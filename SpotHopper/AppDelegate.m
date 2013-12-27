@@ -10,20 +10,25 @@
 
 #import "ClientSessionManager.h"
 
+#import <Raven/RavenClient.h>
 #import <STTwitter/STTwitter.h>
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    // Initializes Raven (Sentry) for error reporting/logging
+    [RavenClient clientWithDSN:kSentryDSN];
 
-    [[ClientSessionManager sharedClient] setDebug:YES];
+    // Sets networking debug logs if debug is set
+    [[ClientSessionManager sharedClient] setDebug:kDebug];
     
     // Open Facebook active session
     [self openFacebookSession:NO success:^(FBSession *session) {
-        NSLog(@"FB - Yay open");
+
     } failure:^(FBSessionState state, NSError *error) {
-        NSLog(@"FB - Boooo don't open");
+
     }];
     
     return YES;
