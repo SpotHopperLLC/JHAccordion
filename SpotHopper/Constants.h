@@ -18,11 +18,17 @@
 
     #define kBaseUrl @"https://"
 
+    #define kTwitterConsumerKey @""
+    #define kTwitterConsumerSecret @""
+
 #elif kEnvEnableProd
 
     #define kDebug FALSE
 
     #define kBaseUrl @"https://"
+
+    #define kTwitterConsumerKey @""
+    #define kTwitterConsumerSecret @""
 
 #endif
 

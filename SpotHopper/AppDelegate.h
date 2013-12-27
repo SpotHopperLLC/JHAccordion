@@ -16,4 +16,6 @@
 
 - (void)openFacebookSession:(BOOL)allowLogin success:(void(^)(FBSession *session))successHandler failure:(void(^)(FBSessionState state, NSError *error))failureHandler;
 
+- (void)reverseAuthWithTwitter:(void(^)(NSString *oAuthToken, NSString *oAuthTokenSecret, NSString *userID, NSString *screenName))successHandler failure:(void(^)(NSError *error))failureHandler;
+
 @end

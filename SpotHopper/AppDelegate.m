@@ -10,6 +10,8 @@
 
 #import "ClientSessionManager.h"
 
+#import <STTwitter/STTwitter.h>
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -115,6 +117,40 @@
         }];
     }
     
+}
+
+#pragma mark - Twitter Connect
+
+- (void)reverseAuthWithTwitter:(void(^)(NSString *oAuthToken, NSString *oAuthTokenSecret, NSString *userID, NSString *screenName))successHandler failure:(void(^)(NSError *error))failureHandler {
+    STTwitterAPI *twitter = [STTwitterAPI twitterAPIWithOAuthConsumerName:nil
+                                                              consumerKey:kTwitterConsumerKey
+                                                           consumerSecret:kTwitterConsumerSecret];
+    
+    [twitter postReverseOAuthTokenRequest:^(NSString *authenticationHeader) {
+        
+        STTwitterAPI *twitterAPIOS = [STTwitterAPI twitterAPIOSWithFirstAccount];
+        
+        [twitterAPIOS verifyCredentialsWithSuccessBlock:^(NSString *username) {
+            
+            [twitterAPIOS postReverseAuthAccessTokenWithAuthenticationHeader:authenticationHeader
+                                                                successBlock:^(NSString *oAuthToken,
+                                                                               NSString *oAuthTokenSecret,
+                                                                               NSString *userID,
+                                                                               NSString *screenName) {
+                                                                    
+                                                                    successHandler(oAuthToken, oAuthTokenSecret, userID, screenName);
+                                                                    
+                                                                } errorBlock:^(NSError *error) {
+                                                                    failureHandler(error);
+                                                                }];
+            
+        } errorBlock:^(NSError *error) {
+            failureHandler(error);
+        }];
+        
+    } errorBlock:^(NSError *error) {
+        failureHandler(error);
+    }];
 }
 
 @end
