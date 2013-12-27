@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+#import <FacebookSDK/FacebookSDK.h>
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+
+- (void)openFacebookSession:(BOOL)allowLogin success:(void(^)(FBSession *session))successHandler failure:(void(^)(FBSessionState state, NSError *error))failureHandler;
 
 @end
