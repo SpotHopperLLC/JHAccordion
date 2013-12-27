@@ -18,8 +18,8 @@
 
     #define kBaseUrl @"https://"
 
-    #define kTwitterConsumerKey @""
-    #define kTwitterConsumerSecret @""
+    #define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"
+    #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
 
 #elif kEnvEnableProd
 
