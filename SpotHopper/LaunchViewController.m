@@ -56,7 +56,7 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
+    [super viewDidLoad:NO];
 
     _keyboardUp = NO;
     

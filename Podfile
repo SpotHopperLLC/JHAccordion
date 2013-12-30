@@ -1,4 +1,4 @@
-platform :ios, '7.0'
+platform :ios, '6.0'
 pod 'AFNetworking', '~> 2.0.3'
 pod 'JSONAPI', '~> 0.1.0'
 pod 'Raven', '~> 0.3.0'

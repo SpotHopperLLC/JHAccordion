@@ -18,7 +18,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_spothopper.png" id="FJA-px-cB7">
-                                <rect key="frame" x="2" y="56" width="317" height="166"/>
+                                <rect key="frame" x="2" y="32" width="317" height="166"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" id="DnA-AE-3di">
