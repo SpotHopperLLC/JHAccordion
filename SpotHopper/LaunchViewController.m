@@ -22,6 +22,12 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtLoginPassword;
 @property (weak, nonatomic) IBOutlet UIImageView *imgLoginArrow;
 
+@property (weak, nonatomic) IBOutlet UIView *viewFormCreate;
+@property (weak, nonatomic) IBOutlet UITextField *txtCreateEmail;
+@property (weak, nonatomic) IBOutlet UITextField *txtCreatePassword;
+@property (weak, nonatomic) IBOutlet UITextField *txtCreatePasswordConfirm;
+@property (weak, nonatomic) IBOutlet UIImageView *imgCreateArrow;
+
 // Login
 @property (nonatomic, assign) BOOL isShowingLogin;
 @property (nonatomic, assign) CGRect viewLoginInitialFrame;
@@ -59,6 +65,10 @@
     _isShowingCreate = NO;
     _viewCreateInitialFrame = _viewCreate.frame;
     
+    CGRect frameCreateForm = _viewFormCreate.frame;
+    frameCreateForm.origin.y = -frameCreateForm.size.height;
+    [_viewFormCreate setFrame:frameCreateForm];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -76,7 +86,7 @@
 }
 
 - (NSArray *)textfieldToHideKeyboard {
-    return @[_txtLoginEmail, _txtLoginPassword];
+    return @[_txtLoginEmail, _txtLoginPassword, _txtCreateEmail, _txtCreatePassword, _txtCreatePasswordConfirm];
 }
 
 - (float)offsetForKeyboard {
@@ -100,11 +110,13 @@
 }
 
 - (IBAction)onClickLogin:(id)sender {
+    [self.view endEditing:YES];
     [self showLogin:!_isShowingLogin];
 }
 
 - (IBAction)onClickCreate:(id)sender {
-    
+    [self.view endEditing:YES];
+    [self showCreate:!_isShowingCreate];
 }
 
 #pragma mark - Private - Connect
@@ -220,6 +232,76 @@
     
 }
 
-- (IBAction)txtLoginPassword:(id)sender {
+- (void)showCreate:(BOOL)show {
+    
+    if (show == YES) {
+        _isShowingCreate = YES;
+        
+        [UIView animateWithDuration:0.35f animations:^{
+            [_viewFacebook setAlpha:0.0f];
+            [_viewTwitter setAlpha:0.0f];
+            [_viewLogin setAlpha:0.0f];
+        } completion:^(BOOL finished) {
+            [_viewFacebook setHidden:YES];
+            [_viewTwitter setHidden:YES];
+            [_viewLogin setHidden:YES];
+            
+            // Create button
+            CGRect createFrame = _viewCreate.frame;
+            createFrame.origin.y = 0;
+            
+            [UIView animateWithDuration:0.35 animations:^{
+                [_viewCreate setFrame:createFrame];
+            } completion:^(BOOL finished) {
+                
+                // Create frame
+                CGRect frameCreateForm = _viewFormCreate.frame;
+                frameCreateForm.origin.y = 0;
+                
+                [UIView animateWithDuration:0.35 animations:^{
+                    [_viewFormCreate setFrame:frameCreateForm];
+                    _imgCreateArrow.transform = CGAffineTransformMakeRotation(M_PI_2);
+                } completion:^(BOOL finished) {
+                    
+                }];
+                
+            }];
+        }];
+        
+    } else {
+        _isShowingCreate = NO;
+        
+        [_viewFacebook setHidden:NO];
+        [_viewTwitter setHidden:NO];
+        [_viewLogin setHidden:NO];
+        
+        // Create frame
+        CGRect frameCreateForm = _viewFormCreate.frame;
+        frameCreateForm.origin.y = -frameCreateForm.size.height;
+        
+        [UIView animateWithDuration:0.35f animations:^{
+            [_viewFormCreate setFrame:frameCreateForm];
+            _imgCreateArrow.transform = CGAffineTransformMakeRotation(0);
+        } completion:^(BOOL finished) {
+            
+            [UIView animateWithDuration:0.35f animations:^{
+                [_viewCreate setFrame:_viewCreateInitialFrame];
+            } completion:^(BOOL finished) {
+                
+                [UIView animateWithDuration:0.35f animations:^{
+                    [_viewFacebook setAlpha:1.0f];
+                    [_viewTwitter setAlpha:1.0f];
+                    [_viewLogin setAlpha:1.0f];
+                } completion:^(BOOL finished) {
+                    
+                }];
+                
+            }];
+            
+        }];
+        
+    }
+    
 }
+
 @end
