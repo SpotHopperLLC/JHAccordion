@@ -114,6 +114,12 @@
 		03F2D9331871E42800C69576 /* btn_login_spothopper@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9311871E42800C69576 /* btn_login_spothopper@2x.png */; };
 		03F2D9371871E88000C69576 /* LaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D9361871E88000C69576 /* LaunchViewController.m */; };
 		03F2D93A1871FB4300C69576 /* UIActionSheet+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D9391871FB4300C69576 /* UIActionSheet+Block.m */; };
+		03F2D93E187208C200C69576 /* SHLabelLatoLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D93D187208C200C69576 /* SHLabelLatoLight.m */; };
+		03F2D9411872090E00C69576 /* SHTextFieldLatoLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D9401872090E00C69576 /* SHTextFieldLatoLight.m */; };
+		03F2D94518720D9E00C69576 /* img_launch_field_divider.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D94318720D9E00C69576 /* img_launch_field_divider.png */; };
+		03F2D94618720D9E00C69576 /* img_launch_field_divider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D94418720D9E00C69576 /* img_launch_field_divider@2x.png */; };
+		03F2D9491872105F00C69576 /* btn_launch_background_create.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9471872105F00C69576 /* btn_launch_background_create.png */; };
+		03F2D94A1872105F00C69576 /* btn_launch_background_create@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9481872105F00C69576 /* btn_launch_background_create@2x.png */; };
 		052EC70F678F4DF18DBE8EB5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -264,6 +270,14 @@
 		03F2D9361871E88000C69576 /* LaunchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchViewController.m; sourceTree = "<group>"; };
 		03F2D9381871FB4300C69576 /* UIActionSheet+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Block.h"; sourceTree = "<group>"; };
 		03F2D9391871FB4300C69576 /* UIActionSheet+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Block.m"; sourceTree = "<group>"; };
+		03F2D93C187208C200C69576 /* SHLabelLatoLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHLabelLatoLight.h; sourceTree = "<group>"; };
+		03F2D93D187208C200C69576 /* SHLabelLatoLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHLabelLatoLight.m; sourceTree = "<group>"; };
+		03F2D93F1872090E00C69576 /* SHTextFieldLatoLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHTextFieldLatoLight.h; sourceTree = "<group>"; };
+		03F2D9401872090E00C69576 /* SHTextFieldLatoLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHTextFieldLatoLight.m; sourceTree = "<group>"; };
+		03F2D94318720D9E00C69576 /* img_launch_field_divider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_launch_field_divider.png; sourceTree = "<group>"; };
+		03F2D94418720D9E00C69576 /* img_launch_field_divider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_launch_field_divider@2x.png"; sourceTree = "<group>"; };
+		03F2D9471872105F00C69576 /* btn_launch_background_create.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_launch_background_create.png; sourceTree = "<group>"; };
+		03F2D9481872105F00C69576 /* btn_launch_background_create@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_launch_background_create@2x.png"; sourceTree = "<group>"; };
 		B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C9816A19827543A8863B8CBF /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -407,6 +421,8 @@
 		0386649F186D36F200985CEC /* Bases */ = {
 			isa = PBXGroup;
 			children = (
+				03F2D9421872091200C69576 /* FontTextField */,
+				03F2D93B187208AA00C69576 /* FontLabel */,
 				03F2D9021871DB3100C69576 /* FontButtons */,
 				038664DD186D379400985CEC /* BaseViewController.h */,
 				038664DE186D379400985CEC /* BaseViewController.m */,
@@ -579,6 +595,10 @@
 		03866507186DE0F700985CEC /* Launch */ = {
 			isa = PBXGroup;
 			children = (
+				03F2D9471872105F00C69576 /* btn_launch_background_create.png */,
+				03F2D9481872105F00C69576 /* btn_launch_background_create@2x.png */,
+				03F2D94318720D9E00C69576 /* img_launch_field_divider.png */,
+				03F2D94418720D9E00C69576 /* img_launch_field_divider@2x.png */,
 				03F2D9301871E42800C69576 /* btn_login_spothopper.png */,
 				03F2D9311871E42800C69576 /* btn_login_spothopper@2x.png */,
 				0386654E186E050500985CEC /* btn_launch_item_background.png */,
@@ -683,6 +703,24 @@
 				03F2D9361871E88000C69576 /* LaunchViewController.m */,
 			);
 			name = Main;
+			sourceTree = "<group>";
+		};
+		03F2D93B187208AA00C69576 /* FontLabel */ = {
+			isa = PBXGroup;
+			children = (
+				03F2D93C187208C200C69576 /* SHLabelLatoLight.h */,
+				03F2D93D187208C200C69576 /* SHLabelLatoLight.m */,
+			);
+			name = FontLabel;
+			sourceTree = "<group>";
+		};
+		03F2D9421872091200C69576 /* FontTextField */ = {
+			isa = PBXGroup;
+			children = (
+				03F2D93F1872090E00C69576 /* SHTextFieldLatoLight.h */,
+				03F2D9401872090E00C69576 /* SHTextFieldLatoLight.m */,
+			);
+			name = FontTextField;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -793,7 +831,9 @@
 				03F2D9271871DC1400C69576 /* Lato-BlackItalic.ttf in Resources */,
 				03F2D9201871DC1400C69576 /* AvantGarEFBoo in Resources */,
 				03866532186DE0F700985CEC /* btn_home_specials.png in Resources */,
+				03F2D9491872105F00C69576 /* btn_launch_background_create.png in Resources */,
 				0386653B186DE0F700985CEC /* btn_loging_twitter@2x.png in Resources */,
+				03F2D94518720D9E00C69576 /* img_launch_field_divider.png in Resources */,
 				03F2D92F1871DC1400C69576 /* Lato-Regular.ttf in Resources */,
 				03F2D92D1871DC1400C69576 /* Lato-Light.ttf in Resources */,
 				03866536186DE0F700985CEC /* btn_login_facebook.png in Resources */,
@@ -810,6 +850,7 @@
 				0386652A186DE0F700985CEC /* btn_context_home.png in Resources */,
 				03866542186DE0F700985CEC /* btn_sidebar_icon_checkin.png in Resources */,
 				03866530186DE0F700985CEC /* btn_home_drinks.png in Resources */,
+				03F2D94618720D9E00C69576 /* img_launch_field_divider@2x.png in Resources */,
 				03866525186DE0F700985CEC /* app_background_blurred@2x.png in Resources */,
 				0386652D186DE0F700985CEC /* btn_context_info@2x.png in Resources */,
 				0386652E186DE0F700985CEC /* btn_home_add_reveiew.png in Resources */,
@@ -827,6 +868,7 @@
 				03866526186DE0F700985CEC /* img_expand_east.png in Resources */,
 				0386654A186DE0F700985CEC /* btn_sidebar_icon_spots.png in Resources */,
 				03866537186DE0F700985CEC /* btn_login_facebook@2x.png in Resources */,
+				03F2D94A1872105F00C69576 /* btn_launch_background_create@2x.png in Resources */,
 				0386653E186DE0F700985CEC /* btn_nav_sidebar.png in Resources */,
 				0386653C186DE0F700985CEC /* btn_nav_arrow_east.png in Resources */,
 				03866547186DE0F700985CEC /* btn_sidebar_icon_reviews@2x.png in Resources */,
@@ -900,6 +942,7 @@
 				038664EA186D37BC00985CEC /* RefreshView.m in Sources */,
 				038664CD186D376900985CEC /* NSDate+Util.m in Sources */,
 				038664D3186D376900985CEC /* UIImage+Resize.m in Sources */,
+				03F2D9411872090E00C69576 /* SHTextFieldLatoLight.m in Sources */,
 				038664E9186D37BC00985CEC /* JHPullRefreshViewController.m in Sources */,
 				038664CF186D376900985CEC /* NSString+Currency.m in Sources */,
 				038664EF186D391E00985CEC /* UserModel.m in Sources */,
@@ -913,6 +956,7 @@
 				038664D7186D376900985CEC /* UILabelRockwell.m in Sources */,
 				038664D1186D376900985CEC /* UIImage+Alpha.m in Sources */,
 				038664CB186D376900985CEC /* NSArray+SaveLoad.m in Sources */,
+				03F2D93E187208C200C69576 /* SHLabelLatoLight.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

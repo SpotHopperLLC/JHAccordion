@@ -139,6 +139,29 @@ typedef void(^AlertBlock)();
     }
 }
 
+#pragma mark - Touches Hide Keyboard
+
+- (NSArray*)textfieldToHideKeyboard {
+    return @[];
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    UITouch *touch = [[event allTouches] anyObject];
+    
+    
+    BOOL hide = NO;
+    for (UITextField *textfield in [self textfieldToHideKeyboard]) {
+        if ([textfield isFirstResponder] && [touch view] != textfield) {
+            hide  = YES;
+        }
+    }
+    
+    if (hide == YES) {
+        [self.view endEditing:YES];
+    }
+    [super touchesBegan:touches withEvent:event];
+}
+
 #pragma mark - Keyboard
 
 #define kOFFSET_FOR_KEYBOARD 80.0

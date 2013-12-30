@@ -30,6 +30,8 @@
 - (UIAlertView*)showAlert:(NSString*)title message:(NSString*)message;
 - (UIAlertView *)showAlert:(NSString *)title message:(NSString *)message block:(void(^)())alertBlock;
 
+- (NSArray*)textfieldToHideKeyboard;
+
 - (float)offsetForKeyboard;
 -(void)keyboardWillShow:(NSNotification*)notification;
 -(void)keyboardWillHide:(NSNotification*)notification;
