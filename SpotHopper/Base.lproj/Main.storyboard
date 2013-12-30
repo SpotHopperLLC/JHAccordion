@@ -23,7 +23,7 @@
                             </imageView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" id="DnA-AE-3di">
                                 <rect key="frame" x="0.0" y="236" width="320" height="244"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" id="zdH-f0-Aso" userLabel="View - Create Form">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="244"/>
@@ -98,7 +98,7 @@
                                                 </state>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
                                     <view contentMode="scaleToFill" id="Cth-M1-HWo" userLabel="View - Login Form">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="244"/>
@@ -292,6 +292,7 @@
                     <connections>
                         <outlet property="imgCreateArrow" destination="c7b-BH-tzU" id="edo-3p-VWN"/>
                         <outlet property="imgLoginArrow" destination="rWW-UR-l9z" id="kSz-YQ-1sj"/>
+                        <outlet property="imgLogo" destination="FJA-px-cB7" id="mVJ-F6-o3E"/>
                         <outlet property="txtCreateEmail" destination="aOL-9j-OVD" id="4QD-h8-zEm"/>
                         <outlet property="txtCreatePassword" destination="C1f-eo-dkf" id="KAn-2i-5fN"/>
                         <outlet property="txtCreatePasswordConfirm" destination="Ljx-DK-j4E" id="mAK-PK-zUc"/>
@@ -302,6 +303,7 @@
                         <outlet property="viewFormCreate" destination="zdH-f0-Aso" id="NWF-MG-fk3"/>
                         <outlet property="viewFormLogin" destination="Cth-M1-HWo" id="IkT-RD-VO9"/>
                         <outlet property="viewLogin" destination="0oA-cj-hsK" id="65s-sY-yJm"/>
+                        <outlet property="viewOptions" destination="DnA-AE-3di" id="PHw-GF-uyy"/>
                         <outlet property="viewTwitter" destination="ihg-06-j58" id="Vns-mg-OoF"/>
                     </connections>
                 </viewController>

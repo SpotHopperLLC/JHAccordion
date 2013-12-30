@@ -12,6 +12,9 @@
 
 @interface LaunchViewController ()
 
+@property (weak, nonatomic) IBOutlet UIImageView *imgLogo;
+@property (weak, nonatomic) IBOutlet UIView *viewOptions;
+
 @property (weak, nonatomic) IBOutlet UIView *viewFacebook;
 @property (weak, nonatomic) IBOutlet UIView *viewTwitter;
 @property (weak, nonatomic) IBOutlet UIView *viewLogin;
@@ -27,6 +30,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtCreatePassword;
 @property (weak, nonatomic) IBOutlet UITextField *txtCreatePasswordConfirm;
 @property (weak, nonatomic) IBOutlet UIImageView *imgCreateArrow;
+
+@property (nonatomic, assign) BOOL keyboardUp;
 
 // Login
 @property (nonatomic, assign) BOOL isShowingLogin;
@@ -53,6 +58,8 @@
 {
     [super viewDidLoad];
 
+    _keyboardUp = NO;
+    
     // Initialize properties - login
     _isShowingLogin = NO;
     _viewLoginInitialFrame = _viewLogin.frame;
@@ -91,6 +98,36 @@
 
 - (float)offsetForKeyboard {
     return 210.0f;
+}
+
+-(void)setViewMovedUp:(BOOL)movedUp keyboardFrame:(CGRect)keyboardFrame
+{
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3]; // if you want to slide up the view
+    
+    CGRect rect = _viewOptions.frame;
+    if (_keyboardUp == NO)
+    {
+        _keyboardUp = YES;
+        // 1. move the view's origin up so that the text field that will be hidden come above the keyboard
+        // 2. increase the size of the view so that the area behind the keyboard is covered up.
+        rect.origin.y -= [self offsetForKeyboard];
+        rect.size.height += [self offsetForKeyboard];
+        
+        [_imgLogo setAlpha:0.0f];
+    }
+    else
+    {
+        _keyboardUp = NO;
+        // revert back to the normal state.
+        rect.origin.y += [self offsetForKeyboard];
+        rect.size.height -= [self offsetForKeyboard];
+        
+        [_imgLogo setAlpha:1.0f];
+    }
+    _viewOptions.frame = rect;
+    
+    [UIView commitAnimations];
 }
 
 - (void)didReceiveMemoryWarning
