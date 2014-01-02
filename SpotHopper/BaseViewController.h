@@ -6,6 +6,9 @@
 //  Copyright (c) 2013 Josh Holtz. All rights reserved.
 //
 
+#define kDidLoadOptionsDontAdjustForIOS6 @"DontAdjustForIOS6"
+#define kDidLoadOptionsNoBackground @"NoBackground"
+
 #import <UIKit/UIKit.h>
 
 @class FooterViewController;
@@ -18,7 +21,7 @@
 
 @property (nonatomic, strong) MBProgressHUD *HUD;
 
-- (void)viewDidLoad:(BOOL)adjustForIOS6;
+- (void)viewDidLoad:(NSArray*)options;
 
 - (void)showHUDCompleted:(NSString*)text;
 - (void)showHUDCompleted:(NSString*)text block:(dispatch_block_t)block;
