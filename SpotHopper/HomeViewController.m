@@ -12,6 +12,7 @@
 
 @interface HomeViewController ()
 
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollViewButtonContainer;
 @property (weak, nonatomic) IBOutlet UIView *viewButtonContainer;
 
 @property (nonatomic, assign) BOOL loaded;
@@ -39,21 +40,28 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self addFooterViewController:^(FooterViewController *footerViewController) {
-        [footerViewController showHome:NO];
-        [footerViewController setRightButton:@"Info" image:[UIImage imageNamed:@"btn_context_info"]];
-    }];
-    
     if (_loaded == NO) {
         _loaded = YES;
         
         if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
+            // Fixes scroll height
+            CGRect frameScroll = _scrollViewButtonContainer.frame;
+            frameScroll.origin.y = 0;
+            frameScroll.size.height = CGRectGetHeight(self.view.frame) - 20.0f;
+            [_scrollViewButtonContainer setFrame:frameScroll];
+            
+            // Adjusts position of frame in scrollview
             CGRect frame = _viewButtonContainer.frame;
             frame.size.height += frame.origin.y;
             frame.origin.y = 0;
             [_viewButtonContainer setFrame:frame];
         }
     }
+    
+    [self addFooterViewController:^(FooterViewController *footerViewController) {
+        [footerViewController showHome:NO];
+        [footerViewController setRightButton:@"Info" image:[UIImage imageNamed:@"btn_context_info"]];
+    }];
 }
 
 - (void)didReceiveMemoryWarning
