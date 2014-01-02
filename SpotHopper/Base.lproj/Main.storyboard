@@ -323,7 +323,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="k8v-IV-Rgf">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="k8v-IV-Rgf">
                                 <rect key="frame" x="0.0" y="-5" width="320" height="485"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
@@ -337,13 +337,19 @@
                                                 <state key="normal" image="btn_home_spots.png">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="onClickSpots:" destination="DCW-kv-kIu" eventType="touchUpInside" id="S38-a6-snw"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="QFP-AE-tUO">
                                                 <rect key="frame" x="141" y="221" width="178" height="143"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                <state key="normal" image="btn_home_spots.png">
+                                                <state key="normal" image="btn_home_add_reveiew.png">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="onClickReviews:" destination="DCW-kv-kIu" eventType="touchUpInside" id="pAZ-AF-5Xc"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Tbz-sK-rl5">
                                                 <rect key="frame" x="1" y="174" width="162" height="138"/>
@@ -351,6 +357,9 @@
                                                 <state key="normal" image="btn_home_specials.png">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="onClickSpecials:" destination="DCW-kv-kIu" eventType="touchUpInside" id="8yC-om-ji6"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="T6q-6n-Ckl">
                                                 <rect key="frame" x="141" y="66" width="178" height="141"/>
@@ -358,6 +367,9 @@
                                                 <state key="normal" image="btn_home_drinks.png">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="onClickDrinks:" destination="DCW-kv-kIu" eventType="touchUpInside" id="7v7-xn-AxW"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -433,6 +445,7 @@
     <resources>
         <image name="app_background.png" width="320" height="566"/>
         <image name="app_background_blurred.png" width="320" height="568"/>
+        <image name="btn_home_add_reveiew.png" width="178" height="143"/>
         <image name="btn_home_drinks.png" width="178" height="141"/>
         <image name="btn_home_specials.png" width="162" height="138"/>
         <image name="btn_home_spots.png" width="162" height="139"/>

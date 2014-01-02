@@ -53,4 +53,22 @@
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark - Actions
+
+- (IBAction)onClickSpots:(id)sender {
+    
+}
+
+- (IBAction)onClickDrinks:(id)sender {
+    
+}
+
+- (IBAction)onClickSpecials:(id)sender {
+    
+}
+
+- (IBAction)onClickReviews:(id)sender {
+    
+}
+
 @end
