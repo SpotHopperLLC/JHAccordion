@@ -10,6 +10,8 @@
 
 #import "MBProgressHUD.h"
 
+#import "FooterViewController.h"
+
 #import <JHSidebar/JHSidebarViewController.h>
 
 typedef void(^AlertBlock)();
@@ -21,6 +23,9 @@ typedef void(^AlertBlock)();
 
 @property (nonatomic, strong) UIBarButtonItem *backButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *rightSidebarButtonItem;
+
+@property (nonatomic, strong) UIImageView *backgroundImage;
+@property (nonatomic, strong) FooterViewController *footerViewController;
 
 @property (nonatomic, assign) BOOL loaded;
 
@@ -39,15 +44,25 @@ typedef void(^AlertBlock)();
 
 - (void)viewDidLoad
 {
-    [self viewDidLoad:YES];
+    [self viewDidLoad:nil];
 }
 
-- (void)viewDidLoad:(BOOL)adjustForIOS6 {
+- (void)viewDidLoad:(NSArray*)options {
     [super viewDidLoad];
 	[self.view setBackgroundColor:[UIColor clearColor]];
     
-    if (adjustForIOS6 == YES && SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"7.0")) {
+    if ([options containsObject:kDidLoadOptionsDontAdjustForIOS6] == NO && SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"7.0")) {
         [self adjustIOS6Crap];
+    }
+    
+    if (![options containsObject:kDidLoadOptionsNoBackground]) {
+        
+        _backgroundImage = [[UIImageView alloc] initWithFrame:self.view.frame];
+        [_backgroundImage setImage:[UIImage imageNamed:@"app_background"]];
+        [_backgroundImage setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+        [_backgroundImage setContentMode:UIViewContentModeBottom];
+        
+        [self.view insertSubview:_backgroundImage atIndex:0];
     }
     
     _backButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_nav_back"] style:UIBarButtonItemStylePlain target:self action:@selector(onClickBack:)];
@@ -269,6 +284,47 @@ typedef void(^AlertBlock)();
         [self.navigationItem setRightBarButtonItem:nil animated:animated];
     }
     
+}
+
+#pragma mark - FooterViewController
+
+- (FooterViewController*)addFooterViewController:(void(^)(FooterViewController *footerViewController))initializeBlock {
+    if (_footerViewController != nil) return _footerViewController;
+    
+    _footerViewController = [[FooterViewController alloc] initWithNibName:@"FooterViewController" bundle:[NSBundle mainBundle]];
+    [_footerViewController setDelegate:self];
+    [self addChildViewController:_footerViewController];
+    
+    CGFloat offset = 0.0f;
+    if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
+        offset = -20.f;
+    }
+    
+    // Place on bottom
+    CGRect frame = _footerViewController.view.frame;
+    frame.size.height = 65.0f;
+    frame.origin.y = CGRectGetMaxY(self.view.frame) - CGRectGetHeight(frame) + offset;
+    [_footerViewController.view setFrame:frame];
+    
+    for (UIView *view in self.view.subviews) {
+        if (_backgroundImage != view) {
+            CGRect frame = view.frame;
+            frame.size.height -= 65.0f;
+            [view setFrame:frame];
+        }
+    }
+    
+    [self.view addSubview:_footerViewController.view];
+    
+    if (initializeBlock) {
+        initializeBlock(_footerViewController);
+    }
+    
+    return _footerViewController;
+}
+
+- (FooterViewController *)footerViewController {
+    return _footerViewController;
 }
 
 @end

@@ -67,7 +67,6 @@
     
     // Set up sidebar options
     [self.sidebarViewController enableTapGesture];
-    [self.sidebarViewController enablePanGesture];
 }
 
 @end

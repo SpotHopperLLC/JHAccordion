@@ -8,7 +8,7 @@
         <!--Launch View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="LaunchViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LaunchViewController" id="vXZ-lx-hvc" customClass="LaunchViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -96,6 +96,9 @@
                                                 <state key="highlighted">
                                                     <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="onClickDoCreate:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="jE3-6j-bOw"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -155,6 +158,9 @@
                                                 <state key="highlighted">
                                                     <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="onClickDoLogin:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="7LI-8Z-thd"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -319,10 +325,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="app_background.png" id="sGw-bj-3zS">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="k8v-IV-Rgf">
                                 <rect key="frame" x="0.0" y="-5" width="320" height="485"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -331,7 +333,7 @@
                                         <rect key="frame" x="0.0" y="70" width="320" height="423"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="fYy-3q-VU6">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="fYy-3q-VU6" userLabel="Button - Spots">
                                                 <rect key="frame" x="1" y="1" width="162" height="139"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" image="btn_home_spots.png">
@@ -341,8 +343,8 @@
                                                     <action selector="onClickSpots:" destination="DCW-kv-kIu" eventType="touchUpInside" id="S38-a6-snw"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="QFP-AE-tUO">
-                                                <rect key="frame" x="141" y="221" width="178" height="143"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="QFP-AE-tUO" userLabel="Button - Add Review">
+                                                <rect key="frame" x="141" y="269" width="178" height="143"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <state key="normal" image="btn_home_add_reveiew.png">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -351,24 +353,24 @@
                                                     <action selector="onClickReviews:" destination="DCW-kv-kIu" eventType="touchUpInside" id="pAZ-AF-5Xc"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Tbz-sK-rl5">
-                                                <rect key="frame" x="1" y="174" width="162" height="138"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" image="btn_home_specials.png">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="onClickSpecials:" destination="DCW-kv-kIu" eventType="touchUpInside" id="8yC-om-ji6"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="T6q-6n-Ckl">
-                                                <rect key="frame" x="141" y="66" width="178" height="141"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="T6q-6n-Ckl" userLabel="Button - Drinks">
+                                                <rect key="frame" x="141" y="77" width="178" height="141"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" image="btn_home_drinks.png">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
                                                     <action selector="onClickDrinks:" destination="DCW-kv-kIu" eventType="touchUpInside" id="7v7-xn-AxW"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Tbz-sK-rl5" userLabel="Button - Specials">
+                                                <rect key="frame" x="1" y="188" width="162" height="138"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" image="btn_home_specials.png">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="onClickSpecials:" destination="DCW-kv-kIu" eventType="touchUpInside" id="8yC-om-ji6"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -383,6 +385,7 @@
                     <navigationItem key="navigationItem" id="wuJ-Ik-25X"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="scrollViewButtonContainer" destination="k8v-IV-Rgf" id="qzb-ma-QFv"/>
                         <outlet property="viewButtonContainer" destination="k0b-e7-ps2" id="Pcj-EN-Ig4"/>
                     </connections>
                 </viewController>
@@ -443,7 +446,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="app_background.png" width="320" height="566"/>
         <image name="app_background_blurred.png" width="320" height="568"/>
         <image name="btn_home_add_reveiew.png" width="178" height="143"/>
         <image name="btn_home_drinks.png" width="178" height="141"/>

@@ -56,7 +56,7 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad:NO];
+    [super viewDidLoad:@[kDidLoadOptionsDontAdjustForIOS6]];
 
     _keyboardUp = NO;
     
@@ -154,6 +154,13 @@
 - (IBAction)onClickCreate:(id)sender {
     [self.view endEditing:YES];
     [self showCreate:!_isShowingCreate];
+}
+
+- (IBAction)onClickDoLogin:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+- (IBAction)onClickDoCreate:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Private - Connect
