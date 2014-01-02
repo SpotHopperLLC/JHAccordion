@@ -260,6 +260,7 @@ typedef void(^AlertBlock)();
         UIImage *image;
         image = [UIImage imageNamed:@"btn_nav_sidebar"];
         _rightSidebarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(onClickShowSidebar:)];
+        [_rightSidebarButtonItem setBackgroundImage:[[UIImage alloc] init] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     }
     
     if (show == YES) {

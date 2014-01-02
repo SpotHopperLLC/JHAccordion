@@ -10,6 +10,10 @@
 
 @interface HomeViewController ()
 
+@property (weak, nonatomic) IBOutlet UIView *viewButtonContainer;
+
+@property (nonatomic, assign) BOOL loaded;
+
 @end
 
 @implementation HomeViewController
@@ -25,10 +29,23 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-    
-    // Show sidebar button in navigation bar
+    [super viewDidLoad:NO];
+
     [self showSidebarButton:YES animated:YES];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (_loaded == NO) {
+        _loaded = YES;
+        
+        if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
+            CGRect frame = _viewButtonContainer.frame;
+            frame.size.height += frame.origin.y;
+            frame.origin.y = 0;
+            [_viewButtonContainer setFrame:frame];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning
