@@ -120,6 +120,11 @@
 		03F2D94618720D9E00C69576 /* img_launch_field_divider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D94418720D9E00C69576 /* img_launch_field_divider@2x.png */; };
 		03F2D9491872105F00C69576 /* btn_launch_background_create.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9471872105F00C69576 /* btn_launch_background_create.png */; };
 		03F2D94A1872105F00C69576 /* btn_launch_background_create@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9481872105F00C69576 /* btn_launch_background_create@2x.png */; };
+		03F2D94D18722CAC00C69576 /* SHNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D94C18722CAC00C69576 /* SHNavigationBar.m */; };
+		03F2D95018722D5300C69576 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D94F18722D5300C69576 /* HomeViewController.m */; };
+		03F2D95318722FB700C69576 /* SHNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D95218722FB700C69576 /* SHNavigationController.m */; };
+		03F2D956187231C600C69576 /* btn_nav_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D954187231C600C69576 /* btn_nav_back.png */; };
+		03F2D957187231C600C69576 /* btn_nav_back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D955187231C600C69576 /* btn_nav_back@2x.png */; };
 		052EC70F678F4DF18DBE8EB5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -278,6 +283,14 @@
 		03F2D94418720D9E00C69576 /* img_launch_field_divider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_launch_field_divider@2x.png"; sourceTree = "<group>"; };
 		03F2D9471872105F00C69576 /* btn_launch_background_create.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_launch_background_create.png; sourceTree = "<group>"; };
 		03F2D9481872105F00C69576 /* btn_launch_background_create@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_launch_background_create@2x.png"; sourceTree = "<group>"; };
+		03F2D94B18722CAC00C69576 /* SHNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHNavigationBar.h; sourceTree = "<group>"; };
+		03F2D94C18722CAC00C69576 /* SHNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHNavigationBar.m; sourceTree = "<group>"; };
+		03F2D94E18722D5300C69576 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		03F2D94F18722D5300C69576 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		03F2D95118722FB700C69576 /* SHNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHNavigationController.h; sourceTree = "<group>"; };
+		03F2D95218722FB700C69576 /* SHNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHNavigationController.m; sourceTree = "<group>"; };
+		03F2D954187231C600C69576 /* btn_nav_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_nav_back.png; sourceTree = "<group>"; };
+		03F2D955187231C600C69576 /* btn_nav_back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_nav_back@2x.png"; sourceTree = "<group>"; };
 		B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C9816A19827543A8863B8CBF /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -428,6 +441,10 @@
 				038664DE186D379400985CEC /* BaseViewController.m */,
 				038664DF186D379400985CEC /* ClientSessionManager.h */,
 				038664E0186D379400985CEC /* ClientSessionManager.m */,
+				03F2D94B18722CAC00C69576 /* SHNavigationBar.h */,
+				03F2D94C18722CAC00C69576 /* SHNavigationBar.m */,
+				03F2D95118722FB700C69576 /* SHNavigationController.h */,
+				03F2D95218722FB700C69576 /* SHNavigationController.m */,
 			);
 			name = Bases;
 			sourceTree = "<group>";
@@ -616,6 +633,8 @@
 		0386650E186DE0F700985CEC /* Nav */ = {
 			isa = PBXGroup;
 			children = (
+				03F2D954187231C600C69576 /* btn_nav_back.png */,
+				03F2D955187231C600C69576 /* btn_nav_back@2x.png */,
 				0386650F186DE0F700985CEC /* btn_nav_arrow_east.png */,
 				03866510186DE0F700985CEC /* btn_nav_arrow_east@2x.png */,
 				03866511186DE0F700985CEC /* btn_nav_sidebar.png */,
@@ -701,6 +720,8 @@
 			children = (
 				03F2D9351871E88000C69576 /* LaunchViewController.h */,
 				03F2D9361871E88000C69576 /* LaunchViewController.m */,
+				03F2D94E18722D5300C69576 /* HomeViewController.h */,
+				03F2D94F18722D5300C69576 /* HomeViewController.m */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -866,7 +887,9 @@
 				0386654B186DE0F700985CEC /* btn_sidebar_icon_spots@2x.png in Resources */,
 				0386654C186DE0F700985CEC /* btn_sidebar_search_icon.png in Resources */,
 				03866526186DE0F700985CEC /* img_expand_east.png in Resources */,
+				03F2D956187231C600C69576 /* btn_nav_back.png in Resources */,
 				0386654A186DE0F700985CEC /* btn_sidebar_icon_spots.png in Resources */,
+				03F2D957187231C600C69576 /* btn_nav_back@2x.png in Resources */,
 				03866537186DE0F700985CEC /* btn_login_facebook@2x.png in Resources */,
 				03F2D94A1872105F00C69576 /* btn_launch_background_create@2x.png in Resources */,
 				0386653E186DE0F700985CEC /* btn_nav_sidebar.png in Resources */,
@@ -933,6 +956,7 @@
 				038664E1186D379400985CEC /* BaseViewController.m in Sources */,
 				038664E2186D379400985CEC /* ClientSessionManager.m in Sources */,
 				03F2D9371871E88000C69576 /* LaunchViewController.m in Sources */,
+				03F2D94D18722CAC00C69576 /* SHNavigationBar.m in Sources */,
 				038664D8186D376900985CEC /* UIView+RelativityLaws.m in Sources */,
 				038664D4186D376900985CEC /* UIImage+Rotation.m in Sources */,
 				038664D5186D376900985CEC /* UIImage+RoundedCorner.m in Sources */,
@@ -951,10 +975,12 @@
 				038664D6186D376900985CEC /* UILabelGotham.m in Sources */,
 				03F2D93A1871FB4300C69576 /* UIActionSheet+Block.m in Sources */,
 				038664DC186D376900985CEC /* TellMeMyLocation.m in Sources */,
+				03F2D95018722D5300C69576 /* HomeViewController.m in Sources */,
 				038664DB186D376900985CEC /* MBProgressHUD.m in Sources */,
 				03866473186D352400985CEC /* main.m in Sources */,
 				038664D7186D376900985CEC /* UILabelRockwell.m in Sources */,
 				038664D1186D376900985CEC /* UIImage+Alpha.m in Sources */,
+				03F2D95318722FB700C69576 /* SHNavigationController.m in Sources */,
 				038664CB186D376900985CEC /* NSArray+SaveLoad.m in Sources */,
 				03F2D93E187208C200C69576 /* SHLabelLatoLight.m in Sources */,
 			);

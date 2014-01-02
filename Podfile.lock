@@ -18,6 +18,7 @@ PODS:
   - AFNetworking/UIKit (2.0.3):
     - AFNetworking/NSURLConnection
   - Facebook-iOS-SDK (3.11.0)
+  - JHSidebar (0.1.0)
   - JSONAPI (0.1.0)
   - Raven (0.3.0)
   - STTwitter (0.0.7)
@@ -25,6 +26,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (~> 2.0.3)
   - Facebook-iOS-SDK (~> 3.11.0)
+  - JHSidebar (~> 0.1.0)
   - JSONAPI (~> 0.1.0)
   - Raven (~> 0.3.0)
   - STTwitter (~> 0.0.7)
@@ -32,6 +34,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworking: e499052cbf3d743e9bb727bb37adb9dc2547ba15
   Facebook-iOS-SDK: 2eb12f9ed04f3d3956f0a4fb0e4e60c824dcd101
+  JHSidebar: 365f83cb9cd91aee10dced5ac1bb4bffc2189db2
   JSONAPI: 4054c16aca0a74861b9c41e47b56ae53fa14497f
   Raven: 875718158645e945cf991c1ca80b41cd2ef82fd9
   STTwitter: beca2e5ff10c6e9c863d9400039f4aed94e28f6a

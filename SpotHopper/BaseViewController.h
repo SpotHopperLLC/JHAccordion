@@ -37,4 +37,6 @@
 -(void)keyboardWillHide:(NSNotification*)notification;
 -(void)setViewMovedUp:(BOOL)movedUp keyboardFrame:(CGRect)keyboardFrame;
 
+- (void)onClickBack:(id)sender;
+
 @end

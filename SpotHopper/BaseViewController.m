@@ -47,6 +47,21 @@ typedef void(^AlertBlock)();
     if (adjustForIOS6 == YES && SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"7.0")) {
         [self adjustIOS6Crap];
     }
+    
+    _backButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_nav_back"] style:UIBarButtonItemStylePlain target:self action:@selector(onClickBack:)];
+    if ([self.navigationController.viewControllers count] > 1) {
+        [self.navigationItem setBackBarButtonItem:nil];
+        [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(onClickBack:)]];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    if ([self.navigationController.viewControllers count] > 1) {
+        [self.navigationItem setBackBarButtonItem:nil];
+        [self.navigationItem setLeftBarButtonItem:_backButtonItem];
+    }
 }
 
 - (void)adjustIOS6Crap {
@@ -220,6 +235,12 @@ typedef void(^AlertBlock)();
     self.view.frame = rect;
     
     [UIView commitAnimations];
+}
+
+#pragma mark - Navigation
+
+- (void)onClickBack:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end
