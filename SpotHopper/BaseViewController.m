@@ -10,6 +10,8 @@
 
 #import "MBProgressHUD.h"
 
+#import <JHSidebar/JHSidebarViewController.h>
+
 typedef void(^AlertBlock)();
 
 @interface BaseViewController ()<UINavigationControllerDelegate>
@@ -18,7 +20,7 @@ typedef void(^AlertBlock)();
 @property (nonatomic, copy) AlertBlock alertBlock;
 
 @property (nonatomic, strong) UIBarButtonItem *backButtonItem;
-@property (nonatomic, strong) UIBarButtonItem *rightRevealButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *rightSidebarButtonItem;
 
 @property (nonatomic, assign) BOOL loaded;
 
@@ -241,6 +243,31 @@ typedef void(^AlertBlock)();
 
 - (void)onClickBack:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)onClickShowSidebar:(id)sender {
+    [self.navigationController.sidebarViewController showRightSidebar:YES];
+}
+
+#pragma mark - Sidebar
+
+- (void)showSidebarButton:(BOOL)show animated:(BOOL)animated {
+    
+    // Shows sidebar menu
+//    JHSidebarViewController *sidebarViewController = [self.navigationController sidebarViewController];
+    
+    if (_rightSidebarButtonItem == nil) {
+        UIImage *image;
+        image = [UIImage imageNamed:@"btn_nav_sidebar"];
+        _rightSidebarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(onClickShowSidebar:)];
+    }
+    
+    if (show == YES) {
+        [self.navigationItem setRightBarButtonItem:_rightSidebarButtonItem animated:animated];
+    } else {
+        [self.navigationItem setRightBarButtonItem:nil animated:animated];
+    }
+    
 }
 
 @end

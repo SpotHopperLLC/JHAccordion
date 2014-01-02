@@ -8,6 +8,8 @@
 
 #import "SHNavigationController.h"
 
+#import <JHSidebar/JHSidebarViewController.h>
+
 @interface SHNavigationController ()
 
 @end
@@ -42,6 +44,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self setupSidebar];
 }
 
 - (void)didReceiveMemoryWarning
@@ -52,6 +56,18 @@
 - (void)setup {
     [self.navigationBar setBackgroundImage:[UIImage alloc] forBarMetrics:UIBarMetricsDefault];
     [self.navigationBar setShadowImage:[[UIImage alloc] init]];
+    
+    [self.navigationBar setTintColor:kColorOrange];
+}
+
+- (void)setupSidebar {
+    if (self.sidebarViewController == nil) {
+        
+    }
+    
+    // Set up sidebar options
+    [self.sidebarViewController enableTapGesture];
+    [self.sidebarViewController enablePanGesture];
 }
 
 @end

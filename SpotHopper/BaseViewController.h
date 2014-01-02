@@ -38,5 +38,8 @@
 -(void)setViewMovedUp:(BOOL)movedUp keyboardFrame:(CGRect)keyboardFrame;
 
 - (void)onClickBack:(id)sender;
+- (void)onClickShowSidebar:(id)sender;
+
+- (void)showSidebarButton:(BOOL)show animated:(BOOL)animated;
 
 @end

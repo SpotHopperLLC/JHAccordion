@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="3Aw-mc-8HV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="3f5-6R-ILz">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -332,6 +332,20 @@
             </objects>
             <point key="canvasLocation" x="-11" y="579"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="A2o-Yq-rxl">
+            <objects>
+                <viewController id="GVQ-VB-zY7" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rK6-YE-FQd">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="0.86666666670000003" green="0.41568627450000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wu5-0o-ttv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-621" y="-68"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="xL0-Ri-7M1">
             <objects>
@@ -349,7 +363,25 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7aT-Za-4oP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-537" y="579"/>
+            <point key="canvasLocation" x="-621" y="579"/>
+        </scene>
+        <!--Sidebar View Controller-->
+        <scene sceneID="sDu-J6-HWA">
+            <objects>
+                <viewController id="3f5-6R-ILz" customClass="JHSidebarViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5Hl-Fe-TiA">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="3Aw-mc-8HV" kind="custom" identifier="JHSidebarMain" id="cRh-b3-MdY"/>
+                        <segue destination="GVQ-VB-zY7" kind="custom" identifier="JHSidebarRight" id="zZM-rH-9db"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EGh-xp-0To" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1175" y="579"/>
         </scene>
     </scenes>
     <resources>
