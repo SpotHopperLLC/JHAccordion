@@ -331,7 +331,7 @@
                                         <rect key="frame" x="0.0" y="70" width="320" height="423"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="fYy-3q-VU6">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="fYy-3q-VU6" userLabel="Button - Spots">
                                                 <rect key="frame" x="1" y="1" width="162" height="139"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" image="btn_home_spots.png">
@@ -341,8 +341,8 @@
                                                     <action selector="onClickSpots:" destination="DCW-kv-kIu" eventType="touchUpInside" id="S38-a6-snw"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="QFP-AE-tUO">
-                                                <rect key="frame" x="141" y="221" width="178" height="143"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="QFP-AE-tUO" userLabel="Button - Add Review">
+                                                <rect key="frame" x="141" y="247" width="178" height="143"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                 <state key="normal" image="btn_home_add_reveiew.png">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -351,17 +351,7 @@
                                                     <action selector="onClickReviews:" destination="DCW-kv-kIu" eventType="touchUpInside" id="pAZ-AF-5Xc"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Tbz-sK-rl5">
-                                                <rect key="frame" x="1" y="174" width="162" height="138"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" image="btn_home_specials.png">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="onClickSpecials:" destination="DCW-kv-kIu" eventType="touchUpInside" id="8yC-om-ji6"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="T6q-6n-Ckl">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="T6q-6n-Ckl" userLabel="Button - Drinks">
                                                 <rect key="frame" x="141" y="66" width="178" height="141"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" image="btn_home_drinks.png">
@@ -369,6 +359,16 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="onClickDrinks:" destination="DCW-kv-kIu" eventType="touchUpInside" id="7v7-xn-AxW"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Tbz-sK-rl5" userLabel="Button - Specials">
+                                                <rect key="frame" x="1" y="174" width="162" height="138"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" image="btn_home_specials.png">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="onClickSpecials:" destination="DCW-kv-kIu" eventType="touchUpInside" id="8yC-om-ji6"/>
                                                 </connections>
                                             </button>
                                         </subviews>

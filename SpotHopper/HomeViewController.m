@@ -36,6 +36,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self addFooterViewController];
     if (_loaded == NO) {
         _loaded = YES;
         

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class FooterViewController;
+
 #import "MBProgressHUD.h"
 
 #import "JHPullRefreshViewController.h"
@@ -41,5 +43,8 @@
 - (void)onClickShowSidebar:(id)sender;
 
 - (void)showSidebarButton:(BOOL)show animated:(BOOL)animated;
+
+- (void)addFooterViewController;
+- (FooterViewController*)footerViewController;
 
 @end

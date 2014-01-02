@@ -10,6 +10,8 @@
 
 #import "MBProgressHUD.h"
 
+#import "FooterViewController.h"
+
 #import <JHSidebar/JHSidebarViewController.h>
 
 typedef void(^AlertBlock)();
@@ -21,6 +23,8 @@ typedef void(^AlertBlock)();
 
 @property (nonatomic, strong) UIBarButtonItem *backButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *rightSidebarButtonItem;
+
+@property (nonatomic, strong) FooterViewController *footerViewController;
 
 @property (nonatomic, assign) BOOL loaded;
 
@@ -269,6 +273,38 @@ typedef void(^AlertBlock)();
         [self.navigationItem setRightBarButtonItem:nil animated:animated];
     }
     
+}
+
+#pragma mark - FooterViewController
+
+- (void)addFooterViewController {
+    if (_footerViewController != nil) return;
+    
+    _footerViewController = [[FooterViewController alloc] initWithNibName:@"FooterViewController" bundle:[NSBundle mainBundle]];
+    [self addChildViewController:_footerViewController];
+    
+    CGFloat offset = 0.0f;
+    if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
+        offset = -20.f;
+    }
+    
+    // Place on bottom
+    CGRect frame = _footerViewController.view.frame;
+    frame.size.height = 65.0f;
+    frame.origin.y = CGRectGetMaxY(self.view.frame) - CGRectGetHeight(frame) + offset;
+    [_footerViewController.view setFrame:frame];
+    
+    for (UIView *view in self.view.subviews) {
+        CGRect frame = view.frame;
+        frame.size.height -= 65.0f;
+        [view setFrame:frame];
+    }
+    
+    [self.view addSubview:_footerViewController.view];
+}
+
+- (FooterViewController *)footerViewController {
+    return _footerViewController;
 }
 
 @end
