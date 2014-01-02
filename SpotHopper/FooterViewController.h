@@ -8,6 +8,26 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum {
+    FooterViewButtonHome, FooterViewButtonLeft, FooterViewButtonMiddle, FooterViewButtonRight
+} FooterViewButtonType;
+
+@protocol FooterViewControllerDelegate;
+
 @interface FooterViewController : UIViewController
+
+@property (nonatomic, assign) id<FooterViewControllerDelegate> delegate;
+
+- (void)showHome:(BOOL)show;
+- (void)setLeftButton:(NSString*)label image:(UIImage*)image;
+- (void)setMiddleButton:(NSString*)label image:(UIImage*)image;
+- (void)setRightButton:(NSString*)label image:(UIImage*)image;
+
+@end
+
+@protocol FooterViewControllerDelegate <NSObject>
+
+@optional
+- (void)footerViewController:(FooterViewController*)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType;
 
 @end

@@ -14,6 +14,16 @@
 
 @property (weak, nonatomic) IBOutlet UIView *viewBackground;
 
+@property (weak, nonatomic) IBOutlet UIButton *btnHome;
+@property (weak, nonatomic) IBOutlet UIButton *btnButtonRight;
+@property (weak, nonatomic) IBOutlet UIButton *btnButtonMiddle;
+@property (weak, nonatomic) IBOutlet UIButton *btnButtonLeft;
+
+@property (weak, nonatomic) IBOutlet UILabel *lblHome;
+@property (weak, nonatomic) IBOutlet UILabel *lblRight;
+@property (weak, nonatomic) IBOutlet UILabel *lblMiddle;
+@property (weak, nonatomic) IBOutlet UILabel *lblLeft;
+
 @end
 
 @implementation FooterViewController
@@ -47,6 +57,63 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Public
+
+- (void)showHome:(BOOL)show {
+    [_btnHome setHidden:!show];
+    [_lblHome setHidden:!show];
+}
+
+- (void)setLeftButton:(NSString*)label image:(UIImage*)image {
+    [_lblLeft setText:label];
+    [_btnButtonLeft setImage:image forState:UIControlStateNormal];
+    
+    [_lblLeft setHidden:NO];
+    [_btnButtonLeft setHidden:NO];
+}
+
+- (void)setMiddleButton:(NSString*)label image:(UIImage*)image {
+    [_lblMiddle setText:label];
+    [_btnButtonMiddle setImage:image forState:UIControlStateNormal];
+    
+    [_lblMiddle setHidden:NO];
+    [_btnButtonMiddle setHidden:NO];
+}
+
+- (void)setRightButton:(NSString*)label image:(UIImage*)image {
+    [_lblRight setText:label];
+    [_btnButtonRight setImage:image forState:UIControlStateNormal];
+    
+    [_lblRight setHidden:NO];
+    [_btnButtonRight setHidden:NO];
+}
+
+#pragma mark - Actions
+
+- (IBAction)onClickHome:(id)sender {
+    if ([_delegate respondsToSelector:@selector(footerViewController:clickedButton:)]) {
+        [_delegate footerViewController:self clickedButton:FooterViewButtonHome];
+    }
+}
+
+- (IBAction)onClickLeft:(id)sender {
+    if ([_delegate respondsToSelector:@selector(footerViewController:clickedButton:)]) {
+        [_delegate footerViewController:self clickedButton:FooterViewButtonLeft];
+    }
+}
+
+- (IBAction)onClickMiddle:(id)sender {
+    if ([_delegate respondsToSelector:@selector(footerViewController:clickedButton:)]) {
+        [_delegate footerViewController:self clickedButton:FooterViewButtonMiddle];
+    }
+}
+
+- (IBAction)onClickRight:(id)sender {
+    if ([_delegate respondsToSelector:@selector(footerViewController:clickedButton:)]) {
+        [_delegate footerViewController:self clickedButton:FooterViewButtonRight];
+    }
 }
 
 @end

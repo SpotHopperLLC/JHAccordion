@@ -11,13 +11,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class FooterViewController;
+#import "FooterViewController.h"
 
 #import "MBProgressHUD.h"
 
 #import "JHPullRefreshViewController.h"
 
-@interface BaseViewController : JHPullRefreshViewController
+@interface BaseViewController : JHPullRefreshViewController<FooterViewControllerDelegate>
 
 @property (nonatomic, strong) MBProgressHUD *HUD;
 
@@ -47,7 +47,7 @@
 
 - (void)showSidebarButton:(BOOL)show animated:(BOOL)animated;
 
-- (void)addFooterViewController;
+- (FooterViewController*)addFooterViewController:(void(^)(FooterViewController *footerViewController))initializeBlock;
 - (FooterViewController*)footerViewController;
 
 @end

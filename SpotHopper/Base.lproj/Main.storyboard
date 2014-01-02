@@ -8,7 +8,7 @@
         <!--Launch View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="LaunchViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LaunchViewController" id="vXZ-lx-hvc" customClass="LaunchViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -96,6 +96,9 @@
                                                 <state key="highlighted">
                                                     <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="onClickDoCreate:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="jE3-6j-bOw"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -155,6 +158,9 @@
                                                 <state key="highlighted">
                                                     <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="onClickDoLogin:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="7LI-8Z-thd"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

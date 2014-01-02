@@ -44,14 +44,14 @@ typedef void(^AlertBlock)();
 
 - (void)viewDidLoad
 {
-    [self viewDidLoad:@[kDidLoadOptionsDontAdjustForIOS6]];
+    [self viewDidLoad:nil];
 }
 
 - (void)viewDidLoad:(NSArray*)options {
     [super viewDidLoad];
 	[self.view setBackgroundColor:[UIColor clearColor]];
     
-    if ([options containsObject:kDidLoadOptionsDontAdjustForIOS6] == YES && SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"7.0")) {
+    if ([options containsObject:kDidLoadOptionsDontAdjustForIOS6] == NO && SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"7.0")) {
         [self adjustIOS6Crap];
     }
     
@@ -62,7 +62,7 @@ typedef void(^AlertBlock)();
         [_backgroundImage setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
         [_backgroundImage setContentMode:UIViewContentModeBottom];
         
-        [self.view addSubview:_backgroundImage];
+        [self.view insertSubview:_backgroundImage atIndex:0];
     }
     
     _backButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_nav_back"] style:UIBarButtonItemStylePlain target:self action:@selector(onClickBack:)];
@@ -288,10 +288,11 @@ typedef void(^AlertBlock)();
 
 #pragma mark - FooterViewController
 
-- (void)addFooterViewController {
-    if (_footerViewController != nil) return;
+- (FooterViewController*)addFooterViewController:(void(^)(FooterViewController *footerViewController))initializeBlock {
+    if (_footerViewController != nil) return _footerViewController;
     
     _footerViewController = [[FooterViewController alloc] initWithNibName:@"FooterViewController" bundle:[NSBundle mainBundle]];
+    [_footerViewController setDelegate:self];
     [self addChildViewController:_footerViewController];
     
     CGFloat offset = 0.0f;
@@ -314,6 +315,12 @@ typedef void(^AlertBlock)();
     }
     
     [self.view addSubview:_footerViewController.view];
+    
+    if (initializeBlock) {
+        initializeBlock(_footerViewController);
+    }
+    
+    return _footerViewController;
 }
 
 - (FooterViewController *)footerViewController {

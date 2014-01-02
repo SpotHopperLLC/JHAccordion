@@ -8,6 +8,8 @@
 
 #import "HomeViewController.h"
 
+#import "LaunchViewController.h"
+
 @interface HomeViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *viewButtonContainer;
@@ -29,14 +31,19 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad:NO];
+    [super viewDidLoad:@[kDidLoadOptionsDontAdjustForIOS6]];
 
     [self showSidebarButton:YES animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self addFooterViewController];
+    
+    [self addFooterViewController:^(FooterViewController *footerViewController) {
+        [footerViewController showHome:NO];
+        [footerViewController setRightButton:@"Info" image:[UIImage imageNamed:@"btn_context_info"]];
+    }];
+    
     if (_loaded == NO) {
         _loaded = YES;
         
@@ -54,6 +61,14 @@
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark - FooterViewControllerDelegate
+
+- (void)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
+    if (FooterViewButtonRight == footerViewButtonType) {
+        [self showAlert:@"Nothing here yet" message:nil];
+    }
+}
+
 #pragma mark - Actions
 
 - (IBAction)onClickSpots:(id)sender {
@@ -65,7 +80,8 @@
 }
 
 - (IBAction)onClickSpecials:(id)sender {
-    
+    LaunchViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LaunchViewController"];
+    [self presentViewController:viewController animated:YES completion:nil];
 }
 
 - (IBAction)onClickReviews:(id)sender {
