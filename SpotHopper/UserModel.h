@@ -8,6 +8,6 @@
 
 #import "JSONAPIResource.h"
 
-@interface UserModel : JSONAPIResource
+@interface UserModel : JSONAPIResource<NSCoding>
 
 @end

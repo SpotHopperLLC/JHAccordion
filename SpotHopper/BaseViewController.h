@@ -30,9 +30,16 @@
 - (UIAlertView*)showAlert:(NSString*)title message:(NSString*)message;
 - (UIAlertView *)showAlert:(NSString *)title message:(NSString *)message block:(void(^)())alertBlock;
 
+- (NSArray*)textfieldToHideKeyboard;
+
 - (float)offsetForKeyboard;
 -(void)keyboardWillShow:(NSNotification*)notification;
 -(void)keyboardWillHide:(NSNotification*)notification;
 -(void)setViewMovedUp:(BOOL)movedUp keyboardFrame:(CGRect)keyboardFrame;
+
+- (void)onClickBack:(id)sender;
+- (void)onClickShowSidebar:(id)sender;
+
+- (void)showSidebarButton:(BOOL)show animated:(BOOL)animated;
 
 @end

@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 
+#import "UIActionSheet+Block.h"
+
 #import "ClientSessionManager.h"
 
 #import <Raven/RavenClient.h>
@@ -25,7 +27,7 @@
     [[ClientSessionManager sharedClient] setDebug:kDebug];
     
     // Open Facebook active session
-    [self openFacebookSession:NO success:^(FBSession *session) {
+    [self facebookAuth:NO success:^(FBSession *session) {
 
     } failure:^(FBSessionState state, NSError *error) {
 
@@ -69,7 +71,7 @@
 
 #pragma mark - Facebook Connect
 
-- (void)openFacebookSession:(BOOL)allowLogin success:(void(^)(FBSession *session))successHandler failure:(void(^)(FBSessionState state, NSError *error))failureHandler {
+- (void)facebookAuth:(BOOL)allowLogin success:(void(^)(FBSession *session))successHandler failure:(void(^)(FBSessionState state, NSError *error))failureHandler {
     
     if ([[FBSession activeSession] isOpen] == YES) {
         successHandler([FBSession activeSession]);
@@ -126,14 +128,59 @@
 
 #pragma mark - Twitter Connect
 
-- (void)reverseAuthWithTwitter:(void(^)(NSString *oAuthToken, NSString *oAuthTokenSecret, NSString *userID, NSString *screenName))successHandler failure:(void(^)(NSError *error))failureHandler {
+- (void)twitterChooseAccount:(UIView*)view success:(void(^)(ACAccount* account))successHandler cancel:(void(^)())cancelHandler noAccounts:(void(^)())noAccounts permissionDenied:(void(^)())permissionDeniedHandler {
+    
+    ACAccountStore *account = [[ACAccountStore alloc] init];
+    ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    
+    [account requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error) {
+        // Did user allow us access?
+        if (granted == YES)
+        {
+            // Populate array with all available Twitter accounts
+            NSArray *arrayOfAccounts = [account accountsWithAccountType:accountType];
+            
+            // Sanity check
+            if ([arrayOfAccounts count] > 0)
+            {
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSMutableArray* twitterAccountsArray = [NSMutableArray array];
+                    
+                    for (ACAccount *account in arrayOfAccounts) {
+                        account.accountType = accountType;
+                        [twitterAccountsArray addObject:account.accountDescription];
+                    }
+                    
+                    [UIActionSheet showInView:view withTitle:@"Select account:" cancelButtonTitle:nil destructiveButtonTitle:@"Cancel" otherButtonTitles:twitterAccountsArray tapBlock:^(UIActionSheet *actionSheet, NSInteger buttonIndex) {
+                        if (buttonIndex == 0) {
+                            cancelHandler();
+                        } else {
+                            successHandler([arrayOfAccounts objectAtIndex:buttonIndex - 1]);
+                        }
+                    }];
+                    
+                });
+                
+            } else {
+                noAccounts();
+            }
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                permissionDeniedHandler();
+            });
+        }
+    }];
+}
+
+- (void)twitterAuth:(ACAccount*)account success:(void(^)(NSString *oAuthToken, NSString *oAuthTokenSecret, NSString *userID, NSString *screenName))successHandler failure:(void(^)(NSError *error))failureHandler {
     STTwitterAPI *twitter = [STTwitterAPI twitterAPIWithOAuthConsumerName:nil
                                                               consumerKey:kTwitterConsumerKey
                                                            consumerSecret:kTwitterConsumerSecret];
     
     [twitter postReverseOAuthTokenRequest:^(NSString *authenticationHeader) {
         
-        STTwitterAPI *twitterAPIOS = [STTwitterAPI twitterAPIOSWithFirstAccount];
+        STTwitterAPI *twitterAPIOS = [STTwitterAPI twitterAPIOSWithAccount:account];
         
         [twitterAPIOS verifyCredentialsWithSuccessBlock:^(NSString *username) {
             
