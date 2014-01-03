@@ -49,9 +49,8 @@ typedef void(^AlertBlock)();
 
 - (void)viewDidLoad:(NSArray*)options {
     [super viewDidLoad];
-	[self.view setBackgroundColor:[UIColor clearColor]];
     
-    if ([options containsObject:kDidLoadOptionsDontAdjustForIOS6] == NO && SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(@"7.0")) {
+    if ([options containsObject:kDidLoadOptionsDontAdjustForIOS6] == NO && SYSTEM_VERSION_LESS_THAN(@"7.0")) {
         [self adjustIOS6Crap];
     }
     

@@ -6,8 +6,10 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
-@interface SidebarViewController : UIViewController
+#import <JHSidebar/JHSidebarViewController.h>
+
+@interface SidebarViewController : BaseViewController<JHSidebarDelegate>
 
 @end

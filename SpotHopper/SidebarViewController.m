@@ -8,7 +8,7 @@
 
 #import "SidebarViewController.h"
 
-@interface SidebarViewController ()
+@interface SidebarViewController ()<UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
 
@@ -34,8 +34,12 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
+    if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    [super viewDidLoad:@[kDidLoadOptionsDontAdjustForIOS6, kDidLoadOptionsNoBackground]];
 	
+    
+    
     // Increasing left inset of button titles
     UIEdgeInsets insets = UIEdgeInsetsMake(0, 15.0f, 0, 0);
     [_btnSpots setTitleEdgeInsets:insets];
@@ -61,6 +65,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (NSArray *)textfieldToHideKeyboard {
+    return @[_txtSearch];
+}
+
 #pragma mark - Private
 
 - (void)addTopBorder:(UIButton*)button {
@@ -77,9 +85,23 @@
     [button.layer addSublayer:border];
 }
 
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    NSLog(@"HERE");
+    return NO;
+}
+
+#pragma mark - JHSidebarDelegate
+
+- (void)sidebar:(JHSidebarSide)side stateChanged:(JHSidebarState)state {
+    [self.view endEditing:YES];
+}
+
 #pragma mark - Actions
 
 - (IBAction)onClickClose:(id)sender {
+    [self.sidebarViewController showRightSidebar:NO];
 }
 
 - (IBAction)onClickSpots:(id)sender {
