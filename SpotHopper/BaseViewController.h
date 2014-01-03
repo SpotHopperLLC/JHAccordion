@@ -48,6 +48,7 @@
 - (void)onClickShowSidebar:(id)sender;
 
 - (void)showSidebarButton:(BOOL)show animated:(BOOL)animated;
+- (void)showSidebarButton:(BOOL)show animated:(BOOL)animated navigationItem:(UINavigationItem*)navigationItem;
 
 - (FooterViewController*)addFooterViewController:(void(^)(FooterViewController *footerViewController))initializeBlock;
 - (FooterViewController*)footerViewController;

@@ -54,7 +54,7 @@ typedef void(^AlertBlock)();
         [self adjustIOS6Crap];
     }
     
-    if (![options containsObject:kDidLoadOptionsBlurredBackground]) {
+    if (![options containsObject:kDidLoadOptionsNoBackground]) {
         
         _backgroundImage = [[UIImageView alloc] initWithFrame:self.view.frame];
         [_backgroundImage setImage:[UIImage imageNamed:( [options containsObject:kDidLoadOptionsFocusedBackground] ? @"app_background" : @"app_background_blurred" )]];
@@ -65,6 +65,7 @@ typedef void(^AlertBlock)();
     }
     
     _backButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_nav_back"] style:UIBarButtonItemStylePlain target:self action:@selector(onClickBack:)];
+    [_backButtonItem setBackgroundImage:[[UIImage alloc] init] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     if ([self.navigationController.viewControllers count] > 1) {
         [self.navigationItem setBackBarButtonItem:nil];
         [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(onClickBack:)]];
@@ -266,6 +267,10 @@ typedef void(^AlertBlock)();
 #pragma mark - Sidebar
 
 - (void)showSidebarButton:(BOOL)show animated:(BOOL)animated {
+    [self showSidebarButton:show animated:animated navigationItem:self.navigationItem];
+}
+
+- (void)showSidebarButton:(BOOL)show animated:(BOOL)animated navigationItem:(UINavigationItem*)navigationItem {
     
     // Shows sidebar menu
 //    JHSidebarViewController *sidebarViewController = [self.navigationController sidebarViewController];
@@ -274,13 +279,14 @@ typedef void(^AlertBlock)();
         UIImage *image;
         image = [UIImage imageNamed:@"btn_nav_sidebar"];
         _rightSidebarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(onClickShowSidebar:)];
+        [_rightSidebarButtonItem setTintColor:kColorOrange];
         [_rightSidebarButtonItem setBackgroundImage:[[UIImage alloc] init] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     }
     
     if (show == YES) {
-        [self.navigationItem setRightBarButtonItem:_rightSidebarButtonItem animated:animated];
+        [navigationItem setRightBarButtonItem:_rightSidebarButtonItem animated:animated];
     } else {
-        [self.navigationItem setRightBarButtonItem:nil animated:animated];
+        [navigationItem setRightBarButtonItem:nil animated:animated];
     }
     
 }
@@ -292,6 +298,7 @@ typedef void(^AlertBlock)();
     
     _footerViewController = [[FooterViewController alloc] initWithNibName:@"FooterViewController" bundle:[NSBundle mainBundle]];
     [_footerViewController setDelegate:self];
+    [_footerViewController.view setAutoresizingMask:UIViewAutoresizingNone];
     [self addChildViewController:_footerViewController];
     
     CGFloat offset = 0.0f;
@@ -302,7 +309,7 @@ typedef void(^AlertBlock)();
     // Place on bottom
     CGRect frame = _footerViewController.view.frame;
     frame.size.height = 65.0f;
-    frame.origin.y = CGRectGetMaxY(self.view.frame) - CGRectGetHeight(frame) + offset;
+    frame.origin.y = CGRectGetMaxY(self.navigationController.view.frame) - CGRectGetHeight(frame) + offset;
     [_footerViewController.view setFrame:frame];
     
     for (UIView *view in self.view.subviews) {

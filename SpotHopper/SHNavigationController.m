@@ -56,7 +56,7 @@
 }
 
 - (void)setup {
-    [self.navigationBar setBackgroundImage:[UIImage alloc] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationBar setBackgroundImage:[UIImage imageNamed:( SYSTEM_VERSION_LESS_THAN(@"7.0") ? @"nav_bar_background_ios6" : @"nav_bar_background_ios7" )] forBarMetrics:UIBarMetricsDefault];
     [self.navigationBar setShadowImage:[[UIImage alloc] init]];
     
     [self.navigationBar setTintColor:kColorOrange];

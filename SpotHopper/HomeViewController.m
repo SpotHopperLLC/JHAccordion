@@ -8,7 +8,11 @@
 
 #import "HomeViewController.h"
 
+#import "UIViewController+Navigator.h"
+
 #import "LaunchViewController.h"
+
+#import "SHNavigationBar.h"
 
 @interface HomeViewController ()
 
@@ -39,23 +43,23 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    if (_loaded == NO) {
-        _loaded = YES;
-        
-        if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
-            // Adjusts position of frame in scrollview
-            CGRect frame = _viewButtonContainer.frame;
-            frame.size.height += frame.origin.y;
-            frame.origin.y = 0;
-            [_viewButtonContainer setFrame:frame];
-        }
-    }
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
     
     [self addFooterViewController:^(FooterViewController *footerViewController) {
         [footerViewController showHome:NO];
         [footerViewController setRightButton:@"Info" image:[UIImage imageNamed:@"btn_context_info"]];
     }];
+    
+    if (_loaded == NO) {
+        _loaded = YES;
+        
+        SHNavigationBar *navigationBar = [[SHNavigationBar alloc] initWithFrame:CGRectMake(0.0f, ( SYSTEM_VERSION_LESS_THAN(@"7.0") ? 0.0f : 20.0f ), 320.0f, 44.0f)];
+        UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:nil];
+        [navigationBar pushNavigationItem:item animated:NO];
+        [self showSidebarButton:YES animated:NO navigationItem:item];
+        [self.view addSubview:navigationBar];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -87,7 +91,7 @@
 }
 
 - (IBAction)onClickReviews:(id)sender {
-    
+    [self goToReviews];
 }
 
 @end

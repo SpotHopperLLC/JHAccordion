@@ -20,6 +20,13 @@
 		0320236518774A49008368C2 /* icon_view_my_reviews@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320235F18774A49008368C2 /* icon_view_my_reviews@2x.png */; };
 		0320236618774A49008368C2 /* txt_reviews_search_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320236018774A49008368C2 /* txt_reviews_search_background.png */; };
 		0320236718774A49008368C2 /* txt_reviews_search_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320236118774A49008368C2 /* txt_reviews_search_background@2x.png */; };
+		0320236918774D64008368C2 /* Reviews.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0320236818774D64008368C2 /* Reviews.storyboard */; };
+		0320236D18774DD1008368C2 /* ReviewsMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0320236C18774DD1008368C2 /* ReviewsMenuViewController.m */; };
+		0320237018774E25008368C2 /* UIViewController+Navigator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0320236F18774E25008368C2 /* UIViewController+Navigator.m */; };
+		0320237518775501008368C2 /* nav_bar_background_ios6.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320237118775501008368C2 /* nav_bar_background_ios6.png */; };
+		0320237618775501008368C2 /* nav_bar_background_ios6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320237218775501008368C2 /* nav_bar_background_ios6@2x.png */; };
+		0320237718775501008368C2 /* nav_bar_background_ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320237318775501008368C2 /* nav_bar_background_ios7.png */; };
+		0320237818775501008368C2 /* nav_bar_background_ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320237418775501008368C2 /* nav_bar_background_ios7@2x.png */; };
 		03866467186D352400985CEC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03866466186D352400985CEC /* Foundation.framework */; };
 		03866469186D352400985CEC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03866468186D352400985CEC /* CoreGraphics.framework */; };
 		0386646B186D352400985CEC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0386646A186D352400985CEC /* UIKit.framework */; };
@@ -167,6 +174,15 @@
 		0320235F18774A49008368C2 /* icon_view_my_reviews@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_view_my_reviews@2x.png"; sourceTree = "<group>"; };
 		0320236018774A49008368C2 /* txt_reviews_search_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = txt_reviews_search_background.png; sourceTree = "<group>"; };
 		0320236118774A49008368C2 /* txt_reviews_search_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "txt_reviews_search_background@2x.png"; sourceTree = "<group>"; };
+		0320236818774D64008368C2 /* Reviews.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Reviews.storyboard; sourceTree = "<group>"; };
+		0320236B18774DD1008368C2 /* ReviewsMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReviewsMenuViewController.h; sourceTree = "<group>"; };
+		0320236C18774DD1008368C2 /* ReviewsMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReviewsMenuViewController.m; sourceTree = "<group>"; };
+		0320236E18774E25008368C2 /* UIViewController+Navigator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Navigator.h"; sourceTree = "<group>"; };
+		0320236F18774E25008368C2 /* UIViewController+Navigator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Navigator.m"; sourceTree = "<group>"; };
+		0320237118775501008368C2 /* nav_bar_background_ios6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_bar_background_ios6.png; sourceTree = "<group>"; };
+		0320237218775501008368C2 /* nav_bar_background_ios6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_bar_background_ios6@2x.png"; sourceTree = "<group>"; };
+		0320237318775501008368C2 /* nav_bar_background_ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_bar_background_ios7.png; sourceTree = "<group>"; };
+		0320237418775501008368C2 /* nav_bar_background_ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_bar_background_ios7@2x.png"; sourceTree = "<group>"; };
 		03866463186D352400985CEC /* SpotHopper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotHopper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03866466186D352400985CEC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		03866468186D352400985CEC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -371,6 +387,15 @@
 			path = Reviews;
 			sourceTree = "<group>";
 		};
+		0320236A18774DB5008368C2 /* Reviews */ = {
+			isa = PBXGroup;
+			children = (
+				0320236B18774DD1008368C2 /* ReviewsMenuViewController.h */,
+				0320236C18774DD1008368C2 /* ReviewsMenuViewController.m */,
+			);
+			name = Reviews;
+			sourceTree = "<group>";
+		};
 		0386645A186D352400985CEC = {
 			isa = PBXGroup;
 			children = (
@@ -457,6 +482,7 @@
 			children = (
 				032023341875DEBC008368C2 /* Footer */,
 				03F2D9341871E86000C69576 /* Main */,
+				0320236A18774DB5008368C2 /* Reviews */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -479,6 +505,7 @@
 			isa = PBXGroup;
 			children = (
 				03866478186D352400985CEC /* Main.storyboard */,
+				0320236818774D64008368C2 /* Reviews.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -491,6 +518,8 @@
 				03F2D9021871DB3100C69576 /* FontButtons */,
 				038664DD186D379400985CEC /* BaseViewController.h */,
 				038664DE186D379400985CEC /* BaseViewController.m */,
+				0320236E18774E25008368C2 /* UIViewController+Navigator.h */,
+				0320236F18774E25008368C2 /* UIViewController+Navigator.m */,
 				038664DF186D379400985CEC /* ClientSessionManager.h */,
 				038664E0186D379400985CEC /* ClientSessionManager.m */,
 				03F2D94B18722CAC00C69576 /* SHNavigationBar.h */,
@@ -688,6 +717,10 @@
 		0386650E186DE0F700985CEC /* Nav */ = {
 			isa = PBXGroup;
 			children = (
+				0320237118775501008368C2 /* nav_bar_background_ios6.png */,
+				0320237218775501008368C2 /* nav_bar_background_ios6@2x.png */,
+				0320237318775501008368C2 /* nav_bar_background_ios7.png */,
+				0320237418775501008368C2 /* nav_bar_background_ios7@2x.png */,
 				03F2D954187231C600C69576 /* btn_nav_back.png */,
 				03F2D955187231C600C69576 /* btn_nav_back@2x.png */,
 				0386650F186DE0F700985CEC /* btn_nav_arrow_east.png */,
@@ -920,6 +953,7 @@
 				0386653B186DE0F700985CEC /* btn_loging_twitter@2x.png in Resources */,
 				0320235A18774A40008368C2 /* table_header_background@2x.png in Resources */,
 				03F2D94518720D9E00C69576 /* img_launch_field_divider.png in Resources */,
+				0320237818775501008368C2 /* nav_bar_background_ios7@2x.png in Resources */,
 				03F2D92F1871DC1400C69576 /* Lato-Regular.ttf in Resources */,
 				03F2D92D1871DC1400C69576 /* Lato-Light.ttf in Resources */,
 				03866536186DE0F700985CEC /* btn_login_facebook.png in Resources */,
@@ -938,6 +972,7 @@
 				03866530186DE0F700985CEC /* btn_home_drinks.png in Resources */,
 				03F2D94618720D9E00C69576 /* img_launch_field_divider@2x.png in Resources */,
 				03866525186DE0F700985CEC /* app_background_blurred@2x.png in Resources */,
+				0320236918774D64008368C2 /* Reviews.storyboard in Resources */,
 				0386652D186DE0F700985CEC /* btn_context_info@2x.png in Resources */,
 				0320236418774A49008368C2 /* icon_view_my_reviews.png in Resources */,
 				0386652E186DE0F700985CEC /* btn_home_add_reveiew.png in Resources */,
@@ -946,7 +981,9 @@
 				0320233C1875E060008368C2 /* FooterViewController.xib in Resources */,
 				03866549186DE0F700985CEC /* btn_sidebar_icon_specials@2x.png in Resources */,
 				03F2D91E1871DC1400C69576 /* AvantGard EF 2 in Resources */,
+				0320237518775501008368C2 /* nav_bar_background_ios6.png in Resources */,
 				03866524186DE0F700985CEC /* app_background_blurred.png in Resources */,
+				0320237618775501008368C2 /* nav_bar_background_ios6@2x.png in Resources */,
 				03F2D91F1871DC1400C69576 /* AvantGarEFBol in Resources */,
 				038664DA186D376900985CEC /* 37x-Checkmark@2x.png in Resources */,
 				0386647A186D352400985CEC /* Main.storyboard in Resources */,
@@ -965,6 +1002,7 @@
 				0320236718774A49008368C2 /* txt_reviews_search_background@2x.png in Resources */,
 				0386653C186DE0F700985CEC /* btn_nav_arrow_east.png in Resources */,
 				03866547186DE0F700985CEC /* btn_sidebar_icon_reviews@2x.png in Resources */,
+				0320237718775501008368C2 /* nav_bar_background_ios7.png in Resources */,
 				03F2D9321871E42800C69576 /* btn_login_spothopper.png in Resources */,
 				03F2D9241871DC1400C69576 /* AvantGarEFExtLig in Resources */,
 				03F2D9231871DC1400C69576 /* AvantGarEFDemObl in Resources */,
@@ -1035,8 +1073,10 @@
 				038664CC186D376900985CEC /* NSDate+Globalize.m in Sources */,
 				038664EA186D37BC00985CEC /* RefreshView.m in Sources */,
 				038664CD186D376900985CEC /* NSDate+Util.m in Sources */,
+				0320236D18774DD1008368C2 /* ReviewsMenuViewController.m in Sources */,
 				038664D3186D376900985CEC /* UIImage+Resize.m in Sources */,
 				03F2D9411872090E00C69576 /* SHTextFieldLatoLight.m in Sources */,
+				0320237018774E25008368C2 /* UIViewController+Navigator.m in Sources */,
 				038664E9186D37BC00985CEC /* JHPullRefreshViewController.m in Sources */,
 				038664CF186D376900985CEC /* NSString+Currency.m in Sources */,
 				038664EF186D391E00985CEC /* UserModel.m in Sources */,
