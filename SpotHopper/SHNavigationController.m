@@ -54,7 +54,8 @@
     NSDictionary *attributes=[NSDictionary dictionaryWithObjectsAndKeys:
                               kColorOrange,UITextAttributeTextColor,
                               [UIFont fontWithName:@"Lato-Bold" size:18.0f],
-                              UITextAttributeFont,[NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset, nil];
+                              UITextAttributeFont,[NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
+                              nil];
     self.navigationBar.titleTextAttributes = attributes;
 }
 
