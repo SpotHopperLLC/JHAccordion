@@ -32,7 +32,7 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad:@[kDidLoadOptionsDontAdjustForIOS6]];
+    [super viewDidLoad:@[kDidLoadOptionsDontAdjustForIOS6, kDidLoadOptionsFocusedBackground]];
 
     [self showSidebarButton:YES animated:YES];
 }

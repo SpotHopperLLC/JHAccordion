@@ -8,6 +8,8 @@
 
 #define kDidLoadOptionsDontAdjustForIOS6 @"DontAdjustForIOS6"
 #define kDidLoadOptionsNoBackground @"NoBackground"
+#define kDidLoadOptionsBlurredBackground @"BlurredBackground"
+#define kDidLoadOptionsFocusedBackground @"FocusedBackground"
 
 #import <UIKit/UIKit.h>
 

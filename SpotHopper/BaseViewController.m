@@ -44,7 +44,7 @@ typedef void(^AlertBlock)();
 
 - (void)viewDidLoad
 {
-    [self viewDidLoad:nil];
+    [self viewDidLoad:@[kDidLoadOptionsBlurredBackground]];
 }
 
 - (void)viewDidLoad:(NSArray*)options {
@@ -54,10 +54,10 @@ typedef void(^AlertBlock)();
         [self adjustIOS6Crap];
     }
     
-    if (![options containsObject:kDidLoadOptionsNoBackground]) {
+    if (![options containsObject:kDidLoadOptionsBlurredBackground]) {
         
         _backgroundImage = [[UIImageView alloc] initWithFrame:self.view.frame];
-        [_backgroundImage setImage:[UIImage imageNamed:@"app_background"]];
+        [_backgroundImage setImage:[UIImage imageNamed:( [options containsObject:kDidLoadOptionsFocusedBackground] ? @"app_background" : @"app_background_blurred" )]];
         [_backgroundImage setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
         [_backgroundImage setContentMode:UIViewContentModeBottom];
         
