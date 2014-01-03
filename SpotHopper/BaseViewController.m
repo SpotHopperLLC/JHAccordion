@@ -274,7 +274,7 @@ typedef void(^AlertBlock)();
     
     // Shows sidebar menu
 //    JHSidebarViewController *sidebarViewController = [self.navigationController sidebarViewController];
-    
+    _rightSidebarButtonItem = nil;
     if (_rightSidebarButtonItem == nil) {
         UIImage *image;
         image = [UIImage imageNamed:@"btn_nav_sidebar"];

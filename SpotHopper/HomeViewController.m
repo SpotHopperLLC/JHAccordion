@@ -19,6 +19,9 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewButtonContainer;
 @property (weak, nonatomic) IBOutlet UIView *viewButtonContainer;
 
+@property (nonatomic, strong) UINavigationBar *navigationBar;
+@property (nonatomic, strong) UINavigationItem *item;
+
 @property (nonatomic, assign) BOOL loaded;
 
 @end
@@ -53,12 +56,14 @@
     if (_loaded == NO) {
         _loaded = YES;
         
-        SHNavigationBar *navigationBar = [[SHNavigationBar alloc] initWithFrame:CGRectMake(0.0f, ( SYSTEM_VERSION_LESS_THAN(@"7.0") ? 0.0f : 20.0f ), 320.0f, 44.0f)];
-        UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:nil];
-        [navigationBar pushNavigationItem:item animated:NO];
-        [self showSidebarButton:YES animated:NO navigationItem:item];
-        [self.view addSubview:navigationBar];
+        _navigationBar = [[SHNavigationBar alloc] initWithFrame:CGRectMake(0.0f, ( SYSTEM_VERSION_LESS_THAN(@"7.0") ? 0.0f : 20.0f ), 320.0f, 44.0f)];
+        _item = [[UINavigationItem alloc] initWithTitle:nil];
+        _navigationBar.items = @[_item];
+        [self.view addSubview:_navigationBar];
     }
+
+    [self showSidebarButton:YES animated:NO navigationItem:_item];
+    
     
 }
 
