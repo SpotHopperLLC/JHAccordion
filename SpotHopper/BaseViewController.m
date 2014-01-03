@@ -315,13 +315,13 @@ typedef void(^AlertBlock)();
     frame.origin.y = CGRectGetMaxY(self.navigationController.view.frame) - CGRectGetHeight(frame) + offset;
     [_footerViewController.view setFrame:frame];
     
-    for (UIView *view in self.view.subviews) {
-        if (_backgroundImage != view) {
-            CGRect frame = view.frame;
-            frame.size.height -= 65.0f;
-            [view setFrame:frame];
-        }
-    }
+//    for (UIView *view in self.view.subviews) {
+//        if (_backgroundImage != view) {
+//            CGRect frame = view.frame;
+//            frame.size.height -= 65.0f;
+//            [view setFrame:frame];
+//        }
+//    }
     
     [self.view addSubview:_footerViewController.view];
     
