@@ -10,6 +10,8 @@
 
 #import "SidebarViewController.h"
 
+#import "SHLabelLatoLight.h"
+
 #import <JHSidebar/JHSidebarViewController.h>
 
 @interface SHNavigationController ()<JHSidebarDelegate>
@@ -48,6 +50,12 @@
     [super viewDidLoad];
     
     [self setupSidebar];
+    
+    NSDictionary *attributes=[NSDictionary dictionaryWithObjectsAndKeys:
+                              kColorOrange,UITextAttributeTextColor,
+                              [UIFont fontWithName:@"Lato-Bold" size:18.0f],
+                              UITextAttributeFont,[NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset, nil];
+    self.navigationBar.titleTextAttributes = attributes;
 }
 
 - (void)didReceiveMemoryWarning

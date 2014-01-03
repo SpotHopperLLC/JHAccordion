@@ -14,6 +14,7 @@
 
 - (void)goToReviews {
     ReviewsMenuViewController *viewController = [[self reviewsStoryboard] instantiateInitialViewController];
+    [viewController setTitle:@"Reviews"];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
