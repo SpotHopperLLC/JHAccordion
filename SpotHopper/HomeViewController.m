@@ -74,10 +74,12 @@
 
 #pragma mark - FooterViewControllerDelegate
 
-- (void)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
+- (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
     if (FooterViewButtonRight == footerViewButtonType) {
         [self showAlert:@"Nothing here yet" message:nil];
+        return YES;
     }
+    return NO;
 }
 
 #pragma mark - Actions

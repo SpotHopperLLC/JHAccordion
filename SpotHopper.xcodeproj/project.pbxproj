@@ -27,6 +27,7 @@
 		0320237618775501008368C2 /* nav_bar_background_ios6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320237218775501008368C2 /* nav_bar_background_ios6@2x.png */; };
 		0320237718775501008368C2 /* nav_bar_background_ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320237318775501008368C2 /* nav_bar_background_ios7.png */; };
 		0320237818775501008368C2 /* nav_bar_background_ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320237418775501008368C2 /* nav_bar_background_ios7@2x.png */; };
+		0320237C187773C0008368C2 /* SHViewTranlucentWhite.m in Sources */ = {isa = PBXBuildFile; fileRef = 0320237B187773C0008368C2 /* SHViewTranlucentWhite.m */; };
 		03866467186D352400985CEC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03866466186D352400985CEC /* Foundation.framework */; };
 		03866469186D352400985CEC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03866468186D352400985CEC /* CoreGraphics.framework */; };
 		0386646B186D352400985CEC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0386646A186D352400985CEC /* UIKit.framework */; };
@@ -183,6 +184,8 @@
 		0320237218775501008368C2 /* nav_bar_background_ios6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_bar_background_ios6@2x.png"; sourceTree = "<group>"; };
 		0320237318775501008368C2 /* nav_bar_background_ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_bar_background_ios7.png; sourceTree = "<group>"; };
 		0320237418775501008368C2 /* nav_bar_background_ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_bar_background_ios7@2x.png"; sourceTree = "<group>"; };
+		0320237A187773C0008368C2 /* SHViewTranlucentWhite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHViewTranlucentWhite.h; sourceTree = "<group>"; };
+		0320237B187773C0008368C2 /* SHViewTranlucentWhite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHViewTranlucentWhite.m; sourceTree = "<group>"; };
 		03866463186D352400985CEC /* SpotHopper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotHopper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03866466186D352400985CEC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		03866468186D352400985CEC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -396,6 +399,15 @@
 			name = Reviews;
 			sourceTree = "<group>";
 		};
+		032023791877739A008368C2 /* TranslucentView */ = {
+			isa = PBXGroup;
+			children = (
+				0320237A187773C0008368C2 /* SHViewTranlucentWhite.h */,
+				0320237B187773C0008368C2 /* SHViewTranlucentWhite.m */,
+			);
+			name = TranslucentView;
+			sourceTree = "<group>";
+		};
 		0386645A186D352400985CEC = {
 			isa = PBXGroup;
 			children = (
@@ -513,6 +525,7 @@
 		0386649F186D36F200985CEC /* Bases */ = {
 			isa = PBXGroup;
 			children = (
+				032023791877739A008368C2 /* TranslucentView */,
 				03F2D9421872091200C69576 /* FontTextField */,
 				03F2D93B187208AA00C69576 /* FontLabel */,
 				03F2D9021871DB3100C69576 /* FontButtons */,
@@ -1081,6 +1094,7 @@
 				038664CF186D376900985CEC /* NSString+Currency.m in Sources */,
 				038664EF186D391E00985CEC /* UserModel.m in Sources */,
 				03866477186D352400985CEC /* AppDelegate.m in Sources */,
+				0320237C187773C0008368C2 /* SHViewTranlucentWhite.m in Sources */,
 				038664D0186D376900985CEC /* UIAlertView+Block.m in Sources */,
 				038664D6186D376900985CEC /* UILabelGotham.m in Sources */,
 				0320235618772D85008368C2 /* SidebarViewController.m in Sources */,

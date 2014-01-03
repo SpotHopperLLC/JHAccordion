@@ -304,6 +304,9 @@ typedef void(^AlertBlock)();
     CGFloat offset = 0.0f;
     if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
         offset = -20.f;
+        if ([self.navigationController isNavigationBarHidden] == NO) {
+            offset -= 44.0f;
+        }
     }
     
     // Place on bottom

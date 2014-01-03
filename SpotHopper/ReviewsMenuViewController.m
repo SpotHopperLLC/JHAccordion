@@ -10,6 +10,8 @@
 
 @interface ReviewsMenuViewController ()
 
+@property (weak, nonatomic) IBOutlet UITextField *txtSearch;
+
 @end
 
 @implementation ReviewsMenuViewController
@@ -26,12 +28,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
+    
+    [self addFooterViewController:^(FooterViewController *footerViewController) {
+        [footerViewController showHome:YES];
+    }];
 }
 
 - (void)didReceiveMemoryWarning
