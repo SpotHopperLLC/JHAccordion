@@ -44,12 +44,6 @@
         _loaded = YES;
         
         if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
-            // Fixes scroll height
-            CGRect frameScroll = _scrollViewButtonContainer.frame;
-            frameScroll.origin.y = 0;
-            frameScroll.size.height = CGRectGetHeight(self.view.frame) - 20.0f;
-            [_scrollViewButtonContainer setFrame:frameScroll];
-            
             // Adjusts position of frame in scrollview
             CGRect frame = _viewButtonContainer.frame;
             frame.size.height += frame.origin.y;

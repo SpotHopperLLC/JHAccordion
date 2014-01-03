@@ -8,9 +8,11 @@
 
 #import "SHNavigationController.h"
 
+#import "SidebarViewController.h"
+
 #import <JHSidebar/JHSidebarViewController.h>
 
-@interface SHNavigationController ()
+@interface SHNavigationController ()<JHSidebarDelegate>
 
 @end
 
@@ -66,7 +68,17 @@
     }
     
     // Set up sidebar options
+    [self.sidebarViewController setDelegate:self];
     [self.sidebarViewController enableTapGesture];
+}
+
+#pragma mark - JHSidebarDelegate
+
+- (void)sidebar:(JHSidebarSide)side stateChanged:(JHSidebarState)state {
+    if (JHSidebarRight == side) {
+        SidebarViewController *sidebarViewController = (SidebarViewController*) self.sidebarViewController.rightViewController;
+        [sidebarViewController sidebar:side stateChanged:state];
+    }
 }
 
 @end

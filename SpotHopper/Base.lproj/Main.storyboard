@@ -315,7 +315,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-11" y="-35"/>
+            <point key="canvasLocation" x="-11" y="-68"/>
         </scene>
         <!--Home View Controller-->
         <scene sceneID="0JM-VX-FHs">
@@ -375,6 +375,7 @@
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <inset key="insetFor6xAndEarlier" minX="0.0" minY="20" maxX="0.0" maxY="-20"/>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -393,15 +394,143 @@
             </objects>
             <point key="canvasLocation" x="-11" y="579"/>
         </scene>
-        <!--View Controller-->
+        <!--Sidebar View Controller-->
         <scene sceneID="A2o-Yq-rxl">
             <objects>
-                <viewController id="GVQ-VB-zY7" sceneMemberID="viewController">
+                <viewController id="GVQ-VB-zY7" customClass="SidebarViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="rK6-YE-FQd">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="0.86666666670000003" green="0.41568627450000001" blue="0.20000000000000001" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="l6W-sT-mGy">
+                                <rect key="frame" x="10" y="10" width="63" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" image="btn_nav_arrow_east.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onClickClose:" destination="GVQ-VB-zY7" eventType="touchUpInside" id="MSs-gT-p4i"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="txt_sidebar_search_background.png" id="j1O-Lj-ues">
+                                <rect key="frame" x="10" y="51" width="251" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search" minimumFontSize="17" id="x0i-kc-A86" customClass="SHTextFieldLatoLight">
+                                <rect key="frame" x="50" y="52" width="204" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="GVQ-VB-zY7" id="Jmw-fO-KvP"/>
+                                </connections>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ozh-Jq-uNr" customClass="SHButtonLatoLight">
+                                <rect key="frame" x="0.0" y="100" width="320" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Spots" image="btn_sidebar_icon_spots.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onClickSpots:" destination="GVQ-VB-zY7" eventType="touchUpInside" id="BEm-2O-mse"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="TbE-N0-aPb" customClass="SHButtonLatoLight">
+                                <rect key="frame" x="0.0" y="150" width="320" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Drinks" image="btn_sidebar_icon_drinks.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onClickDrinks:" destination="GVQ-VB-zY7" eventType="touchUpInside" id="nnW-tG-Nef"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="oYg-0G-FUA" customClass="SHButtonLatoLight">
+                                <rect key="frame" x="0.0" y="200" width="320" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Specials" image="btn_sidebar_icon_specials.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onClickSpecials:" destination="GVQ-VB-zY7" eventType="touchUpInside" id="xKx-Xr-WfD"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="MTm-Tt-D98" customClass="SHButtonLatoLight">
+                                <rect key="frame" x="0.0" y="250" width="320" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Reviews" image="btn_sidebar_icon_reviews.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onClickReviews:" destination="GVQ-VB-zY7" eventType="touchUpInside" id="LDD-fJ-xso"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="iDQ-LH-crG" customClass="SHButtonLatoLight">
+                                <rect key="frame" x="0.0" y="300" width="320" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Check-in" image="btn_sidebar_icon_checkin.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onClickCheckIn:" destination="GVQ-VB-zY7" eventType="touchUpInside" id="jZp-xx-d27"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="oG0-tn-ovb" customClass="SHButtonLatoLight">
+                                <rect key="frame" x="0.0" y="430" width="320" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <inset key="insetFor6xAndEarlier" minX="0.0" minY="20" maxX="0.0" maxY="-20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Account Settings" image="btn_sidebar_icon_account.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onClickAccountSettings:" destination="GVQ-VB-zY7" eventType="touchUpInside" id="fna-aO-zSP"/>
+                                    <action selector="onClickCheckIn:" destination="GVQ-VB-zY7" eventType="touchUpInside" id="CGN-Zt-9Eh"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.86666666670000003" green="0.41568627450000001" blue="0.20000000000000001" alpha="0.84999999999999998" colorSpace="calibratedRGB"/>
                     </view>
+                    <connections>
+                        <outlet property="btnAccount" destination="oG0-tn-ovb" id="DB4-XC-JU3"/>
+                        <outlet property="btnCheckIn" destination="iDQ-LH-crG" id="rCl-Bf-uMR"/>
+                        <outlet property="btnDrinks" destination="TbE-N0-aPb" id="A5O-Hm-vsD"/>
+                        <outlet property="btnReviews" destination="MTm-Tt-D98" id="hn4-6v-Kp3"/>
+                        <outlet property="btnSpecials" destination="oYg-0G-FUA" id="qgr-ae-l67"/>
+                        <outlet property="btnSpots" destination="ozh-Jq-uNr" id="xN5-Hj-OEI"/>
+                        <outlet property="txtSearch" destination="x0i-kc-A86" id="OqP-vp-pll"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wu5-0o-ttv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -457,9 +586,17 @@
         <image name="btn_login_plus.png" width="42" height="28"/>
         <image name="btn_login_spothopper.png" width="42" height="28"/>
         <image name="btn_loging_twitter.png" width="42" height="32"/>
+        <image name="btn_nav_arrow_east.png" width="22" height="22"/>
+        <image name="btn_sidebar_icon_account.png" width="42" height="28"/>
+        <image name="btn_sidebar_icon_checkin.png" width="42" height="29"/>
+        <image name="btn_sidebar_icon_drinks.png" width="42" height="36"/>
+        <image name="btn_sidebar_icon_reviews.png" width="42" height="26"/>
+        <image name="btn_sidebar_icon_specials.png" width="42" height="36"/>
+        <image name="btn_sidebar_icon_spots.png" width="42" height="34"/>
         <image name="img_expand_east.png" width="27" height="27"/>
         <image name="img_launch_field_divider.png" width="317" height="3"/>
         <image name="logo_spothopper.png" width="317" height="166"/>
+        <image name="txt_sidebar_search_background.png" width="251" height="32"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
