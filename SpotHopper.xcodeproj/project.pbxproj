@@ -116,6 +116,7 @@
 		03CA7266187B4EB700815284 /* img_expand_east_orange@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7262187B4EB700815284 /* img_expand_east_orange@2x.png */; };
 		03CA7267187B4EB700815284 /* table_header_background_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7263187B4EB700815284 /* table_header_background_selected.png */; };
 		03CA7268187B4EB700815284 /* table_header_background_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7264187B4EB700815284 /* table_header_background_selected@2x.png */; };
+		03CA726B187B510500815284 /* UIButton+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CA726A187B510500815284 /* UIButton+Block.m */; };
 		03F2D9051871DB5B00C69576 /* SHButtonLatoLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */; };
 		03F2D91D1871DC1400C69576 /* AvantGard EF 1 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9091871DC1400C69576 /* AvantGard EF 1 */; };
 		03F2D91E1871DC1400C69576 /* AvantGard EF 2 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90A1871DC1400C69576 /* AvantGard EF 2 */; };
@@ -306,6 +307,8 @@
 		03CA7262187B4EB700815284 /* img_expand_east_orange@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_expand_east_orange@2x.png"; sourceTree = "<group>"; };
 		03CA7263187B4EB700815284 /* table_header_background_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table_header_background_selected.png; sourceTree = "<group>"; };
 		03CA7264187B4EB700815284 /* table_header_background_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table_header_background_selected@2x.png"; sourceTree = "<group>"; };
+		03CA7269187B510500815284 /* UIButton+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Block.h"; sourceTree = "<group>"; };
+		03CA726A187B510500815284 /* UIButton+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Block.m"; sourceTree = "<group>"; };
 		03F2D9031871DB5B00C69576 /* SHButtonLatoLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoLight.h; sourceTree = "<group>"; };
 		03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoLight.m; sourceTree = "<group>"; };
 		03F2D9091871DC1400C69576 /* AvantGard EF 1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "AvantGard EF 1"; sourceTree = "<group>"; };
@@ -586,6 +589,8 @@
 		038664A4186D376900985CEC /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				03CA7269187B510500815284 /* UIButton+Block.h */,
+				03CA726A187B510500815284 /* UIButton+Block.m */,
 				038664A5186D376900985CEC /* NSArray+SaveLoad.h */,
 				038664A6186D376900985CEC /* NSArray+SaveLoad.m */,
 				038664A7186D376900985CEC /* NSDate+Globalize.h */,
@@ -1109,6 +1114,7 @@
 				03F2D94D18722CAC00C69576 /* SHNavigationBar.m in Sources */,
 				038664D8186D376900985CEC /* UIView+RelativityLaws.m in Sources */,
 				038664D4186D376900985CEC /* UIImage+Rotation.m in Sources */,
+				03CA726B187B510500815284 /* UIButton+Block.m in Sources */,
 				038664D5186D376900985CEC /* UIImage+RoundedCorner.m in Sources */,
 				038664CE186D376900985CEC /* NSNumber+Currency.m in Sources */,
 				03F2D9051871DB5B00C69576 /* SHButtonLatoLight.m in Sources */,

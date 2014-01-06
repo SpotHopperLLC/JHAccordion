@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "UIButton+Block.h"
+
 @interface SectionHeaderView : UIView
 
 @property (nonatomic, strong) UIView *viewContent;

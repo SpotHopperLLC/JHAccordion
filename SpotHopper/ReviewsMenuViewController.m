@@ -15,6 +15,9 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
 @property (weak, nonatomic) IBOutlet UITableView *tblMenu;
 
+@property (nonatomic, strong) SectionHeaderView *sectionHeader0;
+@property (nonatomic, strong) SectionHeaderView *sectionHeader1;
+
 @end
 
 @implementation ReviewsMenuViewController
@@ -71,12 +74,7 @@
 #pragma mark - UITableViewDelegate
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    // Just setting up the section header view
-    SectionHeaderView *view = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(tableView.frame), 65.0f)];
-    [view setIconImage:[UIImage imageNamed:@"icon_view_my_reviews"]];
-    [view setText:@"View My Reviews"];
-    
-    return view;
+    return [self sectionHeaderViewForSection:section];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -85,6 +83,35 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 0.0f;
+}
+
+#pragma mark - Private
+
+- (SectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
+    if (section == 0) {
+        if (_sectionHeader0 == nil) {
+            _sectionHeader0 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 65.0f)];
+            [_sectionHeader0 setIconImage:[UIImage imageNamed:@"icon_view_my_reviews"]];
+            [_sectionHeader0 setText:@"View My Reviews"];
+            [_sectionHeader0.btnBackground setActionWithBlock:^{
+                NSLog(@"Go to my reviews");
+            }];
+        }
+        
+        return _sectionHeader0;
+    } else if (section == 1) {
+        if (_sectionHeader1 == nil) {
+            _sectionHeader1 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 65.0f)];
+            [_sectionHeader1 setIconImage:[UIImage imageNamed:@"icon_plus"]];
+            [_sectionHeader1 setText:@"Add New Review"];
+            [_sectionHeader1.btnBackground setActionWithBlock:^{
+                NSLog(@"Go to add review");
+            }];
+        }
+        
+        return _sectionHeader1;
+    }
+    return nil;
 }
 
 
