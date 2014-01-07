@@ -55,19 +55,19 @@
     [_viewContent addSubview:_btnBackground];
     
     // Icon view
-    _imgIcon = [[UIImageView alloc] initWithFrame:CGRectMake(10.0f, 14.0f, 30.0f, 36.0f)];
+    _imgIcon = [[UIImageView alloc] initWithFrame:CGRectMake(10.0f, 7.0f, 30.0f, 36.0f)];
     [_imgIcon setContentMode:UIViewContentModeCenter];
     [_viewContent addSubview:_imgIcon];
     
     // Label
-    _lblText = [[UILabel alloc] initWithFrame:CGRectMake(45.0f, 14.0f, 200.0f, 36.0f)];
+    _lblText = [[UILabel alloc] initWithFrame:CGRectMake(45.0f, 6.0f, 200.0f, 36.0f)];
     [_lblText setBackgroundColor:[UIColor clearColor]];
     [_lblText setTextColor:[UIColor whiteColor]];
     [_lblText setFont:[UIFont fontWithName:@"Lato-Light" size:18.0f]];
     [_viewContent addSubview:_lblText];
     
     // Image arrow
-    _imgArrow = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(_viewContent.frame) - 47.0f, 18.0f, 27.0f, 27.0f)];
+    _imgArrow = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(_viewContent.frame) - 47.0f, 11.0f, 27.0f, 27.0f)];
     [_imgArrow setImage:[UIImage imageNamed:@"img_expand_east.png"]];
     [_viewContent addSubview:_imgArrow];
 }

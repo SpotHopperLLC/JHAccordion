@@ -10,6 +10,8 @@
 
 #import "SectionHeaderView.h"
 
+#import "MyReviewsViewController.h"
+
 @interface ReviewsMenuViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
@@ -87,21 +89,28 @@
 
 #pragma mark - Private
 
+- (void)goToMyReviews {
+    MyReviewsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyReviewsViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
 - (SectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
+    __block ReviewsMenuViewController *this = self;
+    
     if (section == 0) {
         if (_sectionHeader0 == nil) {
-            _sectionHeader0 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 65.0f)];
+            _sectionHeader0 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
             [_sectionHeader0 setIconImage:[UIImage imageNamed:@"icon_view_my_reviews"]];
             [_sectionHeader0 setText:@"View My Reviews"];
             [_sectionHeader0.btnBackground setActionWithBlock:^{
-                NSLog(@"Go to my reviews");
+                [this goToMyReviews];
             }];
         }
         
         return _sectionHeader0;
     } else if (section == 1) {
         if (_sectionHeader1 == nil) {
-            _sectionHeader1 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 65.0f)];
+            _sectionHeader1 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
             [_sectionHeader1 setIconImage:[UIImage imageNamed:@"icon_plus"]];
             [_sectionHeader1 setText:@"Add New Review"];
             [_sectionHeader1.btnBackground setActionWithBlock:^{
