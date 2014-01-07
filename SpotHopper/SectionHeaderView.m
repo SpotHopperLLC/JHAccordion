@@ -82,4 +82,13 @@
     [_lblText setText:text];
 }
 
+- (void)setSelected:(BOOL)selected {
+    [_btnBackground setSelected:selected];
+    
+    float radians = (selected ? M_PI_2 : 0);
+    [UIView animateWithDuration:0.35 animations:^{
+        _imgArrow.transform = CGAffineTransformMakeRotation(radians);
+    }];
+}
+
 @end

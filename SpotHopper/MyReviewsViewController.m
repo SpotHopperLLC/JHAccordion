@@ -107,11 +107,19 @@
 #pragma mark - JHAccordionDelegate
 
 - (void)accordionOpenedSection:(NSInteger)section {
-    NSLog(@"Opened section - %d", section);
+    if (section == 0) [_sectionHeaderBeer setSelected:YES];
+    if (section == 1) [_sectionHeaderWine setSelected:YES];
+    if (section == 2) [_sectionHeaderCocktails setSelected:YES];
+    if (section == 3) [_sectionHeaderLiqour setSelected:YES];
+    if (section == 4) [_sectionHeaderMostRecent setSelected:YES];
 }
 
 - (void)accordionClosedSection:(NSInteger)section {
-    NSLog(@"Closed section - %d", section);
+    if (section == 0) [_sectionHeaderBeer setSelected:NO];
+    if (section == 1) [_sectionHeaderWine setSelected:NO];
+    if (section == 2) [_sectionHeaderCocktails setSelected:NO];
+    if (section == 3) [_sectionHeaderLiqour setSelected:NO];
+    if (section == 4) [_sectionHeaderMostRecent setSelected:NO];
 }
 
 #pragma mark - Private

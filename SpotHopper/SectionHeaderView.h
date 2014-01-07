@@ -18,6 +18,8 @@
 @property (nonatomic, strong) UILabel *lblText;
 @property (nonatomic, strong) UIImageView *imgArrow;
 
+@property (nonatomic, assign) BOOL selected;
+
 - (id)initWithWidth:(CGFloat)width;
 
 - (void)setIconImage:(UIImage*)image;
