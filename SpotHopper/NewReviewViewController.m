@@ -155,7 +155,6 @@
         return ( [_accordion isSectionOpened:indexPath.section] ? 44.0f : 0.0f);
     } else if (indexPath.section == 1) {
         if (_selectedReviewType > 0) {
-            NSLog(@"Returning a non zero");
             return 77.0f;
         }
     }
