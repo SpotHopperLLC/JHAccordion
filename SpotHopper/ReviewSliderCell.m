@@ -37,7 +37,9 @@
 #pragma mark - Actions
 
 - (void)onValueChangedSlider:(id)sender {
-    NSLog(@"Value changed - %f", _slider.selectedValue);
+    if ([_delegate respondsToSelector:@selector(reviewSliderCell:changedValue:)]) {
+        [_delegate reviewSliderCell:self changedValue:_slider.selectedValue];
+    }
 }
 
 @end

@@ -10,7 +10,7 @@
 
 #import "ReviewSliderCell.h"
 
-@interface ReviewViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface ReviewViewController ()<UITableViewDataSource, UITableViewDelegate, ReviewSliderCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tblReviews;
 
@@ -74,19 +74,12 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
+    [cell setDelegate:self];
     [cell setReview:nil];
     
     [cell setClipsToBounds:NO];
     [cell.contentView setClipsToBounds:NO];
     [cell.contentView.superview setClipsToBounds:NO];
-
-    // This is stupid but for some reason the setting clipToBounds to NO isn't working in iOS 6
-    if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
-//        CGRect bounds = cell.contentView.bounds;
-//        bounds.origin.y -= 30;
-//        bounds.size.height = bounds.size.height + 30;
-//        cell.contentView.bounds = bounds;
-    }
     
     return cell;
 }
@@ -95,6 +88,14 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 87.0f;
+}
+
+#pragma mark - ReviewSliderCellDelegate
+
+- (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(float)value {
+    NSIndexPath *indexPath = [_tblReviews indexPathForCell:cell];
+    
+    NSLog(@"Value changed for row %d to %f", indexPath.row, value);
 }
 
 @end

@@ -12,12 +12,22 @@
 
 #import "ReviewModel.h"
 
+@protocol ReviewSliderCellDelegate;
+
 @interface ReviewSliderCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *lblMnimum;
 @property (weak, nonatomic) IBOutlet UILabel *lblMaximum;
 @property (weak, nonatomic) IBOutlet SHSlider *slider;
 
+@property (nonatomic, assign) id<ReviewSliderCellDelegate> delegate;
+
 - (void)setReview:(ReviewModel*)review;
+
+@end
+
+@protocol ReviewSliderCellDelegate <NSObject>
+
+- (void)reviewSliderCell:(ReviewSliderCell*)cell changedValue:(float)value;
 
 @end
