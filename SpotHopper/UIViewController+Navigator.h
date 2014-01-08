@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+#import "ReviewModel.h"
+
 @interface UIViewController (Navigator)
 
-- (void)goToReviews;
+- (void)goToReviewMenu;
+- (void)goToMyReviews;
+- (void)goToReview:(ReviewModel*)review;
 
 @end

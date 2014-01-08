@@ -100,7 +100,7 @@
 }
 
 - (IBAction)onClickReviews:(id)sender {
-    [self goToReviews];
+    [self goToReviewMenu];
 }
 
 @end

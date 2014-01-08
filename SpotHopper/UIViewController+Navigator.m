@@ -8,20 +8,37 @@
 
 #import "UIViewController+Navigator.h"
 
+#import "MyReviewsViewController.h"
+#import "ReviewViewController.h"
 #import "ReviewsMenuViewController.h"
 
 @implementation UIViewController (Navigator)
 
-- (void)goToReviews {
+- (void)goToReviewMenu {
     ReviewsMenuViewController *viewController = [[self reviewsStoryboard] instantiateInitialViewController];
     [viewController setTitle:@"Reviews"];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToMyReviews {
+    MyReviewsViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"MyReviewsViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToReview:(ReviewModel *)review {
+    ReviewViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"ReviewViewController"];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - Private
 
 - (UIStoryboard*)reviewsStoryboard {
-    return [UIStoryboard storyboardWithName:@"Reviews" bundle:[NSBundle mainBundle]];
+    NSString *name = [self.storyboard valueForKey:@"name"];
+    if ([name isEqualToString:@"Reviews"] == NO) {
+        return [UIStoryboard storyboardWithName:@"Reviews" bundle:[NSBundle mainBundle]];
+    }
+    
+    return self.storyboard;
 }
 
 @end

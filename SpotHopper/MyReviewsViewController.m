@@ -8,6 +8,8 @@
 
 #import "MyReviewsViewController.h"
 
+#import "UIViewController+Navigator.h"
+
 #import "SectionHeaderView.h"
 
 #import <JHAccordion/JHAccordion.h>
@@ -59,6 +61,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    // Deselects table row
+    [_tblReviews deselectRowAtIndexPath:_tblReviews.indexPathForSelectedRow animated:NO];
+    
     // Adds contextual footer view
     [self addFooterViewController:^(FooterViewController *footerViewController) {
         [footerViewController showHome:YES];
@@ -89,6 +94,10 @@
 }
 
 #pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self goToReview:nil];
+}
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     return [self sectionHeaderViewForSection:section];

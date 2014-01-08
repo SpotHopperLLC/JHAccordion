@@ -8,6 +8,8 @@
 
 #import "ReviewsMenuViewController.h"
 
+#import "UIViewController+Navigator.h"
+
 #import "SectionHeaderView.h"
 
 #import "MyReviewsViewController.h"
@@ -88,11 +90,6 @@
 }
 
 #pragma mark - Private
-
-- (void)goToMyReviews {
-    MyReviewsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"MyReviewsViewController"];
-    [self.navigationController pushViewController:viewController animated:YES];
-}
 
 - (SectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
     __block ReviewsMenuViewController *this = self;
