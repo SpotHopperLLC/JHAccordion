@@ -9,6 +9,7 @@
 #import "UIViewController+Navigator.h"
 
 #import "MyReviewsViewController.h"
+#import "NewReviewViewController.h"
 #import "ReviewViewController.h"
 #import "ReviewsMenuViewController.h"
 
@@ -27,6 +28,11 @@
 
 - (void)goToReview:(ReviewModel *)review {
     ReviewViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"ReviewViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToNewReview {
+    NewReviewViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"NewReviewViewController"];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

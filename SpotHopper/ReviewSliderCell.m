@@ -27,6 +27,10 @@
 }
 
 - (void)setReview:(ReviewModel *)review {
+//    [self setClipsToBounds:NO];
+//    [self.contentView setClipsToBounds:NO];
+//    [self.contentView.superview setClipsToBounds:NO];
+    
     [_slider addTarget:self action:@selector(onValueChangedSlider:) forControlEvents:UIControlEventValueChanged];
 }
 

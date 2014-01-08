@@ -160,6 +160,7 @@
 		03CA72C8187C4FB300815284 /* slider_background_selected_min@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72C0187C4FB300815284 /* slider_background_selected_min@2x.png */; };
 		03CA72CB187DD09A00815284 /* DropdownOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CA72CA187DD09A00815284 /* DropdownOptionCell.m */; };
 		03CA72CD187DD0BA00815284 /* DropdownOptionCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72CC187DD0BA00815284 /* DropdownOptionCellView.xib */; };
+		03CA72D0187DF43B00815284 /* NewReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CA72CF187DF43B00815284 /* NewReviewViewController.m */; };
 		03F2D9051871DB5B00C69576 /* SHButtonLatoLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */; };
 		03F2D91D1871DC1400C69576 /* AvantGard EF 1 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9091871DC1400C69576 /* AvantGard EF 1 */; };
 		03F2D91E1871DC1400C69576 /* AvantGard EF 2 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90A1871DC1400C69576 /* AvantGard EF 2 */; };
@@ -403,6 +404,8 @@
 		03CA72C9187DD09A00815284 /* DropdownOptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropdownOptionCell.h; sourceTree = "<group>"; };
 		03CA72CA187DD09A00815284 /* DropdownOptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropdownOptionCell.m; sourceTree = "<group>"; };
 		03CA72CC187DD0BA00815284 /* DropdownOptionCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DropdownOptionCellView.xib; sourceTree = "<group>"; };
+		03CA72CE187DF43B00815284 /* NewReviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewReviewViewController.h; sourceTree = "<group>"; };
+		03CA72CF187DF43B00815284 /* NewReviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewReviewViewController.m; sourceTree = "<group>"; };
 		03F2D9031871DB5B00C69576 /* SHButtonLatoLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoLight.h; sourceTree = "<group>"; };
 		03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoLight.m; sourceTree = "<group>"; };
 		03F2D9091871DC1400C69576 /* AvantGard EF 1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "AvantGard EF 1"; sourceTree = "<group>"; };
@@ -509,6 +512,8 @@
 				03CA726D187B53DA00815284 /* MyReviewsViewController.m */,
 				03CA7284187C245600815284 /* ReviewViewController.h */,
 				03CA7285187C245600815284 /* ReviewViewController.m */,
+				03CA72CE187DF43B00815284 /* NewReviewViewController.h */,
+				03CA72CF187DF43B00815284 /* NewReviewViewController.m */,
 			);
 			name = Reviews;
 			sourceTree = "<group>";
@@ -1333,6 +1338,7 @@
 				03F2D95018722D5300C69576 /* HomeViewController.m in Sources */,
 				038664DB186D376900985CEC /* MBProgressHUD.m in Sources */,
 				03866473186D352400985CEC /* main.m in Sources */,
+				03CA72D0187DF43B00815284 /* NewReviewViewController.m in Sources */,
 				03CA726E187B53DA00815284 /* MyReviewsViewController.m in Sources */,
 				038664D7186D376900985CEC /* UILabelRockwell.m in Sources */,
 				038664D1186D376900985CEC /* UIImage+Alpha.m in Sources */,

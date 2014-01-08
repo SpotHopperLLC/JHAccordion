@@ -77,10 +77,6 @@
     [cell setDelegate:self];
     [cell setReview:nil];
     
-    [cell setClipsToBounds:NO];
-    [cell.contentView setClipsToBounds:NO];
-    [cell.contentView.superview setClipsToBounds:NO];
-    
     return cell;
 }
 

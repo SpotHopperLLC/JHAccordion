@@ -111,7 +111,7 @@
             [_sectionHeader1 setIconImage:[UIImage imageNamed:@"icon_plus"]];
             [_sectionHeader1 setText:@"Add New Review"];
             [_sectionHeader1.btnBackground setActionWithBlock:^{
-                NSLog(@"Go to add review");
+                [this goToNewReview];
             }];
         }
         
