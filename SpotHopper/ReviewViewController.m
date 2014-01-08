@@ -87,7 +87,25 @@
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 87.0f;
+    return 77.0f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UILabel *view = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(tableView.frame), 40.0f)];
+    [view setBackgroundColor:kColorOrangeLight];
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 1.0f, CGRectGetWidth(tableView.frame)-20.0f, 30.f)];
+    [label setBackgroundColor:[UIColor clearColor]];
+    [label setTextColor:[UIColor whiteColor]];
+    [label setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
+    [label setText:[NSString stringWithFormat:@"I thought %@ was...", @""]];
+    [view addSubview:label];
+    
+    return view;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 40.0f;
 }
 
 #pragma mark - ReviewSliderCellDelegate
