@@ -8,6 +8,8 @@
 
 #import "ReviewViewController.h"
 
+#import "UIView+ViewFromNib.h"
+
 #import "ReviewSliderCell.h"
 
 @interface ReviewViewController ()<UITableViewDataSource, UITableViewDelegate, ReviewSliderCellDelegate>
@@ -45,8 +47,7 @@
     
     // Configure table header
     // Header content view
-    NSArray *nibContents = [[NSBundle mainBundle] loadNibNamed:@"ReviewHeaderDrinkView" owner:self options:nil];
-    _headerContent = [nibContents objectAtIndex:0];
+    _headerContent = [UIView viewFromNibNamed:@"ReviewHeaderDrinkView" withOwner:self];
     [_tblReviews setTableHeaderView:_headerContent];
 }
 

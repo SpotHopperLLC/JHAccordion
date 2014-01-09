@@ -180,14 +180,22 @@
 
 #pragma mark - JHAccordionDelegate
 
-- (void)accordionOpenedSection:(NSInteger)section {
+- (void)accordionOpeningSection:(NSInteger)section {
     if (section == 0) [_sectionHeaderFilter setSelected:YES];
     if (section == 1) [_sectionHeaderSort setSelected:YES];
 }
 
-- (void)accordionClosedSection:(NSInteger)section {
+- (void)accordionClosingSection:(NSInteger)section {
     if (section == 0) [_sectionHeaderFilter setSelected:NO];
     if (section == 1) [_sectionHeaderSort setSelected:NO];
+}
+
+- (void)accordionOpenedSection:(NSInteger)section {
+    
+}
+
+- (void)accordionClosedSection:(NSInteger)section {
+    
 }
 
 #pragma mark - Private

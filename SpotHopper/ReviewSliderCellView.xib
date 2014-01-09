@@ -7,10 +7,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="77" id="kdC-El-hOf" customClass="ReviewSliderCell">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="77" id="kdC-El-hOf" customClass="ReviewSliderCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="87"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kdC-El-hOf" id="UZO-O6-bRg">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kdC-El-hOf" id="UZO-O6-bRg">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="86"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
@@ -38,9 +38,9 @@
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                <color key="backgroundColor" red="0.93333333330000001" green="0.62745098040000002" blue="0.42745098040000001" alpha="1" colorSpace="calibratedRGB"/>
             </tableViewCellContentView>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.93333333330000001" green="0.62745098040000002" blue="0.42745098040000001" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
                 <outlet property="lblMaximum" destination="SHq-za-0vq" id="NC0-Ht-zIH"/>
                 <outlet property="lblMnimum" destination="iw3-hG-afc" id="oUm-QU-fsz"/>
