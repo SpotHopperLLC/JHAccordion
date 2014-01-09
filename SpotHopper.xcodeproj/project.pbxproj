@@ -164,6 +164,14 @@
 		03CA72D3187DFC4900815284 /* NewReviewSpotView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72D2187DFC4900815284 /* NewReviewSpotView.xib */; };
 		03CA72D5187DFC5600815284 /* NewReviewBeerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72D4187DFC5600815284 /* NewReviewBeerView.xib */; };
 		03CA72D8187DFCC200815284 /* UIView+ViewFromNib.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CA72D7187DFCC200815284 /* UIView+ViewFromNib.m */; };
+		03CA72DA187F4EC200815284 /* NewReviewWineView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72D9187F4EC200815284 /* NewReviewWineView.xib */; };
+		03CA72DC187F4ED100815284 /* NewReviewCocktailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72DB187F4ED100815284 /* NewReviewCocktailView.xib */; };
+		03CA72DF187F502800815284 /* txt_review_form_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72DD187F502800815284 /* txt_review_form_background.png */; };
+		03CA72E0187F502800815284 /* txt_review_form_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72DE187F502800815284 /* txt_review_form_background@2x.png */; };
+		03CA72E3187F567100815284 /* icon_star.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72E1187F567100815284 /* icon_star.png */; };
+		03CA72E4187F567100815284 /* icon_star@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72E2187F567100815284 /* icon_star@2x.png */; };
+		03CA72E7187F56DA00815284 /* icon_spot.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72E5187F56DA00815284 /* icon_spot.png */; };
+		03CA72E8187F56DA00815284 /* icon_spot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72E6187F56DA00815284 /* icon_spot@2x.png */; };
 		03F2D9051871DB5B00C69576 /* SHButtonLatoLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */; };
 		03F2D91D1871DC1400C69576 /* AvantGard EF 1 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9091871DC1400C69576 /* AvantGard EF 1 */; };
 		03F2D91E1871DC1400C69576 /* AvantGard EF 2 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90A1871DC1400C69576 /* AvantGard EF 2 */; };
@@ -413,6 +421,14 @@
 		03CA72D4187DFC5600815284 /* NewReviewBeerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewReviewBeerView.xib; sourceTree = "<group>"; };
 		03CA72D6187DFCC200815284 /* UIView+ViewFromNib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ViewFromNib.h"; sourceTree = "<group>"; };
 		03CA72D7187DFCC200815284 /* UIView+ViewFromNib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ViewFromNib.m"; sourceTree = "<group>"; };
+		03CA72D9187F4EC200815284 /* NewReviewWineView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewReviewWineView.xib; sourceTree = "<group>"; };
+		03CA72DB187F4ED100815284 /* NewReviewCocktailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewReviewCocktailView.xib; sourceTree = "<group>"; };
+		03CA72DD187F502800815284 /* txt_review_form_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = txt_review_form_background.png; sourceTree = "<group>"; };
+		03CA72DE187F502800815284 /* txt_review_form_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "txt_review_form_background@2x.png"; sourceTree = "<group>"; };
+		03CA72E1187F567100815284 /* icon_star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_star.png; sourceTree = "<group>"; };
+		03CA72E2187F567100815284 /* icon_star@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_star@2x.png"; sourceTree = "<group>"; };
+		03CA72E5187F56DA00815284 /* icon_spot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_spot.png; sourceTree = "<group>"; };
+		03CA72E6187F56DA00815284 /* icon_spot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_spot@2x.png"; sourceTree = "<group>"; };
 		03F2D9031871DB5B00C69576 /* SHButtonLatoLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoLight.h; sourceTree = "<group>"; };
 		03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoLight.m; sourceTree = "<group>"; };
 		03F2D9091871DC1400C69576 /* AvantGard EF 1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "AvantGard EF 1"; sourceTree = "<group>"; };
@@ -500,6 +516,8 @@
 		0320235B18774A49008368C2 /* Reviews */ = {
 			isa = PBXGroup;
 			children = (
+				03CA72DD187F502800815284 /* txt_review_form_background.png */,
+				03CA72DE187F502800815284 /* txt_review_form_background@2x.png */,
 				0320235C18774A49008368C2 /* icon_plus.png */,
 				0320235D18774A49008368C2 /* icon_plus@2x.png */,
 				0320235E18774A49008368C2 /* icon_view_my_reviews.png */,
@@ -926,6 +944,10 @@
 		03CA726F187B8FD800815284 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				03CA72E5187F56DA00815284 /* icon_spot.png */,
+				03CA72E6187F56DA00815284 /* icon_spot@2x.png */,
+				03CA72E1187F567100815284 /* icon_star.png */,
+				03CA72E2187F567100815284 /* icon_star@2x.png */,
 				03CA7280187B90D800815284 /* icon_clock.png */,
 				03CA7281187B90D800815284 /* icon_clock@2x.png */,
 				03CA7270187B8FD800815284 /* icon_beer.png */,
@@ -972,6 +994,8 @@
 			children = (
 				03CA72D2187DFC4900815284 /* NewReviewSpotView.xib */,
 				03CA72D4187DFC5600815284 /* NewReviewBeerView.xib */,
+				03CA72D9187F4EC200815284 /* NewReviewWineView.xib */,
+				03CA72DB187F4ED100815284 /* NewReviewCocktailView.xib */,
 			);
 			name = NewReviewForms;
 			sourceTree = "<group>";
@@ -1157,8 +1181,10 @@
 				03F2D9331871E42800C69576 /* btn_login_spothopper@2x.png in Resources */,
 				03866551186E050500985CEC /* btn_launch_item_background@2x.png in Resources */,
 				03866528186DE0F700985CEC /* logo_spothopper.png in Resources */,
+				03CA72E8187F56DA00815284 /* icon_spot@2x.png in Resources */,
 				03866539186DE0F700985CEC /* btn_login_plus@2x.png in Resources */,
 				03CA72C7187C4FB300815284 /* slider_background_selected_min.png in Resources */,
+				03CA72E0187F502800815284 /* txt_review_form_background@2x.png in Resources */,
 				03CA72AC187C4D0E00815284 /* slider_background_selected.png in Resources */,
 				03F2D92C1871DC1400C69576 /* Lato-Italic.ttf in Resources */,
 				0386652B186DE0F700985CEC /* btn_context_home@2x.png in Resources */,
@@ -1177,6 +1203,7 @@
 				0320235218772A86008368C2 /* txt_sidebar_search_background.png in Resources */,
 				03F2D9201871DC1400C69576 /* AvantGarEFBoo in Resources */,
 				0320236318774A49008368C2 /* icon_plus@2x.png in Resources */,
+				03CA72E3187F567100815284 /* icon_star.png in Resources */,
 				03866532186DE0F700985CEC /* btn_home_specials.png in Resources */,
 				03CA72AD187C4D0E00815284 /* slider_background_selected@2x.png in Resources */,
 				03F2D9491872105F00C69576 /* btn_launch_background_create.png in Resources */,
@@ -1219,6 +1246,7 @@
 				0386652E186DE0F700985CEC /* btn_home_add_reveiew.png in Resources */,
 				03CA727A187B8FD800815284 /* icon_cocktails.png in Resources */,
 				03CA72C1187C4FB300815284 /* slider_background_max.png in Resources */,
+				03CA72DC187F4ED100815284 /* NewReviewCocktailView.xib in Resources */,
 				0386652C186DE0F700985CEC /* btn_context_info.png in Resources */,
 				03866522186DE0F700985CEC /* app_background.png in Resources */,
 				0320233C1875E060008368C2 /* FooterViewController.xib in Resources */,
@@ -1236,6 +1264,7 @@
 				03CA72C8187C4FB300815284 /* slider_background_selected_min@2x.png in Resources */,
 				038664DA186D376900985CEC /* 37x-Checkmark@2x.png in Resources */,
 				03CA727D187B8FD800815284 /* icon_liquor@2x.png in Resources */,
+				03CA72E4187F567100815284 /* icon_star@2x.png in Resources */,
 				0386647A186D352400985CEC /* Main.storyboard in Resources */,
 				0386652F186DE0F700985CEC /* btn_home_add_reveiew@2x.png in Resources */,
 				0386654B186DE0F700985CEC /* btn_sidebar_icon_spots@2x.png in Resources */,
@@ -1243,6 +1272,7 @@
 				03866526186DE0F700985CEC /* img_expand_east.png in Resources */,
 				03F2D956187231C600C69576 /* btn_nav_back.png in Resources */,
 				03CA72AB187C4D0E00815284 /* slider_background@2x.png in Resources */,
+				03CA72E7187F56DA00815284 /* icon_spot.png in Resources */,
 				0386654A186DE0F700985CEC /* btn_sidebar_icon_spots.png in Resources */,
 				03F2D957187231C600C69576 /* btn_nav_back@2x.png in Resources */,
 				03CA7268187B4EB700815284 /* table_header_background_selected@2x.png in Resources */,
@@ -1250,6 +1280,7 @@
 				03CA72B4187C4D0E00815284 /* slider_thumb_selected_with_light.png in Resources */,
 				03F2D94A1872105F00C69576 /* btn_launch_background_create@2x.png in Resources */,
 				0320235918774A40008368C2 /* table_header_background.png in Resources */,
+				03CA72DA187F4EC200815284 /* NewReviewWineView.xib in Resources */,
 				0320236218774A49008368C2 /* icon_plus.png in Resources */,
 				0386653E186DE0F700985CEC /* btn_nav_sidebar.png in Resources */,
 				0320236718774A49008368C2 /* txt_reviews_search_background@2x.png in Resources */,
@@ -1260,6 +1291,7 @@
 				03F2D9321871E42800C69576 /* btn_login_spothopper.png in Resources */,
 				03CA7267187B4EB700815284 /* table_header_background_selected.png in Resources */,
 				03F2D9241871DC1400C69576 /* AvantGarEFExtLig in Resources */,
+				03CA72DF187F502800815284 /* txt_review_form_background.png in Resources */,
 				03F2D9231871DC1400C69576 /* AvantGarEFDemObl in Resources */,
 				03CA72AA187C4D0E00815284 /* slider_background.png in Resources */,
 				0386653A186DE0F700985CEC /* btn_loging_twitter.png in Resources */,

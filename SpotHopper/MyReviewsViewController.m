@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#define kFilters @[@"All Reviews", @"Spots", @"Beers", @"Wines", @"Cocktails"]
-#define kFiltersIcons @[@"", @"", @"", @"", @""]
+#define kFilters @[@"All Reviews", @"Spots", @"Beers", @"Cocktails", @"Wines"]
+#define kFiltersIcons @[@"", @"icon_spot", @"icon_beer", @"icon_cocktails", @"icon_wine"]
 #define kSorts @[@"Most Recent", @"Highest Rated"]
-#define kSortsIcons @[@"", @""]
+#define kSortsIcons @[@"icon_clock", @"icon_star"]
 
 #import "MyReviewsViewController.h"
 

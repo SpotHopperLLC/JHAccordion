@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#define kReviewTypes @[@"Spot", @"Beer", @"Wine", @"Cocktail"]
-#define kReviewTypeIcons @[@"btn_sidebar_icon_spots", @"icon_beer", @"icon_wine", @"icon_cocktails"]
+#define kReviewTypes @[@"Spot", @"Beer", @"Cocktail", @"Wine"]
+#define kReviewTypeIcons @[@"btn_sidebar_icon_spots", @"icon_beer", @"icon_cocktails", @"icon_wine"]
 
 #import "MyReviewsViewController.h"
 
@@ -34,6 +34,8 @@
 
 @property (nonatomic, strong) UIView *viewFormNewSpot;
 @property (nonatomic, strong) UIView *viewFormNewBeer;
+@property (nonatomic, strong) UIView *viewFormNewCocktail;
+@property (nonatomic, strong) UIView *viewFormNewWine;
 
 @end
 
@@ -279,6 +281,18 @@
         }
 
         return _viewFormNewBeer;
+    } else if (index == 2) {
+        if (_viewFormNewCocktail == nil) {
+            _viewFormNewCocktail = [UIView viewFromNibNamed:@"NewReviewCocktailView" withOwner:self];
+        }
+        
+        return _viewFormNewCocktail;
+    } else if (index == 3) {
+        if (_viewFormNewWine == nil) {
+            _viewFormNewWine = [UIView viewFromNibNamed:@"NewReviewWineView" withOwner:self];
+        }
+        
+        return _viewFormNewWine;
     }
     
     return nil;
