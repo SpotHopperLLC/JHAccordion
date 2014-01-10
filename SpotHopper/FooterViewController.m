@@ -94,7 +94,12 @@
 
 - (IBAction)onClickHome:(id)sender {
     if ([_delegate respondsToSelector:@selector(footerViewController:clickedButton:)]) {
-        [_delegate footerViewController:self clickedButton:FooterViewButtonHome];
+        BOOL handled = [_delegate footerViewController:self clickedButton:FooterViewButtonHome];
+        if (handled == NO) {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+    } else {
+        [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
 

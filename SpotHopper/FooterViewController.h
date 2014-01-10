@@ -28,6 +28,6 @@ typedef enum {
 @protocol FooterViewControllerDelegate <NSObject>
 
 @optional
-- (void)footerViewController:(FooterViewController*)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType;
+- (BOOL)footerViewController:(FooterViewController*)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType;
 
 @end

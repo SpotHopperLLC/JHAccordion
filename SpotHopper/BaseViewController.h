@@ -8,6 +8,8 @@
 
 #define kDidLoadOptionsDontAdjustForIOS6 @"DontAdjustForIOS6"
 #define kDidLoadOptionsNoBackground @"NoBackground"
+#define kDidLoadOptionsBlurredBackground @"BlurredBackground"
+#define kDidLoadOptionsFocusedBackground @"FocusedBackground"
 
 #import <UIKit/UIKit.h>
 
@@ -46,6 +48,7 @@
 - (void)onClickShowSidebar:(id)sender;
 
 - (void)showSidebarButton:(BOOL)show animated:(BOOL)animated;
+- (void)showSidebarButton:(BOOL)show animated:(BOOL)animated navigationItem:(UINavigationItem*)navigationItem;
 
 - (FooterViewController*)addFooterViewController:(void(^)(FooterViewController *footerViewController))initializeBlock;
 - (FooterViewController*)footerViewController;

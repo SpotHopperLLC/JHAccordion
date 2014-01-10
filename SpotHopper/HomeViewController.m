@@ -8,12 +8,19 @@
 
 #import "HomeViewController.h"
 
+#import "UIViewController+Navigator.h"
+
 #import "LaunchViewController.h"
+
+#import "SHNavigationBar.h"
 
 @interface HomeViewController ()
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewButtonContainer;
 @property (weak, nonatomic) IBOutlet UIView *viewButtonContainer;
+
+@property (nonatomic, strong) UINavigationBar *navigationBar;
+@property (nonatomic, strong) UINavigationItem *item;
 
 @property (nonatomic, assign) BOOL loaded;
 
@@ -32,30 +39,34 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad:@[kDidLoadOptionsDontAdjustForIOS6]];
+    [super viewDidLoad:@[kDidLoadOptionsDontAdjustForIOS6, kDidLoadOptionsFocusedBackground]];
 
+    // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
     
-    if (_loaded == NO) {
-        _loaded = YES;
-        
-        if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
-            // Adjusts position of frame in scrollview
-            CGRect frame = _viewButtonContainer.frame;
-            frame.size.height += frame.origin.y;
-            frame.origin.y = 0;
-            [_viewButtonContainer setFrame:frame];
-        }
-    }
-    
+    // Adds contextual footer view
     [self addFooterViewController:^(FooterViewController *footerViewController) {
         [footerViewController showHome:NO];
         [footerViewController setRightButton:@"Info" image:[UIImage imageNamed:@"btn_context_info"]];
     }];
+    
+    if (_loaded == NO) {
+        _loaded = YES;
+        
+        _navigationBar = [[SHNavigationBar alloc] initWithFrame:CGRectMake(0.0f, ( SYSTEM_VERSION_LESS_THAN(@"7.0") ? 0.0f : 20.0f ), 320.0f, 44.0f)];
+        _item = [[UINavigationItem alloc] initWithTitle:nil];
+        _navigationBar.items = @[_item];
+        [self.view addSubview:_navigationBar];
+    }
+
+    [self showSidebarButton:YES animated:NO navigationItem:_item];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -65,10 +76,12 @@
 
 #pragma mark - FooterViewControllerDelegate
 
-- (void)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
+- (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
     if (FooterViewButtonRight == footerViewButtonType) {
         [self showAlert:@"Nothing here yet" message:nil];
+        return YES;
     }
+    return NO;
 }
 
 #pragma mark - Actions
@@ -87,7 +100,7 @@
 }
 
 - (IBAction)onClickReviews:(id)sender {
-    
+    [self goToReviewMenu];
 }
 
 @end
