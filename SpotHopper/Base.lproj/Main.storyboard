@@ -289,6 +289,21 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" id="fAx-FE-ILd" customClass="SHButtonLatoLightRightImage">
+                                        <rect key="frame" x="135" y="200" width="50" height="36"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="Skip" image="img_arrow_east.png">
+                                            <color key="titleColor" red="0.86274509803921573" green="0.41568627450980389" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onClickSkip:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="h6s-nU-ZIM"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
@@ -296,6 +311,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="btnSkip" destination="fAx-FE-ILd" id="u4f-Nk-3WQ"/>
                         <outlet property="imgCreateArrow" destination="c7b-BH-tzU" id="edo-3p-VWN"/>
                         <outlet property="imgLoginArrow" destination="rWW-UR-l9z" id="kSz-YQ-1sj"/>
                         <outlet property="imgLogo" destination="FJA-px-cB7" id="mVJ-F6-o3E"/>
@@ -617,6 +633,7 @@
         <image name="btn_sidebar_icon_reviews.png" width="42" height="26"/>
         <image name="btn_sidebar_icon_specials.png" width="42" height="36"/>
         <image name="btn_sidebar_icon_spots.png" width="42" height="34"/>
+        <image name="img_arrow_east.png" width="10" height="15"/>
         <image name="img_expand_east.png" width="27" height="27"/>
         <image name="img_launch_field_divider.png" width="317" height="3"/>
         <image name="logo_spothopper.png" width="317" height="166"/>

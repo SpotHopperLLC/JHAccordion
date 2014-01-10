@@ -19,6 +19,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [[ClientSessionManager sharedClient] setHasSeenLaunch:NO];
     
     // Initializes Raven (Sentry) for error reporting/logging
     [RavenClient clientWithDSN:kSentryDSN];

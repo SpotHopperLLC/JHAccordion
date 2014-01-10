@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIView *viewTwitter;
 @property (weak, nonatomic) IBOutlet UIView *viewLogin;
 @property (weak, nonatomic) IBOutlet UIView *viewCreate;
+@property (weak, nonatomic) IBOutlet UIButton *btnSkip;
 
 @property (weak, nonatomic) IBOutlet UIView *viewFormLogin;
 @property (weak, nonatomic) IBOutlet UITextField *txtLoginEmail;
@@ -143,6 +144,10 @@
 
 #pragma mark - Actions
 
+- (IBAction)onClickSkip:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (IBAction)onClickFacebook:(id)sender {
     [self doFacebook];
 }
@@ -218,10 +223,12 @@
             [_viewFacebook setAlpha:0.0f];
             [_viewTwitter setAlpha:0.0f];
             [_viewCreate setAlpha:0.0f];
+            [_btnSkip setAlpha:0.0f];
         } completion:^(BOOL finished) {
             [_viewFacebook setHidden:YES];
             [_viewTwitter setHidden:YES];
             [_viewCreate setHidden:YES];
+            [_btnSkip setHidden:YES];
             
             // Login button
             CGRect loginFrame = _viewLogin.frame;
@@ -251,6 +258,7 @@
         [_viewFacebook setHidden:NO];
         [_viewTwitter setHidden:NO];
         [_viewCreate setHidden:NO];
+        [_btnSkip setHidden:NO];
         
         // Login frame
         CGRect frameLoginForm = _viewFormLogin.frame;
@@ -269,6 +277,7 @@
                     [_viewFacebook setAlpha:1.0f];
                     [_viewTwitter setAlpha:1.0f];
                     [_viewCreate setAlpha:1.0f];
+                    [_btnSkip setAlpha:1.0f];
                 } completion:^(BOOL finished) {
                     
                 }];
@@ -290,10 +299,12 @@
             [_viewFacebook setAlpha:0.0f];
             [_viewTwitter setAlpha:0.0f];
             [_viewLogin setAlpha:0.0f];
+            [_btnSkip setAlpha:0.0f];
         } completion:^(BOOL finished) {
             [_viewFacebook setHidden:YES];
             [_viewTwitter setHidden:YES];
             [_viewLogin setHidden:YES];
+            [_btnSkip setHidden:YES];
             
             // Create button
             CGRect createFrame = _viewCreate.frame;
@@ -323,6 +334,7 @@
         [_viewFacebook setHidden:NO];
         [_viewTwitter setHidden:NO];
         [_viewLogin setHidden:NO];
+        [_btnSkip setHidden:NO];
         
         // Create frame
         CGRect frameCreateForm = _viewFormCreate.frame;
@@ -341,6 +353,7 @@
                     [_viewFacebook setAlpha:1.0f];
                     [_viewTwitter setAlpha:1.0f];
                     [_viewLogin setAlpha:1.0f];
+                    [_btnSkip setAlpha:1.0f];
                 } completion:^(BOOL finished) {
                     
                 }];
