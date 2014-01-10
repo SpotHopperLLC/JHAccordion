@@ -31,6 +31,7 @@
 		03412C371880535B000F16A8 /* img_arrow_east.png in Resources */ = {isa = PBXBuildFile; fileRef = 03412C351880535B000F16A8 /* img_arrow_east.png */; };
 		03412C381880535B000F16A8 /* img_arrow_east@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03412C361880535B000F16A8 /* img_arrow_east@2x.png */; };
 		03412C3B188053E7000F16A8 /* SHButtonLatoLightRightImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03412C3A188053E7000F16A8 /* SHButtonLatoLightRightImage.m */; };
+		03412C3E18805693000F16A8 /* ErrorModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03412C3D18805693000F16A8 /* ErrorModel.m */; };
 		03866467186D352400985CEC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03866466186D352400985CEC /* Foundation.framework */; };
 		03866469186D352400985CEC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03866468186D352400985CEC /* CoreGraphics.framework */; };
 		0386646B186D352400985CEC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0386646A186D352400985CEC /* UIKit.framework */; };
@@ -256,6 +257,8 @@
 		03412C361880535B000F16A8 /* img_arrow_east@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_arrow_east@2x.png"; sourceTree = "<group>"; };
 		03412C39188053E7000F16A8 /* SHButtonLatoLightRightImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoLightRightImage.h; sourceTree = "<group>"; };
 		03412C3A188053E7000F16A8 /* SHButtonLatoLightRightImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoLightRightImage.m; sourceTree = "<group>"; };
+		03412C3C18805693000F16A8 /* ErrorModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorModel.h; sourceTree = "<group>"; };
+		03412C3D18805693000F16A8 /* ErrorModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorModel.m; sourceTree = "<group>"; };
 		03866463186D352400985CEC /* SpotHopper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotHopper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03866466186D352400985CEC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		03866468186D352400985CEC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -835,6 +838,8 @@
 			children = (
 				03CA728A187C26BD00815284 /* DrinkModel.h */,
 				03CA728B187C26BD00815284 /* DrinkModel.m */,
+				03412C3C18805693000F16A8 /* ErrorModel.h */,
+				03412C3D18805693000F16A8 /* ErrorModel.m */,
 				03CA728D187C3B2E00815284 /* ReviewModel.h */,
 				03CA728E187C3B2E00815284 /* ReviewModel.m */,
 				03CA7287187C26B300815284 /* SpotModel.h */,
@@ -1406,6 +1411,7 @@
 				0320237018774E25008368C2 /* UIViewController+Navigator.m in Sources */,
 				038664E9186D37BC00985CEC /* JHPullRefreshViewController.m in Sources */,
 				038664CF186D376900985CEC /* NSString+Currency.m in Sources */,
+				03412C3E18805693000F16A8 /* ErrorModel.m in Sources */,
 				038664EF186D391E00985CEC /* UserModel.m in Sources */,
 				03866477186D352400985CEC /* AppDelegate.m in Sources */,
 				0320237C187773C0008368C2 /* SHViewTranlucentWhite.m in Sources */,

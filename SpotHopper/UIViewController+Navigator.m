@@ -19,7 +19,7 @@
 
 #pragma mark - Main
 
-- (void)gotToLaunch:(BOOL)animated {
+- (void)goToLaunch:(BOOL)animated {
     LaunchViewController *viewController = [[self mainStoryboard] instantiateViewControllerWithIdentifier:@"LaunchViewController"];
     [self presentViewController:viewController animated:animated completion:nil];
 }

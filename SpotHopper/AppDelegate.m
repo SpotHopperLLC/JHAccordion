@@ -11,7 +11,9 @@
 #import "UIActionSheet+Block.h"
 
 #import "ClientSessionManager.h"
+#import "UserModel.h"
 
+#import <JSONAPI/JSONAPI.h>
 #import <Raven/RavenClient.h>
 #import <STTwitter/STTwitter.h>
 
@@ -19,10 +21,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [[ClientSessionManager sharedClient] setHasSeenLaunch:NO];
+//    [[ClientSessionManager sharedClient] setHasSeenLaunch:NO];
     
     // Initializes Raven (Sentry) for error reporting/logging
     [RavenClient clientWithDSN:kSentryDSN];
+    
+    // Initializes models linking for JSONAPI
+    [JSONAPIResourceModeler useResource:[UserModel class] toLinkedType:@"users"];
 
     // Sets networking debug logs if debug is set
     [[ClientSessionManager sharedClient] setDebug:kDebug];

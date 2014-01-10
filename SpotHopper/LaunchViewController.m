@@ -11,6 +11,8 @@
 #import "AppDelegate.h"
 
 #import "ClientSessionManager.h"
+#import "ErrorModel.h"
+#import "UserModel.h"
 
 @interface LaunchViewController ()
 
@@ -61,9 +63,11 @@
 {
     [super viewDidLoad:@[kDidLoadOptionsDontAdjustForIOS6]];
 
-    _keyboardUp = NO;
+    // Logs current user out
+    [[ClientSessionManager sharedClient] logout];
     
     // Initialize properties - login
+    _keyboardUp = NO;
     _isShowingLogin = NO;
     _viewLoginInitialFrame = _viewLogin.frame;
     
@@ -167,7 +171,7 @@
 }
 
 - (IBAction)onClickDoLogin:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self doLogin];
 }
 - (IBAction)onClickDoCreate:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -210,6 +214,36 @@
     } permissionDenied:^{
         [self showAlert:@"Permission Denied" message:@"SpotHopper does not have permission to use Twitter.\n\nPlease adjust the permissions in the Settings app if you would like to use Twitter in SpotHopper"];
     }];
+}
+
+#pragma mark - Private - API
+
+- (void)doLogin {
+    NSString *email = _txtLoginEmail.text;
+    NSString *password = _txtLoginPassword.text;
+    
+    if (email.length == 0) {
+        [self showAlert:@"Oops" message:@"Email is required"];
+        return;
+    }
+    if (password.length == 0) {
+        [self showAlert:@"Oops" message:@"Password is required"];
+        return;
+    }
+    
+    NSDictionary *params = @{
+                             kUserModelParamEmail : email,
+                             kUserModelParamPassword : password
+                             };
+    [self showHUD:@"Logging in"];
+    [UserModel loginUser:params success:^(UserModel *userModel, NSHTTPURLResponse *response) {
+        [self hideHUD];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } failure:^(ErrorModel *errorModel) {
+        [self hideHUD];
+        [self showAlert:@"Oops" message:@"Error while trying to login"];
+    }];
+    
 }
 
 #pragma mark - Private - Animations

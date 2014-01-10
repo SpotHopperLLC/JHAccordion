@@ -15,6 +15,7 @@
 #import "LaunchViewController.h"
 
 #import "ClientSessionManager.h"
+#import "UserModel.h"
 
 @interface HomeViewController ()
 
@@ -49,9 +50,11 @@
     // Do this in view did load if iOS 7
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
         if ([[ClientSessionManager sharedClient] hasSeenLaunch] == NO) {
-            [self gotToLaunch:NO];
+            [self goToLaunch:NO];
         }
     }
+    
+    NSLog(@"Logged in user - %@", [[ClientSessionManager sharedClient] currentUser].name);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -83,7 +86,7 @@
     // Do this in view did appear if iOS 6
     if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
         if ([[ClientSessionManager sharedClient] hasSeenLaunch] == NO) {
-            [self gotToLaunch:animated];
+            [self goToLaunch:animated];
         }
     }
 }
