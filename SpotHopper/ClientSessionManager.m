@@ -8,6 +8,7 @@
 
 #define kCookie @"Cookie"
 #define kCurrentUser @"CurrentUser"
+#define kHasSeenLaunch @"HasSeenLaunch"
 
 #import "ClientSessionManager.h"
 
@@ -166,7 +167,7 @@
     }];
 }
 
-#pragma mark - Session
+#pragma mark - Session Helpers
 
 - (NSString *)cookie {
     if (_cookie == nil) {
@@ -206,6 +207,8 @@
     
 }
 
+#pragma mark - Login helpers
+
 - (void)login:(NSHTTPURLResponse*)response user:(UserModel*)user {
     NSLog(@"All response cookies - %@", [response allHeaderFields]);
     NSString *cookie = [[response allHeaderFields] objectForKey:@"Set-Cookie"];
@@ -229,6 +232,16 @@
     [self.requestSerializer setValue:@"" forHTTPHeaderField:@"Cookie"];
     [self setCookie:nil];
     [self setCurrentUser:nil];
+}
+
+#pragma mark - Settings
+
+- (BOOL)hasSeenLaunch {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kHasSeenLaunch];
+}
+
+- (void)setHasSeenLaunch:(BOOL)seenLaunch {
+    [[NSUserDefaults standardUserDefaults] setBool:seenLaunch forKey:kHasSeenLaunch];
 }
 
 #pragma mark - Save Model

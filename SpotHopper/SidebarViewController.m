@@ -104,6 +104,10 @@
     [self.sidebarViewController showRightSidebar:NO];
 }
 
+- (IBAction)onClickLogout:(id)sender {
+    
+}
+
 - (IBAction)onClickSpots:(id)sender {
     
 }

@@ -12,6 +12,10 @@
 
 @interface UIViewController (Navigator)
 
+// Main
+- (void)gotToLaunch:(BOOL)animated;
+
+// Reviews
 - (void)goToReviewMenu;
 - (void)goToMyReviews;
 - (void)goToReview:(ReviewModel*)review;

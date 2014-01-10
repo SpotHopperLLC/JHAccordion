@@ -10,9 +10,11 @@
 
 #import "UIViewController+Navigator.h"
 
+#import "SHNavigationBar.h"
+
 #import "LaunchViewController.h"
 
-#import "SHNavigationBar.h"
+#import "ClientSessionManager.h"
 
 @interface HomeViewController ()
 
@@ -43,6 +45,13 @@
 
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
+    
+    // Do this in view did load if iOS 7
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+        if ([[ClientSessionManager sharedClient] hasSeenLaunch] == NO) {
+            [self gotToLaunch:NO];
+        }
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -66,7 +75,17 @@
 
     [self showSidebarButton:YES animated:NO navigationItem:_item];
     
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     
+    // Do this in view did appear if iOS 6
+    if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
+        if ([[ClientSessionManager sharedClient] hasSeenLaunch] == NO) {
+            [self gotToLaunch:animated];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -95,8 +114,7 @@
 }
 
 - (IBAction)onClickSpecials:(id)sender {
-    LaunchViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LaunchViewController"];
-    [self presentViewController:viewController animated:YES completion:nil];
+    
 }
 
 - (IBAction)onClickReviews:(id)sender {

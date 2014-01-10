@@ -524,7 +524,22 @@
                                 </state>
                                 <connections>
                                     <action selector="onClickAccountSettings:" destination="GVQ-VB-zY7" eventType="touchUpInside" id="fna-aO-zSP"/>
-                                    <action selector="onClickCheckIn:" destination="GVQ-VB-zY7" eventType="touchUpInside" id="CGN-Zt-9Eh"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="LOU-4F-apY" userLabel="Button - Logout" customClass="SHButtonLatoLight">
+                                <rect key="frame" x="221" y="23" width="40" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <inset key="insetFor6xAndEarlier" minX="0.0" minY="18" maxX="0.0" maxY="-18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                                <state key="normal" image="51-power.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onClickLogout:" destination="GVQ-VB-zY7" eventType="touchUpInside" id="r7S-Yd-E1R"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -583,6 +598,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="51-power.png" width="28" height="29"/>
         <image name="app_background_blurred.png" width="320" height="568"/>
         <image name="btn_home_add_reveiew.png" width="178" height="143"/>
         <image name="btn_home_drinks.png" width="178" height="141"/>

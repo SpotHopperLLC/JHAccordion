@@ -10,6 +10,8 @@
 
 #import "AppDelegate.h"
 
+#import "ClientSessionManager.h"
+
 @interface LaunchViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgLogo;
@@ -87,6 +89,9 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    // Sets in settings that user has seen launch
+    [[ClientSessionManager sharedClient] setHasSeenLaunch:YES];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
