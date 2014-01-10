@@ -200,7 +200,7 @@
         [self showHUD:@"Connecting Twitter"];
         [appDelegate twitterAuth:account success:^(NSString *oAuthToken, NSString *oAuthTokenSecret, NSString *userID, NSString *screenName) {
             [self hideHUD];
-            NSLog(@"We got Twitter!! - %@, %@, %@", screenName, oAuthToken, oAuthTokenSecret);
+            [self doLoginTwitterWithToken:oAuthToken andSecret:oAuthTokenSecret];
         } failure:^(NSError *error) {
             [self hideHUD];
             [self showAlert:@"Oops" message:@"Looks like there was an error logging in with Twitter"];
@@ -227,6 +227,19 @@
         [self doLoginOperation:params];
     } else {
         [self showAlert:@"Oops" message:@"Error while logging in with Facebook"];
+    }
+}
+
+- (void)doLoginTwitterWithToken:(NSString*)oAuthToken andSecret:(NSString*)oAuthTokenSecret {
+    if (oAuthToken.length > 0 && oAuthTokenSecret.length > 0) {
+        
+        NSDictionary *params = @{
+                                 kUserModelParamsTwitterAccessToken: oAuthToken,
+                                 kUserModelParamsTwitterAccessTokenSecret: oAuthTokenSecret,
+                                 };
+        [self doLoginOperation:params];
+    } else {
+        [self showAlert:@"Oops" message:@"Error while logging in with Twitter"];
     }
 }
 
