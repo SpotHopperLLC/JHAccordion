@@ -8,6 +8,9 @@
 
 #define kUserModelParamEmail @"email"
 #define kUserModelParamPassword @"password"
+#define kUserModelParamFacebookAccessToken @"facebook_access_token"
+#define kUserModelParamsTwitterAccessToken @"twitter_access_token"
+#define kUserModelParamsTwitterAccessTokenSecret @"twitter_access_token_secret"
 
 #import "JSONAPIResource.h"
 

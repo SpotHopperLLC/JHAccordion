@@ -171,7 +171,7 @@
 }
 
 - (IBAction)onClickDoLogin:(id)sender {
-    [self doLogin];
+    [self doLoginSpotHopper];
 }
 - (IBAction)onClickDoCreate:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -185,7 +185,7 @@
     [self showHUD:@"Connecting Facebook"];
     [appDelegate facebookAuth:YES success:^(FBSession *session) {
         [self hideHUD];
-        NSLog(@"We got Facebook!!");
+        [self doLoginFacebook];
     } failure:^(FBSessionState state, NSError *error) {
         [self hideHUD];
         [self showAlert:@"Oops" message:@"Looks like there was an error logging in with Facebook"];
@@ -218,7 +218,19 @@
 
 #pragma mark - Private - API
 
-- (void)doLogin {
+- (void)doLoginFacebook {
+    if ([[FBSession activeSession] isOpen] == YES) {
+        
+        NSDictionary *params = @{
+                                 kUserModelParamFacebookAccessToken: [[[FBSession activeSession] accessTokenData] accessToken]
+                                 };
+        [self doLoginOperation:params];
+    } else {
+        [self showAlert:@"Oops" message:@"Error while logging in with Facebook"];
+    }
+}
+
+- (void)doLoginSpotHopper {
     NSString *email = _txtLoginEmail.text;
     NSString *password = _txtLoginPassword.text;
     
@@ -235,6 +247,12 @@
                              kUserModelParamEmail : email,
                              kUserModelParamPassword : password
                              };
+    
+    [self doLoginOperation:params];
+}
+
+- (void)doLoginOperation:(NSDictionary*)params {
+    
     [self showHUD:@"Logging in"];
     [UserModel loginUser:params success:^(UserModel *userModel, NSHTTPURLResponse *response) {
         [self hideHUD];
