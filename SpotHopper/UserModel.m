@@ -24,7 +24,11 @@
     
     [[ClientSessionManager sharedClient] logout];
     
-    [[ClientSessionManager sharedClient] POST:@"/api/sessions" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSDictionary *wrappedParams = @{
+               kUserModelUsers : @[params]
+               };
+    
+    [[ClientSessionManager sharedClient] POST:@"/api/users" parameters:wrappedParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (operation.response.statusCode == 200) {
             [UserModel loginUser:params success:successBlock failure:failureBlock];
         } else {

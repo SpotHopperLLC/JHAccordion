@@ -6,11 +6,16 @@
 //  Copyright (c) 2013 RokkinCat. All rights reserved.
 //
 
+#define kUserModelUsers @"users"
+
 #define kUserModelParamEmail @"email"
 #define kUserModelParamPassword @"password"
+#define kUserModelParamRole @"role"
 #define kUserModelParamFacebookAccessToken @"facebook_access_token"
 #define kUserModelParamsTwitterAccessToken @"twitter_access_token"
 #define kUserModelParamsTwitterAccessTokenSecret @"twitter_access_token_secret"
+
+#define kUserModelRoleUser @"user"
 
 #import "JSONAPIResource.h"
 

@@ -174,7 +174,7 @@
     [self doLoginSpotHopper];
 }
 - (IBAction)onClickDoCreate:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self doRegistration];
 }
 
 #pragma mark - Private - Connect
@@ -275,6 +275,44 @@
         [self showAlert:@"Oops" message:@"Error while trying to login"];
     }];
     
+}
+
+- (void)doRegistration {
+    NSString *email = _txtCreateEmail.text;
+    NSString *password = _txtCreatePassword.text;
+    NSString *passwordConfirm = _txtCreatePasswordConfirm.text;
+    
+    if (email.length == 0) {
+        [self showAlert:@"Oops" message:@"Email is required"];
+        return;
+    }
+    if (password.length == 0) {
+        [self showAlert:@"Oops" message:@"Password is required"];
+        return;
+    }
+    if (passwordConfirm.length == 0) {
+        [self showAlert:@"Oops" message:@"Password confirmation is required"];
+        return;
+    }
+    if ([password isEqualToString:passwordConfirm] == NO) {
+        [self showAlert:@"Oops" message:@"Passwords don't match"];
+        return;
+    }
+    
+    NSDictionary *params = @{
+                             kUserModelParamEmail : email,
+                             kUserModelParamPassword : password,
+                             kUserModelParamRole : kUserModelRoleUser
+                             };
+    
+    [self showHUD:@"Creating account"];
+    [UserModel registerUser:params success:^(UserModel *userModel, NSHTTPURLResponse *response) {
+        [self hideHUD];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } failure:^(ErrorModel *errorModel) {
+        [self hideHUD];
+        [self showAlert:@"Oops" message:@"Error while trying to login"];
+    }];
 }
 
 #pragma mark - Private - Animations
