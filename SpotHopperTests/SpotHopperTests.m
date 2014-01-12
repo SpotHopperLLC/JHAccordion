@@ -55,45 +55,10 @@
     // Creates response
     NSDictionary *meta = @{};
     NSArray *drinks = @[
-                        @{@"id": @1,
-                        @"name": @"Boobs and Billiards Scotch",
-                        @"type": @"spirit",
-                        @"subtype": @"scotch",
-                        @"description": @"Super premium breasts and pool balls scotch which reeks of upper crust.",
-                        @"alcohol_by_volume": @0.9,
-                        @"style": @"IPA",
-                        @"vintage": @1984,
-                        @"region": @"Your mom's butt",
-                        @"recipe": @"1 part boobs\n1part billiards",
-                        @"spot_id": @1,
-                        @"links" : @{
-                                  @"spot": @1
-                                  }
-                          
-                        }
+                        [self drinkForId:1]
                         ];
     NSArray *linkedSpots = @[
-                             @{
-                                 @"id": @1,
-                                 @"name": @"Oatmeal Junction",
-                                 @"type": @"Restaurant",
-                                 @"address": @"229 E Wisconsin Ave\nSuite #1102\nMilwaukee, WI 53202",
-                                 @"phone_number": @"715-539-8911",
-                                 @"hours_of_operation":@[
-                                                       @[@"8:30-0500",@"16:00-0500"],
-                                                       @[@"8:00-0500",@"20:00-0500"],
-                                                       @[@"8:00-0500",@"20:00-0500"],
-                                                       @[@"8:00-0500",@"20:00-0500"],
-                                                       @[@"8:00-0500",@"20:00-0500"],
-                                                       @[@"8:00-0500",@"20:00-0500"],
-                                                       @[@"8:30-0500",@"18:00-0500"]
-                                                       ],
-                                 @"latitude": @43.038513,
-                                 @"longitude": @-87.908913,
-                                 @"sliders":@[
-                                     @{@"id": @"radness", @"name": @"Radness", @"min": @"UnRad", @"max": @"Super Rad!", @"value": @10}
-                                 ]
-                                 }
+                            [self spotForId:1]
                              ];
     NSDictionary *linked = @{
                              @"spots" : linkedSpots
@@ -159,11 +124,9 @@
         XCTAssertEqualObjects(drinkModel.spotId, spotId, @"Should equal %@", spotId);
         
         // Assert spot
-        NSArray *linkedSpots = [linked objectForKey:@"spots"];
-        NSLog(@"Linked spots - %@", linkedSpots);
         NSDictionary *linkedSpot = nil;
-        for (NSDictionary *dict in linkedSpots) {
-            NSLog(@"Found %@, should be %@", [dict objectForKey:@"id"], spotId);
+        for (NSDictionary *dict in [linked objectForKey:@"spots"]) {
+            // Finds the linked dictionary that matches the linked id
             if ([[dict objectForKey:@"ID"] isEqualToNumber:spotId] == YES) {
                 linkedSpot = dict;
                 break;
@@ -171,8 +134,58 @@
         }
         XCTAssertEqualObjects(drinkModel.spot.ID, spotId, @"Should equal %@", spotId);
     }
-    
-//    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+}
+
+#pragma mark - Data Helpers
+
+- (NSDictionary*)drinkForId:(NSInteger)ID {
+    if (ID == 1) {
+        return @{
+                 @"id": @1,
+                 @"name": @"Boobs and Billiards Scotch",
+                 @"type": @"spirit",
+                 @"subtype": @"scotch",
+                 @"description": @"Super premium breasts and pool balls scotch which reeks of upper crust.",
+                 @"alcohol_by_volume": @0.9,
+                 @"style": @"IPA",
+                 @"vintage": @1984,
+                 @"region": @"Your mom's butt",
+                 @"recipe": @"1 part boobs\n1part billiards",
+                 @"spot_id": @1,
+                 @"links" : @{
+                         @"spot": @1
+                         }
+                 
+                 };
+    }
+    return nil;
+}
+
+- (NSDictionary*)spotForId:(NSInteger)ID {
+    if (ID == 1) {
+        return @{
+                 @"id": @1,
+                 @"name": @"Oatmeal Junction",
+                 @"type": @"Restaurant",
+                 @"address": @"229 E Wisconsin Ave\nSuite #1102\nMilwaukee, WI 53202",
+                 @"phone_number": @"715-539-8911",
+                 @"hours_of_operation":@[
+                         @[@"8:30-0500",@"16:00-0500"],
+                         @[@"8:00-0500",@"20:00-0500"],
+                         @[@"8:00-0500",@"20:00-0500"],
+                         @[@"8:00-0500",@"20:00-0500"],
+                         @[@"8:00-0500",@"20:00-0500"],
+                         @[@"8:00-0500",@"20:00-0500"],
+                         @[@"8:30-0500",@"18:00-0500"]
+                         ],
+                 @"latitude": @43.038513,
+                 @"longitude": @-87.908913,
+                 @"sliders":@[
+                         @{@"id": @"radness", @"name": @"Radness", @"min": @"UnRad", @"max": @"Super Rad!", @"value": @10}
+                         ]
+                 };
+    }
+    return nil;
 }
 
 @end
