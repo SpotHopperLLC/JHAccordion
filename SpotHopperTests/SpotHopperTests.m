@@ -50,6 +50,63 @@
     [super tearDown];
 }
 
+- (void)testParsingUserModel
+{
+    // Creates response
+    NSDictionary *meta = @{};
+    NSArray *users = @[
+                       [self userForId:1]
+                       ];
+    NSDictionary *linked = @{
+                             };
+    NSDictionary *jsonResponse = @{
+                                   @"meta" : meta,
+                                   @"users" : users,
+                                   @"linked" : linked
+                                   };
+    
+    // Parses
+    JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:jsonResponse];
+    
+    NSArray *userModels = [jsonApi resourcesForKey:@"users"];
+    for (NSInteger i = 0; i < userModels.count; ++i) {
+        
+        // Gets model and dictionary from response
+        UserModel *userModel = [userModels objectAtIndex:i];
+        NSDictionary *userFromResposne = [users objectAtIndex:i];
+        
+        // Assert id
+        NSNumber *ID = [userFromResposne objectForKey:@"id"];
+        XCTAssertEqualObjects(userModel.ID, ID, @"Should equal %@", ID);
+        
+        // Assert email
+        NSString *email = [userFromResposne objectForKey:@"email"];
+        XCTAssertEqualObjects(userModel.email, email, @"Should equal %@", email);
+        
+        // Assert role
+        NSString *role = [userFromResposne objectForKey:@"role"];
+        XCTAssertEqualObjects(userModel.role, role, @"Should equal %@", role);
+        
+        // Assert name
+        NSString *name = [userFromResposne objectForKey:@"name"];
+        XCTAssertEqualObjects(userModel.name, name, @"Should equal %@", name);
+        
+        // Assert birthday
+        NSString *birthday = [userFromResposne objectForKey:@"birthday"];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        NSString *birthdayAsString = [dateFormatter stringFromDate: userModel.birthday];
+        XCTAssertEqualObjects(birthdayAsString, birthday, @"Should equal %@", birthday);
+        
+        // Assert settings
+        NSString *settings = [userFromResposne objectForKey:@"settings"];
+        XCTAssertEqualObjects(userModel.settings, settings, @"Should equal %@", settings);
+        
+    }
+}
+
+
 - (void)testParsingDrinkModel
 {
     // Creates response
@@ -247,6 +304,22 @@
                  @"sliders":@[
                          @{@"id": @"radness", @"name": @"Radness", @"min": @"UnRad", @"max": @"Super Rad!", @"value": @10}
                          ]
+                 };
+    }
+    return nil;
+}
+
+
+- (NSDictionary*)userForId:(NSInteger)ID {
+    if (ID == 1) {
+        return @{
+                 @"id": @1,
+                 @"email": @"placeholder@rokkincat.com",
+                 @"role": @"admin",
+                 @"name": @"Nick Gartmann",
+                 @"birthday": @"1989-02-03",
+                 @"settings": @{}
+                 
                  };
     }
     return nil;
