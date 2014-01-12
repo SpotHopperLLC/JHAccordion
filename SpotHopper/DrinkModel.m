@@ -49,7 +49,7 @@
 }
 
 - (SpotModel *)spot {
-    return [self linkedResourceForKey:@"spots"];
+    return [self linkedResourceForKey:@"spot"];
 }
 
 - (NSNumber *)spotId {

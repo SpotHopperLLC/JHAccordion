@@ -6,20 +6,6 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-//{
-//    "id": 1,
-//    "name": "Boobs and Billiards Scotch",
-//    "type": "spirit",
-//    "subtype": "scotch",
-//    "description": "Super premium breasts and pool balls scotch which reeks of upper crust.",
-//    "alcohol_by_volume": 0.9,
-//    "style": "IPA",
-//    "vintage": 1984,
-//    "region": "Your mom's butt",
-//    "recipe": "1 part boobs\n1part billiards"
-//    "spot_id": 1
-//}
-
 #import "SHJSONAPIResource.h"
 
 @class SpotModel;

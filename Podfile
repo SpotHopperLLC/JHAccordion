@@ -1,3 +1,5 @@
+link_with ['SpotHopper', 'SpotHopperTests']
+
 platform :ios, '6.0'
 pod 'AFNetworking', '~> 2.0.3'
 pod 'Facebook-iOS-SDK', '~> 3.11.0'

@@ -11,6 +11,10 @@
 #import "UIActionSheet+Block.h"
 
 #import "ClientSessionManager.h"
+#import "DrinkModel.h"
+#import "ErrorModel.h"
+#import "ReviewModel.h"
+#import "SpotModel.h"
 #import "UserModel.h"
 
 #import <JSONAPI/JSONAPI.h>
@@ -26,7 +30,17 @@
     // Initializes Raven (Sentry) for error reporting/logging
     [RavenClient clientWithDSN:kSentryDSN];
     
-    // Initializes models linking for JSONAPI
+    // Initializes resource linkng for JSONAPI
+    [JSONAPIResourceLinker link:@"drink" toLinkedType:@"drinks"];
+    [JSONAPIResourceLinker link:@"spot" toLinkedType:@"spots"];
+    [JSONAPIResourceLinker link:@"review" toLinkedType:@"reviews"];
+    [JSONAPIResourceLinker link:@"user" toLinkedType:@"users"];
+    
+    // Initializes model linking for JSONAPI
+    [JSONAPIResourceModeler useResource:[DrinkModel class] toLinkedType:@"drinks"];
+    [JSONAPIResourceModeler useResource:[ErrorModel class] toLinkedType:@"errors"];
+    [JSONAPIResourceModeler useResource:[ReviewModel class] toLinkedType:@"reviews"];
+    [JSONAPIResourceModeler useResource:[SpotModel class] toLinkedType:@"spots"];
     [JSONAPIResourceModeler useResource:[UserModel class] toLinkedType:@"users"];
 
     // Sets networking debug logs if debug is set
