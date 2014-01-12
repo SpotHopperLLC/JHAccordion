@@ -106,7 +106,6 @@
     }
 }
 
-
 - (void)testParsingDrinkModel
 {
     // Creates response
@@ -176,12 +175,9 @@
         NSString *receipe = [drinkFromResposne objectForKey:@"receipe"];
         XCTAssertEqualObjects(drinkModel.recipe, receipe, @"Should equal %@", receipe);
         
-        // Assert spot id
-        NSNumber *spotId = [drinkFromResposne objectForKey:@"spot_id"];
-        XCTAssertEqualObjects(drinkModel.spotId, spotId, @"Should equal %@", spotId);
-        
         // Assert spot
         NSDictionary *linkedSpot = nil;
+        NSNumber *spotId = [[drinkFromResposne objectForKey:@"links"] objectForKey:@"spot"];
         for (NSDictionary *dict in [linked objectForKey:@"spots"]) {
             // Finds the linked dictionary that matches the linked id
             if ([[dict objectForKey:@"ID"] isEqualToNumber:spotId] == YES) {
@@ -257,6 +253,93 @@
     }
 }
 
+- (void)testParsingReviewModel
+{
+    // Creates response
+    NSDictionary *meta = @{};
+    NSArray *reviews = @[
+                        [self reviewForId:1]
+                        ];
+    NSArray *linkedDrinks = @[
+                              [self drinkForId:1]
+                              ];
+    NSArray *linkedSpots = @[
+                             [self spotForId:1]
+                             ];
+    NSArray *linkedUsers = @[
+                             [self userForId:1]
+                             ];
+    NSDictionary *linked = @{
+                             @"drinks" : linkedDrinks,
+                             @"users" : linkedUsers,
+                             @"spots" : linkedSpots
+                             };
+    NSDictionary *jsonResponse = @{
+                                   @"meta" : meta,
+                                   @"reviews" : reviews,
+                                   @"linked" : linked
+                                   };
+    
+    // Parses
+    JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:jsonResponse];
+    
+    NSArray *reviewModels = [jsonApi resourcesForKey:@"reviews"];
+    for (NSInteger i = 0; i < reviewModels.count; ++i) {
+        
+        // Gets model and dictionary from response
+        ReviewModel *reviewModel = [reviewModels objectAtIndex:i];
+        NSDictionary *reviewFromResposne = [reviews objectAtIndex:i];
+        
+        // Assert id
+        NSNumber *ID = [reviewFromResposne objectForKey:@"id"];
+        XCTAssertEqualObjects(reviewModel.ID, ID, @"Should equal %@", ID);
+        
+        // Assert rating
+        NSNumber *rating = [reviewFromResposne objectForKey:@"rating"];
+        XCTAssertEqualObjects(reviewModel.rating, rating, @"Should equal %@", rating);
+        
+        // Asset sliders
+        NSDictionary *sliders = [reviewFromResposne objectForKey:@"sliders"];
+        XCTAssertEqualObjects(reviewModel.sliders, sliders, @"Should equal %@", sliders);
+        
+        // Assert drink
+        NSDictionary *linkedDrink = nil;
+        NSNumber *drinkId = [[reviewFromResposne objectForKey:@"links"] objectForKey:@"drink"];
+        for (NSDictionary *dict in [linked objectForKey:@"drinks"]) {
+            // Finds the linked dictionary that matches the linked id
+            if ([[dict objectForKey:@"ID"] isEqualToNumber:drinkId] == YES) {
+                linkedDrink = dict;
+                break;
+            }
+        }
+        XCTAssertEqualObjects(reviewModel.drink.ID, drinkId, @"Should equal %@", drinkId);
+        
+        // Assert spot
+        NSDictionary *linkedSpot = nil;
+        NSNumber *spotId = [[reviewFromResposne objectForKey:@"links"] objectForKey:@"spot"];
+        for (NSDictionary *dict in [linked objectForKey:@"spots"]) {
+            // Finds the linked dictionary that matches the linked id
+            if ([[dict objectForKey:@"ID"] isEqualToNumber:spotId] == YES) {
+                linkedSpot = dict;
+                break;
+            }
+        }
+        XCTAssertEqualObjects(reviewModel.spot.ID, spotId, @"Should equal %@", spotId);
+        
+        // Assert user
+        NSDictionary *linkedUser = nil;
+        NSNumber *userId = [[reviewFromResposne objectForKey:@"links"] objectForKey:@"user"];
+        for (NSDictionary *dict in [linked objectForKey:@"users"]) {
+            // Finds the linked dictionary that matches the linked id
+            if ([[dict objectForKey:@"ID"] isEqualToNumber:userId] == YES) {
+                linkedUser = dict;
+                break;
+            }
+        }
+        XCTAssertEqualObjects(reviewModel.user.ID, userId, @"Should equal %@", userId);
+    }
+}
+
 #pragma mark - Data Helpers
 
 - (NSDictionary*)drinkForId:(NSInteger)ID {
@@ -272,7 +355,6 @@
                  @"vintage": @1984,
                  @"region": @"Your mom's butt",
                  @"recipe": @"1 part boobs\n1part billiards",
-                 @"spot_id": @1,
                  @"links" : @{
                          @"spot": @1
                          }
@@ -319,6 +401,27 @@
                  @"name": @"Nick Gartmann",
                  @"birthday": @"1989-02-03",
                  @"settings": @{}
+                 
+                 };
+    }
+    return nil;
+}
+
+- (NSDictionary*)reviewForId:(NSInteger)ID {
+    if (ID == 1) {
+        return @{
+                 @"id": @1,
+                 @"rating": @10,
+                 @"sliders": @[
+                             @{@"id": @"radness", @"name": @"Radness", @"min": @"UnRad", @"max": @"Super Rad!", @"value": @10}
+                             ],
+                 @"created_at": @"2014-01-01T15:12:43+00:00",
+                 @"updated_at": @"2014-01-01T15:12:43+00:00",
+                 @"links" : @{
+//                         @"user": @1,
+                         @"drink": @1,
+                         @"spot": @1
+                         }
                  
                  };
     }

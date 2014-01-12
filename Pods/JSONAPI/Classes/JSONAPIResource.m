@@ -155,7 +155,9 @@
         if ([linksTo isKindOfClass:[NSNumber class]] == YES) {
             JSONAPIResource *linkedResource = [[linked objectForKey:linkType] objectForKey:linksTo];
             
-            [self.__resourceLinks setObject:linkedResource forKey:linkTypeUnmapped];
+            if (linkedResource != nil) {
+                [self.__resourceLinks setObject:linkedResource forKey:linkTypeUnmapped];
+            }
             
         } else if ([linksTo isKindOfClass:[NSArray class]] == YES) {
             NSMutableArray *linkedResources = [NSMutableArray array];

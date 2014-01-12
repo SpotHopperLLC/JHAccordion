@@ -13,7 +13,7 @@
 #pragma mark - Getters
 
 - (UserModel *)user {
-    return [self linkedResourceForKey:@"users"];
+    return [self linkedResourceForKey:@"user"];
 }
 
 - (NSNumber *)userId {
@@ -21,7 +21,7 @@
 }
 
 - (SpotModel *)spot {
-    return [self linkedResourceForKey:@"spots"];
+    return [self linkedResourceForKey:@"spot"];
 }
 
 - (NSNumber *)spotId {
@@ -29,7 +29,7 @@
 }
 
 - (DrinkModel *)drink {
-    return [self linkedResourceForKey:@"drinks"];
+    return [self linkedResourceForKey:@"drink"];
 }
 
 - (NSNumber *)drinkId {
