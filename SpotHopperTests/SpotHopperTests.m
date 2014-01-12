@@ -136,6 +136,70 @@
     }
 }
 
+- (void)testParsingSpotModel
+{
+    // Creates response
+    NSDictionary *meta = @{};
+    NSArray *spots = @[
+                        [self spotForId:1]
+                        ];
+    NSDictionary *linked = @{
+                             };
+    NSDictionary *jsonResponse = @{
+                                   @"meta" : meta,
+                                   @"spots" : spots,
+                                   @"linked" : linked
+                                   };
+    
+    // Parses
+    JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:jsonResponse];
+    
+    NSArray *spotModels = [jsonApi resourcesForKey:@"spots"];
+    for (NSInteger i = 0; i < spotModels.count; ++i) {
+        
+        // Gets model and dictionary from response
+        SpotModel *spotModel = [spotModels objectAtIndex:i];
+        NSDictionary *spotFromResposne = [spots objectAtIndex:i];
+        
+        // Assert id
+        NSNumber *ID = [spotFromResposne objectForKey:@"id"];
+        XCTAssertEqualObjects(spotModel.ID, ID, @"Should equal %@", ID);
+        
+        // Assert name
+        NSString *name = [spotFromResposne objectForKey:@"name"];
+        XCTAssertEqualObjects(spotModel.name, name, @"Should equal %@", name);
+        
+        // Assert type
+        NSString *type = [spotFromResposne objectForKey:@"type"];
+        XCTAssertEqualObjects(spotModel.type, type, @"Should equal %@", type);
+        
+        // Assert address
+        NSString *address = [spotFromResposne objectForKey:@"address"];
+        XCTAssertEqualObjects(spotModel.address, address, @"Should equal %@", address);
+        
+        // Assert phone number
+        NSString *phoneNumber = [spotFromResposne objectForKey:@"phone_number"];
+        XCTAssertEqualObjects(spotModel.phoneNumber, phoneNumber, @"Should equal %@", phoneNumber);
+        
+        // Assert latitude
+        NSString *latitude = [spotFromResposne objectForKey:@"latitude"];
+        XCTAssertEqualObjects(spotModel.latitude, latitude, @"Should equal %@", latitude);
+        
+        // Assert longitude
+        NSString *longitude = [spotFromResposne objectForKey:@"longitude"];
+        XCTAssertEqualObjects(spotModel.longitude, longitude, @"Should equal %@", longitude);
+        
+        // Assert hours of operation
+        NSArray *hoursOfOperation = [spotFromResposne objectForKey:@"hours_of_operation"];
+        XCTAssertEqualObjects(spotModel.hoursOfOperation, hoursOfOperation, @"Should equal %@", hoursOfOperation);
+        
+        // Asset sliders
+        NSDictionary *sliders = [spotFromResposne objectForKey:@"sliders"];
+        XCTAssertEqualObjects(spotModel.sliders, sliders, @"Should equal %@", sliders);
+        
+    }
+}
+
 #pragma mark - Data Helpers
 
 - (NSDictionary*)drinkForId:(NSInteger)ID {

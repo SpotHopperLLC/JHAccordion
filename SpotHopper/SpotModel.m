@@ -29,7 +29,7 @@
 }
 
 - (NSArray *)hoursOfOperation {
-    return [self objectForKey:@"hoursOfOperation"];
+    return [self objectForKey:@"hours_of_operation"];
 }
 
 - (NSNumber *)latitude {
