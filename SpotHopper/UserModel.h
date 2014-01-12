@@ -17,11 +17,11 @@
 
 #define kUserModelRoleUser @"user"
 
-#import "JSONAPIResource.h"
+#import "SHJSONAPIResource.h"
 
 @class ErrorModel;
 
-@interface UserModel : JSONAPIResource<NSCoding>
+@interface UserModel : SHJSONAPIResource
 
 @property (nonatomic, strong, readonly) NSString *email;
 @property (nonatomic, strong, readonly) NSString *role;

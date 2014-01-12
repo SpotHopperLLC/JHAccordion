@@ -10,4 +10,47 @@
 
 @implementation ReviewModel
 
+#pragma mark - Getters
+
+- (UserModel *)user {
+    return [self linkedResourceForKey:@"users"];
+}
+
+- (NSNumber *)userId {
+    return [self objectForKey:@"user_id"];
+}
+
+- (SpotModel *)spot {
+    return [self linkedResourceForKey:@"spots"];
+}
+
+- (NSNumber *)spotId {
+    return [self objectForKey:@"spot_id"];
+}
+
+- (DrinkModel *)drink {
+    return [self linkedResourceForKey:@"drinks"];
+}
+
+- (NSNumber *)drinkId {
+    return [self objectForKey:@"drink_id"];
+}
+
+- (NSNumber *)rating {
+    return [self objectForKey:@"rating"];
+}
+
+- (NSDictionary *)sliders {
+    return [self objectForKey:@"sliders"];
+}
+
+- (NSDate *)createdAt {
+    return [self formatDateTimestamp:[self objectForKey:@"created_at"]];
+}
+
+- (NSDate *)updatedAt {
+    return [self formatDateTimestamp:[self objectForKey:@"updated_at"]];
+}
+
+
 @end
