@@ -11,6 +11,8 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
+#import <Raven/RavenClient.h>
+
 @implementation SHJSONAPIResource
 
 #pragma mark - Format helpers
@@ -23,7 +25,7 @@
     NSDate *date = nil;
     NSError *error = nil;
     if (![dateFormatter getObjectValue:&date forString:string range:nil error:&error]) {
-        NSLog(@"Date '%@' could not be parsed: %@", string, error);
+        [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:@"Birthday '%@' could not be parsed: %@", string, error] level:kRavenLogLevelDebugError];
     }
     return date;
 }
@@ -36,7 +38,7 @@
     NSDate *date = nil;
     NSError *error = nil;
     if (![dateFormatter getObjectValue:&date forString:string range:nil error:&error]) {
-        NSLog(@"Date '%@' could not be parsed: %@", string, error);
+        [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:@"Date timestamp '%@' could not be parsed: %@", string, error] level:kRavenLogLevelDebugError];
     }
     return date;
 }
