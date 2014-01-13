@@ -52,5 +52,4 @@
     return [self formatDateTimestamp:[self objectForKey:@"updated_at"]];
 }
 
-
 @end

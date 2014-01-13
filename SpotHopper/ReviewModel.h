@@ -6,19 +6,6 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-//{
-//    "id": 1,
-//    "user_id" 5,
-//    "spot_id": null,
-//    "drink_id": 1,
-//    "rating": 10,
-//    "sliders": [
-//                {"id": "radness", "name": "Radness", "min": "UnRad", "max": "Super Rad!", "value": 10}
-//                ],
-//    "created_at": "2014-01-01T15:12:43+00:00",
-//    "updated_at": "2014-01-01T15:12:43+00:00"
-//}
-
 #import "SHJSONAPIResource.h"
 
 @class UserModel;
