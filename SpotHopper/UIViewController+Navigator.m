@@ -8,12 +8,23 @@
 
 #import "UIViewController+Navigator.h"
 
+#import "LaunchViewController.h"
+
 #import "MyReviewsViewController.h"
 #import "NewReviewViewController.h"
 #import "ReviewViewController.h"
 #import "ReviewsMenuViewController.h"
 
 @implementation UIViewController (Navigator)
+
+#pragma mark - Main
+
+- (void)goToLaunch:(BOOL)animated {
+    LaunchViewController *viewController = [[self mainStoryboard] instantiateViewControllerWithIdentifier:@"LaunchViewController"];
+    [self presentViewController:viewController animated:animated completion:nil];
+}
+
+#pragma mark - Reviews
 
 - (void)goToReviewMenu {
     ReviewsMenuViewController *viewController = [[self reviewsStoryboard] instantiateInitialViewController];
@@ -37,6 +48,15 @@
 }
 
 #pragma mark - Private
+
+- (UIStoryboard*)mainStoryboard {
+    NSString *name = [self.storyboard valueForKey:@"name"];
+    if ([name isEqualToString:@"Main"] == NO) {
+        return [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    }
+    
+    return self.storyboard;
+}
 
 - (UIStoryboard*)reviewsStoryboard {
     NSString *name = [self.storyboard valueForKey:@"name"];

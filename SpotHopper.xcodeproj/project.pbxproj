@@ -28,6 +28,11 @@
 		0320237718775501008368C2 /* nav_bar_background_ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320237318775501008368C2 /* nav_bar_background_ios7.png */; };
 		0320237818775501008368C2 /* nav_bar_background_ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320237418775501008368C2 /* nav_bar_background_ios7@2x.png */; };
 		0320237C187773C0008368C2 /* SHViewTranlucentWhite.m in Sources */ = {isa = PBXBuildFile; fileRef = 0320237B187773C0008368C2 /* SHViewTranlucentWhite.m */; };
+		03412C371880535B000F16A8 /* img_arrow_east.png in Resources */ = {isa = PBXBuildFile; fileRef = 03412C351880535B000F16A8 /* img_arrow_east.png */; };
+		03412C381880535B000F16A8 /* img_arrow_east@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03412C361880535B000F16A8 /* img_arrow_east@2x.png */; };
+		03412C3B188053E7000F16A8 /* SHButtonLatoLightRightImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03412C3A188053E7000F16A8 /* SHButtonLatoLightRightImage.m */; };
+		03412C3E18805693000F16A8 /* ErrorModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03412C3D18805693000F16A8 /* ErrorModel.m */; };
+		03412C411882F6EC000F16A8 /* SHJSONAPIResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 03412C401882F6EC000F16A8 /* SHJSONAPIResource.m */; };
 		03866467186D352400985CEC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03866466186D352400985CEC /* Foundation.framework */; };
 		03866469186D352400985CEC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03866468186D352400985CEC /* CoreGraphics.framework */; };
 		0386646B186D352400985CEC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0386646A186D352400985CEC /* UIKit.framework */; };
@@ -172,6 +177,8 @@
 		03CA72E4187F567100815284 /* icon_star@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72E2187F567100815284 /* icon_star@2x.png */; };
 		03CA72E7187F56DA00815284 /* icon_spot.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72E5187F56DA00815284 /* icon_spot.png */; };
 		03CA72E8187F56DA00815284 /* icon_spot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72E6187F56DA00815284 /* icon_spot@2x.png */; };
+		03CA72EC18803F7F00815284 /* 51-power.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72EA18803F7F00815284 /* 51-power.png */; };
+		03CA72ED18803F7F00815284 /* 51-power@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72EB18803F7F00815284 /* 51-power@2x.png */; };
 		03F2D9051871DB5B00C69576 /* SHButtonLatoLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */; };
 		03F2D91D1871DC1400C69576 /* AvantGard EF 1 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9091871DC1400C69576 /* AvantGard EF 1 */; };
 		03F2D91E1871DC1400C69576 /* AvantGard EF 2 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90A1871DC1400C69576 /* AvantGard EF 2 */; };
@@ -208,6 +215,7 @@
 		03F2D956187231C600C69576 /* btn_nav_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D954187231C600C69576 /* btn_nav_back.png */; };
 		03F2D957187231C600C69576 /* btn_nav_back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D955187231C600C69576 /* btn_nav_back@2x.png */; };
 		052EC70F678F4DF18DBE8EB5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
+		D7FCD5C8824B4FA4A7587334 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -247,6 +255,14 @@
 		0320237418775501008368C2 /* nav_bar_background_ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_bar_background_ios7@2x.png"; sourceTree = "<group>"; };
 		0320237A187773C0008368C2 /* SHViewTranlucentWhite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHViewTranlucentWhite.h; sourceTree = "<group>"; };
 		0320237B187773C0008368C2 /* SHViewTranlucentWhite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHViewTranlucentWhite.m; sourceTree = "<group>"; };
+		03412C351880535B000F16A8 /* img_arrow_east.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_arrow_east.png; sourceTree = "<group>"; };
+		03412C361880535B000F16A8 /* img_arrow_east@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_arrow_east@2x.png"; sourceTree = "<group>"; };
+		03412C39188053E7000F16A8 /* SHButtonLatoLightRightImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoLightRightImage.h; sourceTree = "<group>"; };
+		03412C3A188053E7000F16A8 /* SHButtonLatoLightRightImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoLightRightImage.m; sourceTree = "<group>"; };
+		03412C3C18805693000F16A8 /* ErrorModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorModel.h; sourceTree = "<group>"; };
+		03412C3D18805693000F16A8 /* ErrorModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorModel.m; sourceTree = "<group>"; };
+		03412C3F1882F6EC000F16A8 /* SHJSONAPIResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHJSONAPIResource.h; sourceTree = "<group>"; };
+		03412C401882F6EC000F16A8 /* SHJSONAPIResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHJSONAPIResource.m; sourceTree = "<group>"; };
 		03866463186D352400985CEC /* SpotHopper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotHopper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03866466186D352400985CEC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		03866468186D352400985CEC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -429,6 +445,8 @@
 		03CA72E2187F567100815284 /* icon_star@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_star@2x.png"; sourceTree = "<group>"; };
 		03CA72E5187F56DA00815284 /* icon_spot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_spot.png; sourceTree = "<group>"; };
 		03CA72E6187F56DA00815284 /* icon_spot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_spot@2x.png"; sourceTree = "<group>"; };
+		03CA72EA18803F7F00815284 /* 51-power.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "51-power.png"; sourceTree = "<group>"; };
+		03CA72EB18803F7F00815284 /* 51-power@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "51-power@2x.png"; sourceTree = "<group>"; };
 		03F2D9031871DB5B00C69576 /* SHButtonLatoLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoLight.h; sourceTree = "<group>"; };
 		03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoLight.m; sourceTree = "<group>"; };
 		03F2D9091871DC1400C69576 /* AvantGard EF 1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "AvantGard EF 1"; sourceTree = "<group>"; };
@@ -497,6 +515,7 @@
 				03866486186D352500985CEC /* XCTest.framework in Frameworks */,
 				03866488186D352500985CEC /* UIKit.framework in Frameworks */,
 				03866487186D352500985CEC /* Foundation.framework in Frameworks */,
+				D7FCD5C8824B4FA4A7587334 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -717,6 +736,7 @@
 		038664A2186D370E00985CEC /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				03CA72E918803F7F00815284 /* Glyphish */,
 				03CA729D187C4D0E00815284 /* Sliders */,
 				03CA726F187B8FD800815284 /* Icons */,
 				0320235B18774A49008368C2 /* Reviews */,
@@ -821,8 +841,12 @@
 		038664EC186D390700985CEC /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				03412C3F1882F6EC000F16A8 /* SHJSONAPIResource.h */,
+				03412C401882F6EC000F16A8 /* SHJSONAPIResource.m */,
 				03CA728A187C26BD00815284 /* DrinkModel.h */,
 				03CA728B187C26BD00815284 /* DrinkModel.m */,
+				03412C3C18805693000F16A8 /* ErrorModel.h */,
+				03412C3D18805693000F16A8 /* ErrorModel.m */,
 				03CA728D187C3B2E00815284 /* ReviewModel.h */,
 				03CA728E187C3B2E00815284 /* ReviewModel.m */,
 				03CA7287187C26B300815284 /* SpotModel.h */,
@@ -836,6 +860,8 @@
 		038664F0186DE0F700985CEC /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				03412C351880535B000F16A8 /* img_arrow_east.png */,
+				03412C361880535B000F16A8 /* img_arrow_east@2x.png */,
 				03CA7261187B4EB700815284 /* img_expand_east_orange.png */,
 				03CA7262187B4EB700815284 /* img_expand_east_orange@2x.png */,
 				03CA7263187B4EB700815284 /* table_header_background_selected.png */,
@@ -1000,11 +1026,22 @@
 			name = NewReviewForms;
 			sourceTree = "<group>";
 		};
+		03CA72E918803F7F00815284 /* Glyphish */ = {
+			isa = PBXGroup;
+			children = (
+				03CA72EA18803F7F00815284 /* 51-power.png */,
+				03CA72EB18803F7F00815284 /* 51-power@2x.png */,
+			);
+			path = Glyphish;
+			sourceTree = "<group>";
+		};
 		03F2D9021871DB3100C69576 /* FontButtons */ = {
 			isa = PBXGroup;
 			children = (
 				03F2D9031871DB5B00C69576 /* SHButtonLatoLight.h */,
 				03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */,
+				03412C39188053E7000F16A8 /* SHButtonLatoLightRightImage.h */,
+				03412C3A188053E7000F16A8 /* SHButtonLatoLightRightImage.m */,
 			);
 			name = FontButtons;
 			sourceTree = "<group>";
@@ -1108,9 +1145,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 03866498186D352500985CEC /* Build configuration list for PBXNativeTarget "SpotHopperTests" */;
 			buildPhases = (
+				4D2B49071C184BB6A0A93E50 /* Check Pods Manifest.lock */,
 				03866480186D352500985CEC /* Sources */,
 				03866481186D352500985CEC /* Frameworks */,
 				03866482186D352500985CEC /* Resources */,
+				F2E7860635F44F88B7D0AB13 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1220,9 +1259,11 @@
 				0386647F186D352400985CEC /* Images.xcassets in Resources */,
 				03866471186D352400985CEC /* InfoPlist.strings in Resources */,
 				03F2D9251871DC1400C69576 /* AvantGarEFMed in Resources */,
+				03CA72ED18803F7F00815284 /* 51-power@2x.png in Resources */,
 				03CA72C3187C4FB300815284 /* slider_background_min.png in Resources */,
 				03CA7282187B90D800815284 /* icon_clock.png in Resources */,
 				03CA7266187B4EB700815284 /* img_expand_east_orange@2x.png in Resources */,
+				03CA72EC18803F7F00815284 /* 51-power.png in Resources */,
 				03CA7265187B4EB700815284 /* img_expand_east_orange.png in Resources */,
 				03CA7295187C406200815284 /* ReviewHeaderDrinkView.xib in Resources */,
 				03866548186DE0F700985CEC /* btn_sidebar_icon_specials.png in Resources */,
@@ -1266,6 +1307,7 @@
 				03CA727D187B8FD800815284 /* icon_liquor@2x.png in Resources */,
 				03CA72E4187F567100815284 /* icon_star@2x.png in Resources */,
 				0386647A186D352400985CEC /* Main.storyboard in Resources */,
+				03412C371880535B000F16A8 /* img_arrow_east.png in Resources */,
 				0386652F186DE0F700985CEC /* btn_home_add_reveiew@2x.png in Resources */,
 				0386654B186DE0F700985CEC /* btn_sidebar_icon_spots@2x.png in Resources */,
 				0386654C186DE0F700985CEC /* btn_sidebar_search_icon.png in Resources */,
@@ -1298,6 +1340,7 @@
 				03866540186DE0F700985CEC /* btn_sidebar_icon_account.png in Resources */,
 				03CA727E187B8FD800815284 /* icon_wine.png in Resources */,
 				03CA72CD187DD0BA00815284 /* DropdownOptionCellView.xib in Resources */,
+				03412C381880535B000F16A8 /* img_arrow_east@2x.png in Resources */,
 				03CA727C187B8FD800815284 /* icon_liquor.png in Resources */,
 				03F2D9291871DC1400C69576 /* Lato-BoldItalic.ttf in Resources */,
 				03CA72C6187C4FB300815284 /* slider_background_selected_max@2x.png in Resources */,
@@ -1331,6 +1374,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		4D2B49071C184BB6A0A93E50 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		9827BD476669464C9ADB06C1 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1346,6 +1404,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		F2E7860635F44F88B7D0AB13 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1354,6 +1427,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				038664D2186D376900985CEC /* UIImage+FixOrientation.m in Sources */,
+				03412C411882F6EC000F16A8 /* SHJSONAPIResource.m in Sources */,
 				038664E1186D379400985CEC /* BaseViewController.m in Sources */,
 				038664E2186D379400985CEC /* ClientSessionManager.m in Sources */,
 				03F2D9371871E88000C69576 /* LaunchViewController.m in Sources */,
@@ -1361,6 +1435,7 @@
 				038664D8186D376900985CEC /* UIView+RelativityLaws.m in Sources */,
 				038664D4186D376900985CEC /* UIImage+Rotation.m in Sources */,
 				03CA726B187B510500815284 /* UIButton+Block.m in Sources */,
+				03412C3B188053E7000F16A8 /* SHButtonLatoLightRightImage.m in Sources */,
 				03CA728C187C26BD00815284 /* DrinkModel.m in Sources */,
 				038664D5186D376900985CEC /* UIImage+RoundedCorner.m in Sources */,
 				03CA729A187C43BF00815284 /* ReviewSliderCell.m in Sources */,
@@ -1376,6 +1451,7 @@
 				0320237018774E25008368C2 /* UIViewController+Navigator.m in Sources */,
 				038664E9186D37BC00985CEC /* JHPullRefreshViewController.m in Sources */,
 				038664CF186D376900985CEC /* NSString+Currency.m in Sources */,
+				03412C3E18805693000F16A8 /* ErrorModel.m in Sources */,
 				038664EF186D391E00985CEC /* UserModel.m in Sources */,
 				03866477186D352400985CEC /* AppDelegate.m in Sources */,
 				0320237C187773C0008368C2 /* SHViewTranlucentWhite.m in Sources */,
@@ -1528,11 +1604,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Holtz (M57ML2945L)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Holtz (M57ML2945L)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				INFOPLIST_FILE = "SpotHopper/SpotHopper-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "39E38A03-AAE0-4F9D-B45C-9E64C81D5EA4";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1543,17 +1622,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Holtz (M57ML2945L)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				INFOPLIST_FILE = "SpotHopper/SpotHopper-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "39E38A03-AAE0-4F9D-B45C-9E64C81D5EA4";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
 		};
 		03866499186D352500985CEC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SpotHopper.app/SpotHopper";
@@ -1577,6 +1659,7 @@
 		};
 		0386649A186D352500985CEC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SpotHopper.app/SpotHopper";

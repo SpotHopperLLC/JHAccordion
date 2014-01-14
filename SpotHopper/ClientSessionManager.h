@@ -16,20 +16,26 @@
 
 + (instancetype)sharedClient;
 
+// Cause I said so
 - (AFHTTPRequestOperation *)GET:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success;
 - (AFHTTPRequestOperation *)POST:(NSString *)URLString parameters:(NSDictionary *)parameters constructingBodyWithBlock:(void (^)(id<AFMultipartFormData>))block success:(void (^)(AFHTTPRequestOperation *, id))success;
 - (AFHTTPRequestOperation *)POST:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success;
 - (AFHTTPRequestOperation *)PUT:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success;
 - (AFHTTPRequestOperation *)DELETE:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success;
 
+// Session helpers
 - (NSString *)cookie;
 - (void)setCookie:(NSString *)cookie;
 - (UserModel *)currentUser;
 - (void)setCurrentUser:(UserModel *)currentUser;
 
+// Login helpers
 - (BOOL)isLoggedIn;
 - (void)login:(NSHTTPURLResponse*)response user:(UserModel*)user;
 - (void)logout;
 
+// Settings
+- (BOOL)hasSeenLaunch;
+- (void)setHasSeenLaunch:(BOOL)seenLaunch;
 
 @end

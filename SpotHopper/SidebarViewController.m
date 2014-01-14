@@ -8,6 +8,8 @@
 
 #import "SidebarViewController.h"
 
+#import "UIViewController+Navigator.h"
+
 @interface SidebarViewController ()<UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
@@ -102,6 +104,11 @@
 
 - (IBAction)onClickClose:(id)sender {
     [self.sidebarViewController showRightSidebar:NO];
+}
+
+- (IBAction)onClickLogout:(id)sender {
+    [self.sidebarViewController showRightSidebar:NO];
+    [self goToLaunch:YES];
 }
 
 - (IBAction)onClickSpots:(id)sender {

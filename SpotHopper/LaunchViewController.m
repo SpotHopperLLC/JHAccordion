@@ -10,6 +10,10 @@
 
 #import "AppDelegate.h"
 
+#import "ClientSessionManager.h"
+#import "ErrorModel.h"
+#import "UserModel.h"
+
 @interface LaunchViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgLogo;
@@ -19,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UIView *viewTwitter;
 @property (weak, nonatomic) IBOutlet UIView *viewLogin;
 @property (weak, nonatomic) IBOutlet UIView *viewCreate;
+@property (weak, nonatomic) IBOutlet UIButton *btnSkip;
 
 @property (weak, nonatomic) IBOutlet UIView *viewFormLogin;
 @property (weak, nonatomic) IBOutlet UITextField *txtLoginEmail;
@@ -58,9 +63,11 @@
 {
     [super viewDidLoad:@[kDidLoadOptionsDontAdjustForIOS6]];
 
-    _keyboardUp = NO;
+    // Logs current user out
+    [[ClientSessionManager sharedClient] logout];
     
     // Initialize properties - login
+    _keyboardUp = NO;
     _isShowingLogin = NO;
     _viewLoginInitialFrame = _viewLogin.frame;
     
@@ -87,6 +94,9 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    // Sets in settings that user has seen launch
+    [[ClientSessionManager sharedClient] setHasSeenLaunch:YES];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
@@ -138,6 +148,10 @@
 
 #pragma mark - Actions
 
+- (IBAction)onClickSkip:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (IBAction)onClickFacebook:(id)sender {
     [self doFacebook];
 }
@@ -157,10 +171,10 @@
 }
 
 - (IBAction)onClickDoLogin:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self doLoginSpotHopper];
 }
 - (IBAction)onClickDoCreate:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self doRegistration];
 }
 
 #pragma mark - Private - Connect
@@ -171,7 +185,7 @@
     [self showHUD:@"Connecting Facebook"];
     [appDelegate facebookAuth:YES success:^(FBSession *session) {
         [self hideHUD];
-        NSLog(@"We got Facebook!!");
+        [self doLoginFacebook];
     } failure:^(FBSessionState state, NSError *error) {
         [self hideHUD];
         [self showAlert:@"Oops" message:@"Looks like there was an error logging in with Facebook"];
@@ -186,7 +200,7 @@
         [self showHUD:@"Connecting Twitter"];
         [appDelegate twitterAuth:account success:^(NSString *oAuthToken, NSString *oAuthTokenSecret, NSString *userID, NSString *screenName) {
             [self hideHUD];
-            NSLog(@"We got Twitter!! - %@, %@, %@", screenName, oAuthToken, oAuthTokenSecret);
+            [self doLoginTwitterWithToken:oAuthToken andSecret:oAuthTokenSecret];
         } failure:^(NSError *error) {
             [self hideHUD];
             [self showAlert:@"Oops" message:@"Looks like there was an error logging in with Twitter"];
@@ -202,6 +216,105 @@
     }];
 }
 
+#pragma mark - Private - API
+
+- (void)doLoginFacebook {
+    if ([[FBSession activeSession] isOpen] == YES) {
+        
+        NSDictionary *params = @{
+                                 kUserModelParamFacebookAccessToken: [[[FBSession activeSession] accessTokenData] accessToken]
+                                 };
+        [self doLoginOperation:params];
+    } else {
+        [self showAlert:@"Oops" message:@"Error while logging in with Facebook"];
+    }
+}
+
+- (void)doLoginTwitterWithToken:(NSString*)oAuthToken andSecret:(NSString*)oAuthTokenSecret {
+    if (oAuthToken.length > 0 && oAuthTokenSecret.length > 0) {
+        
+        NSDictionary *params = @{
+                                 kUserModelParamsTwitterAccessToken: oAuthToken,
+                                 kUserModelParamsTwitterAccessTokenSecret: oAuthTokenSecret,
+                                 };
+        [self doLoginOperation:params];
+    } else {
+        [self showAlert:@"Oops" message:@"Error while logging in with Twitter"];
+    }
+}
+
+- (void)doLoginSpotHopper {
+    NSString *email = _txtLoginEmail.text;
+    NSString *password = _txtLoginPassword.text;
+    
+    if (email.length == 0) {
+        [self showAlert:@"Oops" message:@"Email is required"];
+        return;
+    }
+    if (password.length == 0) {
+        [self showAlert:@"Oops" message:@"Password is required"];
+        return;
+    }
+    
+    NSDictionary *params = @{
+                             kUserModelParamEmail : email,
+                             kUserModelParamPassword : password
+                             };
+    
+    [self doLoginOperation:params];
+}
+
+- (void)doLoginOperation:(NSDictionary*)params {
+    
+    [self showHUD:@"Logging in"];
+    [UserModel loginUser:params success:^(UserModel *userModel, NSHTTPURLResponse *response) {
+        [self hideHUD];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } failure:^(ErrorModel *errorModel) {
+        [self hideHUD];
+        [self showAlert:@"Oops" message:errorModel.human];
+    }];
+    
+}
+
+- (void)doRegistration {
+    NSString *email = _txtCreateEmail.text;
+    NSString *password = _txtCreatePassword.text;
+    NSString *passwordConfirm = _txtCreatePasswordConfirm.text;
+    
+    if (email.length == 0) {
+        [self showAlert:@"Oops" message:@"Email is required"];
+        return;
+    }
+    if (password.length == 0) {
+        [self showAlert:@"Oops" message:@"Password is required"];
+        return;
+    }
+    if (passwordConfirm.length == 0) {
+        [self showAlert:@"Oops" message:@"Password confirmation is required"];
+        return;
+    }
+    if ([password isEqualToString:passwordConfirm] == NO) {
+        [self showAlert:@"Oops" message:@"Passwords don't match"];
+        return;
+    }
+    
+    NSDictionary *params = @{
+                             kUserModelParamEmail : email,
+                             kUserModelParamPassword : password,
+                             kUserModelParamRole : kUserModelRoleUser
+                             };
+    
+    [self showHUD:@"Creating account"];
+    [UserModel registerUser:params success:^(UserModel *userModel, NSHTTPURLResponse *response) {
+        [self hideHUD];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } failure:^(ErrorModel *errorModel) {
+        [self hideHUD];
+        [self showAlert:@"Oops" message:@"Error while trying to login"];
+    }];
+}
+
 #pragma mark - Private - Animations
 
 - (void)showLogin:(BOOL)show {
@@ -213,10 +326,12 @@
             [_viewFacebook setAlpha:0.0f];
             [_viewTwitter setAlpha:0.0f];
             [_viewCreate setAlpha:0.0f];
+            [_btnSkip setAlpha:0.0f];
         } completion:^(BOOL finished) {
             [_viewFacebook setHidden:YES];
             [_viewTwitter setHidden:YES];
             [_viewCreate setHidden:YES];
+            [_btnSkip setHidden:YES];
             
             // Login button
             CGRect loginFrame = _viewLogin.frame;
@@ -246,6 +361,7 @@
         [_viewFacebook setHidden:NO];
         [_viewTwitter setHidden:NO];
         [_viewCreate setHidden:NO];
+        [_btnSkip setHidden:NO];
         
         // Login frame
         CGRect frameLoginForm = _viewFormLogin.frame;
@@ -264,6 +380,7 @@
                     [_viewFacebook setAlpha:1.0f];
                     [_viewTwitter setAlpha:1.0f];
                     [_viewCreate setAlpha:1.0f];
+                    [_btnSkip setAlpha:1.0f];
                 } completion:^(BOOL finished) {
                     
                 }];
@@ -285,10 +402,12 @@
             [_viewFacebook setAlpha:0.0f];
             [_viewTwitter setAlpha:0.0f];
             [_viewLogin setAlpha:0.0f];
+            [_btnSkip setAlpha:0.0f];
         } completion:^(BOOL finished) {
             [_viewFacebook setHidden:YES];
             [_viewTwitter setHidden:YES];
             [_viewLogin setHidden:YES];
+            [_btnSkip setHidden:YES];
             
             // Create button
             CGRect createFrame = _viewCreate.frame;
@@ -318,6 +437,7 @@
         [_viewFacebook setHidden:NO];
         [_viewTwitter setHidden:NO];
         [_viewLogin setHidden:NO];
+        [_btnSkip setHidden:NO];
         
         // Create frame
         CGRect frameCreateForm = _viewFormCreate.frame;
@@ -336,6 +456,7 @@
                     [_viewFacebook setAlpha:1.0f];
                     [_viewTwitter setAlpha:1.0f];
                     [_viewLogin setAlpha:1.0f];
+                    [_btnSkip setAlpha:1.0f];
                 } completion:^(BOOL finished) {
                     
                 }];

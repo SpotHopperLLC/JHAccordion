@@ -16,7 +16,8 @@
 
     #define kDebug TRUE
 
-    #define kBaseUrl @"https://"
+//    #define kBaseUrl @"http://192.168.1.8:9292"
+    #define kBaseUrl @"http://spothopper-dev.herokuapp.com"
 
     #define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"
     #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"

@@ -8,82 +8,98 @@
 
 #import "UserModel.h"
 
-#import <objc/runtime.h>
-#import <objc/message.h>
+#import <JSONAPI/JSONAPI.h>
+
+#import "ClientSessionManager.h"
+#import "ErrorModel.h"
 
 @implementation UserModel
 
-#pragma mark - NSCoding
+#pragma mark - API
 
-- (NSArray *)propertyKeys
-{
-    NSMutableArray *array = [NSMutableArray array];
-    Class class = [self class];
-    while (class != [NSObject class])
-    {
-        unsigned int propertyCount;
-        objc_property_t *properties = class_copyPropertyList(class, &propertyCount);
-        for (int i = 0; i < propertyCount; i++)
-        {
-            //get property
-            objc_property_t property = properties[i];
-            const char *propertyName = property_getName(property);
-            NSString *key = [NSString stringWithCString:propertyName encoding:NSUTF8StringEncoding];
++ (void)registerUser:(NSDictionary*)params success:(void(^)(UserModel *userModel, NSHTTPURLResponse *response))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    
+    [[ClientSessionManager sharedClient] logout];
+    
+    NSDictionary *wrappedParams = @{
+               kUserModelUsers : @[params]
+               };
+    
+    [[ClientSessionManager sharedClient] POST:@"/api/users" parameters:wrappedParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (operation.response.statusCode == 200) {
+            [UserModel loginUser:params success:successBlock failure:failureBlock];
+        } else {
+            JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
             
-            //check if read-only
-            BOOL readonly = NO;
-            const char *attributes = property_getAttributes(property);
-            NSString *encoding = [NSString stringWithCString:attributes encoding:NSUTF8StringEncoding];
-            if ([[encoding componentsSeparatedByString:@","] containsObject:@"R"])
-            {
-                readonly = YES;
-                
-                //see if there is a backing ivar with a KVC-compliant name
-                NSRange iVarRange = [encoding rangeOfString:@",V"];
-                if (iVarRange.location != NSNotFound)
-                {
-                    NSString *iVarName = [encoding substringFromIndex:iVarRange.location + 2];
-                    if ([iVarName isEqualToString:key] ||
-                        [iVarName isEqualToString:[@"_" stringByAppendingString:key]])
-                    {
-                        //setValue:forKey: will still work
-                        readonly = NO;
-                    }
-                }
-            }
-            
-            if (!readonly)
-            {
-                //exclude read-only properties
-                [array addObject:key];
-            }
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
         }
-        free(properties);
-        class = [class superclass];
-    }
-    return array;
+    }];
+    
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    if ((self = [self init]))
-    {
-        for (NSString *key in [self propertyKeys])
-        {
-            id value = [aDecoder decodeObjectForKey:key];
-            [self setValue:value forKey:key];
++ (void)loginUser:(NSDictionary*)params success:(void(^)(UserModel *userModel, NSHTTPURLResponse *response))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    
+    [[ClientSessionManager sharedClient] logout];
+    
+    [[ClientSessionManager sharedClient] POST:@"/api/sessions" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            UserModel *userModel = [jsonApi resourceForKey:@"users"];
+            
+            NSLog(@"All request cookies - %@", [operation.request allHTTPHeaderFields]);
+            [[ClientSessionManager sharedClient] login:operation.response user:userModel];
+            
+            successBlock(userModel, operation.response);
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
         }
-    }
-    return self;
+    }];
+    
 }
 
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    for (NSString *key in [self propertyKeys])
-    {
-        id value = [self valueForKey:key];
-        [aCoder encodeObject:value forKey:key];
-    }
+#pragma mark - Getters
+
+- (NSString *)email {
+    return [self objectForKey:@"email"];
+}
+
+- (NSString *)role {
+    return [self objectForKey:@"role"];
+}
+
+- (NSString *)name {
+    return [self objectForKey:@"name"];
+}
+
+- (NSString *)facebookId {
+    return [self objectForKey:@"facebook_id"];
+}
+
+- (NSString *)twitterId {
+    return [self objectForKey:@"twitter_id"];
+}
+
+- (NSDate *)birthday {
+    return [self formatBirthday:[self objectForKey:@"birthday"]];
+}
+
+- (NSDictionary *)settings {
+    return [self objectForKey:@"settings"];
+}
+
+- (NSString *)description {
+    return [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:@{
+                                                                                    @"id" : self.ID != nil ? self.ID : @"",
+                                                                                    @"email" : self.email != nil ? self.email : @"",
+                                                                                    @"role" : self.role != nil ? self.role : @"",
+                                                                                    @"name" : self.name != nil ? self.name : @"",
+                                                                                    @"facebook_id" : self.facebookId != nil ? self.facebookId : @"",
+                                                                                    @"twitter_id" : self.twitterId != nil ? self.twitterId : @"",
+                                                                                    @"birthday" : self.birthday != nil ? self.birthday : @""
+                                                                                    } options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding];
 }
 
 @end
