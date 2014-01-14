@@ -74,12 +74,32 @@
     return [self objectForKey:@"name"];
 }
 
+- (NSString *)facebookId {
+    return [self objectForKey:@"facebook_id"];
+}
+
+- (NSString *)twitterId {
+    return [self objectForKey:@"twitter_id"];
+}
+
 - (NSDate *)birthday {
     return [self formatBirthday:[self objectForKey:@"birthday"]];
 }
 
 - (NSDictionary *)settings {
     return [self objectForKey:@"settings"];
+}
+
+- (NSString *)description {
+    return [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:@{
+                                                                                    @"id" : self.ID != nil ? self.ID : @"",
+                                                                                    @"email" : self.email != nil ? self.email : @"",
+                                                                                    @"role" : self.role != nil ? self.role : @"",
+                                                                                    @"name" : self.name != nil ? self.name : @"",
+                                                                                    @"facebook_id" : self.facebookId != nil ? self.facebookId : @"",
+                                                                                    @"twitter_id" : self.twitterId != nil ? self.twitterId : @"",
+                                                                                    @"birthday" : self.birthday != nil ? self.birthday : @""
+                                                                                    } options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding];
 }
 
 @end

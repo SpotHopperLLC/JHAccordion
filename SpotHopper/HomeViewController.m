@@ -100,7 +100,8 @@
 
 - (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
     if (FooterViewButtonRight == footerViewButtonType) {
-        [self showAlert:@"Nothing here yet" message:nil];
+        UserModel *user = [ClientSessionManager sharedClient].currentUser;
+        [self showAlert:user.description message:nil];
         return YES;
     }
     return NO;

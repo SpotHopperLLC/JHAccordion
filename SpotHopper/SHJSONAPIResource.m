@@ -18,27 +18,31 @@
 #pragma mark - Format helpers
 
 - (NSDate *)formatBirthday:(NSString *)string {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-    
     NSDate *date = nil;
-    NSError *error = nil;
-    if (![dateFormatter getObjectValue:&date forString:string range:nil error:&error]) {
-        [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:@"Birthday '%@' could not be parsed: %@", string, error] level:kRavenLogLevelDebugError];
+    if (string.length > 0) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        
+        NSError *error = nil;
+        if (![dateFormatter getObjectValue:&date forString:string range:nil error:&error]) {
+            [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:@"Birthday '%@' could not be parsed: %@", string, error] level:kRavenLogLevelDebugError];
+        }
     }
     return date;
 }
 
 - (NSDate *)formatDateTimestamp:(NSString *)string {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ssZ"];
-    
     NSDate *date = nil;
-    NSError *error = nil;
-    if (![dateFormatter getObjectValue:&date forString:string range:nil error:&error]) {
-        [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:@"Date timestamp '%@' could not be parsed: %@", string, error] level:kRavenLogLevelDebugError];
+    if (string.length > 0) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ssZ"];
+        
+        NSError *error = nil;
+        if (![dateFormatter getObjectValue:&date forString:string range:nil error:&error]) {
+            [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:@"Date timestamp '%@' could not be parsed: %@", string, error] level:kRavenLogLevelDebugError];
+        }
     }
     return date;
 }

@@ -26,6 +26,8 @@
 @property (nonatomic, strong, readonly) NSString *email;
 @property (nonatomic, strong, readonly) NSString *role;
 @property (nonatomic, strong, readonly) NSString *name;
+@property (nonatomic, strong, readonly) NSString *facebookId;
+@property (nonatomic, strong, readonly) NSString *twitterId;
 @property (nonatomic, strong, readonly) NSDate *birthday;
 @property (nonatomic, strong, readonly) NSDictionary *settings;
 
