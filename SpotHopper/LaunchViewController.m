@@ -272,7 +272,7 @@
         [self dismissViewControllerAnimated:YES completion:nil];
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
-        [self showAlert:@"Oops" message:@"Error while trying to login"];
+        [self showAlert:@"Oops" message:errorModel.human];
     }];
     
 }

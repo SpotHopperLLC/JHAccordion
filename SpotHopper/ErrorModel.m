@@ -10,4 +10,17 @@
 
 @implementation ErrorModel
 
+- (NSString *)human {
+    NSString *human = [self objectForKey:@"human"];
+    return (human.length > 0 ? human : @"An unknown error occured");
+}
+
+- (NSString *)error {
+    return [self objectForKey:@"error"];
+}
+
+- (NSDictionary *)validations {
+    return [self objectForKey:@"validations"];
+}
+
 @end

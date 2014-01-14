@@ -10,4 +10,8 @@
 
 @interface ErrorModel : JSONAPIResource
 
+@property (nonatomic, strong) NSString *human;
+@property (nonatomic, strong) NSString *error;
+@property (nonatomic, strong) NSDictionary *validations;
+
 @end
