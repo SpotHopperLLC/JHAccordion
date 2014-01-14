@@ -11,7 +11,7 @@ TARGET_SDK="iphoneos"
 #CONFIGURATION_BUILD_DIR="${PROJDIR}/Build/"
 PROJECT_BUILDDIR="${CONFIGURATION_BUILD_DIR}"
 APPLICATION_BASE_NAME="SpotHopper"
-BUILD_HISTORY_DIR="#{PROJDIR}/Archives"
+BUILD_HISTORY_DIR="/Users/josh/Dropbox/RokkinCat/Projects/\"Client Projects\"/SpotHopper/Builds/iOS"
 DEVELOPPER_NAME="iPhone Developer: Josh Holtz (M57ML2945L)"
 PROVISONNING_PROFILE="/Users/josh/iOS/ProvisionProfiles/RokkinCat_Team.mobileprovision"
 
@@ -21,12 +21,13 @@ namespace :build do
   	build = ENV['build']
 
   	if version.nil? || build.nil?
+  		puts "Mission arguments version= and build="
   		exit(-1)
   	end
 
   	$APPLICATION_NAME = "#{APPLICATION_BASE_NAME}-v#{version}-b#{build}"
 
-	FileUtils.mkdir_p "Archives"
+	#FileUtils.mkdir_p BUILD_HISTORY_DIR
 
     settings = `xctool -workspace SpotHopper.xcworkspace/ -scheme SpotHopper -configuration Release -showBuildSettings build`
     settings.each_line do |line|
