@@ -1,1 +1,0 @@
-../../JHAccordion/Classes/JHAccordion.h

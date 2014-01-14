@@ -6,8 +6,17 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#import "JSONAPIResource.h"
+#import "SHJSONAPIResource.h"
 
-@interface SpotModel : JSONAPIResource
+@interface SpotModel : SHJSONAPIResource
+
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *type;
+@property (nonatomic, strong) NSString *address;
+@property (nonatomic, strong) NSString *phoneNumber;
+@property (nonatomic, strong) NSArray *hoursOfOperation;
+@property (nonatomic, strong) NSNumber *latitude;
+@property (nonatomic, strong) NSNumber *longitude;
+@property (nonatomic, strong) NSDictionary *sliders;
 
 @end
