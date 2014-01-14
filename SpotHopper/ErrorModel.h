@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#import "JSONAPIResource.h"
+#import "SHJSONAPIResource.h"
 
-@interface ErrorModel : JSONAPIResource
+@interface ErrorModel : SHJSONAPIResource
 
 @end
