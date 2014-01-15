@@ -8,7 +8,33 @@
 
 #import "ReviewModel.h"
 
+#import "ClientSessionManager.h"
+#import "ErrorModel.h"
+
+#import <JSONAPI/JSONAPI.h>
+
 @implementation ReviewModel
+
+#pragma mark - API
+
++ (void)getReviews:(NSDictionary*)params success:(void(^)(NSArray *reviewModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    
+    [[ClientSessionManager sharedClient] GET:@"/api/reviews" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (operation.response.statusCode == 200) {
+            JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+            
+            NSArray *models = [jsonApi resourcesForKey:@"reviews"];
+            successBlock(models);
+            
+        } else {
+            JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+            
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+        }
+    }];
+    
+}
 
 #pragma mark - Getters
 

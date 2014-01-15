@@ -17,6 +17,8 @@
 #import "SpotModel.h"
 #import "UserModel.h"
 
+#import "Mockery.h"
+
 #import <JSONAPI/JSONAPI.h>
 #import <Raven/RavenClient.h>
 #import <STTwitter/STTwitter.h>
@@ -52,6 +54,10 @@
     } failure:^(FBSessionState state, NSError *error) {
 
     }];
+    
+    if (kMock) {
+        [self startTheMockery];
+    }
     
     return YES;
 }
@@ -223,6 +229,129 @@
     } errorBlock:^(NSError *error) {
         failureHandler(error);
     }];
+}
+
+#pragma mark - Mockery
+
+- (void)startTheMockery {
+    [Mockery mockeryWithURL:kBaseUrl];
+    
+    [Mockery get:@"/api/reviews" block:^MockeryHTTPURLResponse *(NSString *path, NSURLRequest *request, NSArray *routeParams) {
+        NSDictionary *r1 = [self reviewForId:1];
+        
+        NSArray *rs = @[r1];
+        
+        NSDictionary *jsonApi = @{
+                                  @"reviews" : rs,
+                                  @"linked" : @{
+                                          @"spots" : @[
+                                                  [self spotForId:1]
+                                                  ]
+                                          }
+                                  };
+        
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonApi options:0 error:nil];
+        
+        return [MockeryHTTPURLResponse mockeryWithURL:request.URL statusCode:200 data:jsonData headerFields:[NSDictionary dictionary]];
+    }];
+    
+    [Mockery post:[NSRegularExpression regularExpressionWithPattern:@"^/reviews/(\\d+)/found" options:NSRegularExpressionCaseInsensitive error:nil] block:^MockeryHTTPURLResponse *(NSString *path, NSURLRequest *request, NSArray *routeParams) {
+        
+        NSNumber *reviewId = [routeParams objectAtIndex:0];
+        NSDictionary *r = [self reviewForId:reviewId.integerValue];
+        
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:r options:0 error:nil];
+        
+        return [MockeryHTTPURLResponse mockeryWithURL:request.URL statusCode:200 data:jsonData headerFields:[NSDictionary dictionary]];
+    }];
+}
+
+#pragma mark - Data Helpers
+
+- (NSDictionary*)drinkForId:(NSInteger)ID {
+    if (ID == 1) {
+        return @{
+                 @"id": @1,
+                 @"name": @"Boobs and Billiards Scotch",
+                 @"type": @"spirit",
+                 @"subtype": @"scotch",
+                 @"description": @"Super premium breasts and pool balls scotch which reeks of upper crust.",
+                 @"alcohol_by_volume": @0.9,
+                 @"style": @"IPA",
+                 @"vintage": @1984,
+                 @"region": @"Your mom's butt",
+                 @"recipe": @"1 part boobs\n1part billiards",
+                 @"links" : @{
+                         @"spot": @1
+                         }
+                 
+                 };
+    }
+    return nil;
+}
+
+- (NSDictionary*)spotForId:(NSInteger)ID {
+    if (ID == 1) {
+        return @{
+                 @"id": @1,
+                 @"name": @"Oatmeal Junction",
+                 @"type": @"Restaurant",
+                 @"address": @"229 E Wisconsin Ave\nSuite #1102\nMilwaukee, WI 53202",
+                 @"phone_number": @"715-539-8911",
+                 @"hours_of_operation":@[
+                         @[@"8:30-0500",@"16:00-0500"],
+                         @[@"8:00-0500",@"20:00-0500"],
+                         @[@"8:00-0500",@"20:00-0500"],
+                         @[@"8:00-0500",@"20:00-0500"],
+                         @[@"8:00-0500",@"20:00-0500"],
+                         @[@"8:00-0500",@"20:00-0500"],
+                         @[@"8:30-0500",@"18:00-0500"]
+                         ],
+                 @"latitude": @43.038513,
+                 @"longitude": @-87.908913,
+                 @"sliders":@[
+                         @{@"id": @"radness", @"name": @"Radness", @"min": @"UnRad", @"max": @"Super Rad!", @"value": @10}
+                         ]
+                 };
+    }
+    return nil;
+}
+
+
+- (NSDictionary*)userForId:(NSInteger)ID {
+    if (ID == 1) {
+        return @{
+                 @"id": @1,
+                 @"email": @"placeholder@rokkincat.com",
+                 @"role": @"admin",
+                 @"name": @"Nick Gartmann",
+                 @"birthday": @"1989-02-03",
+                 @"settings": @{}
+                 
+                 };
+    }
+    return nil;
+}
+
+- (NSDictionary*)reviewForId:(NSInteger)ID {
+    if (ID == 1) {
+        return @{
+                 @"id": @1,
+                 @"rating": @9,
+                 @"sliders": @[
+                         @{@"id": @"radness", @"name": @"Radness", @"min": @"UnRad", @"max": @"Super Rad!", @"value": @9}
+                         ],
+                 @"created_at": @"2014-01-01T15:12:43+00:00",
+                 @"updated_at": @"2014-01-01T15:12:43+00:00",
+                 @"links" : @{
+                         //                         @"user": @1,
+                         @"drink": @1,
+                         @"spot": @1
+                         }
+                 
+                 };
+    }
+    return nil;
 }
 
 @end

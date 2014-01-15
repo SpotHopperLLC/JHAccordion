@@ -8,9 +8,11 @@
 
 #import "SHJSONAPIResource.h"
 
-@class UserModel;
-@class SpotModel;
 @class DrinkModel;
+@class ErrorModel;
+@class SpotModel;
+@class UserModel;
+
 
 @interface ReviewModel : SHJSONAPIResource
 
@@ -27,5 +29,7 @@
 @property (nonatomic, strong) NSDictionary *sliders;
 @property (nonatomic, strong) NSDate *createdAt;
 @property (nonatomic, strong) NSDate *updatedAt;
+
++ (void)getReviews:(NSDictionary*)params success:(void(^)(NSArray *reviewModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 @end
