@@ -9,10 +9,10 @@
 #ifndef SpotHopper_Constants_h
 #define SpotHopper_Constants_h
 
-#define kEnvEnableTest TRUE
+#define kEnvEnableDev TRUE
 //#define kEnvEnableProd TRUE
 
-#if kEnvEnableTest
+#if kEnvEnableDev
 
     #define kDebug TRUE
 
