@@ -11,10 +11,11 @@
 @interface SpotModel : SHJSONAPIResource
 
 @property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *imageUrl;
 @property (nonatomic, strong) NSString *type;
 @property (nonatomic, strong) NSString *address;
 @property (nonatomic, strong) NSString *phoneNumber;
-@property (nonatomic, strong) NSArray *hoursOfOperation;
+@property (nonatomic, strong) NSArray *hoursOfOperation; // Returns array (7 in size, SMTWTFS) of arrays (2 in size, open to close)
 @property (nonatomic, strong) NSNumber *latitude;
 @property (nonatomic, strong) NSNumber *longitude;
 @property (nonatomic, strong) NSDictionary *sliders;

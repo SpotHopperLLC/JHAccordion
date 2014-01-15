@@ -13,6 +13,7 @@
 @interface DrinkModel : SHJSONAPIResource
 
 @property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *imageUrl;
 @property (nonatomic, strong) NSString *type;
 @property (nonatomic, strong) NSString *subtype;
 @property (nonatomic, strong) NSString *descriptionOfDrink;

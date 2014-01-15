@@ -160,7 +160,8 @@
         [_accordion closeSection:indexPath.section];
         [_tblReviews deselectRowAtIndexPath:indexPath animated:NO];
     } else if (indexPath.section == 2) {
-        [self goToReview:nil];
+        ReviewModel *review = [_reviews objectAtIndex:indexPath.row];
+        [self goToReview:review];
     }
     
 }

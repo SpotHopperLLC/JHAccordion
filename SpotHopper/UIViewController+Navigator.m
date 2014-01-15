@@ -40,6 +40,7 @@
 
 - (void)goToReview:(ReviewModel *)review {
     ReviewViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"ReviewViewController"];
+    [viewController setReview:review];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

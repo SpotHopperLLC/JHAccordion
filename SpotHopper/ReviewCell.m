@@ -31,6 +31,7 @@
 }
 
 - (void)setReview:(ReviewModel *)review {
+    // Sets review name
     if (review.spot != nil) {
         [_lblName setText:review.spot.name];
     } else if (review.drink != nil) {
@@ -39,6 +40,7 @@
         [_lblName setText:@""];
     }
     
+    // Sets review rating
     [_lblRating setText:[NSString stringWithFormat:@"%d/10", review.rating.integerValue]];
 }
 

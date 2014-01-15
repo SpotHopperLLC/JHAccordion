@@ -12,7 +12,18 @@
 
 #import "ReviewSliderCell.h"
 
+#import "DrinkModel.h"
+#import "SpotModel.h"
+#import "UserModel.h"
+
+#import <AFNetworking/UIImageView+AFNetworking.h>
+
 @interface ReviewViewController ()<UITableViewDataSource, UITableViewDelegate, ReviewSliderCellDelegate>
+
+@property (weak, nonatomic) IBOutlet UIImageView *imgImage;
+@property (weak, nonatomic) IBOutlet UILabel *lblTitle;
+@property (weak, nonatomic) IBOutlet UILabel *lblSubTitle;
+@property (weak, nonatomic) IBOutlet UILabel *lblSubSubTitle;
 
 @property (weak, nonatomic) IBOutlet UITableView *tblReviews;
 
@@ -49,6 +60,9 @@
     // Header content view
     _headerContent = [UIView viewFromNibNamed:@"ReviewHeaderDrinkView" withOwner:self];
     [_tblReviews setTableHeaderView:_headerContent];
+    
+    // Update view
+    [self updateView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -111,6 +125,28 @@
     NSIndexPath *indexPath = [_tblReviews indexPathForCell:cell];
     
     NSLog(@"Value changed for row %d to %f", indexPath.row, value);
+}
+
+#pragma mark - Private
+
+- (void)updateView {
+    if (_review.drink != nil) {
+        [_imgImage setImageWithURL:[NSURL URLWithString:_review.drink.imageUrl]];
+        
+        [_lblTitle setText:_review.drink.name];
+        [_lblSubTitle setText:_review.drink.spot.name];
+        [_lblSubSubTitle setText:[NSString stringWithFormat:@"%@ - %.02f %% ABV", _review.drink.style, _review.drink.alcoholByVolume.floatValue]];
+    } else if (_review.spot != nil) {
+        [_imgImage setImageWithURL:[NSURL URLWithString:_review.spot.imageUrl]];
+        
+        [_lblTitle setText:_review.spot.name];
+        [_lblSubTitle setText:_review.spot.type];
+        [_lblSubSubTitle setText:@""];
+    } else {
+        [_lblTitle setText:@""];
+        [_lblSubTitle setText:@""];
+        [_lblSubSubTitle setText:@""];
+    }
 }
 
 @end

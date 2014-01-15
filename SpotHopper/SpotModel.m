@@ -16,6 +16,10 @@
     return [self objectForKey:@"name"];
 }
 
+- (NSString *)imageUrl {
+    return [self objectForKey:@"image_url"];
+}
+
 - (NSString *)type {
     return [self objectForKey:@"type"];
 }

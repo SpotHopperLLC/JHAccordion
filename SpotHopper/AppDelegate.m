@@ -237,15 +237,20 @@
     [Mockery mockeryWithURL:kBaseUrl];
     
     [Mockery get:@"/api/reviews" block:^MockeryHTTPURLResponse *(NSString *path, NSURLRequest *request, NSArray *routeParams) {
-        NSDictionary *r1 = [self reviewForId:1];
+        NSDictionary *r1 = [self reviewForId:@1 withLinks:@{@"spot":@1}];
+        NSDictionary *r2 = [self reviewForId:@2 withLinks:@{@"drink":@1}];
         
-        NSArray *rs = @[r1];
+        NSArray *rs = @[r1, r2];
         
         NSDictionary *jsonApi = @{
                                   @"reviews" : rs,
                                   @"linked" : @{
                                           @"spots" : @[
-                                                  [self spotForId:1]
+                                                  [self spotForId:@1 withLinks:nil]
+                                                  ]
+                                          ,
+                                          @"drinks" : @[
+                                                  [self drinkForId:@1 withLinks:@{@"spot":@1}]
                                                   ]
                                           }
                                   };
@@ -258,7 +263,7 @@
     [Mockery post:[NSRegularExpression regularExpressionWithPattern:@"^/reviews/(\\d+)/found" options:NSRegularExpressionCaseInsensitive error:nil] block:^MockeryHTTPURLResponse *(NSString *path, NSURLRequest *request, NSArray *routeParams) {
         
         NSNumber *reviewId = [routeParams objectAtIndex:0];
-        NSDictionary *r = [self reviewForId:reviewId.integerValue];
+        NSDictionary *r = [self reviewForId:reviewId withLinks:@{@"spot":@1}];
         
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:r options:0 error:nil];
         
@@ -268,11 +273,13 @@
 
 #pragma mark - Data Helpers
 
-- (NSDictionary*)drinkForId:(NSInteger)ID {
-    if (ID == 1) {
+- (NSDictionary*)drinkForId:(NSNumber*)ID withLinks:(NSDictionary*)links {
+    if (links == nil) links = @{};
+    if (ID.intValue == 1) {
         return @{
                  @"id": @1,
                  @"name": @"Boobs and Billiards Scotch",
+                 @"image_url" : @"http://placekitten.com/300/300",
                  @"type": @"spirit",
                  @"subtype": @"scotch",
                  @"description": @"Super premium breasts and pool balls scotch which reeks of upper crust.",
@@ -281,20 +288,19 @@
                  @"vintage": @1984,
                  @"region": @"Your mom's butt",
                  @"recipe": @"1 part boobs\n1part billiards",
-                 @"links" : @{
-                         @"spot": @1
-                         }
-                 
+                 @"links" : links
                  };
     }
     return nil;
 }
 
-- (NSDictionary*)spotForId:(NSInteger)ID {
-    if (ID == 1) {
+- (NSDictionary*)spotForId:(NSNumber*)ID withLinks:(NSDictionary*)links {
+    if (links == nil) links = @{};
+    if (ID.intValue == 1) {
         return @{
                  @"id": @1,
                  @"name": @"Oatmeal Junction",
+                 @"image_url" : @"http://placekitten.com/300/300",
                  @"type": @"Restaurant",
                  @"address": @"229 E Wisconsin Ave\nSuite #1102\nMilwaukee, WI 53202",
                  @"phone_number": @"715-539-8911",
@@ -311,30 +317,33 @@
                  @"longitude": @-87.908913,
                  @"sliders":@[
                          @{@"id": @"radness", @"name": @"Radness", @"min": @"UnRad", @"max": @"Super Rad!", @"value": @10}
-                         ]
+                         ],
+                 @"links" : links
                  };
     }
     return nil;
 }
 
 
-- (NSDictionary*)userForId:(NSInteger)ID {
-    if (ID == 1) {
+- (NSDictionary*)userForId:(NSNumber*)ID withLinks:(NSDictionary*)links {
+    if (links == nil) links = @{};
+    if (ID.intValue == 1) {
         return @{
                  @"id": @1,
                  @"email": @"placeholder@rokkincat.com",
                  @"role": @"admin",
                  @"name": @"Nick Gartmann",
                  @"birthday": @"1989-02-03",
-                 @"settings": @{}
-                 
+                 @"settings": @{},
+                 @"links" : links
                  };
     }
     return nil;
 }
 
-- (NSDictionary*)reviewForId:(NSInteger)ID {
-    if (ID == 1) {
+- (NSDictionary*)reviewForId:(NSNumber*)ID withLinks:(NSDictionary*)links {
+    if (links == nil) links = @{};
+    if (ID.intValue == 1) {
         return @{
                  @"id": @1,
                  @"rating": @9,
@@ -343,11 +352,19 @@
                          ],
                  @"created_at": @"2014-01-01T15:12:43+00:00",
                  @"updated_at": @"2014-01-01T15:12:43+00:00",
-                 @"links" : @{
-                         //                         @"user": @1,
-                         @"drink": @1,
-                         @"spot": @1
-                         }
+                 @"links" : links
+                 
+                 };
+    } else if (ID.intValue == 2) {
+        return @{
+                 @"id": @2,
+                 @"rating": @5,
+                 @"sliders": @[
+                         @{@"id": @"radness", @"name": @"Radness", @"min": @"UnRad", @"max": @"Super Rad!", @"value": @4}
+                         ],
+                 @"created_at": @"2014-01-01T15:12:43+00:00",
+                 @"updated_at": @"2014-01-01T15:12:43+00:00",
+                 @"links" : links
                  
                  };
     }

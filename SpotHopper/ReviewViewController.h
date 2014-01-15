@@ -8,6 +8,10 @@
 
 #import "BaseViewController.h"
 
+#import "ReviewModel.h"
+
 @interface ReviewViewController : BaseViewController
+
+@property (nonatomic, strong) ReviewModel *review;
 
 @end
