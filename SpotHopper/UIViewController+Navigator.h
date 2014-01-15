@@ -19,6 +19,7 @@
 - (void)goToReviewMenu;
 - (void)goToMyReviews;
 - (void)goToReview:(ReviewModel*)review;
+- (void)goToSearchForNewReview;
 - (void)goToNewReview;
 
 @end

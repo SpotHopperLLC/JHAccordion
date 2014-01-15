@@ -14,6 +14,7 @@
 #import "NewReviewViewController.h"
 #import "ReviewViewController.h"
 #import "ReviewsMenuViewController.h"
+#import "SearchNewReviewViewController.h"
 
 @implementation UIViewController (Navigator)
 
@@ -39,6 +40,11 @@
 
 - (void)goToReview:(ReviewModel *)review {
     ReviewViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"ReviewViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToSearchForNewReview {
+    SearchNewReviewViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"SearchNewReviewViewController"];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

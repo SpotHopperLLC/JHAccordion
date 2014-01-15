@@ -55,7 +55,7 @@
     [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
     
     // Sets title
-    [self setTitle:@"My Reviews"];
+    [self setTitle:@"New Reviews"];
     
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
