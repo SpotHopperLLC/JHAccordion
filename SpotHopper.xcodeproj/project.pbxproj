@@ -128,6 +128,7 @@
 		039B70031887167200C590F8 /* icon_search_spot.png in Resources */ = {isa = PBXBuildFile; fileRef = 039B6FFB1887167200C590F8 /* icon_search_spot.png */; };
 		039B70041887167200C590F8 /* icon_search_spot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039B6FFC1887167200C590F8 /* icon_search_spot@2x.png */; };
 		039B7006188716F800C590F8 /* SearchCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039B7005188716F800C590F8 /* SearchCellView.xib */; };
+		039B7009188721BB00C590F8 /* FooterShadowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B7008188721BB00C590F8 /* FooterShadowCell.m */; };
 		03CA7260187B45B400815284 /* SectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CA725F187B45B400815284 /* SectionHeaderView.m */; };
 		03CA7265187B4EB700815284 /* img_expand_east_orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7261187B4EB700815284 /* img_expand_east_orange.png */; };
 		03CA7266187B4EB700815284 /* img_expand_east_orange@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7262187B4EB700815284 /* img_expand_east_orange@2x.png */; };
@@ -399,6 +400,8 @@
 		039B6FFB1887167200C590F8 /* icon_search_spot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_search_spot.png; sourceTree = "<group>"; };
 		039B6FFC1887167200C590F8 /* icon_search_spot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_search_spot@2x.png"; sourceTree = "<group>"; };
 		039B7005188716F800C590F8 /* SearchCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchCellView.xib; sourceTree = "<group>"; };
+		039B7007188721BB00C590F8 /* FooterShadowCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooterShadowCell.h; sourceTree = "<group>"; };
+		039B7008188721BB00C590F8 /* FooterShadowCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooterShadowCell.m; sourceTree = "<group>"; };
 		03CA725E187B45B400815284 /* SectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionHeaderView.h; sourceTree = "<group>"; };
 		03CA725F187B45B400815284 /* SectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionHeaderView.m; sourceTree = "<group>"; };
 		03CA7261187B4EB700815284 /* img_expand_east_orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_expand_east_orange.png; sourceTree = "<group>"; };
@@ -721,6 +724,8 @@
 				039B6FF21887143B00C590F8 /* SearchCell.h */,
 				039B6FF31887143B00C590F8 /* SearchCell.m */,
 				039B7005188716F800C590F8 /* SearchCellView.xib */,
+				039B7007188721BB00C590F8 /* FooterShadowCell.h */,
+				039B7008188721BB00C590F8 /* FooterShadowCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1505,6 +1510,7 @@
 				03412C3E18805693000F16A8 /* ErrorModel.m in Sources */,
 				038664EF186D391E00985CEC /* UserModel.m in Sources */,
 				039B6FEE18870E4A00C590F8 /* SearchNewReviewViewController.m in Sources */,
+				039B7009188721BB00C590F8 /* FooterShadowCell.m in Sources */,
 				03866477186D352400985CEC /* AppDelegate.m in Sources */,
 				0320237C187773C0008368C2 /* SHViewTranlucentWhite.m in Sources */,
 				03CA728F187C3B2E00815284 /* ReviewModel.m in Sources */,

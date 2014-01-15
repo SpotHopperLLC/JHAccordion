@@ -8,6 +8,7 @@
 
 #import "SearchNewReviewViewController.h"
 
+#import "FooterShadowCell.h"
 #import "SearchCell.h"
 
 #import <QuartzCore/QuartzCore.h>
@@ -92,24 +93,11 @@
     //    
         return cell;
     } else if (indexPath.section == 1) {
-        static NSString *cellIdentifier = @"cell_identifier";
+        static NSString *cellIdentifier = @"FooterShadowCell";
         
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        FooterShadowCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
         if(cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-            [cell setBackgroundColor:[UIColor clearColor]];
-            [cell.contentView setBackgroundColor:[UIColor clearColor]];
-            
-            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(tableView.frame), 10.0f)];
-            [view setBackgroundColor:[UIColor clearColor]];
-            
-            CAGradientLayer *topShadow = [CAGradientLayer layer];
-            topShadow.frame = CGRectMake(0, 0, view.bounds.size.width, 10);
-            topShadow.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithWhite:0.0 alpha:0.1f] CGColor], (id)[[UIColor colorWithWhite:0.0 alpha:0.0f] CGColor], nil];
-            [view.layer insertSublayer:topShadow atIndex:0];
-            
-            [cell addSubview:view];
-            
+            cell = [[FooterShadowCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
         }
         
         return cell;
