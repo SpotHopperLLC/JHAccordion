@@ -29,7 +29,7 @@ namespace :build do
 
 	#FileUtils.mkdir_p BUILD_HISTORY_DIR
 
-    settings = `xctool -workspace SpotHopper.xcworkspace/ -scheme SpotHopper -configuration Release -showBuildSettings build`
+    settings = `xctool -workspace #{WORKSPACE} -scheme #{SCHEME} -configuration #{CONFIGURATION} -showBuildSettings build`
     settings.each_line do |line|
     	if line.include? "CONFIGURATION_BUILD_DIR"
     		$CONFIGURATION_BUILD_DIR = line.partition('=').last.strip
@@ -40,7 +40,7 @@ namespace :build do
   desc "Builds app"
   task :app => :prepare do
   	if $CONFIGURATION_BUILD_DIR
-    	system("xctool -workspace #{WORKSPACE} -scheme #{SCHEME} -sdk #{TARGET_SDK} build")
+    	system("xctool -workspace #{WORKSPACE} -scheme #{SCHEME} -sdk #{TARGET_SDK} -configuration #{CONFIGURATION} build")
     end
   end
 
