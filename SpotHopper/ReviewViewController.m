@@ -111,7 +111,16 @@
     [label setBackgroundColor:[UIColor clearColor]];
     [label setTextColor:[UIColor whiteColor]];
     [label setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
-    [label setText:[NSString stringWithFormat:@"I thought %@ was...", @""]];
+    [label setMinimumScaleFactor:0.5f];
+    [label setAdjustsFontSizeToFitWidth:YES];
+    [label setNumberOfLines:1];
+    
+    if (_review.drink != nil) {
+        [label setText:[NSString stringWithFormat:@"I thought %@ was...", _review.drink.name]];
+    } else if (_review.spot != nil) {
+        [label setText:[NSString stringWithFormat:@"I thought %@ was...", _review.spot.name]];
+    }
+    
     [view addSubview:label];
     
     return view;
