@@ -18,6 +18,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
 @property (weak, nonatomic) IBOutlet UITableView *tblSearches;
 
+@property (nonatomic, assign) CGRect tblSearchesInitalFrame;
+
 @end
 
 @implementation SearchNewReviewViewController
@@ -49,7 +51,7 @@
     [_txtSearch addTarget:self action:@selector(onEditingChangeSearch:) forControlEvents:UIControlEventEditingChanged];
     
     // Initializes states
-
+    _tblSearchesInitalFrame = CGRectZero;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -58,16 +60,62 @@
     // Deselects table row
     [_tblSearches deselectRowAtIndexPath:_tblSearches.indexPathForSelectedRow animated:NO];
     
+    // Gets table frame
+    if (CGRectEqualToRect(_tblSearchesInitalFrame, CGRectZero)) {
+        _tblSearchesInitalFrame = _tblSearches.frame;
+    }
+    
+    // Keyboard notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    
     // Adds contextual footer view
     [self addFooterViewController:^(FooterViewController *footerViewController) {
         [footerViewController showHome:YES];
     }];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Keyboard
+
+- (NSArray *)textfieldToHideKeyboard {
+    return @[_txtSearch];
+}
+
+- (void)keyboardWillShow:(NSNotification*)notification {
+    [self keyboardWillHideOrShow:notification show:NO];
+}
+
+- (void)keyboardWillHide:(NSNotification*)notification {
+    [self keyboardWillHideOrShow:notification show:NO];
+}
+
+- (void)keyboardWillHideOrShow:(NSNotification*)notification show:(BOOL)show {
+    NSDictionary *userInfo = notification.userInfo;
+    NSTimeInterval duration = [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve curve = [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+    
+    CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    CGRect frame = _tblSearches.frame;
+    if (show == YES) {
+        frame.size.height = CGRectGetHeight(self.view.frame) - CGRectGetMinY(frame) - CGRectGetHeight(keyboardFrame);
+    } else {
+        frame = _tblSearchesInitalFrame;
+    }
+    
+    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | curve animations:^{
+        [_tblSearches setFrame:frame];
+    } completion:nil];
 }
 
 #pragma mark - UITableViewDataSource
