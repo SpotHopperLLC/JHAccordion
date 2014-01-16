@@ -244,7 +244,11 @@
     [_results removeAllObjects];
     [_tblSearches reloadData];
     
-    [self doSearch];
+    if (_txtSearch.text.length > 0) {
+        [self doSearch];
+    } else {
+        [self dataDidFinishRefreshing];
+    }
 }
 
 - (void)doSearch {
