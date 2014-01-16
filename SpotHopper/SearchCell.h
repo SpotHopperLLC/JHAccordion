@@ -18,5 +18,7 @@
 
 - (void)setDrink:(DrinkModel*)drink;
 - (void)setSpot:(SpotModel*)spot;
+- (void)setDrinksSimilar:(NSString *)text;
+- (void)setSpotsSimilar:(NSString *)text;
 
 @end

@@ -10,6 +10,8 @@
 
 #import "NSDictionary+Slider.h"
 
+#import <JSONAPI/JSONAPI.h>
+
 @class DrinkModel;
 @class ErrorModel;
 @class SpotModel;
@@ -31,6 +33,6 @@
 @property (nonatomic, strong) NSDate *createdAt;
 @property (nonatomic, strong) NSDate *updatedAt;
 
-+ (void)getReviews:(NSDictionary*)params success:(void(^)(NSArray *reviewModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
++ (void)getReviews:(NSDictionary*)params success:(void(^)(NSArray *reviewModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 @end

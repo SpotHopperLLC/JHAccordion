@@ -17,14 +17,14 @@
 
 #pragma mark - API
 
-+ (void)getReviews:(NSDictionary*)params success:(void(^)(NSArray *reviewModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
++ (void)getReviews:(NSDictionary*)params success:(void(^)(NSArray *reviewModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
     
     [[ClientSessionManager sharedClient] GET:@"/api/reviews" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (operation.response.statusCode == 200) {
             JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
             
             NSArray *models = [jsonApi resourcesForKey:@"reviews"];
-            successBlock(models);
+            successBlock(models, jsonApi);
             
         } else {
             JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];

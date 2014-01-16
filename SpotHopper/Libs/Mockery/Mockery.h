@@ -10,7 +10,7 @@
 
 #import "MockeryHTTPURLResponse.h"
 
-typedef MockeryHTTPURLResponse* (^ResponseBlock)(NSString *, NSURLRequest*, NSArray *routeParams);
+typedef MockeryHTTPURLResponse* (^ResponseBlock)(NSString *, NSURLRequest*, NSDictionary *queryParams, NSArray *routeParams);
 
 @interface Mockery : NSObject
 

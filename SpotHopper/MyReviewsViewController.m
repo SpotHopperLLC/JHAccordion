@@ -214,7 +214,7 @@
 
 - (void)fetchReviews {
     [self showHUD:@"Fetching reviews"];
-    [ReviewModel getReviews:nil success:^(NSArray *reviewModels) {
+    [ReviewModel getReviews:nil success:^(NSArray *reviewModels, JSONAPI *jsonApi) {
         [self hideHUD];
         
         if (_reviews == nil) _reviews = [NSMutableArray array];

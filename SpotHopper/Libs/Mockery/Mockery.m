@@ -92,12 +92,20 @@ static Mockery *sharedInstance = nil;
 - (MockeryHTTPURLResponse*)findRoute:(NSURLRequest *)request withMockResponse:(NSDictionary*)actionMockResponses {
     
     NSString *pathString = [[request URL] absoluteString];
-    NSString *route = [pathString stringByReplacingOccurrencesOfString:[Mockery urlPrefix] withString:@""];
-    
+    NSString *fullRoute = [pathString stringByReplacingOccurrencesOfString:[Mockery urlPrefix] withString:@""];
+
+    NSString *route = fullRoute;
+    NSDictionary *queryParams = nil;
+    if ([route rangeOfString:@"?"].location != NSNotFound) {
+        route = [route stringByReplacingCharactersInRange:NSMakeRange([fullRoute rangeOfString:@"?"].location, fullRoute.length - [fullRoute rangeOfString:@"?"].location) withString:@""];
+     
+        queryParams = [self queryParams:[fullRoute substringWithRange:NSMakeRange([fullRoute rangeOfString:@"?"].location+1, fullRoute.length - [fullRoute rangeOfString:@"?"].location-1)]];
+    }
+
     if ([actionMockResponses objectForKey:route]) {
         
         ResponseBlock mockeryBlock = [actionMockResponses objectForKey:route];
-        return mockeryBlock(pathString, request, nil);
+        return mockeryBlock(pathString, request, queryParams, nil);
         
     } else {
         
@@ -119,7 +127,7 @@ static Mockery *sharedInstance = nil;
                     }
                     
                     ResponseBlock mockeryBlock = [actionMockResponses objectForKey:key];
-                    MockeryHTTPURLResponse *mockeryResponse = mockeryBlock(pathString, request, params);
+                    MockeryHTTPURLResponse *mockeryResponse = mockeryBlock(pathString, request, queryParams, params);
                     
                     return mockeryResponse;
                 }
@@ -133,5 +141,20 @@ static Mockery *sharedInstance = nil;
     
 }
 
+- (NSDictionary*)queryParams:(NSString*)queryString {
+    NSMutableDictionary *queryStringDictionary = [[NSMutableDictionary alloc] init];
+    NSArray *urlComponents = [queryString componentsSeparatedByString:@"&"];
+    
+    for (NSString *keyValuePair in urlComponents)
+    {
+        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+        NSString *key = [pairComponents objectAtIndex:0];
+        NSString *value = [pairComponents objectAtIndex:1];
+        
+        [queryStringDictionary setObject:value forKey:key];
+    }
+    
+    return queryStringDictionary;
+}
 
 @end

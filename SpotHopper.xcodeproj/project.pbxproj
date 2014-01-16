@@ -136,6 +136,7 @@
 		039B701A18873DD400C590F8 /* ReviewCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039B701918873DD400C590F8 /* ReviewCellView.xib */; };
 		039B701F1887592D00C590F8 /* NSDictionary+Slider.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B701E1887592D00C590F8 /* NSDictionary+Slider.m */; };
 		039B7022188759B100C590F8 /* NSArray+HoursOfOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B7021188759B100C590F8 /* NSArray+HoursOfOperation.m */; };
+		039B70251888847200C590F8 /* NSNumber+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B70241888847200C590F8 /* NSNumber+Helpers.m */; };
 		03CA7260187B45B400815284 /* SectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CA725F187B45B400815284 /* SectionHeaderView.m */; };
 		03CA7265187B4EB700815284 /* img_expand_east_orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7261187B4EB700815284 /* img_expand_east_orange.png */; };
 		03CA7266187B4EB700815284 /* img_expand_east_orange@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7262187B4EB700815284 /* img_expand_east_orange@2x.png */; };
@@ -422,6 +423,8 @@
 		039B701E1887592D00C590F8 /* NSDictionary+Slider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Slider.m"; sourceTree = "<group>"; };
 		039B7020188759B100C590F8 /* NSArray+HoursOfOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+HoursOfOperation.h"; sourceTree = "<group>"; };
 		039B7021188759B100C590F8 /* NSArray+HoursOfOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+HoursOfOperation.m"; sourceTree = "<group>"; };
+		039B70231888847200C590F8 /* NSNumber+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Helpers.h"; sourceTree = "<group>"; };
+		039B70241888847200C590F8 /* NSNumber+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Helpers.m"; sourceTree = "<group>"; };
 		03CA725E187B45B400815284 /* SectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionHeaderView.h; sourceTree = "<group>"; };
 		03CA725F187B45B400815284 /* SectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionHeaderView.m; sourceTree = "<group>"; };
 		03CA7261187B4EB700815284 /* img_expand_east_orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_expand_east_orange.png; sourceTree = "<group>"; };
@@ -834,6 +837,8 @@
 				03F2D9391871FB4300C69576 /* UIActionSheet+Block.m */,
 				03CA72D6187DFCC200815284 /* UIView+ViewFromNib.h */,
 				03CA72D7187DFCC200815284 /* UIView+ViewFromNib.m */,
+				039B70231888847200C590F8 /* NSNumber+Helpers.h */,
+				039B70241888847200C590F8 /* NSNumber+Helpers.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -1593,6 +1598,7 @@
 				038664DC186D376900985CEC /* TellMeMyLocation.m in Sources */,
 				039B6FF41887143B00C590F8 /* SearchCell.m in Sources */,
 				03F2D95018722D5300C69576 /* HomeViewController.m in Sources */,
+				039B70251888847200C590F8 /* NSNumber+Helpers.m in Sources */,
 				038664DB186D376900985CEC /* MBProgressHUD.m in Sources */,
 				039B7013188723EB00C590F8 /* MockeryURLProtocol.m in Sources */,
 				039B7012188723EB00C590F8 /* MockeryHTTPURLResponse.m in Sources */,

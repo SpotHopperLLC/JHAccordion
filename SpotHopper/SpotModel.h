@@ -6,10 +6,21 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kSpotModelParamPage @"page"
+#define kSpotModelParamsPageSize @"page_size"
+#define kSpotModelParamQuery @"query"
+#define kSpotModelParamLatitude @"latitude"
+#define kSpotModelParamLongitude @"longitude"
+
+#define kSpotModelMetaPage @"page"
+#define kSpotModelMetaTotalRecords @"total_records"
+
 #import "SHJSONAPIResource.h"
 
 #import "NSArray+HoursOfOperation.h"
 #import "NSDictionary+Slider.h"
+
+#import <JSONAPI/JSONAPI.h>
 
 @class ErrorModel;
 
@@ -25,6 +36,6 @@
 @property (nonatomic, strong) NSNumber *longitude;
 @property (nonatomic, strong) NSArray *sliders;
 
-+ (void)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
++ (void)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 @end

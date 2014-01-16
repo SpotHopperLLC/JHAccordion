@@ -6,6 +6,10 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kPageSize @20
+
+#import "NSNumber+Helpers.h"
+
 #import "SearchNewReviewViewController.h"
 
 #import "FooterShadowCell.h"
@@ -28,6 +32,8 @@
 @property (nonatomic, strong) NSTimer *searchTimer;
 
 @property (nonatomic, strong) NSMutableArray *results;
+@property (nonatomic, strong) NSNumber *drinkPage;
+@property (nonatomic, strong) NSNumber *spotPage;
 
 @end
 
@@ -59,10 +65,14 @@
     // Configures text search
     [_txtSearch addTarget:self action:@selector(onEditingChangeSearch:) forControlEvents:UIControlEventEditingChanged];
     
+    // Register pull to refresh
+    [self registerRefreshTableView:_tblSearches withReloadType:kPullRefreshTypeBoth];
+    
     // Initializes states
     _tblSearchesInitalFrame = CGRectZero;
     _results = [NSMutableArray array];
-    [self updateView];
+    _drinkPage = @1;
+    _spotPage = @1;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -132,13 +142,15 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
         return _results.count;
     } else if (section == 1) {
+        return (_txtSearch.text.length > 0 ? 2 : 0);
+    } else if (section == 2) {
         return 1;
     }
     
@@ -161,6 +173,16 @@
 
         return cell;
     } else if (indexPath.section == 1) {
+        
+        SearchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell" forIndexPath:indexPath];
+        if (indexPath.row == 0) {
+            [cell setDrinksSimilar:_txtSearch.text];
+        } else if (indexPath.row == 1) {
+            [cell setSpotsSimilar:_txtSearch.text];
+        }
+        
+        return cell;
+    } else if (indexPath.section == 2) {
         static NSString *cellIdentifier = @"FooterShadowCell";
         
         FooterShadowCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -177,13 +199,29 @@
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
+    if (indexPath.section == 0 || indexPath.section == 1) {
         return 45.0f;
-    } else if (indexPath.section == 1) {
-        return 10.f;
+    } else if (indexPath.section == 2) {
+        return (_results.count == 0 ? 0.0f : 10.0f);
     }
     
     return 0.0f;
+}
+
+#pragma mark - JHPullToRefresh
+
+- (void)reloadTableViewDataPullDown {
+    // Starts search over
+    [self startSearch];
+}
+
+- (void)reloadTableViewDataPullUp {
+    // Increments pages
+    _drinkPage = [_drinkPage increment];
+    _spotPage = [_spotPage increment];
+    
+    // Does search
+    [self doSearch];
 }
 
 #pragma mark - Actions
@@ -194,31 +232,43 @@
     _searchTimer = nil;
     
     // Schedule timer
-    _searchTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(doSearch) userInfo:nil repeats:NO];
+    _searchTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(startSearch) userInfo:nil repeats:NO];
 }
 
 #pragma mark - Private
 
-- (void)updateView {
-    [_tblSearches setHidden:(_results.count == 0)];
+- (void)startSearch {
+    // Resets pages and clears results
+    _drinkPage = @1;
+    _spotPage = @1;
+    [_results removeAllObjects];
+    [_tblSearches reloadData];
+    
+    [self doSearch];
 }
 
 - (void)doSearch {
-    NSLog(@"Doing search now");
-    
+
     [self showHUD:@"Searching"];
-    [_results removeAllObjects];
 
     // Creates dispatch group
     dispatch_group_t group = dispatch_group_create();
     
-    // Searches drinks
+    /*
+     * Searches drinks
+     */
     dispatch_group_enter(group);
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
-        [DrinkModel getDrinks:nil success:^(NSArray *drinkModels) {
+        NSDictionary *params = @{
+                                 kDrinkModelParamQuery : _txtSearch.text,
+                                 kDrinkModelParamPage : _drinkPage,
+                                 kDrinkModelParamsPageSize : kPageSize
+                                 };
+        
+        [DrinkModel getDrinks:params success:^(NSArray *drinkModels, JSONAPI *jsonApi) {
             // Adds drinks to results
-            [_results addObject:drinkModels];
+            [_results addObjectsFromArray:drinkModels];
             
             // Leaves group
             dispatch_group_leave(group);
@@ -230,13 +280,21 @@
         
     });
     
-    // Searches spots
+    /*
+     * Searches spots
+     */
     dispatch_group_enter(group);
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
-        [SpotModel getSpots:nil success:^(NSArray *spotModels) {
+        NSDictionary *params = @{
+                                 kSpotModelParamQuery : _txtSearch.text,
+                                 kSpotModelParamPage : _spotPage,
+                                 kSpotModelParamsPageSize : kPageSize
+                                 };
+        
+        [SpotModel getSpots:params success:^(NSArray *spotModels, JSONAPI *jsonApi) {
             // Adds spots to results
-            [_results addObject:spotModels];
+            [_results addObjectsFromArray:spotModels];
             
             // Leaves group
             dispatch_group_leave(group);
@@ -253,8 +311,8 @@
         dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [_tblSearches reloadData];
-            [self updateView];
+            NSLog(@"Total stuffs - %d", _results.count);
+            [self dataDidFinishRefreshing];
             [self hideHUD];
         });
     });

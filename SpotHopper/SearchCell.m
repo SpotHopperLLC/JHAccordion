@@ -38,6 +38,21 @@
     [_lblName setText:spot.name];
 }
 
+- (void)setDrinksSimilar:(NSString *)text {
+    [self setup];
+    
+    [_imgIcon setImage:[UIImage imageNamed:@"icon_search_drink_similar"]];
+    [_lblName setText:[NSString stringWithFormat:@"Drinks Similar to %@", text]];
+}
+
+- (void)setSpotsSimilar:(NSString *)text {
+    [self setup];
+    
+    [_imgIcon setImage:[UIImage imageNamed:@"icon_search_spot_similar"]];
+    [_lblName setText:[NSString stringWithFormat:@"Spots Similar to %@", text]];
+}
+
+
 #pragma mark - Private
 
 - (void)setup {

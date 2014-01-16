@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 
+#import "NSNumber+Helpers.h"
 #import "UIActionSheet+Block.h"
 
 #import "ClientSessionManager.h"
@@ -239,7 +240,10 @@
     /*
      * DRINKS
      */
-    [Mockery get:@"/api/drinks" block:^MockeryHTTPURLResponse *(NSString *path, NSURLRequest *request, NSArray *routeParams) {
+    [Mockery get:@"/api/drinks" block:^MockeryHTTPURLResponse *(NSString *path, NSURLRequest *request, NSDictionary *queryParams, NSArray *routeParams) {
+        sleep(1.5f);
+        
+        NSLog(@"Query params - %@", queryParams);
         NSDictionary *d1 = [self drinkForId:@1 withLinks:@{@"spot":@1}];
         
         NSArray *ds = @[d1];
@@ -250,6 +254,10 @@
                                           @"spots" : @[
                                                   [self spotForId:@1 withLinks:nil]
                                                   ]
+                                          },
+                                  @"meta" : @{
+                                          @"page" : [queryParams objectForKey:@"page"],
+                                          @"total_records" : @500
                                           }
                                   };
         
@@ -261,7 +269,9 @@
     /*
      * REVIEWS
      */
-    [Mockery get:@"/api/reviews" block:^MockeryHTTPURLResponse *(NSString *path, NSURLRequest *request, NSArray *routeParams) {
+    [Mockery get:@"/api/reviews" block:^MockeryHTTPURLResponse *(NSString *path, NSURLRequest *request, NSDictionary *queryParams, NSArray *routeParams) {
+        sleep(1.5f);
+        
         NSDictionary *r1 = [self reviewForId:@1 withLinks:@{@"spot":@1}];
         NSDictionary *r2 = [self reviewForId:@2 withLinks:@{@"drink":@1}];
         
@@ -288,7 +298,8 @@
     /*
      * REVIEWS/<ID>
      */
-    [Mockery post:[NSRegularExpression regularExpressionWithPattern:@"^/reviews/(\\d+)" options:NSRegularExpressionCaseInsensitive error:nil] block:^MockeryHTTPURLResponse *(NSString *path, NSURLRequest *request, NSArray *routeParams) {
+    [Mockery post:[NSRegularExpression regularExpressionWithPattern:@"^/reviews/(\\d+)" options:NSRegularExpressionCaseInsensitive error:nil] block:^MockeryHTTPURLResponse *(NSString *path, NSURLRequest *request, NSDictionary *queryParams, NSArray *routeParams) {
+        sleep(1.5f);
         
         NSNumber *reviewId = [routeParams objectAtIndex:0];
         NSDictionary *r = [self reviewForId:reviewId withLinks:@{@"spot":@1}];
@@ -299,9 +310,11 @@
     }];
     
     /*
-     * SPOTSgi
+     * SPOTS
      */
-    [Mockery get:@"/api/spots" block:^MockeryHTTPURLResponse *(NSString *path, NSURLRequest *request, NSArray *routeParams) {
+    [Mockery get:@"/api/spots" block:^MockeryHTTPURLResponse *(NSString *path, NSURLRequest *request, NSDictionary *queryParams, NSArray *routeParams) {
+        sleep(1.5f);
+        
         NSDictionary *s1 = [self spotForId:@1 withLinks:nil];
         
         NSArray *ss = @[s1];

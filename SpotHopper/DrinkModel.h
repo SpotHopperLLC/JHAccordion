@@ -6,7 +6,16 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kDrinkModelParamPage @"page"
+#define kDrinkModelParamsPageSize @"page_size"
+#define kDrinkModelParamQuery @"query"
+
+#define kDrinkModelMetaPage @"page"
+#define kDrinkModelMetaTotalRecords @"total_records"
+
 #import "SHJSONAPIResource.h"
+
+#import <JSONAPI/JSONAPI.h>
 
 @class ErrorModel;
 @class SpotModel;
@@ -26,6 +35,6 @@
 @property (nonatomic, strong) SpotModel *spot;
 @property (nonatomic, strong) NSNumber *spotId;
 
-+ (void)getDrinks:(NSDictionary*)params success:(void(^)(NSArray *drinkModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
++ (void)getDrinks:(NSDictionary*)params success:(void(^)(NSArray *drinkModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 @end
