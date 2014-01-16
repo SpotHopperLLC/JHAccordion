@@ -11,6 +11,8 @@
 #import "NSArray+HoursOfOperation.h"
 #import "NSDictionary+Slider.h"
 
+@class ErrorModel;
+
 @interface SpotModel : SHJSONAPIResource
 
 @property (nonatomic, strong) NSString *name;

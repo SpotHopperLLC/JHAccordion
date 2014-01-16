@@ -13,6 +13,9 @@
 
 @interface SearchCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UIImageView *imgIcon;
+@property (weak, nonatomic) IBOutlet UILabel *lblName;
+
 - (void)setDrink:(DrinkModel*)drink;
 - (void)setSpot:(SpotModel*)spot;
 

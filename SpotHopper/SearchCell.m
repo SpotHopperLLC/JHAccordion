@@ -26,10 +26,16 @@
 
 - (void)setDrink:(DrinkModel *)drink {
     [self setup];
+    
+    [_imgIcon setImage:[UIImage imageNamed:@"icon_search_drink"]];
+    [_lblName setText:drink.name];
 }
 
 - (void)setSpot:(SpotModel *)spot {
     [self setup];
+    
+    [_imgIcon setImage:[UIImage imageNamed:@"icon_search_spot"]];
+    [_lblName setText:spot.name];
 }
 
 #pragma mark - Private

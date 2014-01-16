@@ -11,6 +11,10 @@
 #import "FooterShadowCell.h"
 #import "SearchCell.h"
 
+#import "DrinkModel.h"
+#import "ErrorModel.h"
+#import "SpotModel.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 @interface SearchNewReviewViewController ()<UITableViewDataSource, UITableViewDelegate>
@@ -19,6 +23,11 @@
 @property (weak, nonatomic) IBOutlet UITableView *tblSearches;
 
 @property (nonatomic, assign) CGRect tblSearchesInitalFrame;
+
+// Timer used for when to search when typing halts
+@property (nonatomic, strong) NSTimer *searchTimer;
+
+@property (nonatomic, strong) NSMutableArray *results;
 
 @end
 
@@ -52,6 +61,8 @@
     
     // Initializes states
     _tblSearchesInitalFrame = CGRectZero;
+    _results = [NSMutableArray array];
+    [self updateView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -126,7 +137,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
-        return 10;
+        return _results.count;
     } else if (section == 1) {
         return 1;
     }
@@ -137,11 +148,17 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.section == 0) {
+        JSONAPIResource *result = [_results objectAtIndex:indexPath.row];
+        
         SearchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell" forIndexPath:indexPath];
-        [cell setDrink:nil];
-    //    [cell setDelegate:self];
-    //    [cell setReview:nil];
-    //    
+        if ([result isKindOfClass:[DrinkModel class]] == YES) {
+            DrinkModel *drink = (DrinkModel*)result;
+            [cell setDrink:drink];
+        } else if ([result isKindOfClass:[SpotModel class]] == YES) {
+            SpotModel *spot = (SpotModel*)result;
+            [cell setSpot:spot];
+        }
+
         return cell;
     } else if (indexPath.section == 1) {
         static NSString *cellIdentifier = @"FooterShadowCell";
@@ -172,7 +189,67 @@
 #pragma mark - Actions
 
 - (void)onEditingChangeSearch:(id)sender {
-    NSLog(@"Search - %@", _txtSearch.text);
+    // Cancel and nil
+    [_searchTimer invalidate];
+    _searchTimer = nil;
+    
+    // Schedule timer
+    _searchTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(doSearch) userInfo:nil repeats:NO];
+}
+
+#pragma mark - Private
+
+- (void)updateView {
+    [_tblSearches setHidden:(_results.count == 0)];
+}
+
+- (void)doSearch {
+    NSLog(@"Doing search now");
+    
+    [self showHUD:@"Searching"];
+    [_results removeAllObjects];
+
+    // Creates dispatch group
+    dispatch_group_t group = dispatch_group_create();
+    
+    // Searches drinks
+    dispatch_group_enter(group);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [DrinkModel getDrinks:nil success:^(NSArray *drinkModels) {
+            NSLog(@"Drink models - %d", drinkModels.count);
+            [_results addObject:drinkModels];
+            
+            dispatch_group_leave(group);
+        } failure:^(ErrorModel *errorModel) {
+            
+            dispatch_group_leave(group);
+        }];
+    });
+    
+    // Searches spots
+    dispatch_group_enter(group);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [SpotModel getSpots:nil success:^(NSArray *spotModels) {
+            NSLog(@"Spot models - %d", spotModels.count);
+            [_results addObject:spotModels];
+            
+            dispatch_group_leave(group);
+        } failure:^(ErrorModel *errorModel) {
+            
+            dispatch_group_leave(group);
+        }];
+    });
+    
+    // Waits for drinks and spots to complete before continueing on
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_tblSearches reloadData];
+            [self updateView];
+            [self hideHUD];
+        });
+    });
 }
 
 @end
