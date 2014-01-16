@@ -83,14 +83,16 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 10;
+    return _review.sliders.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    NSDictionary *slider = [_review.sliders objectAtIndex:indexPath.row];
+    
     ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
     [cell setDelegate:self];
-    [cell setReview:nil];
+    [cell setSliderValues:slider];
     
     return cell;
 }

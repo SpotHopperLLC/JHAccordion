@@ -127,7 +127,7 @@
             
             ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
             [cell setDelegate:self];
-            [cell setReview:nil];
+            [cell setSlider:nil];
             
             return cell;
             

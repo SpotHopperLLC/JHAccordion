@@ -134,6 +134,8 @@
 		039B7013188723EB00C590F8 /* MockeryURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B7010188723EB00C590F8 /* MockeryURLProtocol.m */; };
 		039B701818873DB700C590F8 /* ReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B701718873DB700C590F8 /* ReviewCell.m */; };
 		039B701A18873DD400C590F8 /* ReviewCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039B701918873DD400C590F8 /* ReviewCellView.xib */; };
+		039B701F1887592D00C590F8 /* NSDictionary+Slider.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B701E1887592D00C590F8 /* NSDictionary+Slider.m */; };
+		039B7022188759B100C590F8 /* NSArray+HoursOfOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B7021188759B100C590F8 /* NSArray+HoursOfOperation.m */; };
 		03CA7260187B45B400815284 /* SectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CA725F187B45B400815284 /* SectionHeaderView.m */; };
 		03CA7265187B4EB700815284 /* img_expand_east_orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7261187B4EB700815284 /* img_expand_east_orange.png */; };
 		03CA7266187B4EB700815284 /* img_expand_east_orange@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7262187B4EB700815284 /* img_expand_east_orange@2x.png */; };
@@ -416,6 +418,10 @@
 		039B701618873DB700C590F8 /* ReviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReviewCell.h; sourceTree = "<group>"; };
 		039B701718873DB700C590F8 /* ReviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReviewCell.m; sourceTree = "<group>"; };
 		039B701918873DD400C590F8 /* ReviewCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReviewCellView.xib; sourceTree = "<group>"; };
+		039B701D1887592D00C590F8 /* NSDictionary+Slider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Slider.h"; sourceTree = "<group>"; };
+		039B701E1887592D00C590F8 /* NSDictionary+Slider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Slider.m"; sourceTree = "<group>"; };
+		039B7020188759B100C590F8 /* NSArray+HoursOfOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+HoursOfOperation.h"; sourceTree = "<group>"; };
+		039B7021188759B100C590F8 /* NSArray+HoursOfOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+HoursOfOperation.m"; sourceTree = "<group>"; };
 		03CA725E187B45B400815284 /* SectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionHeaderView.h; sourceTree = "<group>"; };
 		03CA725F187B45B400815284 /* SectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionHeaderView.m; sourceTree = "<group>"; };
 		03CA7261187B4EB700815284 /* img_expand_east_orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_expand_east_orange.png; sourceTree = "<group>"; };
@@ -887,6 +893,7 @@
 		038664EC186D390700985CEC /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				039B701C1887591600C590F8 /* Helpers */,
 				03412C3F1882F6EC000F16A8 /* SHJSONAPIResource.h */,
 				03412C401882F6EC000F16A8 /* SHJSONAPIResource.m */,
 				03CA728A187C26BD00815284 /* DrinkModel.h */,
@@ -1049,6 +1056,17 @@
 				039B7008188721BB00C590F8 /* FooterShadowCell.m */,
 			);
 			name = Commons;
+			sourceTree = "<group>";
+		};
+		039B701C1887591600C590F8 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				039B7020188759B100C590F8 /* NSArray+HoursOfOperation.h */,
+				039B7021188759B100C590F8 /* NSArray+HoursOfOperation.m */,
+				039B701D1887592D00C590F8 /* NSDictionary+Slider.h */,
+				039B701E1887592D00C590F8 /* NSDictionary+Slider.m */,
+			);
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 		03CA726F187B8FD800815284 /* Icons */ = {
@@ -1531,6 +1549,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				038664D2186D376900985CEC /* UIImage+FixOrientation.m in Sources */,
+				039B7022188759B100C590F8 /* NSArray+HoursOfOperation.m in Sources */,
+				039B701F1887592D00C590F8 /* NSDictionary+Slider.m in Sources */,
 				03412C411882F6EC000F16A8 /* SHJSONAPIResource.m in Sources */,
 				038664E1186D379400985CEC /* BaseViewController.m in Sources */,
 				038664E2186D379400985CEC /* ClientSessionManager.m in Sources */,

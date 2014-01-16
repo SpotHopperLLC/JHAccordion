@@ -22,7 +22,7 @@
 
 @property (nonatomic, assign) id<ReviewSliderCellDelegate> delegate;
 
-- (void)setReview:(ReviewModel*)review;
+- (void)setSliderValues:(NSDictionary*)sliderValue;
 
 @end
 

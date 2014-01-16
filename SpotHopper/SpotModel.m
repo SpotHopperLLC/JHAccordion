@@ -44,7 +44,7 @@
     return [self objectForKey:@"longitude"];
 }
 
-- (NSDictionary *)sliders {
+- (NSArray *)sliders {
     return [self objectForKey:@"sliders"];
 }
 

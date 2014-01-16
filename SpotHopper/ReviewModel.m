@@ -66,7 +66,7 @@
     return [self objectForKey:@"rating"];
 }
 
-- (NSDictionary *)sliders {
+- (NSArray *)sliders {
     return [self objectForKey:@"sliders"];
 }
 

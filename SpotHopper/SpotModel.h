@@ -8,6 +8,9 @@
 
 #import "SHJSONAPIResource.h"
 
+#import "NSArray+HoursOfOperation.h"
+#import "NSDictionary+Slider.h"
+
 @interface SpotModel : SHJSONAPIResource
 
 @property (nonatomic, strong) NSString *name;
@@ -18,6 +21,6 @@
 @property (nonatomic, strong) NSArray *hoursOfOperation; // Returns array (7 in size, SMTWTFS) of arrays (2 in size, open to close)
 @property (nonatomic, strong) NSNumber *latitude;
 @property (nonatomic, strong) NSNumber *longitude;
-@property (nonatomic, strong) NSDictionary *sliders;
+@property (nonatomic, strong) NSArray *sliders;
 
 @end

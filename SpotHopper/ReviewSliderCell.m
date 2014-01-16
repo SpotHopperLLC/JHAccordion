@@ -26,10 +26,11 @@
     // Configure the view for the selected state
 }
 
-- (void)setReview:(ReviewModel *)review {
-//    [self setClipsToBounds:NO];
-//    [self.contentView setClipsToBounds:NO];
-//    [self.contentView.superview setClipsToBounds:NO];
+- (void)setSliderValues:(NSDictionary *)sliderValue {
+    [_lblMnimum setText:sliderValue.min];
+    [_lblMaximum setText:sliderValue.max];
+    
+    [_slider setSelectedValue:(sliderValue.value.floatValue / 10.f)];
     
     [_slider addTarget:self action:@selector(onValueChangedSlider:) forControlEvents:UIControlEventValueChanged];
 }
