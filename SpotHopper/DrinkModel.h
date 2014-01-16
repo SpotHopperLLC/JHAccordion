@@ -8,6 +8,7 @@
 
 #import "SHJSONAPIResource.h"
 
+@class ErrorModel;
 @class SpotModel;
 
 @interface DrinkModel : SHJSONAPIResource
@@ -24,5 +25,7 @@
 @property (nonatomic, strong) NSString *recipe;
 @property (nonatomic, strong) SpotModel *spot;
 @property (nonatomic, strong) NSNumber *spotId;
+
++ (void)getDrinks:(NSDictionary*)params success:(void(^)(NSArray *drinkModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 @end

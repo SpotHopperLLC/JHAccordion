@@ -8,7 +8,33 @@
 
 #import "DrinkModel.h"
 
+#import "ClientSessionManager.h"
+#import "ErrorModel.h"
+
+#import <JSONAPI/JSONAPI.h>
+
 @implementation DrinkModel
+
+#pragma mark - API
+
++ (void)getDrinks:(NSDictionary*)params success:(void(^)(NSArray *drinkModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    
+    [[ClientSessionManager sharedClient] GET:@"/api/drinks" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (operation.response.statusCode == 200) {
+            JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+            
+            NSArray *models = [jsonApi resourcesForKey:@"drinks"];
+            successBlock(models);
+            
+        } else {
+            JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+            
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+        }
+    }];
+    
+}
 
 #pragma mark - Getters
 

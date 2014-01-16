@@ -23,4 +23,6 @@
 @property (nonatomic, strong) NSNumber *longitude;
 @property (nonatomic, strong) NSArray *sliders;
 
++ (void)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
 @end

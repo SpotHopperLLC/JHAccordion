@@ -8,7 +8,33 @@
 
 #import "SpotModel.h"
 
+#import "ClientSessionManager.h"
+#import "ErrorModel.h"
+
+#import <JSONAPI/JSONAPI.h>
+
 @implementation SpotModel
+
+#pragma mark - API
+
++ (void)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    
+    [[ClientSessionManager sharedClient] GET:@"/api/spots" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (operation.response.statusCode == 200) {
+            JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+            
+            NSArray *models = [jsonApi resourcesForKey:@"spots"];
+            successBlock(models);
+            
+        } else {
+            JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+            
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+        }
+    }];
+    
+}
 
 #pragma mark - Getters
 
