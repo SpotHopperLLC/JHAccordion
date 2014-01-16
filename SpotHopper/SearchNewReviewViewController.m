@@ -45,6 +45,9 @@
     [_tblSearches setTableFooterView:[[UIView alloc] init]];
     [_tblSearches registerNib:[UINib nibWithNibName:@"SearchCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"SearchCell"];
     
+    // Configures text search
+    [_txtSearch addTarget:self action:@selector(onEditingChangeSearch:) forControlEvents:UIControlEventEditingChanged];
+    
     // Initializes states
 
 }
@@ -116,6 +119,12 @@
     }
     
     return 0.0f;
+}
+
+#pragma mark - Actions
+
+- (void)onEditingChangeSearch:(id)sender {
+    NSLog(@"Search - %@", _txtSearch.text);
 }
 
 @end
