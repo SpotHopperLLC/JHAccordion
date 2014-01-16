@@ -215,29 +215,37 @@
     // Searches drinks
     dispatch_group_enter(group);
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        
         [DrinkModel getDrinks:nil success:^(NSArray *drinkModels) {
-            NSLog(@"Drink models - %d", drinkModels.count);
+            // Adds drinks to results
             [_results addObject:drinkModels];
             
+            // Leaves group
             dispatch_group_leave(group);
         } failure:^(ErrorModel *errorModel) {
             
+            // Leaves group
             dispatch_group_leave(group);
         }];
+        
     });
     
     // Searches spots
     dispatch_group_enter(group);
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        
         [SpotModel getSpots:nil success:^(NSArray *spotModels) {
-            NSLog(@"Spot models - %d", spotModels.count);
+            // Adds spots to results
             [_results addObject:spotModels];
             
+            // Leaves group
             dispatch_group_leave(group);
         } failure:^(ErrorModel *errorModel) {
             
+            // Leaves group
             dispatch_group_leave(group);
         }];
+        
     });
     
     // Waits for drinks and spots to complete before continueing on
