@@ -30,7 +30,7 @@
     [_lblMnimum setText:sliderValue.min];
     [_lblMaximum setText:sliderValue.max];
     
-    [_slider setSelectedValue:(sliderValue.value.floatValue / 10.f)];
+    [_slider setSelectedValue:(sliderValue.value.floatValue / 10.0f)];
     
     [_slider addTarget:self action:@selector(onValueChangedSlider:) forControlEvents:UIControlEventValueChanged];
 }

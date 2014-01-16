@@ -100,14 +100,6 @@
     [self setClipsToBounds:NO];
 }
 
-
-- (void)layoutSubviews
-{
-	// Set the initial state
-	_minThumb.center = CGPointMake([self xForValue:_selectedValue], self.frame.size.height / 2.0);
-
-}
-
 - (void)setSelectedValue:(float)selectedValue {
     _selectedValue = selectedValue;
     _minThumb.center = CGPointMake([self xForValue:selectedValue], self.frame.size.height / 2.0);
