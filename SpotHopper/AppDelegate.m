@@ -236,6 +236,31 @@
 - (void)startTheMockery {
     [Mockery mockeryWithURL:kBaseUrl];
     
+    /*
+     * DRINKS
+     */
+    [Mockery get:@"/api/drinks" block:^MockeryHTTPURLResponse *(NSString *path, NSURLRequest *request, NSArray *routeParams) {
+        NSDictionary *d1 = [self drinkForId:@1 withLinks:@{@"spot":@1}];
+        
+        NSArray *ds = @[d1];
+        
+        NSDictionary *jsonApi = @{
+                                  @"drinks" : ds,
+                                  @"linked" : @{
+                                          @"spots" : @[
+                                                  [self spotForId:@1 withLinks:nil]
+                                                  ]
+                                          }
+                                  };
+        
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonApi options:0 error:nil];
+        
+        return [MockeryHTTPURLResponse mockeryWithURL:request.URL statusCode:200 data:jsonData headerFields:[NSDictionary dictionary]];
+    }];
+    
+    /*
+     * REVIEWS
+     */
     [Mockery get:@"/api/reviews" block:^MockeryHTTPURLResponse *(NSString *path, NSURLRequest *request, NSArray *routeParams) {
         NSDictionary *r1 = [self reviewForId:@1 withLinks:@{@"spot":@1}];
         NSDictionary *r2 = [self reviewForId:@2 withLinks:@{@"drink":@1}];
@@ -260,12 +285,34 @@
         return [MockeryHTTPURLResponse mockeryWithURL:request.URL statusCode:200 data:jsonData headerFields:[NSDictionary dictionary]];
     }];
     
-    [Mockery post:[NSRegularExpression regularExpressionWithPattern:@"^/reviews/(\\d+)/found" options:NSRegularExpressionCaseInsensitive error:nil] block:^MockeryHTTPURLResponse *(NSString *path, NSURLRequest *request, NSArray *routeParams) {
+    /*
+     * REVIEWS/<ID>
+     */
+    [Mockery post:[NSRegularExpression regularExpressionWithPattern:@"^/reviews/(\\d+)" options:NSRegularExpressionCaseInsensitive error:nil] block:^MockeryHTTPURLResponse *(NSString *path, NSURLRequest *request, NSArray *routeParams) {
         
         NSNumber *reviewId = [routeParams objectAtIndex:0];
         NSDictionary *r = [self reviewForId:reviewId withLinks:@{@"spot":@1}];
         
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:r options:0 error:nil];
+        
+        return [MockeryHTTPURLResponse mockeryWithURL:request.URL statusCode:200 data:jsonData headerFields:[NSDictionary dictionary]];
+    }];
+    
+    /*
+     * SPOTSgi
+     */
+    [Mockery get:@"/api/spots" block:^MockeryHTTPURLResponse *(NSString *path, NSURLRequest *request, NSArray *routeParams) {
+        NSDictionary *s1 = [self spotForId:@1 withLinks:nil];
+        
+        NSArray *ss = @[s1];
+        
+        NSDictionary *jsonApi = @{
+                                  @"spots" : ss,
+                                  @"linked" : @{
+                                          }
+                                  };
+        
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonApi options:0 error:nil];
         
         return [MockeryHTTPURLResponse mockeryWithURL:request.URL statusCode:200 data:jsonData headerFields:[NSDictionary dictionary]];
     }];
