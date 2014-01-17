@@ -35,6 +35,6 @@
 @property (nonatomic, strong) SpotModel *spot;
 @property (nonatomic, strong) NSNumber *spotId;
 
-+ (void)getDrinks:(NSDictionary*)params success:(void(^)(NSArray *drinkModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
++ (Promise*)getDrinks:(NSDictionary*)params success:(void(^)(NSArray *drinkModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 @end

@@ -15,11 +15,11 @@
 #if kEnvEnableDev
 
     #define kDebug TRUE
-    #define kMock TRUE
+    #define kMock FALSE
     #if kMock
         #define kBaseUrl @"mockery://app"
     #else
-        #define kBaseUrl @"http://192.168.1.8:9292"
+//        #define kBaseUrl @"http://192.168.1.8:9292"
         #define kBaseUrl @"http://spothopper-dev.herokuapp.com"
     #endif
 

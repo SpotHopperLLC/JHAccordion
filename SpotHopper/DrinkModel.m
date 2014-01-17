@@ -15,23 +15,31 @@
 
 #pragma mark - API
 
-+ (void)getDrinks:(NSDictionary*)params success:(void(^)(NSArray *drinkModels, JSONAPI *jsonAPI))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
-    
++ (Promise*)getDrinks:(NSDictionary*)params success:(void(^)(NSArray *drinkModels, JSONAPI *jsonAPI))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+     
     [[ClientSessionManager sharedClient] GET:@"/api/drinks" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
         if (operation.response.statusCode == 200) {
-            JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
-            
             NSArray *models = [jsonApi resourcesForKey:@"drinks"];
             successBlock(models, jsonApi);
             
+            // Resolves promise
+            [deferred resolve];
         } else {
-            JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
-            
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             failureBlock(errorModel);
+            
+            // Rejects promise
+            [deferred rejectWith:errorModel];
         }
     }];
     
+    return deferred.promise;
 }
 
 #pragma mark - Getters

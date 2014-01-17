@@ -307,8 +307,15 @@
     
     [self showHUD:@"Creating account"];
     [UserModel registerUser:params success:^(UserModel *userModel, NSHTTPURLResponse *response) {
-        [self hideHUD];
-        [self dismissViewControllerAnimated:YES completion:nil];
+        
+        [UserModel loginUser:params success:^(UserModel *userModel, NSHTTPURLResponse *response) {
+            [self hideHUD];
+            [self dismissViewControllerAnimated:YES completion:nil];
+        } failure:^(ErrorModel *errorModel) {
+            [self hideHUD];
+            [self showAlert:@"Oops" message:@"Error while trying to login"];
+        }];
+        
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Oops" message:@"Error while trying to login"];

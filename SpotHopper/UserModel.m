@@ -17,8 +17,11 @@
 
 #pragma mark - API
 
-+ (void)registerUser:(NSDictionary*)params success:(void(^)(UserModel *userModel, NSHTTPURLResponse *response))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
++ (Promise*)registerUser:(NSDictionary*)params success:(void(^)(UserModel *userModel, NSHTTPURLResponse *response))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
     
+    // Logs current user out
     [[ClientSessionManager sharedClient] logout];
     
     NSDictionary *wrappedParams = @{
@@ -26,38 +29,57 @@
                };
     
     [[ClientSessionManager sharedClient] POST:@"/api/users" parameters:wrappedParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (operation.response.statusCode == 200) {
-            [UserModel loginUser:params success:successBlock failure:failureBlock];
-        } else {
-            JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
-            
-            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
-            failureBlock(errorModel);
-        }
-    }];
-    
-}
-
-+ (void)loginUser:(NSDictionary*)params success:(void(^)(UserModel *userModel, NSHTTPURLResponse *response))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
-    
-    [[ClientSessionManager sharedClient] logout];
-    
-    [[ClientSessionManager sharedClient] POST:@"/api/sessions" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
         if (operation.response.statusCode == 200) {
             UserModel *userModel = [jsonApi resourceForKey:@"users"];
-            
-            NSLog(@"All request cookies - %@", [operation.request allHTTPHeaderFields]);
-            [[ClientSessionManager sharedClient] login:operation.response user:userModel];
-            
             successBlock(userModel, operation.response);
+            
+            // Resolves promise
+            [deferred resolve];
         } else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             failureBlock(errorModel);
+            
+            // Rejects promise
+            [deferred rejectWith:errorModel];
         }
     }];
     
+    return deferred.promise;
+}
+
++ (Promise*)loginUser:(NSDictionary*)params success:(void(^)(UserModel *userModel, NSHTTPURLResponse *response))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    // Logs current user out
+    [[ClientSessionManager sharedClient] logout];
+    
+    [[ClientSessionManager sharedClient] POST:@"/api/sessions" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            UserModel *userModel = [jsonApi resourceForKey:@"users"];
+            [[ClientSessionManager sharedClient] login:operation.response user:userModel];
+            successBlock(userModel, operation.response);
+            
+            // Resolves promise
+            [deferred resolve];
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+            
+            // Rejects promise
+            [deferred rejectWith:errorModel];
+        }
+    }];
+ 
+    return deferred.promise;
 }
 
 #pragma mark - Getters
