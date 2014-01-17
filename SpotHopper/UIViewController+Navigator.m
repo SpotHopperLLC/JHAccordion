@@ -44,6 +44,18 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
+- (void)goToNewReviewForDrink:(DrinkModel *)drink {
+    ReviewViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"ReviewViewController"];
+    [viewController setDrink:drink];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToNewReviewForSpot:(SpotModel *)spot {
+    ReviewViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"ReviewViewController"];
+    [viewController setSpot:spot];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
 - (void)goToSearchForNewReview {
     SearchNewReviewViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"SearchNewReviewViewController"];
     [self.navigationController pushViewController:viewController animated:YES];

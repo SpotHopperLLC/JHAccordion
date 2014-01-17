@@ -61,6 +61,12 @@
     _headerContent = [UIView viewFromNibNamed:@"ReviewHeaderDrinkView" withOwner:self];
     [_tblReviews setTableHeaderView:_headerContent];
     
+    // Initilizes states
+    if (_review != nil) {
+        _drink = _review.drink;
+        _spot = _review.spot;
+    }
+    
     // Update view
     [self updateView];
 }
@@ -115,10 +121,10 @@
     [label setAdjustsFontSizeToFitWidth:YES];
     [label setNumberOfLines:1];
     
-    if (_review.drink != nil) {
-        [label setText:[NSString stringWithFormat:@"I thought %@ was...", _review.drink.name]];
-    } else if (_review.spot != nil) {
-        [label setText:[NSString stringWithFormat:@"I thought %@ was...", _review.spot.name]];
+    if (_drink != nil) {
+        [label setText:[NSString stringWithFormat:@"I thought %@ was...", _drink.name]];
+    } else if (_spot != nil) {
+        [label setText:[NSString stringWithFormat:@"I thought %@ was...", _spot.name]];
     }
     
     [view addSubview:label];
@@ -141,17 +147,17 @@
 #pragma mark - Private
 
 - (void)updateView {
-    if (_review.drink != nil) {
-        [_imgImage setImageWithURL:[NSURL URLWithString:_review.drink.imageUrl]];
+    if (_drink != nil) {
+        [_imgImage setImageWithURL:[NSURL URLWithString:_drink.imageUrl]];
         
-        [_lblTitle setText:_review.drink.name];
-        [_lblSubTitle setText:_review.drink.spot.name];
-        [_lblSubSubTitle setText:[NSString stringWithFormat:@"%@ - %.02f %% ABV", _review.drink.style, _review.drink.alcoholByVolume.floatValue]];
-    } else if (_review.spot != nil) {
-        [_imgImage setImageWithURL:[NSURL URLWithString:_review.spot.imageUrl]];
+        [_lblTitle setText:_drink.name];
+        [_lblSubTitle setText:_drink.spot.name];
+        [_lblSubSubTitle setText:[NSString stringWithFormat:@"%@ - %.02f %% ABV", _drink.style, _drink.alcoholByVolume.floatValue]];
+    } else if (_spot != nil) {
+        [_imgImage setImageWithURL:[NSURL URLWithString:_spot.imageUrl]];
         
-        [_lblTitle setText:_review.spot.name];
-        [_lblSubTitle setText:_review.spot.type];
+        [_lblTitle setText:_spot.name];
+        [_lblSubTitle setText:_spot.type];
         [_lblSubSubTitle setText:@""];
     } else {
         [_lblTitle setText:@""];

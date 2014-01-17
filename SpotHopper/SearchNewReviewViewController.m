@@ -9,6 +9,7 @@
 #define kPageSize @20
 
 #import "NSNumber+Helpers.h"
+#import "UIViewController+Navigator.h"
 
 #import "SearchNewReviewViewController.h"
 
@@ -197,6 +198,19 @@
 }
 
 #pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        JSONAPIResource *result = [_results objectAtIndex:indexPath.row];
+        if ([result isKindOfClass:[DrinkModel class]] == YES) {
+            DrinkModel *drink = (DrinkModel*)result;
+            [self goToNewReviewForDrink:drink];
+        } else if ([result isKindOfClass:[SpotModel class]] == YES) {
+            SpotModel *spot = (SpotModel*)result;
+            [self goToNewReviewForSpot:spot];
+        }
+    }
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0 || indexPath.section == 1) {

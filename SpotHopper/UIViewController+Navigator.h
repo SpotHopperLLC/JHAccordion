@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+#import "DrinkModel.h"
 #import "ReviewModel.h"
+#import "SpotModel.h"
 
 @interface UIViewController (Navigator)
 
@@ -19,6 +21,8 @@
 - (void)goToReviewMenu;
 - (void)goToMyReviews;
 - (void)goToReview:(ReviewModel*)review;
+- (void)goToNewReviewForDrink:(DrinkModel*)drink;
+- (void)goToNewReviewForSpot:(SpotModel*)spot;
 - (void)goToSearchForNewReview;
 - (void)goToNewReview;
 
