@@ -268,72 +268,51 @@
 - (void)doSearch {
 
     [self showHUD:@"Searching"];
-
-    // Creates dispatch group
-    dispatch_group_t group = dispatch_group_create();
     
     /*
      * Searches drinks
      */
-    dispatch_group_enter(group);
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    NSDictionary *paramsDrinks = @{
+                             kDrinkModelParamQuery : _txtSearch.text,
+                             kDrinkModelParamPage : _drinkPage,
+                             kDrinkModelParamsPageSize : kPageSize
+                             };
+    
+    Promise *promiseDrinks = [DrinkModel getDrinks:paramsDrinks success:^(NSArray *drinkModels, JSONAPI *jsonApi) {
+        // Adds drinks to results
+        [_results addObjectsFromArray:drinkModels];
+    } failure:^(ErrorModel *errorModel) {
         
-        NSDictionary *params = @{
-                                 kDrinkModelParamQuery : _txtSearch.text,
-                                 kDrinkModelParamPage : _drinkPage,
-                                 kDrinkModelParamsPageSize : kPageSize
-                                 };
-        
-        [DrinkModel getDrinks:params success:^(NSArray *drinkModels, JSONAPI *jsonApi) {
-            // Adds drinks to results
-            [_results addObjectsFromArray:drinkModels];
-            
-            // Leaves group
-            dispatch_group_leave(group);
-        } failure:^(ErrorModel *errorModel) {
-            
-            // Leaves group
-            dispatch_group_leave(group);
-        }];
-        
-    });
+    }];
     
     /*
      * Searches spots
      */
-    dispatch_group_enter(group);
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        
-        NSDictionary *params = @{
-                                 kSpotModelParamQuery : _txtSearch.text,
-                                 kSpotModelParamPage : _spotPage,
-                                 kSpotModelParamsPageSize : kPageSize
-                                 };
-        
-        [SpotModel getSpots:params success:^(NSArray *spotModels, JSONAPI *jsonApi) {
-            // Adds spots to results
-            [_results addObjectsFromArray:spotModels];
-            
-            // Leaves group
-            dispatch_group_leave(group);
-        } failure:^(ErrorModel *errorModel) {
-            
-            // Leaves group
-            dispatch_group_leave(group);
-        }];
-        
-    });
+    NSDictionary *paramsSpots = @{
+                             kSpotModelParamQuery : _txtSearch.text,
+                             kSpotModelParamPage : _spotPage,
+                             kSpotModelParamsPageSize : kPageSize
+                             };
     
-    // Waits for drinks and spots to complete before continueing on
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+    Promise *promiseSpots = [SpotModel getSpots:paramsSpots success:^(NSArray *spotModels, JSONAPI *jsonApi) {
+        // Adds spots to results
+        [_results addObjectsFromArray:spotModels];
+    } failure:^(ErrorModel *errorModel) {
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"Total stuffs - %d", _results.count);
-            [self dataDidFinishRefreshing];
-            [self hideHUD];
-        });
-    });
+    }];
+    
+    /*
+     * When
+     */
+    [When when:@[promiseDrinks, promiseSpots] then:^{
+        
+    } fail:^(id error) {
+        
+    } always:^{
+        NSLog(@"Total stuffs - %d", _results.count);
+        [self dataDidFinishRefreshing];
+        [self hideHUD];
+    }];
 }
 
 @end

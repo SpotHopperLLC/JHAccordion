@@ -15,7 +15,7 @@
 #if kEnvEnableDev
 
     #define kDebug TRUE
-    #define kMock FALSE
+    #define kMock TRUE
     #if kMock
         #define kBaseUrl @"mockery://app"
     #else
@@ -29,6 +29,7 @@
 #elif kEnvEnableProd
 
     #define kDebug FALSE
+    #define kMock FALSE
 
     #define kBaseUrl @"https://"
 
