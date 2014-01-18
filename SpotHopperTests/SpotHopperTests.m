@@ -8,6 +8,8 @@
 
 #import <XCTest/XCTest.h>
 
+#import "MockData.h"
+
 #import "ClientSessionManager.h"
 #import "DrinkModel.h"
 #import "ErrorModel.h"
@@ -55,7 +57,7 @@
     // Creates response
     NSDictionary *meta = @{};
     NSArray *users = @[
-                       [self userForId:1]
+                       [MockData userForId:@1 withLinks:nil]
                        ];
     NSDictionary *linked = @{
                              };
@@ -111,10 +113,10 @@
     // Creates response
     NSDictionary *meta = @{};
     NSArray *drinks = @[
-                        [self drinkForId:1]
+                        [MockData drinkForId:@1 withLinks:@{@"spot":@1}]
                         ];
     NSArray *linkedSpots = @[
-                            [self spotForId:1]
+                            [MockData spotForId:@1 withLinks:nil]
                              ];
     NSDictionary *linked = @{
                              @"spots" : linkedSpots
@@ -194,7 +196,7 @@
     // Creates response
     NSDictionary *meta = @{};
     NSArray *spots = @[
-                        [self spotForId:1]
+                        [MockData spotForId:@1 withLinks:nil]
                         ];
     NSDictionary *linked = @{
                              };
@@ -258,16 +260,16 @@
     // Creates response
     NSDictionary *meta = @{};
     NSArray *reviews = @[
-                        [self reviewForId:1]
+                        [MockData reviewForId:@1 withLinks:@{@"spot":@1,@"user":@1}]
                         ];
     NSArray *linkedDrinks = @[
-                              [self drinkForId:1]
+                              [MockData drinkForId:@1 withLinks:nil]
                               ];
     NSArray *linkedSpots = @[
-                             [self spotForId:1]
+                             [MockData spotForId:@1 withLinks:nil]
                              ];
     NSArray *linkedUsers = @[
-                             [self userForId:1]
+                             [MockData userForId:@1 withLinks:nil]
                              ];
     NSDictionary *linked = @{
                              @"drinks" : linkedDrinks,
@@ -338,94 +340,6 @@
         }
         XCTAssertEqualObjects(reviewModel.user.ID, userId, @"Should equal %@", userId);
     }
-}
-
-#pragma mark - Data Helpers
-
-- (NSDictionary*)drinkForId:(NSInteger)ID {
-    if (ID == 1) {
-        return @{
-                 @"id": @1,
-                 @"name": @"Boobs and Billiards Scotch",
-                 @"type": @"spirit",
-                 @"subtype": @"scotch",
-                 @"description": @"Super premium breasts and pool balls scotch which reeks of upper crust.",
-                 @"alcohol_by_volume": @0.9,
-                 @"style": @"IPA",
-                 @"vintage": @1984,
-                 @"region": @"Your mom's butt",
-                 @"recipe": @"1 part boobs\n1part billiards",
-                 @"links" : @{
-                         @"spot": @1
-                         }
-                 
-                 };
-    }
-    return nil;
-}
-
-- (NSDictionary*)spotForId:(NSInteger)ID {
-    if (ID == 1) {
-        return @{
-                 @"id": @1,
-                 @"name": @"Oatmeal Junction",
-                 @"type": @"Restaurant",
-                 @"address": @"229 E Wisconsin Ave\nSuite #1102\nMilwaukee, WI 53202",
-                 @"phone_number": @"715-539-8911",
-                 @"hours_of_operation":@[
-                         @[@"8:30-0500",@"16:00-0500"],
-                         @[@"8:00-0500",@"20:00-0500"],
-                         @[@"8:00-0500",@"20:00-0500"],
-                         @[@"8:00-0500",@"20:00-0500"],
-                         @[@"8:00-0500",@"20:00-0500"],
-                         @[@"8:00-0500",@"20:00-0500"],
-                         @[@"8:30-0500",@"18:00-0500"]
-                         ],
-                 @"latitude": @43.038513,
-                 @"longitude": @-87.908913,
-                 @"sliders":@[
-                         @{@"id": @"radness", @"name": @"Radness", @"min": @"UnRad", @"max": @"Super Rad!", @"value": @10}
-                         ]
-                 };
-    }
-    return nil;
-}
-
-
-- (NSDictionary*)userForId:(NSInteger)ID {
-    if (ID == 1) {
-        return @{
-                 @"id": @1,
-                 @"email": @"placeholder@rokkincat.com",
-                 @"role": @"admin",
-                 @"name": @"Nick Gartmann",
-                 @"birthday": @"1989-02-03",
-                 @"settings": @{}
-                 
-                 };
-    }
-    return nil;
-}
-
-- (NSDictionary*)reviewForId:(NSInteger)ID {
-    if (ID == 1) {
-        return @{
-                 @"id": @1,
-                 @"rating": @10,
-                 @"sliders": @[
-                             @{@"id": @"radness", @"name": @"Radness", @"min": @"UnRad", @"max": @"Super Rad!", @"value": @10}
-                             ],
-                 @"created_at": @"2014-01-01T15:12:43+00:00",
-                 @"updated_at": @"2014-01-01T15:12:43+00:00",
-                 @"links" : @{
-//                         @"user": @1,
-                         @"drink": @1,
-                         @"spot": @1
-                         }
-                 
-                 };
-    }
-    return nil;
 }
 
 @end

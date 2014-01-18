@@ -137,6 +137,7 @@
 		039B701F1887592D00C590F8 /* NSDictionary+Slider.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B701E1887592D00C590F8 /* NSDictionary+Slider.m */; };
 		039B7022188759B100C590F8 /* NSArray+HoursOfOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B7021188759B100C590F8 /* NSArray+HoursOfOperation.m */; };
 		039B70251888847200C590F8 /* NSNumber+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B70241888847200C590F8 /* NSNumber+Helpers.m */; };
+		03C8DAE7188B42A40082321C /* MockData.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C8DAE6188B42A40082321C /* MockData.m */; };
 		03CA7260187B45B400815284 /* SectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CA725F187B45B400815284 /* SectionHeaderView.m */; };
 		03CA7265187B4EB700815284 /* img_expand_east_orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7261187B4EB700815284 /* img_expand_east_orange.png */; };
 		03CA7266187B4EB700815284 /* img_expand_east_orange@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7262187B4EB700815284 /* img_expand_east_orange@2x.png */; };
@@ -425,6 +426,8 @@
 		039B7021188759B100C590F8 /* NSArray+HoursOfOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+HoursOfOperation.m"; sourceTree = "<group>"; };
 		039B70231888847200C590F8 /* NSNumber+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Helpers.h"; sourceTree = "<group>"; };
 		039B70241888847200C590F8 /* NSNumber+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Helpers.m"; sourceTree = "<group>"; };
+		03C8DAE5188B42A40082321C /* MockData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MockData.h; sourceTree = "<group>"; };
+		03C8DAE6188B42A40082321C /* MockData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MockData.m; sourceTree = "<group>"; };
 		03CA725E187B45B400815284 /* SectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionHeaderView.h; sourceTree = "<group>"; };
 		03CA725F187B45B400815284 /* SectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionHeaderView.m; sourceTree = "<group>"; };
 		03CA7261187B4EB700815284 /* img_expand_east_orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_expand_east_orange.png; sourceTree = "<group>"; };
@@ -1066,6 +1069,8 @@
 		039B701C1887591600C590F8 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				03C8DAE5188B42A40082321C /* MockData.h */,
+				03C8DAE6188B42A40082321C /* MockData.m */,
 				039B7020188759B100C590F8 /* NSArray+HoursOfOperation.h */,
 				039B7021188759B100C590F8 /* NSArray+HoursOfOperation.m */,
 				039B701D1887592D00C590F8 /* NSDictionary+Slider.h */,
@@ -1587,6 +1592,7 @@
 				03866477186D352400985CEC /* AppDelegate.m in Sources */,
 				039B7011188723EB00C590F8 /* Mockery.m in Sources */,
 				0320237C187773C0008368C2 /* SHViewTranlucentWhite.m in Sources */,
+				03C8DAE7188B42A40082321C /* MockData.m in Sources */,
 				03CA728F187C3B2E00815284 /* ReviewModel.m in Sources */,
 				038664D0186D376900985CEC /* UIAlertView+Block.m in Sources */,
 				038664D6186D376900985CEC /* UILabelGotham.m in Sources */,
