@@ -75,7 +75,7 @@
 }
 
 - (NSArray *)sliders {
-    return [self objectForKey:@"sliders"];
+    return [self linkedResourceForKey:@"sliders"];
 }
 
 - (NSDate *)createdAt {

@@ -35,7 +35,7 @@
     [JSONAPIResourceLinker link:@"drink" toLinkedType:@"drinks"];
     [JSONAPIResourceLinker link:@"review" toLinkedType:@"reviews"];
     [JSONAPIResourceLinker link:@"slider" toLinkedType:@"sliders"];
-    [JSONAPIResourceLinker link:@"slider_templates" toLinkedType:@"slider_templates"];
+    [JSONAPIResourceLinker link:@"slider_template" toLinkedType:@"slider_templates"];
     [JSONAPIResourceLinker link:@"spot" toLinkedType:@"spots"];
     [JSONAPIResourceLinker link:@"user" toLinkedType:@"users"];
 
@@ -212,33 +212,33 @@
         
         // Asset slider template model info
         for (SliderTemplateModel *sliderTemplateModel in drinkModel.sliderTemplates) {
-            NSDictionary *linkedSliderTempate = nil;
+            NSDictionary *linkedSliderTemplate = nil;
             for (NSDictionary *dict in [linked objectForKey:@"slider_templates"]) {
                 // Finds the linked dictionary that matches the linked id
                 if ([[dict objectForKey:@"id"] isEqualToNumber:sliderTemplateModel.ID] == YES) {
-                    linkedSliderTempate = dict;
+                    linkedSliderTemplate = dict;
                     break;
                 }
             }
             
             // Asset name
-            NSString *name = [linkedSliderTempate objectForKey:@"name"];
+            NSString *name = [linkedSliderTemplate objectForKey:@"name"];
             XCTAssertEqualObjects(sliderTemplateModel.name, name, @"Should equal %@", name);
             
             // Asset min label
-            NSString *minLabel = [linkedSliderTempate objectForKey:@"min_label"];
+            NSString *minLabel = [linkedSliderTemplate objectForKey:@"min_label"];
             XCTAssertEqualObjects(sliderTemplateModel.minLabel, minLabel, @"Should equal %@", minLabel);
             
             // Asset max label
-            NSString *maxLabel = [linkedSliderTempate objectForKey:@"max_label"];
+            NSString *maxLabel = [linkedSliderTemplate objectForKey:@"max_label"];
             XCTAssertEqualObjects(sliderTemplateModel.maxLabel, maxLabel, @"Should equal %@", maxLabel);
             
             // Asset default value
-            NSString *defaultValue = [linkedSliderTempate objectForKey:@"default_value"];
+            NSString *defaultValue = [linkedSliderTemplate objectForKey:@"default_value"];
             XCTAssertEqualObjects(sliderTemplateModel.defaultValue, defaultValue, @"Should equal %@", defaultValue);
             
             // Asset required
-            BOOL required = [[linkedSliderTempate objectForKey:@"required"] boolValue];
+            BOOL required = [[linkedSliderTemplate objectForKey:@"required"] boolValue];
             XCTAssert(sliderTemplateModel.required == required, @"Should equal %@", (required ? @"true" : @"false"));
         }
     }
@@ -318,36 +318,157 @@
         
         // Asset slider template model info
         for (SliderTemplateModel *sliderTemplateModel in spotModel.sliderTemplates) {
-            NSDictionary *linkedSliderTempate = nil;
+            NSDictionary *linkedSliderTemplate = nil;
             for (NSDictionary *dict in [linked objectForKey:@"slider_templates"]) {
                 // Finds the linked dictionary that matches the linked id
                 if ([[dict objectForKey:@"id"] isEqualToNumber:sliderTemplateModel.ID] == YES) {
-                    linkedSliderTempate = dict;
+                    linkedSliderTemplate = dict;
                     break;
                 }
             }
             
             // Asset name
-            NSString *name = [linkedSliderTempate objectForKey:@"name"];
+            NSString *name = [linkedSliderTemplate objectForKey:@"name"];
             XCTAssertEqualObjects(sliderTemplateModel.name, name, @"Should equal %@", name);
             
             // Asset min label
-            NSString *minLabel = [linkedSliderTempate objectForKey:@"min_label"];
+            NSString *minLabel = [linkedSliderTemplate objectForKey:@"min_label"];
             XCTAssertEqualObjects(sliderTemplateModel.minLabel, minLabel, @"Should equal %@", minLabel);
             
             // Asset max label
-            NSString *maxLabel = [linkedSliderTempate objectForKey:@"max_label"];
+            NSString *maxLabel = [linkedSliderTemplate objectForKey:@"max_label"];
             XCTAssertEqualObjects(sliderTemplateModel.maxLabel, maxLabel, @"Should equal %@", maxLabel);
             
             // Asset default value
-            NSString *defaultValue = [linkedSliderTempate objectForKey:@"default_value"];
+            NSString *defaultValue = [linkedSliderTemplate objectForKey:@"default_value"];
             XCTAssertEqualObjects(sliderTemplateModel.defaultValue, defaultValue, @"Should equal %@", defaultValue);
             
             // Asset required
-            BOOL required = [[linkedSliderTempate objectForKey:@"required"] boolValue];
+            BOOL required = [[linkedSliderTemplate objectForKey:@"required"] boolValue];
             XCTAssert(sliderTemplateModel.required == required, @"Should equal %@", (required ? @"true" : @"false"));
         }
         
+    }
+}
+
+- (void)testParsingSliderTemplateModel
+{
+    // Creates response
+    NSDictionary *meta = @{};
+    NSArray *sliderTemplates = @[
+                         [MockData sliderTemplateForId:@1 withLinks:nil]
+                         ];
+    NSDictionary *linked = @{
+                             };
+    NSDictionary *jsonResponse = @{
+                                   @"meta" : meta,
+                                   @"slider_templates" : sliderTemplates,
+                                   @"linked" : linked
+                                   };
+    
+    // Parses
+    JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:jsonResponse];
+    
+    NSArray *sliderTemplateModels = [jsonApi resourcesForKey:@"slider_templates"];
+    for (NSInteger i = 0; i < sliderTemplateModels.count; ++i) {
+        
+        // Gets model and dictionary from response
+        SliderTemplateModel *sliderTemplateModel = [sliderTemplateModels objectAtIndex:i];
+        NSDictionary *sliderTemplateFromResposne = [sliderTemplates objectAtIndex:i];
+        
+        // Assert id
+        NSNumber *ID = [sliderTemplateFromResposne objectForKey:@"id"];
+        XCTAssertEqualObjects(sliderTemplateModel.ID, ID, @"Should equal %@", ID);
+        
+        // Asset name
+        NSString *name = [sliderTemplateFromResposne objectForKey:@"name"];
+        XCTAssertEqualObjects(sliderTemplateModel.name, name, @"Should equal %@", name);
+        
+        // Asset min label
+        NSString *minLabel = [sliderTemplateFromResposne objectForKey:@"min_label"];
+        XCTAssertEqualObjects(sliderTemplateModel.minLabel, minLabel, @"Should equal %@", minLabel);
+        
+        // Asset max label
+        NSString *maxLabel = [sliderTemplateFromResposne objectForKey:@"max_label"];
+        XCTAssertEqualObjects(sliderTemplateModel.maxLabel, maxLabel, @"Should equal %@", maxLabel);
+        
+        // Asset default value
+        NSString *defaultValue = [sliderTemplateFromResposne objectForKey:@"default_value"];
+        XCTAssertEqualObjects(sliderTemplateModel.defaultValue, defaultValue, @"Should equal %@", defaultValue);
+        
+        // Asset required
+        BOOL required = [[sliderTemplateFromResposne objectForKey:@"required"] boolValue];
+        XCTAssert(sliderTemplateModel.required == required, @"Should equal %@", (required ? @"true" : @"false"));
+    }
+}
+
+
+- (void)testParsingSliderModel
+{
+    // Creates response
+    NSDictionary *meta = @{};
+    NSArray *sliders = @[
+                        [MockData sliderForId:@1 withLinks:@{@"slider_template":@1}]
+                        ];
+    NSArray *linkedSliderTemplates = @[
+                                       [MockData sliderTemplateForId:@1 withLinks:nil],
+                                       ];
+    NSDictionary *linked = @{
+                             @"slider_templates" : linkedSliderTemplates
+                             };
+    NSDictionary *jsonResponse = @{
+                                   @"meta" : meta,
+                                   @"sliders" : sliders,
+                                   @"linked" : linked
+                                   };
+    
+    // Parses
+    JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:jsonResponse];
+    
+    NSArray *sliderModels = [jsonApi resourcesForKey:@"sliders"];
+    for (NSInteger i = 0; i < sliderModels.count; ++i) {
+        
+        // Gets model and dictionary from response
+        SliderModel *sliderModel = [sliderModels objectAtIndex:i];
+        NSDictionary *sliderFromResposne = [sliders objectAtIndex:i];
+        
+        // Assert id
+        NSNumber *ID = [sliderFromResposne objectForKey:@"id"];
+        XCTAssertEqualObjects(sliderModel.ID, ID, @"Should equal %@", ID);
+        
+        // Assert slider templates
+        XCTAssertNotNil(sliderModel.sliderTemplate, @"Should not be nil");
+
+        // Find linked slider templtes
+        NSDictionary *linkedSliderTemplate = nil;
+        NSNumber *sliderTemplateId = [[sliderFromResposne objectForKey:@"links"] objectForKey:@"slider_template"];
+        for (NSDictionary *dict in [linked objectForKey:@"slider_templates"]) {
+            // Finds the linked dictionary that matches the linked id
+            if ([[dict objectForKey:@"id"] isEqualToNumber:sliderTemplateId] == YES) {
+                linkedSliderTemplate = dict;
+                break;
+            }
+        }
+        
+        // Asset name
+        NSString *name = [linkedSliderTemplate objectForKey:@"name"];
+        XCTAssertEqualObjects(sliderModel.sliderTemplate.name, name, @"Should equal %@", name);
+        
+        // Asset min label
+        NSString *minLabel = [linkedSliderTemplate objectForKey:@"min_label"];
+        XCTAssertEqualObjects(sliderModel.sliderTemplate.minLabel, minLabel, @"Should equal %@", minLabel);
+        
+        // Asset max label
+        NSString *maxLabel = [linkedSliderTemplate objectForKey:@"max_label"];
+        XCTAssertEqualObjects(sliderModel.sliderTemplate.maxLabel, maxLabel, @"Should equal %@", maxLabel);
+        
+        // Asset default value
+        NSString *defaultValue = [linkedSliderTemplate objectForKey:@"default_value"];
+        XCTAssertEqualObjects(sliderModel.sliderTemplate.defaultValue, defaultValue, @"Should equal %@", defaultValue);
+        
+        // Asset required
+        BOOL required = [[linkedSliderTemplate objectForKey:@"required"] boolValue];
+        XCTAssert(sliderModel.sliderTemplate.required == required, @"Should equal %@", (required ? @"true" : @"false"));
     }
 }
 
@@ -356,7 +477,7 @@
     // Creates response
     NSDictionary *meta = @{};
     NSArray *reviews = @[
-                        [MockData reviewForId:@1 withLinks:@{@"drink":@1,@"spot":@1,@"user":@1}]
+                         [MockData reviewForId:@1 withLinks:@{@"drink":@1,@"spot":@1,@"user":@1,@"sliders":@[@1,@2,@3]}]
                         ];
     NSArray *linkedDrinks = @[
                               [MockData drinkForId:@1 withLinks:nil]
@@ -367,10 +488,22 @@
     NSArray *linkedUsers = @[
                              [MockData userForId:@1 withLinks:nil]
                              ];
+    NSArray *linkedSliders = @[
+                             [MockData sliderForId:@1 withLinks:@{@"slider_template":@1}],
+                             [MockData sliderForId:@2 withLinks:@{@"slider_template":@2}],
+                             [MockData sliderForId:@3 withLinks:@{@"slider_template":@3}]
+                             ];
+    NSArray *linkedSliderTemplates = @[
+                               [MockData sliderTemplateForId:@1 withLinks:nil],
+                               [MockData sliderTemplateForId:@2 withLinks:nil],
+                               [MockData sliderTemplateForId:@3 withLinks:nil]
+                               ];
     NSDictionary *linked = @{
                              @"drinks" : linkedDrinks,
                              @"users" : linkedUsers,
-                             @"spots" : linkedSpots
+                             @"spots" : linkedSpots,
+                             @"sliders" : linkedSliders,
+                             @"slider_templates" : linkedSliderTemplates
                              };
     NSDictionary *jsonResponse = @{
                                    @"meta" : meta,
@@ -395,10 +528,6 @@
         // Assert rating
         NSNumber *rating = [reviewFromResposne objectForKey:@"rating"];
         XCTAssertEqualObjects(reviewModel.rating, rating, @"Should equal %@", rating);
-        
-        // Asset sliders
-        NSDictionary *sliders = [reviewFromResposne objectForKey:@"sliders"];
-        XCTAssertEqualObjects(reviewModel.sliders, sliders, @"Should equal %@", sliders);
         
         // Assert drink
         NSDictionary *linkedDrink = nil;
@@ -435,6 +564,64 @@
             }
         }
         XCTAssertEqualObjects(reviewModel.user.ID, userId, @"Should equal %@", userId);
+        
+        // Assert sliders
+        NSArray *sliderIds = [[reviewFromResposne objectForKey:@"links"] objectForKey:@"sliders"];
+        NSArray *sliderModelIds = [reviewModel.sliders valueForKey:@"ID"];
+        
+        sliderIds = [sliderIds sortedArrayUsingSelector:@selector(compare:)];
+        sliderModelIds = [sliderModelIds sortedArrayUsingSelector:@selector(compare:)];
+        
+        XCTAssert([sliderIds isEqualToArray:sliderModelIds], @"Should equal %@", sliderIds);
+        
+        // Asset slider model info
+        for (SliderModel *sliderModel in reviewModel.sliders) {
+            NSDictionary *linkedSlider = nil;
+            for (NSDictionary *dict in [linked objectForKey:@"sliders"]) {
+                // Finds the linked dictionary that matches the linked id
+                if ([[dict objectForKey:@"id"] isEqualToNumber:sliderModel.ID] == YES) {
+                    linkedSlider = dict;
+                    break;
+                }
+            }
+            
+            NSLog(@"MOO1 - %@", sliderModel.sliderTemplate);
+            
+            NSDictionary *linkedSliderTemplate = nil;
+            for (NSDictionary *dict in [linked objectForKey:@"slider_templates"]) {
+                // Finds the linked dictionary that matches the linked id
+                if ([[dict objectForKey:@"id"] isEqualToNumber:sliderModel.sliderTemplate.ID] == YES) {
+                    linkedSliderTemplate = dict;
+                    break;
+                }
+            }
+            
+            NSLog(@"MOO2 - %@", linkedSliderTemplate);
+            
+            // Asset name
+            NSNumber *value = [linkedSlider objectForKey:@"value"];
+            XCTAssertEqualObjects(sliderModel.value, value, @"Should equal %@", value);
+            
+            // Asset name
+            NSString *name = [linkedSliderTemplate objectForKey:@"name"];
+            XCTAssertEqualObjects(sliderModel.sliderTemplate.name, name, @"Should equal %@", name);
+            
+            // Asset min label
+            NSString *minLabel = [linkedSliderTemplate objectForKey:@"min_label"];
+            XCTAssertEqualObjects(sliderModel.sliderTemplate.minLabel, minLabel, @"Should equal %@", minLabel);
+            
+            // Asset max label
+            NSString *maxLabel = [linkedSliderTemplate objectForKey:@"max_label"];
+            XCTAssertEqualObjects(sliderModel.sliderTemplate.maxLabel, maxLabel, @"Should equal %@", maxLabel);
+            
+            // Asset default value
+            NSString *defaultValue = [linkedSliderTemplate objectForKey:@"default_value"];
+            XCTAssertEqualObjects(sliderModel.sliderTemplate.defaultValue, defaultValue, @"Should equal %@", defaultValue);
+            
+            // Asset required
+            BOOL required = [[linkedSliderTemplate objectForKey:@"required"] boolValue];
+            XCTAssert(sliderModel.sliderTemplate.required == required, @"Should equal %@", (required ? @"true" : @"false"));
+        }
     }
 }
 
