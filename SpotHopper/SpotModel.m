@@ -80,4 +80,8 @@
     return [self objectForKey:@"sliders"];
 }
 
+- (NSArray *)sliderTemplates {
+    return [self linkedResourceForKey:@"slider_templates"];
+}
+
 @end

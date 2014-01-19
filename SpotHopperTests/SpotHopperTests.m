@@ -14,6 +14,8 @@
 #import "DrinkModel.h"
 #import "ErrorModel.h"
 #import "ReviewModel.h"
+#import "SliderModel.h"
+#import "SliderTemplateModel.h"
 #import "SpotModel.h"
 #import "UserModel.h"
 
@@ -31,14 +33,18 @@
     
     // Initializes resource linkng for JSONAPI
     [JSONAPIResourceLinker link:@"drink" toLinkedType:@"drinks"];
-    [JSONAPIResourceLinker link:@"spot" toLinkedType:@"spots"];
     [JSONAPIResourceLinker link:@"review" toLinkedType:@"reviews"];
+    [JSONAPIResourceLinker link:@"slider" toLinkedType:@"sliders"];
+    [JSONAPIResourceLinker link:@"slider_templates" toLinkedType:@"slider_templates"];
+    [JSONAPIResourceLinker link:@"spot" toLinkedType:@"spots"];
     [JSONAPIResourceLinker link:@"user" toLinkedType:@"users"];
 
     // Initializes model linking for JSONAPI
     [JSONAPIResourceModeler useResource:[DrinkModel class] toLinkedType:@"drinks"];
     [JSONAPIResourceModeler useResource:[ErrorModel class] toLinkedType:@"errors"];
     [JSONAPIResourceModeler useResource:[ReviewModel class] toLinkedType:@"reviews"];
+    [JSONAPIResourceModeler useResource:[SliderModel class] toLinkedType:@"sliders"];
+    [JSONAPIResourceModeler useResource:[SliderTemplateModel class] toLinkedType:@"slider_templates"];
     [JSONAPIResourceModeler useResource:[SpotModel class] toLinkedType:@"spots"];
     [JSONAPIResourceModeler useResource:[UserModel class] toLinkedType:@"users"];
     
@@ -113,12 +119,18 @@
     // Creates response
     NSDictionary *meta = @{};
     NSArray *drinks = @[
-                        [MockData drinkForId:@1 withLinks:@{@"spot":@1}]
+                        [MockData drinkForId:@1 withLinks:@{@"spot":@1,@"slider_templates":@[@1,@2,@3]}]
                         ];
+    NSArray *linkedSliderTemplates = @[
+                             [MockData sliderTemplateForId:@1 withLinks:nil],
+                             [MockData sliderTemplateForId:@2 withLinks:nil],
+                             [MockData sliderTemplateForId:@3 withLinks:nil]
+                             ];
     NSArray *linkedSpots = @[
                             [MockData spotForId:@1 withLinks:nil]
                              ];
     NSDictionary *linked = @{
+                             @"slider_templates" : linkedSliderTemplates,
                              @"spots" : linkedSpots
                              };
     NSDictionary *jsonResponse = @{
@@ -182,12 +194,53 @@
         NSNumber *spotId = [[drinkFromResposne objectForKey:@"links"] objectForKey:@"spot"];
         for (NSDictionary *dict in [linked objectForKey:@"spots"]) {
             // Finds the linked dictionary that matches the linked id
-            if ([[dict objectForKey:@"ID"] isEqualToNumber:spotId] == YES) {
+            if ([[dict objectForKey:@"id"] isEqualToNumber:spotId] == YES) {
                 linkedSpot = dict;
                 break;
             }
         }
         XCTAssertEqualObjects(drinkModel.spot.ID, spotId, @"Should equal %@", spotId);
+        
+        // Assert slider templates
+        NSArray *sliderTemplateIds = [[drinkFromResposne objectForKey:@"links"] objectForKey:@"slider_templates"];
+        NSArray *sliderTemplateModelIds = [drinkModel.sliderTemplates valueForKey:@"ID"];
+        
+        sliderTemplateIds = [sliderTemplateIds sortedArrayUsingSelector:@selector(compare:)];
+        sliderTemplateModelIds = [sliderTemplateModelIds sortedArrayUsingSelector:@selector(compare:)];
+        
+        XCTAssert([sliderTemplateIds isEqualToArray:sliderTemplateModelIds], @"Should equal %@", sliderTemplateIds);
+        
+        // Asset slider template model info
+        for (SliderTemplateModel *sliderTemplateModel in drinkModel.sliderTemplates) {
+            NSDictionary *linkedSliderTempate = nil;
+            for (NSDictionary *dict in [linked objectForKey:@"slider_templates"]) {
+                // Finds the linked dictionary that matches the linked id
+                if ([[dict objectForKey:@"id"] isEqualToNumber:sliderTemplateModel.ID] == YES) {
+                    linkedSliderTempate = dict;
+                    break;
+                }
+            }
+            
+            // Asset name
+            NSString *name = [linkedSliderTempate objectForKey:@"name"];
+            XCTAssertEqualObjects(sliderTemplateModel.name, name, @"Should equal %@", name);
+            
+            // Asset min label
+            NSString *minLabel = [linkedSliderTempate objectForKey:@"min_label"];
+            XCTAssertEqualObjects(sliderTemplateModel.minLabel, minLabel, @"Should equal %@", minLabel);
+            
+            // Asset max label
+            NSString *maxLabel = [linkedSliderTempate objectForKey:@"max_label"];
+            XCTAssertEqualObjects(sliderTemplateModel.maxLabel, maxLabel, @"Should equal %@", maxLabel);
+            
+            // Asset default value
+            NSString *defaultValue = [linkedSliderTempate objectForKey:@"default_value"];
+            XCTAssertEqualObjects(sliderTemplateModel.defaultValue, defaultValue, @"Should equal %@", defaultValue);
+            
+            // Asset required
+            BOOL required = [[linkedSliderTempate objectForKey:@"required"] boolValue];
+            XCTAssert(sliderTemplateModel.required == required, @"Should equal %@", (required ? @"true" : @"false"));
+        }
     }
 }
 
@@ -196,9 +249,15 @@
     // Creates response
     NSDictionary *meta = @{};
     NSArray *spots = @[
-                        [MockData spotForId:@1 withLinks:nil]
+                        [MockData spotForId:@1 withLinks:@{@"slider_templates":@[@1,@2,@3]}]
                         ];
+    NSArray *linkedSliderTemplates = @[
+                                       [MockData sliderTemplateForId:@1 withLinks:nil],
+                                       [MockData sliderTemplateForId:@2 withLinks:nil],
+                                       [MockData sliderTemplateForId:@3 withLinks:nil]
+                                       ];
     NSDictionary *linked = @{
+                             @"slider_templates" : linkedSliderTemplates
                              };
     NSDictionary *jsonResponse = @{
                                    @"meta" : meta,
@@ -248,9 +307,46 @@
         NSArray *hoursOfOperation = [spotFromResposne objectForKey:@"hours_of_operation"];
         XCTAssertEqualObjects(spotModel.hoursOfOperation, hoursOfOperation, @"Should equal %@", hoursOfOperation);
         
-        // Asset sliders
-        NSDictionary *sliders = [spotFromResposne objectForKey:@"sliders"];
-        XCTAssertEqualObjects(spotModel.sliders, sliders, @"Should equal %@", sliders);
+        // Assert slider templates
+        NSArray *sliderTemplateIds = [[spotFromResposne objectForKey:@"links"] objectForKey:@"slider_templates"];
+        NSArray *sliderTemplateModelIds = [spotModel.sliderTemplates valueForKey:@"ID"];
+        
+        sliderTemplateIds = [sliderTemplateIds sortedArrayUsingSelector:@selector(compare:)];
+        sliderTemplateModelIds = [sliderTemplateModelIds sortedArrayUsingSelector:@selector(compare:)];
+        
+        XCTAssert([sliderTemplateIds isEqualToArray:sliderTemplateModelIds], @"Should equal %@", sliderTemplateIds);
+        
+        // Asset slider template model info
+        for (SliderTemplateModel *sliderTemplateModel in spotModel.sliderTemplates) {
+            NSDictionary *linkedSliderTempate = nil;
+            for (NSDictionary *dict in [linked objectForKey:@"slider_templates"]) {
+                // Finds the linked dictionary that matches the linked id
+                if ([[dict objectForKey:@"id"] isEqualToNumber:sliderTemplateModel.ID] == YES) {
+                    linkedSliderTempate = dict;
+                    break;
+                }
+            }
+            
+            // Asset name
+            NSString *name = [linkedSliderTempate objectForKey:@"name"];
+            XCTAssertEqualObjects(sliderTemplateModel.name, name, @"Should equal %@", name);
+            
+            // Asset min label
+            NSString *minLabel = [linkedSliderTempate objectForKey:@"min_label"];
+            XCTAssertEqualObjects(sliderTemplateModel.minLabel, minLabel, @"Should equal %@", minLabel);
+            
+            // Asset max label
+            NSString *maxLabel = [linkedSliderTempate objectForKey:@"max_label"];
+            XCTAssertEqualObjects(sliderTemplateModel.maxLabel, maxLabel, @"Should equal %@", maxLabel);
+            
+            // Asset default value
+            NSString *defaultValue = [linkedSliderTempate objectForKey:@"default_value"];
+            XCTAssertEqualObjects(sliderTemplateModel.defaultValue, defaultValue, @"Should equal %@", defaultValue);
+            
+            // Asset required
+            BOOL required = [[linkedSliderTempate objectForKey:@"required"] boolValue];
+            XCTAssert(sliderTemplateModel.required == required, @"Should equal %@", (required ? @"true" : @"false"));
+        }
         
     }
 }
@@ -260,7 +356,7 @@
     // Creates response
     NSDictionary *meta = @{};
     NSArray *reviews = @[
-                        [MockData reviewForId:@1 withLinks:@{@"spot":@1,@"user":@1}]
+                        [MockData reviewForId:@1 withLinks:@{@"drink":@1,@"spot":@1,@"user":@1}]
                         ];
     NSArray *linkedDrinks = @[
                               [MockData drinkForId:@1 withLinks:nil]
@@ -309,7 +405,7 @@
         NSNumber *drinkId = [[reviewFromResposne objectForKey:@"links"] objectForKey:@"drink"];
         for (NSDictionary *dict in [linked objectForKey:@"drinks"]) {
             // Finds the linked dictionary that matches the linked id
-            if ([[dict objectForKey:@"ID"] isEqualToNumber:drinkId] == YES) {
+            if ([[dict objectForKey:@"id"] isEqualToNumber:drinkId] == YES) {
                 linkedDrink = dict;
                 break;
             }
@@ -321,7 +417,7 @@
         NSNumber *spotId = [[reviewFromResposne objectForKey:@"links"] objectForKey:@"spot"];
         for (NSDictionary *dict in [linked objectForKey:@"spots"]) {
             // Finds the linked dictionary that matches the linked id
-            if ([[dict objectForKey:@"ID"] isEqualToNumber:spotId] == YES) {
+            if ([[dict objectForKey:@"id"] isEqualToNumber:spotId] == YES) {
                 linkedSpot = dict;
                 break;
             }
@@ -333,7 +429,7 @@
         NSNumber *userId = [[reviewFromResposne objectForKey:@"links"] objectForKey:@"user"];
         for (NSDictionary *dict in [linked objectForKey:@"users"]) {
             // Finds the linked dictionary that matches the linked id
-            if ([[dict objectForKey:@"ID"] isEqualToNumber:userId] == YES) {
+            if ([[dict objectForKey:@"id"] isEqualToNumber:userId] == YES) {
                 linkedUser = dict;
                 break;
             }

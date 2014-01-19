@@ -132,6 +132,84 @@
     return nil;
 }
 
++ (NSDictionary*)reviewForId:(NSNumber*)ID withLinks:(NSDictionary*)links {
+    if (links == nil) links = @{};
+    if (ID.intValue == 1) {
+        return @{
+                 @"id": @1,
+                 @"rating": @9,
+                 @"sliders": @[
+                         @{@"id": @"radness", @"name": @"Radness", @"min": @"UnRad", @"max": @"Super Rad!", @"value": @9}
+                         ],
+                 @"created_at": @"2014-01-01T15:12:43+00:00",
+                 @"updated_at": @"2014-01-01T15:12:43+00:00",
+                 @"links" : links
+                 
+                 };
+    } else if (ID.intValue == 2) {
+        return @{
+                 @"id": @2,
+                 @"rating": @5,
+                 @"sliders": @[
+                         @{@"id": @"radness", @"name": @"Radness", @"min": @"UnRad", @"max": @"Super Rad!", @"value": @4}
+                         ],
+                 @"created_at": @"2014-01-01T15:12:43+00:00",
+                 @"updated_at": @"2014-01-01T15:12:43+00:00",
+                 @"links" : links
+                 
+                 };
+    }
+    return nil;
+}
+
++ (NSDictionary*)sliderForId:(NSNumber*)ID withLinks:(NSDictionary*)links {
+    if (links == nil) links = @{};
+    if (ID.intValue == 1) {
+        return @{
+                 @"id": @1,
+                 @"value": @"5",
+                 @"links" : links
+                 };
+    }
+    return nil;
+}
+
++ (NSDictionary*)sliderTemplateForId:(NSNumber*)ID withLinks:(NSDictionary*)links {
+    if (links == nil) links = @{};
+    if (ID.intValue == 1) {
+        return @{
+                 @"id": @1,
+                 @"name": @"Quality",
+                 @"min_label": @"Bad",
+                 @"max_label": @"Good",
+                 @"default_value": @6,
+                 @"required": @YES,
+                 @"links" : links
+                 };
+    } else if (ID.intValue == 2) {
+        return @{
+                 @"id": @2,
+                 @"name": @"Awesomeness",
+                 @"min_label": @"Not awesome",
+                 @"max_label": @"So awesome",
+                 @"default_value": @7,
+                 @"required": @YES,
+                 @"links" : links
+                 };
+    } else if (ID.intValue == 3) {
+        return @{
+                 @"id": @3,
+                 @"name": @"Okayness",
+                 @"min_label": @"Not okay",
+                 @"max_label": @"So okay",
+                 @"default_value": @9,
+                 @"required": @NO,
+                 @"links" : links
+                 };
+    }
+    return nil;
+}
+
 + (NSDictionary*)spotForId:(NSNumber*)ID withLinks:(NSDictionary*)links {
     if (links == nil) links = @{};
     if (ID.intValue == 1) {
@@ -162,7 +240,6 @@
     return nil;
 }
 
-
 + (NSDictionary*)userForId:(NSNumber*)ID withLinks:(NSDictionary*)links {
     if (links == nil) links = @{};
     if (ID.intValue == 1) {
@@ -174,36 +251,6 @@
                  @"birthday": @"1989-02-03",
                  @"settings": @{},
                  @"links" : links
-                 };
-    }
-    return nil;
-}
-
-+ (NSDictionary*)reviewForId:(NSNumber*)ID withLinks:(NSDictionary*)links {
-    if (links == nil) links = @{};
-    if (ID.intValue == 1) {
-        return @{
-                 @"id": @1,
-                 @"rating": @9,
-                 @"sliders": @[
-                         @{@"id": @"radness", @"name": @"Radness", @"min": @"UnRad", @"max": @"Super Rad!", @"value": @9}
-                         ],
-                 @"created_at": @"2014-01-01T15:12:43+00:00",
-                 @"updated_at": @"2014-01-01T15:12:43+00:00",
-                 @"links" : links
-                 
-                 };
-    } else if (ID.intValue == 2) {
-        return @{
-                 @"id": @2,
-                 @"rating": @5,
-                 @"sliders": @[
-                         @{@"id": @"radness", @"name": @"Radness", @"min": @"UnRad", @"max": @"Super Rad!", @"value": @4}
-                         ],
-                 @"created_at": @"2014-01-01T15:12:43+00:00",
-                 @"updated_at": @"2014-01-01T15:12:43+00:00",
-                 @"links" : links
-                 
                  };
     }
     return nil;

@@ -92,4 +92,8 @@
     return [self objectForKey:@"spot_id"];
 }
 
+- (NSArray *)sliderTemplates {
+    return [self linkedResourceForKey:@"slider_templates"];
+}
+
 @end
