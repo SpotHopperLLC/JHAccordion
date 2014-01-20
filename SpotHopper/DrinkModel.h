@@ -34,6 +34,7 @@
 @property (nonatomic, strong) NSString *recipe;
 @property (nonatomic, strong) SpotModel *spot;
 @property (nonatomic, strong) NSNumber *spotId;
+@property (nonatomic, strong) NSArray *sliderTemplates;
 
 + (Promise*)getDrinks:(NSDictionary*)params success:(void(^)(NSArray *drinkModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
