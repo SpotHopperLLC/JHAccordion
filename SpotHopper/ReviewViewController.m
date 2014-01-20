@@ -155,6 +155,12 @@
     NSLog(@"Value changed for row %d to %f", indexPath.row, value);
 }
 
+#pragma mark - Actions
+
+- (IBAction)onClickSubmit:(id)sender {
+    
+}
+
 #pragma mark - Private
 
 - (void)updateView {

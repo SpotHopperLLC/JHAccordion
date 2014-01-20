@@ -52,6 +52,12 @@
     [_lblName setText:[NSString stringWithFormat:@"Spots Similar to %@", text]];
 }
 
+- (void)setNotWhatYoureLookingFor {
+    [self setup];
+    
+    [_imgIcon setImage:nil];
+    [_lblName setText:@"Not what you’re looking for? Add it!"];
+}
 
 #pragma mark - Private
 

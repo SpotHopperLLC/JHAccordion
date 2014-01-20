@@ -37,6 +37,8 @@
 @property (nonatomic, strong) UIView *viewFormNewCocktail;
 @property (nonatomic, strong) UIView *viewFormNewWine;
 
+@property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
+
 @end
 
 @implementation NewReviewViewController
@@ -70,6 +72,7 @@
     [_tblReviewTypes registerNib:[UINib nibWithNibName:@"DropdownOptionCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"DropdownOptionCell"];
     [_tblReviews setTableFooterView:[[UIView alloc] init]];
     [_tblReviews registerNib:[UINib nibWithNibName:@"ReviewSliderCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ReviewSliderCell"];
+    [_tblReviews setContentInset:UIEdgeInsetsMake(0, 0, 65.0f, 0)];
     
     // Initializes states
     _selectedReviewType = -1;
@@ -203,8 +206,10 @@
     
     [UIView animateWithDuration:0.35f animations:^{
         [_tblReviews setAlpha:0.0f];
+        [_btnSubmit setAlpha:0.0f];
     } completion:^(BOOL finished) {
         [_tblReviews setHidden:YES];
+        [_btnSubmit setHidden:YES];
     }];
 }
 
@@ -222,8 +227,11 @@
 - (void)accordionClosedSection:(NSInteger)section {
     [_tblReviews setAlpha:0.0f];
     [_tblReviews setHidden:NO];
+    [_btnSubmit setAlpha:0.0f];
+    [_btnSubmit setHidden:NO];
     [UIView animateWithDuration:0.35f animations:^{
         [_tblReviews setAlpha:1.0f];
+        [_btnSubmit setAlpha:1.0f];
     } completion:^(BOOL finished) {
 
     }];
@@ -235,6 +243,12 @@
     NSIndexPath *indexPath = [_tblReviews indexPathForCell:cell];
     
     NSLog(@"Value changed for row %d to %f", indexPath.row, value);
+}
+
+#pragma mark - Actions
+
+- (IBAction)onClickSubmit:(id)sender {
+    
 }
 
 #pragma mark - Private

@@ -150,7 +150,7 @@
     if (section == 0) {
         return _results.count;
     } else if (section == 1) {
-        return (_txtSearch.text.length > 0 ? 2 : 0);
+        return (_txtSearch.text.length > 0 ? 3 : 0);
     } else if (section == 2) {
         return 1;
     }
@@ -180,6 +180,8 @@
             [cell setDrinksSimilar:_txtSearch.text];
         } else if (indexPath.row == 1) {
             [cell setSpotsSimilar:_txtSearch.text];
+        } else if (indexPath.row == 2) {
+            [cell setNotWhatYoureLookingFor];
         }
         
         return cell;
@@ -208,6 +210,14 @@
         } else if ([result isKindOfClass:[SpotModel class]] == YES) {
             SpotModel *spot = (SpotModel*)result;
             [self goToNewReviewForSpot:spot];
+        }
+    } else if (indexPath.section == 1) {
+        if (indexPath.row == 0) {
+            
+        } else if (indexPath.row == 1) {
+            
+        } else if (indexPath.row == 2) {
+            [self goToNewReview];
         }
     }
 }
