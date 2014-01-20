@@ -84,7 +84,7 @@
 }
 
 - (void)keyboardWillShow:(NSNotification*)notification {
-    [self keyboardWillHideOrShow:notification show:NO];
+    [self keyboardWillHideOrShow:notification show:YEs];
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification {
