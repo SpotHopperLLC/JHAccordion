@@ -8,8 +8,6 @@
 
 #import "SHJSONAPIResource.h"
 
-#import "NSDictionary+Slider.h"
-
 #import <JSONAPI/JSONAPI.h>
 
 @class DrinkModel;

@@ -11,6 +11,8 @@
 #import "SHSlider.h"
 
 #import "ReviewModel.h"
+#import "SliderModel.h"
+#import "SliderTemplateModel.h"
 
 @protocol ReviewSliderCellDelegate;
 
@@ -22,7 +24,7 @@
 
 @property (nonatomic, assign) id<ReviewSliderCellDelegate> delegate;
 
-- (void)setSliderValues:(NSDictionary*)sliderValue;
+- (void)setSliderTemplate:(SliderTemplateModel*)sliderTemplate withSlider:(SliderModel*)slider;
 
 @end
 

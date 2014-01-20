@@ -18,7 +18,6 @@
 #import "SHJSONAPIResource.h"
 
 #import "NSArray+HoursOfOperation.h"
-#import "NSDictionary+Slider.h"
 
 #import <JSONAPI/JSONAPI.h>
 

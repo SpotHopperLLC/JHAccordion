@@ -19,8 +19,7 @@
     [Mockery get:@"/api/drinks" block:^MockeryHTTPURLResponse *(NSString *path, NSURLRequest *request, NSDictionary *queryParams, NSArray *routeParams) {
         sleep(1.5f);
         
-        NSLog(@"Query params - %@", queryParams);
-        NSDictionary *d1 = [self drinkForId:@1 withLinks:@{@"spot":@1}];
+        NSDictionary *d1 = [self drinkForId:@1 withLinks:@{@"spot":@1,@"slider_templates":@[@1,@2,@3]}];
         
         NSArray *ds = @[d1];
         
@@ -29,6 +28,11 @@
                                   @"linked" : @{
                                           @"spots" : @[
                                                   [self spotForId:@1 withLinks:nil]
+                                                  ],
+                                          @"slider_templates" : @[
+                                                  [self sliderTemplateForId:@1 withLinks:nil],
+                                                  [self sliderTemplateForId:@2 withLinks:nil],
+                                                  [self sliderTemplateForId:@3 withLinks:nil]
                                                   ]
                                           },
                                   @"meta" : @{
@@ -48,8 +52,8 @@
     [Mockery get:@"/api/reviews" block:^MockeryHTTPURLResponse *(NSString *path, NSURLRequest *request, NSDictionary *queryParams, NSArray *routeParams) {
         sleep(1.5f);
         
-        NSDictionary *r1 = [self reviewForId:@1 withLinks:@{@"spot":@1}];
-        NSDictionary *r2 = [self reviewForId:@2 withLinks:@{@"drink":@1}];
+        NSDictionary *r1 = [self reviewForId:@1 withLinks:@{@"spot":@1,@"sliders":@[@1,@2,@3]}];
+        NSDictionary *r2 = [self reviewForId:@2 withLinks:@{@"drink":@1,@"sliders":@[@1,@2,@3]}];
         
         NSArray *rs = @[r1, r2];
         
@@ -62,6 +66,16 @@
                                           ,
                                           @"drinks" : @[
                                                   [self drinkForId:@1 withLinks:@{@"spot":@1}]
+                                                  ],
+                                          @"sliders" : @[
+                                                  [self sliderForId:@1 withLinks:@{@"slider_template":@1}],
+                                                  [self sliderForId:@2 withLinks:@{@"slider_template":@2}],
+                                                  [self sliderForId:@3 withLinks:@{@"slider_template":@3}]
+                                                  ],
+                                          @"slider_templates" : @[
+                                                  [self sliderTemplateForId:@1 withLinks:nil],
+                                                  [self sliderTemplateForId:@2 withLinks:nil],
+                                                  [self sliderTemplateForId:@3 withLinks:nil]
                                                   ]
                                           }
                                   };
@@ -91,13 +105,18 @@
     [Mockery get:@"/api/spots" block:^MockeryHTTPURLResponse *(NSString *path, NSURLRequest *request, NSDictionary *queryParams, NSArray *routeParams) {
         sleep(1.5f);
         
-        NSDictionary *s1 = [self spotForId:@1 withLinks:nil];
+        NSDictionary *s1 = [self spotForId:@1 withLinks:@{@"slider_templates":@[@1,@2,@3]}];
         
         NSArray *ss = @[s1];
         
         NSDictionary *jsonApi = @{
                                   @"spots" : ss,
                                   @"linked" : @{
+                                          @"slider_templates" : @[
+                                                  [self sliderTemplateForId:@1 withLinks:nil],
+                                                  [self sliderTemplateForId:@2 withLinks:nil],
+                                                  [self sliderTemplateForId:@3 withLinks:nil]
+                                                  ]
                                           }
                                   };
         

@@ -26,11 +26,15 @@
     // Configure the view for the selected state
 }
 
-- (void)setSliderValues:(NSDictionary *)sliderValue {
-    [_lblMnimum setText:sliderValue.min];
-    [_lblMaximum setText:sliderValue.max];
+- (void)setSliderTemplate:(SliderTemplateModel *)sliderTemplate withSlider:(SliderModel *)slider {
+    [_lblMnimum setText:sliderTemplate.minLabel];
+    [_lblMaximum setText:sliderTemplate.maxLabel];
     
-    [_slider setSelectedValue:(sliderValue.value.floatValue / 10.0f)];
+    if (slider == nil) {
+        [_slider setSelectedValue:(sliderTemplate.defaultValue.floatValue / 10.0f)];
+    } else {
+        [_slider setSelectedValue:(slider.value.floatValue / 10.0f)];
+    }
     
     [_slider addTarget:self action:@selector(onValueChangedSlider:) forControlEvents:UIControlEventValueChanged];
 }

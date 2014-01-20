@@ -29,6 +29,9 @@
 
 @property (nonatomic, strong) UIView *headerContent;
 
+@property (nonatomic, strong) NSArray *sliderTemplates;
+@property (nonatomic, strong) NSArray *sliders;
+
 @end
 
 @implementation ReviewViewController
@@ -65,6 +68,13 @@
     if (_review != nil) {
         _drink = _review.drink;
         _spot = _review.spot;
+        
+        _sliders = _review.sliders;
+        _sliderTemplates = [_sliders valueForKey:@"sliderTemplate"];
+    } else if (_drink != nil) {
+        _sliderTemplates = _drink.sliderTemplates;
+    } else if (_spot != nil) {
+        _sliderTemplates = _spot.sliderTemplates;
     }
     
     // Update view
@@ -89,16 +99,17 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _review.sliders.count;
+    return _sliderTemplates.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    NSDictionary *slider = [_review.sliders objectAtIndex:indexPath.row];
+    SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
+    SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
     
     ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
     [cell setDelegate:self];
-    [cell setSliderValues:slider];
+    [cell setSliderTemplate:sliderTemplate withSlider:slider];
     
     return cell;
 }
