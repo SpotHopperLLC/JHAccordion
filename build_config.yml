@@ -1,0 +1,15 @@
+test-flight:
+  api-token: "7fd97a55018768eba4c03aaa5a77b739_Mjk5MTczMjAxMi0wMi0wMSAxMDowNzo0OC45NDU0NTI"
+  team-token:  "ac0b1816346c2b56b201ae938097833a_MzI0NDcyMjAxNC0wMS0xNCAxNDoyNDoyMi42Mzc4MDM"
+
+project:
+  workspace: "SpotHopper.xcworkspace"
+  application-name: "SpotHopper"
+  scheme: "SpotHopper"
+  configuration: "Release"
+  target-sdk: "iphoneos"
+
+build:
+  output-directory: "/Users/josh/Dropbox/RokkinCat/Projects/\"Client Projects\"/SpotHopper/Builds/iOS"
+  developer-name: "iPhone Developer: Josh Holtz (M57ML2945L)"
+  provisioning-profile: "/Users/josh/iOS/ProvisionProfiles/RokkinCat_Team.mobileprovision"

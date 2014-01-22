@@ -136,6 +136,8 @@
 		039B701A18873DD400C590F8 /* ReviewCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039B701918873DD400C590F8 /* ReviewCellView.xib */; };
 		039B7022188759B100C590F8 /* NSArray+HoursOfOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B7021188759B100C590F8 /* NSArray+HoursOfOperation.m */; };
 		039B70251888847200C590F8 /* NSNumber+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B70241888847200C590F8 /* NSNumber+Helpers.m */; };
+		039BA005188EB9AB001AF1B9 /* ACEAutocompleteInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 039BA002188EB9AB001AF1B9 /* ACEAutocompleteInputView.m */; };
+		039BA006188EB9AB001AF1B9 /* UITextField+ACEAutocompleteBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 039BA004188EB9AB001AF1B9 /* UITextField+ACEAutocompleteBar.m */; };
 		03C8DAE7188B42A40082321C /* MockData.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C8DAE6188B42A40082321C /* MockData.m */; };
 		03C8DAEA188B44C20082321C /* SliderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C8DAE9188B44C20082321C /* SliderModel.m */; };
 		03C8DAED188B44CB0082321C /* SliderTemplateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C8DAEC188B44CB0082321C /* SliderTemplateModel.m */; };
@@ -425,6 +427,11 @@
 		039B7021188759B100C590F8 /* NSArray+HoursOfOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+HoursOfOperation.m"; sourceTree = "<group>"; };
 		039B70231888847200C590F8 /* NSNumber+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Helpers.h"; sourceTree = "<group>"; };
 		039B70241888847200C590F8 /* NSNumber+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Helpers.m"; sourceTree = "<group>"; };
+		039BA000188EB9AB001AF1B9 /* ACEAutocompleteBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACEAutocompleteBar.h; sourceTree = "<group>"; };
+		039BA001188EB9AB001AF1B9 /* ACEAutocompleteInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACEAutocompleteInputView.h; sourceTree = "<group>"; };
+		039BA002188EB9AB001AF1B9 /* ACEAutocompleteInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACEAutocompleteInputView.m; sourceTree = "<group>"; };
+		039BA003188EB9AB001AF1B9 /* UITextField+ACEAutocompleteBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+ACEAutocompleteBar.h"; sourceTree = "<group>"; };
+		039BA004188EB9AB001AF1B9 /* UITextField+ACEAutocompleteBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+ACEAutocompleteBar.m"; sourceTree = "<group>"; };
 		03C8DAE5188B42A40082321C /* MockData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MockData.h; sourceTree = "<group>"; };
 		03C8DAE6188B42A40082321C /* MockData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MockData.m; sourceTree = "<group>"; };
 		03C8DAE8188B44C20082321C /* SliderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SliderModel.h; sourceTree = "<group>"; };
@@ -783,6 +790,7 @@
 		038664A1186D370E00985CEC /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				039B9FFF188EB9AB001AF1B9 /* ACEAutocompleteBar */,
 				039B700A188723EB00C590F8 /* Mockery */,
 				038664E3186D37BC00985CEC /* JHTableViewPullRefresh */,
 				038664A4186D376900985CEC /* Categories */,
@@ -1082,6 +1090,18 @@
 				039B7021188759B100C590F8 /* NSArray+HoursOfOperation.m */,
 			);
 			name = Helpers;
+			sourceTree = "<group>";
+		};
+		039B9FFF188EB9AB001AF1B9 /* ACEAutocompleteBar */ = {
+			isa = PBXGroup;
+			children = (
+				039BA000188EB9AB001AF1B9 /* ACEAutocompleteBar.h */,
+				039BA001188EB9AB001AF1B9 /* ACEAutocompleteInputView.h */,
+				039BA002188EB9AB001AF1B9 /* ACEAutocompleteInputView.m */,
+				039BA003188EB9AB001AF1B9 /* UITextField+ACEAutocompleteBar.h */,
+				039BA004188EB9AB001AF1B9 /* UITextField+ACEAutocompleteBar.m */,
+			);
+			path = ACEAutocompleteBar;
 			sourceTree = "<group>";
 		};
 		03CA726F187B8FD800815284 /* Icons */ = {
@@ -1587,6 +1607,7 @@
 				0320236D18774DD1008368C2 /* ReviewsMenuViewController.m in Sources */,
 				038664D3186D376900985CEC /* UIImage+Resize.m in Sources */,
 				03F2D9411872090E00C69576 /* SHTextFieldLatoLight.m in Sources */,
+				039BA005188EB9AB001AF1B9 /* ACEAutocompleteInputView.m in Sources */,
 				0320237018774E25008368C2 /* UIViewController+Navigator.m in Sources */,
 				038664E9186D37BC00985CEC /* JHPullRefreshViewController.m in Sources */,
 				038664CF186D376900985CEC /* NSString+Currency.m in Sources */,
@@ -1626,6 +1647,7 @@
 				03C8DAEA188B44C20082321C /* SliderModel.m in Sources */,
 				0320233B1875E060008368C2 /* FooterViewController.m in Sources */,
 				039B6FF1188711B800C590F8 /* SHLabelLatoRegular.m in Sources */,
+				039BA006188EB9AB001AF1B9 /* UITextField+ACEAutocompleteBar.m in Sources */,
 				039B701818873DB700C590F8 /* ReviewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

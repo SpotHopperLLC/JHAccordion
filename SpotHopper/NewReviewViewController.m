@@ -18,11 +18,12 @@
 #import "DropdownOptionCell.h"
 #import "ReviewSliderCell.h"
 
+#import "ACEAutocompleteBar.h"
 #import <JHAccordion/JHAccordion.h>
 
 #import "NewReviewViewController.h"
 
-@interface NewReviewViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, ReviewSliderCellDelegate>
+@interface NewReviewViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, ACEAutocompleteDataSource, ACEAutocompleteDelegate, ReviewSliderCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tblReviewTypes;
 @property (weak, nonatomic) IBOutlet UITableView *tblReviews;
@@ -32,10 +33,16 @@
 
 @property (nonatomic, assign) NSInteger selectedReviewType;
 
+// Forms
 @property (nonatomic, strong) UIView *viewFormNewSpot;
 @property (nonatomic, strong) UIView *viewFormNewBeer;
 @property (nonatomic, strong) UIView *viewFormNewCocktail;
 @property (nonatomic, strong) UIView *viewFormNewWine;
+
+// Beer
+@property (weak, nonatomic) IBOutlet UITextField *txtBeerName;
+@property (weak, nonatomic) IBOutlet UITextField *txtBeerBreweryName;
+@property (weak, nonatomic) IBOutlet UITextField *txtBeerStyle;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
 
@@ -237,6 +244,54 @@
     }];
 }
 
+#pragma mark - Autocomplete Delegate
+
+- (void)textField:(UITextField *)textField didSelectObject:(id)object inInputView:(ACEAutocompleteInputView *)inputView {
+    textField.text = object; // NSString
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return NO;
+}
+
+#pragma mark - Autocomplete Data Source
+
+- (NSUInteger)minimumCharactersToTrigger:(ACEAutocompleteInputView *)inputView {
+    return 1;
+}
+
+- (void)inputView:(ACEAutocompleteInputView *)inputView itemsFor:(NSString *)query result:(void (^)(NSArray *items))resultBlock; {
+    
+    if (resultBlock != nil) {
+        // execute the filter on a background thread to demo the asynchronous capability
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            
+            // execute the filter
+            
+            NSMutableArray *array;
+            
+            if (_txtBeerBreweryName.isFirstResponder) {
+                array = @[@"Brewery 1", @"Brewery 2", @"Brewery 3"].mutableCopy;
+            } else if (_txtBeerStyle.isFirstResponder){
+                array = @[@"IPA", @"Belgian", @"Stout"].mutableCopy;
+            }
+            
+            NSMutableArray *data = [NSMutableArray array];
+            for (NSString *s in array) {
+                if ([[s lowercaseString] hasPrefix:[query lowercaseString]]) {
+                    [data addObject:s];
+                }
+            }
+            
+            // return the filtered array in the main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                resultBlock(data);
+            });
+        });
+    }
+}
+
 #pragma mark - ReviewSliderCellDelegate
 
 - (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(float)value {
@@ -292,6 +347,16 @@
     } else if (index == 1) {
         if (_viewFormNewBeer == nil) {
             _viewFormNewBeer = [UIView viewFromNibNamed:@"NewReviewBeerView" withOwner:self];
+            
+            // Sets autocomplete
+            [_txtBeerStyle setAutocompleteWithDataSource:self delegate:self customize:^(ACEAutocompleteInputView *inputView) {
+                
+                // customize the view (optional)
+                inputView.font = [UIFont systemFontOfSize:16];
+                inputView.textColor = [UIColor blackColor];
+                inputView.backgroundColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.8];
+                
+            }];
         }
 
         return _viewFormNewBeer;
