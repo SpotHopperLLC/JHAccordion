@@ -5,7 +5,13 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewReviewViewController">
+            <connections>
+                <outlet property="txtWineName" destination="VRL-77-nN5" id="950-MK-ZEN"/>
+                <outlet property="txtWineStyle" destination="Fg6-6l-SGH" id="eIL-eo-f1F"/>
+                <outlet property="txtWineWineryName" destination="pL6-YY-ZvC" id="oAX-Qp-LnV"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="efB-HY-oMH">
             <rect key="frame" x="0.0" y="0.0" width="320" height="184"/>

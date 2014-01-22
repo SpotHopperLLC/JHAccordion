@@ -11,6 +11,7 @@
 
 #import "MyReviewsViewController.h"
 
+#import "NSString+Common.h"
 #import "UIView+ViewFromNib.h"
 #import "UIViewController+Navigator.h"
 
@@ -39,10 +40,26 @@
 @property (nonatomic, strong) UIView *viewFormNewCocktail;
 @property (nonatomic, strong) UIView *viewFormNewWine;
 
+// Spot
+@property (weak, nonatomic) IBOutlet UITextField *txtSpotName;
+@property (weak, nonatomic) IBOutlet UITextField *txtSpotType;
+@property (weak, nonatomic) IBOutlet UITextField *txtSpotAddress;
+@property (weak, nonatomic) IBOutlet UITextField *txtSpotCity;
+@property (weak, nonatomic) IBOutlet UITextField *txtSpotState;
+
 // Beer
 @property (weak, nonatomic) IBOutlet UITextField *txtBeerName;
 @property (weak, nonatomic) IBOutlet UITextField *txtBeerBreweryName;
 @property (weak, nonatomic) IBOutlet UITextField *txtBeerStyle;
+
+// Wine
+@property (weak, nonatomic) IBOutlet UITextField *txtWineStyle;
+@property (weak, nonatomic) IBOutlet UITextField *txtWineWineryName;
+@property (weak, nonatomic) IBOutlet UITextField *txtWineName;
+
+// Cocktail
+@property (weak, nonatomic) IBOutlet UITextField *txtCocktailName;
+@property (weak, nonatomic) IBOutlet UITextField *txtCocktailAlcoholType;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
 
@@ -217,6 +234,8 @@
     } completion:^(BOOL finished) {
         [_tblReviews setHidden:YES];
         [_btnSubmit setHidden:YES];
+        
+        [self.view endEditing:YES];
     }];
 }
 
@@ -228,7 +247,6 @@
 }
 
 - (void)accordionOpenedSection:(NSInteger)section {
-    
 }
 
 - (void)accordionClosedSection:(NSInteger)section {
@@ -271,15 +289,19 @@
             
             NSMutableArray *array;
             
-            if (_txtBeerBreweryName.isFirstResponder) {
-                array = @[@"Brewery 1", @"Brewery 2", @"Brewery 3"].mutableCopy;
+            if (_txtSpotType.isFirstResponder) {
+                array = kSpotTypes.mutableCopy;
             } else if (_txtBeerStyle.isFirstResponder){
-                array = @[@"IPA", @"Belgian", @"Stout"].mutableCopy;
+                array = kBeerTypes.mutableCopy;
+            } else if (_txtWineStyle.isFirstResponder) {
+                array = kWineType.mutableCopy;
+            } else if (_txtCocktailAlcoholType.isFirstResponder) {
+                array = kCocktailTypes.mutableCopy;
             }
             
             NSMutableArray *data = [NSMutableArray array];
             for (NSString *s in array) {
-                if ([[s lowercaseString] hasPrefix:[query lowercaseString]]) {
+                if ([[s lowercaseString] contains:[query lowercaseString]]) {
                     [data addObject:s];
                 }
             }
@@ -338,9 +360,25 @@
 }
 
 - (UIView*)formForReviewTypeIndex:(NSInteger)index {
+    
+    // Single spot fo customize block for styling autocomplete
+    void (^customize)(ACEAutocompleteInputView *inputView);
+    customize = ^(ACEAutocompleteInputView *inputView) {
+        
+        // customize the view (optional)
+        inputView.font = [UIFont systemFontOfSize:16];
+        inputView.textColor = [UIColor blackColor];
+        inputView.backgroundColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.8];
+        
+    };
+    
+    // Determins which form to use
     if (index == 0) {
         if (_viewFormNewSpot == nil) {
             _viewFormNewSpot = [UIView viewFromNibNamed:@"NewReviewSpotView" withOwner:self];
+            
+            // Sets autocomplete
+            [_txtSpotType setAutocompleteWithDataSource:self delegate:self customize:customize];
         }
 
         return _viewFormNewSpot;
@@ -349,26 +387,25 @@
             _viewFormNewBeer = [UIView viewFromNibNamed:@"NewReviewBeerView" withOwner:self];
             
             // Sets autocomplete
-            [_txtBeerStyle setAutocompleteWithDataSource:self delegate:self customize:^(ACEAutocompleteInputView *inputView) {
-                
-                // customize the view (optional)
-                inputView.font = [UIFont systemFontOfSize:16];
-                inputView.textColor = [UIColor blackColor];
-                inputView.backgroundColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.8];
-                
-            }];
+            [_txtBeerStyle setAutocompleteWithDataSource:self delegate:self customize:customize];
         }
 
         return _viewFormNewBeer;
     } else if (index == 2) {
         if (_viewFormNewCocktail == nil) {
             _viewFormNewCocktail = [UIView viewFromNibNamed:@"NewReviewCocktailView" withOwner:self];
+            
+            // Sets autocomplete
+            [_txtCocktailAlcoholType setAutocompleteWithDataSource:self delegate:self customize:customize];
         }
         
         return _viewFormNewCocktail;
     } else if (index == 3) {
         if (_viewFormNewWine == nil) {
             _viewFormNewWine = [UIView viewFromNibNamed:@"NewReviewWineView" withOwner:self];
+            
+            // Sets autocomplete
+            [_txtWineStyle setAutocompleteWithDataSource:self delegate:self customize:customize];
         }
         
         return _viewFormNewWine;

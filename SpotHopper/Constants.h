@@ -42,6 +42,13 @@
 #define kColorOrange [UIColor colorWithRed:(221.0f/255.0f) green:(106.0f/255.0f) blue:(51.0f/255.0f) alpha:1.0f]
 #define kColorOrangeLight [UIColor colorWithRed:(238.0f/255.0f) green:(160.0f/255.0f) blue:(109.0f/255.0f) alpha:1.0f]
 
+// Types
+#define kBeerTypes @[@"IPA", @"Belgian", @"Stout"]
+#define kCocktailTypes @[@"Rum", @"Vodka"]
+#define kSpotTypes @[@"Bar", @"Bar/Resturant", @"Club", @"Lounge", @"Liquor Store", @"Brewery", @"Wine Maker", @"Distillery"]
+#define kWineType @[@"Chardonay", @"Merlot", @"Pinot"]
+
+
 // Service configurations
 #define kSentryDSN @"https://6e7d0ff70d3e4f05a2ae8c53f70c55b1:8bdf476db4344ddaad89108cbd871562@app.getsentry.com/17343"
 

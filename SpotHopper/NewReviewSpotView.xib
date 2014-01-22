@@ -5,7 +5,15 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewReviewViewController">
+            <connections>
+                <outlet property="txtSpotAddress" destination="RVy-KU-lgi" id="baP-ZF-kLQ"/>
+                <outlet property="txtSpotCity" destination="yDk-8Y-7ZM" id="8Br-TC-3AV"/>
+                <outlet property="txtSpotName" destination="H0F-0o-mWl" id="5Vr-YS-i5d"/>
+                <outlet property="txtSpotState" destination="RIJ-gU-tsb" id="wON-UB-9t4"/>
+                <outlet property="txtSpotType" destination="D8Q-yr-9Im" id="Cog-Hm-gXX"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="J5Z-og-UIC">
             <rect key="frame" x="0.0" y="0.0" width="320" height="297"/>

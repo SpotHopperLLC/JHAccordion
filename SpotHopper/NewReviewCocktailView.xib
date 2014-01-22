@@ -5,7 +5,12 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewReviewViewController">
+            <connections>
+                <outlet property="txtCocktailAlcoholType" destination="BjB-a5-R5t" id="lTR-LC-5tM"/>
+                <outlet property="txtCocktailName" destination="XBz-uk-qPe" id="vBU-z5-VyS"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="bSu-5L-cgI">
             <rect key="frame" x="0.0" y="0.0" width="320" height="138"/>
