@@ -29,6 +29,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *tblReviewTypes;
 @property (weak, nonatomic) IBOutlet UITableView *tblReviews;
 
+@property (nonatomic, assign) CGRect tblReviewsInitalFrame;
+
 @property (nonatomic, strong) JHAccordion *accordion;
 @property (nonatomic, strong) SectionHeaderView *sectionHeaderReviewType;
 
@@ -100,6 +102,7 @@
     
     // Initializes states
     _selectedReviewType = -1;
+    _tblReviewsInitalFrame = CGRectZero;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -107,6 +110,15 @@
     
     // Deselects table row
     [_tblReviews deselectRowAtIndexPath:_tblReviews.indexPathForSelectedRow animated:NO];
+    
+    // Gets table frame
+    if (CGRectEqualToRect(_tblReviewsInitalFrame, CGRectZero)) {
+        _tblReviewsInitalFrame = _tblReviews.frame;
+    }
+    
+    // Keyboard notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     
     // Adds contextual footer view
     [self addFooterViewController:^(FooterViewController *footerViewController) {
@@ -118,6 +130,46 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Keyboard
+
+- (NSArray *)textfieldToHideKeyboard {
+    return @[];
+}
+
+- (void)keyboardWillShow:(NSNotification*)notification {
+    [self keyboardWillHideOrShow:notification show:YES];
+}
+
+- (void)keyboardWillHide:(NSNotification*)notification {
+    [self keyboardWillHideOrShow:notification show:NO];
+}
+
+- (void)keyboardWillHideOrShow:(NSNotification*)notification show:(BOOL)show {
+    NSDictionary *userInfo = notification.userInfo;
+    NSTimeInterval duration = [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve curve = [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+    
+    CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    CGRect frame = _tblReviews.frame;
+    if (show == YES) {
+        frame.size.height = CGRectGetHeight(self.view.frame) - CGRectGetMinY(frame) - CGRectGetHeight(keyboardFrame);
+        if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
+            frame.size.height -= 20.0f;
+        }
+    } else {
+        frame = _tblReviewsInitalFrame;
+    }
+    
+    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | curve animations:^{
+        [_tblReviews setFrame:frame];
+    } completion:nil];
 }
 
 #pragma mark - UITableViewDataSource

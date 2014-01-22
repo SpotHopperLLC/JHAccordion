@@ -101,6 +101,9 @@
     CGRect frame = _tblMenu.frame;
     if (show == YES) {
         frame.size.height = CGRectGetHeight(self.view.frame) - CGRectGetMinY(frame) - CGRectGetHeight(keyboardFrame);
+        if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
+            frame.size.height -= 20.0f;
+        }
     } else {
         frame = _tblMenuInitialFrame;
     }
