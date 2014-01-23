@@ -30,7 +30,7 @@ DEPENDENCIES:
   - Facebook-iOS-SDK (~> 3.11.0)
   - JHAccordion (from `git@github.com:joshdholtz/JHAccordion.git`)
   - JHSidebar (~> 0.1.1)
-  - JSONAPI (~> 0.1.1)
+  - JSONAPI (from `git@github.com:joshdholtz/jsonapi-ios.git`)
   - Promises (from `git@github.com:joshdholtz/ios-promises.git`)
   - Raven (~> 0.3.0)
   - STTwitter (~> 0.0.7)
@@ -38,6 +38,8 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   JHAccordion:
     :git: git@github.com:joshdholtz/JHAccordion.git
+  JSONAPI:
+    :git: git@github.com:joshdholtz/jsonapi-ios.git
   Promises:
     :git: git@github.com:joshdholtz/ios-promises.git
 

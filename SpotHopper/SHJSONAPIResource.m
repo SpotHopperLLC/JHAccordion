@@ -11,9 +11,20 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
+#import "NSArray+NullRemoval.h"
+#import "NSDictionary+NullRemoval.h"
+
 #import <Raven/RavenClient.h>
 
 @implementation SHJSONAPIResource
+
+- (id)initWithDictionary:(NSDictionary *)dict withLinked:(NSDictionary *)linked {
+    self = [super initWithDictionary:[dict dictionaryByRemovingNulls] withLinked:[linked dictionaryByRemovingNulls]];
+    if (self) {
+        
+    }
+    return self;
+}
 
 #pragma mark - Format helpers
 

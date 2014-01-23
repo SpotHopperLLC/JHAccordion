@@ -169,7 +169,15 @@
         
         [_lblTitle setText:_drink.name];
         [_lblSubTitle setText:_drink.spot.name];
-        [_lblSubSubTitle setText:[NSString stringWithFormat:@"%@ - %@ ABV", _drink.style, _drink.abvPercentString]];
+        if (_drink.style.length > 0 && _drink.abv.floatValue > 0) {
+            [_lblSubSubTitle setText:[NSString stringWithFormat:@"%@ - %@ ABV", _drink.style, _drink.abvPercentString]];
+        } else if (_drink.style.length > 0) {
+            [_lblSubSubTitle setText:_drink.style];
+        } else if (_drink.abv.floatValue > 0) {
+            [_lblSubSubTitle setText:[NSString stringWithFormat:@"%@ ABV", _drink.abvPercentString]];
+        } else {
+            [_lblSubSubTitle setText:@""];
+        }
     } else if (_spot != nil) {
         [_imgImage setImageWithURL:[NSURL URLWithString:_spot.imageUrl]];
         
