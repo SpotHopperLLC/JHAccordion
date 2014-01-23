@@ -169,7 +169,7 @@
         
         [_lblTitle setText:_drink.name];
         [_lblSubTitle setText:_drink.spot.name];
-        [_lblSubSubTitle setText:[NSString stringWithFormat:@"%@ - %.02f %% ABV", _drink.style, _drink.alcoholByVolume.floatValue]];
+        [_lblSubSubTitle setText:[NSString stringWithFormat:@"%@ - %@ ABV", _drink.style, _drink.abvPercentString]];
     } else if (_spot != nil) {
         [_imgImage setImageWithURL:[NSURL URLWithString:_spot.imageUrl]];
         

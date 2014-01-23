@@ -170,8 +170,8 @@
         XCTAssertEqualObjects(drinkModel.descriptionOfDrink, description, @"Should equal %@", description);
         
         // Assert alcohol by volume
-        NSNumber *alcoholByVolume = [drinkFromResposne objectForKey:@"alcohol_by_volume"];
-        XCTAssertEqualObjects(drinkModel.alcoholByVolume, alcoholByVolume, @"Should equal %@", alcoholByVolume);
+        NSNumber *alcoholByVolume = [drinkFromResposne objectForKey:@"abv"];
+        XCTAssertEqualObjects(drinkModel.abv, alcoholByVolume, @"Should equal %@", alcoholByVolume);
         
         // Assert style
         NSString *style = [drinkFromResposne objectForKey:@"style"];

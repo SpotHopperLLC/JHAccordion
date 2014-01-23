@@ -140,7 +140,7 @@
                  @"type": @"spirit",
                  @"subtype": @"scotch",
                  @"description": @"Super premium breasts and pool balls scotch which reeks of upper crust.",
-                 @"alcohol_by_volume": @0.9,
+                 @"abv": @0.9,
                  @"style": @"IPA",
                  @"vintage": @1984,
                  @"region": @"Your mom's butt",
