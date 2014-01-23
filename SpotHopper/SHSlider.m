@@ -151,9 +151,20 @@
 	return YES;
 }
 
-- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
-{
-	_minThumbOn = false;
+- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    [self turnOff];
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self turnOff];
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self turnOff];
+}
+
+- (void)turnOff {
+    _minThumbOn = false;
 	_maxThumbOn = false;
     
     [_trackBackgroundMin setHighlighted:NO];
