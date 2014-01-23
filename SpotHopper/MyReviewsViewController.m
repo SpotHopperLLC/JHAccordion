@@ -17,6 +17,10 @@
 
 #import "SectionHeaderView.h"
 #import "DropdownOptionCell.h"
+#import "ReviewCell.h"
+
+#import "ErrorModel.h"
+#import "ReviewModel.h"
 
 #import <JHAccordion/JHAccordion.h>
 
@@ -63,11 +67,15 @@
     
     // Configures table
     [_tblReviews setTableFooterView:[[UIView alloc] init]];
+    [_tblReviews registerNib:[UINib nibWithNibName:@"ReviewCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ReviewCell"];
     [_tblReviews registerNib:[UINib nibWithNibName:@"DropdownOptionCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"DropdownOptionCell"];
     
     // Initializes states
     _selectedFilter = 0;
     _selectedSort = 0;
+    
+    // Fetch reviews
+    [self fetchReviews];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -100,7 +108,7 @@
     } else if (section == 1) {
         return kSorts.count;
     } else if (section == 2) {
-        return 5;
+        return _reviews.count;
     }
     return 0;
 }
@@ -124,7 +132,10 @@
         return cell;
 
     } else if (indexPath.section == 2) {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewCell" forIndexPath:indexPath];
+        ReviewModel *review = [_reviews objectAtIndex:indexPath.row];
+        
+        ReviewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewCell" forIndexPath:indexPath];
+        [cell setReview:review];
         return cell;
     }
     
@@ -149,7 +160,8 @@
         [_accordion closeSection:indexPath.section];
         [_tblReviews deselectRowAtIndexPath:indexPath animated:NO];
     } else if (indexPath.section == 2) {
-        [self goToReview:nil];
+        ReviewModel *review = [_reviews objectAtIndex:indexPath.row];
+        [self goToReview:review];
     }
     
 }
@@ -198,7 +210,27 @@
     
 }
 
-#pragma mark - Private
+#pragma mark - Private - API
+
+- (void)fetchReviews {
+    [self showHUD:@"Fetching reviews"];
+    [ReviewModel getReviews:nil success:^(NSArray *reviewModels, JSONAPI *jsonApi) {
+        [self hideHUD];
+        
+        if (_reviews == nil) _reviews = [NSMutableArray array];
+        
+        [_reviews removeAllObjects];
+        [_reviews addObjectsFromArray:reviewModels];
+        
+        [_tblReviews reloadData];
+        
+    } failure:^(ErrorModel *errorModel) {
+        [self hideHUD];
+        [self showAlert:@"Oops" message:errorModel.human];
+    }];
+}
+
+#pragma mark - Private - UI
 
 - (SectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
     if (section == 0) {

@@ -8,12 +8,48 @@
 
 #import "SpotModel.h"
 
+#import "ClientSessionManager.h"
+#import "ErrorModel.h"
+
 @implementation SpotModel
+
+#pragma mark - API
+
++ (Promise*)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [[ClientSessionManager sharedClient] GET:@"/api/spots" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            NSArray *models = [jsonApi resourcesForKey:@"spots"];
+            successBlock(models, jsonApi);
+            
+            // Resolves promise
+            [deferred resolve];
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+            
+            // Rejects promise
+            [deferred rejectWith:errorModel];
+        }
+    }];
+    
+    return deferred.promise;
+}
 
 #pragma mark - Getters
 
 - (NSString *)name {
     return [self objectForKey:@"name"];
+}
+
+- (NSString *)imageUrl {
+    return [self objectForKey:@"image_url"];
 }
 
 - (NSString *)type {
@@ -40,8 +76,12 @@
     return [self objectForKey:@"longitude"];
 }
 
-- (NSDictionary *)sliders {
+- (NSArray *)sliders {
     return [self objectForKey:@"sliders"];
+}
+
+- (NSArray *)sliderTemplates {
+    return [self linkedResourceForKey:@"slider_templates"];
 }
 
 @end

@@ -11,6 +11,7 @@
 
 #import "MyReviewsViewController.h"
 
+#import "NSString+Common.h"
 #import "UIView+ViewFromNib.h"
 #import "UIViewController+Navigator.h"
 
@@ -18,24 +19,51 @@
 #import "DropdownOptionCell.h"
 #import "ReviewSliderCell.h"
 
+#import "ACEAutocompleteBar.h"
 #import <JHAccordion/JHAccordion.h>
 
 #import "NewReviewViewController.h"
 
-@interface NewReviewViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, ReviewSliderCellDelegate>
+@interface NewReviewViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, ACEAutocompleteDataSource, ACEAutocompleteDelegate, ReviewSliderCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tblReviewTypes;
 @property (weak, nonatomic) IBOutlet UITableView *tblReviews;
+
+@property (nonatomic, assign) CGRect tblReviewsInitalFrame;
 
 @property (nonatomic, strong) JHAccordion *accordion;
 @property (nonatomic, strong) SectionHeaderView *sectionHeaderReviewType;
 
 @property (nonatomic, assign) NSInteger selectedReviewType;
 
+// Forms
 @property (nonatomic, strong) UIView *viewFormNewSpot;
 @property (nonatomic, strong) UIView *viewFormNewBeer;
 @property (nonatomic, strong) UIView *viewFormNewCocktail;
 @property (nonatomic, strong) UIView *viewFormNewWine;
+
+// Spot
+@property (weak, nonatomic) IBOutlet UITextField *txtSpotName;
+@property (weak, nonatomic) IBOutlet UITextField *txtSpotType;
+@property (weak, nonatomic) IBOutlet UITextField *txtSpotAddress;
+@property (weak, nonatomic) IBOutlet UITextField *txtSpotCity;
+@property (weak, nonatomic) IBOutlet UITextField *txtSpotState;
+
+// Beer
+@property (weak, nonatomic) IBOutlet UITextField *txtBeerName;
+@property (weak, nonatomic) IBOutlet UITextField *txtBeerBreweryName;
+@property (weak, nonatomic) IBOutlet UITextField *txtBeerStyle;
+
+// Wine
+@property (weak, nonatomic) IBOutlet UITextField *txtWineStyle;
+@property (weak, nonatomic) IBOutlet UITextField *txtWineWineryName;
+@property (weak, nonatomic) IBOutlet UITextField *txtWineName;
+
+// Cocktail
+@property (weak, nonatomic) IBOutlet UITextField *txtCocktailName;
+@property (weak, nonatomic) IBOutlet UITextField *txtCocktailAlcoholType;
+
+@property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
 
 @end
 
@@ -55,7 +83,7 @@
     [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
     
     // Sets title
-    [self setTitle:@"My Reviews"];
+    [self setTitle:@"New Reviews"];
     
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
@@ -70,9 +98,11 @@
     [_tblReviewTypes registerNib:[UINib nibWithNibName:@"DropdownOptionCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"DropdownOptionCell"];
     [_tblReviews setTableFooterView:[[UIView alloc] init]];
     [_tblReviews registerNib:[UINib nibWithNibName:@"ReviewSliderCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ReviewSliderCell"];
+    [_tblReviews setContentInset:UIEdgeInsetsMake(0, 0, 65.0f, 0)];
     
     // Initializes states
     _selectedReviewType = -1;
+    _tblReviewsInitalFrame = CGRectZero;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -80,6 +110,15 @@
     
     // Deselects table row
     [_tblReviews deselectRowAtIndexPath:_tblReviews.indexPathForSelectedRow animated:NO];
+    
+    // Gets table frame
+    if (CGRectEqualToRect(_tblReviewsInitalFrame, CGRectZero)) {
+        _tblReviewsInitalFrame = _tblReviews.frame;
+    }
+    
+    // Keyboard notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     
     // Adds contextual footer view
     [self addFooterViewController:^(FooterViewController *footerViewController) {
@@ -91,6 +130,46 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Keyboard
+
+- (NSArray *)textfieldToHideKeyboard {
+    return @[];
+}
+
+- (void)keyboardWillShow:(NSNotification*)notification {
+    [self keyboardWillHideOrShow:notification show:YES];
+}
+
+- (void)keyboardWillHide:(NSNotification*)notification {
+    [self keyboardWillHideOrShow:notification show:NO];
+}
+
+- (void)keyboardWillHideOrShow:(NSNotification*)notification show:(BOOL)show {
+    NSDictionary *userInfo = notification.userInfo;
+    NSTimeInterval duration = [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve curve = [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+    
+    CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    CGRect frame = _tblReviews.frame;
+    if (show == YES) {
+        frame.size.height = CGRectGetHeight(self.view.frame) - CGRectGetMinY(frame) - CGRectGetHeight(keyboardFrame);
+        if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
+            frame.size.height -= 20.0f;
+        }
+    } else {
+        frame = _tblReviewsInitalFrame;
+    }
+    
+    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | curve animations:^{
+        [_tblReviews setFrame:frame];
+    } completion:nil];
 }
 
 #pragma mark - UITableViewDataSource
@@ -127,7 +206,7 @@
             
             ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
             [cell setDelegate:self];
-            [cell setReview:nil];
+            [cell setSlider:nil];
             
             return cell;
             
@@ -203,8 +282,12 @@
     
     [UIView animateWithDuration:0.35f animations:^{
         [_tblReviews setAlpha:0.0f];
+        [_btnSubmit setAlpha:0.0f];
     } completion:^(BOOL finished) {
         [_tblReviews setHidden:YES];
+        [_btnSubmit setHidden:YES];
+        
+        [self.view endEditing:YES];
     }];
 }
 
@@ -216,17 +299,94 @@
 }
 
 - (void)accordionOpenedSection:(NSInteger)section {
-    
 }
 
 - (void)accordionClosedSection:(NSInteger)section {
     [_tblReviews setAlpha:0.0f];
     [_tblReviews setHidden:NO];
+    [_btnSubmit setAlpha:0.0f];
+    [_btnSubmit setHidden:NO];
     [UIView animateWithDuration:0.35f animations:^{
         [_tblReviews setAlpha:1.0f];
+        [_btnSubmit setAlpha:1.0f];
     } completion:^(BOOL finished) {
 
     }];
+}
+
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    // Spot
+    if (textField == _txtSpotName) { [_txtSpotType becomeFirstResponder];
+    } else if (textField == _txtSpotType) { [_txtSpotAddress becomeFirstResponder];
+    } else if (textField == _txtSpotAddress) { [_txtSpotCity becomeFirstResponder];
+    } else if (textField == _txtSpotCity) { [_txtSpotState becomeFirstResponder];
+    } else if (textField == _txtSpotState) { [_txtSpotState resignFirstResponder];}
+    
+    // Beer
+    if (textField == _txtBeerName) { [_txtBeerBreweryName becomeFirstResponder];
+    } else if (textField == _txtBeerBreweryName) { [_txtBeerStyle becomeFirstResponder];
+    } else if (textField == _txtBeerStyle) { [_txtBeerStyle resignFirstResponder];}
+    
+    // Cocktail
+    if (textField == _txtCocktailName) { [_txtCocktailAlcoholType becomeFirstResponder];
+    } else if (textField == _txtCocktailAlcoholType) { [_txtCocktailAlcoholType resignFirstResponder];}
+    
+    // Wine
+    if (textField == _txtWineStyle) { [_txtWineWineryName becomeFirstResponder];
+    } else if (textField == _txtWineWineryName) { [_txtWineName becomeFirstResponder];
+    } else if (textField == _txtWineName) { [_txtWineName resignFirstResponder];}
+    
+    return NO;
+}
+
+#pragma mark - Autocomplete Delegate
+
+- (void)textField:(UITextField *)textField didSelectObject:(id)object inInputView:(ACEAutocompleteInputView *)inputView {
+    textField.text = object; // NSString
+}
+
+#pragma mark - Autocomplete Data Source
+
+- (NSUInteger)minimumCharactersToTrigger:(ACEAutocompleteInputView *)inputView {
+    return 1;
+}
+
+- (void)inputView:(ACEAutocompleteInputView *)inputView itemsFor:(NSString *)query result:(void (^)(NSArray *items))resultBlock; {
+    
+    if (resultBlock != nil) {
+        // execute the filter on a background thread to demo the asynchronous capability
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            
+            // execute the filter
+            
+            NSMutableArray *array;
+            
+            if (_txtSpotType.isFirstResponder) {
+                array = kSpotTypes.mutableCopy;
+            } else if (_txtBeerStyle.isFirstResponder){
+                array = kBeerTypes.mutableCopy;
+            } else if (_txtWineStyle.isFirstResponder) {
+                array = kWineType.mutableCopy;
+            } else if (_txtCocktailAlcoholType.isFirstResponder) {
+                array = kCocktailTypes.mutableCopy;
+            }
+            
+            NSMutableArray *data = [NSMutableArray array];
+            for (NSString *s in array) {
+                if ([[s lowercaseString] contains:[query lowercaseString]]) {
+                    [data addObject:s];
+                }
+            }
+            
+            // return the filtered array in the main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                resultBlock(data);
+            });
+        });
+    }
 }
 
 #pragma mark - ReviewSliderCellDelegate
@@ -235,6 +395,12 @@
     NSIndexPath *indexPath = [_tblReviews indexPathForCell:cell];
     
     NSLog(@"Value changed for row %d to %f", indexPath.row, value);
+}
+
+#pragma mark - Actions
+
+- (IBAction)onClickSubmit:(id)sender {
+    
 }
 
 #pragma mark - Private
@@ -269,27 +435,52 @@
 }
 
 - (UIView*)formForReviewTypeIndex:(NSInteger)index {
+    
+    // Single spot fo customize block for styling autocomplete
+    void (^customize)(ACEAutocompleteInputView *inputView);
+    customize = ^(ACEAutocompleteInputView *inputView) {
+        
+        // customize the view (optional)
+        inputView.font = [UIFont systemFontOfSize:16];
+        inputView.textColor = [UIColor blackColor];
+        inputView.backgroundColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.8];
+        
+    };
+    
+    // Determins which form to use
     if (index == 0) {
         if (_viewFormNewSpot == nil) {
             _viewFormNewSpot = [UIView viewFromNibNamed:@"NewReviewSpotView" withOwner:self];
+            
+            // Sets autocomplete
+            [_txtSpotType setAutocompleteWithDataSource:self delegate:self customize:customize];
         }
 
         return _viewFormNewSpot;
     } else if (index == 1) {
         if (_viewFormNewBeer == nil) {
             _viewFormNewBeer = [UIView viewFromNibNamed:@"NewReviewBeerView" withOwner:self];
+            
+            // Sets autocomplete
+            [_txtBeerStyle setAutocompleteWithDataSource:self delegate:self customize:customize];
         }
 
         return _viewFormNewBeer;
     } else if (index == 2) {
         if (_viewFormNewCocktail == nil) {
             _viewFormNewCocktail = [UIView viewFromNibNamed:@"NewReviewCocktailView" withOwner:self];
+            
+            // Sets autocomplete
+            [_txtCocktailAlcoholType setAutocompleteWithDataSource:self delegate:self customize:customize];
         }
         
         return _viewFormNewCocktail;
     } else if (index == 3) {
         if (_viewFormNewWine == nil) {
             _viewFormNewWine = [UIView viewFromNibNamed:@"NewReviewWineView" withOwner:self];
+            
+            // Sets autocomplete
+            [_txtWineStyle setAutocompleteWithDataSource:self delegate:self customize:customize];
         }
         
         return _viewFormNewWine;

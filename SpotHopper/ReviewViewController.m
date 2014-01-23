@@ -12,11 +12,25 @@
 
 #import "ReviewSliderCell.h"
 
+#import "DrinkModel.h"
+#import "SpotModel.h"
+#import "UserModel.h"
+
+#import <AFNetworking/UIImageView+AFNetworking.h>
+
 @interface ReviewViewController ()<UITableViewDataSource, UITableViewDelegate, ReviewSliderCellDelegate>
+
+@property (weak, nonatomic) IBOutlet UIImageView *imgImage;
+@property (weak, nonatomic) IBOutlet UILabel *lblTitle;
+@property (weak, nonatomic) IBOutlet UILabel *lblSubTitle;
+@property (weak, nonatomic) IBOutlet UILabel *lblSubSubTitle;
 
 @property (weak, nonatomic) IBOutlet UITableView *tblReviews;
 
 @property (nonatomic, strong) UIView *headerContent;
+
+@property (nonatomic, strong) NSArray *sliderTemplates;
+@property (nonatomic, strong) NSArray *sliders;
 
 @end
 
@@ -49,6 +63,22 @@
     // Header content view
     _headerContent = [UIView viewFromNibNamed:@"ReviewHeaderDrinkView" withOwner:self];
     [_tblReviews setTableHeaderView:_headerContent];
+    
+    // Initilizes states
+    if (_review != nil) {
+        _drink = _review.drink;
+        _spot = _review.spot;
+        
+        _sliders = _review.sliders;
+        _sliderTemplates = [_sliders valueForKey:@"sliderTemplate"];
+    } else if (_drink != nil) {
+        _sliderTemplates = _drink.sliderTemplates;
+    } else if (_spot != nil) {
+        _sliderTemplates = _spot.sliderTemplates;
+    }
+    
+    // Update view
+    [self updateView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -69,14 +99,17 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 10;
+    return _sliderTemplates.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
+    SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
+    
     ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
     [cell setDelegate:self];
-    [cell setReview:nil];
+    [cell setSliderTemplate:sliderTemplate withSlider:slider];
     
     return cell;
 }
@@ -95,7 +128,16 @@
     [label setBackgroundColor:[UIColor clearColor]];
     [label setTextColor:[UIColor whiteColor]];
     [label setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
-    [label setText:[NSString stringWithFormat:@"I thought %@ was...", @""]];
+    [label setMinimumScaleFactor:0.5f];
+    [label setAdjustsFontSizeToFitWidth:YES];
+    [label setNumberOfLines:1];
+    
+    if (_drink != nil) {
+        [label setText:[NSString stringWithFormat:@"I thought %@ was...", _drink.name]];
+    } else if (_spot != nil) {
+        [label setText:[NSString stringWithFormat:@"I thought %@ was...", _spot.name]];
+    }
+    
     [view addSubview:label];
     
     return view;
@@ -111,6 +153,34 @@
     NSIndexPath *indexPath = [_tblReviews indexPathForCell:cell];
     
     NSLog(@"Value changed for row %d to %f", indexPath.row, value);
+}
+
+#pragma mark - Actions
+
+- (IBAction)onClickSubmit:(id)sender {
+    
+}
+
+#pragma mark - Private
+
+- (void)updateView {
+    if (_drink != nil) {
+        [_imgImage setImageWithURL:[NSURL URLWithString:_drink.imageUrl]];
+        
+        [_lblTitle setText:_drink.name];
+        [_lblSubTitle setText:_drink.spot.name];
+        [_lblSubSubTitle setText:[NSString stringWithFormat:@"%@ - %.02f %% ABV", _drink.style, _drink.alcoholByVolume.floatValue]];
+    } else if (_spot != nil) {
+        [_imgImage setImageWithURL:[NSURL URLWithString:_spot.imageUrl]];
+        
+        [_lblTitle setText:_spot.name];
+        [_lblSubTitle setText:_spot.type];
+        [_lblSubSubTitle setText:@""];
+    } else {
+        [_lblTitle setText:@""];
+        [_lblSubTitle setText:@""];
+        [_lblSubSubTitle setText:@""];
+    }
 }
 
 @end

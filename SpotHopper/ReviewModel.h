@@ -8,9 +8,12 @@
 
 #import "SHJSONAPIResource.h"
 
-@class UserModel;
-@class SpotModel;
+#import <JSONAPI/JSONAPI.h>
+
 @class DrinkModel;
+@class ErrorModel;
+@class SpotModel;
+@class UserModel;
 
 @interface ReviewModel : SHJSONAPIResource
 
@@ -24,8 +27,10 @@
 @property (nonatomic, strong) NSNumber *drinkId;
 
 @property (nonatomic, strong) NSNumber *rating;
-@property (nonatomic, strong) NSDictionary *sliders;
+@property (nonatomic, strong) NSArray *sliders;
 @property (nonatomic, strong) NSDate *createdAt;
 @property (nonatomic, strong) NSDate *updatedAt;
+
++ (Promise*)getReviews:(NSDictionary*)params success:(void(^)(NSArray *reviewModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 @end

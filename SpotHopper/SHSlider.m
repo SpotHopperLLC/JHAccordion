@@ -25,10 +25,6 @@
 //    UIImage *thumbImage = [UIImage imageNamed:@"slider_thumb"];
 //    UIImage *thumbImageSelected = [UIImage imageNamed:@"slider_thumb_selected"];
 
-
-@synthesize minimumValue, maximumValue, selectedValue;
-@synthesize valueSnapToInterval;
-
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
 	self = [super initWithCoder:aDecoder];
@@ -104,17 +100,14 @@
     [self setClipsToBounds:NO];
 }
 
-
-- (void)layoutSubviews
-{
-	// Set the initial state
-	_minThumb.center = CGPointMake([self xForValue:selectedValue], self.frame.size.height / 2.0);
-
+- (void)setSelectedValue:(float)selectedValue {
+    _selectedValue = selectedValue;
+    _minThumb.center = CGPointMake([self xForValue:selectedValue], self.frame.size.height / 2.0);
 }
 
 - (float)xForValue:(float)value
 {
-	return (self.frame.size.width - (_padding * 2.0)) * ((value - minimumValue) / (maximumValue - minimumValue)) + _padding;
+	return (self.frame.size.width - (_padding * 2.0)) * ((value - _minimumValue) / (_maximumValue - _minimumValue)) + _padding;
 }
 
 - (float)valueForX:(float)x
@@ -122,7 +115,7 @@
 	if (self.valueSnapToInterval) {
 		x = roundf(x / self.valueSnapToInterval) * self.valueSnapToInterval;
 	}
-	return minimumValue + (x - _padding) / (self.frame.size.width - (_padding * 2.0)) * (maximumValue - minimumValue);
+	return _minimumValue + (x - _padding) / (self.frame.size.width - (_padding * 2.0)) * (_maximumValue - _minimumValue);
 }
 
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
@@ -134,8 +127,8 @@
 	CGPoint touchPoint = [touch locationInView:self];
     
 	if (_minThumbOn) {
-		_minThumb.center = CGPointMake(MAX([self xForValue:minimumValue], MIN(touchPoint.x - distanceFromCenter, [self xForValue:maximumValue])), _minThumb.center.y);
-		selectedValue = [self valueForX:_minThumb.center.x];
+		_minThumb.center = CGPointMake(MAX([self xForValue:_minimumValue], MIN(touchPoint.x - _distanceFromCenter, [self xForValue:_maximumValue])), _minThumb.center.y);
+		_selectedValue = [self valueForX:_minThumb.center.x];
 	}
     
 	[self setNeedsLayout];
@@ -149,7 +142,7 @@
     
 	if (CGRectContainsPoint(_minThumb.frame, touchPoint)){
 		_minThumbOn = true;
-		distanceFromCenter = touchPoint.x - _minThumb.center.x;
+		_distanceFromCenter = touchPoint.x - _minThumb.center.x;
         [_trackBackgroundMin setHighlighted:YES];
         [_trackBackgroundMax setHighlighted:YES];
         [_minThumb setHighlighted:YES];
@@ -158,9 +151,20 @@
 	return YES;
 }
 
-- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
-{
-	_minThumbOn = false;
+- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
+    [self turnOff];
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self turnOff];
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self turnOff];
+}
+
+- (void)turnOff {
+    _minThumbOn = false;
 	_maxThumbOn = false;
     
     [_trackBackgroundMin setHighlighted:NO];

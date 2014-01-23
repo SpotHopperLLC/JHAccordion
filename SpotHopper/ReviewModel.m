@@ -8,7 +8,41 @@
 
 #import "ReviewModel.h"
 
+#import "ClientSessionManager.h"
+#import "ErrorModel.h"
+
+#import <JSONAPI/JSONAPI.h>
+
 @implementation ReviewModel
+
+#pragma mark - API
+
++ (Promise*)getReviews:(NSDictionary*)params success:(void(^)(NSArray *reviewModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [[ClientSessionManager sharedClient] GET:@"/api/reviews" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            NSArray *models = [jsonApi resourcesForKey:@"reviews"];
+            successBlock(models, jsonApi);
+            
+            // Resolves promise
+            [deferred resolve];
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+            
+            // Rejects promise
+            [deferred rejectWith:errorModel];
+        }
+    }];
+    
+    return deferred.promise;
+}
 
 #pragma mark - Getters
 
@@ -40,8 +74,8 @@
     return [self objectForKey:@"rating"];
 }
 
-- (NSDictionary *)sliders {
-    return [self objectForKey:@"sliders"];
+- (NSArray *)sliders {
+    return [self linkedResourceForKey:@"sliders"];
 }
 
 - (NSDate *)createdAt {

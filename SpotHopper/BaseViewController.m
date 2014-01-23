@@ -136,7 +136,7 @@ typedef void(^AlertBlock)();
     [_HUD removeFromSuperview];
     _HUD = nil;
     
-    _HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    _HUD = [MBProgressHUD showHUDAddedTo:[[[UIApplication sharedApplication] delegate] window] animated:YES];
     [_HUD setMode:MBProgressHUDModeIndeterminate];
     [_HUD setDimBackground:YES];
     [_HUD setLabelText:label];

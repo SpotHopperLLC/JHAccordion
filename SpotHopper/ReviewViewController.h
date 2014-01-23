@@ -8,6 +8,15 @@
 
 #import "BaseViewController.h"
 
+#import "DrinkModel.h"
+#import "ReviewModel.h"
+#import "SpotModel.h"
+
 @interface ReviewViewController : BaseViewController
+
+@property (nonatomic, strong) ReviewModel *review;
+
+@property (nonatomic, strong) DrinkModel *drink;
+@property (nonatomic, strong) SpotModel *spot;
 
 @end

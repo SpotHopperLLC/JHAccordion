@@ -8,18 +8,29 @@
 
 #import "AppDelegate.h"
 
+#import "NSNumber+Helpers.h"
 #import "UIActionSheet+Block.h"
 
 #import "ClientSessionManager.h"
 #import "DrinkModel.h"
 #import "ErrorModel.h"
 #import "ReviewModel.h"
+#import "SliderModel.h"
+#import "SliderTemplateModel.h"
 #import "SpotModel.h"
 #import "UserModel.h"
+
+#import "MockData.h"
 
 #import <JSONAPI/JSONAPI.h>
 #import <Raven/RavenClient.h>
 #import <STTwitter/STTwitter.h>
+
+@interface AppDelegate()
+
+@property (nonatomic, strong) Mockery *mockery;
+
+@end
 
 @implementation AppDelegate
 
@@ -32,14 +43,18 @@
     
     // Initializes resource linkng for JSONAPI
     [JSONAPIResourceLinker link:@"drink" toLinkedType:@"drinks"];
-    [JSONAPIResourceLinker link:@"spot" toLinkedType:@"spots"];
     [JSONAPIResourceLinker link:@"review" toLinkedType:@"reviews"];
+    [JSONAPIResourceLinker link:@"slider" toLinkedType:@"sliders"];
+    [JSONAPIResourceLinker link:@"slider_template" toLinkedType:@"slider_templates"];
+    [JSONAPIResourceLinker link:@"spot" toLinkedType:@"spots"];
     [JSONAPIResourceLinker link:@"user" toLinkedType:@"users"];
     
     // Initializes model linking for JSONAPI
     [JSONAPIResourceModeler useResource:[DrinkModel class] toLinkedType:@"drinks"];
     [JSONAPIResourceModeler useResource:[ErrorModel class] toLinkedType:@"errors"];
     [JSONAPIResourceModeler useResource:[ReviewModel class] toLinkedType:@"reviews"];
+    [JSONAPIResourceModeler useResource:[SliderModel class] toLinkedType:@"sliders"];
+    [JSONAPIResourceModeler useResource:[SliderTemplateModel class] toLinkedType:@"slider_templates"];
     [JSONAPIResourceModeler useResource:[SpotModel class] toLinkedType:@"spots"];
     [JSONAPIResourceModeler useResource:[UserModel class] toLinkedType:@"users"];
 
@@ -52,6 +67,10 @@
     } failure:^(FBSessionState state, NSError *error) {
 
     }];
+    
+    if (kMock) {
+        _mockery = [MockData startTheMockery];
+    }
     
     return YES;
 }

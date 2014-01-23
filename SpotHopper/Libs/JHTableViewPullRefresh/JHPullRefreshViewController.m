@@ -159,23 +159,25 @@
         
         _refreshing = NO;
         
-        [UIView beginAnimations:nil context:NULL];
-        [UIView setAnimationDuration:.3];
-        [_refreshTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)];
-        [UIView commitAnimations];
-        
-        if (reloadTable == YES) {
-            [_refreshTableView reloadData];
-        }
-        
-        [_refreshViewUp removeFromSuperview];
-        if (_refreshTableView.contentSize.height < _refreshTableView.frame.size.height) {
-            _refreshViewUp.frame = CGRectMake(0, _refreshTableView.frame.size.height, _refreshTableView.frame.size.width, 60);
-        } else {
-            _refreshViewUp.frame = CGRectMake(0, _refreshTableView.contentSize.height, _refreshTableView.frame.size.width, 60);
-        }
-        
-        [_refreshTableView addSubview:_refreshViewUp];
+        [UIView animateWithDuration:0.3f animations:^{
+            [UIView beginAnimations:nil context:NULL];
+            [UIView setAnimationDuration:.3];
+            [_refreshTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)];
+            [UIView commitAnimations];
+        } completion:^(BOOL finished) {
+            if (reloadTable == YES) {
+                [_refreshTableView reloadData];
+            }
+            
+            [_refreshViewUp removeFromSuperview];
+            if (_refreshTableView.contentSize.height < _refreshTableView.frame.size.height) {
+                _refreshViewUp.frame = CGRectMake(0, _refreshTableView.frame.size.height, _refreshTableView.frame.size.width, 60);
+            } else {
+                _refreshViewUp.frame = CGRectMake(0, _refreshTableView.contentSize.height, _refreshTableView.frame.size.width, 60);
+            }
+            
+            [_refreshTableView addSubview:_refreshViewUp];
+        }];
         
     }
     

@@ -26,10 +26,15 @@
     // Configure the view for the selected state
 }
 
-- (void)setReview:(ReviewModel *)review {
-//    [self setClipsToBounds:NO];
-//    [self.contentView setClipsToBounds:NO];
-//    [self.contentView.superview setClipsToBounds:NO];
+- (void)setSliderTemplate:(SliderTemplateModel *)sliderTemplate withSlider:(SliderModel *)slider {
+    [_lblMnimum setText:sliderTemplate.minLabel];
+    [_lblMaximum setText:sliderTemplate.maxLabel];
+    
+    if (slider == nil) {
+        [_slider setSelectedValue:(sliderTemplate.defaultValue.floatValue / 10.0f)];
+    } else {
+        [_slider setSelectedValue:(slider.value.floatValue / 10.0f)];
+    }
     
     [_slider addTarget:self action:@selector(onValueChangedSlider:) forControlEvents:UIControlEventValueChanged];
 }

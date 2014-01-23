@@ -19,6 +19,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
 @property (weak, nonatomic) IBOutlet UITableView *tblMenu;
 
+@property (nonatomic, assign) CGRect tblMenuInitialFrame;
+
 @property (nonatomic, strong) SectionHeaderView *sectionHeader0;
 @property (nonatomic, strong) SectionHeaderView *sectionHeader1;
 
@@ -35,6 +37,7 @@
     return self;
 }
 
+//TODO: The search button on the top takes the user to the information page for the spot/drink they are searching for (autofill), but autoscrolls down to the vibe/flavor profile
 - (void)viewDidLoad
 {
     [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
@@ -50,15 +53,64 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     
+    // Gets table frame
+    if (CGRectEqualToRect(_tblMenuInitialFrame, CGRectZero)) {
+        _tblMenuInitialFrame = _tblMenu.frame;
+    }
+    
+    // Keyboard notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    
     // Adds contextual footer view
     [self addFooterViewController:^(FooterViewController *footerViewController) {
         [footerViewController showHome:YES];
     }];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+#pragma mark - Keyboard
+
+- (NSArray *)textfieldToHideKeyboard {
+    return @[_txtSearch];
+}
+
+- (void)keyboardWillShow:(NSNotification*)notification {
+    [self keyboardWillHideOrShow:notification show:YES];
+}
+
+- (void)keyboardWillHide:(NSNotification*)notification {
+    [self keyboardWillHideOrShow:notification show:NO];
+}
+
+- (void)keyboardWillHideOrShow:(NSNotification*)notification show:(BOOL)show {
+    NSDictionary *userInfo = notification.userInfo;
+    NSTimeInterval duration = [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve curve = [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+    
+    CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    CGRect frame = _tblMenu.frame;
+    if (show == YES) {
+        frame.size.height = CGRectGetHeight(self.view.frame) - CGRectGetMinY(frame) - CGRectGetHeight(keyboardFrame);
+        if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
+            frame.size.height -= 20.0f;
+        }
+    } else {
+        frame = _tblMenuInitialFrame;
+    }
+    
+    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | curve animations:^{
+        [_tblMenu setFrame:frame];
+    } completion:nil];
 }
 
 #pragma mark - UITableViewDataSource
@@ -111,7 +163,7 @@
             [_sectionHeader1 setIconImage:[UIImage imageNamed:@"icon_plus"]];
             [_sectionHeader1 setText:@"Add New Review"];
             [_sectionHeader1.btnBackground setActionWithBlock:^{
-                [this goToNewReview];
+                [this goToSearchForNewReview];
             }];
         }
         
