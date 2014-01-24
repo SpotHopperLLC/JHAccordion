@@ -19,8 +19,10 @@
 #import "DropdownOptionCell.h"
 #import "ReviewCell.h"
 
+#import "ClientSessionManager.h"
 #import "ErrorModel.h"
 #import "ReviewModel.h"
+#import "UserModel.h"
 
 #import <JHAccordion/JHAccordion.h>
 
@@ -214,7 +216,8 @@
 
 - (void)fetchReviews {
     [self showHUD:@"Fetching reviews"];
-    [ReviewModel getReviews:nil success:^(NSArray *reviewModels, JSONAPI *jsonApi) {
+    UserModel *user = [ClientSessionManager sharedClient].currentUser;
+    [user getReviews:nil success:^(NSArray *reviewModels, JSONAPI *jsonApi) {
         [self hideHUD];
         
         if (_reviews == nil) _reviews = [NSMutableArray array];

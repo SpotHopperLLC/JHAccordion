@@ -52,8 +52,6 @@
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
-    NSLog(@"JSON Sliders - %@", _sliders);
-    
     // Creating params
     NSMutableArray *jsonSliders = [NSMutableArray array];
     for (SliderModel *slider in _sliders) {
@@ -62,17 +60,13 @@
                                  @"value" : slider.value
                                  }];
     }
-    NSLog(@"JSON Sliders - %@", jsonSliders);
-    NSLog(@"Drink - %@", _drink);
-    NSLog(@"Spot - %@", _spot);
-    NSLog(@"Rating - %@", _rating);
+
     NSDictionary *params = @{
                              @"drink_id" : _drink.ID != nil ? _drink.ID : [NSNull null],
                              @"spot_id" : _spot.ID != nil ? _spot.ID : [NSNull null],
                              @"rating" : _rating,
                              @"sliders" : jsonSliders
                              };
-    NSLog(@"Params - %@", params);
     
     [[ClientSessionManager sharedClient] POST:@"/api/reviews" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

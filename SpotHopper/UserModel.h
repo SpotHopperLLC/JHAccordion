@@ -19,6 +19,8 @@
 
 #import "SHJSONAPIResource.h"
 
+#import <JSONAPI/JSONAPI.h>
+
 @class ErrorModel;
 
 @interface UserModel : SHJSONAPIResource
@@ -33,5 +35,7 @@
 
 + (Promise*)registerUser:(NSDictionary*)params success:(void(^)(UserModel *userModel, NSHTTPURLResponse *response))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 + (Promise*)loginUser:(NSDictionary*)params success:(void(^)(UserModel *userModel, NSHTTPURLResponse *response))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
+- (Promise*)getReviews:(NSDictionary*)params success:(void(^)(NSArray *reviewModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 @end
