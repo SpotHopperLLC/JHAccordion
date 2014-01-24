@@ -11,13 +11,16 @@
 @implementation SliderModel
 
 - (NSNumber *)value {
-    return [self loadProperty:_value
-                        value:[self objectForKey:@"value"]];
+    if (_value != nil) return _value;
+    _value = [self objectForKey:@"value"];
+    return _value;
+//    return [self objectForKey:@"value"];
 }
 
 - (SliderTemplateModel *)sliderTemplate {
-    return [self loadProperty:_sliderTemplate
-                        value:[self linkedResourceForKey:@"slider_template"]];
+    if (_sliderTemplate != nil) return _sliderTemplate;
+    _sliderTemplate = [self linkedResourceForKey:@"slider_template"];
+    return _sliderTemplate;
 }
 
 @end

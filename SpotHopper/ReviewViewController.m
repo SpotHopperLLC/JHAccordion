@@ -111,7 +111,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
-    SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
+    SliderModel *slider = nil;
+    if (indexPath.row < _sliders.count) {
+        slider = [_sliders objectAtIndex:indexPath.row];
+    }
     
     ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
     [cell setDelegate:self];
@@ -158,12 +161,14 @@
 - (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(float)value {
     NSIndexPath *indexPath = [_tblReviews indexPathForCell:cell];
     
+    SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
     SliderModel *slider = nil;
-    if (indexPath.row > _sliders.count) {
-        slider = [[SliderModel alloc] init];
-        [_sliders addObject:slider];
-    } else {
+    if (indexPath.row < _sliders.count) {
         slider = [_sliders objectAtIndex:indexPath.row];
+    } else {
+        slider = [[SliderModel alloc] init];
+        [slider setSliderTemplate:sliderTemplate];
+        [_sliders addObject:slider];
     }
     [slider setValue:[NSNumber numberWithInt:ceil(value * 10)]];
     
@@ -175,7 +180,7 @@
     if (_review != nil) {
         
         // Submits changes for review
-        [self showHUD:@"Submitting"];
+        [self showHUD:@"Updating"];
         [_review putReviews:^(ReviewModel *reviewModel, JSONAPI *jsonApi) {
             [self hideHUD];
             [self.navigationController popViewControllerAnimated:YES];
@@ -184,6 +189,22 @@
             [self showAlert:@"Oops" message:errorModel.human];
         }];
         
+    } else if (_drink != nil || _spot != nil) {
+        
+        _review = [[ReviewModel alloc] init];
+        [_review setDrink:_drink];
+        [_review setSpot:_spot];
+        [_review setRating:@5];
+        [_review setSliders:_sliders];
+        
+        [self showHUD:@"Submitting"];
+        [_review postReviews:^(ReviewModel *reviewModel, JSONAPI *jsonApi) {
+            [self hideHUD];
+            [self.navigationController popViewControllerAnimated:YES];
+        } failure:^(ErrorModel *errorModel) {
+            [self hideHUD];
+            [self showAlert:@"Oops" message:errorModel.human];
+        }];
     }
 }
 
