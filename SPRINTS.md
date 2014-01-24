@@ -66,7 +66,6 @@
         - Create
         - Update
         - Get user's reviews
-        - 
 
 ## Sprint 3 - 1/27/14 - 2/7/14
 **FOCUS: Creating new spots and drinks for reviews, saving of unsubmitted reviews locally, show basic (required) sliders and advanced (optional) sliders**
