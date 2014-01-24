@@ -61,6 +61,7 @@
     
     // Configure table header
     // Header content view
+    
     _headerContent = [UIView viewFromNibNamed:@"ReviewHeaderDrinkView" withOwner:self];
     [_tblReviews setTableHeaderView:_headerContent];
     
@@ -70,6 +71,11 @@
         _spot = _review.spot;
         
         _sliders = _review.sliders;
+//        for (SliderModel *slider in _sliders) {
+//            NSLog(@"Slider - %@", slider);
+//            NSLog(@"Slider template - %@", sliderTempalte)'
+//        }
+        
         _sliderTemplates = [_sliders valueForKey:@"sliderTemplate"];
     } else if (_drink != nil) {
         _sliderTemplates = _drink.sliderTemplates;
