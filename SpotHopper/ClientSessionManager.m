@@ -187,8 +187,6 @@
         _currentUser = [self load:[UserModel class] forKey:kCurrentUser];
     }
     
-    NSLog(@"Current user - %@", _currentUser);
-    
     return _currentUser;
 }
 

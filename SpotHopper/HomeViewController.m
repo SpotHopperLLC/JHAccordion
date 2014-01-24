@@ -54,7 +54,6 @@
         }
     }
     
-    NSLog(@"Logged in user - %@", [[ClientSessionManager sharedClient] currentUser].name);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
