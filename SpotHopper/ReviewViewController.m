@@ -13,6 +13,7 @@
 #import "ReviewSliderCell.h"
 
 #import "DrinkModel.h"
+#import "ErrorModel.h"
 #import "SpotModel.h"
 #import "UserModel.h"
 
@@ -30,7 +31,7 @@
 @property (nonatomic, strong) UIView *headerContent;
 
 @property (nonatomic, strong) NSArray *sliderTemplates;
-@property (nonatomic, strong) NSArray *sliders;
+@property (nonatomic, strong) NSMutableArray *sliders;
 
 @end
 
@@ -70,17 +71,16 @@
         _drink = _review.drink;
         _spot = _review.spot;
         
-        _sliders = _review.sliders;
-//        for (SliderModel *slider in _sliders) {
-//            NSLog(@"Slider - %@", slider);
-//            NSLog(@"Slider template - %@", sliderTempalte)'
-//        }
-        
+        _sliders = _review.sliders.mutableCopy;
         _sliderTemplates = [_sliders valueForKey:@"sliderTemplate"];
     } else if (_drink != nil) {
         _sliderTemplates = _drink.sliderTemplates;
     } else if (_spot != nil) {
         _sliderTemplates = _spot.sliderTemplates;
+    }
+    
+    if (_sliders == nil) {
+        _sliders = [NSMutableArray array];
     }
     
     // Update view
@@ -158,13 +158,33 @@
 - (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(float)value {
     NSIndexPath *indexPath = [_tblReviews indexPathForCell:cell];
     
-    NSLog(@"Value changed for row %d to %f", indexPath.row, value);
+    SliderModel *slider = nil;
+    if (indexPath.row > _sliders.count) {
+        slider = [[SliderModel alloc] init];
+        [_sliders addObject:slider];
+    } else {
+        slider = [_sliders objectAtIndex:indexPath.row];
+    }
+    [slider setValue:[NSNumber numberWithInt:ceil(value * 10)]];
+    
 }
 
 #pragma mark - Actions
-
+`
 - (IBAction)onClickSubmit:(id)sender {
-    
+    if (_review != nil) {
+        
+        // Submits changes for review
+        [self showHUD:@"Submitting"];
+        [_review putReviews:^(ReviewModel *reviewModel, JSONAPI *jsonApi) {
+            [self hideHUD];
+            [self.navigationController popViewControllerAnimated:YES];
+        } failure:^(ErrorModel *errorModel) {
+            [self hideHUD];
+            [self showAlert:@"Oops" message:errorModel.human];
+        }];
+        
+    }
 }
 
 #pragma mark - Private

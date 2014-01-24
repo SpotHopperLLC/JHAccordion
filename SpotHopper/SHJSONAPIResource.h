@@ -10,6 +10,8 @@
 
 @interface SHJSONAPIResource : JSONAPIResource<NSCoding>
 
+- (id)loadProperty:(id)property value:(id)value;
+
 - (NSDate*)formatBirthday:(NSString*)string;
 - (NSDate*)formatDateTimestamp:(NSString*)string;
 

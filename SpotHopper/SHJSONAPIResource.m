@@ -26,6 +26,15 @@
     return self;
 }
 
+#pragma mark - Property Helpers
+
+// Loads a property value if not loaded already, otherwise just returns property value
+- (id)loadProperty:(id)property value:(id)value {
+    if (property != nil) return property;
+    property = value;
+    return property;
+}
+
 #pragma mark - Format helpers
 
 - (NSDate *)formatBirthday:(NSString *)string {

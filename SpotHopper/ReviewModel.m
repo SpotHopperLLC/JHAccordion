@@ -9,7 +9,11 @@
 #import "ReviewModel.h"
 
 #import "ClientSessionManager.h"
+#import "DrinkModel.h"
 #import "ErrorModel.h"
+#import "SliderModel.h"
+#import "SliderTemplateModel.h"
+#import "SpotModel.h"
 
 #import <JSONAPI/JSONAPI.h>
 
@@ -29,6 +33,49 @@
         if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"reviews"];
             successBlock(models, jsonApi);
+            
+            // Resolves promise
+            [deferred resolve];
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+            
+            // Rejects promise
+            [deferred rejectWith:errorModel];
+        }
+    }];
+    
+    return deferred.promise;
+}
+
+- (Promise*)putReviews:(void(^)(ReviewModel *reviewModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    // Creating params
+    NSMutableArray *jsonSliders = [NSMutableArray array];
+    for (SliderModel *slider in self.sliders) {
+        [jsonSliders addObject:@{
+                                 @"slider_template_id" : slider.sliderTemplate.ID,
+                                 @"value" : slider.value
+                                 }];
+    }
+    NSDictionary *params = @{
+                             @"drink_id" : self.drink.ID != nil ? self.drink.ID : [NSNull null],
+                             @"spot_id" : self.spot.ID != nil ? self.spot.ID : [NSNull null],
+                             @"rating" : self.rating,
+                             @"sliders" : jsonSliders
+                             };
+    
+    
+    [[ClientSessionManager sharedClient] PUT:[NSString stringWithFormat:@"/api/reviews/%d", self.ID.integerValue] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            ReviewModel *model = [jsonApi resourceForKey:@"reviews"];
+            successBlock(model, jsonApi);
             
             // Resolves promise
             [deferred resolve];
