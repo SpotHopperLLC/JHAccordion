@@ -11,19 +11,25 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
-#import "NSArray+NullRemoval.h"
-#import "NSDictionary+NullRemoval.h"
-
 #import <Raven/RavenClient.h>
 
 @implementation SHJSONAPIResource
 
 - (id)initWithDictionary:(NSDictionary *)dict withLinked:(NSDictionary *)linked {
-    self = [super initWithDictionary:[dict dictionaryByRemovingNulls] withLinked:[linked dictionaryByRemovingNulls]];
+    self = [super initWithDictionary:dict withLinked:linked];
     if (self) {
         
     }
     return self;
+}
+
+- (id)objectForKey:(NSString *)key {
+    // Makes sure NSNulls don't get returned - cause eww
+    id object = [super objectForKey:key];
+    if (object != [NSNull null]) {
+        return object;
+    }
+    return nil;
 }
 
 #pragma mark - Format helpers
