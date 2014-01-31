@@ -114,7 +114,7 @@ typedef void(^AlertBlock)();
     [_HUD removeFromSuperview];
     _HUD = nil;
     
-    _HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    _HUD = [MBProgressHUD showHUDAddedTo:[[[UIApplication sharedApplication] delegate] window] animated:YES];
     _HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:image]];
     [_HUD setLabelText:text];
 	_HUD.mode = MBProgressHUDModeCustomView;

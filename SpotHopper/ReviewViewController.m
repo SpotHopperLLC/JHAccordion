@@ -182,8 +182,12 @@
         // Submits changes for review
         [self showHUD:@"Updating"];
         [_review putReviews:^(ReviewModel *reviewModel, JSONAPI *jsonApi) {
+            
             [self hideHUD];
-            [self.navigationController popViewControllerAnimated:YES];
+            [self showHUDCompleted:@"Saved!" block:^{
+                [self.navigationController popViewControllerAnimated:YES];
+            }];
+            
         } failure:^(ErrorModel *errorModel) {
             [self hideHUD];
             [self showAlert:@"Oops" message:errorModel.human];
@@ -199,8 +203,12 @@
         
         [self showHUD:@"Submitting"];
         [_review postReviews:^(ReviewModel *reviewModel, JSONAPI *jsonApi) {
+            
             [self hideHUD];
-            [self.navigationController popViewControllerAnimated:YES];
+            [self showHUDCompleted:@"Saved!" block:^{
+                [self.navigationController popViewControllerAnimated:YES];
+            }];
+            
         } failure:^(ErrorModel *errorModel) {
             [self hideHUD];
             [self showAlert:@"Oops" message:errorModel.human];
