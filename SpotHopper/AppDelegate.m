@@ -61,6 +61,9 @@
     // Sets networking debug logs if debug is set
     [[ClientSessionManager sharedClient] setDebug:kDebug];
     
+    // Initializes cookie for network calls
+    [[ClientSessionManager sharedClient] isLoggedIn];
+    
     // Open Facebook active session
     [self facebookAuth:NO success:^(FBSession *session) {
 

@@ -15,6 +15,23 @@
 
 @implementation SHJSONAPIResource
 
+- (id)initWithDictionary:(NSDictionary *)dict withLinked:(NSDictionary *)linked {
+    self = [super initWithDictionary:dict withLinked:linked];
+    if (self) {
+        
+    }
+    return self;
+}
+
+- (id)objectForKey:(NSString *)key {
+    // Makes sure NSNulls don't get returned - cause eww
+    id object = [super objectForKey:key];
+    if (object != [NSNull null]) {
+        return object;
+    }
+    return nil;
+}
+
 #pragma mark - Format helpers
 
 - (NSDate *)formatBirthday:(NSString *)string {

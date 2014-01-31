@@ -13,6 +13,7 @@
 #import "ReviewSliderCell.h"
 
 #import "DrinkModel.h"
+#import "ErrorModel.h"
 #import "SpotModel.h"
 #import "UserModel.h"
 
@@ -30,7 +31,7 @@
 @property (nonatomic, strong) UIView *headerContent;
 
 @property (nonatomic, strong) NSArray *sliderTemplates;
-@property (nonatomic, strong) NSArray *sliders;
+@property (nonatomic, strong) NSMutableArray *sliders;
 
 @end
 
@@ -61,6 +62,7 @@
     
     // Configure table header
     // Header content view
+    
     _headerContent = [UIView viewFromNibNamed:@"ReviewHeaderDrinkView" withOwner:self];
     [_tblReviews setTableHeaderView:_headerContent];
     
@@ -69,12 +71,16 @@
         _drink = _review.drink;
         _spot = _review.spot;
         
-        _sliders = _review.sliders;
+        _sliders = _review.sliders.mutableCopy;
         _sliderTemplates = [_sliders valueForKey:@"sliderTemplate"];
     } else if (_drink != nil) {
         _sliderTemplates = _drink.sliderTemplates;
     } else if (_spot != nil) {
         _sliderTemplates = _spot.sliderTemplates;
+    }
+    
+    if (_sliders == nil) {
+        _sliders = [NSMutableArray array];
     }
     
     // Update view
@@ -105,7 +111,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
-    SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
+    SliderModel *slider = nil;
+    if (indexPath.row < _sliders.count) {
+        slider = [_sliders objectAtIndex:indexPath.row];
+    }
     
     ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
     [cell setDelegate:self];
@@ -152,13 +161,59 @@
 - (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(float)value {
     NSIndexPath *indexPath = [_tblReviews indexPathForCell:cell];
     
-    NSLog(@"Value changed for row %d to %f", indexPath.row, value);
+    SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
+    SliderModel *slider = nil;
+    if (indexPath.row < _sliders.count) {
+        slider = [_sliders objectAtIndex:indexPath.row];
+    } else {
+        slider = [[SliderModel alloc] init];
+        [slider setSliderTemplate:sliderTemplate];
+        [_sliders addObject:slider];
+    }
+    [slider setValue:[NSNumber numberWithInt:ceil(value * 10)]];
+    
 }
 
 #pragma mark - Actions
 
 - (IBAction)onClickSubmit:(id)sender {
-    
+    if (_review != nil) {
+        
+        // Submits changes for review
+        [self showHUD:@"Updating"];
+        [_review putReviews:^(ReviewModel *reviewModel, JSONAPI *jsonApi) {
+            
+            [self hideHUD];
+            [self showHUDCompleted:@"Saved!" block:^{
+                [self.navigationController popViewControllerAnimated:YES];
+            }];
+            
+        } failure:^(ErrorModel *errorModel) {
+            [self hideHUD];
+            [self showAlert:@"Oops" message:errorModel.human];
+        }];
+        
+    } else if (_drink != nil || _spot != nil) {
+        
+        _review = [[ReviewModel alloc] init];
+        [_review setDrink:_drink];
+        [_review setSpot:_spot];
+        [_review setRating:@5];
+        [_review setSliders:_sliders];
+        
+        [self showHUD:@"Submitting"];
+        [_review postReviews:^(ReviewModel *reviewModel, JSONAPI *jsonApi) {
+            
+            [self hideHUD];
+            [self showHUDCompleted:@"Saved!" block:^{
+                [self.navigationController popViewControllerAnimated:YES];
+            }];
+            
+        } failure:^(ErrorModel *errorModel) {
+            [self hideHUD];
+            [self showAlert:@"Oops" message:errorModel.human];
+        }];
+    }
 }
 
 #pragma mark - Private
@@ -169,7 +224,15 @@
         
         [_lblTitle setText:_drink.name];
         [_lblSubTitle setText:_drink.spot.name];
-        [_lblSubSubTitle setText:[NSString stringWithFormat:@"%@ - %.02f %% ABV", _drink.style, _drink.alcoholByVolume.floatValue]];
+        if (_drink.style.length > 0 && _drink.abv.floatValue > 0) {
+            [_lblSubSubTitle setText:[NSString stringWithFormat:@"%@ - %@ ABV", _drink.style, _drink.abvPercentString]];
+        } else if (_drink.style.length > 0) {
+            [_lblSubSubTitle setText:_drink.style];
+        } else if (_drink.abv.floatValue > 0) {
+            [_lblSubSubTitle setText:[NSString stringWithFormat:@"%@ ABV", _drink.abvPercentString]];
+        } else {
+            [_lblSubSubTitle setText:@""];
+        }
     } else if (_spot != nil) {
         [_imgImage setImageWithURL:[NSURL URLWithString:_spot.imageUrl]];
         

@@ -64,8 +64,12 @@
     return [self objectForKey:@"description"];
 }
 
-- (NSNumber *)alcoholByVolume {
-    return [self objectForKey:@"alcohol_by_volume"];
+- (NSNumber *)abv {
+    return [self objectForKey:@"abv"];
+}
+
+- (NSString*)abvPercentString {
+    return [NSString stringWithFormat:@"%.02f %%", (self.abv.floatValue * 100.0f)];
 }
 
 - (NSString *)style {
