@@ -86,7 +86,7 @@
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
-    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/user/%d/reviews", self.ID.integerValue] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/users/%d/reviews", self.ID.integerValue] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];

@@ -15,6 +15,56 @@ def read_in_file(prompt)
   Readline.readline('', true).strip
 end
 
+def load_config!
+    if !File.exist?('build_config.yml')
+      puts "CONFIGURATION ERROR: Please create a build_config.yml or run 'rake build:config'"
+      exit(-1)
+    end
+
+    # Loads haml
+    build_config = YAML.load_file('build_config.yml')
+
+    # Prepares things we need to know
+    # TestFlight
+    if build_config['test-flight']
+      $test_flight_api_token = build_config['test-flight']['api-token']
+      $test_flight_team_token = build_config['test-flight']['team-token']
+    end
+
+    # Project
+    if build_config['project']
+      $workspace = build_config['project']['workspace']
+      $application_name = build_config['project']['application-name']
+      $scheme = build_config['project']['scheme']
+      $configuration = build_config['project']['configuration']
+      $target_sdk = build_config['project']['target-sdk']
+    end
+
+    # Build
+    if build_config['build']
+        $output_directory = build_config['build']['output-directory']
+        $developer_name = build_config['build']['developer-name']
+        $provisioning_profile = build_config['build']['provisioning-profile']
+    end
+
+    if $workspace.to_s.strip.length == 0 ||
+      $application_name.to_s.strip.length == 0 ||
+      $scheme.to_s.strip.length == 0 ||
+      $configuration.to_s.strip.length == 0 ||
+      $target_sdk.to_s.strip.length == 0
+      puts "CONFIGURATION ERROR: Please fix your build_config.yml or run 'rake build:config'"
+      exit(-1)
+    end
+
+    if $output_directory.to_s.strip.length == 0 ||
+      $developer_name.to_s.strip.length == 0 ||
+      $provisioning_profile.to_s.strip.length == 0
+      puts "CONFIGURATION ERROR: Please fix your build_config.yml or run 'rake build:config'"
+      exit(-1)
+    end
+
+end
+
 namespace :build do
 
   task :config do |t|
@@ -131,52 +181,7 @@ namespace :build do
 
   task :prepare do |t|
 
-    if !File.exist?('build_config.yml')
-      puts "CONFIGURATION ERROR: Please create a build_config.yml or run 'rake build:config'"
-      exit(-1)
-    end
-
-    # Loads haml
-    build_config = YAML.load_file('build_config.yml')
-
-    # Prepares things we need to know
-    # TestFlight
-    if build_config['test-flight']
-      $test_flight_api_token = build_config['test-flight']['api-token']
-      $test_flight_team_token = build_config['test-flight']['team-token']
-    end
-
-    # Project
-    if build_config['project']
-      $workspace = build_config['project']['workspace']
-      $application_name = build_config['project']['application-name']
-      $scheme = build_config['project']['scheme']
-      $configuration = build_config['project']['configuration']
-      $target_sdk = build_config['project']['target-sdk']
-    end
-
-    # Build
-    if build_config['build']
-        $output_directory = build_config['build']['output-directory']
-        $developer_name = build_config['build']['developer-name']
-        $provisioning_profile = build_config['build']['provisioning-profile']
-    end
-
-    if $workspace.to_s.strip.length == 0 ||
-      $application_name.to_s.strip.length == 0 ||
-      $scheme.to_s.strip.length == 0 ||
-      $configuration.to_s.strip.length == 0 ||
-      $target_sdk.to_s.strip.length == 0
-      puts "CONFIGURATION ERROR: Please fix your build_config.yml or run 'rake build:config'"
-      exit(-1)
-    end
-
-    if $output_directory.to_s.strip.length == 0 ||
-      $developer_name.to_s.strip.length == 0 ||
-      $provisioning_profile.to_s.strip.length == 0
-      puts "CONFIGURATION ERROR: Please fix your build_config.yml or run 'rake build:config'"
-      exit(-1)
-    end
+   load_config!
 
     # Prepares stuff for build
   	version = ENV['version']
@@ -235,6 +240,7 @@ end
 
 desc "Run the tsests for iOS"
 task :test do
+	load_config!
 	test_success = system("xctool -workspace #{$workspace} -scheme #{$scheme} -sdk iphonesimulator test")
 	if test_success
 		puts "\033[0;32m** All tests executed successfully"
