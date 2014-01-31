@@ -47,18 +47,18 @@ def load_config!
         $provisioning_profile = build_config['build']['provisioning-profile']
     end
 
-    if $workspace.to_s.strip.length == 0 ||
-      $application_name.to_s.strip.length == 0 ||
-      $scheme.to_s.strip.length == 0 ||
-      $configuration.to_s.strip.length == 0 ||
-      $target_sdk.to_s.strip.length == 0
+    if $workspace.to_s.strip.empty? ||
+      $application_name.to_s.strip.empty? ||
+      $scheme.to_s.strip.empty? ||
+      $configuration.to_s.strip.empty? ||
+      $target_sdk.to_s.strip.empty?
       puts "CONFIGURATION ERROR: Please fix your build_config.yml or run 'rake build:config'"
       exit(-1)
     end
 
-    if $output_directory.to_s.strip.length == 0 ||
-      $developer_name.to_s.strip.length == 0 ||
-      $provisioning_profile.to_s.strip.length == 0
+    if $output_directory.to_s.strip.empty? ||
+      $developer_name.to_s.strip.empty? ||
+      $provisioning_profile.to_s.strip.empty?
       puts "CONFIGURATION ERROR: Please fix your build_config.yml or run 'rake build:config'"
       exit(-1)
     end
