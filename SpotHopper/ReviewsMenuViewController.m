@@ -14,6 +14,8 @@
 
 #import "MyReviewsViewController.h"
 
+#import "ClientSessionManager.h"
+
 @interface ReviewsMenuViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
@@ -152,7 +154,11 @@
             [_sectionHeader0 setIconImage:[UIImage imageNamed:@"icon_view_my_reviews"]];
             [_sectionHeader0 setText:@"View My Reviews"];
             [_sectionHeader0.btnBackground setActionWithBlock:^{
-                [this goToMyReviews];
+                if ([ClientSessionManager sharedClient].isLoggedIn == YES) {
+                    [this goToMyReviews];
+                } else {
+                    [this showAlert:@"Login Required" message:@"Cannot view your reviews without logging in"];
+                }
             }];
         }
         
@@ -163,7 +169,11 @@
             [_sectionHeader1 setIconImage:[UIImage imageNamed:@"icon_plus"]];
             [_sectionHeader1 setText:@"Add New Review"];
             [_sectionHeader1.btnBackground setActionWithBlock:^{
-                [this goToSearchForNewReview];
+                if ([ClientSessionManager sharedClient].isLoggedIn == YES) {
+                    [this goToSearchForNewReview];
+                } else {
+                    [this showAlert:@"Login Required" message:@"Cannot add a review without logging in"];
+                }
             }];
         }
         
