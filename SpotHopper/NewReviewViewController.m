@@ -36,6 +36,16 @@
 
 @property (nonatomic, assign) NSInteger selectedReviewType;
 
+@property (nonatomic, strong) NSArray *spotTypes;
+@property (nonatomic, strong) NSArray *spotTypesNames;
+@property (nonatomic, strong) NSArray *beerStyles;
+@property (nonatomic, strong) NSArray *wineVarietals;
+@property (nonatomic, strong) NSArray *cocktailBaseAlcohols;
+
+@property (nonatomic, strong) DrinkModel *createdDrink;
+@property (nonatomic, strong) SpotModel *createdSpot;
+@property (nonatomic, strong) NSArray *sliderTemplates;
+
 // Forms
 @property (nonatomic, strong) UIView *viewFormNewSpot;
 @property (nonatomic, strong) UIView *viewFormNewBeer;
@@ -103,6 +113,8 @@
     // Initializes states
     _selectedReviewType = -1;
     _tblReviewsInitalFrame = CGRectZero;
+    
+    [self fetchFormData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -185,7 +197,7 @@
         }
     } else if (tableView == _tblReviews) {
         if (section == 0) {
-            return 5;
+            return _sliderTemplates.count;
         }
     }
     return 0;
@@ -365,11 +377,11 @@
             NSMutableArray *array;
             
             if (_txtSpotType.isFirstResponder) {
-                array = kSpotTypes.mutableCopy;
+                array = _spotTypesNames.mutableCopy;
             } else if (_txtBeerStyle.isFirstResponder){
-                array = kBeerTypes.mutableCopy;
+                array = _beerStyles.mutableCopy;
             } else if (_txtWineStyle.isFirstResponder) {
-                array = kWineType.mutableCopy;
+                array = _wineVarietals.mutableCopy;
             } else if (_txtCocktailAlcoholType.isFirstResponder) {
                 array = kCocktailTypes.mutableCopy;
             }
@@ -404,6 +416,52 @@
 }
 
 #pragma mark - Private
+
+- (void)fetchFormData {
+    
+    // Shows progress hud
+    [self showHUD:@"Loading forms"];
+    
+    // Gets spot form data
+    Promise *promiseSpotForm = [SpotModel getSpots:@{kSpotModelParamsPageSize:@0} success:^(NSArray *spotModels, JSONAPI *jsonApi) {
+        
+        NSDictionary *forms = [jsonApi objectForKey:@"form"];
+        if (forms != nil) {
+            _spotTypes = [forms objectForKey:@"spot_types"];
+            _spotTypesNames = [[_spotTypes valueForKey:@"name"] sortedArrayUsingSelector:@selector(compare:)];
+        }
+        
+    } failure:^(ErrorModel *errorModel) {
+        
+    }];
+    
+    // Gets drink form data
+    Promise *promiseDrinkForm = [DrinkModel getDrinks:@{kDrinkModelParamsPageSize:@0} success:^(NSArray *drinkModels, JSONAPI *jsonApi) {
+        
+        NSDictionary *forms = [jsonApi objectForKey:@"form"];
+        if (forms != nil) {
+            _beerStyles = [[forms objectForKey:@"styles"] sortedArrayUsingSelector:@selector(compare:)];
+            _wineVarietals = [[forms objectForKey:@"varietals"] sortedArrayUsingSelector:@selector(compare:)];
+        }
+        
+    } failure:^(ErrorModel *errorModel) {
+        
+    }];
+    
+    // Waits for both spots and drinks to finish
+    [When when:@[promiseSpotForm, promiseDrinkForm] then:^{
+        NSLog(@"Spot type names - %@", _spotTypesNames);
+        NSLog(@"Beer styles - %@", _beerStyles);
+        NSLog(@"Wine varietals - %@", _wineVarietals);
+    } fail:^(id error) {
+        [self hideHUD];
+        [self showAlert:@"Oops" message:@"Looks like there was an error loading forms. Please try again later" block:^{
+            [self.navigationController popViewControllerAnimated:YES];
+        }];
+    } always:^{
+        [self hideHUD];
+    }];
+}
 
 - (SectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
     if (section == 0) {
