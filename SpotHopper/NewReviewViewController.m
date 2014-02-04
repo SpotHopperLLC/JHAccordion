@@ -41,6 +41,7 @@
 @property (nonatomic, strong) NSArray *beerStyles;
 @property (nonatomic, strong) NSArray *wineVarietals;
 @property (nonatomic, strong) NSArray *cocktailBaseAlcohols;
+@property (nonatomic, strong) NSArray *cocktailBaseAlcoholsNames;
 
 @property (nonatomic, strong) DrinkModel *createdDrink;
 @property (nonatomic, strong) SpotModel *createdSpot;
@@ -383,7 +384,7 @@
             } else if (_txtWineStyle.isFirstResponder) {
                 array = _wineVarietals.mutableCopy;
             } else if (_txtCocktailAlcoholType.isFirstResponder) {
-                array = kCocktailTypes.mutableCopy;
+                array = _cocktailBaseAlcoholsNames.mutableCopy;
             }
             
             NSMutableArray *data = [NSMutableArray array];
@@ -442,6 +443,14 @@
         if (forms != nil) {
             _beerStyles = [[forms objectForKey:@"styles"] sortedArrayUsingSelector:@selector(compare:)];
             _wineVarietals = [[forms objectForKey:@"varietals"] sortedArrayUsingSelector:@selector(compare:)];
+            
+            NSDictionary *drinkTypes = [forms objectForKey:@"drink_types"];
+            for (NSDictionary *drinkType in drinkTypes) {
+                if ([[[drinkType objectForKey:@"name"] lowercaseString] isEqualToString:@"cocktail"] == YES) {
+                    _cocktailBaseAlcohols = [drinkType objectForKey:@"drink_subtypes"];
+                    _cocktailBaseAlcoholsNames = [_cocktailBaseAlcohols valueForKey:@"name"];
+                }
+            }
         }
         
     } failure:^(ErrorModel *errorModel) {
@@ -453,6 +462,7 @@
         NSLog(@"Spot type names - %@", _spotTypesNames);
         NSLog(@"Beer styles - %@", _beerStyles);
         NSLog(@"Wine varietals - %@", _wineVarietals);
+        NSLog(@"Cocktails - %@", _cocktailBaseAlcohols);
     } fail:^(id error) {
         [self hideHUD];
         [self showAlert:@"Oops" message:@"Looks like there was an error loading forms. Please try again later" block:^{
