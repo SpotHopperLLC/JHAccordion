@@ -6,6 +6,10 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kDrinkTypeNameBeer @"Beer"
+#define kDrinkTypeNameCocktail @"Cocktail"
+#define kDrinkTypeNameWine @"Wine"
+
 #define kReviewTypes @[@"Spot", @"Beer", @"Cocktail", @"Wine"]
 #define kReviewTypeIcons @[@"btn_sidebar_icon_spots", @"icon_beer", @"icon_cocktails", @"icon_wine"]
 
@@ -37,15 +41,17 @@
 @property (nonatomic, assign) NSInteger selectedReviewType;
 
 @property (nonatomic, strong) NSArray *spotTypes;
-@property (nonatomic, strong) NSArray *spotTypesNames;
+@property (nonatomic, strong) NSArray *drinkTypes;
 @property (nonatomic, strong) NSArray *beerStyles;
 @property (nonatomic, strong) NSArray *wineVarietals;
 @property (nonatomic, strong) NSArray *cocktailBaseAlcohols;
-@property (nonatomic, strong) NSArray *cocktailBaseAlcoholsNames;
 
 @property (nonatomic, strong) DrinkModel *createdDrink;
 @property (nonatomic, strong) SpotModel *createdSpot;
 @property (nonatomic, strong) NSArray *sliderTemplates;
+
+@property (nonatomic, strong) NSDictionary *selectedSpotType;
+@property (nonatomic, strong) NSDictionary *selectedCocktailSubtype;
 
 // Forms
 @property (nonatomic, strong) UIView *viewFormNewSpot;
@@ -217,9 +223,11 @@
     } else if (tableView == _tblReviews) {
          if (indexPath.section == 0) {
             
+            SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
+             
             ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
             [cell setDelegate:self];
-            [cell setSlider:nil];
+            [cell setSliderTemplate:sliderTemplate withSlider:nil];
             
             return cell;
             
@@ -309,6 +317,8 @@
     
     [_tblReviews setTableHeaderView:[self formForReviewTypeIndex:_selectedReviewType]];
     [_tblReviews reloadData];
+    
+    [self fetchSliderTemplates:_selectedReviewType];
 }
 
 - (void)accordionOpenedSection:(NSInteger)section {
@@ -358,7 +368,17 @@
 #pragma mark - Autocomplete Delegate
 
 - (void)textField:(UITextField *)textField didSelectObject:(id)object inInputView:(ACEAutocompleteInputView *)inputView {
-    textField.text = object; // NSString
+    if (textField == _txtSpotType) {
+        _selectedSpotType = object;
+        textField.text = [_selectedSpotType objectForKey:@"name"];
+
+        [self fetchSliderTemplates:_selectedReviewType];
+    } else if (_txtCocktailAlcoholType ) {
+        _selectedCocktailSubtype = object;
+        textField.text = [_selectedCocktailSubtype objectForKey:@"name"];
+    } else if ([object isKindOfClass:[NSString class]] == YES) {
+        textField.text = object;
+    }
 }
 
 #pragma mark - Autocomplete Data Source
@@ -378,28 +398,31 @@
             NSMutableArray *array;
             
             if (_txtSpotType.isFirstResponder) {
-                array = _spotTypesNames.mutableCopy;
+                array = [_spotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", query]].mutableCopy;
             } else if (_txtBeerStyle.isFirstResponder){
-                array = _beerStyles.mutableCopy;
+                array = [_beerStyles filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", query]].mutableCopy;
             } else if (_txtWineStyle.isFirstResponder) {
-                array = _wineVarietals.mutableCopy;
+                array = [_wineVarietals filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", query]].mutableCopy;
             } else if (_txtCocktailAlcoholType.isFirstResponder) {
-                array = _cocktailBaseAlcoholsNames.mutableCopy;
-            }
-            
-            NSMutableArray *data = [NSMutableArray array];
-            for (NSString *s in array) {
-                if ([[s lowercaseString] contains:[query lowercaseString]]) {
-                    [data addObject:s];
-                }
+                array = [_cocktailBaseAlcohols filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", query]].mutableCopy;
             }
             
             // return the filtered array in the main thread
             dispatch_async(dispatch_get_main_queue(), ^{
-                resultBlock(data);
+                resultBlock(array);
             });
         });
     }
+}
+
+- (NSString *)inputView:(ACEAutocompleteInputView *)inputView stringForObject:(id)object atIndex:(NSUInteger)index {
+    if (_txtSpotType.isFirstResponder) {
+        return [object objectForKey:@"name"];
+    } else if (_txtCocktailAlcoholType ) {
+        return [object objectForKey:@"name"];
+    }
+    
+    return object;
 }
 
 #pragma mark - ReviewSliderCellDelegate
@@ -429,7 +452,6 @@
         NSDictionary *forms = [jsonApi objectForKey:@"form"];
         if (forms != nil) {
             _spotTypes = [forms objectForKey:@"spot_types"];
-            _spotTypesNames = [[_spotTypes valueForKey:@"name"] sortedArrayUsingSelector:@selector(compare:)];
         }
         
     } failure:^(ErrorModel *errorModel) {
@@ -444,11 +466,10 @@
             _beerStyles = [[forms objectForKey:@"styles"] sortedArrayUsingSelector:@selector(compare:)];
             _wineVarietals = [[forms objectForKey:@"varietals"] sortedArrayUsingSelector:@selector(compare:)];
             
-            NSDictionary *drinkTypes = [forms objectForKey:@"drink_types"];
-            for (NSDictionary *drinkType in drinkTypes) {
+            _drinkTypes = [forms objectForKey:@"drink_types"];
+            for (NSDictionary *drinkType in _drinkTypes) {
                 if ([[[drinkType objectForKey:@"name"] lowercaseString] isEqualToString:@"cocktail"] == YES) {
                     _cocktailBaseAlcohols = [drinkType objectForKey:@"drink_subtypes"];
-                    _cocktailBaseAlcoholsNames = [_cocktailBaseAlcohols valueForKey:@"name"];
                 }
             }
         }
@@ -459,10 +480,7 @@
     
     // Waits for both spots and drinks to finish
     [When when:@[promiseSpotForm, promiseDrinkForm] then:^{
-        NSLog(@"Spot type names - %@", _spotTypesNames);
-        NSLog(@"Beer styles - %@", _beerStyles);
-        NSLog(@"Wine varietals - %@", _wineVarietals);
-        NSLog(@"Cocktails - %@", _cocktailBaseAlcohols);
+
     } fail:^(id error) {
         [self hideHUD];
         [self showAlert:@"Oops" message:@"Looks like there was an error loading forms. Please try again later" block:^{
@@ -472,6 +490,55 @@
         [self hideHUD];
     }];
 }
+
+- (void)fetchSliderTemplates:(NSInteger)section {
+    
+    // Gets sliders
+    NSDictionary *params;
+    if (section == 0) {
+        NSNumber *spotTypeId = [_selectedSpotType objectForKey:@"id"];
+        
+        if (spotTypeId != nil) {
+            params = @{
+                       kSliderTemplateModelParamSpotTypeId: spotTypeId
+                       };
+        }
+    } else {
+        NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
+        NSNumber *drinkTypeId = [drinkType objectForKey:@"id"];
+        
+        if (drinkTypeId != nil) {
+            params = @{
+                       kSliderTemplateModelParamDrinkTypeId: drinkTypeId
+                       };
+        }
+    }
+    
+    if (params != nil) {
+        [self showHUD:@"Loading sliders"];
+        [SliderTemplateModel getSliderTemplates:params success:^(NSArray *sliderTemplates, JSONAPI *jsonApi) {
+            [self hideHUD];
+            _sliderTemplates = sliderTemplates;
+            [_tblReviews reloadData];
+        } failure:^(ErrorModel *errorModel) {
+            [self hideHUD];
+        }];
+    }
+}
+
+- (NSDictionary*)getDrinkType:(NSInteger)section {
+    for (NSDictionary *drinkType in _drinkTypes) {
+        if (section == 1 && [[drinkType objectForKey:@"name"] isEqualToString:kDrinkTypeNameBeer]) {
+            return drinkType;
+        } else if (section == 2 && [[drinkType objectForKey:@"name"] isEqualToString:kDrinkTypeNameCocktail]) {
+            return drinkType;
+        } else if (section == 3 && [[drinkType objectForKey:@"name"] isEqualToString:kDrinkTypeNameWine]) {
+            return drinkType;
+        }
+    }
+    return nil;
+}
+
 
 - (SectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
     if (section == 0) {

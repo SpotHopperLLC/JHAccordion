@@ -8,6 +8,9 @@
 
 #import "SliderTemplateModel.h"
 
+#import "ClientSessionManager.h"
+#import "ErrorModel.h"
+
 @implementation SliderTemplateModel
 
 - (NSString *)name {
@@ -28,6 +31,35 @@
 
 - (BOOL)required {
     return [[self objectForKey:@"required"] boolValue];
+}
+
+#pragma mark - API
+
++ (Promise*)getSliderTemplates:(NSDictionary*)params success:(void(^)(NSArray *sliderTemplates, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [[ClientSessionManager sharedClient] GET:@"/api/slider_templates" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            NSArray *models = [jsonApi resourcesForKey:@"slider_templates"];
+            successBlock(models, jsonApi);
+            
+            // Resolves promise
+            [deferred resolve];
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+            
+            // Rejects promise
+            [deferred rejectWith:errorModel];
+        }
+    }];
+    
+    return deferred.promise;
 }
 
 @end
