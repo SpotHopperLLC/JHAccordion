@@ -59,6 +59,7 @@
     // Configures table
     [_tblReviews setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
     [_tblReviews registerNib:[UINib nibWithNibName:@"ReviewSliderCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ReviewSliderCell"];
+    [_tblReviews setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 65.0f, 0.0f)];
     
     // Configure table header
     // Header content view

@@ -19,7 +19,7 @@
     #if kMock
         #define kBaseUrl @"mockery://app"
     #else
-        #define kBaseUrl @"http://192.168.1.8:9292"
+        #define kBaseUrl @"http://192.168.1.81:9292"
 //        #define kBaseUrl @"http://spothopper-dev.herokuapp.com"
     #endif
 
@@ -42,11 +42,9 @@
 #define kColorOrange [UIColor colorWithRed:(221.0f/255.0f) green:(106.0f/255.0f) blue:(51.0f/255.0f) alpha:1.0f]
 #define kColorOrangeLight [UIColor colorWithRed:(238.0f/255.0f) green:(160.0f/255.0f) blue:(109.0f/255.0f) alpha:1.0f]
 
-// Types
-#define kBeerTypes @[@"IPA", @"Belgian", @"Stout"]
-#define kCocktailTypes @[@"Rum", @"Vodka"]
-#define kSpotTypes @[@"Bar", @"Bar/Resturant", @"Club", @"Lounge", @"Liquor Store", @"Brewery", @"Wine Maker", @"Distillery"]
-#define kWineType @[@"Chardonay", @"Merlot", @"Pinot"]
+#define kDrinkTypeNameBeer @"Beer"
+#define kDrinkTypeNameCocktail @"Cocktail"
+#define kDrinkTypeNameWine @"Wine"
 
 
 // Service configurations

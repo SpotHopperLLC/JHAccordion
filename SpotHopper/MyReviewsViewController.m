@@ -39,6 +39,7 @@
 @property (nonatomic, assign) NSInteger selectedSort;
 
 @property (nonatomic, strong) NSMutableArray *reviews;
+@property (nonatomic, strong) NSArray *reviewsFiltered;
 
 @end
 
@@ -110,7 +111,7 @@
     } else if (section == 1) {
         return kSorts.count;
     } else if (section == 2) {
-        return _reviews.count;
+        return _reviewsFiltered.count;
     }
     return 0;
 }
@@ -134,7 +135,7 @@
         return cell;
 
     } else if (indexPath.section == 2) {
-        ReviewModel *review = [_reviews objectAtIndex:indexPath.row];
+        ReviewModel *review = [_reviewsFiltered objectAtIndex:indexPath.row];
         
         ReviewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewCell" forIndexPath:indexPath];
         [cell setReview:review];
@@ -162,7 +163,7 @@
         [_accordion closeSection:indexPath.section];
         [_tblReviews deselectRowAtIndexPath:indexPath animated:NO];
     } else if (indexPath.section == 2) {
-        ReviewModel *review = [_reviews objectAtIndex:indexPath.row];
+        ReviewModel *review = [_reviewsFiltered objectAtIndex:indexPath.row];
         [self goToReview:review];
     }
     
@@ -209,7 +210,8 @@
 }
 
 - (void)accordionClosedSection:(NSInteger)section {
-    
+    [self updateFilter];
+    [_tblReviews reloadData];
 }
 
 #pragma mark - Private - API
@@ -222,9 +224,9 @@
         
         if (_reviews == nil) _reviews = [NSMutableArray array];
         
-        [_reviews removeAllObjects];
         [_reviews addObjectsFromArray:reviewModels];
         
+        [self updateFilter];
         [_tblReviews reloadData];
         
     } failure:^(ErrorModel *errorModel) {
@@ -234,6 +236,30 @@
 }
 
 #pragma mark - Private - UI
+
+- (void)updateFilter {
+    
+    // All
+    if (_selectedFilter == 0) {
+        _reviewsFiltered = [NSArray arrayWithArray:_reviews];
+    }
+    // Spots
+    else if (_selectedFilter == 1) {
+        _reviewsFiltered = [_reviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"spot != NULL"]];
+    }
+    // Beers
+    else if (_selectedFilter == 2) {
+        _reviewsFiltered = [_reviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"drink != NULL AND "]];
+    }
+    // Cocktails
+    else if (_selectedFilter == 3) {
+        
+    }
+    // Wines
+    else if (_selectedFilter == 4) {
+        
+    }
+}
 
 - (SectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
     if (section == 0) {

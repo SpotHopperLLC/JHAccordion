@@ -6,10 +6,6 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#define kDrinkTypeNameBeer @"Beer"
-#define kDrinkTypeNameCocktail @"Cocktail"
-#define kDrinkTypeNameWine @"Wine"
-
 #define kReviewTypes @[@"Spot", @"Beer", @"Cocktail", @"Wine"]
 #define kReviewTypeIcons @[@"btn_sidebar_icon_spots", @"icon_beer", @"icon_cocktails", @"icon_wine"]
 
