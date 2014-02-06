@@ -229,10 +229,14 @@
          if (indexPath.section == 0) {
             
             SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
+            SliderModel *slider = nil;
+            if (indexPath.row < _sliders.count) {
+                slider = [_sliders objectAtIndex:indexPath.row];
+            }
              
             ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
             [cell setDelegate:self];
-            [cell setSliderTemplate:sliderTemplate withSlider:nil];
+            [cell setSliderTemplate:sliderTemplate withSlider:slider];
             
             return cell;
             
