@@ -50,7 +50,9 @@
 
 @property (nonatomic, strong) DrinkModel *createdDrink;
 @property (nonatomic, strong) SpotModel *createdSpot;
+
 @property (nonatomic, strong) NSArray *sliderTemplates;
+@property (nonatomic, strong) NSMutableArray *sliders;
 
 @property (nonatomic, strong) NSDictionary *selectedSpotType;
 @property (nonatomic, strong) NSDictionary *selectedCocktailSubtype;
@@ -122,6 +124,7 @@
     // Initializes states
     _selectedReviewType = -1;
     _tblReviewsInitalFrame = CGRectZero;
+    _sliders = [NSMutableArray array];
     
     [self fetchFormData];
 }
@@ -432,6 +435,16 @@
 - (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(float)value {
     NSIndexPath *indexPath = [_tblReviews indexPathForCell:cell];
     
+    SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
+    SliderModel *slider = nil;
+    if (indexPath.row < _sliders.count) {
+        slider = [_sliders objectAtIndex:indexPath.row];
+    } else {
+        slider = [[SliderModel alloc] init];
+        [slider setSliderTemplate:sliderTemplate];
+        [_sliders addObject:slider];
+    }
+    [slider setValue:[NSNumber numberWithInt:ceil(value * 10)]];
 }
 
 #pragma mark - Actions
@@ -588,6 +601,7 @@
     [self showHUD:@"Creating spot"];
     [SpotModel postSpot:params success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
         [self hideHUD];
+        [self createReview:spotModel drink:nil];
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Error creating drink" message:errorModel.human];
@@ -600,11 +614,33 @@
     [self showHUD:@"Creating drink"];
     [DrinkModel postDrink:params success:^(DrinkModel *drinkModel, JSONAPI *jsonAPI) {
         [self hideHUD];
+        [self createReview:nil drink:drinkModel];
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Error creating drink" message:errorModel.human];
     }];
     
+}
+
+- (void)createReview:(SpotModel*)spot drink:(DrinkModel*)drink {
+    ReviewModel *review = [[ReviewModel alloc] init];
+    [review setDrink:drink];
+    [review setSpot:spot];
+    [review setRating:@5];
+    [review setSliders:_sliders];
+    
+    [self showHUD:@"Submitting review"];
+    [review postReviews:^(ReviewModel *reviewModel, JSONAPI *jsonApi) {
+        
+        [self hideHUD];
+        [self showHUDCompleted:@"Saved!" block:^{
+//            [self.navigationController popViewControllerAnimated:YES];
+        }];
+        
+    } failure:^(ErrorModel *errorModel) {
+        [self hideHUD];
+        [self showAlert:@"Oops" message:errorModel.human];
+    }];
 }
 
 #pragma mark - Private
