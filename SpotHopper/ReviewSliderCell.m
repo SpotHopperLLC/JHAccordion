@@ -27,8 +27,14 @@
 }
 
 - (void)setSliderTemplate:(SliderTemplateModel *)sliderTemplate withSlider:(SliderModel *)slider {
-    [_lblMnimum setText:sliderTemplate.minLabel];
-    [_lblMaximum setText:sliderTemplate.maxLabel];
+    // If a max label isn't defined, the min label gets set to the right hand side
+    if (sliderTemplate.maxLabel.length > 0) {
+        [_lblMnimum setText:sliderTemplate.minLabel];
+        [_lblMaximum setText:sliderTemplate.maxLabel];
+    } else {
+        [_lblMnimum setText:@""];
+        [_lblMaximum setText:sliderTemplate.minLabel];
+    }
     
     if (slider == nil) {
         [_slider setSelectedValue:(sliderTemplate.defaultValue.floatValue / 10.0f)];
