@@ -170,6 +170,8 @@
     [_trackBackgroundMin setHighlighted:NO];
     [_trackBackgroundMax setHighlighted:NO];
     [_minThumb setHighlighted:NO];
+    
+    [self setSelectedValue:( floorf(_selectedValue * 10.0f) / 10.0f )];
 }
 
 @end
