@@ -389,7 +389,7 @@
 #pragma mark - Autocomplete Data Source
 
 - (NSUInteger)minimumCharactersToTrigger:(ACEAutocompleteInputView *)inputView {
-    return 1;
+    return 0;
 }
 
 - (void)inputView:(ACEAutocompleteInputView *)inputView itemsFor:(NSString *)query result:(void (^)(NSArray *items))resultBlock; {

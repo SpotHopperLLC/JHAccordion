@@ -19,8 +19,8 @@
     #if kMock
         #define kBaseUrl @"mockery://app"
     #else
-        #define kBaseUrl @"http://192.168.1.81:9292"
-//        #define kBaseUrl @"http://spothopper-dev.herokuapp.com"
+//        #define kBaseUrl @"http://192.168.1.81:9292"
+        #define kBaseUrl @"http://spothopper-dev.herokuapp.com"
     #endif
 
     #define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"

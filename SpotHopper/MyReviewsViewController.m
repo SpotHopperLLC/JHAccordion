@@ -330,7 +330,9 @@
             return [obj2.createdAt compare:obj1.createdAt];
         }];
     } else if (_selectedSort == 1) {
-
+        _reviewsFiltered = [_reviewsFiltered sortedArrayUsingComparator:^NSComparisonResult(ReviewModel *obj1, ReviewModel *obj2) {
+            return [obj1.rating compare:obj2.rating];
+        }];
     }
 }
 
