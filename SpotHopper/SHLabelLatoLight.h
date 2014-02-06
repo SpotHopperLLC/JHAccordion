@@ -10,4 +10,6 @@
 
 @interface SHLabelLatoLight : UILabel
 
+- (void)italic:(BOOL)italic;
+
 @end

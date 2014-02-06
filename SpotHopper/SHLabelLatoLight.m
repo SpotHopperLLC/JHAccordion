@@ -7,6 +7,7 @@
 //
 
 #define kFontName @"Lato-Light"
+#define kFontNameItalic @"Lato-LightItalic"
 
 #import "SHLabelLatoLight.h"
 
@@ -35,6 +36,22 @@
         NSLog(@"Font not found - %@", kFontName);
     }
     [self setFont:font];
+}
+
+- (void)italic:(BOOL)italic {
+    if (italic == YES) {
+        UIFont *font = [UIFont fontWithName:kFontNameItalic size:self.font.pointSize];
+        if (font == nil) {
+            NSLog(@"Font not found - %@", kFontNameItalic);
+        }
+        [self setFont:font];
+    } else {
+        UIFont *font = [UIFont fontWithName:kFontName size:self.font.pointSize];
+        if (font == nil) {
+            NSLog(@"Font not found - %@", kFontName);
+        }
+        [self setFont:font];
+    }
 }
 
 @end

@@ -11,6 +11,7 @@
 #import "UIView+ViewFromNib.h"
 
 #import "ReviewSliderCell.h"
+#import "SHLabelLatoLight.h"
 
 #import "DrinkModel.h"
 #import "ErrorModel.h"
@@ -22,9 +23,9 @@
 @interface ReviewViewController ()<UITableViewDataSource, UITableViewDelegate, ReviewSliderCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgImage;
-@property (weak, nonatomic) IBOutlet UILabel *lblTitle;
-@property (weak, nonatomic) IBOutlet UILabel *lblSubTitle;
-@property (weak, nonatomic) IBOutlet UILabel *lblSubSubTitle;
+@property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblTitle;
+@property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblSubTitle;
+@property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblSubSubTitle;
 
 @property (weak, nonatomic) IBOutlet UITableView *tblReviews;
 
@@ -223,8 +224,20 @@
     if (_drink != nil) {
         [_imgImage setImageWithURL:[NSURL URLWithString:_drink.imageUrl]];
         
+        // Removing an italics
+        [_lblSubSubTitle italic:NO];
+        
+        // Sets title
         [_lblTitle setText:_drink.name];
-        [_lblSubTitle setText:_drink.spot.name];
+        
+        // Sets brewery/winery
+        if (_drink.spot.name.length > 0) {
+            [_lblSubTitle setText:_drink.spot.name];
+        } else {
+            
+        }
+        
+        // Sets ABV and stuff
         if (_drink.style.length > 0 && _drink.abv.floatValue > 0) {
             [_lblSubSubTitle setText:[NSString stringWithFormat:@"%@ - %@ ABV", _drink.style, _drink.abvPercentString]];
         } else if (_drink.style.length > 0) {
@@ -232,7 +245,8 @@
         } else if (_drink.abv.floatValue > 0) {
             [_lblSubSubTitle setText:[NSString stringWithFormat:@"%@ ABV", _drink.abvPercentString]];
         } else {
-            [_lblSubSubTitle setText:@""];
+            [_lblSubSubTitle italic:YES];
+            [_lblSubSubTitle setText:@"No style or ABV"];
         }
     } else if (_spot != nil) {
         [_imgImage setImageWithURL:[NSURL URLWithString:_spot.imageUrl]];
