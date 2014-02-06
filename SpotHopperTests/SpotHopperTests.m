@@ -12,6 +12,7 @@
 
 #import "ClientSessionManager.h"
 #import "DrinkModel.h"
+#import "DrinkTypeModel.h"
 #import "ErrorModel.h"
 #import "ReviewModel.h"
 #import "SliderModel.h"
@@ -33,14 +34,16 @@
     
     // Initializes resource linkng for JSONAPI
     [JSONAPIResourceLinker link:@"drink" toLinkedType:@"drinks"];
+    [JSONAPIResourceLinker link:@"drink_type" toLinkedType:@"drink_types"];
     [JSONAPIResourceLinker link:@"review" toLinkedType:@"reviews"];
     [JSONAPIResourceLinker link:@"slider" toLinkedType:@"sliders"];
     [JSONAPIResourceLinker link:@"slider_template" toLinkedType:@"slider_templates"];
     [JSONAPIResourceLinker link:@"spot" toLinkedType:@"spots"];
     [JSONAPIResourceLinker link:@"user" toLinkedType:@"users"];
-
+    
     // Initializes model linking for JSONAPI
     [JSONAPIResourceModeler useResource:[DrinkModel class] toLinkedType:@"drinks"];
+    [JSONAPIResourceModeler useResource:[DrinkTypeModel class] toLinkedType:@"drink_types"];
     [JSONAPIResourceModeler useResource:[ErrorModel class] toLinkedType:@"errors"];
     [JSONAPIResourceModeler useResource:[ReviewModel class] toLinkedType:@"reviews"];
     [JSONAPIResourceModeler useResource:[SliderModel class] toLinkedType:@"sliders"];
@@ -119,7 +122,7 @@
     // Creates response
     NSDictionary *meta = @{};
     NSArray *drinks = @[
-                        [MockData drinkForId:@1 withLinks:@{@"spot":@1,@"slider_templates":@[@1,@2,@3]}]
+                        [MockData drinkForId:@1 withLinks:@{@"spot":@1,@"slider_templates":@[@1,@2,@3],@"drink_type":@1}]
                         ];
     NSArray *linkedSliderTemplates = @[
                              [MockData sliderTemplateForId:@1 withLinks:nil],
@@ -129,9 +132,13 @@
     NSArray *linkedSpots = @[
                             [MockData spotForId:@1 withLinks:nil]
                              ];
+    NSArray *linkedDrinkTypes = @[
+                             [MockData drinkTypeForId:@1 withLinks:nil]
+                             ];
     NSDictionary *linked = @{
                              @"slider_templates" : linkedSliderTemplates,
-                             @"spots" : linkedSpots
+                             @"spots" : linkedSpots,
+                             @"drink_types" : linkedDrinkTypes
                              };
     NSDictionary *jsonResponse = @{
                                    @"meta" : meta,
@@ -156,14 +163,6 @@
         // Assert name
         NSString *name = [drinkFromResposne objectForKey:@"name"];
         XCTAssertEqualObjects(drinkModel.name, name, @"Should equal %@", name);
-        
-        // Assert type
-        NSString *type = [drinkFromResposne objectForKey:@"type"];
-        XCTAssertEqualObjects(drinkModel.type, type, @"Should equal %@", type);
-        
-        // Assert subtype
-        NSString *subtype = [drinkFromResposne objectForKey:@"subtype"];
-        XCTAssertEqualObjects(drinkModel.subtype, subtype, @"Should equal %@", subtype);
         
         // Assert description
         NSString *description = [drinkFromResposne objectForKey:@"description"];
@@ -200,6 +199,18 @@
             }
         }
         XCTAssertEqualObjects(drinkModel.spot.ID, spotId, @"Should equal %@", spotId);
+        
+        // Assert drink type
+        NSDictionary *linkedDrinkType = nil;
+        NSNumber *drinkTypeId = [[drinkFromResposne objectForKey:@"links"] objectForKey:@"drink_type"];
+        for (NSDictionary *dict in [linked objectForKey:@"drink_types"]) {
+            // Finds the linked dictionary that matches the linked id
+            if ([[dict objectForKey:@"id"] isEqualToNumber:drinkTypeId] == YES) {
+                linkedDrinkType = dict;
+                break;
+            }
+        }
+        XCTAssertEqualObjects(drinkModel.drinkType.ID, drinkTypeId, @"Should equal %@", drinkTypeId);
         
         // Assert slider templates
         NSArray *sliderTemplateIds = [[drinkFromResposne objectForKey:@"links"] objectForKey:@"slider_templates"];

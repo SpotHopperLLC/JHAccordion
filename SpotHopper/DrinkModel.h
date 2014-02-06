@@ -29,14 +29,14 @@
 #import <JSONAPI/JSONAPI.h>
 
 @class ErrorModel;
+@class DrinkTypeModel;
 @class SpotModel;
 
 @interface DrinkModel : SHJSONAPIResource
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *imageUrl;
-@property (nonatomic, strong) NSString *type;
-@property (nonatomic, strong) NSString *subtype;
+@property (nonatomic, strong) DrinkTypeModel *drinkType;
 @property (nonatomic, strong) NSString *descriptionOfDrink;
 @property (nonatomic, strong) NSNumber *abv;
 @property (nonatomic, strong) NSString *style;

@@ -79,6 +79,10 @@
     return [self objectForKey:@"image_url"];
 }
 
+- (DrinkTypeModel *)drinkType {
+    return [self linkedResourceForKey:@"drink_type"];
+}
+
 - (NSString *)type {
     return [self objectForKey:@"type"];
 }

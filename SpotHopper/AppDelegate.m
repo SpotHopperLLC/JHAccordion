@@ -13,6 +13,7 @@
 
 #import "ClientSessionManager.h"
 #import "DrinkModel.h"
+#import "DrinkTypeModel.h"
 #import "ErrorModel.h"
 #import "ReviewModel.h"
 #import "SliderModel.h"
@@ -43,6 +44,7 @@
     
     // Initializes resource linkng for JSONAPI
     [JSONAPIResourceLinker link:@"drink" toLinkedType:@"drinks"];
+    [JSONAPIResourceLinker link:@"drink_type" toLinkedType:@"drink_types"];
     [JSONAPIResourceLinker link:@"review" toLinkedType:@"reviews"];
     [JSONAPIResourceLinker link:@"slider" toLinkedType:@"sliders"];
     [JSONAPIResourceLinker link:@"slider_template" toLinkedType:@"slider_templates"];
@@ -51,6 +53,7 @@
     
     // Initializes model linking for JSONAPI
     [JSONAPIResourceModeler useResource:[DrinkModel class] toLinkedType:@"drinks"];
+    [JSONAPIResourceModeler useResource:[DrinkTypeModel class] toLinkedType:@"drink_types"];
     [JSONAPIResourceModeler useResource:[ErrorModel class] toLinkedType:@"errors"];
     [JSONAPIResourceModeler useResource:[ReviewModel class] toLinkedType:@"reviews"];
     [JSONAPIResourceModeler useResource:[SliderModel class] toLinkedType:@"sliders"];
