@@ -12,6 +12,12 @@
 #define kSpotModelParamLatitude @"latitude"
 #define kSpotModelParamLongitude @"longitude"
 
+#define kSpotModelParamName @"name"
+#define kSpotModelParamAddress @"address"
+#define kSpotModelParamCity @"city"
+#define kSpotModelParamState @"state"
+#define kSpotModelParamSpotTypeId @"spot_type_id"
+
 #define kSpotModelMetaPage @"page"
 #define kSpotModelMetaTotalRecords @"total_records"
 
@@ -36,5 +42,7 @@
 @property (nonatomic, strong) NSArray *sliderTemplates;
 
 + (Promise*)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise*)postSpot:(NSDictionary*)params success:(void(^)(SpotModel *spotModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 @end

@@ -440,7 +440,43 @@
     
     // Spot
     if (_selectedReviewType == 0) {
+        NSString *name = _txtSpotName.text;
+        NSString *address = _txtSpotAddress.text;
+        NSString *city = _txtSpotAddress.text;
+        NSString *state = _txtSpotState.text;
         
+        // Form text field validations
+        if (name.length == 0) {
+            [self showAlert:@"Oops" message:@"Name is required"];
+            return;
+        } else if (address.length == 0) {
+            [self showAlert:@"Oops" message:@"Address is required"];
+            return;
+        } else if (city.length == 0) {
+            [self showAlert:@"Oops" message:@"City is required"];
+            return;
+        } else if (state.length == 0) {
+            [self showAlert:@"Oops" message:@"State is required"];
+            return;
+        }
+        
+        // Validating selected drink id exists
+        if (_selectedSpotType == nil && [_selectedSpotType objectForKey:@"id"] != nil) {
+            [[RavenClient sharedClient] captureMessage:@"Spot type nil when trying to create spo" level:kRavenLogLevelDebugError];
+            return;
+        }
+        NSNumber *spotTypeId = [_selectedSpotType objectForKey:@"id"];
+
+        NSDictionary *params = @{
+                                 kSpotModelParamName: name,
+                                 kSpotModelParamAddress: address,
+                                 kSpotModelParamCity: city,
+                                 kSpotModelParamState: state,
+                                 kSpotModelParamSpotTypeId: spotTypeId
+                                 };
+
+        // Send request to create spot
+        [self createSpot:params];
     }
     // Beer
     else if (_selectedReviewType == 1) {
@@ -448,6 +484,15 @@
         NSString *name = _txtBeerName.text;
         // TOOD: Need to do something with brewery
         NSString *style = _txtBeerStyle.text;
+        
+        // Form text field validations
+        if (name.length == 0) {
+            [self showAlert:@"Oops" message:@"Name is required"];
+            return;
+        } else if (style.length == 0) {
+            [self showAlert:@"Oops" message:@"Style is required"];
+            return;
+        }
         
         // Validating selected drink id exists
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
@@ -469,6 +514,12 @@
     // Cocktail
     else if (_selectedReviewType == 2) {
         NSString *name = _txtCocktailName.text;
+        
+        // Form text field validations
+        if (name.length == 0) {
+            [self showAlert:@"Oops" message:@"Name is required"];
+            return;
+        }
         
         // Validating selected drink id exists
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
@@ -500,6 +551,12 @@
         // TOOD: Need to do something with brewery
         NSString *name = _txtWineName.text;
         
+        // Form text field validations
+        if (varietal.length == 0) {
+            [self showAlert:@"Oops" message:@"Varietal is required"];
+            return;
+        }
+        
         // Validating selected drink id exists
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
         if (drinkType == nil && [drinkType objectForKey:@"id"] != nil) {
@@ -524,7 +581,19 @@
     
 }
 
-#pragma mark
+#pragma mark - Private - API Create
+
+- (void)createSpot:(NSDictionary*)params  {
+    
+    [self showHUD:@"Creating spot"];
+    [SpotModel postSpot:params success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
+        [self hideHUD];
+    } failure:^(ErrorModel *errorModel) {
+        [self hideHUD];
+        [self showAlert:@"Error creating drink" message:errorModel.human];
+    }];
+    
+}
 
 - (void)createDrink:(NSDictionary*)params  {
     
