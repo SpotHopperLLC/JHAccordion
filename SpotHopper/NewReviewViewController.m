@@ -496,7 +496,30 @@
     }
     // Wine
     else if (_selectedReviewType == 3) {
+        NSString *varietal = _txtWineStyle.text;
+        // TOOD: Need to do something with brewery
+        NSString *name = _txtWineName.text;
         
+        // Validating selected drink id exists
+        NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
+        if (drinkType == nil && [drinkType objectForKey:@"id"] != nil) {
+            [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create wine" level:kRavenLogLevelDebugError];
+            return;
+        }
+        NSNumber *drinkId = [drinkType objectForKey:@"id"];
+        
+        if (name.length == 0) {
+            name = varietal;
+        }
+        
+        NSDictionary *params = @{
+                                 kDrinkModelParamName: name,
+                                 kDrinkModelParamDrinkTypeId: drinkId,
+                                 kDrinkModelParamVarietal: varietal
+                                 };
+        
+        // Send request to create drink
+        [self createDrink:params];
     }
     
 }
