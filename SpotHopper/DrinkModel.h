@@ -10,6 +10,17 @@
 #define kDrinkModelParamsPageSize @"page_size"
 #define kDrinkModelParamQuery @"query"
 
+#define kDrinkModelParamName @"name"
+#define kDrinkModelParamDescription @"description"
+#define kDrinkModelParamABV @"abv"
+#define kDrinkModelParamStyle @"style"
+#define kDrinkModelParamVintage @"vintage"
+#define kDrinkModelParamReceipe @"receipe"
+#define kDrinkModelParamRegion @"region"
+#define kDrinkModelParamVarietal @"varietal"
+#define kDrinkModelParamDrinkTypeId @"drink_type_id"
+#define kDrinkModelParamDrinkSubtypeId @"drink_subtype_id"
+
 #define kDrinkModelMetaPage @"page"
 #define kDrinkModelMetaTotalRecords @"total_records"
 
@@ -37,6 +48,8 @@
 @property (nonatomic, strong) NSArray *sliderTemplates;
 
 + (Promise*)getDrinks:(NSDictionary*)params success:(void(^)(NSArray *drinkModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise*)postDrink:(NSDictionary*)params success:(void(^)(DrinkModel *drinkModel, JSONAPI *jsonAPI))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 - (NSString*)abvPercentString;
 

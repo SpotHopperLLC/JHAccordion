@@ -23,6 +23,8 @@
 #import "DropdownOptionCell.h"
 #import "ReviewSliderCell.h"
 
+#import "ErrorModel.h"
+
 #import "ACEAutocompleteBar.h"
 #import <JHAccordion/JHAccordion.h>
 
@@ -430,12 +432,86 @@
 - (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(float)value {
     NSIndexPath *indexPath = [_tblReviews indexPathForCell:cell];
     
-    NSLog(@"Value changed for row %d to %f", indexPath.row, value);
 }
 
 #pragma mark - Actions
 
 - (IBAction)onClickSubmit:(id)sender {
+    
+    // Spot
+    if (_selectedReviewType == 0) {
+        
+    }
+    // Beer
+    else if (_selectedReviewType == 1) {
+        
+        NSString *name = _txtBeerName.text;
+        // TOOD: Need to do something with brewery
+        NSString *style = _txtBeerStyle.text;
+        
+        // Validating selected drink id exists
+        NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
+        if (drinkType == nil && [drinkType objectForKey:@"id"] != nil) {
+            [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create beer" level:kRavenLogLevelDebugError];
+            return;
+        }
+        NSNumber *drinkId = [drinkType objectForKey:@"id"];
+        
+        NSDictionary *params = @{
+                                 kDrinkModelParamName: name,
+                                 kDrinkModelParamStyle: style,
+                                 kDrinkModelParamDrinkTypeId: drinkId
+                                 };
+        
+        // Send request to create drink
+        [self createDrink:params];
+    }
+    // Cocktail
+    else if (_selectedReviewType == 2) {
+        NSString *name = _txtCocktailName.text;
+        
+        // Validating selected drink id exists
+        NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
+        if (drinkType == nil && [drinkType objectForKey:@"id"] != nil) {
+            [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create cocktail" level:kRavenLogLevelDebugError];
+            return;
+        }
+        NSNumber *drinkId = [drinkType objectForKey:@"id"];
+        
+        // Validating selected drink subtype id exists
+        if (_selectedCocktailSubtype == nil && [_selectedCocktailSubtype objectForKey:@"id"] != nil) {
+            [[RavenClient sharedClient] captureMessage:@"Drink subtype nil when trying to create cocktail" level:kRavenLogLevelDebugError];
+            return;
+        }
+        NSNumber *drinkSubtypeId = [_selectedCocktailSubtype objectForKey:@"id"];
+        
+        NSDictionary *params = @{
+                                 kDrinkModelParamName: name,
+                                 kDrinkModelParamDrinkTypeId: drinkId,
+                                 kDrinkModelParamDrinkSubtypeId: drinkSubtypeId
+                                 };
+        
+        // Send request to create drink
+        [self createDrink:params];
+    }
+    // Wine
+    else if (_selectedReviewType == 3) {
+        
+    }
+    
+}
+
+#pragma mark
+
+- (void)createDrink:(NSDictionary*)params  {
+    
+    [self showHUD:@"Creating drink"];
+    [DrinkModel postDrink:params success:^(DrinkModel *drinkModel, JSONAPI *jsonAPI) {
+        [self hideHUD];
+    } failure:^(ErrorModel *errorModel) {
+        [self hideHUD];
+        [self showAlert:@"Error creating drink" message:errorModel.human];
+    }];
     
 }
 
