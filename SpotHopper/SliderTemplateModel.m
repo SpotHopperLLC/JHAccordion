@@ -18,15 +18,21 @@
 }
 
 - (NSString *)minLabel {
-    return [self objectForKey:@"min_label"];
+    if (_minLabel != nil) return _minLabel;
+    _minLabel = [self objectForKey:@"min_label"];
+    return _minLabel;
 }
 
 - (NSString *)maxLabel {
-    return [self objectForKey:@"max_label"];
+    if (_maxLabel != nil) return _maxLabel;
+    _maxLabel = [self objectForKey:@"max_label"];
+    return _maxLabel;
 }
 
 - (NSNumber *)defaultValue {
-    return [self objectForKey:@"default_value"];
+    if (_defaultValue != nil) return _defaultValue;
+    _defaultValue = [self objectForKey:@"default_value"];
+    return _defaultValue;
 }
 
 - (BOOL)required {

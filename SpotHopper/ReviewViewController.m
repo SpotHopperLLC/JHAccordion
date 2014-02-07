@@ -31,6 +31,7 @@
 
 @property (nonatomic, strong) UIView *headerContent;
 
+@property (nonatomic, strong) SliderModel *reviewRatingSlider;
 @property (nonatomic, strong) NSArray *sliderTemplates;
 @property (nonatomic, strong) NSMutableArray *sliders;
 
@@ -85,6 +86,8 @@
         _sliders = [NSMutableArray array];
     }
     
+    _reviewRatingSlider = [_review ratingSliderModel];
+    
     // Update view
     [self updateView];
 }
@@ -107,7 +110,9 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 1) {
+    if (section == 0) {
+        return ( _reviewRatingSlider == nil ? 0 : 1 );
+    } else if (section == 1) {
         return _sliderTemplates.count;
     }
     return 0;
@@ -115,7 +120,16 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (indexPath.section == 1) {
+    if (indexPath.section == 0) {
+        ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
+        [cell setDelegate:self];
+        NSLog(@"Slider - %@", _reviewRatingSlider);
+        NSLog(@"Slider template - %@", _reviewRatingSlider.sliderTemplate);
+        [cell setSliderTemplate:_reviewRatingSlider.sliderTemplate withSlider:_reviewRatingSlider];
+        
+        return cell;
+        
+    } else if (indexPath.section == 1) {
         SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
         SliderModel *slider = nil;
         if (indexPath.row < _sliders.count) {
@@ -177,23 +191,32 @@
 - (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(float)value {
     NSIndexPath *indexPath = [_tblReviews indexPathForCell:cell];
     
-    SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
-    SliderModel *slider = nil;
-    if (indexPath.row < _sliders.count) {
-        slider = [_sliders objectAtIndex:indexPath.row];
-    } else {
-        slider = [[SliderModel alloc] init];
-        [slider setSliderTemplate:sliderTemplate];
-        [_sliders addObject:slider];
+    if (indexPath.section == 0) {
+        [_reviewRatingSlider setValue:[NSNumber numberWithInt:ceil(value * 10)]];
+    } else if (indexPath.section == 1) {
+        SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
+        SliderModel *slider = nil;
+        if (indexPath.row < _sliders.count) {
+            slider = [_sliders objectAtIndex:indexPath.row];
+        } else {
+            slider = [[SliderModel alloc] init];
+            [slider setSliderTemplate:sliderTemplate];
+            [_sliders addObject:slider];
+        }
+        [slider setValue:[NSNumber numberWithInt:ceil(value * 10)]];
     }
-    [slider setValue:[NSNumber numberWithInt:ceil(value * 10)]];
-    
 }
 
 #pragma mark - Actions
 
 - (IBAction)onClickSubmit:(id)sender {
     if (_review != nil) {
+        
+        if (_reviewRatingSlider == nil) {
+            [_review setRating:@0];
+        } else {
+            [_review setRating:_reviewRatingSlider.value];
+        }
         
         // Submits changes for review
         [self showHUD:@"Updating"];
@@ -214,7 +237,11 @@
         _review = [[ReviewModel alloc] init];
         [_review setDrink:_drink];
         [_review setSpot:_spot];
-        [_review setRating:@5];
+        if (_reviewRatingSlider == nil) {
+            [_review setRating:@0];
+        } else {
+            [_review setRating:_reviewRatingSlider.value];
+        }
         [_review setSliders:_sliders];
         
         [self showHUD:@"Submitting"];

@@ -327,11 +327,14 @@
     // Sort
     if (_selectedSort == 0) {
         _reviewsFiltered = [_reviewsFiltered sortedArrayUsingComparator:^NSComparisonResult(ReviewModel *obj1, ReviewModel *obj2) {
-            return [obj1.createdAt compare:obj2.createdAt];
+            NSDate *obj1Date = ( obj1.updatedAt == nil ? obj1.createdAt : obj1.updatedAt );
+            NSDate *obj2Date = ( obj2.updatedAt == nil ? obj2.createdAt : obj2.updatedAt );
+            
+            return [obj2Date compare:obj1Date];
         }];
     } else if (_selectedSort == 1) {
         _reviewsFiltered = [_reviewsFiltered sortedArrayUsingComparator:^NSComparisonResult(ReviewModel *obj1, ReviewModel *obj2) {
-            return [obj1.rating compare:obj2.rating];
+            return [obj2.rating compare:obj1.rating];
         }];
     }
 }

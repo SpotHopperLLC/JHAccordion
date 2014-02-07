@@ -12,6 +12,7 @@
 
 @class DrinkModel;
 @class ErrorModel;
+@class SliderModel;
 @class SpotModel;
 @class UserModel;
 
@@ -31,10 +32,14 @@
 @property (nonatomic, strong) NSDate *createdAt;
 @property (nonatomic, strong) NSDate *updatedAt;
 
+@property (nonatomic, strong) SliderModel *ratingSliderModel;
+
 + (Promise*)getReviews:(NSDictionary*)params success:(void(^)(NSArray *reviewModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 - (Promise*)postReviews:(void(^)(ReviewModel *reviewModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 - (Promise*)putReviews:(void(^)(ReviewModel *reviewModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
++ (SliderModel*)ratingSliderModel;
 
 @end
