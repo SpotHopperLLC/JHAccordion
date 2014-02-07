@@ -123,7 +123,7 @@
     if (indexPath.section == 0) {
         ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
         [cell setDelegate:self];
-        [cell setSliderTemplate:_reviewRatingSlider.sliderTemplate withSlider:_reviewRatingSlider];
+        [cell setSliderTemplate:_reviewRatingSlider.sliderTemplate withSlider:_reviewRatingSlider showSliderValue:YES];
         
         return cell;
     } else if (indexPath.section == 1) {
@@ -135,7 +135,7 @@
         
         ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
         [cell setDelegate:self];
-        [cell setSliderTemplate:sliderTemplate withSlider:slider];
+        [cell setSliderTemplate:sliderTemplate withSlider:slider showSliderValue:NO];
         
         return cell;
     }

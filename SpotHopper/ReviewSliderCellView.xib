@@ -37,6 +37,13 @@
                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" id="CRC-nt-gsl" customClass="SHLabelLatoLight">
+                        <rect key="frame" x="95" y="48" width="130" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <color key="backgroundColor" red="0.93333333330000001" green="0.62745098040000002" blue="0.42745098040000001" alpha="1" colorSpace="calibratedRGB"/>
             </tableViewCellContentView>
@@ -44,6 +51,7 @@
             <connections>
                 <outlet property="lblMaximum" destination="SHq-za-0vq" id="NC0-Ht-zIH"/>
                 <outlet property="lblMnimum" destination="iw3-hG-afc" id="oUm-QU-fsz"/>
+                <outlet property="lblSliderValue" destination="CRC-nt-gsl" id="zqn-zB-zgn"/>
                 <outlet property="slider" destination="KDm-o5-TgH" id="lvo-xX-oFE"/>
             </connections>
         </tableViewCell>

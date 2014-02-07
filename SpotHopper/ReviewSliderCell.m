@@ -26,7 +26,7 @@
     // Configure the view for the selected state
 }
 
-- (void)setSliderTemplate:(SliderTemplateModel *)sliderTemplate withSlider:(SliderModel *)slider {
+- (void)setSliderTemplate:(SliderTemplateModel *)sliderTemplate withSlider:(SliderModel *)slider showSliderValue:(BOOL)show {
     // If a max label isn't defined, the min label gets set to the right hand side
     if (sliderTemplate.maxLabel.length > 0) {
         [_lblMnimum setText:sliderTemplate.minLabel];
@@ -42,6 +42,9 @@
         [_slider setSelectedValue:(slider.value.floatValue / 10.0f)];
     }
     
+    [_lblSliderValue setHidden:!show];
+    [_lblSliderValue setText:[[NSNumber numberWithInt:ceil(_slider.selectedValue * 10)] stringValue]];
+    
     [_slider addTarget:self action:@selector(onValueChangedSlider:) forControlEvents:UIControlEventValueChanged];
 }
 
@@ -52,6 +55,7 @@
 #pragma mark - Actions
 
 - (void)onValueChangedSlider:(id)sender {
+    [_lblSliderValue setText:[[NSNumber numberWithInt:ceil(_slider.selectedValue * 10)] stringValue]];
     if ([_delegate respondsToSelector:@selector(reviewSliderCell:changedValue:)]) {
         [_delegate reviewSliderCell:self changedValue:_slider.selectedValue];
     }
