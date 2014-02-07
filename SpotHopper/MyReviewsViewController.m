@@ -39,6 +39,9 @@
 @property (nonatomic, assign) NSInteger selectedSort;
 
 @property (nonatomic, strong) NSMutableArray *reviews;
+@property (nonatomic, strong) NSArray *reviewsFiltered;
+
+@property (nonatomic, assign) CGRect tblReviewsInitialFrame;
 
 @end
 
@@ -72,9 +75,13 @@
     [_tblReviews registerNib:[UINib nibWithNibName:@"ReviewCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ReviewCell"];
     [_tblReviews registerNib:[UINib nibWithNibName:@"DropdownOptionCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"DropdownOptionCell"];
     
+    // Configures text search
+    [_txtSearch addTarget:self action:@selector(onEditingChangeSearch:) forControlEvents:UIControlEventEditingChanged];
+    
     // Initializes states
     _selectedFilter = 0;
     _selectedSort = 0;
+    _tblReviewsInitialFrame = CGRectZero;
     
     // Fetch reviews
     [self fetchReviews];
@@ -86,6 +93,15 @@
     // Deselects table row
     [_tblReviews deselectRowAtIndexPath:_tblReviews.indexPathForSelectedRow animated:NO];
     
+    // Gets table frame
+    if (CGRectEqualToRect(_tblReviewsInitialFrame, CGRectZero)) {
+        _tblReviewsInitialFrame = _tblReviews.frame;
+    }
+    
+    // Keyboard notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    
     // Adds contextual footer view
     [self addFooterViewController:^(FooterViewController *footerViewController) {
         [footerViewController showHome:YES];
@@ -96,6 +112,42 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Keyboard
+
+- (NSArray *)textfieldToHideKeyboard {
+    return @[_txtSearch];
+}
+
+- (void)keyboardWillShow:(NSNotification*)notification {
+    [self keyboardWillHideOrShow:notification show:YES];
+}
+
+- (void)keyboardWillHide:(NSNotification*)notification {
+    [self keyboardWillHideOrShow:notification show:NO];
+}
+
+- (void)keyboardWillHideOrShow:(NSNotification*)notification show:(BOOL)show {
+    NSDictionary *userInfo = notification.userInfo;
+    NSTimeInterval duration = [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve curve = [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+    
+    CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    CGRect frame = _tblReviews.frame;
+    if (show == YES) {
+        frame.size.height = CGRectGetHeight(self.view.frame) - CGRectGetMinY(frame) - CGRectGetHeight(keyboardFrame);
+        if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
+            frame.size.height -= 20.0f;
+        }
+    } else {
+        frame = _tblReviewsInitialFrame;
+    }
+    
+    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | curve animations:^{
+        [_tblReviews setFrame:frame];
+    } completion:nil];
 }
 
 #pragma mark - UITableViewDataSource
@@ -110,7 +162,7 @@
     } else if (section == 1) {
         return kSorts.count;
     } else if (section == 2) {
-        return _reviews.count;
+        return _reviewsFiltered.count;
     }
     return 0;
 }
@@ -134,7 +186,7 @@
         return cell;
 
     } else if (indexPath.section == 2) {
-        ReviewModel *review = [_reviews objectAtIndex:indexPath.row];
+        ReviewModel *review = [_reviewsFiltered objectAtIndex:indexPath.row];
         
         ReviewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewCell" forIndexPath:indexPath];
         [cell setReview:review];
@@ -162,7 +214,7 @@
         [_accordion closeSection:indexPath.section];
         [_tblReviews deselectRowAtIndexPath:indexPath animated:NO];
     } else if (indexPath.section == 2) {
-        ReviewModel *review = [_reviews objectAtIndex:indexPath.row];
+        ReviewModel *review = [_reviewsFiltered objectAtIndex:indexPath.row];
         [self goToReview:review];
     }
     
@@ -209,7 +261,15 @@
 }
 
 - (void)accordionClosedSection:(NSInteger)section {
-    
+    [self updateFilter];
+    [_tblReviews reloadData];
+}
+
+#pragma mark - Actions
+
+- (void)onEditingChangeSearch:(id)sender {
+    [self updateFilter];
+    [_tblReviews reloadData];
 }
 
 #pragma mark - Private - API
@@ -222,9 +282,9 @@
         
         if (_reviews == nil) _reviews = [NSMutableArray array];
         
-        [_reviews removeAllObjects];
         [_reviews addObjectsFromArray:reviewModels];
         
+        [self updateFilter];
         [_tblReviews reloadData];
         
     } failure:^(ErrorModel *errorModel) {
@@ -234,6 +294,50 @@
 }
 
 #pragma mark - Private - UI
+
+- (void)updateFilter {
+    
+    // All
+    if (_selectedFilter == 0) {
+        _reviewsFiltered = [NSArray arrayWithArray:_reviews];
+    }
+    // Spots
+    else if (_selectedFilter == 1) {
+        _reviewsFiltered = [_reviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"spot != NULL"]];
+    }
+    // Beers
+    else if (_selectedFilter == 2) {
+        _reviewsFiltered = [_reviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"drink.drinkType.name ==[c] %@", kDrinkTypeNameBeer]];
+    }
+    // Cocktails
+    else if (_selectedFilter == 3) {
+        _reviewsFiltered = [_reviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"drink.drinkType.name ==[c] %@", kDrinkTypeNameCocktail]];
+    }
+    // Wines
+    else if (_selectedFilter == 4) {
+        _reviewsFiltered = [_reviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"drink.drinkType.name ==[c] %@", kDrinkTypeNameWine]];
+    }
+    
+    // Searches for query
+    NSString *query = _txtSearch.text;
+    if (query.length > 0) {
+        _reviewsFiltered = [_reviewsFiltered filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"drink.name CONTAINS[cd] %@ OR spot.name CONTAINS[c] %@", query, query]];
+    }
+    
+    // Sort
+    if (_selectedSort == 0) {
+        _reviewsFiltered = [_reviewsFiltered sortedArrayUsingComparator:^NSComparisonResult(ReviewModel *obj1, ReviewModel *obj2) {
+            NSDate *obj1Date = ( obj1.updatedAt == nil ? obj1.createdAt : obj1.updatedAt );
+            NSDate *obj2Date = ( obj2.updatedAt == nil ? obj2.createdAt : obj2.updatedAt );
+            
+            return [obj2Date compare:obj1Date];
+        }];
+    } else if (_selectedSort == 1) {
+        _reviewsFiltered = [_reviewsFiltered sortedArrayUsingComparator:^NSComparisonResult(ReviewModel *obj1, ReviewModel *obj2) {
+            return [obj2.rating compare:obj1.rating];
+        }];
+    }
+}
 
 - (SectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
     if (section == 0) {

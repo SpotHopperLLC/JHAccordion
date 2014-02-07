@@ -15,6 +15,7 @@
 + (Mockery*)startTheMockery;
 
 + (NSDictionary*)drinkForId:(NSNumber*)ID withLinks:(NSDictionary*)links;
++ (NSDictionary*)drinkTypeForId:(NSNumber*)ID withLinks:(NSDictionary*)links;
 + (NSDictionary*)sliderForId:(NSNumber*)ID withLinks:(NSDictionary*)links;
 + (NSDictionary*)sliderTemplateForId:(NSNumber*)ID withLinks:(NSDictionary*)links;
 + (NSDictionary*)spotForId:(NSNumber*)ID withLinks:(NSDictionary*)links;

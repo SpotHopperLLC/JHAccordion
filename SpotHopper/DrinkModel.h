@@ -10,6 +10,17 @@
 #define kDrinkModelParamsPageSize @"page_size"
 #define kDrinkModelParamQuery @"query"
 
+#define kDrinkModelParamName @"name"
+#define kDrinkModelParamDescription @"description"
+#define kDrinkModelParamABV @"abv"
+#define kDrinkModelParamStyle @"style"
+#define kDrinkModelParamVintage @"vintage"
+#define kDrinkModelParamReceipe @"receipe"
+#define kDrinkModelParamRegion @"region"
+#define kDrinkModelParamVarietal @"varietal"
+#define kDrinkModelParamDrinkTypeId @"drink_type_id"
+#define kDrinkModelParamDrinkSubtypeId @"drink_subtype_id"
+
 #define kDrinkModelMetaPage @"page"
 #define kDrinkModelMetaTotalRecords @"total_records"
 
@@ -18,14 +29,14 @@
 #import <JSONAPI/JSONAPI.h>
 
 @class ErrorModel;
+@class DrinkTypeModel;
 @class SpotModel;
 
 @interface DrinkModel : SHJSONAPIResource
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *imageUrl;
-@property (nonatomic, strong) NSString *type;
-@property (nonatomic, strong) NSString *subtype;
+@property (nonatomic, strong) DrinkTypeModel *drinkType;
 @property (nonatomic, strong) NSString *descriptionOfDrink;
 @property (nonatomic, strong) NSNumber *abv;
 @property (nonatomic, strong) NSString *style;
@@ -37,6 +48,8 @@
 @property (nonatomic, strong) NSArray *sliderTemplates;
 
 + (Promise*)getDrinks:(NSDictionary*)params success:(void(^)(NSArray *drinkModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise*)postDrink:(NSDictionary*)params success:(void(^)(DrinkModel *drinkModel, JSONAPI *jsonAPI))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 - (NSString*)abvPercentString;
 

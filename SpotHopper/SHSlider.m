@@ -95,6 +95,7 @@
 	self.minimumValue = 0.0f;
 	self.maximumValue = 1.0f;
 	self.selectedValue = 0.25f;
+    self.valueSnapToInterval = 0.1;
     
     [_minThumb setClipsToBounds:NO];
     [self setClipsToBounds:NO];
@@ -112,9 +113,6 @@
 
 - (float)valueForX:(float)x
 {
-	if (self.valueSnapToInterval) {
-		x = roundf(x / self.valueSnapToInterval) * self.valueSnapToInterval;
-	}
 	return _minimumValue + (x - _padding) / (self.frame.size.width - (_padding * 2.0)) * (_maximumValue - _minimumValue);
 }
 
@@ -127,7 +125,8 @@
 	CGPoint touchPoint = [touch locationInView:self];
     
 	if (_minThumbOn) {
-		_minThumb.center = CGPointMake(MAX([self xForValue:_minimumValue], MIN(touchPoint.x - _distanceFromCenter, [self xForValue:_maximumValue])), _minThumb.center.y);
+        CGFloat x = MAX([self xForValue:_minimumValue], MIN(touchPoint.x - _distanceFromCenter, [self xForValue:_maximumValue]));
+		_minThumb.center = CGPointMake(x, _minThumb.center.y);
 		_selectedValue = [self valueForX:_minThumb.center.x];
 	}
     

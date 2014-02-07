@@ -41,7 +41,11 @@
     }
     
     // Sets review rating
-    [_lblRating setText:[NSString stringWithFormat:@"%d/10", review.rating.integerValue]];
+    if (review.spot != nil) {
+        [_lblRating setText:[review.spot cityState]];
+    } else {
+        [_lblRating setText:[NSString stringWithFormat:@"%d/10", review.rating.integerValue]];
+    }
 }
 
 @end

@@ -11,6 +11,7 @@
 #import "UIView+ViewFromNib.h"
 
 #import "ReviewSliderCell.h"
+#import "SHLabelLatoLight.h"
 
 #import "DrinkModel.h"
 #import "ErrorModel.h"
@@ -22,14 +23,15 @@
 @interface ReviewViewController ()<UITableViewDataSource, UITableViewDelegate, ReviewSliderCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgImage;
-@property (weak, nonatomic) IBOutlet UILabel *lblTitle;
-@property (weak, nonatomic) IBOutlet UILabel *lblSubTitle;
-@property (weak, nonatomic) IBOutlet UILabel *lblSubSubTitle;
+@property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblTitle;
+@property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblSubTitle;
+@property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblSubSubTitle;
 
 @property (weak, nonatomic) IBOutlet UITableView *tblReviews;
 
 @property (nonatomic, strong) UIView *headerContent;
 
+@property (nonatomic, strong) SliderModel *reviewRatingSlider;
 @property (nonatomic, strong) NSArray *sliderTemplates;
 @property (nonatomic, strong) NSMutableArray *sliders;
 
@@ -59,6 +61,7 @@
     // Configures table
     [_tblReviews setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
     [_tblReviews registerNib:[UINib nibWithNibName:@"ReviewSliderCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ReviewSliderCell"];
+    [_tblReviews setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 65.0f, 0.0f)];
     
     // Configure table header
     // Header content view
@@ -83,6 +86,8 @@
         _sliders = [NSMutableArray array];
     }
     
+    _reviewRatingSlider = [_review ratingSliderModel];
+    
     // Update view
     [self updateView];
 }
@@ -101,26 +106,41 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _sliderTemplates.count;
+    if (section == 0) {
+        return ( _reviewRatingSlider == nil ? 0 : 1 );
+    } else if (section == 1) {
+        return _sliderTemplates.count;
+    }
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
-    SliderModel *slider = nil;
-    if (indexPath.row < _sliders.count) {
-        slider = [_sliders objectAtIndex:indexPath.row];
+    if (indexPath.section == 0) {
+        ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
+        [cell setDelegate:self];
+        [cell setSliderTemplate:_reviewRatingSlider.sliderTemplate withSlider:_reviewRatingSlider showSliderValue:YES];
+        
+        return cell;
+    } else if (indexPath.section == 1) {
+        SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
+        SliderModel *slider = nil;
+        if (indexPath.row < _sliders.count) {
+            slider = [_sliders objectAtIndex:indexPath.row];
+        }
+        
+        ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
+        [cell setDelegate:self];
+        [cell setSliderTemplate:sliderTemplate withSlider:slider showSliderValue:NO];
+        
+        return cell;
     }
     
-    ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
-    [cell setDelegate:self];
-    [cell setSliderTemplate:sliderTemplate withSlider:slider];
-    
-    return cell;
+    return nil;
 }
 
 #pragma mark - UITableViewDelegate
@@ -130,30 +150,37 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UILabel *view = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(tableView.frame), 40.0f)];
-    [view setBackgroundColor:kColorOrangeLight];
-    
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 1.0f, CGRectGetWidth(tableView.frame)-20.0f, 30.f)];
-    [label setBackgroundColor:[UIColor clearColor]];
-    [label setTextColor:[UIColor whiteColor]];
-    [label setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
-    [label setMinimumScaleFactor:0.5f];
-    [label setAdjustsFontSizeToFitWidth:YES];
-    [label setNumberOfLines:1];
-    
-    if (_drink != nil) {
-        [label setText:[NSString stringWithFormat:@"I thought %@ was...", _drink.name]];
-    } else if (_spot != nil) {
-        [label setText:[NSString stringWithFormat:@"I thought %@ was...", _spot.name]];
+    if (section == 0) {
+        UILabel *view = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(tableView.frame), 40.0f)];
+        [view setBackgroundColor:kColorOrangeLight];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 1.0f, CGRectGetWidth(tableView.frame)-20.0f, 30.f)];
+        [label setBackgroundColor:[UIColor clearColor]];
+        [label setTextColor:[UIColor whiteColor]];
+        [label setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
+        [label setMinimumScaleFactor:0.5f];
+        [label setAdjustsFontSizeToFitWidth:YES];
+        [label setNumberOfLines:1];
+        
+        if (_drink != nil) {
+            [label setText:[NSString stringWithFormat:@"I thought %@ was...", _drink.name]];
+        } else if (_spot != nil) {
+            [label setText:[NSString stringWithFormat:@"I thought %@ was...", _spot.name]];
+        }
+        
+        [view addSubview:label];
+        
+        return view;
     }
     
-    [view addSubview:label];
-    
-    return view;
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 40.0f;
+    if (section == 0) {
+        return 40.0f;
+    }
+    return 0.0f;
 }
 
 #pragma mark - ReviewSliderCellDelegate
@@ -161,23 +188,24 @@
 - (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(float)value {
     NSIndexPath *indexPath = [_tblReviews indexPathForCell:cell];
     
-    SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
-    SliderModel *slider = nil;
-    if (indexPath.row < _sliders.count) {
-        slider = [_sliders objectAtIndex:indexPath.row];
-    } else {
-        slider = [[SliderModel alloc] init];
-        [slider setSliderTemplate:sliderTemplate];
-        [_sliders addObject:slider];
+    if (indexPath.section == 0) {
+        [_reviewRatingSlider setValue:[NSNumber numberWithFloat:(value * 10)]];
+    } else if (indexPath.section == 1) {
+        SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
+        [slider setValue:[NSNumber numberWithFloat:(value * 10.0f)]];
     }
-    [slider setValue:[NSNumber numberWithInt:ceil(value * 10)]];
-    
 }
 
 #pragma mark - Actions
 
 - (IBAction)onClickSubmit:(id)sender {
     if (_review != nil) {
+        
+        if (_reviewRatingSlider == nil) {
+            [_review setRating:@0];
+        } else {
+            [_review setRating:_reviewRatingSlider.value];
+        }
         
         // Submits changes for review
         [self showHUD:@"Updating"];
@@ -198,7 +226,11 @@
         _review = [[ReviewModel alloc] init];
         [_review setDrink:_drink];
         [_review setSpot:_spot];
-        [_review setRating:@5];
+        if (_reviewRatingSlider == nil) {
+            [_review setRating:@0];
+        } else {
+            [_review setRating:_reviewRatingSlider.value];
+        }
         [_review setSliders:_sliders];
         
         [self showHUD:@"Submitting"];
@@ -222,8 +254,20 @@
     if (_drink != nil) {
         [_imgImage setImageWithURL:[NSURL URLWithString:_drink.imageUrl]];
         
+        // Removing an italics
+        [_lblSubSubTitle italic:NO];
+        
+        // Sets title
         [_lblTitle setText:_drink.name];
-        [_lblSubTitle setText:_drink.spot.name];
+        
+        // Sets brewery/winery
+        if (_drink.spot.name.length > 0) {
+            [_lblSubTitle setText:_drink.spot.name];
+        } else {
+            
+        }
+        
+        // Sets ABV and stuff
         if (_drink.style.length > 0 && _drink.abv.floatValue > 0) {
             [_lblSubSubTitle setText:[NSString stringWithFormat:@"%@ - %@ ABV", _drink.style, _drink.abvPercentString]];
         } else if (_drink.style.length > 0) {
@@ -231,7 +275,8 @@
         } else if (_drink.abv.floatValue > 0) {
             [_lblSubSubTitle setText:[NSString stringWithFormat:@"%@ ABV", _drink.abvPercentString]];
         } else {
-            [_lblSubSubTitle setText:@""];
+            [_lblSubSubTitle italic:YES];
+            [_lblSubSubTitle setText:@"No style or ABV"];
         }
     } else if (_spot != nil) {
         [_imgImage setImageWithURL:[NSURL URLWithString:_spot.imageUrl]];

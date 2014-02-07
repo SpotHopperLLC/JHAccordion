@@ -137,8 +137,6 @@
                  @"id": @1,
                  @"name": @"Boobs and Billiards Scotch",
                  @"image_url" : @"http://placekitten.com/300/300",
-                 @"type": @"spirit",
-                 @"subtype": @"scotch",
                  @"description": @"Super premium breasts and pool balls scotch which reeks of upper crust.",
                  @"abv": @0.9,
                  @"style": @"IPA",
@@ -146,6 +144,17 @@
                  @"region": @"Your mom's butt",
                  @"recipe": @"1 part boobs\n1part billiards",
                  @"links" : links
+                 };
+    }
+    return nil;
+}
+
++ (NSDictionary*)drinkTypeForId:(NSNumber*)ID withLinks:(NSDictionary*)links {
+    if (links == nil) links = @{};
+    if (ID.intValue == 1) {
+        return @{
+                 @"id": @1,
+                 @"name": @"Beer"
                  };
     }
     return nil;

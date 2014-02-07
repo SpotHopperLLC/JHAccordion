@@ -12,6 +12,13 @@
 #define kSpotModelParamLatitude @"latitude"
 #define kSpotModelParamLongitude @"longitude"
 
+#define kSpotModelParamName @"name"
+#define kSpotModelParamAddress @"address"
+#define kSpotModelParamCity @"city"
+#define kSpotModelParamState @"state"
+#define kSpotModelParamZip @"zip"
+#define kSpotModelParamSpotTypeId @"spot_type_id"
+
 #define kSpotModelMetaPage @"page"
 #define kSpotModelMetaTotalRecords @"total_records"
 
@@ -29,12 +36,19 @@
 @property (nonatomic, strong) NSString *imageUrl;
 @property (nonatomic, strong) NSString *type;
 @property (nonatomic, strong) NSString *address;
+@property (nonatomic, strong) NSString *city;
+@property (nonatomic, strong) NSString *state;
+@property (nonatomic, strong) NSString *zip;
 @property (nonatomic, strong) NSString *phoneNumber;
 @property (nonatomic, strong) NSArray *hoursOfOperation; // Returns array (7 in size, SMTWTFS) of arrays (2 in size, open to close)
 @property (nonatomic, strong) NSNumber *latitude;
 @property (nonatomic, strong) NSNumber *longitude;
 @property (nonatomic, strong) NSArray *sliderTemplates;
 
+- (NSString*)cityState;
+
 + (Promise*)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise*)postSpot:(NSDictionary*)params success:(void(^)(SpotModel *spotModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 @end

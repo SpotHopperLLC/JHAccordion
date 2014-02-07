@@ -68,6 +68,8 @@
                              @"sliders" : jsonSliders
                              };
     
+    NSLog(@"Post Review Params - %@", params);
+    
     [[ClientSessionManager sharedClient] POST:@"/api/reviews" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI
@@ -109,6 +111,8 @@
                              @"rating" : self.rating,
                              @"sliders" : jsonSliders
                              };
+    
+    NSLog(@"Put Review Params - %@", params);
     
     [[ClientSessionManager sharedClient] PUT:[NSString stringWithFormat:@"/api/reviews/%d", self.ID.integerValue] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -160,7 +164,9 @@
 }
 
 - (NSNumber *)rating {
-    return [self objectForKey:@"rating"];
+    if (_rating != nil) return _rating;
+    _rating = [self objectForKey:@"rating"];
+    return _rating;
 }
 
 - (NSArray *)sliders {
@@ -173,6 +179,41 @@
 
 - (NSDate *)updatedAt {
     return [self formatDateTimestamp:[self objectForKey:@"updated_at"]];
+}
+
+#pragma mark - SliderModel for rating
+
+// Creates a slider model for review
++ (SliderModel *)ratingSliderModel {
+    SliderTemplateModel *sliderTemplateModel = [[SliderTemplateModel alloc] init];
+    [sliderTemplateModel setMinLabel:@"Rating"];
+    [sliderTemplateModel setDefaultValue:@5];
+    
+    SliderModel *sliderModel = [[SliderModel alloc] init];
+    [sliderModel setSliderTemplate:sliderTemplateModel];
+    
+    return sliderModel;
+}
+
+- (SliderModel *)ratingSliderModel {
+    // Don't create rating slider model if spot
+    if (_spot != nil) {
+        return nil;
+    }
+    
+    // Creates rating slider model if doesn't exist yet
+    if (_ratingSliderModel == nil) {
+        _ratingSliderModel = [ReviewModel ratingSliderModel];
+        
+        // Sets rating
+        if (_rating != nil) {
+            [_ratingSliderModel setValue:_rating];
+        } else {
+            [_ratingSliderModel setValue:@5];
+        }
+    }
+    
+    return _ratingSliderModel;
 }
 
 @end
