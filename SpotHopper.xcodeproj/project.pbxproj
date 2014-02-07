@@ -34,6 +34,7 @@
 		03412C3E18805693000F16A8 /* ErrorModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03412C3D18805693000F16A8 /* ErrorModel.m */; };
 		03412C411882F6EC000F16A8 /* SHJSONAPIResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 03412C401882F6EC000F16A8 /* SHJSONAPIResource.m */; };
 		037D13A218A3DF8500B89535 /* DrinkTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 037D13A118A3DF8500B89535 /* DrinkTypeModel.m */; };
+		037D13A618A450DB00B89535 /* CLGeocoder+DoubleLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 037D13A518A450DB00B89535 /* CLGeocoder+DoubleLookup.m */; };
 		03866467186D352400985CEC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03866466186D352400985CEC /* Foundation.framework */; };
 		03866469186D352400985CEC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03866468186D352400985CEC /* CoreGraphics.framework */; };
 		0386646B186D352400985CEC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0386646A186D352400985CEC /* UIKit.framework */; };
@@ -292,6 +293,8 @@
 		03412C401882F6EC000F16A8 /* SHJSONAPIResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHJSONAPIResource.m; sourceTree = "<group>"; };
 		037D13A018A3DF8500B89535 /* DrinkTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkTypeModel.h; sourceTree = "<group>"; };
 		037D13A118A3DF8500B89535 /* DrinkTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkTypeModel.m; sourceTree = "<group>"; };
+		037D13A418A450DB00B89535 /* CLGeocoder+DoubleLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLGeocoder+DoubleLookup.h"; sourceTree = "<group>"; };
+		037D13A518A450DB00B89535 /* CLGeocoder+DoubleLookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CLGeocoder+DoubleLookup.m"; sourceTree = "<group>"; };
 		03866463186D352400985CEC /* SpotHopper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotHopper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03866466186D352400985CEC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		03866468186D352400985CEC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -652,6 +655,15 @@
 			name = CustomViews;
 			sourceTree = "<group>";
 		};
+		037D13A318A450C000B89535 /* DoubleGeocoder */ = {
+			isa = PBXGroup;
+			children = (
+				037D13A418A450DB00B89535 /* CLGeocoder+DoubleLookup.h */,
+				037D13A518A450DB00B89535 /* CLGeocoder+DoubleLookup.m */,
+			);
+			path = DoubleGeocoder;
+			sourceTree = "<group>";
+		};
 		0386645A186D352400985CEC = {
 			isa = PBXGroup;
 			children = (
@@ -796,6 +808,7 @@
 		038664A1186D370E00985CEC /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				037D13A318A450C000B89535 /* DoubleGeocoder */,
 				039B9FFF188EB9AB001AF1B9 /* ACEAutocompleteBar */,
 				039B700A188723EB00C590F8 /* Mockery */,
 				038664E3186D37BC00985CEC /* JHTableViewPullRefresh */,
@@ -1650,6 +1663,7 @@
 				03CA72D0187DF43B00815284 /* NewReviewViewController.m in Sources */,
 				03CA726E187B53DA00815284 /* MyReviewsViewController.m in Sources */,
 				038664D7186D376900985CEC /* UILabelRockwell.m in Sources */,
+				037D13A618A450DB00B89535 /* CLGeocoder+DoubleLookup.m in Sources */,
 				038664D1186D376900985CEC /* UIImage+Alpha.m in Sources */,
 				03F2D95318722FB700C69576 /* SHNavigationController.m in Sources */,
 				03CA72D8187DFCC200815284 /* UIView+ViewFromNib.m in Sources */,
@@ -1795,7 +1809,7 @@
 				INFOPLIST_FILE = "SpotHopper/SpotHopper-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "D98E1015-7F90-4B46-B608-B8D91E8E0479";
+				PROVISIONING_PROFILE = "71737B72-4F09-4179-8AA1-475735EAAA8B";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1813,7 +1827,7 @@
 				INFOPLIST_FILE = "SpotHopper/SpotHopper-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "D98E1015-7F90-4B46-B608-B8D91E8E0479";
+				PROVISIONING_PROFILE = "71737B72-4F09-4179-8AA1-475735EAAA8B";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

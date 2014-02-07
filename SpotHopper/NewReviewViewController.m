@@ -11,6 +11,7 @@
 
 #import "MyReviewsViewController.h"
 
+#import "CLGeocoder+DoubleLookup.h"
 #import "NSString+Common.h"
 #import "UIView+ViewFromNib.h"
 #import "UIViewController+Navigator.h"
@@ -453,6 +454,7 @@
     
     // Spot
     if (_selectedReviewType == 0) {
+        
         NSString *name = _txtSpotName.text;
         NSString *address = _txtSpotAddress.text;
         NSString *city = _txtSpotAddress.text;
@@ -479,17 +481,31 @@
             return;
         }
         NSNumber *spotTypeId = [_selectedSpotType objectForKey:@"id"];
+        
+        // Looks up zip code from address, city, and state
+        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+        [geocoder doubleGeocodeAddressDictionary:@{ @"Address" : address, @"City" : city, @"State" : state } completionHandler:^(NSArray *placemarks, NSError *error) {
+            CLPlacemark *placemark = placemarks.firstObject;
+            if (error || placemark == nil) {
+                [self showAlert:@"Oops" message:@"Could not get zip code based on address, city, and state"];
+                return;
+            }
+            
+            NSString *zipCode = placemark.postalCode;
+                
+            NSDictionary *params = @{
+                                     kSpotModelParamName: name,
+                                     kSpotModelParamAddress: address,
+                                     kSpotModelParamCity: city,
+                                     kSpotModelParamState: state,
+                                     kSpotModelParamZip : zipCode,
+                                     kSpotModelParamSpotTypeId: spotTypeId
+                                     };
+            
+            // Send request to create spot
+            [self createSpot:params];
 
-        NSDictionary *params = @{
-                                 kSpotModelParamName: name,
-                                 kSpotModelParamAddress: address,
-                                 kSpotModelParamCity: city,
-                                 kSpotModelParamState: state,
-                                 kSpotModelParamSpotTypeId: spotTypeId
-                                 };
-
-        // Send request to create spot
-        [self createSpot:params];
+        }];
     }
     // Beer
     else if (_selectedReviewType == 1) {

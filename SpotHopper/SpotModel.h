@@ -16,6 +16,7 @@
 #define kSpotModelParamAddress @"address"
 #define kSpotModelParamCity @"city"
 #define kSpotModelParamState @"state"
+#define kSpotModelParamZip @"zip"
 #define kSpotModelParamSpotTypeId @"spot_type_id"
 
 #define kSpotModelMetaPage @"page"
