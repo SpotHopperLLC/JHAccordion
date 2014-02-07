@@ -457,15 +457,10 @@
         [_reviewRatingSlider setValue:[NSNumber numberWithFloat:(value * 10)]];
     } else if (indexPath.section == 1) {
         SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
-        SliderModel *slider = nil;
-        if (indexPath.row < _sliders.count) {
-            slider = [_sliders objectAtIndex:indexPath.row];
-        } else {
-            slider = [[SliderModel alloc] init];
-            [slider setSliderTemplate:sliderTemplate];
-            [_sliders addObject:slider];
-        }
+        SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
         [slider setValue:[NSNumber numberWithFloat:(value * 10)]];
+        
+        NSLog(@"Changed value on slider template id - %@", sliderTemplate.ID);
     }
 }
 
@@ -504,6 +499,7 @@
         NSNumber *spotTypeId = [_selectedSpotType objectForKey:@"id"];
         
         // Looks up zip code from address, city, and state
+        [self showHUD:@"Verifying address"];
         CLGeocoder *geocoder = [[CLGeocoder alloc] init];
         [geocoder doubleGeocodeAddressDictionary:@{ @"Address" : address, @"City" : city, @"State" : state } completionHandler:^(NSArray *placemarks, NSError *error) {
             CLPlacemark *placemark = placemarks.firstObject;
@@ -524,6 +520,7 @@
                                      };
             
             // Send request to create spot
+            [self hideHUD];
             [self createSpot:params];
 
         }];
@@ -768,6 +765,14 @@
         [SliderTemplateModel getSliderTemplates:params success:^(NSArray *sliderTemplates, JSONAPI *jsonApi) {
             [self hideHUD];
             _sliderTemplates = sliderTemplates;
+            
+            [_sliders removeAllObjects];
+            for (SliderTemplateModel *sliderTemplate in _sliderTemplates) {
+                SliderModel *slider = [[SliderModel alloc] init];
+                [slider setSliderTemplate:sliderTemplate];
+                [_sliders addObject:slider];
+            }
+            
             NSLog(@"Slider templates - %@", sliderTemplates);
             [_tblReviews reloadData];
         } failure:^(ErrorModel *errorModel) {

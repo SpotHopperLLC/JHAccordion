@@ -191,18 +191,8 @@
     if (indexPath.section == 0) {
         [_reviewRatingSlider setValue:[NSNumber numberWithFloat:(value * 10)]];
     } else if (indexPath.section == 1) {
-        SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
-        SliderModel *slider = nil;
-        if (indexPath.row < _sliders.count) {
-            slider = [_sliders objectAtIndex:indexPath.row];
-        } else {
-            slider = [[SliderModel alloc] init];
-            [slider setSliderTemplate:sliderTemplate];
-            [_sliders addObject:slider];
-        }
-        NSLog(@"Value - %f", value);
+        SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
         [slider setValue:[NSNumber numberWithFloat:(value * 10.0f)]];
-        NSLog(@"Slider Value - %f", slider.value.floatValue);
     }
 }
 
