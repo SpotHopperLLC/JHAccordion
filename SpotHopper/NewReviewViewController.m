@@ -650,7 +650,7 @@
         
         [self hideHUD];
         [self showHUDCompleted:@"Saved!" block:^{
-            [self goToReview:review];
+            [self.navigationController popViewControllerAnimated:YES];
         }];
         
     } failure:^(ErrorModel *errorModel) {
