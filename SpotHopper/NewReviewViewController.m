@@ -48,6 +48,7 @@
 @property (nonatomic, strong) DrinkModel *createdDrink;
 @property (nonatomic, strong) SpotModel *createdSpot;
 
+@property (nonatomic, strong) SliderModel *reviewRatingSlider;
 @property (nonatomic, strong) NSArray *sliderTemplates;
 @property (nonatomic, strong) NSMutableArray *sliders;
 
@@ -122,6 +123,7 @@
     _selectedReviewType = -1;
     _tblReviewsInitalFrame = CGRectZero;
     _sliders = [NSMutableArray array];
+    _reviewRatingSlider = [ReviewModel ratingSliderModel];
     
     [self fetchFormData];
 }
@@ -196,7 +198,12 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    if (tableView == _tblReviewTypes) {
+        return 1;
+    } else if (tableView == _tblReviews) {
+        return 2;
+    }
+    return 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -206,6 +213,10 @@
         }
     } else if (tableView == _tblReviews) {
         if (section == 0) {
+            if (_selectedReviewType > 0) {
+                return 1;
+            }
+        } else if (section == 1) {
             return _sliderTemplates.count;
         }
     }
@@ -223,7 +234,13 @@
             return cell;
         }
     } else if (tableView == _tblReviews) {
-         if (indexPath.section == 0) {
+        if (indexPath.section == 0) {
+            ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
+            [cell setDelegate:self];
+            [cell setSliderTemplate:_reviewRatingSlider.sliderTemplate withSlider:_reviewRatingSlider];
+            
+            return cell;
+        } else if (indexPath.section == 1) {
             
             SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
             SliderModel *slider = nil;
@@ -292,7 +309,7 @@
             return ( [_accordion isSectionOpened:indexPath.section] ? 44.0f : 0.0f);
         }
     } else if (tableView == _tblReviews) {
-        if (indexPath.section == 0) {
+        if (indexPath.section == 0 || indexPath.section == 1) {
             if (_selectedReviewType >= 0) {
                 return 77.0f;
             }
@@ -436,16 +453,20 @@
 - (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(float)value {
     NSIndexPath *indexPath = [_tblReviews indexPathForCell:cell];
     
-    SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
-    SliderModel *slider = nil;
-    if (indexPath.row < _sliders.count) {
-        slider = [_sliders objectAtIndex:indexPath.row];
-    } else {
-        slider = [[SliderModel alloc] init];
-        [slider setSliderTemplate:sliderTemplate];
-        [_sliders addObject:slider];
+    if (indexPath.section == 0) {
+        [_reviewRatingSlider setValue:[NSNumber numberWithInt:ceil(value * 10)]];
+    } else if (indexPath.section == 1) {
+        SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
+        SliderModel *slider = nil;
+        if (indexPath.row < _sliders.count) {
+            slider = [_sliders objectAtIndex:indexPath.row];
+        } else {
+            slider = [[SliderModel alloc] init];
+            [slider setSliderTemplate:sliderTemplate];
+            [_sliders addObject:slider];
+        }
+        [slider setValue:[NSNumber numberWithInt:ceil(value * 10)]];
     }
-    [slider setValue:[NSNumber numberWithInt:ceil(value * 10)]];
 }
 
 #pragma mark - Actions
@@ -642,7 +663,11 @@
     ReviewModel *review = [[ReviewModel alloc] init];
     [review setDrink:drink];
     [review setSpot:spot];
-    [review setRating:@5];
+    if (spot != nil) {
+        [review setRating:@0];
+    } else {
+        [review setRating:_reviewRatingSlider.value];
+    }
     [review setSliders:_sliders];
     
     [self showHUD:@"Submitting review"];
@@ -739,6 +764,7 @@
         [SliderTemplateModel getSliderTemplates:params success:^(NSArray *sliderTemplates, JSONAPI *jsonApi) {
             [self hideHUD];
             _sliderTemplates = sliderTemplates;
+            NSLog(@"Slider templates - %@", sliderTemplates);
             [_tblReviews reloadData];
         } failure:^(ErrorModel *errorModel) {
             [self hideHUD];

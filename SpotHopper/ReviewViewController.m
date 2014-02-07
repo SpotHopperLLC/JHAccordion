@@ -123,12 +123,9 @@
     if (indexPath.section == 0) {
         ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
         [cell setDelegate:self];
-        NSLog(@"Slider - %@", _reviewRatingSlider);
-        NSLog(@"Slider template - %@", _reviewRatingSlider.sliderTemplate);
         [cell setSliderTemplate:_reviewRatingSlider.sliderTemplate withSlider:_reviewRatingSlider];
         
         return cell;
-        
     } else if (indexPath.section == 1) {
         SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
         SliderModel *slider = nil;
