@@ -189,7 +189,7 @@
     NSIndexPath *indexPath = [_tblReviews indexPathForCell:cell];
     
     if (indexPath.section == 0) {
-        [_reviewRatingSlider setValue:[NSNumber numberWithInt:ceil(value * 10)]];
+        [_reviewRatingSlider setValue:[NSNumber numberWithFloat:(value * 10)]];
     } else if (indexPath.section == 1) {
         SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
         SliderModel *slider = nil;
@@ -200,7 +200,9 @@
             [slider setSliderTemplate:sliderTemplate];
             [_sliders addObject:slider];
         }
-        [slider setValue:[NSNumber numberWithInt:ceil(value * 10)]];
+        NSLog(@"Value - %f", value);
+        [slider setValue:[NSNumber numberWithFloat:(value * 10.0f)]];
+        NSLog(@"Slider Value - %f", slider.value.floatValue);
     }
 }
 

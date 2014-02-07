@@ -126,9 +126,6 @@
     
 	if (_minThumbOn) {
         CGFloat x = MAX([self xForValue:_minimumValue], MIN(touchPoint.x - _distanceFromCenter, [self xForValue:_maximumValue]));
-        CGFloat valueForX = [self valueForX:x];
-        x = [self xForValue:(floorf(valueForX * 10) / 10.0f)];
-        
 		_minThumb.center = CGPointMake(x, _minThumb.center.y);
 		_selectedValue = [self valueForX:_minThumb.center.x];
 	}
