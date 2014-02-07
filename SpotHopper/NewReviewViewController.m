@@ -745,7 +745,9 @@
         
         if (spotTypeId != nil) {
             params = @{
-                       kSliderTemplateModelParamSpotTypeId: spotTypeId
+                       kSliderTemplateModelParamSpotTypeId: spotTypeId,
+                       kSliderTemplateModelParamsPageSize: @100,
+                       kSliderTemplateModelParamPage: @1
                        };
         }
     } else {
@@ -754,7 +756,9 @@
         
         if (drinkTypeId != nil) {
             params = @{
-                       kSliderTemplateModelParamDrinkTypeId: drinkTypeId
+                       kSliderTemplateModelParamDrinkTypeId: drinkTypeId,
+                       kSliderTemplateModelParamsPageSize: @100,
+                       kSliderTemplateModelParamPage: @1
                        };
         }
     }

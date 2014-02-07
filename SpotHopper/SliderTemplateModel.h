@@ -6,6 +6,10 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kSliderTemplateModelParamPage @"page"
+#define kSliderTemplateModelParamsPageSize @"page_size"
+#define kSliderTemplateModelParamQuery @"query"
+
 #define kSliderTemplateModelParamDrinkTypeId @"drink_type_id"
 #define kSliderTemplateModelParamDrinkSubtypeId @"drink_subtype_id"
 #define kSliderTemplateModelParamSpotTypeId @"spot_type_id"

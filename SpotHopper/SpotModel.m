@@ -87,6 +87,30 @@
     return [self objectForKey:@"address"];
 }
 
+-(NSString *)city {
+    return [self objectForKey:@"city"];
+}
+
+- (NSString *)state {
+    return [self objectForKey:@"state"];
+}
+
+- (NSString *)zip {
+    return [self objectForKey:@"zip"];
+}
+
+- (NSString*)cityState {
+    if ([self city].length > 0 && [self state].length > 0) {
+        return [NSString stringWithFormat:@"%@, %@", [self city], [self state]];
+    } else if ([self city].length > 0) {
+        return [self city];
+    } else if ([self state].length > 0) {
+        return [self state];
+    }
+    
+    return nil;
+}
+
 - (NSString *)phoneNumber {
     return [self objectForKey:@"phone_number"];
 }
