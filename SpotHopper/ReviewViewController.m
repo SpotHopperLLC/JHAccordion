@@ -103,26 +103,33 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _sliderTemplates.count;
+    if (section == 1) {
+        return _sliderTemplates.count;
+    }
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
-    SliderModel *slider = nil;
-    if (indexPath.row < _sliders.count) {
-        slider = [_sliders objectAtIndex:indexPath.row];
+    if (indexPath.section == 1) {
+        SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
+        SliderModel *slider = nil;
+        if (indexPath.row < _sliders.count) {
+            slider = [_sliders objectAtIndex:indexPath.row];
+        }
+        
+        ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
+        [cell setDelegate:self];
+        [cell setSliderTemplate:sliderTemplate withSlider:slider];
+        
+        return cell;
     }
     
-    ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
-    [cell setDelegate:self];
-    [cell setSliderTemplate:sliderTemplate withSlider:slider];
-    
-    return cell;
+    return nil;
 }
 
 #pragma mark - UITableViewDelegate
@@ -132,30 +139,37 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UILabel *view = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(tableView.frame), 40.0f)];
-    [view setBackgroundColor:kColorOrangeLight];
-    
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 1.0f, CGRectGetWidth(tableView.frame)-20.0f, 30.f)];
-    [label setBackgroundColor:[UIColor clearColor]];
-    [label setTextColor:[UIColor whiteColor]];
-    [label setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
-    [label setMinimumScaleFactor:0.5f];
-    [label setAdjustsFontSizeToFitWidth:YES];
-    [label setNumberOfLines:1];
-    
-    if (_drink != nil) {
-        [label setText:[NSString stringWithFormat:@"I thought %@ was...", _drink.name]];
-    } else if (_spot != nil) {
-        [label setText:[NSString stringWithFormat:@"I thought %@ was...", _spot.name]];
+    if (section == 0) {
+        UILabel *view = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(tableView.frame), 40.0f)];
+        [view setBackgroundColor:kColorOrangeLight];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 1.0f, CGRectGetWidth(tableView.frame)-20.0f, 30.f)];
+        [label setBackgroundColor:[UIColor clearColor]];
+        [label setTextColor:[UIColor whiteColor]];
+        [label setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
+        [label setMinimumScaleFactor:0.5f];
+        [label setAdjustsFontSizeToFitWidth:YES];
+        [label setNumberOfLines:1];
+        
+        if (_drink != nil) {
+            [label setText:[NSString stringWithFormat:@"I thought %@ was...", _drink.name]];
+        } else if (_spot != nil) {
+            [label setText:[NSString stringWithFormat:@"I thought %@ was...", _spot.name]];
+        }
+        
+        [view addSubview:label];
+        
+        return view;
     }
     
-    [view addSubview:label];
-    
-    return view;
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 40.0f;
+    if (section == 0) {
+        return 40.0f;
+    }
+    return 0.0f;
 }
 
 #pragma mark - ReviewSliderCellDelegate

@@ -327,7 +327,7 @@
     // Sort
     if (_selectedSort == 0) {
         _reviewsFiltered = [_reviewsFiltered sortedArrayUsingComparator:^NSComparisonResult(ReviewModel *obj1, ReviewModel *obj2) {
-            return [obj2.createdAt compare:obj1.createdAt];
+            return [obj1.createdAt compare:obj2.createdAt];
         }];
     } else if (_selectedSort == 1) {
         _reviewsFiltered = [_reviewsFiltered sortedArrayUsingComparator:^NSComparisonResult(ReviewModel *obj1, ReviewModel *obj2) {
