@@ -22,12 +22,12 @@
 
 #import "ErrorModel.h"
 
-#import "ACEAutocompleteBar.h"
 #import <JHAccordion/JHAccordion.h>
+#import <JHAutoCompleteTextField/JHAutoCompleteTextField.h>
 
 #import "NewReviewViewController.h"
 
-@interface NewReviewViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, ACEAutocompleteDataSource, ACEAutocompleteDelegate, ReviewSliderCellDelegate>
+@interface NewReviewViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, JHAutoCompleteDataSource, JHAutoCompleteDelegate, ReviewSliderCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tblReviewTypes;
 @property (weak, nonatomic) IBOutlet UITableView *tblReviews;
@@ -192,7 +192,9 @@
     
     [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | curve animations:^{
         [_tblReviews setFrame:frame];
-    } completion:nil];
+    } completion:^(BOOL finished) {
+        
+    }];
 }
 
 #pragma mark - UITableViewDataSource
@@ -388,35 +390,14 @@
     return NO;
 }
 
-#pragma mark - Autocomplete Delegate
+#pragma mark - JHAutoCompleteDataSource
 
-- (void)textField:(UITextField *)textField didSelectObject:(id)object inInputView:(ACEAutocompleteInputView *)inputView {
-    if (textField == _txtSpotType) {
-        _selectedSpotType = object;
-        textField.text = [_selectedSpotType objectForKey:@"name"];
-
-        [self fetchSliderTemplates:_selectedReviewType];
-    } else if (_txtCocktailAlcoholType ) {
-        _selectedCocktailSubtype = object;
-        textField.text = [_selectedCocktailSubtype objectForKey:@"name"];
-    } else if ([object isKindOfClass:[NSString class]] == YES) {
-        textField.text = object;
-    }
-}
-
-#pragma mark - Autocomplete Data Source
-
-- (NSUInteger)minimumCharactersToTrigger:(ACEAutocompleteInputView *)inputView {
-    return 0;
-}
-
-- (void)inputView:(ACEAutocompleteInputView *)inputView itemsFor:(NSString *)query result:(void (^)(NSArray *items))resultBlock; {
+- (void)autocomplete:(JHAutoCompleteView *)autocompleteView withQuery:(NSString *)query withBlock:(JHAutoCompleteResultsBlock)resultsBlock {
     
-    if (resultBlock != nil) {
-        // execute the filter on a background thread to demo the asynchronous capability
+    if (resultsBlock != nil) {
+        
+        // Performs filtering in background - could easily be an async network call
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-            
-            // execute the filter
             
             NSMutableArray *array;
             
@@ -430,15 +411,15 @@
                 array = [_cocktailBaseAlcohols filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", query]].mutableCopy;
             }
             
-            // return the filtered array in the main thread
+            // Returning results on main queue
             dispatch_async(dispatch_get_main_queue(), ^{
-                resultBlock(array);
+                resultsBlock(array);
             });
         });
     }
 }
 
-- (NSString *)inputView:(ACEAutocompleteInputView *)inputView stringForObject:(id)object atIndex:(NSUInteger)index {
+- (NSString *)autocomplete:(JHAutoCompleteView *)autocompleteView stringForObject:(id)object atIndex:(NSInteger)index {
     if (_txtSpotType.isFirstResponder) {
         return [object objectForKey:@"name"];
     } else if (_txtCocktailAlcoholType ) {
@@ -446,6 +427,37 @@
     }
     
     return object;
+}
+
+#pragma mark - JHAutoCompleteDelegate
+
+- (void)autocompleteWillShow:(JHAutoCompleteView *)autocompleteView {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [_tblReviews setContentOffset:CGPointMake(0.0f, CGRectGetMinY(autocompleteView.textfield.frame) - 15.0f) animated:YES];
+    });
+}
+
+- (BOOL)autocompleteHasKeyboardAccessory:(JHAutoCompleteView *)autocomplteView {
+    return YES;
+}
+
+- (CGFloat)autocompleteHeight {
+    return 100.0f;
+}
+
+- (void)autocomplete:(JHAutoCompleteView *)autocompleteView selectedObject:(id)object atIndex:(NSInteger)index {
+    UITextField *textField = autocompleteView.textfield;
+    if (textField == _txtSpotType) {
+        _selectedSpotType = object;
+        textField.text = [_selectedSpotType objectForKey:@"name"];
+        
+        [self fetchSliderTemplates:_selectedReviewType];
+    } else if (_txtCocktailAlcoholType ) {
+        _selectedCocktailSubtype = object;
+        textField.text = [_selectedCocktailSubtype objectForKey:@"name"];
+    } else if ([object isKindOfClass:[NSString class]] == YES) {
+        textField.text = object;
+    }
 }
 
 #pragma mark - ReviewSliderCellDelegate
@@ -825,17 +837,7 @@
 }
 
 - (UIView*)formForReviewTypeIndex:(NSInteger)index {
-    
-    // Single spot fo customize block for styling autocomplete
-    void (^customize)(ACEAutocompleteInputView *inputView);
-    customize = ^(ACEAutocompleteInputView *inputView) {
-        
-        // customize the view (optional)
-        inputView.font = [UIFont systemFontOfSize:16];
-        inputView.textColor = [UIColor blackColor];
-        inputView.backgroundColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.8];
-        
-    };
+
     
     // Determins which form to use
     if (index == 0) {
@@ -843,7 +845,7 @@
             _viewFormNewSpot = [UIView viewFromNibNamed:@"NewReviewSpotView" withOwner:self];
             
             // Sets autocomplete
-            [_txtSpotType setAutocompleteWithDataSource:self delegate:self customize:customize];
+            [_txtSpotType setAutocompleteWithDataSource:self delegate:self];
         }
 
         return _viewFormNewSpot;
@@ -852,7 +854,7 @@
             _viewFormNewBeer = [UIView viewFromNibNamed:@"NewReviewBeerView" withOwner:self];
             
             // Sets autocomplete
-            [_txtBeerStyle setAutocompleteWithDataSource:self delegate:self customize:customize];
+            [_txtBeerStyle setAutocompleteWithDataSource:self delegate:self];
         }
 
         return _viewFormNewBeer;
@@ -861,7 +863,7 @@
             _viewFormNewCocktail = [UIView viewFromNibNamed:@"NewReviewCocktailView" withOwner:self];
             
             // Sets autocomplete
-            [_txtCocktailAlcoholType setAutocompleteWithDataSource:self delegate:self customize:customize];
+            [_txtCocktailAlcoholType setAutocompleteWithDataSource:self delegate:self];
         }
         
         return _viewFormNewCocktail;
@@ -870,7 +872,7 @@
             _viewFormNewWine = [UIView viewFromNibNamed:@"NewReviewWineView" withOwner:self];
             
             // Sets autocomplete
-            [_txtWineStyle setAutocompleteWithDataSource:self delegate:self customize:customize];
+            [_txtWineStyle setAutocompleteWithDataSource:self delegate:self];
         }
         
         return _viewFormNewWine;
