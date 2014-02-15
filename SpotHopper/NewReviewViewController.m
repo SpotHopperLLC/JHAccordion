@@ -17,6 +17,7 @@
 #import "UIViewController+Navigator.h"
 
 #import "SectionHeaderView.h"
+#import "AutoCompleteCell.h"
 #import "DropdownOptionCell.h"
 #import "ReviewSliderCell.h"
 
@@ -365,6 +366,17 @@
 
 #pragma mark - UITextFieldDelegate
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+    if (textField == _txtSpotType) {
+        _selectedSpotType = nil;
+    } else if (textField == _txtCocktailAlcoholType) {
+        _selectedCocktailSubtype = nil;
+    }
+    
+    return YES;
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     // Spot
     if (textField == _txtSpotName) { [_txtSpotType becomeFirstResponder];
@@ -388,6 +400,22 @@
     } else if (textField == _txtWineName) { [_txtWineName resignFirstResponder];}
     
     return NO;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    if (textField == _txtSpotType) {
+        if (_selectedSpotType == nil) {
+            [_txtSpotType setText:@""];
+            [_sliders removeAllObjects];
+            _sliderTemplates = nil;
+            [_tblReviews reloadData];
+        }
+    } else if (textField == _txtCocktailAlcoholType) {
+        _selectedCocktailSubtype = nil;
+        if (_selectedCocktailSubtype == nil) {
+            [_txtCocktailAlcoholType setText:@""];
+        }
+    }
 }
 
 #pragma mark - JHAutoCompleteDataSource
@@ -445,6 +473,21 @@
     return 100.0f;
 }
 
+- (CGFloat)autocomplete:(JHAutoCompleteView *)autocomplete heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 44.0f;
+}
+
+- (void)autoComplete:(JHAutoCompleteView *)autocomplete withCell:(UITableViewCell *)cell withRowAtIndexPath:(NSIndexPath *)indexPath withObject:(id)object {
+    AutoCompleteCell *autoCompleteCell = (AutoCompleteCell*)cell;
+    if (autocomplete.textfield == _txtSpotType) {
+        autoCompleteCell.lblTitle.text = [object objectForKey:@"name"];
+    } else if (autocomplete.textfield == _txtCocktailAlcoholType) {
+        autoCompleteCell.lblTitle.text = [object objectForKey:@"name"];
+    } else if ([object isKindOfClass:[NSString class]] == YES) {
+        autoCompleteCell.lblTitle.text = object;
+    }
+}
+
 - (void)autocomplete:(JHAutoCompleteView *)autocompleteView selectedObject:(id)object atIndex:(NSInteger)index {
     UITextField *textField = autocompleteView.textfield;
     if (textField == _txtSpotType) {
@@ -471,8 +514,6 @@
         SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
         SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
         [slider setValue:[NSNumber numberWithFloat:(value * 10)]];
-        
-        NSLog(@"Changed value on slider template id - %@", sliderTemplate.ID);
     }
 }
 
@@ -837,7 +878,6 @@
 }
 
 - (UIView*)formForReviewTypeIndex:(NSInteger)index {
-
     
     // Determins which form to use
     if (index == 0) {
@@ -846,6 +886,7 @@
             
             // Sets autocomplete
             [_txtSpotType setAutocompleteWithDataSource:self delegate:self];
+            [_txtSpotType registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
         }
 
         return _viewFormNewSpot;
@@ -855,6 +896,7 @@
             
             // Sets autocomplete
             [_txtBeerStyle setAutocompleteWithDataSource:self delegate:self];
+            [_txtBeerStyle registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
         }
 
         return _viewFormNewBeer;
@@ -864,6 +906,7 @@
             
             // Sets autocomplete
             [_txtCocktailAlcoholType setAutocompleteWithDataSource:self delegate:self];
+            [_txtCocktailAlcoholType registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
         }
         
         return _viewFormNewCocktail;
@@ -873,6 +916,7 @@
             
             // Sets autocomplete
             [_txtWineStyle setAutocompleteWithDataSource:self delegate:self];
+            [_txtWineStyle registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
         }
         
         return _viewFormNewWine;
