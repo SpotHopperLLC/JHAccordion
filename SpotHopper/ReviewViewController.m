@@ -74,7 +74,9 @@
         _drink = _review.drink;
         _spot = _review.spot;
         
-        _reviewRatingSlider = [_review ratingSliderModel];
+        if (_review.drink != nil) {
+            _reviewRatingSlider = [_review ratingSliderModel];
+        }
         
         _sliders = _review.sliders.mutableCopy;
         _sliderTemplates = [_sliders valueForKey:@"sliderTemplate"];
