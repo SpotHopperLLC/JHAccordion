@@ -613,7 +613,8 @@
         
         // Validating selected drink id exists
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
-        if (drinkType == nil && [drinkType objectForKey:@"id"] != nil) {
+        if (drinkType == nil || [drinkType objectForKey:@"id"] != nil) {
+            [self showAlert:@"Oops" message:@"Not able to submit a beer right now"];
             [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create beer" level:kRavenLogLevelDebugError];
             return;
         }
@@ -640,14 +641,16 @@
         
         // Validating selected drink id exists
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
-        if (drinkType == nil && [drinkType objectForKey:@"id"] != nil) {
+        if (drinkType == nil || [drinkType objectForKey:@"id"] != nil) {
+            [self showAlert:@"Oops" message:@"Not able to submit a cocktail right now"];
             [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create cocktail" level:kRavenLogLevelDebugError];
             return;
         }
         NSNumber *drinkId = [drinkType objectForKey:@"id"];
         
         // Validating selected drink subtype id exists
-        if (_selectedCocktailSubtype == nil && [_selectedCocktailSubtype objectForKey:@"id"] != nil) {
+        if (_selectedCocktailSubtype == nil || [_selectedCocktailSubtype objectForKey:@"id"] != nil) {
+            [self showAlert:@"Oops" message:@"A cocktail base alcohol is required"];
             [[RavenClient sharedClient] captureMessage:@"Drink subtype nil when trying to create cocktail" level:kRavenLogLevelDebugError];
             return;
         }
@@ -676,7 +679,8 @@
         
         // Validating selected drink id exists
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
-        if (drinkType == nil && [drinkType objectForKey:@"id"] != nil) {
+        if (drinkType == nil || [drinkType objectForKey:@"id"] != nil) {
+            [self showAlert:@"Oops" message:@"Not able to submit a wine right now"];
             [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create wine" level:kRavenLogLevelDebugError];
             return;
         }
