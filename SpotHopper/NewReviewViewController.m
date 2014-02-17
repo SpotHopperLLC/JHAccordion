@@ -427,16 +427,24 @@
         // Performs filtering in background - could easily be an async network call
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
             
-            NSMutableArray *array;
+            NSArray *array;
             
-            if (_txtSpotType.isFirstResponder) {
-                array = [_spotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", query]].mutableCopy;
-            } else if (_txtBeerStyle.isFirstResponder){
-                array = [_beerStyles filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", query]].mutableCopy;
-            } else if (_txtWineStyle.isFirstResponder) {
-                array = [_wineVarietals filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", query]].mutableCopy;
-            } else if (_txtCocktailAlcoholType.isFirstResponder) {
-                array = [_cocktailBaseAlcohols filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", query]].mutableCopy;
+            if (autocompleteView.textfield == _txtSpotType) {
+                if (query.length > 0) {
+                    array = [_spotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", query]];
+                } else {
+                    array = _spotTypes.copy;
+                }
+            } else if (autocompleteView.textfield == _txtBeerStyle){
+                array = [_beerStyles filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", query]];
+            } else if (autocompleteView.textfield == _txtWineStyle) {
+                array = [_wineVarietals filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", query]];
+            } else if (autocompleteView.textfield == _txtCocktailAlcoholType) {
+                if (query.length > 0) {
+                    array = [_cocktailBaseAlcohols filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", query]];
+                } else {
+                    array = _cocktailBaseAlcohols.copy;
+                }
             }
             
             // Returning results on main queue
@@ -458,6 +466,15 @@
 }
 
 #pragma mark - JHAutoCompleteDelegate
+
+- (NSInteger)autocompleteMinumumNumberOfCharters:(JHAutoCompleteView *)autocompleteView {
+    // Shows all results always for spot type and cocktail
+    if (autocompleteView.textfield == _txtSpotType || autocompleteView.textfield == _txtCocktailAlcoholType) {
+        return 0;
+    }
+    
+    return 1;
+}
 
 - (void)autocompleteWillShow:(JHAutoCompleteView *)autocompleteView {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
@@ -822,6 +839,7 @@
             [_sliders removeAllObjects];
             for (SliderTemplateModel *sliderTemplate in _sliderTemplates) {
                 SliderModel *slider = [[SliderModel alloc] init];
+                [slider setValue:sliderTemplate.defaultValue];
                 [slider setSliderTemplate:sliderTemplate];
                 [_sliders addObject:slider];
             }
@@ -886,6 +904,7 @@
             
             // Sets autocomplete
             [_txtSpotType setAutocompleteWithDataSource:self delegate:self];
+            [_txtSpotType showAutoCompleteTableAlways:YES];
             [_txtSpotType registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
         }
 
@@ -906,6 +925,7 @@
             
             // Sets autocomplete
             [_txtCocktailAlcoholType setAutocompleteWithDataSource:self delegate:self];
+            [_txtCocktailAlcoholType showAutoCompleteTableAlways:YES];
             [_txtCocktailAlcoholType registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
         }
         

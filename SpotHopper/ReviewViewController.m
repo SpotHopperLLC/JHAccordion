@@ -74,9 +74,13 @@
         _drink = _review.drink;
         _spot = _review.spot;
         
+        _reviewRatingSlider = [_review ratingSliderModel];
+        
         _sliders = _review.sliders.mutableCopy;
         _sliderTemplates = [_sliders valueForKey:@"sliderTemplate"];
     } else if (_drink != nil) {
+        _reviewRatingSlider = [ReviewModel ratingSliderModel];
+        
         _sliderTemplates = _drink.sliderTemplates;
     } else if (_spot != nil) {
         _sliderTemplates = _spot.sliderTemplates;
@@ -84,9 +88,13 @@
     
     if (_sliders == nil) {
         _sliders = [NSMutableArray array];
+        for (SliderTemplateModel *sliderTemplate in _sliderTemplates) {
+            SliderModel *slider = [[SliderModel alloc] init];
+            [slider setSliderTemplate:sliderTemplate];
+            [slider setValue:sliderTemplate.defaultValue];
+            [_sliders addObject:slider];
+        }
     }
-    
-    _reviewRatingSlider = [_review ratingSliderModel];
     
     // Update view
     [self updateView];
