@@ -363,7 +363,6 @@
     }];
 }
 
-
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -712,7 +711,7 @@
         [self createReview:spotModel drink:nil];
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
-        [self showAlert:@"Error creating drink" message:errorModel.human];
+        [self showAlert:@"Error creating spot" message:errorModel.human];
     }];
     
 }
