@@ -251,21 +251,19 @@
 
 #pragma mark - JHAccordionDelegate
 
-- (void)accordionOpeningSection:(NSInteger)section {
+- (void)accordion:(JHAccordion *)accordion openingSection:(NSInteger)section {
     if (section == 2) [_sectionHeaderAdvanced setSelected:YES];
-
 }
 
-- (void)accordionClosingSection:(NSInteger)section {
+- (void)accordion:(JHAccordion *)accordion closingSection:(NSInteger)section {
     if (section == 2) [_sectionHeaderAdvanced setSelected:NO];
-
 }
 
-- (void)accordionOpenedSection:(NSInteger)section {
+- (void)accordion:(JHAccordion *)accordion openedSection:(NSInteger)section {
     
 }
 
-- (void)accordionClosedSection:(NSInteger)section {
+- (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
     
 }
 
