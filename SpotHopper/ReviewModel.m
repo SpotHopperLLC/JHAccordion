@@ -93,13 +93,13 @@
     return deferred.promise;
 }
 
-- (Promise*)putReviews:(void(^)(ReviewModel *reviewModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+- (Promise*)putReviews:(NSArray*)sliders successBlock:(void(^)(ReviewModel *reviewModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
     // Creating params
     NSMutableArray *jsonSliders = [NSMutableArray array];
-    for (SliderModel *slider in self.sliders) {
+    for (SliderModel *slider in sliders) {
         [jsonSliders addObject:@{
                                  @"slider_template_id" : slider.sliderTemplate.ID,
                                  @"value" : slider.value

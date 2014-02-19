@@ -10,6 +10,8 @@
 
 #import "UIView+ViewFromNib.h"
 
+#import "SectionHeaderView.h"
+
 #import "ReviewSliderCell.h"
 #import "SHLabelLatoLight.h"
 
@@ -19,8 +21,9 @@
 #import "UserModel.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
+#import <JHAccordion/JHAccordion.h>
 
-@interface ReviewViewController ()<UITableViewDataSource, UITableViewDelegate, ReviewSliderCellDelegate>
+@interface ReviewViewController ()<UITableViewDataSource, UITableViewDelegate, ReviewSliderCellDelegate, JHAccordionDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgImage;
 @property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblTitle;
@@ -31,9 +34,14 @@
 
 @property (nonatomic, strong) UIView *headerContent;
 
+@property (nonatomic, strong) JHAccordion *accordion;
+@property (nonatomic, strong) SectionHeaderView *sectionHeaderAdvanced;
+
 @property (nonatomic, strong) SliderModel *reviewRatingSlider;
 @property (nonatomic, strong) NSArray *sliderTemplates;
 @property (nonatomic, strong) NSMutableArray *sliders;
+
+@property (nonatomic, strong) NSMutableArray *advancedSliders;
 
 @end
 
@@ -57,6 +65,11 @@
     
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
+    
+    // Configures accordion
+    _accordion = [[JHAccordion alloc] initWithTableView:_tblReviews];
+    [_accordion setDelegate:self];
+    [_accordion openSection:0];
     
     // Configures table
     [_tblReviews setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
@@ -88,6 +101,8 @@
         _sliderTemplates = _spot.sliderTemplates;
     }
     
+    
+    // Filling sliders if nil
     if (_sliders == nil) {
         _sliders = [NSMutableArray array];
         for (SliderTemplateModel *sliderTemplate in _sliderTemplates) {
@@ -95,6 +110,23 @@
             [slider setSliderTemplate:sliderTemplate];
             [slider setValue:sliderTemplate.defaultValue];
             [_sliders addObject:slider];
+        }
+    }
+    
+    // Filling advanced sliders if nil
+    if (_advancedSliders == nil) {
+        _advancedSliders = [NSMutableArray array];
+        
+        // Moving advanced sliders into their own array
+        for (SliderModel *slider in _sliders) {
+            if (slider.sliderTemplate.required == NO) {
+                [_advancedSliders addObject:slider];
+            }
+        }
+        
+        // Removing advances sliders from basic array
+        for (SliderModel *slider in _advancedSliders) {
+            [_sliders removeObject:slider];
         }
     }
     
@@ -116,14 +148,16 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
         return ( _reviewRatingSlider == nil ? 0 : 1 );
     } else if (section == 1) {
-        return _sliderTemplates.count;
+        return _sliders.count;
+    } else if (section == 2) {
+        return _advancedSliders.count;
     }
     return 0;
 }
@@ -137,15 +171,19 @@
         
         return cell;
     } else if (indexPath.section == 1) {
-        SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
-        SliderModel *slider = nil;
-        if (indexPath.row < _sliders.count) {
-            slider = [_sliders objectAtIndex:indexPath.row];
-        }
+        SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
         
         ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
         [cell setDelegate:self];
-        [cell setSliderTemplate:sliderTemplate withSlider:slider showSliderValue:NO];
+        [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
+        
+        return cell;
+    } else if (indexPath.section == 2) {
+        SliderModel *slider = [_advancedSliders objectAtIndex:indexPath.row];
+        
+        ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
+        [cell setDelegate:self];
+        [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
         
         return cell;
     }
@@ -156,6 +194,10 @@
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 2) {
+        return ( [_accordion isSectionOpened:indexPath.section] ? 77.0f : 0.0f);
+    }
+    
     return 77.0f;
 }
 
@@ -181,6 +223,18 @@
         [view addSubview:label];
         
         return view;
+    } else if (section == 2) {
+        if (_sectionHeaderAdvanced == nil) {
+            _sectionHeaderAdvanced = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblReviews.frame), 56.0f)];
+            [_sectionHeaderAdvanced setBackgroundColor:[UIColor clearColor]];
+            [_sectionHeaderAdvanced setText:@"Advanced"];
+            [_sectionHeaderAdvanced setSelected:[_accordion isSectionOpened:section]];
+            
+            // Sets up for accordion
+            [_sectionHeaderAdvanced.btnBackground setTag:section];
+            [_sectionHeaderAdvanced.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        return _sectionHeaderAdvanced;
     }
     
     return nil;
@@ -189,8 +243,28 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (section == 0) {
         return 40.0f;
+    } else if (section == 2) {
+        return 56.0f;
     }
     return 0.0f;
+}
+
+#pragma mark - JHAccordionDelegate
+
+- (void)accordion:(JHAccordion *)accordion openingSection:(NSInteger)section {
+    if (section == 2) [_sectionHeaderAdvanced setSelected:YES];
+}
+
+- (void)accordion:(JHAccordion *)accordion closingSection:(NSInteger)section {
+    if (section == 2) [_sectionHeaderAdvanced setSelected:NO];
+}
+
+- (void)accordion:(JHAccordion *)accordion openedSection:(NSInteger)section {
+    
+}
+
+- (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
+    
 }
 
 #pragma mark - ReviewSliderCellDelegate
@@ -202,6 +276,9 @@
         [_reviewRatingSlider setValue:[NSNumber numberWithFloat:(value * 10)]];
     } else if (indexPath.section == 1) {
         SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
+        [slider setValue:[NSNumber numberWithFloat:(value * 10.0f)]];
+    } else if (indexPath.section == 2) {
+        SliderModel *slider = [_advancedSliders objectAtIndex:indexPath.row];
         [slider setValue:[NSNumber numberWithFloat:(value * 10.0f)]];
     }
 }
@@ -217,9 +294,13 @@
             [_review setRating:_reviewRatingSlider.value];
         }
         
+        NSMutableArray *sliders = [NSMutableArray array];
+        [sliders addObjectsFromArray:_sliders];
+        [sliders addObjectsFromArray:_advancedSliders];
+        
         // Submits changes for review
         [self showHUD:@"Updating"];
-        [_review putReviews:^(ReviewModel *reviewModel, JSONAPI *jsonApi) {
+        [_review putReviews:sliders successBlock:^(ReviewModel *reviewModel, JSONAPI *jsonApi) {
             
             [self hideHUD];
             [self showHUDCompleted:@"Saved!" block:^{

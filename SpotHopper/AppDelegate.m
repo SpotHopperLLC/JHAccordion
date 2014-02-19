@@ -41,6 +41,7 @@
     
     // Initializes Raven (Sentry) for error reporting/logging
     [RavenClient clientWithDSN:kSentryDSN];
+    [[RavenClient sharedClient] setupExceptionHandler];
     
     // Initializes resource linkng for JSONAPI
     [JSONAPIResourceLinker link:@"drink" toLinkedType:@"drinks"];

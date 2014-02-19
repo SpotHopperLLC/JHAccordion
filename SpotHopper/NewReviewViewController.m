@@ -38,6 +38,9 @@
 @property (nonatomic, strong) JHAccordion *accordion;
 @property (nonatomic, strong) SectionHeaderView *sectionHeaderReviewType;
 
+@property (nonatomic, strong) JHAccordion *accordionAdvanced;
+@property (nonatomic, strong) SectionHeaderView *sectionHeaderAdvanced;
+
 @property (nonatomic, assign) NSInteger selectedReviewType;
 
 @property (nonatomic, strong) NSArray *spotTypes;
@@ -52,6 +55,8 @@
 @property (nonatomic, strong) SliderModel *reviewRatingSlider;
 @property (nonatomic, strong) NSArray *sliderTemplates;
 @property (nonatomic, strong) NSMutableArray *sliders;
+
+@property (nonatomic, strong) NSMutableArray *advancedSliders;
 
 @property (nonatomic, strong) NSDictionary *selectedSpotType;
 @property (nonatomic, strong) NSDictionary *selectedCocktailSubtype;
@@ -112,6 +117,11 @@
     _accordion = [[JHAccordion alloc] initWithTableView:_tblReviewTypes];
     [_accordion setDelegate:self];
     [_accordion openSection:0];
+    
+    // Configures accordion - advanced sliders
+    _accordionAdvanced = [[JHAccordion alloc] initWithTableView:_tblReviews];
+    [_accordionAdvanced setDelegate:self];
+    [_accordionAdvanced openSection:0];
     
     // Configures table
     [_tblReviewTypes setTableFooterView:[[UIView alloc] init]];
@@ -204,7 +214,7 @@
     if (tableView == _tblReviewTypes) {
         return 1;
     } else if (tableView == _tblReviews) {
-        return 2;
+        return 3;
     }
     return 0;
 }
@@ -220,7 +230,9 @@
                 return 1;
             }
         } else if (section == 1) {
-            return _sliderTemplates.count;
+            return _sliders.count;
+        } else if (section == 2) {
+            return _advancedSliders.count;
         }
     }
     return 0;
@@ -245,18 +257,22 @@
             return cell;
         } else if (indexPath.section == 1) {
             
-            SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
-            SliderModel *slider = nil;
-            if (indexPath.row < _sliders.count) {
-                slider = [_sliders objectAtIndex:indexPath.row];
-            }
+            SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
              
             ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
             [cell setDelegate:self];
-            [cell setSliderTemplate:sliderTemplate withSlider:slider showSliderValue:NO];
+            [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
             
             return cell;
+        } else if (indexPath.section == 2) {
             
+            SliderModel *slider = [_advancedSliders objectAtIndex:indexPath.row];
+            
+            ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
+            [cell setDelegate:self];
+            [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
+            
+            return cell;
         }
     }
     
@@ -286,7 +302,19 @@
             return [self sectionHeaderViewForSection:section];
         }
     } else if (tableView == _tblReviews) {
-
+        if (section == 2) {
+            if (_sectionHeaderAdvanced == nil) {
+                _sectionHeaderAdvanced = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblReviews.frame), 56.0f)];
+                [_sectionHeaderAdvanced setBackgroundColor:[UIColor clearColor]];
+                [_sectionHeaderAdvanced setText:@"Advanced"];
+                [_sectionHeaderAdvanced setSelected:[_accordionAdvanced isSectionOpened:section]];
+                
+                // Sets up for accordion
+                [_sectionHeaderAdvanced.btnBackground setTag:section];
+                [_sectionHeaderAdvanced.btnBackground addTarget:_accordionAdvanced action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
+            }
+            return _sectionHeaderAdvanced;
+        }
     }
     
     return nil;
@@ -298,7 +326,9 @@
             return 56.0f;
         }
     } else if (tableView == _tblReviews) {
-
+        if (section == 2) {
+            return 56.0f;
+        }
     }
     
     return 0.0f;
@@ -316,6 +346,8 @@
             if (_selectedReviewType >= 0) {
                 return 77.0f;
             }
+        } else if (indexPath.section == 2) {
+            return ( [_accordionAdvanced isSectionOpened:indexPath.section] ? 77.0f : 0.0f);
         }
     }
     
@@ -324,45 +356,55 @@
 
 #pragma mark - JHAccordionDelegate
 
-- (void)accordionOpeningSection:(NSInteger)section {
-    if (section == 0) [_sectionHeaderReviewType setSelected:YES];
-    
-    [UIView animateWithDuration:0.35f animations:^{
-        [_tblReviews setAlpha:0.0f];
-        [_btnSubmit setAlpha:0.0f];
-    } completion:^(BOOL finished) {
-        [_tblReviews setHidden:YES];
-        [_btnSubmit setHidden:YES];
+- (void)accordion:(JHAccordion *)accordion openingSection:(NSInteger)section {
+    if (accordion == _accordion) {
+        if (section == 0) [_sectionHeaderReviewType setSelected:YES];
         
-        [self.view endEditing:YES];
-    }];
+        [UIView animateWithDuration:0.35f animations:^{
+            [_tblReviews setAlpha:0.0f];
+            [_btnSubmit setAlpha:0.0f];
+        } completion:^(BOOL finished) {
+            [_tblReviews setHidden:YES];
+            [_btnSubmit setHidden:YES];
+            
+            [self.view endEditing:YES];
+        }];
+    } else if (accordion == _accordionAdvanced) {
+        if (section == 2) [_sectionHeaderAdvanced setSelected:YES];
+    }
 }
 
-- (void)accordionClosingSection:(NSInteger)section {
-    if (section == 0) [_sectionHeaderReviewType setSelected:NO];
+- (void)accordion:(JHAccordion *)accordion closingSection:(NSInteger)section {
+    if (accordion == _accordion) {
+        if (section == 0) [_sectionHeaderReviewType setSelected:NO];
+        
+        [_tblReviews setTableHeaderView:[self formForReviewTypeIndex:_selectedReviewType]];
+        [_tblReviews reloadData];
+        
+        [self fetchSliderTemplates:_selectedReviewType];
+    } else if (accordion == _accordionAdvanced) {
+        if (section == 2) [_sectionHeaderAdvanced setSelected:NO];
+    }
+}
+
+- (void)accordion:(JHAccordion *)accordion openedSection:(NSInteger)section {
     
-    [_tblReviews setTableHeaderView:[self formForReviewTypeIndex:_selectedReviewType]];
-    [_tblReviews reloadData];
-    
-    [self fetchSliderTemplates:_selectedReviewType];
 }
 
-- (void)accordionOpenedSection:(NSInteger)section {
+- (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
+    if (accordion == _accordion) {
+        [_tblReviews setAlpha:0.0f];
+        [_tblReviews setHidden:NO];
+        [_btnSubmit setAlpha:0.0f];
+        [_btnSubmit setHidden:NO];
+        [UIView animateWithDuration:0.35f animations:^{
+            [_tblReviews setAlpha:1.0f];
+            [_btnSubmit setAlpha:1.0f];
+        } completion:^(BOOL finished) {
+            
+        }];
+    }
 }
-
-- (void)accordionClosedSection:(NSInteger)section {
-    [_tblReviews setAlpha:0.0f];
-    [_tblReviews setHidden:NO];
-    [_btnSubmit setAlpha:0.0f];
-    [_btnSubmit setHidden:NO];
-    [UIView animateWithDuration:0.35f animations:^{
-        [_tblReviews setAlpha:1.0f];
-        [_btnSubmit setAlpha:1.0f];
-    } completion:^(BOOL finished) {
-
-    }];
-}
-
 
 #pragma mark - UITextFieldDelegate
 
@@ -528,8 +570,10 @@
     if (indexPath.section == 0) {
         [_reviewRatingSlider setValue:[NSNumber numberWithFloat:(value * 10)]];
     } else if (indexPath.section == 1) {
-        SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
         SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
+        [slider setValue:[NSNumber numberWithFloat:(value * 10)]];
+    } else if (indexPath.section == 2) {
+        SliderModel *slider = [_advancedSliders objectAtIndex:indexPath.row];
         [slider setValue:[NSNumber numberWithFloat:(value * 10)]];
     }
 }
@@ -613,7 +657,8 @@
         
         // Validating selected drink id exists
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
-        if (drinkType == nil && [drinkType objectForKey:@"id"] != nil) {
+        if (drinkType == nil || [drinkType objectForKey:@"id"] != nil) {
+            [self showAlert:@"Oops" message:@"Not able to submit a beer right now"];
             [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create beer" level:kRavenLogLevelDebugError];
             return;
         }
@@ -640,14 +685,16 @@
         
         // Validating selected drink id exists
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
-        if (drinkType == nil && [drinkType objectForKey:@"id"] != nil) {
+        if (drinkType == nil || [drinkType objectForKey:@"id"] != nil) {
+            [self showAlert:@"Oops" message:@"Not able to submit a cocktail right now"];
             [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create cocktail" level:kRavenLogLevelDebugError];
             return;
         }
         NSNumber *drinkId = [drinkType objectForKey:@"id"];
         
         // Validating selected drink subtype id exists
-        if (_selectedCocktailSubtype == nil && [_selectedCocktailSubtype objectForKey:@"id"] != nil) {
+        if (_selectedCocktailSubtype == nil || [_selectedCocktailSubtype objectForKey:@"id"] != nil) {
+            [self showAlert:@"Oops" message:@"A cocktail base alcohol is required"];
             [[RavenClient sharedClient] captureMessage:@"Drink subtype nil when trying to create cocktail" level:kRavenLogLevelDebugError];
             return;
         }
@@ -676,7 +723,8 @@
         
         // Validating selected drink id exists
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
-        if (drinkType == nil && [drinkType objectForKey:@"id"] != nil) {
+        if (drinkType == nil || [drinkType objectForKey:@"id"] != nil) {
+            [self showAlert:@"Oops" message:@"Not able to submit a wine right now"];
             [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create wine" level:kRavenLogLevelDebugError];
             return;
         }
@@ -708,7 +756,7 @@
         [self createReview:spotModel drink:nil];
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
-        [self showAlert:@"Error creating drink" message:errorModel.human];
+        [self showAlert:@"Error creating spot" message:errorModel.human];
     }];
     
 }
@@ -735,7 +783,12 @@
     } else {
         [review setRating:_reviewRatingSlider.value];
     }
-    [review setSliders:_sliders];
+    
+    NSMutableArray *sliders = [NSMutableArray array];
+    [sliders addObjectsFromArray:_sliders];
+    [sliders addObjectsFromArray:_advancedSliders];
+    
+    [review setSliders:sliders];
     
     [self showHUD:@"Submitting review"];
     [review postReviews:^(ReviewModel *reviewModel, JSONAPI *jsonApi) {
@@ -836,6 +889,7 @@
             [self hideHUD];
             _sliderTemplates = sliderTemplates;
             
+            // Creating sliders
             [_sliders removeAllObjects];
             for (SliderTemplateModel *sliderTemplate in _sliderTemplates) {
                 SliderModel *slider = [[SliderModel alloc] init];
@@ -844,8 +898,26 @@
                 [_sliders addObject:slider];
             }
             
-            NSLog(@"Slider templates - %@", sliderTemplates);
+            // Filling advanced sliders if nil
+            if (_advancedSliders == nil) {
+                _advancedSliders = [NSMutableArray array];
+                
+                // Moving advanced sliders into their own array
+                for (SliderModel *slider in _sliders) {
+                    if (slider.sliderTemplate.required == NO) {
+                        [_advancedSliders addObject:slider];
+                    }
+                }
+                
+                // Removing advances sliders from basic array
+                for (SliderModel *slider in _advancedSliders) {
+                    [_sliders removeObject:slider];
+                }
+            }
+            
+            // Reloading table
             [_tblReviews reloadData];
+            
         } failure:^(ErrorModel *errorModel) {
             [self hideHUD];
         }];
