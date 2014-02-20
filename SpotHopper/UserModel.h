@@ -15,6 +15,9 @@
 #define kUserModelParamsTwitterAccessToken @"twitter_access_token"
 #define kUserModelParamsTwitterAccessTokenSecret @"twitter_access_token_secret"
 
+#define kReviewModelParamsSpotId @"spot_id"
+#define kReviewModelParamsDrinkId @"drink_id"
+
 #define kUserModelRoleUser @"user"
 
 #import "SHJSONAPIResource.h"
