@@ -17,21 +17,21 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="vit-V2-QEz">
-                    <rect key="frame" x="0.0" y="102" width="320" height="378"/>
+                    <rect key="frame" x="0.0" y="115" width="320" height="365"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="BjL-Ws-fHJ"/>
                     </connections>
                 </mapView>
                 <view contentMode="scaleToFill" id="uIl-4R-EZb" customClass="SHViewTranlucentWhite">
-                    <rect key="frame" x="0.0" y="64" width="320" height="39"/>
+                    <rect key="frame" x="0.0" y="64" width="320" height="52"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="XD6-ay-brR" customClass="SHButtonLatoLight">
-                            <rect key="frame" x="15" y="8" width="291" height="24"/>
+                            <rect key="frame" x="15" y="23" width="291" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <state key="normal" title="Use your current location?">
+                            <state key="normal" title="Click here to reset to your current location">
                                 <color key="titleColor" red="0.94509803920000002" green="0.37647058820000001" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -39,6 +39,13 @@
                                 <action selector="onClickUseCurrentLocation:" destination="-1" eventType="touchUpInside" id="0Bx-0L-VWa"/>
                             </connections>
                         </button>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Move map to area you want to search" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SLb-lx-e3P" customClass="SHLabelLatoLight">
+                            <rect key="frame" x="15" y="6" width="291" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <inset key="insetFor6xAndEarlier" minX="0.0" minY="64" maxX="0.0" maxY="-64"/>

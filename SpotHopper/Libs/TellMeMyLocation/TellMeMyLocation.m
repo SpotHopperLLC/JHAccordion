@@ -103,7 +103,15 @@
         if (!error) {
             if (placemarks.count > 0) {
                 CLPlacemark *placemark = [placemarks objectAtIndex:0];
-                [TellMeMyLocation setLastLocationName:[placemark locality]];
+                
+                if (placemark.locality.length > 0 && placemark.administrativeArea.length > 0) {
+                    [TellMeMyLocation setLastLocationName:[NSString stringWithFormat:@"%@, %@", placemark.locality, placemark.administrativeArea]];
+                } else if (placemark.locality.length > 0) {
+                    [TellMeMyLocation setLastLocationName:placemark.locality];
+                } else if (placemark.administrativeArea.length > 0) {
+                    [TellMeMyLocation setLastLocationName:placemark.administrativeArea];
+                }
+                
             } else {
                 [TellMeMyLocation setLastLocationName:nil];
             }
