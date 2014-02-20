@@ -83,6 +83,8 @@
     _results = [NSMutableArray array];
     _drinkPage = @1;
     _spotPage = @1;
+    
+    [_txtSearch becomeFirstResponder];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -247,13 +249,25 @@
         JSONAPIResource *result = [_results objectAtIndex:indexPath.row];
         if ([result isKindOfClass:[DrinkModel class]] == YES) {
             DrinkModel *drink = (DrinkModel*)result;
+            
+            // Create a review for this drink
             if (_createReview == YES) {
                 [self goToNewReviewForDrink:drink];
             }
+            // Go to drink profile
+            else {
+                
+            }
         } else if ([result isKindOfClass:[SpotModel class]] == YES) {
             SpotModel *spot = (SpotModel*)result;
+            
+            // Create a review for this spot
             if (_createReview == YES) {
                 [self goToNewReviewForSpot:spot];
+            }
+            // Go to spot profile
+            else {
+                [self goToSpotProfile:spot];
             }
         }
     } else if (indexPath.section == 1) {

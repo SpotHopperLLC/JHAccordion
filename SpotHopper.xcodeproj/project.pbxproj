@@ -684,8 +684,6 @@
 				03CA7285187C245600815284 /* ReviewViewController.m */,
 				03CA72CE187DF43B00815284 /* NewReviewViewController.h */,
 				03CA72CF187DF43B00815284 /* NewReviewViewController.m */,
-				039B6FEC18870E4A00C590F8 /* SearchNewReviewViewController.h */,
-				039B6FED18870E4A00C590F8 /* SearchNewReviewViewController.m */,
 			);
 			name = Reviews;
 			sourceTree = "<group>";
@@ -1282,6 +1280,8 @@
 				03E4454318B56BF700C88421 /* LocationChooserViewController.h */,
 				03E4454418B56BF700C88421 /* LocationChooserViewController.m */,
 				03E4454518B56BF700C88421 /* LocationChooserViewController.xib */,
+				039B6FEC18870E4A00C590F8 /* SearchNewReviewViewController.h */,
+				039B6FED18870E4A00C590F8 /* SearchNewReviewViewController.m */,
 			);
 			name = Commons;
 			sourceTree = "<group>";

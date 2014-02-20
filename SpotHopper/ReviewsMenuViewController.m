@@ -16,7 +16,7 @@
 
 #import "ClientSessionManager.h"
 
-@interface ReviewsMenuViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface ReviewsMenuViewController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
 @property (weak, nonatomic) IBOutlet UITableView *tblMenu;
@@ -141,6 +141,13 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 0.0f;
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    [self goToSearchForNewReview:NO notWhatLookingFor:NO createReview:NO];
+    return NO;
 }
 
 #pragma mark - Private

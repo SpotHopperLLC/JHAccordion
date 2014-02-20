@@ -51,7 +51,7 @@
     
     // Adds contextual footer view
     [self addFooterViewController:^(FooterViewController *footerViewController) {
-        [footerViewController showHome:NO];
+        [footerViewController showHome:YES];
         [footerViewController setMiddleButton:@"Check-in" image:[UIImage imageNamed:@"btn_context_checkin"]];
         [footerViewController setRightButton:@"Info" image:[UIImage imageNamed:@"btn_context_info"]];
     }];
@@ -76,6 +76,16 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     return nil;
+}
+
+#pragma mark - Footer
+
+- (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
+    if (FooterViewButtonHome == footerViewButtonType) {
+        return NO;
+    }
+    
+    return YES;
 }
 
 #pragma mark - UITableViewDelegate
