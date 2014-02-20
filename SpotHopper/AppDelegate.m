@@ -62,6 +62,8 @@
     [JSONAPIResourceModeler useResource:[SpotModel class] toLinkedType:@"spots"];
     [JSONAPIResourceModeler useResource:[UserModel class] toLinkedType:@"users"];
 
+    [[UINavigationBar appearance] setTintColor:kColorOrange];
+    
     // Sets networking debug logs if debug is set
     [[ClientSessionManager sharedClient] setDebug:kDebug];
     

@@ -10,8 +10,16 @@
 
 #import <CoreLocation/CoreLocation.h>
 
+typedef void (^TellMeMyLocationCompletionHandler)();
+
 @interface TellMeMyLocation : NSObject<CLLocationManagerDelegate>
 
 - (void)findMe:(CLLocationAccuracy)accuracy found:(void(^)(CLLocation *newLocation))foundBlock failure:(void(^)())failureBlock;
+
++ (void)setLastLocation:(CLLocation*)location completionHandler:(TellMeMyLocationCompletionHandler)completionHandler;
++ (void)setLastLocationName:(NSString*)name;
+
++ (CLLocation*)lastLocation;
++ (NSString*)lastLocationName;
 
 @end
