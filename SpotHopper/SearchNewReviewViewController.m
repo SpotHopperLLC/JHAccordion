@@ -165,7 +165,15 @@
     if (section == 0) {
         return _results.count;
     } else if (section == 1) {
-        return (_txtSearch.text.length > 0 ? 3 : 0);
+        if (_txtSearch.text.length > 0) {
+            if (_showSimilarList == YES && _showNotWhatLookingFor == YES) {
+                return 3;
+            } else if (_showSimilarList == YES) {
+                return 2;
+            } else if (_showNotWhatLookingFor == YES) {
+                return 1;
+            }
+        }
     } else if (section == 2) {
         return 1;
     }
@@ -191,12 +199,30 @@
     } else if (indexPath.section == 1) {
         
         SearchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell" forIndexPath:indexPath];
-        if (indexPath.row == 0) {
-            [cell setDrinksSimilar:_txtSearch.text];
-        } else if (indexPath.row == 1) {
-            [cell setSpotsSimilar:_txtSearch.text];
-        } else if (indexPath.row == 2) {
-            [cell setNotWhatYoureLookingFor];
+
+        // Show both similar and not what looking for
+        if (_showSimilarList == YES && _showNotWhatLookingFor == YES) {
+            if (indexPath.row == 0) {
+                [cell setDrinksSimilar:_txtSearch.text];
+            } else if (indexPath.row == 1) {
+                [cell setSpotsSimilar:_txtSearch.text];
+            } else if (indexPath.row == 2) {
+                [cell setNotWhatYoureLookingFor];
+            }
+        }
+        // Show only similar
+        else if (_showSimilarList == YES) {
+            if (indexPath.row == 0) {
+                [cell setDrinksSimilar:_txtSearch.text];
+            } else if (indexPath.row == 1) {
+                [cell setSpotsSimilar:_txtSearch.text];
+            }
+        }
+        // Only show not what looking for
+        else if (_showNotWhatLookingFor == YES) {
+            if (indexPath.row == 0) {
+                [cell setNotWhatYoureLookingFor];
+            }
         }
         
         return cell;
@@ -221,18 +247,26 @@
         JSONAPIResource *result = [_results objectAtIndex:indexPath.row];
         if ([result isKindOfClass:[DrinkModel class]] == YES) {
             DrinkModel *drink = (DrinkModel*)result;
-            [self goToNewReviewForDrink:drink];
+            if (_createReview == YES) {
+                [self goToNewReviewForDrink:drink];
+            }
         } else if ([result isKindOfClass:[SpotModel class]] == YES) {
             SpotModel *spot = (SpotModel*)result;
-            [self goToNewReviewForSpot:spot];
+            if (_createReview == YES) {
+                [self goToNewReviewForSpot:spot];
+            }
         }
     } else if (indexPath.section == 1) {
-        if (indexPath.row == 0) {
+        
+        
+        if (_showSimilarList == YES && _showNotWhatLookingFor == YES) {
             
-        } else if (indexPath.row == 1) {
-            
-        } else if (indexPath.row == 2) {
-            [self goToNewReview];
+        } else if (_showSimilarList == YES) {
+
+        } else if (_showNotWhatLookingFor == YES) {
+            if (indexPath.row == 0) {
+                [self goToNewReview];
+            }
         }
     }
 }

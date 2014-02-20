@@ -170,7 +170,7 @@
             [_sectionHeader1 setText:@"Add New Review"];
             [_sectionHeader1.btnBackground setActionWithBlock:^{
                 if ([ClientSessionManager sharedClient].isLoggedIn == YES) {
-                    [this goToSearchForNewReview];
+                    [this goToSearchForNewReview:NO notWhatLookingFor:YES createReview:YES];
                 } else {
                     [this showAlert:@"Login Required" message:@"Cannot add a review without logging in"];
                 }

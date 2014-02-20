@@ -23,7 +23,10 @@
 - (void)goToReview:(ReviewModel*)review;
 - (void)goToNewReviewForDrink:(DrinkModel*)drink;
 - (void)goToNewReviewForSpot:(SpotModel*)spot;
-- (void)goToSearchForNewReview;
+- (void)goToSearchForNewReview:(BOOL)showSimilarLists notWhatLookingFor:(BOOL)showNotWhatLookingFor createReview:(BOOL)createReview;
 - (void)goToNewReview;
+
+// Spots
+- (void)goToSpotProfile:(SpotModel *)spot;
 
 @end
