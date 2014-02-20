@@ -213,6 +213,20 @@
 		03E4454618B56BF700C88421 /* LocationChooserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4454418B56BF700C88421 /* LocationChooserViewController.m */; };
 		03E4454718B56BF700C88421 /* LocationChooserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E4454518B56BF700C88421 /* LocationChooserViewController.xib */; };
 		03E4454918B5705800C88421 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E4454818B5705800C88421 /* MapKit.framework */; };
+		03E4455018B65D7300C88421 /* icon_phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4454E18B65D7300C88421 /* icon_phone.png */; };
+		03E4455118B65D7300C88421 /* icon_phone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4454F18B65D7300C88421 /* icon_phone@2x.png */; };
+		03E4455418B65D7F00C88421 /* btn_context_checkin.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455218B65D7F00C88421 /* btn_context_checkin.png */; };
+		03E4455518B65D7F00C88421 /* btn_context_checkin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455318B65D7F00C88421 /* btn_context_checkin@2x.png */; };
+		03E4456218B65D8A00C88421 /* map_marker_spot.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455718B65D8A00C88421 /* map_marker_spot.png */; };
+		03E4456318B65D8A00C88421 /* map_marker_spot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455818B65D8A00C88421 /* map_marker_spot@2x.png */; };
+		03E4456418B65D8A00C88421 /* btn_spot_profile_drink_menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455A18B65D8A00C88421 /* btn_spot_profile_drink_menu.png */; };
+		03E4456518B65D8A00C88421 /* btn_spot_profile_drink_menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455B18B65D8A00C88421 /* btn_spot_profile_drink_menu@2x.png */; };
+		03E4456618B65D8A00C88421 /* btn_spot_profile_find_similar.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455C18B65D8A00C88421 /* btn_spot_profile_find_similar.png */; };
+		03E4456718B65D8A00C88421 /* btn_spot_profile_find_similar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455D18B65D8A00C88421 /* btn_spot_profile_find_similar@2x.png */; };
+		03E4456818B65D8A00C88421 /* btn_spot_profile_image_previous.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455E18B65D8A00C88421 /* btn_spot_profile_image_previous.png */; };
+		03E4456918B65D8A00C88421 /* btn_spot_profile_image_previous@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455F18B65D8A00C88421 /* btn_spot_profile_image_previous@2x.png */; };
+		03E4456A18B65D8A00C88421 /* btn_spot_profile_review_it.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4456018B65D8A00C88421 /* btn_spot_profile_review_it.png */; };
+		03E4456B18B65D8A00C88421 /* btn_spot_profile_review_it@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4456118B65D8A00C88421 /* btn_spot_profile_review_it@2x.png */; };
 		03F2D9051871DB5B00C69576 /* SHButtonLatoLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */; };
 		03F2D91D1871DC1400C69576 /* AvantGard EF 1 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9091871DC1400C69576 /* AvantGard EF 1 */; };
 		03F2D91E1871DC1400C69576 /* AvantGard EF 2 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90A1871DC1400C69576 /* AvantGard EF 2 */; };
@@ -537,6 +551,20 @@
 		03E4454418B56BF700C88421 /* LocationChooserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationChooserViewController.m; sourceTree = "<group>"; };
 		03E4454518B56BF700C88421 /* LocationChooserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationChooserViewController.xib; sourceTree = "<group>"; };
 		03E4454818B5705800C88421 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		03E4454E18B65D7300C88421 /* icon_phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_phone.png; sourceTree = "<group>"; };
+		03E4454F18B65D7300C88421 /* icon_phone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_phone@2x.png"; sourceTree = "<group>"; };
+		03E4455218B65D7F00C88421 /* btn_context_checkin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_context_checkin.png; sourceTree = "<group>"; };
+		03E4455318B65D7F00C88421 /* btn_context_checkin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_context_checkin@2x.png"; sourceTree = "<group>"; };
+		03E4455718B65D8A00C88421 /* map_marker_spot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_marker_spot.png; sourceTree = "<group>"; };
+		03E4455818B65D8A00C88421 /* map_marker_spot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map_marker_spot@2x.png"; sourceTree = "<group>"; };
+		03E4455A18B65D8A00C88421 /* btn_spot_profile_drink_menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_spot_profile_drink_menu.png; sourceTree = "<group>"; };
+		03E4455B18B65D8A00C88421 /* btn_spot_profile_drink_menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_spot_profile_drink_menu@2x.png"; sourceTree = "<group>"; };
+		03E4455C18B65D8A00C88421 /* btn_spot_profile_find_similar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_spot_profile_find_similar.png; sourceTree = "<group>"; };
+		03E4455D18B65D8A00C88421 /* btn_spot_profile_find_similar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_spot_profile_find_similar@2x.png"; sourceTree = "<group>"; };
+		03E4455E18B65D8A00C88421 /* btn_spot_profile_image_previous.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_spot_profile_image_previous.png; sourceTree = "<group>"; };
+		03E4455F18B65D8A00C88421 /* btn_spot_profile_image_previous@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_spot_profile_image_previous@2x.png"; sourceTree = "<group>"; };
+		03E4456018B65D8A00C88421 /* btn_spot_profile_review_it.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_spot_profile_review_it.png; sourceTree = "<group>"; };
+		03E4456118B65D8A00C88421 /* btn_spot_profile_review_it@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_spot_profile_review_it@2x.png"; sourceTree = "<group>"; };
 		03F2D9031871DB5B00C69576 /* SHButtonLatoLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoLight.h; sourceTree = "<group>"; };
 		03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoLight.m; sourceTree = "<group>"; };
 		03F2D9091871DC1400C69576 /* AvantGard EF 1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "AvantGard EF 1"; sourceTree = "<group>"; };
@@ -843,6 +871,8 @@
 		038664A2186D370E00985CEC /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				03E4455618B65D8A00C88421 /* Map */,
+				03E4455918B65D8A00C88421 /* SpotProfile */,
 				03CA72E918803F7F00815284 /* Glyphish */,
 				03CA729D187C4D0E00815284 /* Sliders */,
 				03CA726F187B8FD800815284 /* Icons */,
@@ -1001,6 +1031,8 @@
 		038664F9186DE0F700985CEC /* ContextMenu */ = {
 			isa = PBXGroup;
 			children = (
+				03E4455218B65D7F00C88421 /* btn_context_checkin.png */,
+				03E4455318B65D7F00C88421 /* btn_context_checkin@2x.png */,
 				038664FA186DE0F700985CEC /* btn_context_home.png */,
 				038664FB186DE0F700985CEC /* btn_context_home@2x.png */,
 				038664FC186DE0F700985CEC /* btn_context_info.png */,
@@ -1149,6 +1181,8 @@
 		03CA726F187B8FD800815284 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				03E4454E18B65D7300C88421 /* icon_phone.png */,
+				03E4454F18B65D7300C88421 /* icon_phone@2x.png */,
 				039B6FF51887167200C590F8 /* icon_search_drink_similar.png */,
 				039B6FF61887167200C590F8 /* icon_search_drink_similar@2x.png */,
 				039B6FF71887167200C590F8 /* icon_search_drink.png */,
@@ -1240,6 +1274,30 @@
 				03E4454518B56BF700C88421 /* LocationChooserViewController.xib */,
 			);
 			name = Commons;
+			sourceTree = "<group>";
+		};
+		03E4455618B65D8A00C88421 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				03E4455718B65D8A00C88421 /* map_marker_spot.png */,
+				03E4455818B65D8A00C88421 /* map_marker_spot@2x.png */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		03E4455918B65D8A00C88421 /* SpotProfile */ = {
+			isa = PBXGroup;
+			children = (
+				03E4455A18B65D8A00C88421 /* btn_spot_profile_drink_menu.png */,
+				03E4455B18B65D8A00C88421 /* btn_spot_profile_drink_menu@2x.png */,
+				03E4455C18B65D8A00C88421 /* btn_spot_profile_find_similar.png */,
+				03E4455D18B65D8A00C88421 /* btn_spot_profile_find_similar@2x.png */,
+				03E4455E18B65D8A00C88421 /* btn_spot_profile_image_previous.png */,
+				03E4455F18B65D8A00C88421 /* btn_spot_profile_image_previous@2x.png */,
+				03E4456018B65D8A00C88421 /* btn_spot_profile_review_it.png */,
+				03E4456118B65D8A00C88421 /* btn_spot_profile_review_it@2x.png */,
+			);
+			path = SpotProfile;
 			sourceTree = "<group>";
 		};
 		03F2D9021871DB3100C69576 /* FontButtons */ = {
@@ -1422,6 +1480,7 @@
 				03F2D9281871DC1400C69576 /* Lato-Bold.ttf in Resources */,
 				03866523186DE0F700985CEC /* app_background@2x.png in Resources */,
 				03866550186E050500985CEC /* btn_launch_item_background.png in Resources */,
+				03E4456A18B65D8A00C88421 /* btn_spot_profile_review_it.png in Resources */,
 				03CA7279187B8FD800815284 /* icon_beer@2x.png in Resources */,
 				0320236618774A49008368C2 /* txt_reviews_search_background.png in Resources */,
 				0386653F186DE0F700985CEC /* btn_nav_sidebar@2x.png in Resources */,
@@ -1429,6 +1488,8 @@
 				03866531186DE0F700985CEC /* btn_home_drinks@2x.png in Resources */,
 				03CA72B1187C4D0E00815284 /* slider_thumb_selected@2x.png in Resources */,
 				03866533186DE0F700985CEC /* btn_home_specials@2x.png in Resources */,
+				03E4456618B65D8A00C88421 /* btn_spot_profile_find_similar.png in Resources */,
+				03E4455418B65D7F00C88421 /* btn_context_checkin.png in Resources */,
 				03F2D9331871E42800C69576 /* btn_login_spothopper@2x.png in Resources */,
 				03866551186E050500985CEC /* btn_launch_item_background@2x.png in Resources */,
 				03866528186DE0F700985CEC /* logo_spothopper.png in Resources */,
@@ -1439,9 +1500,12 @@
 				03CA72AC187C4D0E00815284 /* slider_background_selected.png in Resources */,
 				03E4454718B56BF700C88421 /* LocationChooserViewController.xib in Resources */,
 				03F2D92C1871DC1400C69576 /* Lato-Italic.ttf in Resources */,
+				03E4455018B65D7300C88421 /* icon_phone.png in Resources */,
 				0386652B186DE0F700985CEC /* btn_context_home@2x.png in Resources */,
 				03866544186DE0F700985CEC /* btn_sidebar_icon_drinks.png in Resources */,
+				03E4456718B65D8A00C88421 /* btn_spot_profile_find_similar@2x.png in Resources */,
 				03866527186DE0F700985CEC /* img_expand_east@2x.png in Resources */,
+				03E4456218B65D8A00C88421 /* map_marker_spot.png in Resources */,
 				03CA72C4187C4FB300815284 /* slider_background_min@2x.png in Resources */,
 				0386654D186DE0F700985CEC /* btn_sidebar_search_icon@2x.png in Resources */,
 				0386653D186DE0F700985CEC /* btn_nav_arrow_east@2x.png in Resources */,
@@ -1457,6 +1521,7 @@
 				0320236318774A49008368C2 /* icon_plus@2x.png in Resources */,
 				03CA72E3187F567100815284 /* icon_star.png in Resources */,
 				03866532186DE0F700985CEC /* btn_home_specials.png in Resources */,
+				03E4455518B65D7F00C88421 /* btn_context_checkin@2x.png in Resources */,
 				03CA72AD187C4D0E00815284 /* slider_background_selected@2x.png in Resources */,
 				039B70031887167200C590F8 /* icon_search_spot.png in Resources */,
 				03F2D9491872105F00C69576 /* btn_launch_background_create.png in Resources */,
@@ -1464,6 +1529,7 @@
 				0320235A18774A40008368C2 /* table_header_background@2x.png in Resources */,
 				03CA72B3187C4D0E00815284 /* slider_thumb_selected_light@2x.png in Resources */,
 				03F2D94518720D9E00C69576 /* img_launch_field_divider.png in Resources */,
+				03E4456818B65D8A00C88421 /* btn_spot_profile_image_previous.png in Resources */,
 				0320237818775501008368C2 /* nav_bar_background_ios7@2x.png in Resources */,
 				03F2D92F1871DC1400C69576 /* Lato-Regular.ttf in Resources */,
 				03F2D92D1871DC1400C69576 /* Lato-Light.ttf in Resources */,
@@ -1486,7 +1552,9 @@
 				03F2D91D1871DC1400C69576 /* AvantGard EF 1 in Resources */,
 				03F2D92B1871DC1400C69576 /* Lato-HairlineItalic.ttf in Resources */,
 				03866529186DE0F700985CEC /* logo_spothopper@2x.png in Resources */,
+				03E4456B18B65D8A00C88421 /* btn_spot_profile_review_it@2x.png in Resources */,
 				03CA7278187B8FD800815284 /* icon_beer.png in Resources */,
+				03E4456518B65D8A00C88421 /* btn_spot_profile_drink_menu@2x.png in Resources */,
 				03F2D92E1871DC1400C69576 /* Lato-LightItalic.ttf in Resources */,
 				0386652A186DE0F700985CEC /* btn_context_home.png in Resources */,
 				03866542186DE0F700985CEC /* btn_sidebar_icon_checkin.png in Resources */,
@@ -1525,10 +1593,12 @@
 				038664DA186D376900985CEC /* 37x-Checkmark@2x.png in Resources */,
 				03CA727D187B8FD800815284 /* icon_liquor@2x.png in Resources */,
 				03CA72E4187F567100815284 /* icon_star@2x.png in Resources */,
+				03E4456318B65D8A00C88421 /* map_marker_spot@2x.png in Resources */,
 				0386647A186D352400985CEC /* Main.storyboard in Resources */,
 				03412C371880535B000F16A8 /* img_arrow_east.png in Resources */,
 				0386652F186DE0F700985CEC /* btn_home_add_reveiew@2x.png in Resources */,
 				039B701A18873DD400C590F8 /* ReviewCellView.xib in Resources */,
+				03E4456418B65D8A00C88421 /* btn_spot_profile_drink_menu.png in Resources */,
 				0386654B186DE0F700985CEC /* btn_sidebar_icon_spots@2x.png in Resources */,
 				039B6FFF1887167200C590F8 /* icon_search_drink.png in Resources */,
 				039B6FFE1887167200C590F8 /* icon_search_drink_similar@2x.png in Resources */,
@@ -1538,6 +1608,7 @@
 				03CA72AB187C4D0E00815284 /* slider_background@2x.png in Resources */,
 				03CA72E7187F56DA00815284 /* icon_spot.png in Resources */,
 				0386654A186DE0F700985CEC /* btn_sidebar_icon_spots.png in Resources */,
+				03E4456918B65D8A00C88421 /* btn_spot_profile_image_previous@2x.png in Resources */,
 				03F2D957187231C600C69576 /* btn_nav_back@2x.png in Resources */,
 				039B70041887167200C590F8 /* icon_search_spot@2x.png in Resources */,
 				03CA7268187B4EB700815284 /* table_header_background_selected@2x.png in Resources */,
@@ -1553,6 +1624,7 @@
 				03866547186DE0F700985CEC /* btn_sidebar_icon_reviews@2x.png in Resources */,
 				0320237718775501008368C2 /* nav_bar_background_ios7.png in Resources */,
 				03CA72C5187C4FB300815284 /* slider_background_selected_max.png in Resources */,
+				03E4455118B65D7300C88421 /* icon_phone@2x.png in Resources */,
 				03F2D9321871E42800C69576 /* btn_login_spothopper.png in Resources */,
 				03CA7267187B4EB700815284 /* table_header_background_selected.png in Resources */,
 				03F2D9241871DC1400C69576 /* AvantGarEFExtLig in Resources */,
