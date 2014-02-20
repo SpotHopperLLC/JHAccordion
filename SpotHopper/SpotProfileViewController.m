@@ -10,11 +10,15 @@
 
 #import "UIView+ViewFromNib.h"
 
+#import "SpotAnnotation.h"
+
 #import "SpotImageCollectViewCell.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 
-@interface SpotProfileViewController ()<UITableViewDataSource, UITableViewDelegate>
+#import <MapKit/MapKit.h>
+
+@interface SpotProfileViewController ()<UITableViewDataSource, UITableViewDelegate, MKMapViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tblSliders;
 
@@ -26,6 +30,7 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIButton *btnImagePrev;
 @property (weak, nonatomic) IBOutlet UIButton *btnImageNext;
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 @end
 
@@ -66,6 +71,8 @@
     
     // Configure collection cell
     [_collectionView registerNib:[UINib nibWithNibName:@"SpotImageCollectionViewCellView" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"SpotImageCollectViewCell"];
+    
+    [self updateView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -130,6 +137,26 @@
 
 #pragma mark - UITableViewDelegate
 
+
+#pragma mark - MKMapViewDelegate
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+    MKPinAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"current"];
+    
+//    UIButton *advertButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+//    [advertButton addTarget:self action:@selector(button:) forControlEvents:UIControlEventTouchUpInside];
+    
+    /*MyPin.rightCalloutAccessoryView = advertButton;
+     MyPin.draggable = YES;
+     
+     MyPin.animatesDrop=TRUE;
+     MyPin.canShowCallout = YES;*/
+    pin.highlighted = NO;
+    pin.image = [UIImage imageNamed:@"map_marker_spot"];
+    
+    return pin;
+}
+
 #pragma mark - Actions
 
 - (IBAction)onClickImagePrevious:(id)sender {
@@ -160,6 +187,33 @@
     }
 }
 
+- (IBAction)onClickFindSimilar:(id)sender {
+    
+}
+
+- (IBAction)onClickReviewIt:(id)sender {
+    
+}
+
+- (IBAction)onClickDrinkMenu:(id)sender {
+    
+}
+
 #pragma mark - Private
+
+- (void)updateView {
+    // Update map
+    if (_spot.latitude != nil && _spot.longitude != nil) {
+        MKCoordinateRegion mapRegion;
+        mapRegion.center = CLLocationCoordinate2DMake(_spot.latitude.floatValue, _spot.longitude.floatValue);
+        mapRegion.span = MKCoordinateSpanMake(0.005, 0.005);
+        [_mapView setRegion:mapRegion animated: NO];
+        
+        // Place pin
+        SpotAnnotation *annotation = [[SpotAnnotation alloc] init];
+        annotation.coordinate = CLLocationCoordinate2DMake(_spot.latitude.floatValue, _spot.longitude.floatValue);
+        [_mapView addAnnotation:annotation];
+    }
+}
 
 @end

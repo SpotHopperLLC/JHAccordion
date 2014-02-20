@@ -10,11 +10,12 @@
                 <outlet property="btnImageNext" destination="Hpi-1u-TFC" id="1oN-Oh-SFp"/>
                 <outlet property="btnImagePrev" destination="hJF-Je-ITI" id="qOr-yP-BpX"/>
                 <outlet property="collectionView" destination="rt2-I0-lbw" id="1nk-hV-Fuu"/>
+                <outlet property="mapView" destination="DC8-C7-87F" id="EQg-WX-4Xn"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="1">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="392"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="428"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="none" id="rt2-I0-lbw">
@@ -54,13 +55,66 @@
                         <action selector="onClickImageNext:" destination="-1" eventType="touchUpInside" id="9Tf-2k-FGR"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="V4H-uq-4rX">
+                    <rect key="frame" x="20" y="173" width="87" height="87"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal" image="btn_spot_profile_find_similar.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="onClickFindSimilar:" destination="-1" eventType="touchUpInside" id="HFH-Z2-HVf"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="5pt-L9-zQq">
+                    <rect key="frame" x="117" y="173" width="87" height="87"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal" image="btn_spot_profile_review_it.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="onClickReviewIt:" destination="-1" eventType="touchUpInside" id="Dtc-YE-byh"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="XZ3-b9-PXh">
+                    <rect key="frame" x="213" y="173" width="87" height="87"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal" image="btn_spot_profile_drink_menu.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="onClickDrinkMenu:" destination="-1" eventType="touchUpInside" id="0vG-Uc-c4Z"/>
+                    </connections>
+                </button>
+                <mapView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" id="DC8-C7-87F">
+                    <rect key="frame" x="0.0" y="268" width="320" height="140"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="HpU-58-zb1"/>
+                    </connections>
+                </mapView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_map_shadow_botom.png" id="3qV-dO-Wa3">
+                    <rect key="frame" x="0.0" y="398" width="320" height="10"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_map_shadow_top.png" id="BbL-io-sf3">
+                    <rect key="frame" x="0.0" y="268" width="320" height="10"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
     <resources>
+        <image name="btn_spot_profile_drink_menu.png" width="87" height="87"/>
+        <image name="btn_spot_profile_find_similar.png" width="87" height="87"/>
         <image name="btn_spot_profile_image_next.png" width="52" height="52"/>
         <image name="btn_spot_profile_image_previous.png" width="52" height="52"/>
+        <image name="btn_spot_profile_review_it.png" width="87" height="87"/>
+        <image name="img_map_shadow_botom.png" width="309" height="10"/>
+        <image name="img_map_shadow_top.png" width="309" height="10"/>
     </resources>
 </document>
