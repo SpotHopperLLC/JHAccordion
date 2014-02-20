@@ -27,5 +27,6 @@
 
 - (void)locationRequestsUpdate:(SHButtonLatoLightLocation*)button location:(LocationChooserViewController*)viewController;
 - (void)locationUpdate:(SHButtonLatoLightLocation*)button location:(CLLocation*)location name:(NSString*)name;
+- (void)locationError:(SHButtonLatoLightLocation*)button error:(NSError*)error;
 
 @end

@@ -14,9 +14,6 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-typedef void(^FoundBlock)(CLLocation *userModel);
-typedef void(^FailureBlock)();
-
 @interface TellMeMyLocation()
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
@@ -31,8 +28,25 @@ typedef void(^FailureBlock)();
 @synthesize foundBlock = _foundBlock;
 @synthesize failureBlock = _failureBlock;
 
-- (void)findMe:(CLLocationAccuracy)accuracy found:(void(^)(CLLocation *newLocation))foundBlock failure:(void(^)())failureBlock {
+- (void)findMe:(CLLocationAccuracy)accuracy found:(FoundBlock)foundBlock failure:(FailureBlock)failureBlock {
 
+    if ([CLLocationManager locationServicesEnabled]) {
+        
+        if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied){
+            failureBlock([NSError errorWithDomain:kTellMeMyLocationDomain code:1 userInfo:@{
+                                                                                              NSLocalizedDescriptionKey : @"App Permission Denied",
+                                                                                              NSLocalizedRecoverySuggestionErrorKey : @"To re-enable, please go to Settings and turn on Location Service for this app."
+                                                                                              }]);
+            return;
+        }
+    } else {
+        failureBlock([NSError errorWithDomain:kTellMeMyLocationDomain code:1 userInfo:@{
+                                                                                          NSLocalizedDescriptionKey : @"Permission Denied",
+                                                                                          NSLocalizedRecoverySuggestionErrorKey : @"To re-enable, please go to Settings and turn on Location Services"
+                                                                                          }]);
+        return;
+    }
+    
     if (_locationManager == nil) {
         _foundBlock = [foundBlock copy];
         _failureBlock = [failureBlock copy];
@@ -41,7 +55,7 @@ typedef void(^FailureBlock)();
     
         [_locationManager setDelegate:self];
     }
-    
+
     [_locationManager setDesiredAccuracy:accuracy];
     [_locationManager startUpdatingLocation];
     
@@ -51,15 +65,13 @@ typedef void(^FailureBlock)();
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
+    NSLog(@"Error - %@", error);
     if (_failureBlock != nil) {
-        _failureBlock();
+        _failureBlock(error);
     }
 
     [_locationManager stopUpdatingLocation];
-    
-//    _locationManager = nil;
-//    _foundBlock = nil;
-//    _failureBlock = nil;
+
 }
 
 // Delegate method from the CLLocationManagerDelegate protocol.
@@ -70,10 +82,7 @@ typedef void(^FailureBlock)();
     if (_foundBlock != nil) {
         _foundBlock(newLocation);
     }
-        
-//    _locationManager = nil;
-//    _foundBlock = nil;
-//    _failureBlock = nil;
+
 }
 
 + (void)setLastLocation:(CLLocation*)location completionHandler:(TellMeMyLocationCompletionHandler)completionHandler {

@@ -82,8 +82,14 @@
         [TellMeMyLocation setLastLocation:newLocation completionHandler:^{
             [self updateTitle];
         }];
-    } failure:^{
+    } failure:^(NSError *error){
         [self updateTitle];
+        
+        if ([_delegate respondsToSelector:@selector(locationError:error:)]) {
+            if ([error.domain isEqualToString:kTellMeMyLocationDomain]) {
+                [_delegate locationError:self error:error];
+            }
+        }
     }];
 }
 

@@ -275,6 +275,10 @@
     [self startSearch];
 }
 
+- (void)locationError:(SHButtonLatoLightLocation *)button error:(NSError *)error {
+    [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
+}
+
 #pragma mark - Actions
 
 - (void)onEditingChangeSearch:(id)sender {

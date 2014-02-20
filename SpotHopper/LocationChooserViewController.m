@@ -79,8 +79,10 @@
         mapRegion.center = newLocation.coordinate;
         mapRegion.span = MKCoordinateSpanMake(0.2, 0.2);
         [_mapView setRegion:mapRegion animated: YES];
-    } failure:^{
-        
+    } failure:^(NSError *error){
+        if ([error.domain isEqualToString:kTellMeMyLocationDomain]) {
+            [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
+        }
     }];
 }
 
