@@ -9,8 +9,8 @@
 #define kSpotModelParamPage @"page"
 #define kSpotModelParamsPageSize @"page_size"
 #define kSpotModelParamQuery @"query"
-#define kSpotModelParamLatitude @"latitude"
-#define kSpotModelParamLongitude @"longitude"
+#define kSpotModelParamLatitude @"lat"
+#define kSpotModelParamLongitude @"lng"
 
 #define kSpotModelParamName @"name"
 #define kSpotModelParamAddress @"address"

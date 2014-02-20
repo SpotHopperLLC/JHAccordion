@@ -11,6 +11,10 @@
 #import "NSNumber+Helpers.h"
 #import "UIViewController+Navigator.h"
 
+#import "TellMeMyLocation.h"
+
+#import "SHButtonLatoLightLocation.h"
+
 #import "SearchNewReviewViewController.h"
 
 #import "FooterShadowCell.h"
@@ -20,11 +24,13 @@
 #import "ErrorModel.h"
 #import "SpotModel.h"
 
+#import <CoreLocation/CoreLocation.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface SearchNewReviewViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface SearchNewReviewViewController ()<UITableViewDataSource, UITableViewDelegate, SHButtonLatoLightLocationDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
+@property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
 @property (weak, nonatomic) IBOutlet UITableView *tblSearches;
 
 @property (nonatomic, assign) CGRect tblSearchesInitalFrame;
@@ -35,6 +41,9 @@
 @property (nonatomic, strong) NSMutableArray *results;
 @property (nonatomic, strong) NSNumber *drinkPage;
 @property (nonatomic, strong) NSNumber *spotPage;
+
+@property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
+@property (nonatomic, strong) CLLocation *location;
 
 @end
 
@@ -95,6 +104,9 @@
     [self addFooterViewController:^(FooterViewController *footerViewController) {
         [footerViewController showHome:YES];
     }];
+    
+    [_btnLocation setDelegate:self];
+    [_btnLocation updateWithLastLocation];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -251,6 +263,22 @@
     [self doSearch];
 }
 
+#pragma mark - SHButtonLatoLightLocationDelegate
+
+- (void)locationRequestsUpdate:(SHButtonLatoLightLocation *)button location:(LocationChooserViewController *)viewController {
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
+    _location = location;
+    [self startSearch];
+}
+
+- (void)locationError:(SHButtonLatoLightLocation *)button error:(NSError *)error {
+    [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
+}
+
 #pragma mark - Actions
 
 - (void)onEditingChangeSearch:(id)sender {
@@ -260,6 +288,10 @@
     
     // Schedule timer
     _searchTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(startSearch) userInfo:nil repeats:NO];
+}
+
+- (IBAction)onClickLocation:(id)sender {
+    
 }
 
 #pragma mark - Private
@@ -301,11 +333,15 @@
     /*
      * Searches spots
      */
-    NSDictionary *paramsSpots = @{
+    NSMutableDictionary *paramsSpots = @{
                              kSpotModelParamQuery : _txtSearch.text,
                              kSpotModelParamPage : _spotPage,
                              kSpotModelParamsPageSize : kPageSize
-                             };
+                             }.mutableCopy;
+    if (_location != nil) {
+        [paramsSpots setObject:[NSNumber numberWithFloat:_location.coordinate.latitude] forKey:kSpotModelParamLatitude];
+        [paramsSpots setObject:[NSNumber numberWithFloat:_location.coordinate.longitude] forKey:kSpotModelParamLongitude];
+    }
     
     Promise *promiseSpots = [SpotModel getSpots:paramsSpots success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         // Adds spots to results

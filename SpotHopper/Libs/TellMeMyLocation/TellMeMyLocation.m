@@ -6,12 +6,13 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#define kLastLocationLat @"last_location_lat"
+#define kLastLocationLng @"last_location_lng"
+#define kLastLocationName @"last_location_name"
+
 #import "TellMeMyLocation.h"
 
 #import <CoreLocation/CoreLocation.h>
-
-typedef void(^FoundBlock)(CLLocation *userModel);
-typedef void(^FailureBlock)();
 
 @interface TellMeMyLocation()
 
@@ -27,8 +28,25 @@ typedef void(^FailureBlock)();
 @synthesize foundBlock = _foundBlock;
 @synthesize failureBlock = _failureBlock;
 
-- (void)findMe:(CLLocationAccuracy)accuracy found:(void(^)(CLLocation *newLocation))foundBlock failure:(void(^)())failureBlock {
+- (void)findMe:(CLLocationAccuracy)accuracy found:(FoundBlock)foundBlock failure:(FailureBlock)failureBlock {
 
+    if ([CLLocationManager locationServicesEnabled]) {
+        
+        if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied){
+            failureBlock([NSError errorWithDomain:kTellMeMyLocationDomain code:1 userInfo:@{
+                                                                                              NSLocalizedDescriptionKey : @"App Permission Denied",
+                                                                                              NSLocalizedRecoverySuggestionErrorKey : @"To re-enable, please go to Settings and turn on Location Service for this app."
+                                                                                              }]);
+            return;
+        }
+    } else {
+        failureBlock([NSError errorWithDomain:kTellMeMyLocationDomain code:1 userInfo:@{
+                                                                                          NSLocalizedDescriptionKey : @"Permission Denied",
+                                                                                          NSLocalizedRecoverySuggestionErrorKey : @"To re-enable, please go to Settings and turn on Location Services"
+                                                                                          }]);
+        return;
+    }
+    
     if (_locationManager == nil) {
         _foundBlock = [foundBlock copy];
         _failureBlock = [failureBlock copy];
@@ -36,11 +54,10 @@ typedef void(^FailureBlock)();
         _locationManager = [[CLLocationManager alloc] init];
     
         [_locationManager setDelegate:self];
-        [_locationManager setDesiredAccuracy:accuracy];
-        
-        [_locationManager startUpdatingLocation];
-        
     }
+
+    [_locationManager setDesiredAccuracy:accuracy];
+    [_locationManager startUpdatingLocation];
     
 }
 
@@ -48,13 +65,13 @@ typedef void(^FailureBlock)();
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
+    NSLog(@"Error - %@", error);
     if (_failureBlock != nil) {
-        _failureBlock();
+        _failureBlock(error);
     }
-    
-    _locationManager = nil;
-    _foundBlock = nil;
-    _failureBlock = nil;
+
+    [_locationManager stopUpdatingLocation];
+
 }
 
 // Delegate method from the CLLocationManagerDelegate protocol.
@@ -65,10 +82,66 @@ typedef void(^FailureBlock)();
     if (_foundBlock != nil) {
         _foundBlock(newLocation);
     }
+
+}
+
++ (void)setLastLocation:(CLLocation*)location completionHandler:(TellMeMyLocationCompletionHandler)completionHandler {
+    // Saves location
+    if (location != nil) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:location.coordinate.latitude] forKey:kLastLocationLat];
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:location.coordinate.longitude] forKey:kLastLocationLng];
+    } else {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLastLocationLat];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLastLocationLng];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    // Reverse geocodes
+    [[[CLGeocoder alloc] init] reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
         
-    _locationManager = nil;
-    _foundBlock = nil;
-    _failureBlock = nil;
+        // Saves location name
+        if (!error) {
+            if (placemarks.count > 0) {
+                CLPlacemark *placemark = [placemarks objectAtIndex:0];
+                
+                if (placemark.locality.length > 0 && placemark.administrativeArea.length > 0) {
+                    [TellMeMyLocation setLastLocationName:[NSString stringWithFormat:@"%@, %@", placemark.locality, placemark.administrativeArea]];
+                } else if (placemark.locality.length > 0) {
+                    [TellMeMyLocation setLastLocationName:placemark.locality];
+                } else if (placemark.administrativeArea.length > 0) {
+                    [TellMeMyLocation setLastLocationName:placemark.administrativeArea];
+                }
+                
+            } else {
+                [TellMeMyLocation setLastLocationName:nil];
+            }
+        }
+        
+        completionHandler();
+    }];
+}
+
++ (void)setLastLocationName:(NSString*)name {
+    if (name != nil) {
+        [[NSUserDefaults standardUserDefaults] setObject:name forKey:kLastLocationName];
+    } else {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLastLocationName];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (CLLocation*)lastLocation {
+    NSNumber *lat = [[NSUserDefaults standardUserDefaults] objectForKey:kLastLocationLat];
+    NSNumber *lng = [[NSUserDefaults standardUserDefaults] objectForKey:kLastLocationLng];
+    
+    if (lat != nil && lng != nil) {
+        return [[CLLocation alloc] initWithLatitude:lat.floatValue longitude:lng.floatValue];
+    }
+    return nil;
+}
+
++ (NSString*)lastLocationName {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:kLastLocationName];
 }
 
 @end
