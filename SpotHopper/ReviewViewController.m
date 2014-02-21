@@ -15,8 +15,10 @@
 #import "ReviewSliderCell.h"
 #import "SHLabelLatoLight.h"
 
+#import "ClientSessionManager.h"
 #import "DrinkModel.h"
 #import "ErrorModel.h"
+#import "ReviewModel.h"
 #import "SpotModel.h"
 #import "UserModel.h"
 
@@ -82,56 +84,13 @@
     _headerContent = [UIView viewFromNibNamed:@"ReviewHeaderDrinkView" withOwner:self];
     [_tblReviews setTableHeaderView:_headerContent];
     
-    // Initilizes states
     if (_review != nil) {
         _drink = _review.drink;
         _spot = _review.spot;
-        
-        if (_review.drink != nil) {
-            _reviewRatingSlider = [_review ratingSliderModel];
-        }
-        
-        _sliders = _review.sliders.mutableCopy;
-        _sliderTemplates = [_sliders valueForKey:@"sliderTemplate"];
-    } else if (_drink != nil) {
-        _reviewRatingSlider = [ReviewModel ratingSliderModel];
-        
-        _sliderTemplates = _drink.sliderTemplates;
-    } else if (_spot != nil) {
-        _sliderTemplates = _spot.sliderTemplates;
     }
     
-    
-    // Filling sliders if nil
-    if (_sliders == nil) {
-        _sliders = [NSMutableArray array];
-        for (SliderTemplateModel *sliderTemplate in _sliderTemplates) {
-            SliderModel *slider = [[SliderModel alloc] init];
-            [slider setSliderTemplate:sliderTemplate];
-            [slider setValue:sliderTemplate.defaultValue];
-            [_sliders addObject:slider];
-        }
-    }
-    
-    // Filling advanced sliders if nil
-    if (_advancedSliders == nil) {
-        _advancedSliders = [NSMutableArray array];
-        
-        // Moving advanced sliders into their own array
-        for (SliderModel *slider in _sliders) {
-            if (slider.sliderTemplate.required == NO) {
-                [_advancedSliders addObject:slider];
-            }
-        }
-        
-        // Removing advances sliders from basic array
-        for (SliderModel *slider in _advancedSliders) {
-            [_sliders removeObject:slider];
-        }
-    }
-    
-    // Update view
-    [self updateView];
+    // Gets review if already completed
+    [self fetchReview];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -322,7 +281,11 @@
         } else {
             [_review setRating:_reviewRatingSlider.value];
         }
-        [_review setSliders:_sliders];
+        
+        NSMutableArray *sliders = [NSMutableArray array];
+        [sliders addObjectsFromArray:_sliders];
+        [sliders addObjectsFromArray:_advancedSliders];
+        [_review setSliders:sliders];
         
         [self showHUD:@"Submitting"];
         [_review postReviews:^(ReviewModel *reviewModel, JSONAPI *jsonApi) {
@@ -340,6 +303,60 @@
 }
 
 #pragma mark - Private
+
+- (void)initSliders {
+    // Initilizes states
+    if (_review != nil) {
+        _drink = _review.drink;
+        _spot = _review.spot;
+        
+        if (_review.drink != nil) {
+            _reviewRatingSlider = [_review ratingSliderModel];
+        }
+        
+        _sliders = _review.sliders.mutableCopy;
+        _sliderTemplates = [_sliders valueForKey:@"sliderTemplate"];
+    } else if (_drink != nil) {
+        _reviewRatingSlider = [ReviewModel ratingSliderModel];
+        
+        _sliderTemplates = _drink.sliderTemplates;
+    } else if (_spot != nil) {
+        _sliderTemplates = _spot.sliderTemplates;
+    }
+    
+    
+    // Filling sliders if nil
+    if (_sliders == nil) {
+        _sliders = [NSMutableArray array];
+        for (SliderTemplateModel *sliderTemplate in _sliderTemplates) {
+            SliderModel *slider = [[SliderModel alloc] init];
+            [slider setSliderTemplate:sliderTemplate];
+            [slider setValue:sliderTemplate.defaultValue];
+            [_sliders addObject:slider];
+        }
+    }
+    
+    // Filling advanced sliders if nil
+    if (_advancedSliders == nil) {
+        _advancedSliders = [NSMutableArray array];
+        
+        // Moving advanced sliders into their own array
+        for (SliderModel *slider in _sliders) {
+            if (slider.sliderTemplate.required == NO) {
+                [_advancedSliders addObject:slider];
+            }
+        }
+        
+        // Removing advances sliders from basic array
+        for (SliderModel *slider in _advancedSliders) {
+            [_sliders removeObject:slider];
+        }
+    }
+    
+    // Update view
+    [self updateView];
+    [_tblReviews reloadData];
+}
 
 - (void)updateView {
     if (_drink != nil) {
@@ -380,6 +397,35 @@
         [_lblSubTitle setText:@""];
         [_lblSubSubTitle setText:@""];
     }
+}
+
+- (void)fetchReview {
+    
+    UserModel *user = [ClientSessionManager sharedClient].currentUser;
+    
+    [self showHUD:@"Getting review"];
+    
+    NSDictionary *params = nil;
+    if (_spot != nil) {
+        params = @{ kReviewModelParamsSpotId : _spot.ID };
+    } else if (_drink != nil) {
+        params = @{ kReviewModelParamsDrinkId : _drink.ID };
+    }
+    
+    [user getReviews:params success:^(NSArray *reviewModels, JSONAPI *jsonApi) {
+        [self hideHUD];
+        
+        if (reviewModels.count > 0) {
+            _review = [reviewModels objectAtIndex:0];
+        }
+        
+        [self initSliders];
+
+        
+    } failure:^(ErrorModel *errorModel) {
+        [self hideHUD];
+        [self initSliders];
+    }];
 }
 
 @end
