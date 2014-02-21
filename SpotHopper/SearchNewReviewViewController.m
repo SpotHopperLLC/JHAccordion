@@ -263,7 +263,13 @@
             
             // Create a review for this spot
             if (_createReview == YES) {
-                [self goToNewReviewForSpot:spot];
+                
+                if ([spot ID] == nil) {
+                    [self goToNewReview:spot];
+                } else {
+                    [self goToNewReviewForSpot:spot];
+                }
+                
             }
             // Go to spot profile
             else {
@@ -386,9 +392,16 @@
                              kSpotModelParamPage : _spotPage,
                              kSpotModelParamsPageSize : kPageSize
                              }.mutableCopy;
+    
+    if (_createReview == YES) {
+        [paramsSpots setObject:[@[kSpotModelParamSourcesSpotHopper,kSpotModelParamSourcesFoursquare] componentsJoinedByString:@","] forKey:kSpotModelParamSources];
+    } else {
+        [paramsSpots setObject:kSpotModelParamSourcesSpotHopper forKey:kSpotModelParamSources];
+    }
+    
     if (_location != nil) {
-        [paramsSpots setObject:[NSNumber numberWithFloat:_location.coordinate.latitude] forKey:kSpotModelParamLatitude];
-        [paramsSpots setObject:[NSNumber numberWithFloat:_location.coordinate.longitude] forKey:kSpotModelParamLongitude];
+        [paramsSpots setObject:[NSNumber numberWithFloat:_location.coordinate.latitude] forKey:kSpotModelParamQueryLatitude];
+        [paramsSpots setObject:[NSNumber numberWithFloat:_location.coordinate.longitude] forKey:kSpotModelParamQueryLongitude];
     }
     
     Promise *promiseSpots = [SpotModel getSpots:paramsSpots success:^(NSArray *spotModels, JSONAPI *jsonApi) {

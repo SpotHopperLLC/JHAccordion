@@ -44,6 +44,7 @@
 		0381044518B6846800A410DB /* img_map_shadow_top.png in Resources */ = {isa = PBXBuildFile; fileRef = 0381044118B6846800A410DB /* img_map_shadow_top.png */; };
 		0381044618B6846800A410DB /* img_map_shadow_top@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0381044218B6846800A410DB /* img_map_shadow_top@2x.png */; };
 		0381044A18B6889300A410DB /* SpotAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0381044918B6889300A410DB /* SpotAnnotation.m */; };
+		0381044D18B69E2100A410DB /* SpotTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0381044C18B69E2100A410DB /* SpotTypeModel.m */; };
 		03866467186D352400985CEC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03866466186D352400985CEC /* Foundation.framework */; };
 		03866469186D352400985CEC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03866468186D352400985CEC /* CoreGraphics.framework */; };
 		0386646B186D352400985CEC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0386646A186D352400985CEC /* UIKit.framework */; };
@@ -338,6 +339,8 @@
 		0381044218B6846800A410DB /* img_map_shadow_top@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_map_shadow_top@2x.png"; sourceTree = "<group>"; };
 		0381044818B6889300A410DB /* SpotAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotAnnotation.h; sourceTree = "<group>"; };
 		0381044918B6889300A410DB /* SpotAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotAnnotation.m; sourceTree = "<group>"; };
+		0381044B18B69E2100A410DB /* SpotTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotTypeModel.h; sourceTree = "<group>"; };
+		0381044C18B69E2100A410DB /* SpotTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotTypeModel.m; sourceTree = "<group>"; };
 		03866463186D352400985CEC /* SpotHopper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotHopper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03866466186D352400985CEC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		03866468186D352400985CEC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1048,6 +1051,8 @@
 				03C8DAEC188B44CB0082321C /* SliderTemplateModel.m */,
 				03CA7287187C26B300815284 /* SpotModel.h */,
 				03CA7288187C26B300815284 /* SpotModel.m */,
+				0381044B18B69E2100A410DB /* SpotTypeModel.h */,
+				0381044C18B69E2100A410DB /* SpotTypeModel.m */,
 				038664ED186D391E00985CEC /* UserModel.h */,
 				038664EE186D391E00985CEC /* UserModel.m */,
 			);
@@ -1827,6 +1832,7 @@
 				038664CF186D376900985CEC /* NSString+Currency.m in Sources */,
 				03412C3E18805693000F16A8 /* ErrorModel.m in Sources */,
 				038664EF186D391E00985CEC /* UserModel.m in Sources */,
+				0381044D18B69E2100A410DB /* SpotTypeModel.m in Sources */,
 				039B6FEE18870E4A00C590F8 /* SearchNewReviewViewController.m in Sources */,
 				039B7009188721BB00C590F8 /* FooterShadowCell.m in Sources */,
 				03866477186D352400985CEC /* AppDelegate.m in Sources */,

@@ -138,4 +138,8 @@
     }];
 }
 
+- (SpotTypeModel *)spotType {
+    return [self linkedResourceForKey:@"spot_type"];
+}
+
 @end

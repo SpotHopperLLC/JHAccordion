@@ -160,6 +160,14 @@
     }];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    if (_spotBasedOffOf != nil) {
+        [self tableView:_tblReviewTypes didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -587,7 +595,7 @@
         
         NSString *name = _txtSpotName.text;
         NSString *address = _txtSpotAddress.text;
-        NSString *city = _txtSpotAddress.text;
+        NSString *city = _txtSpotCity.text;
         NSString *state = _txtSpotState.text;
         
         // Form text field validations
@@ -624,14 +632,22 @@
             
             NSString *zipCode = placemark.postalCode;
                 
-            NSDictionary *params = @{
+            NSMutableDictionary *params = @{
                                      kSpotModelParamName: name,
                                      kSpotModelParamAddress: address,
                                      kSpotModelParamCity: city,
                                      kSpotModelParamState: state,
                                      kSpotModelParamZip : zipCode,
                                      kSpotModelParamSpotTypeId: spotTypeId
-                                     };
+                                     }.mutableCopy;
+            
+            if (_spotBasedOffOf != nil && _spotBasedOffOf.latitude != nil && _spotBasedOffOf.longitude != nil) {
+                [params setObject:_spotBasedOffOf.latitude forKey:kSpotModelParamLatitude];
+                [params setObject:_spotBasedOffOf.longitude forKey:kSpotModelParamLongitude];
+            } else if (placemark.location != nil) {
+                [params setObject:[NSNumber numberWithFloat:placemark.location.coordinate.latitude] forKey:kSpotModelParamLatitude];
+                [params setObject:[NSNumber numberWithFloat:placemark.location.coordinate.longitude] forKey:kSpotModelParamLongitude];
+            }
             
             // Send request to create spot
             [self hideHUD];
@@ -973,6 +989,13 @@
     if (index == 0) {
         if (_viewFormNewSpot == nil) {
             _viewFormNewSpot = [UIView viewFromNibNamed:@"NewReviewSpotView" withOwner:self];
+            
+            if (_spotBasedOffOf != nil) {
+                [_txtSpotName setText:_spotBasedOffOf.name];
+                [_txtSpotAddress setText:_spotBasedOffOf.address];
+                [_txtSpotCity setText:_spotBasedOffOf.city];
+                [_txtSpotState setText:_spotBasedOffOf.state];
+            }
             
             // Sets autocomplete
             [_txtSpotType setAutocompleteWithDataSource:self delegate:self];

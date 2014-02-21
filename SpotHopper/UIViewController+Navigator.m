@@ -66,7 +66,12 @@
 }
 
 - (void)goToNewReview {
+    [self goToNewReview:nil];
+}
+
+- (void)goToNewReview:(SpotModel*)spot {
     NewReviewViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"NewReviewViewController"];
+    [viewController setSpotBasedOffOf:spot];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

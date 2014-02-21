@@ -14,6 +14,8 @@
 
 #import "SpotImageCollectViewCell.h"
 
+#import "SpotTypeModel.h"
+
 #import <AFNetworking/UIImageView+AFNetworking.h>
 
 #import <MapKit/MapKit.h>
@@ -24,6 +26,8 @@
 
 // Static Header
 @property (weak, nonatomic) IBOutlet UILabel *lblSpotType;
+@property (weak, nonatomic) IBOutlet UILabel *lblPercentMatch;
+@property (weak, nonatomic) IBOutlet UIButton *btnPhoneNumber;
 
 // Header
 @property (nonatomic, strong) UIView *headerContent;
@@ -202,6 +206,10 @@
 #pragma mark - Private
 
 - (void)updateView {
+    
+    // Spot type
+    [_lblSpotType setText:_spot.spotType.name];
+    
     // Update map
     if (_spot.latitude != nil && _spot.longitude != nil) {
         MKCoordinateRegion mapRegion;
