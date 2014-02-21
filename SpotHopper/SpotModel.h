@@ -20,6 +20,7 @@
 #define kSpotModelParamSpotTypeId @"spot_type_id"
 #define kSpotModelParamLatitude @"latitude"
 #define kSpotModelParamLongitude @"longitude"
+#define kSpotModelParamFoursquareId @"foursquare_id"
 
 
 #define kSpotModelParamSources @"sources"
@@ -51,6 +52,7 @@
 @property (nonatomic, strong) NSNumber *latitude;
 @property (nonatomic, strong) NSNumber *longitude;
 @property (nonatomic, strong) NSArray *sliderTemplates;
+@property (nonatomic, strong) NSString *foursquareId;
 @property (nonatomic, strong) SpotTypeModel *spotType;
 
 - (NSString*)cityState;

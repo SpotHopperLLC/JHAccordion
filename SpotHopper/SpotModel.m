@@ -138,6 +138,10 @@
     }];
 }
 
+- (NSString *)foursquareId {
+    return [self objectForKey:@"foursquare_id"];
+}
+
 - (SpotTypeModel *)spotType {
     return [self linkedResourceForKey:@"spot_type"];
 }

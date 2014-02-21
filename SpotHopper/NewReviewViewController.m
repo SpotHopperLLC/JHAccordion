@@ -641,9 +641,16 @@
                                      kSpotModelParamSpotTypeId: spotTypeId
                                      }.mutableCopy;
             
-            if (_spotBasedOffOf != nil && _spotBasedOffOf.latitude != nil && _spotBasedOffOf.longitude != nil) {
-                [params setObject:_spotBasedOffOf.latitude forKey:kSpotModelParamLatitude];
-                [params setObject:_spotBasedOffOf.longitude forKey:kSpotModelParamLongitude];
+            if (_spotBasedOffOf != nil) {
+                if (_spotBasedOffOf.latitude != nil && _spotBasedOffOf.longitude != nil) {
+                    [params setObject:_spotBasedOffOf.latitude forKey:kSpotModelParamLatitude];
+                    [params setObject:_spotBasedOffOf.longitude forKey:kSpotModelParamLongitude];
+                }
+                
+                if (_spotBasedOffOf.foursquareId.length > 0) {
+                    [params setObject:_spotBasedOffOf.foursquareId forKey:kSpotModelParamFoursquareId];
+                }
+                
             } else if (placemark.location != nil) {
                 [params setObject:[NSNumber numberWithFloat:placemark.location.coordinate.latitude] forKey:kSpotModelParamLatitude];
                 [params setObject:[NSNumber numberWithFloat:placemark.location.coordinate.longitude] forKey:kSpotModelParamLongitude];
