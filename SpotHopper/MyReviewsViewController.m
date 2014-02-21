@@ -246,21 +246,21 @@
 
 #pragma mark - JHAccordionDelegate
 
-- (void)accordionOpeningSection:(NSInteger)section {
+- (void)accordion:(JHAccordion *)accordion openingSection:(NSInteger)section {
     if (section == 0) [_sectionHeaderFilter setSelected:YES];
     if (section == 1) [_sectionHeaderSort setSelected:YES];
 }
 
-- (void)accordionClosingSection:(NSInteger)section {
+- (void)accordion:(JHAccordion *)accordion closingSection:(NSInteger)section {
     if (section == 0) [_sectionHeaderFilter setSelected:NO];
     if (section == 1) [_sectionHeaderSort setSelected:NO];
 }
 
-- (void)accordionOpenedSection:(NSInteger)section {
+- (void)accordion:(JHAccordion *)accordion openedSection:(NSInteger)section {
     
 }
 
-- (void)accordionClosedSection:(NSInteger)section {
+- (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
     [self updateFilter];
     [_tblReviews reloadData];
 }

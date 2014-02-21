@@ -9,8 +9,8 @@
 #define kSpotModelParamPage @"page"
 #define kSpotModelParamsPageSize @"page_size"
 #define kSpotModelParamQuery @"query"
-#define kSpotModelParamLatitude @"latitude"
-#define kSpotModelParamLongitude @"longitude"
+#define kSpotModelParamQueryLatitude @"lat"
+#define kSpotModelParamQueryLongitude @"lng"
 
 #define kSpotModelParamName @"name"
 #define kSpotModelParamAddress @"address"
@@ -18,6 +18,14 @@
 #define kSpotModelParamState @"state"
 #define kSpotModelParamZip @"zip"
 #define kSpotModelParamSpotTypeId @"spot_type_id"
+#define kSpotModelParamLatitude @"latitude"
+#define kSpotModelParamLongitude @"longitude"
+#define kSpotModelParamFoursquareId @"foursquare_id"
+
+
+#define kSpotModelParamSources @"sources"
+#define kSpotModelParamSourcesSpotHopper @"spothopper"
+#define kSpotModelParamSourcesFoursquare @"foursquare"
 
 #define kSpotModelMetaPage @"page"
 #define kSpotModelMetaTotalRecords @"total_records"
@@ -28,7 +36,7 @@
 
 #import <JSONAPI/JSONAPI.h>
 
-@class ErrorModel;
+@class ErrorModel, SpotTypeModel;
 
 @interface SpotModel : SHJSONAPIResource
 
@@ -44,6 +52,8 @@
 @property (nonatomic, strong) NSNumber *latitude;
 @property (nonatomic, strong) NSNumber *longitude;
 @property (nonatomic, strong) NSArray *sliderTemplates;
+@property (nonatomic, strong) NSString *foursquareId;
+@property (nonatomic, strong) SpotTypeModel *spotType;
 
 - (NSString*)cityState;
 

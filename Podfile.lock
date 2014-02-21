@@ -19,6 +19,7 @@ PODS:
     - AFNetworking/NSURLConnection
   - Facebook-iOS-SDK (3.11.0)
   - JHAccordion (0.1.0)
+  - JHAutoCompleteTextField (0.1.0)
   - JHSidebar (0.1.1)
   - JSONAPI (0.1.1)
   - Promises (0.1.0)
@@ -29,6 +30,7 @@ DEPENDENCIES:
   - AFNetworking (~> 2.0.3)
   - Facebook-iOS-SDK (~> 3.11.0)
   - JHAccordion (from `git@github.com:joshdholtz/JHAccordion.git`)
+  - JHAutoCompleteTextField (from `git@github.com:joshdholtz/JHAutoCompleteTextField.git`)
   - JHSidebar (~> 0.1.1)
   - JSONAPI (from `git@github.com:joshdholtz/jsonapi-ios.git`)
   - Promises (from `git@github.com:joshdholtz/ios-promises.git`)
@@ -38,6 +40,8 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   JHAccordion:
     :git: git@github.com:joshdholtz/JHAccordion.git
+  JHAutoCompleteTextField:
+    :git: git@github.com:joshdholtz/JHAutoCompleteTextField.git
   JSONAPI:
     :git: git@github.com:joshdholtz/jsonapi-ios.git
   Promises:
@@ -47,6 +51,7 @@ SPEC CHECKSUMS:
   AFNetworking: e499052cbf3d743e9bb727bb37adb9dc2547ba15
   Facebook-iOS-SDK: 2eb12f9ed04f3d3956f0a4fb0e4e60c824dcd101
   JHAccordion: 4f0337990465b25f8de5ed304609fa9362281db0
+  JHAutoCompleteTextField: 1ca69c82441d9b5bf474e10d36585247030f7594
   JHSidebar: 2efb4d14cc8bb0032c75218fd3ef7db70154c07e
   JSONAPI: 9877cd3d44c825914ae42fdd0b6d97b43b9a2b67
   Promises: 084c52a29463480600484fe7f29d6844814c1c7d

@@ -11,6 +11,10 @@
 #import "NSNumber+Helpers.h"
 #import "UIViewController+Navigator.h"
 
+#import "TellMeMyLocation.h"
+
+#import "SHButtonLatoLightLocation.h"
+
 #import "SearchNewReviewViewController.h"
 
 #import "FooterShadowCell.h"
@@ -20,11 +24,13 @@
 #import "ErrorModel.h"
 #import "SpotModel.h"
 
+#import <CoreLocation/CoreLocation.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface SearchNewReviewViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface SearchNewReviewViewController ()<UITableViewDataSource, UITableViewDelegate, SHButtonLatoLightLocationDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
+@property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
 @property (weak, nonatomic) IBOutlet UITableView *tblSearches;
 
 @property (nonatomic, assign) CGRect tblSearchesInitalFrame;
@@ -35,6 +41,9 @@
 @property (nonatomic, strong) NSMutableArray *results;
 @property (nonatomic, strong) NSNumber *drinkPage;
 @property (nonatomic, strong) NSNumber *spotPage;
+
+@property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
+@property (nonatomic, strong) CLLocation *location;
 
 @end
 
@@ -74,6 +83,8 @@
     _results = [NSMutableArray array];
     _drinkPage = @1;
     _spotPage = @1;
+    
+    [_txtSearch becomeFirstResponder];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -95,6 +106,9 @@
     [self addFooterViewController:^(FooterViewController *footerViewController) {
         [footerViewController showHome:YES];
     }];
+    
+    [_btnLocation setDelegate:self];
+    [_btnLocation updateWithLastLocation];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -153,7 +167,15 @@
     if (section == 0) {
         return _results.count;
     } else if (section == 1) {
-        return (_txtSearch.text.length > 0 ? 3 : 0);
+        if (_txtSearch.text.length > 0) {
+            if (_showSimilarList == YES && _showNotWhatLookingFor == YES) {
+                return 3;
+            } else if (_showSimilarList == YES) {
+                return 2;
+            } else if (_showNotWhatLookingFor == YES) {
+                return 1;
+            }
+        }
     } else if (section == 2) {
         return 1;
     }
@@ -179,12 +201,30 @@
     } else if (indexPath.section == 1) {
         
         SearchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell" forIndexPath:indexPath];
-        if (indexPath.row == 0) {
-            [cell setDrinksSimilar:_txtSearch.text];
-        } else if (indexPath.row == 1) {
-            [cell setSpotsSimilar:_txtSearch.text];
-        } else if (indexPath.row == 2) {
-            [cell setNotWhatYoureLookingFor];
+
+        // Show both similar and not what looking for
+        if (_showSimilarList == YES && _showNotWhatLookingFor == YES) {
+            if (indexPath.row == 0) {
+                [cell setDrinksSimilar:_txtSearch.text];
+            } else if (indexPath.row == 1) {
+                [cell setSpotsSimilar:_txtSearch.text];
+            } else if (indexPath.row == 2) {
+                [cell setNotWhatYoureLookingFor];
+            }
+        }
+        // Show only similar
+        else if (_showSimilarList == YES) {
+            if (indexPath.row == 0) {
+                [cell setDrinksSimilar:_txtSearch.text];
+            } else if (indexPath.row == 1) {
+                [cell setSpotsSimilar:_txtSearch.text];
+            }
+        }
+        // Only show not what looking for
+        else if (_showNotWhatLookingFor == YES) {
+            if (indexPath.row == 0) {
+                [cell setNotWhatYoureLookingFor];
+            }
         }
         
         return cell;
@@ -209,18 +249,44 @@
         JSONAPIResource *result = [_results objectAtIndex:indexPath.row];
         if ([result isKindOfClass:[DrinkModel class]] == YES) {
             DrinkModel *drink = (DrinkModel*)result;
-            [self goToNewReviewForDrink:drink];
+            
+            // Create a review for this drink
+            if (_createReview == YES) {
+                [self goToNewReviewForDrink:drink];
+            }
+            // Go to drink profile
+            else {
+                
+            }
         } else if ([result isKindOfClass:[SpotModel class]] == YES) {
             SpotModel *spot = (SpotModel*)result;
-            [self goToNewReviewForSpot:spot];
+            
+            // Create a review for this spot
+            if (_createReview == YES) {
+                
+                if ([spot ID] == nil) {
+                    [self goToNewReview:spot];
+                } else {
+                    [self goToNewReviewForSpot:spot];
+                }
+                
+            }
+            // Go to spot profile
+            else {
+                [self goToSpotProfile:spot];
+            }
         }
     } else if (indexPath.section == 1) {
-        if (indexPath.row == 0) {
+        
+        
+        if (_showSimilarList == YES && _showNotWhatLookingFor == YES) {
             
-        } else if (indexPath.row == 1) {
-            
-        } else if (indexPath.row == 2) {
-            [self goToNewReview];
+        } else if (_showSimilarList == YES) {
+
+        } else if (_showNotWhatLookingFor == YES) {
+            if (indexPath.row == 0) {
+                [self goToNewReview];
+            }
         }
     }
 }
@@ -251,6 +317,22 @@
     [self doSearch];
 }
 
+#pragma mark - SHButtonLatoLightLocationDelegate
+
+- (void)locationRequestsUpdate:(SHButtonLatoLightLocation *)button location:(LocationChooserViewController *)viewController {
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
+    _location = location;
+    [self startSearch];
+}
+
+- (void)locationError:(SHButtonLatoLightLocation *)button error:(NSError *)error {
+    [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
+}
+
 #pragma mark - Actions
 
 - (void)onEditingChangeSearch:(id)sender {
@@ -260,6 +342,10 @@
     
     // Schedule timer
     _searchTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(startSearch) userInfo:nil repeats:NO];
+}
+
+- (IBAction)onClickLocation:(id)sender {
+    
 }
 
 #pragma mark - Private
@@ -301,11 +387,22 @@
     /*
      * Searches spots
      */
-    NSDictionary *paramsSpots = @{
+    NSMutableDictionary *paramsSpots = @{
                              kSpotModelParamQuery : _txtSearch.text,
                              kSpotModelParamPage : _spotPage,
                              kSpotModelParamsPageSize : kPageSize
-                             };
+                             }.mutableCopy;
+    
+    if (_createReview == YES) {
+        [paramsSpots setObject:[@[kSpotModelParamSourcesSpotHopper,kSpotModelParamSourcesFoursquare] componentsJoinedByString:@","] forKey:kSpotModelParamSources];
+    } else {
+        [paramsSpots setObject:kSpotModelParamSourcesSpotHopper forKey:kSpotModelParamSources];
+    }
+    
+    if (_location != nil) {
+        [paramsSpots setObject:[NSNumber numberWithFloat:_location.coordinate.latitude] forKey:kSpotModelParamQueryLatitude];
+        [paramsSpots setObject:[NSNumber numberWithFloat:_location.coordinate.longitude] forKey:kSpotModelParamQueryLongitude];
+    }
     
     Promise *promiseSpots = [SpotModel getSpots:paramsSpots success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         // Adds spots to results

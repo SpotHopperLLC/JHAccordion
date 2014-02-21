@@ -17,17 +17,18 @@
 #import "UIViewController+Navigator.h"
 
 #import "SectionHeaderView.h"
+#import "AutoCompleteCell.h"
 #import "DropdownOptionCell.h"
 #import "ReviewSliderCell.h"
 
 #import "ErrorModel.h"
 
-#import "ACEAutocompleteBar.h"
 #import <JHAccordion/JHAccordion.h>
+#import <JHAutoCompleteTextField/JHAutoCompleteTextField.h>
 
 #import "NewReviewViewController.h"
 
-@interface NewReviewViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, ACEAutocompleteDataSource, ACEAutocompleteDelegate, ReviewSliderCellDelegate>
+@interface NewReviewViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, JHAutoCompleteDataSource, JHAutoCompleteDelegate, ReviewSliderCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tblReviewTypes;
 @property (weak, nonatomic) IBOutlet UITableView *tblReviews;
@@ -36,6 +37,9 @@
 
 @property (nonatomic, strong) JHAccordion *accordion;
 @property (nonatomic, strong) SectionHeaderView *sectionHeaderReviewType;
+
+@property (nonatomic, strong) JHAccordion *accordionAdvanced;
+@property (nonatomic, strong) SectionHeaderView *sectionHeaderAdvanced;
 
 @property (nonatomic, assign) NSInteger selectedReviewType;
 
@@ -51,6 +55,8 @@
 @property (nonatomic, strong) SliderModel *reviewRatingSlider;
 @property (nonatomic, strong) NSArray *sliderTemplates;
 @property (nonatomic, strong) NSMutableArray *sliders;
+
+@property (nonatomic, strong) NSMutableArray *advancedSliders;
 
 @property (nonatomic, strong) NSDictionary *selectedSpotType;
 @property (nonatomic, strong) NSDictionary *selectedCocktailSubtype;
@@ -112,6 +118,11 @@
     [_accordion setDelegate:self];
     [_accordion openSection:0];
     
+    // Configures accordion - advanced sliders
+    _accordionAdvanced = [[JHAccordion alloc] initWithTableView:_tblReviews];
+    [_accordionAdvanced setDelegate:self];
+    [_accordionAdvanced openSection:0];
+    
     // Configures table
     [_tblReviewTypes setTableFooterView:[[UIView alloc] init]];
     [_tblReviewTypes registerNib:[UINib nibWithNibName:@"DropdownOptionCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"DropdownOptionCell"];
@@ -147,6 +158,14 @@
     [self addFooterViewController:^(FooterViewController *footerViewController) {
         [footerViewController showHome:YES];
     }];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    if (_spotBasedOffOf != nil) {
+        [self tableView:_tblReviewTypes didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -192,7 +211,9 @@
     
     [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | curve animations:^{
         [_tblReviews setFrame:frame];
-    } completion:nil];
+    } completion:^(BOOL finished) {
+        
+    }];
 }
 
 #pragma mark - UITableViewDataSource
@@ -201,7 +222,7 @@
     if (tableView == _tblReviewTypes) {
         return 1;
     } else if (tableView == _tblReviews) {
-        return 2;
+        return 3;
     }
     return 0;
 }
@@ -217,7 +238,9 @@
                 return 1;
             }
         } else if (section == 1) {
-            return _sliderTemplates.count;
+            return _sliders.count;
+        } else if (section == 2) {
+            return _advancedSliders.count;
         }
     }
     return 0;
@@ -242,18 +265,22 @@
             return cell;
         } else if (indexPath.section == 1) {
             
-            SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
-            SliderModel *slider = nil;
-            if (indexPath.row < _sliders.count) {
-                slider = [_sliders objectAtIndex:indexPath.row];
-            }
+            SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
              
             ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
             [cell setDelegate:self];
-            [cell setSliderTemplate:sliderTemplate withSlider:slider showSliderValue:NO];
+            [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
             
             return cell;
+        } else if (indexPath.section == 2) {
             
+            SliderModel *slider = [_advancedSliders objectAtIndex:indexPath.row];
+            
+            ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
+            [cell setDelegate:self];
+            [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
+            
+            return cell;
         }
     }
     
@@ -283,7 +310,19 @@
             return [self sectionHeaderViewForSection:section];
         }
     } else if (tableView == _tblReviews) {
-
+        if (section == 2) {
+            if (_sectionHeaderAdvanced == nil) {
+                _sectionHeaderAdvanced = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblReviews.frame), 56.0f)];
+                [_sectionHeaderAdvanced setBackgroundColor:[UIColor clearColor]];
+                [_sectionHeaderAdvanced setText:@"Advanced"];
+                [_sectionHeaderAdvanced setSelected:[_accordionAdvanced isSectionOpened:section]];
+                
+                // Sets up for accordion
+                [_sectionHeaderAdvanced.btnBackground setTag:section];
+                [_sectionHeaderAdvanced.btnBackground addTarget:_accordionAdvanced action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
+            }
+            return _sectionHeaderAdvanced;
+        }
     }
     
     return nil;
@@ -295,7 +334,9 @@
             return 56.0f;
         }
     } else if (tableView == _tblReviews) {
-
+        if (section == 2) {
+            return 56.0f;
+        }
     }
     
     return 0.0f;
@@ -313,6 +354,8 @@
             if (_selectedReviewType >= 0) {
                 return 77.0f;
             }
+        } else if (indexPath.section == 2) {
+            return ( [_accordionAdvanced isSectionOpened:indexPath.section] ? 77.0f : 0.0f);
         }
     }
     
@@ -321,47 +364,72 @@
 
 #pragma mark - JHAccordionDelegate
 
-- (void)accordionOpeningSection:(NSInteger)section {
-    if (section == 0) [_sectionHeaderReviewType setSelected:YES];
-    
-    [UIView animateWithDuration:0.35f animations:^{
-        [_tblReviews setAlpha:0.0f];
-        [_btnSubmit setAlpha:0.0f];
-    } completion:^(BOOL finished) {
-        [_tblReviews setHidden:YES];
-        [_btnSubmit setHidden:YES];
+- (void)accordion:(JHAccordion *)accordion openingSection:(NSInteger)section {
+    if (accordion == _accordion) {
+        if (section == 0) [_sectionHeaderReviewType setSelected:YES];
         
-        [self.view endEditing:YES];
-    }];
+        [UIView animateWithDuration:0.35f animations:^{
+            [_tblReviews setAlpha:0.0f];
+            [_btnSubmit setAlpha:0.0f];
+        } completion:^(BOOL finished) {
+            [_tblReviews setHidden:YES];
+            [_btnSubmit setHidden:YES];
+            
+            [self.view endEditing:YES];
+        }];
+    } else if (accordion == _accordionAdvanced) {
+        if (section == 2) [_sectionHeaderAdvanced setSelected:YES];
+    }
 }
 
-- (void)accordionClosingSection:(NSInteger)section {
-    if (section == 0) [_sectionHeaderReviewType setSelected:NO];
+- (void)accordion:(JHAccordion *)accordion closingSection:(NSInteger)section {
+    if (accordion == _accordion) {
+        if (section == 0) [_sectionHeaderReviewType setSelected:NO];
+        
+        [_tblReviews setTableHeaderView:[self formForReviewTypeIndex:_selectedReviewType]];
+        [_tblReviews reloadData];
+        
+        [self fetchSliderTemplates:_selectedReviewType];
+    } else if (accordion == _accordionAdvanced) {
+        if (section == 2) [_sectionHeaderAdvanced setSelected:NO];
+    }
+}
+
+- (void)accordion:(JHAccordion *)accordion openedSection:(NSInteger)section {
     
-    [_tblReviews setTableHeaderView:[self formForReviewTypeIndex:_selectedReviewType]];
-    [_tblReviews reloadData];
-    
-    [self fetchSliderTemplates:_selectedReviewType];
 }
 
-- (void)accordionOpenedSection:(NSInteger)section {
+- (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
+    if (accordion == _accordion) {
+        [self showForm:YES];
+    }
 }
 
-- (void)accordionClosedSection:(NSInteger)section {
+- (void)showForm:(BOOL)animate {
     [_tblReviews setAlpha:0.0f];
     [_tblReviews setHidden:NO];
     [_btnSubmit setAlpha:0.0f];
     [_btnSubmit setHidden:NO];
-    [UIView animateWithDuration:0.35f animations:^{
+    [UIView animateWithDuration:( animate ? 0.35f : 0.0f ) animations:^{
         [_tblReviews setAlpha:1.0f];
         [_btnSubmit setAlpha:1.0f];
     } completion:^(BOOL finished) {
-
+        
     }];
 }
 
-
 #pragma mark - UITextFieldDelegate
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+    if (textField == _txtSpotType) {
+        _selectedSpotType = nil;
+    } else if (textField == _txtCocktailAlcoholType) {
+        _selectedCocktailSubtype = nil;
+    }
+    
+    return YES;
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     // Spot
@@ -388,57 +456,60 @@
     return NO;
 }
 
-#pragma mark - Autocomplete Delegate
-
-- (void)textField:(UITextField *)textField didSelectObject:(id)object inInputView:(ACEAutocompleteInputView *)inputView {
+- (void)textFieldDidEndEditing:(UITextField *)textField {
     if (textField == _txtSpotType) {
-        _selectedSpotType = object;
-        textField.text = [_selectedSpotType objectForKey:@"name"];
-
-        [self fetchSliderTemplates:_selectedReviewType];
-    } else if (_txtCocktailAlcoholType ) {
-        _selectedCocktailSubtype = object;
-        textField.text = [_selectedCocktailSubtype objectForKey:@"name"];
-    } else if ([object isKindOfClass:[NSString class]] == YES) {
-        textField.text = object;
+        if (_selectedSpotType == nil) {
+            [_txtSpotType setText:@""];
+            [_sliders removeAllObjects];
+            _sliderTemplates = nil;
+            [_tblReviews reloadData];
+        }
+    } else if (textField == _txtCocktailAlcoholType) {
+        _selectedCocktailSubtype = nil;
+        if (_selectedCocktailSubtype == nil) {
+            [_txtCocktailAlcoholType setText:@""];
+        }
     }
 }
 
-#pragma mark - Autocomplete Data Source
+#pragma mark - JHAutoCompleteDataSource
 
-- (NSUInteger)minimumCharactersToTrigger:(ACEAutocompleteInputView *)inputView {
-    return 0;
-}
-
-- (void)inputView:(ACEAutocompleteInputView *)inputView itemsFor:(NSString *)query result:(void (^)(NSArray *items))resultBlock; {
+- (void)autocomplete:(JHAutoCompleteView *)autocompleteView withQuery:(NSString *)query withBlock:(JHAutoCompleteResultsBlock)resultsBlock {
     
-    if (resultBlock != nil) {
-        // execute the filter on a background thread to demo the asynchronous capability
+    if (resultsBlock != nil) {
+        
+        // Performs filtering in background - could easily be an async network call
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
             
-            // execute the filter
+            NSArray *array;
             
-            NSMutableArray *array;
-            
-            if (_txtSpotType.isFirstResponder) {
-                array = [_spotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", query]].mutableCopy;
-            } else if (_txtBeerStyle.isFirstResponder){
-                array = [_beerStyles filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", query]].mutableCopy;
-            } else if (_txtWineStyle.isFirstResponder) {
-                array = [_wineVarietals filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", query]].mutableCopy;
-            } else if (_txtCocktailAlcoholType.isFirstResponder) {
-                array = [_cocktailBaseAlcohols filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", query]].mutableCopy;
+            if (autocompleteView.textfield == _txtSpotType) {
+                if (query.length > 0) {
+                    array = [_spotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", query]];
+                } else {
+                    array = _spotTypes.copy;
+                }
+            } else if (autocompleteView.textfield == _txtBeerStyle){
+                array = [_beerStyles filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", query]];
+            } else if (autocompleteView.textfield == _txtWineStyle) {
+                array = [_wineVarietals filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", query]];
+            } else if (autocompleteView.textfield == _txtCocktailAlcoholType) {
+                if (query.length > 0) {
+                    array = [_cocktailBaseAlcohols filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", query]];
+                } else {
+                    array = _cocktailBaseAlcohols.copy;
+                }
             }
             
-            // return the filtered array in the main thread
+            // Returning results on main queue
             dispatch_async(dispatch_get_main_queue(), ^{
-                resultBlock(array);
+                resultsBlock(array);
             });
         });
     }
 }
 
-- (NSString *)inputView:(ACEAutocompleteInputView *)inputView stringForObject:(id)object atIndex:(NSUInteger)index {
+- (NSString *)autocomplete:(JHAutoCompleteView *)autocompleteView stringForObject:(id)object atIndex:(NSInteger)index {
     if (_txtSpotType.isFirstResponder) {
         return [object objectForKey:@"name"];
     } else if (_txtCocktailAlcoholType ) {
@@ -446,6 +517,61 @@
     }
     
     return object;
+}
+
+#pragma mark - JHAutoCompleteDelegate
+
+- (NSInteger)autocompleteMinumumNumberOfCharters:(JHAutoCompleteView *)autocompleteView {
+    // Shows all results always for spot type and cocktail
+    if (autocompleteView.textfield == _txtSpotType || autocompleteView.textfield == _txtCocktailAlcoholType) {
+        return 0;
+    }
+    
+    return 1;
+}
+
+- (void)autocompleteWillShow:(JHAutoCompleteView *)autocompleteView {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [_tblReviews setContentOffset:CGPointMake(0.0f, CGRectGetMinY(autocompleteView.textfield.frame) - 15.0f) animated:YES];
+    });
+}
+
+- (BOOL)autocompleteHasKeyboardAccessory:(JHAutoCompleteView *)autocomplteView {
+    return YES;
+}
+
+- (CGFloat)autocompleteHeight {
+    return 100.0f;
+}
+
+- (CGFloat)autocomplete:(JHAutoCompleteView *)autocomplete heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 44.0f;
+}
+
+- (void)autoComplete:(JHAutoCompleteView *)autocomplete withCell:(UITableViewCell *)cell withRowAtIndexPath:(NSIndexPath *)indexPath withObject:(id)object {
+    AutoCompleteCell *autoCompleteCell = (AutoCompleteCell*)cell;
+    if (autocomplete.textfield == _txtSpotType) {
+        autoCompleteCell.lblTitle.text = [object objectForKey:@"name"];
+    } else if (autocomplete.textfield == _txtCocktailAlcoholType) {
+        autoCompleteCell.lblTitle.text = [object objectForKey:@"name"];
+    } else if ([object isKindOfClass:[NSString class]] == YES) {
+        autoCompleteCell.lblTitle.text = object;
+    }
+}
+
+- (void)autocomplete:(JHAutoCompleteView *)autocompleteView selectedObject:(id)object atIndex:(NSInteger)index {
+    UITextField *textField = autocompleteView.textfield;
+    if (textField == _txtSpotType) {
+        _selectedSpotType = object;
+        textField.text = [_selectedSpotType objectForKey:@"name"];
+        
+        [self fetchSliderTemplates:_selectedReviewType];
+    } else if (_txtCocktailAlcoholType ) {
+        _selectedCocktailSubtype = object;
+        textField.text = [_selectedCocktailSubtype objectForKey:@"name"];
+    } else if ([object isKindOfClass:[NSString class]] == YES) {
+        textField.text = object;
+    }
 }
 
 #pragma mark - ReviewSliderCellDelegate
@@ -456,11 +582,11 @@
     if (indexPath.section == 0) {
         [_reviewRatingSlider setValue:[NSNumber numberWithFloat:(value * 10)]];
     } else if (indexPath.section == 1) {
-        SliderTemplateModel *sliderTemplate = [_sliderTemplates objectAtIndex:indexPath.row];
         SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
         [slider setValue:[NSNumber numberWithFloat:(value * 10)]];
-        
-        NSLog(@"Changed value on slider template id - %@", sliderTemplate.ID);
+    } else if (indexPath.section == 2) {
+        SliderModel *slider = [_advancedSliders objectAtIndex:indexPath.row];
+        [slider setValue:[NSNumber numberWithFloat:(value * 10)]];
     }
 }
 
@@ -473,7 +599,7 @@
         
         NSString *name = _txtSpotName.text;
         NSString *address = _txtSpotAddress.text;
-        NSString *city = _txtSpotAddress.text;
+        NSString *city = _txtSpotCity.text;
         NSString *state = _txtSpotState.text;
         
         // Form text field validations
@@ -510,14 +636,29 @@
             
             NSString *zipCode = placemark.postalCode;
                 
-            NSDictionary *params = @{
+            NSMutableDictionary *params = @{
                                      kSpotModelParamName: name,
                                      kSpotModelParamAddress: address,
                                      kSpotModelParamCity: city,
                                      kSpotModelParamState: state,
                                      kSpotModelParamZip : zipCode,
                                      kSpotModelParamSpotTypeId: spotTypeId
-                                     };
+                                     }.mutableCopy;
+            
+            if (_spotBasedOffOf != nil) {
+                if (_spotBasedOffOf.latitude != nil && _spotBasedOffOf.longitude != nil) {
+                    [params setObject:_spotBasedOffOf.latitude forKey:kSpotModelParamLatitude];
+                    [params setObject:_spotBasedOffOf.longitude forKey:kSpotModelParamLongitude];
+                }
+                
+                if (_spotBasedOffOf.foursquareId.length > 0) {
+                    [params setObject:_spotBasedOffOf.foursquareId forKey:kSpotModelParamFoursquareId];
+                }
+                
+            } else if (placemark.location != nil) {
+                [params setObject:[NSNumber numberWithFloat:placemark.location.coordinate.latitude] forKey:kSpotModelParamLatitude];
+                [params setObject:[NSNumber numberWithFloat:placemark.location.coordinate.longitude] forKey:kSpotModelParamLongitude];
+            }
             
             // Send request to create spot
             [self hideHUD];
@@ -543,7 +684,8 @@
         
         // Validating selected drink id exists
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
-        if (drinkType == nil && [drinkType objectForKey:@"id"] != nil) {
+        if (drinkType == nil || [drinkType objectForKey:@"id"] != nil) {
+            [self showAlert:@"Oops" message:@"Not able to submit a beer right now"];
             [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create beer" level:kRavenLogLevelDebugError];
             return;
         }
@@ -570,14 +712,16 @@
         
         // Validating selected drink id exists
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
-        if (drinkType == nil && [drinkType objectForKey:@"id"] != nil) {
+        if (drinkType == nil || [drinkType objectForKey:@"id"] != nil) {
+            [self showAlert:@"Oops" message:@"Not able to submit a cocktail right now"];
             [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create cocktail" level:kRavenLogLevelDebugError];
             return;
         }
         NSNumber *drinkId = [drinkType objectForKey:@"id"];
         
         // Validating selected drink subtype id exists
-        if (_selectedCocktailSubtype == nil && [_selectedCocktailSubtype objectForKey:@"id"] != nil) {
+        if (_selectedCocktailSubtype == nil || [_selectedCocktailSubtype objectForKey:@"id"] != nil) {
+            [self showAlert:@"Oops" message:@"A cocktail base alcohol is required"];
             [[RavenClient sharedClient] captureMessage:@"Drink subtype nil when trying to create cocktail" level:kRavenLogLevelDebugError];
             return;
         }
@@ -606,7 +750,8 @@
         
         // Validating selected drink id exists
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
-        if (drinkType == nil && [drinkType objectForKey:@"id"] != nil) {
+        if (drinkType == nil || [drinkType objectForKey:@"id"] != nil) {
+            [self showAlert:@"Oops" message:@"Not able to submit a wine right now"];
             [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create wine" level:kRavenLogLevelDebugError];
             return;
         }
@@ -638,7 +783,7 @@
         [self createReview:spotModel drink:nil];
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
-        [self showAlert:@"Error creating drink" message:errorModel.human];
+        [self showAlert:@"Error creating spot" message:errorModel.human];
     }];
     
 }
@@ -665,7 +810,12 @@
     } else {
         [review setRating:_reviewRatingSlider.value];
     }
-    [review setSliders:_sliders];
+    
+    NSMutableArray *sliders = [NSMutableArray array];
+    [sliders addObjectsFromArray:_sliders];
+    [sliders addObjectsFromArray:_advancedSliders];
+    
+    [review setSliders:sliders];
     
     [self showHUD:@"Submitting review"];
     [review postReviews:^(ReviewModel *reviewModel, JSONAPI *jsonApi) {
@@ -766,15 +916,35 @@
             [self hideHUD];
             _sliderTemplates = sliderTemplates;
             
+            // Creating sliders
             [_sliders removeAllObjects];
             for (SliderTemplateModel *sliderTemplate in _sliderTemplates) {
                 SliderModel *slider = [[SliderModel alloc] init];
+                [slider setValue:sliderTemplate.defaultValue];
                 [slider setSliderTemplate:sliderTemplate];
                 [_sliders addObject:slider];
             }
             
-            NSLog(@"Slider templates - %@", sliderTemplates);
+            // Filling advanced sliders if nil
+            if (_advancedSliders == nil) {
+                _advancedSliders = [NSMutableArray array];
+                
+                // Moving advanced sliders into their own array
+                for (SliderModel *slider in _sliders) {
+                    if (slider.sliderTemplate.required == NO) {
+                        [_advancedSliders addObject:slider];
+                    }
+                }
+                
+                // Removing advances sliders from basic array
+                for (SliderModel *slider in _advancedSliders) {
+                    [_sliders removeObject:slider];
+                }
+            }
+            
+            // Reloading table
             [_tblReviews reloadData];
+            
         } failure:^(ErrorModel *errorModel) {
             [self hideHUD];
         }];
@@ -826,24 +996,22 @@
 
 - (UIView*)formForReviewTypeIndex:(NSInteger)index {
     
-    // Single spot fo customize block for styling autocomplete
-    void (^customize)(ACEAutocompleteInputView *inputView);
-    customize = ^(ACEAutocompleteInputView *inputView) {
-        
-        // customize the view (optional)
-        inputView.font = [UIFont systemFontOfSize:16];
-        inputView.textColor = [UIColor blackColor];
-        inputView.backgroundColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.8];
-        
-    };
-    
     // Determins which form to use
     if (index == 0) {
         if (_viewFormNewSpot == nil) {
             _viewFormNewSpot = [UIView viewFromNibNamed:@"NewReviewSpotView" withOwner:self];
             
+            if (_spotBasedOffOf != nil) {
+                [_txtSpotName setText:_spotBasedOffOf.name];
+                [_txtSpotAddress setText:_spotBasedOffOf.address];
+                [_txtSpotCity setText:_spotBasedOffOf.city];
+                [_txtSpotState setText:_spotBasedOffOf.state];
+            }
+            
             // Sets autocomplete
-            [_txtSpotType setAutocompleteWithDataSource:self delegate:self customize:customize];
+            [_txtSpotType setAutocompleteWithDataSource:self delegate:self];
+            [_txtSpotType showAutoCompleteTableAlways:YES];
+            [_txtSpotType registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
         }
 
         return _viewFormNewSpot;
@@ -852,7 +1020,8 @@
             _viewFormNewBeer = [UIView viewFromNibNamed:@"NewReviewBeerView" withOwner:self];
             
             // Sets autocomplete
-            [_txtBeerStyle setAutocompleteWithDataSource:self delegate:self customize:customize];
+            [_txtBeerStyle setAutocompleteWithDataSource:self delegate:self];
+            [_txtBeerStyle registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
         }
 
         return _viewFormNewBeer;
@@ -861,7 +1030,9 @@
             _viewFormNewCocktail = [UIView viewFromNibNamed:@"NewReviewCocktailView" withOwner:self];
             
             // Sets autocomplete
-            [_txtCocktailAlcoholType setAutocompleteWithDataSource:self delegate:self customize:customize];
+            [_txtCocktailAlcoholType setAutocompleteWithDataSource:self delegate:self];
+            [_txtCocktailAlcoholType showAutoCompleteTableAlways:YES];
+            [_txtCocktailAlcoholType registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
         }
         
         return _viewFormNewCocktail;
@@ -870,7 +1041,8 @@
             _viewFormNewWine = [UIView viewFromNibNamed:@"NewReviewWineView" withOwner:self];
             
             // Sets autocomplete
-            [_txtWineStyle setAutocompleteWithDataSource:self delegate:self customize:customize];
+            [_txtWineStyle setAutocompleteWithDataSource:self delegate:self];
+            [_txtWineStyle registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
         }
         
         return _viewFormNewWine;

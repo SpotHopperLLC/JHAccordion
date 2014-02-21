@@ -38,7 +38,7 @@
 
 - (Promise*)postReviews:(void(^)(ReviewModel *reviewModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
-- (Promise*)putReviews:(void(^)(ReviewModel *reviewModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+- (Promise*)putReviews:(NSArray*)sliders successBlock:(void(^)(ReviewModel *reviewModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 + (SliderModel*)ratingSliderModel;
 

@@ -93,13 +93,13 @@
     return deferred.promise;
 }
 
-- (Promise*)putReviews:(void(^)(ReviewModel *reviewModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+- (Promise*)putReviews:(NSArray*)sliders successBlock:(void(^)(ReviewModel *reviewModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
     // Creating params
     NSMutableArray *jsonSliders = [NSMutableArray array];
-    for (SliderModel *slider in self.sliders) {
+    for (SliderModel *slider in sliders) {
         [jsonSliders addObject:@{
                                  @"slider_template_id" : slider.sliderTemplate.ID,
                                  @"value" : slider.value
@@ -170,7 +170,9 @@
 }
 
 - (NSArray *)sliders {
-    return [self linkedResourceForKey:@"sliders"];
+    return [[self linkedResourceForKey:@"sliders"] sortedArrayUsingComparator:^NSComparisonResult(SliderModel *obj1, SliderModel *obj2) {
+        return [obj1.sliderTemplate.ID compare:obj2.sliderTemplate.ID];
+    }];
 }
 
 - (NSDate *)createdAt {
@@ -191,6 +193,7 @@
     
     SliderModel *sliderModel = [[SliderModel alloc] init];
     [sliderModel setSliderTemplate:sliderTemplateModel];
+    [sliderModel setValue:@5];
     
     return sliderModel;
 }
@@ -206,8 +209,8 @@
         _ratingSliderModel = [ReviewModel ratingSliderModel];
         
         // Sets rating
-        if (_rating != nil) {
-            [_ratingSliderModel setValue:_rating];
+        if ([self rating] != nil) {
+            [_ratingSliderModel setValue:[self rating]];
         } else {
             [_ratingSliderModel setValue:@5];
         }

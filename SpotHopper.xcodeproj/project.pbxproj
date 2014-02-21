@@ -35,6 +35,16 @@
 		03412C411882F6EC000F16A8 /* SHJSONAPIResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 03412C401882F6EC000F16A8 /* SHJSONAPIResource.m */; };
 		037D13A218A3DF8500B89535 /* DrinkTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 037D13A118A3DF8500B89535 /* DrinkTypeModel.m */; };
 		037D13A618A450DB00B89535 /* CLGeocoder+DoubleLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 037D13A518A450DB00B89535 /* CLGeocoder+DoubleLookup.m */; };
+		0381043818B6704600A410DB /* SpotImageCollectViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0381043718B6704600A410DB /* SpotImageCollectViewCell.m */; };
+		0381043A18B6706800A410DB /* SpotImageCollectionViewCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0381043918B6706800A410DB /* SpotImageCollectionViewCellView.xib */; };
+		0381043D18B672C300A410DB /* btn_spot_profile_image_next.png in Resources */ = {isa = PBXBuildFile; fileRef = 0381043B18B672C300A410DB /* btn_spot_profile_image_next.png */; };
+		0381043E18B672C300A410DB /* btn_spot_profile_image_next@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0381043C18B672C300A410DB /* btn_spot_profile_image_next@2x.png */; };
+		0381044318B6846800A410DB /* img_map_shadow_botom.png in Resources */ = {isa = PBXBuildFile; fileRef = 0381043F18B6846800A410DB /* img_map_shadow_botom.png */; };
+		0381044418B6846800A410DB /* img_map_shadow_botom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0381044018B6846800A410DB /* img_map_shadow_botom@2x.png */; };
+		0381044518B6846800A410DB /* img_map_shadow_top.png in Resources */ = {isa = PBXBuildFile; fileRef = 0381044118B6846800A410DB /* img_map_shadow_top.png */; };
+		0381044618B6846800A410DB /* img_map_shadow_top@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0381044218B6846800A410DB /* img_map_shadow_top@2x.png */; };
+		0381044A18B6889300A410DB /* SpotAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0381044918B6889300A410DB /* SpotAnnotation.m */; };
+		0381044D18B69E2100A410DB /* SpotTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0381044C18B69E2100A410DB /* SpotTypeModel.m */; };
 		03866467186D352400985CEC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03866466186D352400985CEC /* Foundation.framework */; };
 		03866469186D352400985CEC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03866468186D352400985CEC /* CoreGraphics.framework */; };
 		0386646B186D352400985CEC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0386646A186D352400985CEC /* UIKit.framework */; };
@@ -207,6 +217,29 @@
 		03CA72E8187F56DA00815284 /* icon_spot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72E6187F56DA00815284 /* icon_spot@2x.png */; };
 		03CA72EC18803F7F00815284 /* 51-power.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72EA18803F7F00815284 /* 51-power.png */; };
 		03CA72ED18803F7F00815284 /* 51-power@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72EB18803F7F00815284 /* 51-power@2x.png */; };
+		03E4452518AEE64000C88421 /* AutoCompleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4452418AEE64000C88421 /* AutoCompleteCell.m */; };
+		03E4452718AEE65000C88421 /* AutoCompleteCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E4452618AEE65000C88421 /* AutoCompleteCellView.xib */; };
+		03E4453E18B55B9E00C88421 /* SHButtonLatoLightLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4453D18B55B9E00C88421 /* SHButtonLatoLightLocation.m */; };
+		03E4454618B56BF700C88421 /* LocationChooserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4454418B56BF700C88421 /* LocationChooserViewController.m */; };
+		03E4454718B56BF700C88421 /* LocationChooserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E4454518B56BF700C88421 /* LocationChooserViewController.xib */; };
+		03E4454918B5705800C88421 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E4454818B5705800C88421 /* MapKit.framework */; };
+		03E4455018B65D7300C88421 /* icon_phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4454E18B65D7300C88421 /* icon_phone.png */; };
+		03E4455118B65D7300C88421 /* icon_phone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4454F18B65D7300C88421 /* icon_phone@2x.png */; };
+		03E4455418B65D7F00C88421 /* btn_context_checkin.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455218B65D7F00C88421 /* btn_context_checkin.png */; };
+		03E4455518B65D7F00C88421 /* btn_context_checkin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455318B65D7F00C88421 /* btn_context_checkin@2x.png */; };
+		03E4456218B65D8A00C88421 /* map_marker_spot.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455718B65D8A00C88421 /* map_marker_spot.png */; };
+		03E4456318B65D8A00C88421 /* map_marker_spot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455818B65D8A00C88421 /* map_marker_spot@2x.png */; };
+		03E4456418B65D8A00C88421 /* btn_spot_profile_drink_menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455A18B65D8A00C88421 /* btn_spot_profile_drink_menu.png */; };
+		03E4456518B65D8A00C88421 /* btn_spot_profile_drink_menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455B18B65D8A00C88421 /* btn_spot_profile_drink_menu@2x.png */; };
+		03E4456618B65D8A00C88421 /* btn_spot_profile_find_similar.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455C18B65D8A00C88421 /* btn_spot_profile_find_similar.png */; };
+		03E4456718B65D8A00C88421 /* btn_spot_profile_find_similar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455D18B65D8A00C88421 /* btn_spot_profile_find_similar@2x.png */; };
+		03E4456818B65D8A00C88421 /* btn_spot_profile_image_previous.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455E18B65D8A00C88421 /* btn_spot_profile_image_previous.png */; };
+		03E4456918B65D8A00C88421 /* btn_spot_profile_image_previous@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455F18B65D8A00C88421 /* btn_spot_profile_image_previous@2x.png */; };
+		03E4456A18B65D8A00C88421 /* btn_spot_profile_review_it.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4456018B65D8A00C88421 /* btn_spot_profile_review_it.png */; };
+		03E4456B18B65D8A00C88421 /* btn_spot_profile_review_it@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4456118B65D8A00C88421 /* btn_spot_profile_review_it@2x.png */; };
+		03E4456D18B65E1500C88421 /* Spots.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03E4456C18B65E1500C88421 /* Spots.storyboard */; };
+		03E4457118B65F3000C88421 /* SpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4457018B65F3000C88421 /* SpotProfileViewController.m */; };
+		03E4457318B6607900C88421 /* SpotProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E4457218B6607900C88421 /* SpotProfileHeaderView.xib */; };
 		03F2D9051871DB5B00C69576 /* SHButtonLatoLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */; };
 		03F2D91D1871DC1400C69576 /* AvantGard EF 1 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9091871DC1400C69576 /* AvantGard EF 1 */; };
 		03F2D91E1871DC1400C69576 /* AvantGard EF 2 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90A1871DC1400C69576 /* AvantGard EF 2 */; };
@@ -295,6 +328,19 @@
 		037D13A118A3DF8500B89535 /* DrinkTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkTypeModel.m; sourceTree = "<group>"; };
 		037D13A418A450DB00B89535 /* CLGeocoder+DoubleLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLGeocoder+DoubleLookup.h"; sourceTree = "<group>"; };
 		037D13A518A450DB00B89535 /* CLGeocoder+DoubleLookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CLGeocoder+DoubleLookup.m"; sourceTree = "<group>"; };
+		0381043618B6704600A410DB /* SpotImageCollectViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotImageCollectViewCell.h; sourceTree = "<group>"; };
+		0381043718B6704600A410DB /* SpotImageCollectViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotImageCollectViewCell.m; sourceTree = "<group>"; };
+		0381043918B6706800A410DB /* SpotImageCollectionViewCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpotImageCollectionViewCellView.xib; sourceTree = "<group>"; };
+		0381043B18B672C300A410DB /* btn_spot_profile_image_next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_spot_profile_image_next.png; sourceTree = "<group>"; };
+		0381043C18B672C300A410DB /* btn_spot_profile_image_next@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_spot_profile_image_next@2x.png"; sourceTree = "<group>"; };
+		0381043F18B6846800A410DB /* img_map_shadow_botom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_map_shadow_botom.png; sourceTree = "<group>"; };
+		0381044018B6846800A410DB /* img_map_shadow_botom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_map_shadow_botom@2x.png"; sourceTree = "<group>"; };
+		0381044118B6846800A410DB /* img_map_shadow_top.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_map_shadow_top.png; sourceTree = "<group>"; };
+		0381044218B6846800A410DB /* img_map_shadow_top@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_map_shadow_top@2x.png"; sourceTree = "<group>"; };
+		0381044818B6889300A410DB /* SpotAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotAnnotation.h; sourceTree = "<group>"; };
+		0381044918B6889300A410DB /* SpotAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotAnnotation.m; sourceTree = "<group>"; };
+		0381044B18B69E2100A410DB /* SpotTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotTypeModel.h; sourceTree = "<group>"; };
+		0381044C18B69E2100A410DB /* SpotTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotTypeModel.m; sourceTree = "<group>"; };
 		03866463186D352400985CEC /* SpotHopper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotHopper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03866466186D352400985CEC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		03866468186D352400985CEC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -522,6 +568,33 @@
 		03CA72E6187F56DA00815284 /* icon_spot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_spot@2x.png"; sourceTree = "<group>"; };
 		03CA72EA18803F7F00815284 /* 51-power.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "51-power.png"; sourceTree = "<group>"; };
 		03CA72EB18803F7F00815284 /* 51-power@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "51-power@2x.png"; sourceTree = "<group>"; };
+		03E4452318AEE64000C88421 /* AutoCompleteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoCompleteCell.h; sourceTree = "<group>"; };
+		03E4452418AEE64000C88421 /* AutoCompleteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteCell.m; sourceTree = "<group>"; };
+		03E4452618AEE65000C88421 /* AutoCompleteCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AutoCompleteCellView.xib; sourceTree = "<group>"; };
+		03E4453C18B55B9E00C88421 /* SHButtonLatoLightLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoLightLocation.h; sourceTree = "<group>"; };
+		03E4453D18B55B9E00C88421 /* SHButtonLatoLightLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoLightLocation.m; sourceTree = "<group>"; };
+		03E4454318B56BF700C88421 /* LocationChooserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationChooserViewController.h; sourceTree = "<group>"; };
+		03E4454418B56BF700C88421 /* LocationChooserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationChooserViewController.m; sourceTree = "<group>"; };
+		03E4454518B56BF700C88421 /* LocationChooserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationChooserViewController.xib; sourceTree = "<group>"; };
+		03E4454818B5705800C88421 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		03E4454E18B65D7300C88421 /* icon_phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_phone.png; sourceTree = "<group>"; };
+		03E4454F18B65D7300C88421 /* icon_phone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_phone@2x.png"; sourceTree = "<group>"; };
+		03E4455218B65D7F00C88421 /* btn_context_checkin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_context_checkin.png; sourceTree = "<group>"; };
+		03E4455318B65D7F00C88421 /* btn_context_checkin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_context_checkin@2x.png"; sourceTree = "<group>"; };
+		03E4455718B65D8A00C88421 /* map_marker_spot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_marker_spot.png; sourceTree = "<group>"; };
+		03E4455818B65D8A00C88421 /* map_marker_spot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map_marker_spot@2x.png"; sourceTree = "<group>"; };
+		03E4455A18B65D8A00C88421 /* btn_spot_profile_drink_menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_spot_profile_drink_menu.png; sourceTree = "<group>"; };
+		03E4455B18B65D8A00C88421 /* btn_spot_profile_drink_menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_spot_profile_drink_menu@2x.png"; sourceTree = "<group>"; };
+		03E4455C18B65D8A00C88421 /* btn_spot_profile_find_similar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_spot_profile_find_similar.png; sourceTree = "<group>"; };
+		03E4455D18B65D8A00C88421 /* btn_spot_profile_find_similar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_spot_profile_find_similar@2x.png"; sourceTree = "<group>"; };
+		03E4455E18B65D8A00C88421 /* btn_spot_profile_image_previous.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_spot_profile_image_previous.png; sourceTree = "<group>"; };
+		03E4455F18B65D8A00C88421 /* btn_spot_profile_image_previous@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_spot_profile_image_previous@2x.png"; sourceTree = "<group>"; };
+		03E4456018B65D8A00C88421 /* btn_spot_profile_review_it.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_spot_profile_review_it.png; sourceTree = "<group>"; };
+		03E4456118B65D8A00C88421 /* btn_spot_profile_review_it@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_spot_profile_review_it@2x.png"; sourceTree = "<group>"; };
+		03E4456C18B65E1500C88421 /* Spots.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Spots.storyboard; sourceTree = "<group>"; };
+		03E4456F18B65F3000C88421 /* SpotProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotProfileViewController.h; sourceTree = "<group>"; };
+		03E4457018B65F3000C88421 /* SpotProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotProfileViewController.m; sourceTree = "<group>"; };
+		03E4457218B6607900C88421 /* SpotProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpotProfileHeaderView.xib; sourceTree = "<group>"; };
 		03F2D9031871DB5B00C69576 /* SHButtonLatoLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoLight.h; sourceTree = "<group>"; };
 		03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoLight.m; sourceTree = "<group>"; };
 		03F2D9091871DC1400C69576 /* AvantGard EF 1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "AvantGard EF 1"; sourceTree = "<group>"; };
@@ -574,6 +647,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03E4454918B5705800C88421 /* MapKit.framework in Frameworks */,
 				03CA7293187C3B5500815284 /* Twitter.framework in Frameworks */,
 				03CA7291187C3B4900815284 /* Social.framework in Frameworks */,
 				03866469186D352400985CEC /* CoreGraphics.framework in Frameworks */,
@@ -633,8 +707,6 @@
 				03CA7285187C245600815284 /* ReviewViewController.m */,
 				03CA72CE187DF43B00815284 /* NewReviewViewController.h */,
 				03CA72CF187DF43B00815284 /* NewReviewViewController.m */,
-				039B6FEC18870E4A00C590F8 /* SearchNewReviewViewController.h */,
-				039B6FED18870E4A00C590F8 /* SearchNewReviewViewController.m */,
 			);
 			name = Reviews;
 			sourceTree = "<group>";
@@ -664,6 +736,25 @@
 			path = DoubleGeocoder;
 			sourceTree = "<group>";
 		};
+		0381043518B66FE100A410DB /* Spot */ = {
+			isa = PBXGroup;
+			children = (
+				0381043618B6704600A410DB /* SpotImageCollectViewCell.h */,
+				0381043718B6704600A410DB /* SpotImageCollectViewCell.m */,
+				0381043918B6706800A410DB /* SpotImageCollectionViewCellView.xib */,
+			);
+			name = Spot;
+			sourceTree = "<group>";
+		};
+		0381044718B6887C00A410DB /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				0381044818B6889300A410DB /* SpotAnnotation.h */,
+				0381044918B6889300A410DB /* SpotAnnotation.m */,
+			);
+			name = Map;
+			sourceTree = "<group>";
+		};
 		0386645A186D352400985CEC = {
 			isa = PBXGroup;
 			children = (
@@ -687,6 +778,7 @@
 		03866465186D352400985CEC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				03E4454818B5705800C88421 /* MapKit.framework */,
 				03CA7292187C3B5500815284 /* Twitter.framework */,
 				03CA7290187C3B4900815284 /* Social.framework */,
 				03866466186D352400985CEC /* Foundation.framework */,
@@ -752,7 +844,9 @@
 			children = (
 				032023341875DEBC008368C2 /* Footer */,
 				03F2D9341871E86000C69576 /* Main */,
+				03E4456E18B65E3300C88421 /* Spots */,
 				0320236A18774DB5008368C2 /* Reviews */,
+				03E4453F18B56BA400C88421 /* Commons */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -760,7 +854,9 @@
 		0386649C186D36E100985CEC /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0381044718B6887C00A410DB /* Map */,
 				03CA7294187C406200815284 /* ReviewHeaderDrinkView.xib */,
+				03E4457218B6607900C88421 /* SpotProfileHeaderView.xib */,
 				03CA72D1187DFC2F00815284 /* NewReviewForms */,
 			);
 			name = Views;
@@ -769,8 +865,10 @@
 		0386649D186D36E500985CEC /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				03E4452218AEE62100C88421 /* AutoComplete */,
 				039B701518873DA100C590F8 /* Commons */,
 				039B701418873D9400C590F8 /* Reviews */,
+				0381043518B66FE100A410DB /* Spot */,
 				039B6FF21887143B00C590F8 /* SearchCell.h */,
 				039B6FF31887143B00C590F8 /* SearchCell.m */,
 				039B7005188716F800C590F8 /* SearchCellView.xib */,
@@ -783,6 +881,7 @@
 			children = (
 				03866478186D352400985CEC /* Main.storyboard */,
 				0320236818774D64008368C2 /* Reviews.storyboard */,
+				03E4456C18B65E1500C88421 /* Spots.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -824,6 +923,8 @@
 		038664A2186D370E00985CEC /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				03E4455618B65D8A00C88421 /* Map */,
+				03E4455918B65D8A00C88421 /* SpotProfile */,
 				03CA72E918803F7F00815284 /* Glyphish */,
 				03CA729D187C4D0E00815284 /* Sliders */,
 				03CA726F187B8FD800815284 /* Icons */,
@@ -950,6 +1051,8 @@
 				03C8DAEC188B44CB0082321C /* SliderTemplateModel.m */,
 				03CA7287187C26B300815284 /* SpotModel.h */,
 				03CA7288187C26B300815284 /* SpotModel.m */,
+				0381044B18B69E2100A410DB /* SpotTypeModel.h */,
+				0381044C18B69E2100A410DB /* SpotTypeModel.m */,
 				038664ED186D391E00985CEC /* UserModel.h */,
 				038664EE186D391E00985CEC /* UserModel.m */,
 			);
@@ -982,6 +1085,8 @@
 		038664F9186DE0F700985CEC /* ContextMenu */ = {
 			isa = PBXGroup;
 			children = (
+				03E4455218B65D7F00C88421 /* btn_context_checkin.png */,
+				03E4455318B65D7F00C88421 /* btn_context_checkin@2x.png */,
 				038664FA186DE0F700985CEC /* btn_context_home.png */,
 				038664FB186DE0F700985CEC /* btn_context_home@2x.png */,
 				038664FC186DE0F700985CEC /* btn_context_info.png */,
@@ -1130,6 +1235,8 @@
 		03CA726F187B8FD800815284 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				03E4454E18B65D7300C88421 /* icon_phone.png */,
+				03E4454F18B65D7300C88421 /* icon_phone@2x.png */,
 				039B6FF51887167200C590F8 /* icon_search_drink_similar.png */,
 				039B6FF61887167200C590F8 /* icon_search_drink_similar@2x.png */,
 				039B6FF71887167200C590F8 /* icon_search_drink.png */,
@@ -1203,6 +1310,67 @@
 			path = Glyphish;
 			sourceTree = "<group>";
 		};
+		03E4452218AEE62100C88421 /* AutoComplete */ = {
+			isa = PBXGroup;
+			children = (
+				03E4452318AEE64000C88421 /* AutoCompleteCell.h */,
+				03E4452418AEE64000C88421 /* AutoCompleteCell.m */,
+				03E4452618AEE65000C88421 /* AutoCompleteCellView.xib */,
+			);
+			name = AutoComplete;
+			sourceTree = "<group>";
+		};
+		03E4453F18B56BA400C88421 /* Commons */ = {
+			isa = PBXGroup;
+			children = (
+				03E4454318B56BF700C88421 /* LocationChooserViewController.h */,
+				03E4454418B56BF700C88421 /* LocationChooserViewController.m */,
+				03E4454518B56BF700C88421 /* LocationChooserViewController.xib */,
+				039B6FEC18870E4A00C590F8 /* SearchNewReviewViewController.h */,
+				039B6FED18870E4A00C590F8 /* SearchNewReviewViewController.m */,
+			);
+			name = Commons;
+			sourceTree = "<group>";
+		};
+		03E4455618B65D8A00C88421 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				0381043F18B6846800A410DB /* img_map_shadow_botom.png */,
+				0381044018B6846800A410DB /* img_map_shadow_botom@2x.png */,
+				0381044118B6846800A410DB /* img_map_shadow_top.png */,
+				0381044218B6846800A410DB /* img_map_shadow_top@2x.png */,
+				03E4455718B65D8A00C88421 /* map_marker_spot.png */,
+				03E4455818B65D8A00C88421 /* map_marker_spot@2x.png */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		03E4455918B65D8A00C88421 /* SpotProfile */ = {
+			isa = PBXGroup;
+			children = (
+				0381043B18B672C300A410DB /* btn_spot_profile_image_next.png */,
+				0381043C18B672C300A410DB /* btn_spot_profile_image_next@2x.png */,
+				03E4455A18B65D8A00C88421 /* btn_spot_profile_drink_menu.png */,
+				03E4455B18B65D8A00C88421 /* btn_spot_profile_drink_menu@2x.png */,
+				03E4455C18B65D8A00C88421 /* btn_spot_profile_find_similar.png */,
+				03E4455D18B65D8A00C88421 /* btn_spot_profile_find_similar@2x.png */,
+				03E4455E18B65D8A00C88421 /* btn_spot_profile_image_previous.png */,
+				03E4455F18B65D8A00C88421 /* btn_spot_profile_image_previous@2x.png */,
+				03E4456018B65D8A00C88421 /* btn_spot_profile_review_it.png */,
+				03E4456118B65D8A00C88421 /* btn_spot_profile_review_it@2x.png */,
+			);
+			path = SpotProfile;
+			sourceTree = "<group>";
+		};
+		03E4456E18B65E3300C88421 /* Spots */ = {
+			isa = PBXGroup;
+			children = (
+				03E4456F18B65F3000C88421 /* SpotProfileViewController.h */,
+				03E4457018B65F3000C88421 /* SpotProfileViewController.m */,
+			);
+			name = Spots;
+			sourceTree = "<group>";
+		};
 		03F2D9021871DB3100C69576 /* FontButtons */ = {
 			isa = PBXGroup;
 			children = (
@@ -1210,6 +1378,8 @@
 				03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */,
 				03412C39188053E7000F16A8 /* SHButtonLatoLightRightImage.h */,
 				03412C3A188053E7000F16A8 /* SHButtonLatoLightRightImage.m */,
+				03E4453C18B55B9E00C88421 /* SHButtonLatoLightLocation.h */,
+				03E4453D18B55B9E00C88421 /* SHButtonLatoLightLocation.m */,
 			);
 			name = FontButtons;
 			sourceTree = "<group>";
@@ -1381,13 +1551,17 @@
 				03F2D9281871DC1400C69576 /* Lato-Bold.ttf in Resources */,
 				03866523186DE0F700985CEC /* app_background@2x.png in Resources */,
 				03866550186E050500985CEC /* btn_launch_item_background.png in Resources */,
+				03E4456A18B65D8A00C88421 /* btn_spot_profile_review_it.png in Resources */,
 				03CA7279187B8FD800815284 /* icon_beer@2x.png in Resources */,
 				0320236618774A49008368C2 /* txt_reviews_search_background.png in Resources */,
+				0381043E18B672C300A410DB /* btn_spot_profile_image_next@2x.png in Resources */,
 				0386653F186DE0F700985CEC /* btn_nav_sidebar@2x.png in Resources */,
 				03F2D9211871DC1400C69576 /* AvantGarEFBooObl in Resources */,
 				03866531186DE0F700985CEC /* btn_home_drinks@2x.png in Resources */,
 				03CA72B1187C4D0E00815284 /* slider_thumb_selected@2x.png in Resources */,
 				03866533186DE0F700985CEC /* btn_home_specials@2x.png in Resources */,
+				03E4456618B65D8A00C88421 /* btn_spot_profile_find_similar.png in Resources */,
+				03E4455418B65D7F00C88421 /* btn_context_checkin.png in Resources */,
 				03F2D9331871E42800C69576 /* btn_login_spothopper@2x.png in Resources */,
 				03866551186E050500985CEC /* btn_launch_item_background@2x.png in Resources */,
 				03866528186DE0F700985CEC /* logo_spothopper.png in Resources */,
@@ -1396,25 +1570,35 @@
 				03CA72C7187C4FB300815284 /* slider_background_selected_min.png in Resources */,
 				03CA72E0187F502800815284 /* txt_review_form_background@2x.png in Resources */,
 				03CA72AC187C4D0E00815284 /* slider_background_selected.png in Resources */,
+				03E4454718B56BF700C88421 /* LocationChooserViewController.xib in Resources */,
 				03F2D92C1871DC1400C69576 /* Lato-Italic.ttf in Resources */,
+				03E4455018B65D7300C88421 /* icon_phone.png in Resources */,
 				0386652B186DE0F700985CEC /* btn_context_home@2x.png in Resources */,
 				03866544186DE0F700985CEC /* btn_sidebar_icon_drinks.png in Resources */,
+				03E4456718B65D8A00C88421 /* btn_spot_profile_find_similar@2x.png in Resources */,
 				03866527186DE0F700985CEC /* img_expand_east@2x.png in Resources */,
+				03E4456218B65D8A00C88421 /* map_marker_spot.png in Resources */,
 				03CA72C4187C4FB300815284 /* slider_background_min@2x.png in Resources */,
 				0386654D186DE0F700985CEC /* btn_sidebar_search_icon@2x.png in Resources */,
 				0386653D186DE0F700985CEC /* btn_nav_arrow_east@2x.png in Resources */,
 				03F2D9221871DC1400C69576 /* AvantGarEFDem in Resources */,
 				0320235318772A86008368C2 /* txt_sidebar_search_background@2x.png in Resources */,
+				03E4456D18B65E1500C88421 /* Spots.storyboard in Resources */,
 				03866543186DE0F700985CEC /* btn_sidebar_icon_checkin@2x.png in Resources */,
 				0320236518774A49008368C2 /* icon_view_my_reviews@2x.png in Resources */,
 				03F2D9271871DC1400C69576 /* Lato-BlackItalic.ttf in Resources */,
 				03CA72AE187C4D0E00815284 /* slider_thumb.png in Resources */,
 				03CA72B2187C4D0E00815284 /* slider_thumb_selected_light.png in Resources */,
+				03E4457318B6607900C88421 /* SpotProfileHeaderView.xib in Resources */,
 				0320235218772A86008368C2 /* txt_sidebar_search_background.png in Resources */,
 				03F2D9201871DC1400C69576 /* AvantGarEFBoo in Resources */,
+				0381044418B6846800A410DB /* img_map_shadow_botom@2x.png in Resources */,
+				0381044518B6846800A410DB /* img_map_shadow_top.png in Resources */,
 				0320236318774A49008368C2 /* icon_plus@2x.png in Resources */,
 				03CA72E3187F567100815284 /* icon_star.png in Resources */,
+				0381043A18B6706800A410DB /* SpotImageCollectionViewCellView.xib in Resources */,
 				03866532186DE0F700985CEC /* btn_home_specials.png in Resources */,
+				03E4455518B65D7F00C88421 /* btn_context_checkin@2x.png in Resources */,
 				03CA72AD187C4D0E00815284 /* slider_background_selected@2x.png in Resources */,
 				039B70031887167200C590F8 /* icon_search_spot.png in Resources */,
 				03F2D9491872105F00C69576 /* btn_launch_background_create.png in Resources */,
@@ -1422,6 +1606,7 @@
 				0320235A18774A40008368C2 /* table_header_background@2x.png in Resources */,
 				03CA72B3187C4D0E00815284 /* slider_thumb_selected_light@2x.png in Resources */,
 				03F2D94518720D9E00C69576 /* img_launch_field_divider.png in Resources */,
+				03E4456818B65D8A00C88421 /* btn_spot_profile_image_previous.png in Resources */,
 				0320237818775501008368C2 /* nav_bar_background_ios7@2x.png in Resources */,
 				03F2D92F1871DC1400C69576 /* Lato-Regular.ttf in Resources */,
 				03F2D92D1871DC1400C69576 /* Lato-Light.ttf in Resources */,
@@ -1444,12 +1629,15 @@
 				03F2D91D1871DC1400C69576 /* AvantGard EF 1 in Resources */,
 				03F2D92B1871DC1400C69576 /* Lato-HairlineItalic.ttf in Resources */,
 				03866529186DE0F700985CEC /* logo_spothopper@2x.png in Resources */,
+				03E4456B18B65D8A00C88421 /* btn_spot_profile_review_it@2x.png in Resources */,
 				03CA7278187B8FD800815284 /* icon_beer.png in Resources */,
+				03E4456518B65D8A00C88421 /* btn_spot_profile_drink_menu@2x.png in Resources */,
 				03F2D92E1871DC1400C69576 /* Lato-LightItalic.ttf in Resources */,
 				0386652A186DE0F700985CEC /* btn_context_home.png in Resources */,
 				03866542186DE0F700985CEC /* btn_sidebar_icon_checkin.png in Resources */,
 				03866530186DE0F700985CEC /* btn_home_drinks.png in Resources */,
 				03F2D94618720D9E00C69576 /* img_launch_field_divider@2x.png in Resources */,
+				0381044318B6846800A410DB /* img_map_shadow_botom.png in Resources */,
 				03866525186DE0F700985CEC /* app_background_blurred@2x.png in Resources */,
 				0320236918774D64008368C2 /* Reviews.storyboard in Resources */,
 				0386652D186DE0F700985CEC /* btn_context_info@2x.png in Resources */,
@@ -1462,9 +1650,11 @@
 				03CA727A187B8FD800815284 /* icon_cocktails.png in Resources */,
 				03CA72C1187C4FB300815284 /* slider_background_max.png in Resources */,
 				03CA72DC187F4ED100815284 /* NewReviewCocktailView.xib in Resources */,
+				0381043D18B672C300A410DB /* btn_spot_profile_image_next.png in Resources */,
 				0386652C186DE0F700985CEC /* btn_context_info.png in Resources */,
 				03866522186DE0F700985CEC /* app_background.png in Resources */,
 				0320233C1875E060008368C2 /* FooterViewController.xib in Resources */,
+				03E4452718AEE65000C88421 /* AutoCompleteCellView.xib in Resources */,
 				03CA727B187B8FD800815284 /* icon_cocktails@2x.png in Resources */,
 				039B70001887167200C590F8 /* icon_search_drink@2x.png in Resources */,
 				039B7006188716F800C590F8 /* SearchCellView.xib in Resources */,
@@ -1482,10 +1672,12 @@
 				038664DA186D376900985CEC /* 37x-Checkmark@2x.png in Resources */,
 				03CA727D187B8FD800815284 /* icon_liquor@2x.png in Resources */,
 				03CA72E4187F567100815284 /* icon_star@2x.png in Resources */,
+				03E4456318B65D8A00C88421 /* map_marker_spot@2x.png in Resources */,
 				0386647A186D352400985CEC /* Main.storyboard in Resources */,
 				03412C371880535B000F16A8 /* img_arrow_east.png in Resources */,
 				0386652F186DE0F700985CEC /* btn_home_add_reveiew@2x.png in Resources */,
 				039B701A18873DD400C590F8 /* ReviewCellView.xib in Resources */,
+				03E4456418B65D8A00C88421 /* btn_spot_profile_drink_menu.png in Resources */,
 				0386654B186DE0F700985CEC /* btn_sidebar_icon_spots@2x.png in Resources */,
 				039B6FFF1887167200C590F8 /* icon_search_drink.png in Resources */,
 				039B6FFE1887167200C590F8 /* icon_search_drink_similar@2x.png in Resources */,
@@ -1495,6 +1687,7 @@
 				03CA72AB187C4D0E00815284 /* slider_background@2x.png in Resources */,
 				03CA72E7187F56DA00815284 /* icon_spot.png in Resources */,
 				0386654A186DE0F700985CEC /* btn_sidebar_icon_spots.png in Resources */,
+				03E4456918B65D8A00C88421 /* btn_spot_profile_image_previous@2x.png in Resources */,
 				03F2D957187231C600C69576 /* btn_nav_back@2x.png in Resources */,
 				039B70041887167200C590F8 /* icon_search_spot@2x.png in Resources */,
 				03CA7268187B4EB700815284 /* table_header_background_selected@2x.png in Resources */,
@@ -1502,6 +1695,7 @@
 				03CA72B4187C4D0E00815284 /* slider_thumb_selected_with_light.png in Resources */,
 				03F2D94A1872105F00C69576 /* btn_launch_background_create@2x.png in Resources */,
 				0320235918774A40008368C2 /* table_header_background.png in Resources */,
+				0381044618B6846800A410DB /* img_map_shadow_top@2x.png in Resources */,
 				03CA72DA187F4EC200815284 /* NewReviewWineView.xib in Resources */,
 				0320236218774A49008368C2 /* icon_plus.png in Resources */,
 				0386653E186DE0F700985CEC /* btn_nav_sidebar.png in Resources */,
@@ -1510,6 +1704,7 @@
 				03866547186DE0F700985CEC /* btn_sidebar_icon_reviews@2x.png in Resources */,
 				0320237718775501008368C2 /* nav_bar_background_ios7.png in Resources */,
 				03CA72C5187C4FB300815284 /* slider_background_selected_max.png in Resources */,
+				03E4455118B65D7300C88421 /* icon_phone@2x.png in Resources */,
 				03F2D9321871E42800C69576 /* btn_login_spothopper.png in Resources */,
 				03CA7267187B4EB700815284 /* table_header_background_selected.png in Resources */,
 				03F2D9241871DC1400C69576 /* AvantGarEFExtLig in Resources */,
@@ -1621,6 +1816,7 @@
 				038664D5186D376900985CEC /* UIImage+RoundedCorner.m in Sources */,
 				03CA729A187C43BF00815284 /* ReviewSliderCell.m in Sources */,
 				03C8DAED188B44CB0082321C /* SliderTemplateModel.m in Sources */,
+				03E4452518AEE64000C88421 /* AutoCompleteCell.m in Sources */,
 				038664CE186D376900985CEC /* NSNumber+Currency.m in Sources */,
 				03CA7286187C245600815284 /* ReviewViewController.m in Sources */,
 				03F2D9051871DB5B00C69576 /* SHButtonLatoLight.m in Sources */,
@@ -1636,12 +1832,15 @@
 				038664CF186D376900985CEC /* NSString+Currency.m in Sources */,
 				03412C3E18805693000F16A8 /* ErrorModel.m in Sources */,
 				038664EF186D391E00985CEC /* UserModel.m in Sources */,
+				0381044D18B69E2100A410DB /* SpotTypeModel.m in Sources */,
 				039B6FEE18870E4A00C590F8 /* SearchNewReviewViewController.m in Sources */,
 				039B7009188721BB00C590F8 /* FooterShadowCell.m in Sources */,
 				03866477186D352400985CEC /* AppDelegate.m in Sources */,
 				039B7011188723EB00C590F8 /* Mockery.m in Sources */,
+				0381043818B6704600A410DB /* SpotImageCollectViewCell.m in Sources */,
 				0320237C187773C0008368C2 /* SHViewTranlucentWhite.m in Sources */,
 				03C8DAE7188B42A40082321C /* MockData.m in Sources */,
+				03E4454618B56BF700C88421 /* LocationChooserViewController.m in Sources */,
 				03CA728F187C3B2E00815284 /* ReviewModel.m in Sources */,
 				039BA00918906A12001AF1B9 /* NSString+Common.m in Sources */,
 				038664D0186D376900985CEC /* UIAlertView+Block.m in Sources */,
@@ -1662,14 +1861,17 @@
 				03866473186D352400985CEC /* main.m in Sources */,
 				03CA72D0187DF43B00815284 /* NewReviewViewController.m in Sources */,
 				03CA726E187B53DA00815284 /* MyReviewsViewController.m in Sources */,
+				03E4453E18B55B9E00C88421 /* SHButtonLatoLightLocation.m in Sources */,
 				038664D7186D376900985CEC /* UILabelRockwell.m in Sources */,
 				037D13A618A450DB00B89535 /* CLGeocoder+DoubleLookup.m in Sources */,
 				038664D1186D376900985CEC /* UIImage+Alpha.m in Sources */,
+				03E4457118B65F3000C88421 /* SpotProfileViewController.m in Sources */,
 				03F2D95318722FB700C69576 /* SHNavigationController.m in Sources */,
 				03CA72D8187DFCC200815284 /* UIView+ViewFromNib.m in Sources */,
 				03CA7289187C26B300815284 /* SpotModel.m in Sources */,
 				038664CB186D376900985CEC /* NSArray+SaveLoad.m in Sources */,
 				03F2D93E187208C200C69576 /* SHLabelLatoLight.m in Sources */,
+				0381044A18B6889300A410DB /* SpotAnnotation.m in Sources */,
 				03C8DAEA188B44C20082321C /* SliderModel.m in Sources */,
 				0320233B1875E060008368C2 /* FooterViewController.m in Sources */,
 				039B6FF1188711B800C590F8 /* SHLabelLatoRegular.m in Sources */,
@@ -1809,7 +2011,7 @@
 				INFOPLIST_FILE = "SpotHopper/SpotHopper-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "71737B72-4F09-4179-8AA1-475735EAAA8B";
+				PROVISIONING_PROFILE = "40EB5FAA-39B8-4A1D-BB8B-FC8D2B78C7EC";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1820,14 +2022,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Holtz (M57ML2945L)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Holtz (M57ML2945L)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Holtz (825VRU3G97)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Holtz (825VRU3G97)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				INFOPLIST_FILE = "SpotHopper/SpotHopper-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "71737B72-4F09-4179-8AA1-475735EAAA8B";
+				PROVISIONING_PROFILE = "17049795-F2A2-49FF-8BF5-A7203245026C";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

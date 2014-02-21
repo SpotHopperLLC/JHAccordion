@@ -10,6 +10,7 @@
 
 #import "ClientSessionManager.h"
 #import "ErrorModel.h"
+#import "SliderTemplateModel.h"
 
 @implementation SpotModel
 
@@ -132,7 +133,17 @@
 }
 
 - (NSArray *)sliderTemplates {
-    return [self linkedResourceForKey:@"slider_templates"];
+    return [[self linkedResourceForKey:@"slider_templates"] sortedArrayUsingComparator:^NSComparisonResult(SliderTemplateModel *obj1, SliderTemplateModel *obj2) {
+        return [obj1.ID compare:obj2.ID];
+    }];
+}
+
+- (NSString *)foursquareId {
+    return [self objectForKey:@"foursquare_id"];
+}
+
+- (SpotTypeModel *)spotType {
+    return [self linkedResourceForKey:@"spot_type"];
 }
 
 @end

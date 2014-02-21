@@ -19,6 +19,7 @@
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
 #import "SpotModel.h"
+#import "SpotTypeModel.h"
 #import "UserModel.h"
 
 #import "MockData.h"
@@ -41,6 +42,7 @@
     
     // Initializes Raven (Sentry) for error reporting/logging
     [RavenClient clientWithDSN:kSentryDSN];
+    [[RavenClient sharedClient] setupExceptionHandler];
     
     // Initializes resource linkng for JSONAPI
     [JSONAPIResourceLinker link:@"drink" toLinkedType:@"drinks"];
@@ -49,6 +51,7 @@
     [JSONAPIResourceLinker link:@"slider" toLinkedType:@"sliders"];
     [JSONAPIResourceLinker link:@"slider_template" toLinkedType:@"slider_templates"];
     [JSONAPIResourceLinker link:@"spot" toLinkedType:@"spots"];
+    [JSONAPIResourceLinker link:@"spot_type" toLinkedType:@"spot_types"];
     [JSONAPIResourceLinker link:@"user" toLinkedType:@"users"];
     
     // Initializes model linking for JSONAPI
@@ -59,8 +62,11 @@
     [JSONAPIResourceModeler useResource:[SliderModel class] toLinkedType:@"sliders"];
     [JSONAPIResourceModeler useResource:[SliderTemplateModel class] toLinkedType:@"slider_templates"];
     [JSONAPIResourceModeler useResource:[SpotModel class] toLinkedType:@"spots"];
+    [JSONAPIResourceModeler useResource:[SpotTypeModel class] toLinkedType:@"spot_types"];
     [JSONAPIResourceModeler useResource:[UserModel class] toLinkedType:@"users"];
 
+    [[UINavigationBar appearance] setTintColor:kColorOrange];
+    
     // Sets networking debug logs if debug is set
     [[ClientSessionManager sharedClient] setDebug:kDebug];
     

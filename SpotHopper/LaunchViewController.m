@@ -203,7 +203,9 @@
             [self doLoginTwitterWithToken:oAuthToken andSecret:oAuthTokenSecret];
         } failure:^(NSError *error) {
             [self hideHUD];
-            [self showAlert:@"Oops" message:@"Looks like there was an error logging in with Twitter"];
+            // TODO: Link to FAQ on how to fix - logout and log back in
+            // Error - Error Domain=STTwitterOS Code=0 "Error processing your OAuth request: invalid signature or token" UserInfo=0x17827a040 {NSLocalizedDescription=Error processing your OAuth request: invalid signature or token}
+            [self showAlert:@"Oops" message:@"Looks like there was an error logging in with Twitter.\n\n Go to Settings app to logout and login without Twitter account, then try logging in with Twitter again here."];
         }];
 
         

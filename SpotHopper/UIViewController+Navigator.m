@@ -15,6 +15,7 @@
 #import "ReviewViewController.h"
 #import "ReviewsMenuViewController.h"
 #import "SearchNewReviewViewController.h"
+#import "SpotProfileViewController.h"
 
 @implementation UIViewController (Navigator)
 
@@ -56,13 +57,29 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
-- (void)goToSearchForNewReview {
+- (void)goToSearchForNewReview:(BOOL)showSimilarLists notWhatLookingFor:(BOOL)showNotWhatLookingFor createReview:(BOOL)createReview {
     SearchNewReviewViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"SearchNewReviewViewController"];
+    [viewController setShowSimilarList:showSimilarLists];
+    [viewController setShowNotWhatLookingFor:showNotWhatLookingFor];
+    [viewController setCreateReview:createReview];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)goToNewReview {
+    [self goToNewReview:nil];
+}
+
+- (void)goToNewReview:(SpotModel*)spot {
     NewReviewViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"NewReviewViewController"];
+    [viewController setSpotBasedOffOf:spot];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+#pragma mark - Spots
+
+- (void)goToSpotProfile:(SpotModel *)spot {
+    SpotProfileViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
+    [viewController setSpot:spot];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -81,6 +98,15 @@
     NSString *name = [self.storyboard valueForKey:@"name"];
     if ([name isEqualToString:@"Reviews"] == NO) {
         return [UIStoryboard storyboardWithName:@"Reviews" bundle:[NSBundle mainBundle]];
+    }
+    
+    return self.storyboard;
+}
+
+- (UIStoryboard*)spotsStoryboard {
+    NSString *name = [self.storyboard valueForKey:@"name"];
+    if ([name isEqualToString:@"Spots"] == NO) {
+        return [UIStoryboard storyboardWithName:@"Spots" bundle:[NSBundle mainBundle]];
     }
     
     return self.storyboard;
