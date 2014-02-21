@@ -11,6 +11,8 @@
 
 #import "SHLabelLatoLight.h"
 
+#import <CoreText/CoreText.h>
+
 @implementation SHLabelLatoLight
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
@@ -31,11 +33,36 @@
 }
 
 - (void)setup {
-    UIFont *font = [UIFont fontWithName:kFontName size:self.font.pointSize];
+    NSString *fontName;
+    if ([self isItalic] == YES) {
+        fontName = kFontNameItalic;
+    } else {
+        fontName = kFontName;
+    }
+    
+    UIFont *font = [UIFont fontWithName:fontName size:self.font.pointSize];
     if (font == nil) {
-        NSLog(@"Font not found - %@", kFontName);
+        NSLog(@"Font not found - %@", fontName);
     }
     [self setFont:font];
+}
+
+- (BOOL)isBold {
+    CTFontRef font = CTFontCreateWithName((__bridge CFStringRef)self.font.fontName, 10, NULL);
+    CTFontSymbolicTraits traits = CTFontGetSymbolicTraits(font);
+    BOOL isBold = ((traits & kCTFontBoldTrait) == kCTFontBoldTrait);
+    CFRelease(font);
+    
+    return isBold;
+}
+
+- (BOOL)isItalic {
+    CTFontRef font = CTFontCreateWithName((__bridge CFStringRef)self.font.fontName, 10, NULL);
+    CTFontSymbolicTraits traits = CTFontGetSymbolicTraits(font);
+    BOOL isItalic = ((traits & kCTFontItalicTrait) == kCTFontItalicTrait);
+    CFRelease(font);
+    
+    return isItalic;
 }
 
 - (void)italic:(BOOL)italic {

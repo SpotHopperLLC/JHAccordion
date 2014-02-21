@@ -80,7 +80,6 @@
     
     // Configure table header
     // Header content view
-    
     _headerContent = [UIView viewFromNibNamed:@"ReviewHeaderDrinkView" withOwner:self];
     [_tblReviews setTableHeaderView:_headerContent];
     

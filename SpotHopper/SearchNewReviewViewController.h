@@ -10,4 +10,8 @@
 
 @interface SearchNewReviewViewController : BaseViewController
 
+@property (nonatomic, assign) BOOL showSimilarList;
+@property (nonatomic, assign) BOOL showNotWhatLookingFor;
+@property (nonatomic, assign) BOOL createReview;
+
 @end

@@ -16,7 +16,7 @@
 
 #import "ClientSessionManager.h"
 
-@interface ReviewsMenuViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface ReviewsMenuViewController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
 @property (weak, nonatomic) IBOutlet UITableView *tblMenu;
@@ -143,6 +143,13 @@
     return 0.0f;
 }
 
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    [self goToSearchForNewReview:NO notWhatLookingFor:NO createReview:NO];
+    return NO;
+}
+
 #pragma mark - Private
 
 - (SectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
@@ -170,7 +177,7 @@
             [_sectionHeader1 setText:@"Add New Review"];
             [_sectionHeader1.btnBackground setActionWithBlock:^{
                 if ([ClientSessionManager sharedClient].isLoggedIn == YES) {
-                    [this goToSearchForNewReview];
+                    [this goToSearchForNewReview:NO notWhatLookingFor:YES createReview:YES];
                 } else {
                     [this showAlert:@"Login Required" message:@"Cannot add a review without logging in"];
                 }
