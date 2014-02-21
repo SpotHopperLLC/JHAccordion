@@ -401,17 +401,21 @@
 
 - (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
     if (accordion == _accordion) {
-        [_tblReviews setAlpha:0.0f];
-        [_tblReviews setHidden:NO];
-        [_btnSubmit setAlpha:0.0f];
-        [_btnSubmit setHidden:NO];
-        [UIView animateWithDuration:0.35f animations:^{
-            [_tblReviews setAlpha:1.0f];
-            [_btnSubmit setAlpha:1.0f];
-        } completion:^(BOOL finished) {
-            
-        }];
+        [self showForm:YES];
     }
+}
+
+- (void)showForm:(BOOL)animate {
+    [_tblReviews setAlpha:0.0f];
+    [_tblReviews setHidden:NO];
+    [_btnSubmit setAlpha:0.0f];
+    [_btnSubmit setHidden:NO];
+    [UIView animateWithDuration:( animate ? 0.35f : 0.0f ) animations:^{
+        [_tblReviews setAlpha:1.0f];
+        [_btnSubmit setAlpha:1.0f];
+    } completion:^(BOOL finished) {
+        
+    }];
 }
 
 #pragma mark - UITextFieldDelegate

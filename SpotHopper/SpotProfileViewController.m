@@ -9,6 +9,7 @@
 #import "SpotProfileViewController.h"
 
 #import "UIView+ViewFromNib.h"
+#import "UIViewController+Navigator.h"
 
 #import "SpotAnnotation.h"
 
@@ -196,7 +197,7 @@
 }
 
 - (IBAction)onClickReviewIt:(id)sender {
-    
+    [self goToNewReviewForSpot:_spot];
 }
 
 - (IBAction)onClickDrinkMenu:(id)sender {
