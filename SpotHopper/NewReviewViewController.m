@@ -153,11 +153,6 @@
     // Keyboard notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    
-    // Adds contextual footer view
-    [self addFooterViewController:^(FooterViewController *footerViewController) {
-        [footerViewController showHome:YES];
-    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
