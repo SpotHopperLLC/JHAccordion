@@ -56,7 +56,8 @@
     [self setup];
     
     [_imgIcon setImage:nil];
-    [_lblName setText:@"Not what you’re looking for? Add it!"];
+    [_lblName setHidden:YES];
+    [_lblNotWhatLookingFor setHidden:NO];
 }
 
 #pragma mark - Private
@@ -64,6 +65,9 @@
 - (void)setup {
     [self setBackgroundColor:[UIColor colorWithWhite:1.0f alpha:0.5f]];
     [self.contentView setBackgroundColor:[UIColor colorWithWhite:1.0f alpha:0.5f]];
+    
+    [_lblName setHidden:NO];
+    [_lblNotWhatLookingFor setHidden:YES];
 }
 
 @end

@@ -25,6 +25,13 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not what you’re looking for? Add it!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" id="S2j-tw-xWg" customClass="SHLabelLatoLight">
+                        <rect key="frame" x="0.0" y="4" width="320" height="35"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                     <view contentMode="scaleToFill" id="Kmf-f4-5a4" userLabel="View - Divider">
                         <rect key="frame" x="0.0" y="44" width="320" height="1"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -37,6 +44,7 @@
             <connections>
                 <outlet property="imgIcon" destination="jAl-4q-KaV" id="xBt-Rf-Mjr"/>
                 <outlet property="lblName" destination="7Ug-iG-fw6" id="9rH-7U-dEy"/>
+                <outlet property="lblNotWhatLookingFor" destination="S2j-tw-xWg" id="gw0-FE-zZM"/>
             </connections>
         </tableViewCell>
     </objects>
