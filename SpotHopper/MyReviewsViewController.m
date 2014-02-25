@@ -26,7 +26,7 @@
 
 #import <JHAccordion/JHAccordion.h>
 
-@interface MyReviewsViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate>
+@interface MyReviewsViewController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, JHAccordionDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
 @property (weak, nonatomic) IBOutlet UITableView *tblReviews;
@@ -42,6 +42,7 @@
 @property (nonatomic, strong) NSArray *reviewsFiltered;
 
 @property (nonatomic, assign) CGRect tblReviewsInitialFrame;
+@property (nonatomic, assign) BOOL keyboardShowing;
 
 @end
 
@@ -82,6 +83,7 @@
     _selectedFilter = 0;
     _selectedSort = 0;
     _tblReviewsInitialFrame = CGRectZero;
+    _keyboardShowing = NO;
     
     // Fetch reviews
     [self fetchReviews];
@@ -121,10 +123,12 @@
 }
 
 - (void)keyboardWillShow:(NSNotification*)notification {
+    _keyboardShowing = YES;
     [self keyboardWillHideOrShow:notification show:YES];
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification {
+    _keyboardShowing = NO;
     [self keyboardWillHideOrShow:notification show:NO];
 }
 
@@ -147,7 +151,9 @@
     
     [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | curve animations:^{
         [_tblReviews setFrame:frame];
-    } completion:nil];
+    } completion:^(BOOL finished) {
+        [_tblReviews reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }];
 }
 
 #pragma mark - UITableViewDataSource
@@ -226,7 +232,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (section == 0 || section == 1) {
-        return 56.0f;
+        if (_keyboardShowing == NO) {
+            return 56.0f;
+        }
     }
     
     return 0.0f;
@@ -242,6 +250,13 @@
     }
     
     return 0.0f;
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return NO;
 }
 
 #pragma mark - JHAccordionDelegate
