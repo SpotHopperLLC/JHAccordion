@@ -11,6 +11,8 @@
 #import "NSNumber+Helpers.h"
 #import "UIActionSheet+Block.h"
 
+#import "SHNavigationBar.h"
+
 #import "ClientSessionManager.h"
 #import "DrinkModel.h"
 #import "DrinkTypeModel.h"
@@ -65,6 +67,7 @@
     [JSONAPIResourceModeler useResource:[SpotTypeModel class] toLinkedType:@"spot_types"];
     [JSONAPIResourceModeler useResource:[UserModel class] toLinkedType:@"users"];
 
+    // Navigation bar styling
     [[UINavigationBar appearance] setTintColor:kColorOrange];
     
     // Sets networking debug logs if debug is set
