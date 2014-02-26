@@ -21,6 +21,7 @@
 #import "ReviewSliderCell.h"
 
 #import "ReviewsMenuViewController.h"
+#import "SearchNewReviewViewController.h"
 
 #import "ErrorModel.h"
 
@@ -563,7 +564,8 @@
         }
         
         // Validating selected drink id exists
-        if (_selectedSpotType == nil || [_selectedSpotType objectForKey:@"id"] != nil) {
+        if (_selectedSpotType == nil || [_selectedSpotType objectForKey:@"id"] == nil) {
+            [self showAlert:@"Oops" message:@"Not able to submit a spot right now"];
             [[RavenClient sharedClient] captureMessage:@"Spot type nil when trying to create spo" level:kRavenLogLevelDebugError];
             return;
         }
@@ -629,7 +631,7 @@
         
         // Validating selected drink id exists
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
-        if (drinkType == nil || [drinkType objectForKey:@"id"] != nil) {
+        if (drinkType == nil || [drinkType objectForKey:@"id"] == nil) {
             [self showAlert:@"Oops" message:@"Not able to submit a beer right now"];
             [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create beer" level:kRavenLogLevelDebugError];
             return;
@@ -657,7 +659,7 @@
         
         // Validating selected drink id exists
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
-        if (drinkType == nil || [drinkType objectForKey:@"id"] != nil) {
+        if (drinkType == nil || [drinkType objectForKey:@"id"] == nil) {
             [self showAlert:@"Oops" message:@"Not able to submit a cocktail right now"];
             [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create cocktail" level:kRavenLogLevelDebugError];
             return;
@@ -695,7 +697,7 @@
         
         // Validating selected drink id exists
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
-        if (drinkType == nil || [drinkType objectForKey:@"id"] != nil) {
+        if (drinkType == nil || [drinkType objectForKey:@"id"] == nil) {
             [self showAlert:@"Oops" message:@"Not able to submit a wine right now"];
             [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create wine" level:kRavenLogLevelDebugError];
             return;
@@ -781,7 +783,29 @@
             if (reviewsMenuViewController != nil) {
                 [self.navigationController popToViewController:reviewsMenuViewController animated:YES];
             } else {
-                [self.navigationController popViewControllerAnimated:YES];
+                
+                BOOL foundSearch = NO;
+                NSMutableArray *viewControllers = @[].mutableCopy;
+                
+                for (UIViewController *viewController in self.navigationController.viewControllers) {
+                    if ([viewController isKindOfClass:[SearchNewReviewViewController class]] == YES) {
+                        reviewsMenuViewController = viewController;
+                        foundSearch = YES;
+                        break;
+                    } else {
+                        [viewControllers addObject:viewController];
+                    }
+                }
+                
+                if (foundSearch == NO) {
+                    [self.navigationController popViewControllerAnimated:YES];
+                } else {
+                    ReviewsMenuViewController *viewController = [[self reviewsStoryboard] instantiateInitialViewController];
+                    [viewController setTitle:@"Reviews"];
+                    
+                    [viewControllers addObject:viewController];
+                    [self.navigationController setViewControllers:viewControllers animated:YES];
+                }
             }
         }];
         

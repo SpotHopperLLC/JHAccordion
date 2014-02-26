@@ -124,7 +124,10 @@
 }
 
 - (IBAction)onClickReviews:(id)sender {
-    
+    [self.sidebarViewController showRightSidebar:NO];
+    if ([_delegate respondsToSelector:@selector(sidebarViewControllerClickedReview:)]) {
+        [_delegate sidebarViewControllerClickedReview:self];
+    }
 }
 
 - (IBAction)onClickCheckIn:(id)sender {

@@ -121,7 +121,7 @@
 }
 
 - (IBAction)onClickReviews:(id)sender {
-    [self goToReviewMenu];
+    [self goToSearchForNewReview:NO notWhatLookingFor:YES createReview:YES];
 }
 
 @end

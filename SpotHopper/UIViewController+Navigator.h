@@ -31,4 +31,9 @@
 // Spots
 - (void)goToSpotProfile:(SpotModel *)spot;
 
+// Storyboards
+- (UIStoryboard*)mainStoryboard;
+- (UIStoryboard*)reviewsStoryboard;
+- (UIStoryboard*)spotsStoryboard;
+
 @end

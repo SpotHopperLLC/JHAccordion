@@ -92,7 +92,7 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
-#pragma mark - Private
+#pragma mark - Storyboards
 
 - (UIStoryboard*)mainStoryboard {
     NSString *name = [self.storyboard valueForKey:@"name"];

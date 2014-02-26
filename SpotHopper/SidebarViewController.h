@@ -10,6 +10,16 @@
 
 #import <JHSidebar/JHSidebarViewController.h>
 
+@protocol SidebarViewControllerDelegate;
+
 @interface SidebarViewController : BaseViewController<JHSidebarDelegate>
+
+@property (nonatomic, assign) id<SidebarViewControllerDelegate> delegate;
+
+@end
+
+@protocol SidebarViewControllerDelegate <NSObject>
+
+- (void)sidebarViewControllerClickedReview:(SidebarViewController*)sidebarViewController;
 
 @end

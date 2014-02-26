@@ -83,12 +83,12 @@
     _results = [NSMutableArray array];
     _drinkPage = @1;
     _spotPage = @1;
-    
-    [_txtSearch becomeFirstResponder];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
     
     // Deselects table row
     [_tblSearches deselectRowAtIndexPath:_tblSearches.indexPathForSelectedRow animated:NO];
