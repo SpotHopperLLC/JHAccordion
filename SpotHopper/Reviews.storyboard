@@ -117,10 +117,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="orange_gradient_background.png" id="ejq-0c-1VQ">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
                             <tableView clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Zcv-Q0-HRT">
                                 <rect key="frame" x="0.0" y="62" width="320" height="418"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" red="0.93333333330000001" green="0.62745098040000002" blue="0.42745098040000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <inset key="insetFor6xAndEarlier" minX="0.0" minY="64" maxX="0.0" maxY="-20"/>
                                 <connections>
                                     <outlet property="dataSource" destination="yCV-0L-MMw" id="BgT-wm-tAq"/>
@@ -161,6 +165,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="orange_gradient_background.png" id="vs3-08-6zf">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
                             <tableView clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="tO7-J5-sdQ">
                                 <rect key="frame" x="0.0" y="62" width="320" height="353"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -174,7 +182,7 @@
                             <tableView clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="l66-oK-HkB">
                                 <rect key="frame" x="0.0" y="108" width="320" height="372"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" red="0.93333333330000001" green="0.62745098040000002" blue="0.42745098040000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <inset key="insetFor6xAndEarlier" minX="0.0" minY="64" maxX="0.0" maxY="-20"/>
                                 <connections>
                                     <outlet property="dataSource" destination="1j5-74-iQr" id="qMg-dy-SHI"/>
@@ -299,6 +307,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="orange_gradient_background.png" width="259" height="564"/>
         <image name="txt_reviews_search_background.png" width="302" height="32"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

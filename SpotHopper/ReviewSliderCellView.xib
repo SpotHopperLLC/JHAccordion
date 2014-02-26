@@ -55,9 +55,9 @@
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" red="0.93333333330000001" green="0.62745098040000002" blue="0.42745098040000001" alpha="1" colorSpace="calibratedRGB"/>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </tableViewCellContentView>
-            <color key="backgroundColor" red="0.93333333330000001" green="0.62745098040000002" blue="0.42745098040000001" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="lblMaximum" destination="SHq-za-0vq" id="NC0-Ht-zIH"/>
                 <outlet property="lblMnimum" destination="iw3-hG-afc" id="oUm-QU-fsz"/>
