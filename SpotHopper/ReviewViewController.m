@@ -20,6 +20,7 @@
 #import "ErrorModel.h"
 #import "ReviewModel.h"
 #import "SpotModel.h"
+#import "SpotTypeModel.h"
 #import "UserModel.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
@@ -389,8 +390,8 @@
         [_imgImage setImageWithURL:[NSURL URLWithString:_spot.imageUrl]];
         
         [_lblTitle setText:_spot.name];
-        [_lblSubTitle setText:_spot.type];
-        [_lblSubSubTitle setText:@""];
+        [_lblSubTitle setText:_spot.spotType.name];
+        [_lblSubSubTitle setText:_spot.cityState];
     } else {
         [_lblTitle setText:@""];
         [_lblSubTitle setText:@""];
