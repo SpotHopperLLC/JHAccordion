@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		03121A3118BCF31200C9FFA3 /* orange_gradient_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 03121A2F18BCF31200C9FFA3 /* orange_gradient_background.png */; };
 		03121A3218BCF31200C9FFA3 /* orange_gradient_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03121A3018BCF31200C9FFA3 /* orange_gradient_background@2x.png */; };
+		03121A3518BD774B00C9FFA3 /* SHViewTranlucentWhiteFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 03121A3418BD774B00C9FFA3 /* SHViewTranlucentWhiteFooter.m */; };
+		03121A3818BD786D00C9FFA3 /* 723-location-arrow-selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03121A3618BD786D00C9FFA3 /* 723-location-arrow-selected.png */; };
+		03121A3918BD786D00C9FFA3 /* 723-location-arrow-selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03121A3718BD786D00C9FFA3 /* 723-location-arrow-selected@2x.png */; };
 		0320233B1875E060008368C2 /* FooterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 032023391875E060008368C2 /* FooterViewController.m */; };
 		0320233C1875E060008368C2 /* FooterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0320233A1875E060008368C2 /* FooterViewController.xib */; };
 		0320235218772A86008368C2 /* txt_sidebar_search_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320235018772A86008368C2 /* txt_sidebar_search_background.png */; };
@@ -294,6 +297,10 @@
 /* Begin PBXFileReference section */
 		03121A2F18BCF31200C9FFA3 /* orange_gradient_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orange_gradient_background.png; sourceTree = "<group>"; };
 		03121A3018BCF31200C9FFA3 /* orange_gradient_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "orange_gradient_background@2x.png"; sourceTree = "<group>"; };
+		03121A3318BD774B00C9FFA3 /* SHViewTranlucentWhiteFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHViewTranlucentWhiteFooter.h; sourceTree = "<group>"; };
+		03121A3418BD774B00C9FFA3 /* SHViewTranlucentWhiteFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHViewTranlucentWhiteFooter.m; sourceTree = "<group>"; };
+		03121A3618BD786D00C9FFA3 /* 723-location-arrow-selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "723-location-arrow-selected.png"; sourceTree = "<group>"; };
+		03121A3718BD786D00C9FFA3 /* 723-location-arrow-selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "723-location-arrow-selected@2x.png"; sourceTree = "<group>"; };
 		032023381875E060008368C2 /* FooterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooterViewController.h; sourceTree = "<group>"; };
 		032023391875E060008368C2 /* FooterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooterViewController.m; sourceTree = "<group>"; };
 		0320233A1875E060008368C2 /* FooterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FooterViewController.xib; sourceTree = "<group>"; };
@@ -722,6 +729,8 @@
 				03CA725F187B45B400815284 /* SectionHeaderView.m */,
 				0320237A187773C0008368C2 /* SHViewTranlucentWhite.h */,
 				0320237B187773C0008368C2 /* SHViewTranlucentWhite.m */,
+				03121A3318BD774B00C9FFA3 /* SHViewTranlucentWhiteFooter.h */,
+				03121A3418BD774B00C9FFA3 /* SHViewTranlucentWhiteFooter.m */,
 				03CA72B6187C4D5800815284 /* SHSlider.h */,
 				03CA72B7187C4D5800815284 /* SHSlider.m */,
 				03F2D9421872091200C69576 /* FontTextField */,
@@ -1310,6 +1319,8 @@
 		03CA72E918803F7F00815284 /* Glyphish */ = {
 			isa = PBXGroup;
 			children = (
+				03121A3618BD786D00C9FFA3 /* 723-location-arrow-selected.png */,
+				03121A3718BD786D00C9FFA3 /* 723-location-arrow-selected@2x.png */,
 				03CA72EA18803F7F00815284 /* 51-power.png */,
 				03CA72EB18803F7F00815284 /* 51-power@2x.png */,
 			);
@@ -1672,6 +1683,7 @@
 				03CA72B0187C4D0E00815284 /* slider_thumb_selected.png in Resources */,
 				03F2D91E1871DC1400C69576 /* AvantGard EF 2 in Resources */,
 				0320237518775501008368C2 /* nav_bar_background_ios6.png in Resources */,
+				03121A3918BD786D00C9FFA3 /* 723-location-arrow-selected@2x.png in Resources */,
 				03866524186DE0F700985CEC /* app_background_blurred.png in Resources */,
 				03CA729C187C43CD00815284 /* ReviewSliderCellView.xib in Resources */,
 				0320237618775501008368C2 /* nav_bar_background_ios6@2x.png in Resources */,
@@ -1715,6 +1727,7 @@
 				03E4455118B65D7300C88421 /* icon_phone@2x.png in Resources */,
 				03F2D9321871E42800C69576 /* btn_login_spothopper.png in Resources */,
 				03CA7267187B4EB700815284 /* table_header_background_selected.png in Resources */,
+				03121A3818BD786D00C9FFA3 /* 723-location-arrow-selected.png in Resources */,
 				03F2D9241871DC1400C69576 /* AvantGarEFExtLig in Resources */,
 				03CA72DF187F502800815284 /* txt_review_form_background.png in Resources */,
 				03F2D9231871DC1400C69576 /* AvantGarEFDemObl in Resources */,
@@ -1885,6 +1898,7 @@
 				039B6FF1188711B800C590F8 /* SHLabelLatoRegular.m in Sources */,
 				039BA006188EB9AB001AF1B9 /* UITextField+ACEAutocompleteBar.m in Sources */,
 				039B701818873DB700C590F8 /* ReviewCell.m in Sources */,
+				03121A3518BD774B00C9FFA3 /* SHViewTranlucentWhiteFooter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

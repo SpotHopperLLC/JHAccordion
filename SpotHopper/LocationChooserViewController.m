@@ -10,10 +10,12 @@
 
 #import "TellMeMyLocation.h"
 
+#import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 
-@interface LocationChooserViewController ()
+@interface LocationChooserViewController ()<UITextFieldDelegate, MKMapViewDelegate>
 
+@property (weak, nonatomic) IBOutlet UITextField *txtSearch;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 @property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
@@ -63,6 +65,42 @@
 {
     [super didReceiveMemoryWarning];
 
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    
+    if (textField.text.length > 0) {
+        
+        // Reverse geocodes search text
+        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+        
+        [self showHUD:@"Locating..."];
+        [geocoder geocodeAddressString:textField.text completionHandler:^(NSArray *placemarks, NSError *error) {
+            [self hideHUD];
+            if (error || placemarks.count == 0) {
+                [self showAlert:@"Oops" message:@"Could not find the location you are looking for"];
+            } else {
+                CLPlacemark *placemark = [placemarks objectAtIndex:0];
+                
+                MKCoordinateRegion mapRegion;
+                mapRegion.center = placemark.location.coordinate;
+                mapRegion.span = MKCoordinateSpanMake(0.2, 0.2);
+                [_mapView setRegion:mapRegion animated: YES];
+            }
+        }];
+        
+    }
+    
+    return NO;
+}
+
+#pragma mark - MKMapViewDelegate
+
+- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
+    [_txtSearch resignFirstResponder];
 }
 
 #pragma mark - Actions
