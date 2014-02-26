@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#define kReviewTypes @[@"Spot", @"Beer", @"Cocktail", @"Wine"]
 #define kReviewTypeIcons @[@"btn_sidebar_icon_spots", @"icon_beer", @"icon_cocktails", @"icon_wine"]
 
 #import "NewReviewTypeViewController.h"
+
+#import "UIViewController+Navigator.h"
 
 #import "DropdownOptionCell.h"
 
@@ -92,7 +93,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (tableView == _tblReviewTypes) {
-        // GO TO NEW REVIEW
+        NSString *reviewType = [kReviewTypes objectAtIndex:indexPath.row];
+        [self goToNewReviewWithType:reviewType];
     }
 }
 

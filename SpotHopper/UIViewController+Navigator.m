@@ -71,9 +71,16 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
+- (void)goToNewReviewWithType:(NSString*)reviewType {
+    NewReviewViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"NewReviewViewController"];
+    [viewController setReviewType:reviewType];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
 - (void)goToNewReview:(SpotModel*)spot {
     NewReviewViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"NewReviewViewController"];
     [viewController setSpotBasedOffOf:spot];
+    [viewController setReviewType:kReviewTypesSpot];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

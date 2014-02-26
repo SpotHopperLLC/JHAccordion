@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#define kReviewTypes @[@"Spot", @"Beer", @"Cocktail", @"Wine"]
 #define kReviewTypeIcons @[@"btn_sidebar_icon_spots", @"icon_beer", @"icon_cocktails", @"icon_wine"]
 
 #import "MyReviewsViewController.h"
@@ -32,12 +31,10 @@
 
 @interface NewReviewViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, JHAutoCompleteDataSource, JHAutoCompleteDelegate, ReviewSliderCellDelegate>
 
-@property (weak, nonatomic) IBOutlet UITableView *tblReviewTypes;
 @property (weak, nonatomic) IBOutlet UITableView *tblReviews;
 
 @property (nonatomic, assign) CGRect tblReviewsInitalFrame;
 
-@property (nonatomic, strong) JHAccordion *accordion;
 @property (nonatomic, strong) SectionHeaderView *sectionHeaderReviewType;
 
 @property (nonatomic, strong) JHAccordion *accordionAdvanced;
@@ -115,29 +112,23 @@
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
     
-    // Configures accordion
-    _accordion = [[JHAccordion alloc] initWithTableView:_tblReviewTypes];
-    [_accordion setDelegate:self];
-    [_accordion openSection:0];
-    
     // Configures accordion - advanced sliders
     _accordionAdvanced = [[JHAccordion alloc] initWithTableView:_tblReviews];
     [_accordionAdvanced setDelegate:self];
     [_accordionAdvanced openSection:0];
     
     // Configures table
-    [_tblReviewTypes setTableFooterView:[[UIView alloc] init]];
-    [_tblReviewTypes registerNib:[UINib nibWithNibName:@"DropdownOptionCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"DropdownOptionCell"];
     [_tblReviews setTableFooterView:[[UIView alloc] init]];
     [_tblReviews registerNib:[UINib nibWithNibName:@"ReviewSliderCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ReviewSliderCell"];
     [_tblReviews setContentInset:UIEdgeInsetsMake(0, 0, 65.0f, 0)];
     
     // Initializes states
-    _selectedReviewType = -1;
+    _selectedReviewType = [kReviewTypes indexOfObject:_reviewType];
     _tblReviewsInitalFrame = CGRectZero;
     _sliders = [NSMutableArray array];
     _reviewRatingSlider = [ReviewModel ratingSliderModel];
     
+    [_tblReviews setTableHeaderView:[self formForReviewTypeIndex:_selectedReviewType]];
     [self fetchFormData];
 }
 
@@ -155,14 +146,6 @@
     // Keyboard notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    if (_spotBasedOffOf != nil) {
-        [self tableView:_tblReviewTypes didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -216,20 +199,14 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (tableView == _tblReviewTypes) {
-        return 1;
-    } else if (tableView == _tblReviews) {
+    if (tableView == _tblReviews) {
         return 3;
     }
     return 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (tableView == _tblReviewTypes) {
-        if (section == 0) {
-            return kReviewTypes.count;
-        }
-    } else if (tableView == _tblReviews) {
+    if (tableView == _tblReviews) {
         if (section == 0) {
             if (_selectedReviewType > 0) {
                 return 1;
@@ -244,16 +221,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView == _tblReviewTypes) {
-        if (indexPath.section == 0) {
-            NSString *text = [kReviewTypes objectAtIndex:indexPath.row];
-            
-            DropdownOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DropdownOptionCell" forIndexPath:indexPath];
-            [cell.lblText setText:text];
-            
-            return cell;
-        }
-    } else if (tableView == _tblReviews) {
+    if (tableView == _tblReviews) {
         if (indexPath.section == 0) {
             ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
             [cell setDelegate:self];
@@ -287,26 +255,13 @@
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView == _tblReviewTypes) {
-        if (indexPath.section == 0) {
-            _selectedReviewType = indexPath.row;
-            
-            [self updateViewHeader:indexPath.section];
-            
-            [_accordion closeSection:indexPath.section];
-            [_tblReviews deselectRowAtIndexPath:indexPath animated:NO];
-        }
-    } else if (tableView == _tblReviews) {
+    if (tableView == _tblReviews) {
         
     }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (tableView == _tblReviewTypes) {
-        if (section == 0) {
-            return [self sectionHeaderViewForSection:section];
-        }
-    } else if (tableView == _tblReviews) {
+    if (tableView == _tblReviews) {
         if (section == 2) {
             if (_sectionHeaderAdvanced == nil) {
                 _sectionHeaderAdvanced = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblReviews.frame), 56.0f)];
@@ -326,11 +281,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (tableView == _tblReviewTypes) {
-        if (section == 0) {
-            return 56.0f;
-        }
-    } else if (tableView == _tblReviews) {
+    if (tableView == _tblReviews) {
         if (section == 2) {
             return 56.0f;
         }
@@ -340,13 +291,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    // This sets all rows in the closed sections to a height of 0 (so they won't be shown)
-    // and the opened section to a height of 44.0
-    if (tableView == _tblReviewTypes) {
-        if (indexPath.section == 0) {
-            return ( [_accordion isSectionOpened:indexPath.section] ? 44.0f : 0.0f);
-        }
-    } else if (tableView == _tblReviews) {
+    if (tableView == _tblReviews) {
         if (indexPath.section == 0 || indexPath.section == 1) {
             if (_selectedReviewType >= 0) {
                 return 77.0f;
@@ -362,32 +307,13 @@
 #pragma mark - JHAccordionDelegate
 
 - (void)accordion:(JHAccordion *)accordion openingSection:(NSInteger)section {
-    if (accordion == _accordion) {
-        if (section == 0) [_sectionHeaderReviewType setSelected:YES];
-        
-        [UIView animateWithDuration:0.35f animations:^{
-            [_tblReviews setAlpha:0.0f];
-            [_btnSubmit setAlpha:0.0f];
-        } completion:^(BOOL finished) {
-            [_tblReviews setHidden:YES];
-            [_btnSubmit setHidden:YES];
-            
-            [self.view endEditing:YES];
-        }];
-    } else if (accordion == _accordionAdvanced) {
+    if (accordion == _accordionAdvanced) {
         if (section == 2) [_sectionHeaderAdvanced setSelected:YES];
     }
 }
 
 - (void)accordion:(JHAccordion *)accordion closingSection:(NSInteger)section {
-    if (accordion == _accordion) {
-        if (section == 0) [_sectionHeaderReviewType setSelected:NO];
-        
-        [_tblReviews setTableHeaderView:[self formForReviewTypeIndex:_selectedReviewType]];
-        [_tblReviews reloadData];
-        
-        [self fetchSliderTemplates:_selectedReviewType];
-    } else if (accordion == _accordionAdvanced) {
+    if (accordion == _accordionAdvanced) {
         if (section == 2) [_sectionHeaderAdvanced setSelected:NO];
     }
 }
@@ -397,22 +323,7 @@
 }
 
 - (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
-    if (accordion == _accordion) {
-        [self showForm:YES];
-    }
-}
 
-- (void)showForm:(BOOL)animate {
-    [_tblReviews setAlpha:0.0f];
-    [_tblReviews setHidden:NO];
-    [_btnSubmit setAlpha:0.0f];
-    [_btnSubmit setHidden:NO];
-    [UIView animateWithDuration:( animate ? 0.35f : 0.0f ) animations:^{
-        [_tblReviews setAlpha:1.0f];
-        [_btnSubmit setAlpha:1.0f];
-    } completion:^(BOOL finished) {
-        
-    }];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -963,15 +874,6 @@
             _sectionHeaderReviewType = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblReviews.frame), 56.0f)];
             [_sectionHeaderReviewType setBackgroundColor:[UIColor whiteColor]];
             [_sectionHeaderReviewType setText:@"Select Review Type"];
-            [_sectionHeaderReviewType setSelected:[_accordion isSectionOpened:section]];
-            
-            // Sets up for accordion
-            [_sectionHeaderReviewType.btnBackground setTag:section];
-            [_sectionHeaderReviewType.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
-            
-            if (_selectedReviewType >= 0) {
-                [self updateViewHeader:section];
-            }
         }
         
         return _sectionHeaderReviewType;

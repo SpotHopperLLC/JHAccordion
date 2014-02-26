@@ -44,6 +44,12 @@
 #define kColorOrange [UIColor colorWithRed:(221.0f/255.0f) green:(106.0f/255.0f) blue:(51.0f/255.0f) alpha:1.0f]
 #define kColorOrangeLight [UIColor colorWithRed:(238.0f/255.0f) green:(160.0f/255.0f) blue:(109.0f/255.0f) alpha:1.0f]
 
+#define kReviewTypesSpot @"Spot"
+#define kReviewTypesBeer @"Beer"
+#define kReviewTypesCocktail @"Cocktail"
+#define kReviewTypesWine @"Wine"
+#define kReviewTypes @[kReviewTypesSpot, kReviewTypesBeer, kReviewTypesCocktail, kReviewTypesWine]
+
 #define kDrinkTypeNameBeer @"Beer"
 #define kDrinkTypeNameCocktail @"Cocktail"
 #define kDrinkTypeNameWine @"Wine"
