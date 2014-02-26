@@ -21,6 +21,8 @@
 #import "DropdownOptionCell.h"
 #import "ReviewSliderCell.h"
 
+#import "ReviewsMenuViewController.h"
+
 #import "ErrorModel.h"
 
 #import <JHAccordion/JHAccordion.h>
@@ -797,7 +799,22 @@
         
         [self hideHUD];
         [self showHUDCompleted:@"Saved!" block:^{
-            [self.navigationController popViewControllerAnimated:YES];
+
+            // Searches in stack for ReviewsMenuViewController to pop to
+            UIViewController *reviewsMenuViewController;
+            for (UIViewController *viewController in self.navigationController.viewControllers) {
+                if ([viewController isKindOfClass:[ReviewsMenuViewController class]] == YES) {
+                    reviewsMenuViewController = viewController;
+                    break;
+                }
+            }
+            
+            // Pops back to last view controller if not found
+            if (reviewsMenuViewController != nil) {
+                [self.navigationController popToViewController:reviewsMenuViewController animated:YES];
+            } else {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
         }];
         
     } failure:^(ErrorModel *errorModel) {
