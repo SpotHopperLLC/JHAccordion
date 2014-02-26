@@ -402,6 +402,9 @@
 - (void)fetchReview {
     
     UserModel *user = [ClientSessionManager sharedClient].currentUser;
+    if (user == nil) {
+        return;
+    }
     
     [self showHUD:@"Getting review"];
     
