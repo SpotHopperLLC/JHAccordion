@@ -32,6 +32,7 @@
 @interface NewReviewViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, JHAutoCompleteDataSource, JHAutoCompleteDelegate, ReviewSliderCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tblReviews;
+@property (weak, nonatomic) IBOutlet UITableView *tblReviewTypes;
 
 @property (nonatomic, assign) CGRect tblReviewsInitalFrame;
 
@@ -199,14 +200,18 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (tableView == _tblReviews) {
+    if (tableView == _tblReviewTypes) {
+        return 1;
+    } else if (tableView == _tblReviews) {
         return 3;
     }
     return 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (tableView == _tblReviews) {
+    if (tableView == _tblReviewTypes) {
+        return 0;
+    } else if (tableView == _tblReviews) {
         if (section == 0) {
             if (_selectedReviewType > 0) {
                 return 1;
@@ -261,7 +266,11 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (tableView == _tblReviews) {
+    if (tableView == _tblReviewTypes) {
+        if (section == 0) {
+            return [self sectionHeaderViewForSection:section];
+        }
+    } else if (tableView == _tblReviews) {
         if (section == 2) {
             if (_sectionHeaderAdvanced == nil) {
                 _sectionHeaderAdvanced = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblReviews.frame), 56.0f)];
@@ -281,7 +290,11 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (tableView == _tblReviews) {
+    if (tableView == _tblReviewTypes) {
+        if (section == 0) {
+            return 56.0f;
+        }
+    } else if (tableView == _tblReviews) {
         if (section == 2) {
             return 56.0f;
         }
@@ -506,7 +519,7 @@
         }
         
         // Validating selected drink id exists
-        if (_selectedSpotType == nil && [_selectedSpotType objectForKey:@"id"] != nil) {
+        if (_selectedSpotType == nil || [_selectedSpotType objectForKey:@"id"] != nil) {
             [[RavenClient sharedClient] captureMessage:@"Spot type nil when trying to create spo" level:kRavenLogLevelDebugError];
             return;
         }
@@ -873,7 +886,8 @@
         if (_sectionHeaderReviewType == nil) {
             _sectionHeaderReviewType = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblReviews.frame), 56.0f)];
             [_sectionHeaderReviewType setBackgroundColor:[UIColor whiteColor]];
-            [_sectionHeaderReviewType setText:@"Select Review Type"];
+            [_sectionHeaderReviewType setText:[kReviewTypes objectAtIndex:_selectedReviewType]];
+            [_sectionHeaderReviewType setSelected:YES];
         }
         
         return _sectionHeaderReviewType;

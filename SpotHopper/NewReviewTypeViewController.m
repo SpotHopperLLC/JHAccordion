@@ -130,7 +130,6 @@
             _sectionHeaderReviewType = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblReviewTypes.frame), 56.0f)];
             [_sectionHeaderReviewType setBackgroundColor:[UIColor whiteColor]];
             [_sectionHeaderReviewType setText:@"Select Review Type"];
-
         }
         
         return _sectionHeaderReviewType;
