@@ -27,7 +27,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface SearchNewReviewViewController ()<UITableViewDataSource, UITableViewDelegate, SHButtonLatoLightLocationDelegate>
+@interface SearchNewReviewViewController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, SHButtonLatoLightLocationDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
@@ -301,6 +301,13 @@
     return 0.0f;
 }
 
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return NO;
+}
+
 #pragma mark - JHPullToRefresh
 
 - (void)reloadTableViewDataPullDown {
@@ -346,6 +353,10 @@
 
 - (IBAction)onClickLocation:(id)sender {
     
+}
+
+- (IBAction)onTapTable:(id)sender {
+    [_txtSearch resignFirstResponder];
 }
 
 #pragma mark - Private
