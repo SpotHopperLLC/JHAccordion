@@ -75,6 +75,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtSpotState;
 @property (nonatomic, strong) UIPickerView *pickerViewSpotType;
 @property (nonatomic, strong) UISegmentedControl *segControlForSpotType;
+@property (nonatomic, strong) UIPickerView *pickerViewState;
+@property (nonatomic, strong) UISegmentedControl *segControlForState;
 
 // Beer
 @property (weak, nonatomic) IBOutlet UITextField *txtBeerName;
@@ -484,12 +486,22 @@
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    return _spotTypes.count;
+    if (pickerView == _pickerViewSpotType) {
+        return _spotTypes.count;
+    } else if (pickerView == _pickerViewState) {
+        return kStateList.count;
+    }
+    return 0;
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    NSDictionary *spotType = [_spotTypes objectAtIndex:row];
-    return [spotType objectForKey:@"name"];
+    if (pickerView == _pickerViewSpotType) {
+        NSDictionary *spotType = [_spotTypes objectAtIndex:row];
+        return [spotType objectForKey:@"name"];
+    } else if (pickerView == _pickerViewState) {
+        return [kStateList objectAtIndex:row];
+    }
+    return nil;
 }
 
 #pragma mark - ReviewSliderCellDelegate
@@ -516,6 +528,13 @@
     
     _txtSpotType.text = [_selectedSpotType objectForKey:@"name"];
     [self fetchSliderTemplates:_selectedReviewType];
+}
+
+- (void)onClickChooseState:(id)sender {
+    NSString *state = [kStateList objectAtIndex:[_pickerViewState selectedRowInComponent:0]];
+    [self.view endEditing:YES];
+    
+    _txtSpotState.text = state;
 }
 
 - (IBAction)onClickSubmit:(id)sender {
@@ -941,10 +960,7 @@
                 [_txtSpotState setText:_spotBasedOffOf.state];
             }
             
-            // Sets autocomplete
-//            [_txtSpotType setAutocompleteWithDataSource:self delegate:self];
-//            [_txtSpotType showAutoCompleteTableAlways:YES];
-//            [_txtSpotType registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
+            // Sets spot type picker view
             _pickerViewSpotType = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 40, 320, 216)];
             [_pickerViewSpotType setBackgroundColor:[UIColor whiteColor]];
             [_pickerViewSpotType setDataSource:self];
@@ -953,6 +969,16 @@
             //Configure picker...
             [_txtSpotType setInputView:_pickerViewSpotType];
             [_txtSpotType setInputAccessoryView:[self keyboardToolBarForSpotType]];
+            
+            // Sets state picker view
+            _pickerViewState = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 40, 320, 216)];
+            [_pickerViewState setBackgroundColor:[UIColor whiteColor]];
+            [_pickerViewState setDataSource:self];
+            [_pickerViewState setDelegate:self];
+            
+            //Configure picker...
+            [_txtSpotState setInputView:_pickerViewState];
+            [_txtSpotState setInputAccessoryView:[self keyboardToolBarForState]];
         }
 
         return _viewFormNewSpot;
@@ -1002,6 +1028,24 @@
     
     UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onClickChooseSpotType:)];
+    
+    NSArray *itemsArray = @[flex, nextButton];
+    
+    [toolbar setItems:itemsArray];
+    
+    return toolbar;
+}
+
+- (UIToolbar *)keyboardToolBarForState {
+    
+    UIToolbar *toolbar = [[UIToolbar alloc] init];
+    [toolbar setBarStyle:UIBarStyleDefault];
+    [toolbar sizeToFit];
+    
+    [self.segControlForSpotType setEnabled:NO forSegmentAtIndex:0];
+    
+    UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onClickChooseState:)];
     
     NSArray *itemsArray = @[flex, nextButton];
     
