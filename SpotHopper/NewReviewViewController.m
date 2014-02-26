@@ -427,27 +427,7 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    // Spot
-    if (textField == _txtSpotName) { [_txtSpotType becomeFirstResponder];
-    } else if (textField == _txtSpotType) { [_txtSpotAddress becomeFirstResponder];
-    } else if (textField == _txtSpotAddress) { [_txtSpotCity becomeFirstResponder];
-    } else if (textField == _txtSpotCity) { [_txtSpotState becomeFirstResponder];
-    } else if (textField == _txtSpotState) { [_txtSpotState resignFirstResponder];}
-    
-    // Beer
-    if (textField == _txtBeerName) { [_txtBeerBreweryName becomeFirstResponder];
-    } else if (textField == _txtBeerBreweryName) { [_txtBeerStyle becomeFirstResponder];
-    } else if (textField == _txtBeerStyle) { [_txtBeerStyle resignFirstResponder];}
-    
-    // Cocktail
-    if (textField == _txtCocktailName) { [_txtCocktailAlcoholType becomeFirstResponder];
-    } else if (textField == _txtCocktailAlcoholType) { [_txtCocktailAlcoholType resignFirstResponder];}
-    
-    // Wine
-    if (textField == _txtWineStyle) { [_txtWineWineryName becomeFirstResponder];
-    } else if (textField == _txtWineWineryName) { [_txtWineName becomeFirstResponder];
-    } else if (textField == _txtWineName) { [_txtWineName resignFirstResponder];}
-    
+    [textField resignFirstResponder];
     return NO;
 }
 
