@@ -49,10 +49,14 @@
     UIBarButtonItem *barButtonRight = [[UIBarButtonItem alloc] initWithTitle:@"Use" style:UIBarButtonItemStylePlain target:self action:@selector(onClickUse:)];
     [self.navigationItem setRightBarButtonItem:barButtonRight];
  
+    // Sets initial location
     MKCoordinateRegion mapRegion;
     mapRegion.center = _initialLocation.coordinate;
     mapRegion.span = MKCoordinateSpanMake(0.2, 0.2);
     [_mapView setRegion:mapRegion animated: YES];
+    
+    // Shows users current spot
+    [_mapView setShowsUserLocation:YES];
 }
 
 - (void)didReceiveMemoryWarning
