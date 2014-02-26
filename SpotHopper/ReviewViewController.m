@@ -164,10 +164,10 @@
         UILabel *view = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(tableView.frame), 40.0f)];
         [view setBackgroundColor:kColorOrangeLight];
         
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 1.0f, CGRectGetWidth(tableView.frame)-20.0f, 30.f)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20.0f, 1.0f, CGRectGetWidth(tableView.frame)-30.0f, 30.f)];
         [label setBackgroundColor:[UIColor clearColor]];
         [label setTextColor:[UIColor whiteColor]];
-        [label setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
+        [label setFont:[UIFont fontWithName:@"Lato-Light" size:16.0f]];
         [label setMinimumScaleFactor:0.5f];
         [label setAdjustsFontSizeToFitWidth:YES];
         [label setNumberOfLines:1];
