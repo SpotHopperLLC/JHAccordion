@@ -215,7 +215,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3cX-Dz-TBP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1610" y="231"/>
+            <point key="canvasLocation" x="1618" y="231"/>
         </scene>
         <!--Search New Review View Controller-->
         <scene sceneID="UuB-Wc-iAF">
@@ -304,6 +304,36 @@
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="714" y="821"/>
+        </scene>
+        <!--New Review Type View Controller-->
+        <scene sceneID="kl5-yl-dZU">
+            <objects>
+                <viewController storyboardIdentifier="NewReviewTypeViewController" id="xCz-dY-3EN" customClass="NewReviewTypeViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Gqr-7v-sgN">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="cVE-8n-HiD">
+                                <rect key="frame" x="0.0" y="62" width="320" height="353"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="insetFor6xAndEarlier" minX="0.0" minY="64" maxX="0.0" maxY="-20"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="xCz-dY-3EN" id="z68-Ej-VVC"/>
+                                    <outlet property="delegate" destination="xCz-dY-3EN" id="BNE-40-Ppz"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="tblReviewTypes" destination="cVE-8n-HiD" id="P4U-03-aQJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bys-1O-Lpm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2046" y="231"/>
         </scene>
     </scenes>
     <resources>

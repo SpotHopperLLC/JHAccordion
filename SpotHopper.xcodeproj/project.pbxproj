@@ -12,6 +12,7 @@
 		03121A3518BD774B00C9FFA3 /* SHViewTranlucentWhiteFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 03121A3418BD774B00C9FFA3 /* SHViewTranlucentWhiteFooter.m */; };
 		03121A3818BD786D00C9FFA3 /* 723-location-arrow-selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03121A3618BD786D00C9FFA3 /* 723-location-arrow-selected.png */; };
 		03121A3918BD786D00C9FFA3 /* 723-location-arrow-selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03121A3718BD786D00C9FFA3 /* 723-location-arrow-selected@2x.png */; };
+		03121A3C18BE361A00C9FFA3 /* NewReviewTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03121A3B18BE361A00C9FFA3 /* NewReviewTypeViewController.m */; };
 		0320233B1875E060008368C2 /* FooterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 032023391875E060008368C2 /* FooterViewController.m */; };
 		0320233C1875E060008368C2 /* FooterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0320233A1875E060008368C2 /* FooterViewController.xib */; };
 		0320235218772A86008368C2 /* txt_sidebar_search_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320235018772A86008368C2 /* txt_sidebar_search_background.png */; };
@@ -301,6 +302,8 @@
 		03121A3418BD774B00C9FFA3 /* SHViewTranlucentWhiteFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHViewTranlucentWhiteFooter.m; sourceTree = "<group>"; };
 		03121A3618BD786D00C9FFA3 /* 723-location-arrow-selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "723-location-arrow-selected.png"; sourceTree = "<group>"; };
 		03121A3718BD786D00C9FFA3 /* 723-location-arrow-selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "723-location-arrow-selected@2x.png"; sourceTree = "<group>"; };
+		03121A3A18BE361A00C9FFA3 /* NewReviewTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewReviewTypeViewController.h; sourceTree = "<group>"; };
+		03121A3B18BE361A00C9FFA3 /* NewReviewTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewReviewTypeViewController.m; sourceTree = "<group>"; };
 		032023381875E060008368C2 /* FooterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FooterViewController.h; sourceTree = "<group>"; };
 		032023391875E060008368C2 /* FooterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FooterViewController.m; sourceTree = "<group>"; };
 		0320233A1875E060008368C2 /* FooterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FooterViewController.xib; sourceTree = "<group>"; };
@@ -718,6 +721,8 @@
 				03CA7285187C245600815284 /* ReviewViewController.m */,
 				03CA72CE187DF43B00815284 /* NewReviewViewController.h */,
 				03CA72CF187DF43B00815284 /* NewReviewViewController.m */,
+				03121A3A18BE361A00C9FFA3 /* NewReviewTypeViewController.h */,
+				03121A3B18BE361A00C9FFA3 /* NewReviewTypeViewController.m */,
 			);
 			name = Reviews;
 			sourceTree = "<group>";
@@ -1893,6 +1898,7 @@
 				038664CB186D376900985CEC /* NSArray+SaveLoad.m in Sources */,
 				03F2D93E187208C200C69576 /* SHLabelLatoLight.m in Sources */,
 				0381044A18B6889300A410DB /* SpotAnnotation.m in Sources */,
+				03121A3C18BE361A00C9FFA3 /* NewReviewTypeViewController.m in Sources */,
 				03C8DAEA188B44C20082321C /* SliderModel.m in Sources */,
 				0320233B1875E060008368C2 /* FooterViewController.m in Sources */,
 				039B6FF1188711B800C590F8 /* SHLabelLatoRegular.m in Sources */,

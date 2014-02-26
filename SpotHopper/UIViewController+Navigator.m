@@ -12,6 +12,7 @@
 
 #import "MyReviewsViewController.h"
 #import "NewReviewViewController.h"
+#import "NewReviewTypeViewController.h"
 #import "ReviewViewController.h"
 #import "ReviewsMenuViewController.h"
 #import "SearchNewReviewViewController.h"
@@ -66,7 +67,8 @@
 }
 
 - (void)goToNewReview {
-    [self goToNewReview:nil];
+    NewReviewTypeViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"NewReviewTypeViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)goToNewReview:(SpotModel*)spot {
