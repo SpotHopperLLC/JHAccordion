@@ -63,7 +63,11 @@
     [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
     
     // Sets title
-    [self setTitle:@"New Reviews"];
+    if (_createReview == YES) {
+        [self setTitle:@"New Reviews"];
+    } else {
+        [self setTitle:@"Search"];
+    }
     
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
