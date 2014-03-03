@@ -301,7 +301,9 @@
         }
     } else if (tableView == _tblReviews) {
         if (section == 2) {
-            return 56.0f;
+            if (_advancedSliders.count > 0) {
+                return 56.0f;
+            }
         }
     }
     

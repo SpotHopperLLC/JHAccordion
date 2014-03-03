@@ -204,7 +204,9 @@
     if (section == 0) {
         return 40.0f;
     } else if (section == 2) {
-        return 56.0f;
+        if (_advancedSliders.count > 0) {
+            return 56.0f;
+        }
     }
     return 0.0f;
 }
