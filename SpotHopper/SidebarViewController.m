@@ -10,6 +10,8 @@
 
 #import "UIViewController+Navigator.h"
 
+#import <FXBlurView/FXBlurView.h>
+
 @interface SidebarViewController ()<UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
@@ -20,6 +22,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnReviews;
 @property (weak, nonatomic) IBOutlet UIButton *btnCheckIn;
 @property (weak, nonatomic) IBOutlet UIButton *btnAccount;
+
+@property (nonatomic, strong) FXBlurView *blurView;
 
 @end
 
@@ -59,6 +63,16 @@
     [self addTopBorder:_btnCheckIn];
     [self addBottomBorder:_btnCheckIn];
     [self addTopBorder:_btnAccount];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    if (_blurView == nil) {
+//        _blurView = [[FXBlurView alloc] initWithFrame:self.view.frame];
+//        [_blurView setDynamic:YES];
+//        [self.view insertSubview:_blurView atIndex:0];
+    }
 }
 
 - (void)didReceiveMemoryWarning

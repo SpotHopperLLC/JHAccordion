@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="3f5-6R-ILz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="3f5-6R-ILz">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
@@ -563,7 +563,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.86666666670000003" green="0.41568627450000001" blue="0.20000000000000001" alpha="0.0" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="btnAccount" destination="oG0-tn-ovb" id="DB4-XC-JU3"/>
@@ -641,7 +641,7 @@
         <image name="img_expand_east.png" width="27" height="27"/>
         <image name="img_launch_field_divider.png" width="317" height="3"/>
         <image name="logo_spothopper.png" width="317" height="166"/>
-        <image name="orange_gradient_background.png" width="266" height="568"/>
+        <image name="orange_gradient_background.png" width="259" height="564"/>
         <image name="txt_sidebar_search_background.png" width="251" height="32"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

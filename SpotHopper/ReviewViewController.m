@@ -90,6 +90,7 @@
     }
     
     // Gets review if already completed
+    [self updateView];
     [self fetchReview];
 }
 
@@ -360,7 +361,7 @@
 
 - (void)updateView {
     if (_drink != nil) {
-        [_imgImage setImageWithURL:[NSURL URLWithString:_drink.imageUrl]];
+        [_imgImage setImageWithURL:[NSURL URLWithString:_drink.imageUrl] placeholderImage:[UIImage imageNamed:@"bar_drink_placeholder"]];
         
         // Removing an italics
         [_lblSubSubTitle italic:NO];
@@ -387,12 +388,13 @@
             [_lblSubSubTitle setText:@"No style or ABV"];
         }
     } else if (_spot != nil) {
-        [_imgImage setImageWithURL:[NSURL URLWithString:_spot.imageUrl]];
+        [_imgImage setImageWithURL:[NSURL URLWithString:_spot.imageUrl] placeholderImage:[UIImage imageNamed:@"bar_drink_placeholder"]];
         
         [_lblTitle setText:_spot.name];
         [_lblSubTitle setText:_spot.spotType.name];
         [_lblSubSubTitle setText:_spot.cityState];
     } else {
+        [_imgImage setImage:[UIImage imageNamed:@"bar_drink_placeholder"]];
         [_lblTitle setText:@""];
         [_lblSubTitle setText:@""];
         [_lblSubSubTitle setText:@""];

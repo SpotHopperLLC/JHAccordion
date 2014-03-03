@@ -18,6 +18,7 @@ PODS:
   - AFNetworking/UIKit (2.0.3):
     - AFNetworking/NSURLConnection
   - Facebook-iOS-SDK (3.11.0)
+  - FXBlurView (1.5.3)
   - JHAccordion (0.1.0)
   - JHAutoCompleteTextField (0.1.0)
   - JHSidebar (0.1.1)
@@ -29,6 +30,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (~> 2.0.3)
   - Facebook-iOS-SDK (~> 3.11.0)
+  - FXBlurView (~> 1.5.3)
   - JHAccordion (from `git@github.com:joshdholtz/JHAccordion.git`)
   - JHAutoCompleteTextField (from `git@github.com:joshdholtz/JHAutoCompleteTextField.git`)
   - JHSidebar (~> 0.1.1)
@@ -50,6 +52,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: e499052cbf3d743e9bb727bb37adb9dc2547ba15
   Facebook-iOS-SDK: 2eb12f9ed04f3d3956f0a4fb0e4e60c824dcd101
+  FXBlurView: 8d662dd5b4ba15a1a0e97235501326fbdfb2b755
   JHAccordion: 4f0337990465b25f8de5ed304609fa9362281db0
   JHAutoCompleteTextField: 1ca69c82441d9b5bf474e10d36585247030f7594
   JHSidebar: 2efb4d14cc8bb0032c75218fd3ef7db70154c07e
