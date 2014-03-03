@@ -164,7 +164,9 @@
     
     [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | curve animations:^{
         [_tblSearches setFrame:frame];
-    } completion:nil];
+    } completion:^(BOOL finished) {
+        [self dataDidFinishRefreshing];
+    }];
 }
 
 #pragma mark - UITableViewDataSource
@@ -386,6 +388,12 @@
 }
 
 - (void)doSearch {
+    
+    if (_txtSearch.text.length == 0) {
+        [_results removeAllObjects];
+        [self dataDidFinishRefreshing];
+        return;
+    }
 
     [self showHUD:@"Searching"];
     
