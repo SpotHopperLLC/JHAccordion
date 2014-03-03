@@ -15,6 +15,7 @@
 @interface JHPullRefreshViewController : UIViewController
 
 - (void)registerRefreshTableView:(UITableView*)tableView withReloadType:(NSInteger)refreshType;
+- (void)unregisterRefreshTableView;
 
 - (void)reloadTableViewDataPullDown;
 - (void)reloadTableViewDataPullUp;

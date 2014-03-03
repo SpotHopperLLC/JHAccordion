@@ -76,9 +76,6 @@
     [_tblSearches setTableFooterView:[[UIView alloc] init]];
     [_tblSearches registerNib:[UINib nibWithNibName:@"SearchCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"SearchCell"];
     
-    // Configures text search
-    [_txtSearch addTarget:self action:@selector(onEditingChangeSearch:) forControlEvents:UIControlEventEditingChanged];
-    
     // Register pull to refresh
     [self registerRefreshTableView:_tblSearches withReloadType:kPullRefreshTypeBoth];
     
@@ -93,6 +90,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
+    
+    // Configures text search
+    [_txtSearch addTarget:self action:@selector(onEditingChangeSearch:) forControlEvents:UIControlEventEditingChanged];
     
     // Deselects table row
     [_tblSearches deselectRowAtIndexPath:_tblSearches.indexPathForSelectedRow animated:NO];
@@ -116,7 +116,13 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    
+    // Configures text search
+    [_txtSearch removeTarget:self action:@selector(onEditingChangeSearch:) forControlEvents:UIControlEventEditingChanged];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [super viewWillDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning
