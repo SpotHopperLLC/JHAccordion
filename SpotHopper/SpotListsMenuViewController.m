@@ -16,7 +16,13 @@
 #import "CreateListCell.h"
 #import "ListCell.h"
 
+#import "ClientSessionManager.h"
+#import "ErrorModel.h"
+#import "SpotListModel.h"
+#import "UserModel.h"
+
 #import <JHAccordion/JHAccordion.h>
+#import <Promises/Promise.h>
 
 @interface SpotListsMenuViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, SHButtonLatoLightLocationDelegate>
 
@@ -30,6 +36,9 @@
 @property (nonatomic, strong) SectionHeaderView *sectionHeader2;
 
 @property (nonatomic, strong) CLLocation *location;
+
+@property (nonatomic, strong) NSArray *featuredSpotLists;
+@property (nonatomic, strong) NSArray *mySpotLists;
 
 @end
 
@@ -62,6 +71,9 @@
     [_tblMenu registerNib:[UINib nibWithNibName:@"CreateListCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"CreateListCell"];
     [_tblMenu registerNib:[UINib nibWithNibName:@"ListCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ListCell"];
     [_tblMenu setTableFooterView:[[UIView alloc] init]];
+    
+    // Fetching spot lists
+    [self fetchSpotLists];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -92,6 +104,11 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    // Don't show my reviews if no logged in
+    if ([ClientSessionManager sharedClient].isLoggedIn == NO) {
+        return 2;
+    }
+    
     return 3;
 }
 
@@ -99,9 +116,9 @@
     if (section == 0) {
         return 2;
     } else if (section == 1) {
-        return 2;
+        return _featuredSpotLists.count;
     } else if (section == 2) {
-        return 2;
+        return _mySpotLists.count;
     }
     
     return 0;
@@ -124,13 +141,15 @@
     } else if (indexPath.section == 1) {
         ListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ListCell" forIndexPath:indexPath];
         
-        [cell.lblName setText:@"Awesome list (5)"];
+        SpotListModel *spotList = [_featuredSpotLists objectAtIndex:indexPath.row];
+        [cell.lblName setText:spotList.name];
         
         return cell;
     } else if (indexPath.section == 2) {
         ListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ListCell" forIndexPath:indexPath];
         
-        [cell.lblName setText:@"Awesome list (5)"];
+        SpotListModel *spotList = [_mySpotLists objectAtIndex:indexPath.row];
+        [cell.lblName setText:spotList.name];
         
         return cell;
     }
@@ -224,6 +243,48 @@
 }
 
 #pragma mark - Private
+
+- (void)fetchSpotLists {
+    
+    [self showHUD:@"Fetching spot lists"];
+    NSMutableArray *promises = [NSMutableArray array];
+    
+    /*
+     * Featured spot lists
+     */
+    Promise *promiseFeaturedSpotLists = [SpotListModel getSpotLists:nil success:^(NSArray *spotListModels, JSONAPI *jsonApi) {
+        _featuredSpotLists = spotListModels;
+    } failure:^(ErrorModel *errorModel) {
+        
+    }];
+    [promises addObject:promiseFeaturedSpotLists];
+    
+    /*
+     * My spot lists
+     */
+    if ([ClientSessionManager sharedClient].isLoggedIn == YES) {
+        UserModel *user = [ClientSessionManager sharedClient].currentUser;
+        Promise *promiseMySpotLists = [user getSpotLists:nil success:^(NSArray *spotListsModels, JSONAPI *jsonApi) {
+            _mySpotLists = spotListsModels;
+        } failure:^(ErrorModel *errorModel) {
+            
+        }];
+        [promises addObject:promiseMySpotLists];
+    }
+    
+    /*
+     * When
+     */
+    [When when:promises then:^{
+        
+    } fail:^(id error) {
+        
+    } always:^{
+        [_tblMenu reloadData];
+        [self hideHUD];
+    }];
+    
+}
 
 - (SectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
     

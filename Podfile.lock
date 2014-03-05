@@ -22,7 +22,7 @@ PODS:
   - JHAccordion (0.1.0)
   - JHAutoCompleteTextField (0.1.0)
   - JHSidebar (0.1.1)
-  - JSONAPI (0.1.1)
+  - JSONAPI (0.1.2)
   - Promises (0.1.0)
   - Raven (0.3.0)
   - STTwitter (0.0.7)
@@ -35,7 +35,7 @@ DEPENDENCIES:
   - JHAccordion (from `git@github.com:joshdholtz/JHAccordion.git`)
   - JHAutoCompleteTextField (from `git@github.com:joshdholtz/JHAutoCompleteTextField.git`)
   - JHSidebar (~> 0.1.1)
-  - JSONAPI (from `git@github.com:joshdholtz/jsonapi-ios.git`)
+  - JSONAPI (~> 0.1.2)
   - Promises (from `git@github.com:joshdholtz/ios-promises.git`)
   - Raven (~> 0.3.0)
   - STTwitter (~> 0.0.7)
@@ -46,8 +46,6 @@ EXTERNAL SOURCES:
     :git: git@github.com:joshdholtz/JHAccordion.git
   JHAutoCompleteTextField:
     :git: git@github.com:joshdholtz/JHAutoCompleteTextField.git
-  JSONAPI:
-    :git: git@github.com:joshdholtz/jsonapi-ios.git
   Promises:
     :git: git@github.com:joshdholtz/ios-promises.git
 
@@ -58,7 +56,7 @@ SPEC CHECKSUMS:
   JHAccordion: 4f0337990465b25f8de5ed304609fa9362281db0
   JHAutoCompleteTextField: 1ca69c82441d9b5bf474e10d36585247030f7594
   JHSidebar: 2efb4d14cc8bb0032c75218fd3ef7db70154c07e
-  JSONAPI: 9877cd3d44c825914ae42fdd0b6d97b43b9a2b67
+  JSONAPI: b98efd0e5b8bb44984373524e2ac40ef7d5455a2
   Promises: 084c52a29463480600484fe7f29d6844814c1c7d
   Raven: 875718158645e945cf991c1ca80b41cd2ef82fd9
   STTwitter: beca2e5ff10c6e9c863d9400039f4aed94e28f6a

@@ -297,6 +297,7 @@
 		03F6BF6D18C6E11F00172F13 /* CreateListCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF6C18C6E11F00172F13 /* CreateListCellView.xib */; };
 		03F6BF7018C6E8BD00172F13 /* ListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF6F18C6E8BD00172F13 /* ListCell.m */; };
 		03F6BF7218C6E8CD00172F13 /* ListCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF7118C6E8CD00172F13 /* ListCellView.xib */; };
+		03F6BF7518C6EE2B00172F13 /* SpotListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF7418C6EE2B00172F13 /* SpotListModel.m */; };
 		052EC70F678F4DF18DBE8EB5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
 		D7FCD5C8824B4FA4A7587334 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -688,6 +689,8 @@
 		03F6BF6E18C6E8BD00172F13 /* ListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListCell.h; sourceTree = "<group>"; };
 		03F6BF6F18C6E8BD00172F13 /* ListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCell.m; sourceTree = "<group>"; };
 		03F6BF7118C6E8CD00172F13 /* ListCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListCellView.xib; sourceTree = "<group>"; };
+		03F6BF7318C6EE2B00172F13 /* SpotListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotListModel.h; sourceTree = "<group>"; };
+		03F6BF7418C6EE2B00172F13 /* SpotListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotListModel.m; sourceTree = "<group>"; };
 		B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C9816A19827543A8863B8CBF /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -1118,6 +1121,8 @@
 				0381044C18B69E2100A410DB /* SpotTypeModel.m */,
 				038664ED186D391E00985CEC /* UserModel.h */,
 				038664EE186D391E00985CEC /* UserModel.m */,
+				03F6BF7318C6EE2B00172F13 /* SpotListModel.h */,
+				03F6BF7418C6EE2B00172F13 /* SpotListModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1921,6 +1926,7 @@
 				03C8DAED188B44CB0082321C /* SliderTemplateModel.m in Sources */,
 				03E4452518AEE64000C88421 /* AutoCompleteCell.m in Sources */,
 				038664CE186D376900985CEC /* NSNumber+Currency.m in Sources */,
+				03F6BF7518C6EE2B00172F13 /* SpotListModel.m in Sources */,
 				03CA7286187C245600815284 /* ReviewViewController.m in Sources */,
 				03F2D9051871DB5B00C69576 /* SHButtonLatoLight.m in Sources */,
 				03F6BF5C18C6D5BB00172F13 /* SpotListsMenuViewController.m in Sources */,

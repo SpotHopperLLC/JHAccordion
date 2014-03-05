@@ -22,6 +22,7 @@
 #import "SliderTemplateModel.h"
 #import "SpotModel.h"
 #import "SpotTypeModel.h"
+#import "SpotListModel.h"
 #import "UserModel.h"
 
 #import "MockData.h"
@@ -54,6 +55,7 @@
     [JSONAPIResourceLinker link:@"slider_template" toLinkedType:@"slider_templates"];
     [JSONAPIResourceLinker link:@"spot" toLinkedType:@"spots"];
     [JSONAPIResourceLinker link:@"spot_type" toLinkedType:@"spot_types"];
+    [JSONAPIResourceLinker link:@"spot_list" toLinkedType:@"spot_lists"];
     [JSONAPIResourceLinker link:@"user" toLinkedType:@"users"];
     
     // Initializes model linking for JSONAPI
@@ -65,6 +67,7 @@
     [JSONAPIResourceModeler useResource:[SliderTemplateModel class] toLinkedType:@"slider_templates"];
     [JSONAPIResourceModeler useResource:[SpotModel class] toLinkedType:@"spots"];
     [JSONAPIResourceModeler useResource:[SpotTypeModel class] toLinkedType:@"spot_types"];
+    [JSONAPIResourceModeler useResource:[SpotListModel class] toLinkedType:@"spot_lists"];
     [JSONAPIResourceModeler useResource:[UserModel class] toLinkedType:@"users"];
 
     // Navigation bar styling
