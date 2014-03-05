@@ -15,6 +15,7 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgIcon;
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
+@property (weak, nonatomic) IBOutlet UILabel *lblNotWhatLookingFor;
 
 - (void)setDrink:(DrinkModel*)drink;
 - (void)setSpot:(SpotModel*)spot;

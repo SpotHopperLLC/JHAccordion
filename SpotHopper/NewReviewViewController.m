@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#define kReviewTypes @[@"Spot", @"Beer", @"Cocktail", @"Wine"]
 #define kReviewTypeIcons @[@"btn_sidebar_icon_spots", @"icon_beer", @"icon_cocktails", @"icon_wine"]
 
 #import "MyReviewsViewController.h"
@@ -21,6 +20,9 @@
 #import "DropdownOptionCell.h"
 #import "ReviewSliderCell.h"
 
+#import "ReviewsMenuViewController.h"
+#import "SearchNewReviewViewController.h"
+
 #import "ErrorModel.h"
 
 #import <JHAccordion/JHAccordion.h>
@@ -28,14 +30,13 @@
 
 #import "NewReviewViewController.h"
 
-@interface NewReviewViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, JHAutoCompleteDataSource, JHAutoCompleteDelegate, ReviewSliderCellDelegate>
+@interface NewReviewViewController ()<UITableViewDataSource, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, JHAccordionDelegate, JHAutoCompleteDataSource, JHAutoCompleteDelegate, ReviewSliderCellDelegate>
 
-@property (weak, nonatomic) IBOutlet UITableView *tblReviewTypes;
 @property (weak, nonatomic) IBOutlet UITableView *tblReviews;
+@property (weak, nonatomic) IBOutlet UITableView *tblReviewTypes;
 
 @property (nonatomic, assign) CGRect tblReviewsInitalFrame;
 
-@property (nonatomic, strong) JHAccordion *accordion;
 @property (nonatomic, strong) SectionHeaderView *sectionHeaderReviewType;
 
 @property (nonatomic, strong) JHAccordion *accordionAdvanced;
@@ -73,6 +74,10 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtSpotAddress;
 @property (weak, nonatomic) IBOutlet UITextField *txtSpotCity;
 @property (weak, nonatomic) IBOutlet UITextField *txtSpotState;
+@property (nonatomic, strong) UIPickerView *pickerViewSpotType;
+@property (nonatomic, strong) UISegmentedControl *segControlForSpotType;
+@property (nonatomic, strong) UIPickerView *pickerViewState;
+@property (nonatomic, strong) UISegmentedControl *segControlForState;
 
 // Beer
 @property (weak, nonatomic) IBOutlet UITextField *txtBeerName;
@@ -113,29 +118,23 @@
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
     
-    // Configures accordion
-    _accordion = [[JHAccordion alloc] initWithTableView:_tblReviewTypes];
-    [_accordion setDelegate:self];
-    [_accordion openSection:0];
-    
     // Configures accordion - advanced sliders
     _accordionAdvanced = [[JHAccordion alloc] initWithTableView:_tblReviews];
     [_accordionAdvanced setDelegate:self];
     [_accordionAdvanced openSection:0];
     
     // Configures table
-    [_tblReviewTypes setTableFooterView:[[UIView alloc] init]];
-    [_tblReviewTypes registerNib:[UINib nibWithNibName:@"DropdownOptionCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"DropdownOptionCell"];
     [_tblReviews setTableFooterView:[[UIView alloc] init]];
     [_tblReviews registerNib:[UINib nibWithNibName:@"ReviewSliderCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ReviewSliderCell"];
     [_tblReviews setContentInset:UIEdgeInsetsMake(0, 0, 65.0f, 0)];
     
     // Initializes states
-    _selectedReviewType = -1;
+    _selectedReviewType = [kReviewTypes indexOfObject:_reviewType];
     _tblReviewsInitalFrame = CGRectZero;
     _sliders = [NSMutableArray array];
     _reviewRatingSlider = [ReviewModel ratingSliderModel];
     
+    [_tblReviews setTableHeaderView:[self formForReviewTypeIndex:_selectedReviewType]];
     [self fetchFormData];
 }
 
@@ -153,19 +152,6 @@
     // Keyboard notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    
-    // Adds contextual footer view
-    [self addFooterViewController:^(FooterViewController *footerViewController) {
-        [footerViewController showHome:YES];
-    }];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    if (_spotBasedOffOf != nil) {
-        [self tableView:_tblReviewTypes didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -229,9 +215,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (tableView == _tblReviewTypes) {
-        if (section == 0) {
-            return kReviewTypes.count;
-        }
+        return 0;
     } else if (tableView == _tblReviews) {
         if (section == 0) {
             if (_selectedReviewType > 0) {
@@ -247,16 +231,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView == _tblReviewTypes) {
-        if (indexPath.section == 0) {
-            NSString *text = [kReviewTypes objectAtIndex:indexPath.row];
-            
-            DropdownOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DropdownOptionCell" forIndexPath:indexPath];
-            [cell.lblText setText:text];
-            
-            return cell;
-        }
-    } else if (tableView == _tblReviews) {
+    if (tableView == _tblReviews) {
         if (indexPath.section == 0) {
             ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
             [cell setDelegate:self];
@@ -289,17 +264,8 @@
 
 #pragma mark - UITableViewDelegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView == _tblReviewTypes) {
-        if (indexPath.section == 0) {
-            _selectedReviewType = indexPath.row;
-            
-            [self updateViewHeader:indexPath.section];
-            
-            [_accordion closeSection:indexPath.section];
-            [_tblReviews deselectRowAtIndexPath:indexPath animated:NO];
-        }
-    } else if (tableView == _tblReviews) {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexfPath:(NSIndexPath *)indexPath {
+    if (tableView == _tblReviews) {
         
     }
 }
@@ -335,7 +301,9 @@
         }
     } else if (tableView == _tblReviews) {
         if (section == 2) {
-            return 56.0f;
+            if (_advancedSliders.count > 0) {
+                return 56.0f;
+            }
         }
     }
     
@@ -343,13 +311,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    // This sets all rows in the closed sections to a height of 0 (so they won't be shown)
-    // and the opened section to a height of 44.0
-    if (tableView == _tblReviewTypes) {
-        if (indexPath.section == 0) {
-            return ( [_accordion isSectionOpened:indexPath.section] ? 44.0f : 0.0f);
-        }
-    } else if (tableView == _tblReviews) {
+    if (tableView == _tblReviews) {
         if (indexPath.section == 0 || indexPath.section == 1) {
             if (_selectedReviewType >= 0) {
                 return 77.0f;
@@ -365,32 +327,13 @@
 #pragma mark - JHAccordionDelegate
 
 - (void)accordion:(JHAccordion *)accordion openingSection:(NSInteger)section {
-    if (accordion == _accordion) {
-        if (section == 0) [_sectionHeaderReviewType setSelected:YES];
-        
-        [UIView animateWithDuration:0.35f animations:^{
-            [_tblReviews setAlpha:0.0f];
-            [_btnSubmit setAlpha:0.0f];
-        } completion:^(BOOL finished) {
-            [_tblReviews setHidden:YES];
-            [_btnSubmit setHidden:YES];
-            
-            [self.view endEditing:YES];
-        }];
-    } else if (accordion == _accordionAdvanced) {
+    if (accordion == _accordionAdvanced) {
         if (section == 2) [_sectionHeaderAdvanced setSelected:YES];
     }
 }
 
 - (void)accordion:(JHAccordion *)accordion closingSection:(NSInteger)section {
-    if (accordion == _accordion) {
-        if (section == 0) [_sectionHeaderReviewType setSelected:NO];
-        
-        [_tblReviews setTableHeaderView:[self formForReviewTypeIndex:_selectedReviewType]];
-        [_tblReviews reloadData];
-        
-        [self fetchSliderTemplates:_selectedReviewType];
-    } else if (accordion == _accordionAdvanced) {
+    if (accordion == _accordionAdvanced) {
         if (section == 2) [_sectionHeaderAdvanced setSelected:NO];
     }
 }
@@ -400,22 +343,7 @@
 }
 
 - (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
-    if (accordion == _accordion) {
-        [self showForm:YES];
-    }
-}
 
-- (void)showForm:(BOOL)animate {
-    [_tblReviews setAlpha:0.0f];
-    [_tblReviews setHidden:NO];
-    [_btnSubmit setAlpha:0.0f];
-    [_btnSubmit setHidden:NO];
-    [UIView animateWithDuration:( animate ? 0.35f : 0.0f ) animations:^{
-        [_tblReviews setAlpha:1.0f];
-        [_btnSubmit setAlpha:1.0f];
-    } completion:^(BOOL finished) {
-        
-    }];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -432,27 +360,7 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    // Spot
-    if (textField == _txtSpotName) { [_txtSpotType becomeFirstResponder];
-    } else if (textField == _txtSpotType) { [_txtSpotAddress becomeFirstResponder];
-    } else if (textField == _txtSpotAddress) { [_txtSpotCity becomeFirstResponder];
-    } else if (textField == _txtSpotCity) { [_txtSpotState becomeFirstResponder];
-    } else if (textField == _txtSpotState) { [_txtSpotState resignFirstResponder];}
-    
-    // Beer
-    if (textField == _txtBeerName) { [_txtBeerBreweryName becomeFirstResponder];
-    } else if (textField == _txtBeerBreweryName) { [_txtBeerStyle becomeFirstResponder];
-    } else if (textField == _txtBeerStyle) { [_txtBeerStyle resignFirstResponder];}
-    
-    // Cocktail
-    if (textField == _txtCocktailName) { [_txtCocktailAlcoholType becomeFirstResponder];
-    } else if (textField == _txtCocktailAlcoholType) { [_txtCocktailAlcoholType resignFirstResponder];}
-    
-    // Wine
-    if (textField == _txtWineStyle) { [_txtWineWineryName becomeFirstResponder];
-    } else if (textField == _txtWineWineryName) { [_txtWineName becomeFirstResponder];
-    } else if (textField == _txtWineName) { [_txtWineName resignFirstResponder];}
-    
+    [textField resignFirstResponder];
     return NO;
 }
 
@@ -574,6 +482,31 @@
     }
 }
 
+#pragma mark - UIPickerViewDataSource
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    if (pickerView == _pickerViewSpotType) {
+        return _spotTypes.count;
+    } else if (pickerView == _pickerViewState) {
+        return kStateList.count;
+    }
+    return 0;
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    if (pickerView == _pickerViewSpotType) {
+        NSDictionary *spotType = [_spotTypes objectAtIndex:row];
+        return [spotType objectForKey:@"name"];
+    } else if (pickerView == _pickerViewState) {
+        return [kStateList objectAtIndex:row];
+    }
+    return nil;
+}
+
 #pragma mark - ReviewSliderCellDelegate
 
 - (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(float)value {
@@ -591,6 +524,21 @@
 }
 
 #pragma mark - Actions
+
+- (void)onClickChooseSpotType:(id)sender {
+    _selectedSpotType = [_spotTypes objectAtIndex:[_pickerViewSpotType selectedRowInComponent:0]];
+    [self.view endEditing:YES];
+    
+    _txtSpotType.text = [_selectedSpotType objectForKey:@"name"];
+    [self fetchSliderTemplates:_selectedReviewType];
+}
+
+- (void)onClickChooseState:(id)sender {
+    NSString *state = [kStateList objectAtIndex:[_pickerViewState selectedRowInComponent:0]];
+    [self.view endEditing:YES];
+    
+    _txtSpotState.text = state;
+}
 
 - (IBAction)onClickSubmit:(id)sender {
     
@@ -618,7 +566,8 @@
         }
         
         // Validating selected drink id exists
-        if (_selectedSpotType == nil && [_selectedSpotType objectForKey:@"id"] != nil) {
+        if (_selectedSpotType == nil || [_selectedSpotType objectForKey:@"id"] == nil) {
+            [self showAlert:@"Oops" message:@"Not able to submit a spot right now"];
             [[RavenClient sharedClient] captureMessage:@"Spot type nil when trying to create spo" level:kRavenLogLevelDebugError];
             return;
         }
@@ -684,7 +633,7 @@
         
         // Validating selected drink id exists
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
-        if (drinkType == nil || [drinkType objectForKey:@"id"] != nil) {
+        if (drinkType == nil || [drinkType objectForKey:@"id"] == nil) {
             [self showAlert:@"Oops" message:@"Not able to submit a beer right now"];
             [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create beer" level:kRavenLogLevelDebugError];
             return;
@@ -712,7 +661,7 @@
         
         // Validating selected drink id exists
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
-        if (drinkType == nil || [drinkType objectForKey:@"id"] != nil) {
+        if (drinkType == nil || [drinkType objectForKey:@"id"] == nil) {
             [self showAlert:@"Oops" message:@"Not able to submit a cocktail right now"];
             [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create cocktail" level:kRavenLogLevelDebugError];
             return;
@@ -750,7 +699,7 @@
         
         // Validating selected drink id exists
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
-        if (drinkType == nil || [drinkType objectForKey:@"id"] != nil) {
+        if (drinkType == nil || [drinkType objectForKey:@"id"] == nil) {
             [self showAlert:@"Oops" message:@"Not able to submit a wine right now"];
             [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create wine" level:kRavenLogLevelDebugError];
             return;
@@ -822,7 +771,44 @@
         
         [self hideHUD];
         [self showHUDCompleted:@"Saved!" block:^{
-            [self.navigationController popViewControllerAnimated:YES];
+
+            // Searches in stack for ReviewsMenuViewController to pop to
+            UIViewController *reviewsMenuViewController;
+            for (UIViewController *viewController in self.navigationController.viewControllers) {
+                if ([viewController isKindOfClass:[ReviewsMenuViewController class]] == YES) {
+                    reviewsMenuViewController = viewController;
+                    break;
+                }
+            }
+            
+            // Pops back to last view controller if not found
+            if (reviewsMenuViewController != nil) {
+                [self.navigationController popToViewController:reviewsMenuViewController animated:YES];
+            } else {
+                
+                BOOL foundSearch = NO;
+                NSMutableArray *viewControllers = @[].mutableCopy;
+                
+                for (UIViewController *viewController in self.navigationController.viewControllers) {
+                    if ([viewController isKindOfClass:[SearchNewReviewViewController class]] == YES) {
+                        reviewsMenuViewController = viewController;
+                        foundSearch = YES;
+                        break;
+                    } else {
+                        [viewControllers addObject:viewController];
+                    }
+                }
+                
+                if (foundSearch == NO) {
+                    [self.navigationController popViewControllerAnimated:YES];
+                } else {
+                    ReviewsMenuViewController *viewController = [[self reviewsStoryboard] instantiateInitialViewController];
+                    [viewController setTitle:@"Reviews"];
+                    
+                    [viewControllers addObject:viewController];
+                    [self.navigationController setViewControllers:viewControllers animated:YES];
+                }
+            }
         }];
         
     } failure:^(ErrorModel *errorModel) {
@@ -970,16 +956,8 @@
         if (_sectionHeaderReviewType == nil) {
             _sectionHeaderReviewType = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblReviews.frame), 56.0f)];
             [_sectionHeaderReviewType setBackgroundColor:[UIColor whiteColor]];
-            [_sectionHeaderReviewType setText:@"Select Review Type"];
-            [_sectionHeaderReviewType setSelected:[_accordion isSectionOpened:section]];
-            
-            // Sets up for accordion
-            [_sectionHeaderReviewType.btnBackground setTag:section];
-            [_sectionHeaderReviewType.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
-            
-            if (_selectedReviewType >= 0) {
-                [self updateViewHeader:section];
-            }
+            [_sectionHeaderReviewType setText:[kReviewTypes objectAtIndex:_selectedReviewType]];
+            [_sectionHeaderReviewType setSelected:YES];
         }
         
         return _sectionHeaderReviewType;
@@ -1008,10 +986,25 @@
                 [_txtSpotState setText:_spotBasedOffOf.state];
             }
             
-            // Sets autocomplete
-            [_txtSpotType setAutocompleteWithDataSource:self delegate:self];
-            [_txtSpotType showAutoCompleteTableAlways:YES];
-            [_txtSpotType registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
+            // Sets spot type picker view
+            _pickerViewSpotType = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 40, 320, 216)];
+            [_pickerViewSpotType setBackgroundColor:[UIColor whiteColor]];
+            [_pickerViewSpotType setDataSource:self];
+            [_pickerViewSpotType setDelegate:self];
+            
+            //Configure picker...
+            [_txtSpotType setInputView:_pickerViewSpotType];
+            [_txtSpotType setInputAccessoryView:[self keyboardToolBarForSpotType]];
+            
+            // Sets state picker view
+            _pickerViewState = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 40, 320, 216)];
+            [_pickerViewState setBackgroundColor:[UIColor whiteColor]];
+            [_pickerViewState setDataSource:self];
+            [_pickerViewState setDelegate:self];
+            
+            //Configure picker...
+            [_txtSpotState setInputView:_pickerViewState];
+            [_txtSpotState setInputAccessoryView:[self keyboardToolBarForState]];
         }
 
         return _viewFormNewSpot;
@@ -1049,6 +1042,42 @@
     }
     
     return nil;
+}
+
+- (UIToolbar *)keyboardToolBarForSpotType {
+    
+    UIToolbar *toolbar = [[UIToolbar alloc] init];
+    [toolbar setBarStyle:UIBarStyleDefault];
+    [toolbar sizeToFit];
+    
+    [self.segControlForSpotType setEnabled:NO forSegmentAtIndex:0];
+    
+    UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onClickChooseSpotType:)];
+    
+    NSArray *itemsArray = @[flex, nextButton];
+    
+    [toolbar setItems:itemsArray];
+    
+    return toolbar;
+}
+
+- (UIToolbar *)keyboardToolBarForState {
+    
+    UIToolbar *toolbar = [[UIToolbar alloc] init];
+    [toolbar setBarStyle:UIBarStyleDefault];
+    [toolbar sizeToFit];
+    
+    [self.segControlForSpotType setEnabled:NO forSegmentAtIndex:0];
+    
+    UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onClickChooseState:)];
+    
+    NSArray *itemsArray = @[flex, nextButton];
+    
+    [toolbar setItems:itemsArray];
+    
+    return toolbar;
 }
 
 @end

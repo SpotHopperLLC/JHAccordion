@@ -12,6 +12,7 @@
 
 #import "MyReviewsViewController.h"
 #import "NewReviewViewController.h"
+#import "NewReviewTypeViewController.h"
 #import "ReviewViewController.h"
 #import "ReviewsMenuViewController.h"
 #import "SearchNewReviewViewController.h"
@@ -66,12 +67,20 @@
 }
 
 - (void)goToNewReview {
-    [self goToNewReview:nil];
+    NewReviewTypeViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"NewReviewTypeViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToNewReviewWithType:(NSString*)reviewType {
+    NewReviewViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"NewReviewViewController"];
+    [viewController setReviewType:reviewType];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)goToNewReview:(SpotModel*)spot {
     NewReviewViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"NewReviewViewController"];
     [viewController setSpotBasedOffOf:spot];
+    [viewController setReviewType:kReviewTypesSpot];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -83,7 +92,7 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
-#pragma mark - Private
+#pragma mark - Storyboards
 
 - (UIStoryboard*)mainStoryboard {
     NSString *name = [self.storyboard valueForKey:@"name"];

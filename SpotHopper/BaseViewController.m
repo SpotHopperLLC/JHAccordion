@@ -10,13 +10,16 @@
 
 #import "MBProgressHUD.h"
 
+#import "UIViewController+Navigator.h"
+
 #import "FooterViewController.h"
+#import "SidebarViewController.h"
 
 #import <JHSidebar/JHSidebarViewController.h>
 
 typedef void(^AlertBlock)();
 
-@interface BaseViewController ()<UINavigationControllerDelegate>
+@interface BaseViewController ()<UINavigationControllerDelegate, SidebarViewControllerDelegate>
 
 @property (nonatomic, strong) UIAlertView *alertView;
 @property (nonatomic, copy) AlertBlock alertBlock;
@@ -81,6 +84,13 @@ typedef void(^AlertBlock)();
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    SidebarViewController *sidebar = (SidebarViewController*)self.navigationController.sidebarViewController.rightViewController;
+    [sidebar setDelegate:self];
+}
+
 - (void)adjustIOS6Crap {
     for (UIView *view in self.view.subviews) {
         CGRect frame = view.frame;
@@ -93,6 +103,12 @@ typedef void(^AlertBlock)();
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - SidebarViewControllerDelegate
+
+- (void)sidebarViewControllerClickedReview:(SidebarViewController *)sidebarViewController {
+    [self goToReviewMenu];
 }
 
 #pragma mark - HUD

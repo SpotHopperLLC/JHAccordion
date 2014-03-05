@@ -25,9 +25,15 @@
 - (void)goToNewReviewForSpot:(SpotModel*)spot;
 - (void)goToSearchForNewReview:(BOOL)showSimilarLists notWhatLookingFor:(BOOL)showNotWhatLookingFor createReview:(BOOL)createReview;
 - (void)goToNewReview;
+- (void)goToNewReviewWithType:(NSString*)reviewType;
 - (void)goToNewReview:(SpotModel*)spot;
 
 // Spots
 - (void)goToSpotProfile:(SpotModel *)spot;
+
+// Storyboards
+- (UIStoryboard*)mainStoryboard;
+- (UIStoryboard*)reviewsStoryboard;
+- (UIStoryboard*)spotsStoryboard;
 
 @end

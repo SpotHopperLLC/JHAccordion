@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LocationChooserViewController">
             <connections>
                 <outlet property="mapView" destination="vit-V2-QEz" id="5HT-hO-rwF"/>
+                <outlet property="txtSearch" destination="Mfy-0e-m66" id="iq5-Py-fXw"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -23,23 +24,11 @@
                         <outlet property="delegate" destination="-1" id="BjL-Ws-fHJ"/>
                     </connections>
                 </mapView>
-                <view contentMode="scaleToFill" id="uIl-4R-EZb" customClass="SHViewTranlucentWhite">
-                    <rect key="frame" x="0.0" y="64" width="320" height="52"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                <view contentMode="scaleToFill" id="HZS-7P-iSG" customClass="SHViewTranlucentWhiteFooter">
+                    <rect key="frame" x="0.0" y="446" width="320" height="34"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="XD6-ay-brR" customClass="SHButtonLatoLight">
-                            <rect key="frame" x="15" y="23" width="291" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <state key="normal" title="Click here to reset to your current location">
-                                <color key="titleColor" red="0.94509803920000002" green="0.37647058820000001" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="onClickUseCurrentLocation:" destination="-1" eventType="touchUpInside" id="0Bx-0L-VWa"/>
-                            </connections>
-                        </button>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Move map to area you want to search" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SLb-lx-e3P" customClass="SHLabelLatoLight">
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Move map to area you want to search" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="eWW-Ry-P4Q" customClass="SHLabelLatoLight">
                             <rect key="frame" x="15" y="6" width="291" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -50,6 +39,37 @@
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <inset key="insetFor6xAndEarlier" minX="0.0" minY="64" maxX="0.0" maxY="-64"/>
                 </view>
+                <view contentMode="scaleToFill" id="uIl-4R-EZb" customClass="SHViewTranlucentWhite">
+                    <rect key="frame" x="0.0" y="64" width="320" height="52"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <inset key="insetFor6xAndEarlier" minX="0.0" minY="64" maxX="0.0" maxY="-64"/>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="txt_reviews_search_background.png" id="P0C-4h-AEt">
+                    <rect key="frame" x="10" y="74" width="302" height="32"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search for a city" minimumFontSize="17" clearButtonMode="whileEditing" id="Mfy-0e-m66" customClass="SHTextFieldLatoLight">
+                    <rect key="frame" x="45" y="75" width="262" height="30"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="search"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="xlu-IJ-f3A"/>
+                    </connections>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="XD6-ay-brR" customClass="SHButtonLatoLight">
+                    <rect key="frame" x="0.0" y="381" width="65" height="64"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal" image="icon_arrow_shadow.png">
+                        <color key="titleColor" red="0.94509803920000002" green="0.37647058820000001" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="onClickUseCurrentLocation:" destination="-1" eventType="touchUpInside" id="0Bx-0L-VWa"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
@@ -57,4 +77,8 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
+    <resources>
+        <image name="icon_arrow_shadow.png" width="61" height="64"/>
+        <image name="txt_reviews_search_background.png" width="302" height="32"/>
+    </resources>
 </document>

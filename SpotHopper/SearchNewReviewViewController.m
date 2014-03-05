@@ -27,7 +27,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface SearchNewReviewViewController ()<UITableViewDataSource, UITableViewDelegate, SHButtonLatoLightLocationDelegate>
+@interface SearchNewReviewViewController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, SHButtonLatoLightLocationDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
@@ -63,7 +63,11 @@
     [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
     
     // Sets title
-    [self setTitle:@"New Reviews"];
+    if (_createReview == YES) {
+        [self setTitle:@"New Reviews"];
+    } else {
+        [self setTitle:@"Search"];
+    }
     
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
@@ -71,9 +75,6 @@
     // Configures table
     [_tblSearches setTableFooterView:[[UIView alloc] init]];
     [_tblSearches registerNib:[UINib nibWithNibName:@"SearchCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"SearchCell"];
-    
-    // Configures text search
-    [_txtSearch addTarget:self action:@selector(onEditingChangeSearch:) forControlEvents:UIControlEventEditingChanged];
     
     // Register pull to refresh
     [self registerRefreshTableView:_tblSearches withReloadType:kPullRefreshTypeBoth];
@@ -83,12 +84,15 @@
     _results = [NSMutableArray array];
     _drinkPage = @1;
     _spotPage = @1;
-    
-    [_txtSearch becomeFirstResponder];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    
+    // Configures text search
+    [_txtSearch addTarget:self action:@selector(onEditingChangeSearch:) forControlEvents:UIControlEventEditingChanged];
     
     // Deselects table row
     [_tblSearches deselectRowAtIndexPath:_tblSearches.indexPathForSelectedRow animated:NO];
@@ -112,7 +116,13 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    
+    // Configures text search
+    [_txtSearch removeTarget:self action:@selector(onEditingChangeSearch:) forControlEvents:UIControlEventEditingChanged];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [super viewWillDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -154,7 +164,9 @@
     
     [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | curve animations:^{
         [_tblSearches setFrame:frame];
-    } completion:nil];
+    } completion:^(BOOL finished) {
+        [self dataDidFinishRefreshing];
+    }];
 }
 
 #pragma mark - UITableViewDataSource
@@ -301,6 +313,13 @@
     return 0.0f;
 }
 
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return NO;
+}
+
 #pragma mark - JHPullToRefresh
 
 - (void)reloadTableViewDataPullDown {
@@ -348,6 +367,10 @@
     
 }
 
+- (IBAction)onTapTable:(id)sender {
+    [_txtSearch resignFirstResponder];
+}
+
 #pragma mark - Private
 
 - (void)startSearch {
@@ -365,6 +388,12 @@
 }
 
 - (void)doSearch {
+    
+    if (_txtSearch.text.length == 0) {
+        [_results removeAllObjects];
+        [self dataDidFinishRefreshing];
+        return;
+    }
 
     [self showHUD:@"Searching"];
     

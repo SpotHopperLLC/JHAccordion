@@ -42,7 +42,6 @@
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *imageUrl;
-@property (nonatomic, strong) NSString *type;
 @property (nonatomic, strong) NSString *address;
 @property (nonatomic, strong) NSString *city;
 @property (nonatomic, strong) NSString *state;

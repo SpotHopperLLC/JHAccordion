@@ -10,6 +10,7 @@
 
 @interface NewReviewViewController : BaseViewController
 
+@property (nonatomic, strong) NSString *reviewType;
 @property (nonatomic, strong) SpotModel *spotBasedOffOf;
 
 @end

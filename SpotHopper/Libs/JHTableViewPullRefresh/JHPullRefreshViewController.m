@@ -208,6 +208,14 @@
     }
 }
 
+- (void)unregisterRefreshTableView {
+    _refreshType = -1;
+    _refreshTableView = nil;
+
+    [_refreshViewDown removeFromSuperview];
+    [_refreshViewUp removeFromSuperview];
+}
+
 #pragma mark - JHPullRefresh methods for override
 
 - (void)reloadTableViewDataPullUp {

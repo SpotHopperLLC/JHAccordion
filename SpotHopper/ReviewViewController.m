@@ -20,6 +20,7 @@
 #import "ErrorModel.h"
 #import "ReviewModel.h"
 #import "SpotModel.h"
+#import "SpotTypeModel.h"
 #import "UserModel.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
@@ -89,6 +90,7 @@
     }
     
     // Gets review if already completed
+    [self updateView];
     [self fetchReview];
 }
 
@@ -162,12 +164,12 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (section == 0) {
         UILabel *view = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(tableView.frame), 40.0f)];
-        [view setBackgroundColor:kColorOrangeLight];
+        [view setBackgroundColor:[UIColor clearColor]];
         
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 1.0f, CGRectGetWidth(tableView.frame)-20.0f, 30.f)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20.0f, 1.0f, CGRectGetWidth(tableView.frame)-30.0f, 30.f)];
         [label setBackgroundColor:[UIColor clearColor]];
         [label setTextColor:[UIColor whiteColor]];
-        [label setFont:[UIFont fontWithName:@"Lato-Light" size:20.0f]];
+        [label setFont:[UIFont fontWithName:@"Lato-Light" size:16.0f]];
         [label setMinimumScaleFactor:0.5f];
         [label setAdjustsFontSizeToFitWidth:YES];
         [label setNumberOfLines:1];
@@ -202,7 +204,9 @@
     if (section == 0) {
         return 40.0f;
     } else if (section == 2) {
-        return 56.0f;
+        if (_advancedSliders.count > 0) {
+            return 56.0f;
+        }
     }
     return 0.0f;
 }
@@ -359,7 +363,7 @@
 
 - (void)updateView {
     if (_drink != nil) {
-        [_imgImage setImageWithURL:[NSURL URLWithString:_drink.imageUrl]];
+        [_imgImage setImageWithURL:[NSURL URLWithString:_drink.imageUrl] placeholderImage:[UIImage imageNamed:@"bar_drink_placeholder"]];
         
         // Removing an italics
         [_lblSubSubTitle italic:NO];
@@ -386,12 +390,13 @@
             [_lblSubSubTitle setText:@"No style or ABV"];
         }
     } else if (_spot != nil) {
-        [_imgImage setImageWithURL:[NSURL URLWithString:_spot.imageUrl]];
+        [_imgImage setImageWithURL:[NSURL URLWithString:_spot.imageUrl] placeholderImage:[UIImage imageNamed:@"bar_drink_placeholder"]];
         
         [_lblTitle setText:_spot.name];
-        [_lblSubTitle setText:_spot.type];
-        [_lblSubSubTitle setText:@""];
+        [_lblSubTitle setText:_spot.spotType.name];
+        [_lblSubSubTitle setText:_spot.cityState];
     } else {
+        [_imgImage setImage:[UIImage imageNamed:@"bar_drink_placeholder"]];
         [_lblTitle setText:@""];
         [_lblSubTitle setText:@""];
         [_lblSubSubTitle setText:@""];
@@ -401,6 +406,9 @@
 - (void)fetchReview {
     
     UserModel *user = [ClientSessionManager sharedClient].currentUser;
+    if (user == nil) {
+        return;
+    }
     
     [self showHUD:@"Getting review"];
     

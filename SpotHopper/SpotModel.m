@@ -80,10 +80,6 @@
     return [self objectForKey:@"image_url"];
 }
 
-- (NSString *)type {
-    return [self objectForKey:@"type"];
-}
-
 - (NSString *)address {
     return [self objectForKey:@"address"];
 }

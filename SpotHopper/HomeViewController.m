@@ -121,7 +121,11 @@
 }
 
 - (IBAction)onClickReviews:(id)sender {
-    [self goToReviewMenu];
+    if ([ClientSessionManager sharedClient].isLoggedIn == YES) {
+        [self goToSearchForNewReview:NO notWhatLookingFor:YES createReview:YES];
+    } else {
+        [self showAlert:@"Login Required" message:@"Cannot add a review without logging in"];
+    }
 }
 
 @end

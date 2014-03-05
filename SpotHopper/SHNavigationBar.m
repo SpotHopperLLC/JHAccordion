@@ -30,6 +30,7 @@
 - (void)setup {
     [self setBackgroundImage:[UIImage alloc] forBarMetrics:UIBarMetricsDefault];
     [self setShadowImage:[[UIImage alloc] init]];
+    
 }
 
 @end
