@@ -293,6 +293,8 @@
 		03F6BF6418C6DC8500172F13 /* icon_my_spotlists.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF6018C6DC8500172F13 /* icon_my_spotlists.png */; };
 		03F6BF6518C6DC8500172F13 /* icon_my_spotlists@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF6118C6DC8500172F13 /* icon_my_spotlists@2x.png */; };
 		03F6BF6818C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF6718C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.m */; };
+		03F6BF6B18C6E10A00172F13 /* CreateListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF6A18C6E10A00172F13 /* CreateListCell.m */; };
+		03F6BF6D18C6E11F00172F13 /* CreateListCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF6C18C6E11F00172F13 /* CreateListCellView.xib */; };
 		052EC70F678F4DF18DBE8EB5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
 		D7FCD5C8824B4FA4A7587334 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -678,6 +680,9 @@
 		03F6BF6118C6DC8500172F13 /* icon_my_spotlists@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_my_spotlists@2x.png"; sourceTree = "<group>"; };
 		03F6BF6618C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TTTAttributedLabel+QuickFonting.h"; sourceTree = "<group>"; };
 		03F6BF6718C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TTTAttributedLabel+QuickFonting.m"; sourceTree = "<group>"; };
+		03F6BF6918C6E10A00172F13 /* CreateListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateListCell.h; sourceTree = "<group>"; };
+		03F6BF6A18C6E10A00172F13 /* CreateListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateListCell.m; sourceTree = "<group>"; };
+		03F6BF6C18C6E11F00172F13 /* CreateListCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateListCellView.xib; sourceTree = "<group>"; };
 		B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C9816A19827543A8863B8CBF /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -786,6 +791,9 @@
 				0381043618B6704600A410DB /* SpotImageCollectViewCell.h */,
 				0381043718B6704600A410DB /* SpotImageCollectViewCell.m */,
 				0381043918B6706800A410DB /* SpotImageCollectionViewCellView.xib */,
+				03F6BF6918C6E10A00172F13 /* CreateListCell.h */,
+				03F6BF6A18C6E10A00172F13 /* CreateListCell.m */,
+				03F6BF6C18C6E11F00172F13 /* CreateListCellView.xib */,
 			);
 			name = Spot;
 			sourceTree = "<group>";
@@ -1675,6 +1683,7 @@
 				03E4455518B65D7F00C88421 /* btn_context_checkin@2x.png in Resources */,
 				03CA72AD187C4D0E00815284 /* slider_background_selected@2x.png in Resources */,
 				039B70031887167200C590F8 /* icon_search_spot.png in Resources */,
+				03F6BF6D18C6E11F00172F13 /* CreateListCellView.xib in Resources */,
 				03F2D9491872105F00C69576 /* btn_launch_background_create.png in Resources */,
 				0386653B186DE0F700985CEC /* btn_loging_twitter@2x.png in Resources */,
 				0320235A18774A40008368C2 /* table_header_background@2x.png in Resources */,
@@ -1923,6 +1932,7 @@
 				039B7009188721BB00C590F8 /* FooterShadowCell.m in Sources */,
 				03866477186D352400985CEC /* AppDelegate.m in Sources */,
 				039B7011188723EB00C590F8 /* Mockery.m in Sources */,
+				03F6BF6B18C6E10A00172F13 /* CreateListCell.m in Sources */,
 				0381043818B6704600A410DB /* SpotImageCollectViewCell.m in Sources */,
 				0320237C187773C0008368C2 /* SHViewTranlucentWhite.m in Sources */,
 				03C8DAE7188B42A40082321C /* MockData.m in Sources */,

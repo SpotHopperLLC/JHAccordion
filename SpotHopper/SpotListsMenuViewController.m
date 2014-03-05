@@ -13,6 +13,8 @@
 #import "SectionHeaderView.h"
 #import "SHButtonLatoLightLocation.h"
 
+#import "CreateListCell.h"
+
 #import <JHAccordion/JHAccordion.h>
 
 @interface SpotListsMenuViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, SHButtonLatoLightLocationDelegate>
@@ -54,11 +56,18 @@
     // Configures accordion
     _accordion = [[JHAccordion alloc] initWithTableView:_tblMenu];
     [_accordion setDelegate:self];
+    
+    // Configures table
+    [_tblMenu registerNib:[UINib nibWithNibName:@"CreateListCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"CreateListCell"];
+    [_tblMenu setTableFooterView:[[UIView alloc] init]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
+    
+    // Deselects cell
+    [_tblMenu deselectRowAtIndexPath:[_tblMenu indexPathForSelectedRow] animated:NO];
     
     // Adds contextual footer view
     [self addFooterViewController:^(FooterViewController *footerViewController) {
@@ -85,10 +94,28 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == 0) {
+        return 2;
+    }
     return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (indexPath.section == 0) {
+        CreateListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CreateListCell" forIndexPath:indexPath];
+        
+        if (indexPath.row == 0) {
+            [cell.lblText setText:@"Adjust Sliders"];
+            [cell.lblSubtext setText:@"chill vs raging, age, drink selection, etc"];
+        } else if (indexPath.row == 1) {
+            [cell.lblText setText:@"or Name a Favorite Spot"];
+            [cell.lblSubtext setText:@"Find bars similarto it, wherever you go"];
+        }
+        
+        return cell;
+    }
+    
 //        static NSString *cellIdentifier = @"FooterShadowCell";
 //        
 //        FooterShadowCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -105,11 +132,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            NSLog(@"Go to adjust");
+        } else if (indexPath.row == 1) {
+            NSLog(@"Go to name favorite spot");
+        }
+    }
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        return ( [_accordion isSectionOpened:indexPath.section] ? 44.0f : 0.0f);
+        return ( [_accordion isSectionOpened:indexPath.section] ? 58.0f : 0.0f);
     }
     
     return 0.0f;
@@ -121,7 +156,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (section == 0 || section == 1 || section == 2) {
-            return 65.0f;
+        return 65.0f;
     }
     
     return 0.0f;
