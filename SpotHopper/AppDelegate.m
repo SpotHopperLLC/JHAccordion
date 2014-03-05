@@ -14,6 +14,7 @@
 #import "SHNavigationBar.h"
 
 #import "ClientSessionManager.h"
+#import "AverageReviewModel.h"
 #import "DrinkModel.h"
 #import "DrinkTypeModel.h"
 #import "ErrorModel.h"
@@ -48,6 +49,7 @@
     [[RavenClient sharedClient] setupExceptionHandler];
     
     // Initializes resource linkng for JSONAPI
+    [JSONAPIResourceLinker link:@"average_review" toLinkedType:@"average_reviews"];
     [JSONAPIResourceLinker link:@"drink" toLinkedType:@"drinks"];
     [JSONAPIResourceLinker link:@"drink_type" toLinkedType:@"drink_types"];
     [JSONAPIResourceLinker link:@"review" toLinkedType:@"reviews"];
@@ -59,6 +61,7 @@
     [JSONAPIResourceLinker link:@"user" toLinkedType:@"users"];
     
     // Initializes model linking for JSONAPI
+    [JSONAPIResourceModeler useResource:[AverageReviewModel class] toLinkedType:@"average_reviews"];
     [JSONAPIResourceModeler useResource:[DrinkModel class] toLinkedType:@"drinks"];
     [JSONAPIResourceModeler useResource:[DrinkTypeModel class] toLinkedType:@"drink_types"];
     [JSONAPIResourceModeler useResource:[ErrorModel class] toLinkedType:@"errors"];

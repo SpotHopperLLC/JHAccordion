@@ -36,7 +36,7 @@
 
 #import <JSONAPI/JSONAPI.h>
 
-@class ErrorModel, SpotTypeModel;
+@class ErrorModel, AverageReviewModel, SpotTypeModel;
 
 @interface SpotModel : SHJSONAPIResource
 
@@ -53,11 +53,14 @@
 @property (nonatomic, strong) NSArray *sliderTemplates;
 @property (nonatomic, strong) NSString *foursquareId;
 @property (nonatomic, strong) SpotTypeModel *spotType;
+@property (nonatomic, strong) AverageReviewModel *averageReview;
 
 - (NSString*)cityState;
 
 + (Promise*)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 + (Promise*)postSpot:(NSDictionary*)params success:(void(^)(SpotModel *spotModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
+- (Promise*)getSpot:(NSDictionary*)params success:(void(^)(SpotModel *spotModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 @end

@@ -21,7 +21,11 @@
 #import "FindSimilarViewController.h"
 
 #import "ClientSessionManager.h"
+#import "AverageReviewModel.h"
 #import "ErrorModel.h"
+#import "SliderModel.h"
+#import "SliderTemplateModel.h"
+#import "SpotModel.h"
 #import "SpotListModel.h"
 #import "UserModel.h"
 
@@ -270,13 +274,35 @@
 }
 
 - (void)findSimilarViewController:(FindSimilarViewController *)viewController selectedSpot:(SpotModel *)spot {
-    NSLog(@"Spot choosen - %@", spot.name);
-    [self.navigationController popViewControllerAnimated:YES];
+    
+    [self showHUD:@"Creating spotlist"];
+    [spot getSpot:Nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
+        [self hideHUD];
+        
+        [SpotListModel postSpotList:spotModel.name sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+            [self hideHUD];
+            [self showHUDCompleted:@"Spotlist created!" block:^{
+                [self.navigationController popViewControllerAnimated:YES];
+            }];
+            
+        } failure:^(ErrorModel *errorModel) {
+            [self hideHUD];
+            [self showAlert:@"Oops" message:errorModel.human];
+        }];
+        
+    } failure:^(ErrorModel *errorModel) {
+        [self hideHUD];
+        [self showAlert:@"Oops" message:errorModel.human];
+    }];
 }
 
 #pragma mark - AdjustSliderListSliderViewControllerDelegate
 
 - (void)adjustSliderListSliderViewControllerDelegateClickClose:(AdjustSpotListSliderViewController *)viewController {
+    [self showAdjustSlidersView:NO animated:YES];
+}
+
+- (void)adjustSliderListSliderViewControllerDelegate:(AdjustSpotListSliderViewController *)viewController createdSpotList:(SpotListModel *)spotList {
     [self showAdjustSlidersView:NO animated:YES];
 }
 

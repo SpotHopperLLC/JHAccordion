@@ -258,6 +258,7 @@
 		03E882DC18C7953B00BD8FBB /* AdjustSliderSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E882DB18C7953B00BD8FBB /* AdjustSliderSectionHeaderView.m */; };
 		03E882DF18C797BA00BD8FBB /* UIView+AddBorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E882DE18C797BA00BD8FBB /* UIView+AddBorder.m */; };
 		03E882E218C7A39000BD8FBB /* AdjustSliderOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E882E118C7A39000BD8FBB /* AdjustSliderOptionCell.m */; };
+		03E882E518C7B8F400BD8FBB /* AverageReviewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E882E418C7B8F400BD8FBB /* AverageReviewModel.m */; };
 		03F2D9051871DB5B00C69576 /* SHButtonLatoLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */; };
 		03F2D91D1871DC1400C69576 /* AvantGard EF 1 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9091871DC1400C69576 /* AvantGard EF 1 */; };
 		03F2D91E1871DC1400C69576 /* AvantGard EF 2 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90A1871DC1400C69576 /* AvantGard EF 2 */; };
@@ -656,6 +657,8 @@
 		03E882DE18C797BA00BD8FBB /* UIView+AddBorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+AddBorder.m"; sourceTree = "<group>"; };
 		03E882E018C7A39000BD8FBB /* AdjustSliderOptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustSliderOptionCell.h; sourceTree = "<group>"; };
 		03E882E118C7A39000BD8FBB /* AdjustSliderOptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustSliderOptionCell.m; sourceTree = "<group>"; };
+		03E882E318C7B8F400BD8FBB /* AverageReviewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AverageReviewModel.h; sourceTree = "<group>"; };
+		03E882E418C7B8F400BD8FBB /* AverageReviewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AverageReviewModel.m; sourceTree = "<group>"; };
 		03F2D9031871DB5B00C69576 /* SHButtonLatoLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoLight.h; sourceTree = "<group>"; };
 		03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoLight.m; sourceTree = "<group>"; };
 		03F2D9091871DC1400C69576 /* AvantGard EF 1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "AvantGard EF 1"; sourceTree = "<group>"; };
@@ -1163,6 +1166,8 @@
 				038664EE186D391E00985CEC /* UserModel.m */,
 				03F6BF7318C6EE2B00172F13 /* SpotListModel.h */,
 				03F6BF7418C6EE2B00172F13 /* SpotListModel.m */,
+				03E882E318C7B8F400BD8FBB /* AverageReviewModel.h */,
+				03E882E418C7B8F400BD8FBB /* AverageReviewModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -2026,6 +2031,7 @@
 				03E4454618B56BF700C88421 /* LocationChooserViewController.m in Sources */,
 				03CA728F187C3B2E00815284 /* ReviewModel.m in Sources */,
 				039BA00918906A12001AF1B9 /* NSString+Common.m in Sources */,
+				03E882E518C7B8F400BD8FBB /* AverageReviewModel.m in Sources */,
 				038664D0186D376900985CEC /* UIAlertView+Block.m in Sources */,
 				038664D6186D376900985CEC /* UILabelGotham.m in Sources */,
 				03CA72B8187C4D5800815284 /* SHSlider.m in Sources */,

@@ -35,7 +35,7 @@ DEPENDENCIES:
   - JHAccordion (from `git@github.com:joshdholtz/JHAccordion.git`)
   - JHAutoCompleteTextField (from `git@github.com:joshdholtz/JHAutoCompleteTextField.git`)
   - JHSidebar (~> 0.1.1)
-  - JSONAPI (~> 0.1.2)
+  - JSONAPI (from `git@github.com:joshdholtz/jsonapi-ios.git`)
   - Promises (from `git@github.com:joshdholtz/ios-promises.git`)
   - Raven (~> 0.3.0)
   - STTwitter (~> 0.0.7)
@@ -46,6 +46,8 @@ EXTERNAL SOURCES:
     :git: git@github.com:joshdholtz/JHAccordion.git
   JHAutoCompleteTextField:
     :git: git@github.com:joshdholtz/JHAutoCompleteTextField.git
+  JSONAPI:
+    :git: git@github.com:joshdholtz/jsonapi-ios.git
   Promises:
     :git: git@github.com:joshdholtz/ios-promises.git
 

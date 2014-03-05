@@ -10,6 +10,8 @@
 
 @protocol AdjustSliderListSliderViewControllerDelegate;
 
+@class SpotListModel;
+
 @interface AdjustSpotListSliderViewController : BaseViewController
 
 @property (nonatomic, assign) id<AdjustSliderListSliderViewControllerDelegate> delegate;
@@ -19,5 +21,6 @@
 @protocol AdjustSliderListSliderViewControllerDelegate <NSObject>
 
 -(void)adjustSliderListSliderViewControllerDelegateClickClose:(AdjustSpotListSliderViewController*)viewController;
+-(void)adjustSliderListSliderViewControllerDelegate:(AdjustSpotListSliderViewController*)viewController createdSpotList:(SpotListModel*)spotList;
 
 @end
