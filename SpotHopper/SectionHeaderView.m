@@ -60,7 +60,7 @@
     [_viewContent addSubview:_imgIcon];
     
     // Label
-    _lblText = [[UILabel alloc] initWithFrame:CGRectMake(45.0f, 6.0f, 200.0f, 36.0f)];
+    _lblText = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(45.0f, 6.0f, 200.0f, 36.0f)];
     [_lblText setBackgroundColor:[UIColor clearColor]];
     [_lblText setTextColor:[UIColor whiteColor]];
     [_lblText setFont:[UIFont fontWithName:@"Lato-Light" size:18.0f]];

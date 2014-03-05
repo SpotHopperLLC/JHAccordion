@@ -26,6 +26,7 @@ PODS:
   - Promises (0.1.0)
   - Raven (0.3.0)
   - STTwitter (0.0.7)
+  - TTTAttributedLabel (1.8.1)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0.3)
@@ -38,6 +39,7 @@ DEPENDENCIES:
   - Promises (from `git@github.com:joshdholtz/ios-promises.git`)
   - Raven (~> 0.3.0)
   - STTwitter (~> 0.0.7)
+  - TTTAttributedLabel (~> 1.8.1)
 
 EXTERNAL SOURCES:
   JHAccordion:
@@ -60,5 +62,6 @@ SPEC CHECKSUMS:
   Promises: 084c52a29463480600484fe7f29d6844814c1c7d
   Raven: 875718158645e945cf991c1ca80b41cd2ef82fd9
   STTwitter: beca2e5ff10c6e9c863d9400039f4aed94e28f6a
+  TTTAttributedLabel: 3a571d73e055f4a79c304240598e4bfd199238e4
 
 COCOAPODS: 0.29.0

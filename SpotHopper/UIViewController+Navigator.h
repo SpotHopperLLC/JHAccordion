@@ -29,6 +29,7 @@
 - (void)goToNewReview:(SpotModel*)spot;
 
 // Spots
+- (void)goToSpotListMenu;
 - (void)goToSpotProfile:(SpotModel *)spot;
 
 // Storyboards

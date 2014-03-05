@@ -287,6 +287,12 @@
 		03F2D95318722FB700C69576 /* SHNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D95218722FB700C69576 /* SHNavigationController.m */; };
 		03F2D956187231C600C69576 /* btn_nav_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D954187231C600C69576 /* btn_nav_back.png */; };
 		03F2D957187231C600C69576 /* btn_nav_back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D955187231C600C69576 /* btn_nav_back@2x.png */; };
+		03F6BF5C18C6D5BB00172F13 /* SpotListsMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF5B18C6D5BB00172F13 /* SpotListsMenuViewController.m */; };
+		03F6BF6218C6DC8500172F13 /* icon_featured_lists.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF5E18C6DC8500172F13 /* icon_featured_lists.png */; };
+		03F6BF6318C6DC8500172F13 /* icon_featured_lists@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF5F18C6DC8500172F13 /* icon_featured_lists@2x.png */; };
+		03F6BF6418C6DC8500172F13 /* icon_my_spotlists.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF6018C6DC8500172F13 /* icon_my_spotlists.png */; };
+		03F6BF6518C6DC8500172F13 /* icon_my_spotlists@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF6118C6DC8500172F13 /* icon_my_spotlists@2x.png */; };
+		03F6BF6818C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF6718C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.m */; };
 		052EC70F678F4DF18DBE8EB5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
 		D7FCD5C8824B4FA4A7587334 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -664,6 +670,14 @@
 		03F2D95218722FB700C69576 /* SHNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHNavigationController.m; sourceTree = "<group>"; };
 		03F2D954187231C600C69576 /* btn_nav_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_nav_back.png; sourceTree = "<group>"; };
 		03F2D955187231C600C69576 /* btn_nav_back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_nav_back@2x.png"; sourceTree = "<group>"; };
+		03F6BF5A18C6D5BB00172F13 /* SpotListsMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotListsMenuViewController.h; sourceTree = "<group>"; };
+		03F6BF5B18C6D5BB00172F13 /* SpotListsMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotListsMenuViewController.m; sourceTree = "<group>"; };
+		03F6BF5E18C6DC8500172F13 /* icon_featured_lists.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_featured_lists.png; sourceTree = "<group>"; };
+		03F6BF5F18C6DC8500172F13 /* icon_featured_lists@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_featured_lists@2x.png"; sourceTree = "<group>"; };
+		03F6BF6018C6DC8500172F13 /* icon_my_spotlists.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_my_spotlists.png; sourceTree = "<group>"; };
+		03F6BF6118C6DC8500172F13 /* icon_my_spotlists@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_my_spotlists@2x.png"; sourceTree = "<group>"; };
+		03F6BF6618C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TTTAttributedLabel+QuickFonting.h"; sourceTree = "<group>"; };
+		03F6BF6718C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TTTAttributedLabel+QuickFonting.m"; sourceTree = "<group>"; };
 		B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C9816A19827543A8863B8CBF /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -930,6 +944,8 @@
 				03F2D94C18722CAC00C69576 /* SHNavigationBar.m */,
 				03F2D95118722FB700C69576 /* SHNavigationController.h */,
 				03F2D95218722FB700C69576 /* SHNavigationController.m */,
+				03F6BF6618C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.h */,
+				03F6BF6718C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.m */,
 			);
 			name = Bases;
 			sourceTree = "<group>";
@@ -953,6 +969,7 @@
 		038664A2186D370E00985CEC /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				03F6BF5D18C6DC8500172F13 /* Spotlists */,
 				03E4455618B65D8A00C88421 /* Map */,
 				03E4455918B65D8A00C88421 /* SpotProfile */,
 				03CA72E918803F7F00815284 /* Glyphish */,
@@ -1407,6 +1424,8 @@
 			children = (
 				03E4456F18B65F3000C88421 /* SpotProfileViewController.h */,
 				03E4457018B65F3000C88421 /* SpotProfileViewController.m */,
+				03F6BF5A18C6D5BB00172F13 /* SpotListsMenuViewController.h */,
+				03F6BF5B18C6D5BB00172F13 /* SpotListsMenuViewController.m */,
 			);
 			name = Spots;
 			sourceTree = "<group>";
@@ -1497,6 +1516,17 @@
 				03F2D9401872090E00C69576 /* SHTextFieldLatoLight.m */,
 			);
 			name = FontTextField;
+			sourceTree = "<group>";
+		};
+		03F6BF5D18C6DC8500172F13 /* Spotlists */ = {
+			isa = PBXGroup;
+			children = (
+				03F6BF5E18C6DC8500172F13 /* icon_featured_lists.png */,
+				03F6BF5F18C6DC8500172F13 /* icon_featured_lists@2x.png */,
+				03F6BF6018C6DC8500172F13 /* icon_my_spotlists.png */,
+				03F6BF6118C6DC8500172F13 /* icon_my_spotlists@2x.png */,
+			);
+			path = Spotlists;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1678,6 +1708,7 @@
 				03E4456B18B65D8A00C88421 /* btn_spot_profile_review_it@2x.png in Resources */,
 				03CA7278187B8FD800815284 /* icon_beer.png in Resources */,
 				03E4456518B65D8A00C88421 /* btn_spot_profile_drink_menu@2x.png in Resources */,
+				03F6BF6518C6DC8500172F13 /* icon_my_spotlists@2x.png in Resources */,
 				03F2D92E1871DC1400C69576 /* Lato-LightItalic.ttf in Resources */,
 				0386652A186DE0F700985CEC /* btn_context_home.png in Resources */,
 				03866542186DE0F700985CEC /* btn_sidebar_icon_checkin.png in Resources */,
@@ -1743,6 +1774,7 @@
 				03866537186DE0F700985CEC /* btn_login_facebook@2x.png in Resources */,
 				03CA72B4187C4D0E00815284 /* slider_thumb_selected_with_light.png in Resources */,
 				03F2D94A1872105F00C69576 /* btn_launch_background_create@2x.png in Resources */,
+				03F6BF6318C6DC8500172F13 /* icon_featured_lists@2x.png in Resources */,
 				0320235918774A40008368C2 /* table_header_background.png in Resources */,
 				0381044618B6846800A410DB /* img_map_shadow_top@2x.png in Resources */,
 				03CA72DA187F4EC200815284 /* NewReviewWineView.xib in Resources */,
@@ -1755,6 +1787,7 @@
 				03CA72C5187C4FB300815284 /* slider_background_selected_max.png in Resources */,
 				03E4455118B65D7300C88421 /* icon_phone@2x.png in Resources */,
 				03F2D9321871E42800C69576 /* btn_login_spothopper.png in Resources */,
+				03F6BF6218C6DC8500172F13 /* icon_featured_lists.png in Resources */,
 				03CA7267187B4EB700815284 /* table_header_background_selected.png in Resources */,
 				03121A3818BD786D00C9FFA3 /* 723-location-arrow-selected.png in Resources */,
 				03F2D9241871DC1400C69576 /* AvantGarEFExtLig in Resources */,
@@ -1769,6 +1802,7 @@
 				03CA727C187B8FD800815284 /* icon_liquor.png in Resources */,
 				03F2D9291871DC1400C69576 /* Lato-BoldItalic.ttf in Resources */,
 				03CA72C6187C4FB300815284 /* slider_background_selected_max@2x.png in Resources */,
+				03F6BF6418C6DC8500172F13 /* icon_my_spotlists.png in Resources */,
 				03CA72C2187C4FB300815284 /* slider_background_max@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1858,6 +1892,7 @@
 				038664E2186D379400985CEC /* ClientSessionManager.m in Sources */,
 				03F2D9371871E88000C69576 /* LaunchViewController.m in Sources */,
 				03F2D94D18722CAC00C69576 /* SHNavigationBar.m in Sources */,
+				03F6BF6818C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.m in Sources */,
 				038664D8186D376900985CEC /* UIView+RelativityLaws.m in Sources */,
 				038664D4186D376900985CEC /* UIImage+Rotation.m in Sources */,
 				03CA726B187B510500815284 /* UIButton+Block.m in Sources */,
@@ -1870,6 +1905,7 @@
 				038664CE186D376900985CEC /* NSNumber+Currency.m in Sources */,
 				03CA7286187C245600815284 /* ReviewViewController.m in Sources */,
 				03F2D9051871DB5B00C69576 /* SHButtonLatoLight.m in Sources */,
+				03F6BF5C18C6D5BB00172F13 /* SpotListsMenuViewController.m in Sources */,
 				038664CC186D376900985CEC /* NSDate+Globalize.m in Sources */,
 				038664EA186D37BC00985CEC /* RefreshView.m in Sources */,
 				038664CD186D376900985CEC /* NSDate+Util.m in Sources */,

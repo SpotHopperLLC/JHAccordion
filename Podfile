@@ -11,3 +11,4 @@ pod 'JHAutoCompleteTextField', :git => 'git@github.com:joshdholtz/JHAutoComplete
 pod 'Promises', :git => 'git@github.com:joshdholtz/ios-promises.git'
 pod 'Raven', '~> 0.3.0'
 pod 'STTwitter', '~> 0.0.7'
+pod 'TTTAttributedLabel', '~> 1.8.1'

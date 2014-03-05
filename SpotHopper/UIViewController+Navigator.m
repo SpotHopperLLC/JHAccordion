@@ -16,6 +16,7 @@
 #import "ReviewViewController.h"
 #import "ReviewsMenuViewController.h"
 #import "SearchNewReviewViewController.h"
+#import "SpotListsMenuViewController.h"
 #import "SpotProfileViewController.h"
 
 @implementation UIViewController (Navigator)
@@ -85,6 +86,11 @@
 }
 
 #pragma mark - Spots
+
+- (void)goToSpotListMenu {
+    SpotListsMenuViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotListsMenuViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
 
 - (void)goToSpotProfile:(SpotModel *)spot {
     SpotProfileViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
