@@ -60,6 +60,7 @@
     
     // Configures table
     [_tblMenu registerNib:[UINib nibWithNibName:@"CreateListCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"CreateListCell"];
+    [_tblMenu registerNib:[UINib nibWithNibName:@"ListCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ListCell"];
     [_tblMenu setTableFooterView:[[UIView alloc] init]];
 }
 
@@ -97,7 +98,12 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
         return 2;
+    } else if (section == 1) {
+        return 2;
+    } else if (section == 2) {
+        return 2;
     }
+    
     return 0;
 }
 
@@ -113,6 +119,18 @@
             [cell.lblText setText:@"or Name a Favorite Spot"];
             [cell.lblSubtext setText:@"Find bars similarto it, wherever you go"];
         }
+        
+        return cell;
+    } else if (indexPath.section == 1) {
+        ListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ListCell" forIndexPath:indexPath];
+        
+        [cell.lblName setText:@"Awesome list (5)"];
+        
+        return cell;
+    } else if (indexPath.section == 2) {
+        ListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ListCell" forIndexPath:indexPath];
+        
+        [cell.lblName setText:@"Awesome list (5)"];
         
         return cell;
     }
@@ -146,6 +164,10 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         return ( [_accordion isSectionOpened:indexPath.section] ? 58.0f : 0.0f);
+    } else if (indexPath.section == 1) {
+        return ( [_accordion isSectionOpened:indexPath.section] ? 48.0f : 0.0f);
+    } else if (indexPath.section == 2) {
+        return ( [_accordion isSectionOpened:indexPath.section] ? 48.0f : 0.0f);
     }
     
     return 0.0f;
