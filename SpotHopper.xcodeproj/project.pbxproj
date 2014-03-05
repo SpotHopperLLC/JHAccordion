@@ -255,6 +255,9 @@
 		03E882D518C78D3400BD8FBB /* btn_down_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E882D318C78D3400BD8FBB /* btn_down_arrow.png */; };
 		03E882D618C78D3400BD8FBB /* btn_down_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E882D418C78D3400BD8FBB /* btn_down_arrow@2x.png */; };
 		03E882D918C78D8B00BD8FBB /* AdjustSpotListSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E882D818C78D8B00BD8FBB /* AdjustSpotListSliderViewController.m */; };
+		03E882DC18C7953B00BD8FBB /* AdjustSliderSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E882DB18C7953B00BD8FBB /* AdjustSliderSectionHeaderView.m */; };
+		03E882DF18C797BA00BD8FBB /* UIView+AddBorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E882DE18C797BA00BD8FBB /* UIView+AddBorder.m */; };
+		03E882E218C7A39000BD8FBB /* AdjustSliderOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E882E118C7A39000BD8FBB /* AdjustSliderOptionCell.m */; };
 		03F2D9051871DB5B00C69576 /* SHButtonLatoLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */; };
 		03F2D91D1871DC1400C69576 /* AvantGard EF 1 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9091871DC1400C69576 /* AvantGard EF 1 */; };
 		03F2D91E1871DC1400C69576 /* AvantGard EF 2 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90A1871DC1400C69576 /* AvantGard EF 2 */; };
@@ -647,6 +650,12 @@
 		03E882D418C78D3400BD8FBB /* btn_down_arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_down_arrow@2x.png"; sourceTree = "<group>"; };
 		03E882D718C78D8B00BD8FBB /* AdjustSpotListSliderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustSpotListSliderViewController.h; sourceTree = "<group>"; };
 		03E882D818C78D8B00BD8FBB /* AdjustSpotListSliderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustSpotListSliderViewController.m; sourceTree = "<group>"; };
+		03E882DA18C7953B00BD8FBB /* AdjustSliderSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustSliderSectionHeaderView.h; sourceTree = "<group>"; };
+		03E882DB18C7953B00BD8FBB /* AdjustSliderSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustSliderSectionHeaderView.m; sourceTree = "<group>"; };
+		03E882DD18C797BA00BD8FBB /* UIView+AddBorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+AddBorder.h"; sourceTree = "<group>"; };
+		03E882DE18C797BA00BD8FBB /* UIView+AddBorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+AddBorder.m"; sourceTree = "<group>"; };
+		03E882E018C7A39000BD8FBB /* AdjustSliderOptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustSliderOptionCell.h; sourceTree = "<group>"; };
+		03E882E118C7A39000BD8FBB /* AdjustSliderOptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustSliderOptionCell.m; sourceTree = "<group>"; };
 		03F2D9031871DB5B00C69576 /* SHButtonLatoLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoLight.h; sourceTree = "<group>"; };
 		03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoLight.m; sourceTree = "<group>"; };
 		03F2D9091871DC1400C69576 /* AvantGard EF 1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "AvantGard EF 1"; sourceTree = "<group>"; };
@@ -793,6 +802,8 @@
 		032023791877739A008368C2 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				03E882DA18C7953B00BD8FBB /* AdjustSliderSectionHeaderView.h */,
+				03E882DB18C7953B00BD8FBB /* AdjustSliderSectionHeaderView.m */,
 				03CA725E187B45B400815284 /* SectionHeaderView.h */,
 				03CA725F187B45B400815284 /* SectionHeaderView.m */,
 				0320237A187773C0008368C2 /* SHViewTranlucentWhite.h */,
@@ -829,6 +840,8 @@
 				03F6BF6E18C6E8BD00172F13 /* ListCell.h */,
 				03F6BF6F18C6E8BD00172F13 /* ListCell.m */,
 				03F6BF7118C6E8CD00172F13 /* ListCellView.xib */,
+				03E882E018C7A39000BD8FBB /* AdjustSliderOptionCell.h */,
+				03E882E118C7A39000BD8FBB /* AdjustSliderOptionCell.m */,
 			);
 			name = Spot;
 			sourceTree = "<group>";
@@ -989,6 +1002,8 @@
 				03F2D95218722FB700C69576 /* SHNavigationController.m */,
 				03F6BF6618C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.h */,
 				03F6BF6718C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.m */,
+				03E882DD18C797BA00BD8FBB /* UIView+AddBorder.h */,
+				03E882DE18C797BA00BD8FBB /* UIView+AddBorder.m */,
 			);
 			name = Bases;
 			sourceTree = "<group>";
@@ -1983,6 +1998,7 @@
 				03F6BF7518C6EE2B00172F13 /* SpotListModel.m in Sources */,
 				03CA7286187C245600815284 /* ReviewViewController.m in Sources */,
 				03F2D9051871DB5B00C69576 /* SHButtonLatoLight.m in Sources */,
+				03E882DC18C7953B00BD8FBB /* AdjustSliderSectionHeaderView.m in Sources */,
 				03F6BF5C18C6D5BB00172F13 /* SpotListsMenuViewController.m in Sources */,
 				038664CC186D376900985CEC /* NSDate+Globalize.m in Sources */,
 				038664EA186D37BC00985CEC /* RefreshView.m in Sources */,
@@ -2019,6 +2035,7 @@
 				03F2D93A1871FB4300C69576 /* UIActionSheet+Block.m in Sources */,
 				038664DC186D376900985CEC /* TellMeMyLocation.m in Sources */,
 				037D13A218A3DF8500B89535 /* DrinkTypeModel.m in Sources */,
+				03E882E218C7A39000BD8FBB /* AdjustSliderOptionCell.m in Sources */,
 				039B6FF41887143B00C590F8 /* SearchCell.m in Sources */,
 				03F2D95018722D5300C69576 /* HomeViewController.m in Sources */,
 				039B70251888847200C590F8 /* NSNumber+Helpers.m in Sources */,
@@ -2038,6 +2055,7 @@
 				03CA7289187C26B300815284 /* SpotModel.m in Sources */,
 				038664CB186D376900985CEC /* NSArray+SaveLoad.m in Sources */,
 				03E882D918C78D8B00BD8FBB /* AdjustSpotListSliderViewController.m in Sources */,
+				03E882DF18C797BA00BD8FBB /* UIView+AddBorder.m in Sources */,
 				03F2D93E187208C200C69576 /* SHLabelLatoLight.m in Sources */,
 				0381044A18B6889300A410DB /* SpotAnnotation.m in Sources */,
 				03121A3C18BE361A00C9FFA3 /* NewReviewTypeViewController.m in Sources */,

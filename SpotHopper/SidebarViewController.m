@@ -8,6 +8,7 @@
 
 #import "SidebarViewController.h"
 
+#import "UIView+AddBorder.h"
 #import "UIViewController+Navigator.h"
 
 #import <FXBlurView/FXBlurView.h>
@@ -56,13 +57,13 @@
     [_btnAccount setTitleEdgeInsets:insets];
     
     // Add white borders
-    [self addTopBorder:_btnSpots];
-    [self addTopBorder:_btnDrinks];
-    [self addTopBorder:_btnSpecials];
-    [self addTopBorder:_btnReviews];
-    [self addTopBorder:_btnCheckIn];
-    [self addBottomBorder:_btnCheckIn];
-    [self addTopBorder:_btnAccount];
+    [_btnSpots addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
+    [_btnDrinks addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
+    [_btnSpecials addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
+    [_btnReviews addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
+    [_btnCheckIn addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
+    [_btnCheckIn addBottomBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
+    [_btnAccount addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -83,22 +84,6 @@
 
 - (NSArray *)textfieldToHideKeyboard {
     return @[_txtSearch];
-}
-
-#pragma mark - Private
-
-- (void)addTopBorder:(UIButton*)button {
-    CAGradientLayer *border = [CAGradientLayer layer];
-    border.frame = CGRectMake(0, 0, button.bounds.size.width, 1);
-    border.backgroundColor = [[UIColor colorWithWhite:1.0 alpha:1.0f] CGColor];
-    [button.layer addSublayer:border];
-}
-
-- (void)addBottomBorder:(UIButton*)button {
-    CAGradientLayer *border = [CAGradientLayer layer];
-    border.frame = CGRectMake(0, button.bounds.size.height-1, button.bounds.size.width, 1);
-    border.backgroundColor = [[UIColor colorWithWhite:1.0 alpha:0.8f] CGColor];
-    [button.layer addSublayer:border];
 }
 
 #pragma mark - UITextFieldDelegate
