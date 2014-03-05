@@ -295,6 +295,8 @@
 		03F6BF6818C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF6718C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.m */; };
 		03F6BF6B18C6E10A00172F13 /* CreateListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF6A18C6E10A00172F13 /* CreateListCell.m */; };
 		03F6BF6D18C6E11F00172F13 /* CreateListCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF6C18C6E11F00172F13 /* CreateListCellView.xib */; };
+		03F6BF7018C6E8BD00172F13 /* ListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF6F18C6E8BD00172F13 /* ListCell.m */; };
+		03F6BF7218C6E8CD00172F13 /* ListCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF7118C6E8CD00172F13 /* ListCellView.xib */; };
 		052EC70F678F4DF18DBE8EB5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
 		D7FCD5C8824B4FA4A7587334 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -683,6 +685,9 @@
 		03F6BF6918C6E10A00172F13 /* CreateListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateListCell.h; sourceTree = "<group>"; };
 		03F6BF6A18C6E10A00172F13 /* CreateListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateListCell.m; sourceTree = "<group>"; };
 		03F6BF6C18C6E11F00172F13 /* CreateListCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateListCellView.xib; sourceTree = "<group>"; };
+		03F6BF6E18C6E8BD00172F13 /* ListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListCell.h; sourceTree = "<group>"; };
+		03F6BF6F18C6E8BD00172F13 /* ListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCell.m; sourceTree = "<group>"; };
+		03F6BF7118C6E8CD00172F13 /* ListCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListCellView.xib; sourceTree = "<group>"; };
 		B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C9816A19827543A8863B8CBF /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -794,6 +799,9 @@
 				03F6BF6918C6E10A00172F13 /* CreateListCell.h */,
 				03F6BF6A18C6E10A00172F13 /* CreateListCell.m */,
 				03F6BF6C18C6E11F00172F13 /* CreateListCellView.xib */,
+				03F6BF6E18C6E8BD00172F13 /* ListCell.h */,
+				03F6BF6F18C6E8BD00172F13 /* ListCell.m */,
+				03F6BF7118C6E8CD00172F13 /* ListCellView.xib */,
 			);
 			name = Spot;
 			sourceTree = "<group>";
@@ -1619,6 +1627,7 @@
 			files = (
 				03866546186DE0F700985CEC /* btn_sidebar_icon_reviews.png in Resources */,
 				038664EB186D37BC00985CEC /* RefreshView.xib in Resources */,
+				03F6BF7218C6E8CD00172F13 /* ListCellView.xib in Resources */,
 				03F2D92A1871DC1400C69576 /* Lato-Hairline.ttf in Resources */,
 				03866541186DE0F700985CEC /* btn_sidebar_icon_account@2x.png in Resources */,
 				03866545186DE0F700985CEC /* btn_sidebar_icon_drinks@2x.png in Resources */,
@@ -1919,6 +1928,7 @@
 				038664EA186D37BC00985CEC /* RefreshView.m in Sources */,
 				038664CD186D376900985CEC /* NSDate+Util.m in Sources */,
 				0320236D18774DD1008368C2 /* ReviewsMenuViewController.m in Sources */,
+				03F6BF7018C6E8BD00172F13 /* ListCell.m in Sources */,
 				038664D3186D376900985CEC /* UIImage+Resize.m in Sources */,
 				03F2D9411872090E00C69576 /* SHTextFieldLatoLight.m in Sources */,
 				039BA005188EB9AB001AF1B9 /* ACEAutocompleteInputView.m in Sources */,

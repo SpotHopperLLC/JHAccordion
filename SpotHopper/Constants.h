@@ -20,18 +20,18 @@
     #if kMock
         #define kBaseUrl @"mockery://app"
     #else
-//        #define kBaseUrl @"http://192.168.1.8:9292"
+        #define kBaseUrl @"http://192.168.1.8:9292"
 //        #define kBaseUrl @"http://spothopper-dev.herokuapp.com"
-        #define kBaseUrl @"http://spothopper-staging.herokuapp.com"
+//        #define kBaseUrl @"http://spothopper-staging.herokuapp.com"
     #endif
 
 // DEV
-//    #define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"
-//    #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
+    #define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"
+    #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
 
 // STAGING
-    #define kTwitterConsumerKey @"enlXFrFlBlOPkaBoOJunQ"
-    #define kTwitterConsumerSecret @"UHRcQ8WXs13Iug7VpliivDxwQuGtoMg5KsaoIF3jWbM"
+//    #define kTwitterConsumerKey @"enlXFrFlBlOPkaBoOJunQ"
+//    #define kTwitterConsumerSecret @"UHRcQ8WXs13Iug7VpliivDxwQuGtoMg5KsaoIF3jWbM"
 
 #elif kEnvEnableProd
 

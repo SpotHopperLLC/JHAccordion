@@ -14,6 +14,7 @@
 #import "SHButtonLatoLightLocation.h"
 
 #import "CreateListCell.h"
+#import "ListCell.h"
 
 #import <JHAccordion/JHAccordion.h>
 
