@@ -120,12 +120,21 @@
                                     <outlet property="delegate" destination="Wt8-Xh-87r" id="K7u-VH-Fzr"/>
                                 </connections>
                             </tableView>
+                            <containerView hidden="YES" contentMode="scaleToFill" id="8qj-uq-kZ5">
+                                <rect key="frame" x="0.0" y="104" width="320" height="376"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="CVU-Yd-qLK" kind="embed" identifier="EmbedAdjustSpotListSliderViewController" id="dlM-rL-b5g"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="btnLocation" destination="Dtn-co-yAk" id="VFE-VQ-qop"/>
+                        <outlet property="containerAdjustSliders" destination="8qj-uq-kZ5" id="gE2-eD-1a5"/>
                         <outlet property="tblMenu" destination="kmI-GL-drV" id="vLd-pY-EA1"/>
                     </connections>
                 </viewController>
@@ -133,9 +142,43 @@
             </objects>
             <point key="canvasLocation" x="263" y="185"/>
         </scene>
+        <!--Adjust Spot List Slider View Controller-->
+        <scene sceneID="mc8-nl-tgr">
+            <objects>
+                <viewController storyboardIdentifier="AdjustSpotListSliderViewController" automaticallyAdjustsScrollViewInsets="NO" id="CVU-Yd-qLK" customClass="AdjustSpotListSliderViewController" sceneMemberID="viewController">
+                    <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="H30-64-hhO">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="376"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="orange_gradient_background.png" id="0Zr-zF-iYK">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="376"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="eBx-TB-Ie7">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal" image="btn_down_arrow.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onClickClose:" destination="CVU-Yd-qLK" eventType="touchUpInside" id="WMx-Bg-GdX"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <toolbarItems/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Vm1-vx-guC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="750" y="-352"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="btn_down_arrow.png" width="104" height="32"/>
         <image name="icon_phone.png" width="25" height="25"/>
+        <image name="orange_gradient_background.png" width="259" height="564"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

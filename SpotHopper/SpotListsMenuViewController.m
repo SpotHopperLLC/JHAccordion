@@ -17,6 +17,7 @@
 #import "CreateListCell.h"
 #import "ListCell.h"
 
+#import "AdjustSpotListSliderViewController.h"
 #import "FindSimilarViewController.h"
 
 #import "ClientSessionManager.h"
@@ -27,7 +28,9 @@
 #import <JHAccordion/JHAccordion.h>
 #import <Promises/Promise.h>
 
-@interface SpotListsMenuViewController ()<UITableViewDataSource, UITableViewDelegate, FindSimilarViewControllerDelegate, JHAccordionDelegate, SHButtonLatoLightLocationDelegate>
+@interface SpotListsMenuViewController ()<UITableViewDataSource, UITableViewDelegate, FindSimilarViewControllerDelegate, AdjustSliderListSliderViewControllerDelegate, JHAccordionDelegate, SHButtonLatoLightLocationDelegate>
+
+@property (weak, nonatomic) IBOutlet UIView *containerAdjustSliders;
 
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
 
@@ -77,6 +80,8 @@
     
     // Fetching spot lists
     [self fetchSpotLists];
+    
+    [self showAdjustSlidersView:NO animated:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -92,9 +97,20 @@
         [footerViewController setRightButton:@"Info" image:[UIImage imageNamed:@"btn_context_info"]];
     }];
     
+    // Bring container to front so its slides over footer
+    [self.view bringSubviewToFront:_containerAdjustSliders];
+    
     // Locations
     [_btnLocation setDelegate:self];
     [_btnLocation updateWithLastLocation];
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    NSString * segueName = segue.identifier;
+    if ([segueName isEqualToString: @"EmbedAdjustSpotListSliderViewController"]) {
+        AdjustSpotListSliderViewController *viewController = (AdjustSpotListSliderViewController*)[segue destinationViewController];
+        [viewController setDelegate:self];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -175,11 +191,13 @@
 
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            NSLog(@"Go to adjust");
+            [self showAdjustSlidersView:YES animated:YES];
         } else if (indexPath.row == 1) {
             [self goToFindSimilarSpots:self];
         }
     }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
 }
 
@@ -256,6 +274,12 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+#pragma mark - AdjustSliderListSliderViewControllerDelegate
+
+- (void)adjustSliderListSliderViewControllerDelegateClickClose:(AdjustSpotListSliderViewController *)viewController {
+    [self showAdjustSlidersView:NO animated:YES];
+}
+
 #pragma mark - Private
 
 - (void)fetchSpotLists {
@@ -297,6 +321,36 @@
         [_tblMenu reloadData];
         [self hideHUD];
     }];
+    
+}
+
+- (void)showAdjustSlidersView:(BOOL)show animated:(BOOL)animated {
+    
+    if (show == YES) {
+
+        [_containerAdjustSliders setHidden:NO];
+        
+        CGRect frame = _containerAdjustSliders.frame;
+        frame.origin.y = CGRectGetMaxY(self.view.frame) - CGRectGetHeight(frame);
+        
+        [UIView animateWithDuration:( animated ? 0.35f : 0.0f ) animations:^{
+            [_containerAdjustSliders setFrame:frame];
+        } completion:^(BOOL finished) {
+            
+        }];
+        
+    } else {
+        
+        CGRect frame = _containerAdjustSliders.frame;
+        frame.origin.y = CGRectGetMaxY(self.view.frame);
+
+        [UIView animateWithDuration:( animated ? 0.35f : 0.0f ) animations:^{
+            [_containerAdjustSliders setFrame:frame];
+        } completion:^(BOOL finished) {
+            [_containerAdjustSliders setHidden:YES];
+        }];
+        
+    }
     
 }
 
