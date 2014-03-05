@@ -9,12 +9,15 @@
 #import "SpotListsMenuViewController.h"
 
 #import "TTTAttributedLabel+QuickFonting.h"
+#import "UIViewController+Navigator.h"
 
 #import "SectionHeaderView.h"
 #import "SHButtonLatoLightLocation.h"
 
 #import "CreateListCell.h"
 #import "ListCell.h"
+
+#import "FindSimilarViewController.h"
 
 #import "ClientSessionManager.h"
 #import "ErrorModel.h"
@@ -24,7 +27,7 @@
 #import <JHAccordion/JHAccordion.h>
 #import <Promises/Promise.h>
 
-@interface SpotListsMenuViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, SHButtonLatoLightLocationDelegate>
+@interface SpotListsMenuViewController ()<UITableViewDataSource, UITableViewDelegate, FindSimilarViewControllerDelegate, JHAccordionDelegate, SHButtonLatoLightLocationDelegate>
 
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
 
@@ -174,7 +177,7 @@
         if (indexPath.row == 0) {
             NSLog(@"Go to adjust");
         } else if (indexPath.row == 1) {
-            NSLog(@"Go to name favorite spot");
+            [self goToFindSimilarSpots:self];
         }
     }
     
@@ -240,6 +243,17 @@
 
 - (void)locationError:(SHButtonLatoLightLocation *)button error:(NSError *)error {
     [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
+}
+
+#pragma mark - FindSimilarViewControllerDelegate
+
+- (void)findSimilarViewController:(FindSimilarViewController *)viewController selectedDrink:(DrinkModel *)drink {
+    
+}
+
+- (void)findSimilarViewController:(FindSimilarViewController *)viewController selectedSpot:(SpotModel *)spot {
+    NSLog(@"Spot choosen - %@", spot.name);
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Private

@@ -12,6 +12,8 @@
 #import "ReviewModel.h"
 #import "SpotModel.h"
 
+#import "FindSimilarViewController.h"
+
 @interface UIViewController (Navigator)
 
 // Main
@@ -31,6 +33,9 @@
 // Spots
 - (void)goToSpotListMenu;
 - (void)goToSpotProfile:(SpotModel *)spot;
+
+// Common
+- (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate;
 
 // Storyboards
 - (UIStoryboard*)mainStoryboard;

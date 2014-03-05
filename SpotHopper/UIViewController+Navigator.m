@@ -8,6 +8,7 @@
 
 #import "UIViewController+Navigator.h"
 
+#import "FindSimilarViewController.h"
 #import "LaunchViewController.h"
 
 #import "MyReviewsViewController.h"
@@ -95,6 +96,15 @@
 - (void)goToSpotProfile:(SpotModel *)spot {
     SpotProfileViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
     [viewController setSpot:spot];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+#pragma mark - Commons
+
+- (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate {
+    FindSimilarViewController *viewController = [[FindSimilarViewController alloc] initWithNibName:@"FindSimilarViewController" bundle:[NSBundle mainBundle]];
+    [viewController setSearchDrinks:NO];
+    [viewController setDelegate:delegate];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
