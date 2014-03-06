@@ -84,9 +84,6 @@
     [_tblMenu registerNib:[UINib nibWithNibName:@"ListCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ListCell"];
     [_tblMenu setTableFooterView:[[UIView alloc] init]];
     
-    // Fetching spot lists
-    [self fetchSpotLists];
-    
     [self showAdjustSlidersView:NO animated:NO];
 }
 
@@ -109,6 +106,9 @@
     // Locations
     [_btnLocation setDelegate:self];
     [_btnLocation updateWithLastLocation];
+    
+    // Fetching spot lists
+    [self fetchSpotLists];
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

@@ -13,6 +13,7 @@
 
 #import "SpotListViewController.h"
 
+#import "UIAlertView+Block.h"
 #import "UIViewController+Navigator.h"
 
 #import "TellMeMyLocation.h"
@@ -21,6 +22,9 @@
 #import "SHButtonLatoLightLocation.h"
 
 #import "SpotCardCollectionViewCell.h"
+
+#import "ClientSessionManager.h"
+#import "ErrorModel.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -33,6 +37,8 @@
 @property (nonatomic, strong) CLLocation *selectedLocation;
 @property (nonatomic, strong) CLLocation *currentLocation;
 @property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
+
+@property (nonatomic, assign) BOOL showMap;
 
 @end
 
@@ -73,6 +79,9 @@
     [_btnLocation setDelegate:self];
     [_btnLocation updateWithLastLocation];
     
+    // Initialize stuff
+    _showMap = NO;
+    
     // Fetches spotlist
     [self fetchSpotList];
 }
@@ -82,11 +91,33 @@
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     
     // Adds contextual footer view
+    __block SpotListViewController *this = self;
     [self addFooterViewController:^(FooterViewController *footerViewController) {
         [footerViewController showHome:YES];
+        
+        if (this.spotList.featured == NO) {
+            [footerViewController setLeftButton:@"Delete" image:[UIImage imageNamed:@"btn_context_delete"]];
+        }
+        
+        [this updateFooterMapListButton:footerViewController];
         [footerViewController setRightButton:@"Info" image:[UIImage imageNamed:@"btn_context_info"]];
     }];
 
+}
+
+- (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
+    if (FooterViewButtonLeft == footerViewButtonType) {
+        [self deleteSpotList];
+        return YES;
+    } else if (FooterViewButtonMiddle == footerViewButtonType) {
+        _showMap = !_showMap;
+        [self updateFooterMapListButton:footerViewController];
+        return YES;
+    } else if (FooterViewButtonRight == footerViewButtonType) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 - (void)didReceiveMemoryWarning
@@ -151,6 +182,14 @@
 
 #pragma mark - Private
 
+- (void)updateFooterMapListButton:(FooterViewController*)footerViewController {
+    if (_showMap == YES) {
+        [footerViewController setMiddleButton:@"List" image:[UIImage imageNamed:@"btn_context_list"]];
+    } else {
+        [footerViewController setMiddleButton:@"Map" image:[UIImage imageNamed:@"btn_context_map"]];
+    }
+}
+
 - (void)updateMatchPercent {
     CGPoint initialPinchPoint = CGPointMake(_collectionView.center.x + _collectionView.contentOffset.x,
                                             _collectionView.center.y + _collectionView.contentOffset.y);
@@ -181,6 +220,27 @@
         [_collectionView reloadData];
         
         [self updateMatchPercent];
+    }];
+    
+}
+
+- (void)deleteSpotList {
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Confirm Delete" message:@"Are you sure you want to delete this spotlist?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+    [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
+        if (buttonIndex == 1) {
+            
+            [self showHUD:@"Deleting"];
+            [_spotList deleteSpotList:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+                [self hideHUD];
+                [self.navigationController popViewControllerAnimated:YES];
+            } failure:^(ErrorModel *errorModel) {
+                [self hideHUD];
+                [self showAlert:@"Oops" message:errorModel.human];
+            }];
+            
+            
+        }
     }];
     
 }
