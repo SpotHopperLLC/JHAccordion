@@ -20,6 +20,7 @@
 #import "SHNavigationController.h"
 #import "AdjustSpotListSliderViewController.h"
 #import "FindSimilarViewController.h"
+#import "SpotListViewController.h"
 
 #import "ClientSessionManager.h"
 #import "AverageReviewModel.h"
@@ -291,7 +292,17 @@
         [SpotListModel postSpotList:spotModel.name sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
             [self hideHUD];
             [self showHUDCompleted:@"Spotlist created!" block:^{
-                [self.navigationController popViewControllerAnimated:YES];
+                
+                NSMutableArray *viewControllers = self.navigationController.viewControllers.mutableCopy;
+                [viewControllers removeLastObject];
+                
+                SpotListViewController *viewController = [self.spotsStoryboard instantiateViewControllerWithIdentifier:@"SpotListViewController"];
+                [viewController setSpotList:spotListModel];
+                [viewControllers addObject:viewController];
+                
+                [self.navigationController setViewControllers:viewControllers animated:YES];
+                
+                
             }];
             
         } failure:^(ErrorModel *errorModel) {
