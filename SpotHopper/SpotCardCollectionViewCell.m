@@ -8,6 +8,10 @@
 
 #import "SpotCardCollectionViewCell.h"
 
+#import "SpotTypeModel.h"
+
+#import <AFNetworking/UIImageView+AFNetworking.h>
+
 @implementation SpotCardCollectionViewCell
 
 - (id)initWithFrame:(CGRect)frame
@@ -19,13 +23,20 @@
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
+- (void)setSpot:(SpotModel *)spot {
+    
+    [_imgSpot setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:spot.imageUrl]] placeholderImage:Nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        [_imgSpot setImage:image];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        [_imgSpot setImage:nil];
+    }];
+    
+    [_lblName setText:spot.name];
+    [_lblType setText:spot.spotType.name];
+    
+    [_lblWhere setText:spot.cityState];
+    [_lblHowFar setText:@""];
+    
 }
-*/
 
 @end

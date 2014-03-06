@@ -41,6 +41,8 @@
     
     [self.collectionView setBackgroundColor:[UIColor clearColor]];
     [self.collectionView setCollectionViewLayout:[[CardLayout alloc] init]];
+    
+    [self fetchSpotList];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -68,14 +70,34 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 10;
+    return _spotList.spots.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    SpotCardCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SpotImageCollectViewCell" forIndexPath:indexPath];
+    SpotModel *spot = [_spotList.spots objectAtIndex:indexPath.row];
+    
+    SpotCardCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SpotCardCollectionViewCell" forIndexPath:indexPath];
+    [cell setSpot:spot];
     
     return cell;
+}
+
+#pragma mark - Private
+
+- (void)fetchSpotList {
+    
+    [self showHUD:@"Getting spots"];
+    [_spotList getSpotList:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonAPi) {
+        [self hideHUD];
+        
+        _spotList = spotListModel;
+        [_collectionView reloadData];
+    } failure:^(ErrorModel *errorModel) {
+        [self hideHUD];
+        [_collectionView reloadData];
+    }];
+    
 }
 
 @end

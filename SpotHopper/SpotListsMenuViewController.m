@@ -76,6 +76,8 @@
     // Configures accordion
     _accordion = [[JHAccordion alloc] initWithTableView:_tblMenu];
     [_accordion setDelegate:self];
+    [_accordion openSection:0];
+    [_accordion openSection:1];
     
     // Configures table
     [_tblMenu registerNib:[UINib nibWithNibName:@"CreateListCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"CreateListCell"];
@@ -398,6 +400,8 @@
             
             [_sectionHeader0.btnBackground setTag:section];
             [_sectionHeader0.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [_sectionHeader0 setSelected:[_accordion isSectionOpened:section]];
         }
         
         return _sectionHeader0;
@@ -411,6 +415,8 @@
             
             [_sectionHeader1.btnBackground setTag:section];
             [_sectionHeader1.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [_sectionHeader1 setSelected:[_accordion isSectionOpened:section]];
         }
         
         return _sectionHeader1;
@@ -422,6 +428,8 @@
             
             [_sectionHeader2.btnBackground setTag:section];
             [_sectionHeader2.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [_sectionHeader2 setSelected:[_accordion isSectionOpened:section]];
         }
         
         return _sectionHeader2;
