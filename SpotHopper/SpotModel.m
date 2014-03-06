@@ -173,4 +173,8 @@
     return [self linkedResourceForKey:@"average_review"];
 }
 
+- (NSNumber *)match {
+    return [self objectForKey:@"match"];
+}
+
 @end

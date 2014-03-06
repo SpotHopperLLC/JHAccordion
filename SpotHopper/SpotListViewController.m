@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define ITEM_SIZE_WIDTH 180.0f
+#define ITEM_SIZE_HEIGHT 247.0f
+#define ITEM_SIZE_HEIGHT_4_INCH 300.0f
 #define kMeterToMile 0.000621371f
 
 #import "SpotListViewController.h"
@@ -15,15 +18,19 @@
 #import "TellMeMyLocation.h"
 
 #import "CardLayout.h"
+#import "SHButtonLatoLightLocation.h"
 
 #import "SpotCardCollectionViewCell.h"
 
 #import <CoreLocation/CoreLocation.h>
 
-@interface SpotListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate>
+@interface SpotListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, SHButtonLatoLightLocationDelegate>
 
+@property (weak, nonatomic) IBOutlet UILabel *lblMatchPercent;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
 
+@property (nonatomic, strong) CLLocation *selectedLocation;
 @property (nonatomic, strong) CLLocation *currentLocation;
 @property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
 
@@ -50,9 +57,11 @@
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
     
+    // Collection view
     [self.collectionView setBackgroundColor:[UIColor clearColor]];
-    [self.collectionView setCollectionViewLayout:[[CardLayout alloc] init]];
+    [self.collectionView setCollectionViewLayout:[[CardLayout alloc] initWithItemSize:CGSizeMake(ITEM_SIZE_WIDTH, (IS_FOUR_INCH ? ITEM_SIZE_HEIGHT_4_INCH : ITEM_SIZE_HEIGHT) )]];
     
+    // Current location
     _tellMeMyLocation = [[TellMeMyLocation alloc] init];
     [_tellMeMyLocation findMe:kCLLocationAccuracyThreeKilometers found:^(CLLocation *newLocation) {
         _currentLocation = newLocation;
@@ -60,6 +69,11 @@
         
     }];
     
+    // Locations
+    [_btnLocation setDelegate:self];
+    [_btnLocation updateWithLastLocation];
+    
+    // Fetches spotlist
     [self fetchSpotList];
 }
 
@@ -115,7 +129,42 @@
     [self goToSpotProfile:spot];
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self updateMatchPercent];
+}
+
+#pragma mark - SHButtonLatoLightLocationDelegate
+
+- (void)locationRequestsUpdate:(SHButtonLatoLightLocation *)button location:(LocationChooserViewController *)viewController {
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
+    _selectedLocation = location;
+    
+}
+
+- (void)locationError:(SHButtonLatoLightLocation *)button error:(NSError *)error {
+    [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
+}
+
 #pragma mark - Private
+
+- (void)updateMatchPercent {
+    CGPoint initialPinchPoint = CGPointMake(_collectionView.center.x + _collectionView.contentOffset.x,
+                                            _collectionView.center.y + _collectionView.contentOffset.y);
+    
+    NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:initialPinchPoint];
+    
+    SpotModel *spot = [_spotList.spots objectAtIndex:indexPath.row];
+    
+    if (index != nil && spot.match != nil) {
+        [_lblMatchPercent setText:[NSString stringWithFormat:@"%d%% Match", (int)(spot.match.floatValue * 100)]];
+    } else {
+        [_lblMatchPercent setText:@""];
+    }
+}
 
 - (void)fetchSpotList {
     
@@ -125,9 +174,13 @@
         
         _spotList = spotListModel;
         [_collectionView reloadData];
+        
+        [self updateMatchPercent];
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [_collectionView reloadData];
+        
+        [self updateMatchPercent];
     }];
     
 }

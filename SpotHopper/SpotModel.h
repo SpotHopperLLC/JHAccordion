@@ -54,6 +54,7 @@
 @property (nonatomic, strong) NSString *foursquareId;
 @property (nonatomic, strong) SpotTypeModel *spotType;
 @property (nonatomic, strong) AverageReviewModel *averageReview;
+@property (nonatomic, strong) NSNumber *match;
 
 - (NSString*)cityState;
 

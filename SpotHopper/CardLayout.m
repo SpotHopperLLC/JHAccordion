@@ -17,11 +17,20 @@
 
 -(id)init
 {
+    self = [self initWithItemSize:CGSizeMake(ITEM_SIZE_WIDTH, ITEM_SIZE_HEIGHT)];
+    if (self) {
+        
+    }
+    return self;
+}
+
+- (id)initWithItemSize:(CGSize)itemSize {
     self = [super init];
     if (self) {
-        self.itemSize = CGSizeMake(ITEM_SIZE_WIDTH, ITEM_SIZE_HEIGHT);
+        
+        self.itemSize = itemSize;
         self.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        self.sectionInset = UIEdgeInsetsMake(200.0f, 70.0f, 200.0f, 70.0f);
+        self.sectionInset = UIEdgeInsetsMake(0.0f, 70.0f, 0.0f, 70.0f);
         self.minimumLineSpacing = 30.0;
     }
     return self;

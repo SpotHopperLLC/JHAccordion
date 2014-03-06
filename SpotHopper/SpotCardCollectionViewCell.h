@@ -12,6 +12,8 @@
 
 @interface SpotCardCollectionViewCell : UICollectionViewCell
 
+@property (weak, nonatomic) IBOutlet UILabel *lblMatch;
+
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UILabel *lblType;
 @property (weak, nonatomic) IBOutlet UIImageView *imgSpot;

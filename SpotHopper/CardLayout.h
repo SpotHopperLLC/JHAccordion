@@ -10,4 +10,6 @@
 
 @interface CardLayout : UICollectionViewFlowLayout
 
+- (id)initWithItemSize:(CGSize)itemSize;
+
 @end
