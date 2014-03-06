@@ -18,6 +18,7 @@
 #import "ReviewsMenuViewController.h"
 #import "SearchNewReviewViewController.h"
 #import "SpotListsMenuViewController.h"
+#import "SpotListViewController.h"
 #import "SpotProfileViewController.h"
 
 @implementation UIViewController (Navigator)
@@ -90,6 +91,12 @@
 
 - (void)goToSpotListMenu {
     SpotListsMenuViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotListsMenuViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToSpotList:(SpotListModel*)spotList {
+    SpotListViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotListViewController"];
+    [viewController setSpotList:spotList];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

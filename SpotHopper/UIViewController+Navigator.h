@@ -11,6 +11,7 @@
 #import "DrinkModel.h"
 #import "ReviewModel.h"
 #import "SpotModel.h"
+#import "SpotListModel.h"
 
 #import "FindSimilarViewController.h"
 
@@ -32,6 +33,7 @@
 
 // Spots
 - (void)goToSpotListMenu;
+- (void)goToSpotList:(SpotListModel*)spotList;
 - (void)goToSpotProfile:(SpotModel *)spot;
 
 // Common

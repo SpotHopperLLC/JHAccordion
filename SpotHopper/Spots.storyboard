@@ -78,6 +78,64 @@
             </objects>
             <point key="canvasLocation" x="750" y="185"/>
         </scene>
+        <!--Spot List View Controller-->
+        <scene sceneID="YLu-JM-lvq">
+            <objects>
+                <viewController storyboardIdentifier="SpotListViewController" id="46L-BE-h0z" customClass="SpotListViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="meH-zY-U9B">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_carousel_background.png" id="E5E-AG-soI">
+                                <rect key="frame" x="0.0" y="64" width="320" height="351"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="oZb-00-cLy">
+                                <rect key="frame" x="0.0" y="64" width="320" height="351"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="CUG-h9-3aJ">
+                                    <size key="itemSize" width="190" height="240"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="SpotImageCollectViewCell" reuseIdentifier="SpotImageCollectViewCell" id="ZW3-Up-0nb" customClass="SpotImageCollectViewCell">
+                                        <rect key="frame" x="48" y="0.0" width="225" height="309"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="225" height="309"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_card_background.png" id="BKb-Ih-4aH">
+                                                    <rect key="frame" x="0.0" y="0.0" width="225" height="309"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <size key="customSize" width="225" height="309"/>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="46L-BE-h0z" id="mZf-LF-pAM"/>
+                                    <outlet property="delegate" destination="46L-BE-h0z" id="j1o-5G-QcS"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="collectionView" destination="oZb-00-cLy" id="2fL-JV-CA3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zqT-1u-IGE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1174" y="185"/>
+        </scene>
         <!--Spot Lists Menu View Controller-->
         <scene sceneID="NJz-p2-EDm">
             <objects>
@@ -228,6 +286,8 @@
     <resources>
         <image name="btn_down_arrow.png" width="104" height="32"/>
         <image name="icon_phone.png" width="25" height="25"/>
+        <image name="img_card_background.png" width="228" height="309"/>
+        <image name="img_carousel_background.png" width="320" height="409"/>
         <image name="orange_gradient_background.png" width="259" height="564"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

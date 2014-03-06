@@ -199,6 +199,12 @@
         } else if (indexPath.row == 1) {
             [self goToFindSimilarSpots:self];
         }
+    } else if (indexPath.section == 1) {
+        SpotListModel *spotList = [_featuredSpotLists objectAtIndex:indexPath.row];
+        [self goToSpotList:spotList];
+    } else if (indexPath.section == 2) {
+        SpotListModel *spotList = [_mySpotLists objectAtIndex:indexPath.row];
+        [self goToSpotList:spotList];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
