@@ -6,15 +6,26 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kMeterToMile 0.000621371f
+
 #import "SpotListViewController.h"
+
+#import "UIViewController+Navigator.h"
+
+#import "TellMeMyLocation.h"
 
 #import "CardLayout.h"
 
 #import "SpotCardCollectionViewCell.h"
 
+#import <CoreLocation/CoreLocation.h>
+
 @interface SpotListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+
+@property (nonatomic, strong) CLLocation *currentLocation;
+@property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
 
 @end
 
@@ -41,6 +52,13 @@
     
     [self.collectionView setBackgroundColor:[UIColor clearColor]];
     [self.collectionView setCollectionViewLayout:[[CardLayout alloc] init]];
+    
+    _tellMeMyLocation = [[TellMeMyLocation alloc] init];
+    [_tellMeMyLocation findMe:kCLLocationAccuracyThreeKilometers found:^(CLLocation *newLocation) {
+        _currentLocation = newLocation;
+    } failure:^(NSError *error) {
+        
+    }];
     
     [self fetchSpotList];
 }
@@ -79,8 +97,22 @@
     
     SpotCardCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SpotCardCollectionViewCell" forIndexPath:indexPath];
     [cell setSpot:spot];
+
+    if (_currentLocation != nil && spot.latitude != nil && spot.longitude != nil) {
+        CLLocationDistance distance = [_currentLocation distanceFromLocation:[[CLLocation alloc] initWithLatitude:spot.latitude.floatValue longitude:spot.longitude.floatValue]];
+        [cell.lblHowFar setText:[NSString stringWithFormat:@"%.1f Miles From You", ( distance * kMeterToMile )]];
+    } else {
+        [cell.lblHowFar setText:@""];
+    }
     
     return cell;
+}
+
+#pragma mark - UICollectionViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    SpotModel *spot = [_spotList.spots objectAtIndex:indexPath.row];
+    [self goToSpotProfile:spot];
 }
 
 #pragma mark - Private
