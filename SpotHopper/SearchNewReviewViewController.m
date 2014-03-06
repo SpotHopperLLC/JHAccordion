@@ -15,6 +15,7 @@
 
 #import "SHButtonLatoLightLocation.h"
 
+#import "SHNavigationController.h"
 #import "SearchNewReviewViewController.h"
 
 #import "FooterShadowCell.h"
@@ -339,7 +340,7 @@
 #pragma mark - SHButtonLatoLightLocationDelegate
 
 - (void)locationRequestsUpdate:(SHButtonLatoLightLocation *)button location:(LocationChooserViewController *)viewController {
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    SHNavigationController *navController = [[SHNavigationController alloc] initWithRootViewController:viewController];
     [self presentViewController:navController animated:YES completion:nil];
 }
 

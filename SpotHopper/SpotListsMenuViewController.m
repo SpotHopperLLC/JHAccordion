@@ -17,6 +17,7 @@
 #import "CreateListCell.h"
 #import "ListCell.h"
 
+#import "SHNavigationController.h"
 #import "AdjustSpotListSliderViewController.h"
 #import "FindSimilarViewController.h"
 
@@ -262,7 +263,7 @@
 #pragma mark - SHButtonLatoLightLocationDelegate
 
 - (void)locationRequestsUpdate:(SHButtonLatoLightLocation *)button location:(LocationChooserViewController *)viewController {
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    SHNavigationController *navController = [[SHNavigationController alloc] initWithRootViewController:viewController];
     [self presentViewController:navController animated:YES completion:nil];
 }
 
