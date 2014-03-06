@@ -305,7 +305,8 @@
     [allTheSliders addObjectsFromArray:_sliders];
     [allTheSliders addObjectsFromArray:_advancedSliders];
     
-    [SpotListModel postSpotList:[NSDate date].stringAsShortDateShortTime sliders:allTheSliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+    [self showHUD:@"Creating spotlist"];
+    [SpotListModel postSpotList:kSpotListModelDefaultName sliders:allTheSliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
         [self hideHUD];
         [self showHUDCompleted:@"Spotlist created!" block:^{
             

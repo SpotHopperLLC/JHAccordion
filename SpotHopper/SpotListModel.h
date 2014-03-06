@@ -6,6 +6,10 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kSpotListModelDefaultName @"Custom Spotlist"
+
+#define kSpotListModelParamName @"name"
+
 #import "SHJSONAPIResource.h"
 
 #import <JSONAPI/JSONAPI.h>
@@ -22,6 +26,7 @@
 + (Promise *)postSpotList:(NSString*)name sliders:(NSArray*)sliders successBlock:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
 
 - (Promise *)getSpotList:(NSDictionary *)params success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
+- (Promise *)putSpotList:(NSString*)name sliders:(NSArray*)sliders success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
 - (Promise *)deleteSpotList:(NSDictionary *)params success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
 
 @end

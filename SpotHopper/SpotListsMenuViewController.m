@@ -203,10 +203,10 @@
         }
     } else if (indexPath.section == 1) {
         SpotListModel *spotList = [_featuredSpotLists objectAtIndex:indexPath.row];
-        [self goToSpotList:spotList];
+        [self goToSpotList:spotList createdWithAdjustSliders:NO];
     } else if (indexPath.section == 2) {
         SpotListModel *spotList = [_mySpotLists objectAtIndex:indexPath.row];
-        [self goToSpotList:spotList];
+        [self goToSpotList:spotList createdWithAdjustSliders:NO];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -312,6 +312,8 @@
 
 - (void)adjustSliderListSliderViewControllerDelegate:(AdjustSpotListSliderViewController *)viewController createdSpotList:(SpotListModel *)spotList {
     [self showAdjustSlidersView:NO animated:YES];
+    
+    [self goToSpotList:spotList createdWithAdjustSliders:YES];
 }
 
 #pragma mark - Private

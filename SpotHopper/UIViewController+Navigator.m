@@ -94,9 +94,10 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
-- (void)goToSpotList:(SpotListModel*)spotList {
+- (void)goToSpotList:(SpotListModel*)spotList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders {
     SpotListViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotListViewController"];
     [viewController setSpotList:spotList];
+    [viewController setCreatedWithAdjustSliders:createdWithAdjustSliders];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

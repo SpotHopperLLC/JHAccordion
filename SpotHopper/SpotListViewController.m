@@ -180,6 +180,39 @@
     [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
 }
 
+#pragma mark - Actions
+
+- (void)onClickBack:(id)sender {
+    if (_createdWithAdjustSliders == NO) {
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Save Custom Spotlist as..." message:nil delegate:self cancelButtonTitle:@"Discard" otherButtonTitles:@"Save", nil];
+        [alertView setAlertViewStyle:UIAlertViewStylePlainTextInput];
+        [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
+            if (buttonIndex == 1) {
+                NSString *name = [alertView textFieldAtIndex:0].text;
+                if (name.length == 0) {
+                    name = kSpotListModelDefaultName;
+                }
+                
+                [self showHUD:@"Updating name"];
+                [_spotList putSpotList:name sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+                    [self hideHUD];
+                    [self.navigationController popViewControllerAnimated:YES];
+                } failure:^(ErrorModel *errorModel) {
+                    [self hideHUD];
+                    [self showAlert:@"Oops" message:errorModel.human];
+                }];
+                
+            } else {
+                [self doDeleteSpotList];
+            }
+        }];
+        
+    }
+}
+
 #pragma mark - Private
 
 - (void)updateFooterMapListButton:(FooterViewController*)footerViewController {
@@ -229,20 +262,21 @@
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Confirm Delete" message:@"Are you sure you want to delete this spotlist?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
     [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
         if (buttonIndex == 1) {
-            
-            [self showHUD:@"Deleting"];
-            [_spotList deleteSpotList:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
-                [self hideHUD];
-                [self.navigationController popViewControllerAnimated:YES];
-            } failure:^(ErrorModel *errorModel) {
-                [self hideHUD];
-                [self showAlert:@"Oops" message:errorModel.human];
-            }];
-            
-            
+            [self doDeleteSpotList];
         }
     }];
     
+}
+
+- (void)doDeleteSpotList {
+    [self showHUD:@"Deleting"];
+    [_spotList deleteSpotList:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+        [self hideHUD];
+        [self.navigationController popViewControllerAnimated:YES];
+    } failure:^(ErrorModel *errorModel) {
+        [self hideHUD];
+        [self showAlert:@"Oops" message:errorModel.human];
+    }];
 }
 
 @end

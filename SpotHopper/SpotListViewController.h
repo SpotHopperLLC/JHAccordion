@@ -13,5 +13,6 @@
 @interface SpotListViewController : BaseViewController
 
 @property (nonatomic, strong) SpotListModel *spotList;
+@property (nonatomic, assign) BOOL createdWithAdjustSliders;
 
 @end

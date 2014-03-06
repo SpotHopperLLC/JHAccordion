@@ -77,15 +77,13 @@
                              @"sliders" : jsonSliders
                              };
     
-    NSLog(@"Post SpotList Params - %@", params);
-    
     [[ClientSessionManager sharedClient] POST:@"/api/spot_lists" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
         if (operation.response.statusCode == 200) {
-            SpotListModel *model = [jsonApi resourceForKey:@"spot_list"];
+            SpotListModel *model = [jsonApi resourceForKey:@"spot_lists"];
             successBlock(model, jsonApi);
             
             // Resolves promise
@@ -113,6 +111,52 @@
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
         if (operation.response.statusCode == 200) {
+            SpotListModel *model = [jsonApi resourceForKey:@"spot_lists"];
+            successBlock(model, jsonApi);
+            
+            // Resolves promise
+            [deferred resolve];
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+            
+            // Rejects promise
+            [deferred rejectWith:errorModel];
+        }
+    }];
+    
+    return deferred.promise;
+    
+}
+
+- (Promise *)putSpotList:(NSString*)name sliders:(NSArray*)sliders success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+    
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    NSMutableDictionary *params = @{ @"name" : name }.mutableCopy;
+    
+    // Creating params
+    if (sliders != nil) {
+        NSMutableArray *jsonSliders = [NSMutableArray array];
+        for (SliderModel *slider in sliders) {
+            [jsonSliders addObject:@{
+                                     @"slider_template_id" : slider.sliderTemplate.ID,
+                                     @"value" : slider.value
+                                     }];
+        }
+        
+        [params setObject:jsonSliders forKey:@"sliders"];
+    }
+    
+    
+    
+    [[ClientSessionManager sharedClient] PUT:[NSString stringWithFormat:@"/api/spot_lists/%d", [self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200 || operation.response.statusCode == 204) {
             SpotListModel *model = [jsonApi resourceForKey:@"spot_lists"];
             successBlock(model, jsonApi);
             

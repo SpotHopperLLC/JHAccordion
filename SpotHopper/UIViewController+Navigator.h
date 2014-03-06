@@ -33,7 +33,7 @@
 
 // Spots
 - (void)goToSpotListMenu;
-- (void)goToSpotList:(SpotListModel*)spotList;
+- (void)goToSpotList:(SpotListModel*)spotList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders;
 - (void)goToSpotProfile:(SpotModel *)spot;
 
 // Common
