@@ -89,10 +89,6 @@
 
     }];
     
-    if (kMock) {
-        _mockery = [MockData startTheMockery];
-    }
-    
     return YES;
 }
 

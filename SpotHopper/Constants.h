@@ -9,39 +9,34 @@
 #ifndef SpotHopper_Constants_h
 #define SpotHopper_Constants_h
 
-#define kEnvEnableDev TRUE
-//#define kEnvEnableProd TRUE
+#ifdef LOCAL
 
-#if kEnvEnableDev
+    #define kDebug YES
 
-    #define kDebug TRUE
-    #define kMock FALSE
-
-    #if kMock
-        #define kBaseUrl @"mockery://app"
-    #else
-        #define kBaseUrl @"http://192.168.1.123:9292"
-//        #define kBaseUrl @"http://spothopper-dev.herokuapp.com"
-//        #define kBaseUrl @"http://spothopper-staging.herokuapp.com"
-    #endif
-
-// DEV
     #define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"
     #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
 
-// STAGING
-//    #define kTwitterConsumerKey @"enlXFrFlBlOPkaBoOJunQ"
-//    #define kTwitterConsumerSecret @"UHRcQ8WXs13Iug7VpliivDxwQuGtoMg5KsaoIF3jWbM"
+    #define kBaseUrl @"http://192.168.1.123:9292"
+#endif
 
-#elif kEnvEnableProd
+#ifdef DEV
 
-    #define kDebug FALSE
-    #define kMock FALSE
+    #define kDebug YES
 
-    #define kBaseUrl @"https://"
+    #define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"
+    #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
 
-    #define kTwitterConsumerKey @""
-    #define kTwitterConsumerSecret @""
+    #define kBaseUrl @"http://spothopper-dev.herokuapp.com"
+#endif
+
+#ifdef STAGING
+
+    #define kDebug NO
+
+    #define kTwitterConsumerKey @"enlXFrFlBlOPkaBoOJunQ"
+    #define kTwitterConsumerSecret @"UHRcQ8WXs13Iug7VpliivDxwQuGtoMg5KsaoIF3jWbM"
+
+    #define kBaseUrl @"http://spothopper-staging.herokuapp.com"
 
 #endif
 
