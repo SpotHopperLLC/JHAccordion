@@ -231,9 +231,12 @@
     
     NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:initialPinchPoint];
     
-    SpotModel *spot = [_spotList.spots objectAtIndex:indexPath.row];
+    SpotModel *spot = nil;
+    if (indexPath.row < _spotList.spots.count) {
+        spot = [_spotList.spots objectAtIndex:indexPath.row];
+    }
     
-    if (index != nil && spot.match != nil) {
+    if (spot != nil && spot.match != nil) {
         [_lblMatchPercent setText:[NSString stringWithFormat:@"%@ Match", [spot matchPercent]]];
     } else {
         [_lblMatchPercent setText:@""];

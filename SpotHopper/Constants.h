@@ -23,8 +23,8 @@
 
     #define kDebug YES
 
-    #define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"
-    #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
+    #define kTwitterConsumerKey @"fIx6bzfnIohTiQuqOvHqaw"
+    #define kTwitterConsumerSecret @"TT0nyrGy2xdpfWiBMrkGKoFjjiNhJW4atoInhlv7I"
 
     #define kBaseUrl @"http://spothopper-dev.herokuapp.com"
 #endif
