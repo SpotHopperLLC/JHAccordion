@@ -10,11 +10,14 @@
 
 @protocol AdjustSliderListSliderViewControllerDelegate;
 
-@class SpotListModel;
+@class SpotListModel, CLLocation;
 
 @interface AdjustSpotListSliderViewController : BaseViewController
 
+@property (nonatomic, strong) CLLocation *location;
 @property (nonatomic, assign) id<AdjustSliderListSliderViewControllerDelegate> delegate;
+
+- (void)resetForm;
 
 @end
 

@@ -59,7 +59,7 @@
     
 }
 
-+ (Promise *)postSpotList:(NSString*)name sliders:(NSArray*)sliders successBlock:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
++ (Promise *)postSpotList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders successBlock:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
@@ -72,10 +72,14 @@
                                  }];
     }
     
-    NSDictionary *params = @{
+    NSMutableDictionary *params = @{
                              @"name" : name,
                              @"sliders" : jsonSliders
-                             };
+                             }.mutableCopy;
+    if (latitude != nil && longitude != nil) {
+        [params setObject:latitude forKey:kSpotListModelParamLatitude];
+        [params setObject:longitude forKey:kSpotListModelParamLongitude];
+    }
     
     [[ClientSessionManager sharedClient] POST:@"/api/spot_lists" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

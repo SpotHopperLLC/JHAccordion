@@ -49,6 +49,8 @@
 @property (nonatomic, strong) SectionHeaderView *sectionHeader1;
 @property (nonatomic, strong) SectionHeaderView *sectionHeader2;
 
+@property (nonatomic, strong) AdjustSpotListSliderViewController *adjustSpotListSliderViewController;
+
 @property (nonatomic, strong) CLLocation *location;
 
 @property (nonatomic, strong) NSArray *featuredSpotLists;
@@ -118,8 +120,8 @@
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     NSString * segueName = segue.identifier;
     if ([segueName isEqualToString: @"EmbedAdjustSpotListSliderViewController"]) {
-        AdjustSpotListSliderViewController *viewController = (AdjustSpotListSliderViewController*)[segue destinationViewController];
-        [viewController setDelegate:self];
+        _adjustSpotListSliderViewController = (AdjustSpotListSliderViewController*)[segue destinationViewController];
+        [_adjustSpotListSliderViewController setDelegate:self];
     }
 }
 
@@ -272,6 +274,7 @@
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
     _location = location;
+    [_adjustSpotListSliderViewController setLocation:_location];
     [self fetchSpotLists];
 }
 
@@ -291,7 +294,7 @@
     [spot getSpot:Nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
         [self hideHUD];
         
-        [SpotListModel postSpotList:spotModel.name sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+        [SpotListModel postSpotList:spotModel.name latitude:spotModel.latitude longitude:spotModel.longitude sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
             [self hideHUD];
             [self showHUDCompleted:@"Spotlist created!" block:^{
                 
@@ -343,8 +346,8 @@
     NSMutableArray *promises = [NSMutableArray array];
     
     NSDictionary *params = @{
-                             kSpotListModelParamLat : [NSNumber numberWithFloat:_location.coordinate.latitude],
-                             kSpotListModelParamLng : [NSNumber numberWithFloat:_location.coordinate.longitude]
+                             kSpotListModelQueryParamLat : [NSNumber numberWithFloat:_location.coordinate.latitude],
+                             kSpotListModelQueryParamLng : [NSNumber numberWithFloat:_location.coordinate.longitude]
                              };
     
     /*
@@ -390,6 +393,10 @@
 - (void)showAdjustSlidersView:(BOOL)show animated:(BOOL)animated {
     
     if (show == YES) {
+        
+        // Sets currently selected location inthe adjust spotlist slider view controoler
+        [_adjustSpotListSliderViewController setLocation:_location];
+        [_adjustSpotListSliderViewController resetForm];
 
         [_containerAdjustSliders setHidden:NO];
         

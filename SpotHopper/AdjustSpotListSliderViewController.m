@@ -26,6 +26,8 @@
 
 #import <JHAccordion/JHAccordion.h>
 
+#import <CoreLocation/CoreLocation.h>
+
 @interface AdjustSpotListSliderViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, ReviewSliderCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tblSliders;
@@ -229,6 +231,19 @@
     [self doCreateSpotlist];
 }
 
+#pragma mark - Public
+
+- (void)resetForm {
+    // Reset
+    _selectedSpotType = nil;
+    
+    [_sliders removeAllObjects];
+    [_advancedSliders removeAllObjects];
+    
+    // Reload
+    [_tblSliders reloadData];
+}
+
 #pragma mark - Private
 
 - (void)fetchFormData {
@@ -305,8 +320,14 @@
     [allTheSliders addObjectsFromArray:_sliders];
     [allTheSliders addObjectsFromArray:_advancedSliders];
     
+    NSNumber *latitude = nil, *longitude = nil;
+    if (_location != nil) {
+        latitude = [NSNumber numberWithFloat:_location.coordinate.latitude];
+        longitude = [NSNumber numberWithFloat:_location.coordinate.longitude];
+    }
+    
     [self showHUD:@"Creating spotlist"];
-    [SpotListModel postSpotList:kSpotListModelDefaultName sliders:allTheSliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+    [SpotListModel postSpotList:kSpotListModelDefaultName latitude:latitude longitude:longitude sliders:allTheSliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
         [self hideHUD];
         [self showHUDCompleted:@"Spotlist created!" block:^{
             
