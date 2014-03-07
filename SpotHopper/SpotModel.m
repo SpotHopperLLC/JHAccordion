@@ -135,6 +135,13 @@
     return nil;
 }
 
+- (NSString *)matchPercent {
+    if ([self match] == nil) {
+        return nil;
+    }
+    return [NSString stringWithFormat:@"%d%%", (int)([self match].floatValue * 100)];
+}
+
 - (NSString *)phoneNumber {
     return [self objectForKey:@"phone_number"];
 }

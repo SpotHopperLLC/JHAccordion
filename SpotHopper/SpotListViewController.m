@@ -234,7 +234,7 @@
     SpotModel *spot = [_spotList.spots objectAtIndex:indexPath.row];
     
     if (index != nil && spot.match != nil) {
-        [_lblMatchPercent setText:[NSString stringWithFormat:@"%d%% Match", (int)(spot.match.floatValue * 100)]];
+        [_lblMatchPercent setText:[NSString stringWithFormat:@"%@ Match", [spot matchPercent]]];
     } else {
         [_lblMatchPercent setText:@""];
     }

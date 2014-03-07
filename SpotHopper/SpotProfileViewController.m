@@ -211,6 +211,9 @@
     // Spot type
     [_lblSpotType setText:_spot.spotType.name];
     
+    [_lblPercentMatch setHidden:(_spot.match == nil)];
+    if (_spot.match != nil) [_lblPercentMatch setText:[NSString stringWithFormat:@"%@ Match", [_spot matchPercent]]];
+    
     // Update map
     if (_spot.latitude != nil && _spot.longitude != nil) {
         MKCoordinateRegion mapRegion;

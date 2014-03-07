@@ -57,6 +57,7 @@
 @property (nonatomic, strong) NSNumber *match;
 
 - (NSString*)cityState;
+- (NSString*)matchPercent;
 
 + (Promise*)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 

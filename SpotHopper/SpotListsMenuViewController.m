@@ -270,7 +270,6 @@
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
     _location = location;
-
 }
 
 - (void)locationError:(SHButtonLatoLightLocation *)button error:(NSError *)error {
