@@ -29,13 +29,19 @@
     
     [_imgIcon setImage:[UIImage imageNamed:@"icon_search_drink"]];
     [_lblName setText:drink.name];
+    
+    [_lblName setHidden:NO];
 }
 
 - (void)setSpot:(SpotModel *)spot {
     [self setup];
     
     [_imgIcon setImage:[UIImage imageNamed:@"icon_search_spot"]];
-    [_lblName setText:spot.name];
+    [_lblMainTitle setText:spot.name];
+    [_lblSubTitle setText:spot.cityState];
+    
+    [_lblMainTitle setHidden:NO];
+    [_lblSubTitle setHidden:NO];
 }
 
 - (void)setDrinksSimilar:(NSString *)text {
@@ -43,6 +49,8 @@
     
     [_imgIcon setImage:[UIImage imageNamed:@"icon_search_drink_similar"]];
     [_lblName setText:[NSString stringWithFormat:@"Drinks Similar to %@", text]];
+    
+    [_lblName setHidden:NO];
 }
 
 - (void)setSpotsSimilar:(NSString *)text {
@@ -50,13 +58,14 @@
     
     [_imgIcon setImage:[UIImage imageNamed:@"icon_search_spot_similar"]];
     [_lblName setText:[NSString stringWithFormat:@"Spots Similar to %@", text]];
+    
+    [_lblName setHidden:NO];
 }
 
 - (void)setNotWhatYoureLookingFor {
     [self setup];
     
     [_imgIcon setImage:nil];
-    [_lblName setHidden:YES];
     [_lblNotWhatLookingFor setHidden:NO];
 }
 
@@ -66,8 +75,11 @@
     [self setBackgroundColor:[UIColor colorWithWhite:1.0f alpha:0.5f]];
     [self.contentView setBackgroundColor:[UIColor colorWithWhite:1.0f alpha:0.5f]];
     
-    [_lblName setHidden:NO];
+    [_imgIcon setImage:nil];
+    [_lblName setHidden:YES];
     [_lblNotWhatLookingFor setHidden:YES];
+    [_lblMainTitle setHidden:YES];
+    [_lblSubTitle setHidden:YES];
 }
 
 @end

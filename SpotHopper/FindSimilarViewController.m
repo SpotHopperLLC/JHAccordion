@@ -10,8 +10,6 @@
 
 #import "NSNumber+Helpers.h"
 
-#import "SHButtonLatoLightLocation.h"
-
 #import "SHNavigationController.h"
 #import "FindSimilarViewController.h"
 
@@ -22,10 +20,9 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-@interface FindSimilarViewController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, SHButtonLatoLightLocationDelegate>
+@interface FindSimilarViewController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
-@property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
 @property (weak, nonatomic) IBOutlet UITableView *tblResults;
 
 @property (nonatomic, strong) NSTimer *searchTimer;
@@ -64,9 +61,6 @@
     _tblResultsInitialFrame = CGRectZero;
     _results = [NSMutableArray array];
     
-    // Locations
-    [_btnLocation setDelegate:self];
-    [_btnLocation updateWithLastLocation];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -190,7 +184,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 45.0f;
+    return 55.0f;
 }
 #pragma mark - JHPullToRefresh
 
@@ -212,22 +206,6 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return NO;
-}
-
-#pragma mark - SHButtonLatoLightLocationDelegate
-
-- (void)locationRequestsUpdate:(SHButtonLatoLightLocation *)button location:(LocationChooserViewController *)viewController {
-    SHNavigationController *navController = [[SHNavigationController alloc] initWithRootViewController:viewController];
-    [self presentViewController:navController animated:YES completion:nil];
-}
-
-- (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
-    _location = location;
-    
-}
-
-- (void)locationError:(SHButtonLatoLightLocation *)button error:(NSError *)error {
-    [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
 }
 
 #pragma mark - Actions
