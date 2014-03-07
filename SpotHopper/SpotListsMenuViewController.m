@@ -34,6 +34,8 @@
 #import <JHAccordion/JHAccordion.h>
 #import <Promises/Promise.h>
 
+#import <CoreLocation/CoreLocation.h>
+
 @interface SpotListsMenuViewController ()<UITableViewDataSource, UITableViewDelegate, FindSimilarViewControllerDelegate, AdjustSliderListSliderViewControllerDelegate, JHAccordionDelegate, SHButtonLatoLightLocationDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *containerAdjustSliders;
@@ -270,6 +272,7 @@
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
     _location = location;
+    [self fetchSpotLists];
 }
 
 - (void)locationError:(SHButtonLatoLightLocation *)button error:(NSError *)error {
@@ -331,13 +334,23 @@
 
 - (void)fetchSpotLists {
     
+    if (_location == nil) {
+        [self showAlert:@"Oops" message:@"Please select a location above to start showing spotlists"];
+        return;
+    }
+    
     [self showHUD:@"Fetching spot lists"];
     NSMutableArray *promises = [NSMutableArray array];
+    
+    NSDictionary *params = @{
+                             kSpotListModelParamLat : [NSNumber numberWithFloat:_location.coordinate.latitude],
+                             kSpotListModelParamLng : [NSNumber numberWithFloat:_location.coordinate.longitude]
+                             };
     
     /*
      * Featured spot lists
      */
-    Promise *promiseFeaturedSpotLists = [SpotListModel getSpotLists:nil success:^(NSArray *spotListModels, JSONAPI *jsonApi) {
+    Promise *promiseFeaturedSpotLists = [SpotListModel getFeaturedSpotLists:params success:^(NSArray *spotListModels, JSONAPI *jsonApi) {
         _featuredSpotLists = spotListModels;
     } failure:^(ErrorModel *errorModel) {
         
@@ -349,7 +362,7 @@
      */
     if ([ClientSessionManager sharedClient].isLoggedIn == YES) {
         UserModel *user = [ClientSessionManager sharedClient].currentUser;
-        Promise *promiseMySpotLists = [user getSpotLists:nil success:^(NSArray *spotListsModels, JSONAPI *jsonApi) {
+        Promise *promiseMySpotLists = [user getSpotLists:params success:^(NSArray *spotListsModels, JSONAPI *jsonApi) {
             _mySpotLists = spotListsModels;
         } failure:^(ErrorModel *errorModel) {
             
@@ -365,6 +378,9 @@
     } fail:^(id error) {
         
     } always:^{
+        // Opens up featured section if there are featured spotlists
+        [_sectionHeader1 setSelected:(_featuredSpotLists.count > 0)];
+        
         [_tblMenu reloadData];
         [self hideHUD];
     }];
