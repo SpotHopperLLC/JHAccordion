@@ -24,6 +24,8 @@
 //    UIImageView * _trackBackgroundMax;
 }
 
+@property (nonatomic, assign) BOOL vibeFeel;
+
 @property (nonatomic, assign) float minimumValue;
 @property (nonatomic, assign) float maximumValue;
 @property (nonatomic, assign) float selectedValue;
