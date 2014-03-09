@@ -68,13 +68,14 @@
     for (SliderModel *slider in sliders) {
         [jsonSliders addObject:@{
                                  @"slider_template_id" : slider.sliderTemplate.ID,
-                                 @"value" : slider.value
+                                 @"value" : slider.value,
                                  }];
     }
     
     NSMutableDictionary *params = @{
                              @"name" : name,
-                             @"sliders" : jsonSliders
+                             @"sliders" : jsonSliders,
+                             kSpotListModelParamBasedOnSlider : [NSNumber numberWithBool:YES]
                              }.mutableCopy;
     if (latitude != nil && longitude != nil) {
         [params setObject:latitude forKey:kSpotListModelParamLatitude];

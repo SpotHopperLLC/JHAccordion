@@ -16,7 +16,8 @@
     #define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"
     #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
 
-    #define kBaseUrl @"http://192.168.1.123:9292"
+//    #define kBaseUrl @"http://192.168.1.123:9292"
+    #define kBaseUrl @"http://192.168.1.111:9292"
 #endif
 
 #ifdef DEV
@@ -31,7 +32,7 @@
 
 #ifdef STAGING
 
-    #define kDebug NO
+    #define kDebug YES
 
     #define kTwitterConsumerKey @"enlXFrFlBlOPkaBoOJunQ"
     #define kTwitterConsumerSecret @"UHRcQ8WXs13Iug7VpliivDxwQuGtoMg5KsaoIF3jWbM"

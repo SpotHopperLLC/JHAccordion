@@ -11,6 +11,7 @@
 #define kSpotListModelParamName @"name"
 #define kSpotListModelParamLatitude @"latitude"
 #define kSpotListModelParamLongitude @"longitude"
+#define kSpotListModelParamBasedOnSlider @"based_on_sliders"
 
 #define kSpotListModelQueryParamLat @"lat"
 #define kSpotListModelQueryParamLng @"lng"
