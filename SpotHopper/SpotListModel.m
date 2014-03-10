@@ -138,12 +138,21 @@
     
 }
 
-- (Promise *)putSpotList:(NSString*)name sliders:(NSArray*)sliders success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+- (Promise *)putSpotList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
     
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
-    NSMutableDictionary *params = @{ @"name" : name }.mutableCopy;
+    NSMutableDictionary *params = @{  }.mutableCopy;
+    
+    if (name.length > 0) {
+        [params setObject:name forKey:@"name"];
+    }
+    
+    if (latitude != nil && longitude != nil) {
+        [params setObject:latitude forKey:kSpotListModelParamLatitude];
+        [params setObject:longitude forKey:kSpotListModelParamLongitude];
+    }
     
     // Creating params
     if (sliders != nil) {

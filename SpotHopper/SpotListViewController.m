@@ -248,8 +248,25 @@
 }
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
-    _selectedLocation = location;
+    if (_selectedLocation != nil) {
     
+        [self showHUD:@"Getting new spots"];
+        [_spotList putSpotList:nil latitude:[NSNumber numberWithFloat:location.coordinate.latitude] longitude:[NSNumber numberWithFloat:location.coordinate.longitude] sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+            [self hideHUD];
+            
+            _spotList = spotListModel;
+            [_collectionView reloadData];
+            
+            [self updateView];
+            [self updateMatchPercent];
+        } failure:^(ErrorModel *errorModel) {
+            [self hideHUD];
+            [self showAlert:@"Oops" message:errorModel.human];
+        }];
+        
+    }
+    
+    _selectedLocation = location;
 }
 
 - (void)locationError:(SHButtonLatoLightLocation *)button error:(NSError *)error {
@@ -273,7 +290,7 @@
                 }
                 
                 [self showHUD:@"Updating name"];
-                [_spotList putSpotList:name sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+                [_spotList putSpotList:name latitude:nil longitude:nil sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
                     [self hideHUD];
                     [self.navigationController popViewControllerAnimated:YES];
                 } failure:^(ErrorModel *errorModel) {
@@ -302,6 +319,7 @@
     }
     
     // Update map
+    [_mapView removeAnnotations:[_mapView annotations]];
     for (SpotModel *spot in _spotList.spots) {
         
         // Place pin

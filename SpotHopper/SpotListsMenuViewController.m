@@ -91,6 +91,10 @@
     [_tblMenu setTableFooterView:[[UIView alloc] init]];
     
     [self showAdjustSlidersView:NO animated:NO];
+    
+    // Locations
+    [_btnLocation setDelegate:self];
+    [_btnLocation updateWithLastLocation];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -108,10 +112,6 @@
     
     // Bring container to front so its slides over footer
     [self.view bringSubviewToFront:_containerAdjustSliders];
-    
-    // Locations
-    [_btnLocation setDelegate:self];
-    [_btnLocation updateWithLastLocation];
     
     // Fetching spot lists
     [self fetchSpotLists];
@@ -338,7 +338,6 @@
 - (void)fetchSpotLists {
     
     if (_location == nil) {
-        [self showAlert:@"Oops" message:@"Please select a location above to start showing spotlists"];
         return;
     }
     
