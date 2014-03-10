@@ -45,6 +45,22 @@
     [_slider addTarget:self action:@selector(onValueChangedSlider:) forControlEvents:UIControlEventValueChanged];
 }
 
+- (void)setVibeFeel:(BOOL)vibeFeel slider:(SliderModel*)slider {
+    [_slider setVibeFeel:vibeFeel];
+    
+    if (vibeFeel == YES) {
+        // Highlight max label orange if slider value is greater than 5 OR if there is no min label
+        if (slider.value.floatValue >= 5.0f || slider.sliderTemplate.minLabel.length == 0) {
+            [_lblMnimum setTextColor:[UIColor colorWithRed:(64.0f/255.0f) green:(64.0f/255.0f) blue:(64.0f/255.0f) alpha:1.0f]];
+            [_lblMaximum setTextColor:kColorOrangeDark];
+        } else {
+            [_lblMnimum setTextColor:kColorOrangeDark];
+            [_lblMaximum setTextColor:[UIColor colorWithRed:(64.0f/255.0f) green:(64.0f/255.0f) blue:(64.0f/255.0f) alpha:1.0f]];
+        }
+    }
+    
+}
+
 - (void)dealloc {
     [_slider removeTarget:self action:@selector(onValueChangedSlider:) forControlEvents:UIControlEventValueChanged];
 }

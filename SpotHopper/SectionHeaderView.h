@@ -10,12 +10,14 @@
 
 #import "UIButton+Block.h"
 
+#import <TTTAttributedLabel/TTTAttributedLabel.h>
+
 @interface SectionHeaderView : UIView
 
 @property (nonatomic, strong) UIView *viewContent;
 @property (nonatomic, strong) UIButton *btnBackground;
 @property (nonatomic, strong) UIImageView *imgIcon;
-@property (nonatomic, strong) UILabel *lblText;
+@property (nonatomic, strong) TTTAttributedLabel *lblText;
 @property (nonatomic, strong) UIImageView *imgArrow;
 
 @property (nonatomic, assign) BOOL selected;

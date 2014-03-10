@@ -86,7 +86,7 @@
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
-    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/users/%d/reviews", self.ID.integerValue] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/users/%d/reviews", [self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
@@ -107,6 +107,35 @@
     }];
     
     return deferred.promise;
+}
+
+- (Promise *)getSpotLists:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+    
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/users/%d/spot_lists", [self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            NSArray *models = [jsonApi resourcesForKey:@"spot_lists"];
+            successBlock(models, jsonApi);
+            
+            // Resolves promise
+            [deferred resolve];
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+            
+            // Rejects promise
+            [deferred rejectWith:errorModel];
+        }
+    }];
+    
+    return deferred.promise;
+    
 }
 
 #pragma mark - Getters

@@ -109,7 +109,7 @@
 #pragma mark - Actions
 
 - (IBAction)onClickSpots:(id)sender {
-    
+    [self goToSpotListMenu];
 }
 
 - (IBAction)onClickDrinks:(id)sender {

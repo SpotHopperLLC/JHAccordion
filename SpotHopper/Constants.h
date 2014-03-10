@@ -9,45 +9,42 @@
 #ifndef SpotHopper_Constants_h
 #define SpotHopper_Constants_h
 
-#define kEnvEnableDev TRUE
-//#define kEnvEnableProd TRUE
+#ifdef LOCAL
 
-#if kEnvEnableDev
+    #define kDebug YES
 
-    #define kDebug TRUE
-    #define kMock FALSE
+    #define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"
+    #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
 
-    #if kMock
-        #define kBaseUrl @"mockery://app"
-    #else
-//        #define kBaseUrl @"http://192.168.1.8:9292"
-//        #define kBaseUrl @"http://spothopper-dev.herokuapp.com"
-        #define kBaseUrl @"http://spothopper-staging.herokuapp.com"
-    #endif
+//    #define kBaseUrl @"http://192.168.1.123:9292"
+    #define kBaseUrl @"http://192.168.1.111:9292"
+#endif
 
-// DEV
-//    #define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"
-//    #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
+#ifdef DEV
 
-// STAGING
+    #define kDebug YES
+
+    #define kTwitterConsumerKey @"fIx6bzfnIohTiQuqOvHqaw"
+    #define kTwitterConsumerSecret @"TT0nyrGy2xdpfWiBMrkGKoFjjiNhJW4atoInhlv7I"
+
+    #define kBaseUrl @"http://spothopper-dev.herokuapp.com"
+#endif
+
+#ifdef STAGING
+
+    #define kDebug YES
+
     #define kTwitterConsumerKey @"enlXFrFlBlOPkaBoOJunQ"
     #define kTwitterConsumerSecret @"UHRcQ8WXs13Iug7VpliivDxwQuGtoMg5KsaoIF3jWbM"
 
-#elif kEnvEnableProd
-
-    #define kDebug FALSE
-    #define kMock FALSE
-
-    #define kBaseUrl @"https://"
-
-    #define kTwitterConsumerKey @""
-    #define kTwitterConsumerSecret @""
+    #define kBaseUrl @"http://spothopper-staging.herokuapp.com"
 
 #endif
 
 // Colors
 #define kColorOrange [UIColor colorWithRed:(221.0f/255.0f) green:(106.0f/255.0f) blue:(51.0f/255.0f) alpha:1.0f]
 #define kColorOrangeLight [UIColor colorWithRed:(238.0f/255.0f) green:(160.0f/255.0f) blue:(109.0f/255.0f) alpha:1.0f]
+#define kColorOrangeDark [UIColor colorWithRed:(229.0f/255.0f) green:(134.0f/255.0f) blue:(78.0f/255.0f) alpha:1.0f]
 
 #define kReviewTypesSpot @"Spot"
 #define kReviewTypesBeer @"Beer"
@@ -63,6 +60,8 @@
 
 // Service configurations
 #define kSentryDSN @"https://6e7d0ff70d3e4f05a2ae8c53f70c55b1:8bdf476db4344ddaad89108cbd871562@app.getsentry.com/17343"
+
+#define IS_FOUR_INCH  (([[UIScreen mainScreen] bounds].size.height == 568)?YES:NO)
 
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
 #define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)

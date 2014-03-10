@@ -114,7 +114,7 @@
     
     NSLog(@"Put Review Params - %@", params);
     
-    [[ClientSessionManager sharedClient] PUT:[NSString stringWithFormat:@"/api/reviews/%d", self.ID.integerValue] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[ClientSessionManager sharedClient] PUT:[NSString stringWithFormat:@"/api/reviews/%d", [self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];

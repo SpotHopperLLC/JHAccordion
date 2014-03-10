@@ -14,6 +14,7 @@
 #import "SHNavigationBar.h"
 
 #import "ClientSessionManager.h"
+#import "AverageReviewModel.h"
 #import "DrinkModel.h"
 #import "DrinkTypeModel.h"
 #import "ErrorModel.h"
@@ -22,6 +23,7 @@
 #import "SliderTemplateModel.h"
 #import "SpotModel.h"
 #import "SpotTypeModel.h"
+#import "SpotListModel.h"
 #import "UserModel.h"
 
 #import "MockData.h"
@@ -47,6 +49,7 @@
     [[RavenClient sharedClient] setupExceptionHandler];
     
     // Initializes resource linkng for JSONAPI
+    [JSONAPIResourceLinker link:@"average_review" toLinkedType:@"average_reviews"];
     [JSONAPIResourceLinker link:@"drink" toLinkedType:@"drinks"];
     [JSONAPIResourceLinker link:@"drink_type" toLinkedType:@"drink_types"];
     [JSONAPIResourceLinker link:@"review" toLinkedType:@"reviews"];
@@ -54,9 +57,11 @@
     [JSONAPIResourceLinker link:@"slider_template" toLinkedType:@"slider_templates"];
     [JSONAPIResourceLinker link:@"spot" toLinkedType:@"spots"];
     [JSONAPIResourceLinker link:@"spot_type" toLinkedType:@"spot_types"];
+    [JSONAPIResourceLinker link:@"spot_list" toLinkedType:@"spot_lists"];
     [JSONAPIResourceLinker link:@"user" toLinkedType:@"users"];
     
     // Initializes model linking for JSONAPI
+    [JSONAPIResourceModeler useResource:[AverageReviewModel class] toLinkedType:@"average_reviews"];
     [JSONAPIResourceModeler useResource:[DrinkModel class] toLinkedType:@"drinks"];
     [JSONAPIResourceModeler useResource:[DrinkTypeModel class] toLinkedType:@"drink_types"];
     [JSONAPIResourceModeler useResource:[ErrorModel class] toLinkedType:@"errors"];
@@ -65,6 +70,7 @@
     [JSONAPIResourceModeler useResource:[SliderTemplateModel class] toLinkedType:@"slider_templates"];
     [JSONAPIResourceModeler useResource:[SpotModel class] toLinkedType:@"spots"];
     [JSONAPIResourceModeler useResource:[SpotTypeModel class] toLinkedType:@"spot_types"];
+    [JSONAPIResourceModeler useResource:[SpotListModel class] toLinkedType:@"spot_lists"];
     [JSONAPIResourceModeler useResource:[UserModel class] toLinkedType:@"users"];
 
     // Navigation bar styling
@@ -82,10 +88,6 @@
     } failure:^(FBSessionState state, NSError *error) {
 
     }];
-    
-    if (kMock) {
-        _mockery = [MockData startTheMockery];
-    }
     
     return YES;
 }

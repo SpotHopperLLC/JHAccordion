@@ -8,6 +8,7 @@
 
 #import "UIViewController+Navigator.h"
 
+#import "FindSimilarViewController.h"
 #import "LaunchViewController.h"
 
 #import "MyReviewsViewController.h"
@@ -16,6 +17,8 @@
 #import "ReviewViewController.h"
 #import "ReviewsMenuViewController.h"
 #import "SearchNewReviewViewController.h"
+#import "SpotListsMenuViewController.h"
+#import "SpotListViewController.h"
 #import "SpotProfileViewController.h"
 
 @implementation UIViewController (Navigator)
@@ -86,9 +89,30 @@
 
 #pragma mark - Spots
 
+- (void)goToSpotListMenu {
+    SpotListsMenuViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotListsMenuViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToSpotList:(SpotListModel*)spotList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders {
+    SpotListViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotListViewController"];
+    [viewController setSpotList:spotList];
+    [viewController setCreatedWithAdjustSliders:createdWithAdjustSliders];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
 - (void)goToSpotProfile:(SpotModel *)spot {
     SpotProfileViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
     [viewController setSpot:spot];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+#pragma mark - Commons
+
+- (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate {
+    FindSimilarViewController *viewController = [[FindSimilarViewController alloc] initWithNibName:@"FindSimilarViewController" bundle:[NSBundle mainBundle]];
+    [viewController setSearchDrinks:NO];
+    [viewController setDelegate:delegate];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

@@ -42,6 +42,9 @@
 {
     [super viewDidLoad];
     
+    // Sets title
+    [self setTitle:@"Select a Location"];
+    
     _tellMeMyLocation = [[TellMeMyLocation alloc] init];
     
     // Navigation bar buttons

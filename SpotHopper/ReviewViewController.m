@@ -401,6 +401,7 @@
         [_lblSubTitle setText:@""];
         [_lblSubSubTitle setText:@""];
     }
+    
 }
 
 - (void)fetchReview {

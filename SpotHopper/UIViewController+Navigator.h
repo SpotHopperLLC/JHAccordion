@@ -11,6 +11,9 @@
 #import "DrinkModel.h"
 #import "ReviewModel.h"
 #import "SpotModel.h"
+#import "SpotListModel.h"
+
+#import "FindSimilarViewController.h"
 
 @interface UIViewController (Navigator)
 
@@ -29,7 +32,12 @@
 - (void)goToNewReview:(SpotModel*)spot;
 
 // Spots
+- (void)goToSpotListMenu;
+- (void)goToSpotList:(SpotListModel*)spotList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders;
 - (void)goToSpotProfile:(SpotModel *)spot;
+
+// Common
+- (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate;
 
 // Storyboards
 - (UIStoryboard*)mainStoryboard;

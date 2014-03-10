@@ -59,13 +59,14 @@
     // Assue that the cap ends are semi-circular, so the cap is half of the image height
     trackImage=nil;
     
-	_trackBackgroundMin = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"slider_background_min"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)] highlightedImage:[[UIImage imageNamed:@"slider_background_selected_min"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)]];
+    _trackBackgroundMin = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"slider_background_min"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)] highlightedImage:[[UIImage imageNamed:@"slider_background_selected_min"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)]];
     _trackBackgroundMax = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"slider_background_max"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 25)] highlightedImage:[[UIImage imageNamed:@"slider_background_selected_max"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 25)]];
-	
+    
     
     // Load up the handle images so we can measure them
     _minThumb = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"slider_thumb"] highlightedImage:[UIImage imageNamed:@"slider_thumb_selected_with_light"]];
     [_minThumb setContentMode:UIViewContentModeCenter];
+    [self updateVibeFeel];
     
     // the padding is half of the width of the widest thumb, so that the thumb goes to edge of the subview
     _padding=_minThumb.frame.size.width/2;
@@ -118,6 +119,8 @@
 
 - (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
+    if (_vibeFeel == YES) return NO;
+    
 	if(!_minThumbOn && !_maxThumbOn){
 		return YES;
 	}
@@ -137,6 +140,8 @@
 
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
 {
+    if (_vibeFeel == YES) return NO;
+    
 	CGPoint touchPoint = [touch locationInView:self];
     
 	if (CGRectContainsPoint(_minThumb.frame, touchPoint)){
@@ -169,6 +174,37 @@
     [_trackBackgroundMin setHighlighted:NO];
     [_trackBackgroundMax setHighlighted:NO];
     [_minThumb setHighlighted:NO];
+}
+
+- (void)setVibeFeel:(BOOL)vibeFeel {
+    _vibeFeel = vibeFeel;
+    [self updateVibeFeel];
+}
+
+- (void)updateVibeFeel {
+    if (_vibeFeel == NO) {
+        [_trackBackgroundMin setImage:[[UIImage imageNamed:@"slider_background_min"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)]];
+        [_trackBackgroundMin setHighlightedImage:[[UIImage imageNamed:@"slider_background_selected_min"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)]];
+        
+        [_trackBackgroundMax setImage:[[UIImage imageNamed:@"slider_background_max"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 25)]];
+        [_trackBackgroundMax setHighlightedImage:[[UIImage imageNamed:@"slider_background_selected_max"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 25)]];
+        
+        
+        // Load up the handle images so we can measure them
+        [_minThumb setImage:[UIImage imageNamed:@"slider_thumb"]];
+        [_minThumb setHighlightedImage:[UIImage imageNamed:@"slider_thumb_selected_with_light"]];
+    } else {
+        [_trackBackgroundMin setImage:[[UIImage imageNamed:@"slider_background_profile_min"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)]];
+        [_trackBackgroundMin setHighlightedImage:[[UIImage imageNamed:@"slider_background_profile_min"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)]];
+        
+        [_trackBackgroundMax setImage:[[UIImage imageNamed:@"slider_background_profile_max"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 25)]];
+        [_trackBackgroundMax setHighlightedImage:[[UIImage imageNamed:@"slider_background_profile_max"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 25)]];
+        
+        
+        // Load up the handle images so we can measure them
+        [_minThumb setImage:[UIImage imageNamed:@"slider_profile_thumb"]];
+        [_minThumb setHighlightedImage:[UIImage imageNamed:@"slider_profile_thumb"]];
+    }
 }
 
 @end

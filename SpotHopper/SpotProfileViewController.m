@@ -13,8 +13,10 @@
 
 #import "SpotAnnotation.h"
 
+#import "ReviewSliderCell.h"
 #import "SpotImageCollectViewCell.h"
 
+#import "AverageReviewModel.h"
 #import "SpotTypeModel.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
@@ -36,6 +38,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnImagePrev;
 @property (weak, nonatomic) IBOutlet UIButton *btnImageNext;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+
+@property (nonatomic, strong) AverageReviewModel *averageReview;
 
 @end
 
@@ -64,6 +68,9 @@
     // Header content view
     _headerContent = [UIView viewFromNibNamed:@"SpotProfileHeaderView" withOwner:self];
     [_tblSliders setTableHeaderView:_headerContent];
+    
+    // COnfigure table
+    [_tblSliders registerNib:[UINib nibWithNibName:@"ReviewSliderCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ReviewSliderCell"];
 
     // Custom collection view layout
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
@@ -78,6 +85,7 @@
     [_collectionView registerNib:[UINib nibWithNibName:@"SpotImageCollectionViewCellView" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"SpotImageCollectViewCell"];
     
     [self updateView];
+    [self fetchSpot];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -119,15 +127,30 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 0;
+    return _averageReview.sliders.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return nil;
+    SliderModel *slider = [_averageReview.sliders objectAtIndex:indexPath.row];
+    
+    ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
+    [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
+    [cell setVibeFeel:YES slider:slider];
+    
+    return cell;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        return 77.0f;
+    }
+    return 0.0f;
 }
 
 #pragma mark - Footer
@@ -206,10 +229,22 @@
 
 #pragma mark - Private
 
+- (void)fetchSpot {
+    [_spot getSpot:nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
+        _averageReview = spotModel.averageReview;
+        [_tblSliders reloadData];
+    } failure:^(ErrorModel *errorModel) {
+        
+    }];
+}
+
 - (void)updateView {
     
     // Spot type
     [_lblSpotType setText:_spot.spotType.name];
+    
+    [_lblPercentMatch setHidden:(_spot.match == nil)];
+    if (_spot.match != nil) [_lblPercentMatch setText:[NSString stringWithFormat:@"%@ Match", [_spot matchPercent]]];
     
     // Update map
     if (_spot.latitude != nil && _spot.longitude != nil) {
