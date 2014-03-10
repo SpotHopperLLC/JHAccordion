@@ -12,6 +12,9 @@
 #import "MatchPercentAnnotationView.h"
 
 #import "SpotModel.h"
+#import "SpotTypeModel.h"
+
+#import "SpotAnnotationCallout.h"
 
 @implementation MatchPercentAnnotationView
 
@@ -20,7 +23,6 @@
     if (self) {
         self.frame = CGRectMake(0, 0, 72, 62);
         self.opaque = NO;
-        [self setup];
     }
     return self;
 }
@@ -28,21 +30,20 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setup];
+        
     }
     return self;
 }
 
-- (void)setup {
-//    [self setImage:[UIImage imageNamed:@"img_match_pin_view"]];
-//    [self setHighlighted:NO];
+- (void)setCalloutView:(SpotAnnotationCallout *)calloutView {
+    _calloutView = calloutView;
+    
+    [_calloutView.lblName setText:_spot.name];
+    [_calloutView.lblType setText:_spot.spotType.name];
 }
 
 - (void)drawRect:(CGRect)rect {
-//    [super drawRect:rect];
-//    CGContextRef context = UIGraphicsGetCurrentContext();
-//    CGContextClearRect(context, rect);
-    
+
     UIImage *image = [UIImage imageNamed:( self.isHighlighted ? @"img_match_pin_view_selected" : @"img_match_pin_view" )];
     [image drawInRect:rect];
     
@@ -57,5 +58,12 @@
     
 }
 
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+    // Makes callout clickable if touch point was inside callout
+    if (CGRectContainsPoint(_calloutView.frame, point)) {
+        return YES;
+    }
+    return NO;
+}
 
 @end

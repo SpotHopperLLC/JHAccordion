@@ -8,10 +8,11 @@
 
 #import <MapKit/MapKit.h>
 
-@class SpotModel;
+@class SpotAnnotationCallout, SpotModel;
 
 @interface MatchPercentAnnotationView : MKAnnotationView
 
 @property (nonatomic, strong) SpotModel *spot;
+@property (nonatomic, strong) SpotAnnotationCallout *calloutView;
 
 @end

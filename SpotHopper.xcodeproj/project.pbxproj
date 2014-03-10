@@ -158,6 +158,18 @@
 		039ABBDE18CE309C00B84AE6 /* img_match_pin_view_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039ABBDA18CE306B00B84AE6 /* img_match_pin_view_selected@2x.png */; };
 		039ABBDF18CE309C00B84AE6 /* img_match_pin_view_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 039ABBD918CE306B00B84AE6 /* img_match_pin_view_selected.png */; };
 		039ABBE018CE309C00B84AE6 /* img_match_pin_view_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039ABBDA18CE306B00B84AE6 /* img_match_pin_view_selected@2x.png */; };
+		039ABBE218CE326C00B84AE6 /* SpotAnnotationCalloutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039ABBE118CE326C00B84AE6 /* SpotAnnotationCalloutView.xib */; };
+		039ABBE518CE334A00B84AE6 /* img_callout_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 039ABBE318CE334A00B84AE6 /* img_callout_background.png */; };
+		039ABBE618CE334A00B84AE6 /* img_callout_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039ABBE418CE334A00B84AE6 /* img_callout_background@2x.png */; };
+		039ABBE718CE34BD00B84AE6 /* SpotAnnotationCalloutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039ABBE118CE326C00B84AE6 /* SpotAnnotationCalloutView.xib */; };
+		039ABBE818CE34BE00B84AE6 /* SpotAnnotationCalloutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039ABBE118CE326C00B84AE6 /* SpotAnnotationCalloutView.xib */; };
+		039ABBE918CE359400B84AE6 /* img_callout_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039ABBE418CE334A00B84AE6 /* img_callout_background@2x.png */; };
+		039ABBEA18CE359500B84AE6 /* img_callout_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039ABBE418CE334A00B84AE6 /* img_callout_background@2x.png */; };
+		039ABBEB18CE359700B84AE6 /* img_callout_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 039ABBE318CE334A00B84AE6 /* img_callout_background.png */; };
+		039ABBEC18CE359800B84AE6 /* img_callout_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 039ABBE318CE334A00B84AE6 /* img_callout_background.png */; };
+		039ABBEF18CE3BB700B84AE6 /* SpotAnnotationCallout.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ABBEE18CE3BB700B84AE6 /* SpotAnnotationCallout.m */; };
+		039ABBF018CE3BBC00B84AE6 /* SpotAnnotationCallout.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ABBEE18CE3BB700B84AE6 /* SpotAnnotationCallout.m */; };
+		039ABBF118CE3BBD00B84AE6 /* SpotAnnotationCallout.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ABBEE18CE3BB700B84AE6 /* SpotAnnotationCallout.m */; };
 		039B6FEE18870E4A00C590F8 /* SearchNewReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B6FED18870E4A00C590F8 /* SearchNewReviewViewController.m */; };
 		039B6FF1188711B800C590F8 /* SHLabelLatoRegular.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B6FF0188711B800C590F8 /* SHLabelLatoRegular.m */; };
 		039B6FF41887143B00C590F8 /* SearchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B6FF31887143B00C590F8 /* SearchCell.m */; };
@@ -1195,6 +1207,11 @@
 		039ABBD118CE24A400B84AE6 /* MatchPercentAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatchPercentAnnotationView.m; sourceTree = "<group>"; };
 		039ABBD918CE306B00B84AE6 /* img_match_pin_view_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_match_pin_view_selected.png; sourceTree = "<group>"; };
 		039ABBDA18CE306B00B84AE6 /* img_match_pin_view_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_match_pin_view_selected@2x.png"; sourceTree = "<group>"; };
+		039ABBE118CE326C00B84AE6 /* SpotAnnotationCalloutView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpotAnnotationCalloutView.xib; sourceTree = "<group>"; };
+		039ABBE318CE334A00B84AE6 /* img_callout_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_callout_background.png; sourceTree = "<group>"; };
+		039ABBE418CE334A00B84AE6 /* img_callout_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_callout_background@2x.png"; sourceTree = "<group>"; };
+		039ABBED18CE3BB700B84AE6 /* SpotAnnotationCallout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotAnnotationCallout.h; sourceTree = "<group>"; };
+		039ABBEE18CE3BB700B84AE6 /* SpotAnnotationCallout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotAnnotationCallout.m; sourceTree = "<group>"; };
 		039B6FEC18870E4A00C590F8 /* SearchNewReviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchNewReviewViewController.h; sourceTree = "<group>"; };
 		039B6FED18870E4A00C590F8 /* SearchNewReviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchNewReviewViewController.m; sourceTree = "<group>"; };
 		039B6FEF188711B800C590F8 /* SHLabelLatoRegular.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHLabelLatoRegular.h; sourceTree = "<group>"; };
@@ -1609,6 +1626,9 @@
 				039ABBCC18CE22E400B84AE6 /* MatchPercentAnnotation.m */,
 				039ABBD018CE24A400B84AE6 /* MatchPercentAnnotationView.h */,
 				039ABBD118CE24A400B84AE6 /* MatchPercentAnnotationView.m */,
+				039ABBED18CE3BB700B84AE6 /* SpotAnnotationCallout.h */,
+				039ABBEE18CE3BB700B84AE6 /* SpotAnnotationCallout.m */,
+				039ABBE118CE326C00B84AE6 /* SpotAnnotationCalloutView.xib */,
 			);
 			name = Map;
 			sourceTree = "<group>";
@@ -2371,6 +2391,8 @@
 		03F6BF5D18C6DC8500172F13 /* Spotlists */ = {
 			isa = PBXGroup;
 			children = (
+				039ABBE318CE334A00B84AE6 /* img_callout_background.png */,
+				039ABBE418CE334A00B84AE6 /* img_callout_background@2x.png */,
 				039ABBD918CE306B00B84AE6 /* img_match_pin_view_selected.png */,
 				039ABBDA18CE306B00B84AE6 /* img_match_pin_view_selected@2x.png */,
 				039ABBC118CE1DA500B84AE6 /* img_match_pin_view.png */,
@@ -2550,6 +2572,7 @@
 				03F6BF8A18C70A4500172F13 /* FindSimilarViewController.xib in Resources */,
 				03F2D9331871E42800C69576 /* btn_login_spothopper@2x.png in Resources */,
 				03866551186E050500985CEC /* btn_launch_item_background@2x.png in Resources */,
+				039ABBE618CE334A00B84AE6 /* img_callout_background@2x.png in Resources */,
 				03866528186DE0F700985CEC /* logo_spothopper.png in Resources */,
 				039ABBC318CE1DA500B84AE6 /* img_match_pin_view.png in Resources */,
 				03E882D618C78D3400BD8FBB /* btn_down_arrow@2x.png in Resources */,
@@ -2620,6 +2643,7 @@
 				03CA72C3187C4FB300815284 /* slider_background_min.png in Resources */,
 				03CA7282187B90D800815284 /* icon_clock.png in Resources */,
 				03CA7266187B4EB700815284 /* img_expand_east_orange@2x.png in Resources */,
+				039ABBE218CE326C00B84AE6 /* SpotAnnotationCalloutView.xib in Resources */,
 				039ABBDC18CE306B00B84AE6 /* img_match_pin_view_selected@2x.png in Resources */,
 				03CA72EC18803F7F00815284 /* 51-power.png in Resources */,
 				03CA7265187B4EB700815284 /* img_expand_east_orange.png in Resources */,
@@ -2657,6 +2681,7 @@
 				03F4E75918CA2A5C0056EAA9 /* slider_thumb_selected_with_light_large.png in Resources */,
 				0386652C186DE0F700985CEC /* btn_context_info.png in Resources */,
 				03866522186DE0F700985CEC /* app_background.png in Resources */,
+				039ABBE518CE334A00B84AE6 /* img_callout_background.png in Resources */,
 				0320233C1875E060008368C2 /* FooterViewController.xib in Resources */,
 				03265F2918C4E955002177F7 /* icon_arrow_shadow@2x.png in Resources */,
 				03E4452718AEE65000C88421 /* AutoCompleteCellView.xib in Resources */,
@@ -2900,10 +2925,12 @@
 				03F4E84618CA33D00056EAA9 /* slider_thumb_selected_with_light_large.png in Resources */,
 				03F4E84718CA33D00056EAA9 /* btn_context_info.png in Resources */,
 				03F4E84818CA33D00056EAA9 /* app_background.png in Resources */,
+				039ABBEA18CE359500B84AE6 /* img_callout_background@2x.png in Resources */,
 				03F4E84918CA33D00056EAA9 /* FooterViewController.xib in Resources */,
 				03F4E84A18CA33D00056EAA9 /* icon_arrow_shadow@2x.png in Resources */,
 				03F4E84B18CA33D00056EAA9 /* AutoCompleteCellView.xib in Resources */,
 				03F4E84C18CA33D00056EAA9 /* icon_cocktails@2x.png in Resources */,
+				039ABBEC18CE359800B84AE6 /* img_callout_background.png in Resources */,
 				03F4E84D18CA33D00056EAA9 /* icon_search_drink@2x.png in Resources */,
 				03F4E84E18CA33D00056EAA9 /* SearchCellView.xib in Resources */,
 				03F4E84F18CA33D00056EAA9 /* NewReviewSpotView.xib in Resources */,
@@ -2958,6 +2985,7 @@
 				03F4E88018CA33D00056EAA9 /* slider_background_profile_max.png in Resources */,
 				03F4E88118CA33D00056EAA9 /* btn_launch_background_create@2x.png in Resources */,
 				03F4E88218CA33D00056EAA9 /* btn_context_delete.png in Resources */,
+				039ABBE818CE34BE00B84AE6 /* SpotAnnotationCalloutView.xib in Resources */,
 				03F4E88318CA33D00056EAA9 /* icon_featured_lists@2x.png in Resources */,
 				03F4E88418CA33D00056EAA9 /* img_carousel_background.png in Resources */,
 				03F4E88518CA33D00056EAA9 /* table_header_background.png in Resources */,
@@ -3135,10 +3163,12 @@
 				03F4E99418CA34260056EAA9 /* slider_thumb_selected_with_light_large.png in Resources */,
 				03F4E99518CA34260056EAA9 /* btn_context_info.png in Resources */,
 				03F4E99618CA34260056EAA9 /* app_background.png in Resources */,
+				039ABBE918CE359400B84AE6 /* img_callout_background@2x.png in Resources */,
 				03F4E99718CA34260056EAA9 /* FooterViewController.xib in Resources */,
 				03F4E99818CA34260056EAA9 /* icon_arrow_shadow@2x.png in Resources */,
 				03F4E99918CA34260056EAA9 /* AutoCompleteCellView.xib in Resources */,
 				03F4E99A18CA34260056EAA9 /* icon_cocktails@2x.png in Resources */,
+				039ABBEB18CE359700B84AE6 /* img_callout_background.png in Resources */,
 				03F4E99B18CA34260056EAA9 /* icon_search_drink@2x.png in Resources */,
 				03F4E99C18CA34260056EAA9 /* SearchCellView.xib in Resources */,
 				03F4E99D18CA34260056EAA9 /* NewReviewSpotView.xib in Resources */,
@@ -3193,6 +3223,7 @@
 				03F4E9CE18CA34260056EAA9 /* slider_background_profile_max.png in Resources */,
 				03F4E9CF18CA34260056EAA9 /* btn_launch_background_create@2x.png in Resources */,
 				03F4E9D018CA34260056EAA9 /* btn_context_delete.png in Resources */,
+				039ABBE718CE34BD00B84AE6 /* SpotAnnotationCalloutView.xib in Resources */,
 				03F4E9D118CA34260056EAA9 /* icon_featured_lists@2x.png in Resources */,
 				03F4E9D218CA34260056EAA9 /* img_carousel_background.png in Resources */,
 				03F4E9D318CA34260056EAA9 /* table_header_background.png in Resources */,
@@ -3413,6 +3444,7 @@
 				038664D0186D376900985CEC /* UIAlertView+Block.m in Sources */,
 				038664D6186D376900985CEC /* UILabelGotham.m in Sources */,
 				03CA72B8187C4D5800815284 /* SHSlider.m in Sources */,
+				039ABBEF18CE3BB700B84AE6 /* SpotAnnotationCallout.m in Sources */,
 				0320235618772D85008368C2 /* SidebarViewController.m in Sources */,
 				03E8832D18C836A800BD8FBB /* SpotListViewController.m in Sources */,
 				03CA72CB187DD09A00815284 /* DropdownOptionCell.m in Sources */,
@@ -3522,6 +3554,7 @@
 				03F4E79118CA33D00056EAA9 /* UIAlertView+Block.m in Sources */,
 				03F4E79218CA33D00056EAA9 /* UILabelGotham.m in Sources */,
 				03F4E79318CA33D00056EAA9 /* SHSlider.m in Sources */,
+				039ABBF018CE3BBC00B84AE6 /* SpotAnnotationCallout.m in Sources */,
 				03F4E79418CA33D00056EAA9 /* SidebarViewController.m in Sources */,
 				03F4E79518CA33D00056EAA9 /* SpotListViewController.m in Sources */,
 				03F4E79618CA33D00056EAA9 /* DropdownOptionCell.m in Sources */,
@@ -3623,6 +3656,7 @@
 				03F4E8DF18CA34260056EAA9 /* UIAlertView+Block.m in Sources */,
 				03F4E8E018CA34260056EAA9 /* UILabelGotham.m in Sources */,
 				03F4E8E118CA34260056EAA9 /* SHSlider.m in Sources */,
+				039ABBF118CE3BBD00B84AE6 /* SpotAnnotationCallout.m in Sources */,
 				03F4E8E218CA34260056EAA9 /* SidebarViewController.m in Sources */,
 				03F4E8E318CA34260056EAA9 /* SpotListViewController.m in Sources */,
 				03F4E8E418CA34260056EAA9 /* DropdownOptionCell.m in Sources */,

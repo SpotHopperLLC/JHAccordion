@@ -14,12 +14,14 @@
 #import "SpotListViewController.h"
 
 #import "UIAlertView+Block.h"
+#import "UIView+ViewFromNib.h"
 #import "UIViewController+Navigator.h"
 
 #import "TellMeMyLocation.h"
 
 #import "CardLayout.h"
 #import "SHButtonLatoLightLocation.h"
+#import "SpotAnnotationCallout.h"
 
 #import "SHNavigationController.h"
 
@@ -34,7 +36,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 
-@interface SpotListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, MKMapViewDelegate, SHButtonLatoLightLocationDelegate>
+@interface SpotListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, MKMapViewDelegate, SHButtonLatoLightLocationDelegate, SpotAnnotationCalloutDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *lblMatchPercent;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -190,8 +192,29 @@
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
     if ([view isKindOfClass:[MatchPercentAnnotationView class]] == YES) {
         MatchPercentAnnotationView *pin = (MatchPercentAnnotationView*) view;
-        [pin setHighlighted:YES];
-        [pin setNeedsDisplay];
+        
+        if (pin.isHighlighted == NO) {
+            [pin setHighlighted:YES];
+            [pin setNeedsDisplay];
+            
+            SpotAnnotationCallout *callout = [SpotAnnotationCallout viewFromNib];
+            [callout setMatchPercentAnnotationView:pin];
+            [callout setDelegate:self];
+            [callout setFrame:CGRectMake(0.0f, -CGRectGetHeight(callout.frame), CGRectGetWidth(callout.frame), CGRectGetHeight(callout.frame))];
+            
+            [pin setCalloutView:callout];
+            
+            if (_currentLocation != nil && pin.spot.latitude != nil && pin.spot.longitude != nil) {
+                CLLocationDistance distance = [_currentLocation distanceFromLocation:[[CLLocation alloc] initWithLatitude:pin.spot.latitude.floatValue longitude:pin.spot.longitude.floatValue]];
+                [pin.calloutView.lblDistanceAway setText:[NSString stringWithFormat:@"%.1f Miles", ( distance * kMeterToMile )]];
+            } else {
+                [pin.calloutView.lblDistanceAway setText:@""];
+            }
+            
+            [pin setUserInteractionEnabled:YES];
+            [pin addSubview:callout];
+        }
+
     }
 }
 
@@ -200,7 +223,21 @@
         MatchPercentAnnotationView *pin = (MatchPercentAnnotationView*) view;
         [pin setHighlighted:NO];
         [pin setNeedsDisplay];
+        
+        [pin.calloutView removeFromSuperview];
+        [pin setCalloutView:nil];
     }
+}
+
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
+    NSLog(@"HERE???");
+}
+
+#pragma mark - SpotAnnotationCalloutDelegate
+
+- (void)spotAnnotationCallout:(SpotAnnotationCallout *)spotAnnotationCallout clicked:(MatchPercentAnnotationView *)matchPercentAnnotationView {
+    [_mapView deselectAnnotation:matchPercentAnnotationView.annotation animated:YES];
+    [self goToSpotProfile:matchPercentAnnotationView.spot];
 }
 
 #pragma mark - SHButtonLatoLightLocationDelegate
