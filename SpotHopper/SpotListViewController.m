@@ -29,12 +29,14 @@
 #import "ErrorModel.h"
 
 #import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
 
 @interface SpotListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, SHButtonLatoLightLocationDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *lblMatchPercent;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 @property (nonatomic, strong) CLLocation *selectedLocation;
 @property (nonatomic, strong) CLLocation *currentLocation;
@@ -217,11 +219,29 @@
 
 #pragma mark - Private
 
+- (void)updateView {
+    
+    if (_spotList.latitude != nil && _spotList.longitude != nil) {
+        MKCoordinateRegion mapRegion;
+        mapRegion.center = [[CLLocation alloc] initWithLatitude:_spotList.latitude.floatValue longitude:_spotList.longitude.floatValue].coordinate;
+        mapRegion.span = MKCoordinateSpanMake(0.1, 0.1);
+        [_mapView setRegion:mapRegion animated: YES];
+    }
+}
+
 - (void)updateFooterMapListButton:(FooterViewController*)footerViewController {
     if (_showMap == YES) {
         [footerViewController setMiddleButton:@"List" image:[UIImage imageNamed:@"btn_context_list"]];
+        
+        [_mapView setHidden:NO];
+        [_collectionView setHidden:YES];
+        [_lblMatchPercent setHidden:YES];
     } else {
         [footerViewController setMiddleButton:@"Map" image:[UIImage imageNamed:@"btn_context_map"]];
+        
+        [_mapView setHidden:YES];
+        [_collectionView setHidden:NO];
+        [_lblMatchPercent setHidden:NO];
     }
 }
 
@@ -250,6 +270,7 @@
         _spotList = spotListModel;
         [_collectionView reloadData];
         
+        [self updateView];
         [self updateMatchPercent];
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];

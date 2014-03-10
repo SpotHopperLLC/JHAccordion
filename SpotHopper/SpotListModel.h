@@ -27,6 +27,8 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, assign) BOOL featured;
 @property (nonatomic, strong) NSArray *spots;
+@property (nonatomic, strong) NSNumber *latitude;
+@property (nonatomic, strong) NSNumber *longitude;
 
 + (Promise *)getFeaturedSpotLists:(NSDictionary*)params success:(void(^)(NSArray *spotListModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 + (Promise *)postSpotList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders successBlock:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;

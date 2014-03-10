@@ -19,10 +19,14 @@
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'name' to 'name' property
     // Maps values in JSON key 'featured' to 'featured' property
+    // Maps values in JSON key 'latitude' to 'latitude' property
+    // Maps values in JSON key 'longitude' to 'longitude' property
     // Maps linked resource in JSON key 'spots' to 'spots' property
     return @{
              @"name" : @"name",
              @"featured" : @"featured",
+             @"latitude" : @"latitude",
+             @"longitude" : @"longitude",
              @"links.spots" : @"spots",
              };
     
