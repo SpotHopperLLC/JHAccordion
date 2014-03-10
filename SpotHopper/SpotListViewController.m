@@ -25,6 +25,9 @@
 
 #import "SpotCardCollectionViewCell.h"
 
+#import "MatchPercentAnnotation.h"
+#import "MatchPercentAnnotationView.h"
+
 #import "ClientSessionManager.h"
 #import "ErrorModel.h"
 
@@ -168,6 +171,22 @@
     [self updateMatchPercent];
 }
 
+#pragma mark - MKMapViewDelegate
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+    if ([annotation isKindOfClass:[MatchPercentAnnotation class]] == YES) {
+        MatchPercentAnnotation *matchAnnotation = (MatchPercentAnnotation*) annotation;
+        
+        MatchPercentAnnotationView *pin = [[MatchPercentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"current"];
+        [pin setSpot:matchAnnotation.spot];
+        [pin setNeedsDisplay];
+        
+        return pin;
+    }
+    
+    return nil;
+}
+
 #pragma mark - SHButtonLatoLightLocationDelegate
 
 - (void)locationRequestsUpdate:(SHButtonLatoLightLocation *)button location:(LocationChooserViewController *)viewController {
@@ -221,11 +240,25 @@
 
 - (void)updateView {
     
+    // Zoom map
     if (_spotList.latitude != nil && _spotList.longitude != nil) {
         MKCoordinateRegion mapRegion;
         mapRegion.center = [[CLLocation alloc] initWithLatitude:_spotList.latitude.floatValue longitude:_spotList.longitude.floatValue].coordinate;
         mapRegion.span = MKCoordinateSpanMake(0.1, 0.1);
         [_mapView setRegion:mapRegion animated: YES];
+    }
+    
+    // Update map
+    for (SpotModel *spot in _spotList.spots) {
+        
+        // Place pin
+        if (spot.latitude != nil && spot.longitude != nil) {
+            MatchPercentAnnotation *annotation = [[MatchPercentAnnotation alloc] init];
+            [annotation setSpot:spot];
+            annotation.coordinate = CLLocationCoordinate2DMake(spot.latitude.floatValue, spot.longitude.floatValue);
+            [_mapView addAnnotation:annotation];
+        }
+        
     }
 }
 
