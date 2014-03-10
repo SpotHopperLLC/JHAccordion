@@ -34,7 +34,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 
-@interface SpotListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, SHButtonLatoLightLocationDelegate>
+@interface SpotListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, MKMapViewDelegate, SHButtonLatoLightLocationDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *lblMatchPercent;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -185,6 +185,22 @@
     }
     
     return nil;
+}
+
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+    if ([view isKindOfClass:[MatchPercentAnnotationView class]] == YES) {
+        MatchPercentAnnotationView *pin = (MatchPercentAnnotationView*) view;
+        [pin setHighlighted:YES];
+        [pin setNeedsDisplay];
+    }
+}
+
+- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+    if ([view isKindOfClass:[MatchPercentAnnotationView class]] == YES) {
+        MatchPercentAnnotationView *pin = (MatchPercentAnnotationView*) view;
+        [pin setHighlighted:NO];
+        [pin setNeedsDisplay];
+    }
 }
 
 #pragma mark - SHButtonLatoLightLocationDelegate

@@ -43,12 +43,12 @@
 //    CGContextRef context = UIGraphicsGetCurrentContext();
 //    CGContextClearRect(context, rect);
     
-    UIImage *image = [UIImage imageNamed:@"img_match_pin_view"];
+    UIImage *image = [UIImage imageNamed:( self.isHighlighted ? @"img_match_pin_view_selected" : @"img_match_pin_view" )];
     [image drawInRect:rect];
     
     NSDictionary *attributes = @{
                                  NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:22.0],
-                                 NSForegroundColorAttributeName: [UIColor whiteColor]
+                                 NSForegroundColorAttributeName: ( self.isHighlighted ? kColorOrange : [UIColor whiteColor] )
                                  };
     
     NSString *string = _spot.matchPercent;
