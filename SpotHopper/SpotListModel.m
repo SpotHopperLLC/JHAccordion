@@ -19,10 +19,14 @@
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'name' to 'name' property
     // Maps values in JSON key 'featured' to 'featured' property
+    // Maps values in JSON key 'latitude' to 'latitude' property
+    // Maps values in JSON key 'longitude' to 'longitude' property
     // Maps linked resource in JSON key 'spots' to 'spots' property
     return @{
              @"name" : @"name",
              @"featured" : @"featured",
+             @"latitude" : @"latitude",
+             @"longitude" : @"longitude",
              @"links.spots" : @"spots",
              };
     
@@ -134,12 +138,21 @@
     
 }
 
-- (Promise *)putSpotList:(NSString*)name sliders:(NSArray*)sliders success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+- (Promise *)putSpotList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
     
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
-    NSMutableDictionary *params = @{ @"name" : name }.mutableCopy;
+    NSMutableDictionary *params = @{  }.mutableCopy;
+    
+    if (name.length > 0) {
+        [params setObject:name forKey:@"name"];
+    }
+    
+    if (latitude != nil && longitude != nil) {
+        [params setObject:latitude forKey:kSpotListModelParamLatitude];
+        [params setObject:longitude forKey:kSpotListModelParamLongitude];
+    }
     
     // Creating params
     if (sliders != nil) {

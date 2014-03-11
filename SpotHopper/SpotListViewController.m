@@ -14,27 +14,34 @@
 #import "SpotListViewController.h"
 
 #import "UIAlertView+Block.h"
+#import "UIView+ViewFromNib.h"
 #import "UIViewController+Navigator.h"
 
 #import "TellMeMyLocation.h"
 
 #import "CardLayout.h"
 #import "SHButtonLatoLightLocation.h"
+#import "SpotAnnotationCallout.h"
 
 #import "SHNavigationController.h"
 
 #import "SpotCardCollectionViewCell.h"
 
+#import "MatchPercentAnnotation.h"
+#import "MatchPercentAnnotationView.h"
+
 #import "ClientSessionManager.h"
 #import "ErrorModel.h"
 
 #import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
 
-@interface SpotListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, SHButtonLatoLightLocationDelegate>
+@interface SpotListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, MKMapViewDelegate, SHButtonLatoLightLocationDelegate, SpotAnnotationCalloutDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *lblMatchPercent;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 @property (nonatomic, strong) CLLocation *selectedLocation;
 @property (nonatomic, strong) CLLocation *currentLocation;
@@ -166,6 +173,69 @@
     [self updateMatchPercent];
 }
 
+#pragma mark - MKMapViewDelegate
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+    if ([annotation isKindOfClass:[MatchPercentAnnotation class]] == YES) {
+        MatchPercentAnnotation *matchAnnotation = (MatchPercentAnnotation*) annotation;
+        
+        MatchPercentAnnotationView *pin = [[MatchPercentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"current"];
+        [pin setSpot:matchAnnotation.spot];
+        [pin setNeedsDisplay];
+        
+        return pin;
+    }
+    
+    return nil;
+}
+
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+    if ([view isKindOfClass:[MatchPercentAnnotationView class]] == YES) {
+        MatchPercentAnnotationView *pin = (MatchPercentAnnotationView*) view;
+        
+        if (pin.isHighlighted == NO) {
+            [pin setHighlighted:YES];
+            [pin setNeedsDisplay];
+            
+            SpotAnnotationCallout *callout = [SpotAnnotationCallout viewFromNib];
+            [callout setMatchPercentAnnotationView:pin];
+            [callout setDelegate:self];
+            [callout setFrame:CGRectMake(0.0f, -CGRectGetHeight(callout.frame), CGRectGetWidth(callout.frame), CGRectGetHeight(callout.frame))];
+            
+            [pin setCalloutView:callout];
+            
+            if (_currentLocation != nil && pin.spot.latitude != nil && pin.spot.longitude != nil) {
+                CLLocationDistance distance = [_currentLocation distanceFromLocation:[[CLLocation alloc] initWithLatitude:pin.spot.latitude.floatValue longitude:pin.spot.longitude.floatValue]];
+                [pin.calloutView.lblDistanceAway setText:[NSString stringWithFormat:@"%.1f Miles", ( distance * kMeterToMile )]];
+            } else {
+                [pin.calloutView.lblDistanceAway setText:@""];
+            }
+            
+            [pin setUserInteractionEnabled:YES];
+            [pin addSubview:callout];
+        }
+
+    }
+}
+
+- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+    if ([view isKindOfClass:[MatchPercentAnnotationView class]] == YES) {
+        MatchPercentAnnotationView *pin = (MatchPercentAnnotationView*) view;
+        [pin setHighlighted:NO];
+        [pin setNeedsDisplay];
+        
+        [pin.calloutView removeFromSuperview];
+        [pin setCalloutView:nil];
+    }
+}
+
+#pragma mark - SpotAnnotationCalloutDelegate
+
+- (void)spotAnnotationCallout:(SpotAnnotationCallout *)spotAnnotationCallout clicked:(MatchPercentAnnotationView *)matchPercentAnnotationView {
+    [_mapView deselectAnnotation:matchPercentAnnotationView.annotation animated:YES];
+    [self goToSpotProfile:matchPercentAnnotationView.spot];
+}
+
 #pragma mark - SHButtonLatoLightLocationDelegate
 
 - (void)locationRequestsUpdate:(SHButtonLatoLightLocation *)button location:(LocationChooserViewController *)viewController {
@@ -174,8 +244,25 @@
 }
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
-    _selectedLocation = location;
+    if (_selectedLocation != nil) {
     
+        [self showHUD:@"Getting new spots"];
+        [_spotList putSpotList:nil latitude:[NSNumber numberWithFloat:location.coordinate.latitude] longitude:[NSNumber numberWithFloat:location.coordinate.longitude] sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+            [self hideHUD];
+            
+            _spotList = spotListModel;
+            [_collectionView reloadData];
+            
+            [self updateView];
+            [self updateMatchPercent];
+        } failure:^(ErrorModel *errorModel) {
+            [self hideHUD];
+            [self showAlert:@"Oops" message:errorModel.human];
+        }];
+        
+    }
+    
+    _selectedLocation = location;
 }
 
 - (void)locationError:(SHButtonLatoLightLocation *)button error:(NSError *)error {
@@ -200,7 +287,7 @@
                 }
                 
                 [self showHUD:@"Updating name"];
-                [_spotList putSpotList:name sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+                [_spotList putSpotList:name latitude:nil longitude:nil sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
                     [self hideHUD];
                     [self.navigationController popViewControllerAnimated:YES];
                 } failure:^(ErrorModel *errorModel) {
@@ -218,11 +305,44 @@
 
 #pragma mark - Private
 
+- (void)updateView {
+    
+    // Zoom map
+    if (_spotList.latitude != nil && _spotList.longitude != nil) {
+        MKCoordinateRegion mapRegion;
+        mapRegion.center = [[CLLocation alloc] initWithLatitude:_spotList.latitude.floatValue longitude:_spotList.longitude.floatValue].coordinate;
+        mapRegion.span = MKCoordinateSpanMake(0.1, 0.1);
+        [_mapView setRegion:mapRegion animated: YES];
+    }
+    
+    // Update map
+    [_mapView removeAnnotations:[_mapView annotations]];
+    for (SpotModel *spot in _spotList.spots) {
+        
+        // Place pin
+        if (spot.latitude != nil && spot.longitude != nil) {
+            MatchPercentAnnotation *annotation = [[MatchPercentAnnotation alloc] init];
+            [annotation setSpot:spot];
+            annotation.coordinate = CLLocationCoordinate2DMake(spot.latitude.floatValue, spot.longitude.floatValue);
+            [_mapView addAnnotation:annotation];
+        }
+        
+    }
+}
+
 - (void)updateFooterMapListButton:(FooterViewController*)footerViewController {
     if (_showMap == YES) {
         [footerViewController setMiddleButton:@"List" image:[UIImage imageNamed:@"btn_context_list"]];
+        
+        [_mapView setHidden:NO];
+        [_collectionView setHidden:YES];
+        [_lblMatchPercent setHidden:YES];
     } else {
         [footerViewController setMiddleButton:@"Map" image:[UIImage imageNamed:@"btn_context_map"]];
+        
+        [_mapView setHidden:YES];
+        [_collectionView setHidden:NO];
+        [_lblMatchPercent setHidden:NO];
     }
 }
 
@@ -251,6 +371,7 @@
         _spotList = spotListModel;
         [_collectionView reloadData];
         
+        [self updateView];
         [self updateMatchPercent];
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];

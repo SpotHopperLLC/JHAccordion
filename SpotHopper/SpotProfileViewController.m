@@ -170,15 +170,6 @@
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
     MKPinAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"current"];
-    
-//    UIButton *advertButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-//    [advertButton addTarget:self action:@selector(button:) forControlEvents:UIControlEventTouchUpInside];
-    
-    /*MyPin.rightCalloutAccessoryView = advertButton;
-     MyPin.draggable = YES;
-     
-     MyPin.animatesDrop=TRUE;
-     MyPin.canShowCallout = YES;*/
     pin.highlighted = NO;
     pin.image = [UIImage imageNamed:@"map_marker_spot"];
     
