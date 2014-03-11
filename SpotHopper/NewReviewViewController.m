@@ -829,7 +829,15 @@
         
         NSDictionary *forms = [jsonApi objectForKey:@"form"];
         if (forms != nil) {
-            _spotTypes = [forms objectForKey:@"spot_types"];
+            // Get spot types only user can see
+            NSMutableArray *userSpotTypes = [NSMutableArray array];
+            NSArray *allSpotTypes = [forms objectForKey:@"spot_types"];
+            for (NSDictionary *spotType in allSpotTypes) {
+                if ([[spotType objectForKey:@"visible_to_users"] boolValue] == YES) {
+                    [userSpotTypes addObject:spotType];
+                }
+            }
+            _spotTypes = userSpotTypes;
         }
         
     } failure:^(ErrorModel *errorModel) {
