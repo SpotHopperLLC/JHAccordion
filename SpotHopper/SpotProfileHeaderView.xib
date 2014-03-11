@@ -10,6 +10,7 @@
                 <outlet property="btnImageNext" destination="Hpi-1u-TFC" id="1oN-Oh-SFp"/>
                 <outlet property="btnImagePrev" destination="hJF-Je-ITI" id="qOr-yP-BpX"/>
                 <outlet property="collectionView" destination="rt2-I0-lbw" id="1nk-hV-Fuu"/>
+                <outlet property="lblAddress" destination="AcQ-Bm-ghR" id="2jy-zD-6UJ"/>
                 <outlet property="mapView" destination="DC8-C7-87F" id="EQg-WX-4Xn"/>
             </connections>
         </placeholder>
@@ -95,6 +96,14 @@
                         <outlet property="delegate" destination="-1" id="HpU-58-zb1"/>
                     </connections>
                 </mapView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="AcQ-Bm-ghR" customClass="SHLabelLatoLight">
+                    <rect key="frame" x="0.0" y="368" width="320" height="40"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="0.80000000000000004" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="0.93725490196078431" green="0.41568627450980389" blue="0.20784313725490194" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_map_shadow_botom.png" id="3qV-dO-Wa3">
                     <rect key="frame" x="0.0" y="398" width="320" height="10"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

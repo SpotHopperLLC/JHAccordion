@@ -42,6 +42,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnImagePrev;
 @property (weak, nonatomic) IBOutlet UIButton *btnImageNext;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet UILabel *lblAddress;
 
 @property (nonatomic, strong) AverageReviewModel *averageReview;
 
@@ -240,6 +241,9 @@
     
     [_lblPercentMatch setHidden:(_spot.match == nil)];
     if (_spot.match != nil) [_lblPercentMatch setText:[NSString stringWithFormat:@"%@ Match", [_spot matchPercent]]];
+    
+    // Spot addres
+    [_lblAddress setText:[_spot fullAddress]];
     
     // Update map
     if (_spot.latitude != nil && _spot.longitude != nil) {
