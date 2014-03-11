@@ -237,6 +237,10 @@
     // Reset
     _selectedSpotType = nil;
     
+    // Resets headers
+    [self updateSectionHeaderTitles:0];
+    [self updateSectionHeaderTitles:1];
+    
     [_sliders removeAllObjects];
     [_advancedSliders removeAllObjects];
     
