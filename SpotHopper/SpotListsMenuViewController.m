@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kSpotListsMenuViewControllerViewedAlready @"kSpotListsMenuViewControllerViewedAlready"
+
 #import "SpotListsMenuViewController.h"
 
 #import "TTTAttributedLabel+QuickFonting.h"
@@ -83,7 +85,6 @@
     _accordion = [[JHAccordion alloc] initWithTableView:_tblMenu];
     [_accordion setDelegate:self];
     [_accordion openSection:0];
-    [_accordion openSection:1];
     
     // Configures table
     [_tblMenu registerNib:[UINib nibWithNibName:@"CreateListCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"CreateListCell"];
@@ -91,10 +92,7 @@
     [_tblMenu setTableFooterView:[[UIView alloc] init]];
     
     [self showAdjustSlidersView:NO animated:NO];
-    
-    // Locations
-    [_btnLocation setDelegate:self];
-    [_btnLocation updateWithLastLocation];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -114,7 +112,13 @@
     [self.view bringSubviewToFront:_containerAdjustSliders];
     
     // Fetching spot lists
-    [self fetchSpotLists];
+    if (_location == nil) {
+        // Locations
+        [_btnLocation setDelegate:self];
+        [_btnLocation updateWithLastLocation];
+    } else {
+        [self fetchSpotLists];
+    }
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -380,11 +384,38 @@
     } fail:^(id error) {
         
     } always:^{
-        // Opens up featured section if there are featured spotlists
-        [_sectionHeader1 setSelected:(_featuredSpotLists.count > 0)];
         
+        // Reload table and hide HUD
         [_tblMenu reloadData];
         [self hideHUD];
+        
+        BOOL hasSeenBefore = [[NSUserDefaults standardUserDefaults] boolForKey:kSpotListsMenuViewControllerViewedAlready];
+        if (hasSeenBefore == NO) {
+            
+            // Sets has seen before
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSpotListsMenuViewControllerViewedAlready
+             ];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            [_accordion openSection:0];
+            [_accordion closeSection:1];
+            [_accordion closeSection:2];
+            
+        } else {
+            
+            // Opens up only section
+            if (_mySpotLists.count > 0) {
+                [_accordion closeSection:0];
+                [_accordion closeSection:1];
+                [_accordion openSection:2];
+            } else {
+                [_accordion openSection:0];
+                [_accordion openSection:1];
+                [_accordion closeSection:2];
+            }
+            
+        }
+        
     }];
     
 }
