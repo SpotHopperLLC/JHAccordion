@@ -39,6 +39,12 @@
     return [[self objectForKey:@"required"] boolValue];
 }
 
+- (NSArray *)spotTypes {
+    if (_spotTypes != nil) return _spotTypes;
+    _spotTypes = [self linkedResourceForKey:@"spot_types"];
+    return _spotTypes;
+}
+
 #pragma mark - API
 
 + (Promise*)getSliderTemplates:(NSDictionary*)params success:(void(^)(NSArray *sliderTemplates, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
