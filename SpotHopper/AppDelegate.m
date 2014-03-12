@@ -28,6 +28,8 @@
 
 #import "MockData.h"
 
+#import "TellMeMyLocation.h"
+
 #import <JSONAPI/JSONAPI.h>
 #import <Raven/RavenClient.h>
 #import <STTwitter/STTwitter.h>
@@ -35,6 +37,7 @@
 @interface AppDelegate()
 
 @property (nonatomic, strong) Mockery *mockery;
+@property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
 
 @end
 
@@ -43,6 +46,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 //    [[ClientSessionManager sharedClient] setHasSeenLaunch:NO];
+    
+    // Location finder
+    _tellMeMyLocation = [[TellMeMyLocation alloc] init];
     
     // Initializes Raven (Sentry) for error reporting/logging
     [RavenClient clientWithDSN:kSentryDSN];
@@ -118,6 +124,17 @@
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [FBSession.activeSession handleDidBecomeActive];
+    
+    NSDate *date = [TellMeMyLocation lastLocationDate];
+    if (date != nil && abs([date timeIntervalSinceNow]) > kRefreshLocationTime) {
+        [_tellMeMyLocation findMe:kCLLocationAccuracyThreeKilometers found:^(CLLocation *newLocation) {
+            [TellMeMyLocation setLastLocation:newLocation completionHandler:^{
+                
+            }];
+        } failure:^(NSError *error) {
+            
+        }];
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

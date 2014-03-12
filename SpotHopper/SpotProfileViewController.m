@@ -16,8 +16,12 @@
 #import "ReviewSliderCell.h"
 #import "SpotImageCollectViewCell.h"
 
+#import "SpotListViewController.h"
+
 #import "AverageReviewModel.h"
+#import "ErrorModel.h"
 #import "SpotTypeModel.h"
+#import "SpotListModel.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 
@@ -38,6 +42,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnImagePrev;
 @property (weak, nonatomic) IBOutlet UIButton *btnImageNext;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet UILabel *lblAddress;
 
 @property (nonatomic, strong) AverageReviewModel *averageReview;
 
@@ -207,7 +212,7 @@
 }
 
 - (IBAction)onClickFindSimilar:(id)sender {
-    
+    [self doFindSimilar];
 }
 
 - (IBAction)onClickReviewIt:(id)sender {
@@ -237,6 +242,9 @@
     [_lblPercentMatch setHidden:(_spot.match == nil)];
     if (_spot.match != nil) [_lblPercentMatch setText:[NSString stringWithFormat:@"%@ Match", [_spot matchPercent]]];
     
+    // Spot addres
+    [_lblAddress setText:[_spot fullAddress]];
+    
     // Update map
     if (_spot.latitude != nil && _spot.longitude != nil) {
         MKCoordinateRegion mapRegion;
@@ -249,6 +257,22 @@
         annotation.coordinate = CLLocationCoordinate2DMake(_spot.latitude.floatValue, _spot.longitude.floatValue);
         [_mapView addAnnotation:annotation];
     }
+}
+
+- (void)doFindSimilar {
+    [self showHUD:@"Finding similar"];
+    [SpotListModel postSpotList:_spot.name latitude:_spot.latitude longitude:_spot.longitude sliders:_averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+        [self hideHUD];
+        
+        SpotListViewController *viewController = [self.spotsStoryboard instantiateViewControllerWithIdentifier:@"SpotListViewController"];
+        [viewController setSpotList:spotListModel];
+        
+        [self.navigationController pushViewController:viewController animated:YES];
+        
+    } failure:^(ErrorModel *errorModel) {
+        [self hideHUD];
+        [self showAlert:@"Oops" message:errorModel.human];
+    }];
 }
 
 @end

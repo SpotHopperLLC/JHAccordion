@@ -56,6 +56,7 @@
 @property (nonatomic, strong) AverageReviewModel *averageReview;
 @property (nonatomic, strong) NSNumber *match;
 
+- (NSString*)fullAddress;
 - (NSString*)cityState;
 - (NSString*)matchPercent;
 

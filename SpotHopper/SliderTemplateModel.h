@@ -27,6 +27,7 @@
 @property (nonatomic, strong) NSString *maxLabel;
 @property (nonatomic, strong) NSNumber *defaultValue;
 @property (nonatomic, assign) BOOL required;
+@property (nonatomic, strong) NSArray *spotTypes;
 
 + (Promise*)getSliderTemplates:(NSDictionary*)params success:(void(^)(NSArray *sliderTemplates, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 

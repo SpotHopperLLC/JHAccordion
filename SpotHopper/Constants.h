@@ -17,7 +17,11 @@
     #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
 
 //    #define kBaseUrl @"http://192.168.1.123:9292"
-    #define kBaseUrl @"http://192.168.1.111:9292"
+//    #define kBaseUrl @"http://192.168.1.8:9292"
+    #define kBaseUrl @"http://192.168.1.110:9292"
+
+    #define kRefreshLocationTime 60.0f
+
 #endif
 
 #ifdef DEV
@@ -28,6 +32,9 @@
     #define kTwitterConsumerSecret @"TT0nyrGy2xdpfWiBMrkGKoFjjiNhJW4atoInhlv7I"
 
     #define kBaseUrl @"http://spothopper-dev.herokuapp.com"
+
+    #define kRefreshLocationTime 60.0f
+
 #endif
 
 #ifdef STAGING
@@ -38,6 +45,8 @@
     #define kTwitterConsumerSecret @"UHRcQ8WXs13Iug7VpliivDxwQuGtoMg5KsaoIF3jWbM"
 
     #define kBaseUrl @"http://spothopper-staging.herokuapp.com"
+
+    #define kRefreshLocationTime 3600.0f
 
 #endif
 

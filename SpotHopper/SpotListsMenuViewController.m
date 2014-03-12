@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kSpotListsMenuViewControllerViewedAlready @"kSpotListsMenuViewControllerViewedAlready"
+
 #import "SpotListsMenuViewController.h"
 
 #import "TTTAttributedLabel+QuickFonting.h"
@@ -83,7 +85,6 @@
     _accordion = [[JHAccordion alloc] initWithTableView:_tblMenu];
     [_accordion setDelegate:self];
     [_accordion openSection:0];
-    [_accordion openSection:1];
     
     // Configures table
     [_tblMenu registerNib:[UINib nibWithNibName:@"CreateListCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"CreateListCell"];
@@ -91,10 +92,7 @@
     [_tblMenu setTableFooterView:[[UIView alloc] init]];
     
     [self showAdjustSlidersView:NO animated:NO];
-    
-    // Locations
-    [_btnLocation setDelegate:self];
-    [_btnLocation updateWithLastLocation];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -114,7 +112,13 @@
     [self.view bringSubviewToFront:_containerAdjustSliders];
     
     // Fetching spot lists
-    [self fetchSpotLists];
+    if (_location == nil) {
+        // Locations
+        [_btnLocation setDelegate:self];
+        [_btnLocation updateWithLastLocation];
+    } else {
+        [self fetchSpotLists];
+    }
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -202,6 +206,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
     if (indexPath.section == 0) {
+        
+        if ([ClientSessionManager sharedClient].isLoggedIn == NO) {
+            [self showAlert:@"Login Required" message:@"Cannot create a spotlist without logging in"];
+            return;
+        }
+        
         if (indexPath.row == 0) {
             [self showAdjustSlidersView:YES animated:YES];
         } else if (indexPath.row == 1) {
@@ -294,7 +304,7 @@
     [spot getSpot:Nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
         [self hideHUD];
         
-        [SpotListModel postSpotList:spotModel.name latitude:spotModel.latitude longitude:spotModel.longitude sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+        [SpotListModel postSpotList:[NSString stringWithFormat:@"Similar to %@", spotModel.name] latitude:spotModel.latitude longitude:spotModel.longitude sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
             [self hideHUD];
             [self showHUDCompleted:@"Spotlist created!" block:^{
                 
@@ -353,7 +363,9 @@
      * Featured spot lists
      */
     Promise *promiseFeaturedSpotLists = [SpotListModel getFeaturedSpotLists:params success:^(NSArray *spotListModels, JSONAPI *jsonApi) {
-        _featuredSpotLists = spotListModels;
+        _featuredSpotLists = [spotListModels sortedArrayUsingComparator:^NSComparisonResult(SpotListModel* obj1, SpotListModel* obj2) {
+            return [obj1.name caseInsensitiveCompare:obj2.name];
+        }];
     } failure:^(ErrorModel *errorModel) {
         
     }];
@@ -364,8 +376,14 @@
      */
     if ([ClientSessionManager sharedClient].isLoggedIn == YES) {
         UserModel *user = [ClientSessionManager sharedClient].currentUser;
-        Promise *promiseMySpotLists = [user getSpotLists:params success:^(NSArray *spotListsModels, JSONAPI *jsonApi) {
-            _mySpotLists = spotListsModels;
+        Promise *promiseMySpotLists = [user getSpotLists:nil success:^(NSArray *spotListsModels, JSONAPI *jsonApi) {
+            _mySpotLists = [spotListsModels sortedArrayUsingComparator:^NSComparisonResult(SpotListModel* obj1, SpotListModel* obj2) {
+                return [obj1.name caseInsensitiveCompare:obj2.name];
+            }];
+            
+            for (SpotListModel *spotList in _mySpotLists) {
+                NSLog(@"Spotlist -%@", spotList.name);
+            }
         } failure:^(ErrorModel *errorModel) {
             
         }];
@@ -380,11 +398,38 @@
     } fail:^(id error) {
         
     } always:^{
-        // Opens up featured section if there are featured spotlists
-        [_sectionHeader1 setSelected:(_featuredSpotLists.count > 0)];
         
+        // Reload table and hide HUD
         [_tblMenu reloadData];
         [self hideHUD];
+        
+        BOOL hasSeenBefore = [[NSUserDefaults standardUserDefaults] boolForKey:kSpotListsMenuViewControllerViewedAlready];
+        if (hasSeenBefore == NO) {
+            
+            // Sets has seen before
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSpotListsMenuViewControllerViewedAlready
+             ];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            [_accordion openSection:0];
+            [_accordion closeSection:1];
+            [_accordion closeSection:2];
+            
+        } else {
+            
+            // Opens up only section
+            if (_mySpotLists.count > 0) {
+                [_accordion closeSection:0];
+                [_accordion closeSection:1];
+                [_accordion openSection:2];
+            } else {
+                [_accordion openSection:0];
+                [_accordion openSection:1];
+                [_accordion closeSection:2];
+            }
+            
+        }
+        
     }];
     
 }

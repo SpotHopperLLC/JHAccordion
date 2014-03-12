@@ -123,6 +123,23 @@
     return [self objectForKey:@"zip"];
 }
 
+- (NSString*)fullAddress {
+    NSMutableArray *parts = [NSMutableArray array];
+    if ([self address].length > 0 && [self cityState].length > 0) {
+        [parts addObject:[NSString stringWithFormat:@"%@, %@", [self address], [self cityState]]];
+    } else if ([self address].length > 0) {
+        [parts addObject:[self address]];
+    } else if ([self cityState].length > 0) {
+        [parts addObject:[self cityState]];
+    }
+    
+    if ([self zip].length > 0) {
+        [parts addObject:[self zip]];
+    }
+    
+    return [parts componentsJoinedByString:@", "];
+}
+
 - (NSString*)cityState {
     if ([self city].length > 0 && [self state].length > 0) {
         return [NSString stringWithFormat:@"%@, %@", [self city], [self state]];

@@ -25,6 +25,7 @@ typedef void (^TellMeMyLocationCompletionHandler)();
 + (void)setLastLocationName:(NSString*)name;
 
 + (CLLocation*)lastLocation;
++ (NSDate*)lastLocationDate;
 + (NSString*)lastLocationName;
 
 @end

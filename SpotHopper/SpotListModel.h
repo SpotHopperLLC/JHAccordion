@@ -20,7 +20,7 @@
 
 #import <JSONAPI/JSONAPI.h>
 
-@class ErrorModel, SpotModel;
+@class ErrorModel, SpotModel, CLLocation;
 
 @interface SpotListModel : SHJSONAPIResource
 
@@ -29,6 +29,8 @@
 @property (nonatomic, strong) NSArray *spots;
 @property (nonatomic, strong) NSNumber *latitude;
 @property (nonatomic, strong) NSNumber *longitude;
+
+- (CLLocation*)location;
 
 + (Promise *)getFeaturedSpotLists:(NSDictionary*)params success:(void(^)(NSArray *spotListModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 + (Promise *)postSpotList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders successBlock:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;

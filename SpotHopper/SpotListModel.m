@@ -14,6 +14,8 @@
 #import "SliderTemplateModel.h"
 #import "SpotModel.h"
 
+#import <CoreLocation/CoreLocation.h>
+
 @implementation SpotListModel
 
 - (NSDictionary *)mapKeysToProperties {
@@ -30,6 +32,13 @@
              @"links.spots" : @"spots",
              };
     
+}
+
+- (CLLocation *)location {
+    if (_latitude != nil && _longitude != nil) {
+        return [[CLLocation alloc] initWithLatitude:_latitude.floatValue longitude:_longitude.floatValue];
+    }
+    return nil;
 }
 
 #pragma mark - API
@@ -70,10 +79,12 @@
     // Creating params
     NSMutableArray *jsonSliders = [NSMutableArray array];
     for (SliderModel *slider in sliders) {
-        [jsonSliders addObject:@{
-                                 @"slider_template_id" : slider.sliderTemplate.ID,
-                                 @"value" : slider.value,
-                                 }];
+        if (slider.value != nil) {
+            [jsonSliders addObject:@{
+                                     @"slider_template_id" : slider.sliderTemplate.ID,
+                                     @"value" : slider.value,
+                                     }];
+        }
     }
     
     NSMutableDictionary *params = @{

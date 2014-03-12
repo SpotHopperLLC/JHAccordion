@@ -42,7 +42,7 @@
                     <rect key="frame" x="9" y="56" width="302" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="whileEditing" id="jNC-O7-vkY" customClass="SHTextFieldLatoLight">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name your favorite bar, club or lounge..." minimumFontSize="17" clearButtonMode="whileEditing" id="jNC-O7-vkY" customClass="SHTextFieldLatoLight">
                     <rect key="frame" x="20" y="57" width="280" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
