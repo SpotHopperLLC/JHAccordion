@@ -273,6 +273,22 @@
 #pragma mark - Actions
 
 - (IBAction)onClickSubmit:(id)sender {
+    
+    /*
+     * Make sure all required spotlist shave been modified
+     */
+    NSInteger count = 0;
+    for (NSIndexPath *indexPath in _slidersMoved) {
+        // Counts up required sliders
+        if (indexPath.section < 2) count++;
+    }
+    
+    // Adds extra slider if drink for the "review" slider
+    if (count < _sliders.count + (  _reviewRatingSlider != nil ? 1 : 0 )) {
+        [self showAlert:@"Oops" message:@"Please adjust all required sliders before submitting"];
+        return;
+    }
+    
     if (_review != nil) {
         
         if (_reviewRatingSlider == nil) {

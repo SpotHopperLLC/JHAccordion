@@ -569,7 +569,6 @@
         return;
     }
     
-    
     // Spot
     if (_selectedReviewType == 0) {
         
