@@ -44,6 +44,8 @@
 @property (nonatomic, strong) NSMutableArray *sliders;
 @property (nonatomic, strong) NSMutableArray *advancedSliders;
 
+@property (nonatomic, strong) NSMutableArray *slidersMoved;
+
 @end
 
 @implementation AdjustSpotListSliderViewController
@@ -72,6 +74,7 @@
     // Initializes
     _sliders = [NSMutableArray array];
     _advancedSliders = [NSMutableArray array];
+    _slidersMoved = [NSMutableArray array];
     
     [self fetchFormData];
 }
@@ -120,6 +123,7 @@
         ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
         [cell setDelegate:self];
         [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
+        [cell.slider setUserMoved:[_slidersMoved containsObject:indexPath]];
         
         return cell;
     } else if (indexPath.section == 3) {
@@ -129,6 +133,7 @@
         ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
         [cell setDelegate:self];
         [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
+        [cell.slider setUserMoved:[_slidersMoved containsObject:indexPath]];
         
         return cell;
     }
@@ -182,7 +187,13 @@
 #pragma mark - ReviewSliderCellDelegate
 
 - (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(float)value {
+    
     NSIndexPath *indexPath = [_tblSliders indexPathForCell:cell];
+    
+    if (![_slidersMoved containsObject:indexPath]) {
+        [_slidersMoved addObject:indexPath];
+        [cell.slider setUserMoved:YES];
+    }
     
     if (indexPath.section == 2) {
         SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
