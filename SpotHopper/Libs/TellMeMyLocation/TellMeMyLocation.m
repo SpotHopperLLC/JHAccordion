@@ -9,6 +9,7 @@
 #define kLastLocationLat @"last_location_lat"
 #define kLastLocationLng @"last_location_lng"
 #define kLastLocationName @"last_location_name"
+#define kLastLocationDate @"last_location_date"
 
 #import "TellMeMyLocation.h"
 
@@ -90,9 +91,11 @@
     if (location != nil) {
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:location.coordinate.latitude] forKey:kLastLocationLat];
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:location.coordinate.longitude] forKey:kLastLocationLng];
+        [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kLastLocationDate];
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLastLocationLat];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLastLocationLng];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLastLocationDate];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
     
@@ -128,6 +131,10 @@
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLastLocationName];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (NSDate*)lastLocationDate {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:kLastLocationDate];
 }
 
 + (CLLocation*)lastLocation {
