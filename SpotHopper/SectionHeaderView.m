@@ -64,6 +64,7 @@
     [_lblText setBackgroundColor:[UIColor clearColor]];
     [_lblText setTextColor:[UIColor whiteColor]];
     [_lblText setFont:[UIFont fontWithName:@"Lato-Light" size:18.0f]];
+    [_lblText setUserInteractionEnabled:NO];
     [_viewContent addSubview:_lblText];
     
     // Image arrow
