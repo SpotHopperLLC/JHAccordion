@@ -206,7 +206,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
     if (indexPath.section == 0) {
-        
+        `
         if ([ClientSessionManager sharedClient].isLoggedIn == NO) {
             [self showAlert:@"Login Required" message:@"Cannot create a spotlist without logging in"];
             return;
