@@ -932,7 +932,6 @@
             [_sliders removeAllObjects];
             for (SliderTemplateModel *sliderTemplate in _sliderTemplates) {
                 SliderModel *slider = [[SliderModel alloc] init];
-//                [slider setValue:sliderTemplate.defaultValue];
                 [slider setSliderTemplate:sliderTemplate];
                 [_sliders addObject:slider];
             }
