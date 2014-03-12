@@ -67,7 +67,7 @@
     [super viewDidLoad];
     
     // Sets title
-    [self setTitle:[NSString stringWithFormat:@"Similar to %@", _spotList.name]];
+    [self setTitle:_spotList.name];
     
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
