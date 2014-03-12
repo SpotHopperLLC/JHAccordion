@@ -139,7 +139,7 @@
         }
     }
     
-    return sliders;
+    return jsonSliders;
 }
 
 #pragma mark - Getters
