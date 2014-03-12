@@ -51,8 +51,8 @@
     [super setTitle:[NSString stringWithFormat:@"%@ >", title] forState:UIControlStateNormal];
 }
 
-- (void)updateTitle {
-    NSString *locationName =[TellMeMyLocation lastLocationName];
+- (void)updateTitle:(NSString*)locationName location:(CLLocation*)location {
+
     if (locationName.length == 0) {
         [self setTitle:@"<no location selected>" forState:UIControlStateNormal];
     } else {
@@ -60,11 +60,42 @@
     }
     
     if ([_delegate respondsToSelector:@selector(locationUpdate:location:name:)]) {
-        NSString *locationName =[TellMeMyLocation lastLocationName];
-        CLLocation *lastLocation = [TellMeMyLocation lastLocation];
         
-        [_delegate locationUpdate:self location:lastLocation name:locationName];
+        [_delegate locationUpdate:self location:location name:locationName];
     }
+}
+
+- (void)updateWithLocation:(CLLocation*)location {
+    // Reverse geocodes
+    [[[CLGeocoder alloc] init] reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+        
+        // Saves location name
+        if (!error) {
+            if (placemarks.count > 0) {
+                CLPlacemark *placemark = [placemarks objectAtIndex:0];
+                
+                NSString *name = nil;
+                if (placemark.locality.length > 0 && placemark.administrativeArea.length > 0) {
+                    name = [NSString stringWithFormat:@"%@, %@", placemark.locality, placemark.administrativeArea];
+                } else if (placemark.locality.length > 0) {
+                    name = placemark.locality;
+                } else if (placemark.administrativeArea.length > 0) {
+                    name = placemark.administrativeArea;
+                }
+                [self updateTitle:name location:location];
+                
+            } else {
+                [self updateTitle:nil location:nil];
+            }
+        } else {
+            [self updateTitle:nil location:nil];
+            
+            if ([_delegate respondsToSelector:@selector(locationError:error:)]) {
+                [_delegate locationError:self error:error];
+            }
+        }
+        
+    }];
 }
 
 - (void)updateWithLastLocation {
@@ -73,17 +104,17 @@
     if (lastLocation == nil) {
         [self updateWithCurrentLocation];
     } else {
-        [self updateTitle];
+        [self updateTitle:[TellMeMyLocation lastLocationName] location:lastLocation];
     }
 }
 
 - (void)updateWithCurrentLocation {
     [_tellMeMyLocation findMe:kCLLocationAccuracyThreeKilometers found:^(CLLocation *newLocation) {
         [TellMeMyLocation setLastLocation:newLocation completionHandler:^{
-            [self updateTitle];
+            [self updateTitle:[TellMeMyLocation lastLocationName] location:newLocation];
         }];
     } failure:^(NSError *error){
-        [self updateTitle];
+        [self updateTitle:nil location:nil];
         
         if ([_delegate respondsToSelector:@selector(locationError:error:)]) {
             if ([error.domain isEqualToString:kTellMeMyLocationDomain]) {
@@ -98,7 +129,7 @@
 - (void)locationChooserViewController:(LocationChooserViewController *)viewController updateLocation:(CLLocation *)location {
     [viewController dismissViewControllerAnimated:YES completion:^{
         [TellMeMyLocation setLastLocation:location completionHandler:^{
-            [self updateTitle];
+            [self updateTitle:[TellMeMyLocation lastLocationName] location:location];
         }];
     }];
 }

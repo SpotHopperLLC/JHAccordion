@@ -86,7 +86,11 @@
     
     // Locations
     [_btnLocation setDelegate:self];
-    [_btnLocation updateWithLastLocation];
+    if (_spotList.location != nil) {
+        [_btnLocation updateWithLocation:_spotList.location];
+    } else {
+        [_btnLocation updateWithLastLocation];
+    }
     
     // Initialize stuff
     _showMap = NO;
