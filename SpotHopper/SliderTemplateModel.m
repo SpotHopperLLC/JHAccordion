@@ -52,6 +52,9 @@
         
         if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"slider_templates"];
+            models = [models sortedArrayUsingComparator:^NSComparisonResult(SliderTemplateModel *obj1, SliderTemplateModel *obj2) {
+                return [obj1.ID compare:obj2.ID];
+            }];
             successBlock(models, jsonApi);
             
             // Resolves promise

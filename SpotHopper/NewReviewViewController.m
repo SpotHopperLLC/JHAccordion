@@ -58,8 +58,6 @@
 @property (nonatomic, strong) NSMutableArray *sliders;
 @property (nonatomic, strong) NSMutableArray *advancedSliders;
 
-@property (nonatomic, strong) NSMutableArray *slidersMoved;
-
 @property (nonatomic, strong) NSDictionary *selectedSpotType;
 @property (nonatomic, strong) NSDictionary *selectedCocktailSubtype;
 
@@ -134,7 +132,6 @@
     _tblReviewsInitalFrame = CGRectZero;
     _sliders = [NSMutableArray array];
     _reviewRatingSlider = [ReviewModel ratingSliderModel];
-    _slidersMoved = [NSMutableArray array];
     
     [_tblReviews setTableHeaderView:[self formForReviewTypeIndex:_selectedReviewType]];
     [self fetchFormData];
@@ -238,7 +235,6 @@
             ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
             [cell setDelegate:self];
             [cell setSliderTemplate:_reviewRatingSlider.sliderTemplate withSlider:_reviewRatingSlider showSliderValue:YES];
-            [cell.slider setUserMoved:[_slidersMoved containsObject:indexPath]];
             
             return cell;
         } else if (indexPath.section == 1) {
@@ -248,7 +244,6 @@
             ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
             [cell setDelegate:self];
             [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
-            [cell.slider setUserMoved:[_slidersMoved containsObject:indexPath]];
             
             return cell;
         } else if (indexPath.section == 2) {
@@ -258,7 +253,6 @@
             ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
             [cell setDelegate:self];
             [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
-            [cell.slider setUserMoved:[_slidersMoved containsObject:indexPath]];
             
             return cell;
         }
@@ -518,12 +512,6 @@
     
     NSIndexPath *indexPath = [_tblReviews indexPathForCell:cell];
     
-    // Keeps track of which sliders the user moved
-    if (![_slidersMoved containsObject:indexPath]) {
-        [_slidersMoved addObject:indexPath];
-        [cell.slider setUserMoved:YES];
-    }
-    
     if (indexPath.section == 0) {
         [_reviewRatingSlider setValue:[NSNumber numberWithFloat:(value * 10)]];
     } else if (indexPath.section == 1) {
@@ -557,16 +545,16 @@
     /*
      * Make sure all required spotlist shave been modified
      */
-    NSInteger count = 0;
-    for (NSIndexPath *indexPath in _slidersMoved) {
-        // Counts up required sliders
-        if (indexPath.section < 2) count++;
-    }
-    
-    // Adds extra slider if drink for the "review" slider
-    if (count < _sliders.count + ( (_selectedReviewType > 0) ? 1 : 0 )) {
+    if (_reviewRatingSlider != nil && _reviewRatingSlider.value == nil) {
         [self showAlert:@"Oops" message:@"Please adjust all required sliders before submitting"];
         return;
+    }
+    
+    for (SliderModel *slider in _sliders) {
+        if (slider.value == nil) {
+            [self showAlert:@"Oops" message:@"Please adjust all required sliders before submitting"];
+            return;
+        }
     }
     
     // Spot
@@ -941,7 +929,7 @@
             [_sliders removeAllObjects];
             for (SliderTemplateModel *sliderTemplate in _sliderTemplates) {
                 SliderModel *slider = [[SliderModel alloc] init];
-                [slider setValue:sliderTemplate.defaultValue];
+//                [slider setValue:sliderTemplate.defaultValue];
                 [slider setSliderTemplate:sliderTemplate];
                 [_sliders addObject:slider];
             }
