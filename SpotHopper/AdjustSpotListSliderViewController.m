@@ -199,6 +199,9 @@
 
 - (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(float)value {
     
+    // Sets slider to darker/selected color for good
+    [cell.slider setUserMoved:YES];
+    
     NSIndexPath *indexPath = [_tblSliders indexPathForCell:cell];
     
     // Keeps track of which sliders the user moved
