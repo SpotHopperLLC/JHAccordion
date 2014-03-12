@@ -41,6 +41,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblMatchPercent;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
+@property (weak, nonatomic) IBOutlet UILabel *lblLocation;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 @property (nonatomic, strong) CLLocation *selectedLocation;
@@ -85,11 +86,16 @@
     }];
     
     // Locations
-    [_btnLocation setDelegate:self];
-    if (_spotList.location != nil) {
-        [_btnLocation updateWithLocation:_spotList.location];
+    if (_spotList.featured == NO) {
+        [_btnLocation setDelegate:self];
+        if (_spotList.location != nil) {
+            [_btnLocation updateWithLocation:_spotList.location];
+        } else {
+            [_btnLocation updateWithLastLocation];
+        }
     } else {
-        [_btnLocation updateWithLastLocation];
+        [_lblLocation setHidden:YES];
+        [_btnLocation setHidden:YES];
     }
     
     // Initialize stuff
