@@ -79,10 +79,12 @@
     // Creating params
     NSMutableArray *jsonSliders = [NSMutableArray array];
     for (SliderModel *slider in sliders) {
-        [jsonSliders addObject:@{
-                                 @"slider_template_id" : slider.sliderTemplate.ID,
-                                 @"value" : slider.value,
-                                 }];
+        if (slider.value != nil) {
+            [jsonSliders addObject:@{
+                                     @"slider_template_id" : slider.sliderTemplate.ID,
+                                     @"value" : slider.value,
+                                     }];
+        }
     }
     
     NSMutableDictionary *params = @{

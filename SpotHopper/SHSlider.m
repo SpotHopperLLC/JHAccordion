@@ -18,13 +18,6 @@
 
 @implementation SHSlider
 
-//    UIImage *minImage = [[UIImage imageNamed:@"slider_background_min"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)];
-//    UIImage *maxImage = [[UIImage imageNamed:@"slider_background_max"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 25)];
-//    UIImage *minImageSelected = [[UIImage imageNamed:@"slider_background_selected_min"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)];
-//    UIImage *maxImageSelected = [[UIImage imageNamed:@"slider_background_selected_max"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 25)];
-//    UIImage *thumbImage = [UIImage imageNamed:@"slider_thumb"];
-//    UIImage *thumbImageSelected = [UIImage imageNamed:@"slider_thumb_selected"];
-
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
 	self = [super initWithCoder:aDecoder];
@@ -181,12 +174,17 @@
     [self updateVibeFeel];
 }
 
+- (void)setUserMoved:(BOOL)userMoved {
+    _userMoved = userMoved;
+    [self updateVibeFeel];
+}
+
 - (void)updateVibeFeel {
     if (_vibeFeel == NO) {
-        [_trackBackgroundMin setImage:[[UIImage imageNamed:@"slider_background_min"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)]];
+        [_trackBackgroundMin setImage:[[UIImage imageNamed:( _userMoved ? @"slider_background_selected_min" : @"slider_background_min" )] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)]];
         [_trackBackgroundMin setHighlightedImage:[[UIImage imageNamed:@"slider_background_selected_min"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)]];
         
-        [_trackBackgroundMax setImage:[[UIImage imageNamed:@"slider_background_max"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 25)]];
+        [_trackBackgroundMax setImage:[[UIImage imageNamed:( _userMoved ? @"slider_background_selected_max" : @"slider_background_max" )] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 25)]];
         [_trackBackgroundMax setHighlightedImage:[[UIImage imageNamed:@"slider_background_selected_max"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 25)]];
         
         

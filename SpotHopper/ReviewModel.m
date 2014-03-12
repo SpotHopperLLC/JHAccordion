@@ -52,15 +52,9 @@
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
+    
     // Creating params
-    NSMutableArray *jsonSliders = [NSMutableArray array];
-    for (SliderModel *slider in _sliders) {
-        [jsonSliders addObject:@{
-                                 @"slider_template_id" : slider.sliderTemplate.ID,
-                                 @"value" : slider.value
-                                 }];
-    }
-
+    NSArray *jsonSliders = [self createJSONSliderParams:_sliders];
     NSDictionary *params = @{
                              @"drink_id" : _drink.ID != nil ? _drink.ID : [NSNull null],
                              @"spot_id" : _spot.ID != nil ? _spot.ID : [NSNull null],
@@ -98,13 +92,7 @@
     Deferred *deferred = [Deferred deferred];
     
     // Creating params
-    NSMutableArray *jsonSliders = [NSMutableArray array];
-    for (SliderModel *slider in sliders) {
-        [jsonSliders addObject:@{
-                                 @"slider_template_id" : slider.sliderTemplate.ID,
-                                 @"value" : slider.value
-                                 }];
-    }
+    NSArray *jsonSliders = [self createJSONSliderParams:sliders];
     NSDictionary *params = @{
                              @"drink_id" : self.drink.ID != nil ? self.drink.ID : [NSNull null],
                              @"spot_id" : self.spot.ID != nil ? self.spot.ID : [NSNull null],
@@ -135,6 +123,23 @@
     }];
     
     return deferred.promise;
+}
+
+- (NSArray*)createJSONSliderParams:(NSArray*)sliders {
+    // Creating params
+    NSMutableArray *jsonSliders = [NSMutableArray array];
+    for (SliderModel *slider in _sliders) {
+        
+        // Only send up slider if value is not nil
+        if (slider.value != nil) {
+            [jsonSliders addObject:@{
+                                     @"slider_template_id" : slider.sliderTemplate.ID,
+                                     @"value" : slider.value
+                                     }];
+        }
+    }
+    
+    return jsonSliders;
 }
 
 #pragma mark - Getters
@@ -170,7 +175,11 @@
 }
 
 - (NSArray *)sliders {
-    return [[self linkedResourceForKey:@"sliders"] sortedArrayUsingComparator:^NSComparisonResult(SliderModel *obj1, SliderModel *obj2) {
+    if (_sliders == nil) {
+        _sliders = [self linkedResourceForKey:@"sliders"];
+    }
+    
+    return [_sliders sortedArrayUsingComparator:^NSComparisonResult(SliderModel *obj1, SliderModel *obj2) {
         return [obj1.sliderTemplate.ID compare:obj2.sliderTemplate.ID];
     }];
 }

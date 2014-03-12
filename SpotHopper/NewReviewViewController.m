@@ -56,7 +56,6 @@
 @property (nonatomic, strong) SliderModel *reviewRatingSlider;
 @property (nonatomic, strong) NSArray *sliderTemplates;
 @property (nonatomic, strong) NSMutableArray *sliders;
-
 @property (nonatomic, strong) NSMutableArray *advancedSliders;
 
 @property (nonatomic, strong) NSDictionary *selectedSpotType;
@@ -510,6 +509,10 @@
 #pragma mark - ReviewSliderCellDelegate
 
 - (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(float)value {
+    
+    // Sets slider to darker/selected color for good
+    [cell.slider setUserMoved:YES];
+    
     NSIndexPath *indexPath = [_tblReviews indexPathForCell:cell];
     
     if (indexPath.section == 0) {
@@ -541,6 +544,21 @@
 }
 
 - (IBAction)onClickSubmit:(id)sender {
+    
+    /*
+     * Make sure all required spotlist shave been modified
+     */
+    if (_reviewRatingSlider != nil && _reviewRatingSlider.value == nil) {
+        [self showAlert:@"Oops" message:@"Please adjust all required sliders before submitting"];
+        return;
+    }
+    
+    for (SliderModel *slider in _sliders) {
+        if (slider.value == nil) {
+            [self showAlert:@"Oops" message:@"Please adjust all required sliders before submitting"];
+            return;
+        }
+    }
     
     // Spot
     if (_selectedReviewType == 0) {
@@ -914,7 +932,6 @@
             [_sliders removeAllObjects];
             for (SliderTemplateModel *sliderTemplate in _sliderTemplates) {
                 SliderModel *slider = [[SliderModel alloc] init];
-                [slider setValue:sliderTemplate.defaultValue];
                 [slider setSliderTemplate:sliderTemplate];
                 [_sliders addObject:slider];
             }

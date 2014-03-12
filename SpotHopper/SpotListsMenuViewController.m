@@ -206,6 +206,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
     if (indexPath.section == 0) {
+        
+        if ([ClientSessionManager sharedClient].isLoggedIn == NO) {
+            [self showAlert:@"Login Required" message:@"Cannot create a spotlist without logging in"];
+            return;
+        }
+        
         if (indexPath.row == 0) {
             [self showAdjustSlidersView:YES animated:YES];
         } else if (indexPath.row == 1) {
@@ -298,7 +304,7 @@
     [spot getSpot:Nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
         [self hideHUD];
         
-        [SpotListModel postSpotList:spotModel.name latitude:spotModel.latitude longitude:spotModel.longitude sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+        [SpotListModel postSpotList:[NSString stringWithFormat:@"Similar to %@", spotModel.name] latitude:spotModel.latitude longitude:spotModel.longitude sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
             [self hideHUD];
             [self showHUDCompleted:@"Spotlist created!" block:^{
                 
@@ -357,7 +363,9 @@
      * Featured spot lists
      */
     Promise *promiseFeaturedSpotLists = [SpotListModel getFeaturedSpotLists:params success:^(NSArray *spotListModels, JSONAPI *jsonApi) {
-        _featuredSpotLists = spotListModels;
+        _featuredSpotLists = [spotListModels sortedArrayUsingComparator:^NSComparisonResult(SpotListModel* obj1, SpotListModel* obj2) {
+            return [obj1.name caseInsensitiveCompare:obj2.name];
+        }];
     } failure:^(ErrorModel *errorModel) {
         
     }];
@@ -368,8 +376,14 @@
      */
     if ([ClientSessionManager sharedClient].isLoggedIn == YES) {
         UserModel *user = [ClientSessionManager sharedClient].currentUser;
-        Promise *promiseMySpotLists = [user getSpotLists:params success:^(NSArray *spotListsModels, JSONAPI *jsonApi) {
-            _mySpotLists = spotListsModels;
+        Promise *promiseMySpotLists = [user getSpotLists:nil success:^(NSArray *spotListsModels, JSONAPI *jsonApi) {
+            _mySpotLists = [spotListsModels sortedArrayUsingComparator:^NSComparisonResult(SpotListModel* obj1, SpotListModel* obj2) {
+                return [obj1.name caseInsensitiveCompare:obj2.name];
+            }];
+            
+            for (SpotListModel *spotList in _mySpotLists) {
+                NSLog(@"Spotlist -%@", spotList.name);
+            }
         } failure:^(ErrorModel *errorModel) {
             
         }];

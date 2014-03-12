@@ -33,10 +33,12 @@
     [_lblMnimum setText:sliderTemplate.minLabel];
     [_lblMaximum setText:sliderTemplate.maxLabel];
     
-    if (slider == nil) {
+    if (slider.value == nil) {
         [_slider setSelectedValue:(sliderTemplate.defaultValue.floatValue / 10.0f)];
+        [_slider setUserMoved:NO];
     } else {
         [_slider setSelectedValue:(slider.value.floatValue / 10.0f)];
+        [_slider setUserMoved:YES];
     }
     
     [_lblSliderValue setHidden:!show];

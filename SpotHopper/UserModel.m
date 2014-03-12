@@ -12,6 +12,13 @@
 
 #import "ClientSessionManager.h"
 #import "ErrorModel.h"
+#import "ReviewModel.h"
+#import "SliderModel.h"
+#import "SliderTemplateModel.h"
+#import "SpotModel.h"
+#import "SpotTypeModel.h"
+#import "DrinkModel.h"
+#import "DrinkTypeModel.h"
 
 @implementation UserModel
 
@@ -104,6 +111,74 @@
             // Rejects promise
             [deferred rejectWith:errorModel];
         }
+    }];
+    
+    return deferred.promise;
+}
+
+- (Promise*)getReview:(NSDictionary*)params success:(void(^)(ReviewModel *reviewModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/users/%d/reviews", [self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        ReviewModel *model = [jsonApi resourceForKey:@"reviews"];
+        
+        NSDictionary *params = nil;
+        if (model.spot != nil) {
+            params = @{ kSliderTemplateModelParamSpotTypeId : model.spot.spotType.ID };
+        } else if (model.drink != nil) {
+            params = @{ kSliderTemplateModelParamDrinkTypeId : model.drink.drinkType.ID };
+        }
+        
+        [SliderTemplateModel getSliderTemplates:params success:^(NSArray *sliderTemplates, JSONAPI *jsonApiDontNeed) {
+            
+            if (operation.response.statusCode == 200) {
+                
+                
+                if (model != nil) {
+                    
+                    NSMutableDictionary *sliderTemplateToSliderMap = [NSMutableDictionary dictionary];
+                    for (SliderModel *slider in model.sliders) {
+                        [sliderTemplateToSliderMap setObject:slider forKey:slider.sliderTemplate.ID];
+                    }
+                    
+                    // Need to set review slider templates to these slider templates
+                    // and move slider over from review slider templates to these slider templates
+                    NSMutableArray *allSliders = [NSMutableArray array];
+                    for (SliderTemplateModel *sliderTemplate in sliderTemplates) {
+                        SliderModel *slider = [sliderTemplateToSliderMap objectForKey:sliderTemplate.ID];
+                        if (slider == nil) {
+                            slider = [[SliderModel alloc] init];
+                            [slider setSliderTemplate:sliderTemplate];
+                        }
+                        [allSliders addObject:slider];
+                    }
+                    [model setSliders:allSliders];
+                    
+                }
+                
+                successBlock(model, jsonApi);
+                
+                // Resolves promise
+                [deferred resolve];
+            } else {
+                ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+                failureBlock(errorModel);
+                
+                // Rejects promise
+                [deferred rejectWith:errorModel];
+            }
+            
+        } failure:^(ErrorModel *errorModel) {
+            failureBlock(errorModel);
+            
+            // Rejects promise
+            [deferred rejectWith:errorModel];
+        }];
+        
     }];
     
     return deferred.promise;

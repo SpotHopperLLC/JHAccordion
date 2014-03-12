@@ -216,6 +216,7 @@
                     <connections>
                         <outlet property="btnLocation" destination="hFE-xB-2JQ" id="rwl-rV-Vfz"/>
                         <outlet property="collectionView" destination="oZb-00-cLy" id="2fL-JV-CA3"/>
+                        <outlet property="lblLocation" destination="0tZ-et-55A" id="xPk-Ez-kW8"/>
                         <outlet property="lblMatchPercent" destination="tgC-mz-s8X" id="Akz-kP-TGj"/>
                         <outlet property="mapView" destination="7cl-eT-mk0" id="7cW-Hb-KeG"/>
                     </connections>

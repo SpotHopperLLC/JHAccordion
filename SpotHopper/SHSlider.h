@@ -25,6 +25,7 @@
 }
 
 @property (nonatomic, assign) BOOL vibeFeel;
+@property (nonatomic, assign) BOOL userMoved;
 
 @property (nonatomic, assign) float minimumValue;
 @property (nonatomic, assign) float maximumValue;

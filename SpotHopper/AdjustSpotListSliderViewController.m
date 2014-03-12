@@ -40,9 +40,12 @@
 @property (nonatomic, strong) NSArray *spotTypes;
 @property (nonatomic, strong) NSDictionary *selectedSpotType;
 
+@property (nonatomic, strong) NSArray *allSliderTemplates;
 @property (nonatomic, strong) NSArray *sliderTemplates;
 @property (nonatomic, strong) NSMutableArray *sliders;
 @property (nonatomic, strong) NSMutableArray *advancedSliders;
+
+@property (nonatomic, strong) NSMutableArray *slidersMoved;
 
 @end
 
@@ -72,8 +75,10 @@
     // Initializes
     _sliders = [NSMutableArray array];
     _advancedSliders = [NSMutableArray array];
+    _slidersMoved = [NSMutableArray array];
     
     [self fetchFormData];
+    [self fetchSliderTemplates];
 }
 
 - (void)didReceiveMemoryWarning
@@ -90,7 +95,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
-        return _spotTypes.count;
+        return _spotTypes.count + 1;
     } else if (section == 1) {
         
     } else if (section == 2) {
@@ -105,10 +110,15 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.section == 0) {
-        NSDictionary *spotType = [_spotTypes objectAtIndex:indexPath.row];
+        
         
         AdjustSliderOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AdjustSliderOptionCell" forIndexPath:indexPath];
-        [cell.lblTitle setText:[spotType objectForKey:@"name"]];
+        if (indexPath.row > 0) {
+            NSDictionary *spotType = [_spotTypes objectAtIndex:indexPath.row - 1];
+            [cell.lblTitle setText:[spotType objectForKey:@"name"]];
+        } else {
+            [cell.lblTitle setText:@"Any"];
+        }
         
         return cell;
     } else if (indexPath.section == 1) {
@@ -120,6 +130,7 @@
         ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
         [cell setDelegate:self];
         [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
+        [cell.slider setUserMoved:[_slidersMoved containsObject:indexPath]];
         
         return cell;
     } else if (indexPath.section == 3) {
@@ -129,6 +140,7 @@
         ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
         [cell setDelegate:self];
         [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
+        [cell.slider setUserMoved:[_slidersMoved containsObject:indexPath]];
         
         return cell;
     }
@@ -141,7 +153,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.section == 0) {
-        _selectedSpotType = [_spotTypes objectAtIndex:indexPath.row];
+        if (indexPath.row > 0) {
+            _selectedSpotType = [_spotTypes objectAtIndex:indexPath.row - 1];
+        } else {
+            _selectedSpotType = nil;
+        }
         [_accordion closeSection:indexPath.section];
         
     } else if (indexPath.section == 1) {
@@ -182,7 +198,17 @@
 #pragma mark - ReviewSliderCellDelegate
 
 - (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(float)value {
+    
+    // Sets slider to darker/selected color for good
+    [cell.slider setUserMoved:YES];
+    
     NSIndexPath *indexPath = [_tblSliders indexPathForCell:cell];
+    
+    // Keeps track of which sliders the user moved
+    if (![_slidersMoved containsObject:indexPath]) {
+        [_slidersMoved addObject:indexPath];
+        [cell.slider setUserMoved:YES];
+    }
     
     if (indexPath.section == 2) {
         SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
@@ -204,7 +230,7 @@
 - (void)accordion:(JHAccordion *)accordion closingSection:(NSInteger)section {
     if (section == 0) {
         [_sectionHeader0 setSelected:NO];
-        [self fetchSliderTemplates];
+        [self filterSliderTemplates];
     } else if (section == 1) [_sectionHeader1 setSelected:NO];
     else if (section == 3) [_sectionHeader3 setSelected:NO];
     
@@ -243,6 +269,9 @@
     
     [_sliders removeAllObjects];
     [_advancedSliders removeAllObjects];
+    [_slidersMoved removeAllObjects];
+    
+    [self filterSliderTemplates];
     
     // Reload
     [_tblSliders reloadData];
@@ -276,57 +305,80 @@
     }];
 }
 
+- (void)filterSliderTemplates {
+    
+    NSMutableArray *slidersFiltered = [NSMutableArray array];
+    if (_selectedSpotType == nil) {
+        
+        // Filters if is used for any spot type
+        for (SliderTemplateModel *sliderTemplate in _allSliderTemplates) {
+            if (sliderTemplate.spotTypes.count > 0) {
+                [slidersFiltered addObject:sliderTemplate];
+            }
+        }
+        
+    } else {
+        NSNumber *selectedSpotTypeId = [_selectedSpotType objectForKey:@"id"];
+        
+        // Filters by spot idea
+        for (SliderTemplateModel *sliderTemplate in _allSliderTemplates) {
+            NSArray *spotTypeIds = [sliderTemplate.spotTypes valueForKey:@"ID"];
+            
+            if ([spotTypeIds containsObject:selectedSpotTypeId]) {
+                [slidersFiltered addObject:sliderTemplate];
+            }
+        }
+        
+    }
+    _sliderTemplates = slidersFiltered;
+    
+    
+    // Creating sliders
+    [_sliders removeAllObjects];
+    for (SliderTemplateModel *sliderTemplate in _sliderTemplates) {
+        SliderModel *slider = [[SliderModel alloc] init];
+        [slider setSliderTemplate:sliderTemplate];
+        [_sliders addObject:slider];
+    }
+    
+    // Filling advanced sliders if nil
+    [_advancedSliders removeAllObjects];
+    
+    // Moving advanced sliders into their own array
+    for (SliderModel *slider in _sliders) {
+        if (slider.sliderTemplate.required == NO) {
+            [_advancedSliders addObject:slider];
+        }
+    }
+    
+    // Removing advances sliders from basic array
+    for (SliderModel *slider in _advancedSliders) {
+        [_sliders removeObject:slider];
+    }
+    
+    // Reloading table
+    [_tblSliders reloadData];
+    
+}
+
 - (void)fetchSliderTemplates {
     
     // Gets sliders
-    NSDictionary *params;
-    NSNumber *spotTypeId = [_selectedSpotType objectForKey:@"id"];
+//    NSDictionary *params = @{
+//               kSliderTemplateModelParamsPageSize: @200,
+//               kSliderTemplateModelParamPage: @1
+//               };
     
-    if (spotTypeId != nil) {
-        params = @{
-                   kSliderTemplateModelParamSpotTypeId: spotTypeId,
-                   kSliderTemplateModelParamsPageSize: @100,
-                   kSliderTemplateModelParamPage: @1
-                   };
-    }
-    
-    if (params != nil) {
-        [self showHUD:@"Loading sliders"];
-        [SliderTemplateModel getSliderTemplates:params success:^(NSArray *sliderTemplates, JSONAPI *jsonApi) {
-            [self hideHUD];
-            _sliderTemplates = sliderTemplates;
-            
-            // Creating sliders
-            [_sliders removeAllObjects];
-            for (SliderTemplateModel *sliderTemplate in _sliderTemplates) {
-                SliderModel *slider = [[SliderModel alloc] init];
-                [slider setValue:sliderTemplate.defaultValue];
-                [slider setSliderTemplate:sliderTemplate];
-                [_sliders addObject:slider];
-            }
-            
-            // Filling advanced sliders if nil
-            [_advancedSliders removeAllObjects];
-            
-            // Moving advanced sliders into their own array
-            for (SliderModel *slider in _sliders) {
-                if (slider.sliderTemplate.required == NO) {
-                    [_advancedSliders addObject:slider];
-                }
-            }
-            
-            // Removing advances sliders from basic array
-            for (SliderModel *slider in _advancedSliders) {
-                [_sliders removeObject:slider];
-            }
-            
-            // Reloading table
-            [_tblSliders reloadData];
-            
-        } failure:^(ErrorModel *errorModel) {
-            [self hideHUD];
-        }];
-    }
+    [self showHUD:@"Loading sliders"];
+    [SliderTemplateModel getSliderTemplates:nil success:^(NSArray *sliderTemplates, JSONAPI *jsonApi) {
+        [self hideHUD];
+        _allSliderTemplates = sliderTemplates;
+        
+        [self filterSliderTemplates];
+        
+    } failure:^(ErrorModel *errorModel) {
+        [self hideHUD];
+    }];
 }
 
 - (void)doCreateSpotlist {

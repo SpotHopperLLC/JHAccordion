@@ -43,7 +43,6 @@
 @property (nonatomic, strong) SliderModel *reviewRatingSlider;
 @property (nonatomic, strong) NSArray *sliderTemplates;
 @property (nonatomic, strong) NSMutableArray *sliders;
-
 @property (nonatomic, strong) NSMutableArray *advancedSliders;
 
 @end
@@ -232,6 +231,10 @@
 #pragma mark - ReviewSliderCellDelegate
 
 - (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(float)value {
+    
+    // Sets slider to darker/selected color for good
+    [cell.slider setUserMoved:YES];
+    
     NSIndexPath *indexPath = [_tblReviews indexPathForCell:cell];
     
     if (indexPath.section == 0) {
@@ -248,6 +251,25 @@
 #pragma mark - Actions
 
 - (IBAction)onClickSubmit:(id)sender {
+    
+    /*
+     * Make sure all required spotlist shave been modified
+     */
+    /*
+     * Make sure all required spotlist shave been modified
+     */
+    if (_reviewRatingSlider != nil && _reviewRatingSlider.value == nil) {
+        [self showAlert:@"Oops" message:@"Please adjust all required sliders before submitting"];
+        return;
+    }
+    
+    for (SliderModel *slider in _sliders) {
+        if (slider.value == nil) {
+            [self showAlert:@"Oops" message:@"Please adjust all required sliders before submitting"];
+            return;
+        }
+    }
+    
     if (_review != nil) {
         
         if (_reviewRatingSlider == nil) {
@@ -420,13 +442,10 @@
         params = @{ kReviewModelParamsDrinkId : _drink.ID };
     }
     
-    [user getReviews:params success:^(NSArray *reviewModels, JSONAPI *jsonApi) {
+    [user getReview:params success:^(ReviewModel *reviewModel, JSONAPI *jsonApi) {
         [self hideHUD];
         
-        if (reviewModels.count > 0) {
-            _review = [reviewModels objectAtIndex:0];
-        }
-        
+        _review = reviewModel;
         [self initSliders];
 
         
