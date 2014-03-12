@@ -43,8 +43,8 @@
 @property (nonatomic, strong) SliderModel *reviewRatingSlider;
 @property (nonatomic, strong) NSArray *sliderTemplates;
 @property (nonatomic, strong) NSMutableArray *sliders;
-
 @property (nonatomic, strong) NSMutableArray *advancedSliders;
+@property (nonatomic, strong) NSMutableArray *slidersMoved;
 
 @end
 
@@ -89,6 +89,9 @@
         _spot = _review.spot;
     }
     
+    // Initialize stuff
+    _slidersMoved = [NSMutableArray array];
+    
     // Gets review if already completed
     [self updateView];
     [self fetchReview];
@@ -128,6 +131,11 @@
         ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
         [cell setDelegate:self];
         [cell setSliderTemplate:_reviewRatingSlider.sliderTemplate withSlider:_reviewRatingSlider showSliderValue:YES];
+        if (_review == nil) {
+            [cell.slider setUserMoved:[_slidersMoved containsObject:indexPath]];
+        } else {
+            [cell.slider setUserMoved:YES];
+        }
         
         return cell;
     } else if (indexPath.section == 1) {
@@ -136,6 +144,11 @@
         ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
         [cell setDelegate:self];
         [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
+        if (_review == nil) {
+            [cell.slider setUserMoved:[_slidersMoved containsObject:indexPath]];
+        } else {
+            [cell.slider setUserMoved:YES];
+        }
         
         return cell;
     } else if (indexPath.section == 2) {
@@ -144,6 +157,11 @@
         ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
         [cell setDelegate:self];
         [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
+        if (_review == nil) {
+            [cell.slider setUserMoved:[_slidersMoved containsObject:indexPath]];
+        } else {
+            [cell.slider setUserMoved:YES];
+        }
         
         return cell;
     }
@@ -232,7 +250,14 @@
 #pragma mark - ReviewSliderCellDelegate
 
 - (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(float)value {
+    
     NSIndexPath *indexPath = [_tblReviews indexPathForCell:cell];
+    
+    // Keeps track of which sliders the user moved
+    if (![_slidersMoved containsObject:indexPath]) {
+        [_slidersMoved addObject:indexPath];
+        [cell.slider setUserMoved:YES];
+    }
     
     if (indexPath.section == 0) {
         [_reviewRatingSlider setValue:[NSNumber numberWithFloat:(value * 10)]];

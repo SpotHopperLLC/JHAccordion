@@ -238,6 +238,7 @@
             ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
             [cell setDelegate:self];
             [cell setSliderTemplate:_reviewRatingSlider.sliderTemplate withSlider:_reviewRatingSlider showSliderValue:YES];
+            [cell.slider setUserMoved:[_slidersMoved containsObject:indexPath]];
             
             return cell;
         } else if (indexPath.section == 1) {
