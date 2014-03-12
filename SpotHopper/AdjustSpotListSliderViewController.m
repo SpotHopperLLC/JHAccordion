@@ -190,6 +190,7 @@
     
     NSIndexPath *indexPath = [_tblSliders indexPathForCell:cell];
     
+    // Keeps track of which sliders the user moved
     if (![_slidersMoved containsObject:indexPath]) {
         [_slidersMoved addObject:indexPath];
         [cell.slider setUserMoved:YES];

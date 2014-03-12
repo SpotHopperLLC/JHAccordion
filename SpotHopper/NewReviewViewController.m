@@ -56,8 +56,9 @@
 @property (nonatomic, strong) SliderModel *reviewRatingSlider;
 @property (nonatomic, strong) NSArray *sliderTemplates;
 @property (nonatomic, strong) NSMutableArray *sliders;
-
 @property (nonatomic, strong) NSMutableArray *advancedSliders;
+
+@property (nonatomic, strong) NSMutableArray *slidersMoved;
 
 @property (nonatomic, strong) NSDictionary *selectedSpotType;
 @property (nonatomic, strong) NSDictionary *selectedCocktailSubtype;
@@ -133,6 +134,7 @@
     _tblReviewsInitalFrame = CGRectZero;
     _sliders = [NSMutableArray array];
     _reviewRatingSlider = [ReviewModel ratingSliderModel];
+    _slidersMoved = [NSMutableArray array];
     
     [_tblReviews setTableHeaderView:[self formForReviewTypeIndex:_selectedReviewType]];
     [self fetchFormData];
@@ -245,6 +247,7 @@
             ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
             [cell setDelegate:self];
             [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
+            [cell.slider setUserMoved:[_slidersMoved containsObject:indexPath]];
             
             return cell;
         } else if (indexPath.section == 2) {
@@ -254,6 +257,7 @@
             ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
             [cell setDelegate:self];
             [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
+            [cell.slider setUserMoved:[_slidersMoved containsObject:indexPath]];
             
             return cell;
         }
@@ -510,7 +514,14 @@
 #pragma mark - ReviewSliderCellDelegate
 
 - (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(float)value {
+    
     NSIndexPath *indexPath = [_tblReviews indexPathForCell:cell];
+    
+    // Keeps track of which sliders the user moved
+    if (![_slidersMoved containsObject:indexPath]) {
+        [_slidersMoved addObject:indexPath];
+        [cell.slider setUserMoved:YES];
+    }
     
     if (indexPath.section == 0) {
         [_reviewRatingSlider setValue:[NSNumber numberWithFloat:(value * 10)]];
