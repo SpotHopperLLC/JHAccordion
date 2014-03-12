@@ -266,6 +266,9 @@
     
     [_sliders removeAllObjects];
     [_advancedSliders removeAllObjects];
+    [_slidersMoved removeAllObjects];
+    
+    [self filterSliderTemplates];
     
     // Reload
     [_tblSliders reloadData];
