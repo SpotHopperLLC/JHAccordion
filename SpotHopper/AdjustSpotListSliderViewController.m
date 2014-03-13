@@ -21,6 +21,7 @@
 #import "ErrorModel.h"
 #import "SpotModel.h"
 #import "SpotListModel.h"
+#import "SpotListMoodModel.h"
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
 
@@ -39,6 +40,9 @@
 
 @property (nonatomic, strong) NSArray *spotTypes;
 @property (nonatomic, strong) NSDictionary *selectedSpotType;
+
+@property (nonatomic, strong) NSArray *spotListMoodTypes;
+@property (nonatomic, strong) SpotListMoodModel *selectedSpotListMood;
 
 @property (nonatomic, strong) NSArray *allSliderTemplates;
 @property (nonatomic, strong) NSArray *sliderTemplates;
@@ -97,7 +101,7 @@
     if (section == 0) {
         return _spotTypes.count + 1;
     } else if (section == 1) {
-        
+        return _spotListMoodTypes.count + 1;
     } else if (section == 2) {
         return _sliders.count;
     } else if (section == 3) {
@@ -111,7 +115,6 @@
     
     if (indexPath.section == 0) {
         
-        
         AdjustSliderOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AdjustSliderOptionCell" forIndexPath:indexPath];
         if (indexPath.row > 0) {
             NSDictionary *spotType = [_spotTypes objectAtIndex:indexPath.row - 1];
@@ -123,6 +126,15 @@
         return cell;
     } else if (indexPath.section == 1) {
         
+        AdjustSliderOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AdjustSliderOptionCell" forIndexPath:indexPath];
+        if (indexPath.row > 0) {
+            SpotListMoodModel *spotListMood = [_spotListMoodTypes objectAtIndex:indexPath.row - 1];
+            [cell.lblTitle setText:spotListMood.name];
+        } else {
+            [cell.lblTitle setText:@"None"];
+        }
+        
+        return cell;
     }  else if (indexPath.section == 2) {
         
         SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
@@ -161,7 +173,12 @@
         [_accordion closeSection:indexPath.section];
         
     } else if (indexPath.section == 1) {
-        
+        if (indexPath.row > 0) {
+            _selectedSpotListMood = [_spotListMoodTypes objectAtIndex:indexPath.row - 1];
+        } else {
+            _selectedSpotListMood = nil;
+        }
+        [_accordion closeSection:indexPath.section];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -262,6 +279,7 @@
 - (void)resetForm {
     // Reset
     _selectedSpotType = nil;
+    _selectedSpotListMood = nil;
     
     // Resets headers
     [self updateSectionHeaderTitles:0];
@@ -297,11 +315,18 @@
             }
             _spotTypes = userSpotTypes;
             
-            [_tblSliders reloadData];
         }
+        [_tblSliders reloadData];
         
     } failure:^(ErrorModel *errorModel) {
 
+    }];
+    
+    [SpotListMoodModel getSpotListMoods:nil success:^(NSArray *spotListMoodModels, JSONAPI *jsonApi) {
+        _spotListMoodTypes = spotListMoodModels;
+        [_tblSliders reloadData];
+    } failure:^(ErrorModel *errorModel) {
+        
     }];
 }
 
@@ -421,8 +446,12 @@
         
     } else if (section == 1) {
         
-        CGFloat fontSize = _sectionHeader1.lblText.font.pointSize;
-        [_sectionHeader1.lblText setText:@"Select Mood (optional)" withFont:[UIFont fontWithName:@"Lato-LightItalic" size:fontSize] onString:@"(optional)"];
+        if (_selectedSpotListMood == nil) {
+            CGFloat fontSize = _sectionHeader1.lblText.font.pointSize;
+            [_sectionHeader1.lblText setText:@"Select Mood (optional)" withFont:[UIFont fontWithName:@"Lato-LightItalic" size:fontSize] onString:@"(optional)"];
+        } else {
+            [_sectionHeader1.lblText setText:_selectedSpotListMood.name];
+        }
         
     }
     

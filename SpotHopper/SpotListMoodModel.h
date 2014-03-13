@@ -14,7 +14,7 @@
 
 @interface SpotListMoodModel : SHJSONAPIResource
 
-@property (nonatomic, strong) NSNumber *name;
+@property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSArray *sliders;
 
 + (Promise *)getSpotListMoods:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
