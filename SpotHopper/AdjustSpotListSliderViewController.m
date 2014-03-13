@@ -49,8 +49,6 @@
 @property (nonatomic, strong) NSMutableArray *sliders;
 @property (nonatomic, strong) NSMutableArray *advancedSliders;
 
-@property (nonatomic, strong) NSMutableArray *slidersMoved;
-
 @end
 
 @implementation AdjustSpotListSliderViewController
@@ -79,7 +77,6 @@
     // Initializes
     _sliders = [NSMutableArray array];
     _advancedSliders = [NSMutableArray array];
-    _slidersMoved = [NSMutableArray array];
     
     [self fetchFormData];
     [self fetchSliderTemplates];
@@ -142,7 +139,6 @@
         ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
         [cell setDelegate:self];
         [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
-        [cell.slider setUserMoved:[_slidersMoved containsObject:indexPath]];
         
         return cell;
     } else if (indexPath.section == 3) {
@@ -152,7 +148,6 @@
         ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
         [cell setDelegate:self];
         [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
-        [cell.slider setUserMoved:[_slidersMoved containsObject:indexPath]];
         
         return cell;
     }
@@ -221,12 +216,6 @@
     
     NSIndexPath *indexPath = [_tblSliders indexPathForCell:cell];
     
-    // Keeps track of which sliders the user moved
-    if (![_slidersMoved containsObject:indexPath]) {
-        [_slidersMoved addObject:indexPath];
-        [cell.slider setUserMoved:YES];
-    }
-    
     if (indexPath.section == 2) {
         SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
         [slider setValue:[NSNumber numberWithFloat:(value * 10)]];
@@ -259,7 +248,11 @@
 }
 
 - (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
-    [_tblSliders reloadData];
+    if (section == 0) {
+        [_tblSliders reloadData];
+    } else if (section == 1) {
+        [self changeMood];
+    }
 }
 
 #pragma mark - Actions
@@ -287,7 +280,6 @@
     
     [_sliders removeAllObjects];
     [_advancedSliders removeAllObjects];
-    [_slidersMoved removeAllObjects];
     
     [self filterSliderTemplates];
     
@@ -388,12 +380,6 @@
 
 - (void)fetchSliderTemplates {
     
-    // Gets sliders
-//    NSDictionary *params = @{
-//               kSliderTemplateModelParamsPageSize: @200,
-//               kSliderTemplateModelParamPage: @1
-//               };
-    
     [self showHUD:@"Loading sliders"];
     [SliderTemplateModel getSliderTemplates:nil success:^(NSArray *sliderTemplates, JSONAPI *jsonApi) {
         [self hideHUD];
@@ -432,6 +418,36 @@
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
     }];
+}
+
+- (void)changeMood {
+    if (_selectedSpotListMood == nil) {
+        for (SliderModel *slider in _sliders) {
+            [slider setValue:nil];
+        }
+    } else {
+        
+        // Puts sliders into dictionary so that they can be easily found by the slider tempate ID
+        NSMutableDictionary *sliderTemplateToSliderMap = [NSMutableDictionary dictionary];
+        for (SliderModel *slider in _sliders) {
+            [sliderTemplateToSliderMap setObject:slider forKey:slider.sliderTemplate.ID];
+            [slider setValue:nil];
+        }
+        for (SliderModel *slider in _advancedSliders) {
+            [sliderTemplateToSliderMap setObject:slider forKey:slider.sliderTemplate.ID];
+            [slider setValue:nil];
+        }
+        
+        // Sets the mooooooood if the slider templates match
+        for (SliderModel *moodSlider in _selectedSpotListMood.sliders) {
+            SliderModel *slider = [sliderTemplateToSliderMap objectForKey:moodSlider.sliderTemplate.ID];
+            if (slider != nil) {
+                [slider setValue:moodSlider.value];
+            }
+        }
+    }
+    
+    [_tblSliders reloadData];
 }
 
 - (void)updateSectionHeaderTitles:(NSInteger)section {
