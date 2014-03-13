@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kSectionTypes 0
+#define kSectionMoods 1
+#define kSectionSliders 2
+#define kSectionAdvancedSliders 3
+
 #import "AdjustSpotListSliderViewController.h"
 
 #import "NSDate+Globalize.h"
@@ -95,13 +100,13 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 0) {
+    if (section == kSectionTypes) {
         return _spotTypes.count + 1;
-    } else if (section == 1) {
+    } else if (section == kSectionMoods) {
         return _spotListMoodTypes.count + 1;
-    } else if (section == 2) {
+    } else if (section == kSectionSliders) {
         return _sliders.count;
-    } else if (section == 3) {
+    } else if (section == kSectionAdvancedSliders) {
         return _advancedSliders.count;
     }
     
@@ -110,7 +115,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (indexPath.section == 0) {
+    if (indexPath.section == kSectionTypes) {
         
         AdjustSliderOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AdjustSliderOptionCell" forIndexPath:indexPath];
         if (indexPath.row > 0) {
@@ -121,7 +126,7 @@
         }
         
         return cell;
-    } else if (indexPath.section == 1) {
+    } else if (indexPath.section == kSectionMoods) {
         
         AdjustSliderOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AdjustSliderOptionCell" forIndexPath:indexPath];
         if (indexPath.row > 0) {
@@ -132,7 +137,7 @@
         }
         
         return cell;
-    }  else if (indexPath.section == 2) {
+    }  else if (indexPath.section == kSectionSliders) {
         
         SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
         
@@ -141,7 +146,7 @@
         [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
         
         return cell;
-    } else if (indexPath.section == 3) {
+    } else if (indexPath.section == kSectionAdvancedSliders) {
         
         SliderModel *slider = [_advancedSliders objectAtIndex:indexPath.row];
         
@@ -159,7 +164,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (indexPath.section == 0) {
+    if (indexPath.section == kSectionTypes) {
         if (indexPath.row > 0) {
             _selectedSpotType = [_spotTypes objectAtIndex:indexPath.row - 1];
         } else {
@@ -167,7 +172,7 @@
         }
         [_accordion closeSection:indexPath.section];
         
-    } else if (indexPath.section == 1) {
+    } else if (indexPath.section == kSectionMoods) {
         if (indexPath.row > 0) {
             _selectedSpotListMood = [_spotListMoodTypes objectAtIndex:indexPath.row - 1];
         } else {
@@ -180,13 +185,13 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
+    if (indexPath.section == kSectionTypes) {
         return ( [_accordion isSectionOpened:indexPath.section] ? 44.0f : 0.0f);
-    } else if (indexPath.section == 1) {
+    } else if (indexPath.section == kSectionMoods) {
         return ( [_accordion isSectionOpened:indexPath.section] ? 44.0f : 0.0f);
-    } else if (indexPath.section == 2) {
+    } else if (indexPath.section == kSectionSliders) {
         return 77.0f;
-    } else if (indexPath.section == 3) {
+    } else if (indexPath.section == kSectionAdvancedSliders) {
         return ( [_accordion isSectionOpened:indexPath.section] ? 77.0f : 0.0f);
     }
     
@@ -198,7 +203,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 0 || section == 1) {
+    if (section == kSectionTypes || section == kSectionMoods) {
         return 48.0f;
     } else if (section == 3 && _advancedSliders.count > 0) {
         return 48.0f;
@@ -216,10 +221,10 @@
     
     NSIndexPath *indexPath = [_tblSliders indexPathForCell:cell];
     
-    if (indexPath.section == 2) {
+    if (indexPath.section == kSectionSliders) {
         SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
         [slider setValue:[NSNumber numberWithFloat:(value * 10)]];
-    } else if (indexPath.section == 3) {
+    } else if (indexPath.section == kSectionAdvancedSliders) {
         SliderModel *slider = [_advancedSliders objectAtIndex:indexPath.row];
         [slider setValue:[NSNumber numberWithFloat:(value * 10)]];
     }
@@ -228,17 +233,17 @@
 #pragma mark - JHAccordionDelegate
 
 - (void)accordion:(JHAccordion *)accordion openingSection:(NSInteger)section {
-    if (section == 0) [_sectionHeader0 setSelected:YES];
-    else if (section == 1) [_sectionHeader1 setSelected:YES];
-    else if (section == 3) [_sectionHeader3 setSelected:YES];
+    if (section == kSectionTypes) [_sectionHeader0 setSelected:YES];
+    else if (section == kSectionMoods) [_sectionHeader1 setSelected:YES];
+    else if (section == kSectionAdvancedSliders) [_sectionHeader3 setSelected:YES];
 }
 
 - (void)accordion:(JHAccordion *)accordion closingSection:(NSInteger)section {
-    if (section == 0) {
+    if (section == kSectionTypes) {
         [_sectionHeader0 setSelected:NO];
         [self filterSliderTemplates];
-    } else if (section == 1) [_sectionHeader1 setSelected:NO];
-    else if (section == 3) [_sectionHeader3 setSelected:NO];
+    } else if (section == kSectionMoods) [_sectionHeader1 setSelected:NO];
+    else if (section == kSectionAdvancedSliders) [_sectionHeader3 setSelected:NO];
     
     [self updateSectionHeaderTitles:section];
 }
@@ -248,9 +253,9 @@
 }
 
 - (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
-    if (section == 0) {
+    if (section == kSectionTypes) {
         [_tblSliders reloadData];
-    } else if (section == 1) {
+    } else if (section == kSectionMoods) {
         [self changeMood];
     }
 }
@@ -275,8 +280,8 @@
     _selectedSpotListMood = nil;
     
     // Resets headers
-    [self updateSectionHeaderTitles:0];
-    [self updateSectionHeaderTitles:1];
+    [self updateSectionHeaderTitles:kSectionTypes];
+    [self updateSectionHeaderTitles:kSectionMoods];
     
     [_sliders removeAllObjects];
     [_advancedSliders removeAllObjects];
@@ -452,7 +457,7 @@
 
 - (void)updateSectionHeaderTitles:(NSInteger)section {
     
-    if (section == 0) {
+    if (section == kSectionTypes) {
         
         if (_selectedSpotType == nil) {
             [_sectionHeader0.lblText setText:@"Select Spot Type"];
@@ -460,7 +465,7 @@
             [_sectionHeader0.lblText setText:[_selectedSpotType objectForKey:@"name"]];
         }
         
-    } else if (section == 1) {
+    } else if (section == kSectionMoods) {
         
         if (_selectedSpotListMood == nil) {
             CGFloat fontSize = _sectionHeader1.lblText.font.pointSize;
@@ -475,7 +480,7 @@
 
 - (AdjustSliderSectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
     
-    if (section == 0) {
+    if (section == kSectionTypes) {
         if (_sectionHeader0 == nil) {
             _sectionHeader0 = [[AdjustSliderSectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblSliders.frame), 48.0f)];
             
@@ -490,7 +495,7 @@
         }
         
         return _sectionHeader0;
-    } else if (section == 1) {
+    } else if (section == kSectionMoods) {
         if (_sectionHeader1 == nil) {
             _sectionHeader1 = [[AdjustSliderSectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblSliders.frame), 48.0f)];
             
@@ -504,7 +509,7 @@
         }
         
         return _sectionHeader1;
-    } else if (section == 3) {
+    } else if (section == kSectionAdvancedSliders) {
         if (_sectionHeader3 == nil) {
             _sectionHeader3 = [[AdjustSliderSectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblSliders.frame), 48.0f)];
             

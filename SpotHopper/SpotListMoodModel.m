@@ -20,7 +20,6 @@
              @"name" : @"name",
              @"links.sliders" : @"sliders",
              };
-    
 }
 
 #pragma mark - API
