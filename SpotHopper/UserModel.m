@@ -126,6 +126,11 @@
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         ReviewModel *model = [jsonApi resourceForKey:@"reviews"];
         
+        if (model == nil) {
+            successBlock(nil, jsonApi);
+            return;
+        }
+        
         NSDictionary *params = nil;
         if (model.spot != nil) {
             params = @{ kSliderTemplateModelParamSpotTypeId : model.spot.spotType.ID };

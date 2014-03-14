@@ -14,6 +14,7 @@
 #import "DrinksNearbyViewController.h"
 #import "DrinkListMenuViewController.h"
 #import "DrinkListViewController.h"
+#import "DrinkProfileViewController.h"
 #import "FindSimilarDrinksViewController.h"
 #import "FindDrinksAtViewController.h"
 
@@ -61,6 +62,12 @@
 
 - (void)goToFindDrinksAt:(DrinkModel*)drink {
     FindDrinksAtViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"FindDrinksAtViewController"];
+    [viewController setDrink:drink];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToDrinkProfile:(DrinkModel*)drink {
+    DrinkProfileViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkProfileViewController"];
     [viewController setDrink:drink];
     [self.navigationController pushViewController:viewController animated:YES];
 }

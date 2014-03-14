@@ -156,7 +156,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     DrinkModel *drink = [_drinkList.drinks objectAtIndex:indexPath.row];
-//    [self goToDrinkProfile:spot];
+    [self goToDrinkProfile:drink];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {

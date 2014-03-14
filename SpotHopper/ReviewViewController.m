@@ -321,6 +321,7 @@
             }];
             
         } failure:^(ErrorModel *errorModel) {
+            _review = nil;
             [self hideHUD];
             [self showAlert:@"Oops" message:errorModel.human];
         }];

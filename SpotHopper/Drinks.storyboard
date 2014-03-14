@@ -441,11 +441,86 @@ available here</string>
             </objects>
             <point key="canvasLocation" x="1198" y="179"/>
         </scene>
+        <!--Drink Profile View Controller-->
+        <scene sceneID="XMP-Sz-g8c">
+            <objects>
+                <viewController storyboardIdentifier="DrinkProfileViewController" id="Urs-WT-CvC" customClass="DrinkProfileViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="azK-Ic-NrA">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="bhD-HN-yfF">
+                                <rect key="frame" x="0.0" y="114" width="320" height="306"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="Urs-WT-CvC" id="vKM-Mg-rK0"/>
+                                    <outlet property="delegate" destination="Urs-WT-CvC" id="iqk-bG-erF"/>
+                                </connections>
+                            </tableView>
+                            <view contentMode="scaleToFill" id="Sex-1Y-jL9" customClass="SHViewTranlucentWhite">
+                                <rect key="frame" x="0.0" y="64" width="320" height="52"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Brewery" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UG4-Ad-YSo" customClass="SHLabelLatoLight">
+                                        <rect key="frame" x="14" y="0.0" width="176" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="italicSystem" pointSize="18"/>
+                                        <color key="textColor" red="0.25098039220000001" green="0.25098039220000001" blue="0.25098039220000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Double IPA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="O7B-bN-SU2" customClass="SHLabelLatoLight">
+                                        <rect key="frame" x="14" y="24" width="182" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <color key="textColor" red="0.25098039220000001" green="0.25098039220000001" blue="0.25098039220000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="93% Match" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Uvk-PQ-ETS" customClass="SHLabelLatoLight">
+                                        <rect key="frame" x="198" y="0.0" width="111" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="italicSystem" pointSize="18"/>
+                                        <color key="textColor" red="0.25098039220000001" green="0.25098039220000001" blue="0.25098039220000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="zG2-sb-lN7" customClass="SHButtonLatoLight">
+                                        <rect key="frame" x="186" y="24" width="123" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <state key="normal" title="Recipe" image="icon_recipe.png">
+                                            <color key="titleColor" red="0.94509803920000002" green="0.37647058820000001" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="highlighted" title="555-867-5309">
+                                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="insetFor6xAndEarlier" minX="0.0" minY="64" maxX="0.0" maxY="-64"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="btnPhoneNumber" destination="zG2-sb-lN7" id="qhI-gy-xzY"/>
+                        <outlet property="lblInfo" destination="O7B-bN-SU2" id="nbI-CC-wgu"/>
+                        <outlet property="lblPercentMatch" destination="Uvk-PQ-ETS" id="hZh-D0-A0N"/>
+                        <outlet property="lblSpotName" destination="UG4-Ad-YSo" id="trY-AC-haa"/>
+                        <outlet property="tblSliders" destination="bhD-HN-yfF" id="yhM-ki-tRA"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JqV-RV-xIM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1683" y="179"/>
+        </scene>
     </scenes>
     <resources>
         <image name="btn_discover_drinks_nearby.png" width="317" height="115"/>
         <image name="btn_down_arrow.png" width="104" height="32"/>
         <image name="btn_get_drinks_here.png" width="317" height="115"/>
+        <image name="icon_recipe.png" width="20" height="20"/>
         <image name="img_card_background.png" width="228" height="309"/>
         <image name="img_carousel_background.png" width="320" height="409"/>
         <image name="img_expand_east_orange.png" width="27" height="27"/>

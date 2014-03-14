@@ -1,38 +1,43 @@
 //
-//  SpotProfileViewController.m
+//  DrinkProfileViewController.m
 //  SpotHopper
 //
-//  Created by Josh Holtz on 2/20/14.
+//  Created by Josh Holtz on 3/14/14.
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#import "SpotProfileViewController.h"
+#import "DrinkProfileViewController.h"
 
 #import "UIView+ViewFromNib.h"
 #import "UIViewController+Navigator.h"
 
 #import "SpotAnnotation.h"
+#import "SHLabelLatoLight.h"
+
+#import "TellMeMyLocation.h"
 
 #import "ReviewSliderCell.h"
 #import "SpotImageCollectViewCell.h"
 
-#import "SpotListViewController.h"
+#import "DrinkListViewController.h"
 
 #import "AverageReviewModel.h"
 #import "ErrorModel.h"
-#import "SpotTypeModel.h"
-#import "SpotListModel.h"
+#import "SpotModel.h"
+#import "DrinkListModel.h"
+
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 
 #import <MapKit/MapKit.h>
 
-@interface SpotProfileViewController ()<UITableViewDataSource, UITableViewDelegate, MKMapViewDelegate>
+@interface DrinkProfileViewController ()<UITableViewDataSource, UITableViewDelegate, MKMapViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tblSliders;
 
 // Static Header
-@property (weak, nonatomic) IBOutlet UILabel *lblSpotType;
+@property (weak, nonatomic) IBOutlet UILabel *lblSpotName;
+@property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblInfo;
 @property (weak, nonatomic) IBOutlet UILabel *lblPercentMatch;
 @property (weak, nonatomic) IBOutlet UIButton *btnPhoneNumber;
 
@@ -42,14 +47,16 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnImagePrev;
 @property (weak, nonatomic) IBOutlet UIButton *btnImageNext;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
-@property (weak, nonatomic) IBOutlet UILabel *lblAddress;
+
+@property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
+@property (nonatomic, strong) CLLocation *location;
 
 @property (nonatomic, strong) NSString *matchPercent;
 @property (nonatomic, strong) AverageReviewModel *averageReview;
 
 @end
 
-@implementation SpotProfileViewController
+@implementation DrinkProfileViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -59,27 +66,27 @@
     }
     return self;
 }
-`
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    _matchPercent = [_spot matchPercent];
+    
+    _matchPercent = [_drink matchPercent];
     
     // Set title
-    [self setTitle:_spot.name];
+    [self setTitle:_drink.name];
     
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
     
     // Configure table header
     // Header content view
-    _headerContent = [UIView viewFromNibNamed:@"SpotProfileHeaderView" withOwner:self];
+    _headerContent = [UIView viewFromNibNamed:@"DrinkProfileHeaderView" withOwner:self];
     [_tblSliders setTableHeaderView:_headerContent];
     
     // COnfigure table
     [_tblSliders registerNib:[UINib nibWithNibName:@"ReviewSliderCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ReviewSliderCell"];
-
+    
     // Custom collection view layout
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     [layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
@@ -92,8 +99,17 @@
     // Configure collection cell
     [_collectionView registerNib:[UINib nibWithNibName:@"SpotImageCollectionViewCellView" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"SpotImageCollectViewCell"];
     
+    // Get my location
+    _tellMeMyLocation = [[TellMeMyLocation alloc] init];
+    [_tellMeMyLocation findMe:kCLLocationAccuracyThreeKilometers found:^(CLLocation *newLocation) {
+        _location = newLocation;
+        [self updateViewMap];
+    } failure:^(NSError *error) {
+        
+    }];
+    
     [self updateView];
-    [self fetchSpot];
+    [self fetchDrink];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -171,9 +187,6 @@
     return YES;
 }
 
-#pragma mark - UITableViewDelegate
-
-
 #pragma mark - MKMapViewDelegate
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
@@ -219,57 +232,79 @@
 }
 
 - (IBAction)onClickReviewIt:(id)sender {
-    [self goToNewReviewForSpot:_spot];
+    [self goToNewReviewForDrink:_drink];
 }
 
-- (IBAction)onClickDrinkMenu:(id)sender {
+- (IBAction)onClickDescription:(id)sender {
     
 }
 
 #pragma mark - Private
 
-- (void)fetchSpot {
-    [_spot getSpot:nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
-        _spot = spotModel;
-        _averageReview = spotModel.averageReview;
+- (void)fetchDrink {
+    [_drink getDrink:nil success:^(DrinkModel *drinkModel, JSONAPI *jsonApi) {
+        _drink = drinkModel;
+        _averageReview = drinkModel.averageReview;
         [_tblSliders reloadData];
     } failure:^(ErrorModel *errorModel) {
         
     }];
 }
 
+#pragma mark -
+
 - (void)updateView {
     
     // Spot type
-    [_lblSpotType setText:_spot.spotType.name];
+    [_lblSpotName setText:_drink.spot.name];
     
-    [_lblPercentMatch setHidden:(_matchPercent == nil)];
-    if (_matchPercent != nil) [_lblPercentMatch setText:[NSString stringWithFormat:@"%@ Match", _matchPercent]];
+    [_lblPercentMatch setHidden:(_drink.match == nil)];
+    if (_drink.match != nil) [_lblPercentMatch setText:[NSString stringWithFormat:@"%@ Match", [_drink matchPercent]]];
     
-    // Spot addres
-    [_lblAddress setText:[_spot fullAddress]];
+    // Sets ABV and stuff
+    if (_drink.style.length > 0 && _drink.abv.floatValue > 0) {
+        [_lblInfo setText:[NSString stringWithFormat:@"%@ - %@ ABV", _drink.style, _drink.abvPercentString]];
+    } else if (_drink.style.length > 0) {
+        [_lblInfo setText:_drink.style];
+    } else if (_drink.abv.floatValue > 0) {
+        [_lblInfo setText:[NSString stringWithFormat:@"%@ ABV", _drink.abvPercentString]];
+    } else {
+        [_lblInfo italic:YES];
+        [_lblInfo setText:@"No style or ABV"];
+    }
+    
+}
+
+- (void)updateViewMap {
     
     // Update map
-    if (_spot.latitude != nil && _spot.longitude != nil) {
+    if (_location != nil) {
         MKCoordinateRegion mapRegion;
-        mapRegion.center = CLLocationCoordinate2DMake(_spot.latitude.floatValue, _spot.longitude.floatValue);
-        mapRegion.span = MKCoordinateSpanMake(0.005, 0.005);
+        mapRegion.center = _location.coordinate;
+        mapRegion.span = MKCoordinateSpanMake(0.05, 0.05);
         [_mapView setRegion:mapRegion animated: NO];
         
         // Place pin
         SpotAnnotation *annotation = [[SpotAnnotation alloc] init];
-        annotation.coordinate = CLLocationCoordinate2DMake(_spot.latitude.floatValue, _spot.longitude.floatValue);
+        annotation.coordinate = _location.coordinate;
         [_mapView addAnnotation:annotation];
     }
+    
 }
 
 - (void)doFindSimilar {
+    
+    if (_location != nil) {
+        [self showAlert:@"Oops" message:@"Please choose a location"];
+        return;
+    }
+    
     [self showHUD:@"Finding similar"];
-    [SpotListModel postSpotList:_spot.name latitude:_spot.latitude longitude:_spot.longitude sliders:_averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+    [DrinkListModel postDrinkList:_drink.name latitude:[NSNumber numberWithFloat:0] longitude:[NSNumber numberWithFloat:0] sliders:_averageReview.sliders successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
         [self hideHUD];
         
-        SpotListViewController *viewController = [self.spotsStoryboard instantiateViewControllerWithIdentifier:@"SpotListViewController"];
-        [viewController setSpotList:spotListModel];
+        DrinkListViewController *viewController = [self.drinksStoryboard instantiateViewControllerWithIdentifier:@"DrinkListViewController"];
+        [viewController setDrinkList:drinkListModel];
         
         [self.navigationController pushViewController:viewController animated:YES];
         
