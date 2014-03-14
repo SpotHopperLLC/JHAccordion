@@ -99,8 +99,14 @@
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     
     // Adds contextual footer view
+    __block DrinkListViewController *this = self;
     [self addFooterViewController:^(FooterViewController *footerViewController) {
         [footerViewController showHome:YES];
+        
+        if (this.drinkList.featured == NO) {
+            [footerViewController setLeftButton:@"Delete" image:[UIImage imageNamed:@"btn_context_delete"]];
+        }
+        
         [footerViewController setRightButton:@"Info" image:[UIImage imageNamed:@"btn_context_info"]];
     }];
     
@@ -196,6 +202,40 @@
 
 - (void)locationError:(SHButtonLatoLightLocation *)button error:(NSError *)error {
     [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
+}
+
+#pragma mark - Actions
+
+- (void)onClickBack:(id)sender {
+    if (_createdWithAdjustSliders == NO) {
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Save Custom Drinklist as..." message:nil delegate:self cancelButtonTitle:@"Discard" otherButtonTitles:@"Save", nil];
+        [alertView setAlertViewStyle:UIAlertViewStylePlainTextInput];
+        [[alertView textFieldAtIndex:0] setPlaceholder:kSpotListModelDefaultName];
+        [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
+            if (buttonIndex == 1) {
+                NSString *name = [alertView textFieldAtIndex:0].text;
+                if (name.length == 0) {
+                    name = kSpotListModelDefaultName;
+                }
+                
+                [self showHUD:@"Updating name"];
+                [_drinkList putDrinkList:name latitude:nil longitude:nil sliders:nil success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+                    [self hideHUD];
+                    [self.navigationController popViewControllerAnimated:YES];
+                } failure:^(ErrorModel *errorModel) {
+                    [self hideHUD];
+                    [self showAlert:@"Oops" message:errorModel.human];
+                }];
+                
+            } else {
+                [self doDeleteDrinkList];
+            }
+        }];
+        
+    }
 }
 
 #pragma mark - Private
