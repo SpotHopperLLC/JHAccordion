@@ -239,6 +239,10 @@
     
 }
 
+- (IBAction)onClickFindIt:(id)sender {
+    [self goToFindDrinksAt:_drink];
+}
+
 #pragma mark - Private
 
 - (void)fetchDrink {
@@ -281,7 +285,7 @@
     if (_location != nil) {
         MKCoordinateRegion mapRegion;
         mapRegion.center = _location.coordinate;
-        mapRegion.span = MKCoordinateSpanMake(0.05, 0.05);
+        mapRegion.span = MKCoordinateSpanMake(0.005, 0.005);
         [_mapView setRegion:mapRegion animated: NO];
         
         // Place pin
@@ -294,13 +298,13 @@
 
 - (void)doFindSimilar {
     
-    if (_location != nil) {
+    if (_location == nil) {
         [self showAlert:@"Oops" message:@"Please choose a location"];
         return;
     }
     
     [self showHUD:@"Finding similar"];
-    [DrinkListModel postDrinkList:_drink.name latitude:[NSNumber numberWithFloat:0] longitude:[NSNumber numberWithFloat:0] sliders:_averageReview.sliders successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+    [DrinkListModel postDrinkList:_drink.name latitude:[NSNumber numberWithFloat:_location.coordinate.latitude] longitude:[NSNumber numberWithFloat:_location.coordinate.longitude] sliders:_averageReview.sliders successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
         [self hideHUD];
         
         DrinkListViewController *viewController = [self.drinksStoryboard instantiateViewControllerWithIdentifier:@"DrinkListViewController"];

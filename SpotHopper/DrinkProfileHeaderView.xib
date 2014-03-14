@@ -86,6 +86,9 @@
                 <mapView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" id="hBy-AF-LMA">
                     <rect key="frame" x="0.0" y="268" width="320" height="140"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="wkh-eF-GPx"/>
+                    </connections>
                 </mapView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Fbe-Me-kjJ" customClass="SHLabelLatoLight">
                     <rect key="frame" x="0.0" y="368" width="320" height="40"/>
@@ -95,6 +98,21 @@
                     <color key="textColor" red="0.93725490199999995" green="0.41568627450000001" blue="0.20784313730000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" id="Zj8-J7-sts" customClass="SHButtonLatoLightRightImage">
+                    <rect key="frame" x="36" y="368" width="272" height="36"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <state key="normal" title="Find It!" image="img_expand_east_orange.png">
+                        <color key="titleColor" red="0.86274509799999999" green="0.41568627450000001" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="highlighted">
+                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="onClickFindIt:" destination="-1" eventType="touchUpInside" id="mVd-fE-IhG"/>
+                    </connections>
+                </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_map_shadow_botom.png" id="epJ-WQ-TWj">
                     <rect key="frame" x="0.0" y="398" width="320" height="10"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -114,6 +132,7 @@
         <image name="btn_spot_profile_image_next.png" width="52" height="52"/>
         <image name="btn_spot_profile_image_previous.png" width="52" height="52"/>
         <image name="btn_spot_profile_review_it.png" width="87" height="87"/>
+        <image name="img_expand_east_orange.png" width="27" height="27"/>
         <image name="img_map_shadow_botom.png" width="309" height="10"/>
         <image name="img_map_shadow_top.png" width="309" height="10"/>
     </resources>

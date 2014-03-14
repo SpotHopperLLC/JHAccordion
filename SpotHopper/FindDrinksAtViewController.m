@@ -189,6 +189,8 @@
     }
     
     NSDictionary *params = @{
+                             kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:_location.coordinate.latitude],
+                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:_location.coordinate.longitude]
                              };
     
     [self showHUD:@"Finding spots"];
