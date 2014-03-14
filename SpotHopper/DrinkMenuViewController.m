@@ -10,6 +10,8 @@
 
 #import "SectionHeaderView.h"
 
+#import "UIViewController+Navigator.h"
+
 #import "MenuItemSubtypeCell.h"
 
 #import "ErrorModel.h"
@@ -146,20 +148,14 @@
         }
     }
     
+    [self goToMenuOfferings:_spot drinkType:drinkType drinkSubtype:drinkSubtype menuItems:menuItemsToPassOn];
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        return ( [_accordion isSectionOpened:indexPath.section] ? 58.0f : 0.0f);
-    } else if (indexPath.section == 1) {
-        return ( [_accordion isSectionOpened:indexPath.section] ? 48.0f : 0.0f);
-    } else if (indexPath.section == 2) {
-        return ( [_accordion isSectionOpened:indexPath.section] ? 48.0f : 0.0f);
-    }
-    
-    return 0.0f;
+    return ( [_accordion isSectionOpened:indexPath.section] ? 44.0f : 0.0f);
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {

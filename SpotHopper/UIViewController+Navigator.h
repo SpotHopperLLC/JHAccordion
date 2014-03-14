@@ -49,6 +49,7 @@
 // Menu
 
 - (void)goToMenu:(SpotModel*)spot;
+- (void)goToMenuOfferings:(SpotModel *)spot drinkType:(DrinkTypeModel*)drinkType drinkSubtype:(DrinkSubtypeModel*)drinkSubtype menuItems:(NSArray*)menuItems;
 
 // Common
 - (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate;

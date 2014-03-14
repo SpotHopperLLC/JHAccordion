@@ -29,6 +29,7 @@
 #import "SpotProfileViewController.h"
 
 #import "DrinkMenuViewController.h"
+#import "DrinkMenuOfferingsViewController.h"
 
 @implementation UIViewController (Navigator)
 
@@ -157,6 +158,15 @@
 - (void)goToMenu:(SpotModel *)spot {
     DrinkMenuViewController *viewController = [[self menuStoryboard] instantiateViewControllerWithIdentifier:@"DrinkMenuViewController"];
     [viewController setSpot:spot];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToMenuOfferings:(SpotModel *)spot drinkType:(DrinkTypeModel*)drinkType drinkSubtype:(DrinkSubtypeModel*)drinkSubtype menuItems:(NSArray*)menuItems {
+    DrinkMenuOfferingsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DrinkMenuOfferingsViewController"];
+    [viewController setSpot:spot];
+    [viewController setDrinkType:drinkType];
+    [viewController setDrinkSubtype:drinkSubtype];
+    [viewController setMenuItems:menuItems];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
