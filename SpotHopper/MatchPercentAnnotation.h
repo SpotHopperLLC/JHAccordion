@@ -10,7 +10,7 @@
 
 #import <MapKit/MapKit.h>
 
-@class DrinkModel, SpotModel;
+@class SpotModel;
 
 @interface MatchPercentAnnotation : NSObject <MKAnnotation>
 
@@ -18,7 +18,6 @@
 @property(nonatomic, copy) NSString *title;
 @property(nonatomic, copy) NSString *subtitle;
 
-@property (nonatomic, strong) DrinkModel *drink;
 @property (nonatomic, strong) SpotModel *spot;
 
 @end
