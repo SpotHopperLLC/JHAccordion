@@ -13,6 +13,7 @@
 
 #import "DrinksNearbyViewController.h"
 #import "DrinkListMenuViewController.h"
+#import "FindSimilarDrinksViewController.h"
 
 #import "MyReviewsViewController.h"
 #import "NewReviewViewController.h"
@@ -131,6 +132,12 @@
 - (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate {
     FindSimilarViewController *viewController = [[FindSimilarViewController alloc] initWithNibName:@"FindSimilarViewController" bundle:[NSBundle mainBundle]];
     [viewController setSearchDrinks:NO];
+    [viewController setDelegate:delegate];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToFindSimilarDrinks:(id<FindSimilarDrinksViewControllerDelegate>)delegate {
+    FindSimilarDrinksViewController *viewController = [[FindSimilarDrinksViewController alloc] initWithNibName:@"FindSimilarDrinksViewController" bundle:[NSBundle mainBundle]];
     [viewController setDelegate:delegate];
     [self.navigationController pushViewController:viewController animated:YES];
 }

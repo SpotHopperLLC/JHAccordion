@@ -28,6 +28,7 @@
 
 #import <JSONAPI/JSONAPI.h>
 
+@class AverageReviewModel;
 @class ErrorModel;
 @class DrinkTypeModel;
 @class SpotModel;
@@ -46,10 +47,14 @@
 @property (nonatomic, strong) SpotModel *spot;
 @property (nonatomic, strong) NSNumber *spotId;
 @property (nonatomic, strong) NSArray *sliderTemplates;
+@property (nonatomic, strong) AverageReviewModel *averageReview;
+@property (nonatomic, strong) NSNumber *match;
 
 + (Promise*)getDrinks:(NSDictionary*)params success:(void(^)(NSArray *drinkModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 + (Promise*)postDrink:(NSDictionary*)params success:(void(^)(DrinkModel *drinkModel, JSONAPI *jsonAPI))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
+- (Promise*)getDrink:(NSDictionary*)params success:(void(^)(DrinkModel *drinkModel, JSONAPI *jsonAPI))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 - (NSString*)abvPercentString;
 

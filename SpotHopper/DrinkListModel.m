@@ -72,4 +72,52 @@
     
 }
 
++ (Promise *)postDrinkList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders successBlock:(void (^)(DrinkListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    // Creating params
+    NSMutableArray *jsonSliders = [NSMutableArray array];
+    for (SliderModel *slider in sliders) {
+        if (slider.value != nil) {
+            [jsonSliders addObject:@{
+                                     @"slider_template_id" : slider.sliderTemplate.ID,
+                                     @"value" : slider.value,
+                                     }];
+        }
+    }
+    
+    NSMutableDictionary *params = @{
+                                    @"name" : name,
+                                    @"sliders" : jsonSliders,
+                                    kDrinkListModelParamBasedOnSlider : [NSNumber numberWithBool:YES]
+                                    }.mutableCopy;
+    if (latitude != nil && longitude != nil) {
+        [params setObject:latitude forKey:kDrinkListModelParamLatitude];
+        [params setObject:longitude forKey:kDrinkListModelParamLongitude];
+    }
+    
+    [[ClientSessionManager sharedClient] POST:@"/api/drink_lists" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            DrinkListModel *model = [jsonApi resourceForKey:@"drink_lists"];
+            successBlock(model, jsonApi);
+            
+            // Resolves promise
+            [deferred resolve];
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+            
+            // Rejects promise
+            [deferred rejectWith:errorModel];
+        }
+    }];
+    
+    return deferred.promise;
+}
+
 @end

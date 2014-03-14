@@ -70,6 +70,33 @@
     return deferred.promise;
 }
 
+- (Promise*)getDrink:(NSDictionary*)params success:(void(^)(DrinkModel *drinkModel, JSONAPI *jsonAPI))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drinks/%d", [self.ID integerValue] ] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            DrinkModel *model = [jsonApi resourceForKey:@"drinks"];
+            successBlock(model, jsonApi);
+            
+            // Resolves promise
+            [deferred resolve];
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+            
+            // Rejects promise
+            [deferred rejectWith:errorModel];
+        }
+    }];
+    
+    return deferred.promise;
+}
+
 #pragma mark - Getters
 
 - (NSString *)name {
@@ -132,6 +159,14 @@
     return [[self linkedResourceForKey:@"slider_templates"] sortedArrayUsingComparator:^NSComparisonResult(SliderTemplateModel *obj1, SliderTemplateModel *obj2) {
         return [obj1.ID compare:obj2.ID];
     }];
+}
+
+- (AverageReviewModel *)averageReview {
+    return [self linkedResourceForKey:@"average_review"];
+}
+
+- (NSNumber *)match {
+    return [self objectForKey:@"match"];
 }
 
 @end

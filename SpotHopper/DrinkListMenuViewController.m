@@ -11,6 +11,7 @@
 #import "DrinkListMenuViewController.h"
 
 #import "TTTAttributedLabel+QuickFonting.h"
+#import "UIViewController+Navigator.h"
 
 #import "SHButtonLatoLightLocation.h"
 #import "SectionHeaderView.h"
@@ -19,8 +20,11 @@
 #import "ListCell.h"
 
 #import "SHNavigationController.h"
+#import "FindSimilarDrinksViewController.h"
 
 #import "ClientSessionManager.h"
+#import "AverageReviewModel.h"
+#import "DrinkModel.h"
 #import "DrinkListModel.h"
 #import "ErrorModel.h"
 #import "UserModel.h"
@@ -29,7 +33,7 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-@interface DrinkListMenuViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, SHButtonLatoLightLocationDelegate>
+@interface DrinkListMenuViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, FindSimilarDrinksViewControllerDelegate, SHButtonLatoLightLocationDelegate>
 
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
 @property (weak, nonatomic) IBOutlet UITableView *tblMenu;
@@ -152,10 +156,10 @@
         
         if (indexPath.row == 0) {
             [cell.lblText setText:@"Adjust Sliders"];
-            [cell.lblSubtext setText:@"chill vs raging, age, drink selection, etc"];
+            [cell.lblSubtext setText:@"smooth vs boozy, fruitiness, bitterness, etc"];
         } else if (indexPath.row == 1) {
-            [cell.lblText setText:@"or Name a Favorite Spot"];
-            [cell.lblSubtext setText:@"Find bars similarto it, wherever you go"];
+            [cell.lblText setText:@"or Name a Favorite Drink"];
+            [cell.lblSubtext setText:@"Find drinks similar to it, wherever you go"];
         }
         
         return cell;
@@ -192,7 +196,7 @@
         if (indexPath.row == 0) {
 //            [self showAdjustSlidersView:YES animated:YES];
         } else if (indexPath.row == 1) {
-//            [self goToFindSimilarSpots:self];
+            [self goToFindSimilarDrinks:self];
         }
     } else if (indexPath.section == 1) {
 //        SpotListModel *spotList = [_featuredSpotLists objectAtIndex:indexPath.row];
@@ -267,6 +271,41 @@
 
 - (void)locationError:(SHButtonLatoLightLocation *)button error:(NSError *)error {
     [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
+}
+
+#pragma mark - FindSimilarDrinksViewController
+
+- (void)findSimilarDrinksViewController:(FindSimilarDrinksViewController *)viewController selectedDrink:(DrinkModel *)drink {
+
+    [self showHUD:@"Creating drinklist"];
+    [drink getDrink:Nil success:^(DrinkModel *drinkModel, JSONAPI *jsonApi) {
+        [self hideHUD];
+        
+        [DrinkListModel postDrinkList:[NSString stringWithFormat:@"Similar to %@", drinkModel.name] latitude:[NSNumber numberWithFloat:_location.coordinate.latitude] longitude:[NSNumber numberWithFloat:_location.coordinate.longitude] sliders:drinkModel.averageReview.sliders successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+            
+            [self hideHUD];
+            [self showHUDCompleted:@"Drinklist created!" block:^{
+                
+//                NSMutableArray *viewControllers = self.navigationController.viewControllers.mutableCopy;
+//                [viewControllers removeLastObject];
+//                
+//                SpotListViewController *viewController = [self.spotsStoryboard instantiateViewControllerWithIdentifier:@"SpotListViewController"];
+//                [viewController setSpotList:spotListModel];
+//                [viewControllers addObject:viewController];
+//                
+//                [self.navigationController setViewControllers:viewControllers animated:YES];
+                
+            }];
+            
+        } failure:^(ErrorModel *errorModel) {
+            [self hideHUD];
+            [self showAlert:@"Oops" message:errorModel.human];
+        }];
+        
+    } failure:^(ErrorModel *errorModel) {
+        [self hideHUD];
+        [self showAlert:@"Oops" message:errorModel.human];
+    }];
 }
 
 #pragma mark - Private

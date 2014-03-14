@@ -14,6 +14,7 @@
 #import "SpotListModel.h"
 
 #import "FindSimilarViewController.h"
+#import "FindSimilarDrinksViewController.h"
 
 @interface UIViewController (Navigator)
 
@@ -43,6 +44,7 @@
 
 // Common
 - (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate;
+- (void)goToFindSimilarDrinks:(id<FindSimilarDrinksViewControllerDelegate>)delegate;
 
 // Storyboards
 - (UIStoryboard*)mainStoryboard;

@@ -1,26 +1,22 @@
 //
-//  FindSimilarViewController.m
+//  FindSimilarDrinksViewController.m
 //  SpotHopper
 //
-//  Created by Josh Holtz on 3/5/14.
+//  Created by Josh Holtz on 3/13/14.
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
 #define kPageSize @20
 
+#import "FindSimilarDrinksViewController.h"
+
 #import "NSNumber+Helpers.h"
-
-#import "SHNavigationController.h"
-#import "FindSimilarViewController.h"
-
-#import "DrinkModel.h"
-#import "SpotModel.h"
 
 #import "SearchCell.h"
 
-#import <CoreLocation/CoreLocation.h>
+#import <JSONAPI/JSONAPI.h>
 
-@interface FindSimilarViewController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+@interface FindSimilarDrinksViewController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
 @property (weak, nonatomic) IBOutlet UITableView *tblResults;
@@ -30,12 +26,11 @@
 @property (nonatomic, assign) CGRect tblResultsInitialFrame;
 
 @property (nonatomic, strong) NSNumber *page;
-@property (nonatomic, strong) CLLocation *location;
 @property (nonatomic, strong) NSMutableArray *results;
 
 @end
 
-@implementation FindSimilarViewController
+@implementation FindSimilarDrinksViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -56,7 +51,7 @@
     
     // Register pull to refresh
     [self registerRefreshTableView:_tblResults withReloadType:kPullRefreshTypeBoth];
- 
+    
     // Initializes stuff
     _tblResultsInitialFrame = CGRectZero;
     _results = [NSMutableArray array];
@@ -154,13 +149,10 @@
     if ([result isKindOfClass:[DrinkModel class]] == YES) {
         DrinkModel *drink = (DrinkModel*)result;
         [cell setDrink:drink];
-    } else if ([result isKindOfClass:[SpotModel class]] == YES) {
-        SpotModel *spot = (SpotModel*)result;
-        [cell setSpot:spot];
     }
     
     return cell;
-
+    
 }
 
 #pragma mark - UITableViewDelegate
@@ -169,17 +161,11 @@
     JSONAPIResource *result = [_results objectAtIndex:indexPath.row];
     if ([result isKindOfClass:[DrinkModel class]] == YES) {
         DrinkModel *drink = (DrinkModel*)result;
-
-        if ([_delegate respondsToSelector:@selector(findSimilarViewController:selectedDrink:)]) {
-            [_delegate findSimilarViewController:self selectedDrink:drink];
+        
+        if ([_delegate respondsToSelector:@selector(findSimilarDrinksViewController:selectedDrink:)]) {
+            [_delegate findSimilarDrinksViewController:self selectedDrink:drink];
         }
         
-    } else if ([result isKindOfClass:[SpotModel class]] == YES) {
-        SpotModel *spot = (SpotModel*)result;
-        
-        if ([_delegate respondsToSelector:@selector(findSimilarViewController:selectedSpot:)]) {
-            [_delegate findSimilarViewController:self selectedSpot:spot];
-        }
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -222,7 +208,7 @@
     _searchTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(startSearch) userInfo:nil repeats:NO];
 }
 
-- (IBAction)onClickPop:(id)sender {
+- (IBAction)onClickGoBack:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -246,59 +232,26 @@
     
     [self showHUD:@"Searching"];
     
-    if (_searchDrinks == YES) {
-        /*
-         * Searches drinks
-         */
-        NSDictionary *paramsDrinks = @{
-                                       kDrinkModelParamQuery : _txtSearch.text,
-                                       kDrinkModelParamPage : _page,
-                                       kDrinkModelParamsPageSize : kPageSize
-                                       };
-        
-        [DrinkModel getDrinks:paramsDrinks success:^(NSArray *drinkModels, JSONAPI *jsonApi) {
-            [self hideHUD];
-            
-            // Adds drinks to results
-            [_results addObjectsFromArray:drinkModels];
-            [self dataDidFinishRefreshing];
-        } failure:^(ErrorModel *errorModel) {
-            [self dataDidFinishRefreshing];
-            [self hideHUD];
-        }];
-        
-    } else {
+    /*
+     * Searches drinks
+     */
+    NSDictionary *paramsDrinks = @{
+                                   kDrinkModelParamQuery : _txtSearch.text,
+                                   kDrinkModelParamPage : _page,
+                                   kDrinkModelParamsPageSize : kPageSize
+                                   };
     
-        /*
-         * Searches spots
-         */
-        NSMutableDictionary *paramsSpots = @{
-                                             kSpotModelParamQuery : _txtSearch.text,
-                                             kSpotModelParamPage : _page,
-                                             kSpotModelParamsPageSize : kPageSize
-                                             }.mutableCopy;
+    [DrinkModel getDrinks:paramsDrinks success:^(NSArray *drinkModels, JSONAPI *jsonApi) {
+        [self hideHUD];
         
-        [paramsSpots setObject:kSpotModelParamSourcesSpotHopper forKey:kSpotModelParamSources];
-        
-        if (_location != nil) {
-            [paramsSpots setObject:[NSNumber numberWithFloat:_location.coordinate.latitude] forKey:kSpotModelParamQueryLatitude];
-            [paramsSpots setObject:[NSNumber numberWithFloat:_location.coordinate.longitude] forKey:kSpotModelParamQueryLongitude];
-        }
-        
-        [SpotModel getSpots:paramsSpots success:^(NSArray *spotModels, JSONAPI *jsonApi) {
-            [self hideHUD];
-            
-            // Adds spots to results
-            [_results addObjectsFromArray:spotModels];
-            [self dataDidFinishRefreshing];
-        } failure:^(ErrorModel *errorModel) {
-            [self dataDidFinishRefreshing];
-            [self hideHUD];
-        }];
-        
-    }
+        // Adds drinks to results
+        [_results addObjectsFromArray:drinkModels];
+        [self dataDidFinishRefreshing];
+    } failure:^(ErrorModel *errorModel) {
+        [self dataDidFinishRefreshing];
+        [self hideHUD];
+    }];
 }
-
 
 
 @end

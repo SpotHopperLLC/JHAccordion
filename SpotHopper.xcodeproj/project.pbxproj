@@ -220,6 +220,12 @@
 		039F543D18D28F5E004B2B67 /* DrinkListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F543C18D28F5E004B2B67 /* DrinkListModel.m */; };
 		039F543E18D28F5E004B2B67 /* DrinkListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F543C18D28F5E004B2B67 /* DrinkListModel.m */; };
 		039F543F18D28F5E004B2B67 /* DrinkListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F543C18D28F5E004B2B67 /* DrinkListModel.m */; };
+		039F544618D29B02004B2B67 /* FindSimilarDrinksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F544418D29B02004B2B67 /* FindSimilarDrinksViewController.m */; };
+		039F544718D29B02004B2B67 /* FindSimilarDrinksViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039F544518D29B02004B2B67 /* FindSimilarDrinksViewController.xib */; };
+		039F544818D29B09004B2B67 /* FindSimilarDrinksViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039F544518D29B02004B2B67 /* FindSimilarDrinksViewController.xib */; };
+		039F544918D29B0A004B2B67 /* FindSimilarDrinksViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039F544518D29B02004B2B67 /* FindSimilarDrinksViewController.xib */; };
+		039F544A18D29B12004B2B67 /* FindSimilarDrinksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F544418D29B02004B2B67 /* FindSimilarDrinksViewController.m */; };
+		039F544B18D29B12004B2B67 /* FindSimilarDrinksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F544418D29B02004B2B67 /* FindSimilarDrinksViewController.m */; };
 		03C8DAE7188B42A40082321C /* MockData.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C8DAE6188B42A40082321C /* MockData.m */; };
 		03C8DAEA188B44C20082321C /* SliderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C8DAE9188B44C20082321C /* SliderModel.m */; };
 		03C8DAED188B44CB0082321C /* SliderTemplateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C8DAEC188B44CB0082321C /* SliderTemplateModel.m */; };
@@ -1289,6 +1295,9 @@
 		039F542E18D28627004B2B67 /* btn_get_drinks_here@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_get_drinks_here@2x.png"; sourceTree = "<group>"; };
 		039F543B18D28F5E004B2B67 /* DrinkListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkListModel.h; sourceTree = "<group>"; };
 		039F543C18D28F5E004B2B67 /* DrinkListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkListModel.m; sourceTree = "<group>"; };
+		039F544318D29B02004B2B67 /* FindSimilarDrinksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindSimilarDrinksViewController.h; sourceTree = "<group>"; };
+		039F544418D29B02004B2B67 /* FindSimilarDrinksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindSimilarDrinksViewController.m; sourceTree = "<group>"; };
+		039F544518D29B02004B2B67 /* FindSimilarDrinksViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindSimilarDrinksViewController.xib; sourceTree = "<group>"; };
 		03C8DAE5188B42A40082321C /* MockData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MockData.h; sourceTree = "<group>"; };
 		03C8DAE6188B42A40082321C /* MockData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MockData.m; sourceTree = "<group>"; };
 		03C8DAE8188B44C20082321C /* SliderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SliderModel.h; sourceTree = "<group>"; };
@@ -2320,6 +2329,9 @@
 				03E4454518B56BF700C88421 /* LocationChooserViewController.xib */,
 				039B6FEC18870E4A00C590F8 /* SearchNewReviewViewController.h */,
 				039B6FED18870E4A00C590F8 /* SearchNewReviewViewController.m */,
+				039F544318D29B02004B2B67 /* FindSimilarDrinksViewController.h */,
+				039F544418D29B02004B2B67 /* FindSimilarDrinksViewController.m */,
+				039F544518D29B02004B2B67 /* FindSimilarDrinksViewController.xib */,
 			);
 			name = Commons;
 			sourceTree = "<group>";
@@ -2833,6 +2845,7 @@
 				03CA7267187B4EB700815284 /* table_header_background_selected.png in Resources */,
 				03121A3818BD786D00C9FFA3 /* 723-location-arrow-selected.png in Resources */,
 				03F2D9241871DC1400C69576 /* AvantGarEFExtLig in Resources */,
+				039F544718D29B02004B2B67 /* FindSimilarDrinksViewController.xib in Resources */,
 				03CA72DF187F502800815284 /* txt_review_form_background.png in Resources */,
 				03F2D9231871DC1400C69576 /* AvantGarEFDemObl in Resources */,
 				03CA72AA187C4D0E00815284 /* slider_background.png in Resources */,
@@ -3084,6 +3097,7 @@
 				03F4E89318CA33D00056EAA9 /* table_header_background_selected.png in Resources */,
 				03F4E89418CA33D00056EAA9 /* 723-location-arrow-selected.png in Resources */,
 				03F4E89518CA33D00056EAA9 /* AvantGarEFExtLig in Resources */,
+				039F544918D29B0A004B2B67 /* FindSimilarDrinksViewController.xib in Resources */,
 				03F4E89618CA33D00056EAA9 /* txt_review_form_background.png in Resources */,
 				03F4E89718CA33D00056EAA9 /* AvantGarEFDemObl in Resources */,
 				03F4E89818CA33D00056EAA9 /* slider_background.png in Resources */,
@@ -3327,6 +3341,7 @@
 				03F4E9E118CA34260056EAA9 /* table_header_background_selected.png in Resources */,
 				03F4E9E218CA34260056EAA9 /* 723-location-arrow-selected.png in Resources */,
 				03F4E9E318CA34260056EAA9 /* AvantGarEFExtLig in Resources */,
+				039F544818D29B09004B2B67 /* FindSimilarDrinksViewController.xib in Resources */,
 				03F4E9E418CA34260056EAA9 /* txt_review_form_background.png in Resources */,
 				03F4E9E518CA34260056EAA9 /* AvantGarEFDemObl in Resources */,
 				03F4E9E618CA34260056EAA9 /* slider_background.png in Resources */,
@@ -3534,6 +3549,7 @@
 				0320235618772D85008368C2 /* SidebarViewController.m in Sources */,
 				03E8832D18C836A800BD8FBB /* SpotListViewController.m in Sources */,
 				03CA72CB187DD09A00815284 /* DropdownOptionCell.m in Sources */,
+				039F544618D29B02004B2B67 /* FindSimilarDrinksViewController.m in Sources */,
 				03CA7260187B45B400815284 /* SectionHeaderView.m in Sources */,
 				03F2D93A1871FB4300C69576 /* UIActionSheet+Block.m in Sources */,
 				038664DC186D376900985CEC /* TellMeMyLocation.m in Sources */,
@@ -3648,6 +3664,7 @@
 				03F4E79418CA33D00056EAA9 /* SidebarViewController.m in Sources */,
 				03F4E79518CA33D00056EAA9 /* SpotListViewController.m in Sources */,
 				03F4E79618CA33D00056EAA9 /* DropdownOptionCell.m in Sources */,
+				039F544B18D29B12004B2B67 /* FindSimilarDrinksViewController.m in Sources */,
 				03F4E79718CA33D00056EAA9 /* SectionHeaderView.m in Sources */,
 				03F4E79818CA33D00056EAA9 /* UIActionSheet+Block.m in Sources */,
 				03F4E79918CA33D00056EAA9 /* TellMeMyLocation.m in Sources */,
@@ -3754,6 +3771,7 @@
 				03F4E8E218CA34260056EAA9 /* SidebarViewController.m in Sources */,
 				03F4E8E318CA34260056EAA9 /* SpotListViewController.m in Sources */,
 				03F4E8E418CA34260056EAA9 /* DropdownOptionCell.m in Sources */,
+				039F544A18D29B12004B2B67 /* FindSimilarDrinksViewController.m in Sources */,
 				03F4E8E518CA34260056EAA9 /* SectionHeaderView.m in Sources */,
 				03F4E8E618CA34260056EAA9 /* UIActionSheet+Block.m in Sources */,
 				03F4E8E718CA34260056EAA9 /* TellMeMyLocation.m in Sources */,
