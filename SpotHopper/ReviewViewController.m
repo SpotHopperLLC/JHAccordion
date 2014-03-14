@@ -356,7 +356,6 @@
         for (SliderTemplateModel *sliderTemplate in _sliderTemplates) {
             SliderModel *slider = [[SliderModel alloc] init];
             [slider setSliderTemplate:sliderTemplate];
-            [slider setValue:sliderTemplate.defaultValue];
             [_sliders addObject:slider];
         }
     }

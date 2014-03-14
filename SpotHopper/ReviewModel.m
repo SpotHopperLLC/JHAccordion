@@ -202,7 +202,6 @@
     
     SliderModel *sliderModel = [[SliderModel alloc] init];
     [sliderModel setSliderTemplate:sliderTemplateModel];
-    [sliderModel setValue:@5];
     
     return sliderModel;
 }

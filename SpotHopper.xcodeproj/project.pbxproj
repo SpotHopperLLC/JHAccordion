@@ -229,6 +229,12 @@
 		039F544E18D2A834004B2B67 /* AdjustDrinkListSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F544D18D2A834004B2B67 /* AdjustDrinkListSliderViewController.m */; };
 		039F544F18D2B62D004B2B67 /* AdjustDrinkListSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F544D18D2A834004B2B67 /* AdjustDrinkListSliderViewController.m */; };
 		039F545018D2B62E004B2B67 /* AdjustDrinkListSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F544D18D2A834004B2B67 /* AdjustDrinkListSliderViewController.m */; };
+		039F545318D2BA15004B2B67 /* DrinkListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F545218D2BA15004B2B67 /* DrinkListViewController.m */; };
+		039F545418D2BA15004B2B67 /* DrinkListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F545218D2BA15004B2B67 /* DrinkListViewController.m */; };
+		039F545518D2BA15004B2B67 /* DrinkListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F545218D2BA15004B2B67 /* DrinkListViewController.m */; };
+		039F545818D2BB30004B2B67 /* DrinkCardCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F545718D2BB30004B2B67 /* DrinkCardCollectionViewCell.m */; };
+		039F545918D2BB30004B2B67 /* DrinkCardCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F545718D2BB30004B2B67 /* DrinkCardCollectionViewCell.m */; };
+		039F545A18D2BB30004B2B67 /* DrinkCardCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F545718D2BB30004B2B67 /* DrinkCardCollectionViewCell.m */; };
 		03C8DAE7188B42A40082321C /* MockData.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C8DAE6188B42A40082321C /* MockData.m */; };
 		03C8DAEA188B44C20082321C /* SliderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C8DAE9188B44C20082321C /* SliderModel.m */; };
 		03C8DAED188B44CB0082321C /* SliderTemplateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C8DAEC188B44CB0082321C /* SliderTemplateModel.m */; };
@@ -1303,6 +1309,10 @@
 		039F544518D29B02004B2B67 /* FindSimilarDrinksViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindSimilarDrinksViewController.xib; sourceTree = "<group>"; };
 		039F544C18D2A834004B2B67 /* AdjustDrinkListSliderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustDrinkListSliderViewController.h; sourceTree = "<group>"; };
 		039F544D18D2A834004B2B67 /* AdjustDrinkListSliderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustDrinkListSliderViewController.m; sourceTree = "<group>"; };
+		039F545118D2BA15004B2B67 /* DrinkListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkListViewController.h; sourceTree = "<group>"; };
+		039F545218D2BA15004B2B67 /* DrinkListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkListViewController.m; sourceTree = "<group>"; };
+		039F545618D2BB30004B2B67 /* DrinkCardCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkCardCollectionViewCell.h; sourceTree = "<group>"; };
+		039F545718D2BB30004B2B67 /* DrinkCardCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkCardCollectionViewCell.m; sourceTree = "<group>"; };
 		03C8DAE5188B42A40082321C /* MockData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MockData.h; sourceTree = "<group>"; };
 		03C8DAE6188B42A40082321C /* MockData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MockData.m; sourceTree = "<group>"; };
 		03C8DAE8188B44C20082321C /* SliderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SliderModel.h; sourceTree = "<group>"; };
@@ -1805,6 +1815,7 @@
 				03E4452218AEE62100C88421 /* AutoComplete */,
 				039B701518873DA100C590F8 /* Commons */,
 				039B701418873D9400C590F8 /* Reviews */,
+				039F545B18D2BB36004B2B67 /* Drink */,
 				0381043518B66FE100A410DB /* Spot */,
 				039B6FF21887143B00C590F8 /* SearchCell.h */,
 				039B6FF31887143B00C590F8 /* SearchCell.m */,
@@ -2206,6 +2217,8 @@
 				039F542618D283D3004B2B67 /* DrinkListMenuViewController.m */,
 				039F544C18D2A834004B2B67 /* AdjustDrinkListSliderViewController.h */,
 				039F544D18D2A834004B2B67 /* AdjustDrinkListSliderViewController.m */,
+				039F545118D2BA15004B2B67 /* DrinkListViewController.h */,
+				039F545218D2BA15004B2B67 /* DrinkListViewController.m */,
 			);
 			name = Drinks;
 			sourceTree = "<group>";
@@ -2219,6 +2232,15 @@
 				039F542E18D28627004B2B67 /* btn_get_drinks_here@2x.png */,
 			);
 			path = Drinklists;
+			sourceTree = "<group>";
+		};
+		039F545B18D2BB36004B2B67 /* Drink */ = {
+			isa = PBXGroup;
+			children = (
+				039F545618D2BB30004B2B67 /* DrinkCardCollectionViewCell.h */,
+				039F545718D2BB30004B2B67 /* DrinkCardCollectionViewCell.m */,
+			);
+			name = Drink;
 			sourceTree = "<group>";
 		};
 		03CA726F187B8FD800815284 /* Icons */ = {
@@ -3554,6 +3576,7 @@
 				03CA72B8187C4D5800815284 /* SHSlider.m in Sources */,
 				039ABBEF18CE3BB700B84AE6 /* SpotAnnotationCallout.m in Sources */,
 				0320235618772D85008368C2 /* SidebarViewController.m in Sources */,
+				039F545818D2BB30004B2B67 /* DrinkCardCollectionViewCell.m in Sources */,
 				03E8832D18C836A800BD8FBB /* SpotListViewController.m in Sources */,
 				03CA72CB187DD09A00815284 /* DropdownOptionCell.m in Sources */,
 				039F544618D29B02004B2B67 /* FindSimilarDrinksViewController.m in Sources */,
@@ -3567,6 +3590,7 @@
 				03F2D95018722D5300C69576 /* HomeViewController.m in Sources */,
 				039B70251888847200C590F8 /* NSNumber+Helpers.m in Sources */,
 				039ABBD218CE24A400B84AE6 /* MatchPercentAnnotationView.m in Sources */,
+				039F545318D2BA15004B2B67 /* DrinkListViewController.m in Sources */,
 				038664DB186D376900985CEC /* MBProgressHUD.m in Sources */,
 				039B7013188723EB00C590F8 /* MockeryURLProtocol.m in Sources */,
 				039B7012188723EB00C590F8 /* MockeryHTTPURLResponse.m in Sources */,
@@ -3670,6 +3694,7 @@
 				03F4E79318CA33D00056EAA9 /* SHSlider.m in Sources */,
 				039ABBF018CE3BBC00B84AE6 /* SpotAnnotationCallout.m in Sources */,
 				03F4E79418CA33D00056EAA9 /* SidebarViewController.m in Sources */,
+				039F545A18D2BB30004B2B67 /* DrinkCardCollectionViewCell.m in Sources */,
 				03F4E79518CA33D00056EAA9 /* SpotListViewController.m in Sources */,
 				03F4E79618CA33D00056EAA9 /* DropdownOptionCell.m in Sources */,
 				039F544B18D29B12004B2B67 /* FindSimilarDrinksViewController.m in Sources */,
@@ -3683,6 +3708,7 @@
 				03F4E79D18CA33D00056EAA9 /* HomeViewController.m in Sources */,
 				03F4E79E18CA33D00056EAA9 /* NSNumber+Helpers.m in Sources */,
 				039ABBD418CE24A800B84AE6 /* MatchPercentAnnotationView.m in Sources */,
+				039F545518D2BA15004B2B67 /* DrinkListViewController.m in Sources */,
 				03F4E79F18CA33D00056EAA9 /* MBProgressHUD.m in Sources */,
 				03F4E7A018CA33D00056EAA9 /* MockeryURLProtocol.m in Sources */,
 				03F4E7A118CA33D00056EAA9 /* MockeryHTTPURLResponse.m in Sources */,
@@ -3778,6 +3804,7 @@
 				03F4E8E118CA34260056EAA9 /* SHSlider.m in Sources */,
 				039ABBF118CE3BBD00B84AE6 /* SpotAnnotationCallout.m in Sources */,
 				03F4E8E218CA34260056EAA9 /* SidebarViewController.m in Sources */,
+				039F545918D2BB30004B2B67 /* DrinkCardCollectionViewCell.m in Sources */,
 				03F4E8E318CA34260056EAA9 /* SpotListViewController.m in Sources */,
 				03F4E8E418CA34260056EAA9 /* DropdownOptionCell.m in Sources */,
 				039F544A18D29B12004B2B67 /* FindSimilarDrinksViewController.m in Sources */,
@@ -3791,6 +3818,7 @@
 				03F4E8EB18CA34260056EAA9 /* HomeViewController.m in Sources */,
 				03F4E8EC18CA34260056EAA9 /* NSNumber+Helpers.m in Sources */,
 				039ABBD318CE24A700B84AE6 /* MatchPercentAnnotationView.m in Sources */,
+				039F545418D2BA15004B2B67 /* DrinkListViewController.m in Sources */,
 				03F4E8ED18CA34260056EAA9 /* MBProgressHUD.m in Sources */,
 				03F4E8EE18CA34260056EAA9 /* MockeryURLProtocol.m in Sources */,
 				03F4E8EF18CA34260056EAA9 /* MockeryHTTPURLResponse.m in Sources */,

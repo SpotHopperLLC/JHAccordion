@@ -169,4 +169,11 @@
     return [self objectForKey:@"match"];
 }
 
+- (NSString *)matchPercent {
+    if ([self match] == nil) {
+        return nil;
+    }
+    return [NSString stringWithFormat:@"%d%%", (int)([self match].floatValue * 100)];
+}
+
 @end

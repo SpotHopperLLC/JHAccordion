@@ -13,6 +13,7 @@
 
 #import "DrinksNearbyViewController.h"
 #import "DrinkListMenuViewController.h"
+#import "DrinkListViewController.h"
 #import "FindSimilarDrinksViewController.h"
 
 #import "MyReviewsViewController.h"
@@ -47,6 +48,13 @@
 
 - (void)goToDrinkListMenuAtSpot:(SpotModel*)spot {
     DrinkListMenuViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkListMenuViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToDrinkList:(DrinkListModel*)drinkList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders {
+    DrinkListViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkListViewController"];
+    [viewController setDrinkList:drinkList];
+    [viewController setCreatedWithAdjustSliders:createdWithAdjustSliders];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

@@ -29,7 +29,7 @@
              @"featured" : @"featured",
              @"latitude" : @"latitude",
              @"longitude" : @"longitude",
-             @"links.spots" : @"spots",
+             @"links.drinks" : @"drinks",
              };
     
 }
@@ -118,6 +118,119 @@
     }];
     
     return deferred.promise;
+}
+
+- (Promise *)getDrinkList:(NSDictionary *)params success:(void (^)(DrinkListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+    
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drink_lists/%d", [self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            DrinkListModel *model = [jsonApi resourceForKey:@"drink_lists"];
+            successBlock(model, jsonApi);
+            
+            // Resolves promise
+            [deferred resolve];
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+            
+            // Rejects promise
+            [deferred rejectWith:errorModel];
+        }
+    }];
+    
+    return deferred.promise;
+    
+}
+
+- (Promise *)putDrinkList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders success:(void (^)(DrinkListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+    
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    NSMutableDictionary *params = @{  }.mutableCopy;
+    
+    if (name.length > 0) {
+        [params setObject:name forKey:@"name"];
+    }
+    
+    if (latitude != nil && longitude != nil) {
+        [params setObject:latitude forKey:kDrinkListModelParamLatitude];
+        [params setObject:longitude forKey:kDrinkListModelParamLongitude];
+    }
+    
+    // Creating params
+    if (sliders != nil) {
+        NSMutableArray *jsonSliders = [NSMutableArray array];
+        for (SliderModel *slider in sliders) {
+            [jsonSliders addObject:@{
+                                     @"slider_template_id" : slider.sliderTemplate.ID,
+                                     @"value" : slider.value
+                                     }];
+        }
+        
+        [params setObject:jsonSliders forKey:@"sliders"];
+    }
+    
+    
+    
+    [[ClientSessionManager sharedClient] PUT:[NSString stringWithFormat:@"/api/drink_lists/%d", [self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200 || operation.response.statusCode == 204) {
+            DrinkListModel *model = [jsonApi resourceForKey:@"drink_lists"];
+            successBlock(model, jsonApi);
+            
+            // Resolves promise
+            [deferred resolve];
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+            
+            // Rejects promise
+            [deferred rejectWith:errorModel];
+        }
+    }];
+    
+    return deferred.promise;
+    
+}
+
+- (Promise *)deleteDrinkList:(NSDictionary *)params success:(void (^)(DrinkListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+    
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [[ClientSessionManager sharedClient] DELETE:[NSString stringWithFormat:@"/api/drink_lists/%d", [self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200 || operation.response.statusCode == 204) {
+            DrinkListModel *model = [jsonApi resourceForKey:@"drink_lists"];
+            successBlock(model, jsonApi);
+            
+            // Resolves promise
+            [deferred resolve];
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+            
+            // Rejects promise
+            [deferred rejectWith:errorModel];
+        }
+    }];
+    
+    return deferred.promise;
+    
 }
 
 @end

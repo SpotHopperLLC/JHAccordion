@@ -22,6 +22,7 @@
 #import "SHNavigationController.h"
 #import "FindSimilarDrinksViewController.h"
 #import "AdjustDrinkListSliderViewController.h"
+#import "DrinkListViewController.h"
 
 #import "ClientSessionManager.h"
 #import "AverageReviewModel.h"
@@ -202,11 +203,11 @@
             [self goToFindSimilarDrinks:self];
         }
     } else if (indexPath.section == 1) {
-//        SpotListModel *spotList = [_featuredSpotLists objectAtIndex:indexPath.row];
-//        [self goToSpotList:spotList createdWithAdjustSliders:NO];
+        DrinkListModel *drinkList = [_featuredDrinkLists objectAtIndex:indexPath.row];
+        [self goToDrinkList:drinkList createdWithAdjustSliders:NO];
     } else if (indexPath.section == 2) {
-//        SpotListModel *spotList = [_mySpotLists objectAtIndex:indexPath.row];
-//        [self goToSpotList:spotList createdWithAdjustSliders:NO];
+        DrinkListModel *drinkList = [_myDrinkLists objectAtIndex:indexPath.row];
+        [self goToDrinkList:drinkList createdWithAdjustSliders:NO];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -268,7 +269,7 @@
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
     _location = location;
-//    [_adjustSpotListSliderViewController setLocation:_location];
+    [_adjustDrinkListSliderViewController setLocation:_location];
     [self fetchDrinkLists];
 }
 
@@ -289,14 +290,14 @@
             [self hideHUD];
             [self showHUDCompleted:@"Drinklist created!" block:^{
                 
-//                NSMutableArray *viewControllers = self.navigationController.viewControllers.mutableCopy;
-//                [viewControllers removeLastObject];
-//                
-//                SpotListViewController *viewController = [self.spotsStoryboard instantiateViewControllerWithIdentifier:@"SpotListViewController"];
-//                [viewController setSpotList:spotListModel];
-//                [viewControllers addObject:viewController];
-//                
-//                [self.navigationController setViewControllers:viewControllers animated:YES];
+                NSMutableArray *viewControllers = self.navigationController.viewControllers.mutableCopy;
+                [viewControllers removeLastObject];
+                
+                DrinkListViewController *viewController = [self.drinksStoryboard instantiateViewControllerWithIdentifier:@"DrinkListViewController"];
+                [viewController setDrinkList:drinkListModel];
+                [viewControllers addObject:viewController];
+                
+                [self.navigationController setViewControllers:viewControllers animated:YES];
                 
             }];
             
@@ -313,10 +314,10 @@
 
 #pragma mark - AdjustDrinkSliderListSliderViewControllerDelegate
 
-- (void)adjustDrinkSliderListSliderViewControllerDelegate:(AdjustDrinkListSliderViewController *)viewController createdDrinkList:(DrinkListModel *)spotList {
+- (void)adjustDrinkSliderListSliderViewControllerDelegate:(AdjustDrinkListSliderViewController *)viewController createdDrinkList:(DrinkListModel *)drinkList {
     [self showAdjustSlidersView:NO animated:YES];
     
-//    [self goToSpotList:spotList createdWithAdjustSliders:YES];
+    [self goToDrinkList:drinkList createdWithAdjustSliders:YES];
 }
 
 - (void)adjustDrinkSliderListSliderViewControllerDelegateClickClose:(AdjustDrinkListSliderViewController *)viewController {

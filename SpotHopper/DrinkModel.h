@@ -50,6 +50,8 @@
 @property (nonatomic, strong) AverageReviewModel *averageReview;
 @property (nonatomic, strong) NSNumber *match;
 
+- (NSString *)matchPercent;
+
 + (Promise*)getDrinks:(NSDictionary*)params success:(void(^)(NSArray *drinkModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 + (Promise*)postDrink:(NSDictionary*)params success:(void(^)(DrinkModel *drinkModel, JSONAPI *jsonAPI))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;

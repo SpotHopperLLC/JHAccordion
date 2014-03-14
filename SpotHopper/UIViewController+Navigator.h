@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "DrinkModel.h"
+#import "DrinkListModel.h"
 #import "ReviewModel.h"
 #import "SpotModel.h"
 #import "SpotListModel.h"
@@ -25,6 +26,7 @@
 - (void)goToDrinksNearBy;
 - (void)goToDrinkListMenu;
 - (void)goToDrinkListMenuAtSpot:(SpotModel*)spot;
+- (void)goToDrinkList:(DrinkListModel*)drinkList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders;
 
 // Reviews
 - (void)goToReviewMenu;
