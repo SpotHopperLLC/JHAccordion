@@ -281,13 +281,13 @@
     
     NSMutableArray *slidersFiltered = [NSMutableArray array];
     if (_selectedDrinkType == nil) {
-        
-        // Filters if is used for any drink type
-        for (SliderTemplateModel *sliderTemplate in _allSliderTemplates) {
-            if (sliderTemplate.drinkTypes.count > 0) {
-                [slidersFiltered addObject:sliderTemplate];
-            }
-        }
+        _sliderTemplates = nil;
+//        // Filters if is used for any drink type
+//        for (SliderTemplateModel *sliderTemplate in _allSliderTemplates) {
+//            if (sliderTemplate.drinkTypes.count > 0) {
+//                [slidersFiltered addObject:sliderTemplate];
+//            }
+//        }
         
     } else {
         NSNumber *selectedSpotTypeId = [_selectedDrinkType objectForKey:@"id"];
@@ -348,6 +348,11 @@
 }
 
 - (void)doCreateSpotlist {
+    if (_selectedDrinkType == nil) {
+        [self showAlert:@"Oops" message:@"Please select a drink type"];
+        return;
+    }
+    
     NSMutableArray *allTheSliders = [NSMutableArray array];
     [allTheSliders addObjectsFromArray:_sliders];
     [allTheSliders addObjectsFromArray:_advancedSliders];
@@ -359,7 +364,7 @@
     }
     
     [self showHUD:@"Creating drinklist"];
-    [DrinkListModel postDrinkList:kDrinkListModelDefaultName latitude:latitude longitude:longitude sliders:allTheSliders successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+    [DrinkListModel postDrinkList:kDrinkListModelDefaultName latitude:latitude longitude:longitude sliders:allTheSliders drinkId:nil drinkTypeId:[_selectedDrinkType objectForKey:@"id"] spotId:nil successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
         [self hideHUD];
         [self showHUDCompleted:@"Drinklist created!" block:^{
             

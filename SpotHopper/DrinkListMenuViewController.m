@@ -27,6 +27,7 @@
 #import "ClientSessionManager.h"
 #import "AverageReviewModel.h"
 #import "DrinkModel.h"
+#import "DrinkTypeModel.h"
 #import "DrinkListModel.h"
 #import "ErrorModel.h"
 #import "UserModel.h"
@@ -285,7 +286,7 @@
     [drink getDrink:Nil success:^(DrinkModel *drinkModel, JSONAPI *jsonApi) {
         [self hideHUD];
         
-        [DrinkListModel postDrinkList:[NSString stringWithFormat:@"Similar to %@", drinkModel.name] latitude:[NSNumber numberWithFloat:_location.coordinate.latitude] longitude:[NSNumber numberWithFloat:_location.coordinate.longitude] sliders:drinkModel.averageReview.sliders successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+        [DrinkListModel postDrinkList:[NSString stringWithFormat:@"Similar to %@", drinkModel.name] latitude:[NSNumber numberWithFloat:_location.coordinate.latitude] longitude:[NSNumber numberWithFloat:_location.coordinate.longitude] sliders:drinkModel.averageReview.sliders drinkId:drink.ID drinkTypeId:drink.drinkType.ID spotId:nil successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
             
             [self hideHUD];
             [self showHUDCompleted:@"Drinklist created!" block:^{
