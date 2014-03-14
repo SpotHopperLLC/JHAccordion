@@ -48,4 +48,12 @@
     
 }
 
+#pragma mark - Actions
+
+- (IBAction)onClickFindit:(id)sender {
+    if ([_delegate respondsToSelector:@selector(drinkCardCollectionViewCellClickedFindIt:)]) {
+        [_delegate drinkCardCollectionViewCellClickedFindIt:self];
+    }
+}
+
 @end

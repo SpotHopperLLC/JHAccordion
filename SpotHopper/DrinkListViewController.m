@@ -31,7 +31,7 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-@interface DrinkListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, SHButtonLatoLightLocationDelegate>
+@interface DrinkListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, SHButtonLatoLightLocationDelegate, DrinkCardCollectionViewCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *lblMatchPercent;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -141,6 +141,7 @@
     
     DrinkCardCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SpotCardCollectionViewCell" forIndexPath:indexPath];
     [cell setDrink:drink];
+    [cell setDelegate:self];
     
     return cell;
 }
@@ -154,6 +155,15 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     [self updateMatchPercent];
+}
+
+#pragma mark - DrinkCardCollectionViewCellDelegate
+
+- (void)drinkCardCollectionViewCellClickedFindIt:(DrinkCardCollectionViewCell *)cell {
+    NSIndexPath *indexPath = [_collectionView indexPathForCell:cell];
+    DrinkModel *drink = [_drinkList.drinks objectAtIndex:indexPath.row];
+    
+    [self goToFindDrinksAt:drink];
 }
 
 #pragma mark - SHButtonLatoLightLocationDelegate

@@ -27,6 +27,7 @@
 - (void)goToDrinkListMenu;
 - (void)goToDrinkListMenuAtSpot:(SpotModel*)spot;
 - (void)goToDrinkList:(DrinkListModel*)drinkList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders;
+- (void)goToFindDrinksAt:(DrinkModel*)drink;
 
 // Reviews
 - (void)goToReviewMenu;

@@ -15,4 +15,4 @@
 @property (nonatomic, strong) SpotModel *spot;
 @property (nonatomic, strong) SpotAnnotationCallout *calloutView;
 
-@endgit
+@end

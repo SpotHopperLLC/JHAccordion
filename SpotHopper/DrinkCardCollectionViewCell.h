@@ -12,6 +12,8 @@
 
 #import "DrinkModel.h"
 
+@protocol DrinkCardCollectionViewCellDelegate;
+
 @interface DrinkCardCollectionViewCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
@@ -19,6 +21,14 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imgDrink;
 @property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblInfo;
 
+@property (nonatomic, assign) id<DrinkCardCollectionViewCellDelegate> delegate;
+
 - (void)setDrink:(DrinkModel*)drink;
+
+@end
+
+@protocol DrinkCardCollectionViewCellDelegate <NSObject>
+
+- (void)drinkCardCollectionViewCellClickedFindIt:(DrinkCardCollectionViewCell*)cell;
 
 @end
