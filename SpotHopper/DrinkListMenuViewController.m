@@ -397,6 +397,8 @@
             _sectionHeader0 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
             [_sectionHeader0 setIconImage:[UIImage imageNamed:@"icon_plus"]];
             
+            UIFont *font = _sectionHeader0.lblText.font;
+            [_sectionHeader0.lblText setFont:[UIFont fontWithName:font.fontName size:15.0]];
             CGFloat fontSize = _sectionHeader0.lblText.font.pointSize;
             [_sectionHeader0.lblText setText:@"Create Personalized Drinklist" withFont:[UIFont fontWithName:@"Lato-Regular" size:fontSize] onString:@"Create"];
             
@@ -412,6 +414,8 @@
             _sectionHeader1 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
             [_sectionHeader1 setIconImage:[UIImage imageNamed:@"icon_featured_lists"]];
             
+            UIFont *font = _sectionHeader1.lblText.font;
+            [_sectionHeader1.lblText setFont:[UIFont fontWithName:font.fontName size:15.0]];
             CGFloat fontSize = _sectionHeader1.lblText.font.pointSize;
             [_sectionHeader1.lblText setText:@"Jump In: Featured Drinklists" withFont:[UIFont fontWithName:@"Lato-Regular" size:fontSize] onString:@"Jump In:"];
             
@@ -426,6 +430,9 @@
         if (_sectionHeader2 == nil) {
             _sectionHeader2 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
             [_sectionHeader2 setIconImage:[UIImage imageNamed:@"icon_my_spotlists"]];
+            
+            UIFont *font = _sectionHeader2.lblText.font;
+            [_sectionHeader2.lblText setFont:[UIFont fontWithName:font.fontName size:15.0]];
             [_sectionHeader2 setText:@"My Drinklists"];
             
             [_sectionHeader2.btnBackground setTag:section];
