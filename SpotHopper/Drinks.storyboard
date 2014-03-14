@@ -254,13 +254,6 @@ available here</string>
                                 <rect key="frame" x="0.0" y="106" width="320" height="314"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <mapView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="sDf-k1-N7B">
-                                <rect key="frame" x="0.0" y="106" width="325" height="314"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <connections>
-                                    <outlet property="delegate" destination="sA2-0I-v5i" id="pNv-k5-tSb"/>
-                                </connections>
-                            </mapView>
                             <view contentMode="scaleToFill" id="vKI-LS-EsD" customClass="SHViewTranlucentWhite">
                                 <rect key="frame" x="0.0" y="64" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
@@ -374,7 +367,6 @@ available here</string>
                         <outlet property="collectionView" destination="13V-oU-Bpx" id="9iR-OF-kfe"/>
                         <outlet property="lblLocation" destination="s7h-LW-LQV" id="TTN-vr-7Kh"/>
                         <outlet property="lblMatchPercent" destination="hcV-0h-rpp" id="HvH-8X-qot"/>
-                        <outlet property="mapView" destination="sDf-k1-N7B" id="p9l-rf-zfX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tX0-sZ-gNF" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -21,34 +21,26 @@
 
 #import "CardLayout.h"
 #import "SHButtonLatoLightLocation.h"
-//#import "SpotAnnotationCallout.h"
 
 #import "SHNavigationController.h"
 
 #import "DrinkCardCollectionViewCell.h"
 
-#import "MatchPercentAnnotation.h"
-#import "MatchPercentAnnotationView.h"
-
 #import "ClientSessionManager.h"
 #import "ErrorModel.h"
 
 #import <CoreLocation/CoreLocation.h>
-#import <MapKit/MapKit.h>
 
-@interface DrinkListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, MKMapViewDelegate, SHButtonLatoLightLocationDelegate>
+@interface DrinkListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, SHButtonLatoLightLocationDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *lblMatchPercent;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
 @property (weak, nonatomic) IBOutlet UILabel *lblLocation;
-@property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 @property (nonatomic, strong) CLLocation *selectedLocation;
 @property (nonatomic, strong) CLLocation *currentLocation;
 @property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
-
-@property (nonatomic, assign) BOOL showMap;
 
 @end
 
@@ -98,9 +90,6 @@
         [_btnLocation setHidden:YES];
     }
     
-    // Initialize stuff
-    _showMap = NO;
-    
     // Fetches drinklist
     [self fetchDrinkList];
 }
@@ -110,15 +99,8 @@
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     
     // Adds contextual footer view
-    __block DrinkListViewController *this = self;
     [self addFooterViewController:^(FooterViewController *footerViewController) {
         [footerViewController showHome:YES];
-        
-        if (this.drinkList.featured == NO) {
-            [footerViewController setLeftButton:@"Delete" image:[UIImage imageNamed:@"btn_context_delete"]];
-        }
-        
-        [this updateFooterMapListButton:footerViewController];
         [footerViewController setRightButton:@"Info" image:[UIImage imageNamed:@"btn_context_info"]];
     }];
     
@@ -127,10 +109,6 @@
 - (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
     if (FooterViewButtonLeft == footerViewButtonType) {
         [self deleteDrinkList];
-        return YES;
-    } else if (FooterViewButtonMiddle == footerViewButtonType) {
-        _showMap = !_showMap;
-        [self updateFooterMapListButton:footerViewController];
         return YES;
     } else if (FooterViewButtonRight == footerViewButtonType) {
         return YES;
@@ -195,7 +173,6 @@
             _drinkList = drinkListModel;
             [_collectionView reloadData];
             
-            [self updateView];
             [self updateMatchPercent];
         } failure:^(ErrorModel *errorModel) {
             [self hideHUD];
@@ -212,47 +189,6 @@
 }
 
 #pragma mark - Private
-
-- (void)updateView {
-    
-    // Zoom map
-//    if (_spotList.latitude != nil && _spotList.longitude != nil) {
-//        MKCoordinateRegion mapRegion;
-//        mapRegion.center = [[CLLocation alloc] initWithLatitude:_spotList.latitude.floatValue longitude:_spotList.longitude.floatValue].coordinate;
-//        mapRegion.span = MKCoordinateSpanMake(0.1, 0.1);
-//        [_mapView setRegion:mapRegion animated: YES];
-//    }
-    
-    // Update map
-//    [_mapView removeAnnotations:[_mapView annotations]];
-//    for (SpotModel *spot in _spotList.spots) {
-//        
-//        // Place pin
-//        if (spot.latitude != nil && spot.longitude != nil) {
-//            MatchPercentAnnotation *annotation = [[MatchPercentAnnotation alloc] init];
-//            [annotation setSpot:spot];
-//            annotation.coordinate = CLLocationCoordinate2DMake(spot.latitude.floatValue, spot.longitude.floatValue);
-//            [_mapView addAnnotation:annotation];
-//        }
-//        
-//    }
-}
-
-- (void)updateFooterMapListButton:(FooterViewController*)footerViewController {
-    if (_showMap == YES) {
-        [footerViewController setMiddleButton:@"List" image:[UIImage imageNamed:@"btn_context_list"]];
-        
-        [_mapView setHidden:NO];
-        [_collectionView setHidden:YES];
-        [_lblMatchPercent setHidden:YES];
-    } else {
-        [footerViewController setMiddleButton:@"Map" image:[UIImage imageNamed:@"btn_context_map"]];
-        
-        [_mapView setHidden:YES];
-        [_collectionView setHidden:NO];
-        [_lblMatchPercent setHidden:NO];
-    }
-}
 
 - (void)updateMatchPercent {
     CGPoint initialPinchPoint = CGPointMake(_collectionView.center.x + _collectionView.contentOffset.x,
@@ -279,7 +215,6 @@
         _drinkList = drinkListModel;
         [_collectionView reloadData];
         
-        [self updateView];
         [self updateMatchPercent];
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
