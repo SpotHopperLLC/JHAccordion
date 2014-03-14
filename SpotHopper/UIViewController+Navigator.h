@@ -20,6 +20,11 @@
 // Main
 - (void)goToLaunch:(BOOL)animated;
 
+// Drinks
+- (void)goToDrinksNearBy;
+- (void)goToDrinkListMenu;
+- (void)goToDrinkListMenuAtSpot:(SpotModel*)spot;
+
 // Reviews
 - (void)goToReviewMenu;
 - (void)goToMyReviews;
@@ -41,6 +46,7 @@
 
 // Storyboards
 - (UIStoryboard*)mainStoryboard;
+- (UIStoryboard*)drinksStoryboard;
 - (UIStoryboard*)reviewsStoryboard;
 - (UIStoryboard*)spotsStoryboard;
 

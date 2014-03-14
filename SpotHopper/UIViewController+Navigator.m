@@ -11,6 +11,9 @@
 #import "FindSimilarViewController.h"
 #import "LaunchViewController.h"
 
+#import "DrinksNearbyViewController.h"
+#import "DrinkListMenuViewController.h"
+
 #import "MyReviewsViewController.h"
 #import "NewReviewViewController.h"
 #import "NewReviewTypeViewController.h"
@@ -28,6 +31,22 @@
 - (void)goToLaunch:(BOOL)animated {
     LaunchViewController *viewController = [[self mainStoryboard] instantiateViewControllerWithIdentifier:@"LaunchViewController"];
     [self presentViewController:viewController animated:animated completion:nil];
+}
+
+#pragma mark - Drinks
+
+- (void)goToDrinksNearBy {
+    DrinksNearbyViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinksNearbyViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToDrinkListMenu {
+    [self goToDrinkListMenuAtSpot:nil];
+}
+
+- (void)goToDrinkListMenuAtSpot:(SpotModel*)spot {
+    DrinkListMenuViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkListMenuViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - Reviews
@@ -122,6 +141,15 @@
     NSString *name = [self.storyboard valueForKey:@"name"];
     if ([name isEqualToString:@"Main"] == NO) {
         return [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    }
+    
+    return self.storyboard;
+}
+
+- (UIStoryboard*)drinksStoryboard {
+    NSString *name = [self.storyboard valueForKey:@"name"];
+    if ([name isEqualToString:@"Drinks"] == NO) {
+        return [UIStoryboard storyboardWithName:@"Drinks" bundle:[NSBundle mainBundle]];
     }
     
     return self.storyboard;

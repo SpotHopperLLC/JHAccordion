@@ -113,7 +113,7 @@
 }
 
 - (IBAction)onClickDrinks:(id)sender {
-    
+    [self goToDrinksNearBy];
 }
 
 - (IBAction)onClickSpecials:(id)sender {

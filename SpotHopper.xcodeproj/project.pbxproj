@@ -196,6 +196,30 @@
 		039F541818D11E57004B2B67 /* SpotListMoodModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F541718D11E57004B2B67 /* SpotListMoodModel.m */; };
 		039F541918D2506C004B2B67 /* SpotListMoodModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F541718D11E57004B2B67 /* SpotListMoodModel.m */; };
 		039F541A18D2506D004B2B67 /* SpotListMoodModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F541718D11E57004B2B67 /* SpotListMoodModel.m */; };
+		039F541C18D28379004B2B67 /* Drinks.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 039F541B18D28379004B2B67 /* Drinks.storyboard */; };
+		039F541D18D28379004B2B67 /* Drinks.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 039F541B18D28379004B2B67 /* Drinks.storyboard */; };
+		039F541E18D28379004B2B67 /* Drinks.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 039F541B18D28379004B2B67 /* Drinks.storyboard */; };
+		039F542218D283A8004B2B67 /* DrinksNearbyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F542118D283A8004B2B67 /* DrinksNearbyViewController.m */; };
+		039F542318D283A8004B2B67 /* DrinksNearbyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F542118D283A8004B2B67 /* DrinksNearbyViewController.m */; };
+		039F542418D283A8004B2B67 /* DrinksNearbyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F542118D283A8004B2B67 /* DrinksNearbyViewController.m */; };
+		039F542718D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F542618D283D3004B2B67 /* DrinkListMenuViewController.m */; };
+		039F542818D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F542618D283D3004B2B67 /* DrinkListMenuViewController.m */; };
+		039F542918D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F542618D283D3004B2B67 /* DrinkListMenuViewController.m */; };
+		039F542F18D28627004B2B67 /* btn_discover_drinks_nearby.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F542B18D28627004B2B67 /* btn_discover_drinks_nearby.png */; };
+		039F543018D28627004B2B67 /* btn_discover_drinks_nearby.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F542B18D28627004B2B67 /* btn_discover_drinks_nearby.png */; };
+		039F543118D28627004B2B67 /* btn_discover_drinks_nearby.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F542B18D28627004B2B67 /* btn_discover_drinks_nearby.png */; };
+		039F543218D28627004B2B67 /* btn_discover_drinks_nearby@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F542C18D28627004B2B67 /* btn_discover_drinks_nearby@2x.png */; };
+		039F543318D28627004B2B67 /* btn_discover_drinks_nearby@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F542C18D28627004B2B67 /* btn_discover_drinks_nearby@2x.png */; };
+		039F543418D28627004B2B67 /* btn_discover_drinks_nearby@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F542C18D28627004B2B67 /* btn_discover_drinks_nearby@2x.png */; };
+		039F543518D28627004B2B67 /* btn_get_drinks_here.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F542D18D28627004B2B67 /* btn_get_drinks_here.png */; };
+		039F543618D28627004B2B67 /* btn_get_drinks_here.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F542D18D28627004B2B67 /* btn_get_drinks_here.png */; };
+		039F543718D28627004B2B67 /* btn_get_drinks_here.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F542D18D28627004B2B67 /* btn_get_drinks_here.png */; };
+		039F543818D28627004B2B67 /* btn_get_drinks_here@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F542E18D28627004B2B67 /* btn_get_drinks_here@2x.png */; };
+		039F543918D28627004B2B67 /* btn_get_drinks_here@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F542E18D28627004B2B67 /* btn_get_drinks_here@2x.png */; };
+		039F543A18D28627004B2B67 /* btn_get_drinks_here@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F542E18D28627004B2B67 /* btn_get_drinks_here@2x.png */; };
+		039F543D18D28F5E004B2B67 /* DrinkListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F543C18D28F5E004B2B67 /* DrinkListModel.m */; };
+		039F543E18D28F5E004B2B67 /* DrinkListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F543C18D28F5E004B2B67 /* DrinkListModel.m */; };
+		039F543F18D28F5E004B2B67 /* DrinkListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F543C18D28F5E004B2B67 /* DrinkListModel.m */; };
 		03C8DAE7188B42A40082321C /* MockData.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C8DAE6188B42A40082321C /* MockData.m */; };
 		03C8DAEA188B44C20082321C /* SliderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C8DAE9188B44C20082321C /* SliderModel.m */; };
 		03C8DAED188B44CB0082321C /* SliderTemplateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C8DAEC188B44CB0082321C /* SliderTemplateModel.m */; };
@@ -1254,6 +1278,17 @@
 		039BA00818906A12001AF1B9 /* NSString+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Common.m"; sourceTree = "<group>"; };
 		039F541618D11E57004B2B67 /* SpotListMoodModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotListMoodModel.h; sourceTree = "<group>"; };
 		039F541718D11E57004B2B67 /* SpotListMoodModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotListMoodModel.m; sourceTree = "<group>"; };
+		039F541B18D28379004B2B67 /* Drinks.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Drinks.storyboard; sourceTree = "<group>"; };
+		039F542018D283A8004B2B67 /* DrinksNearbyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinksNearbyViewController.h; sourceTree = "<group>"; };
+		039F542118D283A8004B2B67 /* DrinksNearbyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinksNearbyViewController.m; sourceTree = "<group>"; };
+		039F542518D283D3004B2B67 /* DrinkListMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkListMenuViewController.h; sourceTree = "<group>"; };
+		039F542618D283D3004B2B67 /* DrinkListMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkListMenuViewController.m; sourceTree = "<group>"; };
+		039F542B18D28627004B2B67 /* btn_discover_drinks_nearby.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_discover_drinks_nearby.png; sourceTree = "<group>"; };
+		039F542C18D28627004B2B67 /* btn_discover_drinks_nearby@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_discover_drinks_nearby@2x.png"; sourceTree = "<group>"; };
+		039F542D18D28627004B2B67 /* btn_get_drinks_here.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_get_drinks_here.png; sourceTree = "<group>"; };
+		039F542E18D28627004B2B67 /* btn_get_drinks_here@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_get_drinks_here@2x.png"; sourceTree = "<group>"; };
+		039F543B18D28F5E004B2B67 /* DrinkListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkListModel.h; sourceTree = "<group>"; };
+		039F543C18D28F5E004B2B67 /* DrinkListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkListModel.m; sourceTree = "<group>"; };
 		03C8DAE5188B42A40082321C /* MockData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MockData.h; sourceTree = "<group>"; };
 		03C8DAE6188B42A40082321C /* MockData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MockData.m; sourceTree = "<group>"; };
 		03C8DAE8188B44C20082321C /* SliderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SliderModel.h; sourceTree = "<group>"; };
@@ -1731,6 +1766,7 @@
 			children = (
 				032023341875DEBC008368C2 /* Footer */,
 				03F2D9341871E86000C69576 /* Main */,
+				039F541F18D28388004B2B67 /* Drinks */,
 				03E4456E18B65E3300C88421 /* Spots */,
 				0320236A18774DB5008368C2 /* Reviews */,
 				03E4453F18B56BA400C88421 /* Commons */,
@@ -1769,6 +1805,7 @@
 				03866478186D352400985CEC /* Main.storyboard */,
 				0320236818774D64008368C2 /* Reviews.storyboard */,
 				03E4456C18B65E1500C88421 /* Spots.storyboard */,
+				039F541B18D28379004B2B67 /* Drinks.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -1816,6 +1853,7 @@
 		038664A2186D370E00985CEC /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				039F542A18D28627004B2B67 /* Drinklists */,
 				03F6BF7618C7087C00172F13 /* Search */,
 				03F6BF5D18C6DC8500172F13 /* Spotlists */,
 				03E4455618B65D8A00C88421 /* Map */,
@@ -1956,6 +1994,8 @@
 				03E882E418C7B8F400BD8FBB /* AverageReviewModel.m */,
 				039F541618D11E57004B2B67 /* SpotListMoodModel.h */,
 				039F541718D11E57004B2B67 /* SpotListMoodModel.m */,
+				039F543B18D28F5E004B2B67 /* DrinkListModel.h */,
+				039F543C18D28F5E004B2B67 /* DrinkListModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -2141,6 +2181,28 @@
 				039BA004188EB9AB001AF1B9 /* UITextField+ACEAutocompleteBar.m */,
 			);
 			path = ACEAutocompleteBar;
+			sourceTree = "<group>";
+		};
+		039F541F18D28388004B2B67 /* Drinks */ = {
+			isa = PBXGroup;
+			children = (
+				039F542018D283A8004B2B67 /* DrinksNearbyViewController.h */,
+				039F542118D283A8004B2B67 /* DrinksNearbyViewController.m */,
+				039F542518D283D3004B2B67 /* DrinkListMenuViewController.h */,
+				039F542618D283D3004B2B67 /* DrinkListMenuViewController.m */,
+			);
+			name = Drinks;
+			sourceTree = "<group>";
+		};
+		039F542A18D28627004B2B67 /* Drinklists */ = {
+			isa = PBXGroup;
+			children = (
+				039F542B18D28627004B2B67 /* btn_discover_drinks_nearby.png */,
+				039F542C18D28627004B2B67 /* btn_discover_drinks_nearby@2x.png */,
+				039F542D18D28627004B2B67 /* btn_get_drinks_here.png */,
+				039F542E18D28627004B2B67 /* btn_get_drinks_here@2x.png */,
+			);
+			path = Drinklists;
 			sourceTree = "<group>";
 		};
 		03CA726F187B8FD800815284 /* Icons */ = {
@@ -2552,6 +2614,7 @@
 				03866546186DE0F700985CEC /* btn_sidebar_icon_reviews.png in Resources */,
 				038664EB186D37BC00985CEC /* RefreshView.xib in Resources */,
 				03F6BF7218C6E8CD00172F13 /* ListCellView.xib in Resources */,
+				039F543818D28627004B2B67 /* btn_get_drinks_here@2x.png in Resources */,
 				03F2D92A1871DC1400C69576 /* Lato-Hairline.ttf in Resources */,
 				03866541186DE0F700985CEC /* btn_sidebar_icon_account@2x.png in Resources */,
 				03866545186DE0F700985CEC /* btn_sidebar_icon_drinks@2x.png in Resources */,
@@ -2570,6 +2633,7 @@
 				03121A3118BCF31200C9FFA3 /* orange_gradient_background.png in Resources */,
 				0381043E18B672C300A410DB /* btn_spot_profile_image_next@2x.png in Resources */,
 				0386653F186DE0F700985CEC /* btn_nav_sidebar@2x.png in Resources */,
+				039F543518D28627004B2B67 /* btn_get_drinks_here.png in Resources */,
 				03F2D9211871DC1400C69576 /* AvantGarEFBooObl in Resources */,
 				03866531186DE0F700985CEC /* btn_home_drinks@2x.png in Resources */,
 				03CA72B1187C4D0E00815284 /* slider_thumb_selected@2x.png in Resources */,
@@ -2605,9 +2669,11 @@
 				0320235318772A86008368C2 /* txt_sidebar_search_background@2x.png in Resources */,
 				03E4456D18B65E1500C88421 /* Spots.storyboard in Resources */,
 				03866543186DE0F700985CEC /* btn_sidebar_icon_checkin@2x.png in Resources */,
+				039F543218D28627004B2B67 /* btn_discover_drinks_nearby@2x.png in Resources */,
 				03265F2018C4E92C002177F7 /* bar_drink_placeholder.png in Resources */,
 				0320236518774A49008368C2 /* icon_view_my_reviews@2x.png in Resources */,
 				03F2D9271871DC1400C69576 /* Lato-BlackItalic.ttf in Resources */,
+				039F541C18D28379004B2B67 /* Drinks.storyboard in Resources */,
 				03CA72AE187C4D0E00815284 /* slider_thumb.png in Resources */,
 				03CA72B2187C4D0E00815284 /* slider_thumb_selected_light.png in Resources */,
 				03E4457318B6607900C88421 /* SpotProfileHeaderView.xib in Resources */,
@@ -2673,6 +2739,7 @@
 				03866525186DE0F700985CEC /* app_background_blurred@2x.png in Resources */,
 				0320236918774D64008368C2 /* Reviews.storyboard in Resources */,
 				0386652D186DE0F700985CEC /* btn_context_info@2x.png in Resources */,
+				039F542F18D28627004B2B67 /* btn_discover_drinks_nearby.png in Resources */,
 				03CA72B5187C4D0E00815284 /* slider_thumb_selected_with_light@2x.png in Resources */,
 				03265F2618C4E955002177F7 /* icon_arrow_no_shadow.png in Resources */,
 				03CA72AF187C4D0E00815284 /* slider_thumb@2x.png in Resources */,
@@ -2798,6 +2865,7 @@
 				03F4E7C318CA33D00056EAA9 /* btn_sidebar_icon_reviews.png in Resources */,
 				03F4E7C418CA33D00056EAA9 /* RefreshView.xib in Resources */,
 				03F4E7C518CA33D00056EAA9 /* ListCellView.xib in Resources */,
+				039F543A18D28627004B2B67 /* btn_get_drinks_here@2x.png in Resources */,
 				03F4E7C618CA33D00056EAA9 /* Lato-Hairline.ttf in Resources */,
 				03F4E7C718CA33D00056EAA9 /* btn_sidebar_icon_account@2x.png in Resources */,
 				03F4E7C818CA33D00056EAA9 /* btn_sidebar_icon_drinks@2x.png in Resources */,
@@ -2816,6 +2884,7 @@
 				03F4E7D518CA33D00056EAA9 /* orange_gradient_background.png in Resources */,
 				03F4E7D618CA33D00056EAA9 /* btn_spot_profile_image_next@2x.png in Resources */,
 				03F4E7D718CA33D00056EAA9 /* btn_nav_sidebar@2x.png in Resources */,
+				039F543718D28627004B2B67 /* btn_get_drinks_here.png in Resources */,
 				03F4E7D818CA33D00056EAA9 /* AvantGarEFBooObl in Resources */,
 				03F4E7D918CA33D00056EAA9 /* btn_home_drinks@2x.png in Resources */,
 				03F4E7DA18CA33D00056EAA9 /* slider_thumb_selected@2x.png in Resources */,
@@ -2851,9 +2920,11 @@
 				03F4E7F718CA33D00056EAA9 /* Spots.storyboard in Resources */,
 				03F4E7F818CA33D00056EAA9 /* btn_sidebar_icon_checkin@2x.png in Resources */,
 				03F4E7F918CA33D00056EAA9 /* bar_drink_placeholder.png in Resources */,
+				039F543418D28627004B2B67 /* btn_discover_drinks_nearby@2x.png in Resources */,
 				03F4E7FA18CA33D00056EAA9 /* icon_view_my_reviews@2x.png in Resources */,
 				03F4E7FB18CA33D00056EAA9 /* Lato-BlackItalic.ttf in Resources */,
 				03F4E7FC18CA33D00056EAA9 /* slider_thumb.png in Resources */,
+				039F541E18D28379004B2B67 /* Drinks.storyboard in Resources */,
 				03F4E7FD18CA33D00056EAA9 /* slider_thumb_selected_light.png in Resources */,
 				03F4E7FE18CA33D00056EAA9 /* SpotProfileHeaderView.xib in Resources */,
 				039ABBDF18CE309C00B84AE6 /* img_match_pin_view_selected.png in Resources */,
@@ -2919,6 +2990,7 @@
 				03F4E83918CA33D00056EAA9 /* btn_context_info@2x.png in Resources */,
 				03F4E83A18CA33D00056EAA9 /* slider_thumb_selected_with_light@2x.png in Resources */,
 				03F4E83B18CA33D00056EAA9 /* icon_arrow_no_shadow.png in Resources */,
+				039F543118D28627004B2B67 /* btn_discover_drinks_nearby.png in Resources */,
 				03F4E83C18CA33D00056EAA9 /* slider_thumb@2x.png in Resources */,
 				03F4E83D18CA33D00056EAA9 /* icon_wine@2x.png in Resources */,
 				03F4E83E18CA33D00056EAA9 /* icon_view_my_reviews.png in Resources */,
@@ -3036,6 +3108,7 @@
 				03F4E91118CA34260056EAA9 /* btn_sidebar_icon_reviews.png in Resources */,
 				03F4E91218CA34260056EAA9 /* RefreshView.xib in Resources */,
 				03F4E91318CA34260056EAA9 /* ListCellView.xib in Resources */,
+				039F543918D28627004B2B67 /* btn_get_drinks_here@2x.png in Resources */,
 				03F4E91418CA34260056EAA9 /* Lato-Hairline.ttf in Resources */,
 				03F4E91518CA34260056EAA9 /* btn_sidebar_icon_account@2x.png in Resources */,
 				03F4E91618CA34260056EAA9 /* btn_sidebar_icon_drinks@2x.png in Resources */,
@@ -3054,6 +3127,7 @@
 				03F4E92318CA34260056EAA9 /* orange_gradient_background.png in Resources */,
 				03F4E92418CA34260056EAA9 /* btn_spot_profile_image_next@2x.png in Resources */,
 				03F4E92518CA34260056EAA9 /* btn_nav_sidebar@2x.png in Resources */,
+				039F543618D28627004B2B67 /* btn_get_drinks_here.png in Resources */,
 				03F4E92618CA34260056EAA9 /* AvantGarEFBooObl in Resources */,
 				03F4E92718CA34260056EAA9 /* btn_home_drinks@2x.png in Resources */,
 				03F4E92818CA34260056EAA9 /* slider_thumb_selected@2x.png in Resources */,
@@ -3089,9 +3163,11 @@
 				03F4E94518CA34260056EAA9 /* Spots.storyboard in Resources */,
 				03F4E94618CA34260056EAA9 /* btn_sidebar_icon_checkin@2x.png in Resources */,
 				03F4E94718CA34260056EAA9 /* bar_drink_placeholder.png in Resources */,
+				039F543318D28627004B2B67 /* btn_discover_drinks_nearby@2x.png in Resources */,
 				03F4E94818CA34260056EAA9 /* icon_view_my_reviews@2x.png in Resources */,
 				03F4E94918CA34260056EAA9 /* Lato-BlackItalic.ttf in Resources */,
 				03F4E94A18CA34260056EAA9 /* slider_thumb.png in Resources */,
+				039F541D18D28379004B2B67 /* Drinks.storyboard in Resources */,
 				03F4E94B18CA34260056EAA9 /* slider_thumb_selected_light.png in Resources */,
 				03F4E94C18CA34260056EAA9 /* SpotProfileHeaderView.xib in Resources */,
 				039ABBDD18CE309C00B84AE6 /* img_match_pin_view_selected.png in Resources */,
@@ -3157,6 +3233,7 @@
 				03F4E98718CA34260056EAA9 /* btn_context_info@2x.png in Resources */,
 				03F4E98818CA34260056EAA9 /* slider_thumb_selected_with_light@2x.png in Resources */,
 				03F4E98918CA34260056EAA9 /* icon_arrow_no_shadow.png in Resources */,
+				039F543018D28627004B2B67 /* btn_discover_drinks_nearby.png in Resources */,
 				03F4E98A18CA34260056EAA9 /* slider_thumb@2x.png in Resources */,
 				03F4E98B18CA34260056EAA9 /* icon_wine@2x.png in Resources */,
 				03F4E98C18CA34260056EAA9 /* icon_view_my_reviews.png in Resources */,
@@ -3401,6 +3478,7 @@
 				039B7022188759B100C590F8 /* NSArray+HoursOfOperation.m in Sources */,
 				03412C411882F6EC000F16A8 /* SHJSONAPIResource.m in Sources */,
 				038664E1186D379400985CEC /* BaseViewController.m in Sources */,
+				039F542718D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				038664E2186D379400985CEC /* ClientSessionManager.m in Sources */,
 				03F2D9371871E88000C69576 /* LaunchViewController.m in Sources */,
 				03F2D94D18722CAC00C69576 /* SHNavigationBar.m in Sources */,
@@ -3438,6 +3516,7 @@
 				039B7009188721BB00C590F8 /* FooterShadowCell.m in Sources */,
 				03866477186D352400985CEC /* AppDelegate.m in Sources */,
 				039B7011188723EB00C590F8 /* Mockery.m in Sources */,
+				039F543D18D28F5E004B2B67 /* DrinkListModel.m in Sources */,
 				03F6BF6B18C6E10A00172F13 /* CreateListCell.m in Sources */,
 				0381043818B6704600A410DB /* SpotImageCollectViewCell.m in Sources */,
 				03E8833B18C838F600BD8FBB /* CardLayout.m in Sources */,
@@ -3460,6 +3539,7 @@
 				038664DC186D376900985CEC /* TellMeMyLocation.m in Sources */,
 				037D13A218A3DF8500B89535 /* DrinkTypeModel.m in Sources */,
 				03E882E218C7A39000BD8FBB /* AdjustSliderOptionCell.m in Sources */,
+				039F542218D283A8004B2B67 /* DrinksNearbyViewController.m in Sources */,
 				039B6FF41887143B00C590F8 /* SearchCell.m in Sources */,
 				03F2D95018722D5300C69576 /* HomeViewController.m in Sources */,
 				039B70251888847200C590F8 /* NSNumber+Helpers.m in Sources */,
@@ -3512,6 +3592,7 @@
 				03F4E75F18CA33D00056EAA9 /* NSArray+HoursOfOperation.m in Sources */,
 				03F4E76018CA33D00056EAA9 /* SHJSONAPIResource.m in Sources */,
 				03F4E76118CA33D00056EAA9 /* BaseViewController.m in Sources */,
+				039F542918D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				03F4E76218CA33D00056EAA9 /* ClientSessionManager.m in Sources */,
 				03F4E76318CA33D00056EAA9 /* LaunchViewController.m in Sources */,
 				03F4E76418CA33D00056EAA9 /* SHNavigationBar.m in Sources */,
@@ -3549,6 +3630,7 @@
 				03F4E78418CA33D00056EAA9 /* FooterShadowCell.m in Sources */,
 				03F4E78518CA33D00056EAA9 /* AppDelegate.m in Sources */,
 				03F4E78618CA33D00056EAA9 /* Mockery.m in Sources */,
+				039F543F18D28F5E004B2B67 /* DrinkListModel.m in Sources */,
 				03F4E78718CA33D00056EAA9 /* CreateListCell.m in Sources */,
 				03F4E78818CA33D00056EAA9 /* SpotImageCollectViewCell.m in Sources */,
 				03F4E78918CA33D00056EAA9 /* CardLayout.m in Sources */,
@@ -3571,6 +3653,7 @@
 				03F4E79918CA33D00056EAA9 /* TellMeMyLocation.m in Sources */,
 				03F4E79A18CA33D00056EAA9 /* DrinkTypeModel.m in Sources */,
 				03F4E79B18CA33D00056EAA9 /* AdjustSliderOptionCell.m in Sources */,
+				039F542418D283A8004B2B67 /* DrinksNearbyViewController.m in Sources */,
 				03F4E79C18CA33D00056EAA9 /* SearchCell.m in Sources */,
 				03F4E79D18CA33D00056EAA9 /* HomeViewController.m in Sources */,
 				03F4E79E18CA33D00056EAA9 /* NSNumber+Helpers.m in Sources */,
@@ -3615,6 +3698,7 @@
 				03F4E8AD18CA34260056EAA9 /* NSArray+HoursOfOperation.m in Sources */,
 				03F4E8AE18CA34260056EAA9 /* SHJSONAPIResource.m in Sources */,
 				03F4E8AF18CA34260056EAA9 /* BaseViewController.m in Sources */,
+				039F542818D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				03F4E8B018CA34260056EAA9 /* ClientSessionManager.m in Sources */,
 				03F4E8B118CA34260056EAA9 /* LaunchViewController.m in Sources */,
 				03F4E8B218CA34260056EAA9 /* SHNavigationBar.m in Sources */,
@@ -3652,6 +3736,7 @@
 				03F4E8D218CA34260056EAA9 /* FooterShadowCell.m in Sources */,
 				03F4E8D318CA34260056EAA9 /* AppDelegate.m in Sources */,
 				03F4E8D418CA34260056EAA9 /* Mockery.m in Sources */,
+				039F543E18D28F5E004B2B67 /* DrinkListModel.m in Sources */,
 				03F4E8D518CA34260056EAA9 /* CreateListCell.m in Sources */,
 				03F4E8D618CA34260056EAA9 /* SpotImageCollectViewCell.m in Sources */,
 				03F4E8D718CA34260056EAA9 /* CardLayout.m in Sources */,
@@ -3674,6 +3759,7 @@
 				03F4E8E718CA34260056EAA9 /* TellMeMyLocation.m in Sources */,
 				03F4E8E818CA34260056EAA9 /* DrinkTypeModel.m in Sources */,
 				03F4E8E918CA34260056EAA9 /* AdjustSliderOptionCell.m in Sources */,
+				039F542318D283A8004B2B67 /* DrinksNearbyViewController.m in Sources */,
 				03F4E8EA18CA34260056EAA9 /* SearchCell.m in Sources */,
 				03F4E8EB18CA34260056EAA9 /* HomeViewController.m in Sources */,
 				03F4E8EC18CA34260056EAA9 /* NSNumber+Helpers.m in Sources */,
