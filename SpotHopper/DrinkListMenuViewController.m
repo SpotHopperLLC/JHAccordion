@@ -20,6 +20,7 @@
 #import "ListCell.h"
 
 #import "SHNavigationController.h"
+#import "FindSimilarViewController.h"
 #import "FindSimilarDrinksViewController.h"
 #import "AdjustDrinkListSliderViewController.h"
 #import "DrinkListViewController.h"
@@ -36,11 +37,15 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-@interface DrinkListMenuViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, FindSimilarDrinksViewControllerDelegate, SHButtonLatoLightLocationDelegate, AdjustDrinkSliderListSliderViewControllerDelegate>
+@interface DrinkListMenuViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, FindSimilarViewControllerDelegate, FindSimilarDrinksViewControllerDelegate, SHButtonLatoLightLocationDelegate, AdjustDrinkSliderListSliderViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
+@property (weak, nonatomic) IBOutlet SHButtonLatoLight *btnSpot;
 @property (weak, nonatomic) IBOutlet UITableView *tblMenu;
 @property (weak, nonatomic) IBOutlet UIView *containerAdjustSliders;
+
+@property (weak, nonatomic) IBOutlet UIView *viewLocation;
+@property (weak, nonatomic) IBOutlet UIView *viewSpot;
 
 @property (nonatomic, strong) JHAccordion *accordion;
 @property (nonatomic, strong) SectionHeaderView *sectionHeader0;
@@ -89,6 +94,8 @@
     
     [self showAdjustSlidersView:NO animated:NO];
     
+    [self updateView];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -108,7 +115,7 @@
     [self.view bringSubviewToFront:_containerAdjustSliders];
     
     // Fetching spot lists
-    if (_location == nil) {
+    if (_spot == nil && _location == nil) {
         // Locations
         [_btnLocation setDelegate:self];
         [_btnLocation updateWithLastLocation];
@@ -146,7 +153,10 @@
     if (section == 0) {
         return 2;
     } else if (section == 1) {
-        return _featuredDrinkLists.count;
+        // Only show if not a drinklist at a spot
+        if (_spot == nil) {
+            return _featuredDrinkLists.count;
+        }
     } else if (section == 2) {
         return _myDrinkLists.count;
     }
@@ -232,7 +242,14 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 0 || section == 1 || section == 2) {
+    if (section == 0) {
+        return 65.0f;
+    } if (section == 1) {
+        // Only show if not a drinklist at a spot
+        if (_spot == nil) {
+            return 65.0f;
+        }
+    } if (section == 2) {
         return 65.0f;
     }
     
@@ -278,6 +295,20 @@
     [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
 }
 
+#pragma mark - FindSimilarViewControllerDelegate
+
+- (void)findSimilarViewController:(FindSimilarViewController *)viewController selectedSpot:(SpotModel *)spot {
+    [self.navigationController popToViewController:self animated:YES];
+    
+    _spot = spot;
+    [self updateView];
+    [self fetchDrinkLists];
+}
+
+- (void)findSimilarViewController:(FindSimilarViewController *)viewController selectedDrink:(DrinkModel *)drink {
+    
+}
+
 #pragma mark - FindSimilarDrinksViewController
 
 - (void)findSimilarDrinksViewController:(FindSimilarDrinksViewController *)viewController selectedDrink:(DrinkModel *)drink {
@@ -286,7 +317,7 @@
     [drink getDrink:Nil success:^(DrinkModel *drinkModel, JSONAPI *jsonApi) {
         [self hideHUD];
         
-        [DrinkListModel postDrinkList:[NSString stringWithFormat:@"Similar to %@", drinkModel.name] latitude:[NSNumber numberWithFloat:_location.coordinate.latitude] longitude:[NSNumber numberWithFloat:_location.coordinate.longitude] sliders:drinkModel.averageReview.sliders drinkId:drink.ID drinkTypeId:drink.drinkType.ID spotId:nil successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+        [DrinkListModel postDrinkList:[NSString stringWithFormat:@"Similar to %@", drinkModel.name] latitude:[NSNumber numberWithFloat:_location.coordinate.latitude] longitude:[NSNumber numberWithFloat:_location.coordinate.longitude] sliders:drinkModel.averageReview.sliders drinkId:drink.ID drinkTypeId:drink.drinkType.ID spotId:_spot.ID successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
             
             [self hideHUD];
             [self showHUDCompleted:@"Drinklist created!" block:^{
@@ -325,40 +356,66 @@
     [self showAdjustSlidersView:NO animated:YES];
 }
 
+#pragma mark - Actions
+
+- (IBAction)onClickChooseSpot:(id)sender {
+    [self goToFindSimilarSpots:self];
+}
+
+
 #pragma mark - Private
+
+- (void)updateView {
+    
+    [_viewLocation setHidden:(_spot != nil)];
+    [_viewSpot setHidden:(_spot == nil)];
+    
+    [_btnSpot setTitle:[NSString stringWithFormat:@"%@ >", _spot.name] forState:UIControlStateNormal];
+    
+}
 
 - (void)fetchDrinkLists {
     
-    if (_location == nil) {
+    if (_location == nil && _spot == nil) {
         return;
     }
     
     [self showHUD:@"Fetching drinklists"];
     NSMutableArray *promises = [NSMutableArray array];
     
-    NSDictionary *params = @{
-                             kDrinkListModelQueryParamLat : [NSNumber numberWithFloat:_location.coordinate.latitude],
-                             kDrinkListModelQueryParamLng : [NSNumber numberWithFloat:_location.coordinate.longitude]
-                             };
-    
-    /*
-     * Featured spot lists
-     */
-    Promise *promiseFeaturedSpotLists = [DrinkListModel getFeaturedDrinkLists:params success:^(NSArray *drinkListsModels, JSONAPI *jsonApi) {
-        _featuredDrinkLists = [drinkListsModels sortedArrayUsingComparator:^NSComparisonResult(DrinkListModel* obj1, DrinkListModel* obj2) {
-            return [obj1.name caseInsensitiveCompare:obj2.name];
-        }];
-    } failure:^(ErrorModel *errorModel) {
+    if (_location != nil) {
+        NSDictionary *params = @{
+                                 kDrinkListModelQueryParamLat : [NSNumber numberWithFloat:_location.coordinate.latitude],
+                                 kDrinkListModelQueryParamLng : [NSNumber numberWithFloat:_location.coordinate.longitude]
+                                 };
         
-    }];
-    [promises addObject:promiseFeaturedSpotLists];
+        /*
+         * Featured spot lists
+         */
+        Promise *promiseFeaturedSpotLists = [DrinkListModel getFeaturedDrinkLists:params success:^(NSArray *drinkListsModels, JSONAPI *jsonApi) {
+            _featuredDrinkLists = [drinkListsModels sortedArrayUsingComparator:^NSComparisonResult(DrinkListModel* obj1, DrinkListModel* obj2) {
+                return [obj1.name caseInsensitiveCompare:obj2.name];
+            }];
+        } failure:^(ErrorModel *errorModel) {
+            
+        }];
+        [promises addObject:promiseFeaturedSpotLists];
+    }
     
     /*
      * My spot lists
      */
     if ([ClientSessionManager sharedClient].isLoggedIn == YES) {
+        
+        NSDictionary *params = nil;
+        if (_spot != nil) {
+            params = @{
+                       kDrinkListModelQueryParamSpotId : _spot.ID
+                       };
+        }
+        
         UserModel *user = [ClientSessionManager sharedClient].currentUser;
-        Promise *promiseMySpotLists = [user getDrinkLists:nil success:^(NSArray *drinkListsModels, JSONAPI *jsonApi) {
+        Promise *promiseMySpotLists = [user getDrinkLists:params success:^(NSArray *drinkListsModels, JSONAPI *jsonApi) {
             _myDrinkLists = [drinkListsModels sortedArrayUsingComparator:^NSComparisonResult(DrinkListModel* obj1, DrinkListModel* obj2) {
                 return [obj1.name caseInsensitiveCompare:obj2.name];
             }];
@@ -418,6 +475,7 @@
         
         // Sets currently selected location inthe adjust spotlist slider view controoler
         [_adjustDrinkListSliderViewController setLocation:_location];
+        [_adjustDrinkListSliderViewController setSpot:_spot];
         [_adjustDrinkListSliderViewController resetForm];
         
         [_containerAdjustSliders setHidden:NO];

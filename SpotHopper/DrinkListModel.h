@@ -15,6 +15,7 @@
 
 #define kDrinkListModelQueryParamLat @"lat"
 #define kDrinkListModelQueryParamLng @"lng"
+#define kDrinkListModelQueryParamSpotId @"spot_id"
 
 #import "SHJSONAPIResource.h"
 

@@ -13,13 +13,16 @@
 #import "UIViewController+Navigator.h"
 
 #import "SHNavigationController.h"
+#import "DrinkListMenuViewController.h"
+
+#import "FindSimilarViewController.h"
 
 #import "ErrorModel.h"
 #import "SpotModel.h"
 
 #import <CoreLocation/CoreLocation.h>
 
-@interface DrinksNearbyViewController ()<SHButtonLatoLightLocationDelegate>
+@interface DrinksNearbyViewController ()<SHButtonLatoLightLocationDelegate, FindSimilarViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
 
@@ -97,6 +100,23 @@
     [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
 }
 
+#pragma mark - FindSimilarViewControllerDelegate
+
+- (void)findSimilarViewController:(FindSimilarViewController *)viewController selectedDrink:(DrinkModel *)drink {
+    
+}
+
+- (void)findSimilarViewController:(FindSimilarViewController *)findSimilarViewController selectedSpot:(SpotModel *)spot {
+    NSMutableArray *viewControllers = self.navigationController.viewControllers.mutableCopy;
+    [viewControllers removeLastObject];
+    
+    DrinkListMenuViewController *viewController = [self.drinksStoryboard instantiateViewControllerWithIdentifier:@"DrinkListMenuViewController"];
+    [viewController setSpot:spot];
+    [viewControllers addObject:viewController];
+    
+    [self.navigationController setViewControllers:viewControllers animated:YES];
+}
+
 #pragma mark - Actions
 
 - (IBAction)onClickDrinksHere:(id)sender {
@@ -109,6 +129,10 @@
 
 - (IBAction)onClickDrinksNearby:(id)sender {
     [self goToDrinkListMenu];
+}
+
+- (IBAction)onClickNotHere:(id)sender {
+    [self goToFindSimilarSpots:self];
 }
 
 #pragma mark - Private

@@ -26,6 +26,7 @@
 #import "DrinkListModel.h"
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
+#import "SpotModel.h"
 
 #import <JHAccordion/JHAccordion.h>
 
@@ -364,7 +365,7 @@
     }
     
     [self showHUD:@"Creating drinklist"];
-    [DrinkListModel postDrinkList:kDrinkListModelDefaultName latitude:latitude longitude:longitude sliders:allTheSliders drinkId:nil drinkTypeId:[_selectedDrinkType objectForKey:@"id"] spotId:nil successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+    [DrinkListModel postDrinkList:kDrinkListModelDefaultName latitude:latitude longitude:longitude sliders:allTheSliders drinkId:nil drinkTypeId:[_selectedDrinkType objectForKey:@"id"] spotId:_spot.ID successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
         [self hideHUD];
         [self showHUDCompleted:@"Drinklist created!" block:^{
             
