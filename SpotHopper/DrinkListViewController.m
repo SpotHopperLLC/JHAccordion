@@ -104,7 +104,7 @@
         [footerViewController showHome:YES];
         
         if (this.drinkList.featured == NO) {
-            [footerViewController setLeftButton:@"Delete" image:[UIImage imageNamed:@"btn_context_delete"]];
+            [footerViewController setMiddleButton:@"Delete" image:[UIImage imageNamed:@"btn_context_delete"]];
         }
         
         [footerViewController setRightButton:@"Info" image:[UIImage imageNamed:@"btn_context_info"]];
@@ -113,7 +113,7 @@
 }
 
 - (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
-    if (FooterViewButtonLeft == footerViewButtonType) {
+    if (FooterViewButtonMiddle == footerViewButtonType) {
         [self deleteDrinkList];
         return YES;
     } else if (FooterViewButtonRight == footerViewButtonType) {
