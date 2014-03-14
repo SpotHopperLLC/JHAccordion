@@ -45,6 +45,12 @@
     return _spotTypes;
 }
 
+- (NSArray *)drinkTypes {
+    if (_drinkTypes != nil) return _drinkTypes;
+    _drinkTypes = [self linkedResourceForKey:@"drink_types"];
+    return _drinkTypes;
+}
+
 #pragma mark - API
 
 + (Promise*)getSliderTemplates:(NSDictionary*)params success:(void(^)(NSArray *sliderTemplates, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {

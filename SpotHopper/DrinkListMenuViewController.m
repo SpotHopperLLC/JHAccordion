@@ -21,6 +21,7 @@
 
 #import "SHNavigationController.h"
 #import "FindSimilarDrinksViewController.h"
+#import "AdjustDrinkListSliderViewController.h"
 
 #import "ClientSessionManager.h"
 #import "AverageReviewModel.h"
@@ -33,7 +34,7 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-@interface DrinkListMenuViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, FindSimilarDrinksViewControllerDelegate, SHButtonLatoLightLocationDelegate>
+@interface DrinkListMenuViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, FindSimilarDrinksViewControllerDelegate, SHButtonLatoLightLocationDelegate, AdjustDrinkSliderListSliderViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
 @property (weak, nonatomic) IBOutlet UITableView *tblMenu;
@@ -43,6 +44,8 @@
 @property (nonatomic, strong) SectionHeaderView *sectionHeader0;
 @property (nonatomic, strong) SectionHeaderView *sectionHeader1;
 @property (nonatomic, strong) SectionHeaderView *sectionHeader2;
+
+@property (nonatomic, strong) AdjustDrinkListSliderViewController *adjustDrinkListSliderViewController;
 
 @property (nonatomic, strong) CLLocation *location;
 
@@ -82,7 +85,7 @@
     [_tblMenu registerNib:[UINib nibWithNibName:@"ListCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ListCell"];
     [_tblMenu setTableFooterView:[[UIView alloc] init]];
     
-//    [self showAdjustSlidersView:NO animated:NO];
+    [self showAdjustSlidersView:NO animated:NO];
     
 }
 
@@ -114,10 +117,10 @@
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     NSString * segueName = segue.identifier;
-//    if ([segueName isEqualToString: @"EmbedAdjustSpotListSliderViewController"]) {
-//        _adjustSpotListSliderViewController = (AdjustSpotListSliderViewController*)[segue destinationViewController];
-//        [_adjustSpotListSliderViewController setDelegate:self];
-//    }
+    if ([segueName isEqualToString: @"EmbedAdjustDrinkListSliderViewController"]) {
+        _adjustDrinkListSliderViewController = (AdjustDrinkListSliderViewController*)[segue destinationViewController];
+        [_adjustDrinkListSliderViewController setDelegate:self];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -194,7 +197,7 @@
         }
         
         if (indexPath.row == 0) {
-//            [self showAdjustSlidersView:YES animated:YES];
+            [self showAdjustSlidersView:YES animated:YES];
         } else if (indexPath.row == 1) {
             [self goToFindSimilarDrinks:self];
         }
@@ -308,6 +311,18 @@
     }];
 }
 
+#pragma mark - AdjustDrinkSliderListSliderViewControllerDelegate
+
+- (void)adjustDrinkSliderListSliderViewControllerDelegate:(AdjustDrinkListSliderViewController *)viewController createdDrinkList:(DrinkListModel *)spotList {
+    [self showAdjustSlidersView:NO animated:YES];
+    
+//    [self goToSpotList:spotList createdWithAdjustSliders:YES];
+}
+
+- (void)adjustDrinkSliderListSliderViewControllerDelegateClickClose:(AdjustDrinkListSliderViewController *)viewController {
+    [self showAdjustSlidersView:NO animated:YES];
+}
+
 #pragma mark - Private
 
 - (void)fetchDrinkLists {
@@ -400,8 +415,8 @@
     if (show == YES) {
         
         // Sets currently selected location inthe adjust spotlist slider view controoler
-//        [_adjustSpotListSliderViewController setLocation:_location];
-//        [_adjustSpotListSliderViewController resetForm];
+        [_adjustDrinkListSliderViewController setLocation:_location];
+        [_adjustDrinkListSliderViewController resetForm];
         
         [_containerAdjustSliders setHidden:NO];
         
