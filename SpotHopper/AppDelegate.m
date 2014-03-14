@@ -19,6 +19,7 @@
 #import "DrinkTypeModel.h"
 #import "DrinkListModel.h"
 #import "ErrorModel.h"
+#import "MenuItemModel.h"
 #import "ReviewModel.h"
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
@@ -61,6 +62,7 @@
     [JSONAPIResourceLinker link:@"drink" toLinkedType:@"drinks"];
     [JSONAPIResourceLinker link:@"drink_type" toLinkedType:@"drink_types"];
     [JSONAPIResourceLinker link:@"drink_list" toLinkedType:@"drink_lists"];
+    [JSONAPIResourceLinker link:@"menu_item" toLinkedType:@"menu_items"];
     [JSONAPIResourceLinker link:@"review" toLinkedType:@"reviews"];
     [JSONAPIResourceLinker link:@"slider" toLinkedType:@"sliders"];
     [JSONAPIResourceLinker link:@"slider_template" toLinkedType:@"slider_templates"];
@@ -76,6 +78,7 @@
     [JSONAPIResourceModeler useResource:[DrinkTypeModel class] toLinkedType:@"drink_types"];
     [JSONAPIResourceModeler useResource:[DrinkListModel class] toLinkedType:@"drink_lists"];
     [JSONAPIResourceModeler useResource:[ErrorModel class] toLinkedType:@"errors"];
+    [JSONAPIResourceModeler useResource:[MenuItemModel class] toLinkedType:@"menu_items"];
     [JSONAPIResourceModeler useResource:[ReviewModel class] toLinkedType:@"reviews"];
     [JSONAPIResourceModeler useResource:[SliderModel class] toLinkedType:@"sliders"];
     [JSONAPIResourceModeler useResource:[SliderTemplateModel class] toLinkedType:@"slider_templates"];

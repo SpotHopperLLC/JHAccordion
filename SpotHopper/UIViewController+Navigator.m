@@ -28,6 +28,8 @@
 #import "SpotListViewController.h"
 #import "SpotProfileViewController.h"
 
+#import "DrinkMenuViewController.h"
+
 @implementation UIViewController (Navigator)
 
 #pragma mark - Main
@@ -149,6 +151,15 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
+#pragma mark - Menu
+
+
+- (void)goToMenu:(SpotModel *)spot {
+    DrinkMenuViewController *viewController = [[self menuStoryboard] instantiateViewControllerWithIdentifier:@"DrinkMenuViewController"];
+    [viewController setSpot:spot];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
 #pragma mark - Commons
 
 - (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate {
@@ -197,6 +208,15 @@
     NSString *name = [self.storyboard valueForKey:@"name"];
     if ([name isEqualToString:@"Spots"] == NO) {
         return [UIStoryboard storyboardWithName:@"Spots" bundle:[NSBundle mainBundle]];
+    }
+    
+    return self.storyboard;
+}
+
+- (UIStoryboard*)menuStoryboard {
+    NSString *name = [self.storyboard valueForKey:@"name"];
+    if ([name isEqualToString:@"Menu"] == NO) {
+        return [UIStoryboard storyboardWithName:@"Menu" bundle:[NSBundle mainBundle]];
     }
     
     return self.storyboard;

@@ -223,7 +223,7 @@
 }
 
 - (IBAction)onClickDrinkMenu:(id)sender {
-    
+    [self goToMenu:_spot];
 }
 
 #pragma mark - Private

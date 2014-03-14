@@ -46,6 +46,10 @@
 - (void)goToSpotList:(SpotListModel*)spotList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders;
 - (void)goToSpotProfile:(SpotModel *)spot;
 
+// Menu
+
+- (void)goToMenu:(SpotModel*)spot;
+
 // Common
 - (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate;
 - (void)goToFindSimilarDrinks:(id<FindSimilarDrinksViewControllerDelegate>)delegate;
@@ -55,5 +59,6 @@
 - (UIStoryboard*)drinksStoryboard;
 - (UIStoryboard*)reviewsStoryboard;
 - (UIStoryboard*)spotsStoryboard;
+- (UIStoryboard*)menuStoryboard;
 
 @end

@@ -17,8 +17,8 @@
     #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
 
 //    #define kBaseUrl @"http://192.168.1.123:9292"
-    #define kBaseUrl @"http://192.168.1.8:9292"
-//    #define kBaseUrl @"http://192.168.1.110:9292"
+//    #define kBaseUrl @"http://192.168.1.8:9292"
+    #define kBaseUrl @"http://192.168.1.110:9292"
 
     #define kRefreshLocationTime 60.0f
 
@@ -64,6 +64,7 @@
 #define kDrinkTypeNameBeer @"Beer"
 #define kDrinkTypeNameCocktail @"Cocktail"
 #define kDrinkTypeNameWine @"Wine"
+#define kDrinkTypeNameLiquor @"Liquor"
 
 #define kStateList @[@"AL",@"AK",@"AZ",@"AR",@"CA",@"CO",@"CT",@"DE",@"FL",@"GA",@"HI",@"ID",@"IL",@"IN",@"IA",@"KS",@"KY",@"LA",@"ME",@"MD",@"MA",@"MI",@"MN",@"MS",@"MO",@"MT",@"NE",@"NV",@"NH",@"NJ",@"NM",@"NY",@"NC",@"ND",@"OH",@"OK",@"OR",@"PA",@"RI",@"SC",@"SD",@"TN",@"TX",@"UT",@"VT",@"VA",@"WA",@"WV",@"WI",@"WY"]
 
