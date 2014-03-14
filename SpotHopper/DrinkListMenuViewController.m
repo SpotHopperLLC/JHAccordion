@@ -6,7 +6,11 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kDrinkListsMenuViewControllerViewedAlready @"kDrinkListsMenuViewControllerViewedAlready"
+
 #import "DrinkListMenuViewController.h"
+
+#import "TTTAttributedLabel+QuickFonting.h"
 
 #import "SHButtonLatoLightLocation.h"
 #import "SectionHeaderView.h"
@@ -14,11 +18,16 @@
 #import "CreateListCell.h"
 #import "ListCell.h"
 
+#import "SHNavigationController.h"
+
 #import "ClientSessionManager.h"
 #import "DrinkListModel.h"
 #import "ErrorModel.h"
+#import "UserModel.h"
 
 #import <JHAccordion/JHAccordion.h>
+
+#import <CoreLocation/CoreLocation.h>
 
 @interface DrinkListMenuViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, SHButtonLatoLightLocationDelegate>
 
@@ -130,7 +139,7 @@
     } else if (section == 1) {
         return _featuredDrinkLists.count;
     } else if (section == 2) {
-        return _featuredDrinkLists.count;
+        return _myDrinkLists.count;
     }
     
     return 0;
@@ -221,10 +230,213 @@
     return 0.0f;
 }
 
+#pragma mark - JHAccordionDelegate
+
+- (void)accordion:(JHAccordion *)accordion openingSection:(NSInteger)section {
+    if (section == 0) [_sectionHeader0 setSelected:YES];
+    else if (section == 1) [_sectionHeader1 setSelected:YES];
+    else if (section == 2) [_sectionHeader2 setSelected:YES];
+}
+
+- (void)accordion:(JHAccordion *)accordion closingSection:(NSInteger)section {
+    if (section == 0) [_sectionHeader0 setSelected:NO];
+    else if (section == 1) [_sectionHeader1 setSelected:NO];
+    else if (section == 2) [_sectionHeader2 setSelected:NO];
+}
+
+- (void)accordion:(JHAccordion *)accordion openedSection:(NSInteger)section {
+    
+}
+
+- (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
+    [_tblMenu reloadData];
+}
+
+#pragma mark - SHButtonLatoLightLocationDelegate
+
+- (void)locationRequestsUpdate:(SHButtonLatoLightLocation *)button location:(LocationChooserViewController *)viewController {
+    SHNavigationController *navController = [[SHNavigationController alloc] initWithRootViewController:viewController];
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
+    _location = location;
+//    [_adjustSpotListSliderViewController setLocation:_location];
+    [self fetchDrinkLists];
+}
+
+- (void)locationError:(SHButtonLatoLightLocation *)button error:(NSError *)error {
+    [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
+}
+
 #pragma mark - Private
 
 - (void)fetchDrinkLists {
     
+    if (_location == nil) {
+        return;
+    }
+    
+    [self showHUD:@"Fetching drinklists"];
+    NSMutableArray *promises = [NSMutableArray array];
+    
+    NSDictionary *params = @{
+                             kDrinkListModelQueryParamLat : [NSNumber numberWithFloat:_location.coordinate.latitude],
+                             kDrinkListModelQueryParamLng : [NSNumber numberWithFloat:_location.coordinate.longitude]
+                             };
+    
+    /*
+     * Featured spot lists
+     */
+    Promise *promiseFeaturedSpotLists = [DrinkListModel getFeaturedDrinkLists:params success:^(NSArray *drinkListsModels, JSONAPI *jsonApi) {
+        _featuredDrinkLists = [drinkListsModels sortedArrayUsingComparator:^NSComparisonResult(DrinkListModel* obj1, DrinkListModel* obj2) {
+            return [obj1.name caseInsensitiveCompare:obj2.name];
+        }];
+    } failure:^(ErrorModel *errorModel) {
+        
+    }];
+    [promises addObject:promiseFeaturedSpotLists];
+    
+    /*
+     * My spot lists
+     */
+    if ([ClientSessionManager sharedClient].isLoggedIn == YES) {
+        UserModel *user = [ClientSessionManager sharedClient].currentUser;
+        Promise *promiseMySpotLists = [user getDrinkLists:nil success:^(NSArray *drinkListsModels, JSONAPI *jsonApi) {
+            _myDrinkLists = [drinkListsModels sortedArrayUsingComparator:^NSComparisonResult(DrinkListModel* obj1, DrinkListModel* obj2) {
+                return [obj1.name caseInsensitiveCompare:obj2.name];
+            }];
+        } failure:^(ErrorModel *errorModel) {
+            
+        }];
+        [promises addObject:promiseMySpotLists];
+    }
+    
+    /*
+     * When
+     */
+    [When when:promises then:^{
+        
+    } fail:^(id error) {
+        
+    } always:^{
+        
+        // Reload table and hide HUD
+        [_tblMenu reloadData];
+        [self hideHUD];
+        
+        BOOL hasSeenBefore = [[NSUserDefaults standardUserDefaults] boolForKey:kDrinkListsMenuViewControllerViewedAlready];
+        if (hasSeenBefore == NO) {
+            
+            // Sets has seen before
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kDrinkListsMenuViewControllerViewedAlready
+             ];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            [_accordion openSection:0];
+            [_accordion closeSection:1];
+            [_accordion closeSection:2];
+            
+        } else {
+            
+            // Opens up only section
+            if (_myDrinkLists.count > 0) {
+                [_accordion closeSection:0];
+                [_accordion closeSection:1];
+                [_accordion openSection:2];
+            } else {
+                [_accordion openSection:0];
+                [_accordion openSection:1];
+                [_accordion closeSection:2];
+            }
+            
+        }
+        
+    }];
+    
+}
+
+- (void)showAdjustSlidersView:(BOOL)show animated:(BOOL)animated {
+    
+    if (show == YES) {
+        
+        // Sets currently selected location inthe adjust spotlist slider view controoler
+//        [_adjustSpotListSliderViewController setLocation:_location];
+//        [_adjustSpotListSliderViewController resetForm];
+        
+        [_containerAdjustSliders setHidden:NO];
+        
+        CGRect frame = _containerAdjustSliders.frame;
+        frame.origin.y = CGRectGetMaxY(self.view.frame) - CGRectGetHeight(frame);
+        
+        [UIView animateWithDuration:( animated ? 0.35f : 0.0f ) animations:^{
+            [_containerAdjustSliders setFrame:frame];
+        } completion:^(BOOL finished) {
+            
+        }];
+        
+    } else {
+        
+        CGRect frame = _containerAdjustSliders.frame;
+        frame.origin.y = CGRectGetMaxY(self.view.frame);
+        
+        [UIView animateWithDuration:( animated ? 0.35f : 0.0f ) animations:^{
+            [_containerAdjustSliders setFrame:frame];
+        } completion:^(BOOL finished) {
+            [_containerAdjustSliders setHidden:YES];
+        }];
+        
+    }
+    
+}
+
+- (SectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
+    
+    if (section == 0) {
+        if (_sectionHeader0 == nil) {
+            _sectionHeader0 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
+            [_sectionHeader0 setIconImage:[UIImage imageNamed:@"icon_plus"]];
+            
+            CGFloat fontSize = _sectionHeader0.lblText.font.pointSize;
+            [_sectionHeader0.lblText setText:@"Create Personalized Drinklist" withFont:[UIFont fontWithName:@"Lato-Regular" size:fontSize] onString:@"Create"];
+            
+            [_sectionHeader0.btnBackground setTag:section];
+            [_sectionHeader0.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [_sectionHeader0 setSelected:[_accordion isSectionOpened:section]];
+        }
+        
+        return _sectionHeader0;
+    } else if (section == 1) {
+        if (_sectionHeader1 == nil) {
+            _sectionHeader1 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
+            [_sectionHeader1 setIconImage:[UIImage imageNamed:@"icon_featured_lists"]];
+            
+            CGFloat fontSize = _sectionHeader1.lblText.font.pointSize;
+            [_sectionHeader1.lblText setText:@"Jump In: Featured Drinklists" withFont:[UIFont fontWithName:@"Lato-Regular" size:fontSize] onString:@"Jump In:"];
+            
+            [_sectionHeader1.btnBackground setTag:section];
+            [_sectionHeader1.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [_sectionHeader1 setSelected:[_accordion isSectionOpened:section]];
+        }
+        
+        return _sectionHeader1;
+    } else if (section == 2) {
+        if (_sectionHeader2 == nil) {
+            _sectionHeader2 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
+            [_sectionHeader2 setIconImage:[UIImage imageNamed:@"icon_my_spotlists"]];
+            [_sectionHeader2 setText:@"My Drinklists"];
+            
+            [_sectionHeader2.btnBackground setTag:section];
+            [_sectionHeader2.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [_sectionHeader2 setSelected:[_accordion isSectionOpened:section]];
+        }
+        
+        return _sectionHeader2;
+    }
+    return nil;
 }
 
 @end

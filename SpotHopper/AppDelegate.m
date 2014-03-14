@@ -17,6 +17,7 @@
 #import "AverageReviewModel.h"
 #import "DrinkModel.h"
 #import "DrinkTypeModel.h"
+#import "DrinkListModel.h"
 #import "ErrorModel.h"
 #import "ReviewModel.h"
 #import "SliderModel.h"
@@ -59,6 +60,7 @@
     [JSONAPIResourceLinker link:@"average_review" toLinkedType:@"average_reviews"];
     [JSONAPIResourceLinker link:@"drink" toLinkedType:@"drinks"];
     [JSONAPIResourceLinker link:@"drink_type" toLinkedType:@"drink_types"];
+    [JSONAPIResourceLinker link:@"drink_list" toLinkedType:@"drink_lists"];
     [JSONAPIResourceLinker link:@"review" toLinkedType:@"reviews"];
     [JSONAPIResourceLinker link:@"slider" toLinkedType:@"sliders"];
     [JSONAPIResourceLinker link:@"slider_template" toLinkedType:@"slider_templates"];
@@ -72,6 +74,7 @@
     [JSONAPIResourceModeler useResource:[AverageReviewModel class] toLinkedType:@"average_reviews"];
     [JSONAPIResourceModeler useResource:[DrinkModel class] toLinkedType:@"drinks"];
     [JSONAPIResourceModeler useResource:[DrinkTypeModel class] toLinkedType:@"drink_types"];
+    [JSONAPIResourceModeler useResource:[DrinkListModel class] toLinkedType:@"drink_lists"];
     [JSONAPIResourceModeler useResource:[ErrorModel class] toLinkedType:@"errors"];
     [JSONAPIResourceModeler useResource:[ReviewModel class] toLinkedType:@"reviews"];
     [JSONAPIResourceModeler useResource:[SliderModel class] toLinkedType:@"sliders"];
