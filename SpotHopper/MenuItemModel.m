@@ -14,15 +14,15 @@
     // Maps values in JSON key 'price' to 'name' property
     // Maps values in JSON key 'featured' to 'price' property
     // Maps values in JSON key 'in_stock' to 'latitude' property
-    // Maps linked resource in JSON key 'drinks' to 'drinks' property
-    // Maps linked resource in JSON key 'spots' to 'spots' property
+    // Maps linked resource in JSON key 'drink' to 'drink' property
+    // Maps linked resource in JSON key 'spot' to 'spot' property
     return @{
              @"name" : @"name",
              @"price" : @"price",
              @"in_stock" : @"inStock",
              @"latitude" : @"latitude",
-             @"links.drinks" : @"drinks",
-             @"links.spots" : @"spots",
+             @"links.drink" : @"drink",
+             @"links.spot" : @"spot",
              };
 }
 

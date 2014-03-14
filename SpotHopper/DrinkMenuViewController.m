@@ -16,6 +16,7 @@
 #import "DrinkModel.h"
 #import "DrinkTypeModel.h"
 #import "DrinkSubtypeModel.h"
+#import "MenuItemModel.h"
 
 #import <JHAccordion/JHAccordion.h>
 
@@ -25,6 +26,7 @@
 
 @property (nonatomic, strong) NSArray *drinkTypes;
 @property (nonatomic, strong) NSMutableDictionary *drinkSubtypes;
+@property (nonatomic, strong) NSArray *menuItems;
 
 @property (nonatomic, strong) JHAccordion *accordion;
 
@@ -132,6 +134,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    DrinkTypeModel *drinkType = [_drinkTypes objectAtIndex:indexPath.section];
+    DrinkSubtypeModel *drinkSubtype = [[_drinkSubtypes objectForKey:drinkType.ID] objectAtIndex:indexPath.row];
+
+    // Adds all selected drink subtypes to array
+    NSMutableArray *menuItemsToPassOn = [NSMutableArray array];
+    for (MenuItemModel *menuItem in _menuItems) {
+
+        if ([menuItem.drink.drinkSubtype.ID isEqualToNumber:drinkSubtype.ID] == YES) {
+            [menuItemsToPassOn addObject:menuItem];
+        }
+    }
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
 }
@@ -185,7 +199,7 @@
     
     // Gets menu items
     Promise *promiseMenuItems = [_spot getMenuItems:nil success:^(NSArray *menuItemModels, JSONAPI *jsonApi) {
-
+        _menuItems = menuItemModels;
     } failure:^(ErrorModel *errorModel) {
 
     }];

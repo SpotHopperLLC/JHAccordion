@@ -31,6 +31,7 @@
 @class AverageReviewModel;
 @class ErrorModel;
 @class DrinkTypeModel;
+@class DrinkSubtypeModel;
 @class SpotModel;
 
 @interface DrinkModel : SHJSONAPIResource
@@ -38,6 +39,7 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *imageUrl;
 @property (nonatomic, strong) DrinkTypeModel *drinkType;
+@property (nonatomic, strong) DrinkSubtypeModel *drinkSubtype;
 @property (nonatomic, strong) NSString *descriptionOfDrink;
 @property (nonatomic, strong) NSNumber *abv;
 @property (nonatomic, strong) NSString *style;

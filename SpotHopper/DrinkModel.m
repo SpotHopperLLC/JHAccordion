@@ -138,6 +138,10 @@
     return [self linkedResourceForKey:@"drink_type"];
 }
 
+- (DrinkSubtypeModel *)drinkSubtype {
+    return [self linkedResourceForKey:@"drink_subtype"];
+}
+
 - (NSString *)type {
     return [self objectForKey:@"type"];
 }
