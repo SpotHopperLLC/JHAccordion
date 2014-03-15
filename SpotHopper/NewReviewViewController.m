@@ -548,7 +548,7 @@
     /*
      * Make sure all required spotlist shave been modified
      */
-    if (_reviewRatingSlider != nil && _reviewRatingSlider.value == nil) {
+    if (_spotBasedOffOf == nil && _reviewRatingSlider != nil && _reviewRatingSlider.value == nil) {
         [self showAlert:@"Oops" message:@"Please adjust all required sliders before submitting"];
         return;
     }

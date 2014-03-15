@@ -315,7 +315,6 @@
 
     [self showHUD:@"Creating drinklist"];
     [drink getDrink:Nil success:^(DrinkModel *drinkModel, JSONAPI *jsonApi) {
-        [self hideHUD];
         
         [DrinkListModel postDrinkList:[NSString stringWithFormat:@"Similar to %@", drinkModel.name] latitude:[NSNumber numberWithFloat:_location.coordinate.latitude] longitude:[NSNumber numberWithFloat:_location.coordinate.longitude] sliders:drinkModel.averageReview.sliders drinkId:drink.ID drinkTypeId:drink.drinkType.ID spotId:_spot.ID successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
             
