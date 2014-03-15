@@ -66,6 +66,11 @@
 }
 
 - (void)updateWithLocation:(CLLocation*)location {
+    if (location.coordinate.latitude == 0.0f && location.coordinate.longitude == 0.0f) {
+        [self updateWithLastLocation];
+        return;
+    }
+    
     // Reverse geocodes
     [[[CLGeocoder alloc] init] reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
         

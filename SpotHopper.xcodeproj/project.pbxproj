@@ -4283,8 +4283,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Holtz (M57ML2945L)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Holtz (M57ML2945L)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Holtz (825VRU3G97)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Holtz (825VRU3G97)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4295,7 +4295,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopperStaging-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = SpotHopperStaging;
-				PROVISIONING_PROFILE = "40EB5FAA-39B8-4A1D-BB8B-FC8D2B78C7EC";
+				PROVISIONING_PROFILE = "17049795-F2A2-49FF-8BF5-A7203245026C";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
