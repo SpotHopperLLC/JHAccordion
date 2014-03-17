@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#define kDrinkModelParamPage @"page"
+#define kDrinkModelParamPage @"page_number"
 #define kDrinkModelParamsPageSize @"page_size"
 #define kDrinkModelParamQuery @"query"
 

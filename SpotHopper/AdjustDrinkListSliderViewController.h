@@ -8,13 +8,14 @@
 
 #import "BaseViewController.h"
 
-@class DrinkListModel, CLLocation;
+@class DrinkListModel, SpotModel, CLLocation;
 
 @protocol AdjustDrinkSliderListSliderViewControllerDelegate;
 
 @interface AdjustDrinkListSliderViewController : BaseViewController
 
 @property (nonatomic, strong) CLLocation *location;
+@property (nonatomic, strong) SpotModel *spot;
 @property (nonatomic, assign) id<AdjustDrinkSliderListSliderViewControllerDelegate> delegate;
 
 - (void)resetForm;

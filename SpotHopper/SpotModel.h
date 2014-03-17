@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#define kSpotModelParamPage @"page"
+#define kSpotModelParamPage @"page_number"
 #define kSpotModelParamsPageSize @"page_size"
 #define kSpotModelParamQuery @"query"
 #define kSpotModelParamQueryLatitude @"lat"

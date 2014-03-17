@@ -301,8 +301,7 @@
 - (void)findSimilarViewController:(FindSimilarViewController *)viewController selectedSpot:(SpotModel *)spot {
     
     [self showHUD:@"Creating spotlist"];
-    [spot getSpot:Nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
-        [self hideHUD];
+    [spot getSpot:nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
         
         [SpotListModel postSpotList:[NSString stringWithFormat:@"Similar to %@", spotModel.name] latitude:spotModel.latitude longitude:spotModel.longitude sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
             [self hideHUD];

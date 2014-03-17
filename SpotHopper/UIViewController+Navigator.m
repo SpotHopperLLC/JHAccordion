@@ -53,6 +53,7 @@
 
 - (void)goToDrinkListMenuAtSpot:(SpotModel*)spot {
     DrinkListMenuViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkListMenuViewController"];
+    [viewController setSpot:spot];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

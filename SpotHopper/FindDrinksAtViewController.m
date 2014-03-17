@@ -8,6 +8,8 @@
 
 #import "FindDrinksAtViewController.h"
 
+#import "UIViewController+Navigator.h"
+
 #import "SHButtonLatoLightLocation.h"
 #import "SpotAnnotationCallout.h"
 
@@ -132,7 +134,7 @@
 
 - (void)spotAnnotationCallout:(SpotAnnotationCallout *)spotAnnotationCallout clicked:(MatchPercentAnnotationView *)matchPercentAnnotationView {
     [_mapView deselectAnnotation:matchPercentAnnotationView.annotation animated:YES];
-//    [self goToSpotProfile:matchPercentAnnotationView.spot];
+    [self goToSpotProfile:matchPercentAnnotationView.spot];
 }
 
 #pragma mark - SHButtonLatoLightLocationDelegate

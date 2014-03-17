@@ -83,6 +83,17 @@ available here</string>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="RJg-Cn-L2c">
+                                <rect key="frame" x="87" y="382" width="147" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal" image="btn_at_different_spot.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onClickNotHere:" destination="pjT-4Z-Cya" eventType="touchUpInside" id="Uzm-Bj-E6y"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -104,7 +115,7 @@ available here</string>
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" id="qB3-fF-zTn" customClass="SHViewTranlucentWhite">
+                            <view contentMode="scaleToFill" id="qB3-fF-zTn" userLabel="View Tranlucent White - Location" customClass="SHViewTranlucentWhite">
                                 <rect key="frame" x="0.0" y="64" width="320" height="30"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -123,6 +134,39 @@ available here</string>
                                             <color key="titleColor" red="0.94509803920000002" green="0.37647058820000001" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="insetFor6xAndEarlier" minX="0.0" minY="64" maxX="0.0" maxY="-64"/>
+                            </view>
+                            <view contentMode="scaleToFill" id="fFo-X3-Aqa" userLabel="View Tranlucent White - Spot" customClass="SHViewTranlucentWhite">
+                                <rect key="frame" x="0.0" y="64" width="320" height="30"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="At" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="GPf-oM-zxC" customClass="SHLabelLatoRegular">
+                                        <rect key="frame" x="9" y="1" width="31" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="kuO-nc-xFY">
+                                        <rect key="frame" x="48" y="0.0" width="247" height="24"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                        <state key="normal">
+                                            <color key="titleColor" red="0.94509803920000002" green="0.37647058820000001" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onClickChooseSpot:" destination="kb9-hh-FFz" eventType="touchUpInside" id="mML-E4-xcT"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -139,7 +183,7 @@ available here</string>
                                 </connections>
                             </tableView>
                             <containerView hidden="YES" contentMode="scaleToFill" id="sbe-dA-6Nk">
-                                <rect key="frame" x="0.0" y="93" width="320" height="387"/>
+                                <rect key="frame" x="0.0" y="93" width="320" height="322"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <connections>
@@ -152,8 +196,11 @@ available here</string>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="btnLocation" destination="eU4-th-Wa6" id="im2-uS-Xnb"/>
+                        <outlet property="btnSpot" destination="kuO-nc-xFY" id="9Iz-Wp-KIF"/>
                         <outlet property="containerAdjustSliders" destination="sbe-dA-6Nk" id="C27-bV-Ieg"/>
                         <outlet property="tblMenu" destination="tsN-bR-bt6" id="7Xu-mn-aCe"/>
+                        <outlet property="viewLocation" destination="qB3-fF-zTn" id="8S1-hM-kxb"/>
+                        <outlet property="viewSpot" destination="fFo-X3-Aqa" id="d0g-NN-CJK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lUg-Rs-8Ri" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -165,15 +212,15 @@ available here</string>
             <objects>
                 <viewController storyboardIdentifier="AdjustDrinkListSliderViewController" automaticallyAdjustsScrollViewInsets="NO" id="zQQ-3d-nEz" customClass="AdjustDrinkListSliderViewController" sceneMemberID="viewController">
                     <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="ZXS-mx-nnD">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="387"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="322"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="orange_gradient_background.png" id="FQ1-uN-vHB">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="387"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="322"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="vL3-88-Gh4" customClass="SHButtonLatoLight">
-                                <rect key="frame" x="0.0" y="323" width="320" height="64"/>
+                                <rect key="frame" x="0.0" y="258" width="320" height="64"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="0.59999999999999998" colorSpace="calibratedWhite"/>
                                 <inset key="insetFor6xAndEarlier" minX="0.0" minY="20" maxX="0.0" maxY="-20"/>
@@ -187,7 +234,7 @@ available here</string>
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OZx-mk-ZiD">
-                                <rect key="frame" x="0.0" y="39" width="320" height="286"/>
+                                <rect key="frame" x="0.0" y="39" width="320" height="221"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -491,7 +538,7 @@ available here</string>
                                             <color key="titleColor" red="0.94509803920000002" green="0.37647058820000001" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <state key="highlighted" title="555-867-5309">
+                                        <state key="highlighted">
                                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
@@ -517,6 +564,7 @@ available here</string>
         </scene>
     </scenes>
     <resources>
+        <image name="btn_at_different_spot.png" width="147" height="34"/>
         <image name="btn_discover_drinks_nearby.png" width="317" height="115"/>
         <image name="btn_down_arrow.png" width="104" height="32"/>
         <image name="btn_get_drinks_here.png" width="317" height="115"/>

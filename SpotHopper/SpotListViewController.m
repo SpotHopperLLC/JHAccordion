@@ -357,6 +357,12 @@
 }
 
 - (void)updateMatchPercent {
+    
+    if (_spotList.spots.count == 0) {
+        [_lblMatchPercent setText:@""];
+        return;
+    }
+    
     CGPoint initialPinchPoint = CGPointMake(_collectionView.center.x + _collectionView.contentOffset.x,
                                             _collectionView.center.y + _collectionView.contentOffset.y);
     

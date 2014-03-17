@@ -10,6 +10,8 @@
 
 #import "ClientSessionManager.h"
 #import "ErrorModel.h"
+#import "DrinkTypeModel.h"
+#import "SpotModel.h"
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
 #import "DrinkModel.h"
@@ -72,7 +74,7 @@
     
 }
 
-+ (Promise *)postDrinkList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders successBlock:(void (^)(DrinkListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
++ (Promise *)postDrinkList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders drinkId:(NSNumber*)drinkId drinkTypeId:(NSNumber*)drinkTypeId spotId:(NSNumber*)spotId successBlock:(void (^)(DrinkListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
@@ -92,6 +94,17 @@
                                     @"sliders" : jsonSliders,
                                     kDrinkListModelParamBasedOnSlider : [NSNumber numberWithBool:YES]
                                     }.mutableCopy;
+    
+    if (drinkId != nil) {
+        [params setObject:drinkId forKey:@"drink_id"];
+    }
+    if (drinkTypeId != nil) {
+        [params setObject:drinkTypeId forKey:@"drink_type_id"];
+    }
+    if (spotId != nil) {
+        [params setObject:spotId forKey:@"spot_id"];
+    }
+    
     if (latitude != nil && longitude != nil) {
         [params setObject:latitude forKey:kDrinkListModelParamLatitude];
         [params setObject:longitude forKey:kDrinkListModelParamLongitude];

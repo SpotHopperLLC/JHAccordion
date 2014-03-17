@@ -15,12 +15,13 @@
 
 #define kDrinkListModelQueryParamLat @"lat"
 #define kDrinkListModelQueryParamLng @"lng"
+#define kDrinkListModelQueryParamSpotId @"spot_id"
 
 #import "SHJSONAPIResource.h"
 
 #import <JSONAPI/JSONAPI.h>
 
-@class ErrorModel, SpotModel, CLLocation;
+@class ErrorModel, SpotModel, DrinkTypeModel, CLLocation;
 
 @interface DrinkListModel : SHJSONAPIResource
 
@@ -33,7 +34,7 @@
 - (CLLocation*)location;
 
 + (Promise *)getFeaturedDrinkLists:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
-+ (Promise *)postDrinkList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders successBlock:(void (^)(DrinkListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
++ (Promise *)postDrinkList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders drinkId:(NSNumber*)drinkId drinkTypeId:(NSNumber*)drinkTypeId spotId:(NSNumber*)spotId successBlock:(void (^)(DrinkListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
 
 - (Promise *)getDrinkList:(NSDictionary *)params success:(void (^)(DrinkListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
 - (Promise *)putDrinkList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders success:(void (^)(DrinkListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
