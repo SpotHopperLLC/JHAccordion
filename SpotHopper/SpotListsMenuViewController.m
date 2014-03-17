@@ -350,7 +350,7 @@
         return;
     }
     
-    [self showHUD:@"Fetching spot lists"];
+//    [self showHUD:@"Fetching spot lists"];
     NSMutableArray *promises = [NSMutableArray array];
     
     NSDictionary *params = @{

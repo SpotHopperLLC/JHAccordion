@@ -379,7 +379,7 @@
         return;
     }
     
-    [self showHUD:@"Fetching drinklists"];
+//    [self showHUD:@"Fetching drinklists"];
     NSMutableArray *promises = [NSMutableArray array];
     
     if (_location != nil) {

@@ -336,7 +336,7 @@
 
 - (void)fetchSliderTemplates {
     
-    [self showHUD:@"Loading sliders"];
+//    [self showHUD:@"Loading sliders"];
     [SliderTemplateModel getSliderTemplates:nil success:^(NSArray *sliderTemplates, JSONAPI *jsonApi) {
         [self hideHUD];
         _allSliderTemplates = sliderTemplates;
