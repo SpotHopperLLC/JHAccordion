@@ -168,7 +168,7 @@
     }
     
     return 0.0f;
-}
+} 
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     return [self sectionHeaderViewForSection:section];
@@ -177,7 +177,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (section == kSectionTypes) {
         return 48.0f;
-    } else if (section == 3 && _advancedSliders.count > 0) {
+    } else if (section == kSectionAdvancedSliders && _advancedSliders.count > 0) {
         return 48.0f;
     }
     
