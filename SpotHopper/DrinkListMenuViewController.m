@@ -480,7 +480,7 @@
         [_containerAdjustSliders setHidden:NO];
         
         CGRect frame = _containerAdjustSliders.frame;
-        frame.origin.y = CGRectGetMaxY(self.view.frame) - CGRectGetHeight(frame);
+        frame.origin.y = CGRectGetMinY(_tblMenu.frame);
         
         [UIView animateWithDuration:( animated ? 0.35f : 0.0f ) animations:^{
             [_containerAdjustSliders setFrame:frame];
