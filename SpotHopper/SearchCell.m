@@ -8,6 +8,8 @@
 
 #import "SearchCell.h"
 
+#import "DrinkTypeModel.h"
+
 @implementation SearchCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -27,10 +29,25 @@
 - (void)setDrink:(DrinkModel *)drink {
     [self setup];
     
-    [_imgIcon setImage:[UIImage imageNamed:@"icon_search_drink"]];
-    [_lblName setText:drink.name];
+    NSString *title = drink.name;
+    NSString *subtitle = drink.spot.name;
     
-    [_lblName setHidden:NO];
+    // Sets image to drink type
+    if ([drink.drinkType.name isEqualToString:kDrinkTypeNameBeer] == YES) {
+        [_imgIcon setImage:[UIImage imageNamed:@"icon_search_drink"]];
+    }
+    
+    // Shows two lines if there is a spot name (brewery or winery)
+    if (subtitle.length == 0) {
+        [_lblName setText:title];
+        [_lblName setHidden:NO];
+    } else {
+        [_lblMainTitle setText:title];
+        [_lblSubTitle setText:subtitle];
+        
+        [_lblMainTitle setHidden:NO];
+        [_lblSubTitle setHidden:NO];
+    }
 }
 
 - (void)setSpot:(SpotModel *)spot {
