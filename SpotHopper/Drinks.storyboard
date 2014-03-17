@@ -100,6 +100,7 @@ available here</string>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="btnLocation" destination="SHZ-3s-U4L" id="kLh-t8-pEY"/>
+                        <outlet property="btnNearBy" destination="sTD-6g-dW2" id="aqZ-Bc-Zfv"/>
                         <outlet property="lblAtPlace" destination="WeB-0N-WFs" id="c7h-xV-SEc"/>
                     </connections>
                 </viewController>

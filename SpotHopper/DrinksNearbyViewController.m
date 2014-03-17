@@ -24,6 +24,7 @@
 
 @interface DrinksNearbyViewController ()<SHButtonLatoLightLocationDelegate, FindSimilarViewControllerDelegate>
 
+@property (weak, nonatomic) IBOutlet UIButton *btnNearBy;
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblAtPlace;
@@ -139,13 +140,18 @@
 
 - (void)updateView {
     if (_spotNearby != nil) {
+        [_btnNearBy setEnabled:YES];
         [_lblAtPlace setText:[NSString stringWithFormat:@"At %@ ?", _spotNearby.name]];
     } else {
+        [_btnNearBy setEnabled:YES];
         [_lblAtPlace setText:@""];
     }
 }
 
 - (void)fetchClosetSpot {
+ 
+    // Disable while loading
+    [_btnNearBy setEnabled:NO];
     
     if (_location == nil) {
         [self showAlert:@"Oops" message:@"Please choose a location"];
@@ -158,7 +164,7 @@
                              kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:_location.coordinate.longitude]
                              };
     
-    [self showHUD:@"Finding nearby spot"];
+//    [self showHUD:@"Finding nearby spot"];
     // Getting first spot nearby
     [SpotModel getSpots:params success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         [self hideHUD];

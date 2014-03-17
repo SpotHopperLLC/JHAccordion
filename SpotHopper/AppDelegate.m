@@ -34,6 +34,7 @@
 
 #import "TellMeMyLocation.h"
 
+#import <AFNetworking/AFNetworkActivityIndicatorManager.h>
 #import <JSONAPI/JSONAPI.h>
 #import <Raven/RavenClient.h>
 #import <STTwitter/STTwitter.h>
@@ -50,6 +51,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 //    [[ClientSessionManager sharedClient] setHasSeenLaunch:NO];
+    
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
     // Location finder
     _tellMeMyLocation = [[TellMeMyLocation alloc] init];
