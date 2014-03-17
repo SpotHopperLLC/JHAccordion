@@ -321,6 +321,7 @@
             }];
             
         } failure:^(ErrorModel *errorModel) {
+            _review = nil;
             [self hideHUD];
             [self showAlert:@"Oops" message:errorModel.human];
         }];
@@ -356,7 +357,6 @@
         for (SliderTemplateModel *sliderTemplate in _sliderTemplates) {
             SliderModel *slider = [[SliderModel alloc] init];
             [slider setSliderTemplate:sliderTemplate];
-            [slider setValue:sliderTemplate.defaultValue];
             [_sliders addObject:slider];
         }
     }

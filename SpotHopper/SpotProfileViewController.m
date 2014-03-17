@@ -44,6 +44,7 @@
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UILabel *lblAddress;
 
+@property (nonatomic, strong) NSString *matchPercent;
 @property (nonatomic, strong) AverageReviewModel *averageReview;
 
 @end
@@ -63,6 +64,8 @@
 {
     [super viewDidLoad];
 
+    _matchPercent = [_spot matchPercent];
+    
     // Set title
     [self setTitle:_spot.name];
     
@@ -220,13 +223,14 @@
 }
 
 - (IBAction)onClickDrinkMenu:(id)sender {
-    
+    [self goToMenu:_spot];
 }
 
 #pragma mark - Private
 
 - (void)fetchSpot {
     [_spot getSpot:nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
+        _spot = spotModel;
         _averageReview = spotModel.averageReview;
         [_tblSliders reloadData];
     } failure:^(ErrorModel *errorModel) {
@@ -239,8 +243,8 @@
     // Spot type
     [_lblSpotType setText:_spot.spotType.name];
     
-    [_lblPercentMatch setHidden:(_spot.match == nil)];
-    if (_spot.match != nil) [_lblPercentMatch setText:[NSString stringWithFormat:@"%@ Match", [_spot matchPercent]]];
+    [_lblPercentMatch setHidden:(_matchPercent == nil)];
+    if (_matchPercent != nil) [_lblPercentMatch setText:[NSString stringWithFormat:@"%@ Match", _matchPercent]];
     
     // Spot addres
     [_lblAddress setText:[_spot fullAddress]];

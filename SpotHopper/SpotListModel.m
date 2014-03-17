@@ -92,6 +92,7 @@
                              @"sliders" : jsonSliders,
                              kSpotListModelParamBasedOnSlider : [NSNumber numberWithBool:YES]
                              }.mutableCopy;
+    
     if (latitude != nil && longitude != nil) {
         [params setObject:latitude forKey:kSpotListModelParamLatitude];
         [params setObject:longitude forKey:kSpotListModelParamLongitude];

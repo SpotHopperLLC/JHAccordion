@@ -232,8 +232,7 @@
         JSONAPIResource *result = [_results objectAtIndex:indexPath.row];
         if ([result isKindOfClass:[DrinkModel class]] == YES) {
             DrinkModel *drink = (DrinkModel*)result;
-
-            // Go to drink profile
+            [self goToDrinkProfile:drink];
 
         } else if ([result isKindOfClass:[SpotModel class]] == YES) {
             SpotModel *spot = (SpotModel*)result;

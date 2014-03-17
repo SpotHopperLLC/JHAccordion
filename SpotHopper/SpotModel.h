@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#define kSpotModelParamPage @"page"
+#define kSpotModelParamPage @"page_number"
 #define kSpotModelParamsPageSize @"page_size"
 #define kSpotModelParamQuery @"query"
 #define kSpotModelParamQueryLatitude @"lat"
@@ -65,5 +65,7 @@
 + (Promise*)postSpot:(NSDictionary*)params success:(void(^)(SpotModel *spotModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 - (Promise*)getSpot:(NSDictionary*)params success:(void(^)(SpotModel *spotModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
+- (Promise *)getMenuItems:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
 
 @end

@@ -44,27 +44,33 @@
 
 - (void)drawRect:(CGRect)rect {
 
-    // Determines which image to draw (depends on if highlighted or not)
-    UIImage *image = [UIImage imageNamed:( self.isHighlighted ? @"img_match_pin_view_selected" : @"img_match_pin_view" )];
-    [image drawInRect:rect];
-    
-    // Gets attrbutes for string - uses for string size and actually drawing
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:22.0],
-                                 NSForegroundColorAttributeName: ( self.isHighlighted ? kColorOrange : [UIColor whiteColor] )
-                                 };
-    
-    // Gets string size
-    NSString *string = _spot.matchPercent;
-    CGSize sizeOfString = [string sizeWithAttributes:attributes];
-    
-    // Calculates x and y of rect to draw string in (it will appear in the middle of the bubble
-    CGFloat x = ((CGRectGetWidth(rect) - sizeOfString.width) / 2.0f) + kXOffset;
-    CGFloat y = ((CGRectGetHeight(rect) - sizeOfString.height) / 2.0f) + kYOffset;
-    CGFloat width = sizeOfString.width;
-    CGFloat height = sizeOfString.height;
-    
-    [string drawInRect:CGRectMake(x, y, width, height) withAttributes:attributes];
+    if (_spot.match == nil) {
+        // NO MATCH - just a normal image
+        UIImage *image = [UIImage imageNamed:@"img_spot_pin_view"];
+        [image drawInRect:rect];
+    } else {
+        // Determines which image to draw (depends on if highlighted or not)
+        UIImage *image = [UIImage imageNamed:( self.isHighlighted ? @"img_match_pin_view_selected" : @"img_match_pin_view" )];
+        [image drawInRect:rect];
+        
+        // Gets attrbutes for string - uses for string size and actually drawing
+        NSDictionary *attributes = @{
+                                     NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:22.0],
+                                     NSForegroundColorAttributeName: ( self.isHighlighted ? kColorOrange : [UIColor whiteColor] )
+                                     };
+        
+        // Gets string size
+        NSString *string = _spot.matchPercent;
+        CGSize sizeOfString = [string sizeWithAttributes:attributes];
+        
+        // Calculates x and y of rect to draw string in (it will appear in the middle of the bubble
+        CGFloat x = ((CGRectGetWidth(rect) - sizeOfString.width) / 2.0f) + kXOffset;
+        CGFloat y = ((CGRectGetHeight(rect) - sizeOfString.height) / 2.0f) + kYOffset;
+        CGFloat width = sizeOfString.width;
+        CGFloat height = sizeOfString.height;
+        
+        [string drawInRect:CGRectMake(x, y, width, height) withAttributes:attributes];
+    }
     
 }
 

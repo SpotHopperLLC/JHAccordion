@@ -126,6 +126,11 @@
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         ReviewModel *model = [jsonApi resourceForKey:@"reviews"];
         
+        if (model == nil) {
+            successBlock(nil, jsonApi);
+            return;
+        }
+        
         NSDictionary *params = nil;
         if (model.spot != nil) {
             params = @{ kSliderTemplateModelParamSpotTypeId : model.spot.spotType.ID };
@@ -196,6 +201,35 @@
         
         if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"spot_lists"];
+            successBlock(models, jsonApi);
+            
+            // Resolves promise
+            [deferred resolve];
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+            
+            // Rejects promise
+            [deferred rejectWith:errorModel];
+        }
+    }];
+    
+    return deferred.promise;
+    
+}
+
+- (Promise *)getDrinkLists:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+    
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/users/%d/drink_lists", [self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            NSArray *models = [jsonApi resourcesForKey:@"drink_lists"];
             successBlock(models, jsonApi);
             
             // Resolves promise

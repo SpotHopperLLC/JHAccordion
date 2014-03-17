@@ -28,6 +28,7 @@
 @property (nonatomic, strong) NSNumber *defaultValue;
 @property (nonatomic, assign) BOOL required;
 @property (nonatomic, strong) NSArray *spotTypes;
+@property (nonatomic, strong) NSArray *drinkTypes;
 
 + (Promise*)getSliderTemplates:(NSDictionary*)params success:(void(^)(NSArray *sliderTemplates, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 

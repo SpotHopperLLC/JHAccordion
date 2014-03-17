@@ -11,6 +11,13 @@
 #import "FindSimilarViewController.h"
 #import "LaunchViewController.h"
 
+#import "DrinksNearbyViewController.h"
+#import "DrinkListMenuViewController.h"
+#import "DrinkListViewController.h"
+#import "DrinkProfileViewController.h"
+#import "FindSimilarDrinksViewController.h"
+#import "FindDrinksAtViewController.h"
+
 #import "MyReviewsViewController.h"
 #import "NewReviewViewController.h"
 #import "NewReviewTypeViewController.h"
@@ -21,6 +28,9 @@
 #import "SpotListViewController.h"
 #import "SpotProfileViewController.h"
 
+#import "DrinkMenuViewController.h"
+#import "DrinkMenuOfferingsViewController.h"
+
 @implementation UIViewController (Navigator)
 
 #pragma mark - Main
@@ -28,6 +38,42 @@
 - (void)goToLaunch:(BOOL)animated {
     LaunchViewController *viewController = [[self mainStoryboard] instantiateViewControllerWithIdentifier:@"LaunchViewController"];
     [self presentViewController:viewController animated:animated completion:nil];
+}
+
+#pragma mark - Drinks
+
+- (void)goToDrinksNearBy {
+    DrinksNearbyViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinksNearbyViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToDrinkListMenu {
+    [self goToDrinkListMenuAtSpot:nil];
+}
+
+- (void)goToDrinkListMenuAtSpot:(SpotModel*)spot {
+    DrinkListMenuViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkListMenuViewController"];
+    [viewController setSpot:spot];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToDrinkList:(DrinkListModel*)drinkList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders {
+    DrinkListViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkListViewController"];
+    [viewController setDrinkList:drinkList];
+    [viewController setCreatedWithAdjustSliders:createdWithAdjustSliders];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToFindDrinksAt:(DrinkModel*)drink {
+    FindDrinksAtViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"FindDrinksAtViewController"];
+    [viewController setDrink:drink];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToDrinkProfile:(DrinkModel*)drink {
+    DrinkProfileViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkProfileViewController"];
+    [viewController setDrink:drink];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - Reviews
@@ -107,11 +153,35 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
+#pragma mark - Menu
+
+
+- (void)goToMenu:(SpotModel *)spot {
+    DrinkMenuViewController *viewController = [[self menuStoryboard] instantiateViewControllerWithIdentifier:@"DrinkMenuViewController"];
+    [viewController setSpot:spot];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToMenuOfferings:(SpotModel *)spot drinkType:(DrinkTypeModel*)drinkType drinkSubtype:(DrinkSubtypeModel*)drinkSubtype menuItems:(NSArray*)menuItems {
+    DrinkMenuOfferingsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DrinkMenuOfferingsViewController"];
+    [viewController setSpot:spot];
+    [viewController setDrinkType:drinkType];
+    [viewController setDrinkSubtype:drinkSubtype];
+    [viewController setMenuItems:menuItems];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
 #pragma mark - Commons
 
 - (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate {
     FindSimilarViewController *viewController = [[FindSimilarViewController alloc] initWithNibName:@"FindSimilarViewController" bundle:[NSBundle mainBundle]];
     [viewController setSearchDrinks:NO];
+    [viewController setDelegate:delegate];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToFindSimilarDrinks:(id<FindSimilarDrinksViewControllerDelegate>)delegate {
+    FindSimilarDrinksViewController *viewController = [[FindSimilarDrinksViewController alloc] initWithNibName:@"FindSimilarDrinksViewController" bundle:[NSBundle mainBundle]];
     [viewController setDelegate:delegate];
     [self.navigationController pushViewController:viewController animated:YES];
 }
@@ -122,6 +192,15 @@
     NSString *name = [self.storyboard valueForKey:@"name"];
     if ([name isEqualToString:@"Main"] == NO) {
         return [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    }
+    
+    return self.storyboard;
+}
+
+- (UIStoryboard*)drinksStoryboard {
+    NSString *name = [self.storyboard valueForKey:@"name"];
+    if ([name isEqualToString:@"Drinks"] == NO) {
+        return [UIStoryboard storyboardWithName:@"Drinks" bundle:[NSBundle mainBundle]];
     }
     
     return self.storyboard;
@@ -140,6 +219,15 @@
     NSString *name = [self.storyboard valueForKey:@"name"];
     if ([name isEqualToString:@"Spots"] == NO) {
         return [UIStoryboard storyboardWithName:@"Spots" bundle:[NSBundle mainBundle]];
+    }
+    
+    return self.storyboard;
+}
+
+- (UIStoryboard*)menuStoryboard {
+    NSString *name = [self.storyboard valueForKey:@"name"];
+    if ([name isEqualToString:@"Menu"] == NO) {
+        return [UIStoryboard storyboardWithName:@"Menu" bundle:[NSBundle mainBundle]];
     }
     
     return self.storyboard;
