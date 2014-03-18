@@ -8,6 +8,7 @@
 
 #import "SpotProfileViewController.h"
 
+#import "NSDate+Globalize.h"
 #import "UIView+ViewFromNib.h"
 #import "UIViewController+Navigator.h"
 
@@ -35,6 +36,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblSpotType;
 @property (weak, nonatomic) IBOutlet UILabel *lblPercentMatch;
 @property (weak, nonatomic) IBOutlet UIButton *btnPhoneNumber;
+@property (weak, nonatomic) IBOutlet UILabel *lblHoursOpen;
 
 // Header
 @property (nonatomic, strong) UIView *headerContent;
@@ -186,6 +188,14 @@
 
 #pragma mark - Actions
 
+- (IBAction)onClickCall:(id)sender {
+    NSString *phoneNumber = [@"telprompt://" stringByAppendingString:_spot.phoneNumber];
+    NSURL *url =[NSURL URLWithString:phoneNumber];
+    if ([[UIApplication sharedApplication] canOpenURL:url] == YES) {
+        [[UIApplication sharedApplication] openURL:url];
+    }
+}
+
 - (IBAction)onClickImagePrevious:(id)sender {
     NSArray *indexPaths = [_collectionView indexPathsForVisibleItems];
     
@@ -240,6 +250,31 @@
 
 - (void)updateView {
     
+    // Sets "Opens at <some time>" or "Open until <some time>"
+    NSArray *hoursForToday = [_spot.hoursOfOperation datesForToday];
+    if (hoursForToday != nil) {
+        
+        // Creats formatter
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"h:mm a"];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
+        
+        // Gets open and close dates
+        NSDate *dateOpen = hoursForToday.firstObject;
+        NSDate *dateClose = hoursForToday.lastObject;
+        
+        // Sets the stuff
+        NSDate *now = [NSDate date];
+        if ([now timeIntervalSinceDate:dateOpen] > 0 && [now timeIntervalSinceDate:dateClose] < 0) {
+            [_lblHoursOpen setText:[NSString stringWithFormat:@"Open util %@", [dateFormatter stringFromDate:dateClose]]];
+        } else {
+            [_lblHoursOpen setText:[NSString stringWithFormat:@"Opens at %@", [dateFormatter stringFromDate:dateOpen]]];
+        }
+        
+    } else {
+        [_lblHoursOpen setText:@""];
+    }
+    
     // Spot type
     [_lblSpotType setText:_spot.spotType.name];
     
@@ -248,6 +283,10 @@
     
     // Spot addres
     [_lblAddress setText:[_spot fullAddress]];
+    
+    // Sets phonenumber
+    [_btnPhoneNumber setTitle:_spot.phoneNumber forState:UIControlStateNormal];
+    [_btnPhoneNumber setHidden:( _spot.phoneNumber.length == 0 )];
     
     // Update map
     if (_spot.latitude != nil && _spot.longitude != nil) {
