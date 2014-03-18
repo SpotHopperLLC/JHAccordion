@@ -303,7 +303,16 @@
     [self showHUD:@"Creating spotlist"];
     [spot getSpot:nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
         
-        [SpotListModel postSpotList:[NSString stringWithFormat:@"Similar to %@", spotModel.name] latitude:spotModel.latitude longitude:spotModel.longitude sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+        NSNumber *latitude = [NSNumber numberWithFloat:_location.coordinate.latitude];
+        NSNumber *longitude = [NSNumber numberWithFloat:_location.coordinate.longitude];
+        
+        // If location has no chooses a location, default to spots location
+        if (_location == nil) {
+            latitude = spotModel.latitude;
+            longitude = spotModel.longitude;
+        }
+        
+        [SpotListModel postSpotList:[NSString stringWithFormat:@"Similar to %@", spotModel.name] latitude:latitude longitude:longitude sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
             [self hideHUD];
             [self showHUDCompleted:@"Spotlist created!" block:^{
                 
