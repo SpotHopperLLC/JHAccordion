@@ -279,9 +279,15 @@
     _selectedSpotType = nil;
     _selectedSpotListMood = nil;
     
+    // Close section
+    [_accordion closeSection:kSectionTypes];
+    [_accordion closeSection:kSectionMoods];
+    [_accordion closeSection:kSectionAdvancedSliders];
+    
     // Resets headers
     [self updateSectionHeaderTitles:kSectionTypes];
     [self updateSectionHeaderTitles:kSectionMoods];
+    [self updateSectionHeaderTitles:kSectionAdvancedSliders];
     
     [_sliders removeAllObjects];
     [_advancedSliders removeAllObjects];
