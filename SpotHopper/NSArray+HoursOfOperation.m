@@ -25,6 +25,8 @@
     NSInteger dayOfWeek = [comps weekday];
     NSInteger dayOfWeekYesterday = dayOfWeek - 1;
     if (dayOfWeekYesterday < 1) {
+        // If today is Sunday, yesterday should be Saturday
+        // And for some reason this is like the only thing in the world that doesn't start counting from 0
         dayOfWeekYesterday = 7;
     }
     
@@ -59,10 +61,6 @@
     }
 
     return nil;
-}
-
-- (void)hoursForDayOfWeek:(NSInteger)dayOfWeek {
-    
 }
 
 #pragma mark - Private
@@ -108,62 +106,24 @@
     NSDate *date;
     if ([dateFormatter getObjectValue:&date forString:time range:nil error:&error]) {
         
+        // Sets the open and close time to an actual date so we can compare
         NSCalendar *calendar = [NSCalendar currentCalendar];
         NSDateComponents *components = [gregorian components:NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:date];
         [components setSecond:0];
-        [components setDay:[comps day] - ( isYesterday ? 1 : 0 )];
+        [components setDay:[comps day] - ( isYesterday ? 1 : 0 )]; // Subtracts a day if we are looking at yesterdays hours
         [components setMonth:[comps month]];
         [components setYear:[comps year]];
         [components setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
         date = [calendar dateFromComponents:components];
         
-        if (dateOpen != nil) {
-            //Add extra day cause the close is tomorrow, not before the start (dur)
-            if ([date timeIntervalSinceDate:dateOpen] < 0) {
-                [components setDay:[comps day]+1];
-                date = [calendar dateFromComponents:components];
-            }
+        //Add extra day cause the close is tomorrow, not before the start (dur)
+        if (dateOpen != nil && [date timeIntervalSinceDate:dateOpen] < 0) {
+            [components setDay:[comps day]+1];
+            date = [calendar dateFromComponents:components];
         }
     }
     
     return date;
-}
-
-- (void)hoursForDayOfWeek:(NSInteger)dayOfWeek withCalendar:(NSCalendar*)gregorian withDateComponents:(NSDateComponents*)comps {
-//    dayOfWeek = dayOfWeek - 1;
-//    
-//    NSArray *hoursToday = [self objectAtIndex:dayOfWeek];
-//    NSString *timeOpen = [hoursToday firstObject];
-//    NSString *timeClose = [hoursToday lastObject];
-    
-    // Date object for start?
-    
-    
-    
-    
-    // End date
-//    NSError *errorEnd = nil;
-//    NSDate *dateEnd;
-//    if ([dateFormatter getObjectValue:&dateEnd forString:timeClose range:nil error:&errorEnd]) {
-//        
-//        NSCalendar *calendar = [NSCalendar currentCalendar];
-//        NSDateComponents *components = [gregorian components:NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:dateEnd];
-//        [components setSecond:0];
-//        [components setDay:[comps day]];
-//        [components setMonth:[comps month]];
-//        [components setYear:[comps year]];
-//        [components setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
-//        dateEnd = [calendar dateFromComponents:components];
-//        
-//        // Add extra day cause the close is tomorrow, not before the start (dur)
-//        if ([dateEnd timeIntervalSinceDate:dateStart] < 0) {
-//            [components setDay:[comps day]+1];
-//            dateEnd = [calendar dateFromComponents:components];
-//        }
-//        
-//        NSLog(@"End date - %@", dateEnd);
-//    }
-    
 }
 
 @end

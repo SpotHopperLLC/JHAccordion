@@ -253,17 +253,18 @@
     // Sets "Opens at <some time>" or "Open until <some time>"
     NSArray *hoursForToday = [_spot.hoursOfOperation datesForToday];
     if (hoursForToday != nil) {
-        NSLog(@"hoursForToday - %@", hoursForToday);
         
+        // Creats formatter
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"h:mm a"];
         [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
         
+        // Gets open and close dates
         NSDate *dateOpen = hoursForToday.firstObject;
         NSDate *dateClose = hoursForToday.lastObject;
         
+        // Sets the stuff
         NSDate *now = [NSDate date];
-        
         if ([now timeIntervalSinceDate:dateOpen] > 0 && [now timeIntervalSinceDate:dateClose] < 0) {
             [_lblHoursOpen setText:[NSString stringWithFormat:@"Open util %@", [dateFormatter stringFromDate:dateClose]]];
         } else {
