@@ -186,6 +186,14 @@
 
 #pragma mark - Actions
 
+- (IBAction)onClickCall:(id)sender {
+    NSString *phoneNumber = [@"telprompt://" stringByAppendingString:_spot.phoneNumber];
+    NSURL *url =[NSURL URLWithString:phoneNumber];
+    if ([[UIApplication sharedApplication] canOpenURL:url] == YES) {
+        [[UIApplication sharedApplication] openURL:url];
+    }
+}
+
 - (IBAction)onClickImagePrevious:(id)sender {
     NSArray *indexPaths = [_collectionView indexPathsForVisibleItems];
     
@@ -248,6 +256,10 @@
     
     // Spot addres
     [_lblAddress setText:[_spot fullAddress]];
+    
+    // Sets phonenumber
+    [_btnPhoneNumber setTitle:_spot.phoneNumber forState:UIControlStateNormal];
+    [_btnPhoneNumber setHidden:( _spot.phoneNumber.length == 0 )];
     
     // Update map
     if (_spot.latitude != nil && _spot.longitude != nil) {
