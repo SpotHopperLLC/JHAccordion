@@ -132,10 +132,19 @@
 #pragma mark - LocationChooserViewControllerDelegate
 
 - (void)locationChooserViewController:(LocationChooserViewController *)viewController updateLocation:(CLLocation *)location {
-    [viewController dismissViewControllerAnimated:YES completion:^{
-        [TellMeMyLocation setLastLocation:location completionHandler:^{
+    // Shows hud when geocoding location to find name
+    [viewController showHUD:@"Locating..."];
+    
+    [TellMeMyLocation setLastLocation:location completionHandler:^{
+        
+        // Hides da hud
+        [viewController hideHUD];
+        
+        // Dismisses view controller
+        [viewController dismissViewControllerAnimated:YES completion:^{
             [self updateTitle:[TellMeMyLocation lastLocationName] location:location];
         }];
+        
     }];
 }
 
