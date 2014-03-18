@@ -157,6 +157,27 @@
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    // Checks to make sure the slider isn't being slid (yeah)
+    if(!_minThumbOn && !_maxThumbOn){
+        
+        // Gets first touch
+        UITouch *touch = [[touches allObjects] firstObject];
+        if (touch != nil) {
+            
+            // Gets touch point
+            CGPoint touchPoint = [touch locationInView:self];
+            
+            // Sets touch point value
+            CGFloat x = MAX([self xForValue:_minimumValue], MIN(touchPoint.x - _distanceFromCenter, [self xForValue:_maximumValue]));
+            _minThumb.center = CGPointMake(x, _minThumb.center.y);
+            _selectedValue = [self valueForX:_minThumb.center.x];
+            
+            // Updates layout and notifies via value changed
+            [self setNeedsLayout];
+            [self sendActionsForControlEvents:UIControlEventValueChanged];
+        }
+    }
+    
     [self turnOff];
 }
 
