@@ -20,6 +20,8 @@
 #import "SpotModel.h"
 #import "UserModel.h"
 
+//#import "NSArray+HoursOfOperation.h"
+
 #import <JSONAPI/JSONAPI.h>
 
 @interface SpotHopperTests : XCTestCase
@@ -59,6 +61,38 @@
     [JSONAPIResourceModeler unmodelAll];
     
     [super tearDown];
+}
+
+- (void)testHoursOfOperationNormalBarHours {
+
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    
+    // Today will be Tuesday March, 18th
+    NSDateComponents *comp = [[NSDateComponents alloc] init];
+    [comp setDay:18];
+    [comp setMonth:3];
+    [comp setYear:2014];
+    
+    // Setting time
+    [comp setHour:16];
+    [comp setMinute:0];
+    [comp setTimeZone:[NSTimeZone timeZoneWithName:@"GST"]];
+    
+    NSDate *now = [calendar dateFromComponents:comp];
+    
+    NSArray *hoursOfOperation = @[
+                                  @[ @"9:00 PM", @"1:30 AM" ],
+                                  @[ @"9:00 PM", @"1:30 AM" ],
+                                  @[ @"9:00 PM", @"1:30 AM" ],
+                                  @[ @"9:00 PM", @"1:30 AM" ],
+                                  @[ @"9:00 PM", @"1:30 AM" ],
+                                  @[ @"9:00 PM", @"1:30 AM" ],
+                                  @[ @"9:00 PM", @"1:30 AM" ]
+                                  ];
+
+    NSArray *hoursForToday = [hoursForToday datesForNow:now];
+    
+    // No asserst cause Xcode says the unit tests build "Failed" but give no errors
 }
 
 - (void)testParsingUserModel

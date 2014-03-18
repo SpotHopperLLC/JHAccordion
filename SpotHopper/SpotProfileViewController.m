@@ -8,6 +8,7 @@
 
 #import "SpotProfileViewController.h"
 
+#import "NSDate+Globalize.h"
 #import "UIView+ViewFromNib.h"
 #import "UIViewController+Navigator.h"
 
@@ -35,6 +36,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblSpotType;
 @property (weak, nonatomic) IBOutlet UILabel *lblPercentMatch;
 @property (weak, nonatomic) IBOutlet UIButton *btnPhoneNumber;
+@property (weak, nonatomic) IBOutlet UILabel *lblHoursOpen;
 
 // Header
 @property (nonatomic, strong) UIView *headerContent;
@@ -247,6 +249,30 @@
 }
 
 - (void)updateView {
+    
+    // Sets "Opens at <some time>" or "Open until <some time>"
+    NSArray *hoursForToday = [_spot.hoursOfOperation datesForToday];
+    if (hoursForToday != nil) {
+        NSLog(@"hoursForToday - %@", hoursForToday);
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"h:mm a"];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
+        
+        NSDate *dateOpen = hoursForToday.firstObject;
+        NSDate *dateClose = hoursForToday.lastObject;
+        
+        NSDate *now = [NSDate date];
+        
+        if ([now timeIntervalSinceDate:dateOpen] > 0 && [now timeIntervalSinceDate:dateClose] < 0) {
+            [_lblHoursOpen setText:[NSString stringWithFormat:@"Open util %@", [dateFormatter stringFromDate:dateClose]]];
+        } else {
+            [_lblHoursOpen setText:[NSString stringWithFormat:@"Opens at %@", [dateFormatter stringFromDate:dateOpen]]];
+        }
+        
+    } else {
+        [_lblHoursOpen setText:@""];
+    }
     
     // Spot type
     [_lblSpotType setText:_spot.spotType.name];

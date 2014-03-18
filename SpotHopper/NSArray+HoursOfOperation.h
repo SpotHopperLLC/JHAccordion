@@ -10,4 +10,9 @@
 
 @interface NSArray (HoursOfOperation)
 
+- (NSArray*)datesForToday;
+
+// THIS SHOULD ONLY GET CALLED PUBLICLY WHEN TESTING, OKAY?
+- (NSArray*)datesForNow:(NSDate*)now;
+
 @end
