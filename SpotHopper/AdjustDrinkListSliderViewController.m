@@ -247,8 +247,13 @@
     // Reset
     _selectedDrinkType = nil;
     
+    // Close section
+    [_accordion closeSection:kSectionTypes];
+    [_accordion closeSection:kSectionAdvancedSliders];
+    
     // Resets headers
     [self updateSectionHeaderTitles:kSectionTypes];
+    [self updateSectionHeaderTitles:kSectionAdvancedSliders];
     
     [_sliders removeAllObjects];
     [_advancedSliders removeAllObjects];
