@@ -460,7 +460,8 @@
     if (section == kSectionTypes) {
         
         if (_selectedSpotType == nil) {
-            [_sectionHeader0.lblText setText:@"Select Spot Type"];
+            CGFloat fontSize = _sectionHeader0.lblText.font.pointSize;
+            [_sectionHeader0.lblText setText:@"Select Spot Type (optional)" withFont:[UIFont fontWithName:@"Lato-LightItalic" size:fontSize] onString:@"(optional)"];
         } else {
             [_sectionHeader0.lblText setText:[_selectedSpotType objectForKey:@"name"]];
         }
