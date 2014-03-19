@@ -415,7 +415,7 @@
     }
     
     [self showHUD:@"Creating spotlist"];
-    [SpotListModel postSpotList:kSpotListModelDefaultName latitude:latitude longitude:longitude sliders:allTheSliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+    [SpotListModel postSpotList:kSpotListModelDefaultName spotId:nil latitude:latitude longitude:longitude sliders:allTheSliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
         [self hideHUD];
         [self showHUDCompleted:@"Spotlist created!" block:^{
             
