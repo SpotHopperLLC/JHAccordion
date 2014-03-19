@@ -91,7 +91,9 @@
     }
     
     // Fetches drinklist
-    [self fetchDrinkList];
+    if (_drinkList.drinks == nil) {
+        [self fetchDrinkList];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -213,12 +215,12 @@
         
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Save Custom Drinklist as..." message:nil delegate:self cancelButtonTitle:@"Discard" otherButtonTitles:@"Save", nil];
         [alertView setAlertViewStyle:UIAlertViewStylePlainTextInput];
-        [[alertView textFieldAtIndex:0] setPlaceholder:kSpotListModelDefaultName];
+        [[alertView textFieldAtIndex:0] setPlaceholder:kDrinkListModelDefaultName];
         [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
             if (buttonIndex == 1) {
                 NSString *name = [alertView textFieldAtIndex:0].text;
                 if (name.length == 0) {
-                    name = kSpotListModelDefaultName;
+                    name = kDrinkListModelDefaultName;
                 }
                 
                 [self showHUD:@"Updating name"];

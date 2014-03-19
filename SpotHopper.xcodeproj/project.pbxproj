@@ -2780,11 +2780,6 @@
 			attributes = {
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = RokkinCat;
-				TargetAttributes = {
-					03866483186D352500985CEC = {
-						TestTargetID = 03866462186D352400985CEC;
-					};
-				};
 			};
 			buildConfigurationList = 0386645E186D352400985CEC /* Build configuration list for PBXProject "SpotHopper" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -4247,7 +4242,6 @@
 			baseConfigurationReference = B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SpotHopperLocal.app/SpotHopperLocal";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -4261,7 +4255,6 @@
 				);
 				INFOPLIST_FILE = "SpotHopperTests/SpotHopperTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -4271,7 +4264,6 @@
 			baseConfigurationReference = B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SpotHopperLocal.app/SpotHopperLocal";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -4281,7 +4273,6 @@
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				INFOPLIST_FILE = "SpotHopperTests/SpotHopperTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
