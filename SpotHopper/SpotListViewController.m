@@ -104,6 +104,9 @@
     // Fetches spotlist
     if (_spotList.spots == nil) {
         [self fetchSpotList];
+    } else {
+        [_collectionView reloadData];
+        [self updateMatchPercent];
     }
 }
 
