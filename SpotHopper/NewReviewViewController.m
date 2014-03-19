@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kNoReviewType 0
 #define kReviewTypeIcons @[@"btn_sidebar_icon_spots", @"icon_beer", @"icon_cocktails", @"icon_wine"]
 
 #import "MyReviewsViewController.h"
@@ -548,7 +549,7 @@
     /*
      * Make sure all required spotlist shave been modified
      */
-    if (_spotBasedOffOf == nil && _reviewRatingSlider != nil && _reviewRatingSlider.value == nil) {
+    if (_selectedReviewType != kNoReviewType && _reviewRatingSlider != nil && _reviewRatingSlider.value == nil) {
         [self showAlert:@"Oops" message:@"Please adjust all required sliders before submitting"];
         return;
     }

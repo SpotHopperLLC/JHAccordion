@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#define kDrinkListModelDefaultName @"Custom Spotlist"
+#define kDrinkListModelDefaultName @"Custom Drinklist"
 
 #define kDrinkListModelParamName @"name"
 #define kDrinkListModelParamLatitude @"latitude"

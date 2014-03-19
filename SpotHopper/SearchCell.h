@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "SHTableViewCell.h"
 
 #import "DrinkModel.h"
 #import "SpotModel.h"
 
-@interface SearchCell : UITableViewCell
+@interface SearchCell : SHTableViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgIcon;
 @property (weak, nonatomic) IBOutlet UILabel *lblName;

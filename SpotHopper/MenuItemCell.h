@@ -6,13 +6,13 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "SHTableViewCell.h"
 
 #import "SHLabelLatoLight.h"
 
 @class DrinkModel;
 
-@interface MenuItemCell : UITableViewCell
+@interface MenuItemCell : SHTableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UILabel *lblSpot;

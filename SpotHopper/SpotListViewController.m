@@ -102,7 +102,9 @@
     _showMap = NO;
     
     // Fetches spotlist
-    [self fetchSpotList];
+    if (_spotList.spots == nil) {
+        [self fetchSpotList];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
