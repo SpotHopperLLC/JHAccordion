@@ -398,7 +398,11 @@
                     array = _spotTypes.copy;
                 }
             } else if (autocompleteView.textfield == _txtBeerStyle){
-                array = [_beerStyles filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", query]];
+                if (query.length > 0) {
+                    array = [_beerStyles filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", query]];
+                } else {
+                    array = _beerStyles.copy;
+                }
             } else if (autocompleteView.textfield == _txtWineStyle) {
                 array = [_wineVarietals filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", query]];
             } else if (autocompleteView.textfield == _txtCocktailAlcoholType) {
@@ -431,7 +435,7 @@
 
 - (NSInteger)autocompleteMinumumNumberOfCharters:(JHAutoCompleteView *)autocompleteView {
     // Shows all results always for spot type and cocktail
-    if (autocompleteView.textfield == _txtSpotType || autocompleteView.textfield == _txtCocktailAlcoholType) {
+    if (autocompleteView.textfield == _txtSpotType || autocompleteView.textfield == _txtBeerStyle || autocompleteView.textfield == _txtCocktailAlcoholType) {
         return 0;
     }
     
@@ -1047,6 +1051,7 @@
             // Sets autocomplete
             [_txtBeerStyle setAutocompleteWithDataSource:self delegate:self];
             [_txtBeerStyle registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
+            [_txtBeerStyle showAutoCompleteTableAlways:YES];
         }
 
         return _viewFormNewBeer;
