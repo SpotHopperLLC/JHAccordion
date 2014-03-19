@@ -72,7 +72,7 @@
     
 }
 
-+ (Promise *)postSpotList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders successBlock:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
++ (Promise *)postSpotList:(NSString*)name spotId:(NSNumber*)spotId latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders successBlock:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
@@ -92,6 +92,10 @@
                              @"sliders" : jsonSliders,
                              kSpotListModelParamBasedOnSlider : [NSNumber numberWithBool:YES]
                              }.mutableCopy;
+    
+    if (spotId != nil) {
+        [params setObject:spotId forKey:@"spot_id"];
+    }
     
     if (latitude != nil && longitude != nil) {
         [params setObject:latitude forKey:kSpotListModelParamLatitude];

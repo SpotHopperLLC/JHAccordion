@@ -304,7 +304,7 @@
 
 - (void)doFindSimilar {
     [self showHUD:@"Finding similar"];
-    [SpotListModel postSpotList:_spot.name latitude:_spot.latitude longitude:_spot.longitude sliders:_averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+    [SpotListModel postSpotList:_spot.name spotId:_spot.ID latitude:_spot.latitude longitude:_spot.longitude sliders:_averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
         [self hideHUD];
         
         SpotListViewController *viewController = [self.spotsStoryboard instantiateViewControllerWithIdentifier:@"SpotListViewController"];

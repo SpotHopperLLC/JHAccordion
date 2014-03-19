@@ -312,7 +312,7 @@
             longitude = spotModel.longitude;
         }
         
-        [SpotListModel postSpotList:[NSString stringWithFormat:@"Similar to %@", spotModel.name] latitude:latitude longitude:longitude sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+        [SpotListModel postSpotList:[NSString stringWithFormat:@"Similar to %@", spotModel.name] spotId:spotModel.ID latitude:latitude longitude:longitude sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
             [self hideHUD];
             [self showHUDCompleted:@"Spotlist created!" block:^{
                 
