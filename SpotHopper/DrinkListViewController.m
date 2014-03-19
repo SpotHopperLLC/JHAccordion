@@ -93,6 +93,9 @@
     // Fetches drinklist
     if (_drinkList.drinks == nil) {
         [self fetchDrinkList];
+    } else {
+        [_collectionView reloadData];
+        [self updateMatchPercent];
     }
 }
 
