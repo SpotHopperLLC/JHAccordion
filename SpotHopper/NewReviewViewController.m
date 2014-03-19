@@ -432,7 +432,6 @@
                 } else {
                     array = _beerStyles.copy;
                 }
-                NSLog(@"Beer styles - %@", array);
             } else if (autocompleteView.textfield == _txtWineStyle) {
                 array = [_wineVarietals filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", query]];
             } else if (autocompleteView.textfield == _txtCocktailAlcoholType) {
