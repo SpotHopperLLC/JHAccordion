@@ -102,7 +102,7 @@
     _showMap = NO;
     
     // Fetches spotlist
-    if (_spotList.spot == nil) {
+    if (_spotList.spots == nil) {
         [self fetchSpotList];
     }
 }
