@@ -6,20 +6,39 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define DISABLE_TOUCH_EVENTS 1
+
 #import "SHSlider.h"
 
-@interface SHSlider()
+@interface SHSlider() <UIGestureRecognizerDelegate>
+
+@property (nonatomic, assign) CGFloat minimumValue;
+@property (nonatomic, assign) CGFloat maximumValue;
+@property (nonatomic, assign) CGFloat distanceFromCenter;
+
+@property (nonatomic, assign) CGFloat padding;
+
+@property (nonatomic, assign) BOOL maxThumbOn;
+@property (nonatomic, assign) BOOL minThumbOn;
+
+@property (nonatomic, strong) UIImageView *minThumb;
+@property (nonatomic, strong) UIImageView *trackBackgroundMin;
+@property (nonatomic, strong) UIImageView *trackBackgroundMax;
+
+@property (nonatomic) CGFloat valueSnapToInterval;
+
+@property (nonatomic, weak) UITapGestureRecognizer *tapGestureRecognizer;
+@property (nonatomic, weak) UIPanGestureRecognizer *panGestureRecognizer;
 
 - (void)_RS_commonInit;
-- (float)xForValue:(float)value;
-- (float)valueForX:(float)x;
+- (CGFloat)xForValue:(CGFloat)value;
+- (CGFloat)valueForX:(CGFloat)x;
 
 @end
 
 @implementation SHSlider
 
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
+- (id)initWithCoder:(NSCoder *)aDecoder {
 	self = [super initWithCoder:aDecoder];
 	if (!self) {
 		return nil;
@@ -28,8 +47,7 @@
 	return self;
 }
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 	if (!self) {
 		return nil;
@@ -38,12 +56,11 @@
 	return self;
 }
 
-- (void)_RS_commonInit;
-{
+- (void)_RS_commonInit {
 	CGRect bounds = [self bounds];
     
-	_minThumbOn = false;
-	_maxThumbOn = false;
+	_minThumbOn = FALSE;
+	_maxThumbOn = FALSE;
 	//_padding = 20.0f;
     
     // Load the track so that we can measure it.
@@ -54,7 +71,6 @@
     
     _trackBackgroundMin = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"slider_background_min"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)] highlightedImage:[[UIImage imageNamed:@"slider_background_selected_min"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)]];
     _trackBackgroundMax = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"slider_background_max"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 25)] highlightedImage:[[UIImage imageNamed:@"slider_background_selected_max"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 25)]];
-    
     
     // Load up the handle images so we can measure them
     _minThumb = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"slider_thumb"] highlightedImage:[UIImage imageNamed:@"slider_thumb_selected_with_light"]];
@@ -93,25 +109,115 @@
     
     [_minThumb setClipsToBounds:NO];
     [self setClipsToBounds:NO];
+    
+    [self modifyControl:self];
 }
 
-- (void)setSelectedValue:(float)selectedValue {
+- (void)setSelectedValue:(CGFloat)selectedValue {
+    [self setSelectedValue:selectedValue animated:FALSE];
+}
+
+- (void)setSelectedValue:(CGFloat)selectedValue animated:(BOOL)animated {
     _selectedValue = selectedValue;
-    _minThumb.center = CGPointMake([self xForValue:selectedValue], self.frame.size.height / 2.0);
+    
+    CGFloat duration = animated ? 0.25 : 0.0;
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
+        _minThumb.center = CGPointMake([self xForValue:selectedValue], self.frame.size.height / 2.0);
+    } completion:^(BOOL finished) {
+    }];
+    
+    if (self.sliderDelegate) {
+        [self.sliderDelegate slider:self valueDidChange:self.selectedValue];
+    }
 }
 
-- (float)xForValue:(float)value
-{
+- (CGFloat)xForValue:(CGFloat)value {
 	return (self.frame.size.width - (_padding * 2.0)) * ((value - _minimumValue) / (_maximumValue - _minimumValue)) + _padding;
 }
 
-- (float)valueForX:(float)x
-{
+- (CGFloat)valueForX:(CGFloat)x {
 	return _minimumValue + (x - _padding) / (self.frame.size.width - (_padding * 2.0)) * (_maximumValue - _minimumValue);
 }
 
-- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
-{
+#pragma mark - Gestures
+
+- (void)modifyControl:(UIControl *)control {
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureRecognized:)];
+    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(gestureRecognized:)];
+    control.gestureRecognizers = @[tapGestureRecognizer, panGestureRecognizer];
+    
+    [control addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
+    
+    self.tapGestureRecognizer = tapGestureRecognizer;
+    self.panGestureRecognizer = panGestureRecognizer;
+}
+
+- (IBAction)gestureRecognized:(id)sender {
+    [self handleSliderGestureRecognizer:(UIGestureRecognizer *)sender];
+}
+
+- (void)valueChanged:(id)sender {
+    if (self.sliderDelegate) {
+        [self.sliderDelegate slider:self valueDidChange:self.selectedValue];
+    }
+}
+
+- (void)handleSliderGestureRecognizer:(UIGestureRecognizer *)recognizer {
+    if (_vibeFeel == YES) return;
+    
+    switch (recognizer.state) {
+        case UIGestureRecognizerStateBegan:
+            [_minThumb setHighlighted:YES];
+            break;
+        case UIGestureRecognizerStateChanged:
+            // do nothing
+            break;
+        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateFailed:
+            [_minThumb setHighlighted:NO];
+            break;
+            
+        default:
+            // do nothing
+            break;
+    }
+    
+    if ([recognizer.view isKindOfClass:[SHSlider class]]) {
+        SHSlider *slider = (SHSlider *)recognizer.view;
+        CGPoint point = [recognizer locationInView:recognizer.view];
+        CGFloat width = CGRectGetWidth(slider.frame);
+        CGFloat percentage = MAX(0.0, MIN(1.0, point.x / width)); // bound to 0.0 to 1.0
+        
+        // new value is based on the slider's min and max values which
+        // could be different with each slider
+        CGFloat newValue = ((slider.maximumValue - slider.minimumValue) * percentage) + slider.minimumValue;
+        
+        [slider setSelectedValue:newValue]; // ensures thumb control is opaque after value is set from the default
+    }
+    
+    [self sendActionsForControlEvents:UIControlEventValueChanged];
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)gestureRecognizer {
+    // ensure the pan gesture does not handle vertical movement
+    if (gestureRecognizer == self.panGestureRecognizer) {
+        UIView *view = [gestureRecognizer view];
+        CGPoint translation = [gestureRecognizer translationInView:[view superview]];
+        // Check for horizontal gesture
+        return fabsf(translation.x) > fabsf(translation.y);
+    }
+    
+    return YES;
+}
+
+#ifndef DISABLE_TOUCH_EVENTS
+
+#pragma mark - UIControl Touch Events
+
+- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     if (_vibeFeel == YES) return NO;
     
 	if(!_minThumbOn && !_maxThumbOn){
@@ -131,14 +237,13 @@
 	return YES;
 }
 
-- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
-{
+- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {
     if (_vibeFeel == YES) return NO;
     
 	CGPoint touchPoint = [touch locationInView:self];
     
 	if (CGRectContainsPoint(_minThumb.frame, touchPoint)){
-		_minThumbOn = true;
+		_minThumbOn = TRUE;
 		_distanceFromCenter = touchPoint.x - _minThumb.center.x;
         [_trackBackgroundMin setHighlighted:YES];
         [_trackBackgroundMax setHighlighted:YES];
@@ -158,8 +263,8 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     // Checks to make sure the slider isn't being slid (yeah)
+    
     if(!_minThumbOn && !_maxThumbOn){
-        
         // Gets first touch
         UITouch *touch = [[touches allObjects] firstObject];
         if (touch != nil) {
@@ -181,15 +286,18 @@
     [self turnOff];
 }
 
+#endif
+
 - (void)turnOff {
-    _minThumbOn = false;
-	_maxThumbOn = false;
+    _minThumbOn = FALSE;
+	_maxThumbOn = FALSE;
     
     [_trackBackgroundMin setHighlighted:NO];
     [_trackBackgroundMax setHighlighted:NO];
     [_minThumb setHighlighted:NO];
 }
 
+// disabled editing when true and styles it accordingly
 - (void)setVibeFeel:(BOOL)vibeFeel {
     _vibeFeel = vibeFeel;
     [self updateVibeFeel];
@@ -210,7 +318,7 @@
         
         
         // Load up the handle images so we can measure them
-        [_minThumb setImage:[UIImage imageNamed:@"slider_thumb"]];
+        [_minThumb setImage:[UIImage imageNamed: _userMoved ? @"slider_thumb_selected" : @"slider_thumb"]];
         [_minThumb setHighlightedImage:[UIImage imageNamed:@"slider_thumb_selected_with_light"]];
     } else {
         [_trackBackgroundMin setImage:[[UIImage imageNamed:@"slider_background_profile_min"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)]];
