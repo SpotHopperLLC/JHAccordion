@@ -45,6 +45,9 @@
 		03412C3B188053E7000F16A8 /* SHButtonLatoLightRightImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03412C3A188053E7000F16A8 /* SHButtonLatoLightRightImage.m */; };
 		03412C3E18805693000F16A8 /* ErrorModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03412C3D18805693000F16A8 /* ErrorModel.m */; };
 		03412C411882F6EC000F16A8 /* SHJSONAPIResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 03412C401882F6EC000F16A8 /* SHJSONAPIResource.m */; };
+		03763FB718D9EBFC00A9A30B /* SHTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */; };
+		03763FB818D9ED7800A9A30B /* SHTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */; };
+		03763FB918D9ED7800A9A30B /* SHTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */; };
 		037D13A218A3DF8500B89535 /* DrinkTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 037D13A118A3DF8500B89535 /* DrinkTypeModel.m */; };
 		037D13A618A450DB00B89535 /* CLGeocoder+DoubleLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 037D13A518A450DB00B89535 /* CLGeocoder+DoubleLookup.m */; };
 		0381043818B6704600A410DB /* SpotImageCollectViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0381043718B6704600A410DB /* SpotImageCollectViewCell.m */; };
@@ -1187,6 +1190,8 @@
 		03412C3D18805693000F16A8 /* ErrorModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorModel.m; sourceTree = "<group>"; };
 		03412C3F1882F6EC000F16A8 /* SHJSONAPIResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHJSONAPIResource.h; sourceTree = "<group>"; };
 		03412C401882F6EC000F16A8 /* SHJSONAPIResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHJSONAPIResource.m; sourceTree = "<group>"; };
+		03763FB518D9EBFC00A9A30B /* SHTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHTableViewCell.h; sourceTree = "<group>"; };
+		03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHTableViewCell.m; sourceTree = "<group>"; };
 		037D13A018A3DF8500B89535 /* DrinkTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkTypeModel.h; sourceTree = "<group>"; };
 		037D13A118A3DF8500B89535 /* DrinkTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkTypeModel.m; sourceTree = "<group>"; };
 		037D13A418A450DB00B89535 /* CLGeocoder+DoubleLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLGeocoder+DoubleLookup.h"; sourceTree = "<group>"; };
@@ -1927,6 +1932,8 @@
 				039B6FF21887143B00C590F8 /* SearchCell.h */,
 				039B6FF31887143B00C590F8 /* SearchCell.m */,
 				039B7005188716F800C590F8 /* SearchCellView.xib */,
+				03763FB518D9EBFC00A9A30B /* SHTableViewCell.h */,
+				03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -2780,6 +2787,11 @@
 			attributes = {
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = RokkinCat;
+				TargetAttributes = {
+					03866483186D352500985CEC = {
+						TestTargetID = 03866462186D352400985CEC;
+					};
+				};
 			};
 			buildConfigurationList = 0386645E186D352400985CEC /* Build configuration list for PBXProject "SpotHopper" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -3731,6 +3743,7 @@
 				038664E2186D379400985CEC /* ClientSessionManager.m in Sources */,
 				039F54AC18D35C2E004B2B67 /* MenuItemCell.m in Sources */,
 				03F2D9371871E88000C69576 /* LaunchViewController.m in Sources */,
+				03763FB718D9EBFC00A9A30B /* SHTableViewCell.m in Sources */,
 				03F2D94D18722CAC00C69576 /* SHNavigationBar.m in Sources */,
 				03F6BF6818C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.m in Sources */,
 				038664D8186D376900985CEC /* UIView+RelativityLaws.m in Sources */,
@@ -3857,6 +3870,7 @@
 				03F4E76218CA33D00056EAA9 /* ClientSessionManager.m in Sources */,
 				039F54AE18D35C2E004B2B67 /* MenuItemCell.m in Sources */,
 				03F4E76318CA33D00056EAA9 /* LaunchViewController.m in Sources */,
+				03763FB918D9ED7800A9A30B /* SHTableViewCell.m in Sources */,
 				03F4E76418CA33D00056EAA9 /* SHNavigationBar.m in Sources */,
 				03F4E76518CA33D00056EAA9 /* TTTAttributedLabel+QuickFonting.m in Sources */,
 				03F4E76618CA33D00056EAA9 /* UIView+RelativityLaws.m in Sources */,
@@ -3975,6 +3989,7 @@
 				03F4E8B018CA34260056EAA9 /* ClientSessionManager.m in Sources */,
 				039F54AD18D35C2E004B2B67 /* MenuItemCell.m in Sources */,
 				03F4E8B118CA34260056EAA9 /* LaunchViewController.m in Sources */,
+				03763FB818D9ED7800A9A30B /* SHTableViewCell.m in Sources */,
 				03F4E8B218CA34260056EAA9 /* SHNavigationBar.m in Sources */,
 				03F4E8B318CA34260056EAA9 /* TTTAttributedLabel+QuickFonting.m in Sources */,
 				03F4E8B418CA34260056EAA9 /* UIView+RelativityLaws.m in Sources */,
@@ -4242,6 +4257,7 @@
 			baseConfigurationReference = B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SpotHopperLocal.app/SpotHopperLocal";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -4255,6 +4271,7 @@
 				);
 				INFOPLIST_FILE = "SpotHopperTests/SpotHopperTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -4264,6 +4281,7 @@
 			baseConfigurationReference = B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SpotHopperLocal.app/SpotHopperLocal";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -4273,6 +4291,7 @@
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				INFOPLIST_FILE = "SpotHopperTests/SpotHopperTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;

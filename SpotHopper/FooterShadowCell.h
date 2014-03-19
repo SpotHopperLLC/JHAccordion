@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "SHTableViewCell.h"
 
-@interface FooterShadowCell : UITableViewCell
+@interface FooterShadowCell : SHTableViewCell
 
 @end

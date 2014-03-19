@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "SHTableViewCell.h"
 
-@interface MenuItemSubtypeCell : UITableViewCell
+@interface MenuItemSubtypeCell : SHTableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 

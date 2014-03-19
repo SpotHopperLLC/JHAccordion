@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "SHTableViewCell.h"
 
 #import "SHSlider.h"
 
@@ -18,7 +18,7 @@
 
 @protocol ReviewSliderCellDelegate;
 
-@interface ReviewSliderCell : UITableViewCell
+@interface ReviewSliderCell : SHTableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *lblMnimum;
 @property (weak, nonatomic) IBOutlet UILabel *lblMaximum;

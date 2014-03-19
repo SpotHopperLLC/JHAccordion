@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "SHTableViewCell.h"
 
-@interface AdjustSliderOptionCell : UITableViewCell
+@interface AdjustSliderOptionCell : SHTableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *lblTitle;
 

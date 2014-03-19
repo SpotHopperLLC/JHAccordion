@@ -96,7 +96,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == kSectionTypes) {
-        return _drinkTypes.count + 1;
+        return _drinkTypes.count ;
     } else if (section == kSectionSliders) {
         return _sliders.count;
     } else if (section == kSectionAdvancedSliders) {
@@ -111,12 +111,8 @@
     if (indexPath.section == kSectionTypes) {
         
         AdjustSliderOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AdjustSliderOptionCell" forIndexPath:indexPath];
-        if (indexPath.row > 0) {
-            NSDictionary *spotType = [_drinkTypes objectAtIndex:indexPath.row - 1];
-            [cell.lblTitle setText:[spotType objectForKey:@"name"]];
-        } else {
-            [cell.lblTitle setText:@"Any"];
-        }
+        NSDictionary *spotType = [_drinkTypes objectAtIndex:indexPath.row];
+        [cell.lblTitle setText:[spotType objectForKey:@"name"]];
         
         return cell;
     }  else if (indexPath.section == kSectionSliders) {
@@ -147,11 +143,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.section == kSectionTypes) {
-        if (indexPath.row > 0) {
-            _selectedDrinkType = [_drinkTypes objectAtIndex:indexPath.row - 1];
-        } else {
-            _selectedDrinkType = nil;
-        }
+        _selectedDrinkType = [_drinkTypes objectAtIndex:indexPath.row];
         [_accordion closeSection:indexPath.section];
     }
     
