@@ -328,9 +328,9 @@
         NSString *name = [spotFromResposne objectForKey:@"name"];
         XCTAssertEqualObjects(spotModel.name, name, @"Should equal %@", name);
         
-        // Assert type
-        NSString *type = [spotFromResposne objectForKey:@"type"];
-        XCTAssertEqualObjects(spotModel.type, type, @"Should equal %@", type);
+//        // Assert type
+//        NSString *type = [spotFromResposne objectForKey:@"type"];
+//        XCTAssertEqualObjects(spotModel.type, type, @"Should equal %@", type);
         
         // Assert address
         NSString *address = [spotFromResposne objectForKey:@"address"];

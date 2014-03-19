@@ -4247,7 +4247,7 @@
 			baseConfigurationReference = B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SpotHopper.app/SpotHopper";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SpotHopperLocal.app/SpotHopperLocal";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -4271,7 +4271,7 @@
 			baseConfigurationReference = B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SpotHopper.app/SpotHopper";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SpotHopperLocal.app/SpotHopperLocal";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
