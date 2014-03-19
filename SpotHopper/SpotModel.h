@@ -11,6 +11,7 @@
 #define kSpotModelParamQuery @"query"
 #define kSpotModelParamQueryLatitude @"lat"
 #define kSpotModelParamQueryLongitude @"lng"
+#define kSpotModelParamQuerySpotTypeId @"spot_type_id"
 
 #define kSpotModelParamName @"name"
 #define kSpotModelParamAddress @"address"
