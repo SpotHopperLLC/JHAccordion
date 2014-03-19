@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kSpotTypeFilterBrewery @"brewery"
+#define kSpotTypeFilterWinery @"winery"
+
 #define kSpotReviewType 0
 #define kReviewTypeIcons @[@"btn_sidebar_icon_spots", @"icon_beer", @"icon_cocktails", @"icon_wine"]
 
@@ -46,6 +49,8 @@
 @property (nonatomic, assign) NSInteger selectedReviewType;
 
 @property (nonatomic, strong) NSArray *spotTypes;
+@property (nonatomic, strong) NSArray *brewerySpotTypes;
+@property (nonatomic, strong) NSArray *winerySpotTypes;
 @property (nonatomic, strong) NSArray *drinkTypes;
 @property (nonatomic, strong) NSArray *beerStyles;
 @property (nonatomic, strong) NSArray *wineVarietals;
@@ -59,6 +64,7 @@
 @property (nonatomic, strong) NSMutableArray *sliders;
 @property (nonatomic, strong) NSMutableArray *advancedSliders;
 
+@property (nonatomic, strong) SpotModel *selectedDrinkSpot;
 @property (nonatomic, strong) NSDictionary *selectedSpotType;
 @property (nonatomic, strong) NSDictionary *selectedCocktailSubtype;
 
@@ -386,11 +392,34 @@
     
     if (resultsBlock != nil) {
         
+        if (autocompleteView.textfield == _txtBeerBreweryName) {
+            
+            NSArray *brewerySpotTypeIds = [_brewerySpotTypes valueForKeyPath:@"id"];
+            NSNumber *brewerySpotId = [brewerySpotTypeIds lastObject];
+            
+            if (brewerySpotId == nil) {
+                return;
+            }
+            
+            NSDictionary *params = @{
+                                     kSpotModelParamQuery : query,
+                                     kSpotModelParamQuerySpotTypeId : brewerySpotId
+                                     };
+            
+            [SpotModel getSpots:params success:^(NSArray *spotModels, JSONAPI *jsonApi) {
+                // Returning results onnew main queue
+                resultsBlock(spotModels);
+            } failure:^(ErrorModel *errorModel) {
+                
+            }];
+            
+            return;
+        }
+        
         // Performs filtering in background - could easily be an async network call
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
             
             NSArray *array;
-            
             if (autocompleteView.textfield == _txtSpotType) {
                 if (query.length > 0) {
                     array = [_spotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", query]];
@@ -424,7 +453,7 @@
 - (NSString *)autocomplete:(JHAutoCompleteView *)autocompleteView stringForObject:(id)object atIndex:(NSInteger)index {
     if (_txtSpotType.isFirstResponder) {
         return [object objectForKey:@"name"];
-    } else if (_txtCocktailAlcoholType ) {
+    } else if (_txtCocktailAlcoholType.isFirstResponder) {
         return [object objectForKey:@"name"];
     }
     
@@ -468,6 +497,9 @@
         autoCompleteCell.lblTitle.text = [object objectForKey:@"name"];
     } else if ([object isKindOfClass:[NSString class]] == YES) {
         autoCompleteCell.lblTitle.text = object;
+    } else if (autocomplete.textfield == _txtBeerBreweryName) {
+        SpotModel *spot = (SpotModel*)object;
+        autoCompleteCell.lblTitle.text = spot.name;
     }
 }
 
@@ -478,9 +510,12 @@
         textField.text = [_selectedSpotType objectForKey:@"name"];
         
         [self fetchSliderTemplates:_selectedReviewType];
-    } else if (_txtCocktailAlcoholType ) {
+    } else if (textField == _txtCocktailAlcoholType ) {
         _selectedCocktailSubtype = object;
         textField.text = [_selectedCocktailSubtype objectForKey:@"name"];
+    } else if (textField == _txtBeerBreweryName) {
+        _selectedDrinkSpot = object;
+        textField.text = _selectedDrinkSpot.name;
     } else if ([object isKindOfClass:[NSString class]] == YES) {
         textField.text = object;
     }
@@ -642,7 +677,7 @@
     else if (_selectedReviewType == 1) {
         
         NSString *name = _txtBeerName.text;
-        // TOOD: Need to do something with brewery
+        NSString *breweryName = _txtBeerBreweryName.text;
         NSString *style = _txtBeerStyle.text;
         
         // Form text field validations
@@ -663,14 +698,41 @@
         }
         NSNumber *drinkId = [drinkType objectForKey:@"id"];
         
-        NSDictionary *params = @{
+        NSMutableDictionary *params = @{
                                  kDrinkModelParamName: name,
                                  kDrinkModelParamStyle: style,
                                  kDrinkModelParamDrinkTypeId: drinkId
-                                 };
+                                 }.mutableCopy;
         
-        // Send request to create drink
-        [self createDrink:params];
+        // Makes sure the selected drink spot is selected and that the selected drink spot is equal to the text field
+        if (_selectedDrinkSpot != nil && [_selectedDrinkSpot.name isEqualToString:breweryName]) {
+            [params setObject:_selectedDrinkSpot.ID forKey:kDrinkModelParamSpotId];
+
+            [self createDrink:params];
+        } else if (breweryName.length > 0) {
+            
+            [self showHUD:@"Creating brewery"];
+            [SpotModel postSpot:@{
+                                  kSpotModelParamName : breweryName
+                                  } success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
+                                      [self hideHUD];
+                                      
+                                      // Set created spot id
+                                      [params setObject:spotModel.ID forKey:kDrinkModelParamSpotId];
+                                      
+                                      // Send request to create drink
+                                      [self createDrink:params];
+                                      
+            } failure:^(ErrorModel *errorModel) {
+                [self hideHUD];
+                [self showAlert:@"Oops" message:errorModel.human];
+            }];
+            
+        } else {
+            // Send request to create drink
+            [self createDrink:params];
+        }
+
     }
     // Cocktail
     else if (_selectedReviewType == 2) {
@@ -852,15 +914,13 @@
         
         NSDictionary *forms = [jsonApi objectForKey:@"form"];
         if (forms != nil) {
-            // Get spot types only user can see
-            NSMutableArray *userSpotTypes = [NSMutableArray array];
+            
             NSArray *allSpotTypes = [forms objectForKey:@"spot_types"];
-            for (NSDictionary *spotType in allSpotTypes) {
-                if ([[spotType objectForKey:@"visible_to_users"] boolValue] == YES) {
-                    [userSpotTypes addObject:spotType];
-                }
-            }
-            _spotTypes = userSpotTypes;
+            
+            _spotTypes = [allSpotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"visible_to_users == YES"]];
+            _brewerySpotTypes = [allSpotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", kSpotTypeFilterBrewery]];
+            _winerySpotTypes = [allSpotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", kSpotTypeFilterWinery]];
+
         }
         
     } failure:^(ErrorModel *errorModel) {
@@ -1052,6 +1112,10 @@
             [_txtBeerStyle setAutocompleteWithDataSource:self delegate:self];
             [_txtBeerStyle registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
             [_txtBeerStyle showAutoCompleteTableAlways:YES];
+            
+            // Sets autocomplete
+            [_txtBeerBreweryName setAutocompleteWithDataSource:self delegate:self];
+            [_txtBeerBreweryName registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
         }
 
         return _viewFormNewBeer;

@@ -18,6 +18,7 @@
 #define kDrinkModelParamReceipe @"receipe"
 #define kDrinkModelParamRegion @"region"
 #define kDrinkModelParamVarietal @"varietal"
+#define kDrinkModelParamSpotId @"spot_id"
 #define kDrinkModelParamDrinkTypeId @"drink_type_id"
 #define kDrinkModelParamDrinkSubtypeId @"drink_subtype_id"
 
