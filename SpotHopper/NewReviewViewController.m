@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#define kNoReviewType 0
+#define kSpotReviewType 0
 #define kReviewTypeIcons @[@"btn_sidebar_icon_spots", @"icon_beer", @"icon_cocktails", @"icon_wine"]
 
 #import "MyReviewsViewController.h"
@@ -549,7 +549,7 @@
     /*
      * Make sure all required spotlist shave been modified
      */
-    if (_selectedReviewType != kNoReviewType && _reviewRatingSlider != nil && _reviewRatingSlider.value == nil) {
+    if (_selectedReviewType != kSpotReviewType && _reviewRatingSlider != nil && _reviewRatingSlider.value == nil) {
         [self showAlert:@"Oops" message:@"Please adjust all required sliders before submitting"];
         return;
     }
@@ -562,7 +562,7 @@
     }
     
     // Spot
-    if (_selectedReviewType == 0) {
+    if (_selectedReviewType == kSpotReviewType) {
         
         NSString *name = _txtSpotName.text;
         NSString *address = _txtSpotAddress.text;
@@ -893,6 +893,12 @@
         }];
     } always:^{
         [self hideHUD];
+        
+        // Fetch the slider tempaltes for drinks
+        if (_selectedReviewType > kSpotReviewType) {
+            [self fetchSliderTemplates:_selectedReviewType];
+        }
+        
     }];
 }
 
