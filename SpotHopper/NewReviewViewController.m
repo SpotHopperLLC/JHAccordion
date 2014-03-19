@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kSpotTypeFilterBrewery @"brewery"
+#define kSpotTypeFilterWinery @"winery"
+
 #define kSpotReviewType 0
 #define kReviewTypeIcons @[@"btn_sidebar_icon_spots", @"icon_beer", @"icon_cocktails", @"icon_wine"]
 
@@ -46,6 +49,8 @@
 @property (nonatomic, assign) NSInteger selectedReviewType;
 
 @property (nonatomic, strong) NSArray *spotTypes;
+@property (nonatomic, strong) NSArray *brewerySpotTypes;
+@property (nonatomic, strong) NSArray *winerySpotTypes;
 @property (nonatomic, strong) NSArray *drinkTypes;
 @property (nonatomic, strong) NSArray *beerStyles;
 @property (nonatomic, strong) NSArray *wineVarietals;
@@ -852,15 +857,13 @@
         
         NSDictionary *forms = [jsonApi objectForKey:@"form"];
         if (forms != nil) {
-            // Get spot types only user can see
-            NSMutableArray *userSpotTypes = [NSMutableArray array];
+            
             NSArray *allSpotTypes = [forms objectForKey:@"spot_types"];
-            for (NSDictionary *spotType in allSpotTypes) {
-                if ([[spotType objectForKey:@"visible_to_users"] boolValue] == YES) {
-                    [userSpotTypes addObject:spotType];
-                }
-            }
-            _spotTypes = userSpotTypes;
+            
+            _spotTypes = [allSpotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"visible_to_users == YES"]];
+            _brewerySpotTypes = [allSpotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", kSpotTypeFilterBrewery]];
+            _winerySpotTypes = [allSpotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", kSpotTypeFilterWinery]];
+
         }
         
     } failure:^(ErrorModel *errorModel) {
