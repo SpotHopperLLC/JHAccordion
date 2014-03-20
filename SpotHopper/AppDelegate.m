@@ -8,6 +8,9 @@
 
 #import "AppDelegate.h"
 
+#import "Constants.h"
+#import "TestFlight.h"
+
 #import "NSNumber+Helpers.h"
 #import "UIActionSheet+Block.h"
 
@@ -51,6 +54,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 //    [[ClientSessionManager sharedClient] setHasSeenLaunch:NO];
+    
+    NSString *testFlightApplicationToken = kTestFlightApplicationToken;
+    if (testFlightApplicationToken && testFlightApplicationToken.length) {
+        [TestFlight takeOff:testFlightApplicationToken];
+    }
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
