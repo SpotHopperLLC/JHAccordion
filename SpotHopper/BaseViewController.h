@@ -53,4 +53,6 @@
 - (FooterViewController*)addFooterViewController:(void(^)(FooterViewController *footerViewController))initializeBlock;
 - (FooterViewController*)footerViewController;
 
+- (void)slideCell:(UITableViewCell *)cell aboveTableViewMidwayPoint:(UITableView *)tableView;
+
 @end

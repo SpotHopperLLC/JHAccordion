@@ -20,7 +20,7 @@
 
 @interface ReviewSliderCell : SHTableViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *lblMnimum;
+@property (weak, nonatomic) IBOutlet UILabel *lblMinimum;
 @property (weak, nonatomic) IBOutlet UILabel *lblMaximum;
 @property (weak, nonatomic) IBOutlet UILabel *lblSliderValue;
 @property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblSlideToAdjust;
@@ -35,6 +35,9 @@
 
 @protocol ReviewSliderCellDelegate <NSObject>
 
-- (void)reviewSliderCell:(ReviewSliderCell*)cell changedValue:(float)value;
+@required
+
+- (void)reviewSliderCell:(ReviewSliderCell*)cell changedValue:(CGFloat)value;
+- (void)reviewSliderCell:(ReviewSliderCell*)cell finishedChangingValue:(CGFloat)value;
 
 @end

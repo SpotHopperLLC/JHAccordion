@@ -36,8 +36,7 @@ typedef void(^AlertBlock)();
 
 @implementation BaseViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -45,8 +44,7 @@ typedef void(^AlertBlock)();
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [self viewDidLoad:@[kDidLoadOptionsBlurredBackground]];
 }
 
@@ -99,8 +97,7 @@ typedef void(^AlertBlock)();
     }
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -246,8 +243,7 @@ typedef void(^AlertBlock)();
 }
 
 //method to move the view up/down whenever the keyboard is shown/dismissed
--(void)setViewMovedUp:(BOOL)movedUp keyboardFrame:(CGRect)keyboardFrame
-{
+-(void)setViewMovedUp:(BOOL)movedUp keyboardFrame:(CGRect)keyboardFrame {
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.3]; // if you want to slide up the view
     
@@ -309,7 +305,7 @@ typedef void(^AlertBlock)();
 
 #pragma mark - FooterViewController
 
-- (FooterViewController*)addFooterViewController:(void(^)(FooterViewController *footerViewController))initializeBlock {
+- (FooterViewController *)addFooterViewController:(void(^)(FooterViewController *footerViewController))initializeBlock {
     if (_footerViewController != nil) return _footerViewController;
     
     _footerViewController = [[FooterViewController alloc] initWithNibName:@"FooterViewController" bundle:[NSBundle mainBundle]];
@@ -350,6 +346,27 @@ typedef void(^AlertBlock)();
 
 - (FooterViewController *)footerViewController {
     return _footerViewController;
+}
+
+#pragma mark - Table Helper
+
+- (void)slideCell:(UITableViewCell *)cell aboveTableViewMidwayPoint:(UITableView *)tableView {
+    NSIndexPath *indexPath = [tableView indexPathForCell:cell];
+    CGRect cellFrame = [tableView rectForRowAtIndexPath:indexPath];
+    CGFloat cellBottom = cellFrame.origin.y + cellFrame.size.height;
+    
+    // do not set offset beyond the max content offset
+    CGFloat maxContentOffset = MAX(0, tableView.contentSize.height - tableView.frame.size.height);
+    
+    // adjust bottom for offset to compare with midway point
+    CGFloat adjustedBottom = cellBottom - tableView.contentOffset.y;
+    CGFloat midway = tableView.frame.size.height/2;
+    
+    if (adjustedBottom > midway) {
+        CGFloat newOffset = MIN(maxContentOffset, cellBottom - midway);
+        CGPoint offset = CGPointMake(0.0, newOffset);
+        [tableView setContentOffset:offset animated:TRUE];
+    }
 }
 
 @end
