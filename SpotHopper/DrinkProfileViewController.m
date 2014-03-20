@@ -40,6 +40,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblSpotName;
 @property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblInfo;
 @property (weak, nonatomic) IBOutlet UILabel *lblPercentMatch;
+@property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblABV;
 @property (weak, nonatomic) IBOutlet UIButton *btnPhoneNumber;
 
 // Header
@@ -54,6 +55,7 @@
 
 @property (nonatomic, strong) NSString *matchPercent;
 @property (nonatomic, strong) AverageReviewModel *averageReview;
+@property (nonatomic, strong) NSArray *spots;
 
 @end
 
@@ -104,13 +106,14 @@
     _tellMeMyLocation = [[TellMeMyLocation alloc] init];
     [_tellMeMyLocation findMe:kCLLocationAccuracyThreeKilometers found:^(CLLocation *newLocation) {
         _location = newLocation;
-        [self updateViewMap];
+        [self fetchSpots];
     } failure:^(NSError *error) {
         
     }];
     
     [self updateView];
     [self fetchDrink];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -256,6 +259,27 @@
     }];
 }
 
+- (void)fetchSpots {
+    
+    if (_location == nil) {
+        return;
+    }
+    
+    NSDictionary *params = @{
+                             kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:_location.coordinate.latitude],
+                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:_location.coordinate.longitude]
+                             };
+    
+    [_drink getSpots:params success:^(NSArray *spotModels, JSONAPI *jsonApi) {
+        
+        _spots = spotModels;
+        [self updateViewMap];
+        
+    } failure:^(ErrorModel *errorModel) {
+    }];
+    
+}
+
 #pragma mark -
 
 - (void)updateView {
@@ -266,33 +290,48 @@
     [_lblPercentMatch setHidden:(_drink.match == nil)];
     if (_drink.match != nil) [_lblPercentMatch setText:[NSString stringWithFormat:@"%@ Match", [_drink matchPercent]]];
     
-    // Sets ABV and stuff
-    if (_drink.style.length > 0 && _drink.abv.floatValue > 0) {
-        [_lblInfo setText:[NSString stringWithFormat:@"%@ - %@ ABV", _drink.style, _drink.abvPercentString]];
+    // Sets Rating and stuff
+    if (_drink.style.length > 0 && _drink.averageReview != nil) {
+        [_lblInfo setText:[NSString stringWithFormat:@"%@ - %.1f/10", _drink.style, _drink.averageReview.rating.floatValue]];
     } else if (_drink.style.length > 0) {
         [_lblInfo setText:_drink.style];
-    } else if (_drink.abv.floatValue > 0) {
-        [_lblInfo setText:[NSString stringWithFormat:@"%@ ABV", _drink.abvPercentString]];
+    } else if (_drink.averageReview != nil) {
+        [_lblInfo setText:[NSString stringWithFormat:@"%.1f/10", _drink.averageReview.rating.floatValue]];
     } else {
         [_lblInfo italic:YES];
-        [_lblInfo setText:@"No style or ABV"];
+        [_lblInfo setText:@"No style or rating"];
+    }
+    
+    // ABV
+    if (_drink.abvPercentString.length > 0) {
+        [_lblABV setText:_drink.abvPercentString];
+    } else {
+        [_lblABV setText:@""];
     }
     
 }
 
 - (void)updateViewMap {
     
-    // Update map
+    // Zoom map
     if (_location != nil) {
         MKCoordinateRegion mapRegion;
         mapRegion.center = _location.coordinate;
-        mapRegion.span = MKCoordinateSpanMake(0.005, 0.005);
-        [_mapView setRegion:mapRegion animated: NO];
+        mapRegion.span = MKCoordinateSpanMake(0.025, 0.025);
+        [_mapView setRegion:mapRegion animated: YES];
+    }
+    
+    // Update map
+    [_mapView removeAnnotations:[_mapView annotations]];
+    for (SpotModel *spot in _spots) {
         
         // Place pin
-        SpotAnnotation *annotation = [[SpotAnnotation alloc] init];
-        annotation.coordinate = _location.coordinate;
-        [_mapView addAnnotation:annotation];
+        if (spot.latitude != nil && spot.longitude != nil) {
+            SpotAnnotation *annotation = [[SpotAnnotation alloc] init];
+            annotation.coordinate = CLLocationCoordinate2DMake(spot.latitude.floatValue, spot.longitude.floatValue);
+            [_mapView addAnnotation:annotation];
+        }
+        
     }
     
 }
