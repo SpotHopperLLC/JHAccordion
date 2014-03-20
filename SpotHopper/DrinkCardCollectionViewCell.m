@@ -35,7 +35,7 @@
     [_lblName setText:[NSString stringWithFormat:@"%@ >", drink.name]];
     [_lblSpot setText:drink.spot.name];
     
-    // Sets ABV and stuff
+    // Sets Rating and stuff
     if (drink.style.length > 0 && drink.averageReview != nil) {
         [_lblInfo setText:[NSString stringWithFormat:@"%@ - %.1f/10", drink.style, drink.averageReview.rating.floatValue]];
     } else if (drink.style.length > 0) {
