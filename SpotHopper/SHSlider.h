@@ -8,39 +8,25 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SHSlider : UIControl {
-//	float minimumValue;
-//	float maximumValue;
-//	float selectedValue;
-//	float distanceFromCenter;
-//    
-//	float _padding;
-//    
-//	BOOL _maxThumbOn;
-//	BOOL _minThumbOn;
-//    
-//	UIImageView * _minThumb;
-//	UIImageView * _trackBackgroundMin;
-//    UIImageView * _trackBackgroundMax;
-}
+@protocol SHSliderDelegate;
 
+@interface SHSlider : UIControl
+
+@property (weak, nonatomic) IBOutlet id<SHSliderDelegate>sliderDelegate;
+
+@property (nonatomic, assign) CGFloat selectedValue;
 @property (nonatomic, assign) BOOL vibeFeel;
 @property (nonatomic, assign) BOOL userMoved;
 
-@property (nonatomic, assign) float minimumValue;
-@property (nonatomic, assign) float maximumValue;
-@property (nonatomic, assign) float selectedValue;
-@property (nonatomic, assign) float distanceFromCenter;
-
-@property (nonatomic, assign) float padding;
-
-@property (nonatomic, assign) BOOL maxThumbOn;
-@property (nonatomic, assign) BOOL minThumbOn;
-
-@property (nonatomic, strong) UIImageView *minThumb;
-@property (nonatomic, strong) UIImageView *trackBackgroundMin;
-@property (nonatomic, strong) UIImageView *trackBackgroundMax;
-
-@property (nonatomic) CGFloat valueSnapToInterval;
+- (void)setSelectedValue:(CGFloat)selectedValue animated:(BOOL)animated;
 
 @end
+
+@protocol SHSliderDelegate <NSObject>
+
+@optional
+
+- (void)slider:(SHSlider *)slider valueDidChange:(CGFloat)value;
+
+@end
+
