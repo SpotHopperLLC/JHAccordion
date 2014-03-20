@@ -8,6 +8,7 @@
 
 #import "DrinkCardCollectionViewCell.h"
 
+#import "AverageReviewModel.h"
 #import "SpotModel.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
@@ -31,19 +32,19 @@
         [_imgDrink setImage:nil];
     }];
     
-    [_lblName setText:drink.name];
+    [_lblName setText:[NSString stringWithFormat:@"%@ >", drink.name]];
     [_lblSpot setText:drink.spot.name];
     
     // Sets ABV and stuff
-    if (drink.style.length > 0 && drink.abv.floatValue > 0) {
-        [_lblInfo setText:[NSString stringWithFormat:@"%@ - %@ ABV", drink.style, drink.abvPercentString]];
+    if (drink.style.length > 0 && drink.averageReview != nil) {
+        [_lblInfo setText:[NSString stringWithFormat:@"%@ - %.1f/10", drink.style, drink.averageReview.rating.floatValue]];
     } else if (drink.style.length > 0) {
         [_lblInfo setText:drink.style];
-    } else if (drink.abv.floatValue > 0) {
-        [_lblInfo setText:[NSString stringWithFormat:@"%@ ABV", drink.abvPercentString]];
+    } else if (drink.averageReview != nil) {
+        [_lblInfo setText:[NSString stringWithFormat:@"%.1f/10", drink.averageReview.rating.floatValue]];
     } else {
         [_lblInfo italic:YES];
-        [_lblInfo setText:@"No style or ABV"];
+        [_lblInfo setText:@"No style or rating"];
     }
     
 }

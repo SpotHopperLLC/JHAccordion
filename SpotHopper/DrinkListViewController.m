@@ -273,6 +273,16 @@
     [_drinkList getDrinkList:nil success:^(DrinkListModel *drinkListModel, JSONAPI *jsonAPi) {
         [self hideHUD];
         
+//        NSArray *drinks = [[[jsonAPi linked] objectForKey:@"drinks"] allObjects];
+//        for (DrinkModel *drink in drinks) {
+//            NSLog(@"%@ %@ - %@", drink.name, [drink.links objectForKey:@"spot"], drink.spot);
+//        }
+//        
+//        NSArray *spots = [[[jsonAPi linked] objectForKey:@"spots"] allObjects];
+//        for (SpotModel *spot in spots) {
+//            NSLog(@"%@ - %@", spot.name, spot.ID);
+//        }
+        
         _drinkList = drinkListModel;
         [_collectionView reloadData];
         
