@@ -12,7 +12,7 @@
 
 @interface SHSlider : UIControl
 
-@property (weak, nonatomic) IBOutlet id<SHSliderDelegate>sliderDelegate;
+@property (weak, nonatomic) IBOutlet id<SHSliderDelegate>delegate;
 
 @property (nonatomic, assign) CGFloat selectedValue;
 @property (nonatomic, assign) BOOL vibeFeel;
@@ -26,7 +26,11 @@
 
 @optional
 
+// as the user moves the slider this callback will fire each time the value is changed
 - (void)slider:(SHSlider *)slider valueDidChange:(CGFloat)value;
+
+// one the user completes the gesture this callback is fired
+- (void)slider:(SHSlider *)slider valueDidFinishChanging:(CGFloat)value;
 
 @end
 

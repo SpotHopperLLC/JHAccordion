@@ -230,7 +230,7 @@
 
 #pragma mark - ReviewSliderCellDelegate
 
-- (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(float)value {
+- (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(CGFloat)value {
     
     // Sets slider to darker/selected color for good
     [cell.slider setUserMoved:YES];
@@ -246,6 +246,11 @@
         SliderModel *slider = [_advancedSliders objectAtIndex:indexPath.row];
         [slider setValue:[NSNumber numberWithFloat:(value * 10.0f)]];
     }
+}
+
+- (void)reviewSliderCell:(ReviewSliderCell*)cell finishedChangingValue:(CGFloat)value {
+    // move table view of sliders up a little to make the next slider visible
+    [self slideCell:cell aboveTableViewMidwayPoint:_tblReviews];
 }
 
 #pragma mark - Actions

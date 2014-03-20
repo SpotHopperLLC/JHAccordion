@@ -8,6 +8,13 @@
 
 #import "ReviewSliderCell.h"
 
+#pragma mark - Class Extension
+#pragma mark -
+
+@interface ReviewSliderCell () <SHSliderDelegate>
+
+@end
+
 @implementation ReviewSliderCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -28,7 +35,7 @@
     
     [_lblSlideToAdjust italic:YES];
     
-    [_lblMnimum setText:sliderTemplate.minLabel];
+    [_lblMinimum setText:sliderTemplate.minLabel];
     [_lblMaximum setText:sliderTemplate.maxLabel];
     
     if (slider.value == nil) {
@@ -42,7 +49,7 @@
     [_lblSliderValue setHidden:!show];
     [_lblSliderValue setText:[[NSNumber numberWithInt:ceil(_slider.selectedValue * 10)] stringValue]];
     
-    [_slider addTarget:self action:@selector(onValueChangedSlider:) forControlEvents:UIControlEventValueChanged];
+    _slider.delegate = self;
 }
 
 - (void)setVibeFeel:(BOOL)vibeFeel slider:(SliderModel*)slider {
@@ -51,26 +58,32 @@
     if (vibeFeel == YES) {
         // Highlight max label orange if slider value is greater than 5 OR if there is no min label
         if (slider.value.floatValue >= 5.0f || slider.sliderTemplate.minLabel.length == 0) {
-            [_lblMnimum setTextColor:[UIColor colorWithRed:(64.0f/255.0f) green:(64.0f/255.0f) blue:(64.0f/255.0f) alpha:1.0f]];
+            [_lblMinimum setTextColor:[UIColor colorWithRed:(64.0f/255.0f) green:(64.0f/255.0f) blue:(64.0f/255.0f) alpha:1.0f]];
             [_lblMaximum setTextColor:kColorOrangeDark];
         } else {
-            [_lblMnimum setTextColor:kColorOrangeDark];
+            [_lblMinimum setTextColor:kColorOrangeDark];
             [_lblMaximum setTextColor:[UIColor colorWithRed:(64.0f/255.0f) green:(64.0f/255.0f) blue:(64.0f/255.0f) alpha:1.0f]];
         }
     }
     
 }
 
-- (void)dealloc {
-    [_slider removeTarget:self action:@selector(onValueChangedSlider:) forControlEvents:UIControlEventValueChanged];
-}
-
 #pragma mark - Actions
 
-- (void)onValueChangedSlider:(id)sender {
-    [_lblSliderValue setText:[[NSNumber numberWithInt:ceil(_slider.selectedValue * 10)] stringValue]];
-    if ([_delegate respondsToSelector:@selector(reviewSliderCell:changedValue:)]) {
-        [_delegate reviewSliderCell:self changedValue:_slider.selectedValue];
+#pragma mark - SHSliderDelegate
+
+// as the user moves the slider this callback will fire each time the value is changed
+- (void)slider:(SHSlider *)slider valueDidChange:(CGFloat)value {
+    [_lblSliderValue setText:[[NSNumber numberWithInt:ceil(slider.selectedValue * 10)] stringValue]];
+    if (_delegate && [_delegate respondsToSelector:@selector(reviewSliderCell:changedValue:)]) {
+        [_delegate reviewSliderCell:self changedValue:value];
+    }
+}
+
+// one the user completes the gesture this callback is fired
+- (void)slider:(SHSlider *)slider valueDidFinishChanging:(CGFloat)value {
+    if (_delegate && [_delegate respondsToSelector:@selector(reviewSliderCell:finishedChangingValue:)]) {
+        [_delegate reviewSliderCell:self finishedChangingValue:value];
     }
 }
 
