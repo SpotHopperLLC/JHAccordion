@@ -26,7 +26,6 @@ PODS:
   - Promises (0.1.0)
   - Raven (0.3.0)
   - STTwitter (0.0.7)
-  - TestFlightSDK (3.0.0)
   - TTTAttributedLabel (1.8.1)
 
 DEPENDENCIES:
@@ -40,7 +39,6 @@ DEPENDENCIES:
   - Promises (from `http://github.com/joshdholtz/ios-promises.git`)
   - Raven (~> 0.3.0)
   - STTwitter (~> 0.0.7)
-  - TestFlightSDK (~> 3.0.0)
   - TTTAttributedLabel (~> 1.8.1)
 
 EXTERNAL SOURCES:
@@ -64,7 +62,6 @@ SPEC CHECKSUMS:
   Promises: f92c1068dfb1fe8501f6059c0e05edbf655f8665
   Raven: 875718158645e945cf991c1ca80b41cd2ef82fd9
   STTwitter: beca2e5ff10c6e9c863d9400039f4aed94e28f6a
-  TestFlightSDK: 71e3e78d3a46144dbad975a4bf80a14dae6a818a
   TTTAttributedLabel: 3a571d73e055f4a79c304240598e4bfd199238e4
 
 COCOAPODS: 0.29.0
