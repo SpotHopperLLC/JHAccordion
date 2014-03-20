@@ -400,6 +400,7 @@
             _sectionHeader0 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
             [_sectionHeader0 setIconImage:[UIImage imageNamed:@"icon_view_my_reviews"]];
             [_sectionHeader0 setText:@"View My Reviews"];
+            [_sectionHeader0.imgArrow setImage:[UIImage imageNamed:@"img_expand_east"]];
             [_sectionHeader0.btnBackground setActionWithBlock:^{
                 if ([ClientSessionManager sharedClient].isLoggedIn == YES) {
                     [this goToMyReviews];
@@ -415,6 +416,7 @@
             _sectionHeader1 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
             [_sectionHeader1 setIconImage:[UIImage imageNamed:@"icon_plus"]];
             [_sectionHeader1 setText:@"Add New Review"];
+            [_sectionHeader1.imgArrow setImage:[UIImage imageNamed:@"img_expand_east"]];
             [_sectionHeader1.btnBackground setActionWithBlock:^{
                 if ([ClientSessionManager sharedClient].isLoggedIn == YES) {
                     [this goToSearchForNewReview:NO notWhatLookingFor:YES createReview:YES];
