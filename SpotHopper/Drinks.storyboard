@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="pjT-4Z-Cya">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="pjT-4Z-Cya">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
         <!--Drinks Nearby View Controller-->
@@ -184,7 +184,7 @@ available here</string>
                                 </connections>
                             </tableView>
                             <containerView hidden="YES" contentMode="scaleToFill" id="sbe-dA-6Nk">
-                                <rect key="frame" x="0.0" y="93" width="320" height="327"/>
+                                <rect key="frame" x="0.0" y="93" width="320" height="387"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <connections>
@@ -213,15 +213,15 @@ available here</string>
             <objects>
                 <viewController storyboardIdentifier="AdjustDrinkListSliderViewController" automaticallyAdjustsScrollViewInsets="NO" id="zQQ-3d-nEz" customClass="AdjustDrinkListSliderViewController" sceneMemberID="viewController">
                     <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="ZXS-mx-nnD">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="327"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="387"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="orange_gradient_background.png" id="FQ1-uN-vHB">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="327"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="387"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="vL3-88-Gh4" customClass="SHButtonLatoLight">
-                                <rect key="frame" x="0.0" y="263" width="320" height="64"/>
+                                <rect key="frame" x="0.0" y="323" width="320" height="64"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="0.59999999999999998" colorSpace="calibratedWhite"/>
                                 <inset key="insetFor6xAndEarlier" minX="0.0" minY="20" maxX="0.0" maxY="-20"/>
@@ -235,7 +235,7 @@ available here</string>
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OZx-mk-ZiD">
-                                <rect key="frame" x="0.0" y="39" width="320" height="226"/>
+                                <rect key="frame" x="0.0" y="39" width="320" height="286"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
