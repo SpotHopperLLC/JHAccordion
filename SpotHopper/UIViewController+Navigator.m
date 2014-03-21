@@ -96,14 +96,24 @@
 }
 
 - (void)goToNewReviewForDrink:(DrinkModel *)drink {
+    [self goToNewReviewForDrink:drink delegate:nil];
+}
+
+- (void)goToNewReviewForDrink:(DrinkModel *)drink delegate:(id<ReviewViewControllerDelegate>)delegate {
     ReviewViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"ReviewViewController"];
     [viewController setDrink:drink];
+    [viewController setDelegate:delegate];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)goToNewReviewForSpot:(SpotModel *)spot {
+    [self goToNewReviewForSpot:spot delegate:nil];
+}
+
+- (void)goToNewReviewForSpot:(SpotModel *)spot delegate:(id<ReviewViewControllerDelegate>)delegate {
     ReviewViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"ReviewViewController"];
     [viewController setSpot:spot];
+    [viewController setDelegate:delegate];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -121,15 +131,25 @@
 }
 
 - (void)goToNewReviewWithType:(NSString*)reviewType {
+    [self goToNewReviewWithType:reviewType delegate:nil];
+}
+
+- (void)goToNewReviewWithType:(NSString*)reviewType delegate:(id<NewReviewViewControllerDelegate>)delegate {
     NewReviewViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"NewReviewViewController"];
     [viewController setReviewType:reviewType];
+    [viewController setDelegate:delegate];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)goToNewReview:(SpotModel*)spot {
+    [self goToNewReviewForSpot:spot delegate:nil];
+}
+
+- (void)goToNewReview:(SpotModel*)spot delegate:(id<NewReviewViewControllerDelegate>)delegate {
     NewReviewViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"NewReviewViewController"];
     [viewController setSpotBasedOffOf:spot];
     [viewController setReviewType:kReviewTypesSpot];
+    [viewController setDelegate:delegate];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

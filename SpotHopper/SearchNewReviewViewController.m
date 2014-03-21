@@ -17,6 +17,9 @@
 
 #import "SHNavigationController.h"
 #import "SearchNewReviewViewController.h"
+#import "NewReviewViewController.h"
+#import "ReviewViewController.h"
+#import "ReviewsMenuViewController.h"
 
 #import "FooterShadowCell.h"
 #import "SearchCell.h"
@@ -28,7 +31,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface SearchNewReviewViewController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, SHButtonLatoLightLocationDelegate>
+@interface SearchNewReviewViewController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, SHButtonLatoLightLocationDelegate, NewReviewViewControllerDelegate, ReviewViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
@@ -265,7 +268,7 @@
             
             // Create a review for this drink
             if (_createReview == YES) {
-                [self goToNewReviewForDrink:drink];
+                [self goToNewReviewForDrink:drink delegate:self];
             }
             // Go to drink profile
             else {
@@ -278,9 +281,9 @@
             if (_createReview == YES) {
                 
                 if ([spot ID] == nil) {
-                    [self goToNewReview:spot];
+                    [self goToNewReview:spot delegate:self];
                 } else {
-                    [self goToNewReviewForSpot:spot];
+                    [self goToNewReviewForSpot:spot delegate:self];
                 }
                 
             }
@@ -353,6 +356,18 @@
     [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
 }
 
+#pragma mark - NewReviewViewControllerDelegate
+
+- (void)newReviewViewController:(NewReviewViewController *)viewController submittedReview:(ReviewModel *)review {
+    [self goToReviewsViewController];
+}
+
+#pragma mark - ReviewViewControllerDelegate
+
+- (void)reviewViewController:(ReviewViewController *)viewController submittedReview:(ReviewModel *)review {
+    [self goToReviewsViewController];
+}
+
 #pragma mark - Actions
 
 - (void)onEditingChangeSearch:(id)sender {
@@ -373,6 +388,39 @@
 }
 
 #pragma mark - Private
+
+- (void)goToReviewsViewController {
+    
+    // Initializes stuffs
+    BOOL foundSearch = NO;
+    NSMutableArray *viewControllers = @[].mutableCopy;
+    
+    // Iterates through the view controllers in the stack until it finds THIS view
+    // Every view before this is added to an array to that will get set in the nav controller
+    UIViewController *reviewsMenuViewController;
+    for (UIViewController *viewController in self.navigationController.viewControllers) {
+        if ([viewController isKindOfClass:[self class]] == YES) {
+            reviewsMenuViewController = viewController;
+            foundSearch = YES;
+            break;
+        } else {
+            [viewControllers addObject:viewController];
+        }
+    }
+    
+    if (foundSearch == NO) {
+        // If THIS view is not found (it would be weird if this happened) it would
+        // just pop this view
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        // If THIS view is found, the ReviewsMenuViewController is pushed in place of this view
+        ReviewsMenuViewController *viewController = [[self reviewsStoryboard] instantiateInitialViewController];
+        [viewController setTitle:@"Reviews"];
+        
+        [viewControllers addObject:viewController];
+        [self.navigationController setViewControllers:viewControllers animated:YES];
+    }
+}
 
 - (void)startSearch {
     // Resets pages and clears results

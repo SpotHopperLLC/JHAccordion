@@ -884,28 +884,12 @@
                 [self.navigationController popToViewController:reviewsMenuViewController animated:YES];
             } else {
                 
-                BOOL foundSearch = NO;
-                NSMutableArray *viewControllers = @[].mutableCopy;
-                
-                for (UIViewController *viewController in self.navigationController.viewControllers) {
-                    if ([viewController isKindOfClass:[SearchNewReviewViewController class]] == YES) {
-                        reviewsMenuViewController = viewController;
-                        foundSearch = YES;
-                        break;
-                    } else {
-                        [viewControllers addObject:viewController];
-                    }
-                }
-                
-                if (foundSearch == NO) {
-                    [self.navigationController popViewControllerAnimated:YES];
+                if ([_delegate respondsToSelector:@selector(newReviewViewController:submittedReview:)]) {
+                    [_delegate newReviewViewController:self submittedReview:reviewModel];
                 } else {
-                    ReviewsMenuViewController *viewController = [[self reviewsStoryboard] instantiateInitialViewController];
-                    [viewController setTitle:@"Reviews"];
-                    
-                    [viewControllers addObject:viewController];
-                    [self.navigationController setViewControllers:viewControllers animated:YES];
+                    [self.navigationController popViewControllerAnimated:YES];
                 }
+                
             }
         }];
         
