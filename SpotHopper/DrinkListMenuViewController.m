@@ -86,6 +86,8 @@
     _accordion = [[JHAccordion alloc] initWithTableView:_tblMenu];
     [_accordion setDelegate:self];
     [_accordion openSection:0];
+    [_accordion openSection:1];
+    [_accordion openSection:2];
     
     // Configures table
     [_tblMenu registerNib:[UINib nibWithNibName:@"CreateListCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"CreateListCell"];
@@ -101,6 +103,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
+    
+    // Open when the view appears
+    [_accordion openSection:0];
     
     // Deselects cell
     [_tblMenu deselectRowAtIndexPath:[_tblMenu indexPathForSelectedRow] animated:NO];
@@ -121,6 +126,20 @@
         [_btnLocation updateWithLastLocation];
     } else {
         [self fetchDrinkLists];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    // Setting has seen before
+    if ([self hasBeenSeenBefore] == NO) {
+        
+        // Sets has seen before
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kDrinkListsMenuViewControllerViewedAlready
+         ];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
     }
 }
 
@@ -154,11 +173,13 @@
         return 2;
     } else if (section == 1) {
         // Only show if not a drinklist at a spot
-        if (_spot == nil) {
+        if (_spot == nil && [self hasBeenSeenBefore] == YES) {
             return _featuredDrinkLists.count;
         }
     } else if (section == 2) {
-        return _myDrinkLists.count;
+        if ([self hasBeenSeenBefore] == YES) {
+            return _myDrinkLists.count;
+        }
     }
     
     return 0;
@@ -244,12 +265,12 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (section == 0) {
         return 65.0f;
-    } if (section == 1) {
+    } if (section == 1  && [self hasBeenSeenBefore] == YES && _featuredDrinkLists.count > 0) {
         // Only show if not a drinklist at a spot
         if (_spot == nil) {
             return 65.0f;
         }
-    } if (section == 2) {
+    } if (section == 2 && [self hasBeenSeenBefore] == YES && _myDrinkLists.count > 0) {
         return 65.0f;
     }
     
@@ -364,6 +385,10 @@
 
 #pragma mark - Private
 
+- (BOOL)hasBeenSeenBefore {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kDrinkListsMenuViewControllerViewedAlready];
+}
+
 - (void)updateView {
     
     [_viewLocation setHidden:(_spot != nil)];
@@ -436,33 +461,6 @@
         // Reload table and hide HUD
         [_tblMenu reloadData];
         [self hideHUD];
-        
-        BOOL hasSeenBefore = [[NSUserDefaults standardUserDefaults] boolForKey:kDrinkListsMenuViewControllerViewedAlready];
-        if (hasSeenBefore == NO) {
-            
-            // Sets has seen before
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kDrinkListsMenuViewControllerViewedAlready
-             ];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            
-            [_accordion openSection:0];
-            [_accordion closeSection:1];
-            [_accordion closeSection:2];
-            
-        } else {
-            
-            // Opens up only section
-            if (_myDrinkLists.count > 0) {
-                [_accordion closeSection:0];
-                [_accordion closeSection:1];
-                [_accordion openSection:2];
-            } else {
-                [_accordion openSection:0];
-                [_accordion openSection:1];
-                [_accordion closeSection:2];
-            }
-            
-        }
         
     }];
     
