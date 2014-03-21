@@ -403,6 +403,10 @@
             reviewsMenuViewController = viewController;
             foundSearch = YES;
             break;
+        } else if ([viewController isKindOfClass:[ReviewsMenuViewController class]] == YES) {
+            // Pops to first instance of ReviewMenuViewController in the stack
+            [self.navigationController popToViewController:viewController animated:YES];
+            break;
         } else {
             [viewControllers addObject:viewController];
         }
