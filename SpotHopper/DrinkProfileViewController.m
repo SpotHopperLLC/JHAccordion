@@ -344,7 +344,8 @@
     }
     
     [self showHUD:@"Finding similar"];
-    [DrinkListModel postDrinkList:_drink.name latitude:[NSNumber numberWithFloat:_location.coordinate.latitude] longitude:[NSNumber numberWithFloat:_location.coordinate.longitude] sliders:_averageReview.sliders drinkId:_drink.ID drinkTypeId:_drink.drinkType.ID spotId:nil successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+    NSString *name = [NSString stringWithFormat:@"Similar to %@", _drink.name];
+    [DrinkListModel postDrinkList:name latitude:[NSNumber numberWithFloat:_location.coordinate.latitude] longitude:[NSNumber numberWithFloat:_location.coordinate.longitude] sliders:_averageReview.sliders drinkId:_drink.ID drinkTypeId:_drink.drinkType.ID spotId:nil successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
         [self hideHUD];
         
         DrinkListViewController *viewController = [self.drinksStoryboard instantiateViewControllerWithIdentifier:@"DrinkListViewController"];
