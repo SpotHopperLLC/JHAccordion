@@ -392,18 +392,25 @@
     
     if (resultsBlock != nil) {
         
-        if (autocompleteView.textfield == _txtBeerBreweryName) {
+        if (autocompleteView.textfield == _txtBeerBreweryName ||
+            autocompleteView.textfield == _txtWineWineryName) {
             
-            NSArray *brewerySpotTypeIds = [_brewerySpotTypes valueForKeyPath:@"id"];
-            NSNumber *brewerySpotId = [brewerySpotTypeIds lastObject];
+            NSArray *spotTypeId = nil;
+            if (autocompleteView.textfield == _txtBeerBreweryName) {
+                NSArray *brewerySpotTypeIds = [_brewerySpotTypes valueForKeyPath:@"id"];
+                spotTypeId = [brewerySpotTypeIds lastObject];
+            } else if (autocompleteView.textfield == _txtWineWineryName) {
+                NSArray *winerySpotTypeIds = [_winerySpotTypes valueForKeyPath:@"id"];
+                spotTypeId = [winerySpotTypeIds lastObject];
+            }
             
-            if (brewerySpotId == nil) {
+            if (spotTypeId == nil) {
                 return;
             }
             
             NSDictionary *params = @{
                                      kSpotModelParamQuery : query,
-                                     kSpotModelParamQuerySpotTypeId : brewerySpotId
+                                     kSpotModelParamQuerySpotTypeId : spotTypeId
                                      };
             
             [SpotModel getSpots:params success:^(NSArray *spotModels, JSONAPI *jsonApi) {
@@ -500,6 +507,9 @@
     } else if (autocomplete.textfield == _txtBeerBreweryName) {
         SpotModel *spot = (SpotModel*)object;
         autoCompleteCell.lblTitle.text = spot.name;
+    } else if (autocomplete.textfield == _txtWineWineryName) {
+        SpotModel *spot = (SpotModel*)object;
+        autoCompleteCell.lblTitle.text = spot.name;
     }
 }
 
@@ -514,6 +524,9 @@
         _selectedCocktailSubtype = object;
         textField.text = [_selectedCocktailSubtype objectForKey:@"name"];
     } else if (textField == _txtBeerBreweryName) {
+        _selectedDrinkSpot = object;
+        textField.text = _selectedDrinkSpot.name;
+    } else if (textField == _txtWineWineryName) {
         _selectedDrinkSpot = object;
         textField.text = _selectedDrinkSpot.name;
     } else if ([object isKindOfClass:[NSString class]] == YES) {
@@ -787,7 +800,7 @@
     // Wine
     else if (_selectedReviewType == 3) {
         NSString *varietal = _txtWineStyle.text;
-        // TOOD: Need to do something with brewery
+        NSString *wineryName = _txtWineWineryName.text;
         NSString *name = _txtWineName.text;
         
         // Form text field validations
@@ -809,14 +822,40 @@
             name = varietal;
         }
         
-        NSDictionary *params = @{
+        NSMutableDictionary *params = @{
                                  kDrinkModelParamName: name,
                                  kDrinkModelParamDrinkTypeId: drinkId,
                                  kDrinkModelParamVarietal: varietal
-                                 };
+                                 }.mutableCopy;
         
-        // Send request to create drink
-        [self createDrink:params];
+        // Makes sure the selected drink spot is selected and that the selected drink spot is equal to the text field
+        if (_selectedDrinkSpot != nil && [_selectedDrinkSpot.name isEqualToString:wineryName]) {
+            [params setObject:_selectedDrinkSpot.ID forKey:kDrinkModelParamSpotId];
+            
+            [self createDrink:params];
+        } else if (wineryName.length > 0) {
+            
+            [self showHUD:@"Creating winery"];
+            [SpotModel postSpot:@{
+                                  kSpotModelParamName : wineryName,
+                                  } success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
+                                      [self hideHUD];
+                                      
+                                      // Set created spot id
+                                      [params setObject:spotModel.ID forKey:kDrinkModelParamSpotId];
+                                      
+                                      // Send request to create drink
+                                      [self createDrink:params];
+                                      
+                                  } failure:^(ErrorModel *errorModel) {
+                                      [self hideHUD];
+                                      [self showAlert:@"Oops" message:errorModel.human];
+                                  }];
+            
+        } else {
+            // Send request to create drink
+            [self createDrink:params];
+        }
     }
     
 }
@@ -1135,6 +1174,10 @@
             // Sets autocomplete
             [_txtWineStyle setAutocompleteWithDataSource:self delegate:self];
             [_txtWineStyle registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
+            
+            // Sets autocomplete
+            [_txtWineWineryName setAutocompleteWithDataSource:self delegate:self];
+            [_txtWineWineryName registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
         }
         
         return _viewFormNewWine;
