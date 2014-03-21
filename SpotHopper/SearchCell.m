@@ -55,7 +55,7 @@
     
     [_imgIcon setImage:[UIImage imageNamed:@"icon_search_spot"]];
     [_lblMainTitle setText:spot.name];
-    [_lblSubTitle setText:spot.cityState];
+    [_lblSubTitle setText:spot.addressCityState];
     
     [_lblMainTitle setHidden:NO];
     [_lblSubTitle setHidden:NO];
