@@ -592,11 +592,9 @@
     
     // Validating selected spot id exists first
     // since a spot type is required to show sliders
-    if (_selectedReviewType == kSpotReviewType) {
-        if (_selectedSpotType == nil || [_selectedSpotType objectForKey:@"id"] == nil) {
-            [self showAlert:@"Oops" message:@"Please select a spot type before submitting"];
-            return;
-        }
+    if (_selectedReviewType == kSpotReviewType && ( (_selectedSpotType == nil || [_selectedSpotType objectForKey:@"id"] == nil) )) {
+        [self showAlert:@"Oops" message:@"Please select a spot type before submitting"];
+        return;
     }
     
     /*
