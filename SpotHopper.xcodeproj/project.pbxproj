@@ -45,6 +45,9 @@
 		03412C3B188053E7000F16A8 /* SHButtonLatoLightRightImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03412C3A188053E7000F16A8 /* SHButtonLatoLightRightImage.m */; };
 		03412C3E18805693000F16A8 /* ErrorModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03412C3D18805693000F16A8 /* ErrorModel.m */; };
 		03412C411882F6EC000F16A8 /* SHJSONAPIResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 03412C401882F6EC000F16A8 /* SHJSONAPIResource.m */; };
+		0345708F18DC00EE0095E4A8 /* BaseAlcoholModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345708E18DC00EE0095E4A8 /* BaseAlcoholModel.m */; };
+		0345709018DC03010095E4A8 /* BaseAlcoholModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345708E18DC00EE0095E4A8 /* BaseAlcoholModel.m */; };
+		0345709118DC03020095E4A8 /* BaseAlcoholModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345708E18DC00EE0095E4A8 /* BaseAlcoholModel.m */; };
 		03763FB718D9EBFC00A9A30B /* SHTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */; };
 		03763FB818D9ED7800A9A30B /* SHTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */; };
 		03763FB918D9ED7800A9A30B /* SHTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */; };
@@ -1190,6 +1193,8 @@
 		03412C3D18805693000F16A8 /* ErrorModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorModel.m; sourceTree = "<group>"; };
 		03412C3F1882F6EC000F16A8 /* SHJSONAPIResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHJSONAPIResource.h; sourceTree = "<group>"; };
 		03412C401882F6EC000F16A8 /* SHJSONAPIResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHJSONAPIResource.m; sourceTree = "<group>"; };
+		0345708D18DC00EE0095E4A8 /* BaseAlcoholModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseAlcoholModel.h; sourceTree = "<group>"; };
+		0345708E18DC00EE0095E4A8 /* BaseAlcoholModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseAlcoholModel.m; sourceTree = "<group>"; };
 		03763FB518D9EBFC00A9A30B /* SHTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHTableViewCell.h; sourceTree = "<group>"; };
 		03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHTableViewCell.m; sourceTree = "<group>"; };
 		037D13A018A3DF8500B89535 /* DrinkTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkTypeModel.h; sourceTree = "<group>"; };
@@ -2141,6 +2146,8 @@
 				039F543C18D28F5E004B2B67 /* DrinkListModel.m */,
 				039F548D18D340AE004B2B67 /* MenuItemModel.h */,
 				039F548E18D340AE004B2B67 /* MenuItemModel.m */,
+				0345708D18DC00EE0095E4A8 /* BaseAlcoholModel.h */,
+				0345708E18DC00EE0095E4A8 /* BaseAlcoholModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -3807,6 +3814,7 @@
 				038664DC186D376900985CEC /* TellMeMyLocation.m in Sources */,
 				037D13A218A3DF8500B89535 /* DrinkTypeModel.m in Sources */,
 				03E882E218C7A39000BD8FBB /* AdjustSliderOptionCell.m in Sources */,
+				0345708F18DC00EE0095E4A8 /* BaseAlcoholModel.m in Sources */,
 				039F542218D283A8004B2B67 /* DrinksNearbyViewController.m in Sources */,
 				039B6FF41887143B00C590F8 /* SearchCell.m in Sources */,
 				03F2D95018722D5300C69576 /* HomeViewController.m in Sources */,
@@ -3934,6 +3942,7 @@
 				03F4E79918CA33D00056EAA9 /* TellMeMyLocation.m in Sources */,
 				03F4E79A18CA33D00056EAA9 /* DrinkTypeModel.m in Sources */,
 				03F4E79B18CA33D00056EAA9 /* AdjustSliderOptionCell.m in Sources */,
+				0345709118DC03020095E4A8 /* BaseAlcoholModel.m in Sources */,
 				039F542418D283A8004B2B67 /* DrinksNearbyViewController.m in Sources */,
 				03F4E79C18CA33D00056EAA9 /* SearchCell.m in Sources */,
 				03F4E79D18CA33D00056EAA9 /* HomeViewController.m in Sources */,
@@ -4053,6 +4062,7 @@
 				03F4E8E718CA34260056EAA9 /* TellMeMyLocation.m in Sources */,
 				03F4E8E818CA34260056EAA9 /* DrinkTypeModel.m in Sources */,
 				03F4E8E918CA34260056EAA9 /* AdjustSliderOptionCell.m in Sources */,
+				0345709018DC03010095E4A8 /* BaseAlcoholModel.m in Sources */,
 				039F542318D283A8004B2B67 /* DrinksNearbyViewController.m in Sources */,
 				03F4E8EA18CA34260056EAA9 /* SearchCell.m in Sources */,
 				03F4E8EB18CA34260056EAA9 /* HomeViewController.m in Sources */,
@@ -4337,7 +4347,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopperStaging-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = SpotHopperStaging;
-				PROVISIONING_PROFILE = "17049795-F2A2-49FF-8BF5-A7203245026C";
+				PROVISIONING_PROFILE = "40EB5FAA-39B8-4A1D-BB8B-FC8D2B78C7EC";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

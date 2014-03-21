@@ -15,6 +15,7 @@
 
 #import "ClientSessionManager.h"
 #import "AverageReviewModel.h"
+#import "BaseAlcoholModel.h"
 #import "DrinkModel.h"
 #import "DrinkTypeModel.h"
 #import "DrinkSubtypeModel.h"
@@ -63,6 +64,7 @@
     
     // Initializes resource linkng for JSONAPI
     [JSONAPIResourceLinker link:@"average_review" toLinkedType:@"average_reviews"];
+    [JSONAPIResourceLinker link:@"base_alcohol" toLinkedType:@"base_alcohols"];
     [JSONAPIResourceLinker link:@"drink" toLinkedType:@"drinks"];
     [JSONAPIResourceLinker link:@"drink_type" toLinkedType:@"drink_types"];
     [JSONAPIResourceLinker link:@"drink_subtype" toLinkedType:@"drink_subtypes"];
@@ -79,6 +81,7 @@
     
     // Initializes model linking for JSONAPI
     [JSONAPIResourceModeler useResource:[AverageReviewModel class] toLinkedType:@"average_reviews"];
+    [JSONAPIResourceModeler useResource:[BaseAlcoholModel class] toLinkedType:@"base_alcohols"];
     [JSONAPIResourceModeler useResource:[DrinkModel class] toLinkedType:@"drinks"];
     [JSONAPIResourceModeler useResource:[DrinkTypeModel class] toLinkedType:@"drink_types"];
     [JSONAPIResourceModeler useResource:[DrinkSubtypeModel class] toLinkedType:@"drink_subtypes"];

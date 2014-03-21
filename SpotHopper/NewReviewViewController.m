@@ -28,6 +28,7 @@
 #import "SearchNewReviewViewController.h"
 
 #import "ErrorModel.h"
+#import "BaseAlcoholModel.h"
 
 #import <JHAccordion/JHAccordion.h>
 #import <JHAutoCompleteTextField/JHAutoCompleteTextField.h>
@@ -54,6 +55,7 @@
 @property (nonatomic, strong) NSArray *drinkTypes;
 @property (nonatomic, strong) NSArray *beerStyles;
 @property (nonatomic, strong) NSArray *wineVarietals;
+@property (nonatomic, strong) NSArray *cocktailTypes;
 @property (nonatomic, strong) NSArray *cocktailBaseAlcohols;
 
 @property (nonatomic, strong) DrinkModel *createdDrink;
@@ -67,6 +69,7 @@
 @property (nonatomic, strong) SpotModel *selectedDrinkSpot;
 @property (nonatomic, strong) NSDictionary *selectedSpotType;
 @property (nonatomic, strong) NSDictionary *selectedCocktailSubtype;
+@property (nonatomic, strong) BaseAlcoholModel *selectedCocktailBaseAlcohol;
 
 // Forms
 @property (nonatomic, strong) UIView *viewFormNewSpot;
@@ -97,7 +100,12 @@
 
 // Cocktail
 @property (weak, nonatomic) IBOutlet UITextField *txtCocktailName;
+@property (weak, nonatomic) IBOutlet UITextField *txtCocktailType;
 @property (weak, nonatomic) IBOutlet UITextField *txtCocktailAlcoholType;
+@property (nonatomic, strong) UIPickerView *pickerViewCocktailType;
+@property (nonatomic, strong) UISegmentedControl *segControlForCocktailType;
+@property (nonatomic, strong) UIPickerView *pickerViewCocktailBaseAlcoholType;
+@property (nonatomic, strong) UISegmentedControl *segControlForCocktailAlcoholType;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
 
@@ -358,8 +366,6 @@
     
     if (textField == _txtSpotType) {
         _selectedSpotType = nil;
-    } else if (textField == _txtCocktailAlcoholType) {
-        _selectedCocktailSubtype = nil;
     }
     
     return YES;
@@ -378,11 +384,6 @@
             _sliderTemplates = nil;
             [_tblReviews reloadData];
         }
-    } else if (textField == _txtCocktailAlcoholType) {
-        _selectedCocktailSubtype = nil;
-        if (_selectedCocktailSubtype == nil) {
-            [_txtCocktailAlcoholType setText:@""];
-        }
     }
 }
 
@@ -392,18 +393,25 @@
     
     if (resultsBlock != nil) {
         
-        if (autocompleteView.textfield == _txtBeerBreweryName) {
+        if (autocompleteView.textfield == _txtBeerBreweryName ||
+            autocompleteView.textfield == _txtWineWineryName) {
             
-            NSArray *brewerySpotTypeIds = [_brewerySpotTypes valueForKeyPath:@"id"];
-            NSNumber *brewerySpotId = [brewerySpotTypeIds lastObject];
+            NSArray *spotTypeId = nil;
+            if (autocompleteView.textfield == _txtBeerBreweryName) {
+                NSArray *brewerySpotTypeIds = [_brewerySpotTypes valueForKeyPath:@"id"];
+                spotTypeId = [brewerySpotTypeIds lastObject];
+            } else if (autocompleteView.textfield == _txtWineWineryName) {
+                NSArray *winerySpotTypeIds = [_winerySpotTypes valueForKeyPath:@"id"];
+                spotTypeId = [winerySpotTypeIds lastObject];
+            }
             
-            if (brewerySpotId == nil) {
+            if (spotTypeId == nil) {
                 return;
             }
             
             NSDictionary *params = @{
                                      kSpotModelParamQuery : query,
-                                     kSpotModelParamQuerySpotTypeId : brewerySpotId
+                                     kSpotModelParamQuerySpotTypeId : spotTypeId
                                      };
             
             [SpotModel getSpots:params success:^(NSArray *spotModels, JSONAPI *jsonApi) {
@@ -434,12 +442,6 @@
                 }
             } else if (autocompleteView.textfield == _txtWineStyle) {
                 array = [_wineVarietals filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", query]];
-            } else if (autocompleteView.textfield == _txtCocktailAlcoholType) {
-                if (query.length > 0) {
-                    array = [_cocktailBaseAlcohols filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", query]];
-                } else {
-                    array = _cocktailBaseAlcohols.copy;
-                }
             }
             
             // Returning results on main queue
@@ -453,8 +455,6 @@
 - (NSString *)autocomplete:(JHAutoCompleteView *)autocompleteView stringForObject:(id)object atIndex:(NSInteger)index {
     if (_txtSpotType.isFirstResponder) {
         return [object objectForKey:@"name"];
-    } else if (_txtCocktailAlcoholType.isFirstResponder) {
-        return [object objectForKey:@"name"];
     }
     
     return object;
@@ -464,7 +464,7 @@
 
 - (NSInteger)autocompleteMinumumNumberOfCharters:(JHAutoCompleteView *)autocompleteView {
     // Shows all results always for spot type and cocktail
-    if (autocompleteView.textfield == _txtSpotType || autocompleteView.textfield == _txtBeerStyle || autocompleteView.textfield == _txtCocktailAlcoholType) {
+    if (autocompleteView.textfield == _txtSpotType || autocompleteView.textfield == _txtBeerStyle) {
         return 0;
     }
     
@@ -493,11 +493,12 @@
     AutoCompleteCell *autoCompleteCell = (AutoCompleteCell*)cell;
     if (autocomplete.textfield == _txtSpotType) {
         autoCompleteCell.lblTitle.text = [object objectForKey:@"name"];
-    } else if (autocomplete.textfield == _txtCocktailAlcoholType) {
-        autoCompleteCell.lblTitle.text = [object objectForKey:@"name"];
     } else if ([object isKindOfClass:[NSString class]] == YES) {
         autoCompleteCell.lblTitle.text = object;
     } else if (autocomplete.textfield == _txtBeerBreweryName) {
+        SpotModel *spot = (SpotModel*)object;
+        autoCompleteCell.lblTitle.text = spot.name;
+    } else if (autocomplete.textfield == _txtWineWineryName) {
         SpotModel *spot = (SpotModel*)object;
         autoCompleteCell.lblTitle.text = spot.name;
     }
@@ -510,10 +511,10 @@
         textField.text = [_selectedSpotType objectForKey:@"name"];
         
         [self fetchSliderTemplates:_selectedReviewType];
-    } else if (textField == _txtCocktailAlcoholType ) {
-        _selectedCocktailSubtype = object;
-        textField.text = [_selectedCocktailSubtype objectForKey:@"name"];
     } else if (textField == _txtBeerBreweryName) {
+        _selectedDrinkSpot = object;
+        textField.text = _selectedDrinkSpot.name;
+    } else if (textField == _txtWineWineryName) {
         _selectedDrinkSpot = object;
         textField.text = _selectedDrinkSpot.name;
     } else if ([object isKindOfClass:[NSString class]] == YES) {
@@ -532,6 +533,10 @@
         return _spotTypes.count;
     } else if (pickerView == _pickerViewState) {
         return kStateList.count;
+    } else if (pickerView == _pickerViewCocktailType) {
+        return _cocktailTypes.count;
+    } else if (pickerView == _pickerViewCocktailBaseAlcoholType) {
+        return _cocktailBaseAlcohols.count;
     }
     return 0;
 }
@@ -542,6 +547,12 @@
         return [spotType objectForKey:@"name"];
     } else if (pickerView == _pickerViewState) {
         return [kStateList objectAtIndex:row];
+    } else if (pickerView == _pickerViewCocktailType) {
+        NSDictionary *cocktailType = [_cocktailTypes objectAtIndex:row];
+        return [cocktailType objectForKey:@"name"];
+    } else if (pickerView == _pickerViewCocktailBaseAlcoholType) {
+        BaseAlcoholModel *baseAlcohol = [_cocktailBaseAlcohols objectAtIndex:row];
+        return baseAlcohol.name;
     }
     return nil;
 }
@@ -588,7 +599,28 @@
     _txtSpotState.text = state;
 }
 
+- (void)onClickChooseCocktailType:(id)sender {
+    _selectedCocktailSubtype = [_cocktailTypes objectAtIndex:[_pickerViewCocktailType selectedRowInComponent:0]];
+    [self.view endEditing:YES];
+    
+    _txtCocktailType.text = [_selectedCocktailSubtype objectForKey:@"name"];
+}
+
+- (void)onClickChooseCocktailAlcoholType:(id)sender {
+    _selectedCocktailBaseAlcohol = [_cocktailBaseAlcohols objectAtIndex:[_pickerViewCocktailBaseAlcoholType selectedRowInComponent:0]];
+    [self.view endEditing:YES];
+    
+    _txtCocktailAlcoholType.text = _selectedCocktailBaseAlcohol.name;
+}
+
 - (IBAction)onClickSubmit:(id)sender {
+    
+    // Validating selected spot id exists first
+    // since a spot type is required to show sliders
+    if (_selectedReviewType == kSpotReviewType && ( _selectedSpotType == nil || [_selectedSpotType objectForKey:@"id"] == nil )) {
+        [self showAlert:@"Oops" message:@"Please select a spot type before submitting"];
+        return;
+    }
     
     /*
      * Make sure all required spotlist shave been modified
@@ -635,13 +667,7 @@
             [self showAlert:@"Oops" message:@"State is required"];
             return;
         }
-        
-        // Validating selected drink id exists
-        if (_selectedSpotType == nil || [_selectedSpotType objectForKey:@"id"] == nil) {
-            [self showAlert:@"Oops" message:@"Not able to submit a spot right now"];
-            [[RavenClient sharedClient] captureMessage:@"Spot type nil when trying to create spo" level:kRavenLogLevelDebugError];
-            return;
-        }
+
         NSNumber *spotTypeId = [_selectedSpotType objectForKey:@"id"];
         
         // Looks up zip code from address, city, and state
@@ -761,23 +787,28 @@
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
         if (drinkType == nil || [drinkType objectForKey:@"id"] == nil) {
             [self showAlert:@"Oops" message:@"Not able to submit a cocktail right now"];
-            [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create cocktail" level:kRavenLogLevelDebugError];
             return;
         }
         NSNumber *drinkId = [drinkType objectForKey:@"id"];
         
         // Validating selected drink subtype id exists
-        if (_selectedCocktailSubtype == nil || [_selectedCocktailSubtype objectForKey:@"id"] != nil) {
-            [self showAlert:@"Oops" message:@"A cocktail base alcohol is required"];
-            [[RavenClient sharedClient] captureMessage:@"Drink subtype nil when trying to create cocktail" level:kRavenLogLevelDebugError];
+        if (_selectedCocktailSubtype == nil || [_selectedCocktailSubtype objectForKey:@"id"] == nil) {
+            [self showAlert:@"Oops" message:@"A cocktail type is required"];
             return;
         }
         NSNumber *drinkSubtypeId = [_selectedCocktailSubtype objectForKey:@"id"];
         
+        // Validating selected base alcohol
+        if (_selectedCocktailBaseAlcohol == nil) {
+            [self showAlert:@"Oops" message:@"A base alcohol is required"];
+            return;
+        }
+        
         NSDictionary *params = @{
                                  kDrinkModelParamName: name,
                                  kDrinkModelParamDrinkTypeId: drinkId,
-                                 kDrinkModelParamDrinkSubtypeId: drinkSubtypeId
+                                 kDrinkModelParamDrinkSubtypeId: drinkSubtypeId,
+                                 kDrinkModelParamBaseAlcohols : @[ _selectedCocktailBaseAlcohol.ID ]
                                  };
         
         // Send request to create drink
@@ -786,7 +817,7 @@
     // Wine
     else if (_selectedReviewType == 3) {
         NSString *varietal = _txtWineStyle.text;
-        // TOOD: Need to do something with brewery
+        NSString *wineryName = _txtWineWineryName.text;
         NSString *name = _txtWineName.text;
         
         // Form text field validations
@@ -808,14 +839,40 @@
             name = varietal;
         }
         
-        NSDictionary *params = @{
+        NSMutableDictionary *params = @{
                                  kDrinkModelParamName: name,
                                  kDrinkModelParamDrinkTypeId: drinkId,
                                  kDrinkModelParamVarietal: varietal
-                                 };
+                                 }.mutableCopy;
         
-        // Send request to create drink
-        [self createDrink:params];
+        // Makes sure the selected drink spot is selected and that the selected drink spot is equal to the text field
+        if (_selectedDrinkSpot != nil && [_selectedDrinkSpot.name isEqualToString:wineryName]) {
+            [params setObject:_selectedDrinkSpot.ID forKey:kDrinkModelParamSpotId];
+            
+            [self createDrink:params];
+        } else if (wineryName.length > 0) {
+            
+            [self showHUD:@"Creating winery"];
+            [SpotModel postSpot:@{
+                                  kSpotModelParamName : wineryName,
+                                  } success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
+                                      [self hideHUD];
+                                      
+                                      // Set created spot id
+                                      [params setObject:spotModel.ID forKey:kDrinkModelParamSpotId];
+                                      
+                                      // Send request to create drink
+                                      [self createDrink:params];
+                                      
+                                  } failure:^(ErrorModel *errorModel) {
+                                      [self hideHUD];
+                                      [self showAlert:@"Oops" message:errorModel.human];
+                                  }];
+            
+        } else {
+            // Send request to create drink
+            [self createDrink:params];
+        }
     }
     
 }
@@ -884,28 +941,12 @@
                 [self.navigationController popToViewController:reviewsMenuViewController animated:YES];
             } else {
                 
-                BOOL foundSearch = NO;
-                NSMutableArray *viewControllers = @[].mutableCopy;
-                
-                for (UIViewController *viewController in self.navigationController.viewControllers) {
-                    if ([viewController isKindOfClass:[SearchNewReviewViewController class]] == YES) {
-                        reviewsMenuViewController = viewController;
-                        foundSearch = YES;
-                        break;
-                    } else {
-                        [viewControllers addObject:viewController];
-                    }
-                }
-                
-                if (foundSearch == NO) {
-                    [self.navigationController popViewControllerAnimated:YES];
+                if ([_delegate respondsToSelector:@selector(newReviewViewController:submittedReview:)]) {
+                    [_delegate newReviewViewController:self submittedReview:reviewModel];
                 } else {
-                    ReviewsMenuViewController *viewController = [[self reviewsStoryboard] instantiateInitialViewController];
-                    [viewController setTitle:@"Reviews"];
-                    
-                    [viewControllers addObject:viewController];
-                    [self.navigationController setViewControllers:viewControllers animated:YES];
+                    [self.navigationController popViewControllerAnimated:YES];
                 }
+                
             }
         }];
         
@@ -951,7 +992,7 @@
             _drinkTypes = [forms objectForKey:@"drink_types"];
             for (NSDictionary *drinkType in _drinkTypes) {
                 if ([[[drinkType objectForKey:@"name"] lowercaseString] isEqualToString:@"cocktail"] == YES) {
-                    _cocktailBaseAlcohols = [drinkType objectForKey:@"drink_subtypes"];
+                    _cocktailTypes = [drinkType objectForKey:@"drink_subtypes"];
                 }
             }
         }
@@ -960,8 +1001,17 @@
         
     }];
     
+    // Gets drink form data
+    Promise *promiseBaseAlcohols = [BaseAlcoholModel getBaseAlcohols:nil success:^(NSArray *baseAlcoholModels, JSONAPI *jsonAPI) {
+        _cocktailBaseAlcohols = [baseAlcoholModels sortedArrayUsingComparator:^NSComparisonResult(BaseAlcoholModel *obj1, BaseAlcoholModel *obj2) {
+            return [obj1.name caseInsensitiveCompare:obj2.name];
+        }];
+    } failure:^(ErrorModel *errorModel) {
+        
+    }];
+    
     // Waits for both spots and drinks to finish
-    [When when:@[promiseSpotForm, promiseDrinkForm] then:^{
+    [When when:@[promiseSpotForm, promiseDrinkForm, promiseBaseAlcohols] then:^{
 
     } fail:^(id error) {
         [self hideHUD];
@@ -1135,12 +1185,27 @@
     } else if (index == 2) {
         if (_viewFormNewCocktail == nil) {
             _viewFormNewCocktail = [UIView viewFromNibNamed:@"NewReviewCocktailView" withOwner:self];
-            
-            // Sets autocomplete
-            [_txtCocktailAlcoholType setAutocompleteWithDataSource:self delegate:self];
-            [_txtCocktailAlcoholType showAutoCompleteTableAlways:YES];
-            [_txtCocktailAlcoholType registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
         }
+        
+        // Sets cocktail type picker view
+        _pickerViewCocktailType = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 40, 320, 216)];
+        [_pickerViewCocktailType setBackgroundColor:[UIColor whiteColor]];
+        [_pickerViewCocktailType setDataSource:self];
+        [_pickerViewCocktailType setDelegate:self];
+        
+        // Configure picker...
+        [_txtCocktailType setInputView:_pickerViewCocktailType];
+        [_txtCocktailType setInputAccessoryView:[self keyboardToolBarForCocktailType]];
+        
+        // Sets cocktail alcohol type picker view
+        _pickerViewCocktailBaseAlcoholType = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 40, 320, 216)];
+        [_pickerViewCocktailBaseAlcoholType setBackgroundColor:[UIColor whiteColor]];
+        [_pickerViewCocktailBaseAlcoholType setDataSource:self];
+        [_pickerViewCocktailBaseAlcoholType setDelegate:self];
+        
+        // Configure picker...
+        [_txtCocktailAlcoholType setInputView:_pickerViewCocktailBaseAlcoholType];
+        [_txtCocktailAlcoholType setInputAccessoryView:[self keyboardToolBarForCocktailAlcoholType]];
         
         return _viewFormNewCocktail;
     } else if (index == 3) {
@@ -1150,6 +1215,10 @@
             // Sets autocomplete
             [_txtWineStyle setAutocompleteWithDataSource:self delegate:self];
             [_txtWineStyle registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
+            
+            // Sets autocomplete
+            [_txtWineWineryName setAutocompleteWithDataSource:self delegate:self];
+            [_txtWineWineryName registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
         }
         
         return _viewFormNewWine;
@@ -1186,6 +1255,42 @@
     
     UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onClickChooseState:)];
+    
+    NSArray *itemsArray = @[flex, nextButton];
+    
+    [toolbar setItems:itemsArray];
+    
+    return toolbar;
+}
+
+- (UIToolbar *)keyboardToolBarForCocktailType {
+    
+    UIToolbar *toolbar = [[UIToolbar alloc] init];
+    [toolbar setBarStyle:UIBarStyleDefault];
+    [toolbar sizeToFit];
+    
+    [self.segControlForCocktailType setEnabled:NO forSegmentAtIndex:0];
+    
+    UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onClickChooseCocktailType:)];
+    
+    NSArray *itemsArray = @[flex, nextButton];
+    
+    [toolbar setItems:itemsArray];
+    
+    return toolbar;
+}
+
+- (UIToolbar *)keyboardToolBarForCocktailAlcoholType {
+    
+    UIToolbar *toolbar = [[UIToolbar alloc] init];
+    [toolbar setBarStyle:UIBarStyleDefault];
+    [toolbar sizeToFit];
+    
+    [self.segControlForCocktailAlcoholType setEnabled:NO forSegmentAtIndex:0];
+    
+    UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onClickChooseCocktailAlcoholType:)];
     
     NSArray *itemsArray = @[flex, nextButton];
     

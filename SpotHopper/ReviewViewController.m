@@ -301,7 +301,13 @@
             
             [self hideHUD];
             [self showHUDCompleted:@"Saved!" block:^{
-                [self.navigationController popViewControllerAnimated:YES];
+                
+                if ([_delegate respondsToSelector:@selector(reviewViewController:submittedReview:)]) {
+                    [_delegate reviewViewController:self submittedReview:reviewModel];
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                
             }];
             
         } failure:^(ErrorModel *errorModel) {
@@ -330,7 +336,13 @@
             
             [self hideHUD];
             [self showHUDCompleted:@"Saved!" block:^{
-                [self.navigationController popViewControllerAnimated:YES];
+                
+                if ([_delegate respondsToSelector:@selector(reviewViewController:submittedReview:)]) {
+                    [_delegate reviewViewController:self submittedReview:reviewModel];
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                
             }];
             
         } failure:^(ErrorModel *errorModel) {

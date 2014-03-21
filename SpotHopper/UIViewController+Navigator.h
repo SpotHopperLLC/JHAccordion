@@ -14,6 +14,9 @@
 #import "SpotModel.h"
 #import "SpotListModel.h"
 
+#import "NewReviewViewController.h"
+#import "ReviewViewController.h"
+
 #import "FindSimilarViewController.h"
 #import "FindSimilarDrinksViewController.h"
 
@@ -35,11 +38,15 @@
 - (void)goToMyReviews;
 - (void)goToReview:(ReviewModel*)review;
 - (void)goToNewReviewForDrink:(DrinkModel*)drink;
+- (void)goToNewReviewForDrink:(DrinkModel*)drink delegate:(id<ReviewViewControllerDelegate>)delegate;
 - (void)goToNewReviewForSpot:(SpotModel*)spot;
+- (void)goToNewReviewForSpot:(SpotModel *)spot delegate:(id<ReviewViewControllerDelegate>)delegate;
 - (void)goToSearchForNewReview:(BOOL)showSimilarLists notWhatLookingFor:(BOOL)showNotWhatLookingFor createReview:(BOOL)createReview;
 - (void)goToNewReview;
 - (void)goToNewReviewWithType:(NSString*)reviewType;
+- (void)goToNewReviewWithType:(NSString*)reviewType delegate:(id<NewReviewViewControllerDelegate>)delegate;
 - (void)goToNewReview:(SpotModel*)spot;
+- (void)goToNewReview:(SpotModel*)spot delegate:(id<NewReviewViewControllerDelegate>)delegate;
 
 // Spots
 - (void)goToSpotListMenu;

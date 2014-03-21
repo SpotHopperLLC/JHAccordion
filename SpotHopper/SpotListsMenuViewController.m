@@ -30,6 +30,7 @@
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
 #import "SpotModel.h"
+#import "SpotTypeModel.h"
 #import "SpotListModel.h"
 #import "UserModel.h"
 
@@ -85,6 +86,8 @@
     _accordion = [[JHAccordion alloc] initWithTableView:_tblMenu];
     [_accordion setDelegate:self];
     [_accordion openSection:0];
+    [_accordion openSection:1];
+    [_accordion openSection:2];
     
     // Configures table
     [_tblMenu registerNib:[UINib nibWithNibName:@"CreateListCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"CreateListCell"];
@@ -98,6 +101,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
+    
+    // Open when the view appears
+    [_accordion openSection:0];
     
     // Deselects cell
     [_tblMenu deselectRowAtIndexPath:[_tblMenu indexPathForSelectedRow] animated:NO];
@@ -118,6 +124,20 @@
         [_btnLocation updateWithLastLocation];
     } else {
         [self fetchSpotLists];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    // Setting has seen before
+    if ([self hasBeenSeenBefore] == NO) {
+        
+        // Sets has seen before
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSpotListsMenuViewControllerViewedAlready
+         ];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
     }
 }
 
@@ -151,8 +171,18 @@
     if (section == 0) {
         return 2;
     } else if (section == 1) {
+        // Hide section if have not seen before
+        if( [self hasBeenSeenBefore] == NO) {
+            return 0;
+        }
+        
         return _featuredSpotLists.count;
     } else if (section == 2) {
+        // Hide section if have not seen before
+        if( [self hasBeenSeenBefore] == NO) {
+            return 0;
+        }
+        
         return _mySpotLists.count;
     }
     
@@ -188,15 +218,6 @@
         
         return cell;
     }
-    
-//        static NSString *cellIdentifier = @"FooterShadowCell";
-//        
-//        FooterShadowCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-//        if(cell == nil) {
-//            cell = [[FooterShadowCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-//        }
-//        
-//        return cell;
     
     return nil;
 }
@@ -246,7 +267,11 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 0 || section == 1 || section == 2) {
+    if (section == 0) {
+        return 65.0f;
+    } else if (section == 1 && [self hasBeenSeenBefore] == YES && _featuredSpotLists.count > 0 ) {
+        return 65.0f;
+    } else if ( section == 2 && [self hasBeenSeenBefore] == YES && _mySpotLists.count > 0 ) {
         return 65.0f;
     }
     
@@ -312,7 +337,7 @@
             longitude = spotModel.longitude;
         }
         
-        [SpotListModel postSpotList:[NSString stringWithFormat:@"Similar to %@", spotModel.name] spotId:spotModel.ID latitude:latitude longitude:longitude sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+        [SpotListModel postSpotList:[NSString stringWithFormat:@"Similar to %@", spotModel.name] spotId:spotModel.ID spotTypeId:spotModel.spotType.ID latitude:latitude longitude:longitude sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
             [self hideHUD];
             [self showHUDCompleted:@"Spotlist created!" block:^{
                 
@@ -352,6 +377,10 @@
 }
 
 #pragma mark - Private
+
+- (BOOL)hasBeenSeenBefore {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kSpotListsMenuViewControllerViewedAlready];
+}
 
 - (void)fetchSpotLists {
     
@@ -410,33 +439,6 @@
         // Reload table and hide HUD
         [_tblMenu reloadData];
         [self hideHUD];
-        
-        BOOL hasSeenBefore = [[NSUserDefaults standardUserDefaults] boolForKey:kSpotListsMenuViewControllerViewedAlready];
-        if (hasSeenBefore == NO) {
-            
-            // Sets has seen before
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSpotListsMenuViewControllerViewedAlready
-             ];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            
-            [_accordion openSection:0];
-            [_accordion closeSection:1];
-            [_accordion closeSection:2];
-            
-        } else {
-            
-            // Opens up only section
-            if (_mySpotLists.count > 0) {
-                [_accordion closeSection:0];
-                [_accordion closeSection:1];
-                [_accordion openSection:2];
-            } else {
-                [_accordion openSection:0];
-                [_accordion openSection:1];
-                [_accordion closeSection:2];
-            }
-            
-        }
         
     }];
     

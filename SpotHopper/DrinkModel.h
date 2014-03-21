@@ -21,6 +21,7 @@
 #define kDrinkModelParamSpotId @"spot_id"
 #define kDrinkModelParamDrinkTypeId @"drink_type_id"
 #define kDrinkModelParamDrinkSubtypeId @"drink_subtype_id"
+#define kDrinkModelParamBaseAlcohols @"base_alcohols"
 
 #define kDrinkModelMetaPage @"page"
 #define kDrinkModelMetaTotalRecords @"total_records"
