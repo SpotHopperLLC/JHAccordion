@@ -28,6 +28,7 @@
 #import "SearchNewReviewViewController.h"
 
 #import "ErrorModel.h"
+#import "BaseAlcoholModel.h"
 
 #import <JHAccordion/JHAccordion.h>
 #import <JHAutoCompleteTextField/JHAutoCompleteTextField.h>
@@ -55,6 +56,7 @@
 @property (nonatomic, strong) NSArray *beerStyles;
 @property (nonatomic, strong) NSArray *wineVarietals;
 @property (nonatomic, strong) NSArray *cocktailTypes;
+@property (nonatomic, strong) NSArray *cocktailBaseAlcohols;
 
 @property (nonatomic, strong) DrinkModel *createdDrink;
 @property (nonatomic, strong) SpotModel *createdSpot;
@@ -67,6 +69,7 @@
 @property (nonatomic, strong) SpotModel *selectedDrinkSpot;
 @property (nonatomic, strong) NSDictionary *selectedSpotType;
 @property (nonatomic, strong) NSDictionary *selectedCocktailSubtype;
+@property (nonatomic, strong) BaseAlcoholModel *selectedCocktailBaseAlcohol;
 
 // Forms
 @property (nonatomic, strong) UIView *viewFormNewSpot;
@@ -363,8 +366,6 @@
     
     if (textField == _txtSpotType) {
         _selectedSpotType = nil;
-    } else if (textField == _txtCocktailAlcoholType) {
-        _selectedCocktailSubtype = nil;
     }
     
     return YES;
@@ -382,11 +383,6 @@
             [_sliders removeAllObjects];
             _sliderTemplates = nil;
             [_tblReviews reloadData];
-        }
-    } else if (textField == _txtCocktailAlcoholType) {
-        _selectedCocktailSubtype = nil;
-        if (_selectedCocktailSubtype == nil) {
-            [_txtCocktailAlcoholType setText:@""];
         }
     }
 }
@@ -526,6 +522,8 @@
         return kStateList.count;
     } else if (pickerView == _pickerViewCocktailType) {
         return _cocktailTypes.count;
+    } else if (pickerView == _pickerViewCocktailBaseAlcoholType) {
+        return _cocktailBaseAlcohols.count;
     }
     return 0;
 }
@@ -539,6 +537,9 @@
     } else if (pickerView == _pickerViewCocktailType) {
         NSDictionary *cocktailType = [_cocktailTypes objectAtIndex:row];
         return [cocktailType objectForKey:@"name"];
+    } else if (pickerView == _pickerViewCocktailBaseAlcoholType) {
+        BaseAlcoholModel *baseAlcohol = [_cocktailBaseAlcohols objectAtIndex:row];
+        return baseAlcohol.name;
     }
     return nil;
 }
@@ -590,6 +591,13 @@
     [self.view endEditing:YES];
     
     _txtCocktailType.text = [_selectedCocktailSubtype objectForKey:@"name"];
+}
+
+- (void)onClickChooseCocktailAlcoholType:(id)sender {
+    _selectedCocktailBaseAlcohol = [_cocktailBaseAlcohols objectAtIndex:[_pickerViewCocktailBaseAlcoholType selectedRowInComponent:0]];
+    [self.view endEditing:YES];
+    
+    _txtCocktailAlcoholType.text = _selectedCocktailBaseAlcohol.name;
 }
 
 - (IBAction)onClickSubmit:(id)sender {
@@ -776,10 +784,17 @@
         }
         NSNumber *drinkSubtypeId = [_selectedCocktailSubtype objectForKey:@"id"];
         
+        // Validating selected base alcohol
+        if (_selectedCocktailBaseAlcohol == nil) {
+            [self showAlert:@"Oops" message:@"A base alcohol is required"];
+            return;
+        }
+        
         NSDictionary *params = @{
                                  kDrinkModelParamName: name,
                                  kDrinkModelParamDrinkTypeId: drinkId,
-                                 kDrinkModelParamDrinkSubtypeId: drinkSubtypeId
+                                 kDrinkModelParamDrinkSubtypeId: drinkSubtypeId,
+                                 kDrinkModelParamBaseAlcohols : @[ _selectedCocktailBaseAlcohol.ID ]
                                  };
         
         // Send request to create drink
@@ -962,8 +977,17 @@
         
     }];
     
+    // Gets drink form data
+    Promise *promiseBaseAlcohols = [BaseAlcoholModel getBaseAlcohols:nil success:^(NSArray *baseAlcoholModels, JSONAPI *jsonAPI) {
+        _cocktailBaseAlcohols = [baseAlcoholModels sortedArrayUsingComparator:^NSComparisonResult(BaseAlcoholModel *obj1, BaseAlcoholModel *obj2) {
+            return [obj1.name caseInsensitiveCompare:obj2.name];
+        }];
+    } failure:^(ErrorModel *errorModel) {
+        
+    }];
+    
     // Waits for both spots and drinks to finish
-    [When when:@[promiseSpotForm, promiseDrinkForm] then:^{
+    [When when:@[promiseSpotForm, promiseDrinkForm, promiseBaseAlcohols] then:^{
 
     } fail:^(id error) {
         [self hideHUD];
@@ -1139,7 +1163,7 @@
             _viewFormNewCocktail = [UIView viewFromNibNamed:@"NewReviewCocktailView" withOwner:self];
         }
         
-        // Sets spot type picker view
+        // Sets cocktail type picker view
         _pickerViewCocktailType = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 40, 320, 216)];
         [_pickerViewCocktailType setBackgroundColor:[UIColor whiteColor]];
         [_pickerViewCocktailType setDataSource:self];
@@ -1148,6 +1172,16 @@
         // Configure picker...
         [_txtCocktailType setInputView:_pickerViewCocktailType];
         [_txtCocktailType setInputAccessoryView:[self keyboardToolBarForCocktailType]];
+        
+        // Sets cocktail alcohol type picker view
+        _pickerViewCocktailBaseAlcoholType = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 40, 320, 216)];
+        [_pickerViewCocktailBaseAlcoholType setBackgroundColor:[UIColor whiteColor]];
+        [_pickerViewCocktailBaseAlcoholType setDataSource:self];
+        [_pickerViewCocktailBaseAlcoholType setDelegate:self];
+        
+        // Configure picker...
+        [_txtCocktailAlcoholType setInputView:_pickerViewCocktailBaseAlcoholType];
+        [_txtCocktailAlcoholType setInputAccessoryView:[self keyboardToolBarForCocktailAlcoholType]];
         
         return _viewFormNewCocktail;
     } else if (index == 3) {
@@ -1211,6 +1245,24 @@
     
     UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onClickChooseCocktailType:)];
+    
+    NSArray *itemsArray = @[flex, nextButton];
+    
+    [toolbar setItems:itemsArray];
+    
+    return toolbar;
+}
+
+- (UIToolbar *)keyboardToolBarForCocktailAlcoholType {
+    
+    UIToolbar *toolbar = [[UIToolbar alloc] init];
+    [toolbar setBarStyle:UIBarStyleDefault];
+    [toolbar sizeToFit];
+    
+    [self.segControlForCocktailAlcoholType setEnabled:NO forSegmentAtIndex:0];
+    
+    UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onClickChooseCocktailAlcoholType:)];
     
     NSArray *itemsArray = @[flex, nextButton];
     
