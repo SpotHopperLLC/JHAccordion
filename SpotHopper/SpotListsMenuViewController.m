@@ -30,6 +30,7 @@
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
 #import "SpotModel.h"
+#import "SpotTypeModel.h"
 #import "SpotListModel.h"
 #import "UserModel.h"
 
@@ -312,7 +313,7 @@
             longitude = spotModel.longitude;
         }
         
-        [SpotListModel postSpotList:[NSString stringWithFormat:@"Similar to %@", spotModel.name] spotId:spotModel.ID latitude:latitude longitude:longitude sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+        [SpotListModel postSpotList:[NSString stringWithFormat:@"Similar to %@", spotModel.name] spotId:spotModel.ID spotTypeId:spotModel.spotType.ID latitude:latitude longitude:longitude sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
             [self hideHUD];
             [self showHUDCompleted:@"Spotlist created!" block:^{
                 

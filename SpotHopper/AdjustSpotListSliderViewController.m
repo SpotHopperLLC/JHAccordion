@@ -419,8 +419,10 @@
         longitude = [NSNumber numberWithFloat:_location.coordinate.longitude];
     }
     
+    NSNumber *spotTypeId = [_selectedSpotType objectForKey:@"id"];
+    
     [self showHUD:@"Creating spotlist"];
-    [SpotListModel postSpotList:kSpotListModelDefaultName spotId:nil latitude:latitude longitude:longitude sliders:allTheSliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+    [SpotListModel postSpotList:kSpotListModelDefaultName spotId:nil spotTypeId:spotTypeId latitude:latitude longitude:longitude sliders:allTheSliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
         [self hideHUD];
         [self showHUDCompleted:@"Spotlist created!" block:^{
             
