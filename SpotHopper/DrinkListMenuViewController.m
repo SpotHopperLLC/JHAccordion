@@ -76,11 +76,6 @@
 {
     [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
     
-//    // Sets has seen before
-//    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kDrinkListsMenuViewControllerViewedAlready
-//     ];
-//    [[NSUserDefaults standardUserDefaults] synchronize];
-    
     // Sets title
     [self setTitle:@"Drinklists"];
     
