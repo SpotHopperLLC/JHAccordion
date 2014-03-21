@@ -590,6 +590,15 @@
 
 - (IBAction)onClickSubmit:(id)sender {
     
+    // Validating selected spot id exists first
+    // since a spot type is required to show sliders
+    if (_selectedReviewType == kSpotReviewType) {
+        if (_selectedSpotType == nil || [_selectedSpotType objectForKey:@"id"] == nil) {
+            [self showAlert:@"Oops" message:@"Please select a spot type before submitting"];
+            return;
+        }
+    }
+    
     /*
      * Make sure all required spotlist shave been modified
      */
@@ -635,13 +644,7 @@
             [self showAlert:@"Oops" message:@"State is required"];
             return;
         }
-        
-        // Validating selected drink id exists
-        if (_selectedSpotType == nil || [_selectedSpotType objectForKey:@"id"] == nil) {
-            [self showAlert:@"Oops" message:@"Not able to submit a spot right now"];
-            [[RavenClient sharedClient] captureMessage:@"Spot type nil when trying to create spo" level:kRavenLogLevelDebugError];
-            return;
-        }
+
         NSNumber *spotTypeId = [_selectedSpotType objectForKey:@"id"];
         
         // Looks up zip code from address, city, and state
