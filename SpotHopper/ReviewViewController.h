@@ -12,11 +12,21 @@
 #import "ReviewModel.h"
 #import "SpotModel.h"
 
+@protocol ReviewViewControllerDelegate;
+
 @interface ReviewViewController : BaseViewController
 
 @property (nonatomic, strong) ReviewModel *review;
 
 @property (nonatomic, strong) DrinkModel *drink;
 @property (nonatomic, strong) SpotModel *spot;
+
+@property (nonatomic, assign) id<ReviewViewControllerDelegate> delegate;
+
+@end
+
+@protocol ReviewViewControllerDelegate <NSObject>
+
+- (void)reviewViewController:(ReviewViewController*)viewController submittedReview:(ReviewModel*)review;
 
 @end
