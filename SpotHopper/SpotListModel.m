@@ -72,7 +72,7 @@
     
 }
 
-+ (Promise *)postSpotList:(NSString*)name spotId:(NSNumber*)spotId latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders successBlock:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
++ (Promise *)postSpotList:(NSString*)name spotId:(NSNumber*)spotId spotTypeId:(NSNumber*)spotTypeId latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders successBlock:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
@@ -95,6 +95,10 @@
     
     if (spotId != nil) {
         [params setObject:spotId forKey:@"spot_id"];
+    }
+    
+    if (spotTypeId != nil) {
+        [params setObject:spotTypeId forKey:@"spot_type_id"];
     }
     
     if (latitude != nil && longitude != nil) {
