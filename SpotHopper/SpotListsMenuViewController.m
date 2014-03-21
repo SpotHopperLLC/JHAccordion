@@ -75,11 +75,6 @@
 {
     [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
     
-    // Sets has seen before
-//    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSpotListsMenuViewControllerViewedAlready
-//     ];
-//    [[NSUserDefaults standardUserDefaults] synchronize];
-    
     // Sets title
     [self setTitle:@"Spotlists"];
     
