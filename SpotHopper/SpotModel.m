@@ -221,7 +221,7 @@
 
 - (NSArray *)sliderTemplates {
     return [[self linkedResourceForKey:@"slider_templates"] sortedArrayUsingComparator:^NSComparisonResult(SliderTemplateModel *obj1, SliderTemplateModel *obj2) {
-        return [obj1.ID compare:obj2.ID];
+        return [obj1.order compare:obj2.order];
     }];
 }
 
