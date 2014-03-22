@@ -51,6 +51,10 @@
     return _drinkTypes;
 }
 
+- (NSNumber *)order {
+    return [self objectForKey:@"order"];
+}
+
 #pragma mark - API
 
 + (Promise*)getSliderTemplates:(NSDictionary*)params success:(void(^)(NSArray *sliderTemplates, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {

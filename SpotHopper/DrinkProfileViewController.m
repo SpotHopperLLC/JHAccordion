@@ -400,6 +400,9 @@
     // Filling sliders if nil
     if (_sliders == nil) {
         _sliders = [NSMutableArray arrayWithArray:_averageReview.sliders];
+        [_sliders sortUsingComparator:^NSComparisonResult(SliderModel *obj1, SliderModel *obj2) {
+            return [obj1.sliderTemplate.order compare:obj2.sliderTemplate.order];
+        }];
     }
     
     // Filling advanced sliders if nil
