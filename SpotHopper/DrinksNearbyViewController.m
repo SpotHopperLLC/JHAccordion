@@ -9,6 +9,7 @@
 #import "DrinksNearbyViewController.h"
 
 #import "SHButtonLatoLightLocation.h"
+#import "TellMeMyLocation.h"
 
 #import "UIViewController+Navigator.h"
 
@@ -29,6 +30,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *lblAtPlace;
 
+@property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
+@property (nonatomic, strong) CLLocation *currentLocation;
 @property (nonatomic, strong) CLLocation *location;
 
 @property (nonatomic, strong) SpotModel *spotNearby;
@@ -55,6 +58,15 @@
     
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
+    
+    // Find me
+    _tellMeMyLocation = [[TellMeMyLocation alloc] init];
+    [_tellMeMyLocation findMe:kCLLocationAccuracyThreeKilometers found:^(CLLocation *newLocation) {
+        _currentLocation = newLocation;
+        [self fetchClosetSpot];
+    } failure:^(NSError *error) {
+        NSLog(@"Counldn't find location");
+    }];
     
 }
 
@@ -94,7 +106,6 @@
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
     _location = location;
-    [self fetchClosetSpot];
 }
 
 - (void)locationError:(SHButtonLatoLightLocation *)button error:(NSError *)error {
@@ -153,15 +164,15 @@
     // Disable while loading
     [_btnNearBy setEnabled:NO];
     
-    if (_location == nil) {
+    if (_currentLocation == nil) {
         [self showAlert:@"Oops" message:@"Please choose a location"];
         return;
     }
     
     // Params for location search
     NSDictionary *params = @{
-                             kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:_location.coordinate.latitude],
-                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:_location.coordinate.longitude]
+                             kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:_currentLocation.coordinate.latitude],
+                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:_currentLocation.coordinate.longitude]
                              };
     
 //    [self showHUD:@"Finding nearby spot"];
