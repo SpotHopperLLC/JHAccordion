@@ -411,6 +411,7 @@
         
         // Moving advanced sliders into their own array
         for (SliderModel *slider in _sliders) {
+            NSLog(@"Order - %@", slider.sliderTemplate.order);
             if (slider.sliderTemplate.required == NO) {
                 [_advancedSliders addObject:slider];
             }
