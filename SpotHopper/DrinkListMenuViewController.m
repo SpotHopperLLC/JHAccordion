@@ -12,6 +12,7 @@
 
 #import "TTTAttributedLabel+QuickFonting.h"
 #import "UIViewController+Navigator.h"
+#import "UIAlertView+Block.h"
 
 #import "SHButtonLatoLightLocation.h"
 #import "SectionHeaderView.h"
@@ -333,6 +334,19 @@
 #pragma mark - FindSimilarDrinksViewController
 
 - (void)findSimilarDrinksViewController:(FindSimilarDrinksViewController *)viewController selectedDrink:(DrinkModel *)drink {
+    
+    // Cannot create drinklist if no average review - so prompt to create review
+    if (drink.averageReview == nil) {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Reviews" message:@"This drink doesn't have any reviews. Would you like to create one?" delegate:nil cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+        [alert showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
+            if (buttonIndex == 1) {
+                [self goToNewReviewForDrink:drink];
+            }
+        }];
+        
+        return;
+    }
 
     [self showHUD:@"Creating drinklist"];
     [drink getDrink:Nil success:^(DrinkModel *drinkModel, JSONAPI *jsonApi) {
