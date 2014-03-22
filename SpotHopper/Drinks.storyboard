@@ -302,7 +302,13 @@ available here</string>
                                 <rect key="frame" x="0.0" y="106" width="320" height="314"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <view contentMode="scaleToFill" id="vKI-LS-EsD" customClass="SHViewTranlucentWhite">
+                            <view contentMode="scaleToFill" id="frx-5Z-i1r" userLabel="View Tranlucent White - Placeholder" customClass="SHViewTranlucentWhite">
+                                <rect key="frame" x="0.0" y="64" width="320" height="41"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="insetFor6xAndEarlier" minX="0.0" minY="64" maxX="0.0" maxY="-64"/>
+                            </view>
+                            <view hidden="YES" contentMode="scaleToFill" id="vKI-LS-EsD" userLabel="View Tranlucent White - Location" customClass="SHViewTranlucentWhite">
                                 <rect key="frame" x="0.0" y="64" width="320" height="41"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -321,6 +327,36 @@ available here</string>
                                             <color key="titleColor" red="0.94509803920000002" green="0.37647058820000001" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="insetFor6xAndEarlier" minX="0.0" minY="64" maxX="0.0" maxY="-64"/>
+                            </view>
+                            <view hidden="YES" contentMode="scaleToFill" id="NGv-Xc-Nk1" userLabel="View Tranlucent White - Spot" customClass="SHViewTranlucentWhite">
+                                <rect key="frame" x="0.0" y="64" width="320" height="41"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="At" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Vlw-IA-H39" customClass="SHLabelLatoRegular">
+                                        <rect key="frame" x="9" y="8" width="31" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Z3d-vs-A6h">
+                                        <rect key="frame" x="48" y="7" width="247" height="24"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                        <state key="normal">
+                                            <color key="titleColor" red="0.94509803920000002" green="0.37647058820000001" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onClickChooseSpot:" destination="sA2-0I-v5i" eventType="touchUpInside" id="kTO-m1-4CD"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -427,9 +463,13 @@ available here</string>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="btnLocation" destination="K3x-eC-kVf" id="7KL-7d-wHD"/>
+                        <outlet property="btnSpot" destination="Z3d-vs-A6h" id="sOB-Uy-fYo"/>
                         <outlet property="collectionView" destination="13V-oU-Bpx" id="9iR-OF-kfe"/>
                         <outlet property="lblLocation" destination="s7h-LW-LQV" id="TTN-vr-7Kh"/>
                         <outlet property="lblMatchPercent" destination="hcV-0h-rpp" id="HvH-8X-qot"/>
+                        <outlet property="viewLocation" destination="vKI-LS-EsD" id="kSa-eP-MxB"/>
+                        <outlet property="viewPlaceholder" destination="frx-5Z-i1r" id="ND6-bb-MH8"/>
+                        <outlet property="viewSpot" destination="NGv-Xc-Nk1" id="VV1-QZ-6hZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tX0-sZ-gNF" userLabel="First Responder" sceneMemberID="firstResponder"/>

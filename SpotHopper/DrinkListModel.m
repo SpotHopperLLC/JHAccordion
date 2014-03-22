@@ -25,15 +25,20 @@
     // Maps values in JSON key 'featured' to 'featured' property
     // Maps values in JSON key 'latitude' to 'latitude' property
     // Maps values in JSON key 'longitude' to 'longitude' property
-    // Maps linked resource in JSON key 'spots' to 'spots' property
+    // Maps linked resource in JSON key 'drinks' to 'drinks' property
+    // Maps linked resource in JSON key 'spot' to 'spot' property
     return @{
              @"name" : @"name",
              @"featured" : @"featured",
              @"latitude" : @"latitude",
              @"longitude" : @"longitude",
-             @"links.drinks" : @"drinks",
+             @"links.drinks" : @"drinks"
              };
     
+}
+
+- (SpotModel *)spot {
+    return [self linkedResourceForKey:@"spot"];
 }
 
 - (CLLocation *)location {
@@ -162,7 +167,7 @@
     
 }
 
-- (Promise *)putDrinkList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders success:(void (^)(DrinkListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+- (Promise *)putDrinkList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude spotId:(NSNumber*)spotId sliders:(NSArray*)sliders success:(void (^)(DrinkListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
     
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
@@ -171,6 +176,10 @@
     
     if (name.length > 0) {
         [params setObject:name forKey:@"name"];
+    }
+    
+    if (spotId != nil) {
+        [params setObject:spotId forKey:@"spot_id"];
     }
     
     if (latitude != nil && longitude != nil) {

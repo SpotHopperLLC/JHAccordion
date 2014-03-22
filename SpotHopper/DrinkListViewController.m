@@ -23,6 +23,7 @@
 #import "SHButtonLatoLightLocation.h"
 
 #import "SHNavigationController.h"
+#import "FindSimilarViewController.h"
 
 #import "DrinkCardCollectionViewCell.h"
 
@@ -31,7 +32,12 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-@interface DrinkListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, SHButtonLatoLightLocationDelegate, DrinkCardCollectionViewCellDelegate>
+@interface DrinkListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, SHButtonLatoLightLocationDelegate, DrinkCardCollectionViewCellDelegate, FindSimilarViewControllerDelegate>
+
+@property (weak, nonatomic) IBOutlet UIView *viewPlaceholder;
+@property (weak, nonatomic) IBOutlet UIView *viewLocation;
+@property (weak, nonatomic) IBOutlet UIView *viewSpot;
+@property (weak, nonatomic) IBOutlet UIButton *btnSpot;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblMatchPercent;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -95,6 +101,7 @@
         [self fetchDrinkList];
     } else {
         [_collectionView reloadData];
+        [self updateView];
         [self updateMatchPercent];
     }
 }
@@ -188,7 +195,7 @@
     if (_selectedLocation != nil) {
         
         [self showHUD:@"Getting new drinks"];
-        [_drinkList putDrinkList:nil latitude:[NSNumber numberWithFloat:location.coordinate.latitude] longitude:[NSNumber numberWithFloat:location.coordinate.longitude] sliders:nil success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+        [_drinkList putDrinkList:nil latitude:[NSNumber numberWithFloat:location.coordinate.latitude] longitude:[NSNumber numberWithFloat:location.coordinate.longitude] spotId:nil sliders:nil success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
             [self hideHUD];
             
             _drinkList = drinkListModel;
@@ -209,7 +216,47 @@
     [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
 }
 
+#pragma mark - FindSimilarViewControllerDelegate
+
+- (void)findSimilarViewController:(FindSimilarViewController *)viewController selectedSpot:(SpotModel *)spot {
+    [self.navigationController popToViewController:self animated:YES];
+    
+    [self showHUD:@"Creating drinklist"];
+    [spot getSpot:nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
+        
+        NSNumber *latitude = spotModel.latitude;
+        NSNumber *longitude = spotModel.longitude;
+        
+        [self showHUD:@"Getting new drinks"];
+        [_drinkList putDrinkList:nil latitude:latitude longitude:longitude spotId:spotModel.ID sliders:nil success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+            [self hideHUD];
+
+            _drinkList = drinkListModel;
+            [_collectionView reloadData];
+
+            [self updateView];
+            [self updateMatchPercent];
+        } failure:^(ErrorModel *errorModel) {
+            [self hideHUD];
+            [self showAlert:@"Oops" message:errorModel.human];
+        }];
+        
+    } failure:^(ErrorModel *errorModel) {
+        [self hideHUD];
+        [self showAlert:@"Oops" message:errorModel.human];
+    }];
+
+}
+
+- (void)findSimilarViewController:(FindSimilarViewController *)viewController selectedDrink:(DrinkModel *)drink {
+    
+}
+
 #pragma mark - Actions
+
+- (IBAction)onClickChooseSpot:(id)sender {
+    [self goToFindSimilarSpots:self];
+}
 
 - (void)onClickBack:(id)sender {
     if (_createdWithAdjustSliders == NO) {
@@ -227,7 +274,7 @@
                 }
                 
                 [self showHUD:@"Updating name"];
-                [_drinkList putDrinkList:name latitude:nil longitude:nil sliders:nil success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+                [_drinkList putDrinkList:name latitude:nil longitude:nil spotId:nil sliders:nil success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
                     [self hideHUD];
                     [self.navigationController popViewControllerAnimated:YES];
                 } failure:^(ErrorModel *errorModel) {
@@ -244,6 +291,16 @@
 }
 
 #pragma mark - Private
+
+- (void)updateView {
+    
+    [_viewPlaceholder setHidden:YES];
+    [_viewLocation setHidden:(_drinkList.spot != nil)];
+    [_viewSpot setHidden:(_drinkList.spot == nil)];
+    
+    [_btnSpot setTitle:[NSString stringWithFormat:@"%@ >", _drinkList.spot.name] forState:UIControlStateNormal];
+    
+}
 
 - (void)updateMatchPercent {
     
@@ -276,11 +333,13 @@
         _drinkList = drinkListModel;
         [_collectionView reloadData];
         
+        [self updateView];
         [self updateMatchPercent];
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [_collectionView reloadData];
         
+        [self updateView];
         [self updateMatchPercent];
     }];
     
