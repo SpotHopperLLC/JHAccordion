@@ -9,6 +9,7 @@
 #import "SpotProfileViewController.h"
 
 #import "NSDate+Globalize.h"
+#import "UIButton+Block.h"
 #import "UIView+ViewFromNib.h"
 #import "UIViewController+Navigator.h"
 
@@ -25,10 +26,11 @@
 #import "SpotListModel.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
+#import <JHAccordion/JHAccordion.h>
 
 #import <MapKit/MapKit.h>
 
-@interface SpotProfileViewController ()<UITableViewDataSource, UITableViewDelegate, MKMapViewDelegate>
+@interface SpotProfileViewController ()<UITableViewDataSource, UITableViewDelegate, MKMapViewDelegate, JHAccordionDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tblSliders;
 
@@ -48,6 +50,11 @@
 
 @property (nonatomic, strong) NSString *matchPercent;
 @property (nonatomic, strong) AverageReviewModel *averageReview;
+@property (nonatomic, strong) NSMutableArray *sliders;
+@property (nonatomic, strong) NSMutableArray *advancedSliders;
+
+@property (nonatomic, strong) JHAccordion *accordion;
+@property (nonatomic, strong) UIView *sectionHeaderAdvanced;
 
 @end
 
@@ -73,6 +80,11 @@
     
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
+    
+    // Configures accordion
+    _accordion = [[JHAccordion alloc] initWithTableView:_tblSliders];
+    [_accordion setDelegate:self];
+    [_accordion openSection:0];
     
     // Configure table header
     // Header content view
@@ -137,21 +149,39 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _averageReview.sliders.count;
+    if (section == 0) {
+        return _sliders.count;
+    } else if (section == 1) {
+        return _advancedSliders.count;
+    }
+    
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    SliderModel *slider = [_averageReview.sliders objectAtIndex:indexPath.row];
+    if (indexPath.section == 0) {
+        SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
+        
+        ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
+        [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
+        [cell setVibeFeel:YES slider:slider];
     
-    ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
-    [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
-    [cell setVibeFeel:YES slider:slider];
+        return cell;
+    } else if (indexPath.section == 1) {
+        SliderModel *slider = [_advancedSliders objectAtIndex:indexPath.row];
+        
+        ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
+        [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
+        [cell setVibeFeel:YES slider:slider];
+        
+        return cell;
+    }
     
-    return cell;
+    return nil;
 }
 
 #pragma mark - UITableViewDelegate
@@ -159,8 +189,63 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         return 77.0f;
+    } else if (indexPath.section == 1) {
+        return ( [_accordion isSectionOpened:indexPath.section] ? 77.0f : 0.0f);
     }
     return 0.0f;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if (section == 2) {
+        _sectionHeaderAdvanced = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(tableView.frame), 40.0f)];
+        [_sectionHeaderAdvanced setBackgroundColor:[UIColor clearColor]];
+        [_sectionHeaderAdvanced setUserInteractionEnabled:YES];
+        
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(tableView.frame), 40.0f)];
+        [button setBackgroundColor:[UIColor clearColor]];
+        [button setTitleColor:kColorOrange forState:UIControlStateNormal];
+        [button.titleLabel setFont:[UIFont fontWithName:@"Lato-Light" size:16.0f]];
+        [button.titleLabel setTextAlignment:NSTextAlignmentCenter];
+        
+        [button setTitle:@"See all" forState:UIControlStateNormal];
+        
+        // Sets up for accordion
+        [button setTag:1];
+        [button addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [_sectionHeaderAdvanced addSubview:button];
+        
+        return _sectionHeaderAdvanced;
+    }
+    
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == 2) {
+        if (_advancedSliders.count > 0) {
+            return 40.0f;
+        }
+    }
+    return 0.0f;
+}
+
+#pragma mark - JHAccordionDelegate
+
+- (void)accordion:(JHAccordion *)accordion openingSection:(NSInteger)section {
+
+}
+
+- (void)accordion:(JHAccordion *)accordion closingSection:(NSInteger)section {
+
+}
+
+- (void)accordion:(JHAccordion *)accordion openedSection:(NSInteger)section {
+    
+}
+
+- (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
+    
 }
 
 #pragma mark - Footer
@@ -172,9 +257,6 @@
     
     return YES;
 }
-
-#pragma mark - UITableViewDelegate
-
 
 #pragma mark - MKMapViewDelegate
 
@@ -242,10 +324,38 @@
     [_spot getSpot:nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
         _spot = spotModel;
         _averageReview = spotModel.averageReview;
-        [_tblSliders reloadData];
+        [self initSliders];
     } failure:^(ErrorModel *errorModel) {
         
     }];
+}
+
+- (void)initSliders {
+    
+    // Filling sliders if nil
+    if (_sliders == nil) {
+        _sliders = [NSMutableArray arrayWithArray:_averageReview.sliders];
+    }
+    
+    // Filling advanced sliders if nil
+    if (_advancedSliders == nil) {
+        _advancedSliders = [NSMutableArray array];
+        
+        // Moving advanced sliders into their own array
+        for (SliderModel *slider in _sliders) {
+            if (slider.sliderTemplate.required == NO) {
+                [_advancedSliders addObject:slider];
+            }
+        }
+        
+        // Removing advances sliders from basic array
+        for (SliderModel *slider in _advancedSliders) {
+            [_sliders removeObject:slider];
+        }
+    }
+    
+    // Update view
+    [_tblSliders reloadData];
 }
 
 - (void)updateView {
