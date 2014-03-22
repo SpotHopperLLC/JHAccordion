@@ -280,6 +280,8 @@
 #pragma mark - Public
 
 - (void)resetForm {
+    [_tblSliders scrollRectToVisible:CGRectMake(0, 0, CGRectGetWidth(_tblSliders.frame), 1) animated:NO];
+    
     // Reset
     _selectedSpotType = nil;
     _selectedSpotListMood = nil;
