@@ -12,6 +12,7 @@
 
 #import "TTTAttributedLabel+QuickFonting.h"
 #import "UIViewController+Navigator.h"
+#import "UIAlertView+Block.h"
 
 #import "SectionHeaderView.h"
 #import "SHButtonLatoLightLocation.h"
@@ -324,6 +325,19 @@
 }
 
 - (void)findSimilarViewController:(FindSimilarViewController *)viewController selectedSpot:(SpotModel *)spot {
+    
+    // Cannot create spoitlist if no average review - so prompt to create review
+    if (spot.averageReview == nil) {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Reviews" message:@"This spot doesn't have any reviews. Would you like to create one?" delegate:nil cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+        [alert showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
+            if (buttonIndex == 1) {
+                [self goToNewReviewForSpot:spot];
+            }
+        }];
+        
+        return;
+    }
     
     [self showHUD:@"Creating spotlist"];
     [spot getSpot:nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
