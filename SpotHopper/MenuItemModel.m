@@ -11,11 +11,12 @@
 @implementation MenuItemModel
 
 - (NSDictionary *)mapKeysToProperties {
-    // Maps values in JSON key 'price' to 'name' property
+    // Maps values in JSON key 'name' to 'name' property
     // Maps values in JSON key 'featured' to 'price' property
     // Maps values in JSON key 'in_stock' to 'latitude' property
     // Maps linked resource in JSON key 'drink' to 'drink' property
     // Maps linked resource in JSON key 'spot' to 'spot' property
+    // Maps linked resource in JSON key 'menu_type' to 'menuType' property
     return @{
              @"name" : @"name",
              @"price" : @"price",
@@ -23,6 +24,7 @@
              @"latitude" : @"latitude",
              @"links.drink" : @"drink",
              @"links.spot" : @"spot",
+             @"links.menu_type" : @"menuType"
              };
 }
 

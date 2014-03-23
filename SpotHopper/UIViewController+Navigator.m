@@ -182,11 +182,11 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
-- (void)goToMenuOfferings:(SpotModel *)spot drinkType:(DrinkTypeModel*)drinkType drinkSubtype:(DrinkSubtypeModel*)drinkSubtype menuItems:(NSArray*)menuItems {
+- (void)goToMenuOfferings:(SpotModel *)spot drinkType:(DrinkTypeModel*)drinkType menuType:(MenuTypeModel*)menuType menuItems:(NSArray*)menuItems {
     DrinkMenuOfferingsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DrinkMenuOfferingsViewController"];
     [viewController setSpot:spot];
     [viewController setDrinkType:drinkType];
-    [viewController setDrinkSubtype:drinkSubtype];
+    [viewController setMenuType:menuType];
     [viewController setMenuItems:menuItems];
     [self.navigationController pushViewController:viewController animated:YES];
 }

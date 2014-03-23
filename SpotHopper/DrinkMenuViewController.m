@@ -19,6 +19,7 @@
 #import "DrinkTypeModel.h"
 #import "DrinkSubtypeModel.h"
 #import "MenuItemModel.h"
+#import "MenuTypeModel.h"
 
 #import <JHAccordion/JHAccordion.h>
 
@@ -27,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tblMenu;
 
 @property (nonatomic, strong) NSArray *drinkTypes;
+@property (nonatomic, strong) NSDictionary *menuTypes;
 @property (nonatomic, strong) NSMutableDictionary *drinkSubtypes;
 @property (nonatomic, strong) NSArray *menuItems;
 
@@ -121,10 +123,10 @@
     DrinkTypeModel *drinkType = [_drinkTypes objectAtIndex:indexPath.section];
     if (drinkType != nil) {
         
-        DrinkSubtypeModel *drinkSubtype = [[_drinkSubtypes objectForKey:drinkType.ID] objectAtIndex:indexPath.row];
+        MenuTypeModel *menutType = [[_drinkSubtypes objectForKey:drinkType.ID] objectAtIndex:indexPath.row];
         
         MenuItemSubtypeCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MenuItemSubtypeCell" forIndexPath:indexPath];
-        [cell.lblName setText:drinkSubtype.name];
+        [cell.lblName setText:menutType.name];
         
         return cell;
     }
@@ -137,18 +139,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     DrinkTypeModel *drinkType = [_drinkTypes objectAtIndex:indexPath.section];
-    DrinkSubtypeModel *drinkSubtype = [[_drinkSubtypes objectForKey:drinkType.ID] objectAtIndex:indexPath.row];
+    MenuTypeModel *menuType = [[_drinkSubtypes objectForKey:drinkType.ID] objectAtIndex:indexPath.row];
 
     // Adds all selected drink subtypes to array
-    NSMutableArray *menuItemsToPassOn = [NSMutableArray array];
-    for (MenuItemModel *menuItem in _menuItems) {
-
-        if ([menuItem.drink.drinkSubtype.ID isEqualToNumber:drinkSubtype.ID] == YES) {
-            [menuItemsToPassOn addObject:menuItem];
-        }
-    }
+    NSArray *menuItemsToPassOn = [_menuItems filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"menuType.ID = %@", menuType.ID]];
     
-    [self goToMenuOfferings:_spot drinkType:drinkType drinkSubtype:drinkSubtype menuItems:menuItemsToPassOn];
+    [self goToMenuOfferings:_spot drinkType:drinkType menuType:menuType menuItems:menuItemsToPassOn];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
@@ -196,6 +192,7 @@
     // Gets menu items
     Promise *promiseMenuItems = [_spot getMenuItems:nil success:^(NSArray *menuItemModels, JSONAPI *jsonApi) {
         _menuItems = menuItemModels;
+        _menuTypes = [[jsonApi linked] objectForKey:@"menu_types"];
     } failure:^(ErrorModel *errorModel) {
 
     }];
@@ -205,24 +202,13 @@
         
         NSDictionary *forms = [jsonApi objectForKey:@"form"];
         if (forms != nil) {
+            
+            // Orders drink types
             _drinkTypes = [DrinkTypeModel jsonAPIResources:[forms objectForKey:@"drink_types"] withLinked:nil];
             _drinkTypes = [_drinkTypes sortedArrayUsingComparator:^NSComparisonResult(DrinkTypeModel *obj1, DrinkTypeModel *obj2) {
                 return [obj1.name compare:obj2.name];
             }];
             
-            // Loops through all drink types to save off drink subtypes in dictionary
-            for (DrinkTypeModel *drinkType in _drinkTypes) {
-                
-                NSArray *drinkSubtypes = [DrinkSubtypeModel jsonAPIResources:[drinkType objectForKey:@"drink_subtypes"] withLinked:nil];
-                drinkSubtypes = [drinkSubtypes sortedArrayUsingComparator:^NSComparisonResult(DrinkSubtypeModel *obj1, DrinkSubtypeModel *obj2) {
-                    return [obj1.name compare:obj2.name];
-                }];
-                
-                if (drinkSubtypes.count > 0) {
-                    [_drinkSubtypes setObject:drinkSubtypes forKey:drinkType.ID];
-                }
-                
-            }
         }
         
     } failure:^(ErrorModel *errorModel) {
@@ -231,6 +217,25 @@
     
     // Waits for both spots and drinks to finish
     [When when:@[promiseMenuItems, promiseDrinkForm] then:^{
+        
+        // Loops through all menu types to save off drink subtypes in dictionary
+        for (NSNumber *menuTypeId in [_menuTypes allKeys]) {
+            
+            MenuTypeModel *menuType = [_menuTypes objectForKey:menuTypeId];
+
+            // Creates new array for drink type if not created before
+            NSMutableArray *menuTypesForDrinkType = [_drinkSubtypes objectForKey:menuType.drinkType.ID];
+            if (menuTypesForDrinkType == nil) {
+                menuTypesForDrinkType = [NSMutableArray array];
+                [_drinkSubtypes setObject:menuTypesForDrinkType forKey:menuType.drinkType.ID];
+            }
+            
+            // Adds menu type so we can display in table
+            [menuTypesForDrinkType addObject:menuType];
+            
+        }
+
+        
         [_tblMenu reloadData];
     } fail:^(id error) {
         [self hideHUD];

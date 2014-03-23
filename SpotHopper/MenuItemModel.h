@@ -10,6 +10,7 @@
 
 @class DrinkModel;
 @class SpotModel;
+@class MenuTypeModel;
 
 @interface MenuItemModel : SHJSONAPIResource
 
@@ -18,5 +19,6 @@
 @property (nonatomic, assign) BOOL inStock;
 @property (nonatomic, strong) DrinkModel *drink;
 @property (nonatomic, strong) SpotModel *spot;
+@property (nonatomic, strong) MenuTypeModel *menuType;
 
 @end
