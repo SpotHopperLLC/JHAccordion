@@ -8,7 +8,7 @@
 
 #import "DrinkMenuOfferingsViewController.h"
 
-#import "UIViewController+Navigator.h""
+#import "UIViewController+Navigator.h"
 
 #import "SectionHeaderView.h"
 
@@ -142,7 +142,7 @@
         [_sectionHeader setIconImage:[UIImage imageNamed:@"img_arrow_west_circle"]];
         [_sectionHeader.imgArrow setHidden:YES];
         
-        [_sectionHeader.lblText setText:[NSString stringWithFormat:@"%@ > %@", _drinkType.name, _drinkSubtype.name]];
+        [_sectionHeader.lblText setText:[NSString stringWithFormat:@"%@ > %@", _drinkType.name, _menuType.name]];
     }
     
     return _sectionHeader;

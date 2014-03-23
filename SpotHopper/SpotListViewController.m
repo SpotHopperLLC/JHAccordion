@@ -106,6 +106,7 @@
         [self fetchSpotList];
     } else {
         [_collectionView reloadData];
+        [self updateView];
         [self updateMatchPercent];
     }
 }

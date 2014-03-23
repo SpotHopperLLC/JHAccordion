@@ -9,13 +9,13 @@
 #import "BaseViewController.h"
 
 @class DrinkTypeModel;
-@class DrinkSubtypeModel;
+@class MenuTypeModel;
 @class SpotModel;
 
 @interface DrinkMenuOfferingsViewController : BaseViewController
 
 @property (nonatomic, strong) DrinkTypeModel *drinkType;
-@property (nonatomic, strong) DrinkSubtypeModel *drinkSubtype;
+@property (nonatomic, strong) MenuTypeModel *menuType;
 @property (nonatomic, strong) SpotModel *spot;
 @property (nonatomic, strong) NSArray *menuItems;
 
