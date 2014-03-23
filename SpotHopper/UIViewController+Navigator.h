@@ -10,6 +10,7 @@
 
 #import "DrinkModel.h"
 #import "DrinkListModel.h"
+#import "MenuTypeModel.h"
 #import "ReviewModel.h"
 #import "SpotModel.h"
 #import "SpotListModel.h"
@@ -56,7 +57,7 @@
 // Menu
 
 - (void)goToMenu:(SpotModel*)spot;
-- (void)goToMenuOfferings:(SpotModel *)spot drinkType:(DrinkTypeModel*)drinkType drinkSubtype:(DrinkSubtypeModel*)drinkSubtype menuItems:(NSArray*)menuItems;
+- (void)goToMenuOfferings:(SpotModel *)spot drinkType:(DrinkTypeModel*)drinkType menuType:(MenuTypeModel*)drinkSubtype menuItems:(NSArray*)menuItems;
 
 // Common
 - (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate;

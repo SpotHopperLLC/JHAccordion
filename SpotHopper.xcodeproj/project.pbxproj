@@ -48,6 +48,9 @@
 		0345708F18DC00EE0095E4A8 /* BaseAlcoholModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345708E18DC00EE0095E4A8 /* BaseAlcoholModel.m */; };
 		0345709018DC03010095E4A8 /* BaseAlcoholModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345708E18DC00EE0095E4A8 /* BaseAlcoholModel.m */; };
 		0345709118DC03020095E4A8 /* BaseAlcoholModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345708E18DC00EE0095E4A8 /* BaseAlcoholModel.m */; };
+		0345709418DF7DDD0095E4A8 /* MenuTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345709318DF7DDD0095E4A8 /* MenuTypeModel.m */; };
+		0345709518DF7FDD0095E4A8 /* MenuTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345709318DF7DDD0095E4A8 /* MenuTypeModel.m */; };
+		0345709618DF7FDE0095E4A8 /* MenuTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345709318DF7DDD0095E4A8 /* MenuTypeModel.m */; };
 		03763FB718D9EBFC00A9A30B /* SHTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */; };
 		03763FB818D9ED7800A9A30B /* SHTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */; };
 		03763FB918D9ED7800A9A30B /* SHTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */; };
@@ -1195,6 +1198,8 @@
 		03412C401882F6EC000F16A8 /* SHJSONAPIResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHJSONAPIResource.m; sourceTree = "<group>"; };
 		0345708D18DC00EE0095E4A8 /* BaseAlcoholModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseAlcoholModel.h; sourceTree = "<group>"; };
 		0345708E18DC00EE0095E4A8 /* BaseAlcoholModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseAlcoholModel.m; sourceTree = "<group>"; };
+		0345709218DF7DDD0095E4A8 /* MenuTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuTypeModel.h; sourceTree = "<group>"; };
+		0345709318DF7DDD0095E4A8 /* MenuTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuTypeModel.m; sourceTree = "<group>"; };
 		03763FB518D9EBFC00A9A30B /* SHTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHTableViewCell.h; sourceTree = "<group>"; };
 		03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHTableViewCell.m; sourceTree = "<group>"; };
 		037D13A018A3DF8500B89535 /* DrinkTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkTypeModel.h; sourceTree = "<group>"; };
@@ -2148,6 +2153,8 @@
 				039F548E18D340AE004B2B67 /* MenuItemModel.m */,
 				0345708D18DC00EE0095E4A8 /* BaseAlcoholModel.h */,
 				0345708E18DC00EE0095E4A8 /* BaseAlcoholModel.m */,
+				0345709218DF7DDD0095E4A8 /* MenuTypeModel.h */,
+				0345709318DF7DDD0095E4A8 /* MenuTypeModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -3762,6 +3769,7 @@
 				03CA729A187C43BF00815284 /* ReviewSliderCell.m in Sources */,
 				03C8DAED188B44CB0082321C /* SliderTemplateModel.m in Sources */,
 				03E4452518AEE64000C88421 /* AutoCompleteCell.m in Sources */,
+				0345709418DF7DDD0095E4A8 /* MenuTypeModel.m in Sources */,
 				038664CE186D376900985CEC /* NSNumber+Currency.m in Sources */,
 				03F6BF7518C6EE2B00172F13 /* SpotListModel.m in Sources */,
 				03CA7286187C245600815284 /* ReviewViewController.m in Sources */,
@@ -3890,6 +3898,7 @@
 				03F4E76C18CA33D00056EAA9 /* ReviewSliderCell.m in Sources */,
 				03F4E76D18CA33D00056EAA9 /* SliderTemplateModel.m in Sources */,
 				03F4E76E18CA33D00056EAA9 /* AutoCompleteCell.m in Sources */,
+				0345709618DF7FDE0095E4A8 /* MenuTypeModel.m in Sources */,
 				03F4E76F18CA33D00056EAA9 /* NSNumber+Currency.m in Sources */,
 				03F4E77018CA33D00056EAA9 /* SpotListModel.m in Sources */,
 				03F4E77118CA33D00056EAA9 /* ReviewViewController.m in Sources */,
@@ -4010,6 +4019,7 @@
 				03F4E8BA18CA34260056EAA9 /* ReviewSliderCell.m in Sources */,
 				03F4E8BB18CA34260056EAA9 /* SliderTemplateModel.m in Sources */,
 				03F4E8BC18CA34260056EAA9 /* AutoCompleteCell.m in Sources */,
+				0345709518DF7FDD0095E4A8 /* MenuTypeModel.m in Sources */,
 				03F4E8BD18CA34260056EAA9 /* NSNumber+Currency.m in Sources */,
 				03F4E8BE18CA34260056EAA9 /* SpotListModel.m in Sources */,
 				03F4E8BF18CA34260056EAA9 /* ReviewViewController.m in Sources */,
