@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kSomePageSize @300
+
 #import "SliderTemplateModel.h"
 
 #import "ClientSessionManager.h"
@@ -64,7 +66,7 @@
     // Makes page size 300 so we get all slider templates
     if (params == nil) params = @{};
     NSMutableDictionary *mutaParams = params.mutableCopy;
-    [mutaParams setObject:@300 forKey:kSliderTemplateModelParamsPageSize];
+    [mutaParams setObject:kSomePageSize forKey:kSliderTemplateModelParamsPageSize];
     
     [[ClientSessionManager sharedClient] GET:@"/api/slider_templates" parameters:mutaParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
