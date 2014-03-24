@@ -8,8 +8,6 @@
 
 #import "AppDelegate.h"
 
-#import "Constants.h"
-
 #import "NSNumber+Helpers.h"
 #import "UIActionSheet+Block.h"
 
