@@ -33,7 +33,8 @@
 
 - (void)setSliderTemplate:(SliderTemplateModel *)sliderTemplate withSlider:(SliderModel *)slider showSliderValue:(BOOL)show {
     
-    [_lblSlideToAdjust italic:YES];
+//    [_lblSlideToAdjust italic:YES];
+    _lblSlideToAdjust.hidden = TRUE;
     
     [_lblMinimum setText:sliderTemplate.minLabel];
     [_lblMaximum setText:sliderTemplate.maxLabel];
