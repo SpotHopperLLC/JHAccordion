@@ -22,9 +22,7 @@
 
     #define kRefreshLocationTime 60.0f
 
-#endif
-
-#ifdef DEV
+#elif defined(DEV)
 
     #define kDebug YES
 
@@ -35,9 +33,7 @@
 
     #define kRefreshLocationTime 60.0f
 
-#endif
-
-#ifdef STAGING
+#elif defined(STAGING)
 
     #define kDebug YES
 
@@ -47,6 +43,22 @@
     #define kBaseUrl @"http://spothopper-staging.herokuapp.com"
 
     #define kRefreshLocationTime 3600.0f
+
+#else
+
+    #define PRODUCTION YES
+
+    #define kDebug NO
+
+    // TODO define other production values
+
+    #define kTwitterConsumerKey @""
+    #define kTwitterConsumerSecret @""
+
+    // MUST BE SSL
+    #define kBaseUrl @""
+
+    #define kRefreshLocationTime 60.0f
 
 #endif
 
