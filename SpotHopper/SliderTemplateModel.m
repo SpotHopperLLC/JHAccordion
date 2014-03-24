@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kSomePageSize @300
+
 #import "SliderTemplateModel.h"
 
 #import "ClientSessionManager.h"
@@ -61,7 +63,12 @@
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
-    [[ClientSessionManager sharedClient] GET:@"/api/slider_templates" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    // Makes page size 300 so we get all slider templates
+    if (params == nil) params = @{};
+    NSMutableDictionary *mutaParams = params.mutableCopy;
+    [mutaParams setObject:kSomePageSize forKey:kSliderTemplateModelParamsPageSize];
+    
+    [[ClientSessionManager sharedClient] GET:@"/api/slider_templates" parameters:mutaParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
