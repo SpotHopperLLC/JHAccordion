@@ -55,6 +55,8 @@
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 // Header - Recipe and Description
+@property (nonatomic, assign) BOOL expandedRecipe;
+@property (nonatomic, assign) BOOL expandedDescription;
 @property (weak, nonatomic) IBOutlet UIView *viewExpand;
 @property (weak, nonatomic) IBOutlet UILabel *lblExpandTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lblExpandInfo;
@@ -326,34 +328,13 @@
     }
 }
 - (IBAction)onClickRecipe:(id)sender {
-    
-    if ([self isExpandClosed] == YES) {
-        // Sets info
-        [_lblExpandTitle setText:@"Recipe"];
-        [_lblExpandInfo setText:_drink.recipe];
-        [_lblExpandInfo setText:@"OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OM\n\n OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG "];
-        
-        // Expands view to be height of recipe
-        [_lblExpandInfo fitLabelHeight];
-        [_viewExpand alignToChildBottom:_lblExpandInfo withSpacing:5.0f];
+    if (_expandedDescription == YES) {
+        [self toggleDescriptionExpand:^(BOOL closed) {
+            [self toggleRecipeExpand:nil];
+        }];
+    } else {
+        [self toggleRecipeExpand:nil];
     }
-        
-    [self animateExpand:^(BOOL closed) {
-        
-        if (closed == YES) {
-            
-            // Clears
-            [_lblExpandTitle setText:@""];
-            [_lblExpandInfo setText:@""];
-            
-            // Expands view to be height of recipe
-            [_lblExpandInfo fitLabelHeight];
-            [_viewExpand alignToChildBottom:_lblExpandInfo withSpacing:5.0f];
-            
-            [_tblSliders scrollRectToVisible:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblSliders.frame), 1.0f) animated:YES];
-        }
-        
-    }];
 }
 
 - (IBAction)onClickFindSimilar:(id)sender {
@@ -365,12 +346,26 @@
 }
 
 - (IBAction)onClickDescription:(id)sender {
-    
+    if (_expandedRecipe == YES) {
+        [self toggleRecipeExpand:^(BOOL closed) {
+            [self toggleDescriptionExpand:nil];
+        }];
+    } else {
+        [self toggleDescriptionExpand:nil];
+    }
+}
+
+- (IBAction)onClickFindIt:(id)sender {
+    [self goToFindDrinksAt:_drink];
+}
+
+#pragma mark - Private Expand
+
+- (void)toggleRecipeExpand:(void (^)(BOOL closed))completion {
     if ([self isExpandClosed] == YES) {
         // Sets info
-        [_lblExpandTitle setText:@"Description"];
-        [_lblExpandInfo setText:_drink.descriptionOfDrink];
-        [_lblExpandInfo setText:@"ZZZZZZZOMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OM\n\n OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG "];
+        [_lblExpandTitle setText:@"Recipe"];
+        [_lblExpandInfo setText: ( _drink.recipe.length > 0 ? _drink.recipe : @"No recipe" ) ];
         
         // Expands view to be height of recipe
         [_lblExpandInfo fitLabelHeight];
@@ -378,6 +373,10 @@
     }
     
     [self animateExpand:^(BOOL closed) {
+        
+        // State stuff
+        _expandedRecipe = !closed;
+        _expandedDescription = NO;
         
         if (closed == YES) {
             
@@ -392,14 +391,49 @@
             [_tblSliders scrollRectToVisible:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblSliders.frame), 1.0f) animated:YES];
         }
         
+        if (completion) {
+            completion(closed);
+        }
+        
     }];
 }
 
-- (IBAction)onClickFindIt:(id)sender {
-    [self goToFindDrinksAt:_drink];
+- (void)toggleDescriptionExpand:(void (^)(BOOL closed))completion {
+    if ([self isExpandClosed] == YES) {
+        // Sets info
+        [_lblExpandTitle setText:@"Description"];
+        [_lblExpandInfo setText: ( _drink.descriptionOfDrink.length > 0 ? _drink.descriptionOfDrink : @"No description" ) ];
+        
+        // Expands view to be height of recipe
+        [_lblExpandInfo fitLabelHeight];
+        [_viewExpand alignToChildBottom:_lblExpandInfo withSpacing:5.0f];
+    }
+    
+    [self animateExpand:^(BOOL closed) {
+        
+        // State stuff
+        _expandedRecipe = NO;
+        _expandedDescription = !closed;
+        
+        if (closed == YES) {
+            
+            // Clears
+            [_lblExpandTitle setText:@""];
+            [_lblExpandInfo setText:@""];
+            
+            // Expands view to be height of recipe
+            [_lblExpandInfo fitLabelHeight];
+            [_viewExpand alignToChildBottom:_lblExpandInfo withSpacing:5.0f];
+            
+            [_tblSliders scrollRectToVisible:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblSliders.frame), 1.0f) animated:YES];
+        }
+        
+        if (completion) {
+            completion(closed);
+        }
+        
+    }];
 }
-
-#pragma mark - Private Expand
 
 - (BOOL)isExpandClosed {
     CGRect frame = _headerContent.frame;
