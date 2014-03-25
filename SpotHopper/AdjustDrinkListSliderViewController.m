@@ -180,6 +180,13 @@
     
     if (indexPath.section == kSectionTypes) {
         _selectedDrinkType = [_drinkTypes objectAtIndex:indexPath.row];
+        
+        _selectedBaseAlcohol = nil;
+        _selectedWineSubtype = nil;
+        
+        [self updateSectionHeaderTitles:kSectionBaseAlcohols];
+        [self updateSectionHeaderTitles:kSectionWineSubtypes];
+        
         [_accordion closeSection:indexPath.section];
     } else if (indexPath.section == kSectionBaseAlcohols) {
         if (indexPath.row == 0) {
