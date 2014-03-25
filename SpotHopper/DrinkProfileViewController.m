@@ -9,6 +9,7 @@
 #import "DrinkProfileViewController.h"
 
 #import "UIView+ViewFromNib.h"
+#import "UIView+RelativityLaws.h"
 #import "UIViewController+Navigator.h"
 
 #import "SpotAnnotation.h"
@@ -46,10 +47,18 @@
 
 // Header
 @property (nonatomic, strong) UIView *headerContent;
+@property (nonatomic, assign) CGRect initialHeaderContentFrame;
+@property (weak, nonatomic) IBOutlet UIView *viewBottomHeader;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIButton *btnImagePrev;
 @property (weak, nonatomic) IBOutlet UIButton *btnImageNext;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+
+// Header - Recipe and Description
+@property (weak, nonatomic) IBOutlet UIView *viewExpand;
+@property (weak, nonatomic) IBOutlet UILabel *lblExpandTitle;
+@property (weak, nonatomic) IBOutlet UILabel *lblExpandInfo;
+
 
 @property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
 @property (nonatomic, strong) CLLocation *location;
@@ -97,6 +106,7 @@
     // Configure table header
     // Header content view
     _headerContent = [UIView viewFromNibNamed:@"DrinkProfileHeaderView" withOwner:self];
+    _initialHeaderContentFrame = _headerContent.frame;
     [_tblSliders setTableHeaderView:_headerContent];
     
     // COnfigure table
@@ -316,6 +326,34 @@
     }
 }
 - (IBAction)onClickRecipe:(id)sender {
+    
+    if ([self isExpandClosed] == YES) {
+        // Sets info
+        [_lblExpandTitle setText:@"Recipe"];
+        [_lblExpandInfo setText:_drink.recipe];
+        [_lblExpandInfo setText:@"OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OM\n\n OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG "];
+        
+        // Expands view to be height of recipe
+        [_lblExpandInfo fitLabelHeight];
+        [_viewExpand alignToChildBottom:_lblExpandInfo withSpacing:5.0f];
+    }
+        
+    [self animateExpand:^(BOOL closed) {
+        
+        if (closed == YES) {
+            
+            // Clears
+            [_lblExpandTitle setText:@""];
+            [_lblExpandInfo setText:@""];
+            
+            // Expands view to be height of recipe
+            [_lblExpandInfo fitLabelHeight];
+            [_viewExpand alignToChildBottom:_lblExpandInfo withSpacing:5.0f];
+            
+            [_tblSliders scrollRectToVisible:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblSliders.frame), 1.0f) animated:YES];
+        }
+        
+    }];
 }
 
 - (IBAction)onClickFindSimilar:(id)sender {
@@ -328,10 +366,71 @@
 
 - (IBAction)onClickDescription:(id)sender {
     
+    if ([self isExpandClosed] == YES) {
+        // Sets info
+        [_lblExpandTitle setText:@"Description"];
+        [_lblExpandInfo setText:_drink.descriptionOfDrink];
+        [_lblExpandInfo setText:@"ZZZZZZZOMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OM\n\n OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG OMG "];
+        
+        // Expands view to be height of recipe
+        [_lblExpandInfo fitLabelHeight];
+        [_viewExpand alignToChildBottom:_lblExpandInfo withSpacing:5.0f];
+    }
+    
+    [self animateExpand:^(BOOL closed) {
+        
+        if (closed == YES) {
+            
+            // Clears
+            [_lblExpandTitle setText:@""];
+            [_lblExpandInfo setText:@""];
+            
+            // Expands view to be height of recipe
+            [_lblExpandInfo fitLabelHeight];
+            [_viewExpand alignToChildBottom:_lblExpandInfo withSpacing:5.0f];
+            
+            [_tblSliders scrollRectToVisible:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblSliders.frame), 1.0f) animated:YES];
+        }
+        
+    }];
 }
 
 - (IBAction)onClickFindIt:(id)sender {
     [self goToFindDrinksAt:_drink];
+}
+
+#pragma mark - Private Expand
+
+- (BOOL)isExpandClosed {
+    CGRect frame = _headerContent.frame;
+    return CGRectEqualToRect(frame, _initialHeaderContentFrame);
+}
+
+- (void)animateExpand:(void (^)(BOOL closed))completion {
+    
+    // Calculates frames to expand or dexpand (yes, its a word) the header
+    CGRect frame = _headerContent.frame;
+    CGRect frameBottomStuff = _viewBottomHeader.frame;
+    if ([self isExpandClosed] == YES) {
+        frameBottomStuff.origin.y =  CGRectGetMaxY(_viewExpand.frame);
+        frame.size.height = CGRectGetMaxY(frameBottomStuff);
+    } else {
+        frame = _initialHeaderContentFrame;
+        frameBottomStuff.origin.y =  CGRectGetMinY(_viewExpand.frame);
+    }
+    
+    // Animates the header
+    [UIView animateWithDuration:0.35 animations:^{
+        [_headerContent setFrame:frame];
+        [_viewBottomHeader setFrame:frameBottomStuff];
+    } completion:^(BOOL finished) {
+        [_tblSliders setTableHeaderView:_headerContent];
+        
+        // Calls callback block
+        BOOL closed =[self isExpandClosed];
+        completion(closed);
+        
+    }];
 }
 
 #pragma mark - Private

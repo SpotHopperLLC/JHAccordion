@@ -43,6 +43,7 @@
 @property (nonatomic, strong) DrinkTypeModel *drinkType;
 @property (nonatomic, strong) DrinkSubtypeModel *drinkSubtype;
 @property (nonatomic, strong) NSString *descriptionOfDrink;
+@property (nonatomic, strong) NSString *recipeOfDrink;
 @property (nonatomic, strong) NSNumber *abv;
 @property (nonatomic, strong) NSString *style;
 @property (nonatomic, strong) NSString *varietal;

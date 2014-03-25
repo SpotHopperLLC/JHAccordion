@@ -155,6 +155,10 @@
     return [self objectForKey:@"description"];
 }
 
+- (NSString *)recipeOfDrink {
+    return [self objectForKey:@"recipe"];
+}
+
 - (NSNumber *)abv {
     return [self objectForKey:@"abv"];
 }

@@ -44,7 +44,20 @@
         CGSize maximumLabelSize = CGSizeMake(maxWidth,9999);
         
         UILabel *label = (UILabel*) self;
-        CGSize expectedLabelSize = [label.text sizeWithFont:label.font constrainedToSize:maximumLabelSize lineBreakMode:label.lineBreakMode];
+        NSStringDrawingContext *context = [[NSStringDrawingContext alloc] init];
+        
+        NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+        [style setLineBreakMode:NSLineBreakByWordWrapping];
+        
+        CGSize expectedLabelSize = [label.text boundingRectWithSize:maximumLabelSize
+                                                            options:NSStringDrawingUsesLineFragmentOrigin
+                                                         attributes:@{
+                                                                      NSFontAttributeName : label.font,
+                                                                      NSParagraphStyleAttributeName : style
+                                                                      }
+                                                            context:context].size;
+        
+        NSLog(@"Expected label height - %f", expectedLabelSize.height);
         
         if (expectedLabelSize.height < minHeight) {
             expectedLabelSize.height = minHeight;
