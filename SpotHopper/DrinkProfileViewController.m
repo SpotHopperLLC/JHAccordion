@@ -327,15 +327,6 @@
         }
     }
 }
-- (IBAction)onClickRecipe:(id)sender {
-    if (_expandedDescription == YES) {
-        [self toggleDescriptionExpand:^(BOOL closed) {
-            [self toggleRecipeExpand:nil];
-        }];
-    } else {
-        [self toggleRecipeExpand:nil];
-    }
-}
 
 - (IBAction)onClickFindSimilar:(id)sender {
     [self doFindSimilar];
@@ -345,12 +336,34 @@
     [self goToNewReviewForDrink:_drink];
 }
 
+- (IBAction)onClickRecipe:(id)sender {
+    // Closes description first if already opten
+    if (_expandedDescription == YES) {
+        
+        [self toggleDescriptionExpand:^(BOOL closed) {
+            // Then opens recipe
+            [self toggleRecipeExpand:nil];
+        }];
+        
+    }
+    // Else opens recipe
+    else {
+        [self toggleRecipeExpand:nil];
+    }
+}
+
 - (IBAction)onClickDescription:(id)sender {
+    // Closes recipe first if already opten
     if (_expandedRecipe == YES) {
+        
         [self toggleRecipeExpand:^(BOOL closed) {
+            // Then opens description
             [self toggleDescriptionExpand:nil];
         }];
-    } else {
+        
+    }
+    // Else opens description
+    else {
         [self toggleDescriptionExpand:nil];
     }
 }
@@ -445,11 +458,21 @@
     // Calculates frames to expand or dexpand (yes, its a word) the header
     CGRect frame = _headerContent.frame;
     CGRect frameBottomStuff = _viewBottomHeader.frame;
+    
     if ([self isExpandClosed] == YES) {
+        
+        // Will open bottom part of header to below the expanded recipe or description
         frameBottomStuff.origin.y =  CGRectGetMaxY(_viewExpand.frame);
+        
+        // Will expand the height the header to the bottom of bottom part of header
         frame.size.height = CGRectGetMaxY(frameBottomStuff);
+        
     } else {
+        
+        // Will set header back to initial size
         frame = _initialHeaderContentFrame;
+        
+        // Will size bottom part of header back to initial size
         frameBottomStuff.origin.y =  CGRectGetMinY(_viewExpand.frame);
     }
     
@@ -458,6 +481,8 @@
         [_headerContent setFrame:frame];
         [_viewBottomHeader setFrame:frameBottomStuff];
     } completion:^(BOOL finished) {
+        
+        // Resets the header size to place the cells in the correct spot
         [_tblSliders setTableHeaderView:_headerContent];
         
         // Calls callback block
