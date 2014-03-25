@@ -9,6 +9,7 @@
 #import "DrinkCardCollectionViewCell.h"
 
 #import "AverageReviewModel.h"
+#import "DrinkTypeModel.h"
 #import "SpotModel.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
@@ -36,10 +37,19 @@
     [_lblSpot setText:drink.spot.name];
     
     // Sets Rating and stuff
-    if (drink.style.length > 0 && drink.averageReview != nil) {
-        [_lblInfo setText:[NSString stringWithFormat:@"%@ - %.1f/10", drink.style, drink.averageReview.rating.floatValue]];
+    NSString *word = nil;
+    if ([drink.drinkType.name isEqual:kDrinkTypeNameBeer] == YES) {
+        word = drink.style;
+    } else if ([drink.drinkType.name isEqual:kDrinkTypeNameCocktail] == YES) {
+        word = [[drink.baseAlochols valueForKey:@"name"] componentsJoinedByString:@" ,"];
+    } else if ([drink.drinkType.name isEqual:kDrinkTypeNameWine] == YES) {
+        word = drink.varietal;
+    }
+    
+    if (word.length > 0 && drink.averageReview != nil) {
+        [_lblInfo setText:[NSString stringWithFormat:@"%@ - %.1f/10", word, drink.averageReview.rating.floatValue]];
     } else if (drink.style.length > 0) {
-        [_lblInfo setText:drink.style];
+        [_lblInfo setText:word];
     } else if (drink.averageReview != nil) {
         [_lblInfo setText:[NSString stringWithFormat:@"%.1f/10", drink.averageReview.rating.floatValue]];
     } else {

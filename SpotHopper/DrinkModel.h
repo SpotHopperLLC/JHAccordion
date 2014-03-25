@@ -45,6 +45,7 @@
 @property (nonatomic, strong) NSString *descriptionOfDrink;
 @property (nonatomic, strong) NSNumber *abv;
 @property (nonatomic, strong) NSString *style;
+@property (nonatomic, strong) NSString *varietal;
 @property (nonatomic, strong) NSNumber *vintage;
 @property (nonatomic, strong) NSString *region;
 @property (nonatomic, strong) NSString *recipe;
@@ -53,6 +54,7 @@
 @property (nonatomic, strong) NSArray *sliderTemplates;
 @property (nonatomic, strong) AverageReviewModel *averageReview;
 @property (nonatomic, strong) NSNumber *match;
+@property (nonatomic, strong) NSArray *baseAlochols;
 
 - (NSString *)matchPercent;
 
