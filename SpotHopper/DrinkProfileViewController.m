@@ -25,6 +25,7 @@
 #import "ErrorModel.h"
 #import "SpotModel.h"
 #import "DrinkTypeModel.h"
+#import "DrinkSubtypeModel.h"
 #import "DrinkListModel.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
@@ -461,7 +462,16 @@
     
     [self showHUD:@"Finding similar"];
     NSString *name = [NSString stringWithFormat:@"Similar to %@", _drink.name];
-    [DrinkListModel postDrinkList:name latitude:[NSNumber numberWithFloat:_location.coordinate.latitude] longitude:[NSNumber numberWithFloat:_location.coordinate.longitude] sliders:_averageReview.sliders drinkId:_drink.ID drinkTypeId:_drink.drinkType.ID spotId:nil successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+    [DrinkListModel postDrinkList:name
+                         latitude:[NSNumber numberWithFloat:_location.coordinate.latitude]
+                        longitude:[NSNumber numberWithFloat:_location.coordinate.longitude]
+                          sliders:_averageReview.sliders
+                          drinkId:_drink.ID
+                      drinkTypeId:_drink.drinkType.ID
+                   drinkSubtypeId:_drink.drinkSubtype.ID
+                    baseAlcoholId:nil
+                           spotId:nil
+                     successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
         [self hideHUD];
         
         DrinkListViewController *viewController = [self.drinksStoryboard instantiateViewControllerWithIdentifier:@"DrinkListViewController"];

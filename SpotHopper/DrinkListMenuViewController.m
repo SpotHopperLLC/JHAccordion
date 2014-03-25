@@ -30,6 +30,7 @@
 #import "AverageReviewModel.h"
 #import "DrinkModel.h"
 #import "DrinkTypeModel.h"
+#import "DrinkSubtypeModel.h"
 #import "DrinkListModel.h"
 #import "ErrorModel.h"
 #import "UserModel.h"
@@ -351,7 +352,15 @@
     [self showHUD:@"Creating drinklist"];
     [drink getDrink:Nil success:^(DrinkModel *drinkModel, JSONAPI *jsonApi) {
         
-        [DrinkListModel postDrinkList:[NSString stringWithFormat:@"Similar to %@", drinkModel.name] latitude:[NSNumber numberWithFloat:_location.coordinate.latitude] longitude:[NSNumber numberWithFloat:_location.coordinate.longitude] sliders:drinkModel.averageReview.sliders drinkId:drinkModel.ID drinkTypeId:drinkModel.drinkType.ID spotId:_spot.ID successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+        [DrinkListModel postDrinkList:[NSString stringWithFormat:@"Similar to %@", drinkModel.name]
+                             latitude:[NSNumber numberWithFloat:_location.coordinate.latitude]
+                            longitude:[NSNumber numberWithFloat:_location.coordinate.longitude]
+                              sliders:drinkModel.averageReview.sliders drinkId:drinkModel.ID
+                          drinkTypeId:drinkModel.drinkType.ID
+                       drinkSubtypeId:drinkModel.drinkSubtype.ID
+                        baseAlcoholId:nil
+                               spotId:_spot.ID
+                         successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
             
             [self hideHUD];
             [self showHUDCompleted:@"Drinklist created!" block:^{

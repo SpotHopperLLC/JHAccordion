@@ -79,7 +79,7 @@
     
 }
 
-+ (Promise *)postDrinkList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders drinkId:(NSNumber*)drinkId drinkTypeId:(NSNumber*)drinkTypeId spotId:(NSNumber*)spotId successBlock:(void (^)(DrinkListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
++ (Promise *)postDrinkList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders drinkId:(NSNumber*)drinkId drinkTypeId:(NSNumber*)drinkTypeId drinkSubtypeId:(NSNumber*)drinkSubtypeId baseAlcoholId:(NSNumber*)baseAlcoholId spotId:(NSNumber*)spotId successBlock:(void (^)(DrinkListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
@@ -105,6 +105,12 @@
     }
     if (drinkTypeId != nil) {
         [params setObject:drinkTypeId forKey:@"drink_type_id"];
+    }
+    if (drinkSubtypeId != nil) {
+        [params setObject:drinkSubtypeId forKey:@"drink_subtype_id"];
+    }
+    if (baseAlcoholId != nil) {
+        [params setObject:baseAlcoholId forKey:@"base_alcohol_id"];
     }
     if (spotId != nil) {
         [params setObject:spotId forKey:@"spot_id"];
