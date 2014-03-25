@@ -166,6 +166,10 @@
     return [self objectForKey:@"style"];
 }
 
+- (NSString *)varietal {
+    return [self objectForKey:@"varietal"];
+}
+
 - (NSNumber *)vintage {
     return [self objectForKey:@"vintage"];
 }
@@ -205,6 +209,10 @@
         return nil;
     }
     return [NSString stringWithFormat:@"%d%%", (int)([self match].floatValue * 100)];
+}
+
+- (NSArray *)baseAlochols {
+    return [self linkedResourceForKey:@"base_alcohols"];
 }
 
 @end
