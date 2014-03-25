@@ -28,8 +28,7 @@
     return self;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         [self setup];
@@ -45,22 +44,21 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     [self setupSidebar];
     
-    NSDictionary *attributes=[NSDictionary dictionaryWithObjectsAndKeys:
-                              kColorOrange,UITextAttributeTextColor,
-                              [UIFont fontWithName:@"Lato-Regular" size:20.0f],
-                              UITextAttributeFont,[NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
-                              nil];
+    NSShadow *shadow = [[NSShadow alloc] init];
+    NSDictionary *attributes= @{
+                                NSForegroundColorAttributeName : [UIColor darkGrayColor],
+                                NSFontAttributeName : [UIFont fontWithName:@"Lato-Regular" size:20.0f],
+                                NSShadowAttributeName : shadow
+                                 };
     self.navigationBar.titleTextAttributes = attributes;
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
