@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kNumberOfSections 6
 #define kSectionTypes 0
 #define kSectionBaseAlcohols 1
 #define kSectionWineSubtypes 2
@@ -101,7 +102,7 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 6;
+    return kNumberOfSections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -122,6 +123,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    /*
+     * Section: Drink types
+     */
     if (indexPath.section == kSectionTypes) {
         
         AdjustSliderOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AdjustSliderOptionCell" forIndexPath:indexPath];
@@ -129,7 +133,11 @@
         [cell.lblTitle setText:[spotType objectForKey:@"name"]];
         
         return cell;
-    } else if (indexPath.section == kSectionBaseAlcohols) {
+    }
+    /*
+     * Section: Base Alcohols
+     */
+    else if (indexPath.section == kSectionBaseAlcohols) {
         
         AdjustSliderOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AdjustSliderOptionCell" forIndexPath:indexPath];
         if (indexPath.row == 0) {
@@ -140,7 +148,11 @@
         }
         
         return cell;
-    } else if (indexPath.section == kSectionWineSubtypes) {
+    }
+    /*
+     * Section: Wine Subtypes
+     */
+    else if (indexPath.section == kSectionWineSubtypes) {
         
         AdjustSliderOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AdjustSliderOptionCell" forIndexPath:indexPath];
         if (indexPath.row == 0) {
@@ -151,7 +163,11 @@
         }
         
         return cell;
-    }  else if (indexPath.section == kSectionSliders) {
+    }
+    /*
+     * Section: Basic Sliders
+     */
+    else if (indexPath.section == kSectionSliders) {
         
         SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
         
@@ -160,7 +176,11 @@
         [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
         
         return cell;
-    } else if (indexPath.section == kSectionAdvancedSliders) {
+    }
+    /*
+     * Section: Advanced Sliders
+     */
+    else if (indexPath.section == kSectionAdvancedSliders) {
         
         SliderModel *slider = [_advancedSliders objectAtIndex:indexPath.row];
         
@@ -178,6 +198,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    /*
+     * Section: Drink Types
+     */
     if (indexPath.section == kSectionTypes) {
         _selectedDrinkType = [_drinkTypes objectAtIndex:indexPath.row];
         
@@ -188,14 +211,22 @@
         [self updateSectionHeaderTitles:kSectionWineSubtypes];
         
         [_accordion closeSection:indexPath.section];
-    } else if (indexPath.section == kSectionBaseAlcohols) {
+    }
+    /*
+     * Section: Base Alcohols
+     */
+    else if (indexPath.section == kSectionBaseAlcohols) {
         if (indexPath.row == 0) {
             _selectedBaseAlcohol = nil;
         } else {
             _selectedBaseAlcohol = [_baseAlcohols objectAtIndex:indexPath.row-1];
         }
         [_accordion closeSection:indexPath.section];
-    } else if (indexPath.section == kSectionWineSubtypes) {
+    }
+    /*
+     * Section: Wine Subtypes
+     */
+    else if (indexPath.section == kSectionWineSubtypes) {
         if (indexPath.row == 0) {
             _selectedWineSubtype = nil;
         } else {
@@ -400,13 +431,6 @@
     NSMutableArray *slidersFiltered = [NSMutableArray array];
     if (_selectedDrinkType == nil) {
         _sliderTemplates = nil;
-//        // Filters if is used for any drink type
-//        for (SliderTemplateModel *sliderTemplate in _allSliderTemplates) {
-//            if (sliderTemplate.drinkTypes.count > 0) {
-//                [slidersFiltered addObject:sliderTemplate];
-//            }
-//        }
-        
     } else {
         NSNumber *selectedSpotTypeId = [_selectedDrinkType objectForKey:@"id"];
         
@@ -453,7 +477,6 @@
 
 - (void)fetchSliderTemplates {
     
-//    [self showHUD:@"Loading sliders"];
     [SliderTemplateModel getSliderTemplates:nil success:^(NSArray *sliderTemplates, JSONAPI *jsonApi) {
         [self hideHUD];
         _allSliderTemplates = sliderTemplates;
@@ -510,6 +533,7 @@
     
     if (section == kSectionTypes) {
         
+        // Sets label for drink type
         if (_selectedDrinkType == nil) {
             [_sectionHeaderTypes.lblText setText:@"Select Drink Type"];
         } else {
@@ -517,19 +541,25 @@
         }
         
     } else if (section == kSectionBaseAlcohols) {
+        
+        // Sets label for base alcohol
         if (_selectedBaseAlcohol == nil) {
             CGFloat fontSize = _sectionHeaderBaseAlcohol.lblText.font.pointSize;
             [_sectionHeaderBaseAlcohol.lblText setText:@"Select Base Alcohol (optional)" withFont:[UIFont fontWithName:@"Lato-LightItalic" size:fontSize] onString:@"(optional)"];
         } else {
             [_sectionHeaderBaseAlcohol.lblText setText:_selectedBaseAlcohol.name];
         }
+        
     } else if (section == kSectionWineSubtypes) {
+        
+        // Sets label for wine subtype
         if (_selectedWineSubtype == nil) {
             CGFloat fontSize = _sectionHeaderWineSubtype.lblText.font.pointSize;
             [_sectionHeaderWineSubtype.lblText setText:@"Select Wine Type (optional)" withFont:[UIFont fontWithName:@"Lato-LightItalic" size:fontSize] onString:@"(optional)"];
         } else {
             [_sectionHeaderWineSubtype.lblText setText:[_selectedWineSubtype objectForKey:@"name"]];
         }
+        
     }
     
 }
