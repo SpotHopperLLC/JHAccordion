@@ -8,6 +8,7 @@
 
 #define kSectionTypes 0
 #define kSectionBaseAlcohols 1
+#define kSectionWineSubtypes 2
 #define kSectionSliders 4
 #define kSectionAdvancedSliders 5
 
@@ -41,6 +42,7 @@
 @property (nonatomic, strong) JHAccordion *accordion;
 @property (nonatomic, strong) AdjustSliderSectionHeaderView *sectionHeaderTypes;
 @property (nonatomic, strong) AdjustSliderSectionHeaderView *sectionHeaderBaseAlcohol;
+@property (nonatomic, strong) AdjustSliderSectionHeaderView *sectionHeaderWineSubtype;
 @property (nonatomic, strong) AdjustSliderSectionHeaderView *sectionHeaderAdvancedSliders;
 
 @property (nonatomic, strong) NSArray *drinkTypes;
@@ -48,6 +50,9 @@
 
 @property (nonatomic, strong) NSArray *baseAlcohols;
 @property (nonatomic, strong) BaseAlcoholModel *selectedBaseAlcohol;
+
+@property (nonatomic, strong) NSArray *wineSubtypes;
+@property (nonatomic, strong) NSDictionary *selectedWineSubtype;
 
 @property (nonatomic, strong) NSArray *allSliderTemplates;
 @property (nonatomic, strong) NSArray *sliderTemplates;
@@ -104,6 +109,8 @@
         return _drinkTypes.count ;
     } else if (section == kSectionBaseAlcohols) {
         return _baseAlcohols.count + 1;
+    } else if (section == kSectionWineSubtypes) {
+        return _wineSubtypes.count + 1;
     } else if (section == kSectionSliders) {
         return _sliders.count;
     } else if (section == kSectionAdvancedSliders) {
@@ -130,6 +137,17 @@
         } else {
             BaseAlcoholModel *baseAlcohol = [_baseAlcohols objectAtIndex:indexPath.row-1];
             [cell.lblTitle setText:baseAlcohol.name];
+        }
+        
+        return cell;
+    } else if (indexPath.section == kSectionWineSubtypes) {
+        
+        AdjustSliderOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AdjustSliderOptionCell" forIndexPath:indexPath];
+        if (indexPath.row == 0) {
+            [cell.lblTitle setText:@"Any"];
+        } else {
+            NSDictionary *wineSubtype = [_wineSubtypes objectAtIndex:indexPath.row-1];
+            [cell.lblTitle setText:[wineSubtype objectForKey:@"name"]];
         }
         
         return cell;
@@ -170,6 +188,13 @@
             _selectedBaseAlcohol = [_baseAlcohols objectAtIndex:indexPath.row-1];
         }
         [_accordion closeSection:indexPath.section];
+    } else if (indexPath.section == kSectionWineSubtypes) {
+        if (indexPath.row == 0) {
+            _selectedWineSubtype = nil;
+        } else {
+            _selectedWineSubtype = [_wineSubtypes objectAtIndex:indexPath.row-1];
+        }
+        [_accordion closeSection:indexPath.section];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -179,6 +204,8 @@
     if (indexPath.section == kSectionTypes) {
         return ( [_accordion isSectionOpened:indexPath.section] ? 44.0f : 0.0f);
     } else if (indexPath.section == kSectionBaseAlcohols) {
+        return ( [_accordion isSectionOpened:indexPath.section] ? 44.0f : 0.0f);
+    } else if (indexPath.section == kSectionWineSubtypes) {
         return ( [_accordion isSectionOpened:indexPath.section] ? 44.0f : 0.0f);
     } else if (indexPath.section == kSectionSliders) {
         return 77.0f;
@@ -197,6 +224,8 @@
     if (section == kSectionTypes) {
         return 48.0f;
     } else if (section == kSectionBaseAlcohols && [self isCocktailSelected]) {
+        return 48.0f;
+    } else if (section == kSectionWineSubtypes && [self isWineSelected]) {
         return 48.0f;
     } else if (section == kSectionAdvancedSliders && _advancedSliders.count > 0) {
         return 48.0f;
@@ -232,6 +261,7 @@
 - (void)accordion:(JHAccordion *)accordion openingSection:(NSInteger)section {
     if (section == kSectionTypes) [_sectionHeaderTypes setSelected:YES];
     else if (section == kSectionBaseAlcohols) [_sectionHeaderBaseAlcohol setSelected:YES];
+    else if (section == kSectionWineSubtypes) [_sectionHeaderWineSubtype setSelected:YES];
     else if (section == kSectionAdvancedSliders) [_sectionHeaderAdvancedSliders setSelected:YES];
 }
 
@@ -241,6 +271,7 @@
         [self filterSliderTemplates];
     }
     else if (section == kSectionBaseAlcohols) [_sectionHeaderBaseAlcohol setSelected:NO];
+    else if (section == kSectionWineSubtypes) [_sectionHeaderWineSubtype setSelected:NO];
     else if (section == kSectionAdvancedSliders) [_sectionHeaderAdvancedSliders setSelected:NO];
     
     [self updateSectionHeaderTitles:section];
@@ -275,13 +306,19 @@
     
     // Reset
     _selectedDrinkType = nil;
+    _selectedBaseAlcohol = nil;
+    _selectedWineSubtype = nil;
     
     // Close section
     [_accordion closeSection:kSectionTypes];
+    [_accordion closeSection:kSectionBaseAlcohols];
+    [_accordion closeSection:kSectionWineSubtypes];
     [_accordion closeSection:kSectionAdvancedSliders];
     
     // Resets headers
     [self updateSectionHeaderTitles:kSectionTypes];
+    [self updateSectionHeaderTitles:kSectionBaseAlcohols];
+    [self updateSectionHeaderTitles:kSectionWineSubtypes];
     [self updateSectionHeaderTitles:kSectionAdvancedSliders];
     
     [_sliders removeAllObjects];
@@ -299,6 +336,10 @@
     return [[_selectedDrinkType objectForKey:@"name"] isEqualToString:kDrinkTypeNameCocktail];
 }
 
+- (BOOL)isWineSelected {
+    return [[_selectedDrinkType objectForKey:@"name"] isEqualToString:kDrinkTypeNameWine];
+}
+
 - (void)fetchFormData {
     
     // Gets drink form data
@@ -307,6 +348,15 @@
         NSDictionary *forms = [jsonApi objectForKey:@"form"];
         if (forms != nil) {
             _drinkTypes = [forms objectForKey:@"drink_types"];
+            
+            // Saves off wine subtypes into list
+            for (NSDictionary *drinkType in _drinkTypes) {
+                if ([[drinkType objectForKey:@"name"] isEqualToString:kDrinkTypeNameWine] == YES) {
+                    _wineSubtypes = [drinkType objectForKey:@"drink_subtypes"];
+                    break;
+                }
+            }
+            
         }
         
         
@@ -458,6 +508,13 @@
         } else {
             [_sectionHeaderBaseAlcohol.lblText setText:_selectedBaseAlcohol.name];
         }
+    } else if (section == kSectionWineSubtypes) {
+        if (_selectedWineSubtype == nil) {
+            CGFloat fontSize = _sectionHeaderWineSubtype.lblText.font.pointSize;
+            [_sectionHeaderWineSubtype.lblText setText:@"Select Wine Type (optional)" withFont:[UIFont fontWithName:@"Lato-LightItalic" size:fontSize] onString:@"(optional)"];
+        } else {
+            [_sectionHeaderWineSubtype.lblText setText:[_selectedWineSubtype objectForKey:@"name"]];
+        }
     }
     
 }
@@ -493,6 +550,20 @@
         }
         
         return _sectionHeaderBaseAlcohol;
+    } else if (section == kSectionWineSubtypes) {
+        if (_sectionHeaderWineSubtype == nil) {
+            _sectionHeaderWineSubtype = [[AdjustSliderSectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblSliders.frame), 48.0f)];
+            
+            [_sectionHeaderWineSubtype.btnBackground setTag:section];
+            [_sectionHeaderWineSubtype.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
+            
+            // Add borders
+            [_sectionHeaderWineSubtype addBottomBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
+            
+            [self updateSectionHeaderTitles:section];
+        }
+        
+        return _sectionHeaderWineSubtype;
     } else if (section == kSectionAdvancedSliders) {
         if (_sectionHeaderAdvancedSliders == nil) {
             _sectionHeaderAdvancedSliders = [[AdjustSliderSectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblSliders.frame), 48.0f)];
