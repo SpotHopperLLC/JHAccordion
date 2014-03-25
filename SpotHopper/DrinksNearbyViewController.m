@@ -28,6 +28,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnNearBy;
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
 
+@property (weak, nonatomic) IBOutlet UILabel *lblFindingYou;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indFindingYou;
 @property (weak, nonatomic) IBOutlet UILabel *lblAtPlace;
 
 @property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
@@ -59,13 +61,17 @@
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
     
+    // Initializes stuff
+    [_indFindingYou startAnimating];
+    
     // Find me
     _tellMeMyLocation = [[TellMeMyLocation alloc] init];
     [_tellMeMyLocation findMe:kCLLocationAccuracyThreeKilometers found:^(CLLocation *newLocation) {
         _currentLocation = newLocation;
         [self fetchClosetSpot];
     } failure:^(NSError *error) {
-        NSLog(@"Counldn't find location");
+        [_indFindingYou stopAnimating];
+        [_lblFindingYou setText:@"Could not find you"];
     }];
     
 }
@@ -150,12 +156,18 @@
 #pragma mark - Private
 
 - (void)updateView {
+    [_indFindingYou stopAnimating];
+    [_indFindingYou setHidden:YES];
+    
     if (_spotNearby != nil) {
+        [_lblFindingYou setHidden:YES];
+        
         [_btnNearBy setEnabled:YES];
         [_lblAtPlace setText:[NSString stringWithFormat:@"At %@ ?", _spotNearby.name]];
     } else {
         [_btnNearBy setEnabled:YES];
         [_lblAtPlace setText:@""];
+        [_lblFindingYou setText:@"No places nearby"];
     }
 }
 
@@ -175,7 +187,6 @@
                              kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:_currentLocation.coordinate.longitude]
                              };
     
-//    [self showHUD:@"Finding nearby spot"];
     // Getting first spot nearby
     [SpotModel getSpots:params success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         [self hideHUD];

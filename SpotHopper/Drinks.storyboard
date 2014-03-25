@@ -74,6 +74,13 @@ drinks nearby</string>
                                 <color key="textColor" red="0.93725490199999995" green="0.41568627450000001" blue="0.20784313730000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Finding where you are..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" id="yyD-Tw-5y0" customClass="SHLabelLatoRegular">
+                                <rect key="frame" x="99" y="147" width="173" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" red="0.93725490199999995" green="0.41568627450000001" blue="0.20784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" id="IcK-eJ-Boo" customClass="SHLabelLatoRegular">
                                 <rect key="frame" x="99" y="171" width="173" height="27"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -94,6 +101,10 @@ available here</string>
                                     <action selector="onClickNotHere:" destination="pjT-4Z-Cya" eventType="touchUpInside" id="Uzm-Bj-E6y"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" id="tIw-8F-n3d">
+                                <rect key="frame" x="247" y="148" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -101,7 +112,9 @@ available here</string>
                     <connections>
                         <outlet property="btnLocation" destination="SHZ-3s-U4L" id="kLh-t8-pEY"/>
                         <outlet property="btnNearBy" destination="sTD-6g-dW2" id="aqZ-Bc-Zfv"/>
+                        <outlet property="indFindingYou" destination="tIw-8F-n3d" id="heB-Kz-SOQ"/>
                         <outlet property="lblAtPlace" destination="WeB-0N-WFs" id="c7h-xV-SEc"/>
+                        <outlet property="lblFindingYou" destination="yyD-Tw-5y0" id="0pK-so-4t0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SBH-lF-XvV" userLabel="First Responder" sceneMemberID="firstResponder"/>
