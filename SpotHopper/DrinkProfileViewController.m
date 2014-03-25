@@ -315,6 +315,8 @@
         }
     }
 }
+- (IBAction)onClickRecipe:(id)sender {
+}
 
 - (IBAction)onClickFindSimilar:(id)sender {
     [self doFindSimilar];
@@ -387,11 +389,40 @@
         [_lblInfo setText:@"No style or rating"];
     }
     
-    // ABV
-    if (_drink.abvPercentString.length > 0) {
+    // Beer - ABV
+    if ([_drink isBeer] == YES) {
+        
+        // This is actually the recipe button
+        [_btnPhoneNumber setHidden:YES];
+        
+        // This is the bottom right extra info label
+        [_lblABV setHidden:NO];
+        
+        // Setting ABV
         [_lblABV setText:_drink.abvPercentString];
-    } else {
-        [_lblABV setText:@""];
+    }
+    // Cocktail - Recipe
+    else if ([_drink isCocktail] == YES) {
+    
+        // This is actually the recipe button
+        [_btnPhoneNumber setHidden:NO];
+        
+        // This is the bottom right extra info label
+        [_lblABV setHidden:YES];
+        
+    }
+    // Wine - Varietal
+    else if ([_drink isWine] == YES) {
+        
+        // This is actually the recipe button
+        [_btnPhoneNumber setHidden:YES];
+        
+        // This is the bottom right extra info label
+        [_lblABV setHidden:NO];
+        
+        // Setting ABV
+        [_lblABV setText:_drink.varietal];
+        
     }
     
 }

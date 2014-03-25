@@ -574,6 +574,9 @@ available here</string>
                                         <state key="highlighted">
                                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="onClickRecipe:" destination="Urs-WT-CvC" eventType="touchUpInside" id="Qpw-0p-ArQ"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Brewery" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UG4-Ad-YSo" customClass="SHLabelLatoLight">
                                         <rect key="frame" x="14" y="0.0" width="176" height="21"/>

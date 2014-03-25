@@ -68,4 +68,10 @@
 
 - (NSString*)abvPercentString;
 
+#pragma mark - Helpers
+
+- (BOOL)isBeer;
+- (BOOL)isCocktail;
+- (BOOL)isWine;
+
 @end
