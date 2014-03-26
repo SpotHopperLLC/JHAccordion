@@ -9,6 +9,7 @@
 #define kPageSize @20
 
 #import "NSNumber+Helpers.h"
+#import "UIViewController+Navigator.h"
 
 #import "TonightsSpecialsViewController.h"
 
@@ -106,12 +107,23 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    SpotModel *spot = [_spots objectAtIndex:indexPath.row];
+    
     SpecialsCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SpecialsCell" forIndexPath:indexPath];
+    [cell setSpot:spot];
     
     return cell;
 }
 
 #pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    SpotModel *spot = [_spots objectAtIndex:indexPath.row];
+    [self goToSpotProfile:spot];
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 125.0f;
@@ -120,9 +132,8 @@
 #pragma mark - JHPullToRefresh
 
 - (void)reloadTableViewDataPullDown {
-    // Resets pages and clears results
+    // Resets pages
     _page = @1;
-    [_spots removeAllObjects];
     
     [self fetchSpecials];
 }
@@ -173,6 +184,10 @@
     [self showHUD:@"Finding specials"];
     [SpotModel getSpots:params success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         [self hideHUD];
+        
+        if ([_page isEqualToNumber:@1] == YES) {
+            [_spots removeAllObjects];
+        }
         
         // Adds spots to results
         [_spots addObjectsFromArray:spotModels];

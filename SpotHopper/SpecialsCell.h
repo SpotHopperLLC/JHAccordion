@@ -8,10 +8,24 @@
 
 #import "SHTableViewCell.h"
 
+#import "SpotModel.h"
+
+@protocol SpecialsCellDelegate;
+
 @interface SpecialsCell : SHTableViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgSpotCover;
 @property (weak, nonatomic) IBOutlet UILabel *lblSpotName;
 @property (weak, nonatomic) IBOutlet UILabel *lblSpecial;
+
+@property (nonatomic, assign) id<SpecialsCellDelegate> delegate;
+
+- (void)setSpot:(SpotModel*)spot;
+
+@end
+
+@protocol SpecialsCellDelegate <NSObject>
+
+- (void)specialsCellClickedShare:(SpecialsCell*)cell;
 
 @end

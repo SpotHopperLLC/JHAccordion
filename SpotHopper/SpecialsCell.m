@@ -8,6 +8,10 @@
 
 #import "SpecialsCell.h"
 
+#import "ImageModel.h"
+
+#import <AFNetworking/UIImageView+AFNetworking.h>
+
 @implementation SpecialsCell
 
 - (id)initWithFrame:(CGRect)frame
@@ -19,8 +23,24 @@
     return self;
 }
 
-- (IBAction)onClickShare:(id)sender {
+- (void)setSpot:(SpotModel *)spot {
     
+    ImageModel *image = spot.images.firstObject;
+    if (image != nil) {
+        [_imgSpotCover setImageWithURL:[NSURL URLWithString:image.url] placeholderImage:spot.placeholderImage];
+    } else {
+        [_imgSpotCover setImage:spot.placeholderImage];
+    }
+    
+    [_lblSpotName setText:spot.name];
+    
+}
+
+- (IBAction)onClickShare:(id)sender {
+    if ([_delegate respondsToSelector:@selector(specialsCellClickedShare:)]) {
+        [_delegate specialsCellClickedShare:self];
+    }
+
 }
 
 @end
