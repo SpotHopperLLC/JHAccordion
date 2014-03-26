@@ -56,6 +56,7 @@
 @property (nonatomic, strong) AverageReviewModel *averageReview;
 @property (nonatomic, strong) NSNumber *match;
 @property (nonatomic, strong) NSArray *baseAlochols;
+@property (nonatomic, strong) NSArray *images;
 
 - (NSString *)matchPercent;
 
@@ -74,5 +75,6 @@
 - (BOOL)isBeer;
 - (BOOL)isCocktail;
 - (BOOL)isWine;
+- (UIImage *)placeholderImage;
 
 @end

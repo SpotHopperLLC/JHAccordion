@@ -220,6 +220,10 @@
     return [self linkedResourceForKey:@"base_alcohols"];
 }
 
+- (NSArray *)images {
+    return [self linkedResourceForKey:@"images"];
+}
+
 #pragma mark - Helpers
 
 - (BOOL)isBeer {
@@ -233,5 +237,18 @@
 - (BOOL)isWine {
     return [[self drinkType].name isEqualToString:kDrinkTypeNameWine];
 }
+
+- (UIImage *)placeholderImage {
+    if ([self isBeer] == YES) {
+        return [UIImage imageNamed:@"beer_placeholder"];
+    } else if ([self isCocktail] == YES) {
+        return [UIImage imageNamed:@"cocktail_placeholder"];
+    } else if ([self isWine] == YES) {
+        return [UIImage imageNamed:@"wine_placeholder"];
+    }
+    
+    return nil;
+}
+
 
 @end

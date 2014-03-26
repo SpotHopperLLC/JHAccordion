@@ -18,6 +18,7 @@
 #import "ClientSessionManager.h"
 #import "DrinkModel.h"
 #import "ErrorModel.h"
+#import "ImageModel.h"
 #import "ReviewModel.h"
 #import "SpotModel.h"
 #import "SpotTypeModel.h"
@@ -410,7 +411,14 @@
 
 - (void)updateView {
     if (_drink != nil) {
-        [_imgImage setImageWithURL:[NSURL URLWithString:_drink.imageUrl] placeholderImage:[UIImage imageNamed:@"bar_drink_placeholder"]];
+
+        // Sets image
+        ImageModel *image = _drink.images.firstObject;
+        if (image != nil) {
+            [_imgImage setImageWithURL:[NSURL URLWithString:image.url] placeholderImage:_drink.placeholderImage];
+        } else {
+            [_imgImage setImage:_drink.placeholderImage];
+        }
         
         // Removing an italics
         [_lblSubSubTitle italic:NO];
@@ -437,7 +445,13 @@
             [_lblSubSubTitle setText:@"No style or ABV"];
         }
     } else if (_spot != nil) {
-        [_imgImage setImageWithURL:[NSURL URLWithString:_spot.imageUrl] placeholderImage:[UIImage imageNamed:@"bar_drink_placeholder"]];
+        // Sets image
+        ImageModel *image = _spot.images.firstObject;
+        if (image != nil) {
+            [_imgImage setImageWithURL:[NSURL URLWithString:image.url] placeholderImage:_spot.placeholderImage];
+        } else {
+            [_imgImage setImage:_spot.placeholderImage];
+        }
         
         [_lblTitle setText:_spot.name];
         [_lblSubTitle setText:_spot.spotType.name];
