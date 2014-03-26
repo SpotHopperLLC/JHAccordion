@@ -51,6 +51,24 @@
 		0345709418DF7DDD0095E4A8 /* MenuTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345709318DF7DDD0095E4A8 /* MenuTypeModel.m */; };
 		0345709518DF7FDD0095E4A8 /* MenuTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345709318DF7DDD0095E4A8 /* MenuTypeModel.m */; };
 		0345709618DF7FDE0095E4A8 /* MenuTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345709318DF7DDD0095E4A8 /* MenuTypeModel.m */; };
+		0372FF8618E35C2D009188B5 /* icon_search_beer.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF8218E35C2D009188B5 /* icon_search_beer.png */; };
+		0372FF8718E35C2D009188B5 /* icon_search_beer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF8318E35C2D009188B5 /* icon_search_beer@2x.png */; };
+		0372FF8818E35C2D009188B5 /* icon_search_wine.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF8418E35C2D009188B5 /* icon_search_wine.png */; };
+		0372FF8918E35C2D009188B5 /* icon_search_wine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF8518E35C2D009188B5 /* icon_search_wine@2x.png */; };
+		0372FF8A18E35D42009188B5 /* icon_search_beer.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF8218E35C2D009188B5 /* icon_search_beer.png */; };
+		0372FF8B18E35D42009188B5 /* icon_search_beer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF8318E35C2D009188B5 /* icon_search_beer@2x.png */; };
+		0372FF8C18E35D42009188B5 /* icon_search_wine.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF8418E35C2D009188B5 /* icon_search_wine.png */; };
+		0372FF8D18E35D42009188B5 /* icon_search_wine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF8518E35C2D009188B5 /* icon_search_wine@2x.png */; };
+		0372FF8E18E35D42009188B5 /* icon_search_beer.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF8218E35C2D009188B5 /* icon_search_beer.png */; };
+		0372FF8F18E35D42009188B5 /* icon_search_beer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF8318E35C2D009188B5 /* icon_search_beer@2x.png */; };
+		0372FF9018E35D42009188B5 /* icon_search_wine.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF8418E35C2D009188B5 /* icon_search_wine.png */; };
+		0372FF9118E35D42009188B5 /* icon_search_wine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF8518E35C2D009188B5 /* icon_search_wine@2x.png */; };
+		0372FF9918E36A0F009188B5 /* icon_search_cocktails.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF9718E36A0F009188B5 /* icon_search_cocktails.png */; };
+		0372FF9A18E36A0F009188B5 /* icon_search_cocktails@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF9818E36A0F009188B5 /* icon_search_cocktails@2x.png */; };
+		0372FF9B18E36A2C009188B5 /* icon_search_cocktails.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF9718E36A0F009188B5 /* icon_search_cocktails.png */; };
+		0372FF9C18E36A2C009188B5 /* icon_search_cocktails@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF9818E36A0F009188B5 /* icon_search_cocktails@2x.png */; };
+		0372FF9D18E36A2C009188B5 /* icon_search_cocktails.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF9718E36A0F009188B5 /* icon_search_cocktails.png */; };
+		0372FF9E18E36A2C009188B5 /* icon_search_cocktails@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF9818E36A0F009188B5 /* icon_search_cocktails@2x.png */; };
 		03763FB718D9EBFC00A9A30B /* SHTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */; };
 		03763FB818D9ED7800A9A30B /* SHTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */; };
 		03763FB918D9ED7800A9A30B /* SHTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */; };
@@ -1200,6 +1218,12 @@
 		0345708E18DC00EE0095E4A8 /* BaseAlcoholModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseAlcoholModel.m; sourceTree = "<group>"; };
 		0345709218DF7DDD0095E4A8 /* MenuTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuTypeModel.h; sourceTree = "<group>"; };
 		0345709318DF7DDD0095E4A8 /* MenuTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuTypeModel.m; sourceTree = "<group>"; };
+		0372FF8218E35C2D009188B5 /* icon_search_beer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_search_beer.png; sourceTree = "<group>"; };
+		0372FF8318E35C2D009188B5 /* icon_search_beer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_search_beer@2x.png"; sourceTree = "<group>"; };
+		0372FF8418E35C2D009188B5 /* icon_search_wine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_search_wine.png; sourceTree = "<group>"; };
+		0372FF8518E35C2D009188B5 /* icon_search_wine@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_search_wine@2x.png"; sourceTree = "<group>"; };
+		0372FF9718E36A0F009188B5 /* icon_search_cocktails.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_search_cocktails.png; sourceTree = "<group>"; };
+		0372FF9818E36A0F009188B5 /* icon_search_cocktails@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_search_cocktails@2x.png"; sourceTree = "<group>"; };
 		03763FB518D9EBFC00A9A30B /* SHTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHTableViewCell.h; sourceTree = "<group>"; };
 		03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHTableViewCell.m; sourceTree = "<group>"; };
 		037D13A018A3DF8500B89535 /* DrinkTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkTypeModel.h; sourceTree = "<group>"; };
@@ -2425,6 +2449,12 @@
 		03CA726F187B8FD800815284 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				0372FF9718E36A0F009188B5 /* icon_search_cocktails.png */,
+				0372FF9818E36A0F009188B5 /* icon_search_cocktails@2x.png */,
+				0372FF8218E35C2D009188B5 /* icon_search_beer.png */,
+				0372FF8318E35C2D009188B5 /* icon_search_beer@2x.png */,
+				0372FF8418E35C2D009188B5 /* icon_search_wine.png */,
+				0372FF8518E35C2D009188B5 /* icon_search_wine@2x.png */,
 				039F547B18D2DDE2004B2B67 /* icon_recipe.png */,
 				039F547C18D2DDE2004B2B67 /* icon_recipe@2x.png */,
 				03265F2218C4E955002177F7 /* icon_arrow_no_shadow.png */,
@@ -2865,6 +2895,7 @@
 				03866531186DE0F700985CEC /* btn_home_drinks@2x.png in Resources */,
 				039F54A418D35A53004B2B67 /* img_arrow_west_circle.png in Resources */,
 				03CA72B1187C4D0E00815284 /* slider_thumb_selected@2x.png in Resources */,
+				0372FF8818E35C2D009188B5 /* icon_search_wine.png in Resources */,
 				03866533186DE0F700985CEC /* btn_home_specials@2x.png in Resources */,
 				03E4456618B65D8A00C88421 /* btn_spot_profile_find_similar.png in Resources */,
 				03E4455418B65D7F00C88421 /* btn_context_checkin.png in Resources */,
@@ -2934,6 +2965,7 @@
 				03F2D92D1871DC1400C69576 /* Lato-Light.ttf in Resources */,
 				03F6BF7F18C7087C00172F13 /* img_search_header_background.png in Resources */,
 				039F54B118D3AD66004B2B67 /* btn_at_different_spot.png in Resources */,
+				0372FF8618E35C2D009188B5 /* icon_search_beer.png in Resources */,
 				039B70021887167200C590F8 /* icon_search_spot_similar@2x.png in Resources */,
 				03866536186DE0F700985CEC /* btn_login_facebook.png in Resources */,
 				039F54C218D7FE93004B2B67 /* img_expand_south@2x.png in Resources */,
@@ -2953,6 +2985,7 @@
 				03CA72EC18803F7F00815284 /* 51-power.png in Resources */,
 				03CA7265187B4EB700815284 /* img_expand_east_orange.png in Resources */,
 				03CA7295187C406200815284 /* ReviewHeaderDrinkView.xib in Resources */,
+				0372FF8718E35C2D009188B5 /* icon_search_beer@2x.png in Resources */,
 				03866548186DE0F700985CEC /* btn_sidebar_icon_specials.png in Resources */,
 				03F2D91D1871DC1400C69576 /* AvantGard EF 1 in Resources */,
 				03F2D92B1871DC1400C69576 /* Lato-HairlineItalic.ttf in Resources */,
@@ -2971,6 +3004,7 @@
 				03866525186DE0F700985CEC /* app_background_blurred@2x.png in Resources */,
 				0320236918774D64008368C2 /* Reviews.storyboard in Resources */,
 				0386652D186DE0F700985CEC /* btn_context_info@2x.png in Resources */,
+				0372FF9918E36A0F009188B5 /* icon_search_cocktails.png in Resources */,
 				039F542F18D28627004B2B67 /* btn_discover_drinks_nearby.png in Resources */,
 				03CA72B5187C4D0E00815284 /* slider_thumb_selected_with_light@2x.png in Resources */,
 				03265F2618C4E955002177F7 /* icon_arrow_no_shadow.png in Resources */,
@@ -2986,6 +3020,7 @@
 				03CA727A187B8FD800815284 /* icon_cocktails.png in Resources */,
 				03CA72C1187C4FB300815284 /* slider_background_max.png in Resources */,
 				03CA72DC187F4ED100815284 /* NewReviewCocktailView.xib in Resources */,
+				0372FF9A18E36A0F009188B5 /* icon_search_cocktails@2x.png in Resources */,
 				0381043D18B672C300A410DB /* btn_spot_profile_image_next.png in Resources */,
 				03F4E75918CA2A5C0056EAA9 /* slider_thumb_selected_with_light_large.png in Resources */,
 				0386652C186DE0F700985CEC /* btn_context_info.png in Resources */,
@@ -3044,6 +3079,7 @@
 				03CA72E7187F56DA00815284 /* icon_spot.png in Resources */,
 				0386654A186DE0F700985CEC /* btn_sidebar_icon_spots.png in Resources */,
 				03E8834218C8F90000BD8FBB /* btn_context_map.png in Resources */,
+				0372FF8918E35C2D009188B5 /* icon_search_wine@2x.png in Resources */,
 				03E4456918B65D8A00C88421 /* btn_spot_profile_image_previous@2x.png in Resources */,
 				03F2D957187231C600C69576 /* btn_nav_back@2x.png in Resources */,
 				03F6BF8218C7087C00172F13 /* img_search_textfield_background@2x.png in Resources */,
@@ -3127,6 +3163,7 @@
 				03F4E7D518CA33D00056EAA9 /* orange_gradient_background.png in Resources */,
 				03F4E7D618CA33D00056EAA9 /* btn_spot_profile_image_next@2x.png in Resources */,
 				03F4E7D718CA33D00056EAA9 /* btn_nav_sidebar@2x.png in Resources */,
+				0372FF9018E35D42009188B5 /* icon_search_wine.png in Resources */,
 				039F543718D28627004B2B67 /* btn_get_drinks_here.png in Resources */,
 				03F4E7D818CA33D00056EAA9 /* AvantGarEFBooObl in Resources */,
 				039F547118D2DB4A004B2B67 /* DrinkProfileHeaderView.xib in Resources */,
@@ -3241,6 +3278,7 @@
 				03F4E83B18CA33D00056EAA9 /* icon_arrow_no_shadow.png in Resources */,
 				039F543118D28627004B2B67 /* btn_discover_drinks_nearby.png in Resources */,
 				03F4E83C18CA33D00056EAA9 /* slider_thumb@2x.png in Resources */,
+				0372FF9D18E36A2C009188B5 /* icon_search_cocktails.png in Resources */,
 				03F4E83D18CA33D00056EAA9 /* icon_wine@2x.png in Resources */,
 				03F4E83E18CA33D00056EAA9 /* icon_view_my_reviews.png in Resources */,
 				03F4E83F18CA33D00056EAA9 /* icon_clock@2x.png in Resources */,
@@ -3256,8 +3294,10 @@
 				03F4E84718CA33D00056EAA9 /* btn_context_info.png in Resources */,
 				03F4E84818CA33D00056EAA9 /* app_background.png in Resources */,
 				039ABBEA18CE359500B84AE6 /* img_callout_background@2x.png in Resources */,
+				0372FF9E18E36A2C009188B5 /* icon_search_cocktails@2x.png in Resources */,
 				03F4E84918CA33D00056EAA9 /* FooterViewController.xib in Resources */,
 				03F4E84A18CA33D00056EAA9 /* icon_arrow_shadow@2x.png in Resources */,
+				0372FF9118E35D42009188B5 /* icon_search_wine@2x.png in Resources */,
 				03F4E84B18CA33D00056EAA9 /* AutoCompleteCellView.xib in Resources */,
 				03F4E84C18CA33D00056EAA9 /* icon_cocktails@2x.png in Resources */,
 				039ABBEC18CE359800B84AE6 /* img_callout_background.png in Resources */,
@@ -3303,6 +3343,7 @@
 				03F4E86F18CA33D00056EAA9 /* btn_nav_back.png in Resources */,
 				03F4E87018CA33D00056EAA9 /* img_carousel_background@2x.png in Resources */,
 				03F4E87118CA33D00056EAA9 /* btn_context_list.png in Resources */,
+				0372FF8F18E35D42009188B5 /* icon_search_beer@2x.png in Resources */,
 				03F4E87218CA33D00056EAA9 /* img_search_textfield_background.png in Resources */,
 				039F548218D2DDE2004B2B67 /* icon_recipe@2x.png in Resources */,
 				03F4E87318CA33D00056EAA9 /* slider_profile_thumb@2x.png in Resources */,
@@ -3320,6 +3361,7 @@
 				03F4E87F18CA33D00056EAA9 /* slider_thumb_selected_with_light.png in Resources */,
 				03F4E88018CA33D00056EAA9 /* slider_background_profile_max.png in Resources */,
 				03F4E88118CA33D00056EAA9 /* btn_launch_background_create@2x.png in Resources */,
+				0372FF8E18E35D42009188B5 /* icon_search_beer.png in Resources */,
 				03F4E88218CA33D00056EAA9 /* btn_context_delete.png in Resources */,
 				039ABBE818CE34BE00B84AE6 /* SpotAnnotationCalloutView.xib in Resources */,
 				03F4E88318CA33D00056EAA9 /* icon_featured_lists@2x.png in Resources */,
@@ -3387,6 +3429,7 @@
 				03F4E92318CA34260056EAA9 /* orange_gradient_background.png in Resources */,
 				03F4E92418CA34260056EAA9 /* btn_spot_profile_image_next@2x.png in Resources */,
 				03F4E92518CA34260056EAA9 /* btn_nav_sidebar@2x.png in Resources */,
+				0372FF8C18E35D42009188B5 /* icon_search_wine.png in Resources */,
 				039F543618D28627004B2B67 /* btn_get_drinks_here.png in Resources */,
 				03F4E92618CA34260056EAA9 /* AvantGarEFBooObl in Resources */,
 				039F547018D2DB4A004B2B67 /* DrinkProfileHeaderView.xib in Resources */,
@@ -3501,6 +3544,7 @@
 				03F4E98918CA34260056EAA9 /* icon_arrow_no_shadow.png in Resources */,
 				039F543018D28627004B2B67 /* btn_discover_drinks_nearby.png in Resources */,
 				03F4E98A18CA34260056EAA9 /* slider_thumb@2x.png in Resources */,
+				0372FF9B18E36A2C009188B5 /* icon_search_cocktails.png in Resources */,
 				03F4E98B18CA34260056EAA9 /* icon_wine@2x.png in Resources */,
 				03F4E98C18CA34260056EAA9 /* icon_view_my_reviews.png in Resources */,
 				03F4E98D18CA34260056EAA9 /* icon_clock@2x.png in Resources */,
@@ -3516,8 +3560,10 @@
 				03F4E99518CA34260056EAA9 /* btn_context_info.png in Resources */,
 				03F4E99618CA34260056EAA9 /* app_background.png in Resources */,
 				039ABBE918CE359400B84AE6 /* img_callout_background@2x.png in Resources */,
+				0372FF9C18E36A2C009188B5 /* icon_search_cocktails@2x.png in Resources */,
 				03F4E99718CA34260056EAA9 /* FooterViewController.xib in Resources */,
 				03F4E99818CA34260056EAA9 /* icon_arrow_shadow@2x.png in Resources */,
+				0372FF8D18E35D42009188B5 /* icon_search_wine@2x.png in Resources */,
 				03F4E99918CA34260056EAA9 /* AutoCompleteCellView.xib in Resources */,
 				03F4E99A18CA34260056EAA9 /* icon_cocktails@2x.png in Resources */,
 				039ABBEB18CE359700B84AE6 /* img_callout_background.png in Resources */,
@@ -3563,6 +3609,7 @@
 				03F4E9BD18CA34260056EAA9 /* btn_nav_back.png in Resources */,
 				03F4E9BE18CA34260056EAA9 /* img_carousel_background@2x.png in Resources */,
 				03F4E9BF18CA34260056EAA9 /* btn_context_list.png in Resources */,
+				0372FF8B18E35D42009188B5 /* icon_search_beer@2x.png in Resources */,
 				03F4E9C018CA34260056EAA9 /* img_search_textfield_background.png in Resources */,
 				039F548118D2DDE2004B2B67 /* icon_recipe@2x.png in Resources */,
 				03F4E9C118CA34260056EAA9 /* slider_profile_thumb@2x.png in Resources */,
@@ -3580,6 +3627,7 @@
 				03F4E9CD18CA34260056EAA9 /* slider_thumb_selected_with_light.png in Resources */,
 				03F4E9CE18CA34260056EAA9 /* slider_background_profile_max.png in Resources */,
 				03F4E9CF18CA34260056EAA9 /* btn_launch_background_create@2x.png in Resources */,
+				0372FF8A18E35D42009188B5 /* icon_search_beer.png in Resources */,
 				03F4E9D018CA34260056EAA9 /* btn_context_delete.png in Resources */,
 				039ABBE718CE34BD00B84AE6 /* SpotAnnotationCalloutView.xib in Resources */,
 				03F4E9D118CA34260056EAA9 /* icon_featured_lists@2x.png in Resources */,
