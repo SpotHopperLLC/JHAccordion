@@ -8,6 +8,9 @@
 
 #import "SpecialsCell.h"
 
+#import "NSArray+DailySpecials.h"
+#import "UIView+RelativityLaws.h"
+
 #import "ImageModel.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
@@ -32,7 +35,22 @@
         [_imgSpotCover setImage:spot.placeholderImage];
     }
     
+    // Reset label height (to align with image bottom) - need to do this when we shrink label
+    CGRect frameSpecial = _lblSpecial.frame;
+    CGFloat maxHeight = CGRectGetMaxY(_imgSpotCover.frame) - CGRectGetMinY(frameSpecial);
+    frameSpecial.size.height = maxHeight;
+    [_lblSpecial setFrame:frameSpecial];
+    
+    // Sets stuff
     [_lblSpotName setText:spot.name];
+    [_lblSpecial setText:[spot.dailySpecials specialsForToday]];
+    [_lblSpecial fitLabelHeight]; // Shrinking label so it aligns top
+    
+    // Setting label to max height incase special is super duper long
+    if (CGRectGetHeight(_lblSpecial.frame) > maxHeight) {
+        frameSpecial.size.height = maxHeight;
+        [_lblSpecial setFrame:frameSpecial];
+    }
     
 }
 

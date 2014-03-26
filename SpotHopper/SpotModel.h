@@ -57,6 +57,7 @@
 @property (nonatomic, strong) AverageReviewModel *averageReview;
 @property (nonatomic, strong) NSNumber *match;
 @property (nonatomic, strong) NSArray *images;
+@property (nonatomic, strong) NSArray *dailySpecials;
 
 - (NSString*)addressCityState;
 - (NSString*)fullAddress;
