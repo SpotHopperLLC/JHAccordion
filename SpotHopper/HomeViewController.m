@@ -117,7 +117,7 @@
 }
 
 - (IBAction)onClickSpecials:(id)sender {
-    
+    [self goToTonightsSpecials];
 }
 
 - (IBAction)onClickReviews:(id)sender {

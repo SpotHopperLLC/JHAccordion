@@ -31,6 +31,8 @@
 #import "DrinkMenuViewController.h"
 #import "DrinkMenuOfferingsViewController.h"
 
+#import "TonightsSpecialsViewController.h"
+
 @implementation UIViewController (Navigator)
 
 #pragma mark - Main
@@ -191,6 +193,13 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
+#pragma mark - Specials
+
+- (void)goToTonightsSpecials {
+    TonightsSpecialsViewController *viewController = [[self specialsStoryboard] instantiateViewControllerWithIdentifier:@"TonightsSpecialsViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
 #pragma mark - Commons
 
 - (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate {
@@ -239,6 +248,15 @@
     NSString *name = [self.storyboard valueForKey:@"name"];
     if ([name isEqualToString:@"Spots"] == NO) {
         return [UIStoryboard storyboardWithName:@"Spots" bundle:[NSBundle mainBundle]];
+    }
+    
+    return self.storyboard;
+}
+
+- (UIStoryboard*)specialsStoryboard {
+    NSString *name = [self.storyboard valueForKey:@"name"];
+    if ([name isEqualToString:@"Specials"] == NO) {
+        return [UIStoryboard storyboardWithName:@"Specials" bundle:[NSBundle mainBundle]];
     }
     
     return self.storyboard;

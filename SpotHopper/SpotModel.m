@@ -241,4 +241,16 @@
     return [self objectForKey:@"match"];
 }
 
+- (NSArray *)images {
+    return [self linkedResourceForKey:@"images"];
+}
+
+- (NSArray *)dailySpecials {
+    return [self objectForKey:@"daily_specials"];
+}
+
+- (UIImage *)placeholderImage {
+    return [UIImage imageNamed:@"spot_placeholder"];
+}
+
 @end

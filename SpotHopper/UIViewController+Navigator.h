@@ -59,6 +59,9 @@
 - (void)goToMenu:(SpotModel*)spot;
 - (void)goToMenuOfferings:(SpotModel *)spot drinkType:(DrinkTypeModel*)drinkType menuType:(MenuTypeModel*)drinkSubtype menuItems:(NSArray*)menuItems;
 
+// Specials
+- (void)goToTonightsSpecials;
+
 // Common
 - (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate;
 - (void)goToFindSimilarDrinks:(id<FindSimilarDrinksViewControllerDelegate>)delegate;
@@ -68,6 +71,7 @@
 - (UIStoryboard*)drinksStoryboard;
 - (UIStoryboard*)reviewsStoryboard;
 - (UIStoryboard*)spotsStoryboard;
+- (UIStoryboard*)specialsStoryboard;
 - (UIStoryboard*)menuStoryboard;
 
 @end

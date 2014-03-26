@@ -56,11 +56,14 @@
 @property (nonatomic, strong) SpotTypeModel *spotType;
 @property (nonatomic, strong) AverageReviewModel *averageReview;
 @property (nonatomic, strong) NSNumber *match;
+@property (nonatomic, strong) NSArray *images;
+@property (nonatomic, strong) NSArray *dailySpecials;
 
 - (NSString*)addressCityState;
 - (NSString*)fullAddress;
 - (NSString*)cityState;
 - (NSString*)matchPercent;
+- (UIImage*)placeholderImage;
 
 + (Promise*)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 

@@ -21,6 +21,7 @@
 #import "DrinkSubtypeModel.h"
 #import "DrinkListModel.h"
 #import "ErrorModel.h"
+#import "ImageModel.h"
 #import "MenuItemModel.h"
 #import "MenuTypeModel.h"
 #import "ReviewModel.h"
@@ -70,6 +71,7 @@
     [JSONAPIResourceLinker link:@"drink_type" toLinkedType:@"drink_types"];
     [JSONAPIResourceLinker link:@"drink_subtype" toLinkedType:@"drink_subtypes"];
     [JSONAPIResourceLinker link:@"drink_list" toLinkedType:@"drink_lists"];
+    [JSONAPIResourceLinker link:@"image" toLinkedType:@"images"];
     [JSONAPIResourceLinker link:@"menu_item" toLinkedType:@"menu_items"];
     [JSONAPIResourceLinker link:@"menu_type" toLinkedType:@"menu_types"];
     [JSONAPIResourceLinker link:@"review" toLinkedType:@"reviews"];
@@ -89,6 +91,7 @@
     [JSONAPIResourceModeler useResource:[DrinkSubtypeModel class] toLinkedType:@"drink_subtypes"];
     [JSONAPIResourceModeler useResource:[DrinkListModel class] toLinkedType:@"drink_lists"];
     [JSONAPIResourceModeler useResource:[ErrorModel class] toLinkedType:@"errors"];
+    [JSONAPIResourceModeler useResource:[ImageModel class] toLinkedType:@"images"];
     [JSONAPIResourceModeler useResource:[MenuItemModel class] toLinkedType:@"menu_items"];
     [JSONAPIResourceModeler useResource:[MenuTypeModel class] toLinkedType:@"menu_types"];
     [JSONAPIResourceModeler useResource:[ReviewModel class] toLinkedType:@"reviews"];
