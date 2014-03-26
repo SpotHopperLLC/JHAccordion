@@ -22,6 +22,7 @@
 
 #import "AverageReviewModel.h"
 #import "ErrorModel.h"
+#import "ImageModel.h"
 #import "SpotTypeModel.h"
 #import "SpotListModel.h"
 
@@ -135,13 +136,23 @@
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 3;
+    // Alwas should show one image (the once being the placeholder if spot has no images)
+    return MAX( 1 , [_spot images].count );
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     SpotImageCollectViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SpotImageCollectViewCell" forIndexPath:indexPath];
-    [cell.imgSpot setImageWithURL:[NSURL URLWithString:@"http://placekitten.com/320/165"]];
+    
+    // Uses placeholder if spot has no images
+    if ([_spot images].count == 0) {
+        [cell.imgSpot setImage:_spot.placeholderImage];
+    }
+    // Sets the images defined by the spot
+    else {
+        ImageModel *image = [[_spot images] objectAtIndex:indexPath.row];
+        [cell.imgSpot setImageWithURL:[NSURL URLWithString:image.url] placeholderImage:_spot.placeholderImage];
+    }
     
     return cell;
 }
