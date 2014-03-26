@@ -10,6 +10,7 @@
 
 #import "ClientSessionManager.h"
 #import "ErrorModel.h"
+#import "DrinkTypeModel.h"
 #import "SliderTemplateModel.h"
 
 @implementation DrinkModel
@@ -154,6 +155,10 @@
     return [self objectForKey:@"description"];
 }
 
+- (NSString *)recipeOfDrink {
+    return [self objectForKey:@"recipe"];
+}
+
 - (NSNumber *)abv {
     return [self objectForKey:@"abv"];
 }
@@ -213,6 +218,20 @@
 
 - (NSArray *)baseAlochols {
     return [self linkedResourceForKey:@"base_alcohols"];
+}
+
+#pragma mark - Helpers
+
+- (BOOL)isBeer {
+    return [[self drinkType].name isEqualToString:kDrinkTypeNameBeer];
+}
+
+- (BOOL)isCocktail {
+    return [[self drinkType].name isEqualToString:kDrinkTypeNameCocktail];
+}
+
+- (BOOL)isWine {
+    return [[self drinkType].name isEqualToString:kDrinkTypeNameWine];
 }
 
 @end

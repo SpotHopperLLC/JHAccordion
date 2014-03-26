@@ -574,6 +574,9 @@ available here</string>
                                         <state key="highlighted">
                                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="onClickRecipe:" destination="Urs-WT-CvC" eventType="touchUpInside" id="Qpw-0p-ArQ"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Brewery" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UG4-Ad-YSo" customClass="SHLabelLatoLight">
                                         <rect key="frame" x="14" y="0.0" width="176" height="21"/>
@@ -612,7 +615,7 @@ available here</string>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
-                        <outlet property="btnPhoneNumber" destination="zG2-sb-lN7" id="qhI-gy-xzY"/>
+                        <outlet property="btnRecipe" destination="zG2-sb-lN7" id="GeH-5o-QZq"/>
                         <outlet property="lblABV" destination="9kv-Go-825" id="Hs4-bQ-pmj"/>
                         <outlet property="lblInfo" destination="O7B-bN-SU2" id="nbI-CC-wgu"/>
                         <outlet property="lblPercentMatch" destination="Uvk-PQ-ETS" id="hZh-D0-A0N"/>

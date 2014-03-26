@@ -43,6 +43,7 @@
 @property (nonatomic, strong) DrinkTypeModel *drinkType;
 @property (nonatomic, strong) DrinkSubtypeModel *drinkSubtype;
 @property (nonatomic, strong) NSString *descriptionOfDrink;
+@property (nonatomic, strong) NSString *recipeOfDrink;
 @property (nonatomic, strong) NSNumber *abv;
 @property (nonatomic, strong) NSString *style;
 @property (nonatomic, strong) NSString *varietal;
@@ -67,5 +68,11 @@
 - (Promise*)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 - (NSString*)abvPercentString;
+
+#pragma mark - Helpers
+
+- (BOOL)isBeer;
+- (BOOL)isCocktail;
+- (BOOL)isWine;
 
 @end

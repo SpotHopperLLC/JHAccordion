@@ -9,6 +9,7 @@
 #import "DrinkProfileViewController.h"
 
 #import "UIView+ViewFromNib.h"
+#import "UIView+RelativityLaws.h"
 #import "UIViewController+Navigator.h"
 
 #import "SpotAnnotation.h"
@@ -42,14 +43,24 @@
 @property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblInfo;
 @property (weak, nonatomic) IBOutlet UILabel *lblPercentMatch;
 @property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblABV;
-@property (weak, nonatomic) IBOutlet UIButton *btnPhoneNumber;
+@property (weak, nonatomic) IBOutlet UIButton *btnRecipe;
 
 // Header
 @property (nonatomic, strong) UIView *headerContent;
+@property (nonatomic, assign) CGRect initialHeaderContentFrame;
+@property (weak, nonatomic) IBOutlet UIView *viewBottomHeader;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIButton *btnImagePrev;
 @property (weak, nonatomic) IBOutlet UIButton *btnImageNext;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+
+// Header - Recipe and Description
+@property (nonatomic, assign) BOOL expandedRecipe;
+@property (nonatomic, assign) BOOL expandedDescription;
+@property (weak, nonatomic) IBOutlet UIView *viewExpand;
+@property (weak, nonatomic) IBOutlet UILabel *lblExpandTitle;
+@property (weak, nonatomic) IBOutlet UILabel *lblExpandInfo;
+
 
 @property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
 @property (nonatomic, strong) CLLocation *location;
@@ -97,6 +108,7 @@
     // Configure table header
     // Header content view
     _headerContent = [UIView viewFromNibNamed:@"DrinkProfileHeaderView" withOwner:self];
+    _initialHeaderContentFrame = _headerContent.frame;
     [_tblSliders setTableHeaderView:_headerContent];
     
     // COnfigure table
@@ -324,12 +336,160 @@
     [self goToNewReviewForDrink:_drink];
 }
 
+- (IBAction)onClickRecipe:(id)sender {
+    // Closes description first if already opten
+    if (_expandedDescription == YES) {
+        
+        [self toggleDescriptionExpand:^(BOOL closed) {
+            // Then opens recipe
+            [self toggleRecipeExpand:nil];
+        }];
+        
+    }
+    // Else opens recipe
+    else {
+        [self toggleRecipeExpand:nil];
+    }
+}
+
 - (IBAction)onClickDescription:(id)sender {
-    
+    // Closes recipe first if already opten
+    if (_expandedRecipe == YES) {
+        
+        [self toggleRecipeExpand:^(BOOL closed) {
+            // Then opens description
+            [self toggleDescriptionExpand:nil];
+        }];
+        
+    }
+    // Else opens description
+    else {
+        [self toggleDescriptionExpand:nil];
+    }
 }
 
 - (IBAction)onClickFindIt:(id)sender {
     [self goToFindDrinksAt:_drink];
+}
+
+#pragma mark - Private Expand
+
+- (void)toggleRecipeExpand:(void (^)(BOOL closed))completion {
+    if ([self isExpandClosed] == YES) {
+        // Sets info
+        [_lblExpandTitle setText:@"Recipe"];
+        [_lblExpandInfo setText: ( _drink.recipe.length > 0 ? _drink.recipe : @"No recipe" ) ];
+        
+        // Expands view to be height of recipe
+        [_lblExpandInfo fitLabelHeight];
+        [_viewExpand alignToChildBottom:_lblExpandInfo withSpacing:5.0f];
+    }
+    
+    [self animateExpand:^(BOOL closed) {
+        
+        // State stuff
+        _expandedRecipe = !closed;
+        _expandedDescription = NO;
+        
+        if (closed == YES) {
+            
+            // Clears
+            [_lblExpandTitle setText:@""];
+            [_lblExpandInfo setText:@""];
+            
+            // Expands view to be height of recipe
+            [_lblExpandInfo fitLabelHeight];
+            [_viewExpand alignToChildBottom:_lblExpandInfo withSpacing:5.0f];
+            
+            [_tblSliders scrollRectToVisible:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblSliders.frame), 1.0f) animated:YES];
+        }
+        
+        if (completion) {
+            completion(closed);
+        }
+        
+    }];
+}
+
+- (void)toggleDescriptionExpand:(void (^)(BOOL closed))completion {
+    if ([self isExpandClosed] == YES) {
+        // Sets info
+        [_lblExpandTitle setText:@"Description"];
+        [_lblExpandInfo setText: ( _drink.descriptionOfDrink.length > 0 ? _drink.descriptionOfDrink : @"No description" ) ];
+        
+        // Expands view to be height of recipe
+        [_lblExpandInfo fitLabelHeight];
+        [_viewExpand alignToChildBottom:_lblExpandInfo withSpacing:5.0f];
+    }
+    
+    [self animateExpand:^(BOOL closed) {
+        
+        // State stuff
+        _expandedRecipe = NO;
+        _expandedDescription = !closed;
+        
+        if (closed == YES) {
+            
+            // Clears
+            [_lblExpandTitle setText:@""];
+            [_lblExpandInfo setText:@""];
+            
+            // Expands view to be height of recipe
+            [_lblExpandInfo fitLabelHeight];
+            [_viewExpand alignToChildBottom:_lblExpandInfo withSpacing:5.0f];
+            
+            [_tblSliders scrollRectToVisible:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblSliders.frame), 1.0f) animated:YES];
+        }
+        
+        if (completion) {
+            completion(closed);
+        }
+        
+    }];
+}
+
+- (BOOL)isExpandClosed {
+    CGRect frame = _headerContent.frame;
+    return CGRectEqualToRect(frame, _initialHeaderContentFrame);
+}
+
+- (void)animateExpand:(void (^)(BOOL closed))completion {
+    
+    // Calculates frames to expand or dexpand (yes, its a word) the header
+    CGRect frame = _headerContent.frame;
+    CGRect frameBottomStuff = _viewBottomHeader.frame;
+    
+    if ([self isExpandClosed] == YES) {
+        
+        // Will open bottom part of header to below the expanded recipe or description
+        frameBottomStuff.origin.y =  CGRectGetMaxY(_viewExpand.frame);
+        
+        // Will expand the height the header to the bottom of bottom part of header
+        frame.size.height = CGRectGetMaxY(frameBottomStuff);
+        
+    } else {
+        
+        // Will set header back to initial size
+        frame = _initialHeaderContentFrame;
+        
+        // Will size bottom part of header back to initial size
+        frameBottomStuff.origin.y =  CGRectGetMinY(_viewExpand.frame);
+    }
+    
+    // Animates the header
+    [UIView animateWithDuration:0.35 animations:^{
+        [_headerContent setFrame:frame];
+        [_viewBottomHeader setFrame:frameBottomStuff];
+    } completion:^(BOOL finished) {
+        
+        // Resets the header size to place the cells in the correct spot
+        [_tblSliders setTableHeaderView:_headerContent];
+        
+        // Calls callback block
+        BOOL closed =[self isExpandClosed];
+        completion(closed);
+        
+    }];
 }
 
 #pragma mark - Private
@@ -387,11 +547,40 @@
         [_lblInfo setText:@"No style or rating"];
     }
     
-    // ABV
-    if (_drink.abvPercentString.length > 0) {
+    // Beer - ABV
+    if ([_drink isBeer] == YES) {
+        
+        // Hides recipe button
+        [_btnRecipe setHidden:YES];
+        
+        // This is the bottom right extra info label
+        [_lblABV setHidden:NO];
+        
+        // Setting ABV
         [_lblABV setText:_drink.abvPercentString];
-    } else {
-        [_lblABV setText:@""];
+    }
+    // Cocktail - Recipe
+    else if ([_drink isCocktail] == YES) {
+    
+        // Shows recipe button
+        [_btnRecipe setHidden:NO];
+        
+        // This is the bottom right extra info label
+        [_lblABV setHidden:YES];
+        
+    }
+    // Wine - Varietal
+    else if ([_drink isWine] == YES) {
+        
+        // Hides recipe button
+        [_btnRecipe setHidden:YES];
+        
+        // This is the bottom right extra info label
+        [_lblABV setHidden:NO];
+        
+        // Setting ABV
+        [_lblABV setText:_drink.varietal];
+        
     }
     
 }
