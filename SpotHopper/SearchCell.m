@@ -33,8 +33,12 @@
     NSString *subtitle = drink.spot.name;
     
     // Sets image to drink type
-    if ([drink.drinkType.name isEqualToString:kDrinkTypeNameBeer] == YES) {
+    if ([drink isBeer] == YES) {
+        [_imgIcon setImage:[UIImage imageNamed:@"icon_search_beer"]];
+    } else if ([drink isCocktail] == YES) {
         [_imgIcon setImage:[UIImage imageNamed:@"icon_search_drink"]];
+    } else if ([drink isWine] == YES) {
+        [_imgIcon setImage:[UIImage imageNamed:@"icon_search_wine"]];
     }
     
     // Shows two lines if there is a spot name (brewery or winery)
