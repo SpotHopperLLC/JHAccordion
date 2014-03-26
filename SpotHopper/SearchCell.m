@@ -36,7 +36,7 @@
     if ([drink isBeer] == YES) {
         [_imgIcon setImage:[UIImage imageNamed:@"icon_search_beer"]];
     } else if ([drink isCocktail] == YES) {
-        [_imgIcon setImage:[UIImage imageNamed:@"icon_search_drink"]];
+        [_imgIcon setImage:[UIImage imageNamed:@"icon_search_cocktails"]];
     } else if ([drink isWine] == YES) {
         [_imgIcon setImage:[UIImage imageNamed:@"icon_search_wine"]];
     }

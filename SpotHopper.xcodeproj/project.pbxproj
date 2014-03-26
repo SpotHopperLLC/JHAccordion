@@ -63,6 +63,12 @@
 		0372FF8F18E35D42009188B5 /* icon_search_beer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF8318E35C2D009188B5 /* icon_search_beer@2x.png */; };
 		0372FF9018E35D42009188B5 /* icon_search_wine.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF8418E35C2D009188B5 /* icon_search_wine.png */; };
 		0372FF9118E35D42009188B5 /* icon_search_wine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF8518E35C2D009188B5 /* icon_search_wine@2x.png */; };
+		0372FF9918E36A0F009188B5 /* icon_search_cocktails.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF9718E36A0F009188B5 /* icon_search_cocktails.png */; };
+		0372FF9A18E36A0F009188B5 /* icon_search_cocktails@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF9818E36A0F009188B5 /* icon_search_cocktails@2x.png */; };
+		0372FF9B18E36A2C009188B5 /* icon_search_cocktails.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF9718E36A0F009188B5 /* icon_search_cocktails.png */; };
+		0372FF9C18E36A2C009188B5 /* icon_search_cocktails@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF9818E36A0F009188B5 /* icon_search_cocktails@2x.png */; };
+		0372FF9D18E36A2C009188B5 /* icon_search_cocktails.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF9718E36A0F009188B5 /* icon_search_cocktails.png */; };
+		0372FF9E18E36A2C009188B5 /* icon_search_cocktails@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF9818E36A0F009188B5 /* icon_search_cocktails@2x.png */; };
 		03763FB718D9EBFC00A9A30B /* SHTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */; };
 		03763FB818D9ED7800A9A30B /* SHTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */; };
 		03763FB918D9ED7800A9A30B /* SHTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */; };
@@ -1216,6 +1222,8 @@
 		0372FF8318E35C2D009188B5 /* icon_search_beer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_search_beer@2x.png"; sourceTree = "<group>"; };
 		0372FF8418E35C2D009188B5 /* icon_search_wine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_search_wine.png; sourceTree = "<group>"; };
 		0372FF8518E35C2D009188B5 /* icon_search_wine@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_search_wine@2x.png"; sourceTree = "<group>"; };
+		0372FF9718E36A0F009188B5 /* icon_search_cocktails.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_search_cocktails.png; sourceTree = "<group>"; };
+		0372FF9818E36A0F009188B5 /* icon_search_cocktails@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_search_cocktails@2x.png"; sourceTree = "<group>"; };
 		03763FB518D9EBFC00A9A30B /* SHTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHTableViewCell.h; sourceTree = "<group>"; };
 		03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHTableViewCell.m; sourceTree = "<group>"; };
 		037D13A018A3DF8500B89535 /* DrinkTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkTypeModel.h; sourceTree = "<group>"; };
@@ -2441,6 +2449,8 @@
 		03CA726F187B8FD800815284 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				0372FF9718E36A0F009188B5 /* icon_search_cocktails.png */,
+				0372FF9818E36A0F009188B5 /* icon_search_cocktails@2x.png */,
 				0372FF8218E35C2D009188B5 /* icon_search_beer.png */,
 				0372FF8318E35C2D009188B5 /* icon_search_beer@2x.png */,
 				0372FF8418E35C2D009188B5 /* icon_search_wine.png */,
@@ -2994,6 +3004,7 @@
 				03866525186DE0F700985CEC /* app_background_blurred@2x.png in Resources */,
 				0320236918774D64008368C2 /* Reviews.storyboard in Resources */,
 				0386652D186DE0F700985CEC /* btn_context_info@2x.png in Resources */,
+				0372FF9918E36A0F009188B5 /* icon_search_cocktails.png in Resources */,
 				039F542F18D28627004B2B67 /* btn_discover_drinks_nearby.png in Resources */,
 				03CA72B5187C4D0E00815284 /* slider_thumb_selected_with_light@2x.png in Resources */,
 				03265F2618C4E955002177F7 /* icon_arrow_no_shadow.png in Resources */,
@@ -3009,6 +3020,7 @@
 				03CA727A187B8FD800815284 /* icon_cocktails.png in Resources */,
 				03CA72C1187C4FB300815284 /* slider_background_max.png in Resources */,
 				03CA72DC187F4ED100815284 /* NewReviewCocktailView.xib in Resources */,
+				0372FF9A18E36A0F009188B5 /* icon_search_cocktails@2x.png in Resources */,
 				0381043D18B672C300A410DB /* btn_spot_profile_image_next.png in Resources */,
 				03F4E75918CA2A5C0056EAA9 /* slider_thumb_selected_with_light_large.png in Resources */,
 				0386652C186DE0F700985CEC /* btn_context_info.png in Resources */,
@@ -3266,6 +3278,7 @@
 				03F4E83B18CA33D00056EAA9 /* icon_arrow_no_shadow.png in Resources */,
 				039F543118D28627004B2B67 /* btn_discover_drinks_nearby.png in Resources */,
 				03F4E83C18CA33D00056EAA9 /* slider_thumb@2x.png in Resources */,
+				0372FF9D18E36A2C009188B5 /* icon_search_cocktails.png in Resources */,
 				03F4E83D18CA33D00056EAA9 /* icon_wine@2x.png in Resources */,
 				03F4E83E18CA33D00056EAA9 /* icon_view_my_reviews.png in Resources */,
 				03F4E83F18CA33D00056EAA9 /* icon_clock@2x.png in Resources */,
@@ -3281,6 +3294,7 @@
 				03F4E84718CA33D00056EAA9 /* btn_context_info.png in Resources */,
 				03F4E84818CA33D00056EAA9 /* app_background.png in Resources */,
 				039ABBEA18CE359500B84AE6 /* img_callout_background@2x.png in Resources */,
+				0372FF9E18E36A2C009188B5 /* icon_search_cocktails@2x.png in Resources */,
 				03F4E84918CA33D00056EAA9 /* FooterViewController.xib in Resources */,
 				03F4E84A18CA33D00056EAA9 /* icon_arrow_shadow@2x.png in Resources */,
 				0372FF9118E35D42009188B5 /* icon_search_wine@2x.png in Resources */,
@@ -3530,6 +3544,7 @@
 				03F4E98918CA34260056EAA9 /* icon_arrow_no_shadow.png in Resources */,
 				039F543018D28627004B2B67 /* btn_discover_drinks_nearby.png in Resources */,
 				03F4E98A18CA34260056EAA9 /* slider_thumb@2x.png in Resources */,
+				0372FF9B18E36A2C009188B5 /* icon_search_cocktails.png in Resources */,
 				03F4E98B18CA34260056EAA9 /* icon_wine@2x.png in Resources */,
 				03F4E98C18CA34260056EAA9 /* icon_view_my_reviews.png in Resources */,
 				03F4E98D18CA34260056EAA9 /* icon_clock@2x.png in Resources */,
@@ -3545,6 +3560,7 @@
 				03F4E99518CA34260056EAA9 /* btn_context_info.png in Resources */,
 				03F4E99618CA34260056EAA9 /* app_background.png in Resources */,
 				039ABBE918CE359400B84AE6 /* img_callout_background@2x.png in Resources */,
+				0372FF9C18E36A2C009188B5 /* icon_search_cocktails@2x.png in Resources */,
 				03F4E99718CA34260056EAA9 /* FooterViewController.xib in Resources */,
 				03F4E99818CA34260056EAA9 /* icon_arrow_shadow@2x.png in Resources */,
 				0372FF8D18E35D42009188B5 /* icon_search_wine@2x.png in Resources */,
