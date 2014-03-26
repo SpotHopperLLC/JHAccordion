@@ -56,6 +56,8 @@
 
 @property (nonatomic, strong) AdjustDrinkListSliderViewController *adjustDrinkListSliderViewController;
 
+@property (nonatomic, strong) UIStoryboard *commonStoryboard;
+
 @property (nonatomic, strong) CLLocation *location;
 
 @property (nonatomic, strong) NSArray *featuredDrinkLists;
@@ -524,11 +526,24 @@
     
 }
 
+- (SectionHeaderView *)instantiateSectionHeaderView {
+    // load the VC and get the view (to allow for easily laying out the custom section header)
+    if (!_commonStoryboard) {
+        _commonStoryboard = [UIStoryboard storyboardWithName:@"Common" bundle:nil];
+    }
+    UIViewController *vc = [_commonStoryboard instantiateViewControllerWithIdentifier:@"SectionHeaderScene"];
+    SectionHeaderView *sectionHeaderView = (SectionHeaderView *)[vc.view viewWithTag:100];
+    [sectionHeaderView removeFromSuperview];
+    [sectionHeaderView prepareView];
+    
+    return sectionHeaderView;
+}
+
 - (SectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
     
     if (section == 0) {
         if (_sectionHeader0 == nil) {
-            _sectionHeader0 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
+            _sectionHeader0 = [self instantiateSectionHeaderView];
             [_sectionHeader0 setIconImage:[UIImage imageNamed:@"icon_plus"]];
             
             UIFont *font = _sectionHeader0.lblText.font;
@@ -545,7 +560,7 @@
         return _sectionHeader0;
     } else if (section == 1) {
         if (_sectionHeader1 == nil) {
-            _sectionHeader1 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
+            _sectionHeader1 = [self instantiateSectionHeaderView];
             [_sectionHeader1 setIconImage:[UIImage imageNamed:@"icon_featured_lists"]];
             
             UIFont *font = _sectionHeader1.lblText.font;
@@ -562,7 +577,7 @@
         return _sectionHeader1;
     } else if (section == 2) {
         if (_sectionHeader2 == nil) {
-            _sectionHeader2 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
+            _sectionHeader2 = [self instantiateSectionHeaderView];
             [_sectionHeader2 setIconImage:[UIImage imageNamed:@"icon_my_spotlists"]];
             
             UIFont *font = _sectionHeader2.lblText.font;

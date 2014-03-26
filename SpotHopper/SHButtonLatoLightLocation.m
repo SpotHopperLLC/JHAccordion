@@ -48,7 +48,7 @@
 }
 
 - (void)setTitle:(NSString *)title forState:(UIControlState)state {
-    [super setTitle:[NSString stringWithFormat:@"%@ >", title] forState:UIControlStateNormal];
+    [super setTitle:[NSString stringWithFormat:@"%@", title] forState:UIControlStateNormal];
 }
 
 - (void)updateTitle:(NSString*)locationName location:(CLLocation*)location {

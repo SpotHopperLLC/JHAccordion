@@ -44,16 +44,20 @@
 
 @property (weak, nonatomic) IBOutlet UIView *containerAdjustSliders;
 
+@property (weak, nonatomic) IBOutlet UILabel *lblNear;
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
 
 @property (weak, nonatomic) IBOutlet UITableView *tblMenu;
 
 @property (nonatomic, strong) JHAccordion *accordion;
+
 @property (nonatomic, strong) SectionHeaderView *sectionHeader0;
 @property (nonatomic, strong) SectionHeaderView *sectionHeader1;
 @property (nonatomic, strong) SectionHeaderView *sectionHeader2;
 
 @property (nonatomic, strong) AdjustSpotListSliderViewController *adjustSpotListSliderViewController;
+
+@property (nonatomic, strong) UIStoryboard *commonStoryboard;
 
 @property (nonatomic, strong) CLLocation *location;
 
@@ -64,8 +68,7 @@
 
 @implementation SpotListsMenuViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -73,8 +76,7 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
     
     // Sets title
@@ -123,9 +125,16 @@
         // Locations
         [_btnLocation setDelegate:self];
         [_btnLocation updateWithLastLocation];
+        // place the image after the text
+        NSString *text = [_btnLocation titleForState:UIControlStateNormal];
+        CGFloat textWidth = [self widthForString:text font:_btnLocation.titleLabel.font maxWidth:CGFLOAT_MAX];
+        _btnLocation.imageEdgeInsets = UIEdgeInsetsMake(0, (textWidth + 15), 0, 0);
+        _btnLocation.titleEdgeInsets = UIEdgeInsetsMake(0, -7, 0, 0);
     } else {
         [self fetchSpotLists];
     }
+    
+    [_lblNear setFont:[UIFont fontWithName:@"Lato-Regular" size:_lblNear.font.pointSize]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -142,7 +151,7 @@
     }
 }
 
-- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     NSString * segueName = segue.identifier;
     if ([segueName isEqualToString: @"EmbedAdjustSpotListSliderViewController"]) {
         _adjustSpotListSliderViewController = (AdjustSpotListSliderViewController*)[segue destinationViewController];
@@ -150,22 +159,21 @@
     }
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Don't show my reviews if no logged in
-    if ([ClientSessionManager sharedClient].isLoggedIn == NO) {
+    if ([self isShowingMySpots]) {
+        return 3;
+    }
+    else {
         return 2;
     }
-    
-    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -392,6 +400,10 @@
 
 #pragma mark - Private
 
+- (BOOL)isShowingMySpots {
+    return [ClientSessionManager sharedClient].isLoggedIn;
+}
+
 - (BOOL)hasBeenSeenBefore {
     return [[NSUserDefaults standardUserDefaults] boolForKey:kSpotListsMenuViewControllerViewedAlready];
 }
@@ -492,13 +504,27 @@
     
 }
 
+- (SectionHeaderView *)instantiateSectionHeaderView {
+    // load the VC and get the view (to allow for easily laying out the custom section header)
+    if (!_commonStoryboard) {
+        _commonStoryboard = [UIStoryboard storyboardWithName:@"Common" bundle:nil];
+    }
+    UIViewController *vc = [_commonStoryboard instantiateViewControllerWithIdentifier:@"SectionHeaderScene"];
+    SectionHeaderView *sectionHeaderView = (SectionHeaderView *)[vc.view viewWithTag:100];
+    [sectionHeaderView removeFromSuperview];
+    [sectionHeaderView prepareView];
+    
+    return sectionHeaderView;
+}
+
 - (SectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
     
     if (section == 0) {
         if (_sectionHeader0 == nil) {
-            _sectionHeader0 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
+            
+            _sectionHeader0 = [self instantiateSectionHeaderView];
             [_sectionHeader0 setIconImage:[UIImage imageNamed:@"icon_plus"]];
-
+            
             CGFloat fontSize = _sectionHeader0.lblText.font.pointSize;
             [_sectionHeader0.lblText setText:@"Create Personalized Lists" withFont:[UIFont fontWithName:@"Lato-Regular" size:fontSize] onString:@"Create"];
             
@@ -511,7 +537,7 @@
         return _sectionHeader0;
     } else if (section == 1) {
         if (_sectionHeader1 == nil) {
-            _sectionHeader1 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
+            _sectionHeader1 = [self instantiateSectionHeaderView];
             [_sectionHeader1 setIconImage:[UIImage imageNamed:@"icon_featured_lists"]];
             
             CGFloat fontSize = _sectionHeader1.lblText.font.pointSize;
@@ -521,12 +547,13 @@
             [_sectionHeader1.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
             
             [_sectionHeader1 setSelected:[_accordion isSectionOpened:section]];
+            
         }
         
         return _sectionHeader1;
     } else if (section == 2) {
         if (_sectionHeader2 == nil) {
-            _sectionHeader2 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
+            _sectionHeader2 = [self instantiateSectionHeaderView];
             [_sectionHeader2 setIconImage:[UIImage imageNamed:@"icon_my_spotlists"]];
             [_sectionHeader2 setText:@"My Spotlists"];
             
@@ -538,6 +565,7 @@
         
         return _sectionHeader2;
     }
+    
     return nil;
 }
 

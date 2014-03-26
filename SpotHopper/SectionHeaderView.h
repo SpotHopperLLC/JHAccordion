@@ -14,15 +14,17 @@
 
 @interface SectionHeaderView : UIView
 
-@property (nonatomic, strong) UIView *viewContent;
-@property (nonatomic, strong) UIButton *btnBackground;
-@property (nonatomic, strong) UIImageView *imgIcon;
-@property (nonatomic, strong) TTTAttributedLabel *lblText;
-@property (nonatomic, strong) UIImageView *imgArrow;
+@property (nonatomic, strong) IBOutlet UIView *viewContent;
+@property (nonatomic, strong) IBOutlet UIButton *btnBackground;
+@property (nonatomic, strong) IBOutlet UIImageView *imgIcon;
+@property (nonatomic, strong) IBOutlet TTTAttributedLabel *lblText;
+@property (nonatomic, strong) IBOutlet UIImageView *imgArrow;
 
 @property (nonatomic, assign) BOOL selected;
 
-- (id)initWithWidth:(CGFloat)width;
+- (id)initWithWidth:(CGFloat)width __attribute__ ((deprecated));
+
+- (void)prepareView;
 
 - (void)setIconImage:(UIImage*)image;
 - (void)setText:(NSString*)text;
