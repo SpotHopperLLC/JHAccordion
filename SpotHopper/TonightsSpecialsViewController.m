@@ -8,10 +8,15 @@
 
 #define kPageSize @20
 
+#import "NSNumber+Helpers.h"
+
 #import "TonightsSpecialsViewController.h"
 
-#import "SHNavigationController.h"
 #import "SHButtonLatoLightLocation.h"
+
+#import "SHNavigationController.h"
+
+#import "SpecialsCell.h"
 
 #import "ErrorModel.h"
 #import "SpotModel.h"
@@ -52,8 +57,12 @@
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
     
+    // Register pull to refresh
+    [self registerRefreshTableView:_tblSpecials withReloadType:kPullRefreshTypeBoth];
+    
     // Initializes stuff
     _page = @1;
+    _spots = [NSMutableArray array];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -96,10 +105,35 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return nil;
+    
+    SpecialsCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SpecialsCell" forIndexPath:indexPath];
+    
+    return cell;
 }
 
 #pragma mark - UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 125.0f;
+}
+
+#pragma mark - JHPullToRefresh
+
+- (void)reloadTableViewDataPullDown {
+    // Resets pages and clears results
+    _page = @1;
+    [_spots removeAllObjects];
+    
+    [self fetchSpecials];
+}
+
+- (void)reloadTableViewDataPullUp {
+    // Increments pages
+    _page = [_page increment];
+    
+    // Fetches more specials
+    [self fetchSpecials];
+}
 
 #pragma mark - SHButtonLatoLightLocationDelegate
 
@@ -139,7 +173,14 @@
     [self showHUD:@"Finding specials"];
     [SpotModel getSpots:params success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         [self hideHUD];
+        
+        // Adds spots to results
+        [_spots addObjectsFromArray:spotModels];
+        [self dataDidFinishRefreshing];
+        
     } failure:^(ErrorModel *errorModel) {
+        [self dataDidFinishRefreshing];
+        
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
     }];
