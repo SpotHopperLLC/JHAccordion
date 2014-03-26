@@ -10,6 +10,7 @@
 
 #import "AverageReviewModel.h"
 #import "DrinkTypeModel.h"
+#import "ImageModel.h"
 #import "SpotModel.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
@@ -27,11 +28,13 @@
 
 - (void)setDrink:(DrinkModel *)drink {
     
-    [_imgDrink setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:drink.imageUrl]] placeholderImage:Nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        [_imgDrink setImage:image];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [_imgDrink setImage:nil];
-    }];
+    // Sets image
+    ImageModel *image = drink.images.firstObject;
+    if (image != nil) {
+        [_imgDrink setImageWithURL:[NSURL URLWithString:image.url] placeholderImage:drink.placeholderImage];
+    } else {
+        [_imgDrink setImage:drink.placeholderImage];
+    }
     
     [_lblName setText:[NSString stringWithFormat:@"%@ >", drink.name]];
     [_lblSpot setText:drink.spot.name];
