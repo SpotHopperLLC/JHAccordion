@@ -24,6 +24,7 @@
 
 #import "AverageReviewModel.h"
 #import "ErrorModel.h"
+#import "ImageModel.h"
 #import "SpotModel.h"
 #import "DrinkTypeModel.h"
 #import "DrinkSubtypeModel.h"
@@ -165,13 +166,23 @@
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 3;
+    // Alwas should show one image (the once being the placeholder if drink has no images)
+    return MAX( 1 , [_drink images].count );
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     SpotImageCollectViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SpotImageCollectViewCell" forIndexPath:indexPath];
-    [cell.imgSpot setImageWithURL:[NSURL URLWithString:@"http://placekitten.com/320/165"]];
+    
+    // Uses placeholder if drink has no images
+    if ([_drink images].count == 0) {
+        [cell.imgSpot setImage:_drink.placeholderImage];
+    }
+    // Sets the images defined by the drink
+    else {
+        ImageModel *image = [[_drink images] objectAtIndex:indexPath.row];
+        [cell.imgSpot setImageWithURL:[NSURL URLWithString:image.url] placeholderImage:_drink.placeholderImage];
+    }
     
     return cell;
 }
