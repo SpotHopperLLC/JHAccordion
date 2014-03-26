@@ -51,6 +51,12 @@
 		0345709418DF7DDD0095E4A8 /* MenuTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345709318DF7DDD0095E4A8 /* MenuTypeModel.m */; };
 		0345709518DF7FDD0095E4A8 /* MenuTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345709318DF7DDD0095E4A8 /* MenuTypeModel.m */; };
 		0345709618DF7FDE0095E4A8 /* MenuTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345709318DF7DDD0095E4A8 /* MenuTypeModel.m */; };
+		0372FF4918E33A04009188B5 /* Specials.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF4818E33A04009188B5 /* Specials.storyboard */; };
+		0372FF4D18E33B20009188B5 /* TonightsSpecialsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0372FF4C18E33B20009188B5 /* TonightsSpecialsViewController.m */; };
+		0372FF4E18E342CC009188B5 /* Specials.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF4818E33A04009188B5 /* Specials.storyboard */; };
+		0372FF4F18E342CC009188B5 /* Specials.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF4818E33A04009188B5 /* Specials.storyboard */; };
+		0372FF5018E342D1009188B5 /* TonightsSpecialsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0372FF4C18E33B20009188B5 /* TonightsSpecialsViewController.m */; };
+		0372FF5118E342D1009188B5 /* TonightsSpecialsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0372FF4C18E33B20009188B5 /* TonightsSpecialsViewController.m */; };
 		03763FB718D9EBFC00A9A30B /* SHTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */; };
 		03763FB818D9ED7800A9A30B /* SHTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */; };
 		03763FB918D9ED7800A9A30B /* SHTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */; };
@@ -1200,6 +1206,9 @@
 		0345708E18DC00EE0095E4A8 /* BaseAlcoholModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseAlcoholModel.m; sourceTree = "<group>"; };
 		0345709218DF7DDD0095E4A8 /* MenuTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuTypeModel.h; sourceTree = "<group>"; };
 		0345709318DF7DDD0095E4A8 /* MenuTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuTypeModel.m; sourceTree = "<group>"; };
+		0372FF4818E33A04009188B5 /* Specials.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Specials.storyboard; sourceTree = "<group>"; };
+		0372FF4B18E33B20009188B5 /* TonightsSpecialsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TonightsSpecialsViewController.h; sourceTree = "<group>"; };
+		0372FF4C18E33B20009188B5 /* TonightsSpecialsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TonightsSpecialsViewController.m; sourceTree = "<group>"; };
 		03763FB518D9EBFC00A9A30B /* SHTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHTableViewCell.h; sourceTree = "<group>"; };
 		03763FB618D9EBFC00A9A30B /* SHTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHTableViewCell.m; sourceTree = "<group>"; };
 		037D13A018A3DF8500B89535 /* DrinkTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkTypeModel.h; sourceTree = "<group>"; };
@@ -1771,6 +1780,22 @@
 			name = CustomViews;
 			sourceTree = "<group>";
 		};
+		0372FF4A18E33B00009188B5 /* Specials */ = {
+			isa = PBXGroup;
+			children = (
+				0372FF4B18E33B20009188B5 /* TonightsSpecialsViewController.h */,
+				0372FF4C18E33B20009188B5 /* TonightsSpecialsViewController.m */,
+			);
+			name = Specials;
+			sourceTree = "<group>";
+		};
+		0372FF5218E3460D009188B5 /* Specials */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Specials;
+			sourceTree = "<group>";
+		};
 		037D13A318A450C000B89535 /* DoubleGeocoder */ = {
 			isa = PBXGroup;
 			children = (
@@ -1912,6 +1937,7 @@
 				03F2D9341871E86000C69576 /* Main */,
 				039F541F18D28388004B2B67 /* Drinks */,
 				03E4456E18B65E3300C88421 /* Spots */,
+				0372FF4A18E33B00009188B5 /* Specials */,
 				0320236A18774DB5008368C2 /* Reviews */,
 				03E4453F18B56BA400C88421 /* Commons */,
 			);
@@ -1939,6 +1965,7 @@
 				039B701418873D9400C590F8 /* Reviews */,
 				039F545B18D2BB36004B2B67 /* Drink */,
 				0381043518B66FE100A410DB /* Spot */,
+				0372FF5218E3460D009188B5 /* Specials */,
 				039B6FF21887143B00C590F8 /* SearchCell.h */,
 				039B6FF31887143B00C590F8 /* SearchCell.m */,
 				039B7005188716F800C590F8 /* SearchCellView.xib */,
@@ -1956,6 +1983,7 @@
 				03E4456C18B65E1500C88421 /* Spots.storyboard */,
 				039F541B18D28379004B2B67 /* Drinks.storyboard */,
 				039F548318D3393E004B2B67 /* Menu.storyboard */,
+				0372FF4818E33A04009188B5 /* Specials.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -3004,6 +3032,7 @@
 				039F547D18D2DDE2004B2B67 /* icon_recipe.png in Resources */,
 				03F4E75A18CA2A5C0056EAA9 /* slider_thumb_selected_with_light_large@2x.png in Resources */,
 				03E8833318C837B600BD8FBB /* img_card_background@2x.png in Resources */,
+				0372FF4918E33A04009188B5 /* Specials.storyboard in Resources */,
 				03CA72B0187C4D0E00815284 /* slider_thumb_selected.png in Resources */,
 				03F2D91E1871DC1400C69576 /* AvantGard EF 2 in Resources */,
 				0320237518775501008368C2 /* nav_bar_background_ios6.png in Resources */,
@@ -3272,6 +3301,7 @@
 				03F4E85418CA33D00056EAA9 /* img_card_background@2x.png in Resources */,
 				03F4E85518CA33D00056EAA9 /* slider_thumb_selected.png in Resources */,
 				03F4E85618CA33D00056EAA9 /* AvantGard EF 2 in Resources */,
+				0372FF4F18E342CC009188B5 /* Specials.storyboard in Resources */,
 				03F4E85718CA33D00056EAA9 /* nav_bar_background_ios6.png in Resources */,
 				03F4E85818CA33D00056EAA9 /* 723-location-arrow-selected@2x.png in Resources */,
 				03F4E85918CA33D00056EAA9 /* app_background_blurred.png in Resources */,
@@ -3532,6 +3562,7 @@
 				03F4E9A218CA34260056EAA9 /* img_card_background@2x.png in Resources */,
 				03F4E9A318CA34260056EAA9 /* slider_thumb_selected.png in Resources */,
 				03F4E9A418CA34260056EAA9 /* AvantGard EF 2 in Resources */,
+				0372FF4E18E342CC009188B5 /* Specials.storyboard in Resources */,
 				03F4E9A518CA34260056EAA9 /* nav_bar_background_ios6.png in Resources */,
 				03F4E9A618CA34260056EAA9 /* 723-location-arrow-selected@2x.png in Resources */,
 				03F4E9A718CA34260056EAA9 /* app_background_blurred.png in Resources */,
@@ -3781,6 +3812,7 @@
 				03F6BF5C18C6D5BB00172F13 /* SpotListsMenuViewController.m in Sources */,
 				039F546B18D2DB32004B2B67 /* DrinkProfileViewController.m in Sources */,
 				039F548F18D340AE004B2B67 /* MenuItemModel.m in Sources */,
+				0372FF4D18E33B20009188B5 /* TonightsSpecialsViewController.m in Sources */,
 				038664CC186D376900985CEC /* NSDate+Globalize.m in Sources */,
 				038664EA186D37BC00985CEC /* RefreshView.m in Sources */,
 				038664CD186D376900985CEC /* NSDate+Util.m in Sources */,
@@ -3910,6 +3942,7 @@
 				03F4E77418CA33D00056EAA9 /* SpotListsMenuViewController.m in Sources */,
 				039F546D18D2DB32004B2B67 /* DrinkProfileViewController.m in Sources */,
 				039F549118D340AE004B2B67 /* MenuItemModel.m in Sources */,
+				0372FF5118E342D1009188B5 /* TonightsSpecialsViewController.m in Sources */,
 				03F4E77518CA33D00056EAA9 /* NSDate+Globalize.m in Sources */,
 				03F4E77618CA33D00056EAA9 /* RefreshView.m in Sources */,
 				03F4E77718CA33D00056EAA9 /* NSDate+Util.m in Sources */,
@@ -4031,6 +4064,7 @@
 				03F4E8C218CA34260056EAA9 /* SpotListsMenuViewController.m in Sources */,
 				039F546C18D2DB32004B2B67 /* DrinkProfileViewController.m in Sources */,
 				039F549018D340AE004B2B67 /* MenuItemModel.m in Sources */,
+				0372FF5018E342D1009188B5 /* TonightsSpecialsViewController.m in Sources */,
 				03F4E8C318CA34260056EAA9 /* NSDate+Globalize.m in Sources */,
 				03F4E8C418CA34260056EAA9 /* RefreshView.m in Sources */,
 				03F4E8C518CA34260056EAA9 /* NSDate+Util.m in Sources */,
