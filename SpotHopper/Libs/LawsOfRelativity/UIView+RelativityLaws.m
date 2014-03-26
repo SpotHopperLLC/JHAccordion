@@ -57,8 +57,6 @@
                                                                       }
                                                             context:context].size;
         
-        NSLog(@"Expected label height - %f", expectedLabelSize.height);
-        
         if (expectedLabelSize.height < minHeight) {
             expectedLabelSize.height = minHeight;
         }
