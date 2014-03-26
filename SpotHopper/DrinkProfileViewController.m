@@ -43,7 +43,7 @@
 @property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblInfo;
 @property (weak, nonatomic) IBOutlet UILabel *lblPercentMatch;
 @property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblABV;
-@property (weak, nonatomic) IBOutlet UIButton *btnPhoneNumber;
+@property (weak, nonatomic) IBOutlet UIButton *btnRecipe;
 
 // Header
 @property (nonatomic, strong) UIView *headerContent;
@@ -550,8 +550,8 @@
     // Beer - ABV
     if ([_drink isBeer] == YES) {
         
-        // This is actually the recipe button
-        [_btnPhoneNumber setHidden:YES];
+        // Hides recipe button
+        [_btnRecipe setHidden:YES];
         
         // This is the bottom right extra info label
         [_lblABV setHidden:NO];
@@ -562,8 +562,8 @@
     // Cocktail - Recipe
     else if ([_drink isCocktail] == YES) {
     
-        // This is actually the recipe button
-        [_btnPhoneNumber setHidden:NO];
+        // Shows recipe button
+        [_btnRecipe setHidden:NO];
         
         // This is the bottom right extra info label
         [_lblABV setHidden:YES];
@@ -572,8 +572,8 @@
     // Wine - Varietal
     else if ([_drink isWine] == YES) {
         
-        // This is actually the recipe button
-        [_btnPhoneNumber setHidden:YES];
+        // Hides recipe button
+        [_btnRecipe setHidden:YES];
         
         // This is the bottom right extra info label
         [_lblABV setHidden:NO];
