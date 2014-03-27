@@ -447,7 +447,7 @@
         [_lblSpecialInfo  setText:liveSpecial.text];
         [_viewSpecials setHidden:NO];
     } else if (todaysSpecial != nil) {
-        [_lblSpecialTitle setText:@"Daily Special!"];
+        [_lblSpecialTitle setText:@"Current Special!"];
         [_lblSpecialInfo setText:todaysSpecial];
         [_viewSpecials setHidden:NO];
     } else {
