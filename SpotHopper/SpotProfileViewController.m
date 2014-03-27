@@ -481,7 +481,7 @@
         _imgExpand.transform = CGAffineTransformMakeRotation(radians);
         [_viewSpecialInfo setAlpha:(_specialsOpen ? 1.0f : 0.0f)];
         [_viewSpecials setFrame:frame];
-    }];g
+    }];
     
 }
 
