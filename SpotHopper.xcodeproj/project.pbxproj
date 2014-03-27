@@ -49,6 +49,10 @@
 		033A3F1718E4B9B900E07F39 /* img_spot_special_header@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1318E4B5B400E07F39 /* img_spot_special_header@2x.png */; };
 		033A3F1818E4B9B900E07F39 /* img_spot_special_header.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1218E4B5B400E07F39 /* img_spot_special_header.png */; };
 		033A3F1918E4B9B900E07F39 /* img_spot_special_header@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1318E4B5B400E07F39 /* img_spot_special_header@2x.png */; };
+		033A3F1F18E4D63D00E07F39 /* img_checkin_iphone4.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1B18E4D63D00E07F39 /* img_checkin_iphone4.png */; };
+		033A3F2018E4D63D00E07F39 /* img_checkin_iphone4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1C18E4D63D00E07F39 /* img_checkin_iphone4@2x.png */; };
+		033A3F2118E4D63D00E07F39 /* img_checkin_iphone5.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1D18E4D63D00E07F39 /* img_checkin_iphone5.png */; };
+		033A3F2218E4D63D00E07F39 /* img_checkin_iphone5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1E18E4D63D00E07F39 /* img_checkin_iphone5@2x.png */; };
 		03412C371880535B000F16A8 /* img_arrow_east.png in Resources */ = {isa = PBXBuildFile; fileRef = 03412C351880535B000F16A8 /* img_arrow_east.png */; };
 		03412C381880535B000F16A8 /* img_arrow_east@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03412C361880535B000F16A8 /* img_arrow_east@2x.png */; };
 		03412C3B188053E7000F16A8 /* SHButtonLatoLightRightImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03412C3A188053E7000F16A8 /* SHButtonLatoLightRightImage.m */; };
@@ -1264,6 +1268,10 @@
 		033A3F0E18E38CEE00E07F39 /* LiveSpecialModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveSpecialModel.m; sourceTree = "<group>"; };
 		033A3F1218E4B5B400E07F39 /* img_spot_special_header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_spot_special_header.png; sourceTree = "<group>"; };
 		033A3F1318E4B5B400E07F39 /* img_spot_special_header@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_spot_special_header@2x.png"; sourceTree = "<group>"; };
+		033A3F1B18E4D63D00E07F39 /* img_checkin_iphone4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_checkin_iphone4.png; sourceTree = "<group>"; };
+		033A3F1C18E4D63D00E07F39 /* img_checkin_iphone4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_checkin_iphone4@2x.png"; sourceTree = "<group>"; };
+		033A3F1D18E4D63D00E07F39 /* img_checkin_iphone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_checkin_iphone5.png; sourceTree = "<group>"; };
+		033A3F1E18E4D63D00E07F39 /* img_checkin_iphone5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_checkin_iphone5@2x.png"; sourceTree = "<group>"; };
 		03412C351880535B000F16A8 /* img_arrow_east.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_arrow_east.png; sourceTree = "<group>"; };
 		03412C361880535B000F16A8 /* img_arrow_east@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_arrow_east@2x.png"; sourceTree = "<group>"; };
 		03412C39188053E7000F16A8 /* SHButtonLatoLightRightImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoLightRightImage.h; sourceTree = "<group>"; };
@@ -1872,6 +1880,17 @@
 			name = CustomViews;
 			sourceTree = "<group>";
 		};
+		033A3F1A18E4D63D00E07F39 /* Checkin */ = {
+			isa = PBXGroup;
+			children = (
+				033A3F1B18E4D63D00E07F39 /* img_checkin_iphone4.png */,
+				033A3F1C18E4D63D00E07F39 /* img_checkin_iphone4@2x.png */,
+				033A3F1D18E4D63D00E07F39 /* img_checkin_iphone5.png */,
+				033A3F1E18E4D63D00E07F39 /* img_checkin_iphone5@2x.png */,
+			);
+			path = Checkin;
+			sourceTree = "<group>";
+		};
 		0372FF4A18E33B00009188B5 /* Specials */ = {
 			isa = PBXGroup;
 			children = (
@@ -2149,6 +2168,7 @@
 		038664A2186D370E00985CEC /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				033A3F1A18E4D63D00E07F39 /* Checkin */,
 				0372FF7918E359A5009188B5 /* Specials */,
 				0372FF5818E35816009188B5 /* Placeholder */,
 				039F547218D2DC91004B2B67 /* DrinkProfile */,
@@ -3012,6 +3032,7 @@
 				039B6FFD1887167200C590F8 /* icon_search_drink_similar.png in Resources */,
 				03F2D9281871DC1400C69576 /* Lato-Bold.ttf in Resources */,
 				03866523186DE0F700985CEC /* app_background@2x.png in Resources */,
+				033A3F2118E4D63D00E07F39 /* img_checkin_iphone5.png in Resources */,
 				03866550186E050500985CEC /* btn_launch_item_background.png in Resources */,
 				03E4456A18B65D8A00C88421 /* btn_spot_profile_review_it.png in Resources */,
 				039F54BD18D7FE59004B2B67 /* img_expand_north.png in Resources */,
@@ -3070,6 +3091,7 @@
 				039F541C18D28379004B2B67 /* Drinks.storyboard in Resources */,
 				03CA72AE187C4D0E00815284 /* slider_thumb.png in Resources */,
 				039F546618D2D17F004B2B67 /* img_spot_pin_view@2x.png in Resources */,
+				033A3F2018E4D63D00E07F39 /* img_checkin_iphone4@2x.png in Resources */,
 				03CA72B2187C4D0E00815284 /* slider_thumb_selected_light.png in Resources */,
 				03E4457318B6607900C88421 /* SpotProfileHeaderView.xib in Resources */,
 				039ABBDB18CE306B00B84AE6 /* img_match_pin_view_selected.png in Resources */,
@@ -3102,6 +3124,7 @@
 				033A3F1518E4B5B400E07F39 /* img_spot_special_header@2x.png in Resources */,
 				03F2D92D1871DC1400C69576 /* Lato-Light.ttf in Resources */,
 				03F6BF7F18C7087C00172F13 /* img_search_header_background.png in Resources */,
+				033A3F1F18E4D63D00E07F39 /* img_checkin_iphone4.png in Resources */,
 				039F54B118D3AD66004B2B67 /* btn_at_different_spot.png in Resources */,
 				0372FF8618E35C2D009188B5 /* icon_search_beer.png in Resources */,
 				039B70021887167200C590F8 /* icon_search_spot_similar@2x.png in Resources */,
@@ -3266,6 +3289,7 @@
 				03412C381880535B000F16A8 /* img_arrow_east@2x.png in Resources */,
 				03CA727C187B8FD800815284 /* icon_liquor.png in Resources */,
 				03F2D9291871DC1400C69576 /* Lato-BoldItalic.ttf in Resources */,
+				033A3F2218E4D63D00E07F39 /* img_checkin_iphone5@2x.png in Resources */,
 				03CA72C6187C4FB300815284 /* slider_background_selected_max@2x.png in Resources */,
 				039ABBC418CE1DA500B84AE6 /* img_match_pin_view@2x.png in Resources */,
 				03F6BF6418C6DC8500172F13 /* icon_my_spotlists.png in Resources */,
