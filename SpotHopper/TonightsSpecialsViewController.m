@@ -166,13 +166,21 @@
 
 - (void)fetchSpecials {
     
+    // Day of week
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *comps = [gregorian components:NSWeekdayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit|NSDayCalendarUnit|NSTimeZoneCalendarUnit fromDate:[NSDate date]];
+    
+    // Get open and close time
+    NSInteger dayOfWeek = [comps weekday] -1;
+    
     /*
      * Searches spots for specials
      */
     NSMutableDictionary *params = @{
                                          kSpotModelParamPage : _page,
                                          kSpotModelParamsPageSize : kPageSize,
-                                         kSpotModelParamSources : kSpotModelParamSourcesSpotHopper
+                                         kSpotModelParamSources : kSpotModelParamSourcesSpotHopper,
+                                         kSpotModelParamQueryDayOfWeek : [NSNumber numberWithInteger:dayOfWeek]
                                          }.mutableCopy;
     
     // Setting location parameters
@@ -182,7 +190,7 @@
     }
     
     [self showHUD:@"Finding specials"];
-    [SpotModel getSpots:params success:^(NSArray *spotModels, JSONAPI *jsonApi) {
+    [SpotModel getSpotsWithSpecials:params success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         [self hideHUD];
         
         if ([_page isEqualToNumber:@1] == YES) {

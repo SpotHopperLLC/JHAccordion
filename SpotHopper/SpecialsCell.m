@@ -12,6 +12,7 @@
 #import "UIView+RelativityLaws.h"
 
 #import "ImageModel.h"
+#import "LiveSpecialModel.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 
@@ -41,10 +42,23 @@
     frameSpecial.size.height = maxHeight;
     [_lblSpecial setFrame:frameSpecial];
     
-    // Sets stuff
-    [_lblSpotName setText:spot.name];
-    [_lblSpecial setText:[spot.dailySpecials specialsForToday]];
-    [_lblSpecial fitLabelHeight]; // Shrinking label so it aligns top
+    // Sets name
+    LiveSpecialModel *liveSpecial = [spot currentLiveSpecial];
+    if (liveSpecial != nil) {
+        [_lblSpotName setText:[NSString stringWithFormat:@"LIVE - %@", spot.name]];
+    } else {
+        [_lblSpotName setText:spot.name];
+    }
+    
+    // Sets special
+    if (liveSpecial != nil) {
+        [_lblSpecial setText:[liveSpecial text]];
+    } else {
+        [_lblSpecial setText:[spot.dailySpecials specialsForToday]];
+    }
+    
+    // Shrinking label so it aligns top
+    [_lblSpecial fitLabelHeight];
     
     // Setting label to max height incase special is super duper long
     if (CGRectGetHeight(_lblSpecial.frame) > maxHeight) {

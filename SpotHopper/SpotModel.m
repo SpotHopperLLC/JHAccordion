@@ -10,6 +10,7 @@
 
 #import "ClientSessionManager.h"
 #import "ErrorModel.h"
+#import "LiveSpecialModel.h"
 #import "SliderTemplateModel.h"
 
 @implementation SpotModel
@@ -21,6 +22,33 @@
     Deferred *deferred = [Deferred deferred];
     
     [[ClientSessionManager sharedClient] GET:@"/api/spots" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            NSArray *models = [jsonApi resourcesForKey:@"spots"];
+            successBlock(models, jsonApi);
+            
+            // Resolves promise
+            [deferred resolve];
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+            
+            // Rejects promise
+            [deferred rejectWith:errorModel];
+        }
+    }];
+    
+    return deferred.promise;
+}
+
++ (Promise*)getSpotsWithSpecials:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [[ClientSessionManager sharedClient] GET:@"/api/spots/specials" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
@@ -247,6 +275,27 @@
 
 - (NSArray *)dailySpecials {
     return [self objectForKey:@"daily_specials"];
+}
+
+- (NSArray *)liveSpecials {
+    return [self linkedResourceForKey:@"live_specials"];
+}
+
+- (LiveSpecialModel*)currentLiveSpecial {
+    LiveSpecialModel *currentLiveSpecial = nil;
+    
+    NSDate *now = [NSDate date];
+    for (LiveSpecialModel *liveSpecial in [self liveSpecials]) {
+
+        // Checks if currents special start BEFORE now and ends AFTER now
+        if ( [liveSpecial.startDate timeIntervalSinceDate:now] < 0
+            && [liveSpecial.endDate timeIntervalSinceDate:now] > 0) {
+            currentLiveSpecial = liveSpecial;
+            break;
+        }
+    }
+    
+    return currentLiveSpecial;
 }
 
 - (UIImage *)placeholderImage {
