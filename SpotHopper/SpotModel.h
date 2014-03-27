@@ -37,7 +37,7 @@
 
 #import <JSONAPI/JSONAPI.h>
 
-@class ErrorModel, AverageReviewModel, SpotTypeModel;
+@class ErrorModel, AverageReviewModel, SpotTypeModel, LiveSpecialModel;
 
 @interface SpotModel : SHJSONAPIResource
 
@@ -58,12 +58,14 @@
 @property (nonatomic, strong) NSNumber *match;
 @property (nonatomic, strong) NSArray *images;
 @property (nonatomic, strong) NSArray *dailySpecials;
+@property (nonatomic, strong) NSArray *liveSpecials;
 
 - (NSString*)addressCityState;
 - (NSString*)fullAddress;
 - (NSString*)cityState;
 - (NSString*)matchPercent;
 - (UIImage*)placeholderImage;
+- (LiveSpecialModel*)currentLiveSpecial;
 
 + (Promise*)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
