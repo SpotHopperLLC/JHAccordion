@@ -12,6 +12,7 @@
 #define kSpotModelParamQueryLatitude @"lat"
 #define kSpotModelParamQueryLongitude @"lng"
 #define kSpotModelParamQuerySpotTypeId @"spot_type_id"
+#define kSpotModelParamQueryDayOfWeek @"day_of_week"
 
 #define kSpotModelParamName @"name"
 #define kSpotModelParamAddress @"address"
@@ -68,6 +69,8 @@
 - (LiveSpecialModel*)currentLiveSpecial;
 
 + (Promise*)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise*)getSpotsWithSpecials:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 + (Promise*)postSpot:(NSDictionary*)params success:(void(^)(SpotModel *spotModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
