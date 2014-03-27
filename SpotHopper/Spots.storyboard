@@ -66,8 +66,8 @@
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="insetFor6xAndEarlier" minX="0.0" minY="64" maxX="0.0" maxY="-64"/>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" id="9Ke-HK-o2t" userLabel="View - Specials">
-                                <rect key="frame" x="0.0" y="114" width="320" height="51"/>
+                            <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" id="9Ke-HK-o2t" userLabel="View - Specials">
+                                <rect key="frame" x="0.0" y="114" width="320" height="113"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="NIB-7l-FVf">
@@ -87,10 +87,36 @@
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily Special!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5qU-pb-acX" customClass="SHLabelLatoRegular">
                                         <rect key="frame" x="15" y="0.0" width="257" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <view contentMode="scaleToFill" id="OFn-pT-aI5" userLabel="View - Info">
+                                        <rect key="frame" x="0.0" y="41" width="320" height="72"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="wOE-S7-p29">
+                                                <rect key="frame" x="273" y="15" width="40" height="42"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" image="btn_share.png">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="onClickShareSpecial:" destination="Zvc-GB-d50" eventType="touchUpInside" id="WO7-lK-isQ"/>
+                                                </connections>
+                                            </button>
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" id="EMe-Zm-YER" customClass="SHLabelLatoLight">
+                                                <rect key="frame" x="15" y="12" width="250" height="48"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <string key="text">$1 Wisco Taps
+$2 Non-Wisco Taps</string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="0.90000000000000002" colorSpace="calibratedWhite"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
@@ -103,9 +129,11 @@
                         <outlet property="imgExpand" destination="Aqy-o4-JuR" id="zjx-Ua-iGn"/>
                         <outlet property="lblHoursOpen" destination="5dJ-KY-Y6T" id="QAm-18-UNl"/>
                         <outlet property="lblPercentMatch" destination="ovH-Sg-PDa" id="b3Y-y3-ifr"/>
+                        <outlet property="lblSpecialInfo" destination="EMe-Zm-YER" id="bQy-7f-ARg"/>
                         <outlet property="lblSpecialTitle" destination="5qU-pb-acX" id="haF-51-47g"/>
                         <outlet property="lblSpotType" destination="jsA-5d-rZg" id="LZ3-l9-Rnp"/>
                         <outlet property="tblSliders" destination="spU-mV-rAq" id="4ed-uJ-SDG"/>
+                        <outlet property="viewSpecialInfo" destination="OFn-pT-aI5" id="j3H-i6-B8q"/>
                         <outlet property="viewSpecials" destination="9Ke-HK-o2t" id="MK6-AY-QQo"/>
                     </connections>
                 </viewController>
@@ -409,6 +437,7 @@
     </scenes>
     <resources>
         <image name="btn_down_arrow.png" width="104" height="32"/>
+        <image name="btn_share.png" width="40" height="42"/>
         <image name="icon_phone.png" width="25" height="25"/>
         <image name="img_card_background.png" width="228" height="309"/>
         <image name="img_carousel_background.png" width="320" height="409"/>

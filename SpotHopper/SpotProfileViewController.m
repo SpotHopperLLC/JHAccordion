@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kSpecialsClosedHeight 51.0f
+#define kSpecialsOpenedHeight 113.0f
+
 #import "SpotProfileViewController.h"
 
 #import "NSArray+DailySpecials.h"
@@ -15,6 +18,7 @@
 #import "UIViewController+Navigator.h"
 
 #import "SpotAnnotation.h"
+#import "SHLabelLatoLight.h"
 
 #import "ReviewSliderCell.h"
 #import "SpotImageCollectViewCell.h"
@@ -24,6 +28,7 @@
 #import "AverageReviewModel.h"
 #import "ErrorModel.h"
 #import "ImageModel.h"
+#import "LiveSpecialModel.h"
 #import "SpotTypeModel.h"
 #import "SpotListModel.h"
 
@@ -45,7 +50,9 @@
 // Specials
 @property (weak, nonatomic) IBOutlet UIView *viewSpecials;
 @property (weak, nonatomic) IBOutlet UILabel *lblSpecialTitle;
+@property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblSpecialInfo;
 @property (weak, nonatomic) IBOutlet UIImageView *imgExpand;
+@property (weak, nonatomic) IBOutlet UIView *viewSpecialInfo;
 @property (nonatomic, assign) BOOL specialsOpen;
 
 // Header
@@ -116,6 +123,7 @@
     
     // Initialize stuff
     _specialsOpen = NO;
+    [_lblSpecialInfo italic:YES];
     
     [self updateView];
     [self fetchSpot];
@@ -329,7 +337,11 @@
 
 - (IBAction)onClickSpecial:(id)sender {
     _specialsOpen = !_specialsOpen;
-    [self updateViewExpand];
+    [self updateViewSpecials:YES];
+}
+
+- (IBAction)onClickShareSpecial:(id)sender {
+    
 }
 
 - (IBAction)onClickFindSimilar:(id)sender {
@@ -432,14 +444,16 @@
     NSString *todaysSpecial = [[_spot dailySpecials] specialsForToday];
     if (liveSpecial != nil) {
         [_lblSpecialTitle setText:@"Live Special!"];
+        [_lblSpecialInfo  setText:liveSpecial.text];
         [_viewSpecials setHidden:NO];
     } else if (todaysSpecial != nil) {
         [_lblSpecialTitle setText:@"Daily Special!"];
+        [_lblSpecialInfo setText:todaysSpecial];
         [_viewSpecials setHidden:NO];
     } else {
         [_viewSpecials setHidden:YES];
     }
-    [self specialsOpen];
+    [self updateViewSpecials:NO];
     
     // Update map
     if (_spot.latitude != nil && _spot.longitude != nil) {
@@ -455,11 +469,23 @@
     }
 }
 
-- (void)updateViewExpand {
+- (void)updateViewSpecials:(BOOL)animate {
+    
+    CGRect frame = _viewSpecials.frame;
+    frame.size.height = (_specialsOpen ? kSpecialsOpenedHeight : kSpecialsClosedHeight);
+    
     float radians = (_specialsOpen ? M_PI : 0);
-    [UIView animateWithDuration:0.35 animations:^{
+    
+    // Animate
+    [UIView animateWithDuration:( animate ? 0.35 : 0.0 ) animations:^{
         _imgExpand.transform = CGAffineTransformMakeRotation(radians);
+        [_viewSpecialInfo setAlpha:(_specialsOpen ? 1.0f : 0.0f)];
+        [_viewSpecials setFrame:frame];
+    } completion:^(BOOL finished) {
+        
     }];
+    
+    
 }
 
 - (void)doFindSimilar {
