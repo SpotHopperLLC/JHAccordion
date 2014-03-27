@@ -8,6 +8,7 @@
 
 #import "SpotProfileViewController.h"
 
+#import "NSArray+DailySpecials.h"
 #import "NSDate+Globalize.h"
 #import "UIButton+Block.h"
 #import "UIView+ViewFromNib.h"
@@ -40,6 +41,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblPercentMatch;
 @property (weak, nonatomic) IBOutlet UIButton *btnPhoneNumber;
 @property (weak, nonatomic) IBOutlet UILabel *lblHoursOpen;
+
+// Specials
+@property (weak, nonatomic) IBOutlet UIView *viewSpecials;
+@property (weak, nonatomic) IBOutlet UILabel *lblSpecialTitle;
+@property (weak, nonatomic) IBOutlet UIImageView *imgExpand;
+@property (nonatomic, assign) BOOL specialsOpen;
 
 // Header
 @property (nonatomic, strong) UIView *headerContent;
@@ -106,6 +113,9 @@
     
     // Configure collection cell
     [_collectionView registerNib:[UINib nibWithNibName:@"SpotImageCollectionViewCellView" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"SpotImageCollectViewCell"];
+    
+    // Initialize stuff
+    _specialsOpen = NO;
     
     [self updateView];
     [self fetchSpot];
@@ -317,6 +327,11 @@
     }
 }
 
+- (IBAction)onClickSpecial:(id)sender {
+    _specialsOpen = !_specialsOpen;
+    [self updateViewExpand];
+}
+
 - (IBAction)onClickFindSimilar:(id)sender {
     [self doFindSimilar];
 }
@@ -412,6 +427,20 @@
     [_btnPhoneNumber setTitle:_spot.phoneNumber forState:UIControlStateNormal];
     [_btnPhoneNumber setHidden:( _spot.phoneNumber.length == 0 )];
     
+    // Sets specials
+    LiveSpecialModel *liveSpecial = [_spot currentLiveSpecial];
+    NSString *todaysSpecial = [[_spot dailySpecials] specialsForToday];
+    if (liveSpecial != nil) {
+        [_lblSpecialTitle setText:@"Live Special!"];
+        [_viewSpecials setHidden:NO];
+    } else if (todaysSpecial != nil) {
+        [_lblSpecialTitle setText:@"Daily Special!"];
+        [_viewSpecials setHidden:NO];
+    } else {
+        [_viewSpecials setHidden:YES];
+    }
+    [self specialsOpen];
+    
     // Update map
     if (_spot.latitude != nil && _spot.longitude != nil) {
         MKCoordinateRegion mapRegion;
@@ -424,6 +453,13 @@
         annotation.coordinate = CLLocationCoordinate2DMake(_spot.latitude.floatValue, _spot.longitude.floatValue);
         [_mapView addAnnotation:annotation];
     }
+}
+
+- (void)updateViewExpand {
+    float radians = (_specialsOpen ? M_PI : 0);
+    [UIView animateWithDuration:0.35 animations:^{
+        _imgExpand.transform = CGAffineTransformMakeRotation(radians);
+    }];
 }
 
 - (void)doFindSimilar {
