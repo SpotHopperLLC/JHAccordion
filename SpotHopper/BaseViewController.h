@@ -19,9 +19,13 @@
 
 #import "JHPullRefreshViewController.h"
 
+@class LiveSpecialModel;
+@class LiveSpecialViewController;
+
 @interface BaseViewController : JHPullRefreshViewController<FooterViewControllerDelegate>
 
 @property (nonatomic, strong) MBProgressHUD *HUD;
+@property (nonatomic, strong) LiveSpecialViewController *liveSpecialViewController;
 
 - (void)viewDidLoad:(NSArray*)options;
 
@@ -54,5 +58,9 @@
 - (FooterViewController*)footerViewController;
 
 - (void)slideCell:(UITableViewCell *)cell aboveTableViewMidwayPoint:(UITableView *)tableView;
+
+// LiveSpecialViewController
+- (void)showLiveSpecialViewController:(LiveSpecialModel*)liveSpecial;
+- (void)hideLiveSpecialViewController:(void(^)(void))completion;
 
 @end

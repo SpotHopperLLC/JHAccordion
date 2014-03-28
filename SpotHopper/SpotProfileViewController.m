@@ -53,6 +53,7 @@
 @property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblSpecialInfo;
 @property (weak, nonatomic) IBOutlet UIImageView *imgExpand;
 @property (weak, nonatomic) IBOutlet UIView *viewSpecialInfo;
+@property (weak, nonatomic) IBOutlet UIButton *btnShareLiveSpecial;
 @property (nonatomic, assign) BOOL specialsOpen;
 
 // Header
@@ -341,7 +342,10 @@
 }
 
 - (IBAction)onClickShareSpecial:(id)sender {
+    LiveSpecialModel *liveSpecial = [_spot currentLiveSpecial];
+    liveSpecial.spot = _spot;
     
+    [self showLiveSpecialViewController:liveSpecial];
 }
 
 - (IBAction)onClickFindSimilar:(id)sender {
@@ -446,10 +450,12 @@
         [_lblSpecialTitle setText:@"Live Special!"];
         [_lblSpecialInfo  setText:liveSpecial.text];
         [_viewSpecials setHidden:NO];
+        [_btnShareLiveSpecial setHidden:NO];
     } else if (todaysSpecial != nil) {
-        [_lblSpecialTitle setText:@"Daily Special!"];
+        [_lblSpecialTitle setText:@"Current Special!"];
         [_lblSpecialInfo setText:todaysSpecial];
         [_viewSpecials setHidden:NO];
+        [_btnShareLiveSpecial setHidden:YES];
     } else {
         [_viewSpecials setHidden:YES];
     }

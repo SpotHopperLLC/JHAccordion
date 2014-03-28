@@ -13,13 +13,14 @@
 #import "UIViewController+Navigator.h"
 
 #import "FooterViewController.h"
+#import "LiveSpecialViewController.h"
 #import "SidebarViewController.h"
 
 #import <JHSidebar/JHSidebarViewController.h>
 
 typedef void(^AlertBlock)();
 
-@interface BaseViewController ()<UINavigationControllerDelegate, SidebarViewControllerDelegate>
+@interface BaseViewController ()<UINavigationControllerDelegate, SidebarViewControllerDelegate, LiveSpecialViewControllerDelegate>
 
 @property (nonatomic, strong) UIAlertView *alertView;
 @property (nonatomic, copy) AlertBlock alertBlock;
@@ -367,6 +368,61 @@ typedef void(^AlertBlock)();
         CGPoint offset = CGPointMake(0.0, newOffset);
         [tableView setContentOffset:offset animated:TRUE];
     }
+}
+
+#pragma mark - LiveSpecialViewController
+
+- (void)showLiveSpecialViewController:(LiveSpecialModel *)liveSpecial {
+    if (_liveSpecialViewController == nil) {
+        
+        // Create live special view controller
+        _liveSpecialViewController = [[LiveSpecialViewController alloc] initWithNibName:@"LiveSpecialViewController" bundle:[NSBundle mainBundle]];
+        [_liveSpecialViewController setDelegate:self];
+        
+        // Set alpha to zero so we can animate in
+        [_liveSpecialViewController.view setAlpha:0.0f];
+        [_liveSpecialViewController.view setFrame:self.navigationController.view.frame];
+        
+        // Adding to window
+        [[[UIApplication sharedApplication] keyWindow]  addSubview:_liveSpecialViewController.view];
+        
+        // Animating in
+        [UIView animateWithDuration:0.35 animations:^{
+            [_liveSpecialViewController.view setAlpha:1.0f];
+        }];
+    }
+    
+    // Updating live special text
+    [_liveSpecialViewController setLiveSpecial:liveSpecial];
+}
+
+- (void)hideLiveSpecialViewController:(void(^)(void))completion {
+    
+    // Animating live special out
+    [UIView animateWithDuration:0.35 animations:^{
+        [_liveSpecialViewController.view setAlpha:0.0f];
+    } completion:^(BOOL finished) {
+        
+        // Removing live special from view
+        [_liveSpecialViewController.view removeFromSuperview];
+        _liveSpecialViewController = nil;
+
+        if (completion != nil) {
+            completion();
+        }
+    }];
+}
+
+#pragma mark - LiveSpecialViewControllerDelegate
+
+- (void)liveSpecialViewControllerClickedClose:(LiveSpecialViewController *)viewController {
+    [self hideLiveSpecialViewController:nil];
+}
+
+- (void)liveSpecialViewControllerClickedShare:(LiveSpecialViewController *)viewController {
+    [self hideLiveSpecialViewController:^{
+        
+    }];
 }
 
 @end
