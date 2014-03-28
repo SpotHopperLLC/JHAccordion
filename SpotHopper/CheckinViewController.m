@@ -61,7 +61,7 @@
     [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
     
     // Sets title
-    [self setTitle:@"Drinklists"];
+    [self setTitle:@"Check In"];
     
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
