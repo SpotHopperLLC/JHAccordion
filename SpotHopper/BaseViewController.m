@@ -439,7 +439,7 @@ typedef void(^AlertBlock)();
     if (_shareViewController == nil) {
         
         // Create lshare view controller
-        _shareViewController = [[self shareStoryboard] instantiateViewControllerWithIdentifier:@"ShareViewController"];
+        _shareViewController = [[self shareStoryboard] instantiateViewControllerWithIdentifier:( IS_FOUR_INCH ? @"ShareViewController" : @"ShareViewControllerIPhone4" )];
         [_shareViewController setDelegate:self];
         
         // Set alpha to zero so we can animate in

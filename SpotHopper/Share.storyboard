@@ -108,15 +108,121 @@
             </objects>
             <point key="canvasLocation" x="177" y="-39"/>
         </scene>
+        <!--Share View Controller-->
+        <scene sceneID="V88-6l-8kO">
+            <objects>
+                <viewController storyboardIdentifier="ShareViewControllerIPhone4" id="5Sx-tg-cg3" customClass="ShareViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lsT-h3-LjP">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" id="sdk-eE-Yjm">
+                                <rect key="frame" x="0.0" y="34" width="320" height="252"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_share_background_iphone4.png" id="CNo-aE-4Xr">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="252"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Share this Special!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9ck-IX-TsU" customClass="SHLabelLatoLight">
+                                        <rect key="frame" x="20" y="24" width="280" height="37"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
+                                        <color key="textColor" red="0.93725490199999995" green="0.41568627450000001" blue="0.20784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="0uH-XU-ED4">
+                                        <rect key="frame" x="275" y="26" width="25" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                        <state key="normal" image="btn_share_close.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onClickClose:" destination="5Sx-tg-cg3" eventType="touchUpInside" id="1Wf-M3-MDM"/>
+                                        </connections>
+                                    </button>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="nFm-yO-Qlu">
+                                        <rect key="frame" x="34" y="69" width="250" height="77"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="5Sx-tg-cg3" id="fEI-aI-H0A"/>
+                                        </connections>
+                                    </textView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="y95-Dr-bJC">
+                                        <rect key="frame" x="81" y="164" width="63" height="63"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                        <state key="normal" image="btn_share_twitter.png" backgroundImage="btn_share_unselected.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="selected" backgroundImage="btn_share_selected.png"/>
+                                        <connections>
+                                            <action selector="onClickShareTWitter:" destination="5Sx-tg-cg3" eventType="touchUpInside" id="fP7-7X-omP"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="yh3-An-i5R">
+                                        <rect key="frame" x="19" y="164" width="63" height="63"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                        <state key="normal" image="btn_share_facebook.png" backgroundImage="btn_share_unselected.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="selected" backgroundImage="btn_share_selected.png"/>
+                                        <connections>
+                                            <action selector="onClickShareFacebook:" destination="5Sx-tg-cg3" eventType="touchUpInside" id="ka5-YB-adc"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="zXW-3L-vhl">
+                                        <rect key="frame" x="143" y="164" width="63" height="63"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                        <state key="normal" image="btn_share_text.png" backgroundImage="btn_share_unselected.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="selected" backgroundImage="btn_share_selected.png"/>
+                                        <connections>
+                                            <action selector="onClickShareText:" destination="5Sx-tg-cg3" eventType="touchUpInside" id="5xR-YG-MiM"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="EXg-2X-9v8">
+                                        <rect key="frame" x="209" y="164" width="92" height="60"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                        <state key="normal" image="btn_share_share_iphone4.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onClickShare:" destination="5Sx-tg-cg3" eventType="touchUpInside" id="Csl-NV-3Yc"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="btnFacebook" destination="yh3-An-i5R" id="sXf-IK-mOC"/>
+                        <outlet property="btnText" destination="zXW-3L-vhl" id="GJl-YP-2BA"/>
+                        <outlet property="btnTwitter" destination="y95-Dr-bJC" id="YKx-23-5cK"/>
+                        <outlet property="lblTite" destination="9ck-IX-TsU" id="Jlb-Ka-xs1"/>
+                        <outlet property="txtShare" destination="nFm-yO-Qlu" id="7Ax-Jl-AV8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zTz-yb-Rq2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="633" y="-39"/>
+        </scene>
     </scenes>
     <resources>
         <image name="btn_share_close.png" width="25" height="25"/>
         <image name="btn_share_facebook.png" width="19" height="32"/>
         <image name="btn_share_selected.png" width="63" height="63"/>
         <image name="btn_share_share.png" width="142" height="52"/>
+        <image name="btn_share_share_iphone4.png" width="92" height="60"/>
         <image name="btn_share_text.png" width="41" height="30"/>
         <image name="btn_share_twitter.png" width="35" height="30"/>
         <image name="btn_share_unselected.png" width="63" height="63"/>
+        <image name="img_share_background_iphone4.png" width="320" height="252"/>
         <image name="img_share_background_iphone5.png" width="320" height="312"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
