@@ -286,10 +286,20 @@
     
     return self.storyboard;
 }
+
 - (UIStoryboard*)checkinStoryboard {
     NSString *name = [self.storyboard valueForKey:@"name"];
     if ([name isEqualToString:@"Checkin"] == NO) {
         return [UIStoryboard storyboardWithName:@"Checkin" bundle:[NSBundle mainBundle]];
+    }
+    
+    return self.storyboard;
+}
+
+- (UIStoryboard*)shareStoryboard {
+    NSString *name = [self.storyboard valueForKey:@"name"];
+    if ([name isEqualToString:@"Share"] == NO) {
+        return [UIStoryboard storyboardWithName:@"Share" bundle:[NSBundle mainBundle]];
     }
     
     return self.storyboard;

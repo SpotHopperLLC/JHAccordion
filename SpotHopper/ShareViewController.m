@@ -47,19 +47,27 @@
 #pragma mark - Actions
 
 - (IBAction)onClickClose:(id)sender {
-    
+    if ([_delegate respondsToSelector:@selector(shareViewControllerClickedClose:)]) {
+        [_delegate shareViewControllerClickedClose:self];
+    }
 }
 
 - (IBAction)onClickShareFacebook:(id)sender {
+    
 }
 
 - (IBAction)onClickShareTWitter:(id)sender {
+    
 }
 
 - (IBAction)onClickShareText:(id)sender {
+    
 }
 
 - (IBAction)onClickShare:(id)sender {
+    if ([_delegate respondsToSelector:@selector(shareViewControllerDidFinish:)]) {
+        [_delegate shareViewControllerDidFinish:self];
+    }
 }
 
 #pragma mark - Private

@@ -432,6 +432,56 @@
 		03AF8F1A18E5C29900DD9356 /* img_share_background_iphone5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F0418E5C29900DD9356 /* img_share_background_iphone5@2x.png */; };
 		03AF8F1D18E5C40600DD9356 /* btn_share_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F1B18E5C40600DD9356 /* btn_share_share.png */; };
 		03AF8F1E18E5C40600DD9356 /* btn_share_share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F1C18E5C40600DD9356 /* btn_share_share@2x.png */; };
+		03AF8F1F18E5C89600DD9356 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AF8EC918E5B6C800DD9356 /* ShareViewController.m */; };
+		03AF8F2018E5C89600DD9356 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AF8EC918E5B6C800DD9356 /* ShareViewController.m */; };
+		03AF8F2118E5C8F000DD9356 /* btn_share_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F1B18E5C40600DD9356 /* btn_share_share.png */; };
+		03AF8F2218E5C8F000DD9356 /* btn_share_share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F1C18E5C40600DD9356 /* btn_share_share@2x.png */; };
+		03AF8F2318E5C8F000DD9356 /* btn_share_close.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF718E5C29900DD9356 /* btn_share_close.png */; };
+		03AF8F2418E5C8F000DD9356 /* btn_share_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF818E5C29900DD9356 /* btn_share_close@2x.png */; };
+		03AF8F2518E5C8F000DD9356 /* btn_share_facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF918E5C29900DD9356 /* btn_share_facebook.png */; };
+		03AF8F2618E5C8F000DD9356 /* btn_share_facebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EFA18E5C29900DD9356 /* btn_share_facebook@2x.png */; };
+		03AF8F2718E5C8F000DD9356 /* btn_share_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EFB18E5C29900DD9356 /* btn_share_selected.png */; };
+		03AF8F2818E5C8F000DD9356 /* btn_share_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EFC18E5C29900DD9356 /* btn_share_selected@2x.png */; };
+		03AF8F2918E5C8F000DD9356 /* btn_share_text.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EFD18E5C29900DD9356 /* btn_share_text.png */; };
+		03AF8F2A18E5C8F000DD9356 /* btn_share_text@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EFE18E5C29900DD9356 /* btn_share_text@2x.png */; };
+		03AF8F2B18E5C8F000DD9356 /* btn_share_twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EFF18E5C29900DD9356 /* btn_share_twitter.png */; };
+		03AF8F2C18E5C8F000DD9356 /* btn_share_twitter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F0018E5C29900DD9356 /* btn_share_twitter@2x.png */; };
+		03AF8F2D18E5C8F000DD9356 /* btn_share_unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F0118E5C29900DD9356 /* btn_share_unselected.png */; };
+		03AF8F2E18E5C8F000DD9356 /* btn_share_unselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F0218E5C29900DD9356 /* btn_share_unselected@2x.png */; };
+		03AF8F2F18E5C8F000DD9356 /* img_share_background_iphone5.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F0318E5C29900DD9356 /* img_share_background_iphone5.png */; };
+		03AF8F3018E5C8F000DD9356 /* img_share_background_iphone5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F0418E5C29900DD9356 /* img_share_background_iphone5@2x.png */; };
+		03AF8F3118E5C8F000DD9356 /* btn_share_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F1B18E5C40600DD9356 /* btn_share_share.png */; };
+		03AF8F3218E5C8F000DD9356 /* btn_share_share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F1C18E5C40600DD9356 /* btn_share_share@2x.png */; };
+		03AF8F3318E5C8F000DD9356 /* btn_share_close.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF718E5C29900DD9356 /* btn_share_close.png */; };
+		03AF8F3418E5C8F000DD9356 /* btn_share_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF818E5C29900DD9356 /* btn_share_close@2x.png */; };
+		03AF8F3518E5C8F000DD9356 /* btn_share_facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF918E5C29900DD9356 /* btn_share_facebook.png */; };
+		03AF8F3618E5C8F000DD9356 /* btn_share_facebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EFA18E5C29900DD9356 /* btn_share_facebook@2x.png */; };
+		03AF8F3718E5C8F000DD9356 /* btn_share_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EFB18E5C29900DD9356 /* btn_share_selected.png */; };
+		03AF8F3818E5C8F000DD9356 /* btn_share_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EFC18E5C29900DD9356 /* btn_share_selected@2x.png */; };
+		03AF8F3918E5C8F000DD9356 /* btn_share_text.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EFD18E5C29900DD9356 /* btn_share_text.png */; };
+		03AF8F3A18E5C8F000DD9356 /* btn_share_text@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EFE18E5C29900DD9356 /* btn_share_text@2x.png */; };
+		03AF8F3B18E5C8F000DD9356 /* btn_share_twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EFF18E5C29900DD9356 /* btn_share_twitter.png */; };
+		03AF8F3C18E5C8F000DD9356 /* btn_share_twitter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F0018E5C29900DD9356 /* btn_share_twitter@2x.png */; };
+		03AF8F3D18E5C8F000DD9356 /* btn_share_unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F0118E5C29900DD9356 /* btn_share_unselected.png */; };
+		03AF8F3E18E5C8F000DD9356 /* btn_share_unselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F0218E5C29900DD9356 /* btn_share_unselected@2x.png */; };
+		03AF8F3F18E5C8F000DD9356 /* img_share_background_iphone5.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F0318E5C29900DD9356 /* img_share_background_iphone5.png */; };
+		03AF8F4018E5C8F000DD9356 /* img_share_background_iphone5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F0418E5C29900DD9356 /* img_share_background_iphone5@2x.png */; };
+		03AF8F4118E5C8F500DD9356 /* btn_live_special_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EEE18E5C29900DD9356 /* btn_live_special_share.png */; };
+		03AF8F4218E5C8F500DD9356 /* btn_live_special_share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EEF18E5C29900DD9356 /* btn_live_special_share@2x.png */; };
+		03AF8F4318E5C8F500DD9356 /* btn_live_special_x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF018E5C29900DD9356 /* btn_live_special_x.png */; };
+		03AF8F4418E5C8F500DD9356 /* btn_live_special_x@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF118E5C29900DD9356 /* btn_live_special_x@2x.png */; };
+		03AF8F4518E5C8F500DD9356 /* img_live_special_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF218E5C29900DD9356 /* img_live_special_background.png */; };
+		03AF8F4618E5C8F500DD9356 /* img_live_special_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF318E5C29900DD9356 /* img_live_special_background@2x.png */; };
+		03AF8F4718E5C8F500DD9356 /* img_live_special_white_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF418E5C29900DD9356 /* img_live_special_white_arrow.png */; };
+		03AF8F4818E5C8F500DD9356 /* img_live_special_white_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF518E5C29900DD9356 /* img_live_special_white_arrow@2x.png */; };
+		03AF8F4918E5C8F500DD9356 /* btn_live_special_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EEE18E5C29900DD9356 /* btn_live_special_share.png */; };
+		03AF8F4A18E5C8F500DD9356 /* btn_live_special_share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EEF18E5C29900DD9356 /* btn_live_special_share@2x.png */; };
+		03AF8F4B18E5C8F500DD9356 /* btn_live_special_x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF018E5C29900DD9356 /* btn_live_special_x.png */; };
+		03AF8F4C18E5C8F500DD9356 /* btn_live_special_x@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF118E5C29900DD9356 /* btn_live_special_x@2x.png */; };
+		03AF8F4D18E5C8F500DD9356 /* img_live_special_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF218E5C29900DD9356 /* img_live_special_background.png */; };
+		03AF8F4E18E5C8F500DD9356 /* img_live_special_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF318E5C29900DD9356 /* img_live_special_background@2x.png */; };
+		03AF8F4F18E5C8F500DD9356 /* img_live_special_white_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF418E5C29900DD9356 /* img_live_special_white_arrow.png */; };
+		03AF8F5018E5C8F500DD9356 /* img_live_special_white_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF518E5C29900DD9356 /* img_live_special_white_arrow@2x.png */; };
 		03C8DAE7188B42A40082321C /* MockData.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C8DAE6188B42A40082321C /* MockData.m */; };
 		03C8DAEA188B44C20082321C /* SliderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C8DAE9188B44C20082321C /* SliderModel.m */; };
 		03C8DAED188B44CB0082321C /* SliderTemplateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C8DAEC188B44CB0082321C /* SliderTemplateModel.m */; };
@@ -3478,14 +3528,18 @@
 				03F4E7C418CA33D00056EAA9 /* RefreshView.xib in Resources */,
 				03F4E7C518CA33D00056EAA9 /* ListCellView.xib in Resources */,
 				039F543A18D28627004B2B67 /* btn_get_drinks_here@2x.png in Resources */,
+				03AF8F2F18E5C8F000DD9356 /* img_share_background_iphone5.png in Resources */,
 				03F4E7C618CA33D00056EAA9 /* Lato-Hairline.ttf in Resources */,
+				03AF8F2218E5C8F000DD9356 /* btn_share_share@2x.png in Resources */,
 				03F4E7C718CA33D00056EAA9 /* btn_sidebar_icon_account@2x.png in Resources */,
+				03AF8F2C18E5C8F000DD9356 /* btn_share_twitter@2x.png in Resources */,
 				03F4E7C818CA33D00056EAA9 /* btn_sidebar_icon_drinks@2x.png in Resources */,
 				03F4E7C918CA33D00056EAA9 /* 37x-Checkmark.png in Resources */,
 				03F4E7CA18CA33D00056EAA9 /* btn_home_spots@2x.png in Resources */,
 				03F4E7CB18CA33D00056EAA9 /* Lato-Black.ttf in Resources */,
 				0372FF7E18E359A5009188B5 /* btn_share.png in Resources */,
 				03F4E7CC18CA33D00056EAA9 /* icon_search_drink_similar.png in Resources */,
+				03AF8F4618E5C8F500DD9356 /* img_live_special_background@2x.png in Resources */,
 				03F4E7CD18CA33D00056EAA9 /* Lato-Bold.ttf in Resources */,
 				039F54C818D7FF1C004B2B67 /* img_expand_south@2x.png in Resources */,
 				03F4E7CE18CA33D00056EAA9 /* app_background@2x.png in Resources */,
@@ -3505,6 +3559,7 @@
 				039F547118D2DB4A004B2B67 /* DrinkProfileHeaderView.xib in Resources */,
 				03F4E7D918CA33D00056EAA9 /* btn_home_drinks@2x.png in Resources */,
 				039F54A618D35A53004B2B67 /* img_arrow_west_circle.png in Resources */,
+				03AF8F4118E5C8F500DD9356 /* btn_live_special_share.png in Resources */,
 				03F4E7DA18CA33D00056EAA9 /* slider_thumb_selected@2x.png in Resources */,
 				03F4E7DB18CA33D00056EAA9 /* btn_home_specials@2x.png in Resources */,
 				03F4E7DC18CA33D00056EAA9 /* btn_spot_profile_find_similar.png in Resources */,
@@ -3529,8 +3584,10 @@
 				03F4E7ED18CA33D00056EAA9 /* btn_sidebar_icon_drinks.png in Resources */,
 				03F4E7EE18CA33D00056EAA9 /* btn_spot_profile_find_similar@2x.png in Resources */,
 				039F54C718D7FF1C004B2B67 /* img_expand_south.png in Resources */,
+				03AF8F4318E5C8F500DD9356 /* btn_live_special_x.png in Resources */,
 				03F4E7EF18CA33D00056EAA9 /* img_expand_east@2x.png in Resources */,
 				03F4E7F018CA33D00056EAA9 /* map_marker_spot.png in Resources */,
+				03AF8F3018E5C8F000DD9356 /* img_share_background_iphone5@2x.png in Resources */,
 				03F4E7F118CA33D00056EAA9 /* slider_background_min@2x.png in Resources */,
 				03F4E7F218CA33D00056EAA9 /* slider_background_profile_min.png in Resources */,
 				03F4E7F318CA33D00056EAA9 /* btn_sidebar_search_icon@2x.png in Resources */,
@@ -3546,6 +3603,9 @@
 				03F4E7FC18CA33D00056EAA9 /* slider_thumb.png in Resources */,
 				039F54CA18D7FF1C004B2B67 /* img_expand_north@2x.png in Resources */,
 				039F541E18D28379004B2B67 /* Drinks.storyboard in Resources */,
+				03AF8F2A18E5C8F000DD9356 /* btn_share_text@2x.png in Resources */,
+				03AF8F2318E5C8F000DD9356 /* btn_share_close.png in Resources */,
+				03AF8F2D18E5C8F000DD9356 /* btn_share_unselected.png in Resources */,
 				03F4E7FD18CA33D00056EAA9 /* slider_thumb_selected_light.png in Resources */,
 				039F546818D2D17F004B2B67 /* img_spot_pin_view@2x.png in Resources */,
 				03F4E7FE18CA33D00056EAA9 /* SpotProfileHeaderView.xib in Resources */,
@@ -3579,6 +3639,7 @@
 				033A3F1918E4B9B900E07F39 /* img_spot_special_header@2x.png in Resources */,
 				03F4E81618CA33D00056EAA9 /* Lato-Light.ttf in Resources */,
 				03F4E81718CA33D00056EAA9 /* img_search_header_background.png in Resources */,
+				03AF8F2718E5C8F000DD9356 /* btn_share_selected.png in Resources */,
 				03F4E81818CA33D00056EAA9 /* icon_search_spot_similar@2x.png in Resources */,
 				039F54B318D3AD66004B2B67 /* btn_at_different_spot.png in Resources */,
 				03F4E81918CA33D00056EAA9 /* btn_login_facebook.png in Resources */,
@@ -3620,15 +3681,19 @@
 				039F543118D28627004B2B67 /* btn_discover_drinks_nearby.png in Resources */,
 				03F4E83C18CA33D00056EAA9 /* slider_thumb@2x.png in Resources */,
 				0372FF9D18E36A2C009188B5 /* icon_search_cocktails.png in Resources */,
+				03AF8F2E18E5C8F000DD9356 /* btn_share_unselected@2x.png in Resources */,
 				03F4E83D18CA33D00056EAA9 /* icon_wine@2x.png in Resources */,
 				03F4E83E18CA33D00056EAA9 /* icon_view_my_reviews.png in Resources */,
 				03F4E83F18CA33D00056EAA9 /* icon_clock@2x.png in Resources */,
 				03F4E84018CA33D00056EAA9 /* img_card_background.png in Resources */,
+				03AF8F4718E5C8F500DD9356 /* img_live_special_white_arrow.png in Resources */,
+				03AF8F2118E5C8F000DD9356 /* btn_share_share.png in Resources */,
 				03F4E84118CA33D00056EAA9 /* btn_home_add_reveiew.png in Resources */,
 				03F4E84218CA33D00056EAA9 /* icon_cocktails.png in Resources */,
 				039F546518D2D17F004B2B67 /* img_spot_pin_view.png in Resources */,
 				03F4E84318CA33D00056EAA9 /* slider_background_max.png in Resources */,
 				039F548618D3393E004B2B67 /* Menu.storyboard in Resources */,
+				03AF8F2B18E5C8F000DD9356 /* btn_share_twitter.png in Resources */,
 				03F4E84418CA33D00056EAA9 /* NewReviewCocktailView.xib in Resources */,
 				03F4E84518CA33D00056EAA9 /* btn_spot_profile_image_next.png in Resources */,
 				03F4E84618CA33D00056EAA9 /* slider_thumb_selected_with_light_large.png in Resources */,
@@ -3693,10 +3758,12 @@
 				03F4E87218CA33D00056EAA9 /* img_search_textfield_background.png in Resources */,
 				039F548218D2DDE2004B2B67 /* icon_recipe@2x.png in Resources */,
 				03AF8EBE18E5317100DD9356 /* Checkin.storyboard in Resources */,
+				03AF8F2818E5C8F000DD9356 /* btn_share_selected@2x.png in Resources */,
 				03F4E87318CA33D00056EAA9 /* slider_profile_thumb@2x.png in Resources */,
 				03F4E87418CA33D00056EAA9 /* slider_background@2x.png in Resources */,
 				03F4E87518CA33D00056EAA9 /* slider_background_profile_min@2x.png in Resources */,
 				03F4E87618CA33D00056EAA9 /* icon_spot.png in Resources */,
+				03AF8F4518E5C8F500DD9356 /* img_live_special_background.png in Resources */,
 				03F4E87718CA33D00056EAA9 /* btn_sidebar_icon_spots.png in Resources */,
 				03F4E87818CA33D00056EAA9 /* btn_context_map.png in Resources */,
 				03F4E87918CA33D00056EAA9 /* btn_spot_profile_image_previous@2x.png in Resources */,
@@ -3712,8 +3779,10 @@
 				03F4E88218CA33D00056EAA9 /* btn_context_delete.png in Resources */,
 				039ABBE818CE34BE00B84AE6 /* SpotAnnotationCalloutView.xib in Resources */,
 				03F4E88318CA33D00056EAA9 /* icon_featured_lists@2x.png in Resources */,
+				03AF8F2918E5C8F000DD9356 /* btn_share_text.png in Resources */,
 				03F4E88418CA33D00056EAA9 /* img_carousel_background.png in Resources */,
 				03F4E88518CA33D00056EAA9 /* table_header_background.png in Resources */,
+				03AF8F2618E5C8F000DD9356 /* btn_share_facebook@2x.png in Resources */,
 				0372FF7518E35816009188B5 /* wine_placeholder.png in Resources */,
 				03F4E88618CA33D00056EAA9 /* img_map_shadow_top@2x.png in Resources */,
 				03F4E88718CA33D00056EAA9 /* NewReviewWineView.xib in Resources */,
@@ -3723,6 +3792,7 @@
 				03F4E88B18CA33D00056EAA9 /* txt_reviews_search_background@2x.png in Resources */,
 				03F4E88C18CA33D00056EAA9 /* btn_nav_arrow_east.png in Resources */,
 				03F4E88D18CA33D00056EAA9 /* btn_sidebar_icon_reviews@2x.png in Resources */,
+				03AF8F4418E5C8F500DD9356 /* btn_live_special_x@2x.png in Resources */,
 				03F4E88E18CA33D00056EAA9 /* nav_bar_background_ios7.png in Resources */,
 				03F4E88F18CA33D00056EAA9 /* slider_background_selected_max.png in Resources */,
 				03F4E89018CA33D00056EAA9 /* icon_phone@2x.png in Resources */,
@@ -3731,9 +3801,13 @@
 				03F4E89318CA33D00056EAA9 /* table_header_background_selected.png in Resources */,
 				03F4E89418CA33D00056EAA9 /* 723-location-arrow-selected.png in Resources */,
 				039F547718D2DC91004B2B67 /* btn_drink_profile_description.png in Resources */,
+				03AF8F2418E5C8F000DD9356 /* btn_share_close@2x.png in Resources */,
+				03AF8F4818E5C8F500DD9356 /* img_live_special_white_arrow@2x.png in Resources */,
 				03F4E89518CA33D00056EAA9 /* AvantGarEFExtLig in Resources */,
 				039F544918D29B0A004B2B67 /* FindSimilarDrinksViewController.xib in Resources */,
+				03AF8F4218E5C8F500DD9356 /* btn_live_special_share@2x.png in Resources */,
 				03F4E89618CA33D00056EAA9 /* txt_review_form_background.png in Resources */,
+				03AF8F2518E5C8F000DD9356 /* btn_share_facebook.png in Resources */,
 				03F4E89718CA33D00056EAA9 /* AvantGarEFDemObl in Resources */,
 				03F4E89818CA33D00056EAA9 /* slider_background.png in Resources */,
 				0372FF6618E35816009188B5 /* beer_placeholder@2x.png in Resources */,
@@ -3760,14 +3834,18 @@
 				03F4E91218CA34260056EAA9 /* RefreshView.xib in Resources */,
 				03F4E91318CA34260056EAA9 /* ListCellView.xib in Resources */,
 				039F543918D28627004B2B67 /* btn_get_drinks_here@2x.png in Resources */,
+				03AF8F3F18E5C8F000DD9356 /* img_share_background_iphone5.png in Resources */,
 				03F4E91418CA34260056EAA9 /* Lato-Hairline.ttf in Resources */,
+				03AF8F3218E5C8F000DD9356 /* btn_share_share@2x.png in Resources */,
 				03F4E91518CA34260056EAA9 /* btn_sidebar_icon_account@2x.png in Resources */,
+				03AF8F3C18E5C8F000DD9356 /* btn_share_twitter@2x.png in Resources */,
 				03F4E91618CA34260056EAA9 /* btn_sidebar_icon_drinks@2x.png in Resources */,
 				03F4E91718CA34260056EAA9 /* 37x-Checkmark.png in Resources */,
 				03F4E91818CA34260056EAA9 /* btn_home_spots@2x.png in Resources */,
 				03F4E91918CA34260056EAA9 /* Lato-Black.ttf in Resources */,
 				0372FF7D18E359A5009188B5 /* btn_share.png in Resources */,
 				03F4E91A18CA34260056EAA9 /* icon_search_drink_similar.png in Resources */,
+				03AF8F4E18E5C8F500DD9356 /* img_live_special_background@2x.png in Resources */,
 				03F4E91B18CA34260056EAA9 /* Lato-Bold.ttf in Resources */,
 				039F54C418D7FF1B004B2B67 /* img_expand_south@2x.png in Resources */,
 				03F4E91C18CA34260056EAA9 /* app_background@2x.png in Resources */,
@@ -3787,6 +3865,7 @@
 				039F547018D2DB4A004B2B67 /* DrinkProfileHeaderView.xib in Resources */,
 				03F4E92718CA34260056EAA9 /* btn_home_drinks@2x.png in Resources */,
 				039F54A518D35A53004B2B67 /* img_arrow_west_circle.png in Resources */,
+				03AF8F4918E5C8F500DD9356 /* btn_live_special_share.png in Resources */,
 				03F4E92818CA34260056EAA9 /* slider_thumb_selected@2x.png in Resources */,
 				03F4E92918CA34260056EAA9 /* btn_home_specials@2x.png in Resources */,
 				03F4E92A18CA34260056EAA9 /* btn_spot_profile_find_similar.png in Resources */,
@@ -3811,8 +3890,10 @@
 				03F4E93B18CA34260056EAA9 /* btn_sidebar_icon_drinks.png in Resources */,
 				03F4E93C18CA34260056EAA9 /* btn_spot_profile_find_similar@2x.png in Resources */,
 				039F54C318D7FF1B004B2B67 /* img_expand_south.png in Resources */,
+				03AF8F4B18E5C8F500DD9356 /* btn_live_special_x.png in Resources */,
 				03F4E93D18CA34260056EAA9 /* img_expand_east@2x.png in Resources */,
 				03F4E93E18CA34260056EAA9 /* map_marker_spot.png in Resources */,
+				03AF8F4018E5C8F000DD9356 /* img_share_background_iphone5@2x.png in Resources */,
 				03F4E93F18CA34260056EAA9 /* slider_background_min@2x.png in Resources */,
 				03F4E94018CA34260056EAA9 /* slider_background_profile_min.png in Resources */,
 				03F4E94118CA34260056EAA9 /* btn_sidebar_search_icon@2x.png in Resources */,
@@ -3828,6 +3909,9 @@
 				03F4E94A18CA34260056EAA9 /* slider_thumb.png in Resources */,
 				039F54C618D7FF1B004B2B67 /* img_expand_north@2x.png in Resources */,
 				039F541D18D28379004B2B67 /* Drinks.storyboard in Resources */,
+				03AF8F3A18E5C8F000DD9356 /* btn_share_text@2x.png in Resources */,
+				03AF8F3318E5C8F000DD9356 /* btn_share_close.png in Resources */,
+				03AF8F3D18E5C8F000DD9356 /* btn_share_unselected.png in Resources */,
 				03F4E94B18CA34260056EAA9 /* slider_thumb_selected_light.png in Resources */,
 				039F546718D2D17F004B2B67 /* img_spot_pin_view@2x.png in Resources */,
 				03F4E94C18CA34260056EAA9 /* SpotProfileHeaderView.xib in Resources */,
@@ -3861,6 +3945,7 @@
 				033A3F1718E4B9B900E07F39 /* img_spot_special_header@2x.png in Resources */,
 				03F4E96418CA34260056EAA9 /* Lato-Light.ttf in Resources */,
 				03F4E96518CA34260056EAA9 /* img_search_header_background.png in Resources */,
+				03AF8F3718E5C8F000DD9356 /* btn_share_selected.png in Resources */,
 				03F4E96618CA34260056EAA9 /* icon_search_spot_similar@2x.png in Resources */,
 				039F54B218D3AD66004B2B67 /* btn_at_different_spot.png in Resources */,
 				03F4E96718CA34260056EAA9 /* btn_login_facebook.png in Resources */,
@@ -3902,15 +3987,19 @@
 				039F543018D28627004B2B67 /* btn_discover_drinks_nearby.png in Resources */,
 				03F4E98A18CA34260056EAA9 /* slider_thumb@2x.png in Resources */,
 				0372FF9B18E36A2C009188B5 /* icon_search_cocktails.png in Resources */,
+				03AF8F3E18E5C8F000DD9356 /* btn_share_unselected@2x.png in Resources */,
 				03F4E98B18CA34260056EAA9 /* icon_wine@2x.png in Resources */,
 				03F4E98C18CA34260056EAA9 /* icon_view_my_reviews.png in Resources */,
 				03F4E98D18CA34260056EAA9 /* icon_clock@2x.png in Resources */,
 				03F4E98E18CA34260056EAA9 /* img_card_background.png in Resources */,
+				03AF8F4F18E5C8F500DD9356 /* img_live_special_white_arrow.png in Resources */,
+				03AF8F3118E5C8F000DD9356 /* btn_share_share.png in Resources */,
 				03F4E98F18CA34260056EAA9 /* btn_home_add_reveiew.png in Resources */,
 				03F4E99018CA34260056EAA9 /* icon_cocktails.png in Resources */,
 				039F546418D2D17F004B2B67 /* img_spot_pin_view.png in Resources */,
 				03F4E99118CA34260056EAA9 /* slider_background_max.png in Resources */,
 				039F548518D3393E004B2B67 /* Menu.storyboard in Resources */,
+				03AF8F3B18E5C8F000DD9356 /* btn_share_twitter.png in Resources */,
 				03F4E99218CA34260056EAA9 /* NewReviewCocktailView.xib in Resources */,
 				03F4E99318CA34260056EAA9 /* btn_spot_profile_image_next.png in Resources */,
 				03F4E99418CA34260056EAA9 /* slider_thumb_selected_with_light_large.png in Resources */,
@@ -3975,10 +4064,12 @@
 				03F4E9C018CA34260056EAA9 /* img_search_textfield_background.png in Resources */,
 				039F548118D2DDE2004B2B67 /* icon_recipe@2x.png in Resources */,
 				03AF8EBD18E5317100DD9356 /* Checkin.storyboard in Resources */,
+				03AF8F3818E5C8F000DD9356 /* btn_share_selected@2x.png in Resources */,
 				03F4E9C118CA34260056EAA9 /* slider_profile_thumb@2x.png in Resources */,
 				03F4E9C218CA34260056EAA9 /* slider_background@2x.png in Resources */,
 				03F4E9C318CA34260056EAA9 /* slider_background_profile_min@2x.png in Resources */,
 				03F4E9C418CA34260056EAA9 /* icon_spot.png in Resources */,
+				03AF8F4D18E5C8F500DD9356 /* img_live_special_background.png in Resources */,
 				03F4E9C518CA34260056EAA9 /* btn_sidebar_icon_spots.png in Resources */,
 				03F4E9C618CA34260056EAA9 /* btn_context_map.png in Resources */,
 				03F4E9C718CA34260056EAA9 /* btn_spot_profile_image_previous@2x.png in Resources */,
@@ -3994,8 +4085,10 @@
 				03F4E9D018CA34260056EAA9 /* btn_context_delete.png in Resources */,
 				039ABBE718CE34BD00B84AE6 /* SpotAnnotationCalloutView.xib in Resources */,
 				03F4E9D118CA34260056EAA9 /* icon_featured_lists@2x.png in Resources */,
+				03AF8F3918E5C8F000DD9356 /* btn_share_text.png in Resources */,
 				03F4E9D218CA34260056EAA9 /* img_carousel_background.png in Resources */,
 				03F4E9D318CA34260056EAA9 /* table_header_background.png in Resources */,
+				03AF8F3618E5C8F000DD9356 /* btn_share_facebook@2x.png in Resources */,
 				0372FF7418E35816009188B5 /* wine_placeholder.png in Resources */,
 				03F4E9D418CA34260056EAA9 /* img_map_shadow_top@2x.png in Resources */,
 				03F4E9D518CA34260056EAA9 /* NewReviewWineView.xib in Resources */,
@@ -4005,6 +4098,7 @@
 				03F4E9D918CA34260056EAA9 /* txt_reviews_search_background@2x.png in Resources */,
 				03F4E9DA18CA34260056EAA9 /* btn_nav_arrow_east.png in Resources */,
 				03F4E9DB18CA34260056EAA9 /* btn_sidebar_icon_reviews@2x.png in Resources */,
+				03AF8F4C18E5C8F500DD9356 /* btn_live_special_x@2x.png in Resources */,
 				03F4E9DC18CA34260056EAA9 /* nav_bar_background_ios7.png in Resources */,
 				03F4E9DD18CA34260056EAA9 /* slider_background_selected_max.png in Resources */,
 				03F4E9DE18CA34260056EAA9 /* icon_phone@2x.png in Resources */,
@@ -4013,9 +4107,13 @@
 				03F4E9E118CA34260056EAA9 /* table_header_background_selected.png in Resources */,
 				03F4E9E218CA34260056EAA9 /* 723-location-arrow-selected.png in Resources */,
 				039F547618D2DC91004B2B67 /* btn_drink_profile_description.png in Resources */,
+				03AF8F3418E5C8F000DD9356 /* btn_share_close@2x.png in Resources */,
+				03AF8F5018E5C8F500DD9356 /* img_live_special_white_arrow@2x.png in Resources */,
 				03F4E9E318CA34260056EAA9 /* AvantGarEFExtLig in Resources */,
 				039F544818D29B09004B2B67 /* FindSimilarDrinksViewController.xib in Resources */,
+				03AF8F4A18E5C8F500DD9356 /* btn_live_special_share@2x.png in Resources */,
 				03F4E9E418CA34260056EAA9 /* txt_review_form_background.png in Resources */,
+				03AF8F3518E5C8F000DD9356 /* btn_share_facebook.png in Resources */,
 				03F4E9E518CA34260056EAA9 /* AvantGarEFDemObl in Resources */,
 				03F4E9E618CA34260056EAA9 /* slider_background.png in Resources */,
 				0372FF6518E35816009188B5 /* beer_placeholder@2x.png in Resources */,
@@ -4353,6 +4451,7 @@
 				03F4E78518CA33D00056EAA9 /* AppDelegate.m in Sources */,
 				03F4E78618CA33D00056EAA9 /* Mockery.m in Sources */,
 				039F543F18D28F5E004B2B67 /* DrinkListModel.m in Sources */,
+				03AF8F2018E5C89600DD9356 /* ShareViewController.m in Sources */,
 				03F4E78718CA33D00056EAA9 /* CreateListCell.m in Sources */,
 				03F4E78818CA33D00056EAA9 /* SpotImageCollectViewCell.m in Sources */,
 				039F549618D34AC4004B2B67 /* DrinkSubtypeModel.m in Sources */,
@@ -4481,6 +4580,7 @@
 				03F4E8D318CA34260056EAA9 /* AppDelegate.m in Sources */,
 				03F4E8D418CA34260056EAA9 /* Mockery.m in Sources */,
 				039F543E18D28F5E004B2B67 /* DrinkListModel.m in Sources */,
+				03AF8F1F18E5C89600DD9356 /* ShareViewController.m in Sources */,
 				03F4E8D518CA34260056EAA9 /* CreateListCell.m in Sources */,
 				03F4E8D618CA34260056EAA9 /* SpotImageCollectViewCell.m in Sources */,
 				039F549518D34AC4004B2B67 /* DrinkSubtypeModel.m in Sources */,
