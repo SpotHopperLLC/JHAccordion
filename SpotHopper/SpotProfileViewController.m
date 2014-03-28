@@ -23,6 +23,7 @@
 #import "ReviewSliderCell.h"
 #import "SpotImageCollectViewCell.h"
 
+#import "CheckinConfirmationViewController.h"
 #import "SpotListViewController.h"
 
 #import "AverageReviewModel.h"
@@ -37,7 +38,7 @@
 
 #import <MapKit/MapKit.h>
 
-@interface SpotProfileViewController ()<UITableViewDataSource, UITableViewDelegate, MKMapViewDelegate, JHAccordionDelegate>
+@interface SpotProfileViewController ()<UITableViewDataSource, UITableViewDelegate, MKMapViewDelegate, JHAccordionDelegate, CheckinConfirmationViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tblSliders;
 
@@ -71,6 +72,8 @@
 
 @property (nonatomic, strong) JHAccordion *accordion;
 @property (nonatomic, strong) UIView *sectionHeaderAdvanced;
+
+@property (nonatomic, strong) CheckinConfirmationViewController *checkinConfirmationViewController;
 
 @end
 
@@ -315,6 +318,24 @@
     return pin;
 }
 
+#pragma mark - CheckinConfirmationViewControllerDelegate
+
+- (void)checkinConfirmationViewControllerClickedClose:(CheckinConfirmationViewController *)viewController {
+    [self hideCheckinConfirmationViewController:nil];
+}
+
+- (void)checkinConfirmationViewControllerClickedDrinkList:(CheckinConfirmationViewController *)viewController {
+    [self hideCheckinConfirmationViewController:^{
+        [self goToDrinkListMenuAtSpot:_spot];
+    }];
+}
+
+- (void)checkinConfirmationViewControllerClickedFullMenu:(CheckinConfirmationViewController *)viewController {
+    [self hideCheckinConfirmationViewController:^{
+        [self goToMenu:_spot];
+    }];
+}
+
 #pragma mark - Actions
 
 - (IBAction)onClickCall:(id)sender {
@@ -375,6 +396,69 @@
 
 - (IBAction)onClickDrinkMenu:(id)sender {
     [self goToMenu:_spot];
+}
+
+#pragma mark - Private - Checkin
+
+- (void)shareViewControllerClickedClose:(ShareViewController *)viewController {
+    [self hideShareViewController:^{
+        
+        if (ShareViewControllerShareCheckin == viewController.shareType) {
+            [self showCheckinConfirmationViewController];
+        }
+        
+    }];
+}
+
+- (void)shareViewControllerDidFinish:(ShareViewController *)viewController {
+    [self hideShareViewController:^{
+        
+        if (ShareViewControllerShareCheckin == viewController.shareType) {
+            [self showCheckinConfirmationViewController];
+        }
+        
+    }];
+}
+
+- (void)showCheckinConfirmationViewController {
+    if (_checkinConfirmationViewController == nil) {
+        
+        // Create live special view controller
+        _checkinConfirmationViewController = [[self checkinStoryboard] instantiateViewControllerWithIdentifier:( IS_FOUR_INCH ? @"CheckinConfirmationViewController" : @"CheckinConfirmationViewControllerIPhone4" )];
+        [_checkinConfirmationViewController setDelegate:self];
+        
+        // Set alpha to zero so we can animate in
+        [_checkinConfirmationViewController.view setAlpha:0.0f];
+        [_checkinConfirmationViewController.view setFrame:self.navigationController.view.frame];
+        
+        // Adding to window
+        [[[UIApplication sharedApplication] keyWindow]  addSubview:_checkinConfirmationViewController.view];
+        
+        // Animating in
+        [UIView animateWithDuration:0.35 animations:^{
+            [_checkinConfirmationViewController.view setAlpha:1.0f];
+        }];
+    }
+    
+    // Updating live special text
+    [_checkinConfirmationViewController setSpot:_spot];
+}
+
+- (void)hideCheckinConfirmationViewController:(void(^)(void))completion {
+    
+    // Animating checkkin confirmation out
+    [UIView animateWithDuration:0.35 animations:^{
+        [_checkinConfirmationViewController.view setAlpha:0.0f];
+    } completion:^(BOOL finished) {
+        
+        // Removing checkin confirmation from view
+        [_checkinConfirmationViewController.view removeFromSuperview];
+        _checkinConfirmationViewController = nil;
+        
+        if (completion != nil) {
+            completion();
+        }
+    }];
 }
 
 #pragma mark - Private

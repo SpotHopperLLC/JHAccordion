@@ -23,7 +23,7 @@
 
 typedef void(^AlertBlock)();
 
-@interface BaseViewController ()<UINavigationControllerDelegate, SidebarViewControllerDelegate, LiveSpecialViewControllerDelegate, ShareViewControllerDelegate>
+@interface BaseViewController ()<UINavigationControllerDelegate, SidebarViewControllerDelegate, LiveSpecialViewControllerDelegate>
 
 @property (nonatomic, strong) UIAlertView *alertView;
 @property (nonatomic, copy) AlertBlock alertBlock;
@@ -54,12 +54,6 @@ typedef void(^AlertBlock)();
 
 - (void)viewDidLoad:(NSArray*)options {
     [super viewDidLoad];
-    
-    if ([[FBSession activeSession] isOpen] == YES) {
-        NSLog(@"FACEBOOK - Logged in - %@", [FBSession activeSession]);
-    } else {
-        NSLog(@"FACEBOOK - NOT logged in - %@", [FBSession activeSession]);
-    }
     
     if ([options containsObject:kDidLoadOptionsDontAdjustForIOS6] == NO && SYSTEM_VERSION_LESS_THAN(@"7.0")) {
         [self adjustIOS6Crap];

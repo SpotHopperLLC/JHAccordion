@@ -69,6 +69,6 @@
     <resources>
         <image name="btn_live_special_share.png" width="114" height="47"/>
         <image name="btn_live_special_x.png" width="50" height="49"/>
-        <image name="img_live_special_background.png" width="320" height="336"/>
+        <image name="img_live_special_background.png" width="311" height="336"/>
     </resources>
 </document>
