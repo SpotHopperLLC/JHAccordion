@@ -130,7 +130,10 @@
 }
 
 - (IBAction)onClickCheckIn:(id)sender {
-    
+    [self.sidebarViewController showRightSidebar:NO];
+    if ([_delegate respondsToSelector:@selector(sidebarViewControllerClickedCheckin:)]) {
+        [_delegate sidebarViewControllerClickedCheckin:self];
+    }
 }
 
 - (IBAction)onClickAccountSettings:(id)sender {

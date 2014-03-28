@@ -33,6 +33,8 @@
 
 #import "TonightsSpecialsViewController.h"
 
+#import "CheckinViewController.h"
+
 @implementation UIViewController (Navigator)
 
 #pragma mark - Main
@@ -200,6 +202,20 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
+#pragma mark - Checkin
+
+- (void)goToCheckin {
+    CheckinViewController *viewController = [[self checkinStoryboard] instantiateViewControllerWithIdentifier:@"CheckinViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToCheckinAtSpot:(SpotModel*)spot {
+    SpotProfileViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
+    [viewController setSpot:spot];
+    [viewController setIsCheckin:YES];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
 #pragma mark - Commons
 
 - (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate {
@@ -266,6 +282,14 @@
     NSString *name = [self.storyboard valueForKey:@"name"];
     if ([name isEqualToString:@"Menu"] == NO) {
         return [UIStoryboard storyboardWithName:@"Menu" bundle:[NSBundle mainBundle]];
+    }
+    
+    return self.storyboard;
+}
+- (UIStoryboard*)checkinStoryboard {
+    NSString *name = [self.storyboard valueForKey:@"name"];
+    if ([name isEqualToString:@"Checkin"] == NO) {
+        return [UIStoryboard storyboardWithName:@"Checkin" bundle:[NSBundle mainBundle]];
     }
     
     return self.storyboard;

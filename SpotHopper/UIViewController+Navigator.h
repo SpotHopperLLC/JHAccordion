@@ -62,6 +62,10 @@
 // Specials
 - (void)goToTonightsSpecials;
 
+// Checkin
+- (void)goToCheckin;
+- (void)goToCheckinAtSpot:(SpotModel*)spot;
+
 // Common
 - (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate;
 - (void)goToFindSimilarDrinks:(id<FindSimilarDrinksViewControllerDelegate>)delegate;
@@ -73,5 +77,6 @@
 - (UIStoryboard*)spotsStoryboard;
 - (UIStoryboard*)specialsStoryboard;
 - (UIStoryboard*)menuStoryboard;
+- (UIStoryboard*)checkinStoryboard;
 
 @end
