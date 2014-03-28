@@ -83,18 +83,10 @@
     [self showHUD:@"Locating"];
     _tellMeMyLocation = [[TellMeMyLocation alloc] init];
     [_tellMeMyLocation findMe:kCLLocationAccuracyThreeKilometers found:^(CLLocation *newLocation) {
+        
         [self hideHUD];
         _currentLocation = newLocation;
         
-        // Zoom map
-        if (_currentLocation != nil) {
-            MKCoordinateRegion mapRegion;
-            mapRegion.center = _currentLocation.coordinate;
-            mapRegion.span = MKCoordinateSpanMake(0.025, 0.025);
-            [_mapView setRegion:mapRegion animated: YES];
-        }
-        
-        _currentLocation = newLocation;
         [self doSearch];
     } failure:^(NSError *error) {
         [self hideHUD];
@@ -312,6 +304,15 @@
 }
 
 - (void)updateViewMap {
+    
+    // Zoom map
+    SpotModel *spot = [_spots firstObject];
+    if (spot != nil && spot.latitude != nil && spot.longitude != nil) {
+        MKCoordinateRegion mapRegion;
+        mapRegion.center = [[CLLocation alloc] initWithLatitude:spot.latitude.floatValue longitude:spot.longitude.floatValue].coordinate;
+        mapRegion.span = MKCoordinateSpanMake(0.025, 0.025);
+        [_mapView setRegion:mapRegion animated: YES];
+    }
 
     // Update map
     [_mapView removeAnnotations:[_mapView annotations]];
