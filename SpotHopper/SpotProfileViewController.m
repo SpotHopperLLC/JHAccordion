@@ -142,6 +142,21 @@
     
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    // Show checkin view
+    if (_isCheckin == YES) {
+        
+        // Setting to NO so we don't do this ever, ever, ever again
+        _isCheckin = NO;
+        
+        // Showing checkin
+        [self showShareViewController:_spot shareType:ShareViewControllerShareCheckin];
+        
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
