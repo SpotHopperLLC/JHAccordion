@@ -52,7 +52,7 @@
 #pragma mark - Actions
 
 - (IBAction)onClickClose:(id)sender {
-    if ([_delegate respondsToSelector:@selector(liveSpecialViewControllerClickedClose:)]) {
+    if ([_delegate respondsToSelector:@selector(liveSpecialViewControllerClickedClos`e:)]) {
         [_delegate liveSpecialViewControllerClickedClose:self];
     }
 }
