@@ -11,6 +11,11 @@
 
 #import "ShareViewController.h"
 
+#import "NSArray+DailySpecials.h"
+
+#import "LiveSpecialModel.h"
+#import "SpotModel.h"
+
 @interface ShareViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *lblTite;
@@ -70,13 +75,50 @@
     }
 }
 
+#pragma mark - Public
+
+- (void)setSpot:(SpotModel *)spot {
+    _spot = spot;
+    [self updateView];
+}
+
+- (void)setShareType:(ShareViewControllerShareType)shareType {
+    _shareType = shareType;
+    [self updateView];
+}
+
 #pragma mark - Private
 
 - (void)updateView {
+    // Sets stuff if checkin
     if (ShareViewControllerShareCheckin == _shareType) {
+        
+        // Sets title
         [_lblTite setText:kTitleCheckin];
-    } else if (ShareViewControllerShareCheckin == _shareType) {
-    [_lblTite setText:kTitleSpecial];
+        
+        NSString *extraText = @"";
+        LiveSpecialModel *liveSpecial = [_spot currentLiveSpecial];
+        NSString *dailySpecial = [[_spot dailySpecials] specialsForToday];
+        if (liveSpecial != nil) {
+            extraText = [NSString stringWithFormat:@": %@", liveSpecial.text];
+        } else if (dailySpecial != nil) {
+            extraText = [NSString stringWithFormat:@": %@", dailySpecial];
+        }
+        
+        // Sets share text
+        [_txtShare setText:[NSString stringWithFormat:@"Checked into the %@ with SpotHopper%@", _spot.name, extraText]];
+        
+    }
+    // Sets stuff if share live special
+    else if (ShareViewControllerShareLiveSpecial == _shareType) {
+        
+        // Sets title
+        [_lblTite setText:kTitleSpecial];
+        
+        // Sets share text
+        LiveSpecialModel *liveSpecial = [_spot currentLiveSpecial];
+        [_txtShare setText:[NSString stringWithFormat:@"%@ at %@ with checkin #spothopper #barspecials", liveSpecial.text, _spot.name]];
+        
     }
 }
 

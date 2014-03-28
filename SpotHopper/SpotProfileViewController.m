@@ -283,6 +283,8 @@
 - (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
     if (FooterViewButtonHome == footerViewButtonType) {
         return NO;
+    } else if (FooterViewButtonMiddle == footerViewButtonType) {
+        [self showShareViewController:_spot shareType:ShareViewControllerShareCheckin];
     }
     
     return YES;
