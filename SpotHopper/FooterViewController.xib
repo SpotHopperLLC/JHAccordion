@@ -101,11 +101,19 @@
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="vjw-Ad-B88" appends="YES" id="Sfe-vt-HCF"/>
+                    </connections>
                 </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
+        <tapGestureRecognizer id="vjw-Ad-B88">
+            <connections>
+                <action selector="onTapGesture:" destination="-1" id="0m0-AW-srE"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="btn_context_home.png" width="35" height="37"/>

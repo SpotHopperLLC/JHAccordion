@@ -28,8 +28,7 @@
 
 @implementation FooterViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -37,19 +36,12 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-    
-    // Adding shadow to background view
-//    [_viewBackground.layer setShadowColor:[UIColor darkGrayColor].CGColor];
-//    [_viewBackground.layer setShadowOffset:CGSizeMake(0.0f, 0.0f)];
-//    [_viewBackground.layer setShadowRadius:5.0f];
-//    [_viewBackground.layer setShadowOpacity:1.0f];
     
     CAGradientLayer *topShadow = [CAGradientLayer layer];
     topShadow.frame = CGRectMake(0, 0, self.view.bounds.size.width, 5);
-    topShadow.colors = [NSArray arrayWithObjects:(id)[[UIColor colorWithWhite:0.0 alpha:0.0f] CGColor], (id)[[UIColor colorWithWhite:0.0 alpha:0.25f] CGColor], nil];
+    topShadow.colors = @[(id)[UIColor clearColor].CGColor, (id)[[UIColor grayColor] colorWithAlphaComponent:0.25].CGColor]; // [NSArray arrayWithObjects:(id)[[UIColor colorWithWhite:0.0 alpha:0.0f] CGColor], (id)[[UIColor colorWithWhite:0.0 alpha:0.25f] CGColor], nil];
     [self.view.layer insertSublayer:topShadow atIndex:0];
 }
 
@@ -59,10 +51,12 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    NSCAssert(CGColorGetAlpha(self.view.backgroundColor.CGColor) == 0.0, @"Base view alpha should be 0.0");
+    NSCAssert(CGColorGetAlpha(self.viewBackground.backgroundColor.CGColor) == 0.8f, @"Background view alpha should be 0.8");
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -99,6 +93,15 @@
 }
 
 #pragma mark - Actions
+
+- (IBAction)onTapGesture:(id)sender {
+    if (self.view.alpha == 1.0f) {
+        self.view.alpha = 0.1f;
+    }
+    else {
+        self.view.alpha = 1.0f;
+    }
+}
 
 - (IBAction)onClickHome:(id)sender {
     if ([_delegate respondsToSelector:@selector(footerViewController:clickedButton:)]) {
