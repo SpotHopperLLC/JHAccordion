@@ -109,6 +109,10 @@ typedef void(^AlertBlock)();
     [self goToReviewMenu];
 }
 
+- (void)sidebarViewControllerClickedCheckin:(SidebarViewController *)sidebarViewController {
+    [self goToCheckin];
+}
+
 #pragma mark - HUD
 
 - (void)showHUDCompleted:(NSString*)text {
