@@ -20,6 +20,10 @@
 
 #import "MBProgressHUD.h"
 
+#import <Promises/Promise.h>
+
+#import <Social/Social.h>
+
 @interface ShareViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *lblTite;
@@ -126,9 +130,7 @@
 }
 
 - (IBAction)onClickShare:(id)sender {
-    if ([_delegate respondsToSelector:@selector(shareViewControllerDidFinish:)]) {
-        [_delegate shareViewControllerDidFinish:self];
-    }
+    [self doShare];
 }
 
 #pragma mark - Public
@@ -232,5 +234,103 @@
     _HUD = nil;
 }
 
+#pragma mark - Private Share
+
+- (void)doShare {
+    
+    NSMutableArray *promises = [NSMutableArray array];
+    
+    [self showHUD:@"Sharing"];
+    if (_sendToFacebook == YES) {
+        [promises addObject:[self doShareToFacebook]];
+    }
+    if (_sendToTwitter == YES && _selectedTwitterAccount != nil) {
+        [promises addObject:[self doShareToTwitter]];
+    }
+    
+    [When when:promises then:^{
+        [self hideHUD];
+        
+        if ([_delegate respondsToSelector:@selector(shareViewControllerDidFinish:)]) {
+            [_delegate shareViewControllerDidFinish:self];
+        }
+        
+    } fail:^(id error) {
+        [self hideHUD];
+        [self showAlert:@"Oops" message:@"Failed to share"];
+    } always:^{
+        
+    }];
+    
+}
+
+#pragma mark - Private Share Facebook
+
+- (Promise*)doShareToFacebook {
+    
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            _txtShare.text, @"message",
+                            nil];
+    
+    [FBRequestConnection
+     startWithGraphPath:@"me/feed"
+     parameters:params
+     HTTPMethod:@"POST"
+     completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        
+         if (error) {
+             [deferred rejectWith:error];
+         } else {
+             [deferred resolve];
+         }
+         
+     }];
+    
+    return deferred.promise;
+}
+
+#pragma mark - Private Share Twitter
+
+- (Promise*)doShareToTwitter {
+
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    NSString *caption = [_txtShare text];
+    int maxLength = 140;
+    if (caption.length > maxLength) {
+        caption = [caption substringToIndex:maxLength];
+    }
+    
+    NSString *status = caption;
+    
+    
+    NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/update.json"];
+    NSDictionary *params = @{@"status" : status};
+    SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter
+                                            requestMethod:SLRequestMethodPOST
+                                                      URL:url
+                                               parameters:params];
+    
+    [request setAccount:_selectedTwitterAccount];
+    
+    [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"Twitter response, HTTP response: %d", [urlResponse statusCode]);
+            
+            if (error || [urlResponse statusCode] != 200) {
+                [deferred rejectWith:error];
+            } else {
+                [deferred resolve];
+            }
+            
+        });
+    }];
+    
+    return deferred.promise;
+}
 
 @end
