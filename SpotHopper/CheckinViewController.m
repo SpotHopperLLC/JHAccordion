@@ -306,10 +306,9 @@
 - (void)updateViewMap {
     
     // Zoom map
-    SpotModel *spot = [_spots firstObject];
-    if (spot != nil && spot.latitude != nil && spot.longitude != nil) {
+    if (_currentLocation != nil) {
         MKCoordinateRegion mapRegion;
-        mapRegion.center = [[CLLocation alloc] initWithLatitude:spot.latitude.floatValue longitude:spot.longitude.floatValue].coordinate;
+        mapRegion.center = _currentLocation.coordinate;
         mapRegion.span = MKCoordinateSpanMake(0.025, 0.025);
         [_mapView setRegion:mapRegion animated: YES];
     }
