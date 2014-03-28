@@ -447,8 +447,7 @@ typedef void(^AlertBlock)();
         [_shareViewController.view setFrame:self.navigationController.view.frame];
         
         // Adding to window
-        [self addChildViewController:_shareViewController];
-        [self.view  addSubview:_shareViewController.view];
+        [[[UIApplication sharedApplication] keyWindow]  addSubview:_shareViewController.view];
         
         // Animating in
         [UIView animateWithDuration:0.35 animations:^{
@@ -468,7 +467,6 @@ typedef void(^AlertBlock)();
     } completion:^(BOOL finished) {
         
         // Removing live special from view
-        [_shareViewController removeFromParentViewController];
         [_shareViewController.view removeFromSuperview];
         _shareViewController = nil;
         
