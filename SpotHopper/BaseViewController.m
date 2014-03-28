@@ -19,6 +19,7 @@
 #import "LiveSpecialModel.h"
 
 #import <JHSidebar/JHSidebarViewController.h>
+#import <FacebookSDK/FacebookSDK.h>
 
 typedef void(^AlertBlock)();
 
@@ -53,6 +54,12 @@ typedef void(^AlertBlock)();
 
 - (void)viewDidLoad:(NSArray*)options {
     [super viewDidLoad];
+    
+    if ([[FBSession activeSession] isOpen] == YES) {
+        NSLog(@"FACEBOOK - Logged in - %@", [FBSession activeSession]);
+    } else {
+        NSLog(@"FACEBOOK - NOT logged in - %@", [FBSession activeSession]);
+    }
     
     if ([options containsObject:kDidLoadOptionsDontAdjustForIOS6] == NO && SYSTEM_VERSION_LESS_THAN(@"7.0")) {
         [self adjustIOS6Crap];

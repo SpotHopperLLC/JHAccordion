@@ -117,9 +117,9 @@
     
     // Open Facebook active session
     [self facebookAuth:NO success:^(FBSession *session) {
-
+        NSLog(@"We got activite session");
     } failure:^(FBSessionState state, NSError *error) {
-
+        NSLog(@"We DONT got activite session");
     }];
     
     return YES;
@@ -185,6 +185,7 @@
             
             switch (state) {
                 case FBSessionStateOpen:
+//                    [FBSession setActiveSession:session];
                     successHandler(session);
                     
                     break;

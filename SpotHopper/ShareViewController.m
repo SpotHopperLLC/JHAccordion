@@ -13,8 +13,12 @@
 
 #import "NSArray+DailySpecials.h"
 
+#import "AppDelegate.h"
+
 #import "LiveSpecialModel.h"
 #import "SpotModel.h"
+
+#import "MBProgressHUD.h"
 
 @interface ShareViewController ()
 
@@ -23,6 +27,15 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnFacebook;
 @property (weak, nonatomic) IBOutlet UIButton *btnTwitter;
 @property (weak, nonatomic) IBOutlet UIButton *btnText;
+
+@property (nonatomic, assign) BOOL sendToFacebook;
+@property (nonatomic, assign) BOOL sendToTwitter;
+@property (nonatomic, assign) BOOL sendToText;
+
+@property (nonatomic, strong) ACAccount *selectedTwitterAccount;
+
+@property (nonatomic, strong) UIAlertView *alertView;
+@property (nonatomic, strong) MBProgressHUD *HUD;
 
 @end
 
@@ -40,7 +53,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
+    [self updateView];
+    [self updateSocialViews];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -64,14 +79,50 @@
 
 - (IBAction)onClickShareFacebook:(id)sender {
     
+    if ([[FBSession activeSession] isOpen] == YES) {
+        _sendToFacebook = !_sendToFacebook;
+        [self updateSocialViews];
+        return;
+    }
+    
+    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+    [appDelegate facebookAuth:YES success:^(FBSession *session) {
+        _sendToFacebook = YES;
+        [self updateSocialViews];
+    } failure:^(FBSessionState state, NSError *error) {
+        _sendToFacebook = NO;
+        [self updateSocialViews];
+    }];
+    
 }
 
 - (IBAction)onClickShareTWitter:(id)sender {
+    if (_sendToTwitter == YES) {
+        _selectedTwitterAccount = nil;
+        _sendToTwitter = NO;
+        [self updateSocialViews];
+    } else {
     
+        AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+        [appDelegate twitterChooseAccount:self.view success:^(ACAccount *account) {
+            _selectedTwitterAccount = account;
+            
+            _sendToTwitter = YES;
+            [self updateSocialViews];
+        } cancel:^{
+            
+        } noAccounts:^{
+            [self showAlert:@"No Accounts Found" message:@"No Twitter accounts were found logged in to this device..\n\nPlease connect Twitter account in the Settings app if you would like to use Twitter in SpotHopper"];
+        } permissionDenied:^{
+            [self showAlert:@"Permission Denied" message:@"SpotHopper does not have permission to use Twitter.\n\nPlease adjust the permissions in the Settings app if you would like to use Twitter in SpotHopper"];
+        }];
+        
+    }
 }
 
 - (IBAction)onClickShareText:(id)sender {
-    
+    _sendToText = !_sendToText;
+    [self updateSocialViews];
 }
 
 - (IBAction)onClickShare:(id)sender {
@@ -93,6 +144,14 @@
 }
 
 #pragma mark - Private
+
+- (void)updateSocialViews {
+    
+    [_btnFacebook setSelected:_sendToFacebook];
+    [_btnTwitter setSelected:_sendToTwitter];
+    [_btnText setSelected:_sendToText];
+    
+}
 
 - (void)updateView {
     // Sets stuff if checkin
@@ -137,6 +196,41 @@
         }
         
     }
+    
 }
+
+- (UIAlertView *)showAlert:(NSString *)title message:(NSString *)message {
+    return [self showAlert:title message:message block:nil];
+}
+
+- (UIAlertView *)showAlert:(NSString *)title message:(NSString *)message block:(void(^)())alertBlock {
+    [_alertView dismissWithClickedButtonIndex:0 animated:NO];
+    _alertView = nil;
+    
+    _alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+    [_alertView show];
+    return _alertView;
+}
+
+- (void)showHUD {
+    [self showHUD:@"Loading"];
+}
+
+- (void)showHUD:(NSString*)label {
+    [_HUD hide:YES];
+    [_HUD removeFromSuperview];
+    _HUD = nil;
+    
+    _HUD = [MBProgressHUD showHUDAddedTo:[[[UIApplication sharedApplication] delegate] window] animated:YES];
+    [_HUD setMode:MBProgressHUDModeIndeterminate];
+    [_HUD setDimBackground:YES];
+    [_HUD setLabelText:label];
+}
+
+- (void)hideHUD {
+    [_HUD hide:YES];
+    _HUD = nil;
+}
+
 
 @end
