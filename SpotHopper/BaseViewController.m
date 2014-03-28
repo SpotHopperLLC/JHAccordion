@@ -374,28 +374,37 @@ typedef void(^AlertBlock)();
 
 - (void)showLiveSpecialViewController:(LiveSpecialModel *)liveSpecial {
     if (_liveSpecialViewController == nil) {
+        
+        // Create live special view controller
         _liveSpecialViewController = [[LiveSpecialViewController alloc] initWithNibName:@"LiveSpecialViewController" bundle:[NSBundle mainBundle]];
         [_liveSpecialViewController setDelegate:self];
         
+        // Set alpha to zero so we can animate in
         [_liveSpecialViewController.view setAlpha:0.0f];
         [_liveSpecialViewController.view setFrame:self.navigationController.view.frame];
         
+        // Adding to window
         [[[UIApplication sharedApplication] keyWindow]  addSubview:_liveSpecialViewController.view];
         
+        // Animating in
         [UIView animateWithDuration:0.35 animations:^{
             [_liveSpecialViewController.view setAlpha:1.0f];
         }];
     }
     
+    // Updating live special text
     [_liveSpecialViewController setLiveSpecial:liveSpecial];
 }
 
 - (void)hideLiveSpecialViewController:(void(^)(void))completion {
+    
+    // Animating live special out
     [UIView animateWithDuration:0.35 animations:^{
         [_liveSpecialViewController.view setAlpha:0.0f];
     } completion:^(BOOL finished) {
-        [_liveSpecialViewController.view removeFromSuperview];
         
+        // Removing live special from view
+        [_liveSpecialViewController.view removeFromSuperview];
         _liveSpecialViewController = nil;
 
         if (completion != nil) {

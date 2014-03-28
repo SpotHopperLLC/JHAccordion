@@ -52,7 +52,7 @@
 #pragma mark - Actions
 
 - (IBAction)onClickClose:(id)sender {
-    if ([_delegate respondsToSelector:@selector(liveSpecialViewControllerClickedClos`e:)]) {
+    if ([_delegate respondsToSelector:@selector(liveSpecialViewControllerClickedClose:)]) {
         [_delegate liveSpecialViewControllerClickedClose:self];
     }
 }
@@ -73,12 +73,14 @@
         NSString *spotName = _liveSpecial.spot.name;
         NSString *text = [NSString stringWithFormat:@"at %@>\nwith check in", spotName];
         
+        // Styles label to have underline spot name
         [_lblAt setFont:[UIFont fontWithName:@"Lato-Light" size:17.0f]];
         [_lblAt setText:text afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
             
-            
+            // Finds range for spot name
             NSRange range = [[mutableAttributedString string] rangeOfString:spotName options:NSCaseInsensitiveSearch];
             
+            // Applies underline to spot name
             if (range.location != NSNotFound) {
                 [mutableAttributedString addAttribute:(NSString *)kCTUnderlineStyleAttributeName value:[NSNumber numberWithInt:1] range:range];
             }
