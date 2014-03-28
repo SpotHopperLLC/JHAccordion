@@ -126,6 +126,7 @@ $2 Non-Wisco Taps</string>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="btnPhoneNumber" destination="RXJ-I8-77Z" id="Ndi-O8-zcO"/>
+                        <outlet property="btnShareLiveSpecial" destination="wOE-S7-p29" id="VgW-Cr-ONz"/>
                         <outlet property="imgExpand" destination="Aqy-o4-JuR" id="zjx-Ua-iGn"/>
                         <outlet property="lblHoursOpen" destination="5dJ-KY-Y6T" id="QAm-18-UNl"/>
                         <outlet property="lblPercentMatch" destination="ovH-Sg-PDa" id="b3Y-y3-ifr"/>
