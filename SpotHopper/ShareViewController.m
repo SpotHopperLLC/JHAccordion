@@ -110,14 +110,26 @@
         
     }
     // Sets stuff if share live special
-    else if (ShareViewControllerShareLiveSpecial == _shareType) {
+    else if (ShareViewControllerShareSpecial == _shareType) {
         
         // Sets title
         [_lblTite setText:kTitleSpecial];
         
         // Sets share text
+        NSString *specialText = nil;
         LiveSpecialModel *liveSpecial = [_spot currentLiveSpecial];
-        [_txtShare setText:[NSString stringWithFormat:@"%@ at %@ with checkin #spothopper #barspecials", liveSpecial.text, _spot.name]];
+        NSString *dailySpecial = [[_spot dailySpecials] specialsForToday];
+        if (liveSpecial != nil) {
+            specialText = liveSpecial.text;
+        } else if (dailySpecial != nil) {
+            specialText = dailySpecial;
+        }
+        
+        if (specialText != nil) {
+            [_txtShare setText:[NSString stringWithFormat:@"%@ at %@ with check-in #spothopper #barspecials", specialText, _spot.name]];
+        } else {
+            [_txtShare setText:@""];
+        }
         
     }
 }

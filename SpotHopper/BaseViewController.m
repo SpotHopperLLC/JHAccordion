@@ -429,7 +429,7 @@ typedef void(^AlertBlock)();
     LiveSpecialModel *liveSpecial = [viewController liveSpecial];
     
     [self hideLiveSpecialViewController:^{
-        [self showShareViewController:liveSpecial.spot shareType:ShareViewControllerShareLiveSpecial];
+        [self showShareViewController:liveSpecial.spot shareType:ShareViewControllerShareSpecial];
     }];
 }
 
