@@ -22,9 +22,10 @@
 
 #import <Promises/Promise.h>
 
+#import <MessageUI/MessageUI.h>
 #import <Social/Social.h>
 
-@interface ShareViewController ()
+@interface ShareViewController ()<MFMessageComposeViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *lblTite;
 @property (weak, nonatomic) IBOutlet UITextView *txtShare;
@@ -71,6 +72,16 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - MFMessageComposeViewControllerDelegate
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
+    [controller dismissViewControllerAnimated:YES completion:^{
+        if ([_delegate respondsToSelector:@selector(shareViewControllerDidFinish:)]) {
+            [_delegate shareViewControllerDidFinish:self];
+        }
+    }];
 }
 
 #pragma mark - Actions
@@ -251,7 +262,15 @@
     [When when:promises then:^{
         [self hideHUD];
         
-        if ([_delegate respondsToSelector:@selector(shareViewControllerDidFinish:)]) {
+        if (_sendToText == YES) {
+            
+            MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
+            picker.messageComposeDelegate = self;
+            picker.body = _txtShare.text;
+            
+            [self presentViewController:picker animated:YES completion:nil];
+            
+        } else if ([_delegate respondsToSelector:@selector(shareViewControllerDidFinish:)]) {
             [_delegate shareViewControllerDidFinish:self];
         }
         
