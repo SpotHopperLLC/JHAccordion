@@ -24,7 +24,7 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-@interface TonightsSpecialsViewController ()<UITableViewDataSource, UITableViewDelegate, SHButtonLatoLightLocationDelegate>
+@interface TonightsSpecialsViewController ()<UITableViewDataSource, UITableViewDelegate, SHButtonLatoLightLocationDelegate, SpecialsCellDelegate>
 
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
 
@@ -111,6 +111,7 @@
     
     SpecialsCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SpecialsCell" forIndexPath:indexPath];
     [cell setSpot:spot];
+    [cell setDelegate:self];
     
     return cell;
 }
@@ -144,6 +145,15 @@
     
     // Fetches more specials
     [self fetchSpecials];
+}
+
+#pragma mark - SpecialsCellDelegate
+
+- (void)specialsCellClickedShare:(SpecialsCell *)cell {
+    NSIndexPath *indexPath = [_tblSpecials indexPathForCell:cell];
+    SpotModel *spot = [_spots objectAtIndex:indexPath.row];
+    
+    [self showShareViewController:spot shareType:ShareViewControllerShareSpecial];
 }
 
 #pragma mark - SHButtonLatoLightLocationDelegate
