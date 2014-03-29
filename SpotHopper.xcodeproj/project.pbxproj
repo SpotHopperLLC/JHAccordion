@@ -494,6 +494,17 @@
 		03AF8F5E18E5D19D00DD9356 /* img_share_background_iphone4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F5418E5D19D00DD9356 /* img_share_background_iphone4@2x.png */; };
 		03AF8F5F18E5D19D00DD9356 /* img_share_background_iphone4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F5418E5D19D00DD9356 /* img_share_background_iphone4@2x.png */; };
 		03AF8F6018E5D19D00DD9356 /* img_share_background_iphone4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F5418E5D19D00DD9356 /* img_share_background_iphone4@2x.png */; };
+		03AF8F6318E6013700DD9356 /* CheckinConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AF8F6218E6013700DD9356 /* CheckinConfirmationViewController.m */; };
+		03AF8F6418E6013E00DD9356 /* CheckinConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AF8F6218E6013700DD9356 /* CheckinConfirmationViewController.m */; };
+		03AF8F6518E6013E00DD9356 /* CheckinConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AF8F6218E6013700DD9356 /* CheckinConfirmationViewController.m */; };
+		03AF8F6618E60B4400DD9356 /* img_checkin_iphone4.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1B18E4D63D00E07F39 /* img_checkin_iphone4.png */; };
+		03AF8F6718E60B4400DD9356 /* img_checkin_iphone4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1C18E4D63D00E07F39 /* img_checkin_iphone4@2x.png */; };
+		03AF8F6818E60B4400DD9356 /* img_checkin_iphone5.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1D18E4D63D00E07F39 /* img_checkin_iphone5.png */; };
+		03AF8F6918E60B4400DD9356 /* img_checkin_iphone5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1E18E4D63D00E07F39 /* img_checkin_iphone5@2x.png */; };
+		03AF8F6A18E60B4500DD9356 /* img_checkin_iphone4.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1B18E4D63D00E07F39 /* img_checkin_iphone4.png */; };
+		03AF8F6B18E60B4500DD9356 /* img_checkin_iphone4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1C18E4D63D00E07F39 /* img_checkin_iphone4@2x.png */; };
+		03AF8F6C18E60B4500DD9356 /* img_checkin_iphone5.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1D18E4D63D00E07F39 /* img_checkin_iphone5.png */; };
+		03AF8F6D18E60B4500DD9356 /* img_checkin_iphone5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1E18E4D63D00E07F39 /* img_checkin_iphone5@2x.png */; };
 		03C8DAE7188B42A40082321C /* MockData.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C8DAE6188B42A40082321C /* MockData.m */; };
 		03C8DAEA188B44C20082321C /* SliderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C8DAE9188B44C20082321C /* SliderModel.m */; };
 		03C8DAED188B44CB0082321C /* SliderTemplateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C8DAEC188B44CB0082321C /* SliderTemplateModel.m */; };
@@ -1680,6 +1691,8 @@
 		03AF8F5218E5D19D00DD9356 /* btn_share_share_iphone4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_share_share_iphone4@2x.png"; sourceTree = "<group>"; };
 		03AF8F5318E5D19D00DD9356 /* img_share_background_iphone4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_share_background_iphone4.png; sourceTree = "<group>"; };
 		03AF8F5418E5D19D00DD9356 /* img_share_background_iphone4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_share_background_iphone4@2x.png"; sourceTree = "<group>"; };
+		03AF8F6118E6013700DD9356 /* CheckinConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckinConfirmationViewController.h; sourceTree = "<group>"; };
+		03AF8F6218E6013700DD9356 /* CheckinConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckinConfirmationViewController.m; sourceTree = "<group>"; };
 		03C8DAE5188B42A40082321C /* MockData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MockData.h; sourceTree = "<group>"; };
 		03C8DAE6188B42A40082321C /* MockData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MockData.m; sourceTree = "<group>"; };
 		03C8DAE8188B44C20082321C /* SliderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SliderModel.h; sourceTree = "<group>"; };
@@ -2746,6 +2759,8 @@
 			children = (
 				03AF8EBF18E531CC00DD9356 /* CheckinViewController.h */,
 				03AF8EC018E531CC00DD9356 /* CheckinViewController.m */,
+				03AF8F6118E6013700DD9356 /* CheckinConfirmationViewController.h */,
+				03AF8F6218E6013700DD9356 /* CheckinConfirmationViewController.m */,
 			);
 			name = Checkin;
 			sourceTree = "<group>";
@@ -3562,6 +3577,7 @@
 				03F4E7CA18CA33D00056EAA9 /* btn_home_spots@2x.png in Resources */,
 				03AF8F5718E5D19D00DD9356 /* btn_share_share_iphone4.png in Resources */,
 				03F4E7CB18CA33D00056EAA9 /* Lato-Black.ttf in Resources */,
+				03AF8F6818E60B4400DD9356 /* img_checkin_iphone5.png in Resources */,
 				0372FF7E18E359A5009188B5 /* btn_share.png in Resources */,
 				03F4E7CC18CA33D00056EAA9 /* icon_search_drink_similar.png in Resources */,
 				03AF8F4618E5C8F500DD9356 /* img_live_special_background@2x.png in Resources */,
@@ -3591,6 +3607,7 @@
 				03F4E7DC18CA33D00056EAA9 /* btn_spot_profile_find_similar.png in Resources */,
 				03F4E7DD18CA33D00056EAA9 /* btn_context_checkin.png in Resources */,
 				03F4E7DE18CA33D00056EAA9 /* FindSimilarViewController.xib in Resources */,
+				03AF8F6718E60B4400DD9356 /* img_checkin_iphone4@2x.png in Resources */,
 				03F4E7DF18CA33D00056EAA9 /* btn_login_spothopper@2x.png in Resources */,
 				03F4E7E018CA33D00056EAA9 /* btn_launch_item_background@2x.png in Resources */,
 				0372FF6F18E35816009188B5 /* spot_placeholder.png in Resources */,
@@ -3693,6 +3710,7 @@
 				03F4E82E18CA33D00056EAA9 /* slider_background_profile_max@2x.png in Resources */,
 				03F4E82F18CA33D00056EAA9 /* btn_spot_profile_drink_menu@2x.png in Resources */,
 				03F4E83018CA33D00056EAA9 /* icon_my_spotlists@2x.png in Resources */,
+				03AF8F6618E60B4400DD9356 /* img_checkin_iphone4.png in Resources */,
 				03F4E83118CA33D00056EAA9 /* Lato-LightItalic.ttf in Resources */,
 				03F4E83218CA33D00056EAA9 /* btn_context_home.png in Resources */,
 				03F4E83318CA33D00056EAA9 /* btn_sidebar_icon_checkin.png in Resources */,
@@ -3736,6 +3754,7 @@
 				039ABBEC18CE359800B84AE6 /* img_callout_background.png in Resources */,
 				03F4E84D18CA33D00056EAA9 /* icon_search_drink@2x.png in Resources */,
 				03F4E84E18CA33D00056EAA9 /* SearchCellView.xib in Resources */,
+				03AF8F6918E60B4400DD9356 /* img_checkin_iphone5@2x.png in Resources */,
 				0372FF8118E359A5009188B5 /* btn_share@2x.png in Resources */,
 				03F4E84F18CA33D00056EAA9 /* NewReviewSpotView.xib in Resources */,
 				03F4E85018CA33D00056EAA9 /* slider_profile_thumb.png in Resources */,
@@ -3872,6 +3891,7 @@
 				03F4E91818CA34260056EAA9 /* btn_home_spots@2x.png in Resources */,
 				03AF8F5618E5D19D00DD9356 /* btn_share_share_iphone4.png in Resources */,
 				03F4E91918CA34260056EAA9 /* Lato-Black.ttf in Resources */,
+				03AF8F6C18E60B4500DD9356 /* img_checkin_iphone5.png in Resources */,
 				0372FF7D18E359A5009188B5 /* btn_share.png in Resources */,
 				03F4E91A18CA34260056EAA9 /* icon_search_drink_similar.png in Resources */,
 				03AF8F4E18E5C8F500DD9356 /* img_live_special_background@2x.png in Resources */,
@@ -3901,6 +3921,7 @@
 				03F4E92A18CA34260056EAA9 /* btn_spot_profile_find_similar.png in Resources */,
 				03F4E92B18CA34260056EAA9 /* btn_context_checkin.png in Resources */,
 				03F4E92C18CA34260056EAA9 /* FindSimilarViewController.xib in Resources */,
+				03AF8F6B18E60B4500DD9356 /* img_checkin_iphone4@2x.png in Resources */,
 				03F4E92D18CA34260056EAA9 /* btn_login_spothopper@2x.png in Resources */,
 				03F4E92E18CA34260056EAA9 /* btn_launch_item_background@2x.png in Resources */,
 				0372FF6E18E35816009188B5 /* spot_placeholder.png in Resources */,
@@ -4003,6 +4024,7 @@
 				03F4E97C18CA34260056EAA9 /* slider_background_profile_max@2x.png in Resources */,
 				03F4E97D18CA34260056EAA9 /* btn_spot_profile_drink_menu@2x.png in Resources */,
 				03F4E97E18CA34260056EAA9 /* icon_my_spotlists@2x.png in Resources */,
+				03AF8F6A18E60B4500DD9356 /* img_checkin_iphone4.png in Resources */,
 				03F4E97F18CA34260056EAA9 /* Lato-LightItalic.ttf in Resources */,
 				03F4E98018CA34260056EAA9 /* btn_context_home.png in Resources */,
 				03F4E98118CA34260056EAA9 /* btn_sidebar_icon_checkin.png in Resources */,
@@ -4046,6 +4068,7 @@
 				039ABBEB18CE359700B84AE6 /* img_callout_background.png in Resources */,
 				03F4E99B18CA34260056EAA9 /* icon_search_drink@2x.png in Resources */,
 				03F4E99C18CA34260056EAA9 /* SearchCellView.xib in Resources */,
+				03AF8F6D18E60B4500DD9356 /* img_checkin_iphone5@2x.png in Resources */,
 				0372FF8018E359A5009188B5 /* btn_share@2x.png in Resources */,
 				03F4E99D18CA34260056EAA9 /* NewReviewSpotView.xib in Resources */,
 				03F4E99E18CA34260056EAA9 /* slider_profile_thumb.png in Resources */,
@@ -4303,6 +4326,7 @@
 				038664E1186D379400985CEC /* BaseViewController.m in Sources */,
 				039F542718D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				038664E2186D379400985CEC /* ClientSessionManager.m in Sources */,
+				03AF8F6318E6013700DD9356 /* CheckinConfirmationViewController.m in Sources */,
 				039F54AC18D35C2E004B2B67 /* MenuItemCell.m in Sources */,
 				03F2D9371871E88000C69576 /* LaunchViewController.m in Sources */,
 				03763FB718D9EBFC00A9A30B /* SHTableViewCell.m in Sources */,
@@ -4440,6 +4464,7 @@
 				03F4E76118CA33D00056EAA9 /* BaseViewController.m in Sources */,
 				039F542918D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				03F4E76218CA33D00056EAA9 /* ClientSessionManager.m in Sources */,
+				03AF8F6518E6013E00DD9356 /* CheckinConfirmationViewController.m in Sources */,
 				039F54AE18D35C2E004B2B67 /* MenuItemCell.m in Sources */,
 				03F4E76318CA33D00056EAA9 /* LaunchViewController.m in Sources */,
 				03763FB918D9ED7800A9A30B /* SHTableViewCell.m in Sources */,
@@ -4569,6 +4594,7 @@
 				03F4E8AF18CA34260056EAA9 /* BaseViewController.m in Sources */,
 				039F542818D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				03F4E8B018CA34260056EAA9 /* ClientSessionManager.m in Sources */,
+				03AF8F6418E6013E00DD9356 /* CheckinConfirmationViewController.m in Sources */,
 				039F54AD18D35C2E004B2B67 /* MenuItemCell.m in Sources */,
 				03F4E8B118CA34260056EAA9 /* LaunchViewController.m in Sources */,
 				03763FB818D9ED7800A9A30B /* SHTableViewCell.m in Sources */,
@@ -4916,8 +4942,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Holtz (825VRU3G97)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Holtz (825VRU3G97)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4928,7 +4954,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopperStaging-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = SpotHopperStaging;
-				PROVISIONING_PROFILE = "40EB5FAA-39B8-4A1D-BB8B-FC8D2B78C7EC";
+				PROVISIONING_PROFILE = "60BC8668-C7D2-416A-8690-509F5CAED9DA";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

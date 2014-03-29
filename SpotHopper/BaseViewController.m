@@ -19,10 +19,11 @@
 #import "LiveSpecialModel.h"
 
 #import <JHSidebar/JHSidebarViewController.h>
+#import <FacebookSDK/FacebookSDK.h>
 
 typedef void(^AlertBlock)();
 
-@interface BaseViewController ()<UINavigationControllerDelegate, SidebarViewControllerDelegate, LiveSpecialViewControllerDelegate, ShareViewControllerDelegate>
+@interface BaseViewController ()<UINavigationControllerDelegate, SidebarViewControllerDelegate, LiveSpecialViewControllerDelegate>
 
 @property (nonatomic, strong) UIAlertView *alertView;
 @property (nonatomic, copy) AlertBlock alertBlock;

@@ -23,7 +23,7 @@
 @class LiveSpecialModel, SpotModel;
 @class LiveSpecialViewController;
 
-@interface BaseViewController : JHPullRefreshViewController<FooterViewControllerDelegate>
+@interface BaseViewController : JHPullRefreshViewController<FooterViewControllerDelegate, ShareViewControllerDelegate>
 
 @property (nonatomic, strong) MBProgressHUD *HUD;
 @property (nonatomic, strong) LiveSpecialViewController *liveSpecialViewController;
