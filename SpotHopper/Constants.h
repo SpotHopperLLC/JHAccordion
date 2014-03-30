@@ -44,21 +44,17 @@
 
     #define kRefreshLocationTime 3600.0f
 
-#else
+#elif defined(PRODUCTION)
 
-    #define PRODUCTION YES
+    #define kDebug YES
 
-    #define kDebug NO
-
-    // TODO define other production values
-
-    #define kTwitterConsumerKey @""
-    #define kTwitterConsumerSecret @""
+    #define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"
+    #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
 
     // MUST BE SSL
-    #define kBaseUrl @""
+    #define kBaseUrl @"http://spothopper.herokuapp.com"
 
-    #define kRefreshLocationTime 60.0f
+    #define kRefreshLocationTime 3600.0f
 
 #endif
 
