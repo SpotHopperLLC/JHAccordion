@@ -109,8 +109,6 @@
     // Navigation bar styling
     [[UINavigationBar appearance] setTintColor:kColorOrange];
     
-    NSLog(@"Base Url - %@", kBaseUrl);
-    
     // Sets networking debug logs if debug is set
     [[ClientSessionManager sharedClient] setDebug:YES];
     
