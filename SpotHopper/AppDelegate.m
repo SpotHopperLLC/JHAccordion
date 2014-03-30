@@ -110,7 +110,7 @@
     [[UINavigationBar appearance] setTintColor:kColorOrange];
     
     // Sets networking debug logs if debug is set
-    [[ClientSessionManager sharedClient] setDebug:YES];
+    [[ClientSessionManager sharedClient] setDebug:kDebug];
     
     // Initializes cookie for network calls
     [[ClientSessionManager sharedClient] isLoggedIn];
