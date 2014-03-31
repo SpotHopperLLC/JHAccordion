@@ -25,7 +25,9 @@
 #import "LiveSpecialModel.h"
 #import "MenuItemModel.h"
 #import "MenuTypeModel.h"
+#import "PriceModel.h"
 #import "ReviewModel.h"
+#import "SizeModel.h"
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
 #import "SpotModel.h"
@@ -76,7 +78,9 @@
     [JSONAPIResourceLinker link:@"live_special" toLinkedType:@"live_specials"];
     [JSONAPIResourceLinker link:@"menu_item" toLinkedType:@"menu_items"];
     [JSONAPIResourceLinker link:@"menu_type" toLinkedType:@"menu_types"];
+    [JSONAPIResourceLinker link:@"price" toLinkedType:@"prices"];
     [JSONAPIResourceLinker link:@"review" toLinkedType:@"reviews"];
+    [JSONAPIResourceLinker link:@"size" toLinkedType:@"sizes"];
     [JSONAPIResourceLinker link:@"slider" toLinkedType:@"sliders"];
     [JSONAPIResourceLinker link:@"slider_template" toLinkedType:@"slider_templates"];
     [JSONAPIResourceLinker link:@"spot" toLinkedType:@"spots"];
@@ -97,7 +101,9 @@
     [JSONAPIResourceModeler useResource:[LiveSpecialModel class] toLinkedType:@"live_specials"];
     [JSONAPIResourceModeler useResource:[MenuItemModel class] toLinkedType:@"menu_items"];
     [JSONAPIResourceModeler useResource:[MenuTypeModel class] toLinkedType:@"menu_types"];
+    [JSONAPIResourceModeler useResource:[PriceModel class] toLinkedType:@"prices"];
     [JSONAPIResourceModeler useResource:[ReviewModel class] toLinkedType:@"reviews"];
+    [JSONAPIResourceModeler useResource:[SizeModel class] toLinkedType:@"sizes"];
     [JSONAPIResourceModeler useResource:[SliderModel class] toLinkedType:@"sliders"];
     [JSONAPIResourceModeler useResource:[SliderTemplateModel class] toLinkedType:@"slider_templates"];
     [JSONAPIResourceModeler useResource:[SpotModel class] toLinkedType:@"spots"];
