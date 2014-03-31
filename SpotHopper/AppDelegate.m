@@ -58,14 +58,6 @@
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
-    for (NSString *family in [UIFont familyNames]) {
-        NSLog(@"%@", family);
-        
-        for (NSString* name in [UIFont fontNamesForFamilyName: family]) {
-            NSLog(@"  %@", name);
-        }
-    }
-    
     // Location finder
     _tellMeMyLocation = [[TellMeMyLocation alloc] init];
     
