@@ -85,10 +85,10 @@
     LiveSpecialModel *liveSpecial = [_spot currentLiveSpecial];
     NSString *dailySpecial = [[_spot dailySpecials] specialsForToday];
     if (liveSpecial != nil) {
-        specialTitle = @"Live\nSpecials!";
+        specialTitle = @"Live\nSpecials";
         specialText = liveSpecial.text;
     } else if (dailySpecial != nil) {
-        specialTitle = @"Current\nSpecials!";
+        specialTitle = @"Current\nSpecials";
         specialText = dailySpecial;
     }
     [_lblSpecialTitle setText:specialTitle];
