@@ -1745,6 +1745,10 @@
 		2602BD9D18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9E18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9F18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
+		26B6767C18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
+		26B6767D18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
+		26B6767E18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
+		26B6767F18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
 		D7FCD5C8824B4FA4A7587334 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -2197,7 +2201,6 @@
 		03CA72EA18803F7F00815284 /* 51-power.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "51-power.png"; sourceTree = "<group>"; };
 		03CA72EB18803F7F00815284 /* 51-power@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "51-power@2x.png"; sourceTree = "<group>"; };
 		03CAC16A18E7716400FAC5F5 /* SpotHopperProduction.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotHopperProduction.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		03CAC16B18E7716400FAC5F5 /* SpotHopperProduction-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SpotHopperProduction-Info.plist"; path = "/Users/josh/iOS/SpotHopper/SpotHopperProduction-Info.plist"; sourceTree = "<absolute>"; };
 		03CAC18418E9C74000FAC5F5 /* PriceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceModel.h; sourceTree = "<group>"; };
 		03CAC18518E9C74000FAC5F5 /* PriceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceModel.m; sourceTree = "<group>"; };
 		03CAC18A18E9C74F00FAC5F5 /* SizeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SizeModel.h; sourceTree = "<group>"; };
@@ -2330,8 +2333,11 @@
 		2602BD9418E2654900C93BBF /* table_footer_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table_footer_background.png; sourceTree = "<group>"; };
 		2602BD9518E2654900C93BBF /* table_footer_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table_footer_background@2x.png"; sourceTree = "<group>"; };
 		2602BD9C18E283C500C93BBF /* Common.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Common.storyboard; sourceTree = "<group>"; };
-		2624DB2218E33CDC0080AD66 /* SpotHopperStaging-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "SpotHopperStaging-Info.plist"; sourceTree = "<group>"; };
-		2624DB2318E33CDC0080AD66 /* SpotHopperDev-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "SpotHopperDev-Info.plist"; sourceTree = "<group>"; };
+		26B6767A18E9F59500DAD113 /* TutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialViewController.h; sourceTree = "<group>"; };
+		26B6767B18E9F59500DAD113 /* TutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialViewController.m; sourceTree = "<group>"; };
+		26B6768018E9F5B900DAD113 /* SpotHopperDev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperDev-Info.plist"; sourceTree = "<group>"; };
+		26B6768118E9F5B900DAD113 /* SpotHopperStaging-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperStaging-Info.plist"; sourceTree = "<group>"; };
+		26B6768218E9F61400DAD113 /* SpotHopperProduction-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperProduction-Info.plist"; sourceTree = "<group>"; };
 		B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C9816A19827543A8863B8CBF /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -2629,9 +2635,9 @@
 			isa = PBXGroup;
 			children = (
 				0386646E186D352400985CEC /* SpotHopperLocal-Info.plist */,
-				03F4E9F618CA34260056EAA9 /* SpotHopperDev-Info.plist */,
-				03F4E8A818CA33D10056EAA9 /* SpotHopperStaging-Info.plist */,
-				03CAC16B18E7716400FAC5F5 /* SpotHopperProduction-Info.plist */,
+				26B6768018E9F5B900DAD113 /* SpotHopperDev-Info.plist */,
+				26B6768118E9F5B900DAD113 /* SpotHopperStaging-Info.plist */,
+				26B6768218E9F61400DAD113 /* SpotHopperProduction-Info.plist */,
 				0386646F186D352400985CEC /* InfoPlist.strings */,
 				03866472186D352400985CEC /* main.m */,
 				03866474186D352400985CEC /* SpotHopper-Prefix.pch */,
@@ -3492,6 +3498,8 @@
 		03F2D9341871E86000C69576 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				26B6767A18E9F59500DAD113 /* TutorialViewController.h */,
+				26B6767B18E9F59500DAD113 /* TutorialViewController.m */,
 				0320235418772D84008368C2 /* SidebarViewController.h */,
 				0320235518772D85008368C2 /* SidebarViewController.m */,
 				03F2D9351871E88000C69576 /* LaunchViewController.h */,
@@ -3670,6 +3678,9 @@
 					03866483186D352500985CEC = {
 						TestTargetID = 03866462186D352400985CEC;
 					};
+					03CABFAC18E7716400FAC5F5 = {
+						DevelopmentTeam = 54WBL6WQLV;
+					};
 					03F4E75B18CA33D00056EAA9 = {
 						DevelopmentTeam = 54WBL6WQLV;
 					};
@@ -3840,7 +3851,6 @@
 				03265F2718C4E955002177F7 /* icon_arrow_no_shadow@2x.png in Resources */,
 				0386647F186D352400985CEC /* Images.xcassets in Resources */,
 				03866471186D352400985CEC /* InfoPlist.strings in Resources */,
-				03F2D9251871DC1400C69576 /* AvantGarEFMed in Resources */,
 				2602BD9618E2654900C93BBF /* table_footer_background.png in Resources */,
 				03CA72ED18803F7F00815284 /* 51-power@2x.png in Resources */,
 				039B70011887167200C590F8 /* icon_search_spot_similar.png in Resources */,
@@ -5159,6 +5169,7 @@
 				039F543D18D28F5E004B2B67 /* DrinkListModel.m in Sources */,
 				03F6BF6B18C6E10A00172F13 /* CreateListCell.m in Sources */,
 				0381043818B6704600A410DB /* SpotImageCollectViewCell.m in Sources */,
+				26B6767C18E9F59500DAD113 /* TutorialViewController.m in Sources */,
 				039F549418D34AC4004B2B67 /* DrinkSubtypeModel.m in Sources */,
 				03E8833B18C838F600BD8FBB /* CardLayout.m in Sources */,
 				0320237C187773C0008368C2 /* SHViewTranlucentWhite.m in Sources */,
@@ -5299,6 +5310,7 @@
 				03CABFE318E7716400FAC5F5 /* DrinkListModel.m in Sources */,
 				03CABFE418E7716400FAC5F5 /* ShareViewController.m in Sources */,
 				03CABFE518E7716400FAC5F5 /* CreateListCell.m in Sources */,
+				26B6767F18E9F59500DAD113 /* TutorialViewController.m in Sources */,
 				03CABFE618E7716400FAC5F5 /* SpotImageCollectViewCell.m in Sources */,
 				03CABFE718E7716400FAC5F5 /* DrinkSubtypeModel.m in Sources */,
 				03CABFE818E7716400FAC5F5 /* CardLayout.m in Sources */,
@@ -5431,6 +5443,7 @@
 				039F543F18D28F5E004B2B67 /* DrinkListModel.m in Sources */,
 				03AF8F2018E5C89600DD9356 /* ShareViewController.m in Sources */,
 				03F4E78718CA33D00056EAA9 /* CreateListCell.m in Sources */,
+				26B6767E18E9F59500DAD113 /* TutorialViewController.m in Sources */,
 				03F4E78818CA33D00056EAA9 /* SpotImageCollectViewCell.m in Sources */,
 				039F549618D34AC4004B2B67 /* DrinkSubtypeModel.m in Sources */,
 				03F4E78918CA33D00056EAA9 /* CardLayout.m in Sources */,
@@ -5563,6 +5576,7 @@
 				039F543E18D28F5E004B2B67 /* DrinkListModel.m in Sources */,
 				03AF8F1F18E5C89600DD9356 /* ShareViewController.m in Sources */,
 				03F4E8D518CA34260056EAA9 /* CreateListCell.m in Sources */,
+				26B6767D18E9F59500DAD113 /* TutorialViewController.m in Sources */,
 				03F4E8D618CA34260056EAA9 /* SpotImageCollectViewCell.m in Sources */,
 				039F549518D34AC4004B2B67 /* DrinkSubtypeModel.m in Sources */,
 				03F4E8D718CA34260056EAA9 /* CardLayout.m in Sources */,
@@ -5843,8 +5857,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5852,10 +5866,10 @@
 					"COCOAPODS=1",
 					"PRODUCTION=1",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/SpotHopperProduction-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperProduction-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = SpotHopperProduction;
-				PROVISIONING_PROFILE = "40EB5FAA-39B8-4A1D-BB8B-FC8D2B78C7EC";
+				PROVISIONING_PROFILE = "9E339BF6-6897-4640-B4EC-C1ACDCFB091E";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -5866,8 +5880,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Holtz (825VRU3G97)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Holtz (825VRU3G97)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5875,10 +5889,10 @@
 					"COCOAPODS=1",
 					"PRODUCTION=1",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/SpotHopperProduction-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperProduction-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = SpotHopperProduction;
-				PROVISIONING_PROFILE = "0D3FA3BD-6B34-4AFF-B5E5-6A9BB693DD31";
+				PROVISIONING_PROFILE = "9E339BF6-6897-4640-B4EC-C1ACDCFB091E";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -5889,8 +5903,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5901,7 +5915,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperStaging-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = SpotHopperStaging;
-				PROVISIONING_PROFILE = "60BC8668-C7D2-416A-8690-509F5CAED9DA";
+				PROVISIONING_PROFILE = "D2E5B28B-38F8-45C1-B459-BB1A04856DE3";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -5912,8 +5926,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Holtz (825VRU3G97)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Holtz (825VRU3G97)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5924,7 +5938,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperStaging-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = SpotHopperStaging;
-				PROVISIONING_PROFILE = "60BC8668-C7D2-416A-8690-509F5CAED9DA";
+				PROVISIONING_PROFILE = "D2E5B28B-38F8-45C1-B459-BB1A04856DE3";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
