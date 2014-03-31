@@ -102,7 +102,7 @@
         MenuItemModel *menuItem = [_menuItems objectAtIndex:indexPath.row];
         
         MenuItemCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MenuItemCell" forIndexPath:indexPath];
-        [cell setDrink:menuItem.drink];
+        [cell setMenuItem:menuItem];
         
         return cell;
     }

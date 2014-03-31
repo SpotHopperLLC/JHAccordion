@@ -17,6 +17,7 @@
     // Maps linked resource in JSON key 'drink' to 'drink' property
     // Maps linked resource in JSON key 'spot' to 'spot' property
     // Maps linked resource in JSON key 'menu_type' to 'menuType' property
+    // Maps linked resource in JSON key 'prices' to 'prices' property
     return @{
              @"name" : @"name",
              @"price" : @"price",
@@ -24,7 +25,8 @@
              @"latitude" : @"latitude",
              @"links.drink" : @"drink",
              @"links.spot" : @"spot",
-             @"links.menu_type" : @"menuType"
+             @"links.menu_type" : @"menuType",
+             @"links.prices" : @"prices",
              };
 }
 

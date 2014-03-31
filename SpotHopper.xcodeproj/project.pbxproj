@@ -1008,6 +1008,14 @@
 		03CAC16318E7716400FAC5F5 /* img_match_pin_view@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039ABBC218CE1DA500B84AE6 /* img_match_pin_view@2x.png */; };
 		03CAC16418E7716400FAC5F5 /* icon_my_spotlists.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF6018C6DC8500172F13 /* icon_my_spotlists.png */; };
 		03CAC16518E7716400FAC5F5 /* slider_background_max@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72BA187C4FB300815284 /* slider_background_max@2x.png */; };
+		03CAC18618E9C74000FAC5F5 /* PriceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CAC18518E9C74000FAC5F5 /* PriceModel.m */; };
+		03CAC18718E9C74000FAC5F5 /* PriceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CAC18518E9C74000FAC5F5 /* PriceModel.m */; };
+		03CAC18818E9C74000FAC5F5 /* PriceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CAC18518E9C74000FAC5F5 /* PriceModel.m */; };
+		03CAC18918E9C74000FAC5F5 /* PriceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CAC18518E9C74000FAC5F5 /* PriceModel.m */; };
+		03CAC18C18E9C74F00FAC5F5 /* SizeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CAC18B18E9C74F00FAC5F5 /* SizeModel.m */; };
+		03CAC18D18E9C74F00FAC5F5 /* SizeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CAC18B18E9C74F00FAC5F5 /* SizeModel.m */; };
+		03CAC18E18E9C74F00FAC5F5 /* SizeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CAC18B18E9C74F00FAC5F5 /* SizeModel.m */; };
+		03CAC18F18E9C74F00FAC5F5 /* SizeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CAC18B18E9C74F00FAC5F5 /* SizeModel.m */; };
 		03E4452518AEE64000C88421 /* AutoCompleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4452418AEE64000C88421 /* AutoCompleteCell.m */; };
 		03E4452718AEE65000C88421 /* AutoCompleteCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E4452618AEE65000C88421 /* AutoCompleteCellView.xib */; };
 		03E4453E18B55B9E00C88421 /* SHButtonLatoLightLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4453D18B55B9E00C88421 /* SHButtonLatoLightLocation.m */; };
@@ -2213,6 +2221,10 @@
 		03CA72EB18803F7F00815284 /* 51-power@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "51-power@2x.png"; sourceTree = "<group>"; };
 		03CAC16A18E7716400FAC5F5 /* SpotHopperProduction.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotHopperProduction.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03CAC16B18E7716400FAC5F5 /* SpotHopperProduction-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SpotHopperProduction-Info.plist"; path = "/Users/josh/iOS/SpotHopper/SpotHopperProduction-Info.plist"; sourceTree = "<absolute>"; };
+		03CAC18418E9C74000FAC5F5 /* PriceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceModel.h; sourceTree = "<group>"; };
+		03CAC18518E9C74000FAC5F5 /* PriceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceModel.m; sourceTree = "<group>"; };
+		03CAC18A18E9C74F00FAC5F5 /* SizeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SizeModel.h; sourceTree = "<group>"; };
+		03CAC18B18E9C74F00FAC5F5 /* SizeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SizeModel.m; sourceTree = "<group>"; };
 		03E4452318AEE64000C88421 /* AutoCompleteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoCompleteCell.h; sourceTree = "<group>"; };
 		03E4452418AEE64000C88421 /* AutoCompleteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteCell.m; sourceTree = "<group>"; };
 		03E4452618AEE65000C88421 /* AutoCompleteCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AutoCompleteCellView.xib; sourceTree = "<group>"; };
@@ -2940,6 +2952,10 @@
 				0372FF9318E36535009188B5 /* ImageModel.m */,
 				033A3F0D18E38CEE00E07F39 /* LiveSpecialModel.h */,
 				033A3F0E18E38CEE00E07F39 /* LiveSpecialModel.m */,
+				03CAC18418E9C74000FAC5F5 /* PriceModel.h */,
+				03CAC18518E9C74000FAC5F5 /* PriceModel.m */,
+				03CAC18A18E9C74F00FAC5F5 /* SizeModel.h */,
+				03CAC18B18E9C74F00FAC5F5 /* SizeModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -5186,6 +5202,7 @@
 				0381044D18B69E2100A410DB /* SpotTypeModel.m in Sources */,
 				039B6FEE18870E4A00C590F8 /* SearchNewReviewViewController.m in Sources */,
 				039B7009188721BB00C590F8 /* FooterShadowCell.m in Sources */,
+				03CAC18C18E9C74F00FAC5F5 /* SizeModel.m in Sources */,
 				03866477186D352400985CEC /* AppDelegate.m in Sources */,
 				039B7011188723EB00C590F8 /* Mockery.m in Sources */,
 				039F543D18D28F5E004B2B67 /* DrinkListModel.m in Sources */,
@@ -5235,6 +5252,7 @@
 				03AF8EA218E515B900DD9356 /* LiveSpecialViewController.m in Sources */,
 				038664D7186D376900985CEC /* UILabelRockwell.m in Sources */,
 				037D13A618A450DB00B89535 /* CLGeocoder+DoubleLookup.m in Sources */,
+				03CAC18618E9C74000FAC5F5 /* PriceModel.m in Sources */,
 				038664D1186D376900985CEC /* UIImage+Alpha.m in Sources */,
 				03E4457118B65F3000C88421 /* SpotProfileViewController.m in Sources */,
 				03F2D95318722FB700C69576 /* SHNavigationController.m in Sources */,
@@ -5324,6 +5342,7 @@
 				03CABFDE18E7716400FAC5F5 /* SpotTypeModel.m in Sources */,
 				03CABFDF18E7716400FAC5F5 /* SearchNewReviewViewController.m in Sources */,
 				03CABFE018E7716400FAC5F5 /* FooterShadowCell.m in Sources */,
+				03CAC18F18E9C74F00FAC5F5 /* SizeModel.m in Sources */,
 				03CABFE118E7716400FAC5F5 /* AppDelegate.m in Sources */,
 				03CABFE218E7716400FAC5F5 /* Mockery.m in Sources */,
 				03CABFE318E7716400FAC5F5 /* DrinkListModel.m in Sources */,
@@ -5373,6 +5392,7 @@
 				03CAC00F18E7716400FAC5F5 /* LiveSpecialViewController.m in Sources */,
 				03CAC01018E7716400FAC5F5 /* UILabelRockwell.m in Sources */,
 				03CAC01118E7716400FAC5F5 /* CLGeocoder+DoubleLookup.m in Sources */,
+				03CAC18918E9C74000FAC5F5 /* PriceModel.m in Sources */,
 				03CAC01218E7716400FAC5F5 /* UIImage+Alpha.m in Sources */,
 				03CAC01318E7716400FAC5F5 /* SpotProfileViewController.m in Sources */,
 				03CAC01418E7716400FAC5F5 /* SHNavigationController.m in Sources */,
@@ -5454,6 +5474,7 @@
 				03F4E78218CA33D00056EAA9 /* SpotTypeModel.m in Sources */,
 				03F4E78318CA33D00056EAA9 /* SearchNewReviewViewController.m in Sources */,
 				03F4E78418CA33D00056EAA9 /* FooterShadowCell.m in Sources */,
+				03CAC18E18E9C74F00FAC5F5 /* SizeModel.m in Sources */,
 				03F4E78518CA33D00056EAA9 /* AppDelegate.m in Sources */,
 				03F4E78618CA33D00056EAA9 /* Mockery.m in Sources */,
 				039F543F18D28F5E004B2B67 /* DrinkListModel.m in Sources */,
@@ -5503,6 +5524,7 @@
 				03AF8EA418E515B900DD9356 /* LiveSpecialViewController.m in Sources */,
 				03F4E7A618CA33D00056EAA9 /* UILabelRockwell.m in Sources */,
 				03F4E7A718CA33D00056EAA9 /* CLGeocoder+DoubleLookup.m in Sources */,
+				03CAC18818E9C74000FAC5F5 /* PriceModel.m in Sources */,
 				03F4E7A818CA33D00056EAA9 /* UIImage+Alpha.m in Sources */,
 				03F4E7A918CA33D00056EAA9 /* SpotProfileViewController.m in Sources */,
 				03F4E7AA18CA33D00056EAA9 /* SHNavigationController.m in Sources */,
@@ -5584,6 +5606,7 @@
 				03F4E8D018CA34260056EAA9 /* SpotTypeModel.m in Sources */,
 				03F4E8D118CA34260056EAA9 /* SearchNewReviewViewController.m in Sources */,
 				03F4E8D218CA34260056EAA9 /* FooterShadowCell.m in Sources */,
+				03CAC18D18E9C74F00FAC5F5 /* SizeModel.m in Sources */,
 				03F4E8D318CA34260056EAA9 /* AppDelegate.m in Sources */,
 				03F4E8D418CA34260056EAA9 /* Mockery.m in Sources */,
 				039F543E18D28F5E004B2B67 /* DrinkListModel.m in Sources */,
@@ -5633,6 +5656,7 @@
 				03AF8EA318E515B900DD9356 /* LiveSpecialViewController.m in Sources */,
 				03F4E8F418CA34260056EAA9 /* UILabelRockwell.m in Sources */,
 				03F4E8F518CA34260056EAA9 /* CLGeocoder+DoubleLookup.m in Sources */,
+				03CAC18718E9C74000FAC5F5 /* PriceModel.m in Sources */,
 				03F4E8F618CA34260056EAA9 /* UIImage+Alpha.m in Sources */,
 				03F4E8F718CA34260056EAA9 /* SpotProfileViewController.m in Sources */,
 				03F4E8F818CA34260056EAA9 /* SHNavigationController.m in Sources */,

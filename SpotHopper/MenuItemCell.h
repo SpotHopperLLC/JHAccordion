@@ -10,14 +10,15 @@
 
 #import "SHLabelLatoLight.h"
 
-@class DrinkModel;
+@class MenuItemModel;
 
 @interface MenuItemCell : SHTableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UILabel *lblSpot;
 @property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblInfo;
+@property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblPrices;
 
-- (void)setDrink:(DrinkModel*)drink;
+- (void)setMenuItem:(MenuItemModel*)menuItem;
 
 @end
