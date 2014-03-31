@@ -16,6 +16,7 @@
 @interface CheckinConfirmationViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *lblCheckedInAt;
+@property (weak, nonatomic) IBOutlet UILabel *lblSpecialTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lblSpecials;
 
 @end
@@ -35,6 +36,8 @@
 {
     [super viewDidLoad];
 
+    [_lblSpecialTitle setFont:[UIFont fontWithName:@"Avenir-Book" size:_lblSpecialTitle.font.pointSize]];
+    
     [self updateView];
 }
 
@@ -77,14 +80,18 @@
     [_lblCheckedInAt setText:[NSString stringWithFormat:@"You're checked-in at %@!", _spot.name]];
     
     // Sets share text
+    NSString *specialTitle = @"No Current\nSpecials";
     NSString *specialText = nil;
     LiveSpecialModel *liveSpecial = [_spot currentLiveSpecial];
     NSString *dailySpecial = [[_spot dailySpecials] specialsForToday];
     if (liveSpecial != nil) {
+        specialTitle = @"Live\nSpecials";
         specialText = liveSpecial.text;
     } else if (dailySpecial != nil) {
+        specialTitle = @"Current\nSpecials";
         specialText = dailySpecial;
     }
+    [_lblSpecialTitle setText:specialTitle];
     [_lblSpecials setText:specialText];
 }
 

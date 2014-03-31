@@ -733,7 +733,6 @@
 		03CAC05018E7716400FAC5F5 /* btn_nav_sidebar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866512186DE0F700985CEC /* btn_nav_sidebar@2x.png */; };
 		03CAC05118E7716400FAC5F5 /* icon_search_wine.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF8418E35C2D009188B5 /* icon_search_wine.png */; };
 		03CAC05218E7716400FAC5F5 /* btn_get_drinks_here.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F542D18D28627004B2B67 /* btn_get_drinks_here.png */; };
-		03CAC05318E7716400FAC5F5 /* AvantGarEFBooObl in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90D1871DC1400C69576 /* AvantGarEFBooObl */; };
 		03CAC05418E7716400FAC5F5 /* img_share_background_iphone4.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F5318E5D19D00DD9356 /* img_share_background_iphone4.png */; };
 		03CAC05518E7716400FAC5F5 /* LiveSpecialViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EA118E515B900DD9356 /* LiveSpecialViewController.xib */; };
 		03CAC05618E7716400FAC5F5 /* DrinkProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039F546E18D2DB4A004B2B67 /* DrinkProfileHeaderView.xib */; };
@@ -773,7 +772,6 @@
 		03CAC07818E7716400FAC5F5 /* slider_background_profile_min.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F4E74D18CA2A5C0056EAA9 /* slider_background_profile_min.png */; };
 		03CAC07918E7716400FAC5F5 /* btn_sidebar_search_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866521186DE0F700985CEC /* btn_sidebar_search_icon@2x.png */; };
 		03CAC07A18E7716400FAC5F5 /* btn_nav_arrow_east@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866510186DE0F700985CEC /* btn_nav_arrow_east@2x.png */; };
-		03CAC07B18E7716400FAC5F5 /* AvantGarEFDem in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90E1871DC1400C69576 /* AvantGarEFDem */; };
 		03CAC07C18E7716400FAC5F5 /* txt_sidebar_search_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320235118772A86008368C2 /* txt_sidebar_search_background@2x.png */; };
 		03CAC07D18E7716400FAC5F5 /* Spots.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03E4456C18B65E1500C88421 /* Spots.storyboard */; };
 		03CAC07E18E7716400FAC5F5 /* btn_sidebar_icon_checkin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866517186DE0F700985CEC /* btn_sidebar_icon_checkin@2x.png */; };
@@ -793,7 +791,6 @@
 		03CAC08C18E7716400FAC5F5 /* img_match_pin_view_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 039ABBD918CE306B00B84AE6 /* img_match_pin_view_selected.png */; };
 		03CAC08D18E7716400FAC5F5 /* txt_sidebar_search_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320235018772A86008368C2 /* txt_sidebar_search_background.png */; };
 		03CAC08E18E7716400FAC5F5 /* img_spot_special_header.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1218E4B5B400E07F39 /* img_spot_special_header.png */; };
-		03CAC08F18E7716400FAC5F5 /* AvantGarEFBoo in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90C1871DC1400C69576 /* AvantGarEFBoo */; };
 		03CAC09018E7716400FAC5F5 /* img_map_shadow_botom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0381044018B6846800A410DB /* img_map_shadow_botom@2x.png */; };
 		03CAC09118E7716400FAC5F5 /* img_map_shadow_top.png in Resources */ = {isa = PBXBuildFile; fileRef = 0381044118B6846800A410DB /* img_map_shadow_top.png */; };
 		03CAC09218E7716400FAC5F5 /* btn_down_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E882D318C78D3400BD8FBB /* btn_down_arrow.png */; };
@@ -829,7 +826,6 @@
 		03CAC0B018E7716400FAC5F5 /* icon_arrow_no_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03265F2318C4E955002177F7 /* icon_arrow_no_shadow@2x.png */; };
 		03CAC0B118E7716400FAC5F5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0386647E186D352400985CEC /* Images.xcassets */; };
 		03CAC0B218E7716400FAC5F5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0386646F186D352400985CEC /* InfoPlist.strings */; };
-		03CAC0B318E7716400FAC5F5 /* AvantGarEFMed in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9111871DC1400C69576 /* AvantGarEFMed */; };
 		03CAC0B418E7716400FAC5F5 /* 51-power@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72EB18803F7F00815284 /* 51-power@2x.png */; };
 		03CAC0B518E7716400FAC5F5 /* icon_search_spot_similar.png in Resources */ = {isa = PBXBuildFile; fileRef = 039B6FF91887167200C590F8 /* icon_search_spot_similar.png */; };
 		03CAC0B618E7716400FAC5F5 /* slider_background_min.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72BB187C4FB300815284 /* slider_background_min.png */; };
@@ -840,7 +836,6 @@
 		03CAC0BB18E7716400FAC5F5 /* img_expand_east_orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7261187B4EB700815284 /* img_expand_east_orange.png */; };
 		03CAC0BC18E7716400FAC5F5 /* ReviewHeaderDrinkView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7294187C406200815284 /* ReviewHeaderDrinkView.xib */; };
 		03CAC0BD18E7716400FAC5F5 /* btn_sidebar_icon_specials.png in Resources */ = {isa = PBXBuildFile; fileRef = 0386651C186DE0F700985CEC /* btn_sidebar_icon_specials.png */; };
-		03CAC0BE18E7716400FAC5F5 /* AvantGard EF 1 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9091871DC1400C69576 /* AvantGard EF 1 */; };
 		03CAC0BF18E7716400FAC5F5 /* Lato-HairlineItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9181871DC1400C69576 /* Lato-HairlineItalic.ttf */; };
 		03CAC0C018E7716400FAC5F5 /* logo_spothopper@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 038664F8186DE0F700985CEC /* logo_spothopper@2x.png */; };
 		03CAC0C118E7716400FAC5F5 /* btn_spot_profile_review_it@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4456118B65D8A00C88421 /* btn_spot_profile_review_it@2x.png */; };
@@ -902,7 +897,6 @@
 		03CAC0F918E7716400FAC5F5 /* icon_recipe.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F547B18D2DDE2004B2B67 /* icon_recipe.png */; };
 		03CAC0FA18E7716400FAC5F5 /* img_card_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E8832F18C837B600BD8FBB /* img_card_background@2x.png */; };
 		03CAC0FB18E7716400FAC5F5 /* slider_thumb_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72A4187C4D0E00815284 /* slider_thumb_selected.png */; };
-		03CAC0FC18E7716400FAC5F5 /* AvantGard EF 2 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90A1871DC1400C69576 /* AvantGard EF 2 */; };
 		03CAC0FD18E7716400FAC5F5 /* Specials.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF4818E33A04009188B5 /* Specials.storyboard */; };
 		03CAC0FE18E7716400FAC5F5 /* nav_bar_background_ios6.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320237118775501008368C2 /* nav_bar_background_ios6.png */; };
 		03CAC0FF18E7716400FAC5F5 /* 723-location-arrow-selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03121A3718BD786D00C9FFA3 /* 723-location-arrow-selected@2x.png */; };
@@ -910,7 +904,6 @@
 		03CAC10118E7716400FAC5F5 /* ReviewSliderCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03CA729B187C43CD00815284 /* ReviewSliderCellView.xib */; };
 		03CAC10218E7716400FAC5F5 /* beer_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF5918E35816009188B5 /* beer_placeholder.png */; };
 		03CAC10318E7716400FAC5F5 /* nav_bar_background_ios6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320237218775501008368C2 /* nav_bar_background_ios6@2x.png */; };
-		03CAC10418E7716400FAC5F5 /* AvantGarEFBol in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90B1871DC1400C69576 /* AvantGarEFBol */; };
 		03CAC10518E7716400FAC5F5 /* btn_at_different_spot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F54B018D3AD66004B2B67 /* btn_at_different_spot@2x.png */; };
 		03CAC10618E7716400FAC5F5 /* slider_background_selected_min@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72C0187C4FB300815284 /* slider_background_selected_min@2x.png */; };
 		03CAC10718E7716400FAC5F5 /* spot_placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF5E18E35816009188B5 /* spot_placeholder@2x.png */; };
@@ -988,12 +981,10 @@
 		03CAC14F18E7716400FAC5F5 /* btn_drink_profile_description.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F547318D2DC91004B2B67 /* btn_drink_profile_description.png */; };
 		03CAC15018E7716400FAC5F5 /* btn_share_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF818E5C29900DD9356 /* btn_share_close@2x.png */; };
 		03CAC15118E7716400FAC5F5 /* img_live_special_white_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF518E5C29900DD9356 /* img_live_special_white_arrow@2x.png */; };
-		03CAC15218E7716400FAC5F5 /* AvantGarEFExtLig in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9101871DC1400C69576 /* AvantGarEFExtLig */; };
 		03CAC15318E7716400FAC5F5 /* FindSimilarDrinksViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039F544518D29B02004B2B67 /* FindSimilarDrinksViewController.xib */; };
 		03CAC15418E7716400FAC5F5 /* btn_live_special_share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EEF18E5C29900DD9356 /* btn_live_special_share@2x.png */; };
 		03CAC15518E7716400FAC5F5 /* txt_review_form_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72DD187F502800815284 /* txt_review_form_background.png */; };
 		03CAC15618E7716400FAC5F5 /* btn_share_facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF918E5C29900DD9356 /* btn_share_facebook.png */; };
-		03CAC15718E7716400FAC5F5 /* AvantGarEFDemObl in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90F1871DC1400C69576 /* AvantGarEFDemObl */; };
 		03CAC15818E7716400FAC5F5 /* slider_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA729E187C4D0E00815284 /* slider_background.png */; };
 		03CAC15918E7716400FAC5F5 /* beer_placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF5A18E35816009188B5 /* beer_placeholder@2x.png */; };
 		03CAC15A18E7716400FAC5F5 /* btn_loging_twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 0386650C186DE0F700985CEC /* btn_loging_twitter.png */; };
@@ -1016,6 +1007,10 @@
 		03CAC18D18E9C74F00FAC5F5 /* SizeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CAC18B18E9C74F00FAC5F5 /* SizeModel.m */; };
 		03CAC18E18E9C74F00FAC5F5 /* SizeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CAC18B18E9C74F00FAC5F5 /* SizeModel.m */; };
 		03CAC18F18E9C74F00FAC5F5 /* SizeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CAC18B18E9C74F00FAC5F5 /* SizeModel.m */; };
+		03CAC19118E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19018E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf */; };
+		03CAC19218E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19018E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf */; };
+		03CAC19318E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19018E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf */; };
+		03CAC19418E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19018E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf */; };
 		03E4452518AEE64000C88421 /* AutoCompleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4452418AEE64000C88421 /* AutoCompleteCell.m */; };
 		03E4452718AEE65000C88421 /* AutoCompleteCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E4452618AEE65000C88421 /* AutoCompleteCellView.xib */; };
 		03E4453E18B55B9E00C88421 /* SHButtonLatoLightLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4453D18B55B9E00C88421 /* SHButtonLatoLightLocation.m */; };
@@ -1060,15 +1055,6 @@
 		03E8834618C8FA5300BD8FBB /* btn_context_list.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E8834418C8FA5300BD8FBB /* btn_context_list.png */; };
 		03E8834718C8FA5300BD8FBB /* btn_context_list@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E8834518C8FA5300BD8FBB /* btn_context_list@2x.png */; };
 		03F2D9051871DB5B00C69576 /* SHButtonLatoLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */; };
-		03F2D91D1871DC1400C69576 /* AvantGard EF 1 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9091871DC1400C69576 /* AvantGard EF 1 */; };
-		03F2D91E1871DC1400C69576 /* AvantGard EF 2 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90A1871DC1400C69576 /* AvantGard EF 2 */; };
-		03F2D91F1871DC1400C69576 /* AvantGarEFBol in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90B1871DC1400C69576 /* AvantGarEFBol */; };
-		03F2D9201871DC1400C69576 /* AvantGarEFBoo in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90C1871DC1400C69576 /* AvantGarEFBoo */; };
-		03F2D9211871DC1400C69576 /* AvantGarEFBooObl in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90D1871DC1400C69576 /* AvantGarEFBooObl */; };
-		03F2D9221871DC1400C69576 /* AvantGarEFDem in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90E1871DC1400C69576 /* AvantGarEFDem */; };
-		03F2D9231871DC1400C69576 /* AvantGarEFDemObl in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90F1871DC1400C69576 /* AvantGarEFDemObl */; };
-		03F2D9241871DC1400C69576 /* AvantGarEFExtLig in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9101871DC1400C69576 /* AvantGarEFExtLig */; };
-		03F2D9251871DC1400C69576 /* AvantGarEFMed in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9111871DC1400C69576 /* AvantGarEFMed */; };
 		03F2D9261871DC1400C69576 /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9131871DC1400C69576 /* Lato-Black.ttf */; };
 		03F2D9271871DC1400C69576 /* Lato-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9141871DC1400C69576 /* Lato-BlackItalic.ttf */; };
 		03F2D9281871DC1400C69576 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9151871DC1400C69576 /* Lato-Bold.ttf */; };
@@ -1222,7 +1208,6 @@
 		03F4E7D518CA33D00056EAA9 /* orange_gradient_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 03121A2F18BCF31200C9FFA3 /* orange_gradient_background.png */; };
 		03F4E7D618CA33D00056EAA9 /* btn_spot_profile_image_next@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0381043C18B672C300A410DB /* btn_spot_profile_image_next@2x.png */; };
 		03F4E7D718CA33D00056EAA9 /* btn_nav_sidebar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866512186DE0F700985CEC /* btn_nav_sidebar@2x.png */; };
-		03F4E7D818CA33D00056EAA9 /* AvantGarEFBooObl in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90D1871DC1400C69576 /* AvantGarEFBooObl */; };
 		03F4E7D918CA33D00056EAA9 /* btn_home_drinks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866502186DE0F700985CEC /* btn_home_drinks@2x.png */; };
 		03F4E7DA18CA33D00056EAA9 /* slider_thumb_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72A5187C4D0E00815284 /* slider_thumb_selected@2x.png */; };
 		03F4E7DB18CA33D00056EAA9 /* btn_home_specials@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866504186DE0F700985CEC /* btn_home_specials@2x.png */; };
@@ -1251,7 +1236,6 @@
 		03F4E7F218CA33D00056EAA9 /* slider_background_profile_min.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F4E74D18CA2A5C0056EAA9 /* slider_background_profile_min.png */; };
 		03F4E7F318CA33D00056EAA9 /* btn_sidebar_search_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866521186DE0F700985CEC /* btn_sidebar_search_icon@2x.png */; };
 		03F4E7F418CA33D00056EAA9 /* btn_nav_arrow_east@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866510186DE0F700985CEC /* btn_nav_arrow_east@2x.png */; };
-		03F4E7F518CA33D00056EAA9 /* AvantGarEFDem in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90E1871DC1400C69576 /* AvantGarEFDem */; };
 		03F4E7F618CA33D00056EAA9 /* txt_sidebar_search_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320235118772A86008368C2 /* txt_sidebar_search_background@2x.png */; };
 		03F4E7F718CA33D00056EAA9 /* Spots.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03E4456C18B65E1500C88421 /* Spots.storyboard */; };
 		03F4E7F818CA33D00056EAA9 /* btn_sidebar_icon_checkin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866517186DE0F700985CEC /* btn_sidebar_icon_checkin@2x.png */; };
@@ -1262,7 +1246,6 @@
 		03F4E7FD18CA33D00056EAA9 /* slider_thumb_selected_light.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72A6187C4D0E00815284 /* slider_thumb_selected_light.png */; };
 		03F4E7FE18CA33D00056EAA9 /* SpotProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E4457218B6607900C88421 /* SpotProfileHeaderView.xib */; };
 		03F4E7FF18CA33D00056EAA9 /* txt_sidebar_search_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320235018772A86008368C2 /* txt_sidebar_search_background.png */; };
-		03F4E80018CA33D00056EAA9 /* AvantGarEFBoo in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90C1871DC1400C69576 /* AvantGarEFBoo */; };
 		03F4E80118CA33D00056EAA9 /* img_map_shadow_botom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0381044018B6846800A410DB /* img_map_shadow_botom@2x.png */; };
 		03F4E80218CA33D00056EAA9 /* img_map_shadow_top.png in Resources */ = {isa = PBXBuildFile; fileRef = 0381044118B6846800A410DB /* img_map_shadow_top.png */; };
 		03F4E80318CA33D00056EAA9 /* btn_down_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E882D318C78D3400BD8FBB /* btn_down_arrow.png */; };
@@ -1293,7 +1276,6 @@
 		03F4E81C18CA33D00056EAA9 /* icon_arrow_no_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03265F2318C4E955002177F7 /* icon_arrow_no_shadow@2x.png */; };
 		03F4E81D18CA33D00056EAA9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0386647E186D352400985CEC /* Images.xcassets */; };
 		03F4E81E18CA33D00056EAA9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0386646F186D352400985CEC /* InfoPlist.strings */; };
-		03F4E81F18CA33D00056EAA9 /* AvantGarEFMed in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9111871DC1400C69576 /* AvantGarEFMed */; };
 		03F4E82018CA33D00056EAA9 /* 51-power@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72EB18803F7F00815284 /* 51-power@2x.png */; };
 		03F4E82118CA33D00056EAA9 /* icon_search_spot_similar.png in Resources */ = {isa = PBXBuildFile; fileRef = 039B6FF91887167200C590F8 /* icon_search_spot_similar.png */; };
 		03F4E82218CA33D00056EAA9 /* slider_background_min.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72BB187C4FB300815284 /* slider_background_min.png */; };
@@ -1303,7 +1285,6 @@
 		03F4E82618CA33D00056EAA9 /* img_expand_east_orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7261187B4EB700815284 /* img_expand_east_orange.png */; };
 		03F4E82718CA33D00056EAA9 /* ReviewHeaderDrinkView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7294187C406200815284 /* ReviewHeaderDrinkView.xib */; };
 		03F4E82818CA33D00056EAA9 /* btn_sidebar_icon_specials.png in Resources */ = {isa = PBXBuildFile; fileRef = 0386651C186DE0F700985CEC /* btn_sidebar_icon_specials.png */; };
-		03F4E82918CA33D00056EAA9 /* AvantGard EF 1 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9091871DC1400C69576 /* AvantGard EF 1 */; };
 		03F4E82A18CA33D00056EAA9 /* Lato-HairlineItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9181871DC1400C69576 /* Lato-HairlineItalic.ttf */; };
 		03F4E82B18CA33D00056EAA9 /* logo_spothopper@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 038664F8186DE0F700985CEC /* logo_spothopper@2x.png */; };
 		03F4E82C18CA33D00056EAA9 /* btn_spot_profile_review_it@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4456118B65D8A00C88421 /* btn_spot_profile_review_it@2x.png */; };
@@ -1348,13 +1329,11 @@
 		03F4E85318CA33D00056EAA9 /* slider_thumb_selected_with_light_large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F4E75218CA2A5C0056EAA9 /* slider_thumb_selected_with_light_large@2x.png */; };
 		03F4E85418CA33D00056EAA9 /* img_card_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E8832F18C837B600BD8FBB /* img_card_background@2x.png */; };
 		03F4E85518CA33D00056EAA9 /* slider_thumb_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72A4187C4D0E00815284 /* slider_thumb_selected.png */; };
-		03F4E85618CA33D00056EAA9 /* AvantGard EF 2 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90A1871DC1400C69576 /* AvantGard EF 2 */; };
 		03F4E85718CA33D00056EAA9 /* nav_bar_background_ios6.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320237118775501008368C2 /* nav_bar_background_ios6.png */; };
 		03F4E85818CA33D00056EAA9 /* 723-location-arrow-selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03121A3718BD786D00C9FFA3 /* 723-location-arrow-selected@2x.png */; };
 		03F4E85918CA33D00056EAA9 /* app_background_blurred.png in Resources */ = {isa = PBXBuildFile; fileRef = 038664F3186DE0F700985CEC /* app_background_blurred.png */; };
 		03F4E85A18CA33D00056EAA9 /* ReviewSliderCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03CA729B187C43CD00815284 /* ReviewSliderCellView.xib */; };
 		03F4E85B18CA33D00056EAA9 /* nav_bar_background_ios6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320237218775501008368C2 /* nav_bar_background_ios6@2x.png */; };
-		03F4E85C18CA33D00056EAA9 /* AvantGarEFBol in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90B1871DC1400C69576 /* AvantGarEFBol */; };
 		03F4E85D18CA33D00056EAA9 /* slider_background_selected_min@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72C0187C4FB300815284 /* slider_background_selected_min@2x.png */; };
 		03F4E85E18CA33D00056EAA9 /* btn_context_map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E8833F18C8F90000BD8FBB /* btn_context_map@2x.png */; };
 		03F4E85F18CA33D00056EAA9 /* img_search_header_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF7A18C7087C00172F13 /* img_search_header_background@2x.png */; };
@@ -1411,9 +1390,7 @@
 		03F4E89218CA33D00056EAA9 /* icon_featured_lists.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF5E18C6DC8500172F13 /* icon_featured_lists.png */; };
 		03F4E89318CA33D00056EAA9 /* table_header_background_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7263187B4EB700815284 /* table_header_background_selected.png */; };
 		03F4E89418CA33D00056EAA9 /* 723-location-arrow-selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03121A3618BD786D00C9FFA3 /* 723-location-arrow-selected.png */; };
-		03F4E89518CA33D00056EAA9 /* AvantGarEFExtLig in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9101871DC1400C69576 /* AvantGarEFExtLig */; };
 		03F4E89618CA33D00056EAA9 /* txt_review_form_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72DD187F502800815284 /* txt_review_form_background.png */; };
-		03F4E89718CA33D00056EAA9 /* AvantGarEFDemObl in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90F1871DC1400C69576 /* AvantGarEFDemObl */; };
 		03F4E89818CA33D00056EAA9 /* slider_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA729E187C4D0E00815284 /* slider_background.png */; };
 		03F4E89918CA33D00056EAA9 /* btn_loging_twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 0386650C186DE0F700985CEC /* btn_loging_twitter.png */; };
 		03F4E89A18CA33D00056EAA9 /* btn_sidebar_icon_account.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866514186DE0F700985CEC /* btn_sidebar_icon_account.png */; };
@@ -1545,7 +1522,6 @@
 		03F4E92318CA34260056EAA9 /* orange_gradient_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 03121A2F18BCF31200C9FFA3 /* orange_gradient_background.png */; };
 		03F4E92418CA34260056EAA9 /* btn_spot_profile_image_next@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0381043C18B672C300A410DB /* btn_spot_profile_image_next@2x.png */; };
 		03F4E92518CA34260056EAA9 /* btn_nav_sidebar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866512186DE0F700985CEC /* btn_nav_sidebar@2x.png */; };
-		03F4E92618CA34260056EAA9 /* AvantGarEFBooObl in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90D1871DC1400C69576 /* AvantGarEFBooObl */; };
 		03F4E92718CA34260056EAA9 /* btn_home_drinks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866502186DE0F700985CEC /* btn_home_drinks@2x.png */; };
 		03F4E92818CA34260056EAA9 /* slider_thumb_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72A5187C4D0E00815284 /* slider_thumb_selected@2x.png */; };
 		03F4E92918CA34260056EAA9 /* btn_home_specials@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866504186DE0F700985CEC /* btn_home_specials@2x.png */; };
@@ -1574,7 +1550,6 @@
 		03F4E94018CA34260056EAA9 /* slider_background_profile_min.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F4E74D18CA2A5C0056EAA9 /* slider_background_profile_min.png */; };
 		03F4E94118CA34260056EAA9 /* btn_sidebar_search_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866521186DE0F700985CEC /* btn_sidebar_search_icon@2x.png */; };
 		03F4E94218CA34260056EAA9 /* btn_nav_arrow_east@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866510186DE0F700985CEC /* btn_nav_arrow_east@2x.png */; };
-		03F4E94318CA34260056EAA9 /* AvantGarEFDem in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90E1871DC1400C69576 /* AvantGarEFDem */; };
 		03F4E94418CA34260056EAA9 /* txt_sidebar_search_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320235118772A86008368C2 /* txt_sidebar_search_background@2x.png */; };
 		03F4E94518CA34260056EAA9 /* Spots.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03E4456C18B65E1500C88421 /* Spots.storyboard */; };
 		03F4E94618CA34260056EAA9 /* btn_sidebar_icon_checkin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866517186DE0F700985CEC /* btn_sidebar_icon_checkin@2x.png */; };
@@ -1585,7 +1560,6 @@
 		03F4E94B18CA34260056EAA9 /* slider_thumb_selected_light.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72A6187C4D0E00815284 /* slider_thumb_selected_light.png */; };
 		03F4E94C18CA34260056EAA9 /* SpotProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E4457218B6607900C88421 /* SpotProfileHeaderView.xib */; };
 		03F4E94D18CA34260056EAA9 /* txt_sidebar_search_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320235018772A86008368C2 /* txt_sidebar_search_background.png */; };
-		03F4E94E18CA34260056EAA9 /* AvantGarEFBoo in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90C1871DC1400C69576 /* AvantGarEFBoo */; };
 		03F4E94F18CA34260056EAA9 /* img_map_shadow_botom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0381044018B6846800A410DB /* img_map_shadow_botom@2x.png */; };
 		03F4E95018CA34260056EAA9 /* img_map_shadow_top.png in Resources */ = {isa = PBXBuildFile; fileRef = 0381044118B6846800A410DB /* img_map_shadow_top.png */; };
 		03F4E95118CA34260056EAA9 /* btn_down_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E882D318C78D3400BD8FBB /* btn_down_arrow.png */; };
@@ -1616,7 +1590,6 @@
 		03F4E96A18CA34260056EAA9 /* icon_arrow_no_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03265F2318C4E955002177F7 /* icon_arrow_no_shadow@2x.png */; };
 		03F4E96B18CA34260056EAA9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0386647E186D352400985CEC /* Images.xcassets */; };
 		03F4E96C18CA34260056EAA9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0386646F186D352400985CEC /* InfoPlist.strings */; };
-		03F4E96D18CA34260056EAA9 /* AvantGarEFMed in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9111871DC1400C69576 /* AvantGarEFMed */; };
 		03F4E96E18CA34260056EAA9 /* 51-power@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72EB18803F7F00815284 /* 51-power@2x.png */; };
 		03F4E96F18CA34260056EAA9 /* icon_search_spot_similar.png in Resources */ = {isa = PBXBuildFile; fileRef = 039B6FF91887167200C590F8 /* icon_search_spot_similar.png */; };
 		03F4E97018CA34260056EAA9 /* slider_background_min.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72BB187C4FB300815284 /* slider_background_min.png */; };
@@ -1626,7 +1599,6 @@
 		03F4E97418CA34260056EAA9 /* img_expand_east_orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7261187B4EB700815284 /* img_expand_east_orange.png */; };
 		03F4E97518CA34260056EAA9 /* ReviewHeaderDrinkView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7294187C406200815284 /* ReviewHeaderDrinkView.xib */; };
 		03F4E97618CA34260056EAA9 /* btn_sidebar_icon_specials.png in Resources */ = {isa = PBXBuildFile; fileRef = 0386651C186DE0F700985CEC /* btn_sidebar_icon_specials.png */; };
-		03F4E97718CA34260056EAA9 /* AvantGard EF 1 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9091871DC1400C69576 /* AvantGard EF 1 */; };
 		03F4E97818CA34260056EAA9 /* Lato-HairlineItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9181871DC1400C69576 /* Lato-HairlineItalic.ttf */; };
 		03F4E97918CA34260056EAA9 /* logo_spothopper@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 038664F8186DE0F700985CEC /* logo_spothopper@2x.png */; };
 		03F4E97A18CA34260056EAA9 /* btn_spot_profile_review_it@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4456118B65D8A00C88421 /* btn_spot_profile_review_it@2x.png */; };
@@ -1671,13 +1643,11 @@
 		03F4E9A118CA34260056EAA9 /* slider_thumb_selected_with_light_large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F4E75218CA2A5C0056EAA9 /* slider_thumb_selected_with_light_large@2x.png */; };
 		03F4E9A218CA34260056EAA9 /* img_card_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E8832F18C837B600BD8FBB /* img_card_background@2x.png */; };
 		03F4E9A318CA34260056EAA9 /* slider_thumb_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72A4187C4D0E00815284 /* slider_thumb_selected.png */; };
-		03F4E9A418CA34260056EAA9 /* AvantGard EF 2 in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90A1871DC1400C69576 /* AvantGard EF 2 */; };
 		03F4E9A518CA34260056EAA9 /* nav_bar_background_ios6.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320237118775501008368C2 /* nav_bar_background_ios6.png */; };
 		03F4E9A618CA34260056EAA9 /* 723-location-arrow-selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03121A3718BD786D00C9FFA3 /* 723-location-arrow-selected@2x.png */; };
 		03F4E9A718CA34260056EAA9 /* app_background_blurred.png in Resources */ = {isa = PBXBuildFile; fileRef = 038664F3186DE0F700985CEC /* app_background_blurred.png */; };
 		03F4E9A818CA34260056EAA9 /* ReviewSliderCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03CA729B187C43CD00815284 /* ReviewSliderCellView.xib */; };
 		03F4E9A918CA34260056EAA9 /* nav_bar_background_ios6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320237218775501008368C2 /* nav_bar_background_ios6@2x.png */; };
-		03F4E9AA18CA34260056EAA9 /* AvantGarEFBol in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90B1871DC1400C69576 /* AvantGarEFBol */; };
 		03F4E9AB18CA34260056EAA9 /* slider_background_selected_min@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72C0187C4FB300815284 /* slider_background_selected_min@2x.png */; };
 		03F4E9AC18CA34260056EAA9 /* btn_context_map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E8833F18C8F90000BD8FBB /* btn_context_map@2x.png */; };
 		03F4E9AD18CA34260056EAA9 /* img_search_header_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF7A18C7087C00172F13 /* img_search_header_background@2x.png */; };
@@ -1734,9 +1704,7 @@
 		03F4E9E018CA34260056EAA9 /* icon_featured_lists.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF5E18C6DC8500172F13 /* icon_featured_lists.png */; };
 		03F4E9E118CA34260056EAA9 /* table_header_background_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7263187B4EB700815284 /* table_header_background_selected.png */; };
 		03F4E9E218CA34260056EAA9 /* 723-location-arrow-selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03121A3618BD786D00C9FFA3 /* 723-location-arrow-selected.png */; };
-		03F4E9E318CA34260056EAA9 /* AvantGarEFExtLig in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9101871DC1400C69576 /* AvantGarEFExtLig */; };
 		03F4E9E418CA34260056EAA9 /* txt_review_form_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72DD187F502800815284 /* txt_review_form_background.png */; };
-		03F4E9E518CA34260056EAA9 /* AvantGarEFDemObl in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D90F1871DC1400C69576 /* AvantGarEFDemObl */; };
 		03F4E9E618CA34260056EAA9 /* slider_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA729E187C4D0E00815284 /* slider_background.png */; };
 		03F4E9E718CA34260056EAA9 /* btn_loging_twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 0386650C186DE0F700985CEC /* btn_loging_twitter.png */; };
 		03F4E9E818CA34260056EAA9 /* btn_sidebar_icon_account.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866514186DE0F700985CEC /* btn_sidebar_icon_account.png */; };
@@ -2225,6 +2193,7 @@
 		03CAC18518E9C74000FAC5F5 /* PriceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceModel.m; sourceTree = "<group>"; };
 		03CAC18A18E9C74F00FAC5F5 /* SizeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SizeModel.h; sourceTree = "<group>"; };
 		03CAC18B18E9C74F00FAC5F5 /* SizeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SizeModel.m; sourceTree = "<group>"; };
+		03CAC19018E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "avantgardef-book-webfont.ttf"; sourceTree = "<group>"; };
 		03E4452318AEE64000C88421 /* AutoCompleteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoCompleteCell.h; sourceTree = "<group>"; };
 		03E4452418AEE64000C88421 /* AutoCompleteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteCell.m; sourceTree = "<group>"; };
 		03E4452618AEE65000C88421 /* AutoCompleteCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AutoCompleteCellView.xib; sourceTree = "<group>"; };
@@ -2282,15 +2251,6 @@
 		03E8834518C8FA5300BD8FBB /* btn_context_list@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_context_list@2x.png"; sourceTree = "<group>"; };
 		03F2D9031871DB5B00C69576 /* SHButtonLatoLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoLight.h; sourceTree = "<group>"; };
 		03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoLight.m; sourceTree = "<group>"; };
-		03F2D9091871DC1400C69576 /* AvantGard EF 1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "AvantGard EF 1"; sourceTree = "<group>"; };
-		03F2D90A1871DC1400C69576 /* AvantGard EF 2 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "AvantGard EF 2"; sourceTree = "<group>"; };
-		03F2D90B1871DC1400C69576 /* AvantGarEFBol */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AvantGarEFBol; sourceTree = "<group>"; };
-		03F2D90C1871DC1400C69576 /* AvantGarEFBoo */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AvantGarEFBoo; sourceTree = "<group>"; };
-		03F2D90D1871DC1400C69576 /* AvantGarEFBooObl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AvantGarEFBooObl; sourceTree = "<group>"; };
-		03F2D90E1871DC1400C69576 /* AvantGarEFDem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AvantGarEFDem; sourceTree = "<group>"; };
-		03F2D90F1871DC1400C69576 /* AvantGarEFDemObl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AvantGarEFDemObl; sourceTree = "<group>"; };
-		03F2D9101871DC1400C69576 /* AvantGarEFExtLig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AvantGarEFExtLig; sourceTree = "<group>"; };
-		03F2D9111871DC1400C69576 /* AvantGarEFMed */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AvantGarEFMed; sourceTree = "<group>"; };
 		03F2D9131871DC1400C69576 /* Lato-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Black.ttf"; sourceTree = "<group>"; };
 		03F2D9141871DC1400C69576 /* Lato-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-BlackItalic.ttf"; sourceTree = "<group>"; };
 		03F2D9151871DC1400C69576 /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
@@ -3492,15 +3452,7 @@
 		03F2D9081871DC1400C69576 /* AvantGardEF */ = {
 			isa = PBXGroup;
 			children = (
-				03F2D9091871DC1400C69576 /* AvantGard EF 1 */,
-				03F2D90A1871DC1400C69576 /* AvantGard EF 2 */,
-				03F2D90B1871DC1400C69576 /* AvantGarEFBol */,
-				03F2D90C1871DC1400C69576 /* AvantGarEFBoo */,
-				03F2D90D1871DC1400C69576 /* AvantGarEFBooObl */,
-				03F2D90E1871DC1400C69576 /* AvantGarEFDem */,
-				03F2D90F1871DC1400C69576 /* AvantGarEFDemObl */,
-				03F2D9101871DC1400C69576 /* AvantGarEFExtLig */,
-				03F2D9111871DC1400C69576 /* AvantGarEFMed */,
+				03CAC19018E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf */,
 			);
 			path = AvantGardEF;
 			sourceTree = "<group>";
@@ -3763,7 +3715,6 @@
 				0381043E18B672C300A410DB /* btn_spot_profile_image_next@2x.png in Resources */,
 				0386653F186DE0F700985CEC /* btn_nav_sidebar@2x.png in Resources */,
 				039F543518D28627004B2B67 /* btn_get_drinks_here.png in Resources */,
-				03F2D9211871DC1400C69576 /* AvantGarEFBooObl in Resources */,
 				039F546F18D2DB4A004B2B67 /* DrinkProfileHeaderView.xib in Resources */,
 				03866531186DE0F700985CEC /* btn_home_drinks@2x.png in Resources */,
 				039F54A418D35A53004B2B67 /* img_arrow_west_circle.png in Resources */,
@@ -3807,7 +3758,6 @@
 				03F4E75518CA2A5C0056EAA9 /* slider_background_profile_min.png in Resources */,
 				0386654D186DE0F700985CEC /* btn_sidebar_search_icon@2x.png in Resources */,
 				0386653D186DE0F700985CEC /* btn_nav_arrow_east@2x.png in Resources */,
-				03F2D9221871DC1400C69576 /* AvantGarEFDem in Resources */,
 				03AF8F1A18E5C29900DD9356 /* img_share_background_iphone5@2x.png in Resources */,
 				0320235318772A86008368C2 /* txt_sidebar_search_background@2x.png in Resources */,
 				03E4456D18B65E1500C88421 /* Spots.storyboard in Resources */,
@@ -3820,12 +3770,12 @@
 				03CA72AE187C4D0E00815284 /* slider_thumb.png in Resources */,
 				039F546618D2D17F004B2B67 /* img_spot_pin_view@2x.png in Resources */,
 				033A3F2018E4D63D00E07F39 /* img_checkin_iphone4@2x.png in Resources */,
+				03CAC19118E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf in Resources */,
 				03CA72B2187C4D0E00815284 /* slider_thumb_selected_light.png in Resources */,
 				03E4457318B6607900C88421 /* SpotProfileHeaderView.xib in Resources */,
 				039ABBDB18CE306B00B84AE6 /* img_match_pin_view_selected.png in Resources */,
 				0320235218772A86008368C2 /* txt_sidebar_search_background.png in Resources */,
 				033A3F1418E4B5B400E07F39 /* img_spot_special_header.png in Resources */,
-				03F2D9201871DC1400C69576 /* AvantGarEFBoo in Resources */,
 				0381044418B6846800A410DB /* img_map_shadow_botom@2x.png in Resources */,
 				0381044518B6846800A410DB /* img_map_shadow_top.png in Resources */,
 				03E882D518C78D3400BD8FBB /* btn_down_arrow.png in Resources */,
@@ -3868,7 +3818,6 @@
 				03265F2718C4E955002177F7 /* icon_arrow_no_shadow@2x.png in Resources */,
 				0386647F186D352400985CEC /* Images.xcassets in Resources */,
 				03866471186D352400985CEC /* InfoPlist.strings in Resources */,
-				03F2D9251871DC1400C69576 /* AvantGarEFMed in Resources */,
 				03CA72ED18803F7F00815284 /* 51-power@2x.png in Resources */,
 				039B70011887167200C590F8 /* icon_search_spot_similar.png in Resources */,
 				03CA72C3187C4FB300815284 /* slider_background_min.png in Resources */,
@@ -3883,7 +3832,6 @@
 				03CA7295187C406200815284 /* ReviewHeaderDrinkView.xib in Resources */,
 				0372FF8718E35C2D009188B5 /* icon_search_beer@2x.png in Resources */,
 				03866548186DE0F700985CEC /* btn_sidebar_icon_specials.png in Resources */,
-				03F2D91D1871DC1400C69576 /* AvantGard EF 1 in Resources */,
 				03F2D92B1871DC1400C69576 /* Lato-HairlineItalic.ttf in Resources */,
 				03866529186DE0F700985CEC /* logo_spothopper@2x.png in Resources */,
 				03E4456B18B65D8A00C88421 /* btn_spot_profile_review_it@2x.png in Resources */,
@@ -3941,7 +3889,6 @@
 				03E8833318C837B600BD8FBB /* img_card_background@2x.png in Resources */,
 				0372FF4918E33A04009188B5 /* Specials.storyboard in Resources */,
 				03CA72B0187C4D0E00815284 /* slider_thumb_selected.png in Resources */,
-				03F2D91E1871DC1400C69576 /* AvantGard EF 2 in Resources */,
 				0320237518775501008368C2 /* nav_bar_background_ios6.png in Resources */,
 				03121A3918BD786D00C9FFA3 /* 723-location-arrow-selected@2x.png in Resources */,
 				0372FF6118E35816009188B5 /* beer_placeholder.png in Resources */,
@@ -3950,7 +3897,6 @@
 				0320237618775501008368C2 /* nav_bar_background_ios6@2x.png in Resources */,
 				039F54B418D3AD66004B2B67 /* btn_at_different_spot@2x.png in Resources */,
 				0372FF7018E35816009188B5 /* spot_placeholder@2x.png in Resources */,
-				03F2D91F1871DC1400C69576 /* AvantGarEFBol in Resources */,
 				03CA72C8187C4FB300815284 /* slider_background_selected_min@2x.png in Resources */,
 				03E8834318C8F90000BD8FBB /* btn_context_map@2x.png in Resources */,
 				03F6BF8018C7087C00172F13 /* img_search_header_background@2x.png in Resources */,
@@ -4020,10 +3966,8 @@
 				03CA7267187B4EB700815284 /* table_header_background_selected.png in Resources */,
 				03121A3818BD786D00C9FFA3 /* 723-location-arrow-selected.png in Resources */,
 				039F547518D2DC91004B2B67 /* btn_drink_profile_description.png in Resources */,
-				03F2D9241871DC1400C69576 /* AvantGarEFExtLig in Resources */,
 				039F544718D29B02004B2B67 /* FindSimilarDrinksViewController.xib in Resources */,
 				03CA72DF187F502800815284 /* txt_review_form_background.png in Resources */,
-				03F2D9231871DC1400C69576 /* AvantGarEFDemObl in Resources */,
 				03CA72AA187C4D0E00815284 /* slider_background.png in Resources */,
 				0372FF6418E35816009188B5 /* beer_placeholder@2x.png in Resources */,
 				0386653A186DE0F700985CEC /* btn_loging_twitter.png in Resources */,
@@ -4086,7 +4030,6 @@
 				03CAC05018E7716400FAC5F5 /* btn_nav_sidebar@2x.png in Resources */,
 				03CAC05118E7716400FAC5F5 /* icon_search_wine.png in Resources */,
 				03CAC05218E7716400FAC5F5 /* btn_get_drinks_here.png in Resources */,
-				03CAC05318E7716400FAC5F5 /* AvantGarEFBooObl in Resources */,
 				03CAC05418E7716400FAC5F5 /* img_share_background_iphone4.png in Resources */,
 				03CAC05518E7716400FAC5F5 /* LiveSpecialViewController.xib in Resources */,
 				03CAC05618E7716400FAC5F5 /* DrinkProfileHeaderView.xib in Resources */,
@@ -4126,7 +4069,6 @@
 				03CAC07818E7716400FAC5F5 /* slider_background_profile_min.png in Resources */,
 				03CAC07918E7716400FAC5F5 /* btn_sidebar_search_icon@2x.png in Resources */,
 				03CAC07A18E7716400FAC5F5 /* btn_nav_arrow_east@2x.png in Resources */,
-				03CAC07B18E7716400FAC5F5 /* AvantGarEFDem in Resources */,
 				03CAC07C18E7716400FAC5F5 /* txt_sidebar_search_background@2x.png in Resources */,
 				03CAC07D18E7716400FAC5F5 /* Spots.storyboard in Resources */,
 				03CAC07E18E7716400FAC5F5 /* btn_sidebar_icon_checkin@2x.png in Resources */,
@@ -4142,11 +4084,11 @@
 				03CAC08818E7716400FAC5F5 /* btn_share_unselected.png in Resources */,
 				03CAC08918E7716400FAC5F5 /* slider_thumb_selected_light.png in Resources */,
 				03CAC08A18E7716400FAC5F5 /* img_spot_pin_view@2x.png in Resources */,
+				03CAC19418E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf in Resources */,
 				03CAC08B18E7716400FAC5F5 /* SpotProfileHeaderView.xib in Resources */,
 				03CAC08C18E7716400FAC5F5 /* img_match_pin_view_selected.png in Resources */,
 				03CAC08D18E7716400FAC5F5 /* txt_sidebar_search_background.png in Resources */,
 				03CAC08E18E7716400FAC5F5 /* img_spot_special_header.png in Resources */,
-				03CAC08F18E7716400FAC5F5 /* AvantGarEFBoo in Resources */,
 				03CAC09018E7716400FAC5F5 /* img_map_shadow_botom@2x.png in Resources */,
 				03CAC09118E7716400FAC5F5 /* img_map_shadow_top.png in Resources */,
 				03CAC09218E7716400FAC5F5 /* btn_down_arrow.png in Resources */,
@@ -4182,7 +4124,6 @@
 				03CAC0B018E7716400FAC5F5 /* icon_arrow_no_shadow@2x.png in Resources */,
 				03CAC0B118E7716400FAC5F5 /* Images.xcassets in Resources */,
 				03CAC0B218E7716400FAC5F5 /* InfoPlist.strings in Resources */,
-				03CAC0B318E7716400FAC5F5 /* AvantGarEFMed in Resources */,
 				03CAC0B418E7716400FAC5F5 /* 51-power@2x.png in Resources */,
 				03CAC0B518E7716400FAC5F5 /* icon_search_spot_similar.png in Resources */,
 				03CAC0B618E7716400FAC5F5 /* slider_background_min.png in Resources */,
@@ -4193,7 +4134,6 @@
 				03CAC0BB18E7716400FAC5F5 /* img_expand_east_orange.png in Resources */,
 				03CAC0BC18E7716400FAC5F5 /* ReviewHeaderDrinkView.xib in Resources */,
 				03CAC0BD18E7716400FAC5F5 /* btn_sidebar_icon_specials.png in Resources */,
-				03CAC0BE18E7716400FAC5F5 /* AvantGard EF 1 in Resources */,
 				03CAC0BF18E7716400FAC5F5 /* Lato-HairlineItalic.ttf in Resources */,
 				03CAC0C018E7716400FAC5F5 /* logo_spothopper@2x.png in Resources */,
 				03CAC0C118E7716400FAC5F5 /* btn_spot_profile_review_it@2x.png in Resources */,
@@ -4255,7 +4195,6 @@
 				03CAC0F918E7716400FAC5F5 /* icon_recipe.png in Resources */,
 				03CAC0FA18E7716400FAC5F5 /* img_card_background@2x.png in Resources */,
 				03CAC0FB18E7716400FAC5F5 /* slider_thumb_selected.png in Resources */,
-				03CAC0FC18E7716400FAC5F5 /* AvantGard EF 2 in Resources */,
 				03CAC0FD18E7716400FAC5F5 /* Specials.storyboard in Resources */,
 				03CAC0FE18E7716400FAC5F5 /* nav_bar_background_ios6.png in Resources */,
 				03CAC0FF18E7716400FAC5F5 /* 723-location-arrow-selected@2x.png in Resources */,
@@ -4263,7 +4202,6 @@
 				03CAC10118E7716400FAC5F5 /* ReviewSliderCellView.xib in Resources */,
 				03CAC10218E7716400FAC5F5 /* beer_placeholder.png in Resources */,
 				03CAC10318E7716400FAC5F5 /* nav_bar_background_ios6@2x.png in Resources */,
-				03CAC10418E7716400FAC5F5 /* AvantGarEFBol in Resources */,
 				03CAC10518E7716400FAC5F5 /* btn_at_different_spot@2x.png in Resources */,
 				03CAC10618E7716400FAC5F5 /* slider_background_selected_min@2x.png in Resources */,
 				03CAC10718E7716400FAC5F5 /* spot_placeholder@2x.png in Resources */,
@@ -4341,12 +4279,10 @@
 				03CAC14F18E7716400FAC5F5 /* btn_drink_profile_description.png in Resources */,
 				03CAC15018E7716400FAC5F5 /* btn_share_close@2x.png in Resources */,
 				03CAC15118E7716400FAC5F5 /* img_live_special_white_arrow@2x.png in Resources */,
-				03CAC15218E7716400FAC5F5 /* AvantGarEFExtLig in Resources */,
 				03CAC15318E7716400FAC5F5 /* FindSimilarDrinksViewController.xib in Resources */,
 				03CAC15418E7716400FAC5F5 /* btn_live_special_share@2x.png in Resources */,
 				03CAC15518E7716400FAC5F5 /* txt_review_form_background.png in Resources */,
 				03CAC15618E7716400FAC5F5 /* btn_share_facebook.png in Resources */,
-				03CAC15718E7716400FAC5F5 /* AvantGarEFDemObl in Resources */,
 				03CAC15818E7716400FAC5F5 /* slider_background.png in Resources */,
 				03CAC15918E7716400FAC5F5 /* beer_placeholder@2x.png in Resources */,
 				03CAC15A18E7716400FAC5F5 /* btn_loging_twitter.png in Resources */,
@@ -4400,7 +4336,6 @@
 				03F4E7D718CA33D00056EAA9 /* btn_nav_sidebar@2x.png in Resources */,
 				0372FF9018E35D42009188B5 /* icon_search_wine.png in Resources */,
 				039F543718D28627004B2B67 /* btn_get_drinks_here.png in Resources */,
-				03F4E7D818CA33D00056EAA9 /* AvantGarEFBooObl in Resources */,
 				03AF8F5D18E5D19D00DD9356 /* img_share_background_iphone4.png in Resources */,
 				03AF8EA718E515B900DD9356 /* LiveSpecialViewController.xib in Resources */,
 				039F547118D2DB4A004B2B67 /* DrinkProfileHeaderView.xib in Resources */,
@@ -4440,7 +4375,6 @@
 				03F4E7F218CA33D00056EAA9 /* slider_background_profile_min.png in Resources */,
 				03F4E7F318CA33D00056EAA9 /* btn_sidebar_search_icon@2x.png in Resources */,
 				03F4E7F418CA33D00056EAA9 /* btn_nav_arrow_east@2x.png in Resources */,
-				03F4E7F518CA33D00056EAA9 /* AvantGarEFDem in Resources */,
 				03F4E7F618CA33D00056EAA9 /* txt_sidebar_search_background@2x.png in Resources */,
 				03F4E7F718CA33D00056EAA9 /* Spots.storyboard in Resources */,
 				03F4E7F818CA33D00056EAA9 /* btn_sidebar_icon_checkin@2x.png in Resources */,
@@ -4456,11 +4390,11 @@
 				03AF8F2D18E5C8F000DD9356 /* btn_share_unselected.png in Resources */,
 				03F4E7FD18CA33D00056EAA9 /* slider_thumb_selected_light.png in Resources */,
 				039F546818D2D17F004B2B67 /* img_spot_pin_view@2x.png in Resources */,
+				03CAC19318E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf in Resources */,
 				03F4E7FE18CA33D00056EAA9 /* SpotProfileHeaderView.xib in Resources */,
 				039ABBDF18CE309C00B84AE6 /* img_match_pin_view_selected.png in Resources */,
 				03F4E7FF18CA33D00056EAA9 /* txt_sidebar_search_background.png in Resources */,
 				033A3F1818E4B9B900E07F39 /* img_spot_special_header.png in Resources */,
-				03F4E80018CA33D00056EAA9 /* AvantGarEFBoo in Resources */,
 				03F4E80118CA33D00056EAA9 /* img_map_shadow_botom@2x.png in Resources */,
 				03F4E80218CA33D00056EAA9 /* img_map_shadow_top.png in Resources */,
 				03F4E80318CA33D00056EAA9 /* btn_down_arrow.png in Resources */,
@@ -4496,7 +4430,6 @@
 				03F4E81C18CA33D00056EAA9 /* icon_arrow_no_shadow@2x.png in Resources */,
 				03F4E81D18CA33D00056EAA9 /* Images.xcassets in Resources */,
 				03F4E81E18CA33D00056EAA9 /* InfoPlist.strings in Resources */,
-				03F4E81F18CA33D00056EAA9 /* AvantGarEFMed in Resources */,
 				03F4E82018CA33D00056EAA9 /* 51-power@2x.png in Resources */,
 				03F4E82118CA33D00056EAA9 /* icon_search_spot_similar.png in Resources */,
 				03F4E82218CA33D00056EAA9 /* slider_background_min.png in Resources */,
@@ -4507,7 +4440,6 @@
 				03F4E82618CA33D00056EAA9 /* img_expand_east_orange.png in Resources */,
 				03F4E82718CA33D00056EAA9 /* ReviewHeaderDrinkView.xib in Resources */,
 				03F4E82818CA33D00056EAA9 /* btn_sidebar_icon_specials.png in Resources */,
-				03F4E82918CA33D00056EAA9 /* AvantGard EF 1 in Resources */,
 				03F4E82A18CA33D00056EAA9 /* Lato-HairlineItalic.ttf in Resources */,
 				03F4E82B18CA33D00056EAA9 /* logo_spothopper@2x.png in Resources */,
 				03F4E82C18CA33D00056EAA9 /* btn_spot_profile_review_it@2x.png in Resources */,
@@ -4569,7 +4501,6 @@
 				039F547F18D2DDE2004B2B67 /* icon_recipe.png in Resources */,
 				03F4E85418CA33D00056EAA9 /* img_card_background@2x.png in Resources */,
 				03F4E85518CA33D00056EAA9 /* slider_thumb_selected.png in Resources */,
-				03F4E85618CA33D00056EAA9 /* AvantGard EF 2 in Resources */,
 				0372FF4F18E342CC009188B5 /* Specials.storyboard in Resources */,
 				03F4E85718CA33D00056EAA9 /* nav_bar_background_ios6.png in Resources */,
 				03F4E85818CA33D00056EAA9 /* 723-location-arrow-selected@2x.png in Resources */,
@@ -4577,7 +4508,6 @@
 				03F4E85A18CA33D00056EAA9 /* ReviewSliderCellView.xib in Resources */,
 				0372FF6318E35816009188B5 /* beer_placeholder.png in Resources */,
 				03F4E85B18CA33D00056EAA9 /* nav_bar_background_ios6@2x.png in Resources */,
-				03F4E85C18CA33D00056EAA9 /* AvantGarEFBol in Resources */,
 				039F54B618D3AD66004B2B67 /* btn_at_different_spot@2x.png in Resources */,
 				03F4E85D18CA33D00056EAA9 /* slider_background_selected_min@2x.png in Resources */,
 				0372FF7218E35816009188B5 /* spot_placeholder@2x.png in Resources */,
@@ -4655,12 +4585,10 @@
 				039F547718D2DC91004B2B67 /* btn_drink_profile_description.png in Resources */,
 				03AF8F2418E5C8F000DD9356 /* btn_share_close@2x.png in Resources */,
 				03AF8F4818E5C8F500DD9356 /* img_live_special_white_arrow@2x.png in Resources */,
-				03F4E89518CA33D00056EAA9 /* AvantGarEFExtLig in Resources */,
 				039F544918D29B0A004B2B67 /* FindSimilarDrinksViewController.xib in Resources */,
 				03AF8F4218E5C8F500DD9356 /* btn_live_special_share@2x.png in Resources */,
 				03F4E89618CA33D00056EAA9 /* txt_review_form_background.png in Resources */,
 				03AF8F2518E5C8F000DD9356 /* btn_share_facebook.png in Resources */,
-				03F4E89718CA33D00056EAA9 /* AvantGarEFDemObl in Resources */,
 				03F4E89818CA33D00056EAA9 /* slider_background.png in Resources */,
 				0372FF6618E35816009188B5 /* beer_placeholder@2x.png in Resources */,
 				03F4E89918CA33D00056EAA9 /* btn_loging_twitter.png in Resources */,
@@ -4714,7 +4642,6 @@
 				03F4E92518CA34260056EAA9 /* btn_nav_sidebar@2x.png in Resources */,
 				0372FF8C18E35D42009188B5 /* icon_search_wine.png in Resources */,
 				039F543618D28627004B2B67 /* btn_get_drinks_here.png in Resources */,
-				03F4E92618CA34260056EAA9 /* AvantGarEFBooObl in Resources */,
 				03AF8F5C18E5D19D00DD9356 /* img_share_background_iphone4.png in Resources */,
 				03AF8EA618E515B900DD9356 /* LiveSpecialViewController.xib in Resources */,
 				039F547018D2DB4A004B2B67 /* DrinkProfileHeaderView.xib in Resources */,
@@ -4754,7 +4681,6 @@
 				03F4E94018CA34260056EAA9 /* slider_background_profile_min.png in Resources */,
 				03F4E94118CA34260056EAA9 /* btn_sidebar_search_icon@2x.png in Resources */,
 				03F4E94218CA34260056EAA9 /* btn_nav_arrow_east@2x.png in Resources */,
-				03F4E94318CA34260056EAA9 /* AvantGarEFDem in Resources */,
 				03F4E94418CA34260056EAA9 /* txt_sidebar_search_background@2x.png in Resources */,
 				03F4E94518CA34260056EAA9 /* Spots.storyboard in Resources */,
 				03F4E94618CA34260056EAA9 /* btn_sidebar_icon_checkin@2x.png in Resources */,
@@ -4770,11 +4696,11 @@
 				03AF8F3D18E5C8F000DD9356 /* btn_share_unselected.png in Resources */,
 				03F4E94B18CA34260056EAA9 /* slider_thumb_selected_light.png in Resources */,
 				039F546718D2D17F004B2B67 /* img_spot_pin_view@2x.png in Resources */,
+				03CAC19218E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf in Resources */,
 				03F4E94C18CA34260056EAA9 /* SpotProfileHeaderView.xib in Resources */,
 				039ABBDD18CE309C00B84AE6 /* img_match_pin_view_selected.png in Resources */,
 				03F4E94D18CA34260056EAA9 /* txt_sidebar_search_background.png in Resources */,
 				033A3F1618E4B9B900E07F39 /* img_spot_special_header.png in Resources */,
-				03F4E94E18CA34260056EAA9 /* AvantGarEFBoo in Resources */,
 				03F4E94F18CA34260056EAA9 /* img_map_shadow_botom@2x.png in Resources */,
 				03F4E95018CA34260056EAA9 /* img_map_shadow_top.png in Resources */,
 				03F4E95118CA34260056EAA9 /* btn_down_arrow.png in Resources */,
@@ -4810,7 +4736,6 @@
 				03F4E96A18CA34260056EAA9 /* icon_arrow_no_shadow@2x.png in Resources */,
 				03F4E96B18CA34260056EAA9 /* Images.xcassets in Resources */,
 				03F4E96C18CA34260056EAA9 /* InfoPlist.strings in Resources */,
-				03F4E96D18CA34260056EAA9 /* AvantGarEFMed in Resources */,
 				03F4E96E18CA34260056EAA9 /* 51-power@2x.png in Resources */,
 				03F4E96F18CA34260056EAA9 /* icon_search_spot_similar.png in Resources */,
 				03F4E97018CA34260056EAA9 /* slider_background_min.png in Resources */,
@@ -4821,7 +4746,6 @@
 				03F4E97418CA34260056EAA9 /* img_expand_east_orange.png in Resources */,
 				03F4E97518CA34260056EAA9 /* ReviewHeaderDrinkView.xib in Resources */,
 				03F4E97618CA34260056EAA9 /* btn_sidebar_icon_specials.png in Resources */,
-				03F4E97718CA34260056EAA9 /* AvantGard EF 1 in Resources */,
 				03F4E97818CA34260056EAA9 /* Lato-HairlineItalic.ttf in Resources */,
 				03F4E97918CA34260056EAA9 /* logo_spothopper@2x.png in Resources */,
 				03F4E97A18CA34260056EAA9 /* btn_spot_profile_review_it@2x.png in Resources */,
@@ -4883,7 +4807,6 @@
 				039F547E18D2DDE2004B2B67 /* icon_recipe.png in Resources */,
 				03F4E9A218CA34260056EAA9 /* img_card_background@2x.png in Resources */,
 				03F4E9A318CA34260056EAA9 /* slider_thumb_selected.png in Resources */,
-				03F4E9A418CA34260056EAA9 /* AvantGard EF 2 in Resources */,
 				0372FF4E18E342CC009188B5 /* Specials.storyboard in Resources */,
 				03F4E9A518CA34260056EAA9 /* nav_bar_background_ios6.png in Resources */,
 				03F4E9A618CA34260056EAA9 /* 723-location-arrow-selected@2x.png in Resources */,
@@ -4891,7 +4814,6 @@
 				03F4E9A818CA34260056EAA9 /* ReviewSliderCellView.xib in Resources */,
 				0372FF6218E35816009188B5 /* beer_placeholder.png in Resources */,
 				03F4E9A918CA34260056EAA9 /* nav_bar_background_ios6@2x.png in Resources */,
-				03F4E9AA18CA34260056EAA9 /* AvantGarEFBol in Resources */,
 				039F54B518D3AD66004B2B67 /* btn_at_different_spot@2x.png in Resources */,
 				03F4E9AB18CA34260056EAA9 /* slider_background_selected_min@2x.png in Resources */,
 				0372FF7118E35816009188B5 /* spot_placeholder@2x.png in Resources */,
@@ -4969,12 +4891,10 @@
 				039F547618D2DC91004B2B67 /* btn_drink_profile_description.png in Resources */,
 				03AF8F3418E5C8F000DD9356 /* btn_share_close@2x.png in Resources */,
 				03AF8F5018E5C8F500DD9356 /* img_live_special_white_arrow@2x.png in Resources */,
-				03F4E9E318CA34260056EAA9 /* AvantGarEFExtLig in Resources */,
 				039F544818D29B09004B2B67 /* FindSimilarDrinksViewController.xib in Resources */,
 				03AF8F4A18E5C8F500DD9356 /* btn_live_special_share@2x.png in Resources */,
 				03F4E9E418CA34260056EAA9 /* txt_review_form_background.png in Resources */,
 				03AF8F3518E5C8F000DD9356 /* btn_share_facebook.png in Resources */,
-				03F4E9E518CA34260056EAA9 /* AvantGarEFDemObl in Resources */,
 				03F4E9E618CA34260056EAA9 /* slider_background.png in Resources */,
 				0372FF6518E35816009188B5 /* beer_placeholder@2x.png in Resources */,
 				03F4E9E718CA34260056EAA9 /* btn_loging_twitter.png in Resources */,
