@@ -1011,6 +1011,10 @@
 		03CAC19218E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19018E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf */; };
 		03CAC19318E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19018E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf */; };
 		03CAC19418E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19018E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf */; };
+		03CAC19618E9F5FD00FAC5F5 /* User.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19518E9F5FD00FAC5F5 /* User.storyboard */; };
+		03CAC19718E9F5FD00FAC5F5 /* User.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19518E9F5FD00FAC5F5 /* User.storyboard */; };
+		03CAC19818E9F5FD00FAC5F5 /* User.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19518E9F5FD00FAC5F5 /* User.storyboard */; };
+		03CAC19918E9F5FD00FAC5F5 /* User.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19518E9F5FD00FAC5F5 /* User.storyboard */; };
 		03E4452518AEE64000C88421 /* AutoCompleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4452418AEE64000C88421 /* AutoCompleteCell.m */; };
 		03E4452718AEE65000C88421 /* AutoCompleteCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E4452618AEE65000C88421 /* AutoCompleteCellView.xib */; };
 		03E4453E18B55B9E00C88421 /* SHButtonLatoLightLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4453D18B55B9E00C88421 /* SHButtonLatoLightLocation.m */; };
@@ -2206,6 +2210,7 @@
 		03CAC18A18E9C74F00FAC5F5 /* SizeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SizeModel.h; sourceTree = "<group>"; };
 		03CAC18B18E9C74F00FAC5F5 /* SizeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SizeModel.m; sourceTree = "<group>"; };
 		03CAC19018E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "avantgardef-book-webfont.ttf"; sourceTree = "<group>"; };
+		03CAC19518E9F5FD00FAC5F5 /* User.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = User.storyboard; sourceTree = "<group>"; };
 		03E4452318AEE64000C88421 /* AutoCompleteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoCompleteCell.h; sourceTree = "<group>"; };
 		03E4452418AEE64000C88421 /* AutoCompleteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteCell.m; sourceTree = "<group>"; };
 		03E4452618AEE65000C88421 /* AutoCompleteCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AutoCompleteCellView.xib; sourceTree = "<group>"; };
@@ -2666,6 +2671,7 @@
 		0386649B186D36D700985CEC /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				03CAC19A18E9F69200FAC5F5 /* User */,
 				03AF8EC418E59BCE00DD9356 /* Checkin */,
 				03AF8EC718E5B66100DD9356 /* Share */,
 				039F548718D33B88004B2B67 /* Menu */,
@@ -2723,6 +2729,7 @@
 				0372FF4818E33A04009188B5 /* Specials.storyboard */,
 				03AF8EBB18E5317100DD9356 /* Checkin.storyboard */,
 				03AF8EC518E5B63E00DD9356 /* Share.storyboard */,
+				03CAC19518E9F5FD00FAC5F5 /* User.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -3370,6 +3377,13 @@
 			path = Glyphish;
 			sourceTree = "<group>";
 		};
+		03CAC19A18E9F69200FAC5F5 /* User */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = User;
+			sourceTree = "<group>";
+		};
 		03E4452218AEE62100C88421 /* AutoComplete */ = {
 			isa = PBXGroup;
 			children = (
@@ -3799,6 +3813,7 @@
 				03265F2018C4E92C002177F7 /* bar_drink_placeholder.png in Resources */,
 				0320236518774A49008368C2 /* icon_view_my_reviews@2x.png in Resources */,
 				03F2D9271871DC1400C69576 /* Lato-BlackItalic.ttf in Resources */,
+				03CAC19618E9F5FD00FAC5F5 /* User.storyboard in Resources */,
 				039F541C18D28379004B2B67 /* Drinks.storyboard in Resources */,
 				03CA72AE187C4D0E00815284 /* slider_thumb.png in Resources */,
 				039F546618D2D17F004B2B67 /* img_spot_pin_view@2x.png in Resources */,
@@ -4314,6 +4329,7 @@
 				03CAC14F18E7716400FAC5F5 /* btn_drink_profile_description.png in Resources */,
 				03CAC15018E7716400FAC5F5 /* btn_share_close@2x.png in Resources */,
 				03CAC15118E7716400FAC5F5 /* img_live_special_white_arrow@2x.png in Resources */,
+				03CAC19918E9F5FD00FAC5F5 /* User.storyboard in Resources */,
 				03CAC15318E7716400FAC5F5 /* FindSimilarDrinksViewController.xib in Resources */,
 				03CAC15418E7716400FAC5F5 /* btn_live_special_share@2x.png in Resources */,
 				03CAC15518E7716400FAC5F5 /* txt_review_form_background.png in Resources */,
@@ -4422,6 +4438,7 @@
 				039F54CA18D7FF1C004B2B67 /* img_expand_north@2x.png in Resources */,
 				039F541E18D28379004B2B67 /* Drinks.storyboard in Resources */,
 				03AF8F2A18E5C8F000DD9356 /* btn_share_text@2x.png in Resources */,
+				03CAC19818E9F5FD00FAC5F5 /* User.storyboard in Resources */,
 				03AF8F2318E5C8F000DD9356 /* btn_share_close.png in Resources */,
 				03AF8F2D18E5C8F000DD9356 /* btn_share_unselected.png in Resources */,
 				03F4E7FD18CA33D00056EAA9 /* slider_thumb_selected_light.png in Resources */,
@@ -4731,6 +4748,7 @@
 				039F54C618D7FF1B004B2B67 /* img_expand_north@2x.png in Resources */,
 				039F541D18D28379004B2B67 /* Drinks.storyboard in Resources */,
 				03AF8F3A18E5C8F000DD9356 /* btn_share_text@2x.png in Resources */,
+				03CAC19718E9F5FD00FAC5F5 /* User.storyboard in Resources */,
 				03AF8F3318E5C8F000DD9356 /* btn_share_close.png in Resources */,
 				03AF8F3D18E5C8F000DD9356 /* btn_share_unselected.png in Resources */,
 				03F4E94B18CA34260056EAA9 /* slider_thumb_selected_light.png in Resources */,
