@@ -22,5 +22,6 @@
 
 - (void)sidebarViewControllerClickedReview:(SidebarViewController*)sidebarViewController;
 - (void)sidebarViewControllerClickedCheckin:(SidebarViewController*)sidebarViewController;
+- (void)sidebarViewControllerClickedAccount:(SidebarViewController*)sidebarViewController;
 
 @end

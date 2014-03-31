@@ -37,7 +37,7 @@
 
 - (NSString *)stringAsShortDate {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"MM/dd/yyyy"];
+    [dateFormatter setDateFormat:@"MM/dd/yy"];
     
     return [dateFormatter stringFromDate: self];
 }

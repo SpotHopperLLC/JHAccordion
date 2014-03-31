@@ -12,6 +12,7 @@
 
 #import "UIViewController+Navigator.h"
 
+#import "AccountSettingsViewController.h"
 #import "FooterViewController.h"
 #import "LiveSpecialViewController.h"
 #import "SidebarViewController.h"
@@ -114,6 +115,11 @@ typedef void(^AlertBlock)();
 
 - (void)sidebarViewControllerClickedCheckin:(SidebarViewController *)sidebarViewController {
     [self goToCheckin];
+}
+
+- (void)sidebarViewControllerClickedAccount:(SidebarViewController *)sidebarViewController {
+    AccountSettingsViewController *viewController = [[self userStoryboard] instantiateViewControllerWithIdentifier:@"AccountSettingsViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - HUD
