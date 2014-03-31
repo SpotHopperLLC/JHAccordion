@@ -42,9 +42,14 @@
     [_lblName setText:drink.name];
     [_lblSpot setText:drink.spot.name];
     
+    // Sort prices high to low
+    NSArray *sortedPrices = [menuItem.prices sortedArrayUsingComparator:^NSComparisonResult(PriceModel *obj1, PriceModel *obj2) {
+        return [obj2.cents compare:obj1.cents];
+    }];
+    
     // Prices
     NSMutableArray *priceStrs = [NSMutableArray array];
-    for (PriceModel *price in menuItem.prices) {
+    for (PriceModel *price in sortedPrices) {
         [priceStrs addObject:[NSString stringWithFormat:@"%@ / %@", [NSNumber numberWithFloat:(price.cents.floatValue / 100.0f)].currencyFormat, price.size.name]];
     }
     [_lblPrices setText:[priceStrs componentsJoinedByString:@"\n"]];
