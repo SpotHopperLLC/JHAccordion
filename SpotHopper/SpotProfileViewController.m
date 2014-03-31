@@ -6,22 +6,30 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kSpecialsClosedHeight 51.0f
+#define kSpecialsOpenedHeight 113.0f
+
 #import "SpotProfileViewController.h"
 
+#import "NSArray+DailySpecials.h"
 #import "NSDate+Globalize.h"
 #import "UIButton+Block.h"
 #import "UIView+ViewFromNib.h"
 #import "UIViewController+Navigator.h"
 
 #import "SpotAnnotation.h"
+#import "SHLabelLatoLight.h"
 
 #import "ReviewSliderCell.h"
 #import "SpotImageCollectViewCell.h"
 
+#import "CheckinConfirmationViewController.h"
 #import "SpotListViewController.h"
 
 #import "AverageReviewModel.h"
 #import "ErrorModel.h"
+#import "ImageModel.h"
+#import "LiveSpecialModel.h"
 #import "SpotTypeModel.h"
 #import "SpotListModel.h"
 
@@ -30,7 +38,7 @@
 
 #import <MapKit/MapKit.h>
 
-@interface SpotProfileViewController ()<UITableViewDataSource, UITableViewDelegate, MKMapViewDelegate, JHAccordionDelegate>
+@interface SpotProfileViewController ()<UITableViewDataSource, UITableViewDelegate, MKMapViewDelegate, JHAccordionDelegate, CheckinConfirmationViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tblSliders;
 
@@ -39,6 +47,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblPercentMatch;
 @property (weak, nonatomic) IBOutlet UIButton *btnPhoneNumber;
 @property (weak, nonatomic) IBOutlet UILabel *lblHoursOpen;
+
+// Specials
+@property (weak, nonatomic) IBOutlet UIView *viewSpecials;
+@property (weak, nonatomic) IBOutlet UILabel *lblSpecialTitle;
+@property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblSpecialInfo;
+@property (weak, nonatomic) IBOutlet UIImageView *imgExpand;
+@property (weak, nonatomic) IBOutlet UIView *viewSpecialInfo;
+@property (weak, nonatomic) IBOutlet UIButton *btnShareLiveSpecial;
+@property (nonatomic, assign) BOOL specialsOpen;
 
 // Header
 @property (nonatomic, strong) UIView *headerContent;
@@ -55,6 +72,8 @@
 
 @property (nonatomic, strong) JHAccordion *accordion;
 @property (nonatomic, strong) UIView *sectionHeaderAdvanced;
+
+@property (nonatomic, strong) CheckinConfirmationViewController *checkinConfirmationViewController;
 
 @end
 
@@ -106,6 +125,10 @@
     // Configure collection cell
     [_collectionView registerNib:[UINib nibWithNibName:@"SpotImageCollectionViewCellView" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"SpotImageCollectViewCell"];
     
+    // Initialize stuff
+    _specialsOpen = NO;
+    [_lblSpecialInfo italic:YES];
+    
     [self updateView];
     [self fetchSpot];
 }
@@ -122,6 +145,21 @@
     
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    // Show checkin view
+    if (_isCheckin == YES) {
+        
+        // Setting to NO so we don't do this ever, ever, ever again
+        _isCheckin = NO;
+        
+        // Showing checkin
+        [self showShareViewController:_spot shareType:ShareViewControllerShareCheckin];
+        
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -135,13 +173,23 @@
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 3;
+    // Alwas should show one image (the once being the placeholder if spot has no images)
+    return MAX( 1 , [_spot images].count );
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     SpotImageCollectViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SpotImageCollectViewCell" forIndexPath:indexPath];
-    [cell.imgSpot setImageWithURL:[NSURL URLWithString:@"http://placekitten.com/320/165"]];
+    
+    // Uses placeholder if spot has no images
+    if ([_spot images].count == 0) {
+        [cell.imgSpot setImage:_spot.placeholderImage];
+    }
+    // Sets the images defined by the spot
+    else {
+        ImageModel *image = [[_spot images] objectAtIndex:indexPath.row];
+        [cell.imgSpot setImageWithURL:[NSURL URLWithString:image.url] placeholderImage:_spot.placeholderImage];
+    }
     
     return cell;
 }
@@ -253,6 +301,8 @@
 - (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
     if (FooterViewButtonHome == footerViewButtonType) {
         return NO;
+    } else if (FooterViewButtonMiddle == footerViewButtonType) {
+        [self showShareViewController:_spot shareType:ShareViewControllerShareCheckin];
     }
     
     return YES;
@@ -266,6 +316,24 @@
     pin.image = [UIImage imageNamed:@"map_marker_spot"];
     
     return pin;
+}
+
+#pragma mark - CheckinConfirmationViewControllerDelegate
+
+- (void)checkinConfirmationViewControllerClickedClose:(CheckinConfirmationViewController *)viewController {
+    [self hideCheckinConfirmationViewController:nil];
+}
+
+- (void)checkinConfirmationViewControllerClickedDrinkList:(CheckinConfirmationViewController *)viewController {
+    [self hideCheckinConfirmationViewController:^{
+        [self goToDrinkListMenuAtSpot:_spot];
+    }];
+}
+
+- (void)checkinConfirmationViewControllerClickedFullMenu:(CheckinConfirmationViewController *)viewController {
+    [self hideCheckinConfirmationViewController:^{
+        [self goToMenu:_spot];
+    }];
 }
 
 #pragma mark - Actions
@@ -306,6 +374,18 @@
     }
 }
 
+- (IBAction)onClickSpecial:(id)sender {
+    _specialsOpen = !_specialsOpen;
+    [self updateViewSpecials:YES];
+}
+
+- (IBAction)onClickShareSpecial:(id)sender {
+    LiveSpecialModel *liveSpecial = [_spot currentLiveSpecial];
+    liveSpecial.spot = _spot;
+    
+    [self showLiveSpecialViewController:liveSpecial];
+}
+
 - (IBAction)onClickFindSimilar:(id)sender {
     [self doFindSimilar];
 }
@@ -316,6 +396,69 @@
 
 - (IBAction)onClickDrinkMenu:(id)sender {
     [self goToMenu:_spot];
+}
+
+#pragma mark - Private - Checkin
+
+- (void)shareViewControllerClickedClose:(ShareViewController *)viewController {
+    [self hideShareViewController:^{
+        
+        if (ShareViewControllerShareCheckin == viewController.shareType) {
+            [self showCheckinConfirmationViewController];
+        }
+        
+    }];
+}
+
+- (void)shareViewControllerDidFinish:(ShareViewController *)viewController {
+    [self hideShareViewController:^{
+        
+        if (ShareViewControllerShareCheckin == viewController.shareType) {
+            [self showCheckinConfirmationViewController];
+        }
+        
+    }];
+}
+
+- (void)showCheckinConfirmationViewController {
+    if (_checkinConfirmationViewController == nil) {
+        
+        // Create live special view controller
+        _checkinConfirmationViewController = [[self checkinStoryboard] instantiateViewControllerWithIdentifier:( IS_FOUR_INCH ? @"CheckinConfirmationViewController" : @"CheckinConfirmationViewControllerIPhone4" )];
+        [_checkinConfirmationViewController setDelegate:self];
+        
+        // Set alpha to zero so we can animate in
+        [_checkinConfirmationViewController.view setAlpha:0.0f];
+        [_checkinConfirmationViewController.view setFrame:self.navigationController.view.frame];
+        
+        // Adding to window
+        [[[UIApplication sharedApplication] keyWindow]  addSubview:_checkinConfirmationViewController.view];
+        
+        // Animating in
+        [UIView animateWithDuration:0.35 animations:^{
+            [_checkinConfirmationViewController.view setAlpha:1.0f];
+        }];
+    }
+    
+    // Updating live special text
+    [_checkinConfirmationViewController setSpot:_spot];
+}
+
+- (void)hideCheckinConfirmationViewController:(void(^)(void))completion {
+    
+    // Animating checkkin confirmation out
+    [UIView animateWithDuration:0.35 animations:^{
+        [_checkinConfirmationViewController.view setAlpha:0.0f];
+    } completion:^(BOOL finished) {
+        
+        // Removing checkin confirmation from view
+        [_checkinConfirmationViewController.view removeFromSuperview];
+        _checkinConfirmationViewController = nil;
+        
+        if (completion != nil) {
+            completion();
+        }
+    }];
 }
 
 #pragma mark - Private
@@ -401,6 +544,24 @@
     [_btnPhoneNumber setTitle:_spot.phoneNumber forState:UIControlStateNormal];
     [_btnPhoneNumber setHidden:( _spot.phoneNumber.length == 0 )];
     
+    // Sets specials
+    LiveSpecialModel *liveSpecial = [_spot currentLiveSpecial];
+    NSString *todaysSpecial = [[_spot dailySpecials] specialsForToday];
+    if (liveSpecial != nil) {
+        [_lblSpecialTitle setText:@"Live Special!"];
+        [_lblSpecialInfo  setText:liveSpecial.text];
+        [_viewSpecials setHidden:NO];
+        [_btnShareLiveSpecial setHidden:NO];
+    } else if (todaysSpecial != nil) {
+        [_lblSpecialTitle setText:@"Current Special!"];
+        [_lblSpecialInfo setText:todaysSpecial];
+        [_viewSpecials setHidden:NO];
+        [_btnShareLiveSpecial setHidden:YES];
+    } else {
+        [_viewSpecials setHidden:YES];
+    }
+    [self updateViewSpecials:NO];
+    
     // Update map
     if (_spot.latitude != nil && _spot.longitude != nil) {
         MKCoordinateRegion mapRegion;
@@ -413,6 +574,22 @@
         annotation.coordinate = CLLocationCoordinate2DMake(_spot.latitude.floatValue, _spot.longitude.floatValue);
         [_mapView addAnnotation:annotation];
     }
+}
+
+- (void)updateViewSpecials:(BOOL)animate {
+    
+    CGRect frame = _viewSpecials.frame;
+    frame.size.height = (_specialsOpen ? kSpecialsOpenedHeight : kSpecialsClosedHeight);
+    
+    float radians = (_specialsOpen ? M_PI : 0);
+    
+    // Animate
+    [UIView animateWithDuration:( animate ? 0.35 : 0.0 ) animations:^{
+        _imgExpand.transform = CGAffineTransformMakeRotation(radians);
+        [_viewSpecialInfo setAlpha:(_specialsOpen ? 1.0f : 0.0f)];
+        [_viewSpecials setFrame:frame];
+    }];
+    
 }
 
 - (void)doFindSimilar {

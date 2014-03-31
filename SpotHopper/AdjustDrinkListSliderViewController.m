@@ -211,6 +211,8 @@
         [self updateSectionHeaderTitles:kSectionWineSubtypes];
         
         [_accordion closeSection:indexPath.section];
+        [_accordion closeSection:kSectionBaseAlcohols];
+        [_accordion closeSection:kSectionWineSubtypes];
     }
     /*
      * Section: Base Alcohols

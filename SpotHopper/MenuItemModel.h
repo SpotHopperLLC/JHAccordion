@@ -15,10 +15,10 @@
 @interface MenuItemModel : SHJSONAPIResource
 
 @property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSNumber *price;
 @property (nonatomic, assign) BOOL inStock;
 @property (nonatomic, strong) DrinkModel *drink;
 @property (nonatomic, strong) SpotModel *spot;
 @property (nonatomic, strong) MenuTypeModel *menuType;
+@property (nonatomic, strong) NSArray *prices;
 
 @end

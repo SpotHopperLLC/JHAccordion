@@ -8,7 +8,12 @@
 
 #import "MenuItemCell.h"
 
+#import "NSNumber+Currency.h"
+
 #import "DrinkModel.h"
+#import "MenuItemModel.h"
+#import "PriceModel.h"
+#import "SizeModel.h"
 #import "SpotModel.h"
 
 @implementation MenuItemCell
@@ -29,10 +34,25 @@
     // Configure the view for the selected state
 }
 
-- (void)setDrink:(DrinkModel *)drink {
+- (void)setMenuItem:(MenuItemModel*)menuItem {
     
+    DrinkModel *drink = menuItem.drink;
+    
+    // Names
     [_lblName setText:drink.name];
     [_lblSpot setText:drink.spot.name];
+    
+    // Sort prices high to low
+    NSArray *sortedPrices = [menuItem.prices sortedArrayUsingComparator:^NSComparisonResult(PriceModel *obj1, PriceModel *obj2) {
+        return [obj2.cents compare:obj1.cents];
+    }];
+    
+    // Prices
+    NSMutableArray *priceStrs = [NSMutableArray array];
+    for (PriceModel *price in sortedPrices) {
+        [priceStrs addObject:[NSString stringWithFormat:@"%@ / %@", [NSNumber numberWithFloat:(price.cents.floatValue / 100.0f)].currencyFormat, price.size.name]];
+    }
+    [_lblPrices setText:[priceStrs componentsJoinedByString:@"\n"]];
     
     // Sets ABV and stuff
     if (drink.style.length > 0 && drink.abv.floatValue > 0) {

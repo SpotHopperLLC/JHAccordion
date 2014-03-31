@@ -18,10 +18,16 @@
 #import "MBProgressHUD.h"
 
 #import "JHPullRefreshViewController.h"
+#import "ShareViewController.h"
 
-@interface BaseViewController : JHPullRefreshViewController<FooterViewControllerDelegate>
+@class LiveSpecialModel, SpotModel;
+@class LiveSpecialViewController;
+
+@interface BaseViewController : JHPullRefreshViewController<FooterViewControllerDelegate, ShareViewControllerDelegate>
 
 @property (nonatomic, strong) MBProgressHUD *HUD;
+@property (nonatomic, strong) LiveSpecialViewController *liveSpecialViewController;
+@property (nonatomic, strong) ShareViewController *shareViewController;
 
 - (void)viewDidLoad:(NSArray*)options;
 
@@ -59,5 +65,13 @@
 - (FooterViewController*)footerViewController;
 
 - (void)slideCell:(UITableViewCell *)cell aboveTableViewMidwayPoint:(UITableView *)tableView;
+
+// LiveSpecialViewController
+- (void)showLiveSpecialViewController:(LiveSpecialModel*)liveSpecial;
+- (void)hideLiveSpecialViewController:(void(^)(void))completion;
+
+// ShareViewController
+- (void)showShareViewController:(SpotModel*)spot shareType:(ShareViewControllerShareType)shareType;
+- (void)hideShareViewController:(void(^)(void))completion;
 
 @end

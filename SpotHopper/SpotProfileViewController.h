@@ -13,5 +13,6 @@
 @interface SpotProfileViewController : BaseViewController
 
 @property (nonatomic, strong) SpotModel *spot;
+@property (nonatomic, assign) BOOL isCheckin;
 
 @end

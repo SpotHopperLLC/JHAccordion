@@ -31,6 +31,10 @@
 #import "DrinkMenuViewController.h"
 #import "DrinkMenuOfferingsViewController.h"
 
+#import "TonightsSpecialsViewController.h"
+
+#import "CheckinViewController.h"
+
 @implementation UIViewController (Navigator)
 
 #pragma mark - Main
@@ -191,6 +195,27 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
+#pragma mark - Specials
+
+- (void)goToTonightsSpecials {
+    TonightsSpecialsViewController *viewController = [[self specialsStoryboard] instantiateViewControllerWithIdentifier:@"TonightsSpecialsViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+#pragma mark - Checkin
+
+- (void)goToCheckin {
+    CheckinViewController *viewController = [[self checkinStoryboard] instantiateViewControllerWithIdentifier:@"CheckinViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToCheckinAtSpot:(SpotModel*)spot {
+    SpotProfileViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
+    [viewController setSpot:spot];
+    [viewController setIsCheckin:YES];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
 #pragma mark - Commons
 
 - (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate {
@@ -244,10 +269,37 @@
     return self.storyboard;
 }
 
+- (UIStoryboard*)specialsStoryboard {
+    NSString *name = [self.storyboard valueForKey:@"name"];
+    if ([name isEqualToString:@"Specials"] == NO) {
+        return [UIStoryboard storyboardWithName:@"Specials" bundle:[NSBundle mainBundle]];
+    }
+    
+    return self.storyboard;
+}
+
 - (UIStoryboard*)menuStoryboard {
     NSString *name = [self.storyboard valueForKey:@"name"];
     if ([name isEqualToString:@"Menu"] == NO) {
         return [UIStoryboard storyboardWithName:@"Menu" bundle:[NSBundle mainBundle]];
+    }
+    
+    return self.storyboard;
+}
+
+- (UIStoryboard*)checkinStoryboard {
+    NSString *name = [self.storyboard valueForKey:@"name"];
+    if ([name isEqualToString:@"Checkin"] == NO) {
+        return [UIStoryboard storyboardWithName:@"Checkin" bundle:[NSBundle mainBundle]];
+    }
+    
+    return self.storyboard;
+}
+
+- (UIStoryboard*)shareStoryboard {
+    NSString *name = [self.storyboard valueForKey:@"name"];
+    if ([name isEqualToString:@"Share"] == NO) {
+        return [UIStoryboard storyboardWithName:@"Share" bundle:[NSBundle mainBundle]];
     }
     
     return self.storyboard;

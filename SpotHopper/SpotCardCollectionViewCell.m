@@ -8,6 +8,7 @@
 
 #import "SpotCardCollectionViewCell.h"
 
+#import "ImageModel.h"
 #import "SpotTypeModel.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
@@ -25,11 +26,13 @@
 
 - (void)setSpot:(SpotModel *)spot {
     
-    [_imgSpot setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:spot.imageUrl]] placeholderImage:Nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        [_imgSpot setImage:image];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [_imgSpot setImage:nil];
-    }];
+    // Sets image
+    ImageModel *image = spot.images.firstObject;
+    if (image != nil) {
+        [_imgSpot setImageWithURL:[NSURL URLWithString:image.url] placeholderImage:spot.placeholderImage];
+    } else {
+        [_imgSpot setImage:spot.placeholderImage];
+    }
     
     [_lblName setText:spot.name];
     [_lblType setText:spot.spotType.name];

@@ -13,13 +13,17 @@
 #import "UIViewController+Navigator.h"
 
 #import "FooterViewController.h"
+#import "LiveSpecialViewController.h"
 #import "SidebarViewController.h"
 
+#import "LiveSpecialModel.h"
+
 #import <JHSidebar/JHSidebarViewController.h>
+#import <FacebookSDK/FacebookSDK.h>
 
 typedef void(^AlertBlock)();
 
-@interface BaseViewController ()<UINavigationControllerDelegate, SidebarViewControllerDelegate>
+@interface BaseViewController ()<UINavigationControllerDelegate, SidebarViewControllerDelegate, LiveSpecialViewControllerDelegate>
 
 @property (nonatomic, strong) UIAlertView *alertView;
 @property (nonatomic, copy) AlertBlock alertBlock;
@@ -106,6 +110,10 @@ typedef void(^AlertBlock)();
 
 - (void)sidebarViewControllerClickedReview:(SidebarViewController *)sidebarViewController {
     [self goToReviewMenu];
+}
+
+- (void)sidebarViewControllerClickedCheckin:(SidebarViewController *)sidebarViewController {
+    [self goToCheckin];
 }
 
 #pragma mark - HUD
@@ -417,6 +425,118 @@ typedef void(^AlertBlock)();
         CGPoint offset = CGPointMake(0.0, newOffset);
         [tableView setContentOffset:offset animated:TRUE];
     }
+}
+
+#pragma mark - LiveSpecialViewController
+
+- (void)showLiveSpecialViewController:(LiveSpecialModel *)liveSpecial {
+    if (_liveSpecialViewController == nil) {
+        
+        // Create live special view controller
+        _liveSpecialViewController = [[LiveSpecialViewController alloc] initWithNibName:@"LiveSpecialViewController" bundle:[NSBundle mainBundle]];
+        [_liveSpecialViewController setDelegate:self];
+        
+        // Set alpha to zero so we can animate in
+        [_liveSpecialViewController.view setAlpha:0.0f];
+        [_liveSpecialViewController.view setFrame:self.navigationController.view.frame];
+        
+        // Adding to window
+        [[[UIApplication sharedApplication] keyWindow]  addSubview:_liveSpecialViewController.view];
+        
+        // Animating in
+        [UIView animateWithDuration:0.35 animations:^{
+            [_liveSpecialViewController.view setAlpha:1.0f];
+        }];
+    }
+    
+    // Updating live special text
+    [_liveSpecialViewController setLiveSpecial:liveSpecial];
+}
+
+- (void)hideLiveSpecialViewController:(void(^)(void))completion {
+    
+    // Animating live special out
+    [UIView animateWithDuration:0.35 animations:^{
+        [_liveSpecialViewController.view setAlpha:0.0f];
+    } completion:^(BOOL finished) {
+        
+        // Removing live special from view
+        [_liveSpecialViewController.view removeFromSuperview];
+        _liveSpecialViewController = nil;
+
+        if (completion != nil) {
+            completion();
+        }
+    }];
+}
+
+#pragma mark - LiveSpecialViewControllerDelegate
+
+- (void)liveSpecialViewControllerClickedClose:(LiveSpecialViewController *)viewController {
+    [self hideLiveSpecialViewController:nil];
+}
+
+- (void)liveSpecialViewControllerClickedShare:(LiveSpecialViewController *)viewController {
+    LiveSpecialModel *liveSpecial = [viewController liveSpecial];
+    
+    [self hideLiveSpecialViewController:^{
+        [self showShareViewController:liveSpecial.spot shareType:ShareViewControllerShareSpecial];
+    }];
+}
+
+#pragma mark - ShareViewController
+
+- (void)showShareViewController:(SpotModel *)spot shareType:(ShareViewControllerShareType)shareType {
+    if (_shareViewController == nil) {
+        
+        // Create lshare view controller
+        _shareViewController = [[self shareStoryboard] instantiateViewControllerWithIdentifier:( IS_FOUR_INCH ? @"ShareViewController" : @"ShareViewControllerIPhone4" )];
+        [_shareViewController setDelegate:self];
+        
+        // Set alpha to zero so we can animate in
+        [_shareViewController.view setAlpha:0.0f];
+        [_shareViewController.view setFrame:self.navigationController.view.frame];
+        
+        // Adding to window
+        [[[UIApplication sharedApplication] keyWindow]  addSubview:_shareViewController.view];
+        
+        // Animating in
+        [UIView animateWithDuration:0.35 animations:^{
+            [_shareViewController.view setAlpha:1.0f];
+        }];
+    }
+    
+    // Updating live special text
+    [_shareViewController setSpot:spot];
+    [_shareViewController setShareType:shareType];
+}
+
+- (void)hideShareViewController:(void (^)(void))completion {
+    // Animating live special out
+    [UIView animateWithDuration:0.35 animations:^{
+        [_shareViewController.view setAlpha:0.0f];
+    } completion:^(BOOL finished) {
+        
+        // Removing live special from view
+        [_shareViewController.view removeFromSuperview];
+        _shareViewController = nil;
+        
+        if (completion != nil) {
+            completion();
+        }
+    }];
+}
+
+#pragma mark - ShareViewControllerDelegate
+
+- (void)shareViewControllerClickedClose:(ShareViewController *)viewController {
+    [self hideShareViewController:nil];
+}
+
+- (void)shareViewControllerDidFinish:(ShareViewController *)viewController {
+    [self hideShareViewController:^{
+        
+    }];
 }
 
 @end

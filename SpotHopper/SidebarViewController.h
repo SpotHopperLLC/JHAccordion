@@ -21,5 +21,6 @@
 @protocol SidebarViewControllerDelegate <NSObject>
 
 - (void)sidebarViewControllerClickedReview:(SidebarViewController*)sidebarViewController;
+- (void)sidebarViewControllerClickedCheckin:(SidebarViewController*)sidebarViewController;
 
 @end

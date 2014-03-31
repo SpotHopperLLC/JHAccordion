@@ -21,6 +21,7 @@
 #import "UserModel.h"
 
 //#import "NSArray+HoursOfOperation.h"
+#import "NSArray+DailySpecials.h"
 
 #import <JSONAPI/JSONAPI.h>
 
@@ -93,6 +94,46 @@
     NSArray *hoursForToday = [hoursForToday datesForNow:now];
     
     // No asserst cause Xcode says the unit tests build "Failed" but give no errors
+}
+
+- (void)testDailySpecials {
+    
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    
+    // Today will be Tuesday March, 18th
+    NSDateComponents *comp = [[NSDateComponents alloc] init];
+    [comp setDay:18];
+    [comp setMonth:3];
+    [comp setYear:2014];
+    
+    // Setting time
+    [comp setHour:16];
+    [comp setMinute:0];
+    [comp setTimeZone:[NSTimeZone timeZoneWithName:@"GST"]];
+    
+    NSDate *now = [calendar dateFromComponents:comp];
+    
+    NSString *sunday = @"Sunday special";
+    NSString *monday = @"Monday special";
+    NSString *tuesday = @"Tuesday special";
+    NSString *wednesday = @"Wednesday special";
+    NSString *thursday = @"Thursday special";
+    NSString *friday = @"Friday special";
+    NSString *saturday = @"Saturday special";
+    NSArray *dailySpecials = @[
+                                  sunday,
+                                  monday,
+                                  tuesday,
+                                  wednesday,
+                                  thursday,
+                                  friday,
+                                  saturday
+                                  ];
+    
+    NSString *dailySpecialForToday = [dailySpecials specialsForNow:now];
+    
+    // No asserst cause Xcode says the unit tests build "Failed" but give no errors
+    XCTAssertEqualObjects(dailySpecialForToday, tuesday, @"Daily special was not Tuesday");
 }
 
 - (void)testParsingUserModel
