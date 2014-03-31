@@ -8,7 +8,7 @@
 
 #import "SectionHeaderView.h"
 
-@interface SectionHeaderView()
+@interface SectionHeaderView ()
 
 @end
 
@@ -17,13 +17,19 @@
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
+        // do nothing
+    }
+    return self;
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    if (self) {
         [self setup];
     }
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         [self setup];
@@ -42,7 +48,7 @@
 - (void)setup {
     
     // Content view
-    _viewContent = [[UIView alloc] initWithFrame:CGRectMake(0.0f, CGRectGetHeight(self.frame) - 56.0f, CGRectGetWidth(self.frame), 56.0f)];
+    _viewContent = [[UIView alloc] initWithFrame:CGRectMake(0.0f, CGRectGetHeight(self.frame) - 47.0f, CGRectGetWidth(self.frame), 47.0f)];
     [_viewContent setBackgroundColor:[UIColor clearColor]];
     [_viewContent setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
     [self addSubview:_viewContent];
@@ -73,6 +79,17 @@
     [_viewContent addSubview:_imgArrow];
 }
 
+- (void)prepareView {
+    NSCAssert(_btnBackground, @"Outlet is required.");
+    NSCAssert(_imgIcon, @"Outlet is required.");
+    NSCAssert(_lblText, @"Outlet is required.");
+    NSCAssert(_imgArrow, @"Outlet is required.");
+    
+    // Label
+    [_lblText setFont:[UIFont fontWithName:@"Lato-Light" size:18.0f]];
+    [_lblText setUserInteractionEnabled:NO];
+}
+
 #pragma mark - Public
 
 - (void)setIconImage:(UIImage*)image {
@@ -84,7 +101,7 @@
 }
 
 - (void)setSelected:(BOOL)selected {
-    [_btnBackground setSelected:selected];
+//    [_btnBackground setSelected:selected];
     
     float radians = (selected ? M_PI : 0);
     [UIView animateWithDuration:0.35 animations:^{

@@ -166,14 +166,14 @@ $2 Non-Wisco Taps</string>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Near" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0tZ-et-55A" customClass="SHLabelLatoRegular">
-                                        <rect key="frame" x="9" y="0.0" width="47" height="21"/>
+                                        <rect key="frame" x="18" y="1" width="47" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hFE-xB-2JQ" customClass="SHButtonLatoLightLocation">
-                                        <rect key="frame" x="64" y="0.0" width="247" height="24"/>
+                                        <rect key="frame" x="64" y="4" width="236" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <state key="normal">
@@ -297,22 +297,22 @@ $2 Non-Wisco Taps</string>
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" id="hcg-6F-gHz" customClass="SHViewTranlucentWhite">
+                            <view contentMode="scaleToFill" id="hcg-6F-gHz" userLabel="View Translucent White" customClass="SHViewTranlucentWhite">
                                 <rect key="frame" x="0.0" y="64" width="320" height="30"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Near" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wRO-zb-16s" customClass="SHLabelLatoRegular">
-                                        <rect key="frame" x="9" y="1" width="47" height="21"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Near" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wRO-zb-16s" customClass="SHLabelLatoRegular">
+                                        <rect key="frame" x="18" y="1" width="47" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Dtn-co-yAk" customClass="SHButtonLatoLightLocation">
-                                        <rect key="frame" x="64" y="0.0" width="247" height="24"/>
+                                        <rect key="frame" x="64" y="4" width="236" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                        <state key="normal">
+                                        <state key="normal" title="City, State">
                                             <color key="titleColor" red="0.94509803920000002" green="0.37647058820000001" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -346,6 +346,7 @@ $2 Non-Wisco Taps</string>
                     <connections>
                         <outlet property="btnLocation" destination="Dtn-co-yAk" id="VFE-VQ-qop"/>
                         <outlet property="containerAdjustSliders" destination="8qj-uq-kZ5" id="gE2-eD-1a5"/>
+                        <outlet property="lblNear" destination="wRO-zb-16s" id="PAX-ym-eaM"/>
                         <outlet property="tblMenu" destination="kmI-GL-drV" id="vLd-pY-EA1"/>
                     </connections>
                 </viewController>

@@ -25,6 +25,7 @@
 
 @interface FindDrinksAtViewController ()<MKMapViewDelegate, SHButtonLatoLightLocationDelegate, SpotAnnotationCalloutDelegate>
 
+@property (weak, nonatomic) IBOutlet UILabel *lblNear;
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
@@ -58,6 +59,14 @@
     // Locations
     [_btnLocation setDelegate:self];
     [_btnLocation updateWithLastLocation];
+    
+    // place the image after the text
+    NSString *text = [_btnLocation titleForState:UIControlStateNormal];
+    CGFloat textWidth = [self widthForString:text font:_btnLocation.titleLabel.font maxWidth:CGFLOAT_MAX];
+    _btnLocation.imageEdgeInsets = UIEdgeInsetsMake(0, (textWidth + 15), 0, 0);
+    _btnLocation.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+    
+    [_lblNear setFont:[UIFont fontWithName:@"Lato-Regular" size:_lblNear.font.pointSize]];
     
     // Initializes stuff
     _spots = [NSMutableArray array];

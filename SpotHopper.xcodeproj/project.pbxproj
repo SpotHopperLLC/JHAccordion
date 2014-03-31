@@ -1736,6 +1736,15 @@
 		03F6BF8918C70A4500172F13 /* FindSimilarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF8718C70A4500172F13 /* FindSimilarViewController.m */; };
 		03F6BF8A18C70A4500172F13 /* FindSimilarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF8818C70A4500172F13 /* FindSimilarViewController.xib */; };
 		052EC70F678F4DF18DBE8EB5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
+		2602BD9618E2654900C93BBF /* table_footer_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9418E2654900C93BBF /* table_footer_background.png */; };
+		2602BD9718E2654900C93BBF /* table_footer_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9418E2654900C93BBF /* table_footer_background.png */; };
+		2602BD9818E2654900C93BBF /* table_footer_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9418E2654900C93BBF /* table_footer_background.png */; };
+		2602BD9918E2654900C93BBF /* table_footer_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9518E2654900C93BBF /* table_footer_background@2x.png */; };
+		2602BD9A18E2654900C93BBF /* table_footer_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9518E2654900C93BBF /* table_footer_background@2x.png */; };
+		2602BD9B18E2654900C93BBF /* table_footer_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9518E2654900C93BBF /* table_footer_background@2x.png */; };
+		2602BD9D18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
+		2602BD9E18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
+		2602BD9F18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		D7FCD5C8824B4FA4A7587334 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -2292,9 +2301,7 @@
 		03F4E75118CA2A5C0056EAA9 /* slider_thumb_selected_with_light_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_thumb_selected_with_light_large.png; sourceTree = "<group>"; };
 		03F4E75218CA2A5C0056EAA9 /* slider_thumb_selected_with_light_large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider_thumb_selected_with_light_large@2x.png"; sourceTree = "<group>"; };
 		03F4E8A718CA33D00056EAA9 /* SpotHopperStaging.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotHopperStaging.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		03F4E8A818CA33D10056EAA9 /* SpotHopperStaging-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SpotHopperStaging-Info.plist"; path = "/Users/josh/iOS/SpotHopper/SpotHopperStaging-Info.plist"; sourceTree = "<absolute>"; };
 		03F4E9F518CA34260056EAA9 /* SpotHopperDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotHopperDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		03F4E9F618CA34260056EAA9 /* SpotHopperDev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SpotHopperDev-Info.plist"; path = "/Users/josh/iOS/SpotHopper/SpotHopperDev-Info.plist"; sourceTree = "<absolute>"; };
 		03F6BF5A18C6D5BB00172F13 /* SpotListsMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotListsMenuViewController.h; sourceTree = "<group>"; };
 		03F6BF5B18C6D5BB00172F13 /* SpotListsMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotListsMenuViewController.m; sourceTree = "<group>"; };
 		03F6BF5E18C6DC8500172F13 /* icon_featured_lists.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_featured_lists.png; sourceTree = "<group>"; };
@@ -2320,6 +2327,11 @@
 		03F6BF8618C70A4500172F13 /* FindSimilarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindSimilarViewController.h; sourceTree = "<group>"; };
 		03F6BF8718C70A4500172F13 /* FindSimilarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindSimilarViewController.m; sourceTree = "<group>"; };
 		03F6BF8818C70A4500172F13 /* FindSimilarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindSimilarViewController.xib; sourceTree = "<group>"; };
+		2602BD9418E2654900C93BBF /* table_footer_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table_footer_background.png; sourceTree = "<group>"; };
+		2602BD9518E2654900C93BBF /* table_footer_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table_footer_background@2x.png"; sourceTree = "<group>"; };
+		2602BD9C18E283C500C93BBF /* Common.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Common.storyboard; sourceTree = "<group>"; };
+		2624DB2218E33CDC0080AD66 /* SpotHopperStaging-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "SpotHopperStaging-Info.plist"; sourceTree = "<group>"; };
+		2624DB2318E33CDC0080AD66 /* SpotHopperDev-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "SpotHopperDev-Info.plist"; sourceTree = "<group>"; };
 		B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C9816A19827543A8863B8CBF /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -2697,6 +2709,7 @@
 			isa = PBXGroup;
 			children = (
 				03866478186D352400985CEC /* Main.storyboard */,
+				2602BD9C18E283C500C93BBF /* Common.storyboard */,
 				0320236818774D64008368C2 /* Reviews.storyboard */,
 				03E4456C18B65E1500C88421 /* Spots.storyboard */,
 				039F541B18D28379004B2B67 /* Drinks.storyboard */,
@@ -2923,6 +2936,8 @@
 		038664F0186DE0F700985CEC /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				2602BD9418E2654900C93BBF /* table_footer_background.png */,
+				2602BD9518E2654900C93BBF /* table_footer_background@2x.png */,
 				039F54BF18D7FE93004B2B67 /* img_expand_south.png */,
 				039F54C018D7FE93004B2B67 /* img_expand_south@2x.png */,
 				039F54BB18D7FE59004B2B67 /* img_expand_north.png */,
@@ -3649,10 +3664,16 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = RokkinCat;
 				TargetAttributes = {
+					03866462186D352400985CEC = {
+						DevelopmentTeam = 54WBL6WQLV;
+					};
 					03866483186D352500985CEC = {
 						TestTargetID = 03866462186D352400985CEC;
 					};
 					03F4E75B18CA33D00056EAA9 = {
+						DevelopmentTeam = 54WBL6WQLV;
+					};
+					03F4E8A918CA34260056EAA9 = {
 						DevelopmentTeam = 54WBL6WQLV;
 					};
 				};
@@ -3694,6 +3715,7 @@
 				03866541186DE0F700985CEC /* btn_sidebar_icon_account@2x.png in Resources */,
 				03866545186DE0F700985CEC /* btn_sidebar_icon_drinks@2x.png in Resources */,
 				038664D9186D376900985CEC /* 37x-Checkmark.png in Resources */,
+				2602BD9918E2654900C93BBF /* table_footer_background@2x.png in Resources */,
 				03866535186DE0F700985CEC /* btn_home_spots@2x.png in Resources */,
 				03AF8F0918E5C29900DD9356 /* img_live_special_background.png in Resources */,
 				03F2D9261871DC1400C69576 /* Lato-Black.ttf in Resources */,
@@ -3818,6 +3840,8 @@
 				03265F2718C4E955002177F7 /* icon_arrow_no_shadow@2x.png in Resources */,
 				0386647F186D352400985CEC /* Images.xcassets in Resources */,
 				03866471186D352400985CEC /* InfoPlist.strings in Resources */,
+				03F2D9251871DC1400C69576 /* AvantGarEFMed in Resources */,
+				2602BD9618E2654900C93BBF /* table_footer_background.png in Resources */,
 				03CA72ED18803F7F00815284 /* 51-power@2x.png in Resources */,
 				039B70011887167200C590F8 /* icon_search_spot_similar.png in Resources */,
 				03CA72C3187C4FB300815284 /* slider_background_min.png in Resources */,
@@ -3967,6 +3991,7 @@
 				03121A3818BD786D00C9FFA3 /* 723-location-arrow-selected.png in Resources */,
 				039F547518D2DC91004B2B67 /* btn_drink_profile_description.png in Resources */,
 				039F544718D29B02004B2B67 /* FindSimilarDrinksViewController.xib in Resources */,
+				2602BD9D18E283C500C93BBF /* Common.storyboard in Resources */,
 				03CA72DF187F502800815284 /* txt_review_form_background.png in Resources */,
 				03CA72AA187C4D0E00815284 /* slider_background.png in Resources */,
 				0372FF6418E35816009188B5 /* beer_placeholder@2x.png in Resources */,
@@ -4315,6 +4340,7 @@
 				03AF8F2C18E5C8F000DD9356 /* btn_share_twitter@2x.png in Resources */,
 				03F4E7C818CA33D00056EAA9 /* btn_sidebar_icon_drinks@2x.png in Resources */,
 				03F4E7C918CA33D00056EAA9 /* 37x-Checkmark.png in Resources */,
+				2602BD9B18E2654900C93BBF /* table_footer_background@2x.png in Resources */,
 				03F4E7CA18CA33D00056EAA9 /* btn_home_spots@2x.png in Resources */,
 				03AF8F5718E5D19D00DD9356 /* btn_share_share_iphone4.png in Resources */,
 				03F4E7CB18CA33D00056EAA9 /* Lato-Black.ttf in Resources */,
@@ -4431,6 +4457,7 @@
 				03F4E81D18CA33D00056EAA9 /* Images.xcassets in Resources */,
 				03F4E81E18CA33D00056EAA9 /* InfoPlist.strings in Resources */,
 				03F4E82018CA33D00056EAA9 /* 51-power@2x.png in Resources */,
+				2602BD9818E2654900C93BBF /* table_footer_background.png in Resources */,
 				03F4E82118CA33D00056EAA9 /* icon_search_spot_similar.png in Resources */,
 				03F4E82218CA33D00056EAA9 /* slider_background_min.png in Resources */,
 				03F4E82318CA33D00056EAA9 /* icon_clock.png in Resources */,
@@ -4586,6 +4613,7 @@
 				03AF8F2418E5C8F000DD9356 /* btn_share_close@2x.png in Resources */,
 				03AF8F4818E5C8F500DD9356 /* img_live_special_white_arrow@2x.png in Resources */,
 				039F544918D29B0A004B2B67 /* FindSimilarDrinksViewController.xib in Resources */,
+				2602BD9F18E283C500C93BBF /* Common.storyboard in Resources */,
 				03AF8F4218E5C8F500DD9356 /* btn_live_special_share@2x.png in Resources */,
 				03F4E89618CA33D00056EAA9 /* txt_review_form_background.png in Resources */,
 				03AF8F2518E5C8F000DD9356 /* btn_share_facebook.png in Resources */,
@@ -4621,6 +4649,7 @@
 				03AF8F3C18E5C8F000DD9356 /* btn_share_twitter@2x.png in Resources */,
 				03F4E91618CA34260056EAA9 /* btn_sidebar_icon_drinks@2x.png in Resources */,
 				03F4E91718CA34260056EAA9 /* 37x-Checkmark.png in Resources */,
+				2602BD9A18E2654900C93BBF /* table_footer_background@2x.png in Resources */,
 				03F4E91818CA34260056EAA9 /* btn_home_spots@2x.png in Resources */,
 				03AF8F5618E5D19D00DD9356 /* btn_share_share_iphone4.png in Resources */,
 				03F4E91918CA34260056EAA9 /* Lato-Black.ttf in Resources */,
@@ -4737,6 +4766,7 @@
 				03F4E96B18CA34260056EAA9 /* Images.xcassets in Resources */,
 				03F4E96C18CA34260056EAA9 /* InfoPlist.strings in Resources */,
 				03F4E96E18CA34260056EAA9 /* 51-power@2x.png in Resources */,
+				2602BD9718E2654900C93BBF /* table_footer_background.png in Resources */,
 				03F4E96F18CA34260056EAA9 /* icon_search_spot_similar.png in Resources */,
 				03F4E97018CA34260056EAA9 /* slider_background_min.png in Resources */,
 				03F4E97118CA34260056EAA9 /* icon_clock.png in Resources */,
@@ -4892,6 +4922,7 @@
 				03AF8F3418E5C8F000DD9356 /* btn_share_close@2x.png in Resources */,
 				03AF8F5018E5C8F500DD9356 /* img_live_special_white_arrow@2x.png in Resources */,
 				039F544818D29B09004B2B67 /* FindSimilarDrinksViewController.xib in Resources */,
+				2602BD9E18E283C500C93BBF /* Common.storyboard in Resources */,
 				03AF8F4A18E5C8F500DD9356 /* btn_live_special_share@2x.png in Resources */,
 				03F4E9E418CA34260056EAA9 /* txt_review_form_background.png in Resources */,
 				03AF8F3518E5C8F000DD9356 /* btn_share_facebook.png in Resources */,
@@ -5720,8 +5751,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Holtz (M57ML2945L)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Holtz (M57ML2945L)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
@@ -5733,7 +5764,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperLocal-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "40EB5FAA-39B8-4A1D-BB8B-FC8D2B78C7EC";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -5744,8 +5775,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Holtz (M57ML2945L)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Holtz (M57ML2945L)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
@@ -5757,7 +5788,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperLocal-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "40EB5FAA-39B8-4A1D-BB8B-FC8D2B78C7EC";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -5867,10 +5898,10 @@
 					"COCOAPODS=1",
 					"STAGING=1",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/SpotHopperStaging-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperStaging-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = SpotHopperStaging;
-				PROVISIONING_PROFILE = "40EB5FAA-39B8-4A1D-BB8B-FC8D2B78C7EC";
+				PROVISIONING_PROFILE = "60BC8668-C7D2-416A-8690-509F5CAED9DA";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -5890,7 +5921,7 @@
 					"COCOAPODS=1",
 					"STAGING=1",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/SpotHopperStaging-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperStaging-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = SpotHopperStaging;
 				PROVISIONING_PROFILE = "60BC8668-C7D2-416A-8690-509F5CAED9DA";
@@ -5904,8 +5935,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Holtz (M57ML2945L)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Holtz (M57ML2945L)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5913,10 +5944,10 @@
 					"COCOAPODS=1",
 					"DEV=1",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/SpotHopperDev-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperDev-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = SpotHopperDev;
-				PROVISIONING_PROFILE = "40EB5FAA-39B8-4A1D-BB8B-FC8D2B78C7EC";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -5927,8 +5958,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Josh Holtz (M57ML2945L)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Josh Holtz (M57ML2945L)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5936,10 +5967,10 @@
 					"COCOAPODS=1",
 					"DEV=1",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/SpotHopperDev-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperDev-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = SpotHopperDev;
-				PROVISIONING_PROFILE = "40EB5FAA-39B8-4A1D-BB8B-FC8D2B78C7EC";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

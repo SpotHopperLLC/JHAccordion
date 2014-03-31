@@ -299,7 +299,6 @@
     [_viewSpot setHidden:(_drinkList.spot == nil)];
     
     [_btnSpot setTitle:[NSString stringWithFormat:@"%@ >", _drinkList.spot.name] forState:UIControlStateNormal];
-    
 }
 
 - (void)updateMatchPercent {

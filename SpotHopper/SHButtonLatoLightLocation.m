@@ -40,6 +40,7 @@
 - (void)setup {
     _tellMeMyLocation = [[TellMeMyLocation alloc] init];
     
+    [self setImage:[UIImage imageNamed:@"img_arrow_east.png"] forState:UIControlStateNormal];
     [self addTarget:self action:@selector(onClickSelf:) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -48,7 +49,11 @@
 }
 
 - (void)setTitle:(NSString *)title forState:(UIControlState)state {
-    [super setTitle:[NSString stringWithFormat:@"%@ >", title] forState:UIControlStateNormal];
+    [super setTitle:[NSString stringWithFormat:@"%@", title] forState:UIControlStateNormal];
+    
+    CGFloat textWidth = [self widthForString:title font:self.titleLabel.font maxWidth:CGFLOAT_MAX];
+    self.imageEdgeInsets = UIEdgeInsetsMake(0, (textWidth + 10), 0, 0);
+    self.titleEdgeInsets = UIEdgeInsetsMake(0, -7, 0, 0);
 }
 
 - (void)updateTitle:(NSString*)locationName location:(CLLocation*)location {
@@ -146,6 +151,22 @@
         }];
         
     }];
+}
+
+#pragma mark - Private
+
+- (CGFloat)widthForString:(NSString *)text font:(UIFont *)font maxWidth:(CGFloat)maxHeight {
+    if (![text isKindOfClass:[NSString class]] || !text.length) {
+        // no text means no height
+        return 0;
+    }
+    
+    NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
+    NSDictionary *attributes = @{ NSFontAttributeName : font };
+    CGSize size = [text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, maxHeight) options:options attributes:attributes context:nil].size;
+    CGFloat width = ceilf(size.width) + 1; // add 1 point as padding
+    
+    return width;
 }
 
 #pragma mark - Actions
