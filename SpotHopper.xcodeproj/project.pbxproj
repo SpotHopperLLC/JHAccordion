@@ -1043,6 +1043,7 @@
 		03D7F57518EADEF7007B9E78 /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03D7F56F18EADCF3007B9E78 /* SearchViewController.xib */; };
 		03D7F57618EADEF8007B9E78 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D7F56E18EADCF3007B9E78 /* SearchViewController.m */; };
 		03D7F57718EADEF8007B9E78 /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03D7F56F18EADCF3007B9E78 /* SearchViewController.xib */; };
+		03D7F57A18EAE7F9007B9E78 /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		03E4452518AEE64000C88421 /* AutoCompleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4452418AEE64000C88421 /* AutoCompleteCell.m */; };
 		03E4452718AEE65000C88421 /* AutoCompleteCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E4452618AEE65000C88421 /* AutoCompleteCellView.xib */; };
 		03E4453E18B55B9E00C88421 /* SHButtonLatoLightLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4453D18B55B9E00C88421 /* SHButtonLatoLightLocation.m */; };
@@ -4262,6 +4263,7 @@
 				03CAC0C618E7716400FAC5F5 /* img_checkin_iphone4.png in Resources */,
 				03CAC0C718E7716400FAC5F5 /* Lato-LightItalic.ttf in Resources */,
 				03CAC0C818E7716400FAC5F5 /* btn_context_home.png in Resources */,
+				03D7F57A18EAE7F9007B9E78 /* Common.storyboard in Resources */,
 				03CAC0C918E7716400FAC5F5 /* btn_sidebar_icon_checkin.png in Resources */,
 				03CAC0CA18E7716400FAC5F5 /* btn_home_drinks.png in Resources */,
 				03CAC1AE18E9FD7400FAC5F5 /* txt_account_small.png in Resources */,

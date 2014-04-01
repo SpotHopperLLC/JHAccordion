@@ -17,7 +17,7 @@
     #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
 
 //    #define kBaseUrl @"http://192.168.1.123:9292"
-    #define kBaseUrl @"http://192.168.1.8:9292"
+    #define kBaseUrl @"http://192.168.1.2:9292"
 //    #define kBaseUrl @"http://192.168.1.110:9292"
 
     #define kRefreshLocationTime 60.0f
