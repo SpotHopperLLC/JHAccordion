@@ -44,6 +44,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblLocation;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
+@property (weak, nonatomic) IBOutlet UIView *viewEmpty;
+
 @property (nonatomic, strong) CLLocation *selectedLocation;
 @property (nonatomic, strong) CLLocation *currentLocation;
 @property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
@@ -322,6 +324,8 @@
 #pragma mark - Private
 
 - (void)updateView {
+    
+    [_viewEmpty setHidden:( _spotList.spots.count != 0 )];
     
     // Zoom map
     if (_spotList.latitude != nil && _spotList.longitude != nil) {

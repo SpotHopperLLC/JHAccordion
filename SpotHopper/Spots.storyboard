@@ -272,6 +272,28 @@ $2 Non-Wisco Taps</string>
                                     <outlet property="delegate" destination="46L-BE-h0z" id="j1o-5G-QcS"/>
                                 </connections>
                             </collectionView>
+                            <view hidden="YES" contentMode="scaleToFill" id="gLe-oG-6JI">
+                                <rect key="frame" x="20" y="139" width="280" height="236"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oops" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lVj-qY-EOZ" customClass="SHLabelLatoRegular">
+                                        <rect key="frame" x="33" y="20" width="213" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xfB-ug-f5U" customClass="SHLabelLatoLight">
+                                        <rect key="frame" x="9" y="69" width="263" height="109"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <string key="text">Looks like there aren't any results matching your search. Try again? Or better yet help us build our database by reviewing Spots and Drinks that you love!</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -283,6 +305,7 @@ $2 Non-Wisco Taps</string>
                         <outlet property="lblLocation" destination="0tZ-et-55A" id="xPk-Ez-kW8"/>
                         <outlet property="lblMatchPercent" destination="tgC-mz-s8X" id="Akz-kP-TGj"/>
                         <outlet property="mapView" destination="7cl-eT-mk0" id="7cW-Hb-KeG"/>
+                        <outlet property="viewEmpty" destination="gLe-oG-6JI" id="qgn-Li-nI9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zqT-1u-IGE" userLabel="First Responder" sceneMemberID="firstResponder"/>
