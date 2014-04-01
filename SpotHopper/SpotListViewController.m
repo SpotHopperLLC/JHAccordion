@@ -141,6 +141,7 @@
         [self updateFooterMapListButton:footerViewController];
         return YES;
     } else if (FooterViewButtonRight == footerViewButtonType) {
+        [self showAlert:@"Info" message:kInfoSpotList];
         return YES;
     }
     

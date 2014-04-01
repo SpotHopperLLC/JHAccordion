@@ -84,6 +84,14 @@
     
 }
 
+- (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
+    if (FooterViewButtonRight == footerViewButtonType) {
+        [self showAlert:@"Info" message:kInfoDrinkAt];
+    }
+    
+    return YES;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

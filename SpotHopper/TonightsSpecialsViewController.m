@@ -172,6 +172,16 @@
     [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
 }
 
+#pragma mark - Footer
+
+- (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
+    if (FooterViewButtonRight == footerViewButtonType) {
+        [self showAlert:@"Info" message:kInfoTonightsSpecials];
+    }
+    
+    return YES;
+}
+
 #pragma mark - Private
 
 - (void)fetchSpecials {

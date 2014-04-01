@@ -131,7 +131,7 @@
         [self deleteDrinkList];
         return YES;
     } else if (FooterViewButtonRight == footerViewButtonType) {
-        return YES;
+        [self showAlert:@"Info" message:kInfoDrinklist];
     }
     
     return NO;
