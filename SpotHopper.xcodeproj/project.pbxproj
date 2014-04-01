@@ -1035,6 +1035,14 @@
 		03D7F56A18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CAC19C18E9FAC300FAC5F5 /* AccountSettingsViewController.m */; };
 		03D7F56B18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CAC19C18E9FAC300FAC5F5 /* AccountSettingsViewController.m */; };
 		03D7F56C18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CAC19C18E9FAC300FAC5F5 /* AccountSettingsViewController.m */; };
+		03D7F57018EADCF3007B9E78 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D7F56E18EADCF3007B9E78 /* SearchViewController.m */; };
+		03D7F57118EADCF3007B9E78 /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03D7F56F18EADCF3007B9E78 /* SearchViewController.xib */; };
+		03D7F57218EADEF7007B9E78 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D7F56E18EADCF3007B9E78 /* SearchViewController.m */; };
+		03D7F57318EADEF7007B9E78 /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03D7F56F18EADCF3007B9E78 /* SearchViewController.xib */; };
+		03D7F57418EADEF7007B9E78 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D7F56E18EADCF3007B9E78 /* SearchViewController.m */; };
+		03D7F57518EADEF7007B9E78 /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03D7F56F18EADCF3007B9E78 /* SearchViewController.xib */; };
+		03D7F57618EADEF8007B9E78 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D7F56E18EADCF3007B9E78 /* SearchViewController.m */; };
+		03D7F57718EADEF8007B9E78 /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03D7F56F18EADCF3007B9E78 /* SearchViewController.xib */; };
 		03E4452518AEE64000C88421 /* AutoCompleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4452418AEE64000C88421 /* AutoCompleteCell.m */; };
 		03E4452718AEE65000C88421 /* AutoCompleteCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E4452618AEE65000C88421 /* AutoCompleteCellView.xib */; };
 		03E4453E18B55B9E00C88421 /* SHButtonLatoLightLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4453D18B55B9E00C88421 /* SHButtonLatoLightLocation.m */; };
@@ -2241,6 +2249,9 @@
 		03CAC1A018E9FD7400FAC5F5 /* txt_account_large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "txt_account_large@2x.png"; sourceTree = "<group>"; };
 		03CAC1A118E9FD7400FAC5F5 /* txt_account_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = txt_account_small.png; sourceTree = "<group>"; };
 		03CAC1A218E9FD7400FAC5F5 /* txt_account_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "txt_account_small@2x.png"; sourceTree = "<group>"; };
+		03D7F56D18EADCF3007B9E78 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		03D7F56E18EADCF3007B9E78 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
+		03D7F56F18EADCF3007B9E78 /* SearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchViewController.xib; sourceTree = "<group>"; };
 		03E4452318AEE64000C88421 /* AutoCompleteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoCompleteCell.h; sourceTree = "<group>"; };
 		03E4452418AEE64000C88421 /* AutoCompleteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteCell.m; sourceTree = "<group>"; };
 		03E4452618AEE65000C88421 /* AutoCompleteCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AutoCompleteCellView.xib; sourceTree = "<group>"; };
@@ -3457,6 +3468,9 @@
 				03AF8E9F18E515B900DD9356 /* LiveSpecialViewController.h */,
 				03AF8EA018E515B900DD9356 /* LiveSpecialViewController.m */,
 				03AF8EA118E515B900DD9356 /* LiveSpecialViewController.xib */,
+				03D7F56D18EADCF3007B9E78 /* SearchViewController.h */,
+				03D7F56E18EADCF3007B9E78 /* SearchViewController.m */,
+				03D7F56F18EADCF3007B9E78 /* SearchViewController.xib */,
 			);
 			name = Commons;
 			sourceTree = "<group>";
@@ -3840,6 +3854,7 @@
 				03AF8F0F18E5C29900DD9356 /* btn_share_facebook.png in Resources */,
 				03E4454718B56BF700C88421 /* LocationChooserViewController.xib in Resources */,
 				03121A3218BCF31200C9FFA3 /* orange_gradient_background@2x.png in Resources */,
+				03D7F57118EADCF3007B9E78 /* SearchViewController.xib in Resources */,
 				03AF8F5518E5D19D00DD9356 /* btn_share_share_iphone4.png in Resources */,
 				03AF8F0C18E5C29900DD9356 /* img_live_special_white_arrow@2x.png in Resources */,
 				03F2D92C1871DC1400C69576 /* Lato-Italic.ttf in Resources */,
@@ -4273,6 +4288,7 @@
 				03CAC0DE18E7716400FAC5F5 /* icon_cocktails.png in Resources */,
 				03CAC0DF18E7716400FAC5F5 /* img_spot_pin_view.png in Resources */,
 				03CAC0E018E7716400FAC5F5 /* slider_background_max.png in Resources */,
+				03D7F57718EADEF8007B9E78 /* SearchViewController.xib in Resources */,
 				03CAC0E118E7716400FAC5F5 /* Menu.storyboard in Resources */,
 				03CAC0E218E7716400FAC5F5 /* btn_share_twitter.png in Resources */,
 				03CAC0E318E7716400FAC5F5 /* NewReviewCocktailView.xib in Resources */,
@@ -4473,6 +4489,7 @@
 				03F4E7E918CA33D00056EAA9 /* orange_gradient_background@2x.png in Resources */,
 				03F4E7EA18CA33D00056EAA9 /* Lato-Italic.ttf in Resources */,
 				03F4E7EB18CA33D00056EAA9 /* icon_phone.png in Resources */,
+				03D7F57518EADEF7007B9E78 /* SearchViewController.xib in Resources */,
 				03F4E7EC18CA33D00056EAA9 /* btn_context_home@2x.png in Resources */,
 				03F4E7ED18CA33D00056EAA9 /* btn_sidebar_icon_drinks.png in Resources */,
 				03F4E7EE18CA33D00056EAA9 /* btn_spot_profile_find_similar@2x.png in Resources */,
@@ -4787,6 +4804,7 @@
 				03F4E93718CA34260056EAA9 /* orange_gradient_background@2x.png in Resources */,
 				03F4E93818CA34260056EAA9 /* Lato-Italic.ttf in Resources */,
 				03F4E93918CA34260056EAA9 /* icon_phone.png in Resources */,
+				03D7F57318EADEF7007B9E78 /* SearchViewController.xib in Resources */,
 				03F4E93A18CA34260056EAA9 /* btn_context_home@2x.png in Resources */,
 				03F4E93B18CA34260056EAA9 /* btn_sidebar_icon_drinks.png in Resources */,
 				03F4E93C18CA34260056EAA9 /* btn_spot_profile_find_similar@2x.png in Resources */,
@@ -5310,6 +5328,7 @@
 				03E882D918C78D8B00BD8FBB /* AdjustSpotListSliderViewController.m in Sources */,
 				03E882DF18C797BA00BD8FBB /* UIView+AddBorder.m in Sources */,
 				039F548A18D33BA9004B2B67 /* DrinkMenuViewController.m in Sources */,
+				03D7F57018EADCF3007B9E78 /* SearchViewController.m in Sources */,
 				03F2D93E187208C200C69576 /* SHLabelLatoLight.m in Sources */,
 				0381044A18B6889300A410DB /* SpotAnnotation.m in Sources */,
 				03121A3C18BE361A00C9FFA3 /* NewReviewTypeViewController.m in Sources */,
@@ -5453,6 +5472,7 @@
 				03CAC01A18E7716400FAC5F5 /* AdjustSpotListSliderViewController.m in Sources */,
 				03CAC01B18E7716400FAC5F5 /* UIView+AddBorder.m in Sources */,
 				03CAC01C18E7716400FAC5F5 /* DrinkMenuViewController.m in Sources */,
+				03D7F57618EADEF8007B9E78 /* SearchViewController.m in Sources */,
 				03CAC01D18E7716400FAC5F5 /* SHLabelLatoLight.m in Sources */,
 				03CAC01E18E7716400FAC5F5 /* SpotAnnotation.m in Sources */,
 				03CAC01F18E7716400FAC5F5 /* NewReviewTypeViewController.m in Sources */,
@@ -5588,6 +5608,7 @@
 				03F4E7AE18CA33D00056EAA9 /* AdjustSpotListSliderViewController.m in Sources */,
 				03F4E7AF18CA33D00056EAA9 /* UIView+AddBorder.m in Sources */,
 				039F548C18D33BA9004B2B67 /* DrinkMenuViewController.m in Sources */,
+				03D7F57418EADEF7007B9E78 /* SearchViewController.m in Sources */,
 				03F4E7B018CA33D00056EAA9 /* SHLabelLatoLight.m in Sources */,
 				03F4E7B118CA33D00056EAA9 /* SpotAnnotation.m in Sources */,
 				03F4E7B218CA33D00056EAA9 /* NewReviewTypeViewController.m in Sources */,
@@ -5723,6 +5744,7 @@
 				03F4E8FC18CA34260056EAA9 /* AdjustSpotListSliderViewController.m in Sources */,
 				03F4E8FD18CA34260056EAA9 /* UIView+AddBorder.m in Sources */,
 				039F548B18D33BA9004B2B67 /* DrinkMenuViewController.m in Sources */,
+				03D7F57218EADEF7007B9E78 /* SearchViewController.m in Sources */,
 				03F4E8FE18CA34260056EAA9 /* SHLabelLatoLight.m in Sources */,
 				03F4E8FF18CA34260056EAA9 /* SpotAnnotation.m in Sources */,
 				03F4E90018CA34260056EAA9 /* NewReviewTypeViewController.m in Sources */,

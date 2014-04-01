@@ -20,6 +20,10 @@
 
 @protocol SidebarViewControllerDelegate <NSObject>
 
+- (void)sidebarViewControllerClickedSearch:(SidebarViewController*)sidebarViewController;
+- (void)sidebarViewControllerClickedSpots:(SidebarViewController*)sidebarViewController;
+- (void)sidebarViewControllerClickedDrinks:(SidebarViewController*)sidebarViewController;
+- (void)sidebarViewControllerClickedSpecials:(SidebarViewController*)sidebarViewController;
 - (void)sidebarViewControllerClickedReview:(SidebarViewController*)sidebarViewController;
 - (void)sidebarViewControllerClickedCheckin:(SidebarViewController*)sidebarViewController;
 - (void)sidebarViewControllerClickedAccount:(SidebarViewController*)sidebarViewController;

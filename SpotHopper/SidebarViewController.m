@@ -87,7 +87,11 @@
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    NSLog(@"HERE");
+    [self.sidebarViewController showRightSidebar:NO];
+    if ([_delegate respondsToSelector:@selector(sidebarViewControllerClickedSearch:)]) {
+        [_delegate sidebarViewControllerClickedSearch:self];
+    }
+    
     return NO;
 }
 
@@ -109,15 +113,24 @@
 }
 
 - (IBAction)onClickSpots:(id)sender {
-    
+    [self.sidebarViewController showRightSidebar:NO];
+    if ([_delegate respondsToSelector:@selector(sidebarViewControllerClickedSpots:)]) {
+        [_delegate sidebarViewControllerClickedSpots:self];
+    }
 }
 
 - (IBAction)onClickDrinks:(id)sender {
-    
+    [self.sidebarViewController showRightSidebar:NO];
+    if ([_delegate respondsToSelector:@selector(sidebarViewControllerClickedDrinks:)]) {
+        [_delegate sidebarViewControllerClickedDrinks:self];
+    }
 }
 
 - (IBAction)onClickSpecials:(id)sender {
-    
+    [self.sidebarViewController showRightSidebar:NO];
+    if ([_delegate respondsToSelector:@selector(sidebarViewControllerClickedSpecials:)]) {
+        [_delegate sidebarViewControllerClickedSpecials:self];
+    }
 }
 
 - (IBAction)onClickReviews:(id)sender {

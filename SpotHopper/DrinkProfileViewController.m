@@ -143,6 +143,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
     
     // Adds contextual footer view
     [self addFooterViewController:^(FooterViewController *footerViewController) {
