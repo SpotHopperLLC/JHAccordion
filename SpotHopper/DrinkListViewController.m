@@ -44,6 +44,8 @@
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
 @property (weak, nonatomic) IBOutlet UILabel *lblLocation;
 
+@property (weak, nonatomic) IBOutlet UIView *viewEmpty;
+
 @property (nonatomic, strong) CLLocation *selectedLocation;
 @property (nonatomic, strong) CLLocation *currentLocation;
 @property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
@@ -293,6 +295,8 @@
 #pragma mark - Private
 
 - (void)updateView {
+    
+    [_viewEmpty setHidden:( _drinkList.drinks.count != 0 )];
     
     [_viewPlaceholder setHidden:YES];
     [_viewLocation setHidden:(_drinkList.spot != nil)];
