@@ -95,12 +95,14 @@
 #pragma mark - Actions
 
 - (IBAction)onTapGesture:(id)sender {
+#ifndef PRODUCTION
     if (self.view.alpha == 1.0f) {
         self.view.alpha = 0.1f;
     }
     else {
         self.view.alpha = 1.0f;
     }
+#endif
 }
 
 - (IBAction)onClickHome:(id)sender {
