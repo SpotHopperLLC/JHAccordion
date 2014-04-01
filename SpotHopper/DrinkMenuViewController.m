@@ -39,6 +39,8 @@
 @property (nonatomic, strong) SectionHeaderView *sectionHeaderLiquor;
 @property (nonatomic, strong) SectionHeaderView *sectionHeaderWine;
 
+@property (nonatomic, strong) UIStoryboard *commonStoryboard;
+
 @end
 
 @implementation DrinkMenuViewController
@@ -248,13 +250,26 @@
     
 }
 
+- (SectionHeaderView *)instantiateSectionHeaderView {
+    // load the VC and get the view (to allow for easily laying out the custom section header)
+    if (!_commonStoryboard) {
+        _commonStoryboard = [UIStoryboard storyboardWithName:@"Common" bundle:nil];
+    }
+    UIViewController *vc = [_commonStoryboard instantiateViewControllerWithIdentifier:@"SectionHeaderScene"];
+    SectionHeaderView *sectionHeaderView = (SectionHeaderView *)[vc.view viewWithTag:100];
+    [sectionHeaderView removeFromSuperview];
+    [sectionHeaderView prepareView];
+    
+    return sectionHeaderView;
+}
+
 - (SectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
     
     DrinkTypeModel *drinkType = [_drinkTypes objectAtIndex:section];
     
     if ([drinkType.name isEqualToString:kDrinkTypeNameBeer] == YES) {
         if (_sectionHeaderBeer == nil) {
-            _sectionHeaderBeer = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
+            _sectionHeaderBeer = [self instantiateSectionHeaderView];
             [_sectionHeaderBeer setIconImage:[UIImage imageNamed:@"icon_beer"]];
             
             [_sectionHeaderBeer.lblText setText:drinkType.name];
@@ -268,7 +283,7 @@
         return _sectionHeaderBeer;
     } else if ([drinkType.name isEqualToString:kDrinkTypeNameCocktail] == YES) {
         if (_sectionHeaderCocktails == nil) {
-            _sectionHeaderCocktails = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
+            _sectionHeaderCocktails = [self instantiateSectionHeaderView];
             [_sectionHeaderCocktails setIconImage:[UIImage imageNamed:@"icon_cocktails"]];
             
             [_sectionHeaderCocktails.lblText setText:drinkType.name];
@@ -282,7 +297,7 @@
         return _sectionHeaderCocktails;
     } else if ([drinkType.name isEqualToString:kDrinkTypeNameLiquor] == YES) {
         if (_sectionHeaderLiquor == nil) {
-            _sectionHeaderLiquor = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
+            _sectionHeaderLiquor = [self instantiateSectionHeaderView];
             [_sectionHeaderLiquor setIconImage:[UIImage imageNamed:@"icon_liquor"]];
             
             [_sectionHeaderLiquor.lblText setText:drinkType.name];
@@ -296,7 +311,7 @@
         return _sectionHeaderLiquor;
     } else if ([drinkType.name isEqualToString:kDrinkTypeNameWine] == YES) {
         if (_sectionHeaderWine == nil) {
-            _sectionHeaderWine = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
+            _sectionHeaderWine = [self instantiateSectionHeaderView];
             [_sectionHeaderWine setIconImage:[UIImage imageNamed:@"icon_wine"]];
             
             [_sectionHeaderWine.lblText setText:drinkType.name];

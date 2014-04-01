@@ -47,6 +47,8 @@
 @property (nonatomic, strong) NSNumber *spotPage;
 @property (nonatomic, strong) CLLocation *location;
 
+@property (nonatomic, strong) UIStoryboard *commonStoryboard;
+
 @end
 
 @implementation ReviewsMenuViewController
@@ -392,12 +394,25 @@
     }];
 }
 
+- (SectionHeaderView *)instantiateSectionHeaderView {
+    // load the VC and get the view (to allow for easily laying out the custom section header)
+    if (!_commonStoryboard) {
+        _commonStoryboard = [UIStoryboard storyboardWithName:@"Common" bundle:nil];
+    }
+    UIViewController *vc = [_commonStoryboard instantiateViewControllerWithIdentifier:@"SectionHeaderScene"];
+    SectionHeaderView *sectionHeaderView = (SectionHeaderView *)[vc.view viewWithTag:100];
+    [sectionHeaderView removeFromSuperview];
+    [sectionHeaderView prepareView];
+    
+    return sectionHeaderView;
+}
+
 - (SectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
     __block ReviewsMenuViewController *this = self;
     
     if (section == 0) {
         if (_sectionHeader0 == nil) {
-            _sectionHeader0 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
+            _sectionHeader0 = [self instantiateSectionHeaderView];
             [_sectionHeader0 setIconImage:[UIImage imageNamed:@"icon_view_my_reviews"]];
             [_sectionHeader0 setText:@"View My Reviews"];
             [_sectionHeader0.imgArrow setImage:[UIImage imageNamed:@"img_expand_east"]];
@@ -413,7 +428,7 @@
         return _sectionHeader0;
     } else if (section == 1) {
         if (_sectionHeader1 == nil) {
-            _sectionHeader1 = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
+            _sectionHeader1 = [self instantiateSectionHeaderView];
             [_sectionHeader1 setIconImage:[UIImage imageNamed:@"icon_plus"]];
             [_sectionHeader1 setText:@"Add New Review"];
             [_sectionHeader1.imgArrow setImage:[UIImage imageNamed:@"img_expand_east"]];

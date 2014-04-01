@@ -22,6 +22,8 @@
 
 @property (nonatomic, strong) SectionHeaderView *sectionHeaderReviewType;
 
+@property (nonatomic, strong) UIStoryboard *commonStoryboard;
+
 @end
 
 @implementation NewReviewTypeViewController
@@ -111,7 +113,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (tableView == _tblReviewTypes) {
         if (section == 0) {
-            return 56.0f;
+            return 65.0f;
         }
     }
     
@@ -124,10 +126,23 @@
 
 #pragma mark - Private
 
+- (SectionHeaderView *)instantiateSectionHeaderView {
+    // load the VC and get the view (to allow for easily laying out the custom section header)
+    if (!_commonStoryboard) {
+        _commonStoryboard = [UIStoryboard storyboardWithName:@"Common" bundle:nil];
+    }
+    UIViewController *vc = [_commonStoryboard instantiateViewControllerWithIdentifier:@"SectionHeaderScene"];
+    SectionHeaderView *sectionHeaderView = (SectionHeaderView *)[vc.view viewWithTag:100];
+    [sectionHeaderView removeFromSuperview];
+    [sectionHeaderView prepareView];
+    
+    return sectionHeaderView;
+}
+
 - (SectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
     if (section == 0) {
         if (_sectionHeaderReviewType == nil) {
-            _sectionHeaderReviewType = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblReviewTypes.frame), 56.0f)];
+            _sectionHeaderReviewType = [self instantiateSectionHeaderView];
             [_sectionHeaderReviewType setBackgroundColor:[UIColor whiteColor]];
             [_sectionHeaderReviewType setText:@"Select Review Type"];
         }

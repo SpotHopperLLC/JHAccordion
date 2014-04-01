@@ -44,6 +44,8 @@
 @property (nonatomic, assign) CGRect tblReviewsInitialFrame;
 @property (nonatomic, assign) BOOL keyboardShowing;
 
+@property (nonatomic, strong) UIStoryboard *commonStoryboard;
+
 @end
 
 @implementation MyReviewsViewController
@@ -233,7 +235,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (section == 0 || section == 1) {
         if (_keyboardShowing == NO) {
-            return 56.0f;
+            return 65.0f;
         }
     }
     
@@ -354,10 +356,23 @@
     }
 }
 
+- (SectionHeaderView *)instantiateSectionHeaderView {
+    // load the VC and get the view (to allow for easily laying out the custom section header)
+    if (!_commonStoryboard) {
+        _commonStoryboard = [UIStoryboard storyboardWithName:@"Common" bundle:nil];
+    }
+    UIViewController *vc = [_commonStoryboard instantiateViewControllerWithIdentifier:@"SectionHeaderScene"];
+    SectionHeaderView *sectionHeaderView = (SectionHeaderView *)[vc.view viewWithTag:100];
+    [sectionHeaderView removeFromSuperview];
+    [sectionHeaderView prepareView];
+    
+    return sectionHeaderView;
+}
+
 - (SectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
     if (section == 0) {
         if (_sectionHeaderFilter == nil) {
-            _sectionHeaderFilter = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblReviews.frame), 56.0f)];
+            _sectionHeaderFilter = [self instantiateSectionHeaderView];
             
             // Sets up for accordion
             [_sectionHeaderFilter.btnBackground setTag:section];
@@ -369,7 +384,7 @@
         return _sectionHeaderFilter;
     } else if (section == 1) {
         if (_sectionHeaderSort == nil) {
-            _sectionHeaderSort = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblReviews.frame), 56.0f)];
+            _sectionHeaderSort = [self instantiateSectionHeaderView];
 
             // Sets up for accordion
             [_sectionHeaderSort.btnBackground setTag:section];

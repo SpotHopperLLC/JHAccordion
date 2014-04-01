@@ -46,6 +46,8 @@
 @property (nonatomic, strong) NSMutableArray *sliders;
 @property (nonatomic, strong) NSMutableArray *advancedSliders;
 
+@property (nonatomic, strong) UIStoryboard *commonStoryboard;
+
 @end
 
 @implementation ReviewViewController
@@ -185,7 +187,7 @@
         return view;
     } else if (section == 2) {
         if (_sectionHeaderAdvanced == nil) {
-            _sectionHeaderAdvanced = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblReviews.frame), 56.0f)];
+            _sectionHeaderAdvanced = [self instantiateSectionHeaderView];
             [_sectionHeaderAdvanced setBackgroundColor:[UIColor clearColor]];
             [_sectionHeaderAdvanced setText:@"Advanced"];
             [_sectionHeaderAdvanced setSelected:[_accordion isSectionOpened:section]];
@@ -205,7 +207,7 @@
         return 40.0f;
     } else if (section == 2) {
         if (_advancedSliders.count > 0) {
-            return 56.0f;
+            return 65.0f;
         }
     }
     return 0.0f;
@@ -355,6 +357,19 @@
 }
 
 #pragma mark - Private
+
+- (SectionHeaderView *)instantiateSectionHeaderView {
+    // load the VC and get the view (to allow for easily laying out the custom section header)
+    if (!_commonStoryboard) {
+        _commonStoryboard = [UIStoryboard storyboardWithName:@"Common" bundle:nil];
+    }
+    UIViewController *vc = [_commonStoryboard instantiateViewControllerWithIdentifier:@"SectionHeaderScene"];
+    SectionHeaderView *sectionHeaderView = (SectionHeaderView *)[vc.view viewWithTag:100];
+    [sectionHeaderView removeFromSuperview];
+    [sectionHeaderView prepareView];
+    
+    return sectionHeaderView;
+}
 
 - (void)initSliders {
     // Initilizes states
