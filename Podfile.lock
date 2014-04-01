@@ -34,7 +34,7 @@ DEPENDENCIES:
   - FXBlurView (~> 1.5.3)
   - JHAccordion (from `https://github.com/joshdholtz/JHAccordion.git`)
   - JHAutoCompleteTextField (from `http://github.com/joshdholtz/JHAutoCompleteTextField.git`)
-  - JHSidebar (~> 0.1.1)
+  - JHSidebar (from `https://github.com/joshdholtz/JHSidebar.git`)
   - JSONAPI (from `http://github.com/joshdholtz/jsonapi-ios.git`)
   - Promises (from `http://github.com/joshdholtz/ios-promises.git`)
   - Raven (~> 0.3.0)
@@ -46,6 +46,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/joshdholtz/JHAccordion.git
   JHAutoCompleteTextField:
     :git: http://github.com/joshdholtz/JHAutoCompleteTextField.git
+  JHSidebar:
+    :git: https://github.com/joshdholtz/JHSidebar.git
   JSONAPI:
     :git: http://github.com/joshdholtz/jsonapi-ios.git
   Promises:
