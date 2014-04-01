@@ -159,7 +159,7 @@
 }
 
 - (IBAction)onClickNotHere:(id)sender {
-    [self goToFindSimilarSpots:self];
+    [self goToCheckin];
 }
 
 #pragma mark - Private
