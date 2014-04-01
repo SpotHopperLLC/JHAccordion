@@ -135,7 +135,10 @@
 }
 
 - (IBAction)onClickAccountSettings:(id)sender {
-    
+    [self.sidebarViewController showRightSidebar:NO];
+    if ([_delegate respondsToSelector:@selector(sidebarViewControllerClickedAccount:)]) {
+        [_delegate sidebarViewControllerClickedAccount:self];
+    }
 }
 
 @end

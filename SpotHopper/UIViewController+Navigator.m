@@ -311,4 +311,13 @@
     return self.storyboard;
 }
 
+- (UIStoryboard*)userStoryboard {
+    NSString *name = [self.storyboard valueForKey:@"name"];
+    if ([name isEqualToString:@"User"] == NO) {
+        return [UIStoryboard storyboardWithName:@"User" bundle:[NSBundle mainBundle]];
+    }
+    
+    return self.storyboard;
+}
+
 @end

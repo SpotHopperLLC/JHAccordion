@@ -80,5 +80,6 @@
 - (UIStoryboard*)menuStoryboard;
 - (UIStoryboard*)checkinStoryboard;
 - (UIStoryboard*)shareStoryboard;
+- (UIStoryboard*)userStoryboard;
 
 @end
