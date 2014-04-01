@@ -45,8 +45,6 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     [super viewDidLoad:@[kDidLoadOptionsDontAdjustForIOS6, kDidLoadOptionsNoBackground]];
 	
-    
-    
     // Increasing left inset of button titles
     UIEdgeInsets insets = UIEdgeInsetsMake(0, 15.0f, 0, 0);
     [_btnSpots setTitleEdgeInsets:insets];
@@ -137,7 +135,10 @@
 }
 
 - (IBAction)onClickAccountSettings:(id)sender {
-    
+    [self.sidebarViewController showRightSidebar:NO];
+    if ([_delegate respondsToSelector:@selector(sidebarViewControllerClickedAccount:)]) {
+        [_delegate sidebarViewControllerClickedAccount:self];
+    }
 }
 
 @end

@@ -151,11 +151,11 @@ $2 Non-Wisco Taps</string>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_carousel_background.png" id="E5E-AG-soI">
-                                <rect key="frame" x="0.0" y="94" width="320" height="326"/>
+                                <rect key="frame" x="0.0" y="94" width="320" height="386"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                             <mapView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="7cl-eT-mk0">
-                                <rect key="frame" x="0.0" y="106" width="325" height="314"/>
+                                <rect key="frame" x="0.0" y="94" width="320" height="386"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="46L-BE-h0z" id="vBD-TZ-0Q4"/>

@@ -24,6 +24,7 @@
 @interface UIViewController (Navigator)
 
 // Main
+- (void)goToTutorial:(BOOL)animated;
 - (void)goToLaunch:(BOOL)animated;
 
 // Drinks
@@ -79,5 +80,6 @@
 - (UIStoryboard*)menuStoryboard;
 - (UIStoryboard*)checkinStoryboard;
 - (UIStoryboard*)shareStoryboard;
+- (UIStoryboard*)userStoryboard;
 
 @end

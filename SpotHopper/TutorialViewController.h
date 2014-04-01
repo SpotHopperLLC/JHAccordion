@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
-@interface TutorialViewController : UIViewController
+@interface TutorialViewController : BaseViewController
 
 @end

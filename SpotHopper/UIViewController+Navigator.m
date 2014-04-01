@@ -9,6 +9,7 @@
 #import "UIViewController+Navigator.h"
 
 #import "FindSimilarViewController.h"
+#import "TutorialViewController.h"
 #import "LaunchViewController.h"
 
 #import "DrinksNearbyViewController.h"
@@ -38,6 +39,11 @@
 @implementation UIViewController (Navigator)
 
 #pragma mark - Main
+
+- (void)goToTutorial:(BOOL)animated {
+    TutorialViewController *viewController = [[self mainStoryboard] instantiateViewControllerWithIdentifier:@"TutorialViewController"];
+    [self presentViewController:viewController animated:animated completion:nil];
+}
 
 - (void)goToLaunch:(BOOL)animated {
     LaunchViewController *viewController = [[self mainStoryboard] instantiateViewControllerWithIdentifier:@"LaunchViewController"];
@@ -300,6 +306,15 @@
     NSString *name = [self.storyboard valueForKey:@"name"];
     if ([name isEqualToString:@"Share"] == NO) {
         return [UIStoryboard storyboardWithName:@"Share" bundle:[NSBundle mainBundle]];
+    }
+    
+    return self.storyboard;
+}
+
+- (UIStoryboard*)userStoryboard {
+    NSString *name = [self.storyboard valueForKey:@"name"];
+    if ([name isEqualToString:@"User"] == NO) {
+        return [UIStoryboard storyboardWithName:@"User" bundle:[NSBundle mainBundle]];
     }
     
     return self.storyboard;

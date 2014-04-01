@@ -1011,6 +1011,30 @@
 		03CAC19218E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19018E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf */; };
 		03CAC19318E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19018E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf */; };
 		03CAC19418E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19018E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf */; };
+		03CAC19618E9F5FD00FAC5F5 /* User.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19518E9F5FD00FAC5F5 /* User.storyboard */; };
+		03CAC19718E9F5FD00FAC5F5 /* User.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19518E9F5FD00FAC5F5 /* User.storyboard */; };
+		03CAC19818E9F5FD00FAC5F5 /* User.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19518E9F5FD00FAC5F5 /* User.storyboard */; };
+		03CAC19918E9F5FD00FAC5F5 /* User.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19518E9F5FD00FAC5F5 /* User.storyboard */; };
+		03CAC19D18E9FAC300FAC5F5 /* AccountSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CAC19C18E9FAC300FAC5F5 /* AccountSettingsViewController.m */; };
+		03CAC1A318E9FD7400FAC5F5 /* txt_account_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19F18E9FD7400FAC5F5 /* txt_account_large.png */; };
+		03CAC1A418E9FD7400FAC5F5 /* txt_account_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19F18E9FD7400FAC5F5 /* txt_account_large.png */; };
+		03CAC1A518E9FD7400FAC5F5 /* txt_account_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19F18E9FD7400FAC5F5 /* txt_account_large.png */; };
+		03CAC1A618E9FD7400FAC5F5 /* txt_account_large.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19F18E9FD7400FAC5F5 /* txt_account_large.png */; };
+		03CAC1A718E9FD7400FAC5F5 /* txt_account_large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC1A018E9FD7400FAC5F5 /* txt_account_large@2x.png */; };
+		03CAC1A818E9FD7400FAC5F5 /* txt_account_large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC1A018E9FD7400FAC5F5 /* txt_account_large@2x.png */; };
+		03CAC1A918E9FD7400FAC5F5 /* txt_account_large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC1A018E9FD7400FAC5F5 /* txt_account_large@2x.png */; };
+		03CAC1AA18E9FD7400FAC5F5 /* txt_account_large@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC1A018E9FD7400FAC5F5 /* txt_account_large@2x.png */; };
+		03CAC1AB18E9FD7400FAC5F5 /* txt_account_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC1A118E9FD7400FAC5F5 /* txt_account_small.png */; };
+		03CAC1AC18E9FD7400FAC5F5 /* txt_account_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC1A118E9FD7400FAC5F5 /* txt_account_small.png */; };
+		03CAC1AD18E9FD7400FAC5F5 /* txt_account_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC1A118E9FD7400FAC5F5 /* txt_account_small.png */; };
+		03CAC1AE18E9FD7400FAC5F5 /* txt_account_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC1A118E9FD7400FAC5F5 /* txt_account_small.png */; };
+		03CAC1AF18E9FD7400FAC5F5 /* txt_account_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC1A218E9FD7400FAC5F5 /* txt_account_small@2x.png */; };
+		03CAC1B018E9FD7400FAC5F5 /* txt_account_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC1A218E9FD7400FAC5F5 /* txt_account_small@2x.png */; };
+		03CAC1B118E9FD7400FAC5F5 /* txt_account_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC1A218E9FD7400FAC5F5 /* txt_account_small@2x.png */; };
+		03CAC1B218E9FD7400FAC5F5 /* txt_account_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC1A218E9FD7400FAC5F5 /* txt_account_small@2x.png */; };
+		03D7F56A18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CAC19C18E9FAC300FAC5F5 /* AccountSettingsViewController.m */; };
+		03D7F56B18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CAC19C18E9FAC300FAC5F5 /* AccountSettingsViewController.m */; };
+		03D7F56C18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CAC19C18E9FAC300FAC5F5 /* AccountSettingsViewController.m */; };
 		03E4452518AEE64000C88421 /* AutoCompleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4452418AEE64000C88421 /* AutoCompleteCell.m */; };
 		03E4452718AEE65000C88421 /* AutoCompleteCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E4452618AEE65000C88421 /* AutoCompleteCellView.xib */; };
 		03E4453E18B55B9E00C88421 /* SHButtonLatoLightLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4453D18B55B9E00C88421 /* SHButtonLatoLightLocation.m */; };
@@ -1749,6 +1773,10 @@
 		26B6767D18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
 		26B6767E18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
 		26B6767F18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
+		26ED9F8A18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */; };
+		26ED9F8B18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */; };
+		26ED9F8C18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */; };
+		26ED9F8D18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */; };
 		D7FCD5C8824B4FA4A7587334 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -2206,6 +2234,13 @@
 		03CAC18A18E9C74F00FAC5F5 /* SizeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SizeModel.h; sourceTree = "<group>"; };
 		03CAC18B18E9C74F00FAC5F5 /* SizeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SizeModel.m; sourceTree = "<group>"; };
 		03CAC19018E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "avantgardef-book-webfont.ttf"; sourceTree = "<group>"; };
+		03CAC19518E9F5FD00FAC5F5 /* User.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = User.storyboard; sourceTree = "<group>"; };
+		03CAC19B18E9FAC300FAC5F5 /* AccountSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountSettingsViewController.h; sourceTree = "<group>"; };
+		03CAC19C18E9FAC300FAC5F5 /* AccountSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountSettingsViewController.m; sourceTree = "<group>"; };
+		03CAC19F18E9FD7400FAC5F5 /* txt_account_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = txt_account_large.png; sourceTree = "<group>"; };
+		03CAC1A018E9FD7400FAC5F5 /* txt_account_large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "txt_account_large@2x.png"; sourceTree = "<group>"; };
+		03CAC1A118E9FD7400FAC5F5 /* txt_account_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = txt_account_small.png; sourceTree = "<group>"; };
+		03CAC1A218E9FD7400FAC5F5 /* txt_account_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "txt_account_small@2x.png"; sourceTree = "<group>"; };
 		03E4452318AEE64000C88421 /* AutoCompleteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoCompleteCell.h; sourceTree = "<group>"; };
 		03E4452418AEE64000C88421 /* AutoCompleteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteCell.m; sourceTree = "<group>"; };
 		03E4452618AEE65000C88421 /* AutoCompleteCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AutoCompleteCellView.xib; sourceTree = "<group>"; };
@@ -2338,6 +2373,8 @@
 		26B6768018E9F5B900DAD113 /* SpotHopperDev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperDev-Info.plist"; sourceTree = "<group>"; };
 		26B6768118E9F5B900DAD113 /* SpotHopperStaging-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperStaging-Info.plist"; sourceTree = "<group>"; };
 		26B6768218E9F61400DAD113 /* SpotHopperProduction-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperProduction-Info.plist"; sourceTree = "<group>"; };
+		26ED9F8818EA3A2B00C60954 /* SHLabelLatoBold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHLabelLatoBold.h; sourceTree = "<group>"; };
+		26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHLabelLatoBold.m; sourceTree = "<group>"; };
 		B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C9816A19827543A8863B8CBF /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -2666,6 +2703,7 @@
 		0386649B186D36D700985CEC /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				03CAC19A18E9F69200FAC5F5 /* User */,
 				03AF8EC418E59BCE00DD9356 /* Checkin */,
 				03AF8EC718E5B66100DD9356 /* Share */,
 				039F548718D33B88004B2B67 /* Menu */,
@@ -2723,6 +2761,7 @@
 				0372FF4818E33A04009188B5 /* Specials.storyboard */,
 				03AF8EBB18E5317100DD9356 /* Checkin.storyboard */,
 				03AF8EC518E5B63E00DD9356 /* Share.storyboard */,
+				03CAC19518E9F5FD00FAC5F5 /* User.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -2770,6 +2809,7 @@
 		038664A2186D370E00985CEC /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				03CAC19E18E9FD7400FAC5F5 /* AccountSettings */,
 				03AF8EED18E5C29900DD9356 /* LiveSpecial */,
 				03AF8EF618E5C29900DD9356 /* Share */,
 				033A3F1A18E4D63D00E07F39 /* Checkin */,
@@ -3370,6 +3410,26 @@
 			path = Glyphish;
 			sourceTree = "<group>";
 		};
+		03CAC19A18E9F69200FAC5F5 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				03CAC19B18E9FAC300FAC5F5 /* AccountSettingsViewController.h */,
+				03CAC19C18E9FAC300FAC5F5 /* AccountSettingsViewController.m */,
+			);
+			name = User;
+			sourceTree = "<group>";
+		};
+		03CAC19E18E9FD7400FAC5F5 /* AccountSettings */ = {
+			isa = PBXGroup;
+			children = (
+				03CAC19F18E9FD7400FAC5F5 /* txt_account_large.png */,
+				03CAC1A018E9FD7400FAC5F5 /* txt_account_large@2x.png */,
+				03CAC1A118E9FD7400FAC5F5 /* txt_account_small.png */,
+				03CAC1A218E9FD7400FAC5F5 /* txt_account_small@2x.png */,
+			);
+			path = AccountSettings;
+			sourceTree = "<group>";
+		};
 		03E4452218AEE62100C88421 /* AutoComplete */ = {
 			isa = PBXGroup;
 			children = (
@@ -3498,10 +3558,10 @@
 		03F2D9341871E86000C69576 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				26B6767A18E9F59500DAD113 /* TutorialViewController.h */,
-				26B6767B18E9F59500DAD113 /* TutorialViewController.m */,
 				0320235418772D84008368C2 /* SidebarViewController.h */,
 				0320235518772D85008368C2 /* SidebarViewController.m */,
+				26B6767A18E9F59500DAD113 /* TutorialViewController.h */,
+				26B6767B18E9F59500DAD113 /* TutorialViewController.m */,
 				03F2D9351871E88000C69576 /* LaunchViewController.h */,
 				03F2D9361871E88000C69576 /* LaunchViewController.m */,
 				03F2D94E18722D5300C69576 /* HomeViewController.h */,
@@ -3517,6 +3577,8 @@
 				03F2D93D187208C200C69576 /* SHLabelLatoLight.m */,
 				039B6FEF188711B800C590F8 /* SHLabelLatoRegular.h */,
 				039B6FF0188711B800C590F8 /* SHLabelLatoRegular.m */,
+				26ED9F8818EA3A2B00C60954 /* SHLabelLatoBold.h */,
+				26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */,
 			);
 			name = FontLabel;
 			sourceTree = "<group>";
@@ -3669,7 +3731,7 @@
 		0386645B186D352400985CEC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = RokkinCat;
 				TargetAttributes = {
 					03866462186D352400985CEC = {
@@ -3764,7 +3826,9 @@
 				0372FF6D18E35816009188B5 /* spot_placeholder.png in Resources */,
 				039ABBE618CE334A00B84AE6 /* img_callout_background@2x.png in Resources */,
 				03866528186DE0F700985CEC /* logo_spothopper.png in Resources */,
+				03CAC1A718E9FD7400FAC5F5 /* txt_account_large@2x.png in Resources */,
 				039ABBC318CE1DA500B84AE6 /* img_match_pin_view.png in Resources */,
+				03CAC1AB18E9FD7400FAC5F5 /* txt_account_small.png in Resources */,
 				03E882D618C78D3400BD8FBB /* btn_down_arrow@2x.png in Resources */,
 				03AF8EA518E515B900DD9356 /* LiveSpecialViewController.xib in Resources */,
 				03CA72E8187F56DA00815284 /* icon_spot@2x.png in Resources */,
@@ -3799,6 +3863,7 @@
 				03265F2018C4E92C002177F7 /* bar_drink_placeholder.png in Resources */,
 				0320236518774A49008368C2 /* icon_view_my_reviews@2x.png in Resources */,
 				03F2D9271871DC1400C69576 /* Lato-BlackItalic.ttf in Resources */,
+				03CAC19618E9F5FD00FAC5F5 /* User.storyboard in Resources */,
 				039F541C18D28379004B2B67 /* Drinks.storyboard in Resources */,
 				03CA72AE187C4D0E00815284 /* slider_thumb.png in Resources */,
 				039F546618D2D17F004B2B67 /* img_spot_pin_view@2x.png in Resources */,
@@ -3873,6 +3938,7 @@
 				03F4E75418CA2A5C0056EAA9 /* slider_background_profile_max@2x.png in Resources */,
 				03E4456518B65D8A00C88421 /* btn_spot_profile_drink_menu@2x.png in Resources */,
 				03F6BF6518C6DC8500172F13 /* icon_my_spotlists@2x.png in Resources */,
+				03CAC1A318E9FD7400FAC5F5 /* txt_account_large.png in Resources */,
 				03F2D92E1871DC1400C69576 /* Lato-LightItalic.ttf in Resources */,
 				0386652A186DE0F700985CEC /* btn_context_home.png in Resources */,
 				03866542186DE0F700985CEC /* btn_sidebar_icon_checkin.png in Resources */,
@@ -3939,6 +4005,7 @@
 				03AF8F0B18E5C29900DD9356 /* img_live_special_white_arrow.png in Resources */,
 				03E8834118C8F90000BD8FBB /* btn_context_delete@2x.png in Resources */,
 				03CA727D187B8FD800815284 /* icon_liquor@2x.png in Resources */,
+				03CAC1AF18E9FD7400FAC5F5 /* txt_account_small@2x.png in Resources */,
 				03CA72E4187F567100815284 /* icon_star@2x.png in Resources */,
 				03E4456318B65D8A00C88421 /* map_marker_spot@2x.png in Resources */,
 				0386647A186D352400985CEC /* Main.storyboard in Resources */,
@@ -4104,6 +4171,7 @@
 				03CAC07818E7716400FAC5F5 /* slider_background_profile_min.png in Resources */,
 				03CAC07918E7716400FAC5F5 /* btn_sidebar_search_icon@2x.png in Resources */,
 				03CAC07A18E7716400FAC5F5 /* btn_nav_arrow_east@2x.png in Resources */,
+				03CAC1AA18E9FD7400FAC5F5 /* txt_account_large@2x.png in Resources */,
 				03CAC07C18E7716400FAC5F5 /* txt_sidebar_search_background@2x.png in Resources */,
 				03CAC07D18E7716400FAC5F5 /* Spots.storyboard in Resources */,
 				03CAC07E18E7716400FAC5F5 /* btn_sidebar_icon_checkin@2x.png in Resources */,
@@ -4181,9 +4249,11 @@
 				03CAC0C818E7716400FAC5F5 /* btn_context_home.png in Resources */,
 				03CAC0C918E7716400FAC5F5 /* btn_sidebar_icon_checkin.png in Resources */,
 				03CAC0CA18E7716400FAC5F5 /* btn_home_drinks.png in Resources */,
+				03CAC1AE18E9FD7400FAC5F5 /* txt_account_small.png in Resources */,
 				03CAC0CB18E7716400FAC5F5 /* img_launch_field_divider@2x.png in Resources */,
 				03CAC0CC18E7716400FAC5F5 /* img_map_shadow_botom.png in Resources */,
 				03CAC0CD18E7716400FAC5F5 /* app_background_blurred@2x.png in Resources */,
+				03CAC1B218E9FD7400FAC5F5 /* txt_account_small@2x.png in Resources */,
 				03CAC0CE18E7716400FAC5F5 /* Reviews.storyboard in Resources */,
 				03CAC0CF18E7716400FAC5F5 /* btn_context_info@2x.png in Resources */,
 				03CAC0D018E7716400FAC5F5 /* slider_thumb_selected_with_light@2x.png in Resources */,
@@ -4283,6 +4353,7 @@
 				03CAC13018E7716400FAC5F5 /* table_header_background_selected@2x.png in Resources */,
 				03CAC13118E7716400FAC5F5 /* btn_login_facebook@2x.png in Resources */,
 				03CAC13218E7716400FAC5F5 /* slider_thumb_selected_with_light.png in Resources */,
+				03CAC1A618E9FD7400FAC5F5 /* txt_account_large.png in Resources */,
 				03CAC13318E7716400FAC5F5 /* slider_background_profile_max.png in Resources */,
 				03CAC13418E7716400FAC5F5 /* btn_launch_background_create@2x.png in Resources */,
 				03CAC13518E7716400FAC5F5 /* icon_search_beer.png in Resources */,
@@ -4314,6 +4385,7 @@
 				03CAC14F18E7716400FAC5F5 /* btn_drink_profile_description.png in Resources */,
 				03CAC15018E7716400FAC5F5 /* btn_share_close@2x.png in Resources */,
 				03CAC15118E7716400FAC5F5 /* img_live_special_white_arrow@2x.png in Resources */,
+				03CAC19918E9F5FD00FAC5F5 /* User.storyboard in Resources */,
 				03CAC15318E7716400FAC5F5 /* FindSimilarDrinksViewController.xib in Resources */,
 				03CAC15418E7716400FAC5F5 /* btn_live_special_share@2x.png in Resources */,
 				03CAC15518E7716400FAC5F5 /* txt_review_form_background.png in Resources */,
@@ -4387,7 +4459,9 @@
 				03F4E7DF18CA33D00056EAA9 /* btn_login_spothopper@2x.png in Resources */,
 				03F4E7E018CA33D00056EAA9 /* btn_launch_item_background@2x.png in Resources */,
 				0372FF6F18E35816009188B5 /* spot_placeholder.png in Resources */,
+				03CAC1A918E9FD7400FAC5F5 /* txt_account_large@2x.png in Resources */,
 				03F4E7E118CA33D00056EAA9 /* logo_spothopper.png in Resources */,
+				03CAC1AD18E9FD7400FAC5F5 /* txt_account_small.png in Resources */,
 				039ABBD718CE288E00B84AE6 /* img_match_pin_view.png in Resources */,
 				03F4E7E218CA33D00056EAA9 /* btn_down_arrow@2x.png in Resources */,
 				03F4E7E318CA33D00056EAA9 /* icon_spot@2x.png in Resources */,
@@ -4422,6 +4496,7 @@
 				039F54CA18D7FF1C004B2B67 /* img_expand_north@2x.png in Resources */,
 				039F541E18D28379004B2B67 /* Drinks.storyboard in Resources */,
 				03AF8F2A18E5C8F000DD9356 /* btn_share_text@2x.png in Resources */,
+				03CAC19818E9F5FD00FAC5F5 /* User.storyboard in Resources */,
 				03AF8F2318E5C8F000DD9356 /* btn_share_close.png in Resources */,
 				03AF8F2D18E5C8F000DD9356 /* btn_share_unselected.png in Resources */,
 				03F4E7FD18CA33D00056EAA9 /* slider_thumb_selected_light.png in Resources */,
@@ -4496,6 +4571,7 @@
 				03F4E83918CA33D00056EAA9 /* btn_context_info@2x.png in Resources */,
 				03F4E83A18CA33D00056EAA9 /* slider_thumb_selected_with_light@2x.png in Resources */,
 				03F4E83B18CA33D00056EAA9 /* icon_arrow_no_shadow.png in Resources */,
+				03CAC1A518E9FD7400FAC5F5 /* txt_account_large.png in Resources */,
 				039F543118D28627004B2B67 /* btn_discover_drinks_nearby.png in Resources */,
 				03F4E83C18CA33D00056EAA9 /* slider_thumb@2x.png in Resources */,
 				0372FF9D18E36A2C009188B5 /* icon_search_cocktails.png in Resources */,
@@ -4562,6 +4638,7 @@
 				03F4E86718CA33D00056EAA9 /* btn_home_add_reveiew@2x.png in Resources */,
 				03F4E86818CA33D00056EAA9 /* ReviewCellView.xib in Resources */,
 				03F4E86918CA33D00056EAA9 /* btn_spot_profile_drink_menu.png in Resources */,
+				03CAC1B118E9FD7400FAC5F5 /* txt_account_small@2x.png in Resources */,
 				0372FF6918E35816009188B5 /* cocktail_placeholder.png in Resources */,
 				03F4E86A18CA33D00056EAA9 /* btn_sidebar_icon_spots@2x.png in Resources */,
 				03F4E86B18CA33D00056EAA9 /* icon_search_drink.png in Resources */,
@@ -4696,7 +4773,9 @@
 				03F4E92D18CA34260056EAA9 /* btn_login_spothopper@2x.png in Resources */,
 				03F4E92E18CA34260056EAA9 /* btn_launch_item_background@2x.png in Resources */,
 				0372FF6E18E35816009188B5 /* spot_placeholder.png in Resources */,
+				03CAC1A818E9FD7400FAC5F5 /* txt_account_large@2x.png in Resources */,
 				03F4E92F18CA34260056EAA9 /* logo_spothopper.png in Resources */,
+				03CAC1AC18E9FD7400FAC5F5 /* txt_account_small.png in Resources */,
 				039ABBD518CE288E00B84AE6 /* img_match_pin_view.png in Resources */,
 				03F4E93018CA34260056EAA9 /* btn_down_arrow@2x.png in Resources */,
 				03F4E93118CA34260056EAA9 /* icon_spot@2x.png in Resources */,
@@ -4731,6 +4810,7 @@
 				039F54C618D7FF1B004B2B67 /* img_expand_north@2x.png in Resources */,
 				039F541D18D28379004B2B67 /* Drinks.storyboard in Resources */,
 				03AF8F3A18E5C8F000DD9356 /* btn_share_text@2x.png in Resources */,
+				03CAC19718E9F5FD00FAC5F5 /* User.storyboard in Resources */,
 				03AF8F3318E5C8F000DD9356 /* btn_share_close.png in Resources */,
 				03AF8F3D18E5C8F000DD9356 /* btn_share_unselected.png in Resources */,
 				03F4E94B18CA34260056EAA9 /* slider_thumb_selected_light.png in Resources */,
@@ -4805,6 +4885,7 @@
 				03F4E98718CA34260056EAA9 /* btn_context_info@2x.png in Resources */,
 				03F4E98818CA34260056EAA9 /* slider_thumb_selected_with_light@2x.png in Resources */,
 				03F4E98918CA34260056EAA9 /* icon_arrow_no_shadow.png in Resources */,
+				03CAC1A418E9FD7400FAC5F5 /* txt_account_large.png in Resources */,
 				039F543018D28627004B2B67 /* btn_discover_drinks_nearby.png in Resources */,
 				03F4E98A18CA34260056EAA9 /* slider_thumb@2x.png in Resources */,
 				0372FF9B18E36A2C009188B5 /* icon_search_cocktails.png in Resources */,
@@ -4871,6 +4952,7 @@
 				03F4E9B518CA34260056EAA9 /* btn_home_add_reveiew@2x.png in Resources */,
 				03F4E9B618CA34260056EAA9 /* ReviewCellView.xib in Resources */,
 				03F4E9B718CA34260056EAA9 /* btn_spot_profile_drink_menu.png in Resources */,
+				03CAC1B018E9FD7400FAC5F5 /* txt_account_small@2x.png in Resources */,
 				0372FF6818E35816009188B5 /* cocktail_placeholder.png in Resources */,
 				03F4E9B818CA34260056EAA9 /* btn_sidebar_icon_spots@2x.png in Resources */,
 				03F4E9B918CA34260056EAA9 /* icon_search_drink.png in Resources */,
@@ -5119,6 +5201,7 @@
 				039B7022188759B100C590F8 /* NSArray+HoursOfOperation.m in Sources */,
 				03412C411882F6EC000F16A8 /* SHJSONAPIResource.m in Sources */,
 				039F549F18D35871004B2B67 /* DrinkMenuOfferingsViewController.m in Sources */,
+				03CAC19D18E9FAC300FAC5F5 /* AccountSettingsViewController.m in Sources */,
 				038664E1186D379400985CEC /* BaseViewController.m in Sources */,
 				039F542718D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				038664E2186D379400985CEC /* ClientSessionManager.m in Sources */,
@@ -5132,6 +5215,7 @@
 				038664D4186D376900985CEC /* UIImage+Rotation.m in Sources */,
 				03CA726B187B510500815284 /* UIButton+Block.m in Sources */,
 				03412C3B188053E7000F16A8 /* SHButtonLatoLightRightImage.m in Sources */,
+				26ED9F8A18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */,
 				03CA728C187C26BD00815284 /* DrinkModel.m in Sources */,
 				038664D5186D376900985CEC /* UIImage+RoundedCorner.m in Sources */,
 				03CA729A187C43BF00815284 /* ReviewSliderCell.m in Sources */,
@@ -5260,6 +5344,7 @@
 				03CABFB218E7716400FAC5F5 /* NSArray+HoursOfOperation.m in Sources */,
 				03CABFB318E7716400FAC5F5 /* SHJSONAPIResource.m in Sources */,
 				03CABFB418E7716400FAC5F5 /* DrinkMenuOfferingsViewController.m in Sources */,
+				03D7F56C18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */,
 				03CABFB518E7716400FAC5F5 /* BaseViewController.m in Sources */,
 				03CABFB618E7716400FAC5F5 /* DrinkListMenuViewController.m in Sources */,
 				03CABFB718E7716400FAC5F5 /* ClientSessionManager.m in Sources */,
@@ -5273,6 +5358,7 @@
 				03CABFBF18E7716400FAC5F5 /* UIImage+Rotation.m in Sources */,
 				03CABFC018E7716400FAC5F5 /* UIButton+Block.m in Sources */,
 				03CABFC118E7716400FAC5F5 /* SHButtonLatoLightRightImage.m in Sources */,
+				26ED9F8D18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */,
 				03CABFC218E7716400FAC5F5 /* DrinkModel.m in Sources */,
 				03CABFC318E7716400FAC5F5 /* UIImage+RoundedCorner.m in Sources */,
 				03CABFC418E7716400FAC5F5 /* ReviewSliderCell.m in Sources */,
@@ -5393,6 +5479,7 @@
 				03F4E75F18CA33D00056EAA9 /* NSArray+HoursOfOperation.m in Sources */,
 				03F4E76018CA33D00056EAA9 /* SHJSONAPIResource.m in Sources */,
 				039F54A118D35871004B2B67 /* DrinkMenuOfferingsViewController.m in Sources */,
+				03D7F56B18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */,
 				03F4E76118CA33D00056EAA9 /* BaseViewController.m in Sources */,
 				039F542918D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				03F4E76218CA33D00056EAA9 /* ClientSessionManager.m in Sources */,
@@ -5406,6 +5493,7 @@
 				03F4E76718CA33D00056EAA9 /* UIImage+Rotation.m in Sources */,
 				03F4E76818CA33D00056EAA9 /* UIButton+Block.m in Sources */,
 				03F4E76918CA33D00056EAA9 /* SHButtonLatoLightRightImage.m in Sources */,
+				26ED9F8C18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */,
 				03F4E76A18CA33D00056EAA9 /* DrinkModel.m in Sources */,
 				03F4E76B18CA33D00056EAA9 /* UIImage+RoundedCorner.m in Sources */,
 				03F4E76C18CA33D00056EAA9 /* ReviewSliderCell.m in Sources */,
@@ -5526,6 +5614,7 @@
 				03F4E8AD18CA34260056EAA9 /* NSArray+HoursOfOperation.m in Sources */,
 				03F4E8AE18CA34260056EAA9 /* SHJSONAPIResource.m in Sources */,
 				039F54A018D35871004B2B67 /* DrinkMenuOfferingsViewController.m in Sources */,
+				03D7F56A18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */,
 				03F4E8AF18CA34260056EAA9 /* BaseViewController.m in Sources */,
 				039F542818D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				03F4E8B018CA34260056EAA9 /* ClientSessionManager.m in Sources */,
@@ -5539,6 +5628,7 @@
 				03F4E8B518CA34260056EAA9 /* UIImage+Rotation.m in Sources */,
 				03F4E8B618CA34260056EAA9 /* UIButton+Block.m in Sources */,
 				03F4E8B718CA34260056EAA9 /* SHButtonLatoLightRightImage.m in Sources */,
+				26ED9F8B18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */,
 				03F4E8B818CA34260056EAA9 /* DrinkModel.m in Sources */,
 				03F4E8B918CA34260056EAA9 /* UIImage+RoundedCorner.m in Sources */,
 				03F4E8BA18CA34260056EAA9 /* ReviewSliderCell.m in Sources */,
@@ -5691,7 +5781,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -5730,7 +5819,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -5811,7 +5899,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SpotHopperLocal.app/SpotHopperLocal";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -5835,7 +5922,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SpotHopperLocal.app/SpotHopperLocal";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
