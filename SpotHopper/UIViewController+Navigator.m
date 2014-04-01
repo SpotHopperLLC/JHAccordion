@@ -9,6 +9,7 @@
 #import "UIViewController+Navigator.h"
 
 #import "FindSimilarViewController.h"
+#import "TutorialViewController.h"
 #import "LaunchViewController.h"
 
 #import "DrinksNearbyViewController.h"
@@ -38,6 +39,11 @@
 @implementation UIViewController (Navigator)
 
 #pragma mark - Main
+
+- (void)goToTutorial:(BOOL)animated {
+    TutorialViewController *viewController = [[self mainStoryboard] instantiateViewControllerWithIdentifier:@"TutorialViewController"];
+    [self presentViewController:viewController animated:animated completion:nil];
+}
 
 - (void)goToLaunch:(BOOL)animated {
     LaunchViewController *viewController = [[self mainStoryboard] instantiateViewControllerWithIdentifier:@"LaunchViewController"];

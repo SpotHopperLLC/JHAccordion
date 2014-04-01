@@ -24,6 +24,7 @@
 @interface UIViewController (Navigator)
 
 // Main
+- (void)goToTutorial:(BOOL)animated;
 - (void)goToLaunch:(BOOL)animated;
 
 // Drinks

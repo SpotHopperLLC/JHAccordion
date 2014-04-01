@@ -1749,6 +1749,10 @@
 		26B6767D18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
 		26B6767E18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
 		26B6767F18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
+		26ED9F8A18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */; };
+		26ED9F8B18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */; };
+		26ED9F8C18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */; };
+		26ED9F8D18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */; };
 		D7FCD5C8824B4FA4A7587334 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -2338,6 +2342,8 @@
 		26B6768018E9F5B900DAD113 /* SpotHopperDev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperDev-Info.plist"; sourceTree = "<group>"; };
 		26B6768118E9F5B900DAD113 /* SpotHopperStaging-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperStaging-Info.plist"; sourceTree = "<group>"; };
 		26B6768218E9F61400DAD113 /* SpotHopperProduction-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperProduction-Info.plist"; sourceTree = "<group>"; };
+		26ED9F8818EA3A2B00C60954 /* SHLabelLatoBold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHLabelLatoBold.h; sourceTree = "<group>"; };
+		26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHLabelLatoBold.m; sourceTree = "<group>"; };
 		B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C9816A19827543A8863B8CBF /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -3498,10 +3504,10 @@
 		03F2D9341871E86000C69576 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				26B6767A18E9F59500DAD113 /* TutorialViewController.h */,
-				26B6767B18E9F59500DAD113 /* TutorialViewController.m */,
 				0320235418772D84008368C2 /* SidebarViewController.h */,
 				0320235518772D85008368C2 /* SidebarViewController.m */,
+				26B6767A18E9F59500DAD113 /* TutorialViewController.h */,
+				26B6767B18E9F59500DAD113 /* TutorialViewController.m */,
 				03F2D9351871E88000C69576 /* LaunchViewController.h */,
 				03F2D9361871E88000C69576 /* LaunchViewController.m */,
 				03F2D94E18722D5300C69576 /* HomeViewController.h */,
@@ -3517,6 +3523,8 @@
 				03F2D93D187208C200C69576 /* SHLabelLatoLight.m */,
 				039B6FEF188711B800C590F8 /* SHLabelLatoRegular.h */,
 				039B6FF0188711B800C590F8 /* SHLabelLatoRegular.m */,
+				26ED9F8818EA3A2B00C60954 /* SHLabelLatoBold.h */,
+				26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */,
 			);
 			name = FontLabel;
 			sourceTree = "<group>";
@@ -3669,7 +3677,7 @@
 		0386645B186D352400985CEC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = RokkinCat;
 				TargetAttributes = {
 					03866462186D352400985CEC = {
@@ -5132,6 +5140,7 @@
 				038664D4186D376900985CEC /* UIImage+Rotation.m in Sources */,
 				03CA726B187B510500815284 /* UIButton+Block.m in Sources */,
 				03412C3B188053E7000F16A8 /* SHButtonLatoLightRightImage.m in Sources */,
+				26ED9F8A18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */,
 				03CA728C187C26BD00815284 /* DrinkModel.m in Sources */,
 				038664D5186D376900985CEC /* UIImage+RoundedCorner.m in Sources */,
 				03CA729A187C43BF00815284 /* ReviewSliderCell.m in Sources */,
@@ -5273,6 +5282,7 @@
 				03CABFBF18E7716400FAC5F5 /* UIImage+Rotation.m in Sources */,
 				03CABFC018E7716400FAC5F5 /* UIButton+Block.m in Sources */,
 				03CABFC118E7716400FAC5F5 /* SHButtonLatoLightRightImage.m in Sources */,
+				26ED9F8D18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */,
 				03CABFC218E7716400FAC5F5 /* DrinkModel.m in Sources */,
 				03CABFC318E7716400FAC5F5 /* UIImage+RoundedCorner.m in Sources */,
 				03CABFC418E7716400FAC5F5 /* ReviewSliderCell.m in Sources */,
@@ -5406,6 +5416,7 @@
 				03F4E76718CA33D00056EAA9 /* UIImage+Rotation.m in Sources */,
 				03F4E76818CA33D00056EAA9 /* UIButton+Block.m in Sources */,
 				03F4E76918CA33D00056EAA9 /* SHButtonLatoLightRightImage.m in Sources */,
+				26ED9F8C18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */,
 				03F4E76A18CA33D00056EAA9 /* DrinkModel.m in Sources */,
 				03F4E76B18CA33D00056EAA9 /* UIImage+RoundedCorner.m in Sources */,
 				03F4E76C18CA33D00056EAA9 /* ReviewSliderCell.m in Sources */,
@@ -5539,6 +5550,7 @@
 				03F4E8B518CA34260056EAA9 /* UIImage+Rotation.m in Sources */,
 				03F4E8B618CA34260056EAA9 /* UIButton+Block.m in Sources */,
 				03F4E8B718CA34260056EAA9 /* SHButtonLatoLightRightImage.m in Sources */,
+				26ED9F8B18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */,
 				03F4E8B818CA34260056EAA9 /* DrinkModel.m in Sources */,
 				03F4E8B918CA34260056EAA9 /* UIImage+RoundedCorner.m in Sources */,
 				03F4E8BA18CA34260056EAA9 /* ReviewSliderCell.m in Sources */,
@@ -5691,7 +5703,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -5730,7 +5741,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -5811,7 +5821,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SpotHopperLocal.app/SpotHopperLocal";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -5835,7 +5844,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SpotHopperLocal.app/SpotHopperLocal";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
