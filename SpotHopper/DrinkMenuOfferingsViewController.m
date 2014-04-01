@@ -27,6 +27,8 @@
 
 @property (nonatomic, strong) SectionHeaderView *sectionHeader;
 
+@property (nonatomic, strong) UIStoryboard *commonStoryboard;
+
 @end
 
 @implementation DrinkMenuOfferingsViewController
@@ -135,10 +137,23 @@
 
 #pragma mark - Private
 
+- (SectionHeaderView *)instantiateSectionHeaderView {
+    // load the VC and get the view (to allow for easily laying out the custom section header)
+    if (!_commonStoryboard) {
+        _commonStoryboard = [UIStoryboard storyboardWithName:@"Common" bundle:nil];
+    }
+    UIViewController *vc = [_commonStoryboard instantiateViewControllerWithIdentifier:@"SectionHeaderScene"];
+    SectionHeaderView *sectionHeaderView = (SectionHeaderView *)[vc.view viewWithTag:100];
+    [sectionHeaderView removeFromSuperview];
+    [sectionHeaderView prepareView];
+    
+    return sectionHeaderView;
+}
+
 - (SectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
     
     if (_sectionHeader == nil) {
-        _sectionHeader = [[SectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblMenu.frame), 56.0f)];
+        _sectionHeader = [self instantiateSectionHeaderView];
         [_sectionHeader setIconImage:[UIImage imageNamed:@"img_arrow_west_circle"]];
         [_sectionHeader.imgArrow setHidden:YES];
         
