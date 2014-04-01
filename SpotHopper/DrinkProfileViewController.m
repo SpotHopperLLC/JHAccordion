@@ -154,6 +154,14 @@
     
 }
 
+- (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
+    if (FooterViewButtonRight == footerViewButtonType) {
+        [self showAlert:@"Info" message:kInfoDrinkProfile];
+    }
+    
+    return YES;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -288,16 +296,6 @@
 
 - (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
     
-}
-
-#pragma mark - Footer
-
-- (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
-    if (FooterViewButtonHome == footerViewButtonType) {
-        return NO;
-    }
-    
-    return YES;
 }
 
 #pragma mark - MKMapViewDelegate

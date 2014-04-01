@@ -58,6 +58,16 @@
 
 #endif
 
+// InfoText
+#define kInfoSpotList @"Want to find matches somewhere else? Change the location in the subheader!"
+#define kInfoSpotProfile @"Like this spot? Click \"Find Similar\" to search for similar spots wherever you want!"
+#define kInfoDrinklistNearby @"Wrong spot? Try clicking \"I'm at a different spot\". If that still fails, yell at the bar owner and tell 'em to sign up already!"
+#define kInfoDrinklist @"Here are all the best matching drinks available near you. Click \"Find It\" or change the location in the header"
+#define kInfoDrinkAt @"Want to find this item somewhere else? Change the location in the header!"
+#define kInfoDrinkProfile @"Like this drink? Click \"Find Similar\" to search for similar drinks nearby!"
+#define kInfoMenu @"Looking for a personalized check-in drinklist instead? Go to the Home Screen then Drinks > Check-In"
+#define kInfoTonightsSpecials @"These are all the specials for today near you. Change the location in the header for new results"
+
 // Colors
 #define kColorOrange [UIColor colorWithRed:(221.0f/255.0f) green:(106.0f/255.0f) blue:(51.0f/255.0f) alpha:1.0f]
 #define kColorOrangeLight [UIColor colorWithRed:(238.0f/255.0f) green:(160.0f/255.0f) blue:(109.0f/255.0f) alpha:1.0f]
