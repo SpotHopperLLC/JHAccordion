@@ -2387,6 +2387,10 @@
 		26B6768218E9F61400DAD113 /* SpotHopperProduction-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperProduction-Info.plist"; sourceTree = "<group>"; };
 		26ED9F8818EA3A2B00C60954 /* SHLabelLatoBold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHLabelLatoBold.h; sourceTree = "<group>"; };
 		26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHLabelLatoBold.m; sourceTree = "<group>"; };
+		26F0FDE118EB1B18001BB0CD /* Chicago.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Chicago.gpx; sourceTree = "<group>"; };
+		26F0FDE218EB1B18001BB0CD /* Milwaukee.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Milwaukee.gpx; sourceTree = "<group>"; };
+		26F0FDE318EB1B18001BB0CD /* New York.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "New York.gpx"; sourceTree = "<group>"; };
+		26F0FDE418EB1B18001BB0CD /* San Francisco.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "San Francisco.gpx"; sourceTree = "<group>"; };
 		B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C9816A19827543A8863B8CBF /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -2666,6 +2670,7 @@
 				03866475186D352400985CEC /* AppDelegate.h */,
 				03866476186D352400985CEC /* AppDelegate.m */,
 				038664A3186D373100985CEC /* Constants.h */,
+				26F0FDE018EB1B18001BB0CD /* Locations */,
 				038664A2186D370E00985CEC /* Media */,
 				0386649F186D36F200985CEC /* Bases */,
 				0386649E186D36EA00985CEC /* Storyboards */,
@@ -3640,6 +3645,17 @@
 			);
 			path = Search;
 			sourceTree = "<group>";
+		};
+		26F0FDE018EB1B18001BB0CD /* Locations */ = {
+			isa = PBXGroup;
+			children = (
+				26F0FDE118EB1B18001BB0CD /* Chicago.gpx */,
+				26F0FDE218EB1B18001BB0CD /* Milwaukee.gpx */,
+				26F0FDE318EB1B18001BB0CD /* New York.gpx */,
+				26F0FDE418EB1B18001BB0CD /* San Francisco.gpx */,
+			);
+			path = Locations;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
