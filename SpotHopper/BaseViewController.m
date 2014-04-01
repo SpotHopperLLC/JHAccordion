@@ -16,6 +16,10 @@
 #import "FooterViewController.h"
 #import "LiveSpecialViewController.h"
 #import "SidebarViewController.h"
+#import "SearchViewController.h"
+
+#import "DrinkProfileViewController.h"
+#import "SpotProfileViewController.h"
 
 #import "LiveSpecialModel.h"
 
@@ -24,7 +28,7 @@
 
 typedef void(^AlertBlock)();
 
-@interface BaseViewController ()<UINavigationControllerDelegate, SidebarViewControllerDelegate, LiveSpecialViewControllerDelegate>
+@interface BaseViewController ()<UINavigationControllerDelegate, SidebarViewControllerDelegate, LiveSpecialViewControllerDelegate, SearchViewControllerDelegate>
 
 @property (nonatomic, strong) UIAlertView *alertView;
 @property (nonatomic, copy) AlertBlock alertBlock;
@@ -108,6 +112,24 @@ typedef void(^AlertBlock)();
 }
 
 #pragma mark - SidebarViewControllerDelegate
+
+- (void)sidebarViewControllerClickedSearch:(SidebarViewController *)sidebarViewController {
+    SearchViewController *viewController = [[SearchViewController alloc] initWithNibName:@"SearchViewController" bundle:[NSBundle mainBundle]];
+    [viewController setDelegate:self];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)sidebarViewControllerClickedSpots:(SidebarViewController *)sidebarViewController {
+    [self goToSpotListMenu];
+}
+
+- (void)sidebarViewControllerClickedDrinks:(SidebarViewController *)sidebarViewController {
+    [self goToDrinksNearBy];
+}
+
+- (void)sidebarViewControllerClickedSpecials:(SidebarViewController *)sidebarViewController {
+    [self goToTonightsSpecials];
+}
 
 - (void)sidebarViewControllerClickedReview:(SidebarViewController *)sidebarViewController {
     [self goToReviewMenu];
@@ -543,6 +565,34 @@ typedef void(^AlertBlock)();
     [self hideShareViewController:^{
         
     }];
+}
+
+#pragma mark - SearchViewControllerDelegate
+
+- (void)searchViewController:(SearchViewController *)viewController selectedDrink:(DrinkModel *)drink {
+    
+    DrinkProfileViewController *drinkViewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkProfileViewController"];
+    [drinkViewController setDrink:drink];
+    
+    NSMutableArray *viewControllers = self.navigationController.viewControllers.mutableCopy;
+    [viewControllers removeLastObject];
+    [viewControllers addObject:drinkViewController];
+    
+    [self.navigationController setViewControllers:viewControllers animated:YES];
+    
+}
+
+- (void)searchViewController:(SearchViewController *)viewController selectedSpot:(SpotModel *)spot {
+ 
+    SpotProfileViewController *spotViewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
+    [spotViewController setSpot:spot];
+    
+    NSMutableArray *viewControllers = self.navigationController.viewControllers.mutableCopy;
+    [viewControllers removeLastObject];
+    [viewControllers addObject:spotViewController];
+    
+    [self.navigationController setViewControllers:viewControllers animated:YES];
+    
 }
 
 @end
