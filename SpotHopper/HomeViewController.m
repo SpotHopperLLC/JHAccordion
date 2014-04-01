@@ -31,8 +31,9 @@
 
 @implementation HomeViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+#pragma mark - View Lifecycle
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -40,20 +41,15 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsDontAdjustForIOS6, kDidLoadOptionsFocusedBackground]];
 
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
     
-    // Do this in view did load if iOS 7
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-        if ([[ClientSessionManager sharedClient] hasSeenLaunch] == NO) {
-            [self goToLaunch:NO];
-        }
+    if ([[ClientSessionManager sharedClient] hasSeenLaunch] == NO) {
+        [self goToTutorial:FALSE];
     }
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -69,7 +65,7 @@
     if (_loaded == NO) {
         _loaded = YES;
         
-        _navigationBar = [[SHNavigationBar alloc] initWithFrame:CGRectMake(0.0f, ( SYSTEM_VERSION_LESS_THAN(@"7.0") ? 0.0f : 20.0f ), 320.0f, 44.0f)];
+        _navigationBar = [[SHNavigationBar alloc] initWithFrame:CGRectMake(0.0f, 20.0f, 320.0f, 44.0f)];
         _item = [[UINavigationItem alloc] initWithTitle:nil];
         _navigationBar.items = @[_item];
         [self.view addSubview:_navigationBar];
@@ -81,17 +77,9 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    // Do this in view did appear if iOS 6
-    if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
-        if ([[ClientSessionManager sharedClient] hasSeenLaunch] == NO) {
-            [self goToLaunch:animated];
-        }
-    }
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 

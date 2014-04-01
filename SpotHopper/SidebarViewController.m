@@ -45,8 +45,6 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     [super viewDidLoad:@[kDidLoadOptionsDontAdjustForIOS6, kDidLoadOptionsNoBackground]];
 	
-    
-    
     // Increasing left inset of button titles
     UIEdgeInsets insets = UIEdgeInsetsMake(0, 15.0f, 0, 0);
     [_btnSpots setTitleEdgeInsets:insets];
