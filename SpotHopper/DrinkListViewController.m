@@ -298,7 +298,12 @@
     [_viewLocation setHidden:(_drinkList.spot != nil)];
     [_viewSpot setHidden:(_drinkList.spot == nil)];
     
-    [_btnSpot setTitle:[NSString stringWithFormat:@"%@ >", _drinkList.spot.name] forState:UIControlStateNormal];
+    NSString *title = _drinkList.spot.name;
+    [_btnSpot setTitle:title forState:UIControlStateNormal];
+    [_btnSpot setImage:[UIImage imageNamed:@"img_arrow_east.png"] forState:UIControlStateNormal];
+    CGFloat textWidth = [self widthForString:title font:_btnSpot.titleLabel.font maxWidth:CGFLOAT_MAX];
+    _btnSpot.imageEdgeInsets = UIEdgeInsetsMake(0, (textWidth + 10), 0, 0);
+    _btnSpot.titleEdgeInsets = UIEdgeInsetsMake(0, -7, 0, 0);
 }
 
 - (void)updateMatchPercent {
