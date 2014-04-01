@@ -22,6 +22,8 @@
 
     #define kRefreshLocationTime 60.0f
 
+    #define kAnalyticsEnabled   FALSE
+
 #elif defined(DEV)
 
     #define kDebug YES
@@ -33,6 +35,8 @@
 
     #define kRefreshLocationTime 60.0f
 
+    #define kAnalyticsEnabled   FALSE
+
 #elif defined(STAGING)
 
     #define kDebug YES
@@ -43,6 +47,9 @@
     #define kBaseUrl @"http://spothopper-staging.herokuapp.com"
 
     #define kRefreshLocationTime 3600.0f
+
+    // Temporarily turn on analytics while testing
+    #define kAnalyticsEnabled   TRUE
 
 #elif defined(PRODUCTION)
 
@@ -56,7 +63,17 @@
 
     #define kRefreshLocationTime 3600.0f
 
+    #define kAnalyticsEnabled   TRUE
+
 #endif
+
+// Mixpanel - https://mixpanel.com/help/reference/ios
+
+#define kMixPanelToken @"b7cdce62dcc827c0955766058d7696c4"
+
+// Google Analytics - https://developers.google.com/analytics/devguides/collection/ios/v3/
+
+#define kGoogleAnalyticsTrackingId @"UA-49583937-2"
 
 // Colors
 #define kColorOrange [UIColor colorWithRed:(221.0f/255.0f) green:(106.0f/255.0f) blue:(51.0f/255.0f) alpha:1.0f]

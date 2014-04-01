@@ -12,3 +12,6 @@ pod 'Promises', :git => 'http://github.com/joshdholtz/ios-promises.git'
 pod 'Raven', '~> 0.3.0'
 pod 'STTwitter', '~> 0.0.7'
 pod 'TTTAttributedLabel', '~> 1.8.1'
+pod 'Mixpanel', '~> 2.3.0'
+pod 'GoogleAnalytics-iOS-SDK', '~> 3.0.0'
+
