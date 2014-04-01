@@ -470,6 +470,28 @@ available here</string>
                                     <outlet property="delegate" destination="sA2-0I-v5i" id="iEd-my-h4E"/>
                                 </connections>
                             </collectionView>
+                            <view hidden="YES" contentMode="scaleToFill" id="Jdc-uf-TVt">
+                                <rect key="frame" x="20" y="136" width="280" height="236"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oops" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="N2x-w9-khL" customClass="SHLabelLatoRegular">
+                                        <rect key="frame" x="33" y="20" width="213" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="CW1-kB-HT0" customClass="SHLabelLatoLight">
+                                        <rect key="frame" x="9" y="69" width="263" height="109"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <string key="text">Looks like there aren't any results matching your search. Try again? Or better yet help us build our database by reviewing Spots and Drinks that you love!</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -481,6 +503,7 @@ available here</string>
                         <outlet property="collectionView" destination="13V-oU-Bpx" id="9iR-OF-kfe"/>
                         <outlet property="lblLocation" destination="s7h-LW-LQV" id="TTN-vr-7Kh"/>
                         <outlet property="lblMatchPercent" destination="hcV-0h-rpp" id="HvH-8X-qot"/>
+                        <outlet property="viewEmpty" destination="Jdc-uf-TVt" id="Y8J-3h-9n1"/>
                         <outlet property="viewLocation" destination="vKI-LS-EsD" id="kSa-eP-MxB"/>
                         <outlet property="viewPlaceholder" destination="frx-5Z-i1r" id="ND6-bb-MH8"/>
                         <outlet property="viewSpot" destination="NGv-Xc-Nk1" id="VV1-QZ-6hZ"/>
