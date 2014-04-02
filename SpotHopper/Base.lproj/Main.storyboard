@@ -492,15 +492,21 @@
                                                     <color key="textColor" red="0.85882359743118286" green="0.41960787773132324" blue="0.22352942824363708" alpha="1" colorSpace="deviceRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="8tf-CX-iuQ">
-                                                    <rect key="frame" x="218" y="20" width="82" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                    <state key="normal" title="continue">
-                                                        <color key="titleColor" red="0.94509803920000002" green="0.37647058820000001" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                </button>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="WelcomeCell5" id="9om-aw-2RK">
+                                        <rect key="frame" x="1280" y="0.0" width="320" height="480"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_spothopper.png" id="Csc-iN-jSi">
+                                                    <rect key="frame" x="20" y="199" width="280" height="83"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -516,7 +522,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <subviews>
                                     <view tag="1" contentMode="scaleToFill" id="i8M-Le-C2P" userLabel="Breadcrumb View">
-                                        <rect key="frame" x="105" y="5" width="110" height="20"/>
+                                        <rect key="frame" x="90" y="5" width="140" height="20"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="7fX-kQ-2KV">
@@ -555,35 +561,69 @@
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                             </button>
+                                            <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="JHW-0D-IAN">
+                                                <rect key="frame" x="120" y="0.0" width="20" height="20"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <state key="normal">
+                                                    <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="0.5" colorSpace="calibratedWhite"/>
                             </view>
-                            <view contentMode="scaleToFill" id="tmG-nt-NNp" userLabel="Age Verification View">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <connections>
+                        <outlet property="btnStep1" destination="7fX-kQ-2KV" id="xrv-PN-MHL"/>
+                        <outlet property="btnStep2" destination="Pll-ow-8NT" id="PJ7-yl-4Xi"/>
+                        <outlet property="btnStep3" destination="AUX-w6-Lva" id="c6z-7l-toG"/>
+                        <outlet property="btnStep4" destination="BN8-46-OKi" id="VN3-oA-kTQ"/>
+                        <outlet property="btnStep5" destination="JHW-0D-IAN" id="adI-jm-DVt"/>
+                        <outlet property="collectionView" destination="kht-tA-9fs" id="0WG-XH-bUC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JJl-5J-Kc4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="523" y="579"/>
+        </scene>
+        <!--Age Verification View Controller-->
+        <scene sceneID="iYL-wt-43N">
+            <objects>
+                <viewController storyboardIdentifier="AgeVerificationViewController" id="HVm-W8-gs9" customClass="AgeVerificationViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cXi-pl-OAf">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" id="yrI-Eo-EXG" userLabel="Age Verification View">
+                                <rect key="frame" x="0.0" y="36" width="320" height="409"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_spothopper.png" id="T2s-Fz-TrA">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_spothopper.png" id="wdl-0W-471">
                                         <rect key="frame" x="20" y="20" width="280" height="83"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Age Verification" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ucC-UK-oFQ" customClass="SHLabelLatoBold">
-                                        <rect key="frame" x="20" y="118" width="280" height="21"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter your date of birth" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2vr-ii-c8u" customClass="SHLabelLatoBold">
+                                        <rect key="frame" x="24" y="111" width="280" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please set your birth date below to verify your age." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="AzB-7B-lhk" customClass="SHLabelLatoLight">
-                                        <rect key="frame" x="20" y="147" width="272" height="41"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You must be 21 or older to use this application" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6LD-tX-S1i" customClass="SHLabelLatoLight">
+                                        <rect key="frame" x="45" y="140" width="231" height="41"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="30" id="DG2-il-9pS">
-                                        <rect key="frame" x="0.0" y="196" width="320" height="162"/>
+                                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="30" id="5zM-EX-ArV">
+                                        <rect key="frame" x="0.0" y="189" width="320" height="162"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                         <date key="date" timeIntervalSinceReferenceDate="418003351.79697597">
                                             <!--2014-04-01 00:02:31 +0000-->
@@ -610,50 +650,31 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
 </data>
                                         </timeZone>
                                     </datePicker>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="o6y-P8-3ad" customClass="SHButtonLatoLight">
-                                        <rect key="frame" x="90" y="366" width="62" height="30"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="rvR-Rt-ybg" customClass="SHButtonLatoLight">
+                                        <rect key="frame" x="119" y="359" width="90" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                        <state key="normal" title="Cancel">
-                                            <color key="titleColor" red="0.94509803920000002" green="0.37647058820000001" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="onCancelAgeVerification:" destination="LnF-P7-GRS" eventType="touchUpInside" id="56b-n3-o8l"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="QPv-oG-JEB" customClass="SHButtonLatoLight">
-                                        <rect key="frame" x="160" y="366" width="62" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                         <state key="normal" title="Enter">
                                             <color key="titleColor" red="0.94509803920000002" green="0.37647058820000001" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="onEnterAgeVerification:" destination="LnF-P7-GRS" eventType="touchUpInside" id="5od-uo-1YI"/>
+                                            <action selector="onEnterAgeVerification:" destination="HVm-W8-gs9" eventType="touchUpInside" id="Ej3-CI-3ne"/>
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
                     <connections>
-                        <outlet property="ageVerificationDatePicker" destination="DG2-il-9pS" id="344-70-hge"/>
-                        <outlet property="btnStep1" destination="7fX-kQ-2KV" id="xrv-PN-MHL"/>
-                        <outlet property="btnStep2" destination="Pll-ow-8NT" id="PJ7-yl-4Xi"/>
-                        <outlet property="btnStep3" destination="AUX-w6-Lva" id="c6z-7l-toG"/>
-                        <outlet property="btnStep4" destination="BN8-46-OKi" id="VN3-oA-kTQ"/>
-                        <outlet property="collectionView" destination="kht-tA-9fs" id="0WG-XH-bUC"/>
-                        <outlet property="viewAgeVerification" destination="tmG-nt-NNp" id="axa-Nf-eXU"/>
+                        <outlet property="ageVerificationDatePicker" destination="5zM-EX-ArV" id="iGP-hE-HWc"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="JJl-5J-Kc4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OMk-pH-IZO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="523" y="579"/>
+            <point key="canvasLocation" x="924" y="579"/>
         </scene>
         <!--Home View Controller-->
         <scene sceneID="0JM-VX-FHs">

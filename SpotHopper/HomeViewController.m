@@ -48,7 +48,7 @@
     [self showSidebarButton:YES animated:YES];
     
     if ([[ClientSessionManager sharedClient] hasSeenLaunch] == NO) {
-        [self goToTutorial:FALSE];
+        [self goToAgeVerification:FALSE];
     }
 }
 

@@ -8,6 +8,7 @@
 
 #define kCookie @"Cookie"
 #define kCurrentUser @"CurrentUser"
+#define kHasSeenWelcome @"HasSeenWelcome"
 #define kHasSeenLaunch @"HasSeenLaunch"
 
 #import "ClientSessionManager.h"
@@ -233,6 +234,14 @@
 }
 
 #pragma mark - Settings
+
+- (BOOL)hasSeenWelcome {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kHasSeenWelcome];
+}
+
+- (void)setHasSeenWelcome:(BOOL)seenWelcome {
+    [[NSUserDefaults standardUserDefaults] setBool:seenWelcome forKey:kHasSeenWelcome];
+}
 
 - (BOOL)hasSeenLaunch {
     return [[NSUserDefaults standardUserDefaults] boolForKey:kHasSeenLaunch];

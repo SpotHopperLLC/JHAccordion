@@ -1814,6 +1814,10 @@
 		26ED9F8B18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */; };
 		26ED9F8C18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */; };
 		26ED9F8D18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */; };
+		26F0FDE718EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F0FDE618EB4F23001BB0CD /* AgeVerificationViewController.m */; };
+		26F0FDE818EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F0FDE618EB4F23001BB0CD /* AgeVerificationViewController.m */; };
+		26F0FDE918EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F0FDE618EB4F23001BB0CD /* AgeVerificationViewController.m */; };
+		26F0FDEA18EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F0FDE618EB4F23001BB0CD /* AgeVerificationViewController.m */; };
 		D7FCD5C8824B4FA4A7587334 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -2426,6 +2430,8 @@
 		26F0FDE218EB1B18001BB0CD /* Milwaukee.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Milwaukee.gpx; sourceTree = "<group>"; };
 		26F0FDE318EB1B18001BB0CD /* New York.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "New York.gpx"; sourceTree = "<group>"; };
 		26F0FDE418EB1B18001BB0CD /* San Francisco.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "San Francisco.gpx"; sourceTree = "<group>"; };
+		26F0FDE518EB4F23001BB0CD /* AgeVerificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgeVerificationViewController.h; sourceTree = "<group>"; };
+		26F0FDE618EB4F23001BB0CD /* AgeVerificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgeVerificationViewController.m; sourceTree = "<group>"; };
 		B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C9816A19827543A8863B8CBF /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -3636,6 +3642,8 @@
 				03F2D9361871E88000C69576 /* LaunchViewController.m */,
 				03F2D94E18722D5300C69576 /* HomeViewController.h */,
 				03F2D94F18722D5300C69576 /* HomeViewController.m */,
+				26F0FDE518EB4F23001BB0CD /* AgeVerificationViewController.h */,
+				26F0FDE618EB4F23001BB0CD /* AgeVerificationViewController.m */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -5350,6 +5358,7 @@
 				038664CD186D376900985CEC /* NSDate+Util.m in Sources */,
 				0320236D18774DD1008368C2 /* ReviewsMenuViewController.m in Sources */,
 				03F6BF7018C6E8BD00172F13 /* ListCell.m in Sources */,
+				26F0FDE718EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
 				038664D3186D376900985CEC /* UIImage+Resize.m in Sources */,
 				03F2D9411872090E00C69576 /* SHTextFieldLatoLight.m in Sources */,
 				039BA005188EB9AB001AF1B9 /* ACEAutocompleteInputView.m in Sources */,
@@ -5494,6 +5503,7 @@
 				03CABFD318E7716400FAC5F5 /* NSDate+Util.m in Sources */,
 				03CABFD418E7716400FAC5F5 /* ReviewsMenuViewController.m in Sources */,
 				03CABFD518E7716400FAC5F5 /* ListCell.m in Sources */,
+				26F0FDEA18EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
 				03CABFD618E7716400FAC5F5 /* UIImage+Resize.m in Sources */,
 				03CABFD718E7716400FAC5F5 /* SHTextFieldLatoLight.m in Sources */,
 				03CABFD818E7716400FAC5F5 /* ACEAutocompleteInputView.m in Sources */,
@@ -5630,6 +5640,7 @@
 				03F4E77718CA33D00056EAA9 /* NSDate+Util.m in Sources */,
 				03F4E77818CA33D00056EAA9 /* ReviewsMenuViewController.m in Sources */,
 				03F4E77918CA33D00056EAA9 /* ListCell.m in Sources */,
+				26F0FDE918EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
 				03F4E77A18CA33D00056EAA9 /* UIImage+Resize.m in Sources */,
 				03F4E77B18CA33D00056EAA9 /* SHTextFieldLatoLight.m in Sources */,
 				03F4E77C18CA33D00056EAA9 /* ACEAutocompleteInputView.m in Sources */,
@@ -5766,6 +5777,7 @@
 				03F4E8C518CA34260056EAA9 /* NSDate+Util.m in Sources */,
 				03F4E8C618CA34260056EAA9 /* ReviewsMenuViewController.m in Sources */,
 				03F4E8C718CA34260056EAA9 /* ListCell.m in Sources */,
+				26F0FDE818EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
 				03F4E8C818CA34260056EAA9 /* UIImage+Resize.m in Sources */,
 				03F4E8C918CA34260056EAA9 /* SHTextFieldLatoLight.m in Sources */,
 				03F4E8CA18CA34260056EAA9 /* ACEAutocompleteInputView.m in Sources */,

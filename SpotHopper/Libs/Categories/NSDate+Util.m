@@ -78,6 +78,18 @@
     return newDate;
 }
 
+- (NSDate*)addYears:(NSInteger)numberOfYears {
+    // Create and initialize date component instance
+    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+    [dateComponents setYear:numberOfYears];
+    
+    // Retrieve date with increased days count
+    NSDate *newDate = [[NSCalendar currentCalendar]
+                       dateByAddingComponents:dateComponents
+                       toDate:self options:0];
+    return newDate;
+}
+
 + (NSDateComponents*)timeBetween:(NSDate*)startDate and:(NSDate*)endDate {
     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit

@@ -10,9 +10,10 @@
 
 #import "UIViewController+Navigator.h"
 #import "TTTAttributedLabel+QuickFonting.h"
-#import "NSDate+Util.h"
 
-#define kNumberOfCells      4
+#import "ClientSessionManager.h"
+
+#define kNumberOfCells      5
 
 @interface TutorialViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate>
 
@@ -22,12 +23,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnStep2;
 @property (weak, nonatomic) IBOutlet UIButton *btnStep3;
 @property (weak, nonatomic) IBOutlet UIButton *btnStep4;
-
-@property (weak, nonatomic) IBOutlet UIView *viewAgeVerification;
-@property (weak, nonatomic) IBOutlet UIDatePicker *ageVerificationDatePicker;
+@property (weak, nonatomic) IBOutlet UIButton *btnStep5;
 
 @property (strong, nonatomic) NSArray *buttons;
-@property (strong, nonatomic) NSDate *minumumAgeRequirement;
 
 @end
 
@@ -38,7 +36,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSArray *buttons = @[_btnStep1, _btnStep2, _btnStep3, _btnStep4];
+    NSArray *buttons = @[_btnStep1, _btnStep2, _btnStep3, _btnStep4, _btnStep5];
     for (UIButton *button in buttons) {
         [button addTarget:self action:@selector(onStep:) forControlEvents:UIControlEventTouchUpInside];
         [button setBackgroundImage:[self dotFilledImage] forState:UIControlStateNormal];
@@ -46,18 +44,13 @@
         button.selected = button.tag == 1;
     }
     
-    NSCAssert(_viewAgeVerification, @"Outlet is required");
-    NSDate *manyYearsAgo = [[NSDate date] addMonths:12*120*-1];
-    NSDate *just18YearsAgo = [[NSDate date] addMonths:12*18*-1];
-    
-    _viewAgeVerification.hidden = TRUE;
-    _ageVerificationDatePicker.maximumDate = [NSDate date];
-    _ageVerificationDatePicker.minimumDate = manyYearsAgo;
-    _ageVerificationDatePicker.date = just18YearsAgo;
-    
-    self.minumumAgeRequirement = just18YearsAgo;
-    
     self.buttons = buttons;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [[ClientSessionManager sharedClient] setHasSeenWelcome:TRUE];
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -149,60 +142,21 @@
     [self selectCell:(button.tag-1)];
 }
 
-- (IBAction)onContinue:(UIButton *)button {
-    [self showAgeVerification:TRUE];
-}
-
-- (IBAction)onCancelAgeVerification:(UIButton *)button {
-    [self hideAgeVerification:TRUE];
-}
-
-- (IBAction)onEnterAgeVerification:(UIButton *)button {
-    // verify the age is over 18 to procede or alert the user they cannot continue
-    
-    NSDate* now = [NSDate date];
-    NSDateComponents* ageComponents = [[NSCalendar currentCalendar] components:NSYearCalendarUnit
-                                                                      fromDate:_ageVerificationDatePicker.date
-                                                                        toDate:now
-                                                                       options:0];
-    NSInteger age = [ageComponents year];
-    
-    if (age >= 18) {
-        [self hideAgeVerification:FALSE];
-        
-        // go immediately to the launch screen after age verification
-        UIViewController *presentingVC = self.presentingViewController;
-        [self dismissViewControllerAnimated:NO completion:^{
-            [presentingVC goToLaunch:NO];
-        }];
-    }
-    else {
-        [self showAlert:@"Age Verification" message:@"You must be 18 or older to use this app."];
-    }
-}
-
 #pragma mark - Private
 
 - (void)selectCell:(NSUInteger)item {
-    
-//    btnContinue.alpha
     for (UIButton *button in _buttons) {
         button.selected = button.tag == (item+1);
     }
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        // for the last cell fade in the continue button to get the user's attention
-        if (item == kNumberOfCells - 1) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:3 inSection:0];
-            UICollectionViewCell *cell = [_collectionView cellForItemAtIndexPath:indexPath];
-            UIView *view = [cell viewWithTag:4];
-            UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction;
-            [UIView animateWithDuration:0.5 delay:0.0 options:options animations:^{
-                view.alpha = 1.0;
-            } completion:^(BOOL finished) {
+    if (item == kNumberOfCells - 1) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.75 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            // for the last cell fade in the continue button to get the user's attention
+            [self dismissViewControllerAnimated:TRUE completion:^{
+                NSLog(@"Welcome Home!");
             }];
-        }
-    });
+        });
+    }
 }
 
 - (void)changeLabelToLatoLight:(UIView *)view {
@@ -223,28 +177,6 @@
             [label setText:label.text withFont:[UIFont fontWithName:@"Lato-Bold" size:label.font.pointSize] onString:boldText];
         }
     }
-}
-
-- (void)showAgeVerification:(BOOL)animated {
-    _viewAgeVerification.alpha = 0.0f;
-    _viewAgeVerification.hidden = FALSE;
-
-    CGFloat duration = animated ? 0.5f : 0.0f;
-    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction;
-    [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
-        _viewAgeVerification.alpha = 1.0f;
-    } completion:^(BOOL finished) {
-    }];
-}
-
-- (void)hideAgeVerification:(BOOL)animated {
-    CGFloat duration = animated ? 0.5f : 0.0f;
-    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction;
-    [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
-        _viewAgeVerification.alpha = 0.0f;
-    } completion:^(BOOL finished) {
-        _viewAgeVerification.hidden = TRUE;
-    }];
 }
 
 #pragma mark - Images

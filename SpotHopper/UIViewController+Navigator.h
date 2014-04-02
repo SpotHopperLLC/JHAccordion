@@ -26,6 +26,7 @@
 @interface UIViewController (Navigator)
 
 // Main
+- (void)goToAgeVerification:(BOOL)animated;
 - (void)goToTutorial:(BOOL)animated;
 - (void)goToLaunch:(BOOL)animated;
 
@@ -58,7 +59,6 @@
 - (void)goToSpotProfile:(SpotModel *)spot;
 
 // Menu
-
 - (void)goToMenu:(SpotModel*)spot;
 - (void)goToMenuOfferings:(SpotModel *)spot drinkType:(DrinkTypeModel*)drinkType menuType:(MenuTypeModel*)drinkSubtype menuItems:(NSArray*)menuItems;
 
