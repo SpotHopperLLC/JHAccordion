@@ -214,15 +214,25 @@ $2 Non-Wisco Taps</string>
                                                     <rect key="frame" x="0.0" y="0.0" width="225" height="309"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_card_background.png" id="BKb-Ih-4aH">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_card_background.png" id="BKb-Ih-4aH" userLabel="Background Image View">
                                                             <rect key="frame" x="0.0" y="45" width="225" height="264"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         </imageView>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="esJ-nL-Tdh">
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="esJ-nL-Tdh" userLabel="Spot Image View">
                                                             <rect key="frame" x="5" y="101" width="215" height="150"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <color key="backgroundColor" red="0.88235294119999996" green="0.88235294119999996" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
                                                         </imageView>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Tqe-ec-8JA" userLabel="Foursquare Attribution Button">
+                                                            <rect key="frame" x="5" y="220" width="30" height="30"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                            <state key="normal" backgroundImage="Foursquare-Watermark">
+                                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="onFoursquareButton:" destination="46L-BE-h0z" eventType="touchUpInside" id="4Mr-ot-TGv"/>
+                                                            </connections>
+                                                        </button>
                                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@ Staten Island Neighborhood" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="D4l-aU-vZq" customClass="SHLabelLatoLight">
                                                             <rect key="frame" x="5" y="259" width="215" height="21"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
@@ -461,6 +471,7 @@ $2 Non-Wisco Taps</string>
         </scene>
     </scenes>
     <resources>
+        <image name="Foursquare-Watermark" width="60" height="60"/>
         <image name="btn_down_arrow.png" width="104" height="32"/>
         <image name="btn_share.png" width="40" height="42"/>
         <image name="icon_phone.png" width="25" height="25"/>
