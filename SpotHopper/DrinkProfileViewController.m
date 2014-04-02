@@ -392,6 +392,7 @@
         
         // Expands view to be height of recipe
         [_lblExpandInfo fitLabelHeight];
+        [self addExtraHeight:_lblExpandInfo];
         [_viewExpand alignToChildBottom:_lblExpandInfo withSpacing:5.0f];
     }
     
@@ -409,6 +410,7 @@
             
             // Expands view to be height of recipe
             [_lblExpandInfo fitLabelHeight];
+            [self addExtraHeight:_lblExpandInfo];
             [_viewExpand alignToChildBottom:_lblExpandInfo withSpacing:5.0f];
             
             [_tblSliders scrollRectToVisible:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblSliders.frame), 1.0f) animated:YES];
@@ -429,6 +431,7 @@
         
         // Expands view to be height of recipe
         [_lblExpandInfo fitLabelHeight];
+        [self addExtraHeight:_lblExpandInfo];
         [_viewExpand alignToChildBottom:_lblExpandInfo withSpacing:5.0f];
     }
     
@@ -446,6 +449,7 @@
             
             // Expands view to be height of recipe
             [_lblExpandInfo fitLabelHeight];
+            [self addExtraHeight:_lblExpandInfo];
             [_viewExpand alignToChildBottom:_lblExpandInfo withSpacing:5.0f];
             
             [_tblSliders scrollRectToVisible:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblSliders.frame), 1.0f) animated:YES];
@@ -456,6 +460,12 @@
         }
         
     }];
+}
+
+- (void)addExtraHeight:(UILabel*)label {
+    CGRect frame = label.frame;
+    frame.size.height += 50.0f;
+    [label setFrame:frame];
 }
 
 - (BOOL)isExpandClosed {
