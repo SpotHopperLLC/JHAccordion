@@ -203,6 +203,7 @@
             _drinkList = drinkListModel;
             [_collectionView reloadData];
             
+            [self updateView];
             [self updateMatchPercent];
         } failure:^(ErrorModel *errorModel) {
             [self hideHUD];
@@ -297,6 +298,7 @@
 - (void)updateView {
     
     [_viewEmpty setHidden:( _drinkList.drinks.count != 0 )];
+    [_collectionView setHidden:( _drinkList.drinks.count == 0 )];
     
     [_viewPlaceholder setHidden:YES];
     [_viewLocation setHidden:(_drinkList.spot != nil)];
