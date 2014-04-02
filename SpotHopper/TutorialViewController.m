@@ -91,11 +91,6 @@
             [self changeLabelToLatoLight:[cell viewWithTag:2]];
             [self changeLabelToLatoLight:[cell viewWithTag:3]];
             
-            UIButton *btnContinue = (UIButton *)[cell viewWithTag:4];
-            [btnContinue addTarget:self action:@selector(onContinue:) forControlEvents:UIControlEventTouchUpInside];
-            
-            btnContinue.alpha = 0.0;
-
             break;
         }
             
@@ -151,9 +146,8 @@
     
     if (item == kNumberOfCells - 1) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.75 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            // for the last cell fade in the continue button to get the user's attention
             [self dismissViewControllerAnimated:TRUE completion:^{
-                NSLog(@"Welcome Home!");
+                // do nothing
             }];
         });
     }
