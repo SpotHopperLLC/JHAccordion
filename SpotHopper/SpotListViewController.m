@@ -327,6 +327,7 @@
 - (void)updateView {
     
     [_viewEmpty setHidden:( _spotList.spots.count != 0 )];
+    [self updateFooterMapListButton:nil];
     
     // Zoom map
     if (_spotList.latitude != nil && _spotList.longitude != nil) {
@@ -352,18 +353,20 @@
 }
 
 - (void)updateFooterMapListButton:(FooterViewController*)footerViewController {
+    BOOL hide = ( _spotList.spots.count == 0 );
+    
     if (_showMap == YES) {
         [footerViewController setMiddleButton:@"List" image:[UIImage imageNamed:@"btn_context_list"]];
         
-        [_mapView setHidden:NO];
+        [_mapView setHidden:hide];
         [_collectionView setHidden:YES];
         [_lblMatchPercent setHidden:YES];
     } else {
         [footerViewController setMiddleButton:@"Map" image:[UIImage imageNamed:@"btn_context_map"]];
         
         [_mapView setHidden:YES];
-        [_collectionView setHidden:NO];
-        [_lblMatchPercent setHidden:NO];
+        [_collectionView setHidden:hide];
+        [_lblMatchPercent setHidden:hide];
     }
 }
 
