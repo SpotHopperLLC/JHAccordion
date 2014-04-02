@@ -327,6 +327,9 @@
 - (void)updateView {
     
     [_viewEmpty setHidden:( _spotList.spots.count != 0 )];
+    
+    // We can pass in nil here because we only need to worry about correct showing/hiding of
+    // collection view and mapview (not about the changing of the text and iamge of the middle button
     [self updateFooterMapListButton:nil];
     
     // Zoom map
