@@ -325,27 +325,6 @@
     }
 }
 
-//- (void)fetchDrinkList {
-//    
-//    [self showHUD:@"Getting drinks"];
-//    [_drinkList getDrinkList:nil success:^(DrinkListModel *drinkListModel, JSONAPI *jsonAPi) {
-//        [self hideHUD];
-//        
-//        _drinkList = drinkListModel;
-//        [_collectionView reloadData];
-//        
-//        [self updateView];
-//        [self updateMatchPercent];
-//    } failure:^(ErrorModel *errorModel) {
-//        [self hideHUD];
-//        [_collectionView reloadData];
-//        
-//        [self updateView];
-//        [self updateMatchPercent];
-//    }];
-//    
-//}
-
 - (void)deleteDrinkList {
     
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Confirm Delete" message:@"Are you sure you want to delete this drinklist?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
