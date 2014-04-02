@@ -39,7 +39,7 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-@interface DrinkListMenuViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, FindSimilarViewControllerDelegate, FindSimilarDrinksViewControllerDelegate, SHButtonLatoLightLocationDelegate, AdjustDrinkSliderListSliderViewControllerDelegate>
+@interface DrinkListMenuViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, CheckinViewControllerDelegate, FindSimilarDrinksViewControllerDelegate, SHButtonLatoLightLocationDelegate, AdjustDrinkSliderListSliderViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
 @property (weak, nonatomic) IBOutlet SHButtonLatoLight *btnSpot;
@@ -320,18 +320,14 @@
     [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
 }
 
-#pragma mark - FindSimilarViewControllerDelegate
+#pragma mark - CheckinViewControllerDelegate
 
-- (void)findSimilarViewController:(FindSimilarViewController *)viewController selectedSpot:(SpotModel *)spot {
+- (void)checkinViewController:(CheckinViewController *)viewController checkedInToSpot:(SpotModel *)spot {
     [self.navigationController popToViewController:self animated:YES];
     
     _spot = spot;
     [self updateView];
     [self fetchDrinkLists];
-}
-
-- (void)findSimilarViewController:(FindSimilarViewController *)viewController selectedDrink:(DrinkModel *)drink {
-    
 }
 
 #pragma mark - FindSimilarDrinksViewController
@@ -404,7 +400,7 @@
 #pragma mark - Actions
 
 - (IBAction)onClickChooseSpot:(id)sender {
-    [self goToFindSimilarSpots:self];
+    [self goToCheckin:self];
 }
 
 
