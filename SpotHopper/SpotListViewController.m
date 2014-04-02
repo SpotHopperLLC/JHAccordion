@@ -90,11 +90,7 @@
     // Locations
     if (_spotList.featured == NO) {
         [_btnLocation setDelegate:self];
-        if (_spotList.location != nil) {
-            [_btnLocation updateWithLocation:_spotList.location];
-        } else {
-            [_btnLocation updateWithLastLocation];
-        }
+        [_btnLocation updateWithLastLocation];
     } else {
         [_lblLocation setHidden:YES];
         [_btnLocation setHidden:YES];
@@ -105,7 +101,7 @@
     
     // Fetches spotlist
     if (_spotList.spots == nil) {
-        [self fetchSpotList];
+
     } else {
         [_collectionView reloadData];
         [self updateView];
@@ -263,28 +259,26 @@
 }
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
-    if (_selectedLocation != nil) {
     
-        [self showHUD:@"Getting new spots"];
-        [_spotList putSpotList:nil latitude:[NSNumber numberWithFloat:location.coordinate.latitude] longitude:[NSNumber numberWithFloat:location.coordinate.longitude] sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
-            [self hideHUD];
-            
-            _spotList = spotListModel;
-            [_collectionView reloadData];
-            
-            [self updateView];
-            [self updateMatchPercent];
-        } failure:^(ErrorModel *errorModel) {
-            [self hideHUD];
-            [self showAlert:@"Oops" message:errorModel.human];
-        }];
+    [self showHUD:@"Getting new spots"];
+    [_spotList putSpotList:nil latitude:[NSNumber numberWithFloat:location.coordinate.latitude] longitude:[NSNumber numberWithFloat:location.coordinate.longitude] sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+        [self hideHUD];
         
-    }
+        _spotList = spotListModel;
+        [_collectionView reloadData];
+        
+        [self updateView];
+        [self updateMatchPercent];
+    } failure:^(ErrorModel *errorModel) {
+        [self hideHUD];
+        [self showAlert:@"Oops" message:errorModel.human];
+    }];
     
     _selectedLocation = location;
 }
 
 - (void)locationError:(SHButtonLatoLightLocation *)button error:(NSError *)error {
+    [self hideHUD];
     [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
 }
 
@@ -393,26 +387,6 @@
     if (spot != nil && spot.match != nil) {
         [_lblMatchPercent setText:[NSString stringWithFormat:@"%@ Match", [spot matchPercent]]];
     }
-}
-
-- (void)fetchSpotList {
-    
-    [self showHUD:@"Getting spots"];
-    [_spotList getSpotList:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonAPi) {
-        [self hideHUD];
-        
-        _spotList = spotListModel;
-        [_collectionView reloadData];
-        
-        [self updateView];
-        [self updateMatchPercent];
-    } failure:^(ErrorModel *errorModel) {
-        [self hideHUD];
-        [_collectionView reloadData];
-        
-        [self updateMatchPercent];
-    }];
-    
 }
 
 - (void)deleteSpotList {
