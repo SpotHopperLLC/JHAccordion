@@ -87,8 +87,7 @@
 
 - (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
     if (FooterViewButtonRight == footerViewButtonType) {
-        UserModel *user = [ClientSessionManager sharedClient].currentUser;
-        [self showAlert:user.description message:nil];
+        [self goToTutorial:TRUE];
         return YES;
     }
     return NO;
