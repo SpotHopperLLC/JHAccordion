@@ -284,9 +284,9 @@ $2 Non-Wisco Taps</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xfB-ug-f5U" customClass="SHLabelLatoLight">
-                                        <rect key="frame" x="9" y="69" width="263" height="109"/>
+                                        <rect key="frame" x="9" y="69" width="263" height="147"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <string key="text">Looks like there aren't any results matching your search. Try again? Or better yet help us build our database by reviewing Spots and Drinks that you love!</string>
+                                        <string key="text">Looks like there aren't any results matching your search. Adjust your search criteria and try again? Or better yet help us build our database by reviewing Spots and Drinks that you love!</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
