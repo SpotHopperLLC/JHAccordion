@@ -32,7 +32,7 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-@interface DrinkListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, SHButtonLatoLightLocationDelegate, DrinkCardCollectionViewCellDelegate, FindSimilarViewControllerDelegate>
+@interface DrinkListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, SHButtonLatoLightLocationDelegate, DrinkCardCollectionViewCellDelegate, CheckinViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewPlaceholder;
 @property (weak, nonatomic) IBOutlet UIView *viewLocation;
@@ -210,9 +210,9 @@
     [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
 }
 
-#pragma mark - FindSimilarViewControllerDelegate
+#pragma mark - CheckinViewControllerDelegate
 
-- (void)findSimilarViewController:(FindSimilarViewController *)viewController selectedSpot:(SpotModel *)spot {
+- (void)checkinViewController:(CheckinViewController *)viewController checkedInToSpot:(SpotModel *)spot {
     [self.navigationController popToViewController:self animated:YES];
     
     [self showHUD:@"Creating drinklist"];
@@ -224,10 +224,10 @@
         [self showHUD:@"Getting new drinks"];
         [_drinkList putDrinkList:nil latitude:latitude longitude:longitude spotId:spotModel.ID sliders:nil success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
             [self hideHUD];
-
+            
             _drinkList = drinkListModel;
             [_collectionView reloadData];
-
+            
             [self updateView];
             [self updateMatchPercent];
         } failure:^(ErrorModel *errorModel) {
@@ -239,17 +239,12 @@
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
     }];
-
-}
-
-- (void)findSimilarViewController:(FindSimilarViewController *)viewController selectedDrink:(DrinkModel *)drink {
-    
 }
 
 #pragma mark - Actions
 
 - (IBAction)onClickChooseSpot:(id)sender {
-    [self goToFindSimilarSpots:self];
+    [self goToCheckin:self];
 }
 
 - (void)onClickBack:(id)sender {
