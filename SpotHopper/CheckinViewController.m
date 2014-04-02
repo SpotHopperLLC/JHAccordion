@@ -300,7 +300,11 @@
 #pragma mark - Private
 
 - (void)checkinAtSpot:(SpotModel*)spot {
-    [self goToCheckinAtSpot:spot];
+    if ([_delegate respondsToSelector:@selector(checkinViewController:checkedInToSpot:)]) {
+        [_delegate checkinViewController:self checkedInToSpot:spot];
+    } else {
+        [self goToCheckinAtSpot:spot];
+    }
 }
 
 - (void)updateViewMap {

@@ -18,6 +18,8 @@
 #import "NewReviewViewController.h"
 #import "ReviewViewController.h"
 
+#import "CheckinViewController.h"
+
 #import "FindSimilarViewController.h"
 #import "FindSimilarDrinksViewController.h"
 
@@ -64,7 +66,7 @@
 - (void)goToTonightsSpecials;
 
 // Checkin
-- (void)goToCheckin;
+- (void)goToCheckin:(id<CheckinViewControllerDelegate>)delegate;
 - (void)goToCheckinAtSpot:(SpotModel*)spot;
 
 // Common

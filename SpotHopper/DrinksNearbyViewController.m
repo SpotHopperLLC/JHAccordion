@@ -23,7 +23,7 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-@interface DrinksNearbyViewController ()<SHButtonLatoLightLocationDelegate, FindSimilarViewControllerDelegate>
+@interface DrinksNearbyViewController ()<SHButtonLatoLightLocationDelegate, FindSimilarViewControllerDelegate, CheckinViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *lblNear;
 @property (weak, nonatomic) IBOutlet UIButton *btnNearBy;
@@ -152,6 +152,15 @@
     [self.navigationController setViewControllers:viewControllers animated:YES];
 }
 
+#pragma mark - CheckinViewControllerDelegate
+
+- (void)checkinViewController:(CheckinViewController *)viewController checkedInToSpot:(SpotModel *)spot {
+    [self.navigationController popToViewController:self animated:YES];
+    
+    _spotNearby = spot;
+    [self updateView];
+}
+
 #pragma mark - Actions
 
 - (IBAction)onClickDrinksHere:(id)sender {
@@ -167,7 +176,7 @@
 }
 
 - (IBAction)onClickNotHere:(id)sender {
-    [self goToCheckin];
+    [self goToCheckin:self];
 }
 
 #pragma mark - Private
