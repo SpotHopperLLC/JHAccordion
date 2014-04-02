@@ -12,8 +12,10 @@
 
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'url' to 'url' property
+    // Maps values in JSON key 'foursquare_id' to 'foursquareId' property
     return @{
              @"url" : @"url",
+             @"foursquare_id" : @"foursquareId"
              };
 }
 

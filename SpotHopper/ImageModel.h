@@ -11,5 +11,6 @@
 @interface ImageModel : SHJSONAPIResource
 
 @property (nonatomic, strong) NSString *url;
+@property (nonatomic, strong) NSString *foursquareId;
 
 @end
