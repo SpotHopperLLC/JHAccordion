@@ -40,6 +40,9 @@
 
 #import "TellMeMyLocation.h"
 
+#import "Mixpanel.h"
+#import "GAI.h"
+
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
 #import <JSONAPI/JSONAPI.h>
 #import <Raven/RavenClient.h>
@@ -127,6 +130,28 @@
     } failure:^(FBSessionState state, NSError *error) {
         NSLog(@"We DONT got activite session");
     }];
+
+    if (kAnalyticsEnabled) {
+        [Mixpanel sharedInstanceWithToken:kMixPanelToken];
+//        Examples:
+//        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+//        [mixpanel track:@"Plan Selected" properties:@{@"Gender": @"Female", @"Plan": @"Premium"}];
+//        [mixpanel identify:@"13793"]; // once the user is logged in set their identity
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        [mixpanel track:@"App Launching" properties:@{@"currentTime" : [NSDate date]}];
+        
+        // Optional: automatically send uncaught exceptions to Google Analytics.
+        [GAI sharedInstance].trackUncaughtExceptions = YES;
+        
+        // Optional: set Google Analytics dispatch interval to e.g. 20 seconds.
+        [GAI sharedInstance].dispatchInterval = 20;
+        
+        // Optional: set Logger to VERBOSE for debug information.
+        [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
+        
+        // Initialize tracker. Replace with your tracking ID.
+        [[GAI sharedInstance] trackerWithTrackingId:kGoogleAnalyticsTrackingId];
+    }
     
     return YES;
 }

@@ -49,7 +49,6 @@
 @property (nonatomic, strong) NSString *varietal;
 @property (nonatomic, strong) NSNumber *vintage;
 @property (nonatomic, strong) NSString *region;
-@property (nonatomic, strong) NSString *recipe;
 @property (nonatomic, strong) SpotModel *spot;
 @property (nonatomic, strong) NSNumber *spotId;
 @property (nonatomic, strong) NSArray *sliderTemplates;
