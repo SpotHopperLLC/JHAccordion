@@ -388,7 +388,7 @@
     if ([self isExpandClosed] == YES) {
         // Sets info
         [_lblExpandTitle setText:@"Recipe"];
-        [_lblExpandInfo setText: ( _drink.recipe.length > 0 ? _drink.recipe : @"No recipe" ) ];
+        [_lblExpandInfo setText: ( _drink.recipeOfDrink.length > 0 ? _drink.recipeOfDrink : @"No recipe" ) ];
         
         // Expands view to be height of recipe
         [_lblExpandInfo fitLabelHeight];
