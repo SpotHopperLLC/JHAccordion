@@ -100,9 +100,7 @@
     _showMap = NO;
     
     // Fetches spotlist
-    if (_spotList.spots == nil) {
-
-    } else {
+    if (_spotList.spots != nil) {
         [_collectionView reloadData];
         [self updateView];
         [self updateMatchPercent];
