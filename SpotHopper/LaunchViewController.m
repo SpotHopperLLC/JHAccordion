@@ -10,6 +10,7 @@
 
 #import "AppDelegate.h"
 
+#import "UIViewController+Navigator.h"
 #import "ClientSessionManager.h"
 #import "ErrorModel.h"
 #import "UserModel.h"
@@ -149,7 +150,8 @@
 #pragma mark - Actions
 
 - (IBAction)onClickSkip:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    UIViewController *vc = self.presentingViewController;
+    [self exitLaunch];
 }
 
 - (IBAction)onClickFacebook:(id)sender {
@@ -271,12 +273,25 @@
     [self showHUD:@"Logging in"];
     [UserModel loginUser:params success:^(UserModel *userModel, NSHTTPURLResponse *response) {
         [self hideHUD];
-        [self dismissViewControllerAnimated:YES completion:nil];
+        
+        [self exitLaunch];
+        
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
     }];
     
+}
+- (void)exitLaunch {
+    if ([[ClientSessionManager sharedClient] hasSeenWelcome] == NO) {
+        UIViewController *vc = self.presentingViewController;
+        [self dismissViewControllerAnimated:NO completion:^{
+            [vc goToTutorial:FALSE];
+        }];
+    }
+    else {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)doRegistration {
@@ -312,7 +327,7 @@
         
         [UserModel loginUser:params success:^(UserModel *userModel, NSHTTPURLResponse *response) {
             [self hideHUD];
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [self exitLaunch];
         } failure:^(ErrorModel *errorModel) {
             [self hideHUD];
             [self showAlert:@"Oops" message:@"Error while trying to login"];

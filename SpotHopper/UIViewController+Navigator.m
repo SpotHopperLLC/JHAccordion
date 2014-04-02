@@ -9,6 +9,7 @@
 #import "UIViewController+Navigator.h"
 
 #import "FindSimilarViewController.h"
+#import "AgeVerificationViewController.h"
 #import "TutorialViewController.h"
 #import "LaunchViewController.h"
 
@@ -39,6 +40,11 @@
 @implementation UIViewController (Navigator)
 
 #pragma mark - Main
+
+- (void)goToAgeVerification:(BOOL)animated {
+    AgeVerificationViewController *viewController = [[self mainStoryboard] instantiateViewControllerWithIdentifier:@"AgeVerificationViewController"];
+    [self presentViewController:viewController animated:animated completion:nil];
+}
 
 - (void)goToTutorial:(BOOL)animated {
     TutorialViewController *viewController = [[self mainStoryboard] instantiateViewControllerWithIdentifier:@"TutorialViewController"];

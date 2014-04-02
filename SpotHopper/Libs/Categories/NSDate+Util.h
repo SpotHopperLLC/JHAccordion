@@ -14,6 +14,7 @@
 - (NSDate*)dateToGMT;
 - (NSDate*)addDays:(NSInteger)numberOfDays;
 - (NSDate*)addMonths:(NSInteger)numberOfMonths;
+- (NSDate*)addYears:(NSInteger)numberOfYears;
 + (NSDateComponents*)timeBetween:(NSDate*)startDate and:(NSDate*)endDate;
 
 @end

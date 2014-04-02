@@ -47,9 +47,9 @@
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
     
-    if ([[ClientSessionManager sharedClient] hasSeenLaunch] == NO) {
-        [self goToTutorial:FALSE];
-    }
+//    if ([[ClientSessionManager sharedClient] hasSeenLaunch] == NO) {
+        [self goToAgeVerification:FALSE];
+//    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {

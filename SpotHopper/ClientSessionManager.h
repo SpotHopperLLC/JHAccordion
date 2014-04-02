@@ -35,6 +35,8 @@
 - (void)logout;
 
 // Settings
+- (BOOL)hasSeenWelcome;
+- (void)setHasSeenWelcome:(BOOL)seenWelcome;
 - (BOOL)hasSeenLaunch;
 - (void)setHasSeenLaunch:(BOOL)seenLaunch;
 
