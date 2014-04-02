@@ -322,6 +322,10 @@
     }
 }
 
+- (IBAction)onFoursquareButton:(id)sender {
+    NSLog(@"Show 4sq attribution (pop up)");
+}
+
 #pragma mark - Private
 
 - (void)updateView {
