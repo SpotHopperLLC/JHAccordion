@@ -136,7 +136,7 @@ typedef void(^AlertBlock)();
 }
 
 - (void)sidebarViewControllerClickedCheckin:(SidebarViewController *)sidebarViewController {
-    [self goToCheckin];
+    [self goToCheckin:nil];
 }
 
 - (void)sidebarViewControllerClickedAccount:(SidebarViewController *)sidebarViewController {

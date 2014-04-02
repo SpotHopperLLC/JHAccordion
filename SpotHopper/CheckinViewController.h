@@ -8,6 +8,18 @@
 
 #import "BaseViewController.h"
 
+@class SpotModel;
+
+@protocol CheckinViewControllerDelegate;
+
 @interface CheckinViewController : BaseViewController
+
+@property (nonatomic, assign) id<CheckinViewControllerDelegate> delegate;
+
+@end
+
+@protocol CheckinViewControllerDelegate <NSObject>
+
+- (void)checkinViewController:(CheckinViewController*)viewController checkedInToSpot:(SpotModel*)spot;
 
 @end

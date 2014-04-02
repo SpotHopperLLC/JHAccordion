@@ -210,8 +210,9 @@
 
 #pragma mark - Checkin
 
-- (void)goToCheckin {
+- (void)goToCheckin:(id<CheckinViewControllerDelegate>)delegate {
     CheckinViewController *viewController = [[self checkinStoryboard] instantiateViewControllerWithIdentifier:@"CheckinViewController"];
+    [viewController setDelegate:delegate];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
