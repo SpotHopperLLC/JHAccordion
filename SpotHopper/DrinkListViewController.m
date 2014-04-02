@@ -88,11 +88,7 @@
     // Locations
     if (_drinkList.featured == NO) {
         [_btnLocation setDelegate:self];
-        if (_drinkList.location != nil) {
-            [_btnLocation updateWithLocation:_drinkList.location];
-        } else {
-            [_btnLocation updateWithLastLocation];
-        }
+        [_btnLocation updateWithLastLocation];
     } else {
         [_lblLocation setHidden:YES];
         [_btnLocation setHidden:YES];
@@ -100,7 +96,7 @@
     
     // Fetches drinklist
     if (_drinkList.drinks == nil) {
-        [self fetchDrinkList];
+        
     } else {
         [_collectionView reloadData];
         [self updateView];
@@ -194,23 +190,20 @@
 }
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
-    if (_selectedLocation != nil) {
         
-        [self showHUD:@"Getting new drinks"];
-        [_drinkList putDrinkList:nil latitude:[NSNumber numberWithFloat:location.coordinate.latitude] longitude:[NSNumber numberWithFloat:location.coordinate.longitude] spotId:nil sliders:nil success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
-            [self hideHUD];
-            
-            _drinkList = drinkListModel;
-            [_collectionView reloadData];
-            
-            [self updateView];
-            [self updateMatchPercent];
-        } failure:^(ErrorModel *errorModel) {
-            [self hideHUD];
-            [self showAlert:@"Oops" message:errorModel.human];
-        }];
+    [self showHUD:@"Getting new drinks"];
+    [_drinkList putDrinkList:nil latitude:[NSNumber numberWithFloat:location.coordinate.latitude] longitude:[NSNumber numberWithFloat:location.coordinate.longitude] spotId:nil sliders:nil success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+        [self hideHUD];
         
-    }
+        _drinkList = drinkListModel;
+        [_collectionView reloadData];
+        
+        [self updateView];
+        [self updateMatchPercent];
+    } failure:^(ErrorModel *errorModel) {
+        [self hideHUD];
+        [self showAlert:@"Oops" message:errorModel.human];
+    }];
     
     _selectedLocation = location;
 }
@@ -334,26 +327,26 @@
     }
 }
 
-- (void)fetchDrinkList {
-    
-    [self showHUD:@"Getting drinks"];
-    [_drinkList getDrinkList:nil success:^(DrinkListModel *drinkListModel, JSONAPI *jsonAPi) {
-        [self hideHUD];
-        
-        _drinkList = drinkListModel;
-        [_collectionView reloadData];
-        
-        [self updateView];
-        [self updateMatchPercent];
-    } failure:^(ErrorModel *errorModel) {
-        [self hideHUD];
-        [_collectionView reloadData];
-        
-        [self updateView];
-        [self updateMatchPercent];
-    }];
-    
-}
+//- (void)fetchDrinkList {
+//    
+//    [self showHUD:@"Getting drinks"];
+//    [_drinkList getDrinkList:nil success:^(DrinkListModel *drinkListModel, JSONAPI *jsonAPi) {
+//        [self hideHUD];
+//        
+//        _drinkList = drinkListModel;
+//        [_collectionView reloadData];
+//        
+//        [self updateView];
+//        [self updateMatchPercent];
+//    } failure:^(ErrorModel *errorModel) {
+//        [self hideHUD];
+//        [_collectionView reloadData];
+//        
+//        [self updateView];
+//        [self updateMatchPercent];
+//    }];
+//    
+//}
 
 - (void)deleteDrinkList {
     
