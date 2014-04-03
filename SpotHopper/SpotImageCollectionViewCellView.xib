@@ -19,13 +19,24 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.94999999999999996" alpha="1" colorSpace="calibratedWhite"/>
                     </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xJg-rz-z6D" userLabel="Foursquare Attribution Button">
+                        <rect key="frame" x="0.0" y="135" width="30" height="30"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <state key="normal" backgroundImage="Foursquare-Watermark">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <size key="customSize" width="309" height="162"/>
             <connections>
+                <outlet property="btnFoursquare" destination="xJg-rz-z6D" id="BYa-5G-cs9"/>
                 <outlet property="imgSpot" destination="emh-I5-54n" id="t9O-ku-2rR"/>
             </connections>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="Foursquare-Watermark" width="60" height="60"/>
+    </resources>
 </document>

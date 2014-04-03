@@ -8,8 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class ImageModel;
+
 @interface SpotImageCollectViewCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgSpot;
+@property (weak, nonatomic) IBOutlet UIButton *btnFoursquare;
+
+- (void)setImage:(ImageModel *)image withPlaceholder:(UIImage*)placeholderImage;
 
 @end

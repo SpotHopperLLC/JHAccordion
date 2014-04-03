@@ -184,12 +184,12 @@
     
     // Uses placeholder if spot has no images
     if ([_spot images].count == 0) {
-        [cell.imgSpot setImage:_spot.placeholderImage];
+        [cell setImage:nil withPlaceholder:_spot.placeholderImage];
     }
     // Sets the images defined by the spot
     else {
         ImageModel *image = [[_spot images] objectAtIndex:indexPath.row];
-        [cell.imgSpot setImageWithURL:[NSURL URLWithString:image.url] placeholderImage:_spot.placeholderImage];
+        [cell setImage:image withPlaceholder:_spot.placeholderImage];
     }
     
     return cell;

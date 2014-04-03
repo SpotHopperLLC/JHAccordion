@@ -8,6 +8,10 @@
 
 #import "SpotImageCollectViewCell.h"
 
+#import "ImageModel.h"
+
+#import <AFNetworking/UIImageView+AFNetworking.h>
+
 @implementation SpotImageCollectViewCell
 
 - (id)initWithFrame:(CGRect)frame
@@ -17,6 +21,16 @@
         // Initialization code
     }
     return self;
+}
+
+- (void)setImage:(ImageModel *)image withPlaceholder:(UIImage*)placeholderImage {
+    [_btnFoursquare setHidden:( image.foursquareId.length == 0 )];
+    
+    if (image == nil) {
+        [_imgSpot setImage:placeholderImage];
+    } else {
+        [_imgSpot setImageWithURL:[NSURL URLWithString:image.url] placeholderImage:placeholderImage];
+    }
 }
 
 @end
