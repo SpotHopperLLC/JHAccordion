@@ -104,9 +104,10 @@
 - (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
     if (FooterViewButtonRight == footerViewButtonType) {
         [self showAlert:@"Info" message:kInfoMenu];
+        return YES;
     }
     
-    return YES;
+    return NO;
 }
 
 - (void)didReceiveMemoryWarning

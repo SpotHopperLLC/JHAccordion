@@ -177,9 +177,10 @@
 - (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
     if (FooterViewButtonRight == footerViewButtonType) {
         [self showAlert:@"Info" message:kInfoTonightsSpecials];
+        return YES;
     }
     
-    return YES;
+    return NO;
 }
 
 #pragma mark - Private
