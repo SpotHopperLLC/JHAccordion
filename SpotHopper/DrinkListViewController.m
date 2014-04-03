@@ -207,13 +207,11 @@
     [_drinkList putDrinkList:nil latitude:lat longitude:lng spotId:_spotAt.ID sliders:nil success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
         [self hideHUD];
         
-        // Oh yeah
-        if (_spotAt == nil) {
-            _spotAt = [_drinkList spot];
-        }
-        
         _drinkList = drinkListModel;
         [_collectionView reloadData];
+        
+        // Oh yeah
+        _spotAt = [_drinkList spot];
         
         [self updateView];
         [self updateMatchPercent];
