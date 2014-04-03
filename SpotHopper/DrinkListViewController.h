@@ -13,6 +13,7 @@
 @interface DrinkListViewController : BaseViewController
 
 @property (nonatomic, strong) DrinkListModel *drinkList;
+@property (nonatomic, strong) SpotModel *spotAt;
 @property (nonatomic, assign) BOOL createdWithAdjustSliders;
 
 @end

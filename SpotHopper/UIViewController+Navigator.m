@@ -73,10 +73,11 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
-- (void)goToDrinkList:(DrinkListModel*)drinkList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders {
+- (void)goToDrinkList:(DrinkListModel*)drinkList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders atSpot:(SpotModel*)spot {
     DrinkListViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkListViewController"];
     [viewController setDrinkList:drinkList];
     [viewController setCreatedWithAdjustSliders:createdWithAdjustSliders];
+    [viewController setSpotAt:spot];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
