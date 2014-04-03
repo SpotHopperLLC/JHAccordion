@@ -145,31 +145,11 @@
     }
     
     if (item == kNumberOfCells - 1) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.75 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [self dismissViewControllerAnimated:TRUE completion:^{
                 // do nothing
             }];
         });
-    }
-}
-
-- (void)changeLabelToLatoLight:(UIView *)view {
-    [self changeLabelToLatoLight:view withBoldText:nil];
-}
-
-- (void)changeLabelToLatoLight:(UIView *)view withBoldText:(NSString *)boldText {
-    if (view && [view isKindOfClass:[TTTAttributedLabel class]]) {
-        TTTAttributedLabel *label = (TTTAttributedLabel *)view;
-        [label setFont:[UIFont fontWithName:@"Lato-Light" size:label.font.pointSize]];
-        
-        // change label height to fit text
-        CGRect frame = label.frame;
-        frame.size.height = [self heightForString:label.text font:label.font maxWidth:CGRectGetWidth(label.frame)];
-        label.frame = frame;
-        
-        if (boldText.length) {
-            [label setText:label.text withFont:[UIFont fontWithName:@"Lato-Bold" size:label.font.pointSize] onString:boldText];
-        }
     }
 }
 

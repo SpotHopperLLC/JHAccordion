@@ -10,6 +10,8 @@
 #define kCurrentUser @"CurrentUser"
 #define kHasSeenWelcome @"HasSeenWelcome"
 #define kHasSeenLaunch @"HasSeenLaunch"
+#define kHasSeenSpotlists @"HasSeenSpotlists"
+#define kHasSeenDrinklists @"HasSeenDrinklists"
 
 #import "ClientSessionManager.h"
 
@@ -249,6 +251,22 @@
 
 - (void)setHasSeenLaunch:(BOOL)seenLaunch {
     [[NSUserDefaults standardUserDefaults] setBool:seenLaunch forKey:kHasSeenLaunch];
+}
+
+- (BOOL)hasSeenSpotlists {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kHasSeenSpotlists];
+}
+
+- (void)setHasSeenSpotlists:(BOOL)seenSpotlists {
+    [[NSUserDefaults standardUserDefaults] setBool:seenSpotlists forKey:kHasSeenSpotlists];
+}
+
+- (BOOL)hasSeenDrinklists {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kHasSeenDrinklists];
+}
+
+- (void)setHasSeenDrinklists:(BOOL)seenDrinklists {
+    [[NSUserDefaults standardUserDefaults] setBool:seenDrinklists forKey:kHasSeenDrinklists];
 }
 
 #pragma mark - Save Model

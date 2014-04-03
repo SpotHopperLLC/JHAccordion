@@ -205,6 +205,31 @@ available here</string>
                                     <segue destination="zQQ-3d-nEz" kind="embed" identifier="EmbedAdjustDrinkListSliderViewController" id="Bne-ZL-l41"/>
                                 </connections>
                             </containerView>
+                            <view contentMode="scaleToFill" id="DEr-kr-stA" userLabel="Info View">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="gOG-ue-Bfl" userLabel="White Screen Image View">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pencilarrow" id="apz-Zz-Syo">
+                                        <rect key="frame" x="140" y="207" width="40" height="65"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    </imageView>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get started by creating a new list of recommended drinks" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hZU-o6-8IZ">
+                                        <rect key="frame" x="20" y="271" width="280" height="178"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                        <fontDescription key="fontDescription" name="GillSans-Light" family="Gill Sans" pointSize="38"/>
+                                        <color key="textColor" red="0.37254902719999999" green="0.3803921938" blue="0.38431376220000002" alpha="1" colorSpace="deviceRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="AqD-mJ-zOk" appends="YES" id="0Qf-6L-BoB"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -213,12 +238,20 @@ available here</string>
                         <outlet property="btnLocation" destination="eU4-th-Wa6" id="im2-uS-Xnb"/>
                         <outlet property="btnSpot" destination="kuO-nc-xFY" id="9Iz-Wp-KIF"/>
                         <outlet property="containerAdjustSliders" destination="sbe-dA-6Nk" id="C27-bV-Ieg"/>
+                        <outlet property="imgWhiteScreen" destination="gOG-ue-Bfl" id="5iN-bE-ibY"/>
+                        <outlet property="lblInfo" destination="hZU-o6-8IZ" id="RPY-xf-UY3"/>
                         <outlet property="tblMenu" destination="tsN-bR-bt6" id="7Xu-mn-aCe"/>
+                        <outlet property="viewInfo" destination="DEr-kr-stA" id="qGt-rQ-vtG"/>
                         <outlet property="viewLocation" destination="qB3-fF-zTn" id="8S1-hM-kxb"/>
                         <outlet property="viewSpot" destination="fFo-X3-Aqa" id="d0g-NN-CJK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lUg-Rs-8Ri" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="AqD-mJ-zOk">
+                    <connections>
+                        <action selector="onScreenTap:" destination="kb9-hh-FFz" id="ChN-RD-buB"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="253" y="179"/>
         </scene>
@@ -663,6 +696,7 @@ available here</string>
         <image name="img_carousel_background.png" width="320" height="409"/>
         <image name="img_expand_east_orange.png" width="27" height="27"/>
         <image name="orange_gradient_background.png" width="259" height="564"/>
+        <image name="pencilarrow" width="40" height="65"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

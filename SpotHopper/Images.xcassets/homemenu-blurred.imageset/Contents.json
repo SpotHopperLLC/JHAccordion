@@ -3,16 +3,16 @@
     {
       "idiom" : "iphone",
       "scale" : "1x",
-      "filename" : "welcomescreen05~iphone.png"
+      "filename" : "homemenu-blurred~iphone.png"
     },
     {
       "idiom" : "iphone",
       "scale" : "2x",
-      "filename" : "welcomescreen05~iphone@2x.png"
+      "filename" : "homemenu-blurred~iphone@2x.png"
     },
     {
       "idiom" : "iphone",
-      "filename" : "welcomescreen05-568h~iphone@2x.png",
+      "filename" : "homemenu-blurred-568h~iphone@2x.png",
       "subtype" : "retina4",
       "scale" : "2x"
     }

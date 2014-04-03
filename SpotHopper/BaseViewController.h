@@ -20,6 +20,8 @@
 #import "JHPullRefreshViewController.h"
 #import "ShareViewController.h"
 
+#import "TTTAttributedLabel+QuickFonting.h"
+
 @class LiveSpecialModel, SpotModel;
 @class LiveSpecialViewController;
 
@@ -54,6 +56,11 @@
 - (CGFloat)heightForString:(NSString *)text font:(UIFont *)font maxWidth:(CGFloat)maxWidth;
 - (CGFloat)widthForAttributedString:(NSAttributedString *)text maxWidth:(CGFloat)maxHeight;
 - (CGFloat)widthForString:(NSString *)text font:(UIFont *)font maxWidth:(CGFloat)maxHeight;
+
+- (void)changeLabelToLatoLight:(UIView *)view;
+- (void)changeLabelToLatoLight:(UIView *)view withBoldText:(NSString *)boldText;
+
+- (UIImage *)whiteScreenImageForFrame:(CGRect)frame;
 
 - (void)onClickBack:(id)sender;
 - (void)onClickShowSidebar:(id)sender;

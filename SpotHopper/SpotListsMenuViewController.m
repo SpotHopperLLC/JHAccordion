@@ -42,6 +42,11 @@
 
 @interface SpotListsMenuViewController ()<UITableViewDataSource, UITableViewDelegate, FindSimilarViewControllerDelegate, AdjustSliderListSliderViewControllerDelegate, JHAccordionDelegate, SHButtonLatoLightLocationDelegate>
 
+@property (weak, nonatomic) IBOutlet UIView *viewInfo;
+@property (weak, nonatomic) IBOutlet UIImageView *imgWhiteScreen;
+@property (weak, nonatomic) IBOutlet UILabel *lblInfo;
+
+
 @property (weak, nonatomic) IBOutlet UIView *containerAdjustSliders;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblNear;
@@ -99,6 +104,11 @@
     
     [self showAdjustSlidersView:NO animated:NO];
 
+    _imgWhiteScreen.image = [self whiteScreenImageForFrame:_imgWhiteScreen.frame];
+    [self changeLabelToLatoLight:_lblInfo];
+    CGRect frame = _lblInfo.frame;
+    frame.size.height = [self heightForString:_lblInfo.text font:_lblInfo.font maxWidth:CGRectGetWidth(_lblInfo.frame)];
+    _lblInfo.frame = frame;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -135,6 +145,14 @@
     }
     
     [_lblNear setFont:[UIFont fontWithName:@"Lato-Regular" size:_lblNear.font.pointSize]];
+    
+    if ([[ClientSessionManager sharedClient] hasSeenSpotlists] == NO) {
+        [self showInfo:FALSE];
+        [[ClientSessionManager sharedClient] setHasSeenSpotlists:TRUE];
+    }
+    else {
+        [self hideInfo:FALSE];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -398,7 +416,46 @@
     [self goToSpotList:spotList createdWithAdjustSliders:YES];
 }
 
+#pragma mark - FooterViewControllerDelegate
+
+- (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
+    if (FooterViewButtonRight == footerViewButtonType) {
+        [self showInfo:TRUE];
+        return YES;
+    }
+    return NO;
+}
+
+#pragma mark - Actions
+
+- (IBAction)onScreenTap:(id)sender {
+    [self hideInfo:TRUE];
+}
+
 #pragma mark - Private
+
+- (void)hideInfo:(BOOL)animated {
+    CGFloat duration = animated ? 0.25f : 0.0f;
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
+        _viewInfo.alpha = 0.0f;
+    } completion:^(BOOL finished) {
+        _viewInfo.hidden = TRUE;
+    }];
+}
+
+- (void)showInfo:(BOOL)animated {
+    [self.view bringSubviewToFront:_viewInfo];
+    _viewInfo.hidden = FALSE;
+    
+    CGFloat duration = animated ? 0.25f : 0.0f;
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
+        _viewInfo.alpha = 1.0f;
+    } completion:^(BOOL finished) {
+    }];
+}
 
 - (BOOL)isShowingMySpots {
     return [ClientSessionManager sharedClient].isLoggedIn;

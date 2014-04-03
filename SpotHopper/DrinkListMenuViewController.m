@@ -41,6 +41,10 @@
 
 @interface DrinkListMenuViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, CheckinViewControllerDelegate, FindSimilarDrinksViewControllerDelegate, SHButtonLatoLightLocationDelegate, AdjustDrinkSliderListSliderViewControllerDelegate>
 
+@property (weak, nonatomic) IBOutlet UIView *viewInfo;
+@property (weak, nonatomic) IBOutlet UIImageView *imgWhiteScreen;
+@property (weak, nonatomic) IBOutlet UILabel *lblInfo;
+
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
 @property (weak, nonatomic) IBOutlet SHButtonLatoLight *btnSpot;
 @property (weak, nonatomic) IBOutlet UITableView *tblMenu;
@@ -67,8 +71,7 @@
 
 @implementation DrinkListMenuViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -76,8 +79,7 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
     
     // Sets title
@@ -102,6 +104,12 @@
     
     [self updateView];
     
+    _imgWhiteScreen.image = [self whiteScreenImageForFrame:_imgWhiteScreen.frame];
+    [self changeLabelToLatoLight:_lblInfo];
+    CGRect frame = _lblInfo.frame;
+    frame.size.height = [self heightForString:_lblInfo.text font:_lblInfo.font maxWidth:CGRectGetWidth(_lblInfo.frame)];
+    _lblInfo.frame = frame;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -131,6 +139,14 @@
     } else {
         [self fetchDrinkLists];
     }
+    
+    if ([[ClientSessionManager sharedClient] hasSeenDrinklists] == NO) {
+        [self showInfo:FALSE];
+        [[ClientSessionManager sharedClient] setHasSeenDrinklists:TRUE];
+    }
+    else {
+        [self hideInfo:FALSE];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -155,8 +171,7 @@
     }
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -397,14 +412,50 @@
     [self showAdjustSlidersView:NO animated:YES];
 }
 
+#pragma mark - FooterViewControllerDelegate
+
+- (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
+    if (FooterViewButtonRight == footerViewButtonType) {
+        [self showInfo:TRUE];
+        return YES;
+    }
+    return NO;
+}
+
 #pragma mark - Actions
 
 - (IBAction)onClickChooseSpot:(id)sender {
     [self goToCheckin:self];
 }
 
+- (IBAction)onScreenTap:(id)sender {
+    [self hideInfo:TRUE];
+}
 
 #pragma mark - Private
+
+- (void)hideInfo:(BOOL)animated {
+    CGFloat duration = animated ? 0.25f : 0.0f;
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
+        _viewInfo.alpha = 0.0f;
+    } completion:^(BOOL finished) {
+        _viewInfo.hidden = TRUE;
+    }];
+}
+
+- (void)showInfo:(BOOL)animated {
+    [self.view bringSubviewToFront:_viewInfo];
+    _viewInfo.hidden = FALSE;
+    
+    CGFloat duration = animated ? 0.25f : 0.0f;
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
+        _viewInfo.alpha = 1.0f;
+    } completion:^(BOOL finished) {
+    }];
+}
 
 - (BOOL)hasBeenSeenBefore {
     return [[NSUserDefaults standardUserDefaults] boolForKey:kDrinkListsMenuViewControllerViewedAlready];
