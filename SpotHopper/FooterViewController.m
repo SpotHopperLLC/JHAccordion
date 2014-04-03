@@ -24,6 +24,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblMiddle;
 @property (weak, nonatomic) IBOutlet UILabel *lblLeft;
 
+@property (strong, nonatomic) IBOutlet UITapGestureRecognizer *gestureTap;
+
 @end
 
 @implementation FooterViewController
@@ -41,8 +43,12 @@
     
     CAGradientLayer *topShadow = [CAGradientLayer layer];
     topShadow.frame = CGRectMake(0, 0, self.view.bounds.size.width, 5);
-    topShadow.colors = @[(id)[UIColor clearColor].CGColor, (id)[[UIColor grayColor] colorWithAlphaComponent:0.25].CGColor]; // [NSArray arrayWithObjects:(id)[[UIColor colorWithWhite:0.0 alpha:0.0f] CGColor], (id)[[UIColor colorWithWhite:0.0 alpha:0.25f] CGColor], nil];
+    topShadow.colors = @[(id)[UIColor clearColor].CGColor, (id)[[UIColor grayColor] colorWithAlphaComponent:0.25].CGColor];
     [self.view.layer insertSublayer:topShadow atIndex:0];
+    
+#ifdef PRODUCTION
+    _gestureTap.enabled = FALSE;
+#endif
 }
 
 - (void)viewWillAppear:(BOOL)animated {

@@ -360,6 +360,68 @@ typedef void(^AlertBlock)();
     return width;
 }
 
+- (void)changeLabelToLatoLight:(UIView *)view {
+    [self changeLabelToLatoLight:view withBoldText:nil];
+}
+
+- (void)changeLabelToLatoLight:(UIView *)view withBoldText:(NSString *)boldText {
+    if (view && [view isKindOfClass:[TTTAttributedLabel class]]) {
+        TTTAttributedLabel *label = (TTTAttributedLabel *)view;
+        [label setFont:[UIFont fontWithName:@"Lato-Light" size:label.font.pointSize]];
+        
+        // change label height to fit text
+        CGRect frame = label.frame;
+        frame.size.height = [self heightForString:label.text font:label.font maxWidth:CGRectGetWidth(label.frame)];
+        label.frame = frame;
+        
+        if (boldText.length) {
+            [label setText:label.text withFont:[UIFont fontWithName:@"Lato-Bold" size:label.font.pointSize] onString:boldText];
+        }
+    }
+}
+
+#pragma mark - Images
+
+- (UIImage *)whiteScreenImageForFrame:(CGRect)frame {
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(frame.size.width, frame.size.height), NO, 0.0f);
+    
+    CGFloat width = CGRectGetWidth(frame);
+    CGFloat height = CGRectGetHeight(frame);
+    
+    //// General Declarations
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    //// Color Declarations
+    UIColor* myWhite1 = [[UIColor whiteColor] colorWithAlphaComponent:0.1];
+    UIColor* myWhite2 = [[UIColor whiteColor] colorWithAlphaComponent:0.9];
+    UIColor* middleColor = [[UIColor whiteColor] colorWithAlphaComponent:0.8];
+    
+    //// Gradient Declarations
+    NSArray* myWhiteGradientColors = [NSArray arrayWithObjects:
+                                      (id)myWhite1.CGColor,
+                                      (id)middleColor.CGColor,
+                                      (id)myWhite2.CGColor, nil];
+    CGFloat myWhiteGradientLocations[] = {0, 0.86, 1};
+    CGGradientRef myWhiteGradient = CGGradientCreateWithColors(colorSpace, (CFArrayRef)myWhiteGradientColors, myWhiteGradientLocations);
+    
+    //// Rectangle Drawing
+    UIBezierPath* rectanglePath = [UIBezierPath bezierPathWithRect: CGRectMake(0, 0, width, height)];
+    CGContextSaveGState(context);
+    [rectanglePath addClip];
+    CGContextDrawLinearGradient(context, myWhiteGradient, CGPointMake(width/2, 0), CGPointMake(width/2, height), 0);
+    CGContextRestoreGState(context);
+    
+    //// Cleanup
+    CGGradientRelease(myWhiteGradient);
+    CGColorSpaceRelease(colorSpace);
+
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+        
+    return image;
+}
+
 #pragma mark - Navigation
 
 - (void)onClickBack:(id)sender {

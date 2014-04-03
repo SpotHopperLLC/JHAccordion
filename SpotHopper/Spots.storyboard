@@ -372,6 +372,31 @@ $2 Non-Wisco Taps</string>
                                     <segue destination="CVU-Yd-qLK" kind="embed" identifier="EmbedAdjustSpotListSliderViewController" id="dlM-rL-b5g"/>
                                 </connections>
                             </containerView>
+                            <view contentMode="scaleToFill" id="3FE-K5-tyj" userLabel="Info View">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="wWf-yx-acd" userLabel="White Screen Image View">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pencilarrow" id="8eH-Nm-tTD">
+                                        <rect key="frame" x="140" y="207" width="40" height="65"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    </imageView>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get started by creating a new list of recommended spots" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0hm-88-Kux">
+                                        <rect key="frame" x="20" y="271" width="280" height="179"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                        <fontDescription key="fontDescription" name="GillSans-Light" family="Gill Sans" pointSize="38"/>
+                                        <color key="textColor" red="0.37254902719999999" green="0.3803921938" blue="0.38431376220000002" alpha="1" colorSpace="deviceRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="olp-yX-f4B" appends="YES" id="PK1-Mo-6QO"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -379,11 +404,19 @@ $2 Non-Wisco Taps</string>
                     <connections>
                         <outlet property="btnLocation" destination="Dtn-co-yAk" id="VFE-VQ-qop"/>
                         <outlet property="containerAdjustSliders" destination="8qj-uq-kZ5" id="gE2-eD-1a5"/>
+                        <outlet property="imgWhiteScreen" destination="wWf-yx-acd" id="UIe-ww-2Iw"/>
+                        <outlet property="lblInfo" destination="0hm-88-Kux" id="x2v-wJ-tX4"/>
                         <outlet property="lblNear" destination="wRO-zb-16s" id="PAX-ym-eaM"/>
                         <outlet property="tblMenu" destination="kmI-GL-drV" id="vLd-pY-EA1"/>
+                        <outlet property="viewInfo" destination="3FE-K5-tyj" id="eT9-sU-uss"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SlM-eI-Hv3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="olp-yX-f4B">
+                    <connections>
+                        <action selector="onScreenTap:" destination="Wt8-Xh-87r" id="5fu-cv-8n3"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="251" y="185"/>
         </scene>
@@ -480,6 +513,7 @@ $2 Non-Wisco Taps</string>
         <image name="img_expand_south.png" width="27" height="27"/>
         <image name="img_spot_special_header.png" width="279" height="51"/>
         <image name="orange_gradient_background.png" width="259" height="564"/>
+        <image name="pencilarrow" width="40" height="65"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

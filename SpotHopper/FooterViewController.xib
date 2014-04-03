@@ -11,6 +11,7 @@
                 <outlet property="btnButtonMiddle" destination="x8D-Ha-7FJ" id="5xY-ca-bi0"/>
                 <outlet property="btnButtonRight" destination="laJ-Ri-pzu" id="7yD-Co-9w9"/>
                 <outlet property="btnHome" destination="Thq-jZ-JWB" id="zPu-ZO-dmv"/>
+                <outlet property="gestureTap" destination="vjw-Ad-B88" id="7qr-nb-xCV"/>
                 <outlet property="lblHome" destination="5aX-6M-MyT" id="pLS-tD-bC5"/>
                 <outlet property="lblLeft" destination="4lW-xn-3wG" id="1Rl-9P-MqJ"/>
                 <outlet property="lblMiddle" destination="9d9-fz-mBF" id="WRQ-Y4-Q8T"/>
