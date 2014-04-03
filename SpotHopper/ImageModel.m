@@ -19,4 +19,11 @@
              };
 }
 
+- (NSString *)url {
+    if ([_url hasPrefix:@"//"] == YES) {
+        return [NSString stringWithFormat:@"http:%@", _url];
+    }
+    return _url;
+}
+
 @end
