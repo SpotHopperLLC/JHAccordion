@@ -48,8 +48,7 @@
 
     #define kRefreshLocationTime 3600.0f
 
-    // Temporarily turn on analytics while testing
-    #define kAnalyticsEnabled   TRUE
+    #define kAnalyticsEnabled   FALSE
 
 #elif defined(PRODUCTION)
 
