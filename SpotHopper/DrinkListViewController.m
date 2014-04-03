@@ -77,6 +77,11 @@
     [self.collectionView setBackgroundColor:[UIColor clearColor]];
     [self.collectionView setCollectionViewLayout:[[CardLayout alloc] initWithItemSize:CGSizeMake(ITEM_SIZE_WIDTH, (IS_FOUR_INCH ? ITEM_SIZE_HEIGHT_4_INCH : ITEM_SIZE_HEIGHT) )]];
     
+    // Oh yeah
+    if (_spotAt == nil) {
+        _spotAt = [_drinkList spot];
+    }
+    
     // Current location
     _tellMeMyLocation = [[TellMeMyLocation alloc] init];
     [_tellMeMyLocation findMe:kCLLocationAccuracyThreeKilometers found:^(CLLocation *newLocation) {
@@ -190,11 +195,23 @@
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
         
     [self showHUD:@"Getting new drinks"];
-    [_drinkList putDrinkList:nil latitude:[NSNumber numberWithFloat:location.coordinate.latitude] longitude:[NSNumber numberWithFloat:location.coordinate.longitude] spotId:nil sliders:nil success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+    
+    NSNumber *lat = [NSNumber numberWithFloat:location.coordinate.latitude];
+    NSNumber *lng = [NSNumber numberWithFloat:location.coordinate.longitude];
+    
+    if (_spotAt != nil) {
+        lat = _spotAt.latitude;
+        lng = _spotAt.longitude;
+    }
+    
+    [_drinkList putDrinkList:nil latitude:lat longitude:lng spotId:_spotAt.ID sliders:nil success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
         [self hideHUD];
         
         _drinkList = drinkListModel;
         [_collectionView reloadData];
+        
+        // Oh yeah
+        _spotAt = [_drinkList spot];
         
         [self updateView];
         [self updateMatchPercent];
@@ -214,6 +231,8 @@
 
 - (void)checkinViewController:(CheckinViewController *)viewController checkedInToSpot:(SpotModel *)spot {
     [self.navigationController popToViewController:self animated:YES];
+    
+    _spotAt = spot;
     
     [self showHUD:@"Creating drinklist"];
     [spot getSpot:nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
@@ -283,14 +302,16 @@
 
 - (void)updateView {
     
+    NSLog(@"Spot at - %@", _spotAt.name);
+    
     [_viewEmpty setHidden:( _drinkList.drinks.count != 0 )];
     [_collectionView setHidden:( _drinkList.drinks.count == 0 )];
     
     [_viewPlaceholder setHidden:YES];
-    [_viewLocation setHidden:(_drinkList.spot != nil)];
-    [_viewSpot setHidden:(_drinkList.spot == nil)];
+    [_viewLocation setHidden:(_spotAt != nil)];
+    [_viewSpot setHidden:(_spotAt == nil)];
     
-    NSString *title = _drinkList.spot.name;
+    NSString *title = _spotAt.name;
     [_btnSpot setTitle:title forState:UIControlStateNormal];
     [_btnSpot setImage:[UIImage imageNamed:@"img_arrow_east.png"] forState:UIControlStateNormal];
     CGFloat textWidth = [self widthForString:title font:_btnSpot.titleLabel.font maxWidth:CGFLOAT_MAX];

@@ -255,10 +255,10 @@
         }
     } else if (indexPath.section == 1) {
         DrinkListModel *drinkList = [_featuredDrinkLists objectAtIndex:indexPath.row];
-        [self goToDrinkList:drinkList createdWithAdjustSliders:NO];
+        [self goToDrinkList:drinkList createdWithAdjustSliders:NO atSpot:_spot];
     } else if (indexPath.section == 2) {
         DrinkListModel *drinkList = [_myDrinkLists objectAtIndex:indexPath.row];
-        [self goToDrinkList:drinkList createdWithAdjustSliders:NO];
+        [self goToDrinkList:drinkList createdWithAdjustSliders:NO atSpot:_spot];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -405,7 +405,7 @@
 - (void)adjustDrinkSliderListSliderViewControllerDelegate:(AdjustDrinkListSliderViewController *)viewController createdDrinkList:(DrinkListModel *)drinkList {
     [self showAdjustSlidersView:NO animated:YES];
     
-    [self goToDrinkList:drinkList createdWithAdjustSliders:YES];
+    [self goToDrinkList:drinkList createdWithAdjustSliders:YES atSpot:_spot];
 }
 
 - (void)adjustDrinkSliderListSliderViewControllerDelegateClickClose:(AdjustDrinkListSliderViewController *)viewController {
@@ -507,15 +507,8 @@
      */
     if ([ClientSessionManager sharedClient].isLoggedIn == YES) {
         
-        NSDictionary *params = nil;
-        if (_spot != nil) {
-            params = @{
-                       kDrinkListModelQueryParamSpotId : _spot.ID
-                       };
-        }
-        
         UserModel *user = [ClientSessionManager sharedClient].currentUser;
-        Promise *promiseMySpotLists = [user getDrinkLists:params success:^(NSArray *drinkListsModels, JSONAPI *jsonApi) {
+        Promise *promiseMySpotLists = [user getDrinkLists:nil success:^(NSArray *drinkListsModels, JSONAPI *jsonApi) {
             _myDrinkLists = [drinkListsModels sortedArrayUsingComparator:^NSComparisonResult(DrinkListModel* obj1, DrinkListModel* obj2) {
                 return [obj1.name caseInsensitiveCompare:obj2.name];
             }];

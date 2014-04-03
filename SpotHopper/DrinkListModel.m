@@ -32,14 +32,17 @@
              @"featured" : @"featured",
              @"latitude" : @"latitude",
              @"longitude" : @"longitude",
-             @"links.drinks" : @"drinks"
+             @"links.drinks" : @"drinks",
+             @"links.spot" : @"spot"
              };
     
 }
 
-- (SpotModel *)spot {
-    return [self linkedResourceForKey:@"spot"];
-}
+//- (SpotModel *)spot {
+//    if (_spot != nil) return _spot;
+//    _spot = [self linkedResourceForKey:@"spot"];
+//    return _spot;
+//}
 
 - (CLLocation *)location {
     if (_latitude != nil && _longitude != nil) {
@@ -186,6 +189,8 @@
     
     if (spotId != nil) {
         [params setObject:spotId forKey:@"spot_id"];
+    } else if (spotId == nil) {
+        [params setObject:[NSNull null] forKey:@"spot_id"];
     }
     
     if (latitude != nil && longitude != nil) {

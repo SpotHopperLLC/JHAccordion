@@ -34,7 +34,7 @@
 - (void)goToDrinksNearBy;
 - (void)goToDrinkListMenu;
 - (void)goToDrinkListMenuAtSpot:(SpotModel*)spot;
-- (void)goToDrinkList:(DrinkListModel*)drinkList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders;
+- (void)goToDrinkList:(DrinkListModel*)drinkList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders atSpot:(SpotModel*)spot;
 - (void)goToFindDrinksAt:(DrinkModel*)drink;
 - (void)goToDrinkProfile:(DrinkModel*)drink;
 
