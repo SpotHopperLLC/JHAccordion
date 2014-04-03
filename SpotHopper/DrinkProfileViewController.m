@@ -23,6 +23,7 @@
 #import "DrinkListViewController.h"
 
 #import "AverageReviewModel.h"
+#import "BaseAlcoholModel.h"
 #import "ErrorModel.h"
 #import "ImageModel.h"
 #import "SpotModel.h"
@@ -556,15 +557,26 @@
     if (_drink.match != nil) [_lblPercentMatch setText:[NSString stringWithFormat:@"%@ Match", [_drink matchPercent]]];
     
     // Sets Rating and stuff
-    if (_drink.style.length > 0 && _drink.averageReview != nil) {
-        [_lblInfo setText:[NSString stringWithFormat:@"%@ - %.1f/10", _drink.style, _drink.averageReview.rating.floatValue]];
-    } else if (_drink.style.length > 0) {
-        [_lblInfo setText:_drink.style];
+    NSString *style = nil;
+    NSString *emptyText = @"No rating";
+    if ([_drink isBeer] == YES) {
+        style = _drink.style;
+        emptyText = @"No style or rating";
+    } else if ([_drink isCocktail] == YES) {
+        BaseAlcoholModel *baseAlcohol = [[_drink baseAlochols] firstObject];
+        style = baseAlcohol.name;
+        emptyText = @"No rating";
+    }
+    
+    if (style.length > 0 && _drink.averageReview != nil) {
+        [_lblInfo setText:[NSString stringWithFormat:@"%@ - %.1f/10", style, _drink.averageReview.rating.floatValue]];
+    } else if (style.length > 0) {
+        [_lblInfo setText:style];
     } else if (_drink.averageReview != nil) {
         [_lblInfo setText:[NSString stringWithFormat:@"%.1f/10", _drink.averageReview.rating.floatValue]];
     } else {
         [_lblInfo italic:YES];
-        [_lblInfo setText:@"No style or rating"];
+        [_lblInfo setText:emptyText];
     }
     
     // Beer - ABV
