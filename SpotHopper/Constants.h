@@ -58,8 +58,7 @@
     #define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"
     #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
 
-    // MUST BE SSL
-    #define kBaseUrl @"http://spothopper.herokuapp.com"
+    #define kBaseUrl @"https://api.spotapps.co"
 
     #define kRefreshLocationTime 3600.0f
 
