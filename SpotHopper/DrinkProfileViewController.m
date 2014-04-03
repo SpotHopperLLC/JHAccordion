@@ -185,12 +185,12 @@
     
     // Uses placeholder if drink has no images
     if ([_drink images].count == 0) {
-        [cell.imgSpot setImage:_drink.placeholderImage];
+        [cell setImage:nil withPlaceholder:_drink.placeholderImage];
     }
     // Sets the images defined by the drink
     else {
         ImageModel *image = [[_drink images] objectAtIndex:indexPath.row];
-        [cell.imgSpot setImageWithURL:[NSURL URLWithString:image.url] placeholderImage:_drink.placeholderImage];
+        [cell setImage:image withPlaceholder:_drink.placeholderImage];
     }
     
     return cell;

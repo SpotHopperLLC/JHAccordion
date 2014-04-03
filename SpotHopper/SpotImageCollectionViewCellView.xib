@@ -31,6 +31,7 @@
             </view>
             <size key="customSize" width="309" height="162"/>
             <connections>
+                <outlet property="btnFoursquare" destination="xJg-rz-z6D" id="BYa-5G-cs9"/>
                 <outlet property="imgSpot" destination="emh-I5-54n" id="t9O-ku-2rR"/>
             </connections>
         </collectionViewCell>
