@@ -336,15 +336,8 @@
 - (void)startSearch {
     // Resets pages and clears results
     _page = @1;
-    [_spots removeAllObjects];
-    
-    [self dataDidFinishRefreshing];
-    
-    if (_txtSearch.text.length > 0) {
-        [self doSearch];
-    } else {
-        [self dataDidFinishRefreshing];
-    }
+
+    [self doSearch];
 }
 
 - (void)doSearch {
@@ -370,6 +363,9 @@
     [SpotModel getSpots:paramsSpots success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         [self hideHUD];
         
+        if ([_page isEqualToNumber:@1] == YES) {
+            [_spots removeAllObjects];
+        }
         // Adds spots to results
         [_spots addObjectsFromArray:spotModels];
         [self dataDidFinishRefreshing];
