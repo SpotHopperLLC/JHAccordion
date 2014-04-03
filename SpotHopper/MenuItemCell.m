@@ -10,6 +10,7 @@
 
 #import "NSNumber+Currency.h"
 
+#import "BaseAlcoholModel.h"
 #import "DrinkModel.h"
 #import "MenuItemModel.h"
 #import "PriceModel.h"
@@ -40,7 +41,12 @@
     
     // Names
     [_lblName setText:drink.name];
-    [_lblSpot setText:drink.spot.name];
+    if ([drink isCocktail] == YES) {
+        BaseAlcoholModel *baseAlcohol = [[drink baseAlochols] firstObject];
+        [_lblSpot setText:baseAlcohol.name];
+    } else {
+        [_lblSpot setText:drink.spot.name];
+    }
     
     // Sort prices high to low
     NSArray *sortedPrices = [menuItem.prices sortedArrayUsingComparator:^NSComparisonResult(PriceModel *obj1, PriceModel *obj2) {
@@ -55,15 +61,19 @@
     [_lblPrices setText:[priceStrs componentsJoinedByString:@"\n"]];
     
     // Sets ABV and stuff
-    if (drink.style.length > 0 && drink.abv.floatValue > 0) {
-        [_lblInfo setText:[NSString stringWithFormat:@"%@ - %@ ABV", drink.style, drink.abvPercentString]];
-    } else if (drink.style.length > 0) {
-        [_lblInfo setText:drink.style];
-    } else if (drink.abv.floatValue > 0) {
-        [_lblInfo setText:[NSString stringWithFormat:@"%@ ABV", drink.abvPercentString]];
+    if ([drink isCocktail] == NO) {
+        if (drink.style.length > 0 && drink.abv.floatValue > 0) {
+            [_lblInfo setText:[NSString stringWithFormat:@"%@ - %@ ABV", drink.style, drink.abvPercentString]];
+        } else if (drink.style.length > 0) {
+            [_lblInfo setText:drink.style];
+        } else if (drink.abv.floatValue > 0) {
+            [_lblInfo setText:[NSString stringWithFormat:@"%@ ABV", drink.abvPercentString]];
+        } else {
+            [_lblInfo italic:YES];
+            [_lblInfo setText:@"No style or ABV"];
+        }
     } else {
-        [_lblInfo italic:YES];
-        [_lblInfo setText:@"No style or ABV"];
+        [_lblInfo setText:@""];
     }
     
 }
