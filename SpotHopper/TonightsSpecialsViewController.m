@@ -29,6 +29,7 @@
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
 
 @property (weak, nonatomic) IBOutlet UITableView *tblSpecials;
+@property (weak, nonatomic) IBOutlet UIView *viewEmpty;
 
 @property (nonatomic, strong) NSNumber *page;
 @property (nonatomic, strong) NSMutableArray *spots;
@@ -220,6 +221,10 @@
         
         // Adds spots to results
         [_spots addObjectsFromArray:spotModels];
+        
+        [_tblSpecials setHidden:( _spots.count == 0 )];
+        [_viewEmpty setHidden:( _spots.count != 0 )];
+        
         [self dataDidFinishRefreshing];
         
     } failure:^(ErrorModel *errorModel) {

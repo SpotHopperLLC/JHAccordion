@@ -101,6 +101,28 @@ $2 Non-Wisco Taps</string>
                                     <outlet property="delegate" destination="0xD-F6-JAK" id="vub-aA-e2K"/>
                                 </connections>
                             </tableView>
+                            <view hidden="YES" contentMode="scaleToFill" id="xYA-wL-wlb">
+                                <rect key="frame" x="20" y="122" width="280" height="236"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oops" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2H0-Hn-QsV" customClass="SHLabelLatoRegular">
+                                        <rect key="frame" x="33" y="20" width="213" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Oit-cg-4d0" customClass="SHLabelLatoLight">
+                                        <rect key="frame" x="9" y="69" width="263" height="147"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <string key="text">Looks like there aren't any specials nearby. We currently support New York, Milwaukee, Madison WI, and Denver. We'll be coming to your city soon!</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -108,6 +130,7 @@ $2 Non-Wisco Taps</string>
                     <connections>
                         <outlet property="btnLocation" destination="o96-fw-jhU" id="Sd9-7p-eIZ"/>
                         <outlet property="tblSpecials" destination="amQ-89-yGx" id="Wwk-4D-dew"/>
+                        <outlet property="viewEmpty" destination="xYA-wL-wlb" id="zaH-35-ctK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dQk-SV-b4T" userLabel="First Responder" sceneMemberID="firstResponder"/>
