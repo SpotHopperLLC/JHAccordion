@@ -582,8 +582,10 @@
             _sectionHeader0 = [self instantiateSectionHeaderView];
             [_sectionHeader0 setIconImage:[UIImage imageNamed:@"icon_plus"]];
             
+            UIFont *font = _sectionHeader0.lblText.font;
+            [_sectionHeader0.lblText setFont:[UIFont fontWithName:font.fontName size:15.0]];
             CGFloat fontSize = _sectionHeader0.lblText.font.pointSize;
-            [_sectionHeader0.lblText setText:@"Create Personalized Lists" withFont:[UIFont fontWithName:@"Lato-Regular" size:fontSize] onString:@"Create"];
+            [_sectionHeader0.lblText setText:@"Create Personalized Spotlists" withFont:[UIFont fontWithName:@"Lato-Regular" size:fontSize] onString:@"Create"];
             
             [_sectionHeader0.btnBackground setTag:section];
             [_sectionHeader0.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
@@ -597,6 +599,8 @@
             _sectionHeader1 = [self instantiateSectionHeaderView];
             [_sectionHeader1 setIconImage:[UIImage imageNamed:@"icon_featured_lists"]];
             
+            UIFont *font = _sectionHeader1.lblText.font;
+            [_sectionHeader1.lblText setFont:[UIFont fontWithName:font.fontName size:15.0]];
             CGFloat fontSize = _sectionHeader1.lblText.font.pointSize;
             [_sectionHeader1.lblText setText:@"Featured Spotlists" withFont:[UIFont fontWithName:@"Lato-Regular" size:fontSize] onString:@"Featured"];
             
@@ -610,7 +614,12 @@
         return _sectionHeader1;
     } else if (section == 2) {
         if (_sectionHeader2 == nil) {
+            
             _sectionHeader2 = [self instantiateSectionHeaderView];
+            
+            UIFont *font = _sectionHeader2.lblText.font;
+            [_sectionHeader2.lblText setFont:[UIFont fontWithName:font.fontName size:15.0]];
+            
             [_sectionHeader2 setIconImage:[UIImage imageNamed:@"icon_my_spotlists"]];
             [_sectionHeader2 setText:@"My Spotlists"];
             
