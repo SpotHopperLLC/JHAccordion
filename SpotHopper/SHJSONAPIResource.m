@@ -54,12 +54,13 @@
     if (string.length > 0) {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
         
         NSError *error = nil;
         if (![dateFormatter getObjectValue:&date forString:string range:nil error:&error]) {
 //            [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:@"Date timestamp '%@' could not be parsed: %@", string, error] level:kRavenLogLevelDebugError];
         }
+
     }
     return date;
 }
