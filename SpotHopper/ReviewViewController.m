@@ -420,7 +420,6 @@
     }
     
     // Update view
-    [self updateView];
     [_tblReviews reloadData];
 }
 
@@ -482,6 +481,10 @@
 
 - (void)fetchReview {
     
+    // Gets da images
+    [self fetchDrink];
+    [self fetchSpot];
+    
     UserModel *user = [ClientSessionManager sharedClient].currentUser;
     if (user == nil) {
         return;
@@ -506,6 +509,28 @@
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self initSliders];
+    }];
+}
+
+- (void)fetchDrink {
+    if (_review.drink == nil) return;
+    
+    [_drink getDrink:nil success:^(DrinkModel *drinkModel, JSONAPI *jsonAPI) {
+        _drink = drinkModel;
+        [self updateView];
+    } failure:^(ErrorModel *errorModel) {
+        
+    }];
+}
+
+- (void)fetchSpot {
+    if (_review.spot == nil) return;
+    
+    [_spot getSpot:nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
+        _spot = spotModel;
+        [self updateView];
+    } failure:^(ErrorModel *errorModel) {
+        
     }];
 }
 
