@@ -108,7 +108,12 @@
                 CLPlacemark *placemark = [placemarks objectAtIndex:0];
                 
                 if (placemark.locality.length > 0 && placemark.administrativeArea.length > 0) {
-                    [TellMeMyLocation setLastLocationName:[NSString stringWithFormat:@"%@, %@", placemark.locality, placemark.administrativeArea]];
+                    NSString *locationName = [NSString stringWithFormat:@"%@, %@, %@", placemark.subLocality, placemark.locality, placemark.administrativeArea];
+                    if (locationName.length > 25) {
+                        locationName = [NSString stringWithFormat:@"%@, %@", placemark.locality, placemark.administrativeArea];
+                    }
+                    
+                    [TellMeMyLocation setLastLocationName:locationName];
                 } else if (placemark.locality.length > 0) {
                     [TellMeMyLocation setLastLocationName:placemark.locality];
                 } else if (placemark.administrativeArea.length > 0) {
