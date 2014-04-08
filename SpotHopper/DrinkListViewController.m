@@ -50,6 +50,8 @@
 @property (nonatomic, strong) CLLocation *currentLocation;
 @property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
 
+@property (nonatomic, strong) NSMutableDictionary *menuItmes;
+
 @end
 
 @implementation DrinkListViewController
@@ -98,6 +100,9 @@
         [_lblLocation setHidden:YES];
         [_btnLocation setHidden:YES];
     }
+    
+    // Initialize stuff
+    _menuItmes = @{}.mutableCopy;
     
     // Fetches drinklist
     if (_drinkList.drinks != nil) {
@@ -157,9 +162,10 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     DrinkModel *drink = [_drinkList.drinks objectAtIndex:indexPath.row];
+    MenuItemModel *menuItem = [_menuItmes objectForKey:drink.ID];
     
     DrinkCardCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SpotCardCollectionViewCell" forIndexPath:indexPath];
-    [cell setDrink:drink];
+    [cell setDrink:drink menuItem:menuItem];
     [cell setDelegate:self];
     
     return cell;
@@ -208,13 +214,12 @@
         [self hideHUD];
         
         _drinkList = drinkListModel;
-        [_collectionView reloadData];
         
         // Oh yeah
         _spotAt = [_drinkList spot];
         
-        [self updateView];
-        [self updateMatchPercent];
+        [self fetchMenuItems];
+        
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
@@ -240,15 +245,16 @@
         NSNumber *latitude = spotModel.latitude;
         NSNumber *longitude = spotModel.longitude;
         
+        /*
+         * Gets updated spotlist
+         */
         [self showHUD:@"Getting new drinks"];
         [_drinkList putDrinkList:nil latitude:latitude longitude:longitude spotId:spotModel.ID sliders:nil success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
             [self hideHUD];
             
             _drinkList = drinkListModel;
-            [_collectionView reloadData];
             
-            [self updateView];
-            [self updateMatchPercent];
+            [self fetchMenuItems];
         } failure:^(ErrorModel *errorModel) {
             [self hideHUD];
             [self showAlert:@"Oops" message:errorModel.human];
@@ -299,6 +305,38 @@
 }
 
 #pragma mark - Private
+
+- (void)fetchMenuItems {
+    
+    if (_spotAt == nil) {
+        [self updateEverything];
+        return;
+    }
+    
+    [_menuItmes removeAllObjects];
+    
+    [self showHUD:@"Getting menu"];
+    [_spotAt getMenuItems:nil success:^(NSArray *menuItems, JSONAPI *jsonApi) {
+        
+        for (MenuItemModel *menuItem in menuItems) {
+            [_menuItmes setObject:menuItem forKey:menuItem.drink.ID];
+        }
+        
+        [self hideHUD];
+        [self updateEverything];
+    } failure:^(ErrorModel *errorModel) {
+        [self hideHUD];
+        [self updateEverything];
+    }];
+    
+}
+    
+- (void)updateEverything {
+    [_collectionView reloadData];
+    
+    [self updateView];
+    [self updateMatchPercent];
+}
 
 - (void)updateView {
     

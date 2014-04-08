@@ -8,9 +8,13 @@
 
 #import "DrinkCardCollectionViewCell.h"
 
+#import "NSNumber+Currency.h"
+
 #import "AverageReviewModel.h"
 #import "DrinkTypeModel.h"
 #import "ImageModel.h"
+#import "PriceModel.h"
+#import "SizeModel.h"
 #import "SpotModel.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
@@ -26,7 +30,23 @@
     return self;
 }
 
-- (void)setDrink:(DrinkModel *)drink {
+- (void)setDrink:(DrinkModel *)drink menuItem:(MenuItemModel*)menuItem {
+    
+    // Visibles
+    [_btnFindIt setHidden:(menuItem != nil)];
+    [_lblPrice setHidden:(menuItem == nil)];
+    
+    // Sets price
+    if (menuItem != nil) {
+        NSLog(@"Menu item - %@", menuItem);
+        NSLog(@"Menu item prices - %@", [menuItem prices]);
+        PriceModel *price = [[menuItem prices] firstObject];
+        if (price != nil) {
+            [_lblPrice setText:[NSString stringWithFormat:@"%@ / %@", [NSNumber numberWithFloat:(price.cents.floatValue / 100.0f)].currencyFormat, price.size.name]];
+        } else {
+            [_lblPrice setText:@""];
+        }
+    }
     
     // Sets image
     ImageModel *image = drink.images.firstObject;
