@@ -50,7 +50,7 @@
 @property (nonatomic, strong) CLLocation *currentLocation;
 @property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
 
-@property (nonatomic, strong) NSMutableDictionary *menuItmes;
+@property (nonatomic, strong) NSMutableDictionary *menuItems;
 
 @end
 
@@ -102,7 +102,7 @@
     }
     
     // Initialize stuff
-    _menuItmes = @{}.mutableCopy;
+    _menuItems = @{}.mutableCopy;
     
     // Fetches drinklist
     if (_drinkList.drinks != nil) {
@@ -162,7 +162,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     DrinkModel *drink = [_drinkList.drinks objectAtIndex:indexPath.row];
-    MenuItemModel *menuItem = [_menuItmes objectForKey:drink.ID];
+    MenuItemModel *menuItem = [_menuItems objectForKey:drink.ID];
     
     DrinkCardCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SpotCardCollectionViewCell" forIndexPath:indexPath];
     [cell setDrink:drink menuItem:menuItem];
@@ -313,13 +313,13 @@
         return;
     }
     
-    [_menuItmes removeAllObjects];
+    [_menuItems removeAllObjects];
     
     [self showHUD:@"Getting menu"];
     [_spotAt getMenuItems:nil success:^(NSArray *menuItems, JSONAPI *jsonApi) {
         
         for (MenuItemModel *menuItem in menuItems) {
-            [_menuItmes setObject:menuItem forKey:menuItem.drink.ID];
+            [_menuItems setObject:menuItem forKey:menuItem.drink.ID];
         }
         
         [self hideHUD];
