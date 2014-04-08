@@ -189,17 +189,21 @@
 #pragma mark - MKMapViewDelegate
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
-    if ([annotation isKindOfClass:[MatchPercentAnnotation class]] == YES) {
+    MKAnnotationView *annotationView = nil;
+    
+    if ([annotation isKindOfClass:[MKUserLocation class]]) {
+        // do nothing
+    }
+    else if ([annotation isKindOfClass:[MatchPercentAnnotation class]] == YES) {
         MatchPercentAnnotation *matchAnnotation = (MatchPercentAnnotation*) annotation;
         
         MatchPercentAnnotationView *pin = [[MatchPercentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"current"];
         [pin setSpot:matchAnnotation.spot];
         [pin setNeedsDisplay];
-        
-        return pin;
+        annotationView = pin;
     }
     
-    return nil;
+    return annotationView;
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
@@ -329,12 +333,12 @@
     [self updateFooterMapListButton:nil];
     
     // Zoom map
-    if (_spotList.latitude != nil && _spotList.longitude != nil) {
-        MKCoordinateRegion mapRegion;
-        mapRegion.center = [[CLLocation alloc] initWithLatitude:_spotList.latitude.floatValue longitude:_spotList.longitude.floatValue].coordinate;
-        mapRegion.span = MKCoordinateSpanMake(0.1, 0.1);
-        [_mapView setRegion:mapRegion animated: YES];
-    }
+//    if (_spotList.latitude != nil && _spotList.longitude != nil) {
+//        MKCoordinateRegion mapRegion;
+//        mapRegion.center = [[CLLocation alloc] initWithLatitude:_spotList.latitude.floatValue longitude:_spotList.longitude.floatValue].coordinate;
+//        mapRegion.span = MKCoordinateSpanMake(0.1, 0.1);
+//        [_mapView setRegion:mapRegion animated: YES];
+//    }
     
     // Update map
     [_mapView removeAnnotations:[_mapView annotations]];
@@ -349,6 +353,8 @@
         }
         
     }
+    
+    [self repositionMapOnAnnotations:_mapView.annotations animated:FALSE];
 }
 
 - (void)updateFooterMapListButton:(FooterViewController*)footerViewController {
@@ -411,6 +417,36 @@
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
     }];
+}
+
+- (void)repositionMapOnAnnotations:(NSArray *)annotations animated:(BOOL)animated {
+    MKMapRect mapRect = MKMapRectNull;
+    
+    for (id <MKAnnotation> annotation in annotations) {
+        MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
+        MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0, 0);
+        if (MKMapRectIsNull(mapRect)) {
+            mapRect = pointRect;
+        } else {
+            mapRect = MKMapRectUnion(mapRect, pointRect);
+        }
+    }
+    
+    if (!MKMapRectIsNull(mapRect)) {
+        // ensure points are not positioned below the header by setting the edge padding
+        
+        // give it a little extra space
+        if (MKMapRectGetWidth(mapRect) == 0.0 && MKMapRectGetHeight(mapRect) == 0.0) {
+            mapRect.size = MKMapSizeMake(MKMapRectGetWidth(mapRect) + 450.0, MKMapRectGetHeight(mapRect) + 450.0);
+        }
+        
+        [_mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(40.0, 5.0, 90.0, 5.0) animated:animated];
+    }
+    
+    // HACK a bug somehow sets isUserInteractionEnabled to false when a map view animates
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.35 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        _mapView.userInteractionEnabled = TRUE;
+    });
 }
 
 @end
