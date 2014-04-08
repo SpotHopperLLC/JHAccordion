@@ -38,8 +38,6 @@
     
     // Sets price
     if (menuItem != nil) {
-        NSLog(@"Menu item - %@", menuItem);
-        NSLog(@"Menu item prices - %@", [menuItem prices]);
         PriceModel *price = [[menuItem prices] firstObject];
         if (price != nil) {
             [_lblPrice setText:[NSString stringWithFormat:@"%@ / %@", [NSNumber numberWithFloat:(price.cents.floatValue / 100.0f)].currencyFormat, price.size.name]];

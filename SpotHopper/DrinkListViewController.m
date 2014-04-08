@@ -340,8 +340,6 @@
 
 - (void)updateView {
     
-    NSLog(@"Spot at - %@", _spotAt.name);
-    
     [_viewEmpty setHidden:( _drinkList.drinks.count != 0 )];
     [_collectionView setHidden:( _drinkList.drinks.count == 0 )];
     
