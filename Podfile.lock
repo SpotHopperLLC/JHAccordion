@@ -18,7 +18,6 @@ PODS:
   - AFNetworking/UIKit (2.0.3):
     - AFNetworking/NSURLConnection
   - Facebook-iOS-SDK (3.11.1)
-  - FXBlurView (1.5.6)
   - GoogleAnalytics-iOS-SDK (3.0.6)
   - JHAccordion (0.1.0)
   - JHAutoCompleteTextField (0.1.0)
@@ -33,7 +32,6 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (~> 2.0.3)
   - Facebook-iOS-SDK (~> 3.11.0)
-  - FXBlurView (~> 1.5.3)
   - GoogleAnalytics-iOS-SDK (~> 3.0.0)
   - JHAccordion (from `https://github.com/joshdholtz/JHAccordion.git`)
   - JHAutoCompleteTextField (from `http://github.com/joshdholtz/JHAutoCompleteTextField.git`)
@@ -59,9 +57,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: e499052cbf3d743e9bb727bb37adb9dc2547ba15
-  Facebook-iOS-SDK: 42a1de39170b858d675c2453d8aace55c51be2bb
-  FXBlurView: 059c24f06b77e721bbb0950ccde6a0f1fc1c7290
-  GoogleAnalytics-iOS-SDK: 4f77f2cce5216e590343ce0b75ac491aa249ca89
+  Facebook-iOS-SDK: 1f753fe932c2602359114a662cd9abdc2dba48f3
+  GoogleAnalytics-iOS-SDK: 16dfcc0c4491148bf372edc85a8470cc405ffb72
   JHAccordion: 4f0337990465b25f8de5ed304609fa9362281db0
   JHAutoCompleteTextField: 1ca69c82441d9b5bf474e10d36585247030f7594
   JHSidebar: 2efb4d14cc8bb0032c75218fd3ef7db70154c07e
@@ -72,4 +69,4 @@ SPEC CHECKSUMS:
   STTwitter: f155851b9b4d1a544740c2f4ae64918cd42235e2
   TTTAttributedLabel: 3a571d73e055f4a79c304240598e4bfd199238e4
 
-COCOAPODS: 0.31.0
+COCOAPODS: 0.31.1
