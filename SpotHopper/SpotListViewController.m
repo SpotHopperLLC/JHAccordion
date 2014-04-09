@@ -21,6 +21,7 @@
 
 #import "CardLayout.h"
 #import "SHButtonLatoLightLocation.h"
+#import "SHButtonLatoBold.h"
 #import "SpotAnnotationCallout.h"
 
 #import "SHNavigationController.h"
@@ -41,6 +42,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblMatchPercent;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet SHButtonLatoLightLocation *btnLocation;
+@property (weak, nonatomic) IBOutlet SHButtonLatoBold *btnUpdateSearchResults;
 @property (weak, nonatomic) IBOutlet UILabel *lblLocation;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
@@ -54,7 +56,10 @@
 
 @end
 
-@implementation SpotListViewController
+@implementation SpotListViewController {
+    BOOL _isRepositioningMap;
+    BOOL _doNotMoveMap;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -246,6 +251,27 @@
     }
 }
 
+- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
+    if (_mapView.hidden || _isRepositioningMap) {
+        return;
+    }
+    
+//    CLLocation *lastLocation = [TellMeMyLocation lastLocation];
+//    if (_mapView.centerCoordinate.latitude == lastLocation.coordinate.latitude &&
+//        _mapView.centerCoordinate.longitude == lastLocation.coordinate.longitude) {
+//        return;
+//    }
+    
+    _btnUpdateSearchResults.alpha = 0.0;
+    [_btnUpdateSearchResults setHidden:NO];
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:0.25 delay:0.0 options:options animations:^{
+        _btnUpdateSearchResults.alpha = 1.0;
+    } completion:^(BOOL finished) {
+    }];
+}
+
 #pragma mark - SpotAnnotationCalloutDelegate
 
 - (void)spotAnnotationCallout:(SpotAnnotationCallout *)spotAnnotationCallout clicked:(MatchPercentAnnotationView *)matchPercentAnnotationView {
@@ -319,26 +345,29 @@
 }
 
 - (IBAction)onFoursquareButton:(id)sender {
-    NSLog(@"Show 4sq attribution (pop up)");
+    // do nothing (for now)
+}
+
+- (IBAction)onUpdateSearchResults:(id)sender {
+    _doNotMoveMap = TRUE;
+    [_btnLocation updateWithLocation:[[CLLocation alloc] initWithLatitude:_mapView.centerCoordinate.latitude longitude:_mapView.centerCoordinate.longitude]];
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:0.75 delay:0.0 options:options animations:^{
+        _btnUpdateSearchResults.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        [_btnUpdateSearchResults setHidden:YES];
+    }];
 }
 
 #pragma mark - Private
 
 - (void)updateView {
-    
     [_viewEmpty setHidden:( _spotList.spots.count != 0 )];
     
     // We can pass in nil here because we only need to worry about correct showing/hiding of
     // collection view and mapview (not about the changing of the text and iamge of the middle button
     [self updateFooterMapListButton:nil];
-    
-    // Zoom map
-//    if (_spotList.latitude != nil && _spotList.longitude != nil) {
-//        MKCoordinateRegion mapRegion;
-//        mapRegion.center = [[CLLocation alloc] initWithLatitude:_spotList.latitude.floatValue longitude:_spotList.longitude.floatValue].coordinate;
-//        mapRegion.span = MKCoordinateSpanMake(0.1, 0.1);
-//        [_mapView setRegion:mapRegion animated: YES];
-//    }
     
     // Update map
     [_mapView removeAnnotations:[_mapView annotations]];
@@ -354,7 +383,10 @@
         
     }
     
-    [self repositionMapOnAnnotations:_mapView.annotations animated:FALSE];
+    if (!_doNotMoveMap) {
+        [self repositionMapOnAnnotations:_mapView.annotations animated:FALSE];
+    }
+    _doNotMoveMap= FALSE;
 }
 
 - (void)updateFooterMapListButton:(FooterViewController*)footerViewController {
@@ -370,6 +402,7 @@
         [footerViewController setMiddleButton:@"Map" image:[UIImage imageNamed:@"btn_context_map"]];
         
         [_mapView setHidden:YES];
+        [_btnUpdateSearchResults setHidden:YES];
         [_collectionView setHidden:hide];
         [_lblMatchPercent setHidden:hide];
     }
@@ -420,15 +453,19 @@
 }
 
 - (void)repositionMapOnAnnotations:(NSArray *)annotations animated:(BOOL)animated {
+    _isRepositioningMap = TRUE;
     MKMapRect mapRect = MKMapRectNull;
     
+    // do not include the user location
     for (id <MKAnnotation> annotation in annotations) {
-        MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
-        MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0, 0);
-        if (MKMapRectIsNull(mapRect)) {
-            mapRect = pointRect;
-        } else {
-            mapRect = MKMapRectUnion(mapRect, pointRect);
+        if (![annotation isKindOfClass:[MKUserLocation class]]) {
+            MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
+            MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0, 0);
+            if (MKMapRectIsNull(mapRect)) {
+                mapRect = pointRect;
+            } else {
+                mapRect = MKMapRectUnion(mapRect, pointRect);
+            }
         }
     }
     
@@ -437,15 +474,16 @@
         
         // give it a little extra space
         if (MKMapRectGetWidth(mapRect) == 0.0 && MKMapRectGetHeight(mapRect) == 0.0) {
-            mapRect.size = MKMapSizeMake(MKMapRectGetWidth(mapRect) + 450.0, MKMapRectGetHeight(mapRect) + 450.0);
+            mapRect.size = MKMapSizeMake(MKMapRectGetWidth(mapRect) + 150.0, MKMapRectGetHeight(mapRect) + 150.0);
         }
         
-        [_mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(40.0, 5.0, 90.0, 5.0) animated:animated];
+        [_mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(40.0, 15.0, 90.0, 15.0) animated:animated];
     }
     
     // HACK a bug somehow sets isUserInteractionEnabled to false when a map view animates
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.35 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         _mapView.userInteractionEnabled = TRUE;
+        _isRepositioningMap = FALSE;
     });
 }
 

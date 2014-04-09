@@ -1806,6 +1806,10 @@
 		2602BD9D18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9E18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9F18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
+		267D78D618F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */; };
+		267D78D718F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */; };
+		267D78D818F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */; };
+		267D78D918F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */; };
 		26B6767C18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
 		26B6767D18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
 		26B6767E18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
@@ -2419,6 +2423,8 @@
 		2602BD9418E2654900C93BBF /* table_footer_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table_footer_background.png; sourceTree = "<group>"; };
 		2602BD9518E2654900C93BBF /* table_footer_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table_footer_background@2x.png"; sourceTree = "<group>"; };
 		2602BD9C18E283C500C93BBF /* Common.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Common.storyboard; sourceTree = "<group>"; };
+		267D78D418F4A8DD00E95D54 /* SHButtonLatoBold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoBold.h; sourceTree = "<group>"; };
+		267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoBold.m; sourceTree = "<group>"; };
 		26B6767A18E9F59500DAD113 /* TutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialViewController.h; sourceTree = "<group>"; };
 		26B6767B18E9F59500DAD113 /* TutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialViewController.m; sourceTree = "<group>"; };
 		26B6768018E9F5B900DAD113 /* SpotHopperDev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperDev-Info.plist"; sourceTree = "<group>"; };
@@ -3589,6 +3595,8 @@
 			children = (
 				03F2D9031871DB5B00C69576 /* SHButtonLatoLight.h */,
 				03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */,
+				267D78D418F4A8DD00E95D54 /* SHButtonLatoBold.h */,
+				267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */,
 				03412C39188053E7000F16A8 /* SHButtonLatoLightRightImage.h */,
 				03412C3A188053E7000F16A8 /* SHButtonLatoLightRightImage.m */,
 				03E4453C18B55B9E00C88421 /* SHButtonLatoLightLocation.h */,
@@ -5372,6 +5380,7 @@
 				039B7009188721BB00C590F8 /* FooterShadowCell.m in Sources */,
 				03CAC18C18E9C74F00FAC5F5 /* SizeModel.m in Sources */,
 				03866477186D352400985CEC /* AppDelegate.m in Sources */,
+				267D78D618F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */,
 				039B7011188723EB00C590F8 /* Mockery.m in Sources */,
 				039F543D18D28F5E004B2B67 /* DrinkListModel.m in Sources */,
 				03F6BF6B18C6E10A00172F13 /* CreateListCell.m in Sources */,
@@ -5517,6 +5526,7 @@
 				03CABFE018E7716400FAC5F5 /* FooterShadowCell.m in Sources */,
 				03CAC18F18E9C74F00FAC5F5 /* SizeModel.m in Sources */,
 				03CABFE118E7716400FAC5F5 /* AppDelegate.m in Sources */,
+				267D78D918F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */,
 				03CABFE218E7716400FAC5F5 /* Mockery.m in Sources */,
 				03CABFE318E7716400FAC5F5 /* DrinkListModel.m in Sources */,
 				03CABFE418E7716400FAC5F5 /* ShareViewController.m in Sources */,
@@ -5654,6 +5664,7 @@
 				03F4E78418CA33D00056EAA9 /* FooterShadowCell.m in Sources */,
 				03CAC18E18E9C74F00FAC5F5 /* SizeModel.m in Sources */,
 				03F4E78518CA33D00056EAA9 /* AppDelegate.m in Sources */,
+				267D78D818F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */,
 				03F4E78618CA33D00056EAA9 /* Mockery.m in Sources */,
 				039F543F18D28F5E004B2B67 /* DrinkListModel.m in Sources */,
 				03AF8F2018E5C89600DD9356 /* ShareViewController.m in Sources */,
@@ -5791,6 +5802,7 @@
 				03F4E8D218CA34260056EAA9 /* FooterShadowCell.m in Sources */,
 				03CAC18D18E9C74F00FAC5F5 /* SizeModel.m in Sources */,
 				03F4E8D318CA34260056EAA9 /* AppDelegate.m in Sources */,
+				267D78D718F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */,
 				03F4E8D418CA34260056EAA9 /* Mockery.m in Sources */,
 				039F543E18D28F5E004B2B67 /* DrinkListModel.m in Sources */,
 				03AF8F1F18E5C89600DD9356 /* ShareViewController.m in Sources */,

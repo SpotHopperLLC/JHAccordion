@@ -58,7 +58,7 @@
                         <outlet property="delegate" destination="-1" id="xlu-IJ-f3A"/>
                     </connections>
                 </textField>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="XD6-ay-brR" customClass="SHButtonLatoLight">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="XD6-ay-brR" userLabel="Compass Button" customClass="SHButtonLatoLight">
                     <rect key="frame" x="0.0" y="381" width="65" height="64"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
