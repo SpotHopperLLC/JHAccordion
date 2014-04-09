@@ -269,6 +269,10 @@
     return [self objectForKey:@"match"];
 }
 
+- (NSNumber *)relevance {
+    return [self objectForKey:@"relevance"];
+}
+
 - (NSArray *)images {
     return [self linkedResourceForKey:@"images"];
 }

@@ -60,6 +60,7 @@
 @property (nonatomic, strong) NSArray *images;
 @property (nonatomic, strong) NSArray *dailySpecials;
 @property (nonatomic, strong) NSArray *liveSpecials;
+@property (nonatomic, strong) NSNumber *relevance;
 
 - (NSString*)addressCityState;
 - (NSString*)fullAddress;

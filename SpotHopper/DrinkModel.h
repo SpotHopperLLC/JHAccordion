@@ -56,6 +56,7 @@
 @property (nonatomic, strong) NSNumber *match;
 @property (nonatomic, strong) NSArray *baseAlochols;
 @property (nonatomic, strong) NSArray *images;
+@property (nonatomic, strong) NSNumber *relevance;
 
 - (NSString *)matchPercent;
 

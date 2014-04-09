@@ -246,6 +246,13 @@
         
         // Adds drinks to results
         [_results addObjectsFromArray:drinkModels];
+        
+        [_results sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            NSNumber *revObj1 = [obj1 valueForKey:@"relevance"];
+            NSNumber *revObj2 = [obj2 valueForKey:@"relevance"];
+            return [revObj2 compare:revObj1];
+        }];
+        
         [self dataDidFinishRefreshing];
     } failure:^(ErrorModel *errorModel) {
         [self dataDidFinishRefreshing];
