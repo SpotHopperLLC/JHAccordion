@@ -92,7 +92,7 @@
 - (NSData*)scaleToMaxSizeInKB:(NSInteger)sizeInKB {
     CGFloat compression = 0.9f;
     CGFloat maxCompression = 0.1f;
-    int maxFileSize = sizeInKB*1024;
+    NSInteger maxFileSize = sizeInKB*1024;
     
     NSData *imageData = UIImageJPEGRepresentation(self, compression);
     
@@ -101,7 +101,7 @@
         imageData = UIImageJPEGRepresentation(self, compression);
     }
     NSLog(@"Compression - %f", compression);
-    NSLog(@"Size - %d", [imageData length]);
+    NSLog(@"Size - %lu", [imageData length]);
     
     return imageData;
 }

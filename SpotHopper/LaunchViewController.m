@@ -150,7 +150,6 @@
 #pragma mark - Actions
 
 - (IBAction)onClickSkip:(id)sender {
-    UIViewController *vc = self.presentingViewController;
     [self exitLaunch];
 }
 

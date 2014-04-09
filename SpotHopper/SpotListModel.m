@@ -134,7 +134,7 @@
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
-    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/spot_lists/%d", [self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/spot_lists/%ld", [self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
@@ -189,7 +189,7 @@
     
     
     
-    [[ClientSessionManager sharedClient] PUT:[NSString stringWithFormat:@"/api/spot_lists/%d", [self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[ClientSessionManager sharedClient] PUT:[NSString stringWithFormat:@"/api/spot_lists/%ld", [self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
@@ -218,7 +218,7 @@
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
-    [[ClientSessionManager sharedClient] DELETE:[NSString stringWithFormat:@"/api/spot_lists/%d", [self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[ClientSessionManager sharedClient] DELETE:[NSString stringWithFormat:@"/api/spot_lists/%ld", [self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];

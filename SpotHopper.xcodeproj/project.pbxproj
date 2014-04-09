@@ -171,7 +171,6 @@
 		038664D8186D376900985CEC /* UIView+RelativityLaws.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664C2186D376900985CEC /* UIView+RelativityLaws.m */; };
 		038664D9186D376900985CEC /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 038664C4186D376900985CEC /* 37x-Checkmark.png */; };
 		038664DA186D376900985CEC /* 37x-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 038664C5186D376900985CEC /* 37x-Checkmark@2x.png */; };
-		038664DB186D376900985CEC /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664C7186D376900985CEC /* MBProgressHUD.m */; };
 		038664DC186D376900985CEC /* TellMeMyLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664CA186D376900985CEC /* TellMeMyLocation.m */; };
 		038664E1186D379400985CEC /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664DE186D379400985CEC /* BaseViewController.m */; };
 		038664E2186D379400985CEC /* ClientSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664E0186D379400985CEC /* ClientSessionManager.m */; };
@@ -275,8 +274,6 @@
 		039B701A18873DD400C590F8 /* ReviewCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039B701918873DD400C590F8 /* ReviewCellView.xib */; };
 		039B7022188759B100C590F8 /* NSArray+HoursOfOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B7021188759B100C590F8 /* NSArray+HoursOfOperation.m */; };
 		039B70251888847200C590F8 /* NSNumber+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B70241888847200C590F8 /* NSNumber+Helpers.m */; };
-		039BA005188EB9AB001AF1B9 /* ACEAutocompleteInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 039BA002188EB9AB001AF1B9 /* ACEAutocompleteInputView.m */; };
-		039BA006188EB9AB001AF1B9 /* UITextField+ACEAutocompleteBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 039BA004188EB9AB001AF1B9 /* UITextField+ACEAutocompleteBar.m */; };
 		039BA00918906A12001AF1B9 /* NSString+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 039BA00818906A12001AF1B9 /* NSString+Common.m */; };
 		039F541818D11E57004B2B67 /* SpotListMoodModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F541718D11E57004B2B67 /* SpotListMoodModel.m */; };
 		039F541918D2506C004B2B67 /* SpotListMoodModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F541718D11E57004B2B67 /* SpotListMoodModel.m */; };
@@ -612,7 +609,6 @@
 		03CABFD518E7716400FAC5F5 /* ListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF6F18C6E8BD00172F13 /* ListCell.m */; };
 		03CABFD618E7716400FAC5F5 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664B6186D376900985CEC /* UIImage+Resize.m */; };
 		03CABFD718E7716400FAC5F5 /* SHTextFieldLatoLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D9401872090E00C69576 /* SHTextFieldLatoLight.m */; };
-		03CABFD818E7716400FAC5F5 /* ACEAutocompleteInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 039BA002188EB9AB001AF1B9 /* ACEAutocompleteInputView.m */; };
 		03CABFD918E7716400FAC5F5 /* UIViewController+Navigator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0320236F18774E25008368C2 /* UIViewController+Navigator.m */; };
 		03CABFDA18E7716400FAC5F5 /* JHPullRefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664E5186D37BC00985CEC /* JHPullRefreshViewController.m */; };
 		03CABFDB18E7716400FAC5F5 /* NSString+Currency.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664AE186D376900985CEC /* NSString+Currency.m */; };
@@ -659,7 +655,6 @@
 		03CAC00418E7716400FAC5F5 /* FindDrinksAtViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F545D18D2CD35004B2B67 /* FindDrinksAtViewController.m */; };
 		03CAC00518E7716400FAC5F5 /* MatchPercentAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ABBD118CE24A400B84AE6 /* MatchPercentAnnotationView.m */; };
 		03CAC00618E7716400FAC5F5 /* DrinkListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F545218D2BA15004B2B67 /* DrinkListViewController.m */; };
-		03CAC00718E7716400FAC5F5 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664C7186D376900985CEC /* MBProgressHUD.m */; };
 		03CAC00818E7716400FAC5F5 /* MockeryURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B7010188723EB00C590F8 /* MockeryURLProtocol.m */; };
 		03CAC00918E7716400FAC5F5 /* MockeryHTTPURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B700E188723EB00C590F8 /* MockeryHTTPURLResponse.m */; };
 		03CAC00A18E7716400FAC5F5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03866472186D352400985CEC /* main.m */; };
@@ -691,7 +686,6 @@
 		03CAC02418E7716400FAC5F5 /* CheckinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AF8EC018E531CC00DD9356 /* CheckinViewController.m */; };
 		03CAC02518E7716400FAC5F5 /* FooterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 032023391875E060008368C2 /* FooterViewController.m */; };
 		03CAC02618E7716400FAC5F5 /* SHLabelLatoRegular.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B6FF0188711B800C590F8 /* SHLabelLatoRegular.m */; };
-		03CAC02718E7716400FAC5F5 /* UITextField+ACEAutocompleteBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 039BA004188EB9AB001AF1B9 /* UITextField+ACEAutocompleteBar.m */; };
 		03CAC02818E7716400FAC5F5 /* ReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B701718873DB700C590F8 /* ReviewCell.m */; };
 		03CAC02918E7716400FAC5F5 /* SHViewTranlucentWhiteFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 03121A3418BD774B00C9FFA3 /* SHViewTranlucentWhiteFooter.m */; };
 		03CAC02B18E7716400FAC5F5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E4454818B5705800C88421 /* MapKit.framework */; };
@@ -1179,7 +1173,6 @@
 		03F4E77918CA33D00056EAA9 /* ListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF6F18C6E8BD00172F13 /* ListCell.m */; };
 		03F4E77A18CA33D00056EAA9 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664B6186D376900985CEC /* UIImage+Resize.m */; };
 		03F4E77B18CA33D00056EAA9 /* SHTextFieldLatoLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D9401872090E00C69576 /* SHTextFieldLatoLight.m */; };
-		03F4E77C18CA33D00056EAA9 /* ACEAutocompleteInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 039BA002188EB9AB001AF1B9 /* ACEAutocompleteInputView.m */; };
 		03F4E77D18CA33D00056EAA9 /* UIViewController+Navigator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0320236F18774E25008368C2 /* UIViewController+Navigator.m */; };
 		03F4E77E18CA33D00056EAA9 /* JHPullRefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664E5186D37BC00985CEC /* JHPullRefreshViewController.m */; };
 		03F4E77F18CA33D00056EAA9 /* NSString+Currency.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664AE186D376900985CEC /* NSString+Currency.m */; };
@@ -1214,7 +1207,6 @@
 		03F4E79C18CA33D00056EAA9 /* SearchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B6FF31887143B00C590F8 /* SearchCell.m */; };
 		03F4E79D18CA33D00056EAA9 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D94F18722D5300C69576 /* HomeViewController.m */; };
 		03F4E79E18CA33D00056EAA9 /* NSNumber+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B70241888847200C590F8 /* NSNumber+Helpers.m */; };
-		03F4E79F18CA33D00056EAA9 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664C7186D376900985CEC /* MBProgressHUD.m */; };
 		03F4E7A018CA33D00056EAA9 /* MockeryURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B7010188723EB00C590F8 /* MockeryURLProtocol.m */; };
 		03F4E7A118CA33D00056EAA9 /* MockeryHTTPURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B700E188723EB00C590F8 /* MockeryHTTPURLResponse.m */; };
 		03F4E7A218CA33D00056EAA9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03866472186D352400985CEC /* main.m */; };
@@ -1238,7 +1230,6 @@
 		03F4E7B418CA33D00056EAA9 /* SpotCardCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E8833718C8389500BD8FBB /* SpotCardCollectionViewCell.m */; };
 		03F4E7B518CA33D00056EAA9 /* FooterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 032023391875E060008368C2 /* FooterViewController.m */; };
 		03F4E7B618CA33D00056EAA9 /* SHLabelLatoRegular.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B6FF0188711B800C590F8 /* SHLabelLatoRegular.m */; };
-		03F4E7B718CA33D00056EAA9 /* UITextField+ACEAutocompleteBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 039BA004188EB9AB001AF1B9 /* UITextField+ACEAutocompleteBar.m */; };
 		03F4E7B818CA33D00056EAA9 /* ReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B701718873DB700C590F8 /* ReviewCell.m */; };
 		03F4E7B918CA33D00056EAA9 /* SHViewTranlucentWhiteFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 03121A3418BD774B00C9FFA3 /* SHViewTranlucentWhiteFooter.m */; };
 		03F4E7BB18CA33D00056EAA9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E4454818B5705800C88421 /* MapKit.framework */; };
@@ -1493,7 +1484,6 @@
 		03F4E8C718CA34260056EAA9 /* ListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF6F18C6E8BD00172F13 /* ListCell.m */; };
 		03F4E8C818CA34260056EAA9 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664B6186D376900985CEC /* UIImage+Resize.m */; };
 		03F4E8C918CA34260056EAA9 /* SHTextFieldLatoLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D9401872090E00C69576 /* SHTextFieldLatoLight.m */; };
-		03F4E8CA18CA34260056EAA9 /* ACEAutocompleteInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 039BA002188EB9AB001AF1B9 /* ACEAutocompleteInputView.m */; };
 		03F4E8CB18CA34260056EAA9 /* UIViewController+Navigator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0320236F18774E25008368C2 /* UIViewController+Navigator.m */; };
 		03F4E8CC18CA34260056EAA9 /* JHPullRefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664E5186D37BC00985CEC /* JHPullRefreshViewController.m */; };
 		03F4E8CD18CA34260056EAA9 /* NSString+Currency.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664AE186D376900985CEC /* NSString+Currency.m */; };
@@ -1528,7 +1518,6 @@
 		03F4E8EA18CA34260056EAA9 /* SearchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B6FF31887143B00C590F8 /* SearchCell.m */; };
 		03F4E8EB18CA34260056EAA9 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D94F18722D5300C69576 /* HomeViewController.m */; };
 		03F4E8EC18CA34260056EAA9 /* NSNumber+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B70241888847200C590F8 /* NSNumber+Helpers.m */; };
-		03F4E8ED18CA34260056EAA9 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664C7186D376900985CEC /* MBProgressHUD.m */; };
 		03F4E8EE18CA34260056EAA9 /* MockeryURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B7010188723EB00C590F8 /* MockeryURLProtocol.m */; };
 		03F4E8EF18CA34260056EAA9 /* MockeryHTTPURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B700E188723EB00C590F8 /* MockeryHTTPURLResponse.m */; };
 		03F4E8F018CA34260056EAA9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03866472186D352400985CEC /* main.m */; };
@@ -1552,7 +1541,6 @@
 		03F4E90218CA34260056EAA9 /* SpotCardCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E8833718C8389500BD8FBB /* SpotCardCollectionViewCell.m */; };
 		03F4E90318CA34260056EAA9 /* FooterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 032023391875E060008368C2 /* FooterViewController.m */; };
 		03F4E90418CA34260056EAA9 /* SHLabelLatoRegular.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B6FF0188711B800C590F8 /* SHLabelLatoRegular.m */; };
-		03F4E90518CA34260056EAA9 /* UITextField+ACEAutocompleteBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 039BA004188EB9AB001AF1B9 /* UITextField+ACEAutocompleteBar.m */; };
 		03F4E90618CA34260056EAA9 /* ReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 039B701718873DB700C590F8 /* ReviewCell.m */; };
 		03F4E90718CA34260056EAA9 /* SHViewTranlucentWhiteFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 03121A3418BD774B00C9FFA3 /* SHViewTranlucentWhiteFooter.m */; };
 		03F4E90918CA34260056EAA9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E4454818B5705800C88421 /* MapKit.framework */; };
@@ -1988,8 +1976,6 @@
 		038664C2186D376900985CEC /* UIView+RelativityLaws.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+RelativityLaws.m"; sourceTree = "<group>"; };
 		038664C4186D376900985CEC /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark.png"; sourceTree = "<group>"; };
 		038664C5186D376900985CEC /* 37x-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark@2x.png"; sourceTree = "<group>"; };
-		038664C6186D376900985CEC /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
-		038664C7186D376900985CEC /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		038664C9186D376900985CEC /* TellMeMyLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TellMeMyLocation.h; sourceTree = "<group>"; };
 		038664CA186D376900985CEC /* TellMeMyLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TellMeMyLocation.m; sourceTree = "<group>"; };
 		038664DD186D379400985CEC /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
@@ -2092,11 +2078,6 @@
 		039B7021188759B100C590F8 /* NSArray+HoursOfOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+HoursOfOperation.m"; sourceTree = "<group>"; };
 		039B70231888847200C590F8 /* NSNumber+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Helpers.h"; sourceTree = "<group>"; };
 		039B70241888847200C590F8 /* NSNumber+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Helpers.m"; sourceTree = "<group>"; };
-		039BA000188EB9AB001AF1B9 /* ACEAutocompleteBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACEAutocompleteBar.h; sourceTree = "<group>"; };
-		039BA001188EB9AB001AF1B9 /* ACEAutocompleteInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACEAutocompleteInputView.h; sourceTree = "<group>"; };
-		039BA002188EB9AB001AF1B9 /* ACEAutocompleteInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACEAutocompleteInputView.m; sourceTree = "<group>"; };
-		039BA003188EB9AB001AF1B9 /* UITextField+ACEAutocompleteBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+ACEAutocompleteBar.h"; sourceTree = "<group>"; };
-		039BA004188EB9AB001AF1B9 /* UITextField+ACEAutocompleteBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+ACEAutocompleteBar.m"; sourceTree = "<group>"; };
 		039BA00718906A12001AF1B9 /* NSString+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Common.h"; sourceTree = "<group>"; };
 		039BA00818906A12001AF1B9 /* NSString+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Common.m"; sourceTree = "<group>"; };
 		039F541618D11E57004B2B67 /* SpotListMoodModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotListMoodModel.h; sourceTree = "<group>"; };
@@ -2858,13 +2839,11 @@
 			isa = PBXGroup;
 			children = (
 				037D13A318A450C000B89535 /* DoubleGeocoder */,
-				039B9FFF188EB9AB001AF1B9 /* ACEAutocompleteBar */,
 				039B700A188723EB00C590F8 /* Mockery */,
 				038664E3186D37BC00985CEC /* JHTableViewPullRefresh */,
 				038664A4186D376900985CEC /* Categories */,
 				038664BB186D376900985CEC /* FontLabel */,
 				038664C0186D376900985CEC /* LawsOfRelativity */,
-				038664C3186D376900985CEC /* MBProgressHUD */,
 				038664C8186D376900985CEC /* TellMeMyLocation */,
 			);
 			path = Libs;
@@ -2897,6 +2876,7 @@
 				03866507186DE0F700985CEC /* Launch */,
 				0386650E186DE0F700985CEC /* Nav */,
 				03866513186DE0F700985CEC /* Sidebar */,
+				038664C3186D376900985CEC /* MBProgressHUD */,
 			);
 			path = Media;
 			sourceTree = "<group>";
@@ -2965,10 +2945,9 @@
 			children = (
 				038664C4186D376900985CEC /* 37x-Checkmark.png */,
 				038664C5186D376900985CEC /* 37x-Checkmark@2x.png */,
-				038664C6186D376900985CEC /* MBProgressHUD.h */,
-				038664C7186D376900985CEC /* MBProgressHUD.m */,
 			);
-			path = MBProgressHUD;
+			name = MBProgressHUD;
+			path = ../Libs/MBProgressHUD;
 			sourceTree = "<group>";
 		};
 		038664C8186D376900985CEC /* TellMeMyLocation */ = {
@@ -3223,18 +3202,6 @@
 				0372FFA018E36B0A009188B5 /* NSArray+DailySpecials.m */,
 			);
 			name = Helpers;
-			sourceTree = "<group>";
-		};
-		039B9FFF188EB9AB001AF1B9 /* ACEAutocompleteBar */ = {
-			isa = PBXGroup;
-			children = (
-				039BA000188EB9AB001AF1B9 /* ACEAutocompleteBar.h */,
-				039BA001188EB9AB001AF1B9 /* ACEAutocompleteInputView.h */,
-				039BA002188EB9AB001AF1B9 /* ACEAutocompleteInputView.m */,
-				039BA003188EB9AB001AF1B9 /* UITextField+ACEAutocompleteBar.h */,
-				039BA004188EB9AB001AF1B9 /* UITextField+ACEAutocompleteBar.m */,
-			);
-			path = ACEAutocompleteBar;
 			sourceTree = "<group>";
 		};
 		039F541F18D28388004B2B67 /* Drinks */ = {
@@ -5369,7 +5336,6 @@
 				26F0FDE718EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
 				038664D3186D376900985CEC /* UIImage+Resize.m in Sources */,
 				03F2D9411872090E00C69576 /* SHTextFieldLatoLight.m in Sources */,
-				039BA005188EB9AB001AF1B9 /* ACEAutocompleteInputView.m in Sources */,
 				0320237018774E25008368C2 /* UIViewController+Navigator.m in Sources */,
 				038664E9186D37BC00985CEC /* JHPullRefreshViewController.m in Sources */,
 				038664CF186D376900985CEC /* NSString+Currency.m in Sources */,
@@ -5419,7 +5385,6 @@
 				039F545E18D2CD35004B2B67 /* FindDrinksAtViewController.m in Sources */,
 				039ABBD218CE24A400B84AE6 /* MatchPercentAnnotationView.m in Sources */,
 				039F545318D2BA15004B2B67 /* DrinkListViewController.m in Sources */,
-				038664DB186D376900985CEC /* MBProgressHUD.m in Sources */,
 				039B7013188723EB00C590F8 /* MockeryURLProtocol.m in Sources */,
 				039B7012188723EB00C590F8 /* MockeryHTTPURLResponse.m in Sources */,
 				03866473186D352400985CEC /* main.m in Sources */,
@@ -5453,7 +5418,6 @@
 				03AF8EC118E531CC00DD9356 /* CheckinViewController.m in Sources */,
 				0320233B1875E060008368C2 /* FooterViewController.m in Sources */,
 				039B6FF1188711B800C590F8 /* SHLabelLatoRegular.m in Sources */,
-				039BA006188EB9AB001AF1B9 /* UITextField+ACEAutocompleteBar.m in Sources */,
 				039B701818873DB700C590F8 /* ReviewCell.m in Sources */,
 				03121A3518BD774B00C9FFA3 /* SHViewTranlucentWhiteFooter.m in Sources */,
 			);
@@ -5515,7 +5479,6 @@
 				26F0FDEA18EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
 				03CABFD618E7716400FAC5F5 /* UIImage+Resize.m in Sources */,
 				03CABFD718E7716400FAC5F5 /* SHTextFieldLatoLight.m in Sources */,
-				03CABFD818E7716400FAC5F5 /* ACEAutocompleteInputView.m in Sources */,
 				03CABFD918E7716400FAC5F5 /* UIViewController+Navigator.m in Sources */,
 				03CABFDA18E7716400FAC5F5 /* JHPullRefreshViewController.m in Sources */,
 				03CABFDB18E7716400FAC5F5 /* NSString+Currency.m in Sources */,
@@ -5565,7 +5528,6 @@
 				03CAC00418E7716400FAC5F5 /* FindDrinksAtViewController.m in Sources */,
 				03CAC00518E7716400FAC5F5 /* MatchPercentAnnotationView.m in Sources */,
 				03CAC00618E7716400FAC5F5 /* DrinkListViewController.m in Sources */,
-				03CAC00718E7716400FAC5F5 /* MBProgressHUD.m in Sources */,
 				03CAC00818E7716400FAC5F5 /* MockeryURLProtocol.m in Sources */,
 				03CAC00918E7716400FAC5F5 /* MockeryHTTPURLResponse.m in Sources */,
 				03CAC00A18E7716400FAC5F5 /* main.m in Sources */,
@@ -5599,7 +5561,6 @@
 				03CAC02418E7716400FAC5F5 /* CheckinViewController.m in Sources */,
 				03CAC02518E7716400FAC5F5 /* FooterViewController.m in Sources */,
 				03CAC02618E7716400FAC5F5 /* SHLabelLatoRegular.m in Sources */,
-				03CAC02718E7716400FAC5F5 /* UITextField+ACEAutocompleteBar.m in Sources */,
 				03CAC02818E7716400FAC5F5 /* ReviewCell.m in Sources */,
 				03CAC02918E7716400FAC5F5 /* SHViewTranlucentWhiteFooter.m in Sources */,
 			);
@@ -5653,7 +5614,6 @@
 				26F0FDE918EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
 				03F4E77A18CA33D00056EAA9 /* UIImage+Resize.m in Sources */,
 				03F4E77B18CA33D00056EAA9 /* SHTextFieldLatoLight.m in Sources */,
-				03F4E77C18CA33D00056EAA9 /* ACEAutocompleteInputView.m in Sources */,
 				03F4E77D18CA33D00056EAA9 /* UIViewController+Navigator.m in Sources */,
 				03F4E77E18CA33D00056EAA9 /* JHPullRefreshViewController.m in Sources */,
 				03F4E77F18CA33D00056EAA9 /* NSString+Currency.m in Sources */,
@@ -5703,7 +5663,6 @@
 				039F546018D2CD35004B2B67 /* FindDrinksAtViewController.m in Sources */,
 				039ABBD418CE24A800B84AE6 /* MatchPercentAnnotationView.m in Sources */,
 				039F545518D2BA15004B2B67 /* DrinkListViewController.m in Sources */,
-				03F4E79F18CA33D00056EAA9 /* MBProgressHUD.m in Sources */,
 				03F4E7A018CA33D00056EAA9 /* MockeryURLProtocol.m in Sources */,
 				03F4E7A118CA33D00056EAA9 /* MockeryHTTPURLResponse.m in Sources */,
 				03F4E7A218CA33D00056EAA9 /* main.m in Sources */,
@@ -5737,7 +5696,6 @@
 				03AF8EC318E531CC00DD9356 /* CheckinViewController.m in Sources */,
 				03F4E7B518CA33D00056EAA9 /* FooterViewController.m in Sources */,
 				03F4E7B618CA33D00056EAA9 /* SHLabelLatoRegular.m in Sources */,
-				03F4E7B718CA33D00056EAA9 /* UITextField+ACEAutocompleteBar.m in Sources */,
 				03F4E7B818CA33D00056EAA9 /* ReviewCell.m in Sources */,
 				03F4E7B918CA33D00056EAA9 /* SHViewTranlucentWhiteFooter.m in Sources */,
 			);
@@ -5791,7 +5749,6 @@
 				26F0FDE818EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
 				03F4E8C818CA34260056EAA9 /* UIImage+Resize.m in Sources */,
 				03F4E8C918CA34260056EAA9 /* SHTextFieldLatoLight.m in Sources */,
-				03F4E8CA18CA34260056EAA9 /* ACEAutocompleteInputView.m in Sources */,
 				03F4E8CB18CA34260056EAA9 /* UIViewController+Navigator.m in Sources */,
 				03F4E8CC18CA34260056EAA9 /* JHPullRefreshViewController.m in Sources */,
 				03F4E8CD18CA34260056EAA9 /* NSString+Currency.m in Sources */,
@@ -5841,7 +5798,6 @@
 				039F545F18D2CD35004B2B67 /* FindDrinksAtViewController.m in Sources */,
 				039ABBD318CE24A700B84AE6 /* MatchPercentAnnotationView.m in Sources */,
 				039F545418D2BA15004B2B67 /* DrinkListViewController.m in Sources */,
-				03F4E8ED18CA34260056EAA9 /* MBProgressHUD.m in Sources */,
 				03F4E8EE18CA34260056EAA9 /* MockeryURLProtocol.m in Sources */,
 				03F4E8EF18CA34260056EAA9 /* MockeryHTTPURLResponse.m in Sources */,
 				03F4E8F018CA34260056EAA9 /* main.m in Sources */,
@@ -5875,7 +5831,6 @@
 				03AF8EC218E531CC00DD9356 /* CheckinViewController.m in Sources */,
 				03F4E90318CA34260056EAA9 /* FooterViewController.m in Sources */,
 				03F4E90418CA34260056EAA9 /* SHLabelLatoRegular.m in Sources */,
-				03F4E90518CA34260056EAA9 /* UITextField+ACEAutocompleteBar.m in Sources */,
 				03F4E90618CA34260056EAA9 /* ReviewCell.m in Sources */,
 				03F4E90718CA34260056EAA9 /* SHViewTranlucentWhiteFooter.m in Sources */,
 			);

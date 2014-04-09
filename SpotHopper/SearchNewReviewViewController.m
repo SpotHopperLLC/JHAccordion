@@ -501,7 +501,7 @@
     } fail:^(id error) {
         
     } always:^{
-        NSLog(@"Total stuffs - %d", _results.count);
+        NSLog(@"Total stuffs - %ld", _results.count);
         [self dataDidFinishRefreshing];
         [self hideHUD];
     }];
