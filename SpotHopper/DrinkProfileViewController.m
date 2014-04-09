@@ -77,6 +77,8 @@
 @property (nonatomic, strong) JHAccordion *accordion;
 @property (nonatomic, strong) UIView *sectionHeaderAdvanced;
 
+@property (nonatomic, weak) UIButton *btnSeeAll;
+
 @end
 
 @implementation DrinkProfileViewController
@@ -258,13 +260,19 @@
         [button.titleLabel setFont:[UIFont fontWithName:@"Lato-Light" size:16.0f]];
         [button.titleLabel setTextAlignment:NSTextAlignmentCenter];
         
-        [button setTitle:@"See all" forState:UIControlStateNormal];
+        if ([_accordion isSectionOpened:(section-1)]) {
+            [button setTitle:@"See less" forState:UIControlStateNormal];
+        }
+        else {
+            [button setTitle:@"See all" forState:UIControlStateNormal];
+        }
         
         // Sets up for accordion
         [button setTag:1];
         [button addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
         
         [_sectionHeaderAdvanced addSubview:button];
+        _btnSeeAll = button;
         
         return _sectionHeaderAdvanced;
     }
@@ -284,19 +292,21 @@
 #pragma mark - JHAccordionDelegate
 
 - (void)accordion:(JHAccordion *)accordion openingSection:(NSInteger)section {
-    
 }
 
 - (void)accordion:(JHAccordion *)accordion closingSection:(NSInteger)section {
-    
 }
 
 - (void)accordion:(JHAccordion *)accordion openedSection:(NSInteger)section {
-    
+    if (_btnSeeAll) {
+        [_btnSeeAll setTitle:@"See less" forState:UIControlStateNormal];
+    }
 }
 
 - (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
-    
+    if (_btnSeeAll) {
+        [_btnSeeAll setTitle:@"See all" forState:UIControlStateNormal];
+    }
 }
 
 #pragma mark - MKMapViewDelegate
