@@ -161,6 +161,18 @@ $2 Non-Wisco Taps</string>
                                     <outlet property="delegate" destination="46L-BE-h0z" id="vBD-TZ-0Q4"/>
                                 </connections>
                             </mapView>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="CTJ-iD-itG" userLabel="Update Search Results Button" customClass="SHButtonLatoBold">
+                                <rect key="frame" x="70" y="380" width="180" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="0.75" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="Update Search Results">
+                                    <color key="titleColor" red="0.85882359740000003" green="0.41960787770000002" blue="0.22352942819999999" alpha="1" colorSpace="deviceRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onUpdateSearchResults:" destination="46L-BE-h0z" eventType="touchUpInside" id="vFu-XE-B5Y"/>
+                                </connections>
+                            </button>
                             <view contentMode="scaleToFill" id="xqW-7F-IJf" customClass="SHViewTranlucentWhite">
                                 <rect key="frame" x="0.0" y="64" width="320" height="30"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
@@ -172,7 +184,7 @@ $2 Non-Wisco Taps</string>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hFE-xB-2JQ" customClass="SHButtonLatoLightLocation">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hFE-xB-2JQ" userLabel="Location Button" customClass="SHButtonLatoLightLocation">
                                         <rect key="frame" x="64" y="4" width="236" height="18"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
@@ -311,6 +323,7 @@ $2 Non-Wisco Taps</string>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="btnLocation" destination="hFE-xB-2JQ" id="rwl-rV-Vfz"/>
+                        <outlet property="btnUpdateSearchResults" destination="CTJ-iD-itG" id="28X-Qi-5xU"/>
                         <outlet property="collectionView" destination="oZb-00-cLy" id="2fL-JV-CA3"/>
                         <outlet property="lblLocation" destination="0tZ-et-55A" id="xPk-Ez-kW8"/>
                         <outlet property="lblMatchPercent" destination="tgC-mz-s8X" id="Akz-kP-TGj"/>
