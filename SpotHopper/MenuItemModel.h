@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kMenuItemParamsInStock @"in_stock"
+
 #import "SHJSONAPIResource.h"
 
 @class DrinkModel;
