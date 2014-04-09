@@ -216,6 +216,10 @@
     return [NSString stringWithFormat:@"%d%%", (int)([self match].floatValue * 100)];
 }
 
+- (NSNumber *)relevance {
+    return [self objectForKey:@"relevance"];
+}
+
 - (NSArray *)baseAlochols {
     return [self linkedResourceForKey:@"base_alcohols"];
 }
