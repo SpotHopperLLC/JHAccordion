@@ -977,10 +977,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <connections>
-                        <segue destination="3Aw-mc-8HV" kind="custom" identifier="" id="cRh-b3-MdY"/>
-                        <segue destination="GVQ-VB-zY7" kind="custom" identifier="" id="zZM-rH-9db"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EGh-xp-0To" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -14,6 +14,7 @@ pod 'JHAccordion', :git => 'https://github.com/joshdholtz/JHAccordion.git'
 pod 'JHAutoCompleteTextField', :git => 'http://github.com/joshdholtz/JHAutoCompleteTextField.git'
 pod 'JHSidebar', :git => 'https://github.com/joshdholtz/JHSidebar.git'
 pod 'TTTAttributedLabel', '~> 1.8.1'
+pod 'MBProgressHUD', '~> 0.8.0'
 
 # Debugging
 pod 'Raven', '~> 0.3.0'

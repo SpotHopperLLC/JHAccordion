@@ -6,11 +6,6 @@
 #import "UIImage+RoundedCorner.h"
 #import "UIImage+Alpha.h"
 
-// Private helper methods
-@interface UIImage ()
-- (void)addRoundedRectToPath:(CGRect)rect context:(CGContextRef)context ovalWidth:(CGFloat)ovalWidth ovalHeight:(CGFloat)ovalHeight;
-@end
-
 @implementation UIImage (RoundedCorner)
 
 // Creates a copy of this image with rounded corners
@@ -32,9 +27,9 @@
     // Create a clipping path with rounded corners
     CGContextBeginPath(context);
     [self addRoundedRectToPath:CGRectMake(borderSize, borderSize, image.size.width - borderSize * 2, image.size.height - borderSize * 2)
-                       context:context
-                     ovalWidth:cornerSize
-                    ovalHeight:cornerSize];
+                         context:context
+                       ovalWidth:cornerSize
+                      ovalHeight:cornerSize];
     CGContextClosePath(context);
     CGContextClip(context);
 

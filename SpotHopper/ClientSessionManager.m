@@ -47,14 +47,14 @@
 - (AFHTTPRequestOperation *)GET:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success {
     return [super GET:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
-            NSLog(@"%@ %d - %@", operation.request.URL.standardizedURL, operation.response.statusCode, operation.responseString);
+            NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, operation.response.statusCode, operation.responseString);
             NSLog(@"%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
         }
         
         success(operation, responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (_debug) {
-            NSLog(@"%@ %d - %@", operation.request.URL.standardizedURL, operation.response.statusCode, operation.responseString);
+            NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, operation.response.statusCode, operation.responseString);
             NSLog(@"%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
         }
         
@@ -73,7 +73,7 @@
         if (_debug) {
             NSLog(@"Request Headers\n\t%@", operation.request.allHTTPHeaderFields);
             NSLog(@"Request Body\n\t%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
-            NSLog(@"Response\n\t%@ %d - %@", operation.request.URL.standardizedURL, operation.response.statusCode, operation.responseString);
+            NSLog(@"Response\n\t%@ %ld - %@", operation.request.URL.standardizedURL, operation.response.statusCode, operation.responseString);
         }
         
         success(operation, responseObject);
@@ -81,7 +81,7 @@
         if (_debug) {
             NSLog(@"Request Headers\n\t%@", operation.request.allHTTPHeaderFields);
             NSLog(@"Reques Body\n\t%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
-            NSLog(@"Response\n\t%@ %d - %@", operation.request.URL.standardizedURL, operation.response.statusCode, operation.responseString);
+            NSLog(@"Response\n\t%@ %ld - %@", operation.request.URL.standardizedURL, operation.response.statusCode, operation.responseString);
         }
         
         id response = nil;
@@ -97,7 +97,7 @@
 - (AFHTTPRequestOperation *)POST:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success {
     return [super POST:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
-            NSLog(@"%@ %d - %@", operation.request.URL.standardizedURL, operation.response.statusCode, operation.responseString);
+            NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, operation.response.statusCode, operation.responseString);
             NSLog(@"Request Headers - %@", operation.request.allHTTPHeaderFields);
             NSLog(@"%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
         }
@@ -109,7 +109,7 @@
         if (_debug) {
             NSLog(@"Request Headers - %@", operation.request.allHTTPHeaderFields);
             NSLog(@"Request Body - %@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
-            NSLog(@"Response - %@ %d - %@", operation.request.URL.standardizedURL, operation.response.statusCode, operation.responseString);
+            NSLog(@"Response - %@ %ld - %@", operation.request.URL.standardizedURL, operation.response.statusCode, operation.responseString);
         }
         
         id response = nil;
@@ -125,14 +125,14 @@
 - (AFHTTPRequestOperation *)PUT:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success {
     return [super PUT:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
-            NSLog(@"%@ %d - %@", operation.request.URL.standardizedURL, operation.response.statusCode, operation.responseString);
+            NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, operation.response.statusCode, operation.responseString);
             NSLog(@"%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
         }
         
         success(operation, responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (_debug) {
-            NSLog(@"%@ %d - %@", operation.request.URL.standardizedURL, operation.response.statusCode, operation.responseString);
+            NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, operation.response.statusCode, operation.responseString);
             NSLog(@"%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
         }
         
@@ -149,14 +149,14 @@
 - (AFHTTPRequestOperation *)DELETE:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success {
     return [super DELETE:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
-            NSLog(@"%@ %d - %@", operation.request.URL.standardizedURL, operation.response.statusCode, operation.responseString);
+            NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, operation.response.statusCode, operation.responseString);
             NSLog(@"%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
         }
         
         success(operation, responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (_debug) {
-            NSLog(@"%@ %d - %@", operation.request.URL.standardizedURL, operation.response.statusCode, operation.responseString);
+            NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, operation.response.statusCode, operation.responseString);
             NSLog(@"%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
         }
         
