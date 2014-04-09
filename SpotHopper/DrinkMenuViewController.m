@@ -201,7 +201,7 @@
     [self showHUD:@"Loading menu"];
     
     // Gets menu items
-    Promise *promiseMenuItems = [_spot getMenuItems:nil success:^(NSArray *menuItemModels, JSONAPI *jsonApi) {
+    Promise *promiseMenuItems = [_spot getMenuItems:@{ kMenuItemParamsInStock : @"true" } success:^(NSArray *menuItemModels, JSONAPI *jsonApi) {
         _menuItems = menuItemModels;
         _menuTypes = [[jsonApi linked] objectForKey:@"menu_types"];
     } failure:^(ErrorModel *errorModel) {
