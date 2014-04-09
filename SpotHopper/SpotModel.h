@@ -13,6 +13,7 @@
 #define kSpotModelParamQueryLongitude @"lng"
 #define kSpotModelParamQuerySpotTypeId @"spot_type_id"
 #define kSpotModelParamQueryDayOfWeek @"day_of_week"
+#define kSpotModelParamQueryVisibleToUsers @"visible_to_users"
 
 #define kSpotModelParamName @"name"
 #define kSpotModelParamAddress @"address"
