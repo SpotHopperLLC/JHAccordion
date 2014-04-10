@@ -200,6 +200,7 @@
      */
     NSMutableDictionary *params = @{
                                          kSpotModelParamPage : _page,
+                                         kSpotModelParamQueryVisibleToUsers : @"true",
                                          kSpotModelParamsPageSize : kPageSize,
                                          kSpotModelParamSources : kSpotModelParamSourcesSpotHopper,
                                          kSpotModelParamQueryDayOfWeek : [NSNumber numberWithInteger:dayOfWeek]

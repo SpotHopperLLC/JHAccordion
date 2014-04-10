@@ -349,8 +349,9 @@
      */
     NSMutableDictionary *paramsSpots = @{
                                          kSpotModelParamQuery : _txtSearch.text,
+                                         kSpotModelParamQueryVisibleToUsers : @"true",
                                          kSpotModelParamPage : _page,
-                                         kSpotModelParamsPageSize : kPageSize
+                                         kSpotModelParamsPageSize : kPageSize,
                                          }.mutableCopy;
     
     [paramsSpots setObject:kSpotModelParamSourcesSpotHopper forKey:kSpotModelParamSources];
