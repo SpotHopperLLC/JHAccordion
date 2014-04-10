@@ -270,7 +270,8 @@
 }
 
 - (NSNumber *)relevance {
-    return [self objectForKey:@"relevance"];
+    NSNumber *rel = [self objectForKey:@"relevance"];
+    return ( rel == nil ? @0 : rel );
 }
 
 - (NSArray *)images {
