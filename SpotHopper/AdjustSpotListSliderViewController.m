@@ -237,31 +237,8 @@
     [self slideCell:cell aboveTableViewMidwayPoint:_tblSliders];
     
     if (_btnSubmit.hidden) {
-        [_btnSubmit setHidden:FALSE];
         [_btnSubmit setTitle:@"Search" forState:UIControlStateNormal];
-        
-        // 1) position it below the superview (out of view)
-        // 2) set to hidden = false
-        // 3) animate it up into position
-        // 4) update the table with insets so it will not cover sliders
-        
-        CGFloat buttonHeight = CGRectGetHeight(_btnSubmit.frame);
-        CGFloat viewHeight = CGRectGetHeight(self.view.frame);
-        
-        CGRect hiddenFrame = _btnSubmit.frame;
-        hiddenFrame.origin.y = viewHeight;
-        _btnSubmit.frame = hiddenFrame;
-        _btnSubmit.hidden = FALSE;
-        [self.view bringSubviewToFront:_btnSubmit];
-        
-        [UIView animateWithDuration:0.5 animations:^{
-            CGRect visibleFrame = _btnSubmit.frame;
-            visibleFrame.origin.y = viewHeight - buttonHeight;
-            _btnSubmit.frame = visibleFrame;
-            _tblSliders.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, buttonHeight, 0.0f);
-            _tblSliders.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, buttonHeight, 0.0f);
-        } completion:^(BOOL finished) {
-        }];
+        [self showSubmitButton:TRUE];
     }
 }
 
@@ -297,6 +274,7 @@
 - (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
     if (section == kSectionTypes) {
         [_tblSliders reloadData];
+        [self hideSubmitButton:TRUE];
     } else if (section == kSectionMoods) {
         [self changeMood];
     }
@@ -581,6 +559,50 @@
         return _sectionHeader3;
     }
     return nil;
+}
+
+- (void)hideSubmitButton:(BOOL)animated {
+    // 1) slide the button down and out of view
+    // 2) set hidden to TRUE
+    
+    CGFloat viewHeight = CGRectGetHeight(self.view.frame);
+    
+    CGRect hiddenFrame = _btnSubmit.frame;
+    hiddenFrame.origin.y = viewHeight;
+    _btnSubmit.frame = hiddenFrame;
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        _btnSubmit.frame = hiddenFrame;
+        _tblSliders.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
+        _tblSliders.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
+    } completion:^(BOOL finished) {
+        [_btnSubmit setHidden:TRUE];
+    }];
+}
+
+- (void)showSubmitButton:(BOOL)animated {
+    // 1) position it below the superview (out of view)
+    // 2) set to hidden = false
+    // 3) animate it up into position
+    // 4) update the table with insets so it will not cover table cells
+    
+    CGFloat buttonHeight = CGRectGetHeight(_btnSubmit.frame);
+    CGFloat viewHeight = CGRectGetHeight(self.view.frame);
+    
+    CGRect hiddenFrame = _btnSubmit.frame;
+    hiddenFrame.origin.y = viewHeight;
+    _btnSubmit.frame = hiddenFrame;
+    _btnSubmit.hidden = FALSE;
+    [self.view bringSubviewToFront:_btnSubmit];
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        CGRect visibleFrame = _btnSubmit.frame;
+        visibleFrame.origin.y = viewHeight - buttonHeight;
+        _btnSubmit.frame = visibleFrame;
+        _tblSliders.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, buttonHeight, 0.0f);
+        _tblSliders.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, buttonHeight, 0.0f);
+    } completion:^(BOOL finished) {
+    }];
 }
 
 @end

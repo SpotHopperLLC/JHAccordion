@@ -48,7 +48,7 @@
     // Background view
     _btnBackground = [[UIButton alloc] initWithFrame:_viewContent.frame];
     [_btnBackground setContentMode:UIViewContentModeScaleToFill];
-    [_btnBackground setBackgroundColor:( kColorOrangeDark )];
+    [self updateViewButtonBackground];
     
     [_viewContent addSubview:_btnBackground];
     
@@ -73,11 +73,17 @@
 }
 
 - (void)setSelected:(BOOL)selected {
+    [_btnBackground setSelected:selected];
+    [self updateViewButtonBackground];
     
     float radians = (selected ? M_PI_2 * -2 : 0);
     [UIView animateWithDuration:0.35 animations:^{
         _imgArrow.transform = CGAffineTransformMakeRotation(radians);
     }];
+}
+
+- (void)updateViewButtonBackground {
+    [_btnBackground setBackgroundColor:( _btnBackground.selected ? kColorOrangeDark : [UIColor clearColor] )];
 }
 
 @end

@@ -83,6 +83,7 @@ typedef void(^AlertBlock)();
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    NSLog(@"%@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
     [super viewWillAppear:animated];
     
     if ([self.navigationController.viewControllers count] > 1) {

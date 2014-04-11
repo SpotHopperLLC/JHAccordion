@@ -9,6 +9,7 @@
 #import "ReviewViewController.h"
 
 #import "UIView+ViewFromNib.h"
+#import "UIView+AddBorder.h"
 
 #import "SHButtonLatoLight.h"
 #import "SectionHeaderView.h"
@@ -189,14 +190,6 @@
         return view;
     } else if (section == 2) {
         if (_sectionHeaderAdvanced == nil) {
-//            _sectionHeaderAdvanced = [self instantiateSectionHeaderView];
-//            [_sectionHeaderAdvanced setBackgroundColor:[UIColor clearColor]];
-//            [_sectionHeaderAdvanced setText:@"Advanced"];
-//            [_sectionHeaderAdvanced setSelected:[_accordion isSectionOpened:section]];
-//            
-//            // Sets up for accordion
-//            [_sectionHeaderAdvanced.btnBackground setTag:section];
-//            [_sectionHeaderAdvanced.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
             
             _sectionHeaderAdvanced = [[AdjustSliderSectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblReviews.frame), 48.0f)];
             
@@ -206,7 +199,7 @@
             [_sectionHeaderAdvanced.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
             
             // Add borders
-//            [_sectionHeaderAdvanced addBottomBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
+            [_sectionHeaderAdvanced addBottomBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
         }
         return _sectionHeaderAdvanced;
     }

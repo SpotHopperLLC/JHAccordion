@@ -141,7 +141,6 @@
     // Configures table
     [_tblReviews setTableFooterView:[[UIView alloc] init]];
     [_tblReviews registerNib:[UINib nibWithNibName:@"ReviewSliderCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ReviewSliderCell"];
-    [_tblReviews setContentInset:UIEdgeInsetsMake(0, 0, 65.0f, 0)];
     
     // Initializes states
     _selectedReviewType = [kReviewTypes indexOfObject:_reviewType];
@@ -291,7 +290,8 @@
         if (section == 0) {
             return [self sectionHeaderViewForSection:section];
         }
-    } else if (tableView == _tblReviews) {
+    }
+    else if (tableView == _tblReviews) {
         if (section == 2) {
             if (_sectionHeaderAdvanced == nil) {
                 _sectionHeaderAdvanced = [self instantiateSectionHeaderView];
@@ -1164,7 +1164,8 @@
         if (_sectionHeaderReviewType == nil) {
             _sectionHeaderReviewType = [self instantiateSectionHeaderView];
             [_sectionHeaderReviewType setBackgroundColor:[UIColor whiteColor]];
-            [_sectionHeaderReviewType setText:[kReviewTypes objectAtIndex:_selectedReviewType]];
+            NSString *text = [kReviewTypes objectAtIndex:_selectedReviewType];
+            [_sectionHeaderReviewType setText:text];
             [_sectionHeaderReviewType setSelected:YES];
         }
         
@@ -1216,7 +1217,8 @@
         }
 
         return _viewFormNewSpot;
-    } else if (index == 1) {
+    }
+    else if (index == 1) {
         if (_viewFormNewBeer == nil) {
             _viewFormNewBeer = [UIView viewFromNibNamed:@"NewReviewBeerView" withOwner:self];
             
@@ -1231,7 +1233,8 @@
         }
 
         return _viewFormNewBeer;
-    } else if (index == 2) {
+    }
+    else if (index == 2) {
         if (_viewFormNewCocktail == nil) {
             _viewFormNewCocktail = [UIView viewFromNibNamed:@"NewReviewCocktailView" withOwner:self];
         }
@@ -1257,7 +1260,8 @@
         [_txtCocktailAlcoholType setInputAccessoryView:[self keyboardToolBarForCocktailAlcoholType]];
         
         return _viewFormNewCocktail;
-    } else if (index == 3) {
+    }
+    else if (index == 3) {
         if (_viewFormNewWine == nil) {
             _viewFormNewWine = [UIView viewFromNibNamed:@"NewReviewWineView" withOwner:self];
             
