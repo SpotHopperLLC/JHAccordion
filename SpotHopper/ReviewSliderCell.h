@@ -23,7 +23,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblMinimum;
 @property (weak, nonatomic) IBOutlet UILabel *lblMaximum;
 @property (weak, nonatomic) IBOutlet UILabel *lblSliderValue;
-@property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblSlideToAdjust;
 @property (weak, nonatomic) IBOutlet SHSlider *slider;
 
 @property (nonatomic, assign) id<ReviewSliderCellDelegate> delegate;

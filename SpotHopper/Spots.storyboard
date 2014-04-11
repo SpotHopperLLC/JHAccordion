@@ -460,7 +460,7 @@ $2 Non-Wisco Taps</string>
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="IT8-bS-ErD">
-                                <rect key="frame" x="0.0" y="39" width="320" height="286"/>
+                                <rect key="frame" x="0.0" y="39" width="320" height="348"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -508,6 +508,7 @@ $2 Non-Wisco Taps</string>
                     </view>
                     <toolbarItems/>
                     <connections>
+                        <outlet property="btnSubmit" destination="Zfi-IM-0kR" id="UpN-B7-cDl"/>
                         <outlet property="tblSliders" destination="IT8-bS-ErD" id="O1u-lE-48w"/>
                     </connections>
                 </viewController>
