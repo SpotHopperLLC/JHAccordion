@@ -324,6 +324,9 @@
 #pragma mark - Private
 
 - (void)startSearch {
+    [DrinkModel cancelGetDrinks];
+    [SpotModel cancelGetSpots];
+    
     // Resets pages and clears results
     _drinkPage = @1;
     _spotPage = @1;
@@ -351,7 +354,6 @@
                                    kDrinkModelParamsPageSize : kPageSize
                                    };
     
-    [DrinkModel cancelGetDrinks];
     Promise *promiseDrinks = [DrinkModel getDrinks:paramsDrinks success:^(NSArray *drinkModels, JSONAPI *jsonApi) {
         // Adds drinks to results
         [_results addObjectsFromArray:drinkModels];

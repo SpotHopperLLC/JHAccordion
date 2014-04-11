@@ -361,7 +361,6 @@
         [paramsSpots setObject:[NSNumber numberWithFloat:_currentLocation.coordinate.longitude] forKey:kSpotModelParamQueryLongitude];
     }
     
-    [SpotModel cancelGetSpots];
     [SpotModel getSpots:paramsSpots success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         [self hideHUD];
         

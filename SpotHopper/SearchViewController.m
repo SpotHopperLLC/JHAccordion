@@ -233,6 +233,9 @@
 #pragma mark - Private
 
 - (void)startSearch {
+    [DrinkModel cancelGetDrinks];
+    [SpotModel cancelGetSpots];
+    
     // Resets pages and clears results
     _page = @1;
     [_results removeAllObjects];
@@ -257,7 +260,6 @@
                                    kDrinkModelParamsPageSize : kPageSize
                                    };
     
-    [DrinkModel cancelGetDrinks];
     Promise *promiseDrink = [DrinkModel getDrinks:paramsDrinks success:^(NSArray *drinkModels, JSONAPI *jsonApi) {
         
         // Adds drinks to results
@@ -279,7 +281,6 @@
     
     [paramsSpots setObject:kSpotModelParamSourcesSpotHopper forKey:kSpotModelParamSources];
     
-    [SpotModel cancelGetSpots];
     Promise *promiseSpot = [SpotModel getSpots:paramsSpots success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         
         // Adds spots to results

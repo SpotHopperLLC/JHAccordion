@@ -215,6 +215,8 @@
 #pragma mark - Private
 
 - (void)startSearch {
+    [DrinkModel cancelGetDrinks];
+    
     // Resets pages and clears results
     _page = @1;
     [_results removeAllObjects];
@@ -241,7 +243,6 @@
                                    kDrinkModelParamsPageSize : kPageSize
                                    };
     
-    [DrinkModel cancelGetDrinks];
     [DrinkModel getDrinks:paramsDrinks success:^(NSArray *drinkModels, JSONAPI *jsonApi) {
         [self hideHUD];
         
