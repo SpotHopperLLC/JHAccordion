@@ -170,6 +170,7 @@
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="btnSubmit" destination="jPh-Q1-rpf" id="lVW-di-GpL"/>
                         <outlet property="tblReviews" destination="Zcv-Q0-HRT" id="H1k-Gl-oJC"/>
                     </connections>
                 </viewController>

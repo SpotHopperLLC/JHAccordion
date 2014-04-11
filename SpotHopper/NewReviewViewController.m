@@ -14,6 +14,7 @@
 
 #import "MyReviewsViewController.h"
 
+#import "SHButtonLatoLight.h"
 #import "CLGeocoder+DoubleLookup.h"
 #import "NSString+Common.h"
 #import "UIView+ViewFromNib.h"
@@ -115,8 +116,7 @@
 
 @implementation NewReviewViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -124,8 +124,7 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
     
     // Sets title
@@ -160,6 +159,8 @@
     // Deselects table row
     [_tblReviews deselectRowAtIndexPath:_tblReviews.indexPathForSelectedRow animated:NO];
     
+    [_btnSubmit setHidden:TRUE];
+    
     // Gets table frame
     if (CGRectEqualToRect(_tblReviewsInitalFrame, CGRectZero)) {
         _tblReviewsInitalFrame = _tblReviews.frame;
@@ -170,8 +171,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -355,7 +355,14 @@
 }
 
 - (void)accordion:(JHAccordion *)accordion openedSection:(NSInteger)section {
+    CGRect sectionRect = [_tblReviews rectForSection:section];
     
+    CGFloat tableHeight = CGRectGetHeight(_tblReviews.frame);
+    if (sectionRect.origin.y > tableHeight) {
+        CGFloat newOffset = sectionRect.origin.y - (tableHeight / 3);
+        CGPoint offset = CGPointMake(0.0, newOffset);
+        [_tblReviews setContentOffset:offset animated:TRUE];
+    }
 }
 
 - (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
@@ -582,6 +589,34 @@
 - (void)reviewSliderCell:(ReviewSliderCell*)cell finishedChangingValue:(CGFloat)value {
     // move table view of sliders up a little to make the next slider visible
     [self slideCell:cell aboveTableViewMidwayPoint:_tblReviews];
+    
+    if (_btnSubmit.hidden) {
+        [_btnSubmit setHidden:FALSE];
+        [_btnSubmit setTitle:@"Submit Review" forState:UIControlStateNormal];
+        
+        // 1) position it below the superview (out of view)
+        // 2) set to hidden = false
+        // 3) animate it up into position
+        // 4) update the table with insets so it will not cover sliders
+        
+        CGFloat buttonHeight = CGRectGetHeight(_btnSubmit.frame);
+        CGFloat viewHeight = CGRectGetHeight(self.view.frame);
+        
+        CGRect hiddenFrame = _btnSubmit.frame;
+        hiddenFrame.origin.y = viewHeight;
+        _btnSubmit.frame = hiddenFrame;
+        _btnSubmit.hidden = FALSE;
+        [self.view bringSubviewToFront:_btnSubmit];
+        
+        [UIView animateWithDuration:0.5 animations:^{
+            CGRect visibleFrame = _btnSubmit.frame;
+            visibleFrame.origin.y = viewHeight - buttonHeight;
+            _btnSubmit.frame = visibleFrame;
+            _tblReviews.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, buttonHeight, 0.0f);
+            _tblReviews.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, buttonHeight, 0.0f);
+        } completion:^(BOOL finished) {
+        }];
+    }
 }
 
 #pragma mark - Actions
