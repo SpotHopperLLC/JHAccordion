@@ -215,6 +215,8 @@
 #pragma mark - Private
 
 - (void)startSearch {
+    [DrinkModel cancelGetDrinks];
+    
     // Resets pages and clears results
     _page = @1;
     [_results removeAllObjects];

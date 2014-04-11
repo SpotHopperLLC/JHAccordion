@@ -427,6 +427,9 @@
 }
 
 - (void)startSearch {
+    [DrinkModel cancelGetDrinks];
+    [SpotModel cancelGetSpots];
+    
     // Resets pages and clears results
     _drinkPage = @1;
     _spotPage = @1;
