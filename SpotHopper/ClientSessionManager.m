@@ -44,6 +44,34 @@
     return _sharedClient;
 }
 
+- (void)cancelAllHTTPOperationsWithMethod:(NSString*)method path:(NSString*)path parameters:(NSDictionary*)parameters ignoreParams:(BOOL)ignoreParams {
+    
+    NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:(method ?: @"GET") URLString:[[NSURL URLWithString:path relativeToURL:self.baseURL] absoluteString] parameters:parameters];
+    NSString *URLStringToMatched = [[request URL] absoluteString];
+    
+    for (NSOperation *operation in [self.operationQueue operations]) {
+        if (![operation isKindOfClass:[AFHTTPRequestOperation class]]) {
+            continue;
+        }
+        
+        NSURL *matchymatchyURL = [[(AFHTTPRequestOperation *)operation request] URL];
+        if (ignoreParams == YES) {
+            NSURLComponents *components = [[NSURLComponents alloc] initWithURL:matchymatchyURL resolvingAgainstBaseURL:YES];
+            components.query = nil;
+            components.fragment = nil;
+            
+            matchymatchyURL = [components URL];
+        }
+        
+        BOOL hasMatchingMethod = !method || [method isEqualToString:[[(AFHTTPRequestOperation *)operation request] HTTPMethod]];
+        BOOL hasMatchingURL = [[matchymatchyURL absoluteString] isEqualToString:URLStringToMatched];
+        
+        if (hasMatchingMethod && hasMatchingURL) {
+            [operation cancel];
+        }
+    }
+}
+
 - (AFHTTPRequestOperation *)GET:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success {
     return [super GET:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {

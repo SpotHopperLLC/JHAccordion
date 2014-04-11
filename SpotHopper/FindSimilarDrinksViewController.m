@@ -241,6 +241,7 @@
                                    kDrinkModelParamsPageSize : kPageSize
                                    };
     
+    [DrinkModel cancelGetDrinks];
     [DrinkModel getDrinks:paramsDrinks success:^(NSArray *drinkModels, JSONAPI *jsonApi) {
         [self hideHUD];
         

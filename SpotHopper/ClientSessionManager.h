@@ -22,6 +22,8 @@
 @property (assign) BOOL hasSeenSpotlists;
 @property (assign) BOOL hasSeenDrinklists;
 
+- (void)cancelAllHTTPOperationsWithMethod:(NSString*)method path:(NSString*)path parameters:(NSDictionary*)parameters ignoreParams:(BOOL)ignoreParams;
+
 // Cause I said so
 - (AFHTTPRequestOperation *)GET:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success;
 - (AFHTTPRequestOperation *)POST:(NSString *)URLString parameters:(NSDictionary *)parameters constructingBodyWithBlock:(void (^)(id<AFMultipartFormData>))block success:(void (^)(AFHTTPRequestOperation *, id))success;

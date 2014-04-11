@@ -459,6 +459,7 @@
                              kDrinkModelParamsPageSize : kPageSize
                              };
     
+    [DrinkModel cancelGetDrinks];
     Promise *promiseDrinks = [DrinkModel getDrinks:paramsDrinks success:^(NSArray *drinkModels, JSONAPI *jsonApi) {
         // Adds drinks to results
         [_results addObjectsFromArray:drinkModels];
@@ -487,6 +488,7 @@
         [paramsSpots setObject:[NSNumber numberWithFloat:_location.coordinate.longitude] forKey:kSpotModelParamQueryLongitude];
     }
     
+    [SpotModel cancelGetSpots];
     Promise *promiseSpots = [SpotModel getSpots:paramsSpots success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         // Adds spots to results
         [_results addObjectsFromArray:spotModels];

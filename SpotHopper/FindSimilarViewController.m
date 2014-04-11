@@ -256,6 +256,7 @@
                                        kDrinkModelParamsPageSize : kPageSize
                                        };
         
+        [DrinkModel cancelGetDrinks];
         [DrinkModel getDrinks:paramsDrinks success:^(NSArray *drinkModels, JSONAPI *jsonApi) {
             [self hideHUD];
             
@@ -293,6 +294,7 @@
             [paramsSpots setObject:[NSNumber numberWithFloat:_location.coordinate.longitude] forKey:kSpotModelParamQueryLongitude];
         }
         
+        [SpotModel cancelGetSpots];
         [SpotModel getSpots:paramsSpots success:^(NSArray *spotModels, JSONAPI *jsonApi) {
             [self hideHUD];
             

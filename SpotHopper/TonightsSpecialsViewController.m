@@ -213,6 +213,7 @@
     }
     
     [self showHUD:@"Finding specials"];
+    [SpotModel cancelGetSpots];
     [SpotModel getSpotsWithSpecials:params success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         [self hideHUD];
         

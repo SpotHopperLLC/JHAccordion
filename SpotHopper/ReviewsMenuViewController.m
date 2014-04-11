@@ -351,6 +351,7 @@
                                    kDrinkModelParamsPageSize : kPageSize
                                    };
     
+    [DrinkModel cancelGetDrinks];
     Promise *promiseDrinks = [DrinkModel getDrinks:paramsDrinks success:^(NSArray *drinkModels, JSONAPI *jsonApi) {
         // Adds drinks to results
         [_results addObjectsFromArray:drinkModels];

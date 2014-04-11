@@ -70,6 +70,8 @@
 - (UIImage*)placeholderImage;
 - (LiveSpecialModel*)currentLiveSpecial;
 
++ (void)cancelGetSpots;
+
 + (Promise*)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 + (Promise*)getSpotsWithSpecials:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
