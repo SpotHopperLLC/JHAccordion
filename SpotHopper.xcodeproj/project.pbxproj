@@ -1794,6 +1794,8 @@
 		2602BD9D18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9E18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9F18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
+		2636AB3E18F8A82100591722 /* table_footer_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9418E2654900C93BBF /* table_footer_background.png */; };
+		2636AB3F18F8A82400591722 /* table_footer_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9518E2654900C93BBF /* table_footer_background@2x.png */; };
 		267D78D618F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */; };
 		267D78D718F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */; };
 		267D78D818F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */; };
@@ -4441,6 +4443,7 @@
 				03CAC13618E7716400FAC5F5 /* btn_context_delete.png in Resources */,
 				03CAC13718E7716400FAC5F5 /* SpotAnnotationCalloutView.xib in Resources */,
 				03CAC13818E7716400FAC5F5 /* icon_featured_lists@2x.png in Resources */,
+				2636AB3E18F8A82100591722 /* table_footer_background.png in Resources */,
 				03CAC13918E7716400FAC5F5 /* btn_share_text.png in Resources */,
 				03CAC13A18E7716400FAC5F5 /* img_carousel_background.png in Resources */,
 				03CAC13B18E7716400FAC5F5 /* btn_share_share_iphone4@2x.png in Resources */,
@@ -4449,6 +4452,7 @@
 				03CAC13E18E7716400FAC5F5 /* wine_placeholder.png in Resources */,
 				03CAC13F18E7716400FAC5F5 /* img_map_shadow_top@2x.png in Resources */,
 				03CAC14018E7716400FAC5F5 /* NewReviewWineView.xib in Resources */,
+				2636AB3F18F8A82400591722 /* table_footer_background@2x.png in Resources */,
 				03CAC14118E7716400FAC5F5 /* icon_plus.png in Resources */,
 				03CAC14218E7716400FAC5F5 /* btn_nav_sidebar.png in Resources */,
 				03CAC14318E7716400FAC5F5 /* btn_context_list@2x.png in Resources */,

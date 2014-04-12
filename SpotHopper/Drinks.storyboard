@@ -282,7 +282,7 @@ available here</string>
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OZx-mk-ZiD">
-                                <rect key="frame" x="0.0" y="39" width="320" height="286"/>
+                                <rect key="frame" x="0.0" y="39" width="320" height="348"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -330,12 +330,13 @@ available here</string>
                     </view>
                     <toolbarItems/>
                     <connections>
+                        <outlet property="btnSubmit" destination="vL3-88-Gh4" id="dnL-32-dBP"/>
                         <outlet property="tblSliders" destination="OZx-mk-ZiD" id="Psf-rM-62a"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qgn-jr-6h6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="748" y="-436"/>
+            <point key="canvasLocation" x="773" y="-368"/>
         </scene>
         <!--Drink List View Controller-->
         <scene sceneID="CWo-JL-FPN">

@@ -9,11 +9,15 @@
 #import "ReviewViewController.h"
 
 #import "UIView+ViewFromNib.h"
+#import "UIView+AddBorder.h"
 
+#import "SHButtonLatoLight.h"
 #import "SectionHeaderView.h"
 
 #import "ReviewSliderCell.h"
 #import "SHLabelLatoLight.h"
+
+#import "AdjustSliderSectionHeaderView.h"
 
 #import "ClientSessionManager.h"
 #import "DrinkModel.h"
@@ -35,11 +39,12 @@
 @property (weak, nonatomic) IBOutlet SHLabelLatoLight *lblSubSubTitle;
 
 @property (weak, nonatomic) IBOutlet UITableView *tblReviews;
+@property (weak, nonatomic) IBOutlet SHButtonLatoLight *btnSubmit;
 
 @property (nonatomic, strong) UIView *headerContent;
 
 @property (nonatomic, strong) JHAccordion *accordion;
-@property (nonatomic, strong) SectionHeaderView *sectionHeaderAdvanced;
+@property (nonatomic, strong) AdjustSliderSectionHeaderView *sectionHeaderAdvanced;
 
 @property (nonatomic, strong) SliderModel *reviewRatingSlider;
 @property (nonatomic, strong) NSArray *sliderTemplates;
@@ -52,8 +57,7 @@
 
 @implementation ReviewViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -61,8 +65,7 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
     
     // Sets title
@@ -79,7 +82,7 @@
     // Configures table
     [_tblReviews setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
     [_tblReviews registerNib:[UINib nibWithNibName:@"ReviewSliderCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ReviewSliderCell"];
-    [_tblReviews setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 65.0f, 0.0f)];
+//    [_tblReviews setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 65.0f, 0.0f)];
     
     // Configure table header
     // Header content view
@@ -99,10 +102,10 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [_btnSubmit setHidden:TRUE];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -187,14 +190,16 @@
         return view;
     } else if (section == 2) {
         if (_sectionHeaderAdvanced == nil) {
-            _sectionHeaderAdvanced = [self instantiateSectionHeaderView];
-            [_sectionHeaderAdvanced setBackgroundColor:[UIColor clearColor]];
-            [_sectionHeaderAdvanced setText:@"Advanced"];
-            [_sectionHeaderAdvanced setSelected:[_accordion isSectionOpened:section]];
             
-            // Sets up for accordion
+            _sectionHeaderAdvanced = [[AdjustSliderSectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblReviews.frame), 48.0f)];
+            
+            [_sectionHeaderAdvanced setText:@"Advanced"];
+            
             [_sectionHeaderAdvanced.btnBackground setTag:section];
             [_sectionHeaderAdvanced.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
+            
+            // Add borders
+            [_sectionHeaderAdvanced addBottomBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
         }
         return _sectionHeaderAdvanced;
     }
@@ -207,7 +212,7 @@
         return 40.0f;
     } else if (section == 2) {
         if (_advancedSliders.count > 0) {
-            return 65.0f;
+            return 48.0f;
         }
     }
     return 0.0f;
@@ -224,7 +229,14 @@
 }
 
 - (void)accordion:(JHAccordion *)accordion openedSection:(NSInteger)section {
+    CGRect sectionRect = [_tblReviews rectForSection:section];
     
+    CGFloat tableHeight = CGRectGetHeight(_tblReviews.frame);
+    if (sectionRect.origin.y > tableHeight) {
+        CGFloat newOffset = sectionRect.origin.y - (tableHeight / 3);
+        CGPoint offset = CGPointMake(0.0, newOffset);
+        [_tblReviews setContentOffset:offset animated:TRUE];
+    }
 }
 
 - (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
@@ -254,6 +266,34 @@
 - (void)reviewSliderCell:(ReviewSliderCell*)cell finishedChangingValue:(CGFloat)value {
     // move table view of sliders up a little to make the next slider visible
     [self slideCell:cell aboveTableViewMidwayPoint:_tblReviews];
+    
+    if (_btnSubmit.hidden) {
+        [_btnSubmit setHidden:FALSE];
+        [_btnSubmit setTitle:@"Submit Review" forState:UIControlStateNormal];
+        
+        // 1) position it below the superview (out of view)
+        // 2) set to hidden = false
+        // 3) animate it up into position
+        // 4) update the table with insets so it will not cover sliders
+        
+        CGFloat buttonHeight = CGRectGetHeight(_btnSubmit.frame);
+        CGFloat viewHeight = CGRectGetHeight(self.view.frame);
+        
+        CGRect hiddenFrame = _btnSubmit.frame;
+        hiddenFrame.origin.y = viewHeight;
+        _btnSubmit.frame = hiddenFrame;
+        _btnSubmit.hidden = FALSE;
+        [self.view bringSubviewToFront:_btnSubmit];
+        
+        [UIView animateWithDuration:0.5 animations:^{
+            CGRect visibleFrame = _btnSubmit.frame;
+            visibleFrame.origin.y = viewHeight - buttonHeight;
+            _btnSubmit.frame = visibleFrame;
+            _tblReviews.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, buttonHeight, 0.0f);
+            _tblReviews.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, buttonHeight, 0.0f);
+        } completion:^(BOOL finished) {
+        }];
+    }
 }
 
 #pragma mark - Actions

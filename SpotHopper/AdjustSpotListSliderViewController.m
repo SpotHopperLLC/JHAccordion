@@ -13,6 +13,7 @@
 
 #import "AdjustSpotListSliderViewController.h"
 
+#import "SHButtonLatoLight.h"
 #import "NSDate+Globalize.h"
 #import "TTTAttributedLabel+QuickFonting.h"
 #import "UIView+AddBorder.h"
@@ -37,6 +38,7 @@
 @interface AdjustSpotListSliderViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, ReviewSliderCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tblSliders;
+@property (weak, nonatomic) IBOutlet SHButtonLatoLight *btnSubmit;
 
 @property (nonatomic, strong) JHAccordion *accordion;
 @property (nonatomic, strong) AdjustSliderSectionHeaderView *sectionHeader0;
@@ -58,8 +60,7 @@
 
 @implementation AdjustSpotListSliderViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -67,8 +68,7 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 
     // Configures accordion
@@ -87,8 +87,11 @@
     [self fetchSliderTemplates];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -215,7 +218,6 @@
 #pragma mark - ReviewSliderCellDelegate
 
 - (void)reviewSliderCell:(ReviewSliderCell *)cell changedValue:(CGFloat)value {
-    
     // Sets slider to darker/selected color for good
     [cell.slider setUserMoved:YES];
     
@@ -233,6 +235,11 @@
 - (void)reviewSliderCell:(ReviewSliderCell*)cell finishedChangingValue:(CGFloat)value {
     // move table view of sliders up a little to make the next slider visible
     [self slideCell:cell aboveTableViewMidwayPoint:_tblSliders];
+    
+    if (_btnSubmit.hidden) {
+        [_btnSubmit setTitle:@"Search" forState:UIControlStateNormal];
+        [self showSubmitButton:TRUE];
+    }
 }
 
 #pragma mark - JHAccordionDelegate
@@ -254,12 +261,20 @@
 }
 
 - (void)accordion:(JHAccordion *)accordion openedSection:(NSInteger)section {
+    CGRect sectionRect = [_tblSliders rectForSection:section];
     
+    CGFloat tableHeight = CGRectGetHeight(_tblSliders.frame);
+    if (sectionRect.origin.y > tableHeight) {
+        CGFloat newOffset = sectionRect.origin.y - (tableHeight / 3);
+        CGPoint offset = CGPointMake(0.0, newOffset);
+        [_tblSliders setContentOffset:offset animated:TRUE];
+    }
 }
 
 - (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
     if (section == kSectionTypes) {
         [_tblSliders reloadData];
+        [self hideSubmitButton:TRUE];
     } else if (section == kSectionMoods) {
         [self changeMood];
     }
@@ -281,6 +296,7 @@
 
 - (void)resetForm {
     [_tblSliders scrollRectToVisible:CGRectMake(0, 0, CGRectGetWidth(_tblSliders.frame), 1) animated:NO];
+    [_btnSubmit setHidden:TRUE];
     
     // Reset
     _selectedSpotType = nil;
@@ -543,6 +559,50 @@
         return _sectionHeader3;
     }
     return nil;
+}
+
+- (void)hideSubmitButton:(BOOL)animated {
+    // 1) slide the button down and out of view
+    // 2) set hidden to TRUE
+    
+    CGFloat viewHeight = CGRectGetHeight(self.view.frame);
+    
+    CGRect hiddenFrame = _btnSubmit.frame;
+    hiddenFrame.origin.y = viewHeight;
+    _btnSubmit.frame = hiddenFrame;
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        _btnSubmit.frame = hiddenFrame;
+        _tblSliders.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
+        _tblSliders.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
+    } completion:^(BOOL finished) {
+        [_btnSubmit setHidden:TRUE];
+    }];
+}
+
+- (void)showSubmitButton:(BOOL)animated {
+    // 1) position it below the superview (out of view)
+    // 2) set to hidden = false
+    // 3) animate it up into position
+    // 4) update the table with insets so it will not cover table cells
+    
+    CGFloat buttonHeight = CGRectGetHeight(_btnSubmit.frame);
+    CGFloat viewHeight = CGRectGetHeight(self.view.frame);
+    
+    CGRect hiddenFrame = _btnSubmit.frame;
+    hiddenFrame.origin.y = viewHeight;
+    _btnSubmit.frame = hiddenFrame;
+    _btnSubmit.hidden = FALSE;
+    [self.view bringSubviewToFront:_btnSubmit];
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        CGRect visibleFrame = _btnSubmit.frame;
+        visibleFrame.origin.y = viewHeight - buttonHeight;
+        _btnSubmit.frame = visibleFrame;
+        _tblSliders.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, buttonHeight, 0.0f);
+        _tblSliders.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, buttonHeight, 0.0f);
+    } completion:^(BOOL finished) {
+    }];
 }
 
 @end

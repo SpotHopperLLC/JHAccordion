@@ -83,6 +83,7 @@ typedef void(^AlertBlock)();
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    NSLog(@"%@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
     [super viewWillAppear:animated];
     
     if ([self.navigationController.viewControllers count] > 1) {
@@ -504,12 +505,12 @@ typedef void(^AlertBlock)();
     CGFloat cellBottom = cellFrame.origin.y + cellFrame.size.height;
     
     // do not set offset beyond the max content offset
-    CGFloat maxContentOffset = MAX(0, tableView.contentSize.height - tableView.frame.size.height);
+    CGFloat maxContentOffset = MAX(0, tableView.contentSize.height - tableView.frame.size.height + tableView.contentInset.bottom);
     
     // adjust bottom for offset to compare with midway point
     CGFloat adjustedBottom = cellBottom - tableView.contentOffset.y;
-    CGFloat midway = tableView.frame.size.height/2;
-    
+    CGFloat midway = CGRectGetHeight(tableView.frame)/2;
+
     if (adjustedBottom > midway) {
         CGFloat newOffset = MIN(maxContentOffset, cellBottom - midway);
         CGPoint offset = CGPointMake(0.0, newOffset);

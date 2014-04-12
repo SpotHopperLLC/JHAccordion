@@ -14,6 +14,7 @@
 
 #import "MyReviewsViewController.h"
 
+#import "SHButtonLatoLight.h"
 #import "CLGeocoder+DoubleLookup.h"
 #import "NSString+Common.h"
 #import "UIView+ViewFromNib.h"
@@ -115,8 +116,7 @@
 
 @implementation NewReviewViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -124,8 +124,7 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
     
     // Sets title
@@ -142,7 +141,6 @@
     // Configures table
     [_tblReviews setTableFooterView:[[UIView alloc] init]];
     [_tblReviews registerNib:[UINib nibWithNibName:@"ReviewSliderCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ReviewSliderCell"];
-    [_tblReviews setContentInset:UIEdgeInsetsMake(0, 0, 65.0f, 0)];
     
     // Initializes states
     _selectedReviewType = [kReviewTypes indexOfObject:_reviewType];
@@ -160,6 +158,8 @@
     // Deselects table row
     [_tblReviews deselectRowAtIndexPath:_tblReviews.indexPathForSelectedRow animated:NO];
     
+    [_btnSubmit setHidden:TRUE];
+    
     // Gets table frame
     if (CGRectEqualToRect(_tblReviewsInitalFrame, CGRectZero)) {
         _tblReviewsInitalFrame = _tblReviews.frame;
@@ -170,8 +170,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -291,7 +290,8 @@
         if (section == 0) {
             return [self sectionHeaderViewForSection:section];
         }
-    } else if (tableView == _tblReviews) {
+    }
+    else if (tableView == _tblReviews) {
         if (section == 2) {
             if (_sectionHeaderAdvanced == nil) {
                 _sectionHeaderAdvanced = [self instantiateSectionHeaderView];
@@ -355,7 +355,14 @@
 }
 
 - (void)accordion:(JHAccordion *)accordion openedSection:(NSInteger)section {
+    CGRect sectionRect = [_tblReviews rectForSection:section];
     
+    CGFloat tableHeight = CGRectGetHeight(_tblReviews.frame);
+    if (sectionRect.origin.y > tableHeight) {
+        CGFloat newOffset = sectionRect.origin.y - (tableHeight / 3);
+        CGPoint offset = CGPointMake(0.0, newOffset);
+        [_tblReviews setContentOffset:offset animated:TRUE];
+    }
 }
 
 - (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
@@ -582,6 +589,34 @@
 - (void)reviewSliderCell:(ReviewSliderCell*)cell finishedChangingValue:(CGFloat)value {
     // move table view of sliders up a little to make the next slider visible
     [self slideCell:cell aboveTableViewMidwayPoint:_tblReviews];
+    
+    if (_btnSubmit.hidden) {
+        [_btnSubmit setHidden:FALSE];
+        [_btnSubmit setTitle:@"Submit Review" forState:UIControlStateNormal];
+        
+        // 1) position it below the superview (out of view)
+        // 2) set to hidden = false
+        // 3) animate it up into position
+        // 4) update the table with insets so it will not cover sliders
+        
+        CGFloat buttonHeight = CGRectGetHeight(_btnSubmit.frame);
+        CGFloat viewHeight = CGRectGetHeight(self.view.frame);
+        
+        CGRect hiddenFrame = _btnSubmit.frame;
+        hiddenFrame.origin.y = viewHeight;
+        _btnSubmit.frame = hiddenFrame;
+        _btnSubmit.hidden = FALSE;
+        [self.view bringSubviewToFront:_btnSubmit];
+        
+        [UIView animateWithDuration:0.5 animations:^{
+            CGRect visibleFrame = _btnSubmit.frame;
+            visibleFrame.origin.y = viewHeight - buttonHeight;
+            _btnSubmit.frame = visibleFrame;
+            _tblReviews.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, buttonHeight, 0.0f);
+            _tblReviews.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, buttonHeight, 0.0f);
+        } completion:^(BOOL finished) {
+        }];
+    }
 }
 
 #pragma mark - Actions
@@ -1129,7 +1164,8 @@
         if (_sectionHeaderReviewType == nil) {
             _sectionHeaderReviewType = [self instantiateSectionHeaderView];
             [_sectionHeaderReviewType setBackgroundColor:[UIColor whiteColor]];
-            [_sectionHeaderReviewType setText:[kReviewTypes objectAtIndex:_selectedReviewType]];
+            NSString *text = [kReviewTypes objectAtIndex:_selectedReviewType];
+            [_sectionHeaderReviewType setText:text];
             [_sectionHeaderReviewType setSelected:YES];
         }
         
@@ -1181,7 +1217,8 @@
         }
 
         return _viewFormNewSpot;
-    } else if (index == 1) {
+    }
+    else if (index == 1) {
         if (_viewFormNewBeer == nil) {
             _viewFormNewBeer = [UIView viewFromNibNamed:@"NewReviewBeerView" withOwner:self];
             
@@ -1196,7 +1233,8 @@
         }
 
         return _viewFormNewBeer;
-    } else if (index == 2) {
+    }
+    else if (index == 2) {
         if (_viewFormNewCocktail == nil) {
             _viewFormNewCocktail = [UIView viewFromNibNamed:@"NewReviewCocktailView" withOwner:self];
         }
@@ -1222,7 +1260,8 @@
         [_txtCocktailAlcoholType setInputAccessoryView:[self keyboardToolBarForCocktailAlcoholType]];
         
         return _viewFormNewCocktail;
-    } else if (index == 3) {
+    }
+    else if (index == 3) {
         if (_viewFormNewWine == nil) {
             _viewFormNewWine = [UIView viewFromNibNamed:@"NewReviewWineView" withOwner:self];
             
