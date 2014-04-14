@@ -99,6 +99,10 @@ typedef void(^AlertBlock)();
     [sidebar setDelegate:self];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleDefault;
+}
+
 - (void)adjustIOS6Crap {
     for (UIView *view in self.view.subviews) {
         CGRect frame = view.frame;

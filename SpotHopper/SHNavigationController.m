@@ -58,6 +58,15 @@
     self.navigationBar.titleTextAttributes = attributes;
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    UIViewController *viewController = self.viewControllers.lastObject;
+    if ([viewController respondsToSelector:@selector(preferredStatusBarStyle)]) {
+        return [viewController preferredStatusBarStyle];
+    }
+    
+    return UIStatusBarStyleDefault;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
