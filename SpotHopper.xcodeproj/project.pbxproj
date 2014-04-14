@@ -1804,6 +1804,10 @@
 		26B6767D18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
 		26B6767E18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
 		26B6767F18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
+		26EB38AF18FC7E1100E84A3B /* NSNull+Debugging.m in Sources */ = {isa = PBXBuildFile; fileRef = 26EB38AE18FC7E1100E84A3B /* NSNull+Debugging.m */; };
+		26EB38B018FC7E1100E84A3B /* NSNull+Debugging.m in Sources */ = {isa = PBXBuildFile; fileRef = 26EB38AE18FC7E1100E84A3B /* NSNull+Debugging.m */; };
+		26EB38B118FC7E1100E84A3B /* NSNull+Debugging.m in Sources */ = {isa = PBXBuildFile; fileRef = 26EB38AE18FC7E1100E84A3B /* NSNull+Debugging.m */; };
+		26EB38B218FC7E1100E84A3B /* NSNull+Debugging.m in Sources */ = {isa = PBXBuildFile; fileRef = 26EB38AE18FC7E1100E84A3B /* NSNull+Debugging.m */; };
 		26ED9F8A18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */; };
 		26ED9F8B18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */; };
 		26ED9F8C18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */; };
@@ -2413,6 +2417,8 @@
 		26B6768018E9F5B900DAD113 /* SpotHopperDev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperDev-Info.plist"; sourceTree = "<group>"; };
 		26B6768118E9F5B900DAD113 /* SpotHopperStaging-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperStaging-Info.plist"; sourceTree = "<group>"; };
 		26B6768218E9F61400DAD113 /* SpotHopperProduction-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperProduction-Info.plist"; sourceTree = "<group>"; };
+		26EB38AD18FC7E1100E84A3B /* NSNull+Debugging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNull+Debugging.h"; sourceTree = "<group>"; };
+		26EB38AE18FC7E1100E84A3B /* NSNull+Debugging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNull+Debugging.m"; sourceTree = "<group>"; };
 		26ED9F8818EA3A2B00C60954 /* SHLabelLatoBold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHLabelLatoBold.h; sourceTree = "<group>"; };
 		26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHLabelLatoBold.m; sourceTree = "<group>"; };
 		26F0FDE118EB1B18001BB0CD /* Chicago.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Chicago.gpx; sourceTree = "<group>"; };
@@ -3202,6 +3208,8 @@
 				039B7021188759B100C590F8 /* NSArray+HoursOfOperation.m */,
 				0372FF9F18E36B0A009188B5 /* NSArray+DailySpecials.h */,
 				0372FFA018E36B0A009188B5 /* NSArray+DailySpecials.m */,
+				26EB38AD18FC7E1100E84A3B /* NSNull+Debugging.h */,
+				26EB38AE18FC7E1100E84A3B /* NSNull+Debugging.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -5419,6 +5427,7 @@
 				039F544E18D2A834004B2B67 /* AdjustDrinkListSliderViewController.m in Sources */,
 				03E8833818C8389500BD8FBB /* SpotCardCollectionViewCell.m in Sources */,
 				0372FF9418E36535009188B5 /* ImageModel.m in Sources */,
+				26EB38AF18FC7E1100E84A3B /* NSNull+Debugging.m in Sources */,
 				03AF8EC118E531CC00DD9356 /* CheckinViewController.m in Sources */,
 				0320233B1875E060008368C2 /* FooterViewController.m in Sources */,
 				039B6FF1188711B800C590F8 /* SHLabelLatoRegular.m in Sources */,
@@ -5562,6 +5571,7 @@
 				03CAC02118E7716400FAC5F5 /* AdjustDrinkListSliderViewController.m in Sources */,
 				03CAC02218E7716400FAC5F5 /* SpotCardCollectionViewCell.m in Sources */,
 				03CAC02318E7716400FAC5F5 /* ImageModel.m in Sources */,
+				26EB38B218FC7E1100E84A3B /* NSNull+Debugging.m in Sources */,
 				03CAC02418E7716400FAC5F5 /* CheckinViewController.m in Sources */,
 				03CAC02518E7716400FAC5F5 /* FooterViewController.m in Sources */,
 				03CAC02618E7716400FAC5F5 /* SHLabelLatoRegular.m in Sources */,
@@ -5697,6 +5707,7 @@
 				039F545018D2B62E004B2B67 /* AdjustDrinkListSliderViewController.m in Sources */,
 				03F4E7B418CA33D00056EAA9 /* SpotCardCollectionViewCell.m in Sources */,
 				0372FF9518E36677009188B5 /* ImageModel.m in Sources */,
+				26EB38B118FC7E1100E84A3B /* NSNull+Debugging.m in Sources */,
 				03AF8EC318E531CC00DD9356 /* CheckinViewController.m in Sources */,
 				03F4E7B518CA33D00056EAA9 /* FooterViewController.m in Sources */,
 				03F4E7B618CA33D00056EAA9 /* SHLabelLatoRegular.m in Sources */,
@@ -5832,6 +5843,7 @@
 				039F544F18D2B62D004B2B67 /* AdjustDrinkListSliderViewController.m in Sources */,
 				03F4E90218CA34260056EAA9 /* SpotCardCollectionViewCell.m in Sources */,
 				0372FF9618E36677009188B5 /* ImageModel.m in Sources */,
+				26EB38B018FC7E1100E84A3B /* NSNull+Debugging.m in Sources */,
 				03AF8EC218E531CC00DD9356 /* CheckinViewController.m in Sources */,
 				03F4E90318CA34260056EAA9 /* FooterViewController.m in Sources */,
 				03F4E90418CA34260056EAA9 /* SHLabelLatoRegular.m in Sources */,

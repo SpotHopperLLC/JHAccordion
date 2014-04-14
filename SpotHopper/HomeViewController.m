@@ -83,6 +83,12 @@
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark - Tracking
+
+- (NSString *)screenName {
+    return @"Home";
+}
+
 #pragma mark - FooterViewControllerDelegate
 
 - (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {

@@ -53,6 +53,12 @@
     [[ClientSessionManager sharedClient] setHasSeenWelcome:TRUE];
 }
 
+#pragma mark - Tracking
+
+- (NSString *)screenName {
+    return @"Tutorial";
+}
+
 #pragma mark - UICollectionViewDelegate
 
 // nothing to implement for this delegate

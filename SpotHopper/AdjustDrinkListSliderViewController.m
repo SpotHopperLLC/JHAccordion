@@ -102,6 +102,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Tracking
+
+- (NSString *)screenName {
+    return @"Adjust Drinklist Slider";
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

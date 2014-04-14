@@ -37,6 +37,12 @@
     self.maximumDateOfBirth = yearsAgo;
 }
 
+#pragma mark - Tracking
+
+- (NSString *)screenName {
+    return @"Age Verification";
+}
+
 - (IBAction)onEnterAgeVerification:(UIButton *)button {
     // verify the age is over 21 to procede or alert the user they cannot continue
     

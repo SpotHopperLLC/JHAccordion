@@ -110,6 +110,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Tracking
+
+- (NSString *)screenName {
+    return @"Review";
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

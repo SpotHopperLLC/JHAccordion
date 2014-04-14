@@ -51,8 +51,7 @@
 
 @implementation LaunchViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -60,8 +59,7 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsDontAdjustForIOS6]];
 
     // Logs current user out
@@ -111,8 +109,7 @@
     return 210.0f;
 }
 
--(void)setViewMovedUp:(BOOL)movedUp keyboardFrame:(CGRect)keyboardFrame
-{
+-(void)setViewMovedUp:(BOOL)movedUp keyboardFrame:(CGRect)keyboardFrame {
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.3]; // if you want to slide up the view
     
@@ -141,10 +138,15 @@
     [UIView commitAnimations];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Tracking
+
+- (NSString *)screenName {
+    return @"Launch";
 }
 
 #pragma mark - Actions
@@ -174,6 +176,7 @@
 - (IBAction)onClickDoLogin:(id)sender {
     [self doLoginSpotHopper];
 }
+
 - (IBAction)onClickDoCreate:(id)sender {
     [self doRegistration];
 }

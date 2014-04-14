@@ -8,6 +8,10 @@
 
 #import "BaseViewController.h"
 
+#import "GAI.h"
+#import "GAIFields.h"
+#import "GAIDictionaryBuilder.h"
+
 #import "MBProgressHUD.h"
 
 #import "UIViewController+Navigator.h"
@@ -94,6 +98,11 @@ typedef void(^AlertBlock)();
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+
+    // tracking with Google Analytics (override screenName)
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName value:self.screenName];
+    [tracker send:[[GAIDictionaryBuilder createAppView] build]];
     
     SidebarViewController *sidebar = (SidebarViewController*)self.navigationController.sidebarViewController.rightViewController;
     [sidebar setDelegate:self];
@@ -110,6 +119,12 @@ typedef void(^AlertBlock)();
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Tracking
+
+- (NSString *)screenName {
+    return self.title;
 }
 
 #pragma mark - SidebarViewControllerDelegate

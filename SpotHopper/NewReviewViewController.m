@@ -179,6 +179,12 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+#pragma mark - Tracking
+
+- (NSString *)screenName {
+    return @"New Review";
+}
+
 #pragma mark - Keyboard
 
 - (NSArray *)textfieldToHideKeyboard {

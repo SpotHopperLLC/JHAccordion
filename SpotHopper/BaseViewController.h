@@ -30,6 +30,7 @@
 @property (nonatomic, strong) MBProgressHUD *HUD;
 @property (nonatomic, strong) LiveSpecialViewController *liveSpecialViewController;
 @property (nonatomic, strong) ShareViewController *shareViewController;
+@property (nonatomic, readonly) NSString *screenName; // override
 
 - (void)viewDidLoad:(NSArray*)options;
 
