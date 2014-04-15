@@ -411,13 +411,13 @@
         if (autocompleteView.textfield == _txtBeerBreweryName ||
             autocompleteView.textfield == _txtWineWineryName) {
             
-            NSArray *spotTypeId = nil;
+            NSString *spotTypeId = nil;
             if (autocompleteView.textfield == _txtBeerBreweryName) {
                 NSArray *brewerySpotTypeIds = [_brewerySpotTypes valueForKeyPath:@"id"];
-                spotTypeId = [brewerySpotTypeIds lastObject];
+                spotTypeId = [brewerySpotTypeIds componentsJoinedByString:@","];
             } else if (autocompleteView.textfield == _txtWineWineryName) {
                 NSArray *winerySpotTypeIds = [_winerySpotTypes valueForKeyPath:@"id"];
-                spotTypeId = [winerySpotTypeIds lastObject];
+                spotTypeId = [winerySpotTypeIds componentsJoinedByString:@","];
             }
             
             if (spotTypeId == nil) {
