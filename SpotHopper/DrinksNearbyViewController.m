@@ -196,7 +196,7 @@
     } else {
         [_btnNearBy setEnabled:YES];
         [_lblAtPlace setText:@""];
-        [_lblFindingYou setText:@"No places nearby"];
+        [_lblFindingYou setText:@"No spots nearby"];
     }
 }
 

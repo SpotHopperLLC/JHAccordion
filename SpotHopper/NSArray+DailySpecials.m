@@ -25,7 +25,12 @@
     NSInteger dayOfWeek = [comps weekday] - 1;
     
     if (dayOfWeek >= 0 && dayOfWeek <= 6 && dayOfWeek < self.count) {
-        return [self objectAtIndex:dayOfWeek];
+        NSString *result = [self objectAtIndex:dayOfWeek];
+        if ([result isEqual:[NSNull null]]) {
+            return nil;
+        }
+        
+        return result;
     }
     
     return nil;

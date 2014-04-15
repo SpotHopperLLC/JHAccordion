@@ -1,4 +1,4 @@
-link_with ['SpotHopper', 'SpotHopperTests']
+# link_with ['SpotHopper', 'SpotHopperTests']
 
 platform :ios, '7.0'
 
@@ -26,3 +26,18 @@ pod 'STTwitter', '~> 0.0.7'
 # Analytics
 pod 'Mixpanel', '~> 2.3.0'
 pod 'GoogleAnalytics-iOS-SDK', '~> 3.0.0'
+
+target "SpotHopperLocal" do
+    # Debugging UI
+    pod 'Reveal-iOS-SDK'
+end
+
+target "SpotHopperDev" do
+    # Debugging UI
+    pod 'Reveal-iOS-SDK'
+end
+
+target "SpotHopperStaging" do
+    # Debugging UI
+    pod 'Reveal-iOS-SDK'
+end

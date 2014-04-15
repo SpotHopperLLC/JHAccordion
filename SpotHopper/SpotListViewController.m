@@ -102,7 +102,7 @@
     }
     
     // Initialize stuff
-    _showMap = NO;
+    _showMap = YES;
     
     // Fetches spotlist
     if (_spotList.spots != nil) {
@@ -371,7 +371,9 @@
 #pragma mark - Private
 
 - (void)updateView {
-    [_viewEmpty setHidden:( _spotList.spots.count != 0 )];
+    if (!_spotList.spots.count) {
+        [self showAlert:@"Oops" message:@"There are no spots which match in this location. Please try another search area."];
+    }
     
     // We can pass in nil here because we only need to worry about correct showing/hiding of
     // collection view and mapview (not about the changing of the text and iamge of the middle button
@@ -398,12 +400,10 @@
 }
 
 - (void)updateFooterMapListButton:(FooterViewController*)footerViewController {
-    BOOL hide = ( _spotList.spots.count == 0 );
-    
     if (_showMap == YES) {
         [footerViewController setMiddleButton:@"List" image:[UIImage imageNamed:@"btn_context_list"]];
         
-        [_mapView setHidden:hide];
+        [_mapView setHidden:NO];
         [_collectionView setHidden:YES];
         [_lblMatchPercent setHidden:YES];
     } else {
@@ -411,8 +411,14 @@
         
         [_mapView setHidden:YES];
         [_btnUpdateSearchResults setHidden:YES];
-        [_collectionView setHidden:hide];
-        [_lblMatchPercent setHidden:hide];
+        
+        [_btnUpdateSearchResults setHidden:YES];
+        [_collectionView setHidden:NO];
+        [_lblMatchPercent setHidden:NO];
+        
+        if (!_spotList.spots.count) {
+            _lblMatchPercent.text = @"No Matches";
+        }
     }
 }
 
