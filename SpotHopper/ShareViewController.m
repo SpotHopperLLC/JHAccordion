@@ -11,6 +11,10 @@
 
 #import "ShareViewController.h"
 
+#import "GAI.h"
+#import "GAIFields.h"
+#import "GAIDictionaryBuilder.h"
+
 #import "NSArray+DailySpecials.h"
 
 #import "AppDelegate.h"
@@ -24,6 +28,9 @@
 
 #import <MessageUI/MessageUI.h>
 #import <Social/Social.h>
+
+#import "Mixpanel.h"
+#import "TellMeMyLocation.h"
 
 @interface ShareViewController ()<MFMessageComposeViewControllerDelegate>
 
@@ -46,8 +53,7 @@
 
 @implementation ShareViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -55,8 +61,7 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 
     [self updateView];
@@ -66,12 +71,22 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [_txtShare becomeFirstResponder];
+    
+    // tracking with Google Analytics (override screenName)
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName value:self.screenName];
+    [tracker send:[[GAIDictionaryBuilder createAppView] build]];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Tracking
+
+- (NSString *)screenName {
+    return @"Share";
 }
 
 #pragma mark - MFMessageComposeViewControllerDelegate
@@ -93,6 +108,7 @@
 }
 
 - (IBAction)onClickShareFacebook:(id)sender {
+    [[Mixpanel sharedInstance] track:@"Sharing" properties:@{@"Service" : @"Facebook", @"Location" : [TellMeMyLocation lastLocationNameShort]}];
     
     if ([[FBSession activeSession] isOpen] == YES) {
         _sendToFacebook = !_sendToFacebook;
@@ -112,6 +128,8 @@
 }
 
 - (IBAction)onClickShareTWitter:(id)sender {
+    [[Mixpanel sharedInstance] track:@"Sharing" properties:@{@"Service" : @"Twitter", @"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    
     if (_sendToTwitter == YES) {
         _selectedTwitterAccount = nil;
         _sendToTwitter = NO;
@@ -136,6 +154,8 @@
 }
 
 - (IBAction)onClickShareText:(id)sender {
+    [[Mixpanel sharedInstance] track:@"Sharing" properties:@{@"Service" : @"Text", @"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    
     _sendToText = !_sendToText;
     [self updateSocialViews];
 }

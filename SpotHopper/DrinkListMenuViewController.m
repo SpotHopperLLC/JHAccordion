@@ -176,6 +176,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Tracking
+
+- (NSString *)screenName {
+    return @"Drink List Menu";
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

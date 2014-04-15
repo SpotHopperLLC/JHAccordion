@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+#import "BaseViewController.h"
+
 @class LiveSpecialModel;
 
 @protocol LiveSpecialViewControllerDelegate;
 
-@interface LiveSpecialViewController : UIViewController
+@interface LiveSpecialViewController : BaseViewController
 
 @property (nonatomic, strong) LiveSpecialModel *liveSpecial;
 @property (nonatomic, strong) id<LiveSpecialViewControllerDelegate> delegate;

@@ -22,8 +22,7 @@
 
 @implementation LiveSpecialViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -31,15 +30,13 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     [self updateView];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -47,6 +44,12 @@
 - (void)setLiveSpecial:(LiveSpecialModel *)liveSpecial {
     _liveSpecial = liveSpecial;
     [self updateView];
+}
+
+#pragma mark - Tracking
+
+- (NSString *)screenName {
+    return @"Live Special";
 }
 
 #pragma mark - Actions

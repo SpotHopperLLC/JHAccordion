@@ -28,6 +28,8 @@
 #import "SpotTypeModel.h"
 #import "UserModel.h"
 
+#import "Mixpanel.h"
+
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import <JHAccordion/JHAccordion.h>
 
@@ -108,6 +110,12 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Tracking
+
+- (NSString *)screenName {
+    return @"Review";
 }
 
 #pragma mark - UITableViewDataSource
@@ -374,11 +382,13 @@
         [sliders addObjectsFromArray:_advancedSliders];
         [_review setSliders:sliders];
         
+        [[Mixpanel sharedInstance] track:@"Submitting Review" properties:@{@"Type" : _drink ? @"Drink" : @"Spot"}];
         [self showHUD:@"Submitting"];
         [_review postReviews:^(ReviewModel *reviewModel, JSONAPI *jsonApi) {
             
             [self hideHUD];
             [self showHUDCompleted:@"Saved!" block:^{
+                [[Mixpanel sharedInstance] track:@"Submitted Review" properties:@{@"Success" : @TRUE}];
                 
                 if ([_delegate respondsToSelector:@selector(reviewViewController:submittedReview:)]) {
                     [_delegate reviewViewController:self submittedReview:reviewModel];
@@ -389,6 +399,8 @@
             }];
             
         } failure:^(ErrorModel *errorModel) {
+            [[Mixpanel sharedInstance] track:@"Submitted Review" properties:@{@"Success" : @FALSE}];
+            
             _review = nil;
             [self hideHUD];
             [self showAlert:@"Oops" message:errorModel.human];

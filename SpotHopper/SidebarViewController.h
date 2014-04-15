@@ -12,7 +12,7 @@
 
 @protocol SidebarViewControllerDelegate;
 
-@interface SidebarViewController : BaseViewController<JHSidebarDelegate>
+@interface SidebarViewController : BaseViewController <JHSidebarDelegate>
 
 @property (nonatomic, assign) id<SidebarViewControllerDelegate> delegate;
 

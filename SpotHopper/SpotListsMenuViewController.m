@@ -182,6 +182,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Tracking
+
+- (NSString *)screenName {
+    return @"Spotlists";
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

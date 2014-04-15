@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+#import "BaseViewController.h"
+
 @class SpotModel;
 
 @protocol CheckinConfirmationViewControllerDelegate;
 
-@interface CheckinConfirmationViewController : UIViewController
+@interface CheckinConfirmationViewController : BaseViewController
 
 @property (nonatomic, strong) SpotModel *spot;
 @property (nonatomic, assign) id<CheckinConfirmationViewControllerDelegate> delegate;

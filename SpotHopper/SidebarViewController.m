@@ -26,8 +26,7 @@
 
 @implementation SidebarViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -35,8 +34,7 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
         self.edgesForExtendedLayout = UIRectEdgeNone;
     [super viewDidLoad:@[kDidLoadOptionsDontAdjustForIOS6, kDidLoadOptionsNoBackground]];
@@ -60,14 +58,19 @@
     [_btnAccount addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 - (NSArray *)textfieldToHideKeyboard {
     return @[_txtSearch];
+}
+
+#pragma mark - Tracking
+
+- (NSString *)screenName {
+    return @"Sidebar";
 }
 
 #pragma mark - UITextFieldDelegate

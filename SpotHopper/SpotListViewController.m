@@ -37,6 +37,8 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 
+#import "Mixpanel.h"
+
 @interface SpotListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, MKMapViewDelegate, SHButtonLatoLightLocationDelegate, SpotAnnotationCalloutDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *lblMatchPercent;
@@ -148,6 +150,12 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Tracking
+
+- (NSString *)screenName {
+    return @"Spotlist";
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -278,6 +286,7 @@
 }
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
+    [[Mixpanel sharedInstance] track:@"Fetching Spotlist Results"];
     
     [self showHUD:@"Getting new spots"];
     [_spotList putSpotList:nil latitude:[NSNumber numberWithFloat:location.coordinate.latitude] longitude:[NSNumber numberWithFloat:location.coordinate.longitude] sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
@@ -288,7 +297,9 @@
         
         [self updateView];
         [self updateMatchPercent];
+        [[Mixpanel sharedInstance] track:@"Fetched Spotlist Results" properties:@{@"Success" : @TRUE, @"Count" : [NSNumber numberWithUnsignedInteger:_spotList.spots.count]}];
     } failure:^(ErrorModel *errorModel) {
+        [[Mixpanel sharedInstance] track:@"Fetched Spotlist Results" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
     }];
@@ -443,11 +454,15 @@
 }
 
 - (void)doDeleteSpotList {
+    [[Mixpanel sharedInstance] track:@"Deleting Spotlist"];
+    
     [self showHUD:@"Deleting"];
     [_spotList deleteSpotList:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+        [[Mixpanel sharedInstance] track:@"Delete Spotlist" properties:@{@"Success" : @TRUE}];
         [self hideHUD];
         [self.navigationController popViewControllerAnimated:YES];
     } failure:^(ErrorModel *errorModel) {
+        [[Mixpanel sharedInstance] track:@"Delete Spotlist" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
     }];

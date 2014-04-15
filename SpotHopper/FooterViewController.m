@@ -10,6 +10,10 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+#import "GAI.h"
+#import "GAIFields.h"
+#import "GAIDictionaryBuilder.h"
+
 @interface FooterViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *viewBackground;
@@ -60,11 +64,22 @@
     
     NSCAssert(CGColorGetAlpha(self.view.backgroundColor.CGColor) == 0.0, @"Base view alpha should be 0.0");
     NSCAssert(CGColorGetAlpha(self.viewBackground.backgroundColor.CGColor) == 0.8f, @"Background view alpha should be 0.8");
+    
+    // tracking with Google Analytics (override screenName)
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName value:self.screenName];
+    [tracker send:[[GAIDictionaryBuilder createAppView] build]];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Tracking
+
+- (NSString *)screenName {
+    return @"Footer";
 }
 
 #pragma mark - Public
