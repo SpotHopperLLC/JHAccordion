@@ -29,7 +29,7 @@
 #import <MessageUI/MessageUI.h>
 #import <Social/Social.h>
 
-#import "Mixpanel.h"
+#import "Tracker.h"
 #import "TellMeMyLocation.h"
 
 @interface ShareViewController ()<MFMessageComposeViewControllerDelegate>
@@ -108,7 +108,7 @@
 }
 
 - (IBAction)onClickShareFacebook:(id)sender {
-    [[Mixpanel sharedInstance] track:@"Sharing" properties:@{@"Service" : @"Facebook", @"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"Sharing" properties:@{@"Service" : @"Facebook", @"Location" : [TellMeMyLocation lastLocationNameShort]}];
     
     if ([[FBSession activeSession] isOpen] == YES) {
         _sendToFacebook = !_sendToFacebook;
@@ -128,7 +128,7 @@
 }
 
 - (IBAction)onClickShareTWitter:(id)sender {
-    [[Mixpanel sharedInstance] track:@"Sharing" properties:@{@"Service" : @"Twitter", @"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"Sharing" properties:@{@"Service" : @"Twitter", @"Location" : [TellMeMyLocation lastLocationNameShort]}];
     
     if (_sendToTwitter == YES) {
         _selectedTwitterAccount = nil;
@@ -154,7 +154,7 @@
 }
 
 - (IBAction)onClickShareText:(id)sender {
-    [[Mixpanel sharedInstance] track:@"Sharing" properties:@{@"Service" : @"Text", @"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"Sharing" properties:@{@"Service" : @"Text", @"Location" : [TellMeMyLocation lastLocationNameShort]}];
     
     _sendToText = !_sendToText;
     [self updateSocialViews];

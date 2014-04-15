@@ -126,9 +126,9 @@
     
     // Open Facebook active session
     [self facebookAuth:NO success:^(FBSession *session) {
-        NSLog(@"We got activite session");
+        NSLog(@"We have an active FB session");
     } failure:^(FBSessionState state, NSError *error) {
-        NSLog(@"We DONT got activite session");
+        NSLog(@"We DON'T have an active FB session");
     }];
 
     if (kAnalyticsEnabled) {
@@ -137,8 +137,7 @@
 //        Mixpanel *mixpanel = [Mixpanel sharedInstance];
 //        [mixpanel track:@"Plan Selected" properties:@{@"Gender": @"Female", @"Plan": @"Premium"}];
 //        [mixpanel identify:@"13793"]; // once the user is logged in set their identity
-        Mixpanel *mixpanel = [Mixpanel sharedInstance];
-        [mixpanel track:@"App Launching" properties:@{@"currentTime" : [NSDate date]}];
+        [[Mixpanel sharedInstance] track:@"App Launching" properties:@{@"currentTime" : [NSDate date]}];
         
         // Optional: automatically send uncaught exceptions to Google Analytics.
         [GAI sharedInstance].trackUncaughtExceptions = YES;
