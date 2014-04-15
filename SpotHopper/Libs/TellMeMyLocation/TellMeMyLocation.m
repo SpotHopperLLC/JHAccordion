@@ -15,6 +15,8 @@
 
 #import <CoreLocation/CoreLocation.h>
 
+NSString * const kTellMeMyLocationChangedNotification = @"TellMeMyLocationChangedNotification";
+
 @interface TellMeMyLocation()
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
@@ -123,6 +125,8 @@
             } else {
                 [TellMeMyLocation setLastLocationName:nil];
             }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTellMeMyLocationChangedNotification object:nil];
         }
         
         completionHandler();

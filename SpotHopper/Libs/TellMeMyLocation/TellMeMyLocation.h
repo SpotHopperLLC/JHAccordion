@@ -12,6 +12,8 @@
 
 #import <CoreLocation/CoreLocation.h>
 
+extern NSString * const kTellMeMyLocationChangedNotification;
+
 typedef void(^FoundBlock)(CLLocation *newLocation);
 typedef void(^FailureBlock)(NSError *error);
 

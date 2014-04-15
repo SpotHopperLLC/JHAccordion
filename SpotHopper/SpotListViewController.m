@@ -253,12 +253,6 @@
         return;
     }
     
-//    CLLocation *lastLocation = [TellMeMyLocation lastLocation];
-//    if (_mapView.centerCoordinate.latitude == lastLocation.coordinate.latitude &&
-//        _mapView.centerCoordinate.longitude == lastLocation.coordinate.longitude) {
-//        return;
-//    }
-    
     _btnUpdateSearchResults.alpha = 0.0;
     [_btnUpdateSearchResults setHidden:NO];
     
@@ -347,7 +341,11 @@
 
 - (IBAction)onUpdateSearchResults:(id)sender {
     _doNotMoveMap = TRUE;
-    [_btnLocation updateWithLocation:[[CLLocation alloc] initWithLatitude:_mapView.centerCoordinate.latitude longitude:_mapView.centerCoordinate.longitude]];
+    CLLocation *location = [[CLLocation alloc] initWithLatitude:_mapView.centerCoordinate.latitude longitude:_mapView.centerCoordinate.longitude];
+    
+    [TellMeMyLocation setLastLocation:location completionHandler:^{
+        // do nothing
+    }];
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:0.75 delay:0.0 options:options animations:^{
