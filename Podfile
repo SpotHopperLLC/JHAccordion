@@ -41,9 +41,3 @@ target "SpotHopperStaging" do
     # Debugging UI
     pod 'Reveal-iOS-SDK'
 end
-
-target "SpotHopperProduction" do
-    # Hack to get production building - needed a pod in this target so duplicating AFNetworking
-    # NEED TO FIX LATER
-    pod 'AFNetworking', '~> 2.0.3'
-end
