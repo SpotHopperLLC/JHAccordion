@@ -27,6 +27,7 @@ PODS:
   - Mixpanel (2.3.4)
   - Promises (0.1.0)
   - Raven (0.3.0)
+  - Reveal-iOS-SDK (1.0.3)
   - STTwitter (0.0.9)
   - TTTAttributedLabel (1.8.1)
 
@@ -42,6 +43,7 @@ DEPENDENCIES:
   - Mixpanel (~> 2.3.0)
   - Promises (from `http://github.com/joshdholtz/ios-promises.git`)
   - Raven (~> 0.3.0)
+  - Reveal-iOS-SDK
   - STTwitter (~> 0.0.7)
   - TTTAttributedLabel (~> 1.8.1)
 
@@ -69,6 +71,7 @@ SPEC CHECKSUMS:
   Mixpanel: 16e6f1d5f8aeb9282ee864e169557de0bd9549df
   Promises: f92c1068dfb1fe8501f6059c0e05edbf655f8665
   Raven: 875718158645e945cf991c1ca80b41cd2ef82fd9
+  Reveal-iOS-SDK: 8e6a6f22a9520437e4a180fe1d4e99f43b75430e
   STTwitter: f155851b9b4d1a544740c2f4ae64918cd42235e2
   TTTAttributedLabel: 3a571d73e055f4a79c304240598e4bfd199238e4
 
