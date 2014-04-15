@@ -176,7 +176,6 @@
     [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
 }
 
-
 #pragma mark - Private
 
 - (void)updateView {
