@@ -15,6 +15,8 @@
 #import "ErrorModel.h"
 #import "UserModel.h"
 
+#import "Mixpanel.h"
+
 @interface LaunchViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgLogo;
@@ -231,6 +233,8 @@
                                  kUserModelParamFacebookAccessToken: [[[FBSession activeSession] accessTokenData] accessToken]
                                  };
         [self doLoginOperation:params];
+        
+        [[Mixpanel sharedInstance] track:@"Logging In" properties:@{@"Service" : @"Facebook"}];
     } else {
         [self showAlert:@"Oops" message:@"Error while logging in with Facebook"];
     }
@@ -244,6 +248,8 @@
                                  kUserModelParamsTwitterAccessTokenSecret: oAuthTokenSecret,
                                  };
         [self doLoginOperation:params];
+        
+        [[Mixpanel sharedInstance] track:@"Logging In" properties:@{@"Service" : @"Twitter"}];
     } else {
         [self showAlert:@"Oops" message:@"Error while logging in with Twitter"];
     }
@@ -268,17 +274,20 @@
                              };
     
     [self doLoginOperation:params];
+    
+    [[Mixpanel sharedInstance] track:@"Logging In" properties:@{@"Service" : @"SpotHopper"}];
 }
 
 - (void)doLoginOperation:(NSDictionary*)params {
     
     [self showHUD:@"Logging in"];
     [UserModel loginUser:params success:^(UserModel *userModel, NSHTTPURLResponse *response) {
+        [[Mixpanel sharedInstance] track:@"Logged In" properties:@{@"Success" : @TRUE}];
+
         [self hideHUD];
-        
         [self exitLaunch];
-        
     } failure:^(ErrorModel *errorModel) {
+        [[Mixpanel sharedInstance] track:@"Logged In" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
     }];
@@ -324,8 +333,11 @@
                              kUserModelParamRole : kUserModelRoleUser
                              };
     
+    [[Mixpanel sharedInstance] track:@"Creating Account"];
+    
     [self showHUD:@"Creating account"];
     [UserModel registerUser:params success:^(UserModel *userModel, NSHTTPURLResponse *response) {
+        [[Mixpanel sharedInstance] track:@"Created User" properties:@{@"Success" : @TRUE}];
         
         [UserModel loginUser:params success:^(UserModel *userModel, NSHTTPURLResponse *response) {
             [self hideHUD];
@@ -336,6 +348,8 @@
         }];
         
     } failure:^(ErrorModel *errorModel) {
+        [[Mixpanel sharedInstance] track:@"Created User" properties:@{@"Success" : @FALSE}];
+        
         [self hideHUD];
         [self showAlert:@"Oops" message:@"Error while trying to login"];
     }];

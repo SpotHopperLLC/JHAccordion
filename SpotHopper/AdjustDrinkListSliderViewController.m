@@ -33,6 +33,8 @@
 #import "SliderTemplateModel.h"
 #import "SpotModel.h"
 
+#import "Mixpanel.h"
+
 #import <JHAccordion/JHAccordion.h>
 
 #import <CoreLocation/CoreLocation.h>
@@ -358,7 +360,7 @@
 }
 
 - (IBAction)onClickSubmit:(id)sender {
-    [self doCreateSpotlist];
+    [self doCreateDrinklist];
 }
 
 #pragma mark - Public
@@ -513,7 +515,7 @@
     }];
 }
 
-- (void)doCreateSpotlist {
+- (void)doCreateDrinklist {
     if (_selectedDrinkType == nil) {
         [self showAlert:@"Oops" message:@"Please select a drink type"];
         return;
@@ -529,6 +531,8 @@
         longitude = [NSNumber numberWithFloat:_location.coordinate.longitude];
     }
     
+    [[Mixpanel sharedInstance] track:@"Creating Drinklist"];
+    
     [self showHUD:@"Creating drinklist"];
     [DrinkListModel postDrinkList:kDrinkListModelDefaultName
                          latitude:latitude
@@ -539,6 +543,7 @@
                     baseAlcoholId:_selectedBaseAlcohol.ID
                            spotId:_spot.ID
                      successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+        [[Mixpanel sharedInstance] track:@"Created Drinklist" properties:@{@"Success" : @TRUE}];
         [self hideHUD];
         [self showHUDCompleted:@"Drinklist created!" block:^{
             
@@ -547,8 +552,8 @@
             }
             
         }];
-        
     } failure:^(ErrorModel *errorModel) {
+        [[Mixpanel sharedInstance] track:@"Created Drinklist" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
     }];

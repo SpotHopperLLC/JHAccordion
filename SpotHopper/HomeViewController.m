@@ -17,6 +17,9 @@
 #import "ClientSessionManager.h"
 #import "UserModel.h"
 
+#import "Mixpanel.h"
+#import "TellMeMyLocation.h"
+
 @interface HomeViewController ()
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewButtonContainer;
@@ -77,6 +80,8 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    [[Mixpanel sharedInstance] track:@"View Main Menu" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -102,18 +107,22 @@
 #pragma mark - Actions
 
 - (IBAction)onClickSpots:(id)sender {
+    [[Mixpanel sharedInstance] track:@"Home to Spots" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     [self goToSpotListMenu];
 }
 
 - (IBAction)onClickDrinks:(id)sender {
+    [[Mixpanel sharedInstance] track:@"Home to Drinks" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     [self goToDrinksNearBy];
 }
 
 - (IBAction)onClickSpecials:(id)sender {
+    [[Mixpanel sharedInstance] track:@"Home to Specials" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     [self goToTonightsSpecials];
 }
 
 - (IBAction)onClickReviews:(id)sender {
+    [[Mixpanel sharedInstance] track:@"Home to Reviews" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     if ([ClientSessionManager sharedClient].isLoggedIn == YES) {
         [self goToSearchForNewReview:NO notWhatLookingFor:YES createReview:YES];
     } else {

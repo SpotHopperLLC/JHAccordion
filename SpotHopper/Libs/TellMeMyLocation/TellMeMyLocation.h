@@ -3,7 +3,7 @@
 //  PatronApp
 //
 //  Created by Josh Holtz on 5/23/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2014 SpotHopper. All rights reserved.
 //
 
 #define kTellMeMyLocationDomain @"TellMeMyLocationDomain"
@@ -27,5 +27,6 @@ typedef void (^TellMeMyLocationCompletionHandler)();
 + (CLLocation*)lastLocation;
 + (NSDate*)lastLocationDate;
 + (NSString*)lastLocationName;
++ (NSString*)lastLocationNameShort;
 
 @end

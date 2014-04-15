@@ -3,13 +3,14 @@
 //  PatronApp
 //
 //  Created by Josh Holtz on 5/23/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2014 SpotHopper. All rights reserved.
 //
 
 #define kLastLocationLat @"last_location_lat"
 #define kLastLocationLng @"last_location_lng"
 #define kLastLocationName @"last_location_name"
 #define kLastLocationDate @"last_location_date"
+#define kLastLocationNameShort @"last_location_name_short"
 
 #import "TellMeMyLocation.h"
 
@@ -64,8 +65,7 @@
 
 #pragma mark - CLLocation Delegate
 
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
-{
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
     NSLog(@"Error - %@", error);
     if (_failureBlock != nil) {
         _failureBlock(error);
@@ -76,8 +76,7 @@
 }
 
 // Delegate method from the CLLocationManagerDelegate protocol.
-- (void)locationManager:(CLLocationManager *)manage didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
-{
+- (void)locationManager:(CLLocationManager *)manage didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
     [_locationManager stopUpdatingLocation];
     
     if (_foundBlock != nil) {
@@ -113,15 +112,16 @@
                         locationName = [NSString stringWithFormat:@"%@, %@", placemark.locality, placemark.administrativeArea];
                     }
                     
-                    [TellMeMyLocation setLastLocationName:locationName];
+                    [self setLastLocationName:locationName];
                 } else if (placemark.locality.length > 0) {
-                    [TellMeMyLocation setLastLocationName:placemark.locality];
+                    [self setLastLocationName:placemark.locality];
                 } else if (placemark.administrativeArea.length > 0) {
-                    [TellMeMyLocation setLastLocationName:placemark.administrativeArea];
+                    [self setLastLocationName:placemark.administrativeArea];
                 }
                 
+                [self setLastLocationNameShort:[NSString stringWithFormat:@"%@, %@", placemark.locality, placemark.administrativeArea]];
             } else {
-                [TellMeMyLocation setLastLocationName:nil];
+                [self setLastLocationName:nil];
             }
         }
         
@@ -130,10 +130,19 @@
 }
 
 + (void)setLastLocationName:(NSString*)name {
-    if (name != nil) {
+    if (name != nil && name.length) {
         [[NSUserDefaults standardUserDefaults] setObject:name forKey:kLastLocationName];
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLastLocationName];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (void)setLastLocationNameShort:(NSString*)nameShort {
+    if (nameShort != nil && nameShort.length) {
+        [[NSUserDefaults standardUserDefaults] setObject:nameShort forKey:kLastLocationNameShort];
+    } else {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLastLocationNameShort];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
@@ -153,7 +162,23 @@
 }
 
 + (NSString*)lastLocationName {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:kLastLocationName];
+    NSString *name = [[NSUserDefaults standardUserDefaults] objectForKey:kLastLocationName];
+    if (name && name.length) {
+        return name;
+    }
+    else {
+        return @"Undefined";
+    }
+}
+
++ (NSString*)lastLocationNameShort {
+    NSString *nameShort = [[NSUserDefaults standardUserDefaults] objectForKey:kLastLocationNameShort];
+    if (nameShort && nameShort.length) {
+        return nameShort;
+    }
+    else {
+        return @"Undefined";
+    }
 }
 
 @end

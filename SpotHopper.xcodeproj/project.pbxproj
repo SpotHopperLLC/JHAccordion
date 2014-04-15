@@ -3806,7 +3806,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0510;
-				ORGANIZATIONNAME = RokkinCat;
+				ORGANIZATIONNAME = SpotHopper;
 				TargetAttributes = {
 					03866462186D352400985CEC = {
 						DevelopmentTeam = 54WBL6WQLV;
