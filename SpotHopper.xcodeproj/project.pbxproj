@@ -2676,7 +2676,7 @@
 				<string>0386646B186D352400985CEC</string>
 				<string>03866467186D352400985CEC</string>
 				<string>5F881FD0AAD84878A974907D</string>
-				<string>45A98C9D11294D439FDABE12</string>
+				<string>14A3CD06A4ED4AAC906B692F</string>
 			</array>
 			<key>isa</key>
 			<string>PBXFrameworksBuildPhase</string>
@@ -3759,8 +3759,6 @@
 				<string>$(TARGET_NAME)</string>
 				<key>PROVISIONING_PROFILE</key>
 				<string></string>
-				<key>RUN_CLANG_STATIC_ANALYZER</key>
-				<string>YES</string>
 				<key>WRAPPER_EXTENSION</key>
 				<string>app</string>
 			</dict>
@@ -3803,8 +3801,6 @@
 				<string>$(TARGET_NAME)</string>
 				<key>PROVISIONING_PROFILE</key>
 				<string></string>
-				<key>RUN_CLANG_STATIC_ANALYZER</key>
-				<string>YES</string>
 				<key>WRAPPER_EXTENSION</key>
 				<string>app</string>
 			</dict>
@@ -20594,8 +20590,6 @@ fi
 				<string>SpotHopperStaging</string>
 				<key>PROVISIONING_PROFILE</key>
 				<string>D2E5B28B-38F8-45C1-B459-BB1A04856DE3</string>
-				<key>RUN_CLANG_STATIC_ANALYZER</key>
-				<string>YES</string>
 				<key>WRAPPER_EXTENSION</key>
 				<string>app</string>
 			</dict>
@@ -20636,8 +20630,6 @@ fi
 				<string>SpotHopperStaging</string>
 				<key>PROVISIONING_PROFILE</key>
 				<string>D2E5B28B-38F8-45C1-B459-BB1A04856DE3</string>
-				<key>RUN_CLANG_STATIC_ANALYZER</key>
-				<string>YES</string>
 				<key>WRAPPER_EXTENSION</key>
 				<string>app</string>
 			</dict>
@@ -23450,8 +23442,6 @@ fi
 				<string>SpotHopperDev</string>
 				<key>PROVISIONING_PROFILE</key>
 				<string></string>
-				<key>RUN_CLANG_STATIC_ANALYZER</key>
-				<string>YES</string>
 				<key>WRAPPER_EXTENSION</key>
 				<string>app</string>
 			</dict>
@@ -23492,8 +23482,6 @@ fi
 				<string>SpotHopperDev</string>
 				<key>PROVISIONING_PROFILE</key>
 				<string></string>
-				<key>RUN_CLANG_STATIC_ANALYZER</key>
-				<string>YES</string>
 				<key>WRAPPER_EXTENSION</key>
 				<string>app</string>
 			</dict>
@@ -24009,6 +23997,13 @@ fi
 			<string>libPods-SpotHopperStaging.a</string>
 			<key>sourceTree</key>
 			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>14A3CD06A4ED4AAC906B692F</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C9816A19827543A8863B8CBF</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
 		</dict>
 		<key>2602BD9418E2654900C93BBF</key>
 		<dict>
@@ -24536,13 +24531,6 @@ fi
 </string>
 			<key>showEnvVarsInLog</key>
 			<string>0</string>
-		</dict>
-		<key>45A98C9D11294D439FDABE12</key>
-		<dict>
-			<key>fileRef</key>
-			<string>C9816A19827543A8863B8CBF</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
 		</dict>
 		<key>4D2B49071C184BB6A0A93E50</key>
 		<dict>
