@@ -52,11 +52,11 @@
     }
 
     // If less than close yesterday, its still yesterday
-    if ([now timeIntervalSinceDate:dateCloseYesterday] < 0) {
+    if (dateOpenYesterday && dateCloseYesterday && [now timeIntervalSinceDate:dateCloseYesterday] < 0) {
         return @[ dateOpenYesterday, dateCloseYesterday ];
     }
     // Else if less than close today it is today
-    else if ([now timeIntervalSinceDate:dateClose] < 0) {
+    else if (dateOpen && dateClose && [now timeIntervalSinceDate:dateClose] < 0) {
         return @[ dateOpen, dateClose ];
     }
 

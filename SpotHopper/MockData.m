@@ -150,7 +150,6 @@
 }
 
 + (NSDictionary*)drinkTypeForId:(NSNumber*)ID withLinks:(NSDictionary*)links {
-    if (links == nil) links = @{};
     if (ID.intValue == 1) {
         return @{
                  @"id": @1,

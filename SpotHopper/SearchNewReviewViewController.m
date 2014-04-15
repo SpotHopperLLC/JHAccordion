@@ -400,10 +400,8 @@
     
     // Iterates through the view controllers in the stack until it finds THIS view
     // Every view before this is added to an array to that will get set in the nav controller
-    UIViewController *reviewsMenuViewController;
     for (UIViewController *viewController in self.navigationController.viewControllers) {
         if ([viewController isKindOfClass:[self class]] == YES) {
-            reviewsMenuViewController = viewController;
             foundSearch = YES;
             break;
         } else if ([viewController isKindOfClass:[ReviewsMenuViewController class]] == YES) {

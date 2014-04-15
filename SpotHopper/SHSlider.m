@@ -61,12 +61,6 @@
 	_maxThumbOn = FALSE;
 	//_padding = 20.0f;
     
-    // Load the track so that we can measure it.
-    UIImage *trackImage=[UIImage imageNamed:@"slider_background_min"];
-    
-    // Assue that the cap ends are semi-circular, so the cap is half of the image height
-    trackImage=nil;
-    
     _trackBackgroundMin = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"slider_background_min"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)] highlightedImage:[[UIImage imageNamed:@"slider_background_selected_min"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 25, 0, 0)]];
     _trackBackgroundMax = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"slider_background_max"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 25)] highlightedImage:[[UIImage imageNamed:@"slider_background_selected_max"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 25)]];
     
