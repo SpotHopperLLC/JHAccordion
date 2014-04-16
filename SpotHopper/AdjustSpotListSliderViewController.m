@@ -186,8 +186,10 @@
     } else if (indexPath.section == kSectionMoods) {
         if (indexPath.row > 0) {
             _selectedSpotListMood = [_spotListMoodTypes objectAtIndex:indexPath.row - 1];
+            [self showSubmitButton:YES];
         } else {
             _selectedSpotListMood = nil;
+            [self hideSubmitButton:YES];
         }
         [_accordion closeSection:indexPath.section];
     }
@@ -593,6 +595,8 @@
 }
 
 - (void)showSubmitButton:(BOOL)animated {
+    if (_btnSubmit.hidden == FALSE) return;
+    
     // 1) position it below the superview (out of view)
     // 2) set to hidden = false
     // 3) animate it up into position
