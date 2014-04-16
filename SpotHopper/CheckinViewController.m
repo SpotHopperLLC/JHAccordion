@@ -80,7 +80,7 @@
     // Find me
     [self showHUD:@"Locating"];
     _tellMeMyLocation = [[TellMeMyLocation alloc] init];
-    [_tellMeMyLocation findMe:kCLLocationAccuracyThreeKilometers found:^(CLLocation *newLocation) {
+    [_tellMeMyLocation findMe:kCLLocationAccuracyNearestTenMeters found:^(CLLocation *newLocation) {
         
         [self hideHUD];
         _currentLocation = newLocation;

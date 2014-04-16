@@ -123,7 +123,7 @@
 }
 
 - (void)updateWithCurrentLocation {
-    [_tellMeMyLocation findMe:kCLLocationAccuracyThreeKilometers found:^(CLLocation *newLocation) {
+    [_tellMeMyLocation findMe:kCLLocationAccuracyKilometer found:^(CLLocation *newLocation) {
         [TellMeMyLocation setLastLocation:newLocation completionHandler:^{
             [self updateTitle:[TellMeMyLocation lastLocationName] location:newLocation];
         }];
