@@ -31,7 +31,7 @@
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
 
-#import "Mixpanel.h"
+#import "Tracker.h"
 
 #import <JHAccordion/JHAccordion.h>
 
@@ -447,11 +447,11 @@
     
     NSNumber *spotTypeId = [_selectedSpotType objectForKey:@"id"];
     
-    [[Mixpanel sharedInstance] track:@"Creating Spotlist"];
+    [Tracker track:@"Creating Spotlist"];
     
     [self showHUD:@"Creating spotlist"];
     [SpotListModel postSpotList:kSpotListModelDefaultName spotId:nil spotTypeId:spotTypeId latitude:latitude longitude:longitude sliders:allTheSliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
-        [[Mixpanel sharedInstance] track:@"Created Spotlist" properties:@{@"Success" : @TRUE}];
+        [Tracker track:@"Created Spotlist" properties:@{@"Success" : @TRUE}];
         [self hideHUD];
         [self showHUDCompleted:@"Spotlist created!" block:^{
             
@@ -462,7 +462,7 @@
         }];
         
     } failure:^(ErrorModel *errorModel) {
-        [[Mixpanel sharedInstance] track:@"Created Spotlist" properties:@{@"Success" : @FALSE}];
+        [Tracker track:@"Created Spotlist" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
     }];

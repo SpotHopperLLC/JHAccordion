@@ -37,7 +37,7 @@
 
 #import "CheckinViewController.h"
 
-#import "Mixpanel.h"
+#import "Tracker.h"
 #import "TellMeMyLocation.h"
 
 @implementation UIViewController (Navigator)
@@ -62,25 +62,25 @@
 #pragma mark - Drinks
 
 - (void)goToDrinksNearBy {
-    [[Mixpanel sharedInstance] track:@"View Drinks Nearby" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Drinks Nearby" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     DrinksNearbyViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinksNearbyViewController"];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)goToDrinkListMenu {
-    [[Mixpanel sharedInstance] track:@"View Drink List Menu" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Drink List Menu" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     [self goToDrinkListMenuAtSpot:nil];
 }
 
 - (void)goToDrinkListMenuAtSpot:(SpotModel*)spot {
-    [[Mixpanel sharedInstance] track:@"View Drinklist Menu at Spot" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Drinklist Menu at Spot" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     DrinkListMenuViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkListMenuViewController"];
     [viewController setSpot:spot];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)goToDrinkList:(DrinkListModel*)drinkList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders atSpot:(SpotModel*)spot {
-    [[Mixpanel sharedInstance] track:@"View Drinklist" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Drinklist" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     DrinkListViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkListViewController"];
     [viewController setDrinkList:drinkList];
     [viewController setCreatedWithAdjustSliders:createdWithAdjustSliders];
@@ -89,14 +89,14 @@
 }
 
 - (void)goToFindDrinksAt:(DrinkModel*)drink {
-    [[Mixpanel sharedInstance] track:@"View Find Drinks At" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Find Drinks At" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     FindDrinksAtViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"FindDrinksAtViewController"];
     [viewController setDrink:drink];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)goToDrinkProfile:(DrinkModel*)drink {
-    [[Mixpanel sharedInstance] track:@"View Drink Profile" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Drink Profile" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     DrinkProfileViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkProfileViewController"];
     [viewController setDrink:drink];
     [self.navigationController pushViewController:viewController animated:YES];
@@ -182,13 +182,13 @@
 #pragma mark - Spots
 
 - (void)goToSpotListMenu {
-    [[Mixpanel sharedInstance] track:@"View Spotlist Menu" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Spotlist Menu" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     SpotListsMenuViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotListsMenuViewController"];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)goToSpotList:(SpotListModel*)spotList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders {
-    [[Mixpanel sharedInstance] track:@"View Spotlist" properties:@{@"Created with Sliders" : createdWithAdjustSliders ? @YES : @NO, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Spotlist" properties:@{@"Created with Sliders" : createdWithAdjustSliders ? @YES : @NO, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
     SpotListViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotListViewController"];
     [viewController setSpotList:spotList];
     [viewController setCreatedWithAdjustSliders:createdWithAdjustSliders];
@@ -196,7 +196,7 @@
 }
 
 - (void)goToSpotProfile:(SpotModel *)spot {
-    [[Mixpanel sharedInstance] track:@"View Spot Profile" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Spot Profile" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     SpotProfileViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
     [viewController setSpot:spot];
     [self.navigationController pushViewController:viewController animated:YES];
@@ -212,7 +212,7 @@
 }
 
 - (void)goToMenuOfferings:(SpotModel *)spot drinkType:(DrinkTypeModel*)drinkType menuType:(MenuTypeModel*)menuType menuItems:(NSArray*)menuItems {
-    [[Mixpanel sharedInstance] track:@"View Menu Offerings" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Menu Offerings" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     DrinkMenuOfferingsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DrinkMenuOfferingsViewController"];
     [viewController setSpot:spot];
     [viewController setDrinkType:drinkType];
@@ -224,7 +224,7 @@
 #pragma mark - Specials
 
 - (void)goToTonightsSpecials {
-    [[Mixpanel sharedInstance] track:@"View Tonight Specials" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Tonight Specials" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     TonightsSpecialsViewController *viewController = [[self specialsStoryboard] instantiateViewControllerWithIdentifier:@"TonightsSpecialsViewController"];
     [self.navigationController pushViewController:viewController animated:YES];
 }
@@ -238,7 +238,7 @@
 }
 
 - (void)goToCheckinAtSpot:(SpotModel*)spot {
-    [[Mixpanel sharedInstance] track:@"View Check In" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Check In" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     SpotProfileViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
     [viewController setSpot:spot];
     [viewController setIsCheckin:YES];
@@ -248,7 +248,7 @@
 #pragma mark - Commons
 
 - (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate {
-    [[Mixpanel sharedInstance] track:@"View Similar Spots" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Similar Spots" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     FindSimilarViewController *viewController = [[FindSimilarViewController alloc] initWithNibName:@"FindSimilarViewController" bundle:[NSBundle mainBundle]];
     [viewController setSearchDrinks:NO];
     [viewController setDelegate:delegate];
@@ -256,7 +256,7 @@
 }
 
 - (void)goToFindSimilarDrinks:(id<FindSimilarDrinksViewControllerDelegate>)delegate {
-    [[Mixpanel sharedInstance] track:@"View Similar Drinks" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Similar Drinks" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     FindSimilarDrinksViewController *viewController = [[FindSimilarDrinksViewController alloc] initWithNibName:@"FindSimilarDrinksViewController" bundle:[NSBundle mainBundle]];
     [viewController setDelegate:delegate];
     [self.navigationController pushViewController:viewController animated:YES];

@@ -27,8 +27,6 @@
     NSDate *manyYearsAgo = [[NSDate date] addMonths:12*120*-1];
     NSDate *yearsAgo = [[NSDate date] addYears:-21];
     
-    NSLog(@"%@", yearsAgo);
-    
     NSCAssert(_ageVerificationDatePicker, @"Outlet is required");
     _ageVerificationDatePicker.maximumDate = [NSDate date];
     _ageVerificationDatePicker.minimumDate = manyYearsAgo;
@@ -45,9 +43,6 @@
 
 - (IBAction)onEnterAgeVerification:(UIButton *)button {
     // verify the age is over 21 to procede or alert the user they cannot continue
-    
-    NSLog(@"max: %@", _maximumDateOfBirth);
-    NSLog(@"dob: %@", _ageVerificationDatePicker.date);
     
     if ([_maximumDateOfBirth compare:_ageVerificationDatePicker.date] == NSOrderedDescending) {
         // go immediately to the launch screen after age verification

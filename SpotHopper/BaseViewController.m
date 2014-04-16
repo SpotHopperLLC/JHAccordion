@@ -87,7 +87,6 @@ typedef void(^AlertBlock)();
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    NSLog(@"%@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
     [super viewWillAppear:animated];
     
     if ([self.navigationController.viewControllers count] > 1) {
@@ -99,10 +98,12 @@ typedef void(^AlertBlock)();
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-    // tracking with Google Analytics (override screenName)
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker set:kGAIScreenName value:self.screenName];
-    [tracker send:[[GAIDictionaryBuilder createAppView] build]];
+    if (kAnalyticsEnabled) {
+        // tracking with Google Analytics (override screenName)
+        id tracker = [[GAI sharedInstance] defaultTracker];
+        [tracker set:kGAIScreenName value:self.screenName];
+        [tracker send:[[GAIDictionaryBuilder createAppView] build]];
+    }
     
     SidebarViewController *sidebar = (SidebarViewController*)self.navigationController.sidebarViewController.rightViewController;
     [sidebar setDelegate:self];

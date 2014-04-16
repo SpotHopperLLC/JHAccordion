@@ -39,7 +39,7 @@
 
 #elif defined(STAGING)
 
-    #define kDebug YES
+    #define kDebug NO
 
     #define kTwitterConsumerKey @"enlXFrFlBlOPkaBoOJunQ"
     #define kTwitterConsumerSecret @"UHRcQ8WXs13Iug7VpliivDxwQuGtoMg5KsaoIF3jWbM"
@@ -48,11 +48,11 @@
 
     #define kRefreshLocationTime 3600.0f
 
-    #define kAnalyticsEnabled   FALSE
+    #define kAnalyticsEnabled   TRUE
 
 #elif defined(PRODUCTION)
 
-    #define kDebug YES
+    #define kDebug NO
 
     #define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"
     #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"

@@ -32,7 +32,7 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-#import "Mixpanel.h"
+#import "Tracker.h"
 
 @interface DrinkListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, SHButtonLatoLightLocationDelegate, DrinkCardCollectionViewCellDelegate, CheckinViewControllerDelegate>
 
@@ -202,8 +202,7 @@
 }
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
-        
-    [[Mixpanel sharedInstance] track:@"Fetching Drinklist Results"];
+    [Tracker track:@"Fetching Drinklist Results"];
 
     [self showHUD:@"Getting new drinks"];
     
@@ -224,10 +223,10 @@
         _spotAt = [_drinkList spot];
         
         [self fetchMenuItems];
-        [[Mixpanel sharedInstance] track:@"Fetched Drinklist Results" properties:@{@"Success" : @TRUE, @"Count" : [NSNumber numberWithUnsignedInteger:_drinkList.drinks.count]}];
+        [Tracker track:@"Fetched Drinklist Results" properties:@{@"Success" : @TRUE, @"Count" : [NSNumber numberWithUnsignedInteger:_drinkList.drinks.count]}];
         
     } failure:^(ErrorModel *errorModel) {
-        [[Mixpanel sharedInstance] track:@"Fetched Drinklist Results" properties:@{@"Success" : @FALSE}];
+        [Tracker track:@"Fetched Drinklist Results" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
     }];
@@ -396,15 +395,15 @@
 }
 
 - (void)doDeleteDrinkList {
-    [[Mixpanel sharedInstance] track:@"Deleting Drinklist"];
+    [Tracker track:@"Deleting Drinklist"];
     
     [self showHUD:@"Deleting"];
     [_drinkList deleteDrinkList:nil success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
-        [[Mixpanel sharedInstance] track:@"Delete Drinklist" properties:@{@"Success" : @TRUE}];
+        [Tracker track:@"Delete Drinklist" properties:@{@"Success" : @TRUE}];
         [self hideHUD];
         [self.navigationController popViewControllerAnimated:YES];
     } failure:^(ErrorModel *errorModel) {
-        [[Mixpanel sharedInstance] track:@"Delete Drinklist" properties:@{@"Success" : @FALSE}];
+        [Tracker track:@"Delete Drinklist" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
     }];

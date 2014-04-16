@@ -33,7 +33,7 @@
 #import "SliderTemplateModel.h"
 #import "SpotModel.h"
 
-#import "Mixpanel.h"
+#import "Tracker.h"
 
 #import <JHAccordion/JHAccordion.h>
 
@@ -531,7 +531,7 @@
         longitude = [NSNumber numberWithFloat:_location.coordinate.longitude];
     }
     
-    [[Mixpanel sharedInstance] track:@"Creating Drinklist"];
+    [Tracker track:@"Creating Drinklist"];
     
     [self showHUD:@"Creating drinklist"];
     [DrinkListModel postDrinkList:kDrinkListModelDefaultName
@@ -543,7 +543,7 @@
                     baseAlcoholId:_selectedBaseAlcohol.ID
                            spotId:_spot.ID
                      successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
-        [[Mixpanel sharedInstance] track:@"Created Drinklist" properties:@{@"Success" : @TRUE}];
+        [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE}];
         [self hideHUD];
         [self showHUDCompleted:@"Drinklist created!" block:^{
             
@@ -553,7 +553,7 @@
             
         }];
     } failure:^(ErrorModel *errorModel) {
-        [[Mixpanel sharedInstance] track:@"Created Drinklist" properties:@{@"Success" : @FALSE}];
+        [Tracker track:@"Created Drinklist" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
     }];
