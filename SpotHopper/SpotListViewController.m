@@ -59,6 +59,7 @@
 @end
 
 @implementation SpotListViewController {
+    BOOL _isSearching;
     BOOL _isRepositioningMap;
     BOOL _doNotMoveMap;
 }
@@ -96,6 +97,8 @@
     if (_spotList.featured == NO) {
         [_btnLocation setDelegate:self];
         [_btnLocation updateWithLastLocation];
+        _isRepositioningMap = TRUE;
+        [self fetchSpotlistResults:[TellMeMyLocation lastLocation]];
     } else {
         [_lblLocation setHidden:YES];
         [_btnLocation setHidden:YES];
@@ -286,25 +289,7 @@
 }
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
-    [Tracker track:@"Fetching Spotlist Results"];
-    
-    [self showHUD:@"Getting new spots"];
-    [_spotList putSpotList:nil latitude:[NSNumber numberWithFloat:location.coordinate.latitude] longitude:[NSNumber numberWithFloat:location.coordinate.longitude] sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
-        [self hideHUD];
-        
-        _spotList = spotListModel;
-        [_collectionView reloadData];
-        
-        [self updateView];
-        [self updateMatchPercent];
-        [Tracker track:@"Fetched Spotlist Results" properties:@{@"Success" : @TRUE, @"Count" : [NSNumber numberWithUnsignedInteger:_spotList.spots.count]}];
-    } failure:^(ErrorModel *errorModel) {
-        [Tracker track:@"Fetched Spotlist Results" properties:@{@"Success" : @FALSE}];
-        [self hideHUD];
-        [self showAlert:@"Oops" message:errorModel.human];
-    }];
-    
-    _selectedLocation = location;
+    [self fetchSpotlistResults:location];
 }
 
 - (void)locationError:(SHButtonLatoLightLocation *)button error:(NSError *)error {
@@ -353,9 +338,8 @@
 - (IBAction)onUpdateSearchResults:(id)sender {
     _doNotMoveMap = TRUE;
     CLLocation *location = [[CLLocation alloc] initWithLatitude:_mapView.centerCoordinate.latitude longitude:_mapView.centerCoordinate.longitude];
-    
     [TellMeMyLocation setLastLocation:location completionHandler:^{
-        // do nothing
+        [self fetchSpotlistResults:location];
     }];
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
@@ -367,6 +351,37 @@
 }
 
 #pragma mark - Private
+
+- (void)fetchSpotlistResults:(CLLocation *)location {
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+    if (_isSearching) {
+        return;
+    }
+    _isSearching = TRUE;
+
+    [Tracker track:@"Fetching Spotlist Results"];
+    
+    [self showHUD:@"Getting new spots"];
+    [_spotList putSpotList:nil latitude:[NSNumber numberWithFloat:location.coordinate.latitude] longitude:[NSNumber numberWithFloat:location.coordinate.longitude] sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+        _isSearching = FALSE;
+        _isRepositioningMap = FALSE;
+        [self hideHUD];
+        
+        _spotList = spotListModel;
+        [_collectionView reloadData];
+        
+        [self updateView];
+        [self updateMatchPercent];
+        [Tracker track:@"Fetched Spotlist Results" properties:@{@"Success" : @TRUE, @"Count" : [NSNumber numberWithUnsignedInteger:_spotList.spots.count]}];
+    } failure:^(ErrorModel *errorModel) {
+        _isSearching = FALSE;
+        [Tracker track:@"Fetched Spotlist Results" properties:@{@"Success" : @FALSE}];
+        [self hideHUD];
+        [self showAlert:@"Oops" message:errorModel.human];
+    }];
+    
+    _selectedLocation = location;
+}
 
 - (void)updateView {
     if (!_spotList.spots.count) {
@@ -394,7 +409,7 @@
     if (!_doNotMoveMap) {
         [self repositionMapOnAnnotations:_mapView.annotations animated:FALSE];
     }
-    _doNotMoveMap= FALSE;
+    _doNotMoveMap = FALSE;
 }
 
 - (void)updateFooterMapListButton:(FooterViewController*)footerViewController {
@@ -471,17 +486,41 @@
 - (void)repositionMapOnAnnotations:(NSArray *)annotations animated:(BOOL)animated {
     _isRepositioningMap = TRUE;
     MKMapRect mapRect = MKMapRectNull;
+    BOOL useCoordinate = TRUE;
     
-    // do not include the user location
-    for (id <MKAnnotation> annotation in annotations) {
-        if (![annotation isKindOfClass:[MKUserLocation class]]) {
-            MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
-            MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0, 0);
-            if (MKMapRectIsNull(mapRect)) {
-                mapRect = pointRect;
-            } else {
-                mapRect = MKMapRectUnion(mapRect, pointRect);
+    if (annotations.count) {
+        for (id <MKAnnotation> annotation in annotations) {
+            if ([annotation isKindOfClass:[MKUserLocation class]]) {
+                // if the user's location is within a half mile of the current map view center then include it
+                MKUserLocation *userLocation = (MKUserLocation *)annotation;
+                CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:_mapView.centerCoordinate.latitude longitude:_mapView.centerCoordinate.longitude];
+                CLLocationDistance distance = [userLocation.location distanceFromLocation:centerLocation];
+                // minimum distance from center must 500 meters
+                useCoordinate = distance < 500;
             }
+            else {
+                useCoordinate = TRUE;
+            }
+            
+            if (useCoordinate) {
+                MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
+                MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0, 0);
+                if (MKMapRectIsNull(mapRect)) {
+                    mapRect = pointRect;
+                } else {
+                    mapRect = MKMapRectUnion(mapRect, pointRect);
+                }
+            }
+        }
+    }
+    else {
+        // use map center to zoom in closer
+        MKMapPoint annotationPoint = MKMapPointForCoordinate(_mapView.centerCoordinate);
+        MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0, 0);
+        if (MKMapRectIsNull(mapRect)) {
+            mapRect = pointRect;
+        } else {
+            mapRect = MKMapRectUnion(mapRect, pointRect);
         }
     }
     

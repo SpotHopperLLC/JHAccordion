@@ -161,11 +161,11 @@ $2 Non-Wisco Taps</string>
                                     <outlet property="delegate" destination="46L-BE-h0z" id="vBD-TZ-0Q4"/>
                                 </connections>
                             </mapView>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="CTJ-iD-itG" userLabel="Update Search Results Button" customClass="SHButtonLatoBold">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="CTJ-iD-itG" userLabel="Search This Area Button" customClass="SHButtonLatoBold">
                                 <rect key="frame" x="70" y="380" width="180" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="0.75" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Update Search Results">
+                                <state key="normal" title="Search This Area">
                                     <color key="titleColor" red="0.85882359740000003" green="0.41960787770000002" blue="0.22352942819999999" alpha="1" colorSpace="deviceRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
