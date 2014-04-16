@@ -8,6 +8,8 @@
 
 #define kSpotTypeFilterBrewery @"brewery"
 #define kSpotTypeFilterWinery @"winery"
+#define kSpotTypeFilterBrewerySpotToCreate @"brewery without"
+#define kSpotTypeFilterWinerySpotToCreate @"winery without"
 
 #define kSpotReviewType 0
 #define kReviewTypeIcons @[@"btn_sidebar_icon_spots", @"icon_beer", @"icon_cocktails", @"icon_wine"]
@@ -71,6 +73,10 @@
 @property (nonatomic, strong) NSDictionary *selectedSpotType;
 @property (nonatomic, strong) NSDictionary *selectedCocktailSubtype;
 @property (nonatomic, strong) BaseAlcoholModel *selectedCocktailBaseAlcohol;
+
+// Create brewery and winery
+@property (nonatomic, strong) NSNumber *brewerySpotId;
+@property (nonatomic, strong) NSNumber *winerySpotId;
 
 // Forms
 @property (nonatomic, strong) UIView *viewFormNewSpot;
@@ -794,8 +800,9 @@
         } else if (breweryName.length > 0) {
             
             [self showHUD:@"Creating brewery"];
-            [SpotModel postSpot:@{
-                                  kSpotModelParamName : breweryName
+            [SpotModegil postSpot:@{
+                                  kSpotModelParamName : breweryName,
+                                  kSpotModelParamSpotTypeId : ( _brewerySpotId ?: [NSNull null] )
                                   } success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
                                       [self hideHUD];
                                       
@@ -898,6 +905,7 @@
             [self showHUD:@"Creating winery"];
             [SpotModel postSpot:@{
                                   kSpotModelParamName : wineryName,
+                                  kSpotModelParamSpotTypeId : ( _winerySpotId ?: [NSNull null] )
                                   } success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
                                       [self hideHUD];
                                       
@@ -1017,6 +1025,18 @@
             _spotTypes = [allSpotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"visible_to_users == YES"]];
             _brewerySpotTypes = [allSpotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", kSpotTypeFilterBrewery]];
             _winerySpotTypes = [allSpotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", kSpotTypeFilterWinery]];
+            
+            // Get brewery spot id to create
+            NSDictionary *breweryToCreate = [[allSpotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", kSpotTypeFilterBrewerySpotToCreate]] firstObject];
+            if (breweryToCreate != nil) {
+                _brewerySpotId = [breweryToCreate objectForKey:@"id"];
+            }
+            
+            // Get winery spot id to create
+            NSDictionary *wineryToCreate = [[allSpotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", kSpotTypeFilterWinerySpotToCreate]] firstObject];
+            if (wineryToCreate != nil) {
+                _winerySpotId = [wineryToCreate objectForKey:@"id"];
+            }
 
         }
         
