@@ -11,6 +11,8 @@
 #import "UIView+AddBorder.h"
 #import "UIViewController+Navigator.h"
 
+#import "ClientSessionManager.h"
+
 @interface SidebarViewController ()<UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
@@ -56,6 +58,8 @@
     [_btnCheckIn addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
     [_btnCheckIn addBottomBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
     [_btnAccount addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
+    
+    [self updateView:NO];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -87,6 +91,7 @@
 #pragma mark - JHSidebarDelegate
 
 - (void)sidebar:(JHSidebarSide)side stateChanged:(JHSidebarState)state {
+    [self updateView:YES];
     [self.view endEditing:YES];
 }
 
@@ -141,6 +146,18 @@
     if ([_delegate respondsToSelector:@selector(sidebarViewControllerClickedAccount:)]) {
         [_delegate sidebarViewControllerClickedAccount:self];
     }
+}
+
+#pragma mark - Private
+
+- (void)updateView:(BOOL)animate {
+    [_btnAccount setHidden:NO];
+    [UIView animateWithDuration:( animate ? 0.35f : 0.0f ) animations:^{
+        [_btnAccount setAlpha:( [ClientSessionManager sharedClient].isLoggedIn ? 1.0f : 0.0f)];
+    } completion:^(BOOL finished) {
+        [_btnAccount setHidden:( _btnAccount.alpha < 0.5f )];
+    }];
+
 }
 
 @end
