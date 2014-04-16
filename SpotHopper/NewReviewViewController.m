@@ -8,8 +8,6 @@
 
 #define kSpotTypeFilterBrewery @"brewery"
 #define kSpotTypeFilterWinery @"winery"
-#define kSpotTypeFilterBrewerySpotToCreate @"brewery without"
-#define kSpotTypeFilterWinerySpotToCreate @"winery without"
 
 #define kSpotReviewType 0
 #define kReviewTypeIcons @[@"btn_sidebar_icon_spots", @"icon_beer", @"icon_cocktails", @"icon_wine"]
@@ -1027,13 +1025,13 @@
             _winerySpotTypes = [allSpotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", kSpotTypeFilterWinery]];
             
             // Get brewery spot id to create
-            NSDictionary *breweryToCreate = [[allSpotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", kSpotTypeFilterBrewerySpotToCreate]] firstObject];
+            NSDictionary *breweryToCreate = [[allSpotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name ==[c] %@", kSpotTypeFilterBrewery]] firstObject];
             if (breweryToCreate != nil) {
                 _brewerySpotId = [breweryToCreate objectForKey:@"id"];
             }
             
             // Get winery spot id to create
-            NSDictionary *wineryToCreate = [[allSpotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", kSpotTypeFilterWinerySpotToCreate]] firstObject];
+            NSDictionary *wineryToCreate = [[allSpotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name ==[c] %@", kSpotTypeFilterWinery]] firstObject];
             if (wineryToCreate != nil) {
                 _winerySpotId = [wineryToCreate objectForKey:@"id"];
             }
