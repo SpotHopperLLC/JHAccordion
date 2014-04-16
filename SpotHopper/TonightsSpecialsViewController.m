@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#define kPageSize @15
+#define kPageSize @25
 
 #import "NSNumber+Helpers.h"
 #import "UIViewController+Navigator.h"
