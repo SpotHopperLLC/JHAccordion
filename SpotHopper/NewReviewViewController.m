@@ -800,7 +800,7 @@
         } else if (breweryName.length > 0) {
             
             [self showHUD:@"Creating brewery"];
-            [SpotModegil postSpot:@{
+            [SpotModel postSpot:@{
                                   kSpotModelParamName : breweryName,
                                   kSpotModelParamSpotTypeId : ( _brewerySpotId ?: [NSNull null] )
                                   } success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
