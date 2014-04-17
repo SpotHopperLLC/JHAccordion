@@ -23,7 +23,7 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setup];
+        [self setupLocationButton];
     }
     return self;
 }
@@ -31,12 +31,12 @@
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        [self setup];
+        [self setupLocationButton];
     }
     return self;
 }
 
-- (void)setup {
+- (void)setupLocationButton {
     _tellMeMyLocation = [[TellMeMyLocation alloc] init];
     
     [self setImage:[UIImage imageNamed:@"img_arrow_east.png"] forState:UIControlStateNormal];

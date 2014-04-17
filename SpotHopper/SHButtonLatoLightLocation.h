@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "SHButtonLatoLight.h"
 
 #import "LocationChooserViewController.h"
 
@@ -14,7 +14,7 @@
 
 @protocol SHButtonLatoLightLocationDelegate;
 
-@interface SHButtonLatoLightLocation : UIButton
+@interface SHButtonLatoLightLocation : SHButtonLatoLight
 
 @property (nonatomic, assign) id<SHButtonLatoLightLocationDelegate> delegate;
 
