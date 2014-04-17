@@ -98,7 +98,6 @@
         [_btnLocation setDelegate:self];
         [_btnLocation updateWithLastLocation];
         _isRepositioningMap = TRUE;
-        [self fetchSpotlistResults:[TellMeMyLocation lastLocation]];
     } else {
         [_lblLocation setHidden:YES];
         [_btnLocation setHidden:YES];
@@ -339,7 +338,6 @@
     _doNotMoveMap = TRUE;
     CLLocation *location = [[CLLocation alloc] initWithLatitude:_mapView.centerCoordinate.latitude longitude:_mapView.centerCoordinate.longitude];
     [TellMeMyLocation setLastLocation:location completionHandler:^{
-        [self fetchSpotlistResults:location];
     }];
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
