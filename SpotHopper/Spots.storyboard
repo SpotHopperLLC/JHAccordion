@@ -161,6 +161,18 @@ $2 Non-Wisco Taps</string>
                                     <outlet property="delegate" destination="46L-BE-h0z" id="vBD-TZ-0Q4"/>
                                 </connections>
                             </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="3dx-dE-GHs" userLabel="Compass Button" customClass="SHButtonLatoLight">
+                                <rect key="frame" x="0.0" y="356" width="65" height="64"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal" image="icon_arrow_shadow.png">
+                                    <color key="titleColor" red="0.94509803920000002" green="0.37647058820000001" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onClickUseCurrentLocation:" destination="46L-BE-h0z" eventType="touchUpInside" id="CA6-7A-4bk"/>
+                                </connections>
+                            </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="CTJ-iD-itG" userLabel="Search This Area Button" customClass="SHButtonLatoBold">
                                 <rect key="frame" x="70" y="380" width="180" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -322,6 +334,7 @@ $2 Non-Wisco Taps</string>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="btnCompass" destination="3dx-dE-GHs" id="c4G-V1-4Xu"/>
                         <outlet property="btnLocation" destination="hFE-xB-2JQ" id="rwl-rV-Vfz"/>
                         <outlet property="btnUpdateSearchResults" destination="CTJ-iD-itG" id="28X-Qi-5xU"/>
                         <outlet property="collectionView" destination="oZb-00-cLy" id="2fL-JV-CA3"/>
@@ -521,6 +534,7 @@ $2 Non-Wisco Taps</string>
         <image name="Foursquare-Watermark" width="60" height="60"/>
         <image name="btn_down_arrow.png" width="104" height="32"/>
         <image name="btn_share.png" width="40" height="42"/>
+        <image name="icon_arrow_shadow.png" width="61" height="64"/>
         <image name="icon_phone.png" width="25" height="25"/>
         <image name="img_card_background.png" width="228" height="309"/>
         <image name="img_carousel_background.png" width="320" height="409"/>

@@ -47,6 +47,7 @@
 @property (weak, nonatomic) IBOutlet SHButtonLatoBold *btnUpdateSearchResults;
 @property (weak, nonatomic) IBOutlet UILabel *lblLocation;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet SHButtonLatoLight *btnCompass;
 
 @property (weak, nonatomic) IBOutlet UIView *viewEmpty;
 
@@ -348,6 +349,23 @@
     }];
 }
 
+- (IBAction)onClickUseCurrentLocation:(id)sender {
+    [_tellMeMyLocation findMe:kCLLocationAccuracyThreeKilometers found:^(CLLocation *newLocation) {
+        NSLog(@"found");
+        MKCoordinateRegion mapRegion;
+        
+        mapRegion.center = newLocation.coordinate;
+        mapRegion.span = _mapView.region.span;
+        //MKCoordinateSpanMake(0.2, 0.2);
+        [_mapView setRegion:mapRegion animated: YES];
+    } failure:^(NSError *error){
+        NSLog(@"error");
+        if ([error.domain isEqualToString:kTellMeMyLocationDomain]) {
+            [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
+        }
+    }];
+}
+
 #pragma mark - Private
 
 - (void)fetchSpotlistResults:(CLLocation *)location {
@@ -415,12 +433,14 @@
         [footerViewController setMiddleButton:@"List" image:[UIImage imageNamed:@"btn_context_list"]];
         
         [_mapView setHidden:NO];
+        [_btnCompass setHidden:NO];
         [_collectionView setHidden:YES];
         [_lblMatchPercent setHidden:YES];
     } else {
         [footerViewController setMiddleButton:@"Map" image:[UIImage imageNamed:@"btn_context_map"]];
         
         [_mapView setHidden:YES];
+        [_btnCompass setHidden:YES];
         [_btnUpdateSearchResults setHidden:YES];
         
         [_btnUpdateSearchResults setHidden:YES];
