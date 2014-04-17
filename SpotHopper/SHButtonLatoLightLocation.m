@@ -42,10 +42,12 @@
     [self setImage:[UIImage imageNamed:@"img_arrow_east.png"] forState:UIControlStateNormal];
     [self addTarget:self action:@selector(onClickSelf:) forControlEvents:UIControlEventTouchUpInside];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(tellMeMyLocationChangedNotification:)
-                                                 name:kTellMeMyLocationChangedNotification
-                                               object:nil];
+    if ([self respondsToSelector:@selector(tellMeMyLocationChangedNotification:)]) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(tellMeMyLocationChangedNotification:)
+                                                     name:kTellMeMyLocationChangedNotification
+                                                   object:nil];
+    }
 }
 
 - (void)dealloc {
