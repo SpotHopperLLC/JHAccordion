@@ -46,8 +46,18 @@
         [_lblName setText:title];
         [_lblName setHidden:NO];
     } else {
-        [_lblMainTitle setText:title];
-        [_lblSubTitle setText:subtitle];
+        if ([drink isWine] && drink.vintage && ![drink isKindOfClass:[NSNull class]]) {
+            [_lblMainTitle setText:[NSString stringWithFormat:@"%@ (%@)", title, drink.vintage]];
+        }
+        else {
+            [_lblMainTitle setText:title];
+        }
+        if (!title.length && subtitle.length) {
+            [_lblMainTitle setText:subtitle];
+        }
+        else {
+            [_lblSubTitle setText:subtitle];
+        }
         
         [_lblMainTitle setHidden:NO];
         [_lblSubTitle setHidden:NO];
