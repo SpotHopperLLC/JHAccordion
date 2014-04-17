@@ -33,7 +33,6 @@ NSString * const kTellMeMyLocationChangedNotification = @"TellMeMyLocationChange
 @synthesize failureBlock = _failureBlock;
 
 - (void)findMe:(CLLocationAccuracy)accuracy found:(FoundBlock)foundBlock failure:(FailureBlock)failureBlock {
-
     if ([CLLocationManager locationServicesEnabled]) {
         
         if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied){
@@ -43,7 +42,8 @@ NSString * const kTellMeMyLocationChangedNotification = @"TellMeMyLocationChange
                                                                                               }]);
             return;
         }
-    } else {
+    }
+    else {
         failureBlock([NSError errorWithDomain:kTellMeMyLocationDomain code:1 userInfo:@{
                                                                                           NSLocalizedDescriptionKey : @"Permission Denied",
                                                                                           NSLocalizedRecoverySuggestionErrorKey : @"To re-enable, please go to Settings and turn on Location Services"
@@ -52,23 +52,20 @@ NSString * const kTellMeMyLocationChangedNotification = @"TellMeMyLocationChange
     }
     
     if (_locationManager == nil) {
-        _foundBlock = [foundBlock copy];
-        _failureBlock = [failureBlock copy];
-        
         _locationManager = [[CLLocationManager alloc] init];
-    
         [_locationManager setDelegate:self];
     }
+    
+    _foundBlock = [foundBlock copy];
+    _failureBlock = [failureBlock copy];
 
     [_locationManager setDesiredAccuracy:accuracy];
     [_locationManager startUpdatingLocation];
-    
 }
 
 #pragma mark - CLLocation Delegate
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    NSLog(@"Error - %@", error);
     if (_failureBlock != nil) {
         _failureBlock(error);
     }
