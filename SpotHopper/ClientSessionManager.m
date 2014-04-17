@@ -224,7 +224,7 @@
 - (BOOL)isLoggedIn {
     if ([self cookie] != nil) {
         [self.requestSerializer setValue:self.cookie forHTTPHeaderField:@"Cookie"];
-        NSLog(@"Loaded cookie - %@", self.cookie);
+        if (_debug) NSLog(@"Loaded cookie - %@", self.cookie);
         return YES;
     }
     return NO;

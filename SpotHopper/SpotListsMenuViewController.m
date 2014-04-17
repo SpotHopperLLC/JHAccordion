@@ -506,10 +506,6 @@
             _mySpotLists = [spotListsModels sortedArrayUsingComparator:^NSComparisonResult(SpotListModel* obj1, SpotListModel* obj2) {
                 return [obj1.name caseInsensitiveCompare:obj2.name];
             }];
-            
-            for (SpotListModel *spotList in _mySpotLists) {
-                NSLog(@"Spotlist -%@", spotList.name);
-            }
         } failure:^(ErrorModel *errorModel) {
             
         }];
