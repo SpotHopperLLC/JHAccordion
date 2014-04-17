@@ -122,7 +122,7 @@
 }
 
 - (IBAction)onClickUseCurrentLocation:(id)sender {
-    [_tellMeMyLocation findMe:kCLLocationAccuracyThreeKilometers found:^(CLLocation *newLocation) {
+    [_tellMeMyLocation findMe:kCLLocationAccuracyKilometer found:^(CLLocation *newLocation) {
         MKCoordinateRegion mapRegion;
         mapRegion.center = newLocation.coordinate;
         mapRegion.span = MKCoordinateSpanMake(0.2, 0.2);

@@ -88,7 +88,7 @@
     
     // Current location
     _tellMeMyLocation = [[TellMeMyLocation alloc] init];
-    [_tellMeMyLocation findMe:kCLLocationAccuracyThreeKilometers found:^(CLLocation *newLocation) {
+    [_tellMeMyLocation findMe:kCLLocationAccuracyKilometer found:^(CLLocation *newLocation) {
         _currentLocation = newLocation;
     } failure:^(NSError *error) {
         
