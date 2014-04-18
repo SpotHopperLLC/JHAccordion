@@ -1798,6 +1798,10 @@
 		267D78D718F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */; };
 		267D78D818F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */; };
 		267D78D918F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */; };
+		268C8CA2190089D00011E0F8 /* UserState.m in Sources */ = {isa = PBXBuildFile; fileRef = 268C8CA1190089D00011E0F8 /* UserState.m */; };
+		268C8CA3190089D00011E0F8 /* UserState.m in Sources */ = {isa = PBXBuildFile; fileRef = 268C8CA1190089D00011E0F8 /* UserState.m */; };
+		268C8CA4190089D00011E0F8 /* UserState.m in Sources */ = {isa = PBXBuildFile; fileRef = 268C8CA1190089D00011E0F8 /* UserState.m */; };
+		268C8CA5190089D00011E0F8 /* UserState.m in Sources */ = {isa = PBXBuildFile; fileRef = 268C8CA1190089D00011E0F8 /* UserState.m */; };
 		26B6767C18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
 		26B6767D18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
 		26B6767E18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
@@ -2418,6 +2422,8 @@
 		2602BD9C18E283C500C93BBF /* Common.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Common.storyboard; sourceTree = "<group>"; };
 		267D78D418F4A8DD00E95D54 /* SHButtonLatoBold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoBold.h; sourceTree = "<group>"; };
 		267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoBold.m; sourceTree = "<group>"; };
+		268C8CA0190089D00011E0F8 /* UserState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserState.h; sourceTree = "<group>"; };
+		268C8CA1190089D00011E0F8 /* UserState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserState.m; sourceTree = "<group>"; };
 		26B6767A18E9F59500DAD113 /* TutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialViewController.h; sourceTree = "<group>"; };
 		26B6767B18E9F59500DAD113 /* TutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialViewController.m; sourceTree = "<group>"; };
 		26B6768018E9F5B900DAD113 /* SpotHopperDev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperDev-Info.plist"; sourceTree = "<group>"; };
@@ -2726,6 +2732,7 @@
 				03866475186D352400985CEC /* AppDelegate.h */,
 				03866476186D352400985CEC /* AppDelegate.m */,
 				038664A3186D373100985CEC /* Constants.h */,
+				268C8C9F190089B50011E0F8 /* State */,
 				26F0FDE018EB1B18001BB0CD /* Locations */,
 				038664A2186D370E00985CEC /* Media */,
 				0386649F186D36F200985CEC /* Bases */,
@@ -3709,6 +3716,15 @@
 				03F6BF7C18C7087C00172F13 /* img_search_textfield_background@2x.png */,
 			);
 			path = Search;
+			sourceTree = "<group>";
+		};
+		268C8C9F190089B50011E0F8 /* State */ = {
+			isa = PBXGroup;
+			children = (
+				268C8CA0190089D00011E0F8 /* UserState.h */,
+				268C8CA1190089D00011E0F8 /* UserState.m */,
+			);
+			name = State;
 			sourceTree = "<group>";
 		};
 		26F0FDE018EB1B18001BB0CD /* Locations */ = {
@@ -5369,6 +5385,7 @@
 				03F6BF7018C6E8BD00172F13 /* ListCell.m in Sources */,
 				26F0FDE718EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
 				038664D3186D376900985CEC /* UIImage+Resize.m in Sources */,
+				268C8CA2190089D00011E0F8 /* UserState.m in Sources */,
 				03F2D9411872090E00C69576 /* SHTextFieldLatoLight.m in Sources */,
 				0320237018774E25008368C2 /* UIViewController+Navigator.m in Sources */,
 				038664E9186D37BC00985CEC /* JHPullRefreshViewController.m in Sources */,
@@ -5514,6 +5531,7 @@
 				03CABFD518E7716400FAC5F5 /* ListCell.m in Sources */,
 				26F0FDEA18EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
 				03CABFD618E7716400FAC5F5 /* UIImage+Resize.m in Sources */,
+				268C8CA5190089D00011E0F8 /* UserState.m in Sources */,
 				03CABFD718E7716400FAC5F5 /* SHTextFieldLatoLight.m in Sources */,
 				03CABFD918E7716400FAC5F5 /* UIViewController+Navigator.m in Sources */,
 				03CABFDA18E7716400FAC5F5 /* JHPullRefreshViewController.m in Sources */,
@@ -5651,6 +5669,7 @@
 				03F4E77918CA33D00056EAA9 /* ListCell.m in Sources */,
 				26F0FDE918EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
 				03F4E77A18CA33D00056EAA9 /* UIImage+Resize.m in Sources */,
+				268C8CA4190089D00011E0F8 /* UserState.m in Sources */,
 				03F4E77B18CA33D00056EAA9 /* SHTextFieldLatoLight.m in Sources */,
 				03F4E77D18CA33D00056EAA9 /* UIViewController+Navigator.m in Sources */,
 				03F4E77E18CA33D00056EAA9 /* JHPullRefreshViewController.m in Sources */,
@@ -5788,6 +5807,7 @@
 				03F4E8C718CA34260056EAA9 /* ListCell.m in Sources */,
 				26F0FDE818EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
 				03F4E8C818CA34260056EAA9 /* UIImage+Resize.m in Sources */,
+				268C8CA3190089D00011E0F8 /* UserState.m in Sources */,
 				03F4E8C918CA34260056EAA9 /* SHTextFieldLatoLight.m in Sources */,
 				03F4E8CB18CA34260056EAA9 /* UIViewController+Navigator.m in Sources */,
 				03F4E8CC18CA34260056EAA9 /* JHPullRefreshViewController.m in Sources */,
@@ -6094,7 +6114,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperProduction-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = SpotHopperProduction;
-				PROVISIONING_PROFILE = "9E339BF6-6897-4640-B4EC-C1ACDCFB091E";
+				PROVISIONING_PROFILE = "46017E83-A405-4244-9B88-400BC882B369";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -6117,7 +6137,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperProduction-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = SpotHopperProduction;
-				PROVISIONING_PROFILE = "9E339BF6-6897-4640-B4EC-C1ACDCFB091E";
+				PROVISIONING_PROFILE = "46017E83-A405-4244-9B88-400BC882B369";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

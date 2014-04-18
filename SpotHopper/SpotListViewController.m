@@ -38,6 +38,7 @@
 #import <MapKit/MapKit.h>
 
 #import "Tracker.h"
+#import "UserState.h"
 
 @interface SpotListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, MKMapViewDelegate, SHButtonLatoLightLocationDelegate, SpotAnnotationCalloutDelegate>
 
@@ -382,6 +383,8 @@
         _isSearching = FALSE;
         _isRepositioningMap = FALSE;
         [self hideHUD];
+        
+        [UserState setSpotlistCount:[NSNumber numberWithUnsignedInteger:spotListModel.spots.count]];
         
         _spotList = spotListModel;
         [_collectionView reloadData];

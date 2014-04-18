@@ -20,6 +20,8 @@
 #import "Tracker.h"
 #import "TellMeMyLocation.h"
 
+#import "iRate.h"
+
 @interface HomeViewController ()
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewButtonContainer;
@@ -82,6 +84,11 @@
     [super viewDidAppear:animated];
     
     [Tracker track:@"View Main Menu" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    
+    // iRate
+    if ([[iRate sharedInstance] usesCount] > 10) {
+        [[iRate sharedInstance] promptForRating];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
