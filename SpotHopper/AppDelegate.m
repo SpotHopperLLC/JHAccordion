@@ -66,13 +66,10 @@
     [iRate sharedInstance].usesUntilPrompt = 15;
     [iRate sharedInstance].onlyPromptIfLatestVersion = YES;
     
-//    [iRate sharedInstance].promptAtLaunch = FALSE;
-    
-#ifndef PRODUCTION
-    //enable preview mode
-//    [iRate sharedInstance].previewMode = YES;
+#ifdef PRODUCTION
+    // enable preview mode in non-production targets
+    [iRate sharedInstance].previewMode = NO;
 #endif
-    
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -227,7 +224,7 @@
     NSNumber *spotlistCount = [UserState spotlistCount];
     NSNumber *drinklistCount = [UserState drinklistCount];
     
-    return (spotlistCount && [spotlistCount unsignedIntegerValue] > 3) || (drinklistCount && [drinklistCount unsignedIntegerValue] > 3);
+    return spotlistCount.unsignedIntegerValue > 3 || drinklistCount.unsignedIntegerValue > 3;
 }
 
 #pragma mark - Facebook Connect

@@ -84,11 +84,6 @@
     [super viewDidAppear:animated];
     
     [Tracker track:@"View Main Menu" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    
-    // iRate
-    if ([[iRate sharedInstance] usesCount] > 10) {
-        [[iRate sharedInstance] promptForRating];
-    }
 }
 
 - (void)didReceiveMemoryWarning {
