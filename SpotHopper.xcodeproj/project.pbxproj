@@ -6024,6 +6024,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperLocal-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_CFLAGS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -6048,6 +6049,10 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperLocal-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DNS_BLOCK_ASSERTIONS=1",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -6113,6 +6118,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperProduction-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_CFLAGS = "$(inherited)";
 				PRODUCT_NAME = SpotHopperProduction;
 				PROVISIONING_PROFILE = "46017E83-A405-4244-9B88-400BC882B369";
 				WRAPPER_EXTENSION = app;
@@ -6136,6 +6142,10 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperProduction-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DNS_BLOCK_ASSERTIONS=1",
+				);
 				PRODUCT_NAME = SpotHopperProduction;
 				PROVISIONING_PROFILE = "46017E83-A405-4244-9B88-400BC882B369";
 				WRAPPER_EXTENSION = app;
@@ -6159,6 +6169,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperStaging-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_CFLAGS = "$(inherited)";
 				PRODUCT_NAME = SpotHopperStaging;
 				PROVISIONING_PROFILE = "7E7136E1-40C2-4A67-B71D-104F800CD3E5";
 				WRAPPER_EXTENSION = app;
@@ -6182,6 +6193,10 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperStaging-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DNS_BLOCK_ASSERTIONS=1",
+				);
 				PRODUCT_NAME = SpotHopperStaging;
 				PROVISIONING_PROFILE = "7E7136E1-40C2-4A67-B71D-104F800CD3E5";
 				WRAPPER_EXTENSION = app;
@@ -6205,6 +6220,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperDev-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_CFLAGS = "$(inherited)";
 				PRODUCT_NAME = SpotHopperDev;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -6228,6 +6244,10 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperDev-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DNS_BLOCK_ASSERTIONS=1",
+				);
 				PRODUCT_NAME = SpotHopperDev;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
