@@ -26,8 +26,11 @@
 
 @protocol SHButtonLatoLightLocationDelegate <NSObject>
 
+@optional
+
 - (void)locationRequestsUpdate:(SHButtonLatoLightLocation*)button location:(LocationChooserViewController*)viewController;
 - (void)locationUpdate:(SHButtonLatoLightLocation*)button location:(CLLocation*)location name:(NSString*)name;
 - (void)locationError:(SHButtonLatoLightLocation*)button error:(NSError*)error;
+- (void)locationDidChooseLocation:(CLLocation *)location;
 
 @end

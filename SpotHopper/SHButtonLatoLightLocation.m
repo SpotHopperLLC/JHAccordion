@@ -160,6 +160,9 @@
         // Dismisses view controller
         [viewController dismissViewControllerAnimated:YES completion:^{
             [self updateTitle:[TellMeMyLocation lastLocationName] location:location];
+            if ([_delegate respondsToSelector:@selector(locationDidChooseLocation:)]) {
+                [_delegate locationDidChooseLocation:location];
+            }
         }];
         
     }];

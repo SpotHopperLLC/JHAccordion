@@ -135,7 +135,6 @@
         [this updateFooterMapListButton:footerViewController];
         [footerViewController setRightButton:@"Info" image:[UIImage imageNamed:@"btn_context_info"]];
     }];
-
 }
 
 - (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
@@ -296,6 +295,11 @@
     // do nothing (there are potentially multiple VCs which could still be active with a location button)
 }
 
+- (void)locationDidChooseLocation:(CLLocation *)location {
+    _isRepositioningMap = TRUE;
+    [self fetchSpotlistResults:location];
+}
+
 - (void)locationError:(SHButtonLatoLightLocation *)button error:(NSError *)error {
     [self hideHUD];
     [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
@@ -356,7 +360,6 @@
 
 - (IBAction)onClickUseCurrentLocation:(id)sender {
     [_tellMeMyLocation findMe:kCLLocationAccuracyThreeKilometers found:^(CLLocation *newLocation) {
-        NSLog(@"found");
         MKCoordinateRegion mapRegion;
         
         mapRegion.center = newLocation.coordinate;
@@ -364,7 +367,6 @@
         //MKCoordinateSpanMake(0.2, 0.2);
         [_mapView setRegion:mapRegion animated: YES];
     } failure:^(NSError *error){
-        NSLog(@"error");
         if ([error.domain isEqualToString:kTellMeMyLocationDomain]) {
             [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
         }
@@ -374,7 +376,6 @@
 #pragma mark - Private
 
 - (void)fetchSpotlistResults:(CLLocation *)location {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
     if (_isSearching) {
         return;
     }
@@ -518,8 +519,7 @@
             if ([annotation isKindOfClass:[MKUserLocation class]]) {
                 // if the user's location is within a half mile of the current map view center then include it
                 MKUserLocation *userLocation = (MKUserLocation *)annotation;
-                CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:_mapView.centerCoordinate.latitude longitude:_mapView.centerCoordinate.longitude];
-                CLLocationDistance distance = [userLocation.location distanceFromLocation:centerLocation];
+                CLLocationDistance distance = [userLocation.location distanceFromLocation:[TellMeMyLocation lastLocation]];
                 // minimum distance from center must 500 meters
                 useCoordinate = distance < 500;
             }
