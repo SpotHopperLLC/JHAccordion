@@ -15,7 +15,7 @@
 
 @interface SearchViewController : BaseViewController
 
-@property (nonatomic, assign) id<SearchViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<SearchViewControllerDelegate> delegate;
 
 @end
 

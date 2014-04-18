@@ -24,7 +24,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnFindIt;
 @property (weak, nonatomic) IBOutlet UILabel *lblPrice;
 
-@property (nonatomic, assign) id<DrinkCardCollectionViewCellDelegate> delegate;
+@property (nonatomic, weak) id<DrinkCardCollectionViewCellDelegate> delegate;
 
 - (void)setDrink:(DrinkModel *)drink menuItem:(MenuItemModel*)menuItem;
 

@@ -14,7 +14,7 @@
 
 @interface CheckinViewController : BaseViewController
 
-@property (nonatomic, assign) id<CheckinViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<CheckinViewControllerDelegate> delegate;
 
 @end
 

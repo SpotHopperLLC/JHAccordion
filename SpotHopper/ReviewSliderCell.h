@@ -25,7 +25,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblSliderValue;
 @property (weak, nonatomic) IBOutlet SHSlider *slider;
 
-@property (nonatomic, assign) id<ReviewSliderCellDelegate> delegate;
+@property (nonatomic, weak) id<ReviewSliderCellDelegate> delegate;
 
 - (void)setSliderTemplate:(SliderTemplateModel*)sliderTemplate withSlider:(SliderModel*)slider showSliderValue:(BOOL)show;
 - (void)setVibeFeel:(BOOL)vibeFeel slider:(SliderModel*)slider;

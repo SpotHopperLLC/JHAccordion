@@ -16,7 +16,7 @@
 
 @property (nonatomic, strong) CLLocation *location;
 @property (nonatomic, strong) SpotModel *spot;
-@property (nonatomic, assign) id<AdjustDrinkSliderListSliderViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<AdjustDrinkSliderListSliderViewControllerDelegate> delegate;
 
 - (void)resetForm;
 

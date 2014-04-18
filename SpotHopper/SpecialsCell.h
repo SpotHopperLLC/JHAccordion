@@ -18,7 +18,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblSpotName;
 @property (weak, nonatomic) IBOutlet UILabel *lblSpecial;
 
-@property (nonatomic, assign) id<SpecialsCellDelegate> delegate;
+@property (nonatomic, weak) id<SpecialsCellDelegate> delegate;
 
 - (void)setSpot:(SpotModel*)spot;
 

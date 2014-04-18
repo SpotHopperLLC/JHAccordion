@@ -15,7 +15,7 @@
 @property (nonatomic, strong) NSString *reviewType;
 @property (nonatomic, strong) SpotModel *spotBasedOffOf;
 
-@property (nonatomic, assign) id<NewReviewViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<NewReviewViewControllerDelegate> delegate;
 
 @end
 

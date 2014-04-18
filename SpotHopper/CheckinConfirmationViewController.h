@@ -17,7 +17,7 @@
 @interface CheckinConfirmationViewController : BaseViewController
 
 @property (nonatomic, strong) SpotModel *spot;
-@property (nonatomic, assign) id<CheckinConfirmationViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<CheckinConfirmationViewControllerDelegate> delegate;
 
 @end
 

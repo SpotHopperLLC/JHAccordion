@@ -15,7 +15,7 @@
 @interface FindSimilarViewController : BaseViewController
 
 @property (nonatomic, assign) BOOL searchDrinks;
-@property (nonatomic, assign) id<FindSimilarViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<FindSimilarViewControllerDelegate> delegate;
 
 @end
 

@@ -21,7 +21,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblDistanceAway;
 
 @property (nonatomic, strong) MatchPercentAnnotationView *matchPercentAnnotationView;
-@property (nonatomic, assign) id<SpotAnnotationCalloutDelegate> delegate;
+@property (nonatomic, weak) id<SpotAnnotationCalloutDelegate> delegate;
 
 @end
 
