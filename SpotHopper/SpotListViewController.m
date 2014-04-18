@@ -95,15 +95,18 @@
         
     }];
     
+    NSCAssert([_btnLocation.delegate isEqual:self], @"Button delegate should be set to self in the storyboard");
+
     // Locations
     if (_spotList.featured == NO) {
-        [_btnLocation setDelegate:self];
         [_btnLocation updateWithLastLocation];
         _isRepositioningMap = TRUE;
     } else {
         [_lblLocation setHidden:YES];
         [_btnLocation setHidden:YES];
     }
+    
+    [self fetchSpotlistResults:[TellMeMyLocation lastLocation]];
     
     // Initialize stuff
     _showMap = YES;
@@ -290,7 +293,7 @@
 }
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
-    [self fetchSpotlistResults:location];
+    // do nothing (there are potentially multiple VCs which could still be active with a location button)
 }
 
 - (void)locationError:(SHButtonLatoLightLocation *)button error:(NSError *)error {
@@ -340,6 +343,7 @@
     _doNotMoveMap = TRUE;
     CLLocation *location = [[CLLocation alloc] initWithLatitude:_mapView.centerCoordinate.latitude longitude:_mapView.centerCoordinate.longitude];
     [TellMeMyLocation setLastLocation:location completionHandler:^{
+        [self fetchSpotlistResults:location];
     }];
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
