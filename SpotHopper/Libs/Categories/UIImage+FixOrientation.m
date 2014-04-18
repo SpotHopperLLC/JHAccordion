@@ -101,7 +101,7 @@
         imageData = UIImageJPEGRepresentation(self, compression);
     }
     NSLog(@"Compression - %f", compression);
-    NSLog(@"Size - %lu", [imageData length]);
+    NSLog(@"Size - %lu", (unsigned long)[imageData length]);
     
     return imageData;
 }

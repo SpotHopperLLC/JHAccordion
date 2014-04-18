@@ -71,7 +71,7 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    NSString *cellName = [NSString stringWithFormat:@"WelcomeCell%li", indexPath.item + 1];
+    NSString *cellName = [NSString stringWithFormat:@"WelcomeCell%li", (long)indexPath.item + 1];
     UICollectionViewCell *cell = (UICollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:cellName forIndexPath:indexPath];
     
     switch (indexPath.item) {

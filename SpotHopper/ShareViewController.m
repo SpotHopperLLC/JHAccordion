@@ -358,7 +358,7 @@
     
     [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"Twitter response, HTTP response: %ld", [urlResponse statusCode]);
+            NSLog(@"Twitter response, HTTP response: %ld", (long)[urlResponse statusCode]);
             
             if (error || [urlResponse statusCode] != 200) {
                 [deferred rejectWith:error];
