@@ -328,7 +328,7 @@
     } else if (tableView == _tblReviews) {
         if (section == 2) {
             if (_advancedSliders.count > 0) {
-                return 65.0f;
+                return 47.0f;
             }
         }
     }
