@@ -44,6 +44,7 @@
 #import "Mixpanel.h"
 #import "GAI.h"
 #import "iRate.h"
+#import "Tracker.h"
 #import "UserState.h"
 
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
@@ -76,11 +77,6 @@
 //    [[ClientSessionManager sharedClient] setHasSeenLaunch:NO];
     
     [iRate sharedInstance].delegate = self;
-    
-    NSDate *firstUseDate = [UserState firstUseDate];
-    if (!firstUseDate) {
-        [UserState setFirstUseDate:[NSDate date]];
-    }
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
@@ -173,6 +169,14 @@
         [[GAI sharedInstance] trackerWithTrackingId:kGoogleAnalyticsTrackingId];
     }
     
+    NSDate *firstUseDate = [UserState firstUseDate];
+    if (!firstUseDate) {
+        [UserState setFirstUseDate:[NSDate date]];
+        if (kAnalyticsEnabled) {
+            [[Mixpanel sharedInstance] track:@"First Use"];
+        }
+    }
+    
     return YES;
 }
 
@@ -225,6 +229,30 @@
     NSNumber *drinklistCount = [UserState drinklistCount];
     
     return spotlistCount.unsignedIntegerValue > 3 || drinklistCount.unsignedIntegerValue > 3;
+}
+
+- (void)iRateDidDetectAppUpdate {
+    [Tracker track:@"iRate Detected Update"];
+}
+
+- (void)iRateDidPromptForRating {
+    [Tracker track:@"iRate did Prompt to Rate"];
+}
+
+- (void)iRateUserDidAttemptToRateApp {
+    [Tracker track:@"iRate Attempted to Rate"];
+}
+
+- (void)iRateUserDidDeclineToRateApp {
+    [Tracker track:@"iRate Declined to Rate"];
+}
+
+- (void)iRateUserDidRequestReminderToRateApp {
+    [Tracker track:@"iRate Requested Reminder"];
+}
+
+- (void)iRateDidOpenAppStore {
+    [Tracker track:@"iRate Opened App Store"];
 }
 
 #pragma mark - Facebook Connect

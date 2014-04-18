@@ -8,6 +8,8 @@
 
 #import "ReviewSliderCell.h"
 
+#import "Tracker.h"
+
 #pragma mark - Class Extension
 #pragma mark -
 
@@ -82,6 +84,17 @@
 - (void)slider:(SHSlider *)slider valueDidFinishChanging:(CGFloat)value {
     if (_delegate && [_delegate respondsToSelector:@selector(reviewSliderCell:finishedChangingValue:)]) {
         [_delegate reviewSliderCell:self finishedChangingValue:value];
+    }
+    
+    [Tracker track:@"Slider Value Changed" properties:@{@"Min" : [self notNilString:_lblMinimum.text], @"Max" : [self notNilString:_lblMaximum.text], @"Value" : [NSNumber numberWithFloat:value]}];
+}
+
+- (NSString *)notNilString:(NSString *)string {
+    if ([string isKindOfClass:[NSString class]] && string.length) {
+        return string;
+    }
+    else {
+        return @"";
     }
 }
 
