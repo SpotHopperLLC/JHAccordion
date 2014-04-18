@@ -16,7 +16,7 @@
 
 @interface SHButtonLatoLightLocation : SHButtonLatoLight
 
-@property (nonatomic, assign) id<SHButtonLatoLightLocationDelegate> delegate;
+@property (nonatomic, weak) id<SHButtonLatoLightLocationDelegate> delegate;
 
 - (void)updateWithLocation:(CLLocation*)location;
 - (void)updateWithLastLocation;

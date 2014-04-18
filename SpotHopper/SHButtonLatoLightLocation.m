@@ -41,12 +41,19 @@
     
     [self setImage:[UIImage imageNamed:@"img_arrow_east.png"] forState:UIControlStateNormal];
     [self addTarget:self action:@selector(onClickSelf:) forControlEvents:UIControlEventTouchUpInside];
+
+#ifdef STAGING
+    NSCAssert([self respondsToSelector:@selector(tellMeMyLocationChangedNotification:)], @"Current instance must implement tellMeMyLocationChangedNotification:");
+#endif
     
     if ([self respondsToSelector:@selector(tellMeMyLocationChangedNotification:)]) {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(tellMeMyLocationChangedNotification:)
                                                      name:kTellMeMyLocationChangedNotification
                                                    object:nil];
+    }
+    else {
+        NSLog(@"self: %@", NSStringFromClass([self class]));
     }
 }
 
@@ -70,8 +77,7 @@
         [self setTitle:locationName forState:UIControlStateNormal];
     }
     
-    if ([_delegate respondsToSelector:@selector(locationUpdate:location:name:)]) {
-        
+    if (_delegate && [_delegate respondsToSelector:@selector(locationUpdate:location:name:)]) {
         [_delegate locationUpdate:self location:location name:locationName];
     }
 }

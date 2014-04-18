@@ -20,6 +20,8 @@
 #import "Tracker.h"
 #import "TellMeMyLocation.h"
 
+#import "iRate.h"
+
 @interface HomeViewController ()
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewButtonContainer;

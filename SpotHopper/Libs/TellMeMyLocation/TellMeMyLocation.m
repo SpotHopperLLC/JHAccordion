@@ -123,6 +123,8 @@ NSString * const kTellMeMyLocationChangedNotification = @"TellMeMyLocationChange
                 [self setLastLocationName:nil];
             }
             
+            NSCAssert([NSThread isMainThread], @"Must be main thread");
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:kTellMeMyLocationChangedNotification object:nil];
         }
         

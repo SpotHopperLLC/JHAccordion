@@ -33,6 +33,7 @@
 #import <CoreLocation/CoreLocation.h>
 
 #import "Tracker.h"
+#import "UserState.h"
 
 @interface DrinkListViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, SHButtonLatoLightLocationDelegate, DrinkCardCollectionViewCellDelegate, CheckinViewControllerDelegate>
 
@@ -216,6 +217,8 @@
     
     [_drinkList putDrinkList:nil latitude:lat longitude:lng spotId:_spotAt.ID sliders:nil success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
         [self hideHUD];
+        
+        [UserState setDrinklistCount:[NSNumber numberWithUnsignedInteger:drinkListModel.drinks.count]];
         
         _drinkList = drinkListModel;
         
