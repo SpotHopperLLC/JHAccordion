@@ -15,7 +15,7 @@
 @interface AdjustSpotListSliderViewController : BaseViewController
 
 @property (nonatomic, strong) CLLocation *location;
-@property (nonatomic, assign) id<AdjustSliderListSliderViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<AdjustSliderListSliderViewControllerDelegate> delegate;
 
 - (void)resetForm;
 

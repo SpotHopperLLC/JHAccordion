@@ -16,7 +16,7 @@ typedef enum {
 
 @interface FooterViewController : UIViewController
 
-@property (nonatomic, assign) id<FooterViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<FooterViewControllerDelegate> delegate;
 
 - (void)showHome:(BOOL)show;
 - (void)setLeftButton:(NSString*)label image:(UIImage*)image;

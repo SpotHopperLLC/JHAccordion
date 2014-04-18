@@ -21,7 +21,7 @@
 @property (nonatomic, strong) DrinkModel *drink;
 @property (nonatomic, strong) SpotModel *spot;
 
-@property (nonatomic, assign) id<ReviewViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<ReviewViewControllerDelegate> delegate;
 
 @end
 

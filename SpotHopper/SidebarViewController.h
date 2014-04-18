@@ -14,7 +14,7 @@
 
 @interface SidebarViewController : BaseViewController <JHSidebarDelegate>
 
-@property (nonatomic, assign) id<SidebarViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<SidebarViewControllerDelegate> delegate;
 
 @end
 

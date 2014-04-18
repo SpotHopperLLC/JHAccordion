@@ -15,7 +15,7 @@
 @interface LocationChooserViewController : BaseViewController
 
 @property (nonatomic, strong) CLLocation *initialLocation;
-@property (nonatomic, assign) id<LocationChooserViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<LocationChooserViewControllerDelegate> delegate;
 
 + (LocationChooserViewController*)locationChooser;
 

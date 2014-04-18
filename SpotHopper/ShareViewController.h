@@ -20,7 +20,7 @@ typedef enum {
 
 @property (nonatomic, strong) SpotModel *spot;
 @property (nonatomic, assign) ShareViewControllerShareType shareType;
-@property (nonatomic, assign) id<ShareViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<ShareViewControllerDelegate> delegate;
 
 @end
 
