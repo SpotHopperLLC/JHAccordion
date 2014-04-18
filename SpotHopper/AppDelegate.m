@@ -49,6 +49,7 @@
 
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
 #import <JSONAPI/JSONAPI.h>
+#import <Parse/Parse.h>
 #import <Raven/RavenClient.h>
 #import <STTwitter/STTwitter.h>
 
@@ -82,6 +83,14 @@
     
     // Location finder
     _tellMeMyLocation = [[TellMeMyLocation alloc] init];
+    
+    // Initialize Parse
+    [Parse setApplicationId:kParseApplicationID
+                  clientKey:kParseClientKey];
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge|
+     UIRemoteNotificationTypeAlert|
+     UIRemoteNotificationTypeSound];
     
     // Initializes Raven (Sentry) for error reporting/logging
     [RavenClient clientWithDSN:kSentryDSN];
@@ -182,6 +191,24 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     return [FBSession.activeSession handleOpenURL:url];
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    // Store the deviceToken in the current Installation and save it to Parse.
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    [currentInstallation setDeviceTokenFromData:deviceToken];
+    [currentInstallation saveInBackground];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    [PFPush handlePush:userInfo];
+    [self handlePush:userInfo inForeground:(application.applicationState == UIApplicationStateActive)];
+}
+
+- (void)handlePush:(NSDictionary*)payload inForeground:(BOOL)inForeground {
+    if (payload != nil) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationPushReceived object:self userInfo:payload];
+    }
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application {

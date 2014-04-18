@@ -17,6 +17,7 @@
 @interface LiveSpecialViewController : BaseViewController
 
 @property (nonatomic, strong) LiveSpecialModel *liveSpecial;
+@property (nonatomic, assign) BOOL needToFetch;
 @property (nonatomic, strong) id<LiveSpecialViewControllerDelegate> delegate;
 
 @end

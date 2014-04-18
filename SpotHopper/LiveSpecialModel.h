@@ -8,7 +8,9 @@
 
 #import "SHJSONAPIResource.h"
 
-@class SpotModel;
+#import <JSONAPI/JSONAPI.h>
+
+@class ErrorModel, SpotModel;
 
 @interface LiveSpecialModel : SHJSONAPIResource
 
@@ -19,5 +21,7 @@
 
 @property (nonatomic, strong) NSString *startDateStr;
 @property (nonatomic, strong) NSString *endDateStr;
+
+- (Promise *)getLiveSpecial:(NSDictionary *)params success:(void (^)(LiveSpecialModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
 
 @end

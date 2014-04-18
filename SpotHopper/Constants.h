@@ -20,6 +20,9 @@
     #define kBaseUrl @"http://192.168.1.2:9292"
 //    #define kBaseUrl @"http://192.168.1.110:9292"
 
+    #define kParseApplicationID @""
+    #define kParseClientKey @""
+
     #define kRefreshLocationTime 60.0f
 
     #define kAnalyticsEnabled   FALSE
@@ -32,6 +35,9 @@
     #define kTwitterConsumerSecret @"TT0nyrGy2xdpfWiBMrkGKoFjjiNhJW4atoInhlv7I"
 
     #define kBaseUrl @"http://spothopper-dev.herokuapp.com"
+
+    #define kParseApplicationID @""
+    #define kParseClientKey @""
 
     #define kRefreshLocationTime 60.0f
 
@@ -46,6 +52,9 @@
 
     #define kBaseUrl @"http://spothopper-staging.herokuapp.com"
 
+    #define kParseApplicationID @"lu4u2Bg5pBqLg9qZEWJB5W7fjSAVQPiH39Hr29kV"
+    #define kParseClientKey @"BHl8KE9ZmZgmeDFnV9H886qKB9Y7EaWzZLPdOs4J"
+
     #define kRefreshLocationTime 3600.0f
 
     #define kAnalyticsEnabled   TRUE
@@ -59,6 +68,9 @@
 
     #define kBaseUrl @"https://api.spotapps.co"
 
+    #define kParseApplicationID @""
+    #define kParseClientKey @""
+
     #define kRefreshLocationTime 3600.0f
 
     #define kAnalyticsEnabled   TRUE
@@ -70,8 +82,9 @@
 #define kMixPanelToken @"b7cdce62dcc827c0955766058d7696c4"
 
 // Google Analytics - https://developers.google.com/analytics/devguides/collection/ios/v3/
-
 #define kGoogleAnalyticsTrackingId @"UA-49583937-2"
+
+#define kNotificationPushReceived @"push_notification_received"
 
 // InfoText
 #define kInfoSpotList @"Want to find matches somewhere else? Change the location in the subheader!"

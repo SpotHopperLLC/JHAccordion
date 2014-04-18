@@ -8,6 +8,9 @@
 
 #import "LiveSpecialModel.h"
 
+#import "ClientSessionManager.h"
+#import "ErrorModel.h"
+
 @implementation LiveSpecialModel
 
 - (NSDictionary *)mapKeysToProperties {
@@ -29,6 +32,37 @@
 
 - (NSDate *)endDate {
     return [self formatDateTimestamp:[self endDateStr]];
+}
+
+#pragma mark - API
+
+- (Promise *)getLiveSpecial:(NSDictionary *)params success:(void (^)(LiveSpecialModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+    
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/live_specials/%d", [self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            LiveSpecialModel *model = [jsonApi resourceForKey:@"live_specials"];
+            successBlock(model, jsonApi);
+            
+            // Resolves promise
+            [deferred resolve];
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+            
+            // Rejects promise
+            [deferred rejectWith:errorModel];
+        }
+    }];
+    
+    return deferred.promise;
+    
 }
 
 @end

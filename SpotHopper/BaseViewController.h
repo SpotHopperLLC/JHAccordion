@@ -75,7 +75,7 @@
 - (void)slideCell:(UITableViewCell *)cell aboveTableViewMidwayPoint:(UITableView *)tableView;
 
 // LiveSpecialViewController
-- (void)showLiveSpecialViewController:(LiveSpecialModel*)liveSpecial;
+- (void)showLiveSpecialViewController:(LiveSpecialModel *)liveSpecial needToFetch:(BOOL)needToFetch;
 - (void)hideLiveSpecialViewController:(void(^)(void))completion;
 
 // ShareViewController

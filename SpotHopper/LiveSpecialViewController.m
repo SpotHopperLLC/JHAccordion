@@ -9,6 +9,7 @@
 #import "LiveSpecialViewController.h"
 
 #import "LiveSpecialModel.h"
+#import "ErrorModel.h"
 #import "SpotModel.h"
 
 #import <TTTAttributedLabel/TTTAttributedLabel.h>
@@ -17,6 +18,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *lblSpecial;
 @property (weak, nonatomic) IBOutlet TTTAttributedLabel *lblAt;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -31,9 +33,21 @@
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
+    [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
+    
     
     [self updateView];
+    
+    if (_needToFetch == YES) {
+        [self fetchLiveSpecial];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    // We don't need to listen for this here
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kNotificationPushReceived object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -44,6 +58,10 @@
 - (void)setLiveSpecial:(LiveSpecialModel *)liveSpecial {
     _liveSpecial = liveSpecial;
     [self updateView];
+    
+    if (_needToFetch == YES) {
+        [self fetchLiveSpecial];
+    }
 }
 
 #pragma mark - Tracking
@@ -68,8 +86,31 @@
 
 #pragma mark - Private
 
+- (void)fetchLiveSpecial {
+    [_liveSpecial getLiveSpecial:nil success:^(LiveSpecialModel *liveSpecial, JSONAPI *jsonApi) {
+        
+        _needToFetch = NO;
+        _liveSpecial = liveSpecial;
+        
+        [self updateView];
+        
+    } failure:^(ErrorModel *errorModel) {
+        [self showAlert:@"Oops" message:[errorModel human]];
+    }];
+}
+
 - (void)updateView {
+    
     if (_liveSpecial != nil) {
+        
+        if (_needToFetch == YES) {
+            [_activityIndicator setHidden:NO];
+            [_activityIndicator startAnimating];
+            return;
+        }
+        
+        [_activityIndicator setHidden:YES];
+        [_activityIndicator stopAnimating];
         
         [_lblSpecial setText:_liveSpecial.text];
         
