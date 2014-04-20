@@ -125,9 +125,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     if (indexPath.section == kSectionTypes) {
-        
         AdjustSliderOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AdjustSliderOptionCell" forIndexPath:indexPath];
         if (indexPath.row > 0) {
             NSDictionary *spotType = [_spotTypes objectAtIndex:indexPath.row - 1];
@@ -137,8 +135,8 @@
         }
         
         return cell;
-    } else if (indexPath.section == kSectionMoods) {
-        
+    }
+    else if (indexPath.section == kSectionMoods) {
         AdjustSliderOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AdjustSliderOptionCell" forIndexPath:indexPath];
         if (indexPath.row > 0) {
             SpotListMoodModel *spotListMood = [_spotListMoodTypes objectAtIndex:indexPath.row - 1];
@@ -148,19 +146,17 @@
         }
         
         return cell;
-    }  else if (indexPath.section == kSectionSliders) {
-        
+    }
+    else if (indexPath.section == kSectionSliders) {
         SliderModel *slider = [_sliders objectAtIndex:indexPath.row];
-        
         ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
         [cell setDelegate:self];
         [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];
         
         return cell;
-    } else if (indexPath.section == kSectionAdvancedSliders) {
-        
+    }
+    else if (indexPath.section == kSectionAdvancedSliders) {
         SliderModel *slider = [_advancedSliders objectAtIndex:indexPath.row];
-        
         ReviewSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReviewSliderCell" forIndexPath:indexPath];
         [cell setDelegate:self];
         [cell setSliderTemplate:slider.sliderTemplate withSlider:slider showSliderValue:NO];

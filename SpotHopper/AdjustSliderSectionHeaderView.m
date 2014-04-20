@@ -62,7 +62,7 @@
     
     // Image arrow
     _imgArrow = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(_viewContent.frame) - 47.0f, 11.0f, 27.0f, 27.0f)];
-    [_imgArrow setImage:[UIImage imageNamed:@"img_expand_north.png"]];
+    [_imgArrow setImage:[UIImage imageNamed:@"img_expand_south"]];
     [_viewContent addSubview:_imgArrow];
 }
 
@@ -76,7 +76,7 @@
     [_btnBackground setSelected:selected];
     [self updateViewButtonBackground];
     
-    float radians = (selected ? M_PI_2 * -2 : 0);
+    float radians = (selected ? M_PI : 0);
     [UIView animateWithDuration:0.35 animations:^{
         _imgArrow.transform = CGAffineTransformMakeRotation(radians);
     }];
