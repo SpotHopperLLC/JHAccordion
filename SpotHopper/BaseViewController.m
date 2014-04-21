@@ -171,7 +171,9 @@ typedef void(^AlertBlock)();
     else if ([fullURLString rangeOfString:@"//drinks/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
         NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"//drinks/"];
         if (modelId != NSNotFound) {
-            // TODO go to specific drink
+            DrinkModel *drink = [[DrinkModel alloc] init];
+            [drink setID:[NSNumber numberWithInt:modelId]];
+            [self goToDrinkProfile:drink];
         }
         else {
             [self goToDrinkListMenu];
