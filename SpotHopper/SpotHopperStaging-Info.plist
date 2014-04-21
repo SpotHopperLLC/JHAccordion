@@ -28,6 +28,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb667976203263064</string>
+				<string>spothopperappstaging</string>
 			</array>
 		</dict>
 	</array>

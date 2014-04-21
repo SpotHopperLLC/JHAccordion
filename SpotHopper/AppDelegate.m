@@ -190,7 +190,57 @@
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    return [FBSession.activeSession handleOpenURL:url];
+    
+    NSString *fullURLString = [url absoluteString];
+    
+    if (!fullURLString) {
+        // The URL's absoluteString is nil. There's nothing more to do.
+        return NO;
+    }
+    
+    NSInteger maximumExpectedLength = 2048;
+    
+    if ([fullURLString length] > maximumExpectedLength) {
+        // The URL is longer than we expect. Stop servicing it.
+        return NO;
+    }
+    
+    if ([kAppURLScheme length] && [fullURLString hasPrefix:kAppURLScheme]) {
+        // handle /spots/:id, /drinks/:id, /specials/:id
+        
+        if ([fullURLString rangeOfString:@"//spots/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+            NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"//spots/"];
+            if (modelId != NSNotFound) {
+                // TODO go to specific spot
+            }
+            else {
+                // TODO go to spots
+            }
+        }
+        else if ([fullURLString rangeOfString:@"//drinks/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+            NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"//drinks/"];
+            if (modelId != NSNotFound) {
+                // TODO go to specific spot
+            }
+            else {
+                // TODO go to spots
+            }
+        }
+        else if ([fullURLString rangeOfString:@"//specials/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+            NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"//specials/"];
+            if (modelId != NSNotFound) {
+                // TODO go to specific spot
+            }
+            else {
+                // TODO go to spots
+            }
+        }
+        
+        return YES;
+    }
+    else {
+        return [FBSession.activeSession handleOpenURL:url];
+    }
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
@@ -210,7 +260,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationPushReceived object:self userInfo:payload];
     }
 }
-							
+
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -243,6 +293,29 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark - Private
+
+- (NSInteger)extractNumberFromString:(NSString *)string withPrefix:(NSString *)prefix {
+    NSString *pattern = [NSString stringWithFormat:@"%@(\\d+)", prefix];
+    
+    NSError *error;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern
+                                                                           options:NSRegularExpressionCaseInsensitive
+                                                                             error:&error];
+    if (!error) {
+        NSArray *matches = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
+        if (matches.count) {
+            NSTextCheckingResult *match = matches[0];
+            if (match.numberOfRanges > 1) {
+                NSString *substring = [string substringWithRange:[match rangeAtIndex:1]];
+                return [substring integerValue];
+            }
+        }
+    }
+
+    return NSNotFound;
 }
 
 #pragma mark - iRateDelegate
