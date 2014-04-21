@@ -97,6 +97,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    // We don't need to listen for this here
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kNotificationPushReceived object:nil];
 }
 
 - (void)didReceiveMemoryWarning {

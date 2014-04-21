@@ -400,7 +400,7 @@
     LiveSpecialModel *liveSpecial = [_spot currentLiveSpecial];
     liveSpecial.spot = _spot;
     
-    [self showLiveSpecialViewController:liveSpecial];
+    [self showLiveSpecialViewController:liveSpecial needToFetch:NO];
 }
 
 - (IBAction)onClickFindSimilar:(id)sender {

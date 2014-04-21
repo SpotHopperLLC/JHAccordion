@@ -24,6 +24,9 @@ pod 'Raven', '~> 0.3.0'
 pod 'Facebook-iOS-SDK', '~> 3.11.0'
 pod 'STTwitter', '~> 0.0.7'
 
+# Push notifications
+pod 'Parse-iOS-SDK', '~> 1.2.19'
+
 # Analytics
 pod 'Mixpanel', '~> 2.3.0'
 pod 'GoogleAnalytics-iOS-SDK', '~> 3.0.0'

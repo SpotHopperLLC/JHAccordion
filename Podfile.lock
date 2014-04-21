@@ -26,6 +26,8 @@ PODS:
   - JSONAPI (0.1.2)
   - MBProgressHUD (0.8)
   - Mixpanel (2.3.4)
+  - Parse-iOS-SDK (1.2.19):
+    - Facebook-iOS-SDK (~> 3.7)
   - Promises (0.1.0)
   - Raven (0.3.0)
   - Reveal-iOS-SDK (1.0.3)
@@ -43,6 +45,7 @@ DEPENDENCIES:
   - JSONAPI (from `http://github.com/joshdholtz/jsonapi-ios.git`)
   - MBProgressHUD (~> 0.8.0)
   - Mixpanel (~> 2.3.0)
+  - Parse-iOS-SDK (~> 1.2.19)
   - Promises (from `http://github.com/joshdholtz/ios-promises.git`)
   - Raven (~> 0.3.0)
   - Reveal-iOS-SDK
@@ -72,6 +75,7 @@ SPEC CHECKSUMS:
   JSONAPI: b98efd0e5b8bb44984373524e2ac40ef7d5455a2
   MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
   Mixpanel: 16e6f1d5f8aeb9282ee864e169557de0bd9549df
+  Parse-iOS-SDK: 48e366fb9a8956c4e50d93cfd16243176938fae1
   Promises: f92c1068dfb1fe8501f6059c0e05edbf655f8665
   Raven: 875718158645e945cf991c1ca80b41cd2ef82fd9
   Reveal-iOS-SDK: 8e6a6f22a9520437e4a180fe1d4e99f43b75430e

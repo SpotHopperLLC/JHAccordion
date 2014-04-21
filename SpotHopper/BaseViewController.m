@@ -93,6 +93,8 @@ typedef void(^AlertBlock)();
         [self.navigationItem setBackBarButtonItem:nil];
         [self.navigationItem setLeftBarButtonItem:_backButtonItem];
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushNotificationReceived:) name:kNotificationPushReceived object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -107,6 +109,11 @@ typedef void(^AlertBlock)();
     
     SidebarViewController *sidebar = (SidebarViewController*)self.navigationController.sidebarViewController.rightViewController;
     [sidebar setDelegate:self];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kNotificationPushReceived object:nil];
+    [super viewWillDisappear:animated];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
@@ -124,6 +131,22 @@ typedef void(^AlertBlock)();
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Push notification 
+
+- (void)pushNotificationReceived:(NSNotification*)notification {
+    NSLog(@"Handling push on - %@", self);
+    
+    NSNumber *spotId = [notification.userInfo objectForKey:@"s_id"];
+    NSNumber *liveSpecialId = [notification.userInfo objectForKey:@"ls_id"];
+    
+    if (liveSpecialId != nil) {
+        LiveSpecialModel *liveSpecial = [[LiveSpecialModel alloc] init];
+        [liveSpecial setID:liveSpecialId];
+        [self showLiveSpecialViewController:liveSpecial needToFetch:YES];
+    }
+    
 }
 
 #pragma mark - Tracking
@@ -540,7 +563,7 @@ typedef void(^AlertBlock)();
 
 #pragma mark - LiveSpecialViewController
 
-- (void)showLiveSpecialViewController:(LiveSpecialModel *)liveSpecial {
+- (void)showLiveSpecialViewController:(LiveSpecialModel *)liveSpecial needToFetch:(BOOL)needToFetch {
     if (_liveSpecialViewController == nil) {
         
         // Create live special view controller
@@ -561,6 +584,7 @@ typedef void(^AlertBlock)();
     }
     
     // Updating live special text
+    [_liveSpecialViewController setNeedToFetch:needToFetch];
     [_liveSpecialViewController setLiveSpecial:liveSpecial];
 }
 

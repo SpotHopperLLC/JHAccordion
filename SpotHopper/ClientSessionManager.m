@@ -18,6 +18,7 @@
 #import "UserModel.h"
 
 #import <FacebookSDK/Facebook.h>
+#import <Parse/Parse.h>
 
 @interface ClientSessionManager()
 
@@ -246,10 +247,20 @@
     [self setCookie:cookie];
     [self.requestSerializer setValue:cookie forHTTPHeaderField:@"Cookie"];
     [self setCurrentUser:user];
+    
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    [currentInstallation addUniqueObject:[NSString stringWithFormat:@"user-%@", self.currentUser.ID] forKey:@"channels"];
+    [currentInstallation saveInBackground];
 }
 
 - (void)logout {
     [[FBSession activeSession] closeAndClearTokenInformation];
+    
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    if (currentInstallation.channels != nil) {
+        [currentInstallation removeObjectsInArray:currentInstallation.channels forKey:@"channels"];
+    }
+    [currentInstallation saveInBackground];
     
     NSHTTPCookie *cookie;
     NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
