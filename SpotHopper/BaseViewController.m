@@ -179,10 +179,12 @@ typedef void(^AlertBlock)();
             [self goToDrinkListMenu];
         }
     }
-    else if ([fullURLString rangeOfString:@"//specials/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
-        NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"//specials/"];
+    else if ([fullURLString rangeOfString:@"//live_specials/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+        NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"//live_specials/"];
         if (modelId != NSNotFound) {
-            // TODO go to specific spot
+            LiveSpecialModel *liveSpecial =[[LiveSpecialModel alloc] init];
+            [liveSpecial setID:[NSNumber numberWithInt:modelId]];
+            [self showLiveSpecialViewController:liveSpecial needToFetch:YES];
         }
         else {
             [self goToTonightsSpecials];
