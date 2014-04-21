@@ -16,4 +16,5 @@
     #import "Constants.h"
     #import <Raven/RavenClient.h>
     #import <Promises/Promise.h>
+    #import "NSNull+Debugging.h"
 #endif

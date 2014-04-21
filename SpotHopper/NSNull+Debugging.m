@@ -10,7 +10,18 @@
 
 @implementation NSNull (Debugging)
 
+- (NSUInteger)count {
+    NSString *message = [NSString stringWithFormat:@"NSNull issue - %@", (NSStringFromClass([self class]), NSStringFromSelector(_cmd))];
+    [[RavenClient sharedClient] captureMessage:message level:kRavenLogLevelDebugError];
+    
+    NSLog(@"%@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+    return 0;
+}
+
 - (NSUInteger)length {
+    NSString *message = [NSString stringWithFormat:@"NSNull issue - %@", (NSStringFromClass([self class]), NSStringFromSelector(_cmd))];
+    [[RavenClient sharedClient] captureMessage:message level:kRavenLogLevelDebugError];
+    
     NSLog(@"%@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
     return 0;
 }
