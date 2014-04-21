@@ -53,6 +53,12 @@
     return _drinkTypes;
 }
 
+- (NSArray *)drinkSubtypes {
+    if (_drinkSubtypes != nil) return _drinkSubtypes;
+    _drinkSubtypes = [self linkedResourceForKey:@"drink_subtypes"];
+    return _drinkSubtypes;
+}
+
 - (NSNumber *)order {
     return [self objectForKey:@"order"];
 }
