@@ -327,7 +327,10 @@
         [self filterSliderTemplates];
     }
     else if (section == kSectionBaseAlcohols) [_sectionHeaderBaseAlcohol setSelected:NO];
-    else if (section == kSectionWineSubtypes) [_sectionHeaderWineSubtype setSelected:NO];
+    else if (section == kSectionWineSubtypes) {
+        [_sectionHeaderWineSubtype setSelected:NO];
+        [self filterSliderTemplates];
+    }
     else if (section == kSectionAdvancedSliders) [_sectionHeaderAdvancedSliders setSelected:NO];
     
     [self updateSectionHeaderTitles:section];
@@ -459,15 +462,24 @@
     if (_selectedDrinkType == nil) {
         _sliderTemplates = nil;
     } else {
-        NSNumber *selectedSpotTypeId = [_selectedDrinkType objectForKey:@"id"];
+        NSNumber *selectedDrinkTypeId = [_selectedDrinkType objectForKey:@"id"];
+        NSNumber *selectedWineTypeId = [_selectedWineSubtype objectForKey:@"id"];
         
         // Filters by spot idea
         for (SliderTemplateModel *sliderTemplate in _allSliderTemplates) {
-            NSArray *spotTypeIds = [sliderTemplate.drinkTypes valueForKey:@"ID"];
             
-            if ([spotTypeIds containsObject:selectedSpotTypeId]) {
+            NSArray *drinkTypeIds = [sliderTemplate.drinkTypes valueForKey:@"ID"];
+            NSArray *drinkSubtypeIds = [sliderTemplate.drinkSubtypes valueForKey:@"ID"];
+            
+            // Only filter by drink type if wine subtype is nil
+            if (_selectedWineSubtype == nil && [drinkTypeIds containsObject:selectedDrinkTypeId]) {
                 [slidersFiltered addObject:sliderTemplate];
             }
+            // Else filter by drink type and drink subtype
+            else if (_selectedWineSubtype != nil && [drinkTypeIds containsObject:selectedDrinkTypeId] && [drinkSubtypeIds containsObject:selectedWineTypeId]) {
+                [slidersFiltered addObject:sliderTemplate];
+            }
+            
         }
         
     }
