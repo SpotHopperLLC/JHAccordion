@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="3f5-6R-ILz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="3f5-6R-ILz">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -916,20 +916,20 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <action selector="onClickAccountSettings:" destination="GVQ-VB-zY7" eventType="touchUpInside" id="fna-aO-zSP"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="LOU-4F-apY" userLabel="Button - Logout" customClass="SHButtonLatoLight">
-                                <rect key="frame" x="221" y="23" width="40" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <inset key="insetFor6xAndEarlier" minX="0.0" minY="18" maxX="0.0" maxY="-18"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="eEb-gW-dCb" customClass="SHButtonLatoLight">
+                                <rect key="frame" x="0.0" y="420" width="320" height="65"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <inset key="insetFor6xAndEarlier" minX="0.0" minY="20" maxX="0.0" maxY="-20"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
-                                <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                                <state key="normal" image="51-power.png">
+                                <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="    Login" image="51-power.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <state key="highlighted">
                                     <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="onClickLogout:" destination="GVQ-VB-zY7" eventType="touchUpInside" id="r7S-Yd-E1R"/>
+                                    <action selector="onClickLogin:" destination="GVQ-VB-zY7" eventType="touchUpInside" id="mHh-WU-Jch"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -939,6 +939,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <outlet property="btnAccount" destination="oG0-tn-ovb" id="DB4-XC-JU3"/>
                         <outlet property="btnCheckIn" destination="iDQ-LH-crG" id="rCl-Bf-uMR"/>
                         <outlet property="btnDrinks" destination="TbE-N0-aPb" id="A5O-Hm-vsD"/>
+                        <outlet property="btnLogin" destination="eEb-gW-dCb" id="mPi-Ja-ia5"/>
                         <outlet property="btnReviews" destination="MTm-Tt-D98" id="hn4-6v-Kp3"/>
                         <outlet property="btnSpecials" destination="oYg-0G-FUA" id="qgr-ae-l67"/>
                         <outlet property="btnSpots" destination="ozh-Jq-uNr" id="xN5-Hj-OEI"/>

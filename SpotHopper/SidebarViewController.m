@@ -23,6 +23,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnReviews;
 @property (weak, nonatomic) IBOutlet UIButton *btnCheckIn;
 @property (weak, nonatomic) IBOutlet UIButton *btnAccount;
+@property (weak, nonatomic) IBOutlet UIButton *btnLogin;
+
 
 @end
 
@@ -58,6 +60,7 @@
     [_btnCheckIn addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
     [_btnCheckIn addBottomBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
     [_btnAccount addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
+    [_btnLogin addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
     
     [self updateView:NO];
 }
@@ -99,11 +102,6 @@
 
 - (IBAction)onClickClose:(id)sender {
     [self.sidebarViewController showRightSidebar:NO];
-}
-
-- (IBAction)onClickLogout:(id)sender {
-    [self.sidebarViewController showRightSidebar:NO];
-    [self goToLaunch:YES];
 }
 
 - (IBAction)onClickSpots:(id)sender {
@@ -148,14 +146,22 @@
     }
 }
 
+- (IBAction)onClickLogin:(id)sender {
+    [self.sidebarViewController showRightSidebar:NO];
+    [self goToLaunch:YES];
+}
+
 #pragma mark - Private
 
 - (void)updateView:(BOOL)animate {
     [_btnAccount setHidden:NO];
+    [_btnLogin setHidden:NO];
     [UIView animateWithDuration:( animate ? 0.35f : 0.0f ) animations:^{
         [_btnAccount setAlpha:( [ClientSessionManager sharedClient].isLoggedIn ? 1.0f : 0.0f)];
+        [_btnLogin setAlpha:( ![ClientSessionManager sharedClient].isLoggedIn ? 1.0f : 0.0f)];
     } completion:^(BOOL finished) {
         [_btnAccount setHidden:( _btnAccount.alpha < 0.5f )];
+        [_btnLogin setHidden:( _btnLogin.alpha < 0.5f )];
     }];
 
 }
