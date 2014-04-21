@@ -95,9 +95,6 @@
 
     _matchPercent = [_spot matchPercent];
     
-    // Set title
-    [self setTitle:_spot.name];
-    
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
     
@@ -485,6 +482,7 @@
         _spot = spotModel;
         _averageReview = spotModel.averageReview;
         [self initSliders];
+        [self updateView];
     } failure:^(ErrorModel *errorModel) {
         
     }];
@@ -522,6 +520,9 @@
 }
 
 - (void)updateView {
+    
+    // Set title
+    [self setTitle:_spot.name];
     
     // Sets "Opens at <some time>" or "Open until <some time>"
     NSArray *hoursForToday = [_spot.hoursOfOperation datesForToday];
