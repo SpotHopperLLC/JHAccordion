@@ -152,6 +152,16 @@
     _txtSex.text = _selectedSex;
 }
 
+- (IBAction)onClickLogout:(id)sender {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Logout" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+    [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
+        if (buttonIndex == 1) {
+            [[ClientSessionManager sharedClient] logout];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }];
+}
+
 #pragma mark - Private
 
 - (UIToolbar *)keyboardToolBar:(SEL)sel {
