@@ -251,6 +251,7 @@
 
 - (void)notLoggedIn {
     [self showAlert:@"Oops" message:@"You need to be logged in to edit your account" block:^{
+        [[ClientSessionManager sharedClient] logout];
         [self.navigationController popViewControllerAnimated:YES];
     }];
 }
