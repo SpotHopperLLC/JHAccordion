@@ -521,6 +521,9 @@
 
 - (void)updateView {
     
+    // Reload images
+    [_collectionView reloadData];
+    
     // Set title
     [self setTitle:_spot.name];
     
