@@ -197,7 +197,7 @@ $2 Non-Wisco Taps</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hFE-xB-2JQ" userLabel="Location Button" customClass="SHButtonLatoLightLocation">
-                                        <rect key="frame" x="64" y="4" width="236" height="18"/>
+                                        <rect key="frame" x="64" y="0.0" width="236" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <state key="normal">
@@ -371,7 +371,7 @@ $2 Non-Wisco Taps</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Dtn-co-yAk" customClass="SHButtonLatoLightLocation">
-                                        <rect key="frame" x="64" y="4" width="236" height="18"/>
+                                        <rect key="frame" x="64" y="0.0" width="236" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <state key="normal" title="City, State">
