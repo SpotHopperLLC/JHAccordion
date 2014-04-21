@@ -80,6 +80,22 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="9me-bi-mF4" userLabel="Button - Logout" customClass="SHButtonLatoLight">
+                                        <rect key="frame" x="7" y="431" width="307" height="49"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <inset key="insetFor6xAndEarlier" minX="0.0" minY="18" maxX="0.0" maxY="-18"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                        <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                                        <state key="normal" title="  Logout" image="51-power.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onClickLogout:" destination="5qP-wk-g8A" eventType="touchUpInside" id="4GJ-eN-ZIc"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <connections>
                                     <outlet property="delegate" destination="5qP-wk-g8A" id="iyA-PC-mo4"/>
@@ -103,6 +119,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="51-power.png" width="28" height="29"/>
         <image name="orange_gradient_background.png" width="259" height="564"/>
         <image name="txt_account_large.png" width="242" height="37"/>
     </resources>

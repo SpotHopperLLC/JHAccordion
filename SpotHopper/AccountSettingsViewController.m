@@ -152,6 +152,16 @@
     _txtSex.text = _selectedSex;
 }
 
+- (IBAction)onClickLogout:(id)sender {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Logout" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+    [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
+        if (buttonIndex == 1) {
+            [[ClientSessionManager sharedClient] logout];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }];
+}
+
 #pragma mark - Private
 
 - (UIToolbar *)keyboardToolBar:(SEL)sel {
@@ -183,18 +193,22 @@
 }
 
 - (void)fetchUser {
-    [self showHUD:@"Getting settings"];
     UserModel *user = [ClientSessionManager sharedClient].currentUser;
-    [user getUser:nil success:^(UserModel *userModel, NSHTTPURLResponse *response) {
-        [self hideHUD];
-        
-        _user = userModel;
-        [self updateView];
-        
-    } failure:^(ErrorModel *errorModel) {
-        [self hideHUD];
-        [self showAlert:@"Oops" message:errorModel.human];
-    }];
+    if (user != nil) {
+        [self showHUD:@"Getting settings"];
+        [user getUser:nil success:^(UserModel *userModel, NSHTTPURLResponse *response) {
+            [self hideHUD];
+            
+            _user = userModel;
+            [self updateView];
+            
+        } failure:^(ErrorModel *errorModel) {
+            [self hideHUD];
+            [self showAlert:@"Oops" message:errorModel.human];
+        }];
+    } else {
+        [self notLoggedIn];
+    }
 }
 
 - (void)doPut {
@@ -214,21 +228,32 @@
         [params setObject:_selectedSex forKey:kUserModelParamGender];
     }
     
-    [self showHUD:@"Saving"];
     UserModel *user = [ClientSessionManager sharedClient].currentUser;
-    [user putUser:params success:^(UserModel *userModel, NSHTTPURLResponse *response) {
-        [self hideHUD];
-        
-        [[ClientSessionManager sharedClient] setCurrentUser:userModel];
-        
-        [self showHUDCompleted:@"Saved!" block:^{
-            [self.navigationController popViewControllerAnimated:YES];
+    if (user != nil) {
+        [self showHUD:@"Saving"];
+        [user putUser:params success:^(UserModel *userModel, NSHTTPURLResponse *response) {
+            [self hideHUD];
+            
+            [[ClientSessionManager sharedClient] setCurrentUser:userModel];
+            
+            [self showHUDCompleted:@"Saved!" block:^{
+                [self.navigationController popViewControllerAnimated:YES];
+            }];
+        } failure:^(ErrorModel *errorModel) {
+            [self hideHUD];
+            [self showAlert:@"Oops" message:errorModel.human];
         }];
-    } failure:^(ErrorModel *errorModel) {
-        [self hideHUD];
-        [self showAlert:@"Oops" message:errorModel.human];
-    }];
+    } else {
+        [self notLoggedIn];
+    }
     
+}
+
+- (void)notLoggedIn {
+    [self showAlert:@"Oops" message:@"You need to be logged in to edit your account" block:^{
+        [[ClientSessionManager sharedClient] logout];
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
 }
 
 @end

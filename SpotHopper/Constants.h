@@ -93,6 +93,7 @@
 #define kGoogleAnalyticsTrackingId @"UA-49583937-2"
 
 #define kNotificationPushReceived @"push_notification_received"
+#define kUrlPushReceived @"url_received"
 
 // InfoText
 #define kInfoSpotList @"Want to find matches somewhere else? Change the location in the subheader!"

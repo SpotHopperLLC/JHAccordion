@@ -169,11 +169,25 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    return [self sectionHeaderViewForSection:section];
+    DrinkTypeModel *drinkType = [_drinkTypes objectAtIndex:section];
+    
+    // Only shows header if there are drinks in this section
+    if (drinkType != nil && [[_drinkSubtypes objectForKey:drinkType.ID] count] > 0) {
+        return [self sectionHeaderViewForSection:section];
+    }
+    
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 65.0f;
+    DrinkTypeModel *drinkType = [_drinkTypes objectAtIndex:section];
+    
+    // Only shows header if there are drinks in this section
+    if (drinkType != nil && [[_drinkSubtypes objectForKey:drinkType.ID] count] > 0) {
+        return 65.0f;
+    }
+    
+    return 0.0f;
 }
 
 #pragma mark - JHAccordionDelegate
