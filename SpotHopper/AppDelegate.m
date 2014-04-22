@@ -190,7 +190,28 @@
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    return [FBSession.activeSession handleOpenURL:url];
+    
+    NSString *fullURLString = [url absoluteString];
+    
+    if (!fullURLString.length) {
+        // The URL's absoluteString is nil. There's nothing more to do.
+        return NO;
+    }
+    
+    NSInteger maximumExpectedLength = 2048;
+    
+    if ([fullURLString length] > maximumExpectedLength) {
+        // The URL is longer than we expect. Stop servicing it.
+        return NO;
+    }
+    
+    if ([kAppURLScheme length] && [fullURLString hasPrefix:kAppURLScheme]) {
+        self.openedURL = url;
+        return YES;
+    }
+    else {
+        return [FBSession.activeSession handleOpenURL:url];
+    }
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
@@ -210,7 +231,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationPushReceived object:self userInfo:payload];
     }
 }
-							
+
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.

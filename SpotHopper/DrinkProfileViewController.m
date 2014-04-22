@@ -96,9 +96,6 @@
     
     _matchPercent = [_drink matchPercent];
     
-    // Set title
-    [self setTitle:_drink.name];
-    
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
     
@@ -532,6 +529,7 @@
     [_drink getDrink:nil success:^(DrinkModel *drinkModel, JSONAPI *jsonApi) {
         _drink = drinkModel;
         _averageReview = drinkModel.averageReview;
+        [self updateView];
         [self initSliders];
     } failure:^(ErrorModel *errorModel) {
         
@@ -562,6 +560,12 @@
 #pragma mark -
 
 - (void)updateView {
+    
+    // Reload images
+    [_collectionView reloadData];
+    
+    // Set title
+    [self setTitle:_drink.name];
     
     // Spot type
     [_lblSpotName setText:_drink.spot.name];

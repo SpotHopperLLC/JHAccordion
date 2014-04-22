@@ -27,6 +27,8 @@
 
 #import "LiveSpecialModel.h"
 
+#import "AppDelegate.h"
+
 #import "SSTURLShortener.h"
 
 #import <JHSidebar/JHSidebarViewController.h>
@@ -97,6 +99,13 @@ typedef void(^AlertBlock)();
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushNotificationReceived:) name:kNotificationPushReceived object:nil];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSURL *openedURL = [appDelegate openedURL];
+    if (openedURL) {
+        [self handleOpenedURL:openedURL];
+        appDelegate.openedURL = nil;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -140,7 +149,7 @@ typedef void(^AlertBlock)();
 - (void)pushNotificationReceived:(NSNotification*)notification {
     NSLog(@"Handling push on - %@", self);
     
-    NSNumber *spotId = [notification.userInfo objectForKey:@"s_id"];
+    //NSNumber *spotId = [notification.userInfo objectForKey:@"s_id"];
     NSNumber *liveSpecialId = [notification.userInfo objectForKey:@"ls_id"];
     
     if (liveSpecialId != nil) {
@@ -149,6 +158,46 @@ typedef void(^AlertBlock)();
         [self showLiveSpecialViewController:liveSpecial needToFetch:YES];
     }
     
+}
+
+#pragma mark - URL Scheme Support
+
+- (void)handleOpenedURL:(NSURL *)openedURL {
+    NSString *fullURLString = openedURL.absoluteString;
+    
+    if ([fullURLString rangeOfString:@"//spots/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+        NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"//spots/"];
+        if (modelId != NSNotFound) {
+            SpotModel *spot = [[SpotModel alloc] init];
+            [spot setID:[NSNumber numberWithInteger:modelId]];
+            [self goToSpotProfile:spot];
+        }
+        else {
+            [self goToSpotListMenu];
+        }
+    }
+    else if ([fullURLString rangeOfString:@"//drinks/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+        NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"//drinks/"];
+        if (modelId != NSNotFound) {
+            DrinkModel *drink = [[DrinkModel alloc] init];
+            [drink setID:[NSNumber numberWithInteger:modelId]];
+            [self goToDrinkProfile:drink];
+        }
+        else {
+            [self goToDrinkListMenu];
+        }
+    }
+    else if ([fullURLString rangeOfString:@"//live_specials/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+        NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"//live_specials/"];
+        if (modelId != NSNotFound) {
+            LiveSpecialModel *liveSpecial =[[LiveSpecialModel alloc] init];
+            [liveSpecial setID:[NSNumber numberWithInteger:modelId]];
+            [self showLiveSpecialViewController:liveSpecial needToFetch:YES];
+        }
+        else {
+            [self goToTonightsSpecials];
+        }
+    }
 }
 
 #pragma mark - Tracking
@@ -714,6 +763,29 @@ typedef void(^AlertBlock)();
     
     [self.navigationController setViewControllers:viewControllers animated:YES];
     
+}
+
+#pragma mark - Private
+
+- (NSInteger)extractNumberFromString:(NSString *)string withPrefix:(NSString *)prefix {
+    NSString *pattern = [NSString stringWithFormat:@"%@(\\d+)", prefix];
+    
+    NSError *error;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern
+                                                                           options:NSRegularExpressionCaseInsensitive
+                                                                             error:&error];
+    if (!error) {
+        NSArray *matches = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
+        if (matches.count) {
+            NSTextCheckingResult *match = matches[0];
+            if (match.numberOfRanges > 1) {
+                NSString *substring = [string substringWithRange:[match rangeAtIndex:1]];
+                return [substring integerValue];
+            }
+        }
+    }
+    
+    return NSNotFound;
 }
 
 @end
