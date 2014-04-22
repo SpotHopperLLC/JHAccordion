@@ -61,7 +61,10 @@
     [_lblPrices setText:[priceStrs componentsJoinedByString:@"\n"]];
     
     // Sets ABV and stuff
-    if ([drink isCocktail] == NO) {
+    if ([drink isWine]) {
+        [_lblInfo setText:[NSString stringWithFormat:@"%@", drink.vintage ? drink.vintage : @""]];
+    }
+    else if ([drink isBeer]) {
         if (drink.style.length > 0 && drink.abv.floatValue > 0) {
             [_lblInfo setText:[NSString stringWithFormat:@"%@ - %@ ABV", drink.style, drink.abvPercentString]];
         } else if (drink.style.length > 0) {
