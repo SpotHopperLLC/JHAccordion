@@ -209,7 +209,6 @@
     
     if ([kAppURLScheme length] && [fullURLString hasPrefix:kAppURLScheme]) {
         self.openedURL = url;
-//        [[NSNotificationCenter defaultCenter] postNotificationName:kUrlPushReceived object:self userInfo:@{@"full_url_string":fullURLString}];
         return YES;
     }
     else {

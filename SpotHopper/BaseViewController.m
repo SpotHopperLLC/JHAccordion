@@ -167,7 +167,7 @@ typedef void(^AlertBlock)();
         NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"//spots/"];
         if (modelId != NSNotFound) {
             SpotModel *spot = [[SpotModel alloc] init];
-            [spot setID:[NSNumber numberWithInt:modelId]];
+            [spot setID:[NSNumber numberWithInteger:modelId]];
             [self goToSpotProfile:spot];
         }
         else {
@@ -178,7 +178,7 @@ typedef void(^AlertBlock)();
         NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"//drinks/"];
         if (modelId != NSNotFound) {
             DrinkModel *drink = [[DrinkModel alloc] init];
-            [drink setID:[NSNumber numberWithInt:modelId]];
+            [drink setID:[NSNumber numberWithInteger:modelId]];
             [self goToDrinkProfile:drink];
         }
         else {
@@ -189,7 +189,7 @@ typedef void(^AlertBlock)();
         NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"//live_specials/"];
         if (modelId != NSNotFound) {
             LiveSpecialModel *liveSpecial =[[LiveSpecialModel alloc] init];
-            [liveSpecial setID:[NSNumber numberWithInt:modelId]];
+            [liveSpecial setID:[NSNumber numberWithInteger:modelId]];
             [self showLiveSpecialViewController:liveSpecial needToFetch:YES];
         }
         else {
