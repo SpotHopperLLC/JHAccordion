@@ -193,7 +193,7 @@
     
     NSString *fullURLString = [url absoluteString];
     
-    if (!fullURLString) {
+    if (!fullURLString.length) {
         // The URL's absoluteString is nil. There's nothing more to do.
         return NO;
     }
