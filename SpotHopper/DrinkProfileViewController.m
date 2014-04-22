@@ -587,6 +587,14 @@
     
     if (style.length > 0 && _drink.averageReview != nil) {
         [_lblInfo setText:[NSString stringWithFormat:@"%@ - %.1f/10", style, _drink.averageReview.rating.floatValue]];
+        
+    } else if ([_drink isWine]) {
+        if (_drink.vintage) {
+            [_lblInfo setText:[NSString stringWithFormat:@"(%@) %.1f/10", _drink.vintage, _drink.averageReview.rating.floatValue]];
+        }
+        else {
+            [_lblInfo setText:[NSString stringWithFormat:@"%.1f/10", _drink.averageReview.rating.floatValue]];
+        }
     } else if (style.length > 0) {
         [_lblInfo setText:style];
     } else if (_drink.averageReview != nil) {
