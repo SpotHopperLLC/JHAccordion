@@ -12,7 +12,7 @@
 
 #import "LocationChooserViewController.h"
 
-@interface SHButtonLatoLightLocation()<LocationChooserViewControllerDelegate>
+@interface SHButtonLatoLightLocation() <LocationChooserViewControllerDelegate>
 
 @property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
 
@@ -23,7 +23,7 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setupLocationButton];
+        [self setupLatoLightLocation];
     }
     return self;
 }
@@ -31,22 +31,23 @@
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        [self setupLocationButton];
+        [self setupLatoLightLocation];
     }
     return self;
 }
 
-- (void)setupLocationButton {
+- (void)setupLatoLightLocation {
     _tellMeMyLocation = [[TellMeMyLocation alloc] init];
     
     [self setImage:[UIImage imageNamed:@"img_arrow_east.png"] forState:UIControlStateNormal];
     [self addTarget:self action:@selector(onClickSelf:) forControlEvents:UIControlEventTouchUpInside];
 
 #ifdef STAGING
+    NSLog(@"%@ - %@", kTellMeMyLocationChangedNotification, NSStringFromClass([self class]));
     NSCAssert([self respondsToSelector:@selector(tellMeMyLocationChangedNotification:)], @"Current instance must implement tellMeMyLocationChangedNotification:");
 #endif
     
-    if ([self respondsToSelector:@selector(tellMeMyLocationChangedNotification:)]) {
+    if ([self isKindOfClass:[SHButtonLatoLightLocation class]] && [self respondsToSelector:@selector(tellMeMyLocationChangedNotification:)]) {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(tellMeMyLocationChangedNotification:)
                                                      name:kTellMeMyLocationChangedNotification
@@ -70,7 +71,6 @@
 }
 
 - (void)updateTitle:(NSString*)locationName location:(CLLocation*)location {
-
     if (locationName.length == 0) {
         [self setTitle:@"<no location selected>" forState:UIControlStateNormal];
     } else {
