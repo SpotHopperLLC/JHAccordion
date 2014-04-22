@@ -16,6 +16,8 @@
     #define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"
     #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
 
+    #define kAppURLScheme  @""
+
 //    #define kBaseUrl @"http://192.168.1.123:9292"
     #define kBaseUrl @"http://192.168.1.2:9292"
 //    #define kBaseUrl @"http://192.168.1.110:9292"
@@ -34,6 +36,8 @@
     #define kTwitterConsumerKey @"fIx6bzfnIohTiQuqOvHqaw"
     #define kTwitterConsumerSecret @"TT0nyrGy2xdpfWiBMrkGKoFjjiNhJW4atoInhlv7I"
 
+    #define kAppURLScheme  @""
+
     #define kBaseUrl @"http://spothopper-dev.herokuapp.com"
 
     #define kParseApplicationID @""
@@ -49,6 +53,8 @@
 
     #define kTwitterConsumerKey @"enlXFrFlBlOPkaBoOJunQ"
     #define kTwitterConsumerSecret @"UHRcQ8WXs13Iug7VpliivDxwQuGtoMg5KsaoIF3jWbM"
+
+    #define kAppURLScheme  @"spothopperappstaging"
 
     #define kBaseUrl @"http://spothopper-staging.herokuapp.com"
 
@@ -71,6 +77,8 @@
     #define kParseApplicationID @""
     #define kParseClientKey @""
 
+    #define kAppURLScheme  @"spothopperapp"
+
     #define kRefreshLocationTime 3600.0f
 
     #define kAnalyticsEnabled   TRUE
@@ -85,6 +93,7 @@
 #define kGoogleAnalyticsTrackingId @"UA-49583937-2"
 
 #define kNotificationPushReceived @"push_notification_received"
+#define kUrlPushReceived @"url_received"
 
 // InfoText
 #define kInfoSpotList @"Want to find matches somewhere else? Change the location in the subheader!"
