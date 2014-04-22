@@ -21,6 +21,8 @@
 #import "SpotModel.h"
 #import "ErrorModel.h"
 
+#import "TellMeMyLocation.h"
+
 #import <MapKit/MapKit.h>
 
 @interface FindDrinksAtViewController ()<MKMapViewDelegate, SHButtonLatoLightLocationDelegate, SpotAnnotationCalloutDelegate>
@@ -35,7 +37,9 @@
 
 @end
 
-@implementation FindDrinksAtViewController
+@implementation FindDrinksAtViewController {
+    BOOL _updatedSearchNeeded;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -68,6 +72,8 @@
     
     // Initializes stuff
     _spots = [NSMutableArray array];
+    
+    _updatedSearchNeeded = TRUE;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -80,6 +86,10 @@
         [footerViewController setRightButton:@"Info" image:[UIImage imageNamed:@"btn_context_info"]];
     }];
     
+    if (_updatedSearchNeeded) {
+        _location = [TellMeMyLocation lastLocation];
+        [self fetchSpots];
+    }
 }
 
 - (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
@@ -166,6 +176,10 @@
 }
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
+    _updatedSearchNeeded = TRUE;
+}
+
+- (void)locationDidChooseLocation:(CLLocation *)location {
     _location = location;
     
     [_spots removeAllObjects];
@@ -204,6 +218,7 @@
 }
 
 - (void)fetchSpots {
+    _updatedSearchNeeded = FALSE;
     
     if (_location == nil) {
         [self showAlert:@"Oops" message:@"Please choose a location"];

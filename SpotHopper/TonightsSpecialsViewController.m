@@ -22,6 +22,8 @@
 #import "ErrorModel.h"
 #import "SpotModel.h"
 
+#import "TellMeMyLocation.h"
+
 #import <CoreLocation/CoreLocation.h>
 
 @interface TonightsSpecialsViewController ()<UITableViewDataSource, UITableViewDelegate, SHButtonLatoLightLocationDelegate, SpecialsCellDelegate>
@@ -38,7 +40,9 @@
 
 @end
 
-@implementation TonightsSpecialsViewController
+@implementation TonightsSpecialsViewController {
+    BOOL _updatedSearchNeeded;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -63,6 +67,8 @@
     // Initializes stuff
     _page = @1;
     _spots = [NSMutableArray array];
+    
+    _updatedSearchNeeded = TRUE;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -84,6 +90,11 @@
         [_btnLocation setDelegate:self];
         [_btnLocation updateWithLastLocation];
     } else {
+        [self fetchSpecials];
+    }
+    
+    if (_updatedSearchNeeded) {
+        _location = [TellMeMyLocation lastLocation];
         [self fetchSpecials];
     }
 }
@@ -168,6 +179,10 @@
 }
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
+    _updatedSearchNeeded = TRUE;
+}
+
+- (void)locationDidChooseLocation:(CLLocation *)location {
     _location = location;
     [self fetchSpecials];
 }
@@ -190,6 +205,7 @@
 #pragma mark - Private
 
 - (void)fetchSpecials {
+    _updatedSearchNeeded = FALSE;
     
     // Day of week
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];

@@ -35,6 +35,8 @@
 #import "SpotListModel.h"
 #import "UserModel.h"
 
+#import "TellMeMyLocation.h"
+
 #import <JHAccordion/JHAccordion.h>
 #import <Promises/Promise.h>
 
@@ -71,7 +73,9 @@
 
 @end
 
-@implementation SpotListsMenuViewController
+@implementation SpotListsMenuViewController {
+    BOOL _updatedSearchNeeded;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -109,6 +113,8 @@
     CGRect frame = _lblInfo.frame;
     frame.size.height = [self heightForString:_lblInfo.text font:_lblInfo.font maxWidth:CGRectGetWidth(_lblInfo.frame)];
     _lblInfo.frame = frame;
+    
+    _updatedSearchNeeded = TRUE;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -152,6 +158,12 @@
     }
     else {
         [self hideInfo:FALSE];
+    }
+    
+    if (_updatedSearchNeeded) {
+        _location = [TellMeMyLocation lastLocation];
+        [_adjustSpotListSliderViewController setLocation:_location];
+        [self fetchSpotLists];
     }
 }
 
@@ -341,6 +353,10 @@
 }
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
+    _updatedSearchNeeded = TRUE;
+}
+
+- (void)locationDidChooseLocation:(CLLocation *)location {
     _location = location;
     [_adjustSpotListSliderViewController setLocation:_location];
     [self fetchSpotLists];
@@ -472,6 +488,7 @@
 }
 
 - (void)fetchSpotLists {
+    _updatedSearchNeeded = FALSE;
     
     if (_location == nil) {
         return;

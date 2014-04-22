@@ -64,6 +64,7 @@
     BOOL _isSearching;
     BOOL _isRepositioningMap;
     BOOL _doNotMoveMap;
+    BOOL _updatedSearchNeeded;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -106,8 +107,6 @@
         [_btnLocation setHidden:YES];
     }
     
-    [self fetchSpotlistResults:[TellMeMyLocation lastLocation]];
-    
     // Initialize stuff
     _showMap = YES;
     
@@ -117,6 +116,8 @@
         [self updateView];
         [self updateMatchPercent];
     }
+    
+    _updatedSearchNeeded = TRUE;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -135,6 +136,10 @@
         [this updateFooterMapListButton:footerViewController];
         [footerViewController setRightButton:@"Info" image:[UIImage imageNamed:@"btn_context_info"]];
     }];
+
+    if (_updatedSearchNeeded) {
+        [self fetchSpotlistResults:[TellMeMyLocation lastLocation]];
+    }
 }
 
 - (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
@@ -292,7 +297,7 @@
 }
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
-    // do nothing (there are potentially multiple VCs which could still be active with a location button)
+    _updatedSearchNeeded = TRUE;
 }
 
 - (void)locationDidChooseLocation:(CLLocation *)location {
@@ -376,6 +381,8 @@
 #pragma mark - Private
 
 - (void)fetchSpotlistResults:(CLLocation *)location {
+    _updatedSearchNeeded = FALSE;
+    
     if (_isSearching) {
         return;
     }

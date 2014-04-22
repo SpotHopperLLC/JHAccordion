@@ -28,6 +28,8 @@
 #import "ErrorModel.h"
 #import "SpotModel.h"
 
+#import "TellMeMyLocation.h"
+
 #import <CoreLocation/CoreLocation.h>
 #import <QuartzCore/QuartzCore.h>
 
@@ -51,7 +53,9 @@
 
 @end
 
-@implementation SearchNewReviewViewController
+@implementation SearchNewReviewViewController {
+    BOOL _updatedSearchNeeded;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -86,7 +90,8 @@
     _results = [NSMutableArray array];
     _drinkPage = @1;
     _spotPage = @1;
-
+    
+    _updatedSearchNeeded = TRUE;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -115,6 +120,11 @@
     
     [_btnLocation setDelegate:self];
     [_btnLocation updateWithLastLocation];
+    
+    if (_updatedSearchNeeded) {
+        _location = [TellMeMyLocation lastLocation];
+        [self startSearch];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -351,6 +361,10 @@
 }
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
+    _updatedSearchNeeded = TRUE;
+}
+
+- (void)locationDidChooseLocation:(CLLocation *)location {
     _location = location;
     [self startSearch];
 }
@@ -428,6 +442,8 @@
 }
 
 - (void)startSearch {
+    _updatedSearchNeeded = FALSE;
+    
     [DrinkModel cancelGetDrinks];
     [SpotModel cancelGetSpots];
     
