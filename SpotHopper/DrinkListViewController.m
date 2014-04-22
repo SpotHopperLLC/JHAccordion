@@ -111,6 +111,8 @@
         [self updateView];
         [self updateMatchPercent];
     }
+    
+    [self fetchDrinklistResults:[TellMeMyLocation lastLocation]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -203,6 +205,14 @@
 }
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
+    // do nothing (there are potentially multiple VCs which could still be active with a location button)
+}
+
+- (void)locationDidChooseLocation:(CLLocation *)location {
+    [self fetchDrinklistResults:location];
+}
+
+- (void)fetchDrinklistResults:(CLLocation *)location {
     [Tracker track:@"Fetching Drinklist Results"];
 
     [self showHUD:@"Getting new drinks"];

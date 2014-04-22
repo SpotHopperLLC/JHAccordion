@@ -15,21 +15,20 @@
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        [self setup];
+        [self setupLatoLight];
     }
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setup];
+        [self setupLatoLight];
     }
     return self;
 }
 
-- (void)setup {
+- (void)setupLatoLight {
     UIFont *font = [UIFont fontWithName:kFontName size:self.titleLabel.font.pointSize];
     if (font == nil) {
         NSLog(@"Font not found - %@", kFontName);

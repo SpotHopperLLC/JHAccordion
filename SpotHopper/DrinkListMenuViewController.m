@@ -332,6 +332,10 @@
 }
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
+    // do nothing
+}
+
+- (void)locationDidChooseLocation:(CLLocation *)location {
     _location = location;
     [_adjustDrinkListSliderViewController setLocation:_location];
     [self fetchDrinkLists];
