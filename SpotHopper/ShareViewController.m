@@ -321,7 +321,7 @@
     
     UserModel *user = [[ClientSessionManager sharedClient] currentUser];
     if (user != nil) {
-        return [NSString stringWithFormat:@"http://www.spothopperapp.com/?source=%@&user=%di&type=%@%@", source, [user.ID integerValue], type, spotOrSpecialParams];
+        return [NSString stringWithFormat:@"http://www.spothopperapp.com/?source=%@&user=%li&type=%@%@", source, [user.ID integerValue], type, spotOrSpecialParams];
     }
     else {
         return [NSString stringWithFormat:@"http://www.spothopperapp.com/?source=%@&type=%@%@", source, type, spotOrSpecialParams];
