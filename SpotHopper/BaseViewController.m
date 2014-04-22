@@ -27,6 +27,8 @@
 
 #import "LiveSpecialModel.h"
 
+#import "SSTURLShortener.h"
+
 #import <JHSidebar/JHSidebarViewController.h>
 #import <FacebookSDK/FacebookSDK.h>
 
@@ -464,6 +466,18 @@ typedef void(^AlertBlock)();
     UIGraphicsEndImageContext();
         
     return image;
+}
+
+#pragma mark - Sharing
+
+- (void)shortenLink:(NSString *)link withCompletionBlock:(void (^)(NSString *shortedLink, NSError *error))completionBlock {
+    // go.spotapps.co -> www.spothopperapp.com
+    
+    [SSTURLShortener shortenURL:[NSURL URLWithString:link] username:kBitlyUsername apiKey:kBitlyAPIKey withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
+        if (completionBlock) {
+            completionBlock(shortenedURL.absoluteString, error);
+        }
+    }];
 }
 
 #pragma mark - Navigation

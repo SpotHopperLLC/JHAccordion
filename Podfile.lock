@@ -17,6 +17,8 @@ PODS:
   - AFNetworking/Serialization (2.0.3)
   - AFNetworking/UIKit (2.0.3):
     - AFNetworking/NSURLConnection
+  - BitlyForiOS (0.0.1):
+    - AFNetworking (~> 2.0.0)
   - Facebook-iOS-SDK (3.11.1)
   - GoogleAnalytics-iOS-SDK (3.0.6)
   - iRate (1.8.3)
@@ -36,6 +38,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0.3)
+  - BitlyForiOS (from `https://github.com/brennanMKE/BitlyForiOS.git`, tag `0.0.1`)
   - Facebook-iOS-SDK (~> 3.11.0)
   - GoogleAnalytics-iOS-SDK (~> 3.0.0)
   - iRate (~> 1.8.0)
@@ -53,6 +56,9 @@ DEPENDENCIES:
   - TTTAttributedLabel (~> 1.8.1)
 
 EXTERNAL SOURCES:
+  BitlyForiOS:
+    :git: https://github.com/brennanMKE/BitlyForiOS.git
+    :tag: 0.0.1
   JHAccordion:
     :git: https://github.com/joshdholtz/JHAccordion.git
   JHAutoCompleteTextField:
@@ -66,6 +72,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: e499052cbf3d743e9bb727bb37adb9dc2547ba15
+  BitlyForiOS: c4e6b77fefc483e047604f61f18db6c5fc416a6a
   Facebook-iOS-SDK: 1f753fe932c2602359114a662cd9abdc2dba48f3
   GoogleAnalytics-iOS-SDK: 16dfcc0c4491148bf372edc85a8470cc405ffb72
   iRate: 7820b59656e8ebcb09aadc0d2f710d939c15fbe4

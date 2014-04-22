@@ -63,6 +63,8 @@
 
 - (UIImage *)whiteScreenImageForFrame:(CGRect)frame;
 
+- (void)shortenLink:(NSString *)link withCompletionBlock:(void (^)(NSString *shortedLink, NSError *error))completionBlock;
+
 - (void)onClickBack:(id)sender;
 - (void)onClickShowSidebar:(id)sender;
 

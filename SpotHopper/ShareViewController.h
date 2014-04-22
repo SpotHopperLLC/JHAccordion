@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-    ShareViewControllerShareCheckin, ShareViewControllerShareSpecial
-} ShareViewControllerShareType ;
+    ShareViewControllerShareUnknown = 0,
+    ShareViewControllerShareCheckin = 1,
+    ShareViewControllerShareSpecial = 2
+} ShareViewControllerShareType;
 
 @class SpotModel;
 
