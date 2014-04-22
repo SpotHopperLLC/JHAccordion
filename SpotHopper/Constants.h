@@ -45,7 +45,7 @@
 
 #elif defined(STAGING)
 
-    #define kDebug NO
+    #define kDebug YES
 
     #define kTwitterConsumerKey @"enlXFrFlBlOPkaBoOJunQ"
     #define kTwitterConsumerSecret @"UHRcQ8WXs13Iug7VpliivDxwQuGtoMg5KsaoIF3jWbM"
