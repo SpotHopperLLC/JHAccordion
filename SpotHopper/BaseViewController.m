@@ -27,6 +27,8 @@
 
 #import "LiveSpecialModel.h"
 
+#import "AppDelegate.h"
+
 #import <JHSidebar/JHSidebarViewController.h>
 #import <FacebookSDK/FacebookSDK.h>
 
@@ -95,7 +97,13 @@ typedef void(^AlertBlock)();
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushNotificationReceived:) name:kNotificationPushReceived object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlNotificationReceived:) name:kUrlPushReceived object:nil];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSURL *openedURL = [appDelegate openedURL];
+    if (openedURL) {
+        [self handleOpenedURL:openedURL];
+        appDelegate.openedURL = nil;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -113,7 +121,6 @@ typedef void(^AlertBlock)();
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kUrlPushReceived object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kNotificationPushReceived object:nil];
     [super viewWillDisappear:animated];
 }
@@ -140,7 +147,7 @@ typedef void(^AlertBlock)();
 - (void)pushNotificationReceived:(NSNotification*)notification {
     NSLog(@"Handling push on - %@", self);
     
-    NSNumber *spotId = [notification.userInfo objectForKey:@"s_id"];
+    //NSNumber *spotId = [notification.userInfo objectForKey:@"s_id"];
     NSNumber *liveSpecialId = [notification.userInfo objectForKey:@"ls_id"];
     
     if (liveSpecialId != nil) {
@@ -151,12 +158,11 @@ typedef void(^AlertBlock)();
     
 }
 
-#pragma mark - URL Notification
+#pragma mark - URL Scheme Support
 
-- (void)urlNotificationReceived:(NSNotification*)notification {
-    // handle /spots/:id, /drinks/:id, /specials/:id
+- (void)handleOpenedURL:(NSURL *)openedURL {
+    NSString *fullURLString = openedURL.absoluteString;
     
-    NSString *fullURLString = [notification.userInfo objectForKey:@"full_url_string"];
     if ([fullURLString rangeOfString:@"//spots/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
         NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"//spots/"];
         if (modelId != NSNotFound) {

@@ -77,6 +77,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 //    [[ClientSessionManager sharedClient] setHasSeenLaunch:NO];
     
+    self.openedURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@://spots/10", kAppURLScheme]];
+    
     [iRate sharedInstance].delegate = self;
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
@@ -206,7 +208,8 @@
     }
     
     if ([kAppURLScheme length] && [fullURLString hasPrefix:kAppURLScheme]) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kUrlPushReceived object:self userInfo:@{@"full_url_string":fullURLString}];
+        self.openedURL = url;
+//        [[NSNotificationCenter defaultCenter] postNotificationName:kUrlPushReceived object:self userInfo:@{@"full_url_string":fullURLString}];
         return YES;
     }
     else {
