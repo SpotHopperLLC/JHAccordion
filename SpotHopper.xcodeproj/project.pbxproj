@@ -1802,10 +1802,6 @@
 		268C8CA3190089D00011E0F8 /* UserState.m in Sources */ = {isa = PBXBuildFile; fileRef = 268C8CA1190089D00011E0F8 /* UserState.m */; };
 		268C8CA4190089D00011E0F8 /* UserState.m in Sources */ = {isa = PBXBuildFile; fileRef = 268C8CA1190089D00011E0F8 /* UserState.m */; };
 		268C8CA5190089D00011E0F8 /* UserState.m in Sources */ = {isa = PBXBuildFile; fileRef = 268C8CA1190089D00011E0F8 /* UserState.m */; };
-		26AE6ED71905B22E00FA810A /* SSTURLShortener.m in Sources */ = {isa = PBXBuildFile; fileRef = 26AE6ED61905B22E00FA810A /* SSTURLShortener.m */; };
-		26AE6ED81905B22E00FA810A /* SSTURLShortener.m in Sources */ = {isa = PBXBuildFile; fileRef = 26AE6ED61905B22E00FA810A /* SSTURLShortener.m */; };
-		26AE6ED91905B22E00FA810A /* SSTURLShortener.m in Sources */ = {isa = PBXBuildFile; fileRef = 26AE6ED61905B22E00FA810A /* SSTURLShortener.m */; };
-		26AE6EDA1905B22E00FA810A /* SSTURLShortener.m in Sources */ = {isa = PBXBuildFile; fileRef = 26AE6ED61905B22E00FA810A /* SSTURLShortener.m */; };
 		26B6767C18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
 		26B6767D18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
 		26B6767E18E9F59500DAD113 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
@@ -2428,8 +2424,6 @@
 		267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoBold.m; sourceTree = "<group>"; };
 		268C8CA0190089D00011E0F8 /* UserState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserState.h; sourceTree = "<group>"; };
 		268C8CA1190089D00011E0F8 /* UserState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserState.m; sourceTree = "<group>"; };
-		26AE6ED51905B22E00FA810A /* SSTURLShortener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSTURLShortener.h; path = SpotHopper/SSTURLShortener.h; sourceTree = SOURCE_ROOT; };
-		26AE6ED61905B22E00FA810A /* SSTURLShortener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSTURLShortener.m; path = SpotHopper/SSTURLShortener.m; sourceTree = SOURCE_ROOT; };
 		26B6767A18E9F59500DAD113 /* TutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialViewController.h; sourceTree = "<group>"; };
 		26B6767B18E9F59500DAD113 /* TutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialViewController.m; sourceTree = "<group>"; };
 		26B6768018E9F5B900DAD113 /* SpotHopperDev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperDev-Info.plist"; sourceTree = "<group>"; };
@@ -2879,7 +2873,6 @@
 		038664A1186D370E00985CEC /* Libs */ = {
 			isa = PBXGroup;
 			children = (
-				26AE6ED41905B22200FA810A /* SSTURLShortener */,
 				037D13A318A450C000B89535 /* DoubleGeocoder */,
 				039B700A188723EB00C590F8 /* Mockery */,
 				038664E3186D37BC00985CEC /* JHTableViewPullRefresh */,
@@ -3732,15 +3725,6 @@
 				268C8CA1190089D00011E0F8 /* UserState.m */,
 			);
 			name = State;
-			sourceTree = "<group>";
-		};
-		26AE6ED41905B22200FA810A /* SSTURLShortener */ = {
-			isa = PBXGroup;
-			children = (
-				26AE6ED51905B22E00FA810A /* SSTURLShortener.h */,
-				26AE6ED61905B22E00FA810A /* SSTURLShortener.m */,
-			);
-			name = SSTURLShortener;
 			sourceTree = "<group>";
 		};
 		26F0FDE018EB1B18001BB0CD /* Locations */ = {
@@ -5477,7 +5461,6 @@
 				039F548A18D33BA9004B2B67 /* DrinkMenuViewController.m in Sources */,
 				03D7F57018EADCF3007B9E78 /* SearchViewController.m in Sources */,
 				03F2D93E187208C200C69576 /* SHLabelLatoLight.m in Sources */,
-				26AE6ED71905B22E00FA810A /* SSTURLShortener.m in Sources */,
 				0381044A18B6889300A410DB /* SpotAnnotation.m in Sources */,
 				03121A3C18BE361A00C9FFA3 /* NewReviewTypeViewController.m in Sources */,
 				03C8DAEA188B44C20082321C /* SliderModel.m in Sources */,
@@ -5624,7 +5607,6 @@
 				03CAC01C18E7716400FAC5F5 /* DrinkMenuViewController.m in Sources */,
 				03D7F57618EADEF8007B9E78 /* SearchViewController.m in Sources */,
 				03CAC01D18E7716400FAC5F5 /* SHLabelLatoLight.m in Sources */,
-				26AE6EDA1905B22E00FA810A /* SSTURLShortener.m in Sources */,
 				03CAC01E18E7716400FAC5F5 /* SpotAnnotation.m in Sources */,
 				03CAC01F18E7716400FAC5F5 /* NewReviewTypeViewController.m in Sources */,
 				03CAC02018E7716400FAC5F5 /* SliderModel.m in Sources */,
@@ -5763,7 +5745,6 @@
 				039F548C18D33BA9004B2B67 /* DrinkMenuViewController.m in Sources */,
 				03D7F57418EADEF7007B9E78 /* SearchViewController.m in Sources */,
 				03F4E7B018CA33D00056EAA9 /* SHLabelLatoLight.m in Sources */,
-				26AE6ED91905B22E00FA810A /* SSTURLShortener.m in Sources */,
 				03F4E7B118CA33D00056EAA9 /* SpotAnnotation.m in Sources */,
 				03F4E7B218CA33D00056EAA9 /* NewReviewTypeViewController.m in Sources */,
 				03F4E7B318CA33D00056EAA9 /* SliderModel.m in Sources */,
@@ -5902,7 +5883,6 @@
 				039F548B18D33BA9004B2B67 /* DrinkMenuViewController.m in Sources */,
 				03D7F57218EADEF7007B9E78 /* SearchViewController.m in Sources */,
 				03F4E8FE18CA34260056EAA9 /* SHLabelLatoLight.m in Sources */,
-				26AE6ED81905B22E00FA810A /* SSTURLShortener.m in Sources */,
 				03F4E8FF18CA34260056EAA9 /* SpotAnnotation.m in Sources */,
 				03F4E90018CA34260056EAA9 /* NewReviewTypeViewController.m in Sources */,
 				03F4E90118CA34260056EAA9 /* SliderModel.m in Sources */,
