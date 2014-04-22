@@ -23,6 +23,8 @@
 
 #import "MyReviewsViewController.h"
 
+#import "TellMeMyLocation.h"
+
 #import "ClientSessionManager.h"
 
 #import <CoreLocation/CoreLocation.h>
@@ -51,7 +53,9 @@
 
 @end
 
-@implementation ReviewsMenuViewController
+@implementation ReviewsMenuViewController {
+    BOOL _updatedSearchNeeded;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -74,6 +78,8 @@
     
     // Initializes things
     _results = [NSMutableArray array];
+    
+    _updatedSearchNeeded = TRUE;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -100,6 +106,11 @@
     // Locations
     [_btnLocation setDelegate:self];
     [_btnLocation updateWithLastLocation];
+    
+    if (_updatedSearchNeeded) {
+        _location = [TellMeMyLocation lastLocation];
+        [self startSearch];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -305,6 +316,10 @@
 }
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
+    _updatedSearchNeeded = TRUE;
+}
+
+- (void)locationDidChooseLocation:(CLLocation *)location {
     _location = location;
     [self startSearch];
 }
@@ -327,6 +342,8 @@
 #pragma mark - Private
 
 - (void)startSearch {
+    _updatedSearchNeeded = FALSE;
+    
     [DrinkModel cancelGetDrinks];
     [SpotModel cancelGetSpots];
     
