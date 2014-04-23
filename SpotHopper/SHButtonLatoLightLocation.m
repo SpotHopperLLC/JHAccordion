@@ -60,6 +60,10 @@
 
 - (void)dealloc {
     [self removeTarget:self action:@selector(onClickSelf:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kTellMeMyLocationChangedNotification
+                                                  object:nil];
 }
 
 - (void)setTitle:(NSString *)title forState:(UIControlState)state {
