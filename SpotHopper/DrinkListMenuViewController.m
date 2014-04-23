@@ -69,7 +69,9 @@
 
 @end
 
-@implementation DrinkListMenuViewController
+@implementation DrinkListMenuViewController {
+    BOOL _updatedSearchNeeded;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -109,7 +111,6 @@
     CGRect frame = _lblInfo.frame;
     frame.size.height = [self heightForString:_lblInfo.text font:_lblInfo.font maxWidth:CGRectGetWidth(_lblInfo.frame)];
     _lblInfo.frame = frame;
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -134,6 +135,7 @@
     // Fetching spot lists
     if (_spot == nil && _location == nil) {
         // Locations
+        _updatedSearchNeeded = TRUE;
         [_btnLocation setDelegate:self];
         [_btnLocation updateWithLastLocation];
     } else {
@@ -332,6 +334,14 @@
 }
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
+    // do nothing
+    _location = location;
+    if (_updatedSearchNeeded) {
+        [self fetchDrinkLists];
+    }
+}
+
+- (void)locationDidChooseLocation:(CLLocation *)location {
     _location = location;
     [_adjustDrinkListSliderViewController setLocation:_location];
     [self fetchDrinkLists];
@@ -481,6 +491,7 @@
 }
 
 - (void)fetchDrinkLists {
+    _updatedSearchNeeded = FALSE;
     
     if (_location == nil && _spot == nil) {
         return;

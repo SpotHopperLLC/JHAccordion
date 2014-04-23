@@ -57,7 +57,9 @@
 
 @end
 
-@implementation DrinkListViewController
+@implementation DrinkListViewController {
+    BOOL _updatedSearchNeeded;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -111,6 +113,8 @@
         [self updateView];
         [self updateMatchPercent];
     }
+    
+    _updatedSearchNeeded = TRUE;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -129,6 +133,9 @@
         [footerViewController setRightButton:@"Info" image:[UIImage imageNamed:@"btn_context_info"]];
     }];
     
+    if (_updatedSearchNeeded) {
+        [self fetchDrinklistResults:[TellMeMyLocation lastLocation]];
+    }
 }
 
 - (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
@@ -203,6 +210,16 @@
 }
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
+    _updatedSearchNeeded = TRUE;
+}
+
+- (void)locationDidChooseLocation:(CLLocation *)location {
+    [self fetchDrinklistResults:location];
+}
+
+- (void)fetchDrinklistResults:(CLLocation *)location {
+    _updatedSearchNeeded = FALSE;
+    
     [Tracker track:@"Fetching Drinklist Results"];
 
     [self showHUD:@"Getting new drinks"];

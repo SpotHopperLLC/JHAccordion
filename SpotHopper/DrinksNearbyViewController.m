@@ -41,7 +41,9 @@
 
 @end
 
-@implementation DrinksNearbyViewController
+@implementation DrinksNearbyViewController {
+    BOOL _updatedSearchNeeded;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -63,16 +65,17 @@
     // Initializes stuff
     [_indFindingYou startAnimating];
     
+    _updatedSearchNeeded = TRUE;
+    
     // Find me
     _tellMeMyLocation = [[TellMeMyLocation alloc] init];
     [_tellMeMyLocation findMe:kCLLocationAccuracyNearestTenMeters found:^(CLLocation *newLocation) {
         _currentLocation = newLocation;
-        [self fetchClosetSpot];
+        [self fetchClosestSpot];
     } failure:^(NSError *error) {
         [_indFindingYou stopAnimating];
         [_lblFindingYou setText:@"Could not find you"];
     }];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -131,7 +134,12 @@
 }
 
 - (void)locationUpdate:(SHButtonLatoLightLocation *)button location:(CLLocation *)location name:(NSString *)name {
+    _updatedSearchNeeded = TRUE;
+}
+
+- (void)locationDidChooseLocation:(CLLocation *)location {
     _location = location;
+    [self fetchClosestSpot];
 }
 
 - (void)locationError:(SHButtonLatoLightLocation *)button error:(NSError *)error {
@@ -200,7 +208,8 @@
     }
 }
 
-- (void)fetchClosetSpot {
+- (void)fetchClosestSpot {
+    _updatedSearchNeeded = FALSE;
  
     // Disable while loading
     [_btnNearBy setEnabled:NO];
@@ -227,7 +236,6 @@
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
     }];
-    
 }
 
 @end

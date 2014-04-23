@@ -275,11 +275,11 @@
 #pragma mark - Private Share
 
 - (NSString *)linkToShareForSource:(NSString *)source {
-    // TODO add user id, and special or spot id depending on the share type (check in or special)
+    // Add user id, and special or spot id depending on the share type (check in or special)
     
     // Notes on Sharing with Links
     // These parameters will not be visible in the shorted URL and once the page is loaded it should immediately
-    // captures these values to the session and redirect to the appropriate web page.
+    // capture these values to the session and redirect to the appropriate web page.
     
     // These details should be logged each time a link is used so that it will be possible to identify who
     // is sharing the link, which source (FB, Twitter, SMS) and the related spot or special if it is set.
@@ -298,7 +298,7 @@
     // the spot, drink or special id but later it could include the user id of the user who shared it
     // to close the loop on tracking that sharing activity.
     
-    // TODO get the actual userId if they are logged in to give them credit for the share
+    // Get the actual userId if they are logged in to give them credit for the share
     // (otherwise leave userId as NSNotFound so it is not used, defensive programming)
     NSString *type = _shareType == ShareViewControllerShareCheckin ? @"checkin" : @"special";
     
@@ -315,13 +315,13 @@
     } else {
         spotOrSpecialParams = [NSString stringWithFormat:@"&spot=%@", _spot.ID];
     }
-    // TODO if the spot or special is defined then set these params which are appended at the end
+    // If the spot or special is defined then set these params which are appended at the end
     // Be sure to follow the query string format: &NAME=VALUE
     // Examples: &spot=123 or &special=456
     
     UserModel *user = [[ClientSessionManager sharedClient] currentUser];
     if (user != nil) {
-        return [NSString stringWithFormat:@"http://www.spothopperapp.com/?source=%@&user=%li&type=%@%@", source, [user.ID integerValue], type, spotOrSpecialParams];
+        return [NSString stringWithFormat:@"http://www.spothopperapp.com/?source=%@&user=%li&type=%@%@", source, (long)[user.ID integerValue], type, spotOrSpecialParams];
     }
     else {
         return [NSString stringWithFormat:@"http://www.spothopperapp.com/?source=%@&type=%@%@", source, type, spotOrSpecialParams];
