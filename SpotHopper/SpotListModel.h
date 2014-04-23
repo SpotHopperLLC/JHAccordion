@@ -11,6 +11,7 @@
 #define kSpotListModelParamName @"name"
 #define kSpotListModelParamLatitude @"latitude"
 #define kSpotListModelParamLongitude @"longitude"
+#define kSpotListModelParamRadius @"radius"
 #define kSpotListModelParamBasedOnSlider @"based_on_sliders"
 
 #define kSpotListModelQueryParamLat @"lat"
@@ -29,6 +30,7 @@
 @property (nonatomic, strong) NSArray *spots;
 @property (nonatomic, strong) NSNumber *latitude;
 @property (nonatomic, strong) NSNumber *longitude;
+@property (nonatomic, strong) NSNumber *radius;
 
 - (CLLocation*)location;
 

@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define METERS_PER_MILE 1609.344
+
 #define ITEM_SIZE_WIDTH 180.0f
 #define ITEM_SIZE_HEIGHT 247.0f
 #define ITEM_SIZE_HEIGHT_4_INCH 300.0f
@@ -412,6 +414,18 @@
     }];
     
     _selectedLocation = location;
+}
+
+- (CGFloat)radiusInMiles {
+    MKCoordinateRegion region = _mapView.region;
+    CLLocationCoordinate2D centerCoordinate = _mapView.centerCoordinate;
+    
+    CLLocation * newLocation = [[CLLocation alloc] initWithLatitude:centerCoordinate.latitude + region.span.latitudeDelta longitude:centerCoordinate.longitude];
+    CLLocation * centerLocation = [[CLLocation alloc] initWithLatitude:centerCoordinate.latitude longitude:centerCoordinate.longitude];
+    
+    CLLocationDistance distance = [centerLocation distanceFromLocation:newLocation]; // in meters
+    
+    return distance / METERS_PER_MILE;
 }
 
 - (void)updateView {
