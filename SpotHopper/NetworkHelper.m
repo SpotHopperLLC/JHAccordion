@@ -60,8 +60,6 @@
             NSMutableURLRequest *thumbImageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:thumbUrl]];
             [thumbImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
             UIImageView *imgView = [[UIImageView alloc] init];
-            [imgView setImageWithURL:[NSURL URLWithString:imageModel.thumbUrl] placeholderImage:nil];
-            
             [imgView setImageWithURLRequest:thumbImageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
                 
                 [self preloadImageModels:imageModels index:index+1];
