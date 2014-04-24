@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kMaxRadius @5.0f
+
 #import "SpotListModel.h"
 
 #import "ClientSessionManager.h"
@@ -177,7 +179,8 @@
     }
     
     if (radius != nil) {
-        [params setObject:radius forKey:kSpotListModelParamRadius];
+        // Make sure it doesn't go above max radius
+        [params setObject:( [radius compare:kMaxRadius] == NSOrderedDescending ? kMaxRadius : radius ) forKey:kSpotListModelParamRadius];
     }
     
     // Creating params
