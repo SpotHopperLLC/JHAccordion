@@ -35,6 +35,7 @@
 
 #import "ClientSessionManager.h"
 #import "ErrorModel.h"
+#import "NetworkHelper.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
@@ -408,6 +409,10 @@
         
         _spotList = spotListModel;
         [_collectionView reloadData];
+        
+        for (SpotModel *spot in _spotList.spots) {
+            [NetworkHelper preloadImageModels:spot.images];
+        }
         
         [self updateView];
         [self updateMatchPercent];

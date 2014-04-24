@@ -11,7 +11,7 @@
 #import "ImageModel.h"
 #import "SpotTypeModel.h"
 
-#import <AFNetworking/UIImageView+AFNetworking.h>
+#import "NetworkHelper.h"
 
 @implementation SpotCardCollectionViewCell
 
@@ -27,9 +27,9 @@
 - (void)setSpot:(SpotModel *)spot {
     
     // Sets image
-    ImageModel *image = spot.images.firstObject;
-    if (image != nil) {
-        [_imgSpot setImageWithURL:[NSURL URLWithString:image.url] placeholderImage:spot.placeholderImage];
+    ImageModel *imageModel = spot.images.firstObject;
+    if (imageModel != nil) {
+        [NetworkHelper loadImageProgressively:imageModel imageView:_imgSpot placeholderImage:spot.placeholderImage];
     } else {
         [_imgSpot setImage:spot.placeholderImage];
     }
