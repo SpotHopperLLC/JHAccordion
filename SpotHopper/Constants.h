@@ -74,8 +74,8 @@
 
     #define kBaseUrl @"https://api.spotapps.co"
 
-    #define kParseApplicationID @""
-    #define kParseClientKey @""
+    #define kParseApplicationID @"8gsK1txoPG66EvpzxhHPFJeeNjWTwe1SF5j1jIKN"
+    #define kParseClientKey @"z86QKJFiLmSxWAekThVpTo8yLpp29nekhTiUgV2i"
 
     #define kAppURLScheme  @"spothopperapp"
 
