@@ -17,6 +17,7 @@
 #import "UIView+ViewFromNib.h"
 #import "UIViewController+Navigator.h"
 #import "NSNull+Debugging.h"
+#import "NetworkHelper.h"
 
 #import "SpotAnnotation.h"
 #import "SHLabelLatoLight.h"
@@ -595,6 +596,8 @@
         annotation.coordinate = CLLocationCoordinate2DMake(_spot.latitude.floatValue, _spot.longitude.floatValue);
         [_mapView addAnnotation:annotation];
     }
+    
+    [NetworkHelper preloadImageModels:_spot.images];
 }
 
 - (void)updateViewSpecials:(BOOL)animate {

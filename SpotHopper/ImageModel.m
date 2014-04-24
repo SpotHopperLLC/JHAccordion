@@ -8,6 +8,10 @@
 
 #import "ImageModel.h"
 
+#define kFullPath @"/full"
+#define kS3Host @"spothopper-static.s3.amazonaws.com"
+#define kCloudFrontHost @"static.spotapps.co"
+
 @implementation ImageModel
 
 - (NSDictionary *)mapKeysToProperties {
@@ -20,10 +24,47 @@
 }
 
 - (NSString *)url {
-    if ([_url hasPrefix:@"//"] == YES) {
-        return [NSString stringWithFormat:@"http:%@", _url];
+    return [self tweakedUrl:_url];
+}
+
+- (NSDictionary *)urls {
+    return [self objectForKey:@"urls"];
+}
+
+- (NSString *)thumbUrl {
+    return [self urlForImageSize:@"thumb"];
+}
+
+- (NSString *)smallUrl {
+    return [self urlForImageSize:@"small"];
+}
+
+- (NSString *)fullUrl {
+    return [self urlForImageSize:@"full"];
+}
+
+#pragma mark - Private
+
+- (NSString *)urlForImageSize:(NSString *)size {
+    NSString *url = (NSString *)self.urls[size];
+    
+    if (![@"full" isEqualToString:size] && [url hasSuffix:kFullPath]) {
+        url = [url stringByReplacingOccurrencesOfString:kFullPath withString:[NSString stringWithFormat:@"/%@", size]];
     }
-    return _url;
+    
+    return [self tweakedUrl:url];
+}
+
+- (NSString *)tweakedUrl:(NSString *)url {
+    if ([url hasPrefix:@"//"] == YES) {
+        return [NSString stringWithFormat:@"http:%@", url];
+    }
+    
+    if ([url rangeOfString:kS3Host].location != NSNotFound) {
+        url = [url stringByReplacingOccurrencesOfString:kS3Host withString:kCloudFrontHost];
+    }
+
+    return url;
 }
 
 @end

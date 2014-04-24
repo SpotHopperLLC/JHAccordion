@@ -10,7 +10,7 @@
 
 #import "ImageModel.h"
 
-#import <AFNetworking/UIImageView+AFNetworking.h>
+#import "NetworkHelper.h"
 
 @implementation SpotImageCollectViewCell
 
@@ -29,7 +29,7 @@
     if (image == nil) {
         [_imgSpot setImage:placeholderImage];
     } else {
-        [_imgSpot setImageWithURL:[NSURL URLWithString:image.url] placeholderImage:placeholderImage];
+        [NetworkHelper loadImageProgressively:image imageView:_imgSpot placeholderImage:placeholderImage];
     }
 }
 

@@ -12,5 +12,9 @@
 
 @property (nonatomic, strong) NSString *url;
 @property (nonatomic, strong) NSString *foursquareId;
+@property (nonatomic, strong, readonly) NSDictionary *urls;
+@property (nonatomic, strong, readonly) NSString *thumbUrl;
+@property (nonatomic, strong, readonly) NSString *smallUrl;
+@property (nonatomic, strong, readonly) NSString *fullUrl;
 
 @end

@@ -1794,6 +1794,10 @@
 		2602BD9F18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2636AB3E18F8A82100591722 /* table_footer_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9418E2654900C93BBF /* table_footer_background.png */; };
 		2636AB3F18F8A82400591722 /* table_footer_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9518E2654900C93BBF /* table_footer_background@2x.png */; };
+		267C5E3A1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
+		267C5E3B1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
+		267C5E3C1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
+		267C5E3D1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
 		267D78D618F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */; };
 		267D78D718F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */; };
 		267D78D818F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */; };
@@ -2420,6 +2424,8 @@
 		2602BD9418E2654900C93BBF /* table_footer_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table_footer_background.png; sourceTree = "<group>"; };
 		2602BD9518E2654900C93BBF /* table_footer_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table_footer_background@2x.png"; sourceTree = "<group>"; };
 		2602BD9C18E283C500C93BBF /* Common.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Common.storyboard; sourceTree = "<group>"; };
+		267C5E381908B7CC00D60EB5 /* NetworkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkHelper.h; sourceTree = "<group>"; };
+		267C5E391908B7CC00D60EB5 /* NetworkHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkHelper.m; sourceTree = "<group>"; };
 		267D78D418F4A8DD00E95D54 /* SHButtonLatoBold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoBold.h; sourceTree = "<group>"; };
 		267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoBold.m; sourceTree = "<group>"; };
 		268C8CA0190089D00011E0F8 /* UserState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserState.h; sourceTree = "<group>"; };
@@ -3056,6 +3062,8 @@
 				03CAC18B18E9C74F00FAC5F5 /* SizeModel.m */,
 				26ED5CB418FDDE56006901ED /* Tracker.h */,
 				26ED5CB518FDDE56006901ED /* Tracker.m */,
+				267C5E381908B7CC00D60EB5 /* NetworkHelper.h */,
+				267C5E391908B7CC00D60EB5 /* NetworkHelper.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -3854,9 +3862,19 @@
 					};
 					03CABFAC18E7716400FAC5F5 = {
 						DevelopmentTeam = 54WBL6WQLV;
+						SystemCapabilities = {
+							com.apple.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					03F4E75B18CA33D00056EAA9 = {
 						DevelopmentTeam = 54WBL6WQLV;
+						SystemCapabilities = {
+							com.apple.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					03F4E8A918CA34260056EAA9 = {
 						DevelopmentTeam = 54WBL6WQLV;
@@ -5359,6 +5377,7 @@
 				03F2D94D18722CAC00C69576 /* SHNavigationBar.m in Sources */,
 				03F6BF6818C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.m in Sources */,
 				038664D8186D376900985CEC /* UIView+RelativityLaws.m in Sources */,
+				267C5E3A1908B7CC00D60EB5 /* NetworkHelper.m in Sources */,
 				038664D4186D376900985CEC /* UIImage+Rotation.m in Sources */,
 				03CA726B187B510500815284 /* UIButton+Block.m in Sources */,
 				03412C3B188053E7000F16A8 /* SHButtonLatoLightRightImage.m in Sources */,
@@ -5505,6 +5524,7 @@
 				03CABFBC18E7716400FAC5F5 /* SHNavigationBar.m in Sources */,
 				03CABFBD18E7716400FAC5F5 /* TTTAttributedLabel+QuickFonting.m in Sources */,
 				03CABFBE18E7716400FAC5F5 /* UIView+RelativityLaws.m in Sources */,
+				267C5E3D1908B7CC00D60EB5 /* NetworkHelper.m in Sources */,
 				03CABFBF18E7716400FAC5F5 /* UIImage+Rotation.m in Sources */,
 				03CABFC018E7716400FAC5F5 /* UIButton+Block.m in Sources */,
 				03CABFC118E7716400FAC5F5 /* SHButtonLatoLightRightImage.m in Sources */,
@@ -5643,6 +5663,7 @@
 				03F4E76418CA33D00056EAA9 /* SHNavigationBar.m in Sources */,
 				03F4E76518CA33D00056EAA9 /* TTTAttributedLabel+QuickFonting.m in Sources */,
 				03F4E76618CA33D00056EAA9 /* UIView+RelativityLaws.m in Sources */,
+				267C5E3C1908B7CC00D60EB5 /* NetworkHelper.m in Sources */,
 				03F4E76718CA33D00056EAA9 /* UIImage+Rotation.m in Sources */,
 				03F4E76818CA33D00056EAA9 /* UIButton+Block.m in Sources */,
 				03F4E76918CA33D00056EAA9 /* SHButtonLatoLightRightImage.m in Sources */,
@@ -5781,6 +5802,7 @@
 				03F4E8B218CA34260056EAA9 /* SHNavigationBar.m in Sources */,
 				03F4E8B318CA34260056EAA9 /* TTTAttributedLabel+QuickFonting.m in Sources */,
 				03F4E8B418CA34260056EAA9 /* UIView+RelativityLaws.m in Sources */,
+				267C5E3B1908B7CC00D60EB5 /* NetworkHelper.m in Sources */,
 				03F4E8B518CA34260056EAA9 /* UIImage+Rotation.m in Sources */,
 				03F4E8B618CA34260056EAA9 /* UIButton+Block.m in Sources */,
 				03F4E8B718CA34260056EAA9 /* SHButtonLatoLightRightImage.m in Sources */,
@@ -6120,7 +6142,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "$(inherited)";
 				PRODUCT_NAME = SpotHopperProduction;
-				PROVISIONING_PROFILE = "46017E83-A405-4244-9B88-400BC882B369";
+				PROVISIONING_PROFILE = "FE3B8B45-B514-4EF0-AB82-C66C244F0422";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -6147,7 +6169,7 @@
 					"-DNS_BLOCK_ASSERTIONS=1",
 				);
 				PRODUCT_NAME = SpotHopperProduction;
-				PROVISIONING_PROFILE = "46017E83-A405-4244-9B88-400BC882B369";
+				PROVISIONING_PROFILE = "FE3B8B45-B514-4EF0-AB82-C66C244F0422";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
