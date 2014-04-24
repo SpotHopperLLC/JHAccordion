@@ -60,6 +60,8 @@
 
 @property (nonatomic, assign) BOOL showMap;
 
+@property (nonatomic, strong) NSNumber *manuallyChangedRadius;
+
 @end
 
 @implementation SpotListViewController {
@@ -330,7 +332,7 @@
                 }
                 
                 [self showHUD:@"Updating name"];
-                [_spotList putSpotList:name latitude:nil longitude:nil sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+                [_spotList putSpotList:name latitude:nil longitude:nil radius:nil sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
                     [self hideHUD];
                     [self.navigationController popViewControllerAnimated:YES];
                 } failure:^(ErrorModel *errorModel) {
@@ -351,6 +353,10 @@
 }
 
 - (IBAction)onUpdateSearchResults:(id)sender {
+    
+    // Setting the manually changed radius
+    _manuallyChangedRadius = [NSNumber numberWithFloat:[self radiusInMiles]];
+    
     _doNotMoveMap = TRUE;
     CLLocation *location = [[CLLocation alloc] initWithLatitude:_mapView.centerCoordinate.latitude longitude:_mapView.centerCoordinate.longitude];
     [TellMeMyLocation setLastLocation:location completionHandler:^{
@@ -393,7 +399,7 @@
     [Tracker track:@"Fetching Spotlist Results"];
     
     [self showHUD:@"Getting new spots"];
-    [_spotList putSpotList:nil latitude:[NSNumber numberWithFloat:location.coordinate.latitude] longitude:[NSNumber numberWithFloat:location.coordinate.longitude] sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+    [_spotList putSpotList:nil latitude:[NSNumber numberWithFloat:location.coordinate.latitude] longitude:[NSNumber numberWithFloat:location.coordinate.longitude] radius:_manuallyChangedRadius sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
         _isSearching = FALSE;
         _isRepositioningMap = FALSE;
         [self hideHUD];

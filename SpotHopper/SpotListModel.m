@@ -160,7 +160,7 @@
     
 }
 
-- (Promise *)putSpotList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+- (Promise *)putSpotList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude radius:(NSNumber*)radius sliders:(NSArray*)sliders success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
     
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
@@ -174,6 +174,10 @@
     if (latitude != nil && longitude != nil) {
         [params setObject:latitude forKey:kSpotListModelParamLatitude];
         [params setObject:longitude forKey:kSpotListModelParamLongitude];
+    }
+    
+    if (radius != nil) {
+        [params setObject:radius forKey:kSpotListModelParamRadius];
     }
     
     // Creating params
