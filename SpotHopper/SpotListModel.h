@@ -11,6 +11,7 @@
 #define kSpotListModelParamName @"name"
 #define kSpotListModelParamLatitude @"latitude"
 #define kSpotListModelParamLongitude @"longitude"
+#define kSpotListModelParamRadius @"radius"
 #define kSpotListModelParamBasedOnSlider @"based_on_sliders"
 
 #define kSpotListModelQueryParamLat @"lat"
@@ -29,6 +30,7 @@
 @property (nonatomic, strong) NSArray *spots;
 @property (nonatomic, strong) NSNumber *latitude;
 @property (nonatomic, strong) NSNumber *longitude;
+@property (nonatomic, strong) NSNumber *radius;
 
 - (CLLocation*)location;
 
@@ -36,7 +38,7 @@
 + (Promise *)postSpotList:(NSString*)name spotId:(NSNumber*)spotId spotTypeId:(NSNumber*)spotTypeId latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders successBlock:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
 
 - (Promise *)getSpotList:(NSDictionary *)params success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
-- (Promise *)putSpotList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
+- (Promise *)putSpotList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude radius:(NSNumber*)radius sliders:(NSArray*)sliders success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
 - (Promise *)deleteSpotList:(NSDictionary *)params success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
 
 @end

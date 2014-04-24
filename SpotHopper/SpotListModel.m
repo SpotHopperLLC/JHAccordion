@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kMaxRadius @5.0f
+
 #import "SpotListModel.h"
 
 #import "ClientSessionManager.h"
@@ -23,12 +25,14 @@
     // Maps values in JSON key 'featured' to 'featured' property
     // Maps values in JSON key 'latitude' to 'latitude' property
     // Maps values in JSON key 'longitude' to 'longitude' property
+    // Maps values in JSON key 'radius' to 'radius' property
     // Maps linked resource in JSON key 'spots' to 'spots' property
     return @{
              @"name" : @"name",
              @"featured" : @"featured",
              @"latitude" : @"latitude",
              @"longitude" : @"longitude",
+             @"radius" : @"radius",
              @"links.spots" : @"spots",
              };
     
@@ -158,7 +162,7 @@
     
 }
 
-- (Promise *)putSpotList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+- (Promise *)putSpotList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude radius:(NSNumber*)radius sliders:(NSArray*)sliders success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
     
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
@@ -172,6 +176,11 @@
     if (latitude != nil && longitude != nil) {
         [params setObject:latitude forKey:kSpotListModelParamLatitude];
         [params setObject:longitude forKey:kSpotListModelParamLongitude];
+    }
+    
+    if (radius != nil) {
+        // Make sure it doesn't go above max radius
+        [params setObject:( [radius compare:kMaxRadius] == NSOrderedDescending ? kMaxRadius : radius ) forKey:kSpotListModelParamRadius];
     }
     
     // Creating params

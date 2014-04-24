@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define METERS_PER_MILE 1609.344
+
 #define ITEM_SIZE_WIDTH 180.0f
 #define ITEM_SIZE_HEIGHT 247.0f
 #define ITEM_SIZE_HEIGHT_4_INCH 300.0f
@@ -57,6 +59,8 @@
 @property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
 
 @property (nonatomic, assign) BOOL showMap;
+
+@property (nonatomic, strong) NSNumber *manuallyChangedRadius;
 
 @end
 
@@ -328,7 +332,7 @@
                 }
                 
                 [self showHUD:@"Updating name"];
-                [_spotList putSpotList:name latitude:nil longitude:nil sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+                [_spotList putSpotList:name latitude:nil longitude:nil radius:nil sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
                     [self hideHUD];
                     [self.navigationController popViewControllerAnimated:YES];
                 } failure:^(ErrorModel *errorModel) {
@@ -349,6 +353,10 @@
 }
 
 - (IBAction)onUpdateSearchResults:(id)sender {
+    
+    // Setting the manually changed radius
+    _manuallyChangedRadius = [NSNumber numberWithFloat:[self radiusInMiles]];
+    
     _doNotMoveMap = TRUE;
     CLLocation *location = [[CLLocation alloc] initWithLatitude:_mapView.centerCoordinate.latitude longitude:_mapView.centerCoordinate.longitude];
     [TellMeMyLocation setLastLocation:location completionHandler:^{
@@ -391,7 +399,7 @@
     [Tracker track:@"Fetching Spotlist Results"];
     
     [self showHUD:@"Getting new spots"];
-    [_spotList putSpotList:nil latitude:[NSNumber numberWithFloat:location.coordinate.latitude] longitude:[NSNumber numberWithFloat:location.coordinate.longitude] sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+    [_spotList putSpotList:nil latitude:[NSNumber numberWithFloat:location.coordinate.latitude] longitude:[NSNumber numberWithFloat:location.coordinate.longitude] radius:_manuallyChangedRadius sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
         _isSearching = FALSE;
         _isRepositioningMap = FALSE;
         [self hideHUD];
@@ -412,6 +420,18 @@
     }];
     
     _selectedLocation = location;
+}
+
+- (CGFloat)radiusInMiles {
+    MKCoordinateRegion region = _mapView.region;
+    CLLocationCoordinate2D centerCoordinate = _mapView.centerCoordinate;
+    
+    CLLocation * newLocation = [[CLLocation alloc] initWithLatitude:centerCoordinate.latitude + region.span.latitudeDelta longitude:centerCoordinate.longitude];
+    CLLocation * centerLocation = [[CLLocation alloc] initWithLatitude:centerCoordinate.latitude longitude:centerCoordinate.longitude];
+    
+    CLLocationDistance distance = [centerLocation distanceFromLocation:newLocation]; // in meters
+    
+    return distance / METERS_PER_MILE;
 }
 
 - (void)updateView {
