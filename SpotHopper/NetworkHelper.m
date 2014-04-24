@@ -65,7 +65,7 @@
                 [self preloadImageModels:imageModels index:index+1];
                 
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                
+                [Tracker track:@"Error Loading Image" properties:@{@"URL" : thumbUrl}];
             }];
         }
     }
