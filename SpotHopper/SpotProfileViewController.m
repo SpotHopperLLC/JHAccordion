@@ -544,7 +544,7 @@
         // Sets the stuff
         NSDate *now = [NSDate date];
         if ([now timeIntervalSinceDate:dateOpen] > 0 && [now timeIntervalSinceDate:dateClose] < 0) {
-            [_lblHoursOpen setText:[NSString stringWithFormat:@"Open util %@", [dateFormatter stringFromDate:dateClose]]];
+            [_lblHoursOpen setText:[NSString stringWithFormat:@"Open until %@", [dateFormatter stringFromDate:dateClose]]];
         } else {
             [_lblHoursOpen setText:[NSString stringWithFormat:@"Opens at %@", [dateFormatter stringFromDate:dateOpen]]];
         }
