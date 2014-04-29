@@ -48,7 +48,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imgWhiteScreen;
 @property (weak, nonatomic) IBOutlet UILabel *lblInfo;
 
-
 @property (weak, nonatomic) IBOutlet UIView *containerAdjustSliders;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblNear;
