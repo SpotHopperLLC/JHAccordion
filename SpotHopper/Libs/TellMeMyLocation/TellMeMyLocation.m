@@ -41,13 +41,6 @@ static NSDate *_lastDeviceLocationRefresh;
 #pragma mark - Public Implemention
 
 - (void)findMe:(CLLocationAccuracy)accuracy found:(FoundBlock)foundBlock failure:(FailureBlock)failureBlock {
-    
-#if TARGET_IPHONE_SIMULATOR
-	CLLocation *location = [[CLLocation alloc] initWithLatitude:kSimulatorLatitude longitude:kSimulatorLongitude];
-	[self finishWithBestLocation:location error:nil];
-    return;
-#endif
-
     // finish immediately if the device location was refreshed recently
     if (_lastDeviceLocationRefresh && _bestLocation && foundBlock) {
         NSTimeInterval diff = [[NSDate date] timeIntervalSinceDate:_lastDeviceLocationRefresh];
