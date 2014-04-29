@@ -19,7 +19,7 @@ pod 'TTTAttributedLabel', '~> 1.8.1'
 pod 'MBProgressHUD', '~> 0.8.0'
 
 # Debugging
-pod 'Raven', '~> 0.3.0'
+pod 'Raven', '~> 0.2.0'
 
 # Social
 pod 'Facebook-iOS-SDK', '~> 3.11.0'
