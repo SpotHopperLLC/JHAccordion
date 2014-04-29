@@ -114,6 +114,8 @@
     _lblInfo.frame = frame;
     
     _updatedSearchNeeded = TRUE;
+    
+    [self hideInfo:FALSE];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -151,18 +153,27 @@
     
     [_lblNear setFont:[UIFont fontWithName:@"Lato-Regular" size:_lblNear.font.pointSize]];
     
-    if ([[ClientSessionManager sharedClient] hasSeenSpotlists] == NO) {
-        [self showInfo:FALSE];
-        [[ClientSessionManager sharedClient] setHasSeenSpotlists:TRUE];
-    }
-    else {
-        [self hideInfo:FALSE];
-    }
+//    if ([[ClientSessionManager sharedClient] hasSeenSpotlists] == NO) {
+//        [self showInfo:FALSE];
+//        [[ClientSessionManager sharedClient] setHasSeenSpotlists:TRUE];
+//    }
     
     if (_updatedSearchNeeded) {
         _location = [TellMeMyLocation lastLocation];
         [_adjustSpotListSliderViewController setLocation:_location];
         [self fetchSpotLists];
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    if ([[ClientSessionManager sharedClient] hasSeenDrinklists] == NO) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self createSpotlistForSimilar];
+        });
+        
+        [[ClientSessionManager sharedClient] setHasSeenDrinklists:TRUE];
     }
 }
 
@@ -182,7 +193,7 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     NSString * segueName = segue.identifier;
-    if ([segueName isEqualToString: @"EmbedAdjustSpotListSliderViewController"]) {
+    if ([segueName isEqualToString:@"EmbedAdjustSpotListSliderViewController"]) {
         _adjustSpotListSliderViewController = (AdjustSpotListSliderViewController*)[segue destinationViewController];
         [_adjustSpotListSliderViewController setDelegate:self];
     }
@@ -212,21 +223,9 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 0) {
-        return 2;
-    } else if (section == 1) {
-        // Hide section if have not seen before
-        if( [self hasBeenSeenBefore] == NO) {
-            return 0;
-        }
-        
-        return _featuredSpotLists.count;
+    if (section == 0 || section == 1) {
+        return 0;
     } else if (section == 2) {
-        // Hide section if have not seen before
-        if( [self hasBeenSeenBefore] == NO) {
-            return 0;
-        }
-        
         return _mySpotLists.count;
     }
     
@@ -234,27 +233,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (indexPath.section == 0) {
-        CreateListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CreateListCell" forIndexPath:indexPath];
-        
-        if (indexPath.row == 0) {
-            [cell.lblText setText:@"Adjust Sliders"];
-            [cell.lblSubtext setText:@"chill vs raging, age, drink selection, etc"];
-        } else if (indexPath.row == 1) {
-            [cell.lblText setText:@"or Name a Favorite Spot"];
-            [cell.lblSubtext setText:@"Find bars similarto it, wherever you go"];
-        }
-        
-        return cell;
-    } else if (indexPath.section == 1) {
-        ListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ListCell" forIndexPath:indexPath];
-        
-        SpotListModel *spotList = [_featuredSpotLists objectAtIndex:indexPath.row];
-        [cell.lblName setText:spotList.name];
-        
-        return cell;
-    } else if (indexPath.section == 2) {
+    if (indexPath.section == 2) {
         ListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ListCell" forIndexPath:indexPath];
         
         SpotListModel *spotList = [_mySpotLists objectAtIndex:indexPath.row];
@@ -269,23 +248,7 @@
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
-    if (indexPath.section == 0) {
-        
-        if ([ClientSessionManager sharedClient].isLoggedIn == NO) {
-            [self showAlert:@"Login Required" message:@"Cannot create a spotlist without logging in"];
-            return;
-        }
-        
-        if (indexPath.row == 0) {
-            [self showAdjustSlidersView:YES animated:YES];
-        } else if (indexPath.row == 1) {
-            [self goToFindSimilarSpots:self];
-        }
-    } else if (indexPath.section == 1) {
-        SpotListModel *spotList = [_featuredSpotLists objectAtIndex:indexPath.row];
-        [self goToSpotList:spotList createdWithAdjustSliders:NO];
-    } else if (indexPath.section == 2) {
+    if (indexPath.section == 2) {
         SpotListModel *spotList = [_mySpotLists objectAtIndex:indexPath.row];
         [self goToSpotList:spotList createdWithAdjustSliders:NO];
     }
@@ -311,9 +274,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
-        return 65.0f;
-    } else if (section == 1 && [self hasBeenSeenBefore] == YES && _featuredSpotLists.count > 0 ) {
+    if (section < 2) {
         return 65.0f;
     } else if ( section == 2 && [self hasBeenSeenBefore] == YES && _mySpotLists.count > 0 ) {
         return 65.0f;
@@ -325,15 +286,11 @@
 #pragma mark - JHAccordionDelegate
 
 - (void)accordion:(JHAccordion *)accordion openingSection:(NSInteger)section {
-    if (section == 0) [_sectionHeader0 setSelected:YES];
-    else if (section == 1) [_sectionHeader1 setSelected:YES];
-    else if (section == 2) [_sectionHeader2 setSelected:YES];
+    if (section == 2) [_sectionHeader2 setSelected:YES];
 }
 
 - (void)accordion:(JHAccordion *)accordion closingSection:(NSInteger)section {
-    if (section == 0) [_sectionHeader0 setSelected:NO];
-    else if (section == 1) [_sectionHeader1 setSelected:NO];
-    else if (section == 2) [_sectionHeader2 setSelected:NO];
+    if (section == 2) [_sectionHeader2 setSelected:NO];
 }
 
 - (void)accordion:(JHAccordion *)accordion openedSection:(NSInteger)section {
@@ -598,35 +555,36 @@
         if (_sectionHeader0 == nil) {
             
             _sectionHeader0 = [self instantiateSectionHeaderView];
-            [_sectionHeader0 setIconImage:[UIImage imageNamed:@"icon_plus"]];
+            [_sectionHeader0 setIconImage:[UIImage imageNamed:@"icon_sliders"]];
             
             UIFont *font = _sectionHeader0.lblText.font;
             [_sectionHeader0.lblText setFont:[UIFont fontWithName:font.fontName size:15.0]];
             CGFloat fontSize = _sectionHeader0.lblText.font.pointSize;
-            [_sectionHeader0.lblText setText:@"Create Personalized Spotlists" withFont:[UIFont fontWithName:@"Lato-Regular" size:fontSize] onString:@"Create"];
+            [_sectionHeader0.lblText setText:@"Search by Sliders" withFont:[UIFont fontWithName:@"Lato-Regular" size:fontSize] onString:@"Sliders"];
             
             [_sectionHeader0.btnBackground setTag:section];
-            [_sectionHeader0.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
+            [_sectionHeader0.btnBackground addTarget:self action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
             
-            [_sectionHeader0 setSelected:[_accordion isSectionOpened:section]];
+            // point arrow right
+            _sectionHeader0.imgArrow.transform = CGAffineTransformMakeRotation(-M_PI/2);
         }
         
         return _sectionHeader0;
     } else if (section == 1) {
         if (_sectionHeader1 == nil) {
             _sectionHeader1 = [self instantiateSectionHeaderView];
-            [_sectionHeader1 setIconImage:[UIImage imageNamed:@"icon_featured_lists"]];
+            [_sectionHeader1 setIconImage:[UIImage imageNamed:@"icon_search"]];
             
             UIFont *font = _sectionHeader1.lblText.font;
             [_sectionHeader1.lblText setFont:[UIFont fontWithName:font.fontName size:15.0]];
             CGFloat fontSize = _sectionHeader1.lblText.font.pointSize;
-            [_sectionHeader1.lblText setText:@"Featured Spotlists" withFont:[UIFont fontWithName:@"Lato-Regular" size:fontSize] onString:@"Featured"];
+            [_sectionHeader1.lblText setText:@"Name a favorite, find similar" withFont:[UIFont fontWithName:@"Lato-Regular" size:fontSize] onStrings:@[@"favorite", @"similar"]];
             
             [_sectionHeader1.btnBackground setTag:section];
-            [_sectionHeader1.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
+            [_sectionHeader1.btnBackground addTarget:self action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
             
-            [_sectionHeader1 setSelected:[_accordion isSectionOpened:section]];
-            
+            // point arrow right
+            _sectionHeader1.imgArrow.transform = CGAffineTransformMakeRotation(-M_PI/2);
         }
         
         return _sectionHeader1;
@@ -651,6 +609,33 @@
     }
     
     return nil;
+}
+
+- (void)onClickSection:(UIView *)view {
+    if (view.tag == 0) {
+        [self createSpotlistWithSliders];
+    }
+    else if (view.tag == 1) {
+        [self createSpotlistForSimilar];
+    }
+}
+
+- (void)createSpotlistWithSliders {
+    if ([ClientSessionManager sharedClient].isLoggedIn == NO) {
+        [self showAlert:@"Login Required" message:@"Cannot create a spotlist without logging in"];
+        return;
+    }
+    
+    [self showAdjustSlidersView:YES animated:YES];
+}
+
+- (void)createSpotlistForSimilar {
+    if ([ClientSessionManager sharedClient].isLoggedIn == NO) {
+        [self showAlert:@"Login Required" message:@"Cannot create a spotlist without logging in"];
+        return;
+    }
+    
+    [self goToFindSimilarSpots:self];
 }
 
 @end

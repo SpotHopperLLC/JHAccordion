@@ -211,12 +211,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section < 2) {
-        ListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ListCell" forIndexPath:indexPath];
-        
-        return cell;
-    }
-    else if (indexPath.section == 2) {
+    if (indexPath.section == 2) {
         ListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ListCell" forIndexPath:indexPath];
         
         DrinkListModel *drinkList = [_myDrinkLists objectAtIndex:indexPath.row];
@@ -627,7 +622,7 @@
 
 - (void)createDrinklistWithSliders {
     if ([ClientSessionManager sharedClient].isLoggedIn == NO) {
-        [self showAlert:@"Login Required" message:@"Cannot create a spotlist without logging in"];
+        [self showAlert:@"Login Required" message:@"Cannot create a drinklist without logging in"];
         return;
     }
     
@@ -636,7 +631,7 @@
 
 - (void)createDrinklistForSimilar {
     if ([ClientSessionManager sharedClient].isLoggedIn == NO) {
-        [self showAlert:@"Login Required" message:@"Cannot create a spotlist without logging in"];
+        [self showAlert:@"Login Required" message:@"Cannot create a drinklist without logging in"];
         return;
     }
     
