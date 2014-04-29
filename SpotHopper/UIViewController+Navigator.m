@@ -13,6 +13,7 @@
 #import "TutorialViewController.h"
 #import "LaunchViewController.h"
 
+#import "DrinksViewController.h"
 #import "DrinksNearbyViewController.h"
 #import "DrinkListMenuViewController.h"
 #import "DrinkListViewController.h"
@@ -60,6 +61,12 @@
 }
 
 #pragma mark - Drinks
+
+- (void)goToDrinks {
+    [Tracker track:@"View Drinks" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    DrinksViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinksViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
 
 - (void)goToDrinksNearBy {
     [Tracker track:@"View Drinks Nearby" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];

@@ -1,12 +1,12 @@
 //
-//  CheckinViewController.m
+//  DrinksViewController.m
 //  SpotHopper
 //
-//  Created by Josh Holtz on 3/27/14.
-//  Copyright (c) 2014 RokkinCat. All rights reserved.
+//  Created by Brennan Stehling on 4/29/14.
+//  Copyright (c) 2014 SpotHopper. All rights reserved.
 //
 
-#import "CheckinViewController.h"
+#import "DrinksViewController.h"
 
 #import "NSNumber+Helpers.h"
 #import "UIViewController+Navigator.h"
@@ -27,7 +27,7 @@
 
 #define kPageSize @15
 
-@interface CheckinViewController () <UITableViewDataSource, UITableViewDelegate, MKMapViewDelegate, SpotAnnotationCalloutDelegate>
+@interface DrinksViewController () <UITableViewDataSource, UITableViewDelegate, MKMapViewDelegate, SpotAnnotationCalloutDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
 @property (weak, nonatomic) IBOutlet UITableView *tblSpots;
@@ -45,7 +45,7 @@
 
 @end
 
-@implementation CheckinViewController
+@implementation DrinksViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -59,7 +59,7 @@
     [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
     
     // Sets title
-    [self setTitle:@"Check In"];
+    [self setTitle:@"Where?"];
     
     // Shows sidebar button in nav
     [self showSidebarButton:YES animated:YES];
@@ -73,6 +73,7 @@
     [_tblSpots setTableHeaderView:_mapView];
     [_tblSpots setTableFooterView:[[UIView alloc] init]];
     [_tblSpots registerNib:[UINib nibWithNibName:@"SearchCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"SearchCell"];
+    [_tblSpots registerNib:[UINib nibWithNibName:@"DrinksNearbyViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"DrinksNearbyViewCell"];
     
     // Register pull to refresh
     [self registerRefreshTableView:_tblSpots withReloadType:kPullRefreshTypeBoth];
@@ -112,6 +113,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+//    [[TellMeMyLocation instance] findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
+//        [self repositionMapOnAnnotations:_mapView.annotations animated:TRUE];
+//    } failure:^(NSError *error) {
+//    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -175,30 +183,37 @@
 
 #pragma mark - UITableViewDataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _spots.count;
+    return _spots.count + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    SpotModel *spot = [_spots objectAtIndex:indexPath.row];
-    
-    SearchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell" forIndexPath:indexPath];
-    [cell setSpot:spot];
-    
-    return cell;
-    
+    if (indexPath.row == 0) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DrinksNearbyViewCell" forIndexPath:indexPath];
+        
+        return cell;
+    }
+    else {
+        SpotModel *spot = [_spots objectAtIndex:indexPath.row - 1];
+        SearchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell" forIndexPath:indexPath];
+        [cell setSpot:spot];
+        
+        return cell;
+    }
 }
 
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    SpotModel *spot = [_spots objectAtIndex:indexPath.row];
-    [self checkinAtSpot:spot];
+    if (indexPath.row == 0) {
+        // TODO: implement
+        //[self goToDrinksNearBy];
+        [self goToDrinkListMenu];
+    }
+    else {
+        SpotModel *spot = [_spots objectAtIndex:indexPath.row - 1];
+        [self goToSpot:spot];
+    }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -293,7 +308,7 @@
 
 - (void)spotAnnotationCallout:(SpotAnnotationCallout *)spotAnnotationCallout clicked:(MatchPercentAnnotationView *)matchPercentAnnotationView {
     [_mapView deselectAnnotation:matchPercentAnnotationView.annotation animated:YES];
-    [self checkinAtSpot:matchPercentAnnotationView.spot];
+    [self goToSpot:matchPercentAnnotationView.spot];
 }
 
 #pragma mark - Actions
@@ -313,16 +328,11 @@
 
 #pragma mark - Private
 
-- (void)checkinAtSpot:(SpotModel*)spot {
-    if ([_delegate respondsToSelector:@selector(checkinViewController:checkedInToSpot:)]) {
-        [_delegate checkinViewController:self checkedInToSpot:spot];
-    } else {
-        [self goToCheckinAtSpot:spot];
-    }
+- (void)goToSpot:(SpotModel*)spot {
+    [self goToDrinkListMenuAtSpot:spot];
 }
 
 - (void)updateViewMap {
-    
     // Update map
     [_mapView removeAnnotations:[_mapView annotations]];
     NSMutableArray *annotations = [@[] mutableCopy];
@@ -337,20 +347,20 @@
     }
     
     [_mapView addAnnotations:annotations];
-    [self repositionMapOnAnnotations:_mapView.annotations animated:TRUE];
+    [self repositionMapOnAnnotations:_mapView.annotations animated:FALSE];
 }
 
 - (void)startSearch {
     // Resets pages and clears results
     _page = @1;
-
+    
     [self doSearch];
 }
 
 - (void)doSearch {
     
     [self showHUD:@"Searching"];
-        
+    
     /*
      * Searches spots
      */
@@ -390,12 +400,13 @@
 - (void)repositionMapOnAnnotations:(NSArray *)annotations animated:(BOOL)animated {
     MKMapRect mapRect = MKMapRectNull;
     
+    BOOL foundUserLocation = FALSE;
+    
     if (annotations.count) {
         for (id <MKAnnotation> annotation in annotations) {
             if ([annotation isKindOfClass:[MKUserLocation class]]) {
-                // if the user's location is within a half mile of the current map view center then include it
-//                MKUserLocation *userLocation = (MKUserLocation *)annotation;
-
+                foundUserLocation = TRUE;
+                
                 MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
                 MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0, 0);
                 if (MKMapRectIsNull(mapRect)) {

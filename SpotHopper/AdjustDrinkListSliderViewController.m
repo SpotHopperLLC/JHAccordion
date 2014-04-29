@@ -102,6 +102,12 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kNotificationPushReceived object:nil];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [_accordion openSection:0];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -401,6 +407,10 @@
     [_tblSliders reloadData];
 }
 
+- (void)openSection:(NSInteger)section {
+    [_accordion openSection:section];
+}
+
 #pragma mark - Private
 
 - (BOOL)isCocktailSelected {
@@ -616,7 +626,9 @@
             _sectionHeaderTypes = [[AdjustSliderSectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(_tblSliders.frame), 48.0f)];
             
             [_sectionHeaderTypes.btnBackground setTag:section];
-            [_sectionHeaderTypes.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [_sectionHeaderTypes.btnBackground addTarget:self action:@selector(onSectionTapped:) forControlEvents:UIControlEventTouchUpInside];
+//            [_sectionHeaderTypes.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
             
             // Add borders
             [_sectionHeaderTypes addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
@@ -672,6 +684,13 @@
         return _sectionHeaderAdvancedSliders;
     }
     return nil;
+}
+
+- (void)onSectionTapped:(UIButton *)button {
+    NSLog(@"section: %li", (long)
+          button.tag);
+    
+    [_accordion onClickSection:button];
 }
 
 - (void)hideSubmitButton:(BOOL)animated {

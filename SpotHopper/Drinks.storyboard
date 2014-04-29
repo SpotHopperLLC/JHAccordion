@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="pjT-4Z-Cya">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="pjT-4Z-Cya">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -9,7 +9,7 @@
             <objects>
                 <viewController storyboardIdentifier="DrinksNearbyViewController" id="pjT-4Z-Cya" customClass="DrinksNearbyViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="WpZ-eZ-abp" customClass="SHLabelLatoLight">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" id="c1y-oz-6Pz" customClass="SHViewTranlucentWhite">
@@ -91,7 +91,7 @@ available here</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="RJg-Cn-L2c">
-                                <rect key="frame" x="87" y="382" width="147" height="34"/>
+                                <rect key="frame" x="87" y="457.5" width="147" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <state key="normal" image="btn_at_different_spot.png">
@@ -127,7 +127,7 @@ available here</string>
             <objects>
                 <viewController storyboardIdentifier="DrinkListMenuViewController" id="kb9-hh-FFz" customClass="DrinkListMenuViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="srB-cf-kWT">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" id="qB3-fF-zTn" userLabel="View Tranlucent White - Location" customClass="SHViewTranlucentWhite">
@@ -188,7 +188,7 @@ available here</string>
                                 <inset key="insetFor6xAndEarlier" minX="0.0" minY="64" maxX="0.0" maxY="-64"/>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="tsN-bR-bt6">
-                                <rect key="frame" x="0.0" y="93" width="320" height="322"/>
+                                <rect key="frame" x="0.0" y="93" width="320" height="410"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <inset key="insetFor6xAndEarlier" minX="0.0" minY="64" maxX="0.0" maxY="-20"/>
@@ -198,7 +198,7 @@ available here</string>
                                 </connections>
                             </tableView>
                             <containerView hidden="YES" contentMode="scaleToFill" id="sbe-dA-6Nk">
-                                <rect key="frame" x="0.0" y="93" width="320" height="387"/>
+                                <rect key="frame" x="0.0" y="93" width="320" height="475"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <connections>
@@ -206,19 +206,19 @@ available here</string>
                                 </connections>
                             </containerView>
                             <view contentMode="scaleToFill" id="DEr-kr-stA" userLabel="Info View">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="gOG-ue-Bfl" userLabel="White Screen Image View">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pencilarrow" id="apz-Zz-Syo">
-                                        <rect key="frame" x="140" y="207" width="40" height="65"/>
+                                        <rect key="frame" x="140" y="295" width="40" height="65"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     </imageView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get started by creating a new list of recommended drinks" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hZU-o6-8IZ">
-                                        <rect key="frame" x="20" y="271" width="280" height="178"/>
+                                        <rect key="frame" x="20" y="359" width="280" height="178"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                         <fontDescription key="fontDescription" name="GillSans-Light" family="Gill Sans" pointSize="38"/>
                                         <color key="textColor" red="0.37254902719999999" green="0.3803921938" blue="0.38431376220000002" alpha="1" colorSpace="deviceRGB"/>
@@ -260,15 +260,15 @@ available here</string>
             <objects>
                 <viewController storyboardIdentifier="AdjustDrinkListSliderViewController" automaticallyAdjustsScrollViewInsets="NO" id="zQQ-3d-nEz" customClass="AdjustDrinkListSliderViewController" sceneMemberID="viewController">
                     <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="ZXS-mx-nnD">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="387"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="475"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="orange_gradient_background.png" id="FQ1-uN-vHB">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="387"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="475"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="vL3-88-Gh4" customClass="SHButtonLatoLight">
-                                <rect key="frame" x="0.0" y="323" width="320" height="64"/>
+                                <rect key="frame" x="0.0" y="411" width="320" height="64"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="0.59999999999999998" colorSpace="calibratedWhite"/>
                                 <inset key="insetFor6xAndEarlier" minX="0.0" minY="20" maxX="0.0" maxY="-20"/>
@@ -282,7 +282,7 @@ available here</string>
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="OZx-mk-ZiD">
-                                <rect key="frame" x="0.0" y="39" width="320" height="348"/>
+                                <rect key="frame" x="0.0" y="39" width="320" height="436"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -343,11 +343,11 @@ available here</string>
             <objects>
                 <viewController storyboardIdentifier="DrinkListViewController" id="sA2-0I-v5i" customClass="DrinkListViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gk5-Mu-whR">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_carousel_background.png" id="iX5-Wy-6S2">
-                                <rect key="frame" x="0.0" y="93" width="320" height="393"/>
+                                <rect key="frame" x="0.0" y="93" width="320" height="481"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                             <view contentMode="scaleToFill" id="frx-5Z-i1r" userLabel="View Tranlucent White - Placeholder" customClass="SHViewTranlucentWhite">
@@ -418,7 +418,7 @@ available here</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view hidden="YES" contentMode="scaleToFill" id="Jdc-uf-TVt">
-                                <rect key="frame" x="20" y="136" width="280" height="236"/>
+                                <rect key="frame" x="20" y="185" width="280" height="236"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oops" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="N2x-w9-khL" customClass="SHLabelLatoRegular">
@@ -440,7 +440,7 @@ available here</string>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="13V-oU-Bpx">
-                                <rect key="frame" x="0.0" y="93" width="320" height="322"/>
+                                <rect key="frame" x="0.0" y="93" width="320" height="410"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="uuo-UT-3rr">
@@ -556,16 +556,68 @@ available here</string>
             </objects>
             <point key="canvasLocation" x="757" y="179"/>
         </scene>
+        <!--Drinks View Controller-->
+        <scene sceneID="vvt-Ig-iv5">
+            <objects>
+                <viewController storyboardIdentifier="DrinksViewController" id="Ecm-U2-w5B" customClass="DrinksViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Db5-cK-aZX">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="72" sectionHeaderHeight="22" sectionFooterHeight="22" id="1Tt-DK-HAU">
+                                <rect key="frame" x="0.0" y="114" width="320" height="454"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <inset key="insetFor6xAndEarlier" minX="0.0" minY="64" maxX="0.0" maxY="-20"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="Ecm-U2-w5B" id="fo9-7V-edT"/>
+                                    <outlet property="delegate" destination="Ecm-U2-w5B" id="dcV-7T-F3F"/>
+                                </connections>
+                            </tableView>
+                            <view contentMode="scaleToFill" id="ouS-6R-2ZT" customClass="SHViewTranlucentWhite">
+                                <rect key="frame" x="0.0" y="64" width="320" height="52"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="txt_reviews_search_background.png" id="UW3-Wc-IBA">
+                                        <rect key="frame" x="9" y="10" width="302" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search for spot or drink review..." minimumFontSize="17" clearButtonMode="whileEditing" id="eOi-NJ-YyL" customClass="SHTextFieldLatoLight">
+                                        <rect key="frame" x="44" y="11" width="262" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="done"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="Ecm-U2-w5B" id="dLL-j7-XWQ"/>
+                                        </connections>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="insetFor6xAndEarlier" minX="0.0" minY="64" maxX="0.0" maxY="-64"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="tblSpots" destination="1Tt-DK-HAU" id="wXp-iy-RrM"/>
+                        <outlet property="txtSearch" destination="eOi-NJ-YyL" id="o4V-dX-b43"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5C8-cN-FXg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="246" y="-524"/>
+        </scene>
         <!--Find Drinks At View Controller-->
         <scene sceneID="j8P-ym-yB0">
             <objects>
                 <viewController storyboardIdentifier="FindDrinksAtViewController" id="ozB-p7-ys6" customClass="FindDrinksAtViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="YSB-Jq-6g8">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="NX0-tL-KOY">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="ozB-p7-ys6" id="rU9-WD-asf"/>
@@ -615,11 +667,11 @@ available here</string>
             <objects>
                 <viewController storyboardIdentifier="DrinkProfileViewController" id="Urs-WT-CvC" customClass="DrinkProfileViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="azK-Ic-NrA">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="bhD-HN-yfF">
-                                <rect key="frame" x="0.0" y="114" width="320" height="306"/>
+                                <rect key="frame" x="0.0" y="114" width="320" height="394"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -707,10 +759,11 @@ available here</string>
         <image name="img_expand_east_orange.png" width="27" height="27"/>
         <image name="orange_gradient_background.png" width="259" height="564"/>
         <image name="pencilarrow" width="40" height="65"/>
+        <image name="txt_reviews_search_background.png" width="302" height="32"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
 </document>

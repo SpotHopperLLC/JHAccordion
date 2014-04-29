@@ -31,6 +31,7 @@
 - (void)goToLaunch:(BOOL)animated;
 
 // Drinks
+- (void)goToDrinks;
 - (void)goToDrinksNearBy;
 - (void)goToDrinkListMenu;
 - (void)goToDrinkListMenuAtSpot:(SpotModel*)spot;
