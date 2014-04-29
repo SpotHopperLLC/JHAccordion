@@ -219,7 +219,7 @@ typedef void(^AlertBlock)();
 }
 
 - (void)sidebarViewControllerClickedDrinks:(SidebarViewController *)sidebarViewController {
-    [self goToDrinksNearBy];
+    [self goToDrinks];
 }
 
 - (void)sidebarViewControllerClickedSpecials:(SidebarViewController *)sidebarViewController {

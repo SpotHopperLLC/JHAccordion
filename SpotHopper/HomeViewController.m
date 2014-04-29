@@ -115,7 +115,7 @@
 
 - (IBAction)onClickDrinks:(id)sender {
     [Tracker track:@"Home to Drinks" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    [self goToDrinksNearBy];
+    [self goToDrinks];
 }
 
 - (IBAction)onClickSpecials:(id)sender {

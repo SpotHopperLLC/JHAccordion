@@ -569,7 +569,7 @@
         [UIView animateWithDuration:( animated ? 0.35f : 0.0f ) animations:^{
             [_containerAdjustSliders setFrame:frame];
         } completion:^(BOOL finished) {
-            
+            [_adjustDrinkListSliderViewController openSection:0];
         }];
         
     } else {

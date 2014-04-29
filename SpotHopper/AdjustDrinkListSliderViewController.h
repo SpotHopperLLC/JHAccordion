@@ -20,6 +20,8 @@
 
 - (void)resetForm;
 
+- (void)openSection:(NSInteger)section;
+
 @end
 
 @protocol AdjustDrinkSliderListSliderViewControllerDelegate <NSObject>
