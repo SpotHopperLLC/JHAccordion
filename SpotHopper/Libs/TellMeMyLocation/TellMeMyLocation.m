@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 SpotHopper. All rights reserved.
 //
 
+#define kLocationUpdateTimeout              2.0
+#define kTimeBetweenLocationRefreshes       30
+#define kSimulatorLatitude                  43.060179
+#define kSimulatorLongitude                 -87.885228
+
 #define kLastLocationLat @"last_location_lat"
 #define kLastLocationLng @"last_location_lng"
 #define kLastLocationName @"last_location_name"
@@ -18,23 +23,41 @@
 
 NSString * const kTellMeMyLocationChangedNotification = @"TellMeMyLocationChangedNotification";
 
-@interface TellMeMyLocation()
+@interface TellMeMyLocation() <CLLocationManagerDelegate>
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, copy) FoundBlock foundBlock;
 @property (nonatomic, copy) FailureBlock failureBlock;
 
+@property (nonatomic, strong) CLLocation *bestLocation;
+
 @end
 
 @implementation TellMeMyLocation
 
-@synthesize locationManager = _locationManager;
-@synthesize foundBlock = _foundBlock;
-@synthesize failureBlock = _failureBlock;
+static CLLocation *_currentDeviceLocation;
+static NSDate *_lastDeviceLocationRefresh;
+
+#pragma mark - Public Implemention
 
 - (void)findMe:(CLLocationAccuracy)accuracy found:(FoundBlock)foundBlock failure:(FailureBlock)failureBlock {
+    
+#if TARGET_IPHONE_SIMULATOR
+	CLLocation *location = [[CLLocation alloc] initWithLatitude:kSimulatorLatitude longitude:kSimulatorLongitude];
+	[self finishWithBestLocation:location error:nil];
+    return;
+#endif
+
+    // finish immediately if the device location was refreshed recently
+    if (_lastDeviceLocationRefresh && _bestLocation && foundBlock) {
+        NSTimeInterval diff = [[NSDate date] timeIntervalSinceDate:_lastDeviceLocationRefresh];
+        if (diff <= kTimeBetweenLocationRefreshes) {
+            foundBlock(_bestLocation);
+            return;
+        }
+    }
+    
     if ([CLLocationManager locationServicesEnabled]) {
-        
         if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied){
             failureBlock([NSError errorWithDomain:kTellMeMyLocationDomain code:1 userInfo:@{
                                                                                               NSLocalizedDescriptionKey : @"App Permission Denied",
@@ -61,32 +84,17 @@ NSString * const kTellMeMyLocationChangedNotification = @"TellMeMyLocationChange
 
     [_locationManager setDesiredAccuracy:accuracy];
     [_locationManager startUpdatingLocation];
-}
-
-#pragma mark - CLLocation Delegate
-
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    if (_failureBlock != nil) {
-        _failureBlock(error);
-    }
-
-    [_locationManager stopUpdatingLocation];
+    [self performSelector:@selector(stopUpdatingLocationAfterTimeout:) withObject:_locationManager afterDelay:kLocationUpdateTimeout];
 
 }
 
-// Delegate method from the CLLocationManagerDelegate protocol.
-- (void)locationManager:(CLLocationManager *)manage didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-    [_locationManager stopUpdatingLocation];
-    
-    if (_foundBlock != nil) {
-        _foundBlock(newLocation);
-    }
-
++ (CLLocation *)currentDeviceLocation {
+    return _currentDeviceLocation;
 }
 
 + (void)setLastLocation:(CLLocation*)location completionHandler:(TellMeMyLocationCompletionHandler)completionHandler {
     // Saves location
-    if (location != nil) {
+    if (location) {
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:location.coordinate.latitude] forKey:kLastLocationLat];
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithFloat:location.coordinate.longitude] forKey:kLastLocationLng];
         [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kLastLocationDate];
@@ -133,7 +141,7 @@ NSString * const kTellMeMyLocationChangedNotification = @"TellMeMyLocationChange
 }
 
 + (void)setLastLocationName:(NSString*)name {
-    if (name != nil && name.length) {
+    if (name.length) {
         [[NSUserDefaults standardUserDefaults] setObject:name forKey:kLastLocationName];
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLastLocationName];
@@ -142,7 +150,7 @@ NSString * const kTellMeMyLocationChangedNotification = @"TellMeMyLocationChange
 }
 
 + (void)setLastLocationNameShort:(NSString*)nameShort {
-    if (nameShort != nil && nameShort.length) {
+    if (nameShort.length) {
         [[NSUserDefaults standardUserDefaults] setObject:nameShort forKey:kLastLocationNameShort];
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLastLocationNameShort];
@@ -158,7 +166,7 @@ NSString * const kTellMeMyLocationChangedNotification = @"TellMeMyLocationChange
     NSNumber *lat = [[NSUserDefaults standardUserDefaults] objectForKey:kLastLocationLat];
     NSNumber *lng = [[NSUserDefaults standardUserDefaults] objectForKey:kLastLocationLng];
     
-    if (lat != nil && lng != nil) {
+    if (lat && lng) {
         return [[CLLocation alloc] initWithLatitude:lat.floatValue longitude:lng.floatValue];
     }
     return nil;
@@ -181,6 +189,59 @@ NSString * const kTellMeMyLocationChangedNotification = @"TellMeMyLocationChange
     }
     else {
         return @"Undefined";
+    }
+}
+
+#pragma mark - Private Implemention
+
+- (void)stopUpdatingLocationAfterTimeout:(CLLocationManager *)manager {
+    if (manager) {
+        [manager stopUpdatingLocation];
+        manager.delegate = nil;
+    }
+    [self finishWithBestLocation:_bestLocation error:nil];
+}
+
+- (void)finishWithBestLocation:(CLLocation *)location error:(NSError *)error {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopUpdatingLocationAfterTimeout:) object:nil];
+    _currentDeviceLocation = location;
+    _lastDeviceLocationRefresh = [NSDate date];
+    // the following line crashes with bad memory access for no apparent reason
+    
+    if (_foundBlock) {
+        _foundBlock(location);
+    }
+}
+
+#pragma mark - CLLocationManagerDelegate
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    if (_failureBlock) {
+        _failureBlock(error);
+    }
+    
+    [_locationManager stopUpdatingLocation];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    CLLocation *latestLocation = nil;
+    
+    if (locations.count) {
+        latestLocation = [locations lastObject];
+    }
+    
+    if (_bestLocation == nil) {
+        _bestLocation = latestLocation;
+    }
+
+    if (latestLocation.horizontalAccuracy < _bestLocation.horizontalAccuracy) {
+        self.bestLocation = latestLocation;
+    }
+
+    if (_bestLocation.horizontalAccuracy <= manager.desiredAccuracy) {
+        [manager stopUpdatingLocation];
+        manager.delegate = nil;
+        [self finishWithBestLocation:_bestLocation error:nil];
     }
 }
 
