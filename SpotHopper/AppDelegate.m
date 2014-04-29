@@ -56,7 +56,6 @@
 @interface AppDelegate() <iRateDelegate>
 
 @property (nonatomic, strong) Mockery *mockery;
-@property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
 
 @end
 
@@ -81,66 +80,22 @@
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
-    // Location finder
-    _tellMeMyLocation = [[TellMeMyLocation alloc] init];
-    
-    // Initialize Parse
-    [Parse setApplicationId:kParseApplicationID
-                  clientKey:kParseClientKey];
-    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
-    [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge|
-     UIRemoteNotificationTypeAlert|
-     UIRemoteNotificationTypeSound];
+    if (kParseApplicationID.length) {
+        // Initialize Parse
+        [Parse setApplicationId:kParseApplicationID
+                      clientKey:kParseClientKey];
+        [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+        [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge|
+         UIRemoteNotificationTypeAlert|
+         UIRemoteNotificationTypeSound];
+    }
     
     // Initializes Raven (Sentry) for error reporting/logging
     [RavenClient clientWithDSN:kSentryDSN];
     [[RavenClient sharedClient] setupExceptionHandler];
     
-    // Initializes resource linkng for JSONAPI
-    [JSONAPIResourceLinker link:@"average_review" toLinkedType:@"average_reviews"];
-    [JSONAPIResourceLinker link:@"base_alcohol" toLinkedType:@"base_alcohols"];
-    [JSONAPIResourceLinker link:@"drink" toLinkedType:@"drinks"];
-    [JSONAPIResourceLinker link:@"drink_type" toLinkedType:@"drink_types"];
-    [JSONAPIResourceLinker link:@"drink_subtype" toLinkedType:@"drink_subtypes"];
-    [JSONAPIResourceLinker link:@"drink_list" toLinkedType:@"drink_lists"];
-    [JSONAPIResourceLinker link:@"image" toLinkedType:@"images"];
-    [JSONAPIResourceLinker link:@"live_special" toLinkedType:@"live_specials"];
-    [JSONAPIResourceLinker link:@"menu_item" toLinkedType:@"menu_items"];
-    [JSONAPIResourceLinker link:@"menu_type" toLinkedType:@"menu_types"];
-    [JSONAPIResourceLinker link:@"price" toLinkedType:@"prices"];
-    [JSONAPIResourceLinker link:@"review" toLinkedType:@"reviews"];
-    [JSONAPIResourceLinker link:@"size" toLinkedType:@"sizes"];
-    [JSONAPIResourceLinker link:@"slider" toLinkedType:@"sliders"];
-    [JSONAPIResourceLinker link:@"slider_template" toLinkedType:@"slider_templates"];
-    [JSONAPIResourceLinker link:@"spot" toLinkedType:@"spots"];
-    [JSONAPIResourceLinker link:@"spot_type" toLinkedType:@"spot_types"];
-    [JSONAPIResourceLinker link:@"spot_list" toLinkedType:@"spot_lists"];
-    [JSONAPIResourceLinker link:@"spot_list_mood" toLinkedType:@"spot_list_moods"];
-    [JSONAPIResourceLinker link:@"user" toLinkedType:@"users"];
+    [self prepareResources];
     
-    // Initializes model linking for JSONAPI
-    [JSONAPIResourceModeler useResource:[AverageReviewModel class] toLinkedType:@"average_reviews"];
-    [JSONAPIResourceModeler useResource:[BaseAlcoholModel class] toLinkedType:@"base_alcohols"];
-    [JSONAPIResourceModeler useResource:[DrinkModel class] toLinkedType:@"drinks"];
-    [JSONAPIResourceModeler useResource:[DrinkTypeModel class] toLinkedType:@"drink_types"];
-    [JSONAPIResourceModeler useResource:[DrinkSubtypeModel class] toLinkedType:@"drink_subtypes"];
-    [JSONAPIResourceModeler useResource:[DrinkListModel class] toLinkedType:@"drink_lists"];
-    [JSONAPIResourceModeler useResource:[ErrorModel class] toLinkedType:@"errors"];
-    [JSONAPIResourceModeler useResource:[ImageModel class] toLinkedType:@"images"];
-    [JSONAPIResourceModeler useResource:[LiveSpecialModel class] toLinkedType:@"live_specials"];
-    [JSONAPIResourceModeler useResource:[MenuItemModel class] toLinkedType:@"menu_items"];
-    [JSONAPIResourceModeler useResource:[MenuTypeModel class] toLinkedType:@"menu_types"];
-    [JSONAPIResourceModeler useResource:[PriceModel class] toLinkedType:@"prices"];
-    [JSONAPIResourceModeler useResource:[ReviewModel class] toLinkedType:@"reviews"];
-    [JSONAPIResourceModeler useResource:[SizeModel class] toLinkedType:@"sizes"];
-    [JSONAPIResourceModeler useResource:[SliderModel class] toLinkedType:@"sliders"];
-    [JSONAPIResourceModeler useResource:[SliderTemplateModel class] toLinkedType:@"slider_templates"];
-    [JSONAPIResourceModeler useResource:[SpotModel class] toLinkedType:@"spots"];
-    [JSONAPIResourceModeler useResource:[SpotTypeModel class] toLinkedType:@"spot_types"];
-    [JSONAPIResourceModeler useResource:[SpotListModel class] toLinkedType:@"spot_lists"];
-    [JSONAPIResourceModeler useResource:[SpotListMoodModel class] toLinkedType:@"spot_list_moods"];
-    [JSONAPIResourceModeler useResource:[UserModel class] toLinkedType:@"users"];
-
     // Navigation bar styling
     [[UINavigationBar appearance] setTintColor:kColorOrange];
     
@@ -185,6 +140,15 @@
             [[Mixpanel sharedInstance] track:@"First Use"];
         }
     }
+
+    [self refreshDeviceLocationWithCompletionBlock:^{
+        NSDate *date = [TellMeMyLocation lastLocationDate];
+        if (date != nil && abs([date timeIntervalSinceNow]) > kRefreshLocationTime) {
+            [TellMeMyLocation setLastLocation:[TellMeMyLocation currentDeviceLocation] completionHandler:^{
+                // do nothing
+            }];
+        }
+    }];
     
     return YES;
 }
@@ -244,26 +208,80 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    [self refreshDeviceLocationWithCompletionBlock:^{
+        // do nothing
+    }];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [FBSession.activeSession handleDidBecomeActive];
-    
-    NSDate *date = [TellMeMyLocation lastLocationDate];
-    if (date != nil && abs([date timeIntervalSinceNow]) > kRefreshLocationTime) {
-        [_tellMeMyLocation findMe:kCLLocationAccuracyKilometer found:^(CLLocation *newLocation) {
-            [TellMeMyLocation setLastLocation:newLocation completionHandler:^{
-                
-            }];
-        } failure:^(NSError *error) {
-            
-        }];
-    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark - Private
+
+- (void)prepareResources {
+    // Initializes resource linkng for JSONAPI
+    [JSONAPIResourceLinker link:@"average_review" toLinkedType:@"average_reviews"];
+    [JSONAPIResourceLinker link:@"base_alcohol" toLinkedType:@"base_alcohols"];
+    [JSONAPIResourceLinker link:@"drink" toLinkedType:@"drinks"];
+    [JSONAPIResourceLinker link:@"drink_type" toLinkedType:@"drink_types"];
+    [JSONAPIResourceLinker link:@"drink_subtype" toLinkedType:@"drink_subtypes"];
+    [JSONAPIResourceLinker link:@"drink_list" toLinkedType:@"drink_lists"];
+    [JSONAPIResourceLinker link:@"image" toLinkedType:@"images"];
+    [JSONAPIResourceLinker link:@"live_special" toLinkedType:@"live_specials"];
+    [JSONAPIResourceLinker link:@"menu_item" toLinkedType:@"menu_items"];
+    [JSONAPIResourceLinker link:@"menu_type" toLinkedType:@"menu_types"];
+    [JSONAPIResourceLinker link:@"price" toLinkedType:@"prices"];
+    [JSONAPIResourceLinker link:@"review" toLinkedType:@"reviews"];
+    [JSONAPIResourceLinker link:@"size" toLinkedType:@"sizes"];
+    [JSONAPIResourceLinker link:@"slider" toLinkedType:@"sliders"];
+    [JSONAPIResourceLinker link:@"slider_template" toLinkedType:@"slider_templates"];
+    [JSONAPIResourceLinker link:@"spot" toLinkedType:@"spots"];
+    [JSONAPIResourceLinker link:@"spot_type" toLinkedType:@"spot_types"];
+    [JSONAPIResourceLinker link:@"spot_list" toLinkedType:@"spot_lists"];
+    [JSONAPIResourceLinker link:@"spot_list_mood" toLinkedType:@"spot_list_moods"];
+    [JSONAPIResourceLinker link:@"user" toLinkedType:@"users"];
+    
+    // Initializes model linking for JSONAPI
+    [JSONAPIResourceModeler useResource:[AverageReviewModel class] toLinkedType:@"average_reviews"];
+    [JSONAPIResourceModeler useResource:[BaseAlcoholModel class] toLinkedType:@"base_alcohols"];
+    [JSONAPIResourceModeler useResource:[DrinkModel class] toLinkedType:@"drinks"];
+    [JSONAPIResourceModeler useResource:[DrinkTypeModel class] toLinkedType:@"drink_types"];
+    [JSONAPIResourceModeler useResource:[DrinkSubtypeModel class] toLinkedType:@"drink_subtypes"];
+    [JSONAPIResourceModeler useResource:[DrinkListModel class] toLinkedType:@"drink_lists"];
+    [JSONAPIResourceModeler useResource:[ErrorModel class] toLinkedType:@"errors"];
+    [JSONAPIResourceModeler useResource:[ImageModel class] toLinkedType:@"images"];
+    [JSONAPIResourceModeler useResource:[LiveSpecialModel class] toLinkedType:@"live_specials"];
+    [JSONAPIResourceModeler useResource:[MenuItemModel class] toLinkedType:@"menu_items"];
+    [JSONAPIResourceModeler useResource:[MenuTypeModel class] toLinkedType:@"menu_types"];
+    [JSONAPIResourceModeler useResource:[PriceModel class] toLinkedType:@"prices"];
+    [JSONAPIResourceModeler useResource:[ReviewModel class] toLinkedType:@"reviews"];
+    [JSONAPIResourceModeler useResource:[SizeModel class] toLinkedType:@"sizes"];
+    [JSONAPIResourceModeler useResource:[SliderModel class] toLinkedType:@"sliders"];
+    [JSONAPIResourceModeler useResource:[SliderTemplateModel class] toLinkedType:@"slider_templates"];
+    [JSONAPIResourceModeler useResource:[SpotModel class] toLinkedType:@"spots"];
+    [JSONAPIResourceModeler useResource:[SpotTypeModel class] toLinkedType:@"spot_types"];
+    [JSONAPIResourceModeler useResource:[SpotListModel class] toLinkedType:@"spot_lists"];
+    [JSONAPIResourceModeler useResource:[SpotListMoodModel class] toLinkedType:@"spot_list_moods"];
+    [JSONAPIResourceModeler useResource:[UserModel class] toLinkedType:@"users"];
+}
+
+#pragma mark - Location
+
+- (void)refreshDeviceLocationWithCompletionBlock:(void (^)())completionBlock {
+    TellMeMyLocation *tellMeMyLocation = [[TellMeMyLocation alloc] init];
+    [tellMeMyLocation findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
+        if (completionBlock) {
+            completionBlock();
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
 }
 
 #pragma mark - iRateDelegate
