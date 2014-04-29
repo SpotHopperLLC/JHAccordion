@@ -33,7 +33,7 @@
 
 #import "Tracker.h"
 
-#import <JHAccordion/JHAccordion.h>
+#import "JHAccordion.h"
 
 #import <CoreLocation/CoreLocation.h>
 

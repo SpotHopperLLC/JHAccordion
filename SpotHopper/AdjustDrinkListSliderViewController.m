@@ -35,7 +35,7 @@
 
 #import "Tracker.h"
 
-#import <JHAccordion/JHAccordion.h>
+#import "JHAccordion.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -407,6 +407,10 @@
     [_tblSliders reloadData];
 }
 
+- (void)closeSection:(NSInteger)section {
+    [_accordion closeSection:section];
+}
+
 - (void)openSection:(NSInteger)section {
     [_accordion openSection:section];
 }
@@ -687,9 +691,6 @@
 }
 
 - (void)onSectionTapped:(UIButton *)button {
-    NSLog(@"section: %li", (long)
-          button.tag);
-    
     [_accordion onClickSection:button];
 }
 

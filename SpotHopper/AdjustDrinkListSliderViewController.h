@@ -20,6 +20,7 @@
 
 - (void)resetForm;
 
+- (void)closeSection:(NSInteger)section;
 - (void)openSection:(NSInteger)section;
 
 @end

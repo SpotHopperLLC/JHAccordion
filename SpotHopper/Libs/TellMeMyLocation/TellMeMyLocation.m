@@ -201,9 +201,15 @@ static NSDate *_lastDeviceLocationRefresh;
     _lastDeviceLocationRefresh = [NSDate date];
     // the following line crashes with bad memory access for no apparent reason
     
-    if (_foundBlock) {
+    if (error && _failureBlock) {
+        _failureBlock(error);
+    }
+    else if (!error && _foundBlock) {
         _foundBlock(location);
     }
+    
+    _foundBlock = nil;
+    _failureBlock = nil;
 }
 
 #pragma mark - CLLocationManagerDelegate
