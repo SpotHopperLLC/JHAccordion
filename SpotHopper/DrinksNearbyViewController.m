@@ -222,7 +222,8 @@
     // Params for location search
     NSDictionary *params = @{
                              kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:_currentLocation.coordinate.latitude],
-                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:_currentLocation.coordinate.longitude]
+                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:_currentLocation.coordinate.longitude],
+                             kSpotModelParamsPageSize : @1
                              };
     
     // Getting first spot nearby
