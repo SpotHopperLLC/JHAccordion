@@ -37,7 +37,7 @@
 
 #import "TellMeMyLocation.h"
 
-#import <JHAccordion/JHAccordion.h>
+#import "JHAccordion.h"
 #import <Promises/Promise.h>
 
 #import <CoreLocation/CoreLocation.h>

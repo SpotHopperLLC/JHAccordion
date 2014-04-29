@@ -35,7 +35,7 @@
 #import "ErrorModel.h"
 #import "UserModel.h"
 
-#import <JHAccordion/JHAccordion.h>
+#import "JHAccordion.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -111,14 +111,13 @@
     CGRect frame = _lblInfo.frame;
     frame.size.height = [self heightForString:_lblInfo.text font:_lblInfo.font maxWidth:CGRectGetWidth(_lblInfo.frame)];
     _lblInfo.frame = frame;
+    
+    [self hideInfo:FALSE];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
-    
-    // Open when the view appears
-    [_accordion openSection:0];
     
     // Deselects cell
     [_tblMenu deselectRowAtIndexPath:[_tblMenu indexPathForSelectedRow] animated:NO];
@@ -142,13 +141,25 @@
         [self fetchDrinkLists];
     }
     
-    if ([[ClientSessionManager sharedClient] hasSeenDrinklists] == NO) {
-        [self showInfo:FALSE];
-        [[ClientSessionManager sharedClient] setHasSeenDrinklists:TRUE];
-    }
-    else {
-        [self hideInfo:FALSE];
-    }
+    [_adjustDrinkListSliderViewController closeSection:0];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+
+
+    //    if ([[ClientSessionManager sharedClient] hasSeenDrinklists] == NO) {
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self createDrinklistWithSliders];
+        });
+    
+    //        [[ClientSessionManager sharedClient] setHasSeenDrinklists:TRUE];
+    //    }
+    //    else {
+    //
+    //    }
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -165,7 +176,7 @@
     }
 }
 
-- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     NSString * segueName = segue.identifier;
     if ([segueName isEqualToString: @"EmbedAdjustDrinkListSliderViewController"]) {
         _adjustDrinkListSliderViewController = (AdjustDrinkListSliderViewController*)[segue destinationViewController];
@@ -196,44 +207,22 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 0) {
-        return 2;
-    } else if (section == 1) {
-        // Only show if not a drinklist at a spot
-        if (_spot == nil && [self hasBeenSeenBefore] == YES) {
-            return _featuredDrinkLists.count;
-        }
+    if (section == 0 || section == 1) {
+        return 0;
     } else if (section == 2) {
-        if ([self hasBeenSeenBefore] == YES) {
-            return _myDrinkLists.count;
-        }
+        return _myDrinkLists.count;
     }
     
     return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (indexPath.section == 0) {
-        CreateListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CreateListCell" forIndexPath:indexPath];
-        
-        if (indexPath.row == 0) {
-            [cell.lblText setText:@"Adjust Sliders"];
-            [cell.lblSubtext setText:@"smooth vs boozy, fruitiness, bitterness, etc"];
-        } else if (indexPath.row == 1) {
-            [cell.lblText setText:@"or Name a Favorite Drink"];
-            [cell.lblSubtext setText:@"Find drinks similar to it, wherever you go"];
-        }
-        
-        return cell;
-    } else if (indexPath.section == 1) {
+    if (indexPath.section < 2) {
         ListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ListCell" forIndexPath:indexPath];
         
-        DrinkListModel *drinkList = [_featuredDrinkLists objectAtIndex:indexPath.row];
-        [cell.lblName setText:drinkList.name];
-        
         return cell;
-    } else if (indexPath.section == 2) {
+    }
+    else if (indexPath.section == 2) {
         ListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ListCell" forIndexPath:indexPath];
         
         DrinkListModel *drinkList = [_myDrinkLists objectAtIndex:indexPath.row];
@@ -248,29 +237,12 @@
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (indexPath.section == 0) {
-        
-        if ([ClientSessionManager sharedClient].isLoggedIn == NO) {
-            [self showAlert:@"Login Required" message:@"Cannot create a spotlist without logging in"];
-            return;
-        }
-        
-        if (indexPath.row == 0) {
-            [self showAdjustSlidersView:YES animated:YES];
-        } else if (indexPath.row == 1) {
-            [self goToFindSimilarDrinks:self];
-        }
-    } else if (indexPath.section == 1) {
-        DrinkListModel *drinkList = [_featuredDrinkLists objectAtIndex:indexPath.row];
-        [self goToDrinkList:drinkList createdWithAdjustSliders:NO atSpot:_spot];
-    } else if (indexPath.section == 2) {
+    if (indexPath.section == 2) {
         DrinkListModel *drinkList = [_myDrinkLists objectAtIndex:indexPath.row];
         [self goToDrinkList:drinkList createdWithAdjustSliders:NO atSpot:_spot];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -290,13 +262,8 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
+    if (section < 2) {
         return 65.0f;
-    } if (section == 1  && [self hasBeenSeenBefore] == YES && _featuredDrinkLists.count > 0) {
-        // Only show if not a drinklist at a spot
-        if (_spot == nil) {
-            return 65.0f;
-        }
     } if (section == 2 && [self hasBeenSeenBefore] == YES && _myDrinkLists.count > 0) {
         return 65.0f;
     }
@@ -307,15 +274,11 @@
 #pragma mark - JHAccordionDelegate
 
 - (void)accordion:(JHAccordion *)accordion openingSection:(NSInteger)section {
-    if (section == 0) [_sectionHeader0 setSelected:YES];
-    else if (section == 1) [_sectionHeader1 setSelected:YES];
-    else if (section == 2) [_sectionHeader2 setSelected:YES];
+    if (section == 2) [_sectionHeader2 setSelected:YES];
 }
 
 - (void)accordion:(JHAccordion *)accordion closingSection:(NSInteger)section {
-    if (section == 0) [_sectionHeader0 setSelected:NO];
-    else if (section == 1) [_sectionHeader1 setSelected:NO];
-    else if (section == 2) [_sectionHeader2 setSelected:NO];
+    if (section == 2) [_sectionHeader2 setSelected:NO];
 }
 
 - (void)accordion:(JHAccordion *)accordion openedSection:(NSInteger)section {
@@ -605,34 +568,37 @@
     if (section == 0) {
         if (_sectionHeader0 == nil) {
             _sectionHeader0 = [self instantiateSectionHeaderView];
-            [_sectionHeader0 setIconImage:[UIImage imageNamed:@"icon_plus"]];
+            [_sectionHeader0 setIconImage:[UIImage imageNamed:@"icon_sliders"]];
             
             UIFont *font = _sectionHeader0.lblText.font;
             [_sectionHeader0.lblText setFont:[UIFont fontWithName:font.fontName size:15.0]];
             CGFloat fontSize = _sectionHeader0.lblText.font.pointSize;
-            [_sectionHeader0.lblText setText:@"Create Personalized Drinklist" withFont:[UIFont fontWithName:@"Lato-Regular" size:fontSize] onString:@"Create"];
+            [_sectionHeader0.lblText setText:@"Search by Flavor Sliders" withFont:[UIFont fontWithName:@"Lato-Regular" size:fontSize] onString:@"Flavor Sliders"];
             
             [_sectionHeader0.btnBackground setTag:section];
-            [_sectionHeader0.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
-            
-            [_sectionHeader0 setSelected:[_accordion isSectionOpened:section]];
+            [_sectionHeader0.btnBackground addTarget:self action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
+
+            // point arrow right
+            _sectionHeader0.imgArrow.transform = CGAffineTransformMakeRotation(-M_PI/2);
         }
         
         return _sectionHeader0;
     } else if (section == 1) {
         if (_sectionHeader1 == nil) {
             _sectionHeader1 = [self instantiateSectionHeaderView];
-            [_sectionHeader1 setIconImage:[UIImage imageNamed:@"icon_featured_lists"]];
+            [_sectionHeader1 setIconImage:[UIImage imageNamed:@"icon_search"]];
             
             UIFont *font = _sectionHeader1.lblText.font;
             [_sectionHeader1.lblText setFont:[UIFont fontWithName:font.fontName size:15.0]];
             CGFloat fontSize = _sectionHeader1.lblText.font.pointSize;
-            [_sectionHeader1.lblText setText:@"Jump In: Featured Drinklists" withFont:[UIFont fontWithName:@"Lato-Regular" size:fontSize] onString:@"Jump In:"];
+            [_sectionHeader1.lblText setText:@"Name a favorite, find similar" withFont:[UIFont fontWithName:@"Lato-Regular" size:fontSize] onStrings:@[@"favorite", @"similar"]];
             
             [_sectionHeader1.btnBackground setTag:section];
-            [_sectionHeader1.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
+            [_sectionHeader1.btnBackground addTarget:self action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
             
-            [_sectionHeader1 setSelected:[_accordion isSectionOpened:section]];
+            // point arrow right
+            _sectionHeader1.imgArrow.transform = CGAffineTransformMakeRotation(-M_PI/2);
+
         }
         
         return _sectionHeader1;
@@ -654,6 +620,33 @@
         return _sectionHeader2;
     }
     return nil;
+}
+
+- (void)onClickSection:(UIView *)view {
+    if (view.tag == 0) {
+        [self createDrinklistWithSliders];
+    }
+    else if (view.tag == 1) {
+        [self createDrinklistForSimilar];
+    }
+}
+
+- (void)createDrinklistWithSliders {
+    if ([ClientSessionManager sharedClient].isLoggedIn == NO) {
+        [self showAlert:@"Login Required" message:@"Cannot create a spotlist without logging in"];
+        return;
+    }
+    
+    [self showAdjustSlidersView:YES animated:YES];
+}
+
+- (void)createDrinklistForSimilar {
+    if ([ClientSessionManager sharedClient].isLoggedIn == NO) {
+        [self showAlert:@"Login Required" message:@"Cannot create a spotlist without logging in"];
+        return;
+    }
+    
+    [self goToFindSimilarDrinks:self];
 }
 
 @end

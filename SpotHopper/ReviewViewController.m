@@ -31,7 +31,7 @@
 #import "Tracker.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
-#import <JHAccordion/JHAccordion.h>
+#import "JHAccordion.h"
 
 @interface ReviewViewController ()<UITableViewDataSource, UITableViewDelegate, ReviewSliderCellDelegate, JHAccordionDelegate>
 
@@ -237,14 +237,13 @@
 }
 
 - (void)accordion:(JHAccordion *)accordion openedSection:(NSInteger)section {
-    CGRect sectionRect = [_tblReviews rectForSection:section];
-    
-    CGFloat tableHeight = CGRectGetHeight(_tblReviews.frame);
-    if (sectionRect.origin.y > tableHeight) {
-        CGFloat newOffset = sectionRect.origin.y - (tableHeight / 3);
-        CGPoint offset = CGPointMake(0.0, newOffset);
-        [_tblReviews setContentOffset:offset animated:TRUE];
-    }
+//    CGRect sectionRect = [_tblReviews rectForSection:section];
+//    CGFloat tableHeight = CGRectGetHeight(_tblReviews.frame);
+//    if (sectionRect.origin.y > tableHeight) {
+//        CGFloat newOffset = sectionRect.origin.y - (tableHeight / 3);
+//        CGPoint offset = CGPointMake(0.0, newOffset);
+//        [_tblReviews setContentOffset:offset animated:TRUE];
+//    }
 }
 
 - (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
