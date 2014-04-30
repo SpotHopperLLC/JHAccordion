@@ -12,7 +12,7 @@ pod 'Promises', :git => 'http://github.com/joshdholtz/ios-promises.git'
 pod 'iRate', '~> 1.8.0'
 
 # UI
-pod 'JHAccordion', :git => 'https://github.com/joshdholtz/JHAccordion.git'
+#pod 'JHAccordion', :git => 'https://github.com/joshdholtz/JHAccordion.git'
 pod 'JHAutoCompleteTextField', :git => 'http://github.com/joshdholtz/JHAutoCompleteTextField.git'
 pod 'JHSidebar', :git => 'https://github.com/joshdholtz/JHSidebar.git'
 pod 'TTTAttributedLabel', '~> 1.8.1'

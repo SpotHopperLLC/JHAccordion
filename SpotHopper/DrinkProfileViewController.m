@@ -32,7 +32,7 @@
 #import "DrinkListModel.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
-#import <JHAccordion/JHAccordion.h>
+#import "JHAccordion.h"
 
 #import <MapKit/MapKit.h>
 

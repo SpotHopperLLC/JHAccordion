@@ -21,7 +21,7 @@
 #import "MenuItemModel.h"
 #import "MenuTypeModel.h"
 
-#import <JHAccordion/JHAccordion.h>
+#import "JHAccordion.h"
 
 @interface DrinkMenuViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate>
 

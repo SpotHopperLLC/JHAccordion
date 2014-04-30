@@ -24,7 +24,7 @@
 #import "ReviewModel.h"
 #import "UserModel.h"
 
-#import <JHAccordion/JHAccordion.h>
+#import "JHAccordion.h"
 
 @interface MyReviewsViewController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, JHAccordionDelegate>
 

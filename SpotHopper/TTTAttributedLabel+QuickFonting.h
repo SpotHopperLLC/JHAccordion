@@ -12,4 +12,6 @@
 
 - (void)setText:(NSString*)text withFont:(UIFont *)font onString:(NSString*)stringToFont;
 
+- (void)setText:(NSString*)text withFont:(UIFont *)font onStrings:(NSArray*)strings;
+
 @end
