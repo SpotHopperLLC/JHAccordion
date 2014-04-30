@@ -203,7 +203,6 @@
 }
 
 - (void)accordion:(JHAccordion *)accordion openedSection:(NSInteger)section {
-    
 }
 
 - (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {

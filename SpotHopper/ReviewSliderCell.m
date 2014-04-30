@@ -85,8 +85,6 @@
     if (_delegate && [_delegate respondsToSelector:@selector(reviewSliderCell:finishedChangingValue:)]) {
         [_delegate reviewSliderCell:self finishedChangingValue:value];
     }
-    
-    [Tracker track:@"Slider Value Changed" properties:@{@"Min" : [self notNilString:_lblMinimum.text], @"Max" : [self notNilString:_lblMaximum.text], @"Value" : [NSNumber numberWithFloat:value]}];
 }
 
 - (NSString *)notNilString:(NSString *)string {

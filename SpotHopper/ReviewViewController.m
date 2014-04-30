@@ -237,17 +237,15 @@
 }
 
 - (void)accordion:(JHAccordion *)accordion openedSection:(NSInteger)section {
-//    CGRect sectionRect = [_tblReviews rectForSection:section];
-//    CGFloat tableHeight = CGRectGetHeight(_tblReviews.frame);
-//    if (sectionRect.origin.y > tableHeight) {
-//        CGFloat newOffset = sectionRect.origin.y - (tableHeight / 3);
-//        CGPoint offset = CGPointMake(0.0, newOffset);
-//        [_tblReviews setContentOffset:offset animated:TRUE];
-//    }
 }
 
 - (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
     
+}
+
+- (void)accordion:(JHAccordion*)accordion contentSizeChanged:(CGSize)contentSize {
+    NSLog(@"contentSizeChanged");
+    //[accordion slideUpLastOpenedSection];
 }
 
 #pragma mark - ReviewSliderCellDelegate

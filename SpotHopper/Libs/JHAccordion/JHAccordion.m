@@ -8,6 +8,8 @@
 
 #import "JHAccordion.h"
 
+#define kInvalidSection -1
+
 @interface JHAccordion()
 
 @property (nonatomic, strong) NSMutableArray *selectedSections;
@@ -89,6 +91,7 @@
 }
 
 - (void)closeSection:(NSInteger)section {
+    _lastOpenedSection = kInvalidSection;
     if ([self isSectionOpened:section]) {
         [self toggleSection:section];
     }
@@ -179,6 +182,18 @@
     }
 }
 
+- (void)slideUpLastOpenedSection {
+    if (_lastOpenedSection >= 0 && [self isSectionOpened:_lastOpenedSection]) {
+        NSInteger numberOfSections = [_tableView numberOfSections];
+        if (numberOfSections > 0) {
+            NSInteger numberOfRowsInSection = [_tableView numberOfRowsInSection:_lastOpenedSection];
+            if (numberOfRowsInSection > 0) {
+                [self slideUpSection:_lastOpenedSection inTableView:_tableView];
+            }
+        }
+    }
+}
+
 #pragma mark - Private
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -188,17 +203,6 @@
             if ([_delegate respondsToSelector:@selector(accordion:contentSizeChanged:)]) {
                 [_delegate accordion:self contentSizeChanged:_lastContentSize];
             }
-            
-            if (_lastOpenedSection >= 0 && [self isSectionOpened:_lastOpenedSection]) {
-                NSInteger numberOfSections = [_tableView numberOfSections];
-                if (numberOfSections > 0) {
-                    NSInteger numberOfRowsInSection = [_tableView numberOfRowsInSection:_lastOpenedSection];
-                    if (numberOfRowsInSection > 0) {
-                        [self slideUpSection:_lastOpenedSection inTableView:_tableView];
-                    }
-                }
-            }
-            
         }
     }
 }
