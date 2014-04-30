@@ -153,11 +153,6 @@
     
     [_lblNear setFont:[UIFont fontWithName:@"Lato-Regular" size:_lblNear.font.pointSize]];
     
-//    if ([[ClientSessionManager sharedClient] hasSeenSpotlists] == NO) {
-//        [self showInfo:FALSE];
-//        [[ClientSessionManager sharedClient] setHasSeenSpotlists:TRUE];
-//    }
-    
     if (_updatedSearchNeeded) {
         _location = [TellMeMyLocation lastLocation];
         [_adjustSpotListSliderViewController setLocation:_location];
