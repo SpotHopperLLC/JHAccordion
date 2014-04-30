@@ -143,6 +143,8 @@
 
 - (void)keyboardWillShow:(NSNotification*)notification {
     [self keyboardWillHideOrShow:notification show:YES];
+    
+    [_tblSpots setContentOffset:CGPointMake(0, CGRectGetHeight(_mapView.frame))];
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification {

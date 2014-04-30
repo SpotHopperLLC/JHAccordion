@@ -132,11 +132,6 @@
     [super viewWillDisappear:animated];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - Tracking
 
 - (NSString *)screenName {
@@ -151,6 +146,8 @@
 
 - (void)keyboardWillShow:(NSNotification*)notification {
     [self keyboardWillHideOrShow:notification show:YES];
+    
+    [_tblSpots setContentOffset:CGPointMake(0, CGRectGetHeight(_mapView.frame))];
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification {
