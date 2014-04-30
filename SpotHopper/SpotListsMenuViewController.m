@@ -168,12 +168,12 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    if ([[ClientSessionManager sharedClient] hasSeenDrinklists] == NO) {
+    if ([[ClientSessionManager sharedClient] hasSeenSpotlists] == NO) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            [self createSpotlistForSimilar];
+            [self createSpotlistWithSliders];
         });
         
-        [[ClientSessionManager sharedClient] setHasSeenDrinklists:TRUE];
+        [[ClientSessionManager sharedClient] setHasSeenSpotlists:TRUE];
     }
 }
 

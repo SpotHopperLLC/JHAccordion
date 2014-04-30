@@ -59,7 +59,9 @@
 
 @end
 
-@implementation AppDelegate
+@implementation AppDelegate {
+    TellMeMyLocation *_tellMeMyLocation;
+}
 
 + (void)initialize {
     //configure iRate
@@ -274,8 +276,11 @@
 #pragma mark - Location
 
 - (void)refreshDeviceLocationWithCompletionBlock:(void (^)())completionBlock {
-    TellMeMyLocation *tellMeMyLocation = [[TellMeMyLocation alloc] init];
-    [tellMeMyLocation findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
+    if (!_tellMeMyLocation) {
+        _tellMeMyLocation = [[TellMeMyLocation alloc] init];
+    }
+    
+    [_tellMeMyLocation findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
         if (completionBlock) {
             completionBlock();
         }

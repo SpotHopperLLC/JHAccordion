@@ -33,7 +33,9 @@ NSString * const kTellMeMyLocationChangedNotification = @"TellMeMyLocationChange
 
 @end
 
-@implementation TellMeMyLocation
+@implementation TellMeMyLocation {
+    CLAuthorizationStatus _authorizationStatus;
+}
 
 static CLLocation *_currentDeviceLocation;
 static NSDate *_lastDeviceLocationRefresh;
@@ -188,11 +190,14 @@ static NSDate *_lastDeviceLocationRefresh;
 #pragma mark - Private Implemention
 
 - (void)stopUpdatingLocationAfterTimeout:(CLLocationManager *)manager {
-    if (manager) {
-        [manager stopUpdatingLocation];
-        manager.delegate = nil;
+    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
+        if (manager) {
+            [manager stopUpdatingLocation];
+            manager.delegate = nil;
+        }
+    
+        [self finishWithBestLocation:_bestLocation error:nil];
     }
-    [self finishWithBestLocation:_bestLocation error:nil];
 }
 
 - (void)finishWithBestLocation:(CLLocation *)location error:(NSError *)error {
