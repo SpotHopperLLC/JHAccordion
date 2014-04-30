@@ -38,9 +38,28 @@
     
     // Sets price
     if (menuItem != nil) {
-        PriceModel *price = [[menuItem prices] firstObject];
+        NSArray *menutItemPricesSorted = [[menuItem prices] sortedArrayUsingComparator:^NSComparisonResult(PriceModel *obj1, PriceModel *obj2) {
+            
+            NSNumber *price1 = (obj1.cents ?: @0);
+            NSNumber *price2 = (obj2.cents ?: @0);
+            
+            return [price1 compare:price2];
+        }];
+        
+        NSMutableArray *pricesToDisplay = @[].mutableCopy;
+        if (menutItemPricesSorted.count >= 1) {
+            PriceModel *price = [menutItemPricesSorted objectAtIndex:0];
+            [pricesToDisplay addObject:[self priceString:price]];
+        }
+        if (menutItemPricesSorted.count >= 2) {
+            PriceModel *price = [menutItemPricesSorted objectAtIndex:1];
+            [pricesToDisplay addObject:[self priceString:price]];
+        }
+        
+        PriceModel *price = [menutItemPricesSorted firstObject];
+        
         if (price != nil) {
-            [_lblPrice setText:[NSString stringWithFormat:@"%@ / %@", [NSNumber numberWithFloat:(price.cents.floatValue / 100.0f)].currencyFormat, price.size.name]];
+            [_lblPrice setText:[pricesToDisplay componentsJoinedByString:@", "]];
         } else {
             [_lblPrice setText:@""];
         }
@@ -86,6 +105,12 @@
     if ([_delegate respondsToSelector:@selector(drinkCardCollectionViewCellClickedFindIt:)]) {
         [_delegate drinkCardCollectionViewCellClickedFindIt:self];
     }
+}
+
+#pragma mark - Private
+
+- (NSString*)priceString:(PriceModel*)price {
+    return [NSString stringWithFormat:@"%@ / %@", [NSNumber numberWithFloat:(price.cents.floatValue / 100.0f)].currencyFormat, price.size.name];
 }
 
 @end
