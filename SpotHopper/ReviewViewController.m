@@ -244,8 +244,7 @@
 }
 
 - (void)accordion:(JHAccordion*)accordion contentSizeChanged:(CGSize)contentSize {
-    NSLog(@"contentSizeChanged");
-    //[accordion slideUpLastOpenedSection];
+    [accordion slideUpLastOpenedSection];
 }
 
 #pragma mark - ReviewSliderCellDelegate
