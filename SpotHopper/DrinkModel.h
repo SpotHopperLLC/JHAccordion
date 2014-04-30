@@ -15,7 +15,7 @@
 #define kDrinkModelParamABV @"abv"
 #define kDrinkModelParamStyle @"style"
 #define kDrinkModelParamVintage @"vintage"
-#define kDrinkModelParamReceipe @"receipe"
+#define kDrinkModelParamRecipe @"recipe"
 #define kDrinkModelParamRegion @"region"
 #define kDrinkModelParamVarietal @"varietal"
 #define kDrinkModelParamSpotId @"spot_id"
