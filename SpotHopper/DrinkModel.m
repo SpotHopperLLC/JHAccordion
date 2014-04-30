@@ -187,10 +187,6 @@
     return [self objectForKey:@"region"];
 }
 
-- (NSString *)recipe {
-    return [self objectForKey:@"receipe"];
-}
-
 - (SpotModel *)spot {
     return [self linkedResourceForKey:@"spot"];
 }

@@ -259,9 +259,9 @@
         NSString *region = [drinkFromResposne objectForKey:@"region"];
         XCTAssertEqualObjects(drinkModel.region, region, @"Should equal %@", region);
         
-        // Assert receipe
-        NSString *receipe = [drinkFromResposne objectForKey:@"receipe"];
-        XCTAssertEqualObjects(drinkModel.recipe, receipe, @"Should equal %@", receipe);
+        // Assert recipe
+        NSString *recipe = [drinkFromResposne objectForKey:@"recipe"];
+        XCTAssertEqualObjects(drinkModel.recipeOfDrink, recipe, @"Should equal %@", recipe);
         
         // Assert spot
         NSDictionary *linkedSpot = nil;
