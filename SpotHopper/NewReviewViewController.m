@@ -719,14 +719,16 @@
         // Looks up zip code from address, city, and state
         [self showHUD:@"Verifying address"];
         CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-        [geocoder doubleGeocodeAddressDictionary:@{ @"Address" : address, @"City" : city, @"State" : state } completionHandler:^(NSArray *placemarks, NSError *error) {
-            CLPlacemark *placemark = placemarks.firstObject;
-            if (error || placemark == nil) {
+        [geocoder doubleGeocodeAddressDictionary:@{ @"Street" : address, @"City" : city, @"State" : state } completionHandler:^(NSArray *singlePlacemarks, NSArray *doublePlacemarks, NSError *error) {
+            
+            CLPlacemark *latLngPlacemark = singlePlacemarks.firstObject;
+            CLPlacemark *zipPlacemark = doublePlacemarks.firstObject;
+            if (error || latLngPlacemark == nil || zipPlacemark == nil) {
                 [self showAlert:@"Oops" message:@"Could not get zip code based on address, city, and state"];
                 return;
             }
             
-            NSString *zipCode = placemark.postalCode;
+            NSString *zipCode = zipPlacemark.postalCode;
                 
             NSMutableDictionary *params = @{
                                      kSpotModelParamName: name,
@@ -747,9 +749,9 @@
                     [params setObject:_spotBasedOffOf.foursquareId forKey:kSpotModelParamFoursquareId];
                 }
                 
-            } else if (placemark.location != nil) {
-                [params setObject:[NSNumber numberWithFloat:placemark.location.coordinate.latitude] forKey:kSpotModelParamLatitude];
-                [params setObject:[NSNumber numberWithFloat:placemark.location.coordinate.longitude] forKey:kSpotModelParamLongitude];
+            } else if (latLngPlacemark.location != nil) {
+                [params setObject:[NSNumber numberWithFloat:latLngPlacemark.location.coordinate.latitude] forKey:kSpotModelParamLatitude];
+                [params setObject:[NSNumber numberWithFloat:latLngPlacemark.location.coordinate.longitude] forKey:kSpotModelParamLongitude];
             }
             
             // Send request to create spot
