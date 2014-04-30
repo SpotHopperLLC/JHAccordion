@@ -18,6 +18,7 @@
 #import "SHNavigationController.h"
 #import "SearchNewReviewViewController.h"
 #import "NewReviewViewController.h"
+#import "NewReviewTypeViewController.h"
 #import "ReviewViewController.h"
 #import "ReviewsMenuViewController.h"
 
@@ -314,7 +315,9 @@
 
         } else if (_showNotWhatLookingFor == YES) {
             if (indexPath.row == 0) {
-                [self goToNewReview];
+                NewReviewTypeViewController *viewController = [[self reviewsStoryboard] instantiateViewControllerWithIdentifier:@"NewReviewTypeViewController"];
+                [viewController setDelegate:self];
+                [self.navigationController pushViewController:viewController animated:YES];
             }
         }
     }

@@ -99,7 +99,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (tableView == _tblReviewTypes) {
         NSString *reviewType = [kReviewTypes objectAtIndex:indexPath.row];
-        [self goToNewReviewWithType:reviewType];
+        [self goToNewReviewWithType:reviewType delegate:_delegate];
     }
 }
 

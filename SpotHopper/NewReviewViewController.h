@@ -8,6 +8,8 @@
 
 #import "BaseViewController.h"
 
+@class ReviewModel;
+
 @protocol NewReviewViewControllerDelegate;
 
 @interface NewReviewViewController : BaseViewController

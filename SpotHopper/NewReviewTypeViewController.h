@@ -8,6 +8,10 @@
 
 #import "BaseViewController.h"
 
+@protocol NewReviewViewControllerDelegate;
+
 @interface NewReviewTypeViewController : BaseViewController
+
+@property (nonatomic, weak) id<NewReviewViewControllerDelegate> delegate;
 
 @end
