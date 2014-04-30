@@ -87,7 +87,7 @@
 }
 
 - (void)goToDrinkList:(DrinkListModel*)drinkList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders atSpot:(SpotModel*)spot {
-    [Tracker track:@"View Drinklist" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Drinklist" properties:@{@"Created with Sliders" : createdWithAdjustSliders ? @YES : @NO, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
     DrinkListViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkListViewController"];
     [viewController setDrinkList:drinkList];
     [viewController setCreatedWithAdjustSliders:createdWithAdjustSliders];

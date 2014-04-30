@@ -25,6 +25,7 @@
 - (BOOL)isSectionOpened:(NSInteger)section;
 - (void)onClickSection:(UIView*)sender;
 - (void)slideUpSection:(NSInteger)section inTableView:(UITableView *)tableView;
+- (void)slideUpLastOpenedSection;
 
 @end
 

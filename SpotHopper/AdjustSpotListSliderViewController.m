@@ -270,14 +270,6 @@
 }
 
 - (void)accordion:(JHAccordion *)accordion openedSection:(NSInteger)section {
-    CGRect sectionRect = [_tblSliders rectForSection:section];
-    
-    CGFloat tableHeight = CGRectGetHeight(_tblSliders.frame);
-    if (sectionRect.origin.y > tableHeight) {
-        CGFloat newOffset = sectionRect.origin.y - (tableHeight / 3);
-        CGPoint offset = CGPointMake(0.0, newOffset);
-        [_tblSliders setContentOffset:offset animated:TRUE];
-    }
 }
 
 - (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
@@ -287,6 +279,10 @@
     } else if (section == kSectionMoods) {
         [self changeMood];
     }
+}
+
+- (void)accordion:(JHAccordion*)accordion contentSizeChanged:(CGSize)contentSize {
+    [accordion slideUpLastOpenedSection];
 }
 
 #pragma mark - Actions
@@ -439,6 +435,17 @@
     NSMutableArray *allTheSliders = [NSMutableArray array];
     [allTheSliders addObjectsFromArray:_sliders];
     [allTheSliders addObjectsFromArray:_advancedSliders];
+    
+    for (SliderModel *sliderModel in _sliders) {
+        if (sliderModel.value) {
+            [Tracker track:@"Slider Value Set" properties:@{@"Type" : @"Spotlist", @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @NO}];
+        }
+    }
+    for (SliderModel *sliderModel in _advancedSliders) {
+        if (sliderModel.value) {
+            [Tracker track:@"Slider Value Set" properties:@{@"Type" : @"Spotlist", @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @YES}];
+        }
+    }
     
     NSNumber *latitude = nil, *longitude = nil;
     if (_location != nil) {
