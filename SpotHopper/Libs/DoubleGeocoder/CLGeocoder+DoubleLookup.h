@@ -8,10 +8,12 @@
 
 #import <CoreLocation/CoreLocation.h>
 
+typedef void (^DoubleLookupGeocodeCompletionHandler)(NSArray *singleLookupPlacemarks, NSArray *doubleLookupPlacemarks, NSError *error);
+
 @interface CLGeocoder (DoubleLookup)
 
-- (void)doubleGeocodeAddressDictionary:(NSDictionary *)addressDictionary completionHandler:(CLGeocodeCompletionHandler)completionHandler;
-- (void)doubleGeocodeAddressString:(NSString *)addressString completionHandler:(CLGeocodeCompletionHandler)completionHandler;
-- (void)doubleGeocodeAddressString:(NSString *)addressString inRegion:(CLRegion *)region completionHandler:(CLGeocodeCompletionHandler)completionHandler;
+- (void)doubleGeocodeAddressDictionary:(NSDictionary *)addressDictionary completionHandler:(DoubleLookupGeocodeCompletionHandler)completionHandler;
+- (void)doubleGeocodeAddressString:(NSString *)addressString completionHandler:(DoubleLookupGeocodeCompletionHandler)completionHandler;
+- (void)doubleGeocodeAddressString:(NSString *)addressString inRegion:(CLRegion *)region completionHandler:(DoubleLookupGeocodeCompletionHandler)completionHandler;
 
 @end
