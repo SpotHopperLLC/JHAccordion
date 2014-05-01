@@ -1119,11 +1119,17 @@
         [self showHUD:@"Loading sliders"];
         [SliderTemplateModel getSliderTemplates:params success:^(NSArray *sliderTemplates, JSONAPI *jsonApi) {
             [self hideHUD];
-            _sliderTemplates = sliderTemplates;
+            
+            // Sorting sliders
+            _sliderTemplates = [sliderTemplates sortedArrayUsingComparator:^NSComparisonResult(SliderTemplateModel *obj1, SliderTemplateModel *obj2) {
+                return [(obj1.order ?: @0) compare:(obj2.order ?: @0)];
+            }];
             
             // Creating sliders
             [_sliders removeAllObjects];
             for (SliderTemplateModel *sliderTemplate in _sliderTemplates) {
+                NSLog(@"Slider template order - %@", sliderTemplate.order);
+                
                 SliderModel *slider = [[SliderModel alloc] init];
                 [slider setSliderTemplate:sliderTemplate];
                 [_sliders addObject:slider];
