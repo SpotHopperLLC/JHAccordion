@@ -82,6 +82,7 @@
     // Configures accordion
     _accordion = [[JHAccordion alloc] initWithTableView:_tblSliders];
     [_accordion setDelegate:self];
+    [_accordion openSection:0];
     
     // Configures table
     [_tblSliders setTableFooterView:[[UIView alloc] init]];
@@ -104,8 +105,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    [_accordion openSection:0];
 }
 
 - (void)didReceiveMemoryWarning {
