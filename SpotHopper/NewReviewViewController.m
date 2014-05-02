@@ -1119,7 +1119,11 @@
         [self showHUD:@"Loading sliders"];
         [SliderTemplateModel getSliderTemplates:params success:^(NSArray *sliderTemplates, JSONAPI *jsonApi) {
             [self hideHUD];
-            _sliderTemplates = sliderTemplates;
+            
+            // Sorting sliders
+            _sliderTemplates = [sliderTemplates sortedArrayUsingComparator:^NSComparisonResult(SliderTemplateModel *obj1, SliderTemplateModel *obj2) {
+                return [(obj1.order ?: @0) compare:(obj2.order ?: @0)];
+            }];
             
             // Creating sliders
             [_sliders removeAllObjects];
