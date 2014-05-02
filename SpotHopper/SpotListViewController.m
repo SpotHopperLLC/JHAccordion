@@ -63,6 +63,8 @@
 
 @property (nonatomic, strong) NSNumber *manuallyChangedRadius;
 
+@property (nonatomic, assign) BOOL triedLoadingAfterFailure;
+
 @end
 
 @implementation SpotListViewController {
@@ -399,6 +401,7 @@
 
     [Tracker track:@"Fetching Spotlist Results"];
     
+    __weak CLLocation *weakLocation = location;
     [self showHUD:@"Getting new spots"];
     [_spotList putSpotList:nil latitude:[NSNumber numberWithFloat:location.coordinate.latitude] longitude:[NSNumber numberWithFloat:location.coordinate.longitude] radius:_manuallyChangedRadius sliders:nil success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
         _isSearching = FALSE;
@@ -421,7 +424,21 @@
         _isSearching = FALSE;
         [Tracker track:@"Fetched Spotlist Results" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
-        [self showAlert:@"Oops" message:errorModel.human];
+
+        // Checks so see if a failure had happened
+        if (_triedLoadingAfterFailure == NO) {
+            _triedLoadingAfterFailure = YES;
+            
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Failed to load spotlist" message:@"Would you like to try loading again?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+            [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                if (buttonIndex == 1) {
+                    [self fetchSpotlistResults:weakLocation];
+                }
+            }];
+        } else {
+            [self showAlert:@"Oops" message:errorModel.human];
+        }
+        
     }];
     
     _selectedLocation = location;
