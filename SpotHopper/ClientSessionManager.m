@@ -74,6 +74,7 @@
 }
 
 - (AFHTTPRequestOperation *)GET:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success {
+    __weak NSDate *now = [NSDate date];
     return [super GET:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
             NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, (long)operation.response.statusCode, operation.responseString);
@@ -81,6 +82,7 @@
         }
         
         success(operation, responseObject);
+        [self handleError:operation withResponseObject:responseObject timeStarted:now];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (_debug) {
             NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, (long)operation.response.statusCode, operation.responseString);
@@ -94,10 +96,12 @@
                                                          error: nil];
         }
         success(operation, response);
+        [self handleError:operation withResponseObject:response timeStarted:now];
     }];
 }
 
 - (AFHTTPRequestOperation *)POST:(NSString *)URLString parameters:(NSDictionary *)parameters constructingBodyWithBlock:(void (^)(id<AFMultipartFormData>))block success:(void (^)(AFHTTPRequestOperation *, id))success {
+    __weak NSDate *now = [NSDate date];
     return [super POST:URLString parameters:parameters constructingBodyWithBlock:block success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
             NSLog(@"Request Headers\n\t%@", operation.request.allHTTPHeaderFields);
@@ -106,6 +110,7 @@
         }
         
         success(operation, responseObject);
+        [self handleError:operation withResponseObject:responseObject timeStarted:now];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (_debug) {
             NSLog(@"Request Headers\n\t%@", operation.request.allHTTPHeaderFields);
@@ -120,10 +125,12 @@
                                                          error: nil];
         }
         success(operation, response);
+        [self handleError:operation withResponseObject:response timeStarted:now];
     }];
 }
 
 - (AFHTTPRequestOperation *)POST:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success {
+    __weak NSDate *now = [NSDate date];
     return [super POST:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
             NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, (long)operation.response.statusCode, operation.responseString);
@@ -132,6 +139,7 @@
         }
         
         success(operation, responseObject);
+        [self handleError:operation withResponseObject:responseObject timeStarted:now];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error - %@", error);
         
@@ -148,10 +156,12 @@
                                                          error: nil];
         }
         success(operation, response);
+        [self handleError:operation withResponseObject:response timeStarted:now];
     }];
 }
 
 - (AFHTTPRequestOperation *)PUT:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success {
+    __weak NSDate *now = [NSDate date];
     return [super PUT:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
             NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, (long)operation.response.statusCode, operation.responseString);
@@ -159,6 +169,7 @@
         }
         
         success(operation, responseObject);
+        [self handleError:operation withResponseObject:responseObject timeStarted:now];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (_debug) {
             NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, (long)operation.response.statusCode, operation.responseString);
@@ -172,10 +183,12 @@
                                                          error: nil];
         }
         success(operation, response);
+        [self handleError:operation withResponseObject:response timeStarted:now];
     }];
 }
 
 - (AFHTTPRequestOperation *)DELETE:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success {
+    __weak NSDate *now = [NSDate date];
     return [super DELETE:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
             NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, (long)operation.response.statusCode, operation.responseString);
@@ -183,6 +196,7 @@
         }
         
         success(operation, responseObject);
+        [self handleError:operation withResponseObject:responseObject timeStarted:now];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (_debug) {
             NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, (long)operation.response.statusCode, operation.responseString);
@@ -196,7 +210,23 @@
                                                          error: nil];
         }
         success(operation, response);
+        [self handleError:operation withResponseObject:response timeStarted:now];
     }];
+}
+
+#pragma mark - Handle error response 
+
+- (void)handleError:(AFHTTPRequestOperation*)operation withResponseObject:(id)responseObject timeStarted:(NSDate*)date {
+    long statusCode = operation.response.statusCode;
+    if (statusCode >= 200 && statusCode < 400) {
+        // 200s are okay, 300s are redirects and things
+        return;
+    }
+    
+    CGFloat elapsedTime = [[NSDate date] timeIntervalSinceDate:date];
+    NSString *body = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
+    NSString *message = [NSString stringWithFormat:@"[Error] %ld '%@' [%.04f s]: %@", statusCode, [[operation.response URL] absoluteString], elapsedTime, body];
+    [[RavenClient sharedClient] captureMessage:message level:kRavenLogLevelDebugWarning];
 }
 
 #pragma mark - Session Helpers
