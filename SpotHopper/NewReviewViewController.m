@@ -1074,7 +1074,7 @@
 
     } fail:^(id error) {
         [self hideHUD];
-        [self showAlert:@"Oops" message:@"Looks like there was an error loading forms. Please try again later" block:^{
+        [self showAlert:@"Oops" message:@"Looks like your internet connection may be poor. Please try again later." block:^{
             [self.navigationController popViewControllerAnimated:YES];
         }];
     } always:^{
