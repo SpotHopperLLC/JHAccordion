@@ -194,6 +194,7 @@
         [self doLoginFacebook];
     } failure:^(FBSessionState state, NSError *error) {
         [self hideHUD];
+        [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:@"[Facebook Connect] - Failed to oauth, %@", [error localizedDescription]] level:kRavenLogLevelDebugInfo];
         [self showAlert:@"Oops" message:@"Looks like there was an error logging in with Facebook"];
     }];
 }
@@ -211,6 +212,7 @@
             [self hideHUD];
             // TODO: Link to FAQ on how to fix - logout and log back in
             // Error - Error Domain=STTwitterOS Code=0 "Error processing your OAuth request: invalid signature or token" UserInfo=0x17827a040 {NSLocalizedDescription=Error processing your OAuth request: invalid signature or token}
+            [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:@"[Twitter Connect] - Failed to reverse oauth, %@", [error localizedDescription]] level:kRavenLogLevelDebugInfo];
             [self showAlert:@"Oops" message:@"Looks like there was an error logging in with Twitter.\n\n Go to Settings app to logout and login without Twitter account, then try logging in with Twitter again here."];
         }];
 
@@ -218,8 +220,10 @@
     } cancel:^{
         
     } noAccounts:^{
+        [[RavenClient sharedClient] captureMessage:@"[Twitter Connect] - No accounts" level:kRavenLogLevelDebugInfo];
         [self showAlert:@"No Accounts Found" message:@"No Twitter accounts were found logged in to this device..\n\nPlease connect Twitter account in the Settings app if you would like to use Twitter in SpotHopper"];
     } permissionDenied:^{
+        [[RavenClient sharedClient] captureMessage:@"[Twitter Connect] - Permission denied" level:kRavenLogLevelDebugInfo];
         [self showAlert:@"Permission Denied" message:@"SpotHopper does not have permission to use Twitter.\n\nPlease adjust the permissions in the Settings app if you would like to use Twitter in SpotHopper"];
     }];
 }
