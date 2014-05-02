@@ -125,10 +125,8 @@
 
 - (IBAction)onClickReviews:(id)sender {
     [Tracker track:@"Home to Reviews" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    if ([ClientSessionManager sharedClient].isLoggedIn == YES) {
+    if ([self promptLoginNeeded:@"Cannot add a review without logging in"] == NO) {
         [self goToSearchForNewReview:NO notWhatLookingFor:YES createReview:YES];
-    } else {
-        [self showAlert:@"Login Required" message:@"Cannot add a review without logging in"];
     }
 }
 

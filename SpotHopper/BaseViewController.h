@@ -91,4 +91,7 @@
 - (void)showShareViewControllerWithSpot:(SpotModel*)spot shareType:(ShareViewControllerShareType)shareType;
 - (void)hideShareViewController:(void(^)(void))completion;
 
+// Prompt Login Needed
+- (BOOL)promptLoginNeeded:(NSString*)message;
+
 @end
