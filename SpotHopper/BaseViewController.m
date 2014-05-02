@@ -15,6 +15,7 @@
 #import "MBProgressHUD.h"
 
 #import "UIViewController+Navigator.h"
+#import "UIAlertView+Block.h"
 
 #import "AccountSettingsViewController.h"
 #import "FooterViewController.h"
@@ -22,12 +23,14 @@
 #import "SidebarViewController.h"
 #import "SearchViewController.h"
 
+#import "LaunchViewController.h"
 #import "DrinkProfileViewController.h"
 #import "SpotProfileViewController.h"
 
 #import "LiveSpecialModel.h"
 
 #import "AppDelegate.h"
+#import "ClientSessionManager.h"
 
 #import "SSTURLShortener.h"
 
@@ -763,6 +766,25 @@ typedef void(^AlertBlock)();
     
     [self.navigationController setViewControllers:viewControllers animated:YES];
     
+}
+
+#pragma mark - Prompt Loging Needed
+
+// Returns YES if a login is needed
+- (BOOL)promptLoginNeeded:(NSString*)message {
+    BOOL isLoggedIn = [ClientSessionManager sharedClient].isLoggedIn;
+    
+    if (isLoggedIn == NO) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Do you want to login?" message:message delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+        [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
+            if (buttonIndex == 1) {
+                [self.navigationController popToRootViewControllerAnimated:YES];
+                [self goToLaunch:YES];
+            }
+        }];
+    }
+    
+    return !isLoggedIn;
 }
 
 #pragma mark - Private
