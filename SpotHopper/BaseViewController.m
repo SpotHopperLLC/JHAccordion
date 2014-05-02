@@ -230,11 +230,15 @@ typedef void(^AlertBlock)();
 }
 
 - (void)sidebarViewControllerClickedReview:(SidebarViewController *)sidebarViewController {
-    [self goToReviewMenu];
+    if ([self promptLoginNeeded:@"Cannot add a review without logging in"] == NO) {
+        [self goToReviewMenu];
+    }
 }
 
 - (void)sidebarViewControllerClickedCheckin:(SidebarViewController *)sidebarViewController {
-    [self goToCheckin:nil];
+    if ([self promptLoginNeeded:@"Cannot checkin without logging in"] == NO) {
+        [self goToCheckin:nil];
+    }
 }
 
 - (void)sidebarViewControllerClickedAccount:(SidebarViewController *)sidebarViewController {
