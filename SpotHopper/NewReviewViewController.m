@@ -1128,8 +1128,6 @@
             // Creating sliders
             [_sliders removeAllObjects];
             for (SliderTemplateModel *sliderTemplate in _sliderTemplates) {
-                NSLog(@"Slider template order - %@", sliderTemplate.order);
-                
                 SliderModel *slider = [[SliderModel alloc] init];
                 [slider setSliderTemplate:sliderTemplate];
                 [_sliders addObject:slider];
