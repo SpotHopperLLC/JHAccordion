@@ -56,7 +56,7 @@
     // Prices
     NSMutableArray *priceStrs = [NSMutableArray array];
     for (PriceModel *price in sortedPrices) {
-        [priceStrs addObject:[NSString stringWithFormat:@"%@ / %@", [NSNumber numberWithFloat:(price.cents.floatValue / 100.0f)].currencyFormat, price.size.name]];
+        [priceStrs addObject:[price priceAndSize]];
     }
     [_lblPrices setText:[priceStrs componentsJoinedByString:@"\n"]];
     

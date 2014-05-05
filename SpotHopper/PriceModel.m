@@ -8,6 +8,10 @@
 
 #import "PriceModel.h"
 
+#import "NSNumber+Currency.h"
+
+#import "SizeModel.h"
+
 @implementation PriceModel
 
 - (NSDictionary *)mapKeysToProperties {
@@ -17,6 +21,21 @@
              @"cents" : @"cents",
              @"links.size" : @"size"
              };
+}
+
+- (NSString *)priceAndSize {
+    if (_cents == nil && _size == nil) return @"";
+    
+    NSString *price = [NSNumber numberWithFloat:(_cents.floatValue / 100.0f)].currencyFormat;
+    if (_cents != nil && _size != nil) {
+        return [NSString stringWithFormat:@"%@ / %@", price, _size.name];
+    } else if (_cents != nil) {
+        return price;
+    } else if (_size != nil) {
+        return _size.name;
+    }
+    
+    return nil;
 }
 
 @end
