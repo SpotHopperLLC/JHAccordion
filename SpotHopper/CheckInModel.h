@@ -19,10 +19,18 @@
 
 #import <JSONAPI/JSONAPI.h>
 
-@class ErrorModel;
+@class ErrorModel, SpotModel, UserModel;
 
 @interface CheckInModel : SHJSONAPIResource
 
+@property (nonatomic, strong) NSString *text;
+@property (nonatomic, strong) NSString *createdAtStr;
+@property (nonatomic, strong) NSDate *createdAt;
+@property (nonatomic, strong) UserModel *user;
+@property (nonatomic, strong) SpotModel *spot;
+
+- (Promise *)getCheckIn:(NSDictionary *)params success:(void(^)(CheckInModel *checkInModel, JSONAPI* jsonAPI))successBlock failure:(void(^)(ErrorModel* errorModel))failureBlock;
 - (Promise *)postCheckIn:(NSDictionary *)params success:(void(^)(CheckInModel *checkInModel, JSONAPI* jsonAPI))successBlock failure:(void(^)(ErrorModel* errorModel))failureBlock;
+- (Promise *)putCheckIn:(NSDictionary *)params success:(void(^)(CheckInModel *checkInModel, JSONAPI* jsonAPI))successBlock failure:(void(^)(ErrorModel* errorModel))failureBlock;
 
 @end
