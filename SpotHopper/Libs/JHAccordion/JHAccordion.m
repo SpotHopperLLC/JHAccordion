@@ -127,7 +127,15 @@
             _lastOpenedSection = selectedSection;
             [_delegate accordion:self openedSection:selectedSection];
         }
+        
+        if ([_delegate respondsToSelector:@selector(accordion:didUpdateTableView:)]) {
+            [_delegate accordion:self didUpdateTableView:_tableView];
+        }
     };
+    
+    if ([_delegate respondsToSelector:@selector(accordion:willUpdateTableView:)]) {
+        [_delegate accordion:self willUpdateTableView:_tableView];
+    }
     
     static NSString *lock = @"LOCK";
     @synchronized(lock) {

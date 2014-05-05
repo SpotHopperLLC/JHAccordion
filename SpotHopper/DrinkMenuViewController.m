@@ -32,6 +32,8 @@
 @property (nonatomic, strong) NSMutableDictionary *drinkSubtypes;
 @property (nonatomic, strong) NSArray *menuItems;
 
+@property (nonatomic, strong) NSArray *drinkTypesUpdate;
+
 @property (nonatomic, strong) JHAccordion *accordion;
 
 @property (nonatomic, strong) SectionHeaderView *sectionHeaderBeer;
@@ -43,7 +45,9 @@
 
 @end
 
-@implementation DrinkMenuViewController
+@implementation DrinkMenuViewController {
+    BOOL _isUpdatingTableView;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -209,6 +213,15 @@
     [_tblMenu reloadData];
 }
 
+- (void)accordion:(JHAccordion*)accordion willUpdateTableView:(UITableView *)tableView {
+    _isUpdatingTableView = TRUE;
+}
+
+- (void)accordion:(JHAccordion*)accordion didUpdateTableView:(UITableView *)tableView {
+    _isUpdatingTableView = FALSE;
+//    [self updateFeaturedSpotlists];
+//    [self updateMySpotlists];
+}
 
 #pragma mark - Private
 
@@ -229,13 +242,12 @@
         
         NSDictionary *forms = [jsonApi objectForKey:@"form"];
         if (forms != nil) {
-            
             // Orders drink types
-            _drinkTypes = [DrinkTypeModel jsonAPIResources:[forms objectForKey:@"drink_types"] withLinked:nil];
-            _drinkTypes = [_drinkTypes sortedArrayUsingComparator:^NSComparisonResult(DrinkTypeModel *obj1, DrinkTypeModel *obj2) {
+            _drinkTypesUpdate = [DrinkTypeModel jsonAPIResources:[forms objectForKey:@"drink_types"] withLinked:nil];
+            _drinkTypesUpdate = [_drinkTypesUpdate sortedArrayUsingComparator:^NSComparisonResult(DrinkTypeModel *obj1, DrinkTypeModel *obj2) {
                 return [obj1.name compare:obj2.name];
             }];
-            
+            [self updateDrinkTypes];
         }
         
     } failure:^(ErrorModel *errorModel) {
@@ -259,9 +271,7 @@
             
             // Adds menu type so we can display in table
             [menuTypesForDrinkType addObject:menuType];
-            
         }
-
         
         [_tblMenu reloadData];
     } fail:^(id error) {
@@ -351,6 +361,18 @@
 
     }
     return nil;
+}
+
+- (void)updateDrinkTypes {
+    if (!_isUpdatingTableView && _drinkTypesUpdate) {
+        _drinkTypes = _drinkTypesUpdate;
+        _drinkTypesUpdate = nil;
+        [_tblMenu reloadData];
+    }
+    else if (_isUpdatingTableView && _drinkTypesUpdate) {
+        // update later when the table may be done updating
+        [self performSelector:@selector(updateDrinkTypes) withObject:nil afterDelay:0.25];
+    }
 }
 
 @end

@@ -67,10 +67,14 @@
 @property (nonatomic, strong) NSArray *featuredDrinkLists;
 @property (nonatomic, strong) NSArray *myDrinkLists;
 
+@property (nonatomic, strong) NSArray *featuredDrinkListsUpdate;
+@property (nonatomic, strong) NSArray *myDrinkListsUpdate;
+
 @end
 
 @implementation DrinkListMenuViewController {
     BOOL _updatedSearchNeeded;
+    BOOL _isUpdatingTableView;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -277,6 +281,16 @@
     [_tblMenu reloadData];
 }
 
+- (void)accordion:(JHAccordion*)accordion willUpdateTableView:(UITableView *)tableView {
+    _isUpdatingTableView = TRUE;
+}
+
+- (void)accordion:(JHAccordion*)accordion didUpdateTableView:(UITableView *)tableView {
+    _isUpdatingTableView = FALSE;
+    [self updateFeaturedDrinklists];
+    [self updateMyDrinklists];
+}
+
 #pragma mark - SHButtonLatoLightLocationDelegate
 
 - (void)locationRequestsUpdate:(SHButtonLatoLightLocation *)button location:(LocationChooserViewController *)viewController {
@@ -461,9 +475,10 @@
          * Featured spot lists
          */
         Promise *promiseFeaturedSpotLists = [DrinkListModel getFeaturedDrinkLists:params success:^(NSArray *drinkListsModels, JSONAPI *jsonApi) {
-            _featuredDrinkLists = [drinkListsModels sortedArrayUsingComparator:^NSComparisonResult(DrinkListModel* obj1, DrinkListModel* obj2) {
+            _featuredDrinkListsUpdate = [drinkListsModels sortedArrayUsingComparator:^NSComparisonResult(DrinkListModel* obj1, DrinkListModel* obj2) {
                 return [obj1.name caseInsensitiveCompare:obj2.name];
             }];
+            [self updateFeaturedDrinklists];
         } failure:^(ErrorModel *errorModel) {
             
         }];
@@ -477,9 +492,10 @@
         
         UserModel *user = [ClientSessionManager sharedClient].currentUser;
         Promise *promiseMySpotLists = [user getDrinkLists:nil success:^(NSArray *drinkListsModels, JSONAPI *jsonApi) {
-            _myDrinkLists = [drinkListsModels sortedArrayUsingComparator:^NSComparisonResult(DrinkListModel* obj1, DrinkListModel* obj2) {
+            _myDrinkListsUpdate = [drinkListsModels sortedArrayUsingComparator:^NSComparisonResult(DrinkListModel* obj1, DrinkListModel* obj2) {
                 return [obj1.name caseInsensitiveCompare:obj2.name];
             }];
+            [self updateMyDrinklists];
         } failure:^(ErrorModel *errorModel) {
             
         }];
@@ -635,6 +651,30 @@
     }
     
     [self goToFindSimilarDrinks:self];
+}
+
+- (void)updateFeaturedDrinklists {
+    if (!_isUpdatingTableView && _featuredDrinkLists) {
+        _featuredDrinkLists = _featuredDrinkListsUpdate;
+        _featuredDrinkListsUpdate = nil;
+        [_tblMenu reloadData];
+    }
+    else if (_isUpdatingTableView && _featuredDrinkLists) {
+        // update later when the table may be done updating
+        [self performSelector:@selector(updateFeaturedDrinklists) withObject:nil afterDelay:0.25];
+    }
+}
+
+- (void)updateMyDrinklists {
+    if (!_isUpdatingTableView && _myDrinkListsUpdate) {
+        _myDrinkLists = _myDrinkListsUpdate;
+        _myDrinkListsUpdate = nil;
+        [_tblMenu reloadData];
+    }
+    else if (_isUpdatingTableView && _myDrinkListsUpdate) {
+        // update later when the table may be done updating
+        [self performSelector:@selector(updateMyDrinklists) withObject:nil afterDelay:0.25];
+    }
 }
 
 @end
