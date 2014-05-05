@@ -696,7 +696,7 @@ typedef void(^AlertBlock)();
         [_shareViewController.view setFrame:self.navigationController.view.frame];
         
         // Adding to window
-        [[[UIApplication sharedApplication] keyWindow]  addSubview:_shareViewController.view];
+        [[[UIApplication sharedApplication] keyWindow] addSubview:_shareViewController.view];
         
         // Animating in
         [UIView animateWithDuration:0.35 animations:^{

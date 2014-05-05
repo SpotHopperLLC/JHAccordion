@@ -1792,6 +1792,10 @@
 		2602BD9D18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9E18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9F18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
+		261E577719175B720044F496 /* CheckInModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E577619175B720044F496 /* CheckInModel.m */; };
+		261E577819175B720044F496 /* CheckInModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E577619175B720044F496 /* CheckInModel.m */; };
+		261E577919175B720044F496 /* CheckInModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E577619175B720044F496 /* CheckInModel.m */; };
+		261E577A19175B720044F496 /* CheckInModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E577619175B720044F496 /* CheckInModel.m */; };
 		2636AB3E18F8A82100591722 /* table_footer_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9418E2654900C93BBF /* table_footer_background.png */; };
 		2636AB3F18F8A82400591722 /* table_footer_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9518E2654900C93BBF /* table_footer_background@2x.png */; };
 		267C5E3A1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
@@ -2460,6 +2464,8 @@
 		2602BD9418E2654900C93BBF /* table_footer_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table_footer_background.png; sourceTree = "<group>"; };
 		2602BD9518E2654900C93BBF /* table_footer_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table_footer_background@2x.png"; sourceTree = "<group>"; };
 		2602BD9C18E283C500C93BBF /* Common.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Common.storyboard; sourceTree = "<group>"; };
+		261E577519175B720044F496 /* CheckInModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckInModel.h; sourceTree = "<group>"; };
+		261E577619175B720044F496 /* CheckInModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckInModel.m; sourceTree = "<group>"; };
 		267C5E381908B7CC00D60EB5 /* NetworkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkHelper.h; sourceTree = "<group>"; };
 		267C5E391908B7CC00D60EB5 /* NetworkHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkHelper.m; sourceTree = "<group>"; };
 		267D78D418F4A8DD00E95D54 /* SHButtonLatoBold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoBold.h; sourceTree = "<group>"; };
@@ -3112,6 +3118,8 @@
 				26ED5CB518FDDE56006901ED /* Tracker.m */,
 				267C5E381908B7CC00D60EB5 /* NetworkHelper.h */,
 				267C5E391908B7CC00D60EB5 /* NetworkHelper.m */,
+				261E577519175B720044F496 /* CheckInModel.h */,
+				261E577619175B720044F496 /* CheckInModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -5463,6 +5471,7 @@
 				03CAC19D18E9FAC300FAC5F5 /* AccountSettingsViewController.m in Sources */,
 				038664E1186D379400985CEC /* BaseViewController.m in Sources */,
 				26BABDF61910688F00852D73 /* JHAccordion.m in Sources */,
+				261E577719175B720044F496 /* CheckInModel.m in Sources */,
 				039F542718D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				038664E2186D379400985CEC /* ClientSessionManager.m in Sources */,
 				03AF8F6318E6013700DD9356 /* CheckinConfirmationViewController.m in Sources */,
@@ -5612,6 +5621,7 @@
 				03D7F56C18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */,
 				03CABFB518E7716400FAC5F5 /* BaseViewController.m in Sources */,
 				26BABDF91910688F00852D73 /* JHAccordion.m in Sources */,
+				261E577A19175B720044F496 /* CheckInModel.m in Sources */,
 				03CABFB618E7716400FAC5F5 /* DrinkListMenuViewController.m in Sources */,
 				03CABFB718E7716400FAC5F5 /* ClientSessionManager.m in Sources */,
 				03CABFB818E7716400FAC5F5 /* CheckinConfirmationViewController.m in Sources */,
@@ -5753,6 +5763,7 @@
 				03D7F56B18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */,
 				03F4E76118CA33D00056EAA9 /* BaseViewController.m in Sources */,
 				26BABDF81910688F00852D73 /* JHAccordion.m in Sources */,
+				261E577919175B720044F496 /* CheckInModel.m in Sources */,
 				039F542918D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				03F4E76218CA33D00056EAA9 /* ClientSessionManager.m in Sources */,
 				03AF8F6518E6013E00DD9356 /* CheckinConfirmationViewController.m in Sources */,
@@ -5894,6 +5905,7 @@
 				03D7F56A18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */,
 				03F4E8AF18CA34260056EAA9 /* BaseViewController.m in Sources */,
 				26BABDF71910688F00852D73 /* JHAccordion.m in Sources */,
+				261E577819175B720044F496 /* CheckInModel.m in Sources */,
 				039F542818D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				03F4E8B018CA34260056EAA9 /* ClientSessionManager.m in Sources */,
 				03AF8F6418E6013E00DD9356 /* CheckinConfirmationViewController.m in Sources */,

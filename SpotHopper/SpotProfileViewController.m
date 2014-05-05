@@ -156,7 +156,6 @@
         
         // Showing checkin
         [self showShareViewController:_spot shareType:ShareViewControllerShareCheckin];
-        
     }
 }
 
