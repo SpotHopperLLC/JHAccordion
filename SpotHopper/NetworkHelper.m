@@ -22,7 +22,7 @@
     
     __weak UIImageView *weakSelf = imageView;
     
-    // first load the thum image
+    // first load the thumb image
     NSMutableURLRequest *thumbImageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageModel.thumbUrl]];
     [thumbImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     [weakSelf setImageWithURLRequest:thumbImageRequest placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *thumbImage) {
@@ -42,6 +42,46 @@
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         [Tracker track:@"Error Loading Image" properties:@{@"URL" : imageModel.thumbUrl}];
+    }];
+}
+
++ (void)loadThumbnailImage:(ImageModel *)imageModel imageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage {
+    if (!imageModel.thumbUrl.length) {
+        // do nothing since there is no image to load
+        return;
+    }
+    
+    __weak UIImageView *weakSelf = imageView;
+    
+    // first load the thumb image
+    NSMutableURLRequest *thumbImageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageModel.thumbUrl]];
+    [thumbImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+    [weakSelf setImageWithURLRequest:thumbImageRequest placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *thumbImage) {
+        
+        weakSelf.image = thumbImage;
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        [Tracker track:@"Error Loading Image" properties:@{@"URL" : imageModel.thumbUrl}];
+    }];
+}
+
++ (void)loadSmallImage:(ImageModel *)imageModel imageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage {
+    if (!imageModel.smallUrl.length) {
+        // do nothing since there is no image to load
+        return;
+    }
+    
+    __weak UIImageView *weakSelf = imageView;
+    
+    // first load the small image
+    NSMutableURLRequest *smallImageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageModel.smallUrl]];
+    [smallImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+    [weakSelf setImageWithURLRequest:smallImageRequest placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *smallImage) {
+        
+        weakSelf.image = smallImage;
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        [Tracker track:@"Error Loading Image" properties:@{@"URL" : imageModel.smallUrl}];
     }];
 }
 

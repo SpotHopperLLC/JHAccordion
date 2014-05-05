@@ -73,6 +73,7 @@
 // Common
 - (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate;
 - (void)goToFindSimilarDrinks:(id<FindSimilarDrinksViewControllerDelegate>)delegate;
+- (void)goToPhotoAlbum:(NSArray *)images atIndex:(NSInteger)index;
 
 // Storyboards
 - (UIStoryboard*)mainStoryboard;
