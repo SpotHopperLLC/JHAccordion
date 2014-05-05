@@ -199,6 +199,11 @@
     return cell;
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"item %li for %li images", (long)indexPath.item, (long)_spot.images.count);
+    [self goToPhotoAlbum:[_spot images] atIndex:indexPath.item];
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

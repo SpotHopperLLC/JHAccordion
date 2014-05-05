@@ -1,0 +1,72 @@
+//
+//  PhotoAlbumViewController.m
+//  SpotHopper
+//
+//  Created by Brennan Stehling on 4/30/14.
+//  Copyright (c) 2014 SpotHopper. All rights reserved.
+//
+
+#import "PhotoAlbumViewController.h"
+
+#import "ImageModel.h"
+#import "NetworkHelper.h"
+
+@interface PhotoAlbumViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
+
+@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+
+@end
+
+@implementation PhotoAlbumViewController
+
+#pragma mark - View Lifecycle
+#pragma mark -
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    NSCAssert(self.collectionView, @"Outlet is required");
+    NSCAssert(self.collectionView.delegate, @"Property is required");
+    NSCAssert(self.collectionView.dataSource, @"Property is required");
+    
+    NSLog(@"Images: %li", (long)self.images.count);
+    
+    self.title = @"Photos";
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+
+#pragma mark - UICollectionViewDataSource
+#pragma mark -
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return self.images.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSCAssert(self.images, @"Images are required");
+    if (indexPath.item < self.images.count) {
+        ImageModel *imageModel = self.images[indexPath.item];
+        UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ImageCell" forIndexPath:indexPath];
+        UIImageView *imageView = (UIImageView *)[cell viewWithTag:1];
+        NSCAssert(imageView, @"Image View is required");
+        [NetworkHelper loadThumbnailImage:imageModel imageView:imageView placeholderImage:self.placeholderImage];
+    
+        return cell;
+    }
+    
+    return nil;
+}
+
+#pragma mark - UICollectionViewDelegate
+#pragma mark -
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"Selected item at %li", (long)indexPath.item);
+    //UICollectionViewCell *cell = (UICollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    
+}
+
+@end

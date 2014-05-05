@@ -37,6 +37,7 @@
 #import "TonightsSpecialsViewController.h"
 
 #import "CheckinViewController.h"
+#import "PhotoAlbumViewController.h"
 
 #import "Tracker.h"
 #import "TellMeMyLocation.h"
@@ -211,7 +212,6 @@
 
 #pragma mark - Menu
 
-
 - (void)goToMenu:(SpotModel *)spot {
     DrinkMenuViewController *viewController = [[self menuStoryboard] instantiateViewControllerWithIdentifier:@"DrinkMenuViewController"];
     [viewController setSpot:spot];
@@ -266,6 +266,14 @@
     [Tracker track:@"View Similar Drinks" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     FindSimilarDrinksViewController *viewController = [[FindSimilarDrinksViewController alloc] initWithNibName:@"FindSimilarDrinksViewController" bundle:[NSBundle mainBundle]];
     [viewController setDelegate:delegate];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToPhotoAlbum:(NSArray *)images atIndex:(NSInteger)index {
+    [Tracker track:@"View Photo Album" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    UIStoryboard *commonStoryboard = [UIStoryboard storyboardWithName:@"Common" bundle:nil];
+    PhotoAlbumViewController *viewController = [commonStoryboard instantiateViewControllerWithIdentifier:@"PhotoAlbumViewController"];
+    viewController.images = images;
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

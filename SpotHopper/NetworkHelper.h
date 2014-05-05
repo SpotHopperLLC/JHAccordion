@@ -14,6 +14,10 @@
 
 + (void)loadImageProgressively:(ImageModel *)imageModel imageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage;
 
++ (void)loadThumbnailImage:(ImageModel *)imageModel imageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage;
+
++ (void)loadSmallImage:(ImageModel *)imageModel imageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage;
+
 + (void)preloadImageModels:(NSArray *)imageModels;
 
 @end
