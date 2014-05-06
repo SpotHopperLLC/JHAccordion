@@ -311,7 +311,7 @@
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
         if (operation.response.statusCode == 200) {
-            NSArray *models = [jsonApi resourcesForKey:@"checkin"];
+            NSArray *models = [jsonApi resourcesForKey:@"checkins"];
             successBlock(models, jsonApi);
             
             // Resolves promise

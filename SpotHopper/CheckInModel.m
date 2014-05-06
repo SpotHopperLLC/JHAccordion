@@ -42,7 +42,7 @@
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
         if (operation.response.statusCode == 200) {
-            CheckInModel *model = [jsonApi resourceForKey:@"checkin"];
+            CheckInModel *model = [jsonApi resourceForKey:@"checkins"];
             successBlock(model, jsonApi);
             
             // Resolves promise
@@ -69,7 +69,7 @@
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
         if (operation.response.statusCode == 200) {
-            CheckInModel *model = [jsonApi resourceForKey:@"checkin"];
+            CheckInModel *model = [jsonApi resourceForKey:@"checkins"];
             successBlock(model, jsonApi);
             
             // Resolves promise
@@ -96,7 +96,7 @@
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
         if (operation.response.statusCode == 200) {
-            CheckInModel *model = [jsonApi resourceForKey:@"checkin"];
+            CheckInModel *model = [jsonApi resourceForKey:@"checkins"];
             successBlock(model, jsonApi);
             
             // Resolves promise

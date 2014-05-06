@@ -397,7 +397,7 @@
     CheckInModel *checkInModel = [[CheckInModel alloc] init];
     [checkInModel postCheckIn:@{@"spot_id" : spot.ID} success:^(CheckInModel *checkInModel, JSONAPI *jsonAPI) {
         
-        NSLog(@"check in: %@", checkInModel);
+        NSLog(@"check in ID: %@", checkInModel.ID);
         
         // TODO: The ID from the check in is needed to create the URL but checkInModel is nil
         
