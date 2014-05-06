@@ -249,7 +249,11 @@
     SpotProfileViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
     [viewController setSpot:spot];
     [viewController setIsCheckin:YES];
-    [self.navigationController pushViewController:viewController animated:YES];
+    
+    NSMutableArray *viewControllers = self.navigationController.viewControllers.mutableCopy;
+    [viewControllers removeLastObject];
+    [viewControllers addObject:viewController];
+    [self.navigationController setViewControllers:viewControllers animated:YES];
 }
 
 #pragma mark - Commons

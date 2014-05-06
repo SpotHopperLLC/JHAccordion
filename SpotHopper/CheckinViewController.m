@@ -17,10 +17,14 @@
 #import "MatchPercentAnnotationView.h"
 
 #import "SpotModel.h"
+#import "UserModel.h"
+#import "CheckInModel.h"
 
 #import "SearchCell.h"
 
 #import "TellMeMyLocation.h"
+#import "ClientSessionManager.h"
+#import "Tracker.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
@@ -31,6 +35,7 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
 @property (weak, nonatomic) IBOutlet UITableView *tblSpots;
+@property (weak, nonatomic) IBOutlet UIButton *btnCheckIn;
 
 @property (nonatomic, strong) MKMapView *mapView;
 @property (nonatomic, assign) CGRect tblSpotsInitialFrame;
@@ -42,6 +47,7 @@
 @property (nonatomic, strong) NSNumber *page;
 
 @property (nonatomic, strong) NSMutableArray *spots;
+@property (nonatomic, weak) SpotModel *selectedSpot;
 
 @end
 
@@ -94,6 +100,7 @@
     // Initializes stuff
     _page = @1;
     _spots = [NSMutableArray array];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -111,6 +118,9 @@
     // Keyboard notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    
+    [self hideCheckInButton:FALSE];
+    _selectedSpot = nil;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -179,23 +189,39 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     SpotModel *spot = [_spots objectAtIndex:indexPath.row];
     
     SearchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell" forIndexPath:indexPath];
     [cell setSpot:spot];
     
     return cell;
-    
 }
 
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     SpotModel *spot = [_spots objectAtIndex:indexPath.row];
-    [self checkinAtSpot:spot];
     
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if ([spot isEqual:_selectedSpot]) {
+        [_tblSpots deselectRowAtIndexPath:indexPath animated:TRUE];
+        _selectedSpot = nil;
+        [self hideCheckInButton:TRUE];
+    }
+    else {
+        self.selectedSpot = spot;
+        [self showCheckInButton:TRUE];
+        [_tblSpots selectRowAtIndexPath:indexPath animated:TRUE scrollPosition:UITableViewScrollPositionMiddle];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+    _selectedSpot = nil;
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        if (!_selectedSpot) {
+            [self hideCheckInButton:TRUE];
+        }
+    });
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -287,8 +313,15 @@
 #pragma mark - SpotAnnotationCalloutDelegate
 
 - (void)spotAnnotationCallout:(SpotAnnotationCallout *)spotAnnotationCallout clicked:(MatchPercentAnnotationView *)matchPercentAnnotationView {
-    [_mapView deselectAnnotation:matchPercentAnnotationView.annotation animated:YES];
-    [self checkinAtSpot:matchPercentAnnotationView.spot];
+    NSUInteger index = [_spots indexOfObject:matchPercentAnnotationView.spot];
+
+    if (index != NSNotFound) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+        
+        [_tblSpots selectRowAtIndexPath:indexPath animated:TRUE scrollPosition:UITableViewScrollPositionMiddle];
+        _selectedSpot = matchPercentAnnotationView.spot;
+        [self showCheckInButton:TRUE];
+    }
 }
 
 #pragma mark - Actions
@@ -306,14 +339,81 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (IBAction)onCheckIn:(id)sender {
+    [self checkinAtSpot:_selectedSpot];
+}
+
 #pragma mark - Private
 
+- (void)hideCheckInButton:(BOOL)animated {
+    // 1) slide the button down and out of view
+    // 2) set hidden to TRUE
+    
+    CGFloat viewHeight = CGRectGetHeight(self.view.frame);
+    
+    CGRect hiddenFrame = _btnCheckIn.frame;
+    hiddenFrame.origin.y = viewHeight;
+    
+    [UIView animateWithDuration:(animated ? 0.5 : 0.0) animations:^{
+        _btnCheckIn.frame = hiddenFrame;
+        _tblSpots.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
+        _tblSpots.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
+    } completion:^(BOOL finished) {
+        [_btnCheckIn setHidden:TRUE];
+    }];
+}
+
+- (void)showCheckInButton:(BOOL)animated {
+    if (_btnCheckIn.hidden == FALSE) return;
+    
+    // 1) position it below the superview (out of view)
+    // 2) set to hidden = false
+    // 3) animate it up into position
+    // 4) update the table with insets so it will not cover table cells
+    
+    CGFloat buttonHeight = CGRectGetHeight(_btnCheckIn.frame);
+    CGFloat viewHeight = CGRectGetHeight(self.view.frame);
+    
+    CGRect hiddenFrame = _btnCheckIn.frame;
+    hiddenFrame.origin.y = viewHeight;
+    _btnCheckIn.frame = hiddenFrame;
+    _btnCheckIn.hidden = FALSE;
+    [self.view bringSubviewToFront:_btnCheckIn];
+    
+    [UIView animateWithDuration:(animated ? 0.5 : 0.0) animations:^{
+        CGRect visibleFrame = _btnCheckIn.frame;
+        visibleFrame.origin.y = viewHeight - buttonHeight;
+        _btnCheckIn.frame = visibleFrame;
+        _tblSpots.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, buttonHeight, 0.0f);
+        _tblSpots.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, buttonHeight, 0.0f);
+    } completion:^(BOOL finished) {
+    }];
+}
+
 - (void)checkinAtSpot:(SpotModel*)spot {
-    if ([_delegate respondsToSelector:@selector(checkinViewController:checkedInToSpot:)]) {
-        [_delegate checkinViewController:self checkedInToSpot:spot];
-    } else {
-        [self goToCheckinAtSpot:spot];
-    }
+    UserModel *user = [ClientSessionManager sharedClient].currentUser;
+    [Tracker track:@"Check In" properties:@{@"user_id" : user.ID, @"spot_id" : spot.ID}];
+    
+    CheckInModel *checkInModel = [[CheckInModel alloc] init];
+    [checkInModel postCheckIn:@{@"spot_id" : spot.ID} success:^(CheckInModel *checkInModel, JSONAPI *jsonAPI) {
+        
+        NSLog(@"check in: %@", checkInModel);
+        
+        // TODO: The ID from the check in is needed to create the URL but checkInModel is nil
+        
+        if ([_delegate respondsToSelector:@selector(checkinViewController:checkedInToSpot:)]) {
+            // TODO: instead of passing the spot it should now pass the check in model
+            [_delegate checkinViewController:self checkedInToSpot:spot];
+        } else {
+            // TODO: instead of passing the spot it should now pass the check in model
+            [self goToCheckinAtSpot:spot];
+        }
+        
+    } failure:^(ErrorModel *errorModel) {
+        
+        NSLog(@"Error: %@", errorModel);
+        
+    }];
 }
 
 - (void)updateViewMap {
