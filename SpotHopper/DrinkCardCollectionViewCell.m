@@ -49,11 +49,11 @@
         NSMutableArray *pricesToDisplay = @[].mutableCopy;
         if (menutItemPricesSorted.count >= 1) {
             PriceModel *price = [menutItemPricesSorted objectAtIndex:0];
-            [pricesToDisplay addObject:[self priceString:price]];
+            [pricesToDisplay addObject:[price priceAndSize]];
         }
         if (menutItemPricesSorted.count >= 2) {
             PriceModel *price = [menutItemPricesSorted objectAtIndex:1];
-            [pricesToDisplay addObject:[self priceString:price]];
+            [pricesToDisplay addObject:[price priceAndSize]];
         }
         
         PriceModel *price = [menutItemPricesSorted firstObject];
@@ -105,12 +105,6 @@
     if ([_delegate respondsToSelector:@selector(drinkCardCollectionViewCellClickedFindIt:)]) {
         [_delegate drinkCardCollectionViewCellClickedFindIt:self];
     }
-}
-
-#pragma mark - Private
-
-- (NSString*)priceString:(PriceModel*)price {
-    return [NSString stringWithFormat:@"%@ / %@", [NSNumber numberWithFloat:(price.cents.floatValue / 100.0f)].currencyFormat, price.size.name];
 }
 
 @end
