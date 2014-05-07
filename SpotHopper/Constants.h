@@ -21,6 +21,7 @@
 //    #define kBaseUrl @"http://192.168.1.123:9292"
     #define kBaseUrl @"http://192.168.1.2:9292"
 //    #define kBaseUrl @"http://192.168.1.110:9292"
+    #define kWebsiteUrl @"http://192.168.1.2:9292"
 
     #define kParseApplicationID @""
     #define kParseClientKey @""
@@ -39,6 +40,7 @@
     #define kAppURLScheme  @""
 
     #define kBaseUrl @"http://spothopper-dev.herokuapp.com"
+    #define kWebsiteUrl @"http://spothopper-dev.herokuapp.com"
 
     #define kParseApplicationID @""
     #define kParseClientKey @""
@@ -57,6 +59,7 @@
     #define kAppURLScheme  @"spothopperappstaging"
 
     #define kBaseUrl @"http://spothopper-staging.herokuapp.com"
+    #define kWebsiteUrl @"http://spothopper-staging.herokuapp.com"
 
     #define kParseApplicationID @"lu4u2Bg5pBqLg9qZEWJB5W7fjSAVQPiH39Hr29kV"
     #define kParseClientKey @"BHl8KE9ZmZgmeDFnV9H886qKB9Y7EaWzZLPdOs4J"
@@ -73,6 +76,7 @@
     #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
 
     #define kBaseUrl @"https://api.spotapps.co"
+    #define kWebsiteUrl @"http://www.spothopperapp.com"
 
     #define kParseApplicationID @"8gsK1txoPG66EvpzxhHPFJeeNjWTwe1SF5j1jIKN"
     #define kParseClientKey @"z86QKJFiLmSxWAekThVpTo8yLpp29nekhTiUgV2i"

@@ -15,12 +15,14 @@ typedef enum {
 } ShareViewControllerShareType;
 
 @class SpotModel;
+@class CheckInModel;
 
 @protocol ShareViewControllerDelegate;
 
 @interface ShareViewController : UIViewController
 
 @property (nonatomic, strong) SpotModel *spot;
+@property (nonatomic, strong) CheckInModel *checkIn;
 @property (nonatomic, assign) ShareViewControllerShareType shareType;
 @property (nonatomic, weak) id<ShareViewControllerDelegate> delegate;
 

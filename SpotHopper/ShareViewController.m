@@ -23,6 +23,7 @@
 #import "LiveSpecialModel.h"
 #import "SpotModel.h"
 #import "UserModel.h"
+#import "CheckInModel.h"
 
 #import "MBProgressHUD.h"
 
@@ -173,6 +174,11 @@
 
 #pragma mark - Public
 
+- (void)setCheckIn:(CheckInModel *)checkIn {
+    _checkIn = checkIn;
+    [self updateView];
+}
+
 - (void)setSpot:(SpotModel *)spot {
     _spot = spot;
     [self updateView];
@@ -300,31 +306,37 @@
     
     // Get the actual userId if they are logged in to give them credit for the share
     // (otherwise leave userId as NSNotFound so it is not used, defensive programming)
-    NSString *type = _shareType == ShareViewControllerShareCheckin ? @"checkin" : @"special";
     
-    NSString *spotOrSpecialParams = @"";
-    if (_shareType == ShareViewControllerShareCheckin) {
-        // If there is a live special, share that id
-        if ([_spot currentLiveSpecial] != nil) {
-            spotOrSpecialParams = [NSString stringWithFormat:@"&special=%@", [_spot currentLiveSpecial].ID];
-        }
-        // Else its a daily special so share the spot id
-        else {
-            spotOrSpecialParams = [NSString stringWithFormat:@"&spot=%@", _spot.ID];
-        }
-    } else {
-        spotOrSpecialParams = [NSString stringWithFormat:@"&spot=%@", _spot.ID];
-    }
-    // If the spot or special is defined then set these params which are appended at the end
-    // Be sure to follow the query string format: &NAME=VALUE
-    // Examples: &spot=123 or &special=456
-    
-    UserModel *user = [[ClientSessionManager sharedClient] currentUser];
-    if (user != nil) {
-        return [NSString stringWithFormat:@"http://www.spothopperapp.com/?source=%@&user=%li&type=%@%@", source, (long)[user.ID integerValue], type, spotOrSpecialParams];
+    if (_checkIn) {
+        return [NSString stringWithFormat:@"%@/checkins/%@?source=%@", kWebsiteUrl, _checkIn.ID, source];
     }
     else {
-        return [NSString stringWithFormat:@"http://www.spothopperapp.com/?source=%@&type=%@%@", source, type, spotOrSpecialParams];
+        NSString *type = _shareType == ShareViewControllerShareCheckin ? @"checkin" : @"special";
+        
+        NSString *spotOrSpecialParams = @"";
+        if (_shareType == ShareViewControllerShareCheckin) {
+            // If there is a live special, share that id
+            if ([_spot currentLiveSpecial] != nil) {
+                spotOrSpecialParams = [NSString stringWithFormat:@"&special=%@", [_spot currentLiveSpecial].ID];
+            }
+            // Else its a daily special so share the spot id
+            else {
+                spotOrSpecialParams = [NSString stringWithFormat:@"&spot=%@", _spot.ID];
+            }
+        } else {
+            spotOrSpecialParams = [NSString stringWithFormat:@"&spot=%@", _spot.ID];
+        }
+        // If the spot or special is defined then set these params which are appended at the end
+        // Be sure to follow the query string format: &NAME=VALUE
+        // Examples: &spot=123 or &special=456
+        
+        UserModel *user = [[ClientSessionManager sharedClient] currentUser];
+        if (user != nil) {
+            return [NSString stringWithFormat:@"%@/?source=%@&user=%li&type=%@%@", kWebsiteUrl, source, (long)[user.ID integerValue], type, spotOrSpecialParams];
+        }
+        else {
+            return [NSString stringWithFormat:@"%@/?source=%@&type=%@%@", kWebsiteUrl, source, type, spotOrSpecialParams];
+        }
     }
 }
 

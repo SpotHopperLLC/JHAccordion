@@ -20,6 +20,4 @@
 
 @protocol DrinksViewControllerDelegate <NSObject>
 
-//- (void)drinksViewController:(DrinksViewController*)viewController checkedInToSpot:(SpotModel*)spot;
-
 @end

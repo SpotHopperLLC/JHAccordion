@@ -678,13 +678,13 @@ typedef void(^AlertBlock)();
     LiveSpecialModel *liveSpecial = [viewController liveSpecial];
     
     [self hideLiveSpecialViewController:^{
-        [self showShareViewController:liveSpecial.spot shareType:ShareViewControllerShareSpecial];
+        [self showShareViewControllerWithSpot:liveSpecial.spot shareType:ShareViewControllerShareSpecial];
     }];
 }
 
 #pragma mark - ShareViewController
 
-- (void)showShareViewController:(SpotModel *)spot shareType:(ShareViewControllerShareType)shareType {
+- (void)showShareViewControllerWithCheckIn:(CheckInModel *)checkIn {
     if (_shareViewController == nil) {
         
         // Create lshare view controller
@@ -696,7 +696,33 @@ typedef void(^AlertBlock)();
         [_shareViewController.view setFrame:self.navigationController.view.frame];
         
         // Adding to window
-        [[[UIApplication sharedApplication] keyWindow]  addSubview:_shareViewController.view];
+        [[[UIApplication sharedApplication] keyWindow] addSubview:_shareViewController.view];
+        
+        // Animating in
+        [UIView animateWithDuration:0.35 animations:^{
+            [_shareViewController.view setAlpha:1.0f];
+        }];
+    }
+    
+    // Updating live special text
+    [_shareViewController setCheckIn:checkIn];
+    [_shareViewController setSpot:checkIn.spot];
+    [_shareViewController setShareType:ShareViewControllerShareCheckin];
+}
+
+- (void)showShareViewControllerWithSpot:(SpotModel *)spot shareType:(ShareViewControllerShareType)shareType {
+    if (_shareViewController == nil) {
+        
+        // Create lshare view controller
+        _shareViewController = [[self shareStoryboard] instantiateViewControllerWithIdentifier:( IS_FOUR_INCH ? @"ShareViewController" : @"ShareViewControllerIPhone4" )];
+        [_shareViewController setDelegate:self];
+        
+        // Set alpha to zero so we can animate in
+        [_shareViewController.view setAlpha:0.0f];
+        [_shareViewController.view setFrame:self.navigationController.view.frame];
+        
+        // Adding to window
+        [[[UIApplication sharedApplication] keyWindow] addSubview:_shareViewController.view];
         
         // Animating in
         [UIView animateWithDuration:0.35 animations:^{

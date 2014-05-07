@@ -168,7 +168,7 @@
     NSIndexPath *indexPath = [_tblSpecials indexPathForCell:cell];
     SpotModel *spot = [_spots objectAtIndex:indexPath.row];
     
-    [self showShareViewController:spot shareType:ShareViewControllerShareSpecial];
+    [self showShareViewControllerWithSpot:spot shareType:ShareViewControllerShareSpecial];
 }
 
 #pragma mark - SHButtonLatoLightLocationDelegate

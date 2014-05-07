@@ -155,8 +155,7 @@
         _isCheckin = NO;
         
         // Showing checkin
-        [self showShareViewController:_spot shareType:ShareViewControllerShareCheckin];
-        
+        [self showShareViewControllerWithCheckIn:_checkIn];
     }
 }
 
@@ -315,7 +314,7 @@
     if (FooterViewButtonHome == footerViewButtonType) {
         return NO;
     } else if (FooterViewButtonMiddle == footerViewButtonType) {
-        [self showShareViewController:_spot shareType:ShareViewControllerShareCheckin];
+        [self showShareViewControllerWithSpot:_spot shareType:ShareViewControllerShareCheckin];
     } else if (FooterViewButtonRight == footerViewButtonType) {
         [self showAlert:@"Info" message:kInfoSpotProfile];
     }

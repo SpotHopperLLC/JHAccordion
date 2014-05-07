@@ -81,7 +81,8 @@
 - (void)hideLiveSpecialViewController:(void(^)(void))completion;
 
 // ShareViewController
-- (void)showShareViewController:(SpotModel*)spot shareType:(ShareViewControllerShareType)shareType;
+- (void)showShareViewControllerWithCheckIn:(CheckInModel *)checkIn;
+- (void)showShareViewControllerWithSpot:(SpotModel*)spot shareType:(ShareViewControllerShareType)shareType;
 - (void)hideShareViewController:(void(^)(void))completion;
 
 @end
