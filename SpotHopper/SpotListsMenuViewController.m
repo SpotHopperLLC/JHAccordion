@@ -70,6 +70,8 @@
 @property (nonatomic, strong) NSArray *featuredSpotLists;
 @property (nonatomic, strong) NSArray *mySpotLists;
 
+@property (nonatomic, assign) BOOL triedLoadingAfterFailure;
+
 @end
 
 @implementation SpotListsMenuViewController {
@@ -483,15 +485,28 @@
     /*
      * When
      */
+    __block BOOL failed = NO;
     [When when:promises then:^{
         
     } fail:^(id error) {
-        
+        failed = YES;
     } always:^{
         
         // Reload table and hide HUD
         [_tblMenu reloadData];
         [self hideHUD];
+        
+        // Checks so see if a failure had happened
+        if (failed == YES && _triedLoadingAfterFailure == NO) {
+            _triedLoadingAfterFailure = YES;
+            
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Failed to load spotlists" message:@"Would you like to try loading again?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+            [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                if (buttonIndex == 1) {
+                    [self fetchSpotLists];
+                }
+            }];
+        }
         
     }];
     

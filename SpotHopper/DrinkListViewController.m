@@ -55,6 +55,8 @@
 
 @property (nonatomic, strong) NSMutableDictionary *menuItems;
 
+@property (nonatomic, assign) BOOL triedLoadingAfterFailure;
+
 @end
 
 @implementation DrinkListViewController {
@@ -232,6 +234,7 @@
         lng = _spotAt.longitude;
     }
     
+    __weak CLLocation *weakLocation = location;
     [_drinkList putDrinkList:nil latitude:lat longitude:lng spotId:_spotAt.ID sliders:nil success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
         [self hideHUD];
         
@@ -248,7 +251,20 @@
     } failure:^(ErrorModel *errorModel) {
         [Tracker track:@"Fetched Drinklist Results" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
-        [self showAlert:@"Oops" message:errorModel.human];
+        
+        // Checks so see if a failure had happened
+        if (_triedLoadingAfterFailure == NO) {
+            _triedLoadingAfterFailure = YES;
+            
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Failed to load drinklist" message:@"Would you like to try loading again?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+            [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                if (buttonIndex == 1) {
+                    [self fetchDrinklistResults:weakLocation];
+                }
+            }];
+        } else {
+            [self showAlert:@"Oops" message:errorModel.human];
+        }
     }];
     
     _selectedLocation = location;
