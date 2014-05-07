@@ -41,6 +41,8 @@
 #import "Tracker.h"
 #import "TellMeMyLocation.h"
 
+#import "CheckInModel.h"
+
 @implementation UIViewController (Navigator)
 
 #pragma mark - Main
@@ -244,10 +246,11 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
-- (void)goToCheckinAtSpot:(SpotModel*)spot {
+- (void)goToCheckIn:(CheckInModel*)checkIn {
     [Tracker track:@"View Check In" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     SpotProfileViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
-    [viewController setSpot:spot];
+    [viewController setCheckIn:checkIn];
+    [viewController setSpot:checkIn.spot];
     [viewController setIsCheckin:YES];
     
     NSMutableArray *viewControllers = self.navigationController.viewControllers.mutableCopy;

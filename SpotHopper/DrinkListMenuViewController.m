@@ -34,6 +34,7 @@
 #import "DrinkListModel.h"
 #import "ErrorModel.h"
 #import "UserModel.h"
+#import "CheckInModel.h"
 
 #import "JHAccordion.h"
 
@@ -304,10 +305,10 @@
 
 #pragma mark - CheckinViewControllerDelegate
 
-- (void)checkinViewController:(CheckinViewController *)viewController checkedInToSpot:(SpotModel *)spot {
+- (void)checkinViewController:(CheckinViewController *)viewController checkedIn:(CheckInModel *)checkIn {
     [self.navigationController popToViewController:self animated:YES];
     
-    _spot = spot;
+    _spot = checkIn.spot;
     [self updateView];
     [self fetchDrinkLists];
 }

@@ -9,6 +9,7 @@
 #import "BaseViewController.h"
 
 @class SpotModel;
+@class CheckInModel;
 
 @protocol CheckinViewControllerDelegate;
 
@@ -20,6 +21,6 @@
 
 @protocol CheckinViewControllerDelegate <NSObject>
 
-- (void)checkinViewController:(CheckinViewController*)viewController checkedInToSpot:(SpotModel*)spot;
+- (void)checkinViewController:(CheckinViewController*)viewController checkedIn:(CheckInModel*)checkIn;
 
 @end

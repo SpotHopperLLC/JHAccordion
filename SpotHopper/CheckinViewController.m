@@ -396,28 +396,18 @@
     
     CheckInModel *checkInModel = [[CheckInModel alloc] init];
     [checkInModel postCheckIn:@{@"spot_id" : spot.ID} success:^(CheckInModel *checkInModel, JSONAPI *jsonAPI) {
-        
         NSLog(@"check in ID: %@", checkInModel.ID);
         
-        // TODO: The ID from the check in is needed to create the URL but checkInModel is nil
-        
-        if ([_delegate respondsToSelector:@selector(checkinViewController:checkedInToSpot:)]) {
-            // TODO: instead of passing the spot it should now pass the check in model
-            [_delegate checkinViewController:self checkedInToSpot:spot];
+        if ([_delegate respondsToSelector:@selector(checkinViewController:checkedIn:)]) {
+            [_delegate checkinViewController:self checkedIn:checkInModel];
         } else {
-            // TODO: instead of passing the spot it should now pass the check in model
-            [self goToCheckinAtSpot:spot];
+            [self goToCheckIn:checkInModel];
         }
-        
     } failure:^(ErrorModel *errorModel) {
-        
-        NSLog(@"Error: %@", errorModel);
-        
     }];
 }
 
 - (void)updateViewMap {
-    
     // Update map
     [_mapView removeAnnotations:[_mapView annotations]];
     NSMutableArray *annotations = [@[] mutableCopy];

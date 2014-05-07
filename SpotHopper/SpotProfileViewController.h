@@ -9,10 +9,12 @@
 #import "BaseViewController.h"
 
 #import "SpotModel.h"
+#import "CheckInModel.h"
 
 @interface SpotProfileViewController : BaseViewController
 
 @property (nonatomic, strong) SpotModel *spot;
+@property (nonatomic, strong) CheckInModel *checkIn;
 @property (nonatomic, assign) BOOL isCheckin;
 
 @end

@@ -68,7 +68,7 @@
 
 // Checkin
 - (void)goToCheckin:(id<CheckinViewControllerDelegate>)delegate;
-- (void)goToCheckinAtSpot:(SpotModel*)spot;
+- (void)goToCheckIn:(CheckInModel*)checkIn;
 
 // Common
 - (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate;

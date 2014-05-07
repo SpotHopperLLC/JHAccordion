@@ -29,6 +29,7 @@
 
 #import "ClientSessionManager.h"
 #import "ErrorModel.h"
+#import "CheckInModel.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -260,13 +261,13 @@
 
 #pragma mark - CheckinViewControllerDelegate
 
-- (void)checkinViewController:(CheckinViewController *)viewController checkedInToSpot:(SpotModel *)spot {
+- (void)checkinViewController:(CheckinViewController *)viewController checkedIn:(CheckInModel *)checkIn {
     [self.navigationController popToViewController:self animated:YES];
     
-    _spotAt = spot;
+    _spotAt = checkIn.spot;
     
     [self showHUD:@"Creating drinklist"];
-    [spot getSpot:nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
+    [checkIn.spot getSpot:nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
         
         NSNumber *latitude = spotModel.latitude;
         NSNumber *longitude = spotModel.longitude;
