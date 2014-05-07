@@ -65,6 +65,12 @@
 
 - (void)shortenLink:(NSString *)link withCompletionBlock:(void (^)(NSString *shortedLink, NSError *error))completionBlock;
 
+- (void)promptForDirectionsForSpot:(SpotModel *)spot;
+- (BOOL)isGoogleMapsAvailable;
+- (void)openGoogleMapsInAppStore;
+- (void)openGoogleMapsDirectionsForSpot:(SpotModel *)spot;
+- (void)openAppleMapsDirectionsForSpot:(SpotModel *)spot;
+
 - (void)onClickBack:(id)sender;
 - (void)onClickShowSidebar:(id)sender;
 
