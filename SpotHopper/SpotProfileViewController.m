@@ -432,8 +432,6 @@
 }
 
 - (IBAction)onClickDirections:(id)sender {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
-    
     [self promptForDirectionsForSpot:_spot];
 }
 
