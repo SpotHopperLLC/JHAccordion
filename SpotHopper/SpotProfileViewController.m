@@ -40,7 +40,7 @@
 
 #import <MapKit/MapKit.h>
 
-@interface SpotProfileViewController ()<UITableViewDataSource, UITableViewDelegate, MKMapViewDelegate, JHAccordionDelegate, CheckinConfirmationViewControllerDelegate>
+@interface SpotProfileViewController () <UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, MKMapViewDelegate, JHAccordionDelegate, CheckinConfirmationViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tblSliders;
 
@@ -66,6 +66,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnImageNext;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UILabel *lblAddress;
+@property (weak, nonatomic) IBOutlet UIButton *btnDirections;
 
 @property (nonatomic, strong) NSString *matchPercent;
 @property (nonatomic, strong) AverageReviewModel *averageReview;
@@ -143,6 +144,7 @@
         [footerViewController setRightButton:@"Info" image:[UIImage imageNamed:@"btn_context_info"]];
     }];
     
+    [self updateImageArrows];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -332,6 +334,14 @@
     return pin;
 }
 
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    if (scrollView == _collectionView) {
+        [self updateImageArrows];
+    }
+}
+
 #pragma mark - CheckinConfirmationViewControllerDelegate
 
 - (void)checkinConfirmationViewControllerClickedClose:(CheckinConfirmationViewController *)viewController {
@@ -370,6 +380,10 @@
         // Makes sure we can go back
         if (indexPath.row > 0) {
             [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.4 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [self updateImageArrows];
+            });
         }
     }
 }
@@ -384,6 +398,10 @@
         // Makes sure we can go forward
         if (indexPath.row < ( [self collectionView:_collectionView numberOfItemsInSection:indexPath.section] - 1) ) {
             [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.row + 1) inSection:indexPath.section] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.4 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [self updateImageArrows];
+            });
         }
     }
 }
@@ -410,6 +428,10 @@
 
 - (IBAction)onClickDrinkMenu:(id)sender {
     [self goToMenu:_spot];
+}
+
+- (IBAction)onClickDirections:(id)sender {
+    [self promptForDirectionsForSpot:_spot];
 }
 
 #pragma mark - Private - Checkin
@@ -630,6 +652,28 @@
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
+    }];
+}
+
+- (NSIndexPath *)indexPathForCurrentImage {
+    NSArray *indexPaths = [_collectionView indexPathsForVisibleItems];
+    if (indexPaths.count) {
+        return indexPaths[0];
+    }
+    
+    return nil;
+}
+
+- (void)updateImageArrows {
+    NSIndexPath *indexPath = [self indexPathForCurrentImage];
+    
+    BOOL hasNext = _spot.images.count ? (indexPath.item < _spot.images.count - 1) : FALSE;
+    BOOL hasPrev = _spot.images.count ? (indexPath.item > 0) : FALSE;
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        _btnImageNext.alpha = hasNext ? 1.0 : 0.1;
+        _btnImagePrev.alpha = hasPrev ? 1.0 : 0.1;
+    } completion:^(BOOL finished) {
     }];
 }
 

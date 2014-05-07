@@ -29,7 +29,9 @@
 
 #import "AppDelegate.h"
 
+#import "TellMeMyLocation.h"
 #import "SSTURLShortener.h"
+#import "UIAlertView+Block.h"
 
 #import <JHSidebar/JHSidebarViewController.h>
 #import <FacebookSDK/FacebookSDK.h>
@@ -527,6 +529,85 @@ typedef void(^AlertBlock)();
             completionBlock(shortenedURL.absoluteString, error);
         }
     }];
+}
+
+#pragma mark - Directions
+
+#define kGoogleMapsURLScheme @"comgooglemaps://"
+#define kAppleMapsURLScheme @"http://maps.apple.com"
+
+- (void)promptForDirectionsForSpot:(SpotModel *)spot {
+#if TARGET_IPHONE_SIMULATOR
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Simulator" message:@"Directions are not available in the iOS Simulator." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alertView show];
+#else
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Directions" message:@"Would you like to open directions for this spot?" delegate:nil cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+    [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
+        if (buttonIndex == 1) {
+            if ([self isGoogleMapsAvailable]) {
+                [self openGoogleMapsDirectionsForSpot:spot];
+            }
+            else {
+                [self openAppleMapsDirectionsForSpot:spot];
+            }
+        }
+    }];
+#endif
+}
+
+- (BOOL)isGoogleMapsAvailable {
+    return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:kGoogleMapsURLScheme]];
+}
+
+- (void)openGoogleMapsInAppStore {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.apple.com/us/app/google-maps/id585027354?mt=8"]];
+}
+
+- (void)openGoogleMapsDirectionsForSpot:(SpotModel *)spot {
+    if ([self isGoogleMapsAvailable]) {
+        CLLocation *currentLocation = [TellMeMyLocation currentDeviceLocation];
+        CLLocation *spotLocation = [[CLLocation alloc] initWithLatitude:[spot.latitude floatValue] longitude:[spot.longitude floatValue]];
+        
+        CLLocationDistance meters = [currentLocation distanceFromLocation:spotLocation];
+        NSString *dirflg = meters < 500 ? @"w" : @"d"; // set to walking for under 500 meters
+        
+        // w = walking, d = driving, r = public transit
+        
+        NSString *saddr = [NSString stringWithFormat:@"%f,%f",
+                           currentLocation.coordinate.latitude,
+                           currentLocation.coordinate.longitude];
+        NSString *daddr = [NSString stringWithFormat:@"%f,%f",
+                           spotLocation.coordinate.latitude,
+                           spotLocation.coordinate.longitude];
+
+        NSString *urlString = [NSString stringWithFormat:@"%@?saddr=%@&daddr=%@&dirflg=%@", kGoogleMapsURLScheme, saddr, daddr, dirflg];
+        NSURL *url = [NSURL URLWithString:urlString];
+        
+        [[UIApplication sharedApplication] openURL:url];
+    }
+}
+
+- (void)openAppleMapsDirectionsForSpot:(SpotModel *)spot {
+    CLLocation *currentLocation = [TellMeMyLocation currentDeviceLocation];
+    CLLocation *spotLocation = [[CLLocation alloc] initWithLatitude:[spot.latitude floatValue] longitude:[spot.longitude floatValue]];
+    
+    CLLocationDistance meters = [currentLocation distanceFromLocation:spotLocation];
+    NSString *dirflg = meters < 500 ? @"w" : @"d"; // default to walking
+    
+    // if the distance is not walking distance (1/8 mile) then use driving directions
+    // w = walking, d = driving, r = public transit
+    
+    NSString *saddr = [NSString stringWithFormat:@"%f,%f",
+                       currentLocation.coordinate.latitude,
+                       currentLocation.coordinate.longitude];
+    NSString *daddr = [NSString stringWithFormat:@"%f,%f",
+                       spotLocation.coordinate.latitude,
+                       spotLocation.coordinate.longitude];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@?saddr=%@&daddr=%@&dirflg=%@", kAppleMapsURLScheme, saddr, daddr, dirflg];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    [[UIApplication sharedApplication] openURL:url];
 }
 
 #pragma mark - Navigation
