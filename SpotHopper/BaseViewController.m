@@ -569,9 +569,8 @@ typedef void(^AlertBlock)();
         CLLocation *spotLocation = [[CLLocation alloc] initWithLatitude:[spot.latitude floatValue] longitude:[spot.longitude floatValue]];
         
         CLLocationDistance meters = [currentLocation distanceFromLocation:spotLocation];
-        NSString *dirflg = meters < 500 ? @"w" : @"d"; // default to walking
+        NSString *dirflg = meters < 500 ? @"w" : @"d"; // set to walking for under 500 meters
         
-        // if the distance is not walking distance (1/8 mile) then use driving directions
         // w = walking, d = driving, r = public transit
         
         NSString *saddr = [NSString stringWithFormat:@"%f,%f",
