@@ -70,12 +70,16 @@
 @property (nonatomic, strong) NSArray *featuredSpotLists;
 @property (nonatomic, strong) NSArray *mySpotLists;
 
+@property (nonatomic, strong) NSArray *featuredSpotListsUpdate;
+@property (nonatomic, strong) NSArray *mySpotListsUpdate;
+
 @property (nonatomic, assign) BOOL triedLoadingAfterFailure;
 
 @end
 
 @implementation SpotListsMenuViewController {
     BOOL _updatedSearchNeeded;
+    BOOL _isUpdatingTableView;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -298,6 +302,16 @@
     [_tblMenu reloadData];
 }
 
+- (void)accordion:(JHAccordion*)accordion willUpdateTableView:(UITableView *)tableView {
+    _isUpdatingTableView = TRUE;
+}
+
+- (void)accordion:(JHAccordion*)accordion didUpdateTableView:(UITableView *)tableView {
+    _isUpdatingTableView = FALSE;
+    [self updateFeaturedSpotlists];
+    [self updateMySpotlists];
+}
+
 #pragma mark - SHButtonLatoLightLocationDelegate
 
 - (void)locationRequestsUpdate:(SHButtonLatoLightLocation *)button location:(LocationChooserViewController *)viewController {
@@ -459,9 +473,10 @@
      * Featured spot lists
      */
     Promise *promiseFeaturedSpotLists = [SpotListModel getFeaturedSpotLists:params success:^(NSArray *spotListModels, JSONAPI *jsonApi) {
-        _featuredSpotLists = [spotListModels sortedArrayUsingComparator:^NSComparisonResult(SpotListModel* obj1, SpotListModel* obj2) {
+        _featuredSpotListsUpdate = [spotListModels sortedArrayUsingComparator:^NSComparisonResult(SpotListModel* obj1, SpotListModel* obj2) {
             return [obj1.name caseInsensitiveCompare:obj2.name];
         }];
+        [self updateFeaturedSpotlists];
     } failure:^(ErrorModel *errorModel) {
         
     }];
@@ -473,9 +488,10 @@
     if ([ClientSessionManager sharedClient].isLoggedIn == YES) {
         UserModel *user = [ClientSessionManager sharedClient].currentUser;
         Promise *promiseMySpotLists = [user getSpotLists:nil success:^(NSArray *spotListsModels, JSONAPI *jsonApi) {
-            _mySpotLists = [spotListsModels sortedArrayUsingComparator:^NSComparisonResult(SpotListModel* obj1, SpotListModel* obj2) {
+            _mySpotListsUpdate = [spotListsModels sortedArrayUsingComparator:^NSComparisonResult(SpotListModel* obj1, SpotListModel* obj2) {
                 return [obj1.name caseInsensitiveCompare:obj2.name];
             }];
+            [self updateMySpotlists];
         } failure:^(ErrorModel *errorModel) {
             
         }];
@@ -646,6 +662,30 @@
     }
     
     [self goToFindSimilarSpots:self];
+}
+
+- (void)updateFeaturedSpotlists {
+    if (!_isUpdatingTableView && _featuredSpotLists) {
+        _featuredSpotLists = _featuredSpotListsUpdate;
+        _featuredSpotListsUpdate = nil;
+        [_tblMenu reloadData];
+    }
+    else if (_isUpdatingTableView && _featuredSpotLists) {
+        // update later when the table may be done updating
+        [self performSelector:@selector(updateFeaturedSpotlists) withObject:nil afterDelay:0.25];
+    }
+}
+
+- (void)updateMySpotlists {
+    if (!_isUpdatingTableView && _mySpotListsUpdate) {
+        _mySpotLists = _mySpotListsUpdate;
+        _mySpotListsUpdate = nil;
+        [_tblMenu reloadData];
+     }
+    else if (_isUpdatingTableView && _mySpotListsUpdate) {
+        // update later when the table may be done updating
+        [self performSelector:@selector(updateMySpotlists) withObject:nil afterDelay:0.25];
+    }
 }
 
 @end

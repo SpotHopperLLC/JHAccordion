@@ -37,7 +37,7 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-@interface AdjustSpotListSliderViewController ()<UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, ReviewSliderCellDelegate>
+@interface AdjustSpotListSliderViewController () <UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, ReviewSliderCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tblSliders;
 @property (weak, nonatomic) IBOutlet SHButtonLatoLight *btnSubmit;
@@ -58,9 +58,15 @@
 @property (nonatomic, strong) NSMutableArray *sliders;
 @property (nonatomic, strong) NSMutableArray *advancedSliders;
 
+@property (nonatomic, strong) NSArray *spotTypesUpdate;
+@property (nonatomic, strong) NSArray *spotListMoodTypesUpdate;
+@property (nonatomic, strong) NSArray *allSliderTemplatesUpdate;
+
 @end
 
-@implementation AdjustSpotListSliderViewController
+@implementation AdjustSpotListSliderViewController {
+    BOOL _isUpdatingTableView;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -285,6 +291,18 @@
     [accordion slideUpLastOpenedSection];
 }
 
+- (void)accordion:(JHAccordion*)accordion willUpdateTableView:(UITableView *)tableView {
+    _isUpdatingTableView = TRUE;
+}
+
+- (void)accordion:(JHAccordion*)accordion didUpdateTableView:(UITableView *)tableView {
+    _isUpdatingTableView = FALSE;
+    
+    [self updateSpotTypes];
+    [self updateSpotListMoodTypes];
+    [self updateAllSliderTemplates];
+}
+
 #pragma mark - Actions
 
 - (IBAction)onClickClose:(id)sender {
@@ -329,10 +347,8 @@
 #pragma mark - Private
 
 - (void)fetchFormData {
-    
     // Gets spot form data
     [SpotModel getSpots:@{kSpotModelParamsPageSize:@0} success:^(NSArray *spotModels, JSONAPI *jsonApi) {
-        
         NSDictionary *forms = [jsonApi objectForKey:@"form"];
         if (forms != nil) {
             
@@ -344,18 +360,18 @@
                     [userSpotTypes addObject:spotType];
                 }
             }
-            _spotTypes = userSpotTypes;
+            _spotTypesUpdate = userSpotTypes;
             
         }
-        [_tblSliders reloadData];
         
+        [self updateSpotTypes];
     } failure:^(ErrorModel *errorModel) {
 
     }];
     
     [SpotListMoodModel getSpotListMoods:nil success:^(NSArray *spotListMoodModels, JSONAPI *jsonApi) {
-        _spotListMoodTypes = spotListMoodModels;
-        [_tblSliders reloadData];
+        _spotListMoodTypesUpdate = spotListMoodModels;
+        [self updateSpotListMoodTypes];
     } failure:^(ErrorModel *errorModel) {
         
     }];
@@ -386,8 +402,8 @@
         }
         
     }
-    _sliderTemplates = slidersFiltered;
     
+    _sliderTemplates = slidersFiltered;
     
     // Creating sliders
     [_sliders removeAllObjects];
@@ -422,10 +438,10 @@
 //    [self showHUD:@"Loading sliders"];
     [SliderTemplateModel getSliderTemplates:nil success:^(NSArray *sliderTemplates, JSONAPI *jsonApi) {
         [self hideHUD];
-        _allSliderTemplates = sliderTemplates;
+        _allSliderTemplatesUpdate = sliderTemplates;
         
         [self filterSliderTemplates];
-        
+        [self updateAllSliderTemplates];
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
     }];
@@ -625,6 +641,42 @@
         _tblSliders.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, buttonHeight, 0.0f);
     } completion:^(BOOL finished) {
     }];
+}
+
+- (void)updateSpotTypes {
+    if (!_isUpdatingTableView && _spotTypesUpdate) {
+        _spotTypes = _spotTypesUpdate;
+        _spotTypesUpdate = nil;
+        [_tblSliders reloadData];
+    }
+    else if (_isUpdatingTableView && _spotTypesUpdate) {
+        // update later when the table may be done updating
+        [self performSelector:@selector(updateSpotTypes) withObject:nil afterDelay:0.25];
+    }
+}
+
+- (void)updateSpotListMoodTypes {
+    if (!_isUpdatingTableView && _spotListMoodTypesUpdate) {
+        _spotListMoodTypes = _spotListMoodTypesUpdate;
+        _spotListMoodTypesUpdate = nil;
+        [_tblSliders reloadData];
+    }
+    else if (_isUpdatingTableView && _spotListMoodTypesUpdate) {
+        // update later when the table may be done updating
+        [self performSelector:@selector(updateSpotListMoodTypes) withObject:nil afterDelay:0.25];
+    }
+}
+
+- (void)updateAllSliderTemplates {
+    if (!_isUpdatingTableView && _allSliderTemplatesUpdate) {
+        _allSliderTemplates = _allSliderTemplatesUpdate;
+        _allSliderTemplatesUpdate = nil;
+        [_tblSliders reloadData];
+    }
+    else if (_isUpdatingTableView && _allSliderTemplatesUpdate) {
+        // update later when the table may be done updating
+        [self performSelector:@selector(updateAllSliderTemplates) withObject:nil afterDelay:0.25];
+    }
 }
 
 @end

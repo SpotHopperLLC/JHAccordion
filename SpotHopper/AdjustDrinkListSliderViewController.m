@@ -64,9 +64,15 @@
 @property (nonatomic, strong) NSMutableArray *sliders;
 @property (nonatomic, strong) NSMutableArray *advancedSliders;
 
+@property (nonatomic, strong) NSArray *drinkTypesUpdate;
+@property (nonatomic, strong) NSArray *baseAlcoholsUpdate;
+@property (nonatomic, strong) NSArray *allSliderTemplatesUpdate;
+
 @end
 
-@implementation AdjustDrinkListSliderViewController
+@implementation AdjustDrinkListSliderViewController {
+    BOOL _isUpdatingTableView;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -358,6 +364,17 @@
     [accordion slideUpLastOpenedSection];
 }
 
+- (void)accordion:(JHAccordion*)accordion willUpdateTableView:(UITableView *)tableView {
+    _isUpdatingTableView = TRUE;
+}
+
+- (void)accordion:(JHAccordion*)accordion didUpdateTableView:(UITableView *)tableView {
+    _isUpdatingTableView = FALSE;
+    [self updateDrinkTypes];
+    [self updateBaseAlcohols];
+    [self updateAllSliderTemplates];
+}
+
 #pragma mark - Actions
 
 - (IBAction)onClickClose:(id)sender {
@@ -424,10 +441,9 @@
     
     // Gets drink form data
     Promise *promiseFormData = [DrinkModel getDrinks:@{kDrinkModelParamsPageSize:@0} success:^(NSArray *spotModels, JSONAPI *jsonApi) {
-        
         NSDictionary *forms = [jsonApi objectForKey:@"form"];
         if (forms != nil) {
-            _drinkTypes = [forms objectForKey:@"drink_types"];
+            _drinkTypesUpdate = [forms objectForKey:@"drink_types"];
             
             // Saves off wine subtypes into list
             for (NSDictionary *drinkType in _drinkTypes) {
@@ -439,16 +455,17 @@
             
         }
         
-        
+        [self updateDrinkTypes];
     } failure:^(ErrorModel *errorModel) {
         
     }];
  
     // Gets drink form data
     Promise *promiseBaseAlcohols = [BaseAlcoholModel getBaseAlcohols:nil success:^(NSArray *baseAlcoholModels, JSONAPI *jsonAPI) {
-        _baseAlcohols = [baseAlcoholModels sortedArrayUsingComparator:^NSComparisonResult(BaseAlcoholModel *obj1, BaseAlcoholModel *obj2) {
+        _baseAlcoholsUpdate = [baseAlcoholModels sortedArrayUsingComparator:^NSComparisonResult(BaseAlcoholModel *obj1, BaseAlcoholModel *obj2) {
             return [obj1.name caseInsensitiveCompare:obj2.name];
         }];
+        [self updateBaseAlcohols];
     } failure:^(ErrorModel *errorModel) {
         
     }];
@@ -530,10 +547,10 @@
     
     [SliderTemplateModel getSliderTemplates:nil success:^(NSArray *sliderTemplates, JSONAPI *jsonApi) {
         [self hideHUD];
-        _allSliderTemplates = sliderTemplates;
+        _allSliderTemplatesUpdate = sliderTemplates;
         
         [self filterSliderTemplates];
-        
+        [self updateAllSliderTemplates];
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
     }];
@@ -742,6 +759,42 @@
         _tblSliders.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, buttonHeight, 0.0f);
     } completion:^(BOOL finished) {
     }];
+}
+
+- (void)updateDrinkTypes {
+    if (!_isUpdatingTableView && _drinkTypesUpdate) {
+        _drinkTypes = _drinkTypesUpdate;
+        _drinkTypesUpdate = nil;
+        [_tblSliders reloadData];
+    }
+    else if (_isUpdatingTableView && _drinkTypesUpdate) {
+        // update later when the table may be done updating
+        [self performSelector:@selector(updateDrinkTypes) withObject:nil afterDelay:0.25];
+    }
+}
+
+- (void)updateBaseAlcohols {
+    if (!_isUpdatingTableView && _baseAlcoholsUpdate) {
+        _baseAlcohols = _baseAlcoholsUpdate;
+        _baseAlcoholsUpdate = nil;
+        [_tblSliders reloadData];
+    }
+    else if (_isUpdatingTableView && _baseAlcoholsUpdate) {
+        // update later when the table may be done updating
+        [self performSelector:@selector(updateBaseAlcohols) withObject:nil afterDelay:0.25];
+    }
+}
+
+- (void)updateAllSliderTemplates {
+    if (!_isUpdatingTableView && _allSliderTemplatesUpdate) {
+        _allSliderTemplates = _allSliderTemplatesUpdate;
+        _allSliderTemplatesUpdate = nil;
+        [_tblSliders reloadData];
+    }
+    else if (_isUpdatingTableView && _allSliderTemplatesUpdate) {
+        // update later when the table may be done updating
+        [self performSelector:@selector(updateAllSliderTemplates) withObject:nil afterDelay:0.25];
+    }
 }
 
 @end

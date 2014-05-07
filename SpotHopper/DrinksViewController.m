@@ -135,7 +135,7 @@
 #pragma mark - Tracking
 
 - (NSString *)screenName {
-    return @"Check In";
+    return @"Drinks";
 }
 
 #pragma mark - Keyboard

@@ -39,5 +39,7 @@
 - (void)accordion:(JHAccordion*)accordion openedSection:(NSInteger)section;
 - (void)accordion:(JHAccordion*)accordion closedSection:(NSInteger)section;
 - (void)accordion:(JHAccordion*)accordion contentSizeChanged:(CGSize)contentSize;
+- (void)accordion:(JHAccordion*)accordion willUpdateTableView:(UITableView *)tableView;
+- (void)accordion:(JHAccordion*)accordion didUpdateTableView:(UITableView *)tableView;
 
 @end
