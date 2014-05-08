@@ -12,6 +12,8 @@
 
 @interface NetworkHelper : NSObject
 
++ (void)loadImage:(ImageModel *)imageModel placeholderImage:(UIImage *)placeholderImage withThumbImageBlock:(void (^)(UIImage *thumbImage))thumbImageBlock withFullImageBlock:(void (^)(UIImage *fullImage))fullImageBlock withErrorBlock:(void (^)(NSError *error))errorBlock;
+
 + (void)loadImageProgressively:(ImageModel *)imageModel imageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage;
 
 + (void)loadThumbnailImage:(ImageModel *)imageModel imageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage;

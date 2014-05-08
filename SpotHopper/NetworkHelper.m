@@ -14,27 +14,75 @@
 
 @implementation NetworkHelper
 
++ (void)loadImage:(ImageModel *)imageModel placeholderImage:(UIImage *)placeholderImage withThumbImageBlock:(void (^)(UIImage *thumbImage))thumbImageBlock withFullImageBlock:(void (^)(UIImage *fullImage))fullImageBlock withErrorBlock:(void (^)(NSError *error))errorBlock {
+    
+    if (!imageModel.thumbUrl.length || !imageModel.fullUrl.length) {
+        // do nothing since there is no image to load
+        return;
+    }
+    
+    UIImageView *imageView = [[UIImageView alloc] init];
+    
+    __weak UIImageView *weakImageView = imageView;
+    
+    // first load the thumb image
+    NSMutableURLRequest *thumbImageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageModel.thumbUrl]];
+    [thumbImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+    [weakImageView setImageWithURLRequest:thumbImageRequest placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *thumbImage) {
+        
+        if (thumbImageBlock) {
+            thumbImageBlock(thumbImage);
+        }
+        
+        // then load the large image
+        NSMutableURLRequest *fullImageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageModel.fullUrl]];
+        [fullImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+        [weakImageView setImageWithURLRequest:fullImageRequest placeholderImage:thumbImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *fullImage) {
+            
+            if (fullImageBlock) {
+                fullImageBlock(fullImage);
+            }
+            
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+            [Tracker track:@"Error Loading Image" properties:@{@"URL" : imageModel.fullUrl}];
+            
+            if (errorBlock) {
+                errorBlock(error);
+            }
+        }];
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        [Tracker track:@"Error Loading Image" properties:@{@"URL" : imageModel.thumbUrl}];
+        
+        if (errorBlock) {
+            errorBlock(error);
+        }
+    }];
+}
+
+//+ (void)loadImage:(ImageModel *)imageModel 
+
 + (void)loadImageProgressively:(ImageModel *)imageModel imageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage {
     if (!imageModel.thumbUrl.length || !imageModel.fullUrl.length) {
         // do nothing since there is no image to load
         return;
     }
     
-    __weak UIImageView *weakSelf = imageView;
+    __weak UIImageView *weakImageView = imageView;
     
     // first load the thumb image
     NSMutableURLRequest *thumbImageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageModel.thumbUrl]];
     [thumbImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    [weakSelf setImageWithURLRequest:thumbImageRequest placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *thumbImage) {
+    [weakImageView setImageWithURLRequest:thumbImageRequest placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *thumbImage) {
         
-        weakSelf.image = thumbImage;
+        weakImageView.image = thumbImage;
         
         // then load the large image
         NSMutableURLRequest *fullImageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageModel.fullUrl]];
         [fullImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-        [weakSelf setImageWithURLRequest:fullImageRequest placeholderImage:thumbImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *fullImage) {
+        [weakImageView setImageWithURLRequest:fullImageRequest placeholderImage:thumbImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *fullImage) {
             
-            weakSelf.image = fullImage;
+            weakImageView.image = fullImage;
             
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
             [Tracker track:@"Error Loading Image" properties:@{@"URL" : imageModel.fullUrl}];
@@ -51,14 +99,14 @@
         return;
     }
     
-    __weak UIImageView *weakSelf = imageView;
+    __weak UIImageView *weakImageView = imageView;
     
     // first load the thumb image
     NSMutableURLRequest *thumbImageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageModel.thumbUrl]];
     [thumbImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    [weakSelf setImageWithURLRequest:thumbImageRequest placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *thumbImage) {
+    [weakImageView setImageWithURLRequest:thumbImageRequest placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *thumbImage) {
         
-        weakSelf.image = thumbImage;
+        weakImageView.image = thumbImage;
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         [Tracker track:@"Error Loading Image" properties:@{@"URL" : imageModel.thumbUrl}];
@@ -71,14 +119,14 @@
         return;
     }
     
-    __weak UIImageView *weakSelf = imageView;
+    __weak UIImageView *weakImageView = imageView;
     
     // first load the small image
     NSMutableURLRequest *smallImageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageModel.smallUrl]];
     [smallImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    [weakSelf setImageWithURLRequest:smallImageRequest placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *smallImage) {
+    [weakImageView setImageWithURLRequest:smallImageRequest placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *smallImage) {
         
-        weakSelf.image = smallImage;
+        weakImageView.image = smallImage;
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         [Tracker track:@"Error Loading Image" properties:@{@"URL" : imageModel.smallUrl}];

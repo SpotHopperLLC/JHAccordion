@@ -38,6 +38,7 @@
 
 #import "CheckinViewController.h"
 #import "PhotoAlbumViewController.h"
+#import "PhotoViewerViewController.h"
 
 #import "Tracker.h"
 #import "TellMeMyLocation.h"
@@ -276,11 +277,21 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
-- (void)goToPhotoAlbum:(NSArray *)images atIndex:(NSInteger)index {
+- (void)goToPhotoAlbum:(NSArray *)images atIndex:(NSUInteger)index {
     [Tracker track:@"View Photo Album" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     UIStoryboard *commonStoryboard = [UIStoryboard storyboardWithName:@"Common" bundle:nil];
     PhotoAlbumViewController *viewController = [commonStoryboard instantiateViewControllerWithIdentifier:@"PhotoAlbumViewController"];
     viewController.images = images;
+    viewController.index = index;
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)goToPhotoViewer:(NSArray *)images atIndex:(NSUInteger)index {
+    [Tracker track:@"View Photo Viewer" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    UIStoryboard *commonStoryboard = [UIStoryboard storyboardWithName:@"Common" bundle:nil];
+    PhotoViewerViewController *viewController = [commonStoryboard instantiateViewControllerWithIdentifier:@"PhotoViewerViewController"];
+    viewController.images = images;
+    viewController.index = index;
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

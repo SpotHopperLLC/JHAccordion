@@ -1792,10 +1792,6 @@
 		2602BD9D18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9E18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9F18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
-		261E577719175B720044F496 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		261E577819175B720044F496 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		261E577919175B720044F496 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		261E577A19175B720044F496 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		2636AB3E18F8A82100591722 /* table_footer_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9418E2654900C93BBF /* table_footer_background.png */; };
 		2636AB3F18F8A82400591722 /* table_footer_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9518E2654900C93BBF /* table_footer_background@2x.png */; };
 		265CE70D1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */; };
@@ -1874,6 +1870,10 @@
 		26FF53BA191B577D00834FBD /* CheckInModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FF53B8191B577D00834FBD /* CheckInModel.m */; };
 		26FF53BB191B577D00834FBD /* CheckInModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FF53B8191B577D00834FBD /* CheckInModel.m */; };
 		26FF53BC191B577D00834FBD /* CheckInModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FF53B8191B577D00834FBD /* CheckInModel.m */; };
+		26FFAFF4191B367B00D222B7 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */; };
+		26FFAFF5191B367B00D222B7 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */; };
+		26FFAFF6191B367B00D222B7 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */; };
+		26FFAFF7191B367B00D222B7 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */; };
 		5F881FD0AAD84878A974907D /* libPods-SpotHopperLocal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3557E960D2924E8BA2015473 /* libPods-SpotHopperLocal.a */; };
 		98B74A6E72D54C9491FDAF17 /* libPods-SpotHopperStaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 123F4C2DFBE04705AFDF66F5 /* libPods-SpotHopperStaging.a */; };
 		B603C870603D4E1C905D19CD /* libPods-SpotHopperDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90AAD79CD27D48B987A3A0C5 /* libPods-SpotHopperDev.a */; };
@@ -2510,6 +2510,8 @@
 		26F0FDE618EB4F23001BB0CD /* AgeVerificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgeVerificationViewController.m; sourceTree = "<group>"; };
 		26FF53B7191B577D00834FBD /* CheckInModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckInModel.h; sourceTree = "<group>"; };
 		26FF53B8191B577D00834FBD /* CheckInModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckInModel.m; sourceTree = "<group>"; };
+		26FFAFF2191B367B00D222B7 /* PhotoViewerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewerViewController.h; sourceTree = "<group>"; };
+		26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewerViewController.m; sourceTree = "<group>"; };
 		28166567EC6E42329AF4A745 /* Pods-SpotHopperLocal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotHopperLocal.xcconfig"; path = "Pods/Pods-SpotHopperLocal.xcconfig"; sourceTree = "<group>"; };
 		3557E960D2924E8BA2015473 /* libPods-SpotHopperLocal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpotHopperLocal.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		90AAD79CD27D48B987A3A0C5 /* libPods-SpotHopperDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpotHopperDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3630,6 +3632,8 @@
 				03D7F56F18EADCF3007B9E78 /* SearchViewController.xib */,
 				265CE70B1911899C008DAF5E /* PhotoAlbumViewController.h */,
 				265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */,
+				26FFAFF2191B367B00D222B7 /* PhotoViewerViewController.h */,
+				26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */,
 			);
 			name = Commons;
 			sourceTree = "<group>";
@@ -5483,7 +5487,6 @@
 				03CAC19D18E9FAC300FAC5F5 /* AccountSettingsViewController.m in Sources */,
 				038664E1186D379400985CEC /* BaseViewController.m in Sources */,
 				26BABDF61910688F00852D73 /* JHAccordion.m in Sources */,
-				261E577719175B720044F496 /* (null) in Sources */,
 				039F542718D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				038664E2186D379400985CEC /* ClientSessionManager.m in Sources */,
 				03AF8F6318E6013700DD9356 /* CheckinConfirmationViewController.m in Sources */,
@@ -5581,6 +5584,7 @@
 				26FF53B9191B577D00834FBD /* CheckInModel.m in Sources */,
 				03CA726E187B53DA00815284 /* MyReviewsViewController.m in Sources */,
 				03E4453E18B55B9E00C88421 /* SHButtonLatoLightLocation.m in Sources */,
+				26FFAFF4191B367B00D222B7 /* PhotoViewerViewController.m in Sources */,
 				039ABBCD18CE22E400B84AE6 /* MatchPercentAnnotation.m in Sources */,
 				03AF8EA218E515B900DD9356 /* LiveSpecialViewController.m in Sources */,
 				038664D7186D376900985CEC /* UILabelRockwell.m in Sources */,
@@ -5635,7 +5639,6 @@
 				03D7F56C18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */,
 				03CABFB518E7716400FAC5F5 /* BaseViewController.m in Sources */,
 				26BABDF91910688F00852D73 /* JHAccordion.m in Sources */,
-				261E577A19175B720044F496 /* (null) in Sources */,
 				03CABFB618E7716400FAC5F5 /* DrinkListMenuViewController.m in Sources */,
 				03CABFB718E7716400FAC5F5 /* ClientSessionManager.m in Sources */,
 				03CABFB818E7716400FAC5F5 /* CheckinConfirmationViewController.m in Sources */,
@@ -5733,6 +5736,7 @@
 				26FF53BC191B577D00834FBD /* CheckInModel.m in Sources */,
 				03CAC00C18E7716400FAC5F5 /* MyReviewsViewController.m in Sources */,
 				03CAC00D18E7716400FAC5F5 /* SHButtonLatoLightLocation.m in Sources */,
+				26FFAFF7191B367B00D222B7 /* PhotoViewerViewController.m in Sources */,
 				03CAC00E18E7716400FAC5F5 /* MatchPercentAnnotation.m in Sources */,
 				03CAC00F18E7716400FAC5F5 /* LiveSpecialViewController.m in Sources */,
 				03CAC01018E7716400FAC5F5 /* UILabelRockwell.m in Sources */,
@@ -5779,7 +5783,6 @@
 				03D7F56B18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */,
 				03F4E76118CA33D00056EAA9 /* BaseViewController.m in Sources */,
 				26BABDF81910688F00852D73 /* JHAccordion.m in Sources */,
-				261E577919175B720044F496 /* (null) in Sources */,
 				039F542918D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				03F4E76218CA33D00056EAA9 /* ClientSessionManager.m in Sources */,
 				03AF8F6518E6013E00DD9356 /* CheckinConfirmationViewController.m in Sources */,
@@ -5877,6 +5880,7 @@
 				26FF53BB191B577D00834FBD /* CheckInModel.m in Sources */,
 				03F4E7A418CA33D00056EAA9 /* MyReviewsViewController.m in Sources */,
 				03F4E7A518CA33D00056EAA9 /* SHButtonLatoLightLocation.m in Sources */,
+				26FFAFF6191B367B00D222B7 /* PhotoViewerViewController.m in Sources */,
 				039ABBCF18CE246E00B84AE6 /* MatchPercentAnnotation.m in Sources */,
 				03AF8EA418E515B900DD9356 /* LiveSpecialViewController.m in Sources */,
 				03F4E7A618CA33D00056EAA9 /* UILabelRockwell.m in Sources */,
@@ -6021,6 +6025,7 @@
 				26FF53BA191B577D00834FBD /* CheckInModel.m in Sources */,
 				03F4E8F218CA34260056EAA9 /* MyReviewsViewController.m in Sources */,
 				03F4E8F318CA34260056EAA9 /* SHButtonLatoLightLocation.m in Sources */,
+				26FFAFF5191B367B00D222B7 /* PhotoViewerViewController.m in Sources */,
 				039ABBCE18CE246E00B84AE6 /* MatchPercentAnnotation.m in Sources */,
 				03AF8EA318E515B900DD9356 /* LiveSpecialViewController.m in Sources */,
 				03F4E8F418CA34260056EAA9 /* UILabelRockwell.m in Sources */,

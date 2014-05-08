@@ -11,6 +11,7 @@
 @interface PhotoAlbumViewController : BaseViewController
 
 @property (nonatomic, strong) NSArray *images;
+@property (nonatomic, assign) NSUInteger index;
 @property (nonatomic, strong) UIImage *placeholderImage;
 
 @end
