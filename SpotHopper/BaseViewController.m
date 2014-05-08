@@ -879,7 +879,7 @@ typedef void(^AlertBlock)();
     
 }
 
-#pragma mark - Prompt Loging Needed
+#pragma mark - Prompt Login Needed
 
 // Returns YES if a login is needed
 - (BOOL)promptLoginNeeded:(NSString*)message {

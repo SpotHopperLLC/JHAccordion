@@ -647,21 +647,15 @@
 }
 
 - (void)createSpotlistWithSliders {
-    if ([ClientSessionManager sharedClient].isLoggedIn == NO) {
-        [self showAlert:@"Login Required" message:@"Cannot create a spotlist without logging in"];
-        return;
+    if ([self promptLoginNeeded:@"Cannot create a spotlist without logging in"] == NO) {
+        [self showAdjustSlidersView:YES animated:YES];
     }
-    
-    [self showAdjustSlidersView:YES animated:YES];
 }
 
 - (void)createSpotlistForSimilar {
-    if ([ClientSessionManager sharedClient].isLoggedIn == NO) {
-        [self showAlert:@"Login Required" message:@"Cannot create a spotlist without logging in"];
-        return;
+    if ([self promptLoginNeeded:@"Cannot create a spotlist without logging in"] == NO) {
+        [self goToFindSimilarSpots:self];
     }
-    
-    [self goToFindSimilarSpots:self];
 }
 
 - (void)updateFeaturedSpotlists {
