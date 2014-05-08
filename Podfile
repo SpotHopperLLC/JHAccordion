@@ -15,6 +15,7 @@ pod 'iRate', '~> 1.8.0'
 #pod 'JHAccordion', :git => 'https://github.com/joshdholtz/JHAccordion.git'
 pod 'JHAutoCompleteTextField', :git => 'http://github.com/joshdholtz/JHAutoCompleteTextField.git'
 pod 'JHSidebar', :git => 'https://github.com/joshdholtz/JHSidebar.git'
+pod 'PhotoZoom', :git => 'https://github.com/brennanMKE/PhotoZoom.git', :tag => '0.0.1'
 pod 'TTTAttributedLabel', '~> 1.8.1'
 pod 'MBProgressHUD', '~> 0.8.0'
 

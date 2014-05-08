@@ -1866,6 +1866,10 @@
 		26F0FDE818EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F0FDE618EB4F23001BB0CD /* AgeVerificationViewController.m */; };
 		26F0FDE918EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F0FDE618EB4F23001BB0CD /* AgeVerificationViewController.m */; };
 		26F0FDEA18EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F0FDE618EB4F23001BB0CD /* AgeVerificationViewController.m */; };
+		26FFAFF4191B367B00D222B7 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */; };
+		26FFAFF5191B367B00D222B7 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */; };
+		26FFAFF6191B367B00D222B7 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */; };
+		26FFAFF7191B367B00D222B7 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */; };
 		5F881FD0AAD84878A974907D /* libPods-SpotHopperLocal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3557E960D2924E8BA2015473 /* libPods-SpotHopperLocal.a */; };
 		98B74A6E72D54C9491FDAF17 /* libPods-SpotHopperStaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 123F4C2DFBE04705AFDF66F5 /* libPods-SpotHopperStaging.a */; };
 		B603C870603D4E1C905D19CD /* libPods-SpotHopperDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90AAD79CD27D48B987A3A0C5 /* libPods-SpotHopperDev.a */; };
@@ -2500,6 +2504,8 @@
 		26F0FDE418EB1B18001BB0CD /* San Francisco.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "San Francisco.gpx"; sourceTree = "<group>"; };
 		26F0FDE518EB4F23001BB0CD /* AgeVerificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgeVerificationViewController.h; sourceTree = "<group>"; };
 		26F0FDE618EB4F23001BB0CD /* AgeVerificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgeVerificationViewController.m; sourceTree = "<group>"; };
+		26FFAFF2191B367B00D222B7 /* PhotoViewerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewerViewController.h; sourceTree = "<group>"; };
+		26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewerViewController.m; sourceTree = "<group>"; };
 		28166567EC6E42329AF4A745 /* Pods-SpotHopperLocal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotHopperLocal.xcconfig"; path = "Pods/Pods-SpotHopperLocal.xcconfig"; sourceTree = "<group>"; };
 		3557E960D2924E8BA2015473 /* libPods-SpotHopperLocal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpotHopperLocal.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		90AAD79CD27D48B987A3A0C5 /* libPods-SpotHopperDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpotHopperDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3618,6 +3624,8 @@
 				03D7F56F18EADCF3007B9E78 /* SearchViewController.xib */,
 				265CE70B1911899C008DAF5E /* PhotoAlbumViewController.h */,
 				265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */,
+				26FFAFF2191B367B00D222B7 /* PhotoViewerViewController.h */,
+				26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */,
 			);
 			name = Commons;
 			sourceTree = "<group>";
@@ -5567,6 +5575,7 @@
 				03CA72D0187DF43B00815284 /* NewReviewViewController.m in Sources */,
 				03CA726E187B53DA00815284 /* MyReviewsViewController.m in Sources */,
 				03E4453E18B55B9E00C88421 /* SHButtonLatoLightLocation.m in Sources */,
+				26FFAFF4191B367B00D222B7 /* PhotoViewerViewController.m in Sources */,
 				039ABBCD18CE22E400B84AE6 /* MatchPercentAnnotation.m in Sources */,
 				03AF8EA218E515B900DD9356 /* LiveSpecialViewController.m in Sources */,
 				038664D7186D376900985CEC /* UILabelRockwell.m in Sources */,
@@ -5717,6 +5726,7 @@
 				03CAC00B18E7716400FAC5F5 /* NewReviewViewController.m in Sources */,
 				03CAC00C18E7716400FAC5F5 /* MyReviewsViewController.m in Sources */,
 				03CAC00D18E7716400FAC5F5 /* SHButtonLatoLightLocation.m in Sources */,
+				26FFAFF7191B367B00D222B7 /* PhotoViewerViewController.m in Sources */,
 				03CAC00E18E7716400FAC5F5 /* MatchPercentAnnotation.m in Sources */,
 				03CAC00F18E7716400FAC5F5 /* LiveSpecialViewController.m in Sources */,
 				03CAC01018E7716400FAC5F5 /* UILabelRockwell.m in Sources */,
@@ -5859,6 +5869,7 @@
 				03F4E7A318CA33D00056EAA9 /* NewReviewViewController.m in Sources */,
 				03F4E7A418CA33D00056EAA9 /* MyReviewsViewController.m in Sources */,
 				03F4E7A518CA33D00056EAA9 /* SHButtonLatoLightLocation.m in Sources */,
+				26FFAFF6191B367B00D222B7 /* PhotoViewerViewController.m in Sources */,
 				039ABBCF18CE246E00B84AE6 /* MatchPercentAnnotation.m in Sources */,
 				03AF8EA418E515B900DD9356 /* LiveSpecialViewController.m in Sources */,
 				03F4E7A618CA33D00056EAA9 /* UILabelRockwell.m in Sources */,
@@ -6001,6 +6012,7 @@
 				03F4E8F118CA34260056EAA9 /* NewReviewViewController.m in Sources */,
 				03F4E8F218CA34260056EAA9 /* MyReviewsViewController.m in Sources */,
 				03F4E8F318CA34260056EAA9 /* SHButtonLatoLightLocation.m in Sources */,
+				26FFAFF5191B367B00D222B7 /* PhotoViewerViewController.m in Sources */,
 				039ABBCE18CE246E00B84AE6 /* MatchPercentAnnotation.m in Sources */,
 				03AF8EA318E515B900DD9356 /* LiveSpecialViewController.m in Sources */,
 				03F4E8F418CA34260056EAA9 /* UILabelRockwell.m in Sources */,

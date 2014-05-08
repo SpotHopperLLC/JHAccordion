@@ -8,6 +8,8 @@
 
 #import "PhotoAlbumViewController.h"
 
+#import "UIViewController+Navigator.h"
+
 #import "ImageModel.h"
 #import "NetworkHelper.h"
 
@@ -65,8 +67,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"Selected item at %li", (long)indexPath.item);
-    //UICollectionViewCell *cell = (UICollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    
+    [self goToPhotoViewer:_images atIndex:indexPath.item];
 }
 
 @end
