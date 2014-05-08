@@ -15,6 +15,7 @@
 #import "ErrorModel.h"
 #import "UserModel.h"
 
+#import "TellMeMyLocation.h"
 #import "Tracker.h"
 
 @interface LaunchViewController ()
@@ -284,12 +285,22 @@
 
 - (void)doLoginOperation:(NSDictionary*)params {
     
+    NSMutableDictionary *paramsWithLocation = params.mutableCopy;
+    
+    // Sets last location to user if there is one
+    CLLocation *location = [TellMeMyLocation lastLocation];
+    if (location) {
+        [paramsWithLocation setObject:[NSNumber numberWithFloat:location.coordinate.latitude] forKey:kUserModelParamLatitude];
+        [paramsWithLocation setObject:[NSNumber numberWithFloat:location.coordinate.longitude] forKey:kUserModelParamLongitude];
+    }
+    
     [self showHUD:@"Logging in"];
-    [UserModel loginUser:params success:^(UserModel *userModel, NSHTTPURLResponse *response) {
+    [UserModel loginUser:paramsWithLocation success:^(UserModel *userModel, NSHTTPURLResponse *response) {
         [Tracker track:@"Logged In" properties:@{@"Success" : @TRUE}];
 
         [self hideHUD];
         [self exitLaunch];
+        
     } failure:^(ErrorModel *errorModel) {
         [Tracker track:@"Logged In" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
@@ -323,11 +334,18 @@
         return;
     }
     
-    NSDictionary *params = @{
+    NSMutableDictionary *params = @{
                              kUserModelParamEmail : email,
                              kUserModelParamPassword : password,
                              kUserModelParamRole : kUserModelRoleUser
-                             };
+                             }.mutableCopy;
+    
+    // Sets last location to user if there is one
+    CLLocation *location = [TellMeMyLocation lastLocation];
+    if (location) {
+        [params setObject:[NSNumber numberWithFloat:location.coordinate.latitude] forKey:kUserModelParamLatitude];
+        [params setObject:[NSNumber numberWithFloat:location.coordinate.longitude] forKey:kUserModelParamLongitude];
+    }
     
     [Tracker track:@"Creating Account"];
     
