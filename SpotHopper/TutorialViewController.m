@@ -47,12 +47,6 @@
     self.buttons = buttons;
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    [[ClientSessionManager sharedClient] setHasSeenWelcome:TRUE];
-}
-
 #pragma mark - Tracking
 
 - (NSString *)screenName {

@@ -298,15 +298,7 @@
     
 }
 - (void)exitLaunch {
-    if ([[ClientSessionManager sharedClient] hasSeenWelcome] == NO) {
-        UIViewController *vc = self.presentingViewController;
-        [self dismissViewControllerAnimated:NO completion:^{
-            [vc goToTutorial:FALSE];
-        }];
-    }
-    else {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)doRegistration {
