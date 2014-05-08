@@ -14,6 +14,8 @@
 #define kUserModelParamName @"name"
 #define kUserModelParamGender @"gender"
 #define kUserModelParamBirthday @"birthday"
+#define kUserModelParamLatitude @"latitude"
+#define kUserModelParamLongitude @"longitude"
 #define kUserModelParamFacebookAccessToken @"facebook_access_token"
 #define kUserModelParamsTwitterAccessToken @"twitter_access_token"
 #define kUserModelParamsTwitterAccessTokenSecret @"twitter_access_token_secret"
