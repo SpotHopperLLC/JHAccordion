@@ -1792,12 +1792,12 @@
 		2602BD9D18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9E18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9F18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
-		261E577719175B720044F496 /* CheckInModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E577619175B720044F496 /* CheckInModel.m */; };
-		261E577819175B720044F496 /* CheckInModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E577619175B720044F496 /* CheckInModel.m */; };
-		261E577919175B720044F496 /* CheckInModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E577619175B720044F496 /* CheckInModel.m */; };
-		261E577A19175B720044F496 /* CheckInModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E577619175B720044F496 /* CheckInModel.m */; };
 		2636AB3E18F8A82100591722 /* table_footer_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9418E2654900C93BBF /* table_footer_background.png */; };
 		2636AB3F18F8A82400591722 /* table_footer_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9518E2654900C93BBF /* table_footer_background@2x.png */; };
+		265CE70D1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */; };
+		265CE70E1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */; };
+		265CE70F1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */; };
+		265CE7101911899C008DAF5E /* PhotoAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */; };
 		267C5E3A1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
 		267C5E3B1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
 		267C5E3C1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
@@ -1866,6 +1866,14 @@
 		26F0FDE818EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F0FDE618EB4F23001BB0CD /* AgeVerificationViewController.m */; };
 		26F0FDE918EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F0FDE618EB4F23001BB0CD /* AgeVerificationViewController.m */; };
 		26F0FDEA18EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F0FDE618EB4F23001BB0CD /* AgeVerificationViewController.m */; };
+		26FF53B9191B577D00834FBD /* CheckInModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FF53B8191B577D00834FBD /* CheckInModel.m */; };
+		26FF53BA191B577D00834FBD /* CheckInModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FF53B8191B577D00834FBD /* CheckInModel.m */; };
+		26FF53BB191B577D00834FBD /* CheckInModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FF53B8191B577D00834FBD /* CheckInModel.m */; };
+		26FF53BC191B577D00834FBD /* CheckInModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FF53B8191B577D00834FBD /* CheckInModel.m */; };
+		26FFAFF4191B367B00D222B7 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */; };
+		26FFAFF5191B367B00D222B7 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */; };
+		26FFAFF6191B367B00D222B7 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */; };
+		26FFAFF7191B367B00D222B7 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */; };
 		5F881FD0AAD84878A974907D /* libPods-SpotHopperLocal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3557E960D2924E8BA2015473 /* libPods-SpotHopperLocal.a */; };
 		98B74A6E72D54C9491FDAF17 /* libPods-SpotHopperStaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 123F4C2DFBE04705AFDF66F5 /* libPods-SpotHopperStaging.a */; };
 		B603C870603D4E1C905D19CD /* libPods-SpotHopperDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90AAD79CD27D48B987A3A0C5 /* libPods-SpotHopperDev.a */; };
@@ -2464,8 +2472,8 @@
 		2602BD9418E2654900C93BBF /* table_footer_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table_footer_background.png; sourceTree = "<group>"; };
 		2602BD9518E2654900C93BBF /* table_footer_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table_footer_background@2x.png"; sourceTree = "<group>"; };
 		2602BD9C18E283C500C93BBF /* Common.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Common.storyboard; sourceTree = "<group>"; };
-		261E577519175B720044F496 /* CheckInModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckInModel.h; sourceTree = "<group>"; };
-		261E577619175B720044F496 /* CheckInModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckInModel.m; sourceTree = "<group>"; };
+		265CE70B1911899C008DAF5E /* PhotoAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAlbumViewController.h; sourceTree = "<group>"; };
+		265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAlbumViewController.m; sourceTree = "<group>"; };
 		267C5E381908B7CC00D60EB5 /* NetworkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkHelper.h; sourceTree = "<group>"; };
 		267C5E391908B7CC00D60EB5 /* NetworkHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkHelper.m; sourceTree = "<group>"; };
 		267D78D418F4A8DD00E95D54 /* SHButtonLatoBold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoBold.h; sourceTree = "<group>"; };
@@ -2500,6 +2508,10 @@
 		26F0FDE418EB1B18001BB0CD /* San Francisco.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "San Francisco.gpx"; sourceTree = "<group>"; };
 		26F0FDE518EB4F23001BB0CD /* AgeVerificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgeVerificationViewController.h; sourceTree = "<group>"; };
 		26F0FDE618EB4F23001BB0CD /* AgeVerificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgeVerificationViewController.m; sourceTree = "<group>"; };
+		26FF53B7191B577D00834FBD /* CheckInModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckInModel.h; sourceTree = "<group>"; };
+		26FF53B8191B577D00834FBD /* CheckInModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckInModel.m; sourceTree = "<group>"; };
+		26FFAFF2191B367B00D222B7 /* PhotoViewerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewerViewController.h; sourceTree = "<group>"; };
+		26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewerViewController.m; sourceTree = "<group>"; };
 		28166567EC6E42329AF4A745 /* Pods-SpotHopperLocal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotHopperLocal.xcconfig"; path = "Pods/Pods-SpotHopperLocal.xcconfig"; sourceTree = "<group>"; };
 		3557E960D2924E8BA2015473 /* libPods-SpotHopperLocal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpotHopperLocal.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		90AAD79CD27D48B987A3A0C5 /* libPods-SpotHopperDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpotHopperDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3070,56 +3082,56 @@
 			isa = PBXGroup;
 			children = (
 				039B701C1887591600C590F8 /* Helpers */,
-				03412C3F1882F6EC000F16A8 /* SHJSONAPIResource.h */,
-				03412C401882F6EC000F16A8 /* SHJSONAPIResource.m */,
-				03CA728A187C26BD00815284 /* DrinkModel.h */,
-				03CA728B187C26BD00815284 /* DrinkModel.m */,
-				037D13A018A3DF8500B89535 /* DrinkTypeModel.h */,
-				037D13A118A3DF8500B89535 /* DrinkTypeModel.m */,
-				039F549218D34AC4004B2B67 /* DrinkSubtypeModel.h */,
-				039F549318D34AC4004B2B67 /* DrinkSubtypeModel.m */,
-				03412C3C18805693000F16A8 /* ErrorModel.h */,
-				03412C3D18805693000F16A8 /* ErrorModel.m */,
-				03CA728D187C3B2E00815284 /* ReviewModel.h */,
-				03CA728E187C3B2E00815284 /* ReviewModel.m */,
-				03C8DAE8188B44C20082321C /* SliderModel.h */,
-				03C8DAE9188B44C20082321C /* SliderModel.m */,
-				03C8DAEB188B44CB0082321C /* SliderTemplateModel.h */,
-				03C8DAEC188B44CB0082321C /* SliderTemplateModel.m */,
-				03CA7287187C26B300815284 /* SpotModel.h */,
-				03CA7288187C26B300815284 /* SpotModel.m */,
-				0381044B18B69E2100A410DB /* SpotTypeModel.h */,
-				0381044C18B69E2100A410DB /* SpotTypeModel.m */,
-				038664ED186D391E00985CEC /* UserModel.h */,
-				038664EE186D391E00985CEC /* UserModel.m */,
-				03F6BF7318C6EE2B00172F13 /* SpotListModel.h */,
-				03F6BF7418C6EE2B00172F13 /* SpotListModel.m */,
 				03E882E318C7B8F400BD8FBB /* AverageReviewModel.h */,
 				03E882E418C7B8F400BD8FBB /* AverageReviewModel.m */,
-				039F541618D11E57004B2B67 /* SpotListMoodModel.h */,
-				039F541718D11E57004B2B67 /* SpotListMoodModel.m */,
-				039F543B18D28F5E004B2B67 /* DrinkListModel.h */,
-				039F543C18D28F5E004B2B67 /* DrinkListModel.m */,
-				039F548D18D340AE004B2B67 /* MenuItemModel.h */,
-				039F548E18D340AE004B2B67 /* MenuItemModel.m */,
 				0345708D18DC00EE0095E4A8 /* BaseAlcoholModel.h */,
 				0345708E18DC00EE0095E4A8 /* BaseAlcoholModel.m */,
-				0345709218DF7DDD0095E4A8 /* MenuTypeModel.h */,
-				0345709318DF7DDD0095E4A8 /* MenuTypeModel.m */,
+				26FF53B7191B577D00834FBD /* CheckInModel.h */,
+				26FF53B8191B577D00834FBD /* CheckInModel.m */,
+				039F543B18D28F5E004B2B67 /* DrinkListModel.h */,
+				039F543C18D28F5E004B2B67 /* DrinkListModel.m */,
+				03CA728A187C26BD00815284 /* DrinkModel.h */,
+				03CA728B187C26BD00815284 /* DrinkModel.m */,
+				039F549218D34AC4004B2B67 /* DrinkSubtypeModel.h */,
+				039F549318D34AC4004B2B67 /* DrinkSubtypeModel.m */,
+				037D13A018A3DF8500B89535 /* DrinkTypeModel.h */,
+				037D13A118A3DF8500B89535 /* DrinkTypeModel.m */,
+				03412C3C18805693000F16A8 /* ErrorModel.h */,
+				03412C3D18805693000F16A8 /* ErrorModel.m */,
 				0372FF9218E36535009188B5 /* ImageModel.h */,
 				0372FF9318E36535009188B5 /* ImageModel.m */,
 				033A3F0D18E38CEE00E07F39 /* LiveSpecialModel.h */,
 				033A3F0E18E38CEE00E07F39 /* LiveSpecialModel.m */,
-				03CAC18418E9C74000FAC5F5 /* PriceModel.h */,
-				03CAC18518E9C74000FAC5F5 /* PriceModel.m */,
-				03CAC18A18E9C74F00FAC5F5 /* SizeModel.h */,
-				03CAC18B18E9C74F00FAC5F5 /* SizeModel.m */,
-				26ED5CB418FDDE56006901ED /* Tracker.h */,
-				26ED5CB518FDDE56006901ED /* Tracker.m */,
+				039F548D18D340AE004B2B67 /* MenuItemModel.h */,
+				039F548E18D340AE004B2B67 /* MenuItemModel.m */,
+				0345709218DF7DDD0095E4A8 /* MenuTypeModel.h */,
+				0345709318DF7DDD0095E4A8 /* MenuTypeModel.m */,
 				267C5E381908B7CC00D60EB5 /* NetworkHelper.h */,
 				267C5E391908B7CC00D60EB5 /* NetworkHelper.m */,
-				261E577519175B720044F496 /* CheckInModel.h */,
-				261E577619175B720044F496 /* CheckInModel.m */,
+				03CAC18418E9C74000FAC5F5 /* PriceModel.h */,
+				03CAC18518E9C74000FAC5F5 /* PriceModel.m */,
+				03CA728D187C3B2E00815284 /* ReviewModel.h */,
+				03CA728E187C3B2E00815284 /* ReviewModel.m */,
+				03412C3F1882F6EC000F16A8 /* SHJSONAPIResource.h */,
+				03412C401882F6EC000F16A8 /* SHJSONAPIResource.m */,
+				03CAC18A18E9C74F00FAC5F5 /* SizeModel.h */,
+				03CAC18B18E9C74F00FAC5F5 /* SizeModel.m */,
+				03C8DAE8188B44C20082321C /* SliderModel.h */,
+				03C8DAE9188B44C20082321C /* SliderModel.m */,
+				03C8DAEB188B44CB0082321C /* SliderTemplateModel.h */,
+				03C8DAEC188B44CB0082321C /* SliderTemplateModel.m */,
+				03F6BF7318C6EE2B00172F13 /* SpotListModel.h */,
+				03F6BF7418C6EE2B00172F13 /* SpotListModel.m */,
+				039F541618D11E57004B2B67 /* SpotListMoodModel.h */,
+				039F541718D11E57004B2B67 /* SpotListMoodModel.m */,
+				03CA7287187C26B300815284 /* SpotModel.h */,
+				03CA7288187C26B300815284 /* SpotModel.m */,
+				0381044B18B69E2100A410DB /* SpotTypeModel.h */,
+				0381044C18B69E2100A410DB /* SpotTypeModel.m */,
+				26ED5CB418FDDE56006901ED /* Tracker.h */,
+				26ED5CB518FDDE56006901ED /* Tracker.m */,
+				038664ED186D391E00985CEC /* UserModel.h */,
+				038664EE186D391E00985CEC /* UserModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -3303,10 +3315,10 @@
 			children = (
 				03C8DAE5188B42A40082321C /* MockData.h */,
 				03C8DAE6188B42A40082321C /* MockData.m */,
-				039B7020188759B100C590F8 /* NSArray+HoursOfOperation.h */,
-				039B7021188759B100C590F8 /* NSArray+HoursOfOperation.m */,
 				0372FF9F18E36B0A009188B5 /* NSArray+DailySpecials.h */,
 				0372FFA018E36B0A009188B5 /* NSArray+DailySpecials.m */,
+				039B7020188759B100C590F8 /* NSArray+HoursOfOperation.h */,
+				039B7021188759B100C590F8 /* NSArray+HoursOfOperation.m */,
 				26EB38AD18FC7E1100E84A3B /* NSNull+Debugging.h */,
 				26EB38AE18FC7E1100E84A3B /* NSNull+Debugging.m */,
 			);
@@ -3618,6 +3630,10 @@
 				03D7F56D18EADCF3007B9E78 /* SearchViewController.h */,
 				03D7F56E18EADCF3007B9E78 /* SearchViewController.m */,
 				03D7F56F18EADCF3007B9E78 /* SearchViewController.xib */,
+				265CE70B1911899C008DAF5E /* PhotoAlbumViewController.h */,
+				265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */,
+				26FFAFF2191B367B00D222B7 /* PhotoViewerViewController.h */,
+				26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */,
 			);
 			name = Commons;
 			sourceTree = "<group>";
@@ -5471,7 +5487,6 @@
 				03CAC19D18E9FAC300FAC5F5 /* AccountSettingsViewController.m in Sources */,
 				038664E1186D379400985CEC /* BaseViewController.m in Sources */,
 				26BABDF61910688F00852D73 /* JHAccordion.m in Sources */,
-				261E577719175B720044F496 /* CheckInModel.m in Sources */,
 				039F542718D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				038664E2186D379400985CEC /* ClientSessionManager.m in Sources */,
 				03AF8F6318E6013700DD9356 /* CheckinConfirmationViewController.m in Sources */,
@@ -5501,6 +5516,7 @@
 				039F546B18D2DB32004B2B67 /* DrinkProfileViewController.m in Sources */,
 				039F548F18D340AE004B2B67 /* MenuItemModel.m in Sources */,
 				26BABDCC190F698800852D73 /* DrinksViewController.m in Sources */,
+				265CE70D1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */,
 				0372FF4D18E33B20009188B5 /* TonightsSpecialsViewController.m in Sources */,
 				038664CC186D376900985CEC /* NSDate+Globalize.m in Sources */,
 				038664EA186D37BC00985CEC /* RefreshView.m in Sources */,
@@ -5565,8 +5581,10 @@
 				039B7012188723EB00C590F8 /* MockeryHTTPURLResponse.m in Sources */,
 				03866473186D352400985CEC /* main.m in Sources */,
 				03CA72D0187DF43B00815284 /* NewReviewViewController.m in Sources */,
+				26FF53B9191B577D00834FBD /* CheckInModel.m in Sources */,
 				03CA726E187B53DA00815284 /* MyReviewsViewController.m in Sources */,
 				03E4453E18B55B9E00C88421 /* SHButtonLatoLightLocation.m in Sources */,
+				26FFAFF4191B367B00D222B7 /* PhotoViewerViewController.m in Sources */,
 				039ABBCD18CE22E400B84AE6 /* MatchPercentAnnotation.m in Sources */,
 				03AF8EA218E515B900DD9356 /* LiveSpecialViewController.m in Sources */,
 				038664D7186D376900985CEC /* UILabelRockwell.m in Sources */,
@@ -5621,7 +5639,6 @@
 				03D7F56C18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */,
 				03CABFB518E7716400FAC5F5 /* BaseViewController.m in Sources */,
 				26BABDF91910688F00852D73 /* JHAccordion.m in Sources */,
-				261E577A19175B720044F496 /* CheckInModel.m in Sources */,
 				03CABFB618E7716400FAC5F5 /* DrinkListMenuViewController.m in Sources */,
 				03CABFB718E7716400FAC5F5 /* ClientSessionManager.m in Sources */,
 				03CABFB818E7716400FAC5F5 /* CheckinConfirmationViewController.m in Sources */,
@@ -5651,6 +5668,7 @@
 				03CABFCE18E7716400FAC5F5 /* DrinkProfileViewController.m in Sources */,
 				03CABFCF18E7716400FAC5F5 /* MenuItemModel.m in Sources */,
 				26BABDCF190F698800852D73 /* DrinksViewController.m in Sources */,
+				265CE7101911899C008DAF5E /* PhotoAlbumViewController.m in Sources */,
 				03CABFD018E7716400FAC5F5 /* TonightsSpecialsViewController.m in Sources */,
 				03CABFD118E7716400FAC5F5 /* NSDate+Globalize.m in Sources */,
 				03CABFD218E7716400FAC5F5 /* RefreshView.m in Sources */,
@@ -5715,8 +5733,10 @@
 				03CAC00918E7716400FAC5F5 /* MockeryHTTPURLResponse.m in Sources */,
 				03CAC00A18E7716400FAC5F5 /* main.m in Sources */,
 				03CAC00B18E7716400FAC5F5 /* NewReviewViewController.m in Sources */,
+				26FF53BC191B577D00834FBD /* CheckInModel.m in Sources */,
 				03CAC00C18E7716400FAC5F5 /* MyReviewsViewController.m in Sources */,
 				03CAC00D18E7716400FAC5F5 /* SHButtonLatoLightLocation.m in Sources */,
+				26FFAFF7191B367B00D222B7 /* PhotoViewerViewController.m in Sources */,
 				03CAC00E18E7716400FAC5F5 /* MatchPercentAnnotation.m in Sources */,
 				03CAC00F18E7716400FAC5F5 /* LiveSpecialViewController.m in Sources */,
 				03CAC01018E7716400FAC5F5 /* UILabelRockwell.m in Sources */,
@@ -5763,7 +5783,6 @@
 				03D7F56B18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */,
 				03F4E76118CA33D00056EAA9 /* BaseViewController.m in Sources */,
 				26BABDF81910688F00852D73 /* JHAccordion.m in Sources */,
-				261E577919175B720044F496 /* CheckInModel.m in Sources */,
 				039F542918D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				03F4E76218CA33D00056EAA9 /* ClientSessionManager.m in Sources */,
 				03AF8F6518E6013E00DD9356 /* CheckinConfirmationViewController.m in Sources */,
@@ -5793,6 +5812,7 @@
 				039F546D18D2DB32004B2B67 /* DrinkProfileViewController.m in Sources */,
 				039F549118D340AE004B2B67 /* MenuItemModel.m in Sources */,
 				26BABDCE190F698800852D73 /* DrinksViewController.m in Sources */,
+				265CE70F1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */,
 				0372FF5118E342D1009188B5 /* TonightsSpecialsViewController.m in Sources */,
 				03F4E77518CA33D00056EAA9 /* NSDate+Globalize.m in Sources */,
 				03F4E77618CA33D00056EAA9 /* RefreshView.m in Sources */,
@@ -5857,8 +5877,10 @@
 				03F4E7A118CA33D00056EAA9 /* MockeryHTTPURLResponse.m in Sources */,
 				03F4E7A218CA33D00056EAA9 /* main.m in Sources */,
 				03F4E7A318CA33D00056EAA9 /* NewReviewViewController.m in Sources */,
+				26FF53BB191B577D00834FBD /* CheckInModel.m in Sources */,
 				03F4E7A418CA33D00056EAA9 /* MyReviewsViewController.m in Sources */,
 				03F4E7A518CA33D00056EAA9 /* SHButtonLatoLightLocation.m in Sources */,
+				26FFAFF6191B367B00D222B7 /* PhotoViewerViewController.m in Sources */,
 				039ABBCF18CE246E00B84AE6 /* MatchPercentAnnotation.m in Sources */,
 				03AF8EA418E515B900DD9356 /* LiveSpecialViewController.m in Sources */,
 				03F4E7A618CA33D00056EAA9 /* UILabelRockwell.m in Sources */,
@@ -5905,7 +5927,6 @@
 				03D7F56A18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */,
 				03F4E8AF18CA34260056EAA9 /* BaseViewController.m in Sources */,
 				26BABDF71910688F00852D73 /* JHAccordion.m in Sources */,
-				261E577819175B720044F496 /* CheckInModel.m in Sources */,
 				039F542818D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				03F4E8B018CA34260056EAA9 /* ClientSessionManager.m in Sources */,
 				03AF8F6418E6013E00DD9356 /* CheckinConfirmationViewController.m in Sources */,
@@ -5935,6 +5956,7 @@
 				039F546C18D2DB32004B2B67 /* DrinkProfileViewController.m in Sources */,
 				039F549018D340AE004B2B67 /* MenuItemModel.m in Sources */,
 				26BABDCD190F698800852D73 /* DrinksViewController.m in Sources */,
+				265CE70E1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */,
 				0372FF5018E342D1009188B5 /* TonightsSpecialsViewController.m in Sources */,
 				03F4E8C318CA34260056EAA9 /* NSDate+Globalize.m in Sources */,
 				03F4E8C418CA34260056EAA9 /* RefreshView.m in Sources */,
@@ -5999,8 +6021,10 @@
 				03F4E8EF18CA34260056EAA9 /* MockeryHTTPURLResponse.m in Sources */,
 				03F4E8F018CA34260056EAA9 /* main.m in Sources */,
 				03F4E8F118CA34260056EAA9 /* NewReviewViewController.m in Sources */,
+				26FF53BA191B577D00834FBD /* CheckInModel.m in Sources */,
 				03F4E8F218CA34260056EAA9 /* MyReviewsViewController.m in Sources */,
 				03F4E8F318CA34260056EAA9 /* SHButtonLatoLightLocation.m in Sources */,
+				26FFAFF5191B367B00D222B7 /* PhotoViewerViewController.m in Sources */,
 				039ABBCE18CE246E00B84AE6 /* MatchPercentAnnotation.m in Sources */,
 				03AF8EA318E515B900DD9356 /* LiveSpecialViewController.m in Sources */,
 				03F4E8F418CA34260056EAA9 /* UILabelRockwell.m in Sources */,

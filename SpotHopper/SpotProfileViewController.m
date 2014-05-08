@@ -184,7 +184,6 @@
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
     SpotImageCollectViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SpotImageCollectViewCell" forIndexPath:indexPath];
     
     // Uses placeholder if spot has no images
@@ -193,11 +192,15 @@
     }
     // Sets the images defined by the spot
     else {
-        ImageModel *image = [[_spot images] objectAtIndex:indexPath.row];
-        [cell setImage:image withPlaceholder:_spot.placeholderImage];
+        ImageModel *imageModel = _spot.images[indexPath.item];
+        [cell setImage:imageModel withPlaceholder:_spot.placeholderImage];
     }
     
     return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    [self goToPhotoAlbum:[_spot images] atIndex:indexPath.item];
 }
 
 #pragma mark - UITableViewDataSource

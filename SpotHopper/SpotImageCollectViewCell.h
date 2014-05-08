@@ -15,6 +15,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imgSpot;
 @property (weak, nonatomic) IBOutlet UIButton *btnFoursquare;
 
-- (void)setImage:(ImageModel *)image withPlaceholder:(UIImage*)placeholderImage;
+- (void)setImage:(ImageModel *)imageModel withPlaceholder:(UIImage*)placeholderImage;
 
 @end
