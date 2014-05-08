@@ -391,20 +391,23 @@
 }
 
 - (void)checkinAtSpot:(SpotModel*)spot {
-    UserModel *user = [ClientSessionManager sharedClient].currentUser;
-    [Tracker track:@"Check In" properties:@{@"user_id" : user.ID, @"spot_id" : spot.ID}];
-    
-    CheckInModel *checkInModel = [[CheckInModel alloc] init];
-    [checkInModel postCheckIn:@{@"spot_id" : spot.ID} success:^(CheckInModel *checkInModel, JSONAPI *jsonAPI) {
-        NSLog(@"check in ID: %@", checkInModel.ID);
+    if ([self promptLoginNeeded:@"Cannot checkin without logging in"] == NO) {
+        UserModel *user = [ClientSessionManager sharedClient].currentUser;
+        NSCAssert(user, @"user is required");
+        NSCAssert(spot, @"spot is required");
+        [Tracker track:@"Check In" properties:@{@"user_id" : user.ID, @"spot_id" : spot.ID}];
         
-        if ([_delegate respondsToSelector:@selector(checkinViewController:checkedIn:)]) {
-            [_delegate checkinViewController:self checkedIn:checkInModel];
-        } else {
-            [self goToCheckIn:checkInModel];
-        }
-    } failure:^(ErrorModel *errorModel) {
-    }];
+        CheckInModel *checkInModel = [[CheckInModel alloc] init];
+        [checkInModel postCheckIn:@{@"spot_id" : spot.ID} success:^(CheckInModel *checkInModel, JSONAPI *jsonAPI) {
+            if ([_delegate respondsToSelector:@selector(checkinViewController:checkedIn:)]) {
+                [_delegate checkinViewController:self checkedIn:checkInModel];
+            } else {
+                [self goToCheckIn:checkInModel];
+            }
+        } failure:^(ErrorModel *errorModel) {
+            [self showAlert:@"Oops" message:@"You are not able to check in at this time. Please try again later."];
+        }];
+    }
 }
 
 - (void)updateViewMap {
