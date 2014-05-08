@@ -23,6 +23,8 @@
 #import "FindSimilarViewController.h"
 #import "FindSimilarDrinksViewController.h"
 
+#import "PhotoAlbumViewController.h"
+
 @interface UIViewController (Navigator)
 
 // Main
@@ -74,7 +76,7 @@
 - (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate;
 - (void)goToFindSimilarDrinks:(id<FindSimilarDrinksViewControllerDelegate>)delegate;
 - (void)goToPhotoAlbum:(NSArray *)images atIndex:(NSUInteger)index;
-- (void)goToPhotoViewer:(NSArray *)images atIndex:(NSUInteger)index;
+- (void)goToPhotoViewer:(NSArray *)images atIndex:(NSUInteger)index fromPhotoAlbum:(PhotoAlbumViewController *)photoAlbum;
 
 // Storyboards
 - (UIStoryboard*)mainStoryboard;

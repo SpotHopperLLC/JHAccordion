@@ -202,6 +202,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="collectionView" destination="1LX-d5-Hmr" id="Rkc-Ox-2em"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8E0-LV-uQJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

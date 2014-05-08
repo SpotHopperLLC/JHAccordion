@@ -23,13 +23,13 @@
     return self;
 }
 
-- (void)setImage:(ImageModel *)image withPlaceholder:(UIImage*)placeholderImage {
-    [_btnFoursquare setHidden:( image.foursquareId.length == 0 )];
+- (void)setImage:(ImageModel *)imageModel withPlaceholder:(UIImage*)placeholderImage {
+    [_btnFoursquare setHidden:( imageModel.foursquareId.length == 0 )];
     
-    if (image == nil) {
+    if (imageModel == nil) {
         [_imgSpot setImage:placeholderImage];
     } else {
-        [NetworkHelper loadImageProgressively:image imageView:_imgSpot placeholderImage:placeholderImage];
+        [NetworkHelper loadImageProgressively:imageModel imageView:_imgSpot placeholderImage:placeholderImage];
     }
 }
 

@@ -25,10 +25,9 @@
 }
 
 - (void)setSpot:(SpotModel *)spot {
-    
     // Sets image
-    ImageModel *imageModel = spot.images.firstObject;
-    if (imageModel != nil) {
+    if (spot.images.count) {
+        ImageModel *imageModel = spot.images[0];
         [NetworkHelper loadImageProgressively:imageModel imageView:_imgSpot placeholderImage:spot.placeholderImage];
     } else {
         [_imgSpot setImage:spot.placeholderImage];
@@ -39,7 +38,6 @@
     
     [_lblWhere setText:spot.cityState];
     [_lblHowFar setText:@""];
-    
 }
 
 @end

@@ -286,12 +286,13 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
-- (void)goToPhotoViewer:(NSArray *)images atIndex:(NSUInteger)index {
+- (void)goToPhotoViewer:(NSArray *)images atIndex:(NSUInteger)index fromPhotoAlbum:(PhotoAlbumViewController *)photoAlbum {
     [Tracker track:@"View Photo Viewer" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     UIStoryboard *commonStoryboard = [UIStoryboard storyboardWithName:@"Common" bundle:nil];
     PhotoViewerViewController *viewController = [commonStoryboard instantiateViewControllerWithIdentifier:@"PhotoViewerViewController"];
     viewController.images = images;
     viewController.index = index;
+    viewController.delegate = photoAlbum;
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

@@ -8,9 +8,20 @@
 
 #import "BaseViewController.h"
 
+@protocol PhotoViewerDelegate;
+
 @interface PhotoViewerViewController : BaseViewController
 
+@property (weak, nonatomic) IBOutlet id<PhotoViewerDelegate> delegate;
 @property (strong, nonatomic) NSArray *images;
 @property (assign, nonatomic) NSUInteger index;
+
+@end
+
+@protocol PhotoViewerDelegate <NSObject>
+
+@optional
+
+- (void)photoViewer:(PhotoViewerViewController *)photoViewer didChangeIndex:(NSUInteger)index;
 
 @end

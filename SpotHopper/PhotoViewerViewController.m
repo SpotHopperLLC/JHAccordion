@@ -14,7 +14,9 @@
 #import "ImageModel.h"
 #import "NetworkHelper.h"
 
-@interface PhotoViewerViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
+@interface PhotoViewerViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @end
 
@@ -33,6 +35,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_index inSection:0];
+    [_collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:FALSE];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -90,7 +95,7 @@
         } withFullImageBlock:^(UIImage *fullImage) {
             [photoView displayImage:fullImage];
         } withErrorBlock:^(NSError *error) {
-            NSLog(@"Error: %@", error);
+            // do nothing
         }];
     }
     
@@ -101,7 +106,21 @@
 #pragma mark -
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"Selected item!");
+}
+
+#pragma mark - UIScrollViewDelegate
+#pragma mark -
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    NSArray *visibleItems = [_collectionView indexPathsForVisibleItems];
+    if (visibleItems.count) {
+        NSIndexPath *indexPath = (NSIndexPath *)visibleItems[0];
+        _index = indexPath.item;
+        
+        if ([_delegate respondsToSelector:@selector(photoViewer:didChangeIndex:)]) {
+            [_delegate photoViewer:self didChangeIndex:_index];
+        }
+    }
 }
 
 #pragma mark - PZPhotoViewDelegate

@@ -31,13 +31,12 @@
     NSCAssert(self.collectionView.delegate, @"Property is required");
     NSCAssert(self.collectionView.dataSource, @"Property is required");
     
-    NSLog(@"Images: %li", (long)self.images.count);
-    
     self.title = @"Photos";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [_collectionView reloadData];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -55,6 +54,8 @@
         UIImageView *imageView = (UIImageView *)[cell viewWithTag:1];
         NSCAssert(imageView, @"Image View is required");
         [NetworkHelper loadThumbnailImage:imageModel imageView:imageView placeholderImage:self.placeholderImage];
+        
+        cell.backgroundColor = _index == indexPath.item ? [UIColor whiteColor] : [UIColor blackColor];
     
         return cell;
     }
@@ -66,8 +67,15 @@
 #pragma mark -
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"Selected item at %li", (long)indexPath.item);
-    [self goToPhotoViewer:_images atIndex:indexPath.item];
+    [self goToPhotoViewer:_images atIndex:indexPath.item fromPhotoAlbum:self];
+    _index = indexPath.item;
+}
+
+#pragma mark - PhotoViewerDelegate
+#pragma mark -
+
+- (void)photoViewer:(PhotoViewerViewController *)photoViewer didChangeIndex:(NSUInteger)index {
+    _index = index;
 }
 
 @end

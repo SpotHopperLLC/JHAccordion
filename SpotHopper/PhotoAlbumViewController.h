@@ -8,7 +8,9 @@
 
 #import "BaseViewController.h"
 
-@interface PhotoAlbumViewController : BaseViewController
+#import "PhotoViewerViewController.h"
+
+@interface PhotoAlbumViewController : BaseViewController <PhotoViewerDelegate>
 
 @property (nonatomic, strong) NSArray *images;
 @property (nonatomic, assign) NSUInteger index;
