@@ -5927,7 +5927,6 @@
 				03D7F56A18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */,
 				03F4E8AF18CA34260056EAA9 /* BaseViewController.m in Sources */,
 				26BABDF71910688F00852D73 /* JHAccordion.m in Sources */,
-				261E577819175B720044F496 /* (null) in Sources */,
 				039F542818D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				03F4E8B018CA34260056EAA9 /* ClientSessionManager.m in Sources */,
 				03AF8F6418E6013E00DD9356 /* CheckinConfirmationViewController.m in Sources */,
