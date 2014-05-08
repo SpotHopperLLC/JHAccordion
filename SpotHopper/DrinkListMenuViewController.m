@@ -652,21 +652,15 @@
 }
 
 - (void)createDrinklistWithSliders {
-    if ([ClientSessionManager sharedClient].isLoggedIn == NO) {
-        [self showAlert:@"Login Required" message:@"Cannot create a drinklist without logging in"];
-        return;
+    if ([self promptLoginNeeded:@"Cannot create a drinklist without logging in"] == NO) {
+        [self showAdjustSlidersView:YES animated:YES];
     }
-    
-    [self showAdjustSlidersView:YES animated:YES];
 }
 
 - (void)createDrinklistForSimilar {
-    if ([ClientSessionManager sharedClient].isLoggedIn == NO) {
-        [self showAlert:@"Login Required" message:@"Cannot create a drinklist without logging in"];
-        return;
+    if ([self promptLoginNeeded:@"Cannot create a drinklist without logging in"] == NO) {
+        [self goToFindSimilarDrinks:self];
     }
-    
-    [self goToFindSimilarDrinks:self];
 }
 
 - (void)updateFeaturedDrinklists {

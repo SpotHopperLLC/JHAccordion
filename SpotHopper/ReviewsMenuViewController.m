@@ -439,7 +439,8 @@
 }
 
 - (SectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
-    __block ReviewsMenuViewController *this = self;
+//    __block ReviewsMenuViewController *this = self;
+    __weak ReviewsMenuViewController *weakSelf = self;
     
     if (section == 0) {
         if (_sectionHeader0 == nil) {
@@ -447,11 +448,11 @@
             [_sectionHeader0 setIconImage:[UIImage imageNamed:@"icon_view_my_reviews"]];
             [_sectionHeader0 setText:@"View My Reviews"];
             [_sectionHeader0.imgArrow setImage:[UIImage imageNamed:@"img_expand_east"]];
+            
             [_sectionHeader0.btnBackground setActionWithBlock:^{
-                if ([ClientSessionManager sharedClient].isLoggedIn == YES) {
-                    [this goToMyReviews];
-                } else {
-                    [this showAlert:@"Login Required" message:@"Cannot view your reviews without logging in"];
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                if ([strongSelf promptLoginNeeded:@"Cannot view your reviews without logging in"] == NO) {
+                    [strongSelf goToMyReviews];
                 }
             }];
         }
@@ -464,10 +465,9 @@
             [_sectionHeader1 setText:@"Add New Review"];
             [_sectionHeader1.imgArrow setImage:[UIImage imageNamed:@"img_expand_east"]];
             [_sectionHeader1.btnBackground setActionWithBlock:^{
-                if ([ClientSessionManager sharedClient].isLoggedIn == YES) {
-                    [this goToSearchForNewReview:NO notWhatLookingFor:YES createReview:YES];
-                } else {
-                    [this showAlert:@"Login Required" message:@"Cannot add a review without logging in"];
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                if ([strongSelf promptLoginNeeded:@"Cannot add a review without logging in"] == NO) {
+                    [strongSelf goToSearchForNewReview:NO notWhatLookingFor:YES createReview:YES];
                 }
             }];
         }
