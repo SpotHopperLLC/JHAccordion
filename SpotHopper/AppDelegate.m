@@ -144,14 +144,28 @@
         }
     }
 
-    [self refreshDeviceLocationWithCompletionBlock:^{
-        NSDate *date = [TellMeMyLocation lastLocationDate];
-        if (date != nil && abs([date timeIntervalSinceNow]) > kRefreshLocationTime) {
-            [TellMeMyLocation setLastLocation:[TellMeMyLocation currentDeviceLocation] completionHandler:^{
-                // do nothing
-            }];
-        }
-    }];
+    if ([ClientSessionManager sharedClient].isLoggedIn) {
+        [self refreshDeviceLocationWithCompletionBlock:^{
+            NSDate *date = [TellMeMyLocation lastLocationDate];
+            if (date != nil && abs([date timeIntervalSinceNow]) > kRefreshLocationTime) {
+                [TellMeMyLocation setLastLocation:[TellMeMyLocation currentDeviceLocation] completionHandler:^{
+
+                    CLLocation *location = [TellMeMyLocation lastLocation];
+                    if (location) {
+                        UserModel *user = [[ClientSessionManager sharedClient] currentUser];
+                        [user putUser:@{ kUserModelParamLatitude : [NSNumber numberWithFloat:location.coordinate.latitude],
+                                         kUserModelParamLongitude : [NSNumber numberWithFloat:location.coordinate.longitude]
+                                         } success:^(UserModel *userModel, NSHTTPURLResponse *response) {
+                            
+                        } failure:^(ErrorModel *errorModel) {
+                            
+                        }];
+                    }
+                    
+                }];
+            }
+        }];
+    }
     
     return YES;
 }
