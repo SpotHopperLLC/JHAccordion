@@ -101,6 +101,7 @@
     _page = @1;
     _spots = [NSMutableArray array];
     
+    _tblSpots.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 65.0, 0.0f);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -119,8 +120,14 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     
-    [self hideCheckInButton:FALSE];
     _selectedSpot = nil;
+    
+    [self hideCheckInButton:FALSE];
+
+    // Adds contextual footer view
+    [self addFooterViewController:^(FooterViewController *footerViewController) {
+        [footerViewController showHome:YES];
+    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -194,6 +201,12 @@
     SearchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell" forIndexPath:indexPath];
     [cell setSpot:spot];
     
+    UIView *selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
+    selectedBackgroundView.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.1];
+    cell.selectedBackgroundView = selectedBackgroundView;
+    
+    cell.clipsToBounds = TRUE;
+    
     return cell;
 }
 
@@ -210,7 +223,7 @@
     else {
         self.selectedSpot = spot;
         [self showCheckInButton:TRUE];
-        [_tblSpots selectRowAtIndexPath:indexPath animated:TRUE scrollPosition:UITableViewScrollPositionMiddle];
+        [_tblSpots selectRowAtIndexPath:indexPath animated:TRUE scrollPosition:UITableViewScrollPositionNone];
     }
 }
 
@@ -349,6 +362,7 @@
     // 1) slide the button down and out of view
     // 2) set hidden to TRUE
     
+    CGFloat footerHeight = CGRectGetHeight(self.footerViewController.view.frame);
     CGFloat viewHeight = CGRectGetHeight(self.view.frame);
     
     CGRect hiddenFrame = _btnCheckIn.frame;
@@ -356,8 +370,8 @@
     
     [UIView animateWithDuration:(animated ? 0.5 : 0.0) animations:^{
         _btnCheckIn.frame = hiddenFrame;
-        _tblSpots.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
-        _tblSpots.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
+        _tblSpots.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, footerHeight, 0.0f);
+        _tblSpots.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, footerHeight, 0.0f);
     } completion:^(BOOL finished) {
         [_btnCheckIn setHidden:TRUE];
     }];
@@ -371,6 +385,7 @@
     // 3) animate it up into position
     // 4) update the table with insets so it will not cover table cells
     
+    CGFloat footerHeight = CGRectGetHeight(self.footerViewController.view.frame);
     CGFloat buttonHeight = CGRectGetHeight(_btnCheckIn.frame);
     CGFloat viewHeight = CGRectGetHeight(self.view.frame);
     
@@ -384,8 +399,8 @@
         CGRect visibleFrame = _btnCheckIn.frame;
         visibleFrame.origin.y = viewHeight - buttonHeight;
         _btnCheckIn.frame = visibleFrame;
-        _tblSpots.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, buttonHeight, 0.0f);
-        _tblSpots.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, buttonHeight, 0.0f);
+        _tblSpots.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, MAX(buttonHeight, footerHeight), 0.0f);
+        _tblSpots.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, MAX(buttonHeight, footerHeight), 0.0f);
     } completion:^(BOOL finished) {
     }];
 }
@@ -467,7 +482,7 @@
         [self dataDidFinishRefreshing];
         
         [self updateViewMap];
-        
+        [self hideCheckInButton:FALSE];
     } failure:^(ErrorModel *errorModel) {
         [self dataDidFinishRefreshing];
         [self hideHUD];
