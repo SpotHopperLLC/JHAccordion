@@ -37,6 +37,7 @@
 #import "CheckInModel.h"
 
 #import "JHAccordion.h"
+#import "Tracker.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -345,6 +346,8 @@
         
         return;
     }
+    
+    [Tracker track:@"Creating Drinklist"];
 
     [self showHUD:@"Creating drinklist"];
     [drink getDrink:Nil success:^(DrinkModel *drinkModel, JSONAPI *jsonApi) {
@@ -358,6 +361,8 @@
                         baseAlcoholId:nil
                                spotId:_spot.ID
                          successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+                             
+            [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Drink Type ID" : drinkModel.drinkType.ID, @"Drink Sub Type ID" : drinkModel.drinkSubtype.ID, @"Created With Sliders" : @FALSE}];
             
             [self hideHUD];
             [self showHUDCompleted:@"Drinklist created!" block:^{
@@ -655,12 +660,14 @@
     if ([self promptLoginNeeded:@"Cannot create a drinklist without logging in"] == NO) {
         [self showAdjustSlidersView:YES animated:YES];
     }
+    [Tracker track:@"Create Drinklist with Sliders Tapped"];
 }
 
 - (void)createDrinklistForSimilar {
     if ([self promptLoginNeeded:@"Cannot create a drinklist without logging in"] == NO) {
         [self goToFindSimilarDrinks:self];
     }
+    [Tracker track:@"Create Drinklist for Similar Tapped"];
 }
 
 - (void)updateFeaturedDrinklists {
