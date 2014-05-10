@@ -17,16 +17,18 @@ PODS:
   - AFNetworking/Serialization (2.0.3)
   - AFNetworking/UIKit (2.0.3):
     - AFNetworking/NSURLConnection
-  - BitlyForiOS (0.0.2):
-    - AFNetworking (~> 2.0.0)
-  - Facebook-iOS-SDK (3.11.1)
-  - GoogleAnalytics-iOS-SDK (3.0.6)
+  - BitlyForiOS (0.0.3):
+    - AFNetworking (~> 2.0)
+  - Bolts (1.1.0)
+  - Facebook-iOS-SDK (3.14.0):
+    - Bolts
+  - GoogleAnalytics-iOS-SDK (3.0.7)
   - iRate (1.8.3)
   - JHAutoCompleteTextField (0.1.0)
   - JHSidebar (0.1.1)
   - JSONAPI (0.1.2)
   - MBProgressHUD (0.8)
-  - Mixpanel (2.3.5)
+  - Mixpanel (2.3.6)
   - Parse-iOS-SDK (1.2.19):
     - Facebook-iOS-SDK (~> 3.7)
   - PhotoZoom (0.0.1)
@@ -34,12 +36,12 @@ PODS:
   - Raven (0.2.0)
   - Reveal-iOS-SDK (1.0.4)
   - STTwitter (0.0.9)
-  - TTTAttributedLabel (1.8.1)
+  - TTTAttributedLabel (1.9.5)
 
 DEPENDENCIES:
-  - AFNetworking (~> 2.0.3)
-  - BitlyForiOS (from `https://github.com/brennanMKE/BitlyForiOS.git`, tag `0.0.2`)
-  - Facebook-iOS-SDK (~> 3.11.0)
+  - AFNetworking (~> 2.0.0)
+  - BitlyForiOS (from `https://github.com/brennanMKE/BitlyForiOS.git`, tag `0.0.3`)
+  - Facebook-iOS-SDK (~> 3.0)
   - GoogleAnalytics-iOS-SDK (~> 3.0.0)
   - iRate (~> 1.8.0)
   - JHAutoCompleteTextField (from `http://github.com/joshdholtz/JHAutoCompleteTextField.git`)
@@ -53,12 +55,12 @@ DEPENDENCIES:
   - Raven (~> 0.2.0)
   - Reveal-iOS-SDK
   - STTwitter (~> 0.0.7)
-  - TTTAttributedLabel (~> 1.8.1)
+  - TTTAttributedLabel (~> 1.9.0)
 
 EXTERNAL SOURCES:
   BitlyForiOS:
     :git: https://github.com/brennanMKE/BitlyForiOS.git
-    :tag: 0.0.2
+    :tag: 0.0.3
   JHAutoCompleteTextField:
     :git: http://github.com/joshdholtz/JHAutoCompleteTextField.git
   JHSidebar:
@@ -73,21 +75,22 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: e499052cbf3d743e9bb727bb37adb9dc2547ba15
-  BitlyForiOS: 1d0d405637891c8760e3766d293f540ecd8d5f46
-  Facebook-iOS-SDK: 1f753fe932c2602359114a662cd9abdc2dba48f3
-  GoogleAnalytics-iOS-SDK: 16dfcc0c4491148bf372edc85a8470cc405ffb72
+  BitlyForiOS: c6eb9b297cb503757a616fc201b3362fb857e8b4
+  Bolts: dc620a31cf67c29bce3e3d14a07a12e797a1a154
+  Facebook-iOS-SDK: 63e19ff8d275d63b765819f492a4e71e445f9822
+  GoogleAnalytics-iOS-SDK: 594702aaf93e6ee497140fd31e758c2e2fa44315
   iRate: 7820b59656e8ebcb09aadc0d2f710d939c15fbe4
   JHAutoCompleteTextField: 1ca69c82441d9b5bf474e10d36585247030f7594
   JHSidebar: 2efb4d14cc8bb0032c75218fd3ef7db70154c07e
   JSONAPI: b98efd0e5b8bb44984373524e2ac40ef7d5455a2
   MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
-  Mixpanel: 79ff289920b67399475b93057ac11e48637585d7
+  Mixpanel: b1c61efa748193777889dfe8b7f80471ceb95e97
   Parse-iOS-SDK: 48e366fb9a8956c4e50d93cfd16243176938fae1
   PhotoZoom: ae484cf68ee1bfce2eb23b37c11430c5155866d4
   Promises: f92c1068dfb1fe8501f6059c0e05edbf655f8665
   Raven: 3a4c596da85c8703feb2eefe89f0647db03f2f00
   Reveal-iOS-SDK: 9de027a2cb0812e9ae220d9047161f3a0ac2db74
   STTwitter: f155851b9b4d1a544740c2f4ae64918cd42235e2
-  TTTAttributedLabel: 3a571d73e055f4a79c304240598e4bfd199238e4
+  TTTAttributedLabel: 6154fd2407a03fb8d71abfa36f4710fff26a168e
 
 COCOAPODS: 0.32.1

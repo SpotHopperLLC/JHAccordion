@@ -11,6 +11,7 @@
 
 #import "SpotProfileViewController.h"
 
+#import "ClientSessionManager.h"
 #import "NSArray+DailySpecials.h"
 #import "NSDate+Globalize.h"
 #import "UIButton+Block.h"
@@ -28,12 +29,15 @@
 #import "CheckinConfirmationViewController.h"
 #import "SpotListViewController.h"
 
+#import "UserModel.h"
 #import "AverageReviewModel.h"
 #import "ErrorModel.h"
 #import "ImageModel.h"
 #import "LiveSpecialModel.h"
 #import "SpotTypeModel.h"
 #import "SpotListModel.h"
+#import "CheckInModel.h"
+#import "Tracker.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import "JHAccordion.h"
@@ -319,7 +323,17 @@
     if (FooterViewButtonHome == footerViewButtonType) {
         return NO;
     } else if (FooterViewButtonMiddle == footerViewButtonType) {
-        [self showShareViewControllerWithSpot:_spot shareType:ShareViewControllerShareCheckin];
+        if ([self promptLoginNeeded:@"Cannot checkin without logging in"] == NO) {
+            UserModel *user = [ClientSessionManager sharedClient].currentUser;
+            [Tracker track:@"Check In" properties:@{@"user_id" : user.ID, @"spot_id" : _spot.ID}];
+            
+            CheckInModel *checkInModel = [[CheckInModel alloc] init];
+            [checkInModel postCheckIn:@{@"spot_id" : _spot.ID} success:^(CheckInModel *checkInModel, JSONAPI *jsonAPI) {
+                [self showShareViewControllerWithCheckIn:checkInModel];
+            } failure:^(ErrorModel *errorModel) {
+                [self showAlert:@"Oops" message:@"You are not able to check in at this time. Please try again later."];
+            }];
+        }
     } else if (FooterViewButtonRight == footerViewButtonType) {
         [self showAlert:@"Info" message:kInfoSpotProfile];
     }
