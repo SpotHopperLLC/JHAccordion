@@ -366,14 +366,14 @@
         
         [self updateSpotTypes];
     } failure:^(ErrorModel *errorModel) {
-
+        [Tracker logError:errorModel.error];
     }];
     
     [SpotListMoodModel getSpotListMoods:nil success:^(NSArray *spotListMoodModels, JSONAPI *jsonApi) {
         _spotListMoodTypesUpdate = spotListMoodModels;
         [self updateSpotListMoodTypes];
     } failure:^(ErrorModel *errorModel) {
-        
+        [Tracker logError:errorModel.error];
     }];
 }
 
@@ -444,6 +444,7 @@
         [self updateAllSliderTemplates];
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
+        [Tracker logError:errorModel.error];
     }];
 }
 
@@ -489,6 +490,7 @@
         [Tracker track:@"Created Spotlist" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
+        [Tracker logError:errorModel.error];
     }];
 }
 

@@ -100,7 +100,7 @@
     [_tellMeMyLocation findMe:kCLLocationAccuracyKilometer found:^(CLLocation *newLocation) {
         _currentLocation = newLocation;
     } failure:^(NSError *error) {
-        
+        [Tracker logError:error.description];
     }];
     
     NSCAssert([_btnLocation.delegate isEqual:self], @"Button delegate should be set to self in the storyboard");
@@ -340,6 +340,7 @@
                 } failure:^(ErrorModel *errorModel) {
                     [self hideHUD];
                     [self showAlert:@"Oops" message:errorModel.human];
+                    [Tracker logError:errorModel.error];
                 }];
                 
             } else {
@@ -385,6 +386,7 @@
         if ([error.domain isEqualToString:kTellMeMyLocationDomain]) {
             [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
         }
+        [Tracker logError:error.description];
     }];
 }
 
@@ -437,7 +439,7 @@
         } else {
             [self showAlert:@"Oops" message:errorModel.human];
         }
-        
+        [Tracker logError:errorModel.error];
     }];
     
     _selectedLocation = location;
@@ -554,6 +556,7 @@
         [Tracker track:@"Delete Spotlist" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
+        [Tracker logError:errorModel.error];
     }];
 }
 

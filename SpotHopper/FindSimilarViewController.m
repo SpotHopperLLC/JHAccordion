@@ -15,6 +15,8 @@
 
 #import "DrinkModel.h"
 #import "SpotModel.h"
+#import "ErrorModel.h"
+#import "Tracker.h"
 
 #import "SearchCell.h"
 
@@ -282,6 +284,7 @@
         } failure:^(ErrorModel *errorModel) {
             [self dataDidFinishRefreshing];
             [self hideHUD];
+            [Tracker logError:errorModel.error];
         }];
         
     } else {
@@ -319,6 +322,7 @@
         } failure:^(ErrorModel *errorModel) {
             [self dataDidFinishRefreshing];
             [self hideHUD];
+            [Tracker logError:errorModel.error];
         }];
         
     }

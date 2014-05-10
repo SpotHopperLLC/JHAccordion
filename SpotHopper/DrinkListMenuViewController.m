@@ -35,6 +35,7 @@
 #import "ErrorModel.h"
 #import "UserModel.h"
 #import "CheckInModel.h"
+#import "Tracker.h"
 
 #import "JHAccordion.h"
 
@@ -376,11 +377,13 @@
         } failure:^(ErrorModel *errorModel) {
             [self hideHUD];
             [self showAlert:@"Oops" message:errorModel.human];
+            [Tracker logError:errorModel.error];
         }];
         
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
+        [Tracker logError:errorModel.error];
     }];
 }
 
@@ -483,7 +486,7 @@
             }];
             [self updateFeaturedDrinklists];
         } failure:^(ErrorModel *errorModel) {
-            
+            [Tracker logError:errorModel.error];
         }];
         [promises addObject:promiseFeaturedSpotLists];
     }
@@ -500,7 +503,7 @@
             }];
             [self updateMyDrinklists];
         } failure:^(ErrorModel *errorModel) {
-            
+            [Tracker logError:errorModel.error];
         }];
         [promises addObject:promiseMySpotLists];
     }

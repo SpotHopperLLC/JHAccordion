@@ -113,6 +113,7 @@
         NSLog(@"We have an active FB session");
     } failure:^(FBSessionState state, NSError *error) {
         NSLog(@"We DON'T have an active FB session");
+        [Tracker logError:error.description];
     }];
 
     if (kAnalyticsEnabled) {
@@ -158,7 +159,7 @@
                                          } success:^(UserModel *userModel, NSHTTPURLResponse *response) {
                             
                         } failure:^(ErrorModel *errorModel) {
-                            
+                            [Tracker logError:errorModel.error];
                         }];
                     }
                     
@@ -304,7 +305,7 @@
             completionBlock();
         }
     } failure:^(NSError *error) {
-        NSLog(@"Error: %@", error);
+        [Tracker logError:error.description];
     }];
 }
 

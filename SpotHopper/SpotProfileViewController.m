@@ -34,6 +34,7 @@
 #import "LiveSpecialModel.h"
 #import "SpotTypeModel.h"
 #import "SpotListModel.h"
+#import "Tracker.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import "JHAccordion.h"
@@ -509,7 +510,7 @@
         [self initSliders];
         [self updateView];
     } failure:^(ErrorModel *errorModel) {
-        
+        [Tracker logError:errorModel.error];
     }];
 }
 
@@ -655,6 +656,7 @@
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
+        [Tracker logError:errorModel.error];
     }];
 }
 

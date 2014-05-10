@@ -16,11 +16,13 @@
 #import "MatchPercentAnnotation.h"
 #import "MatchPercentAnnotationView.h"
 
+#import "ErrorModel.h"
 #import "SpotModel.h"
 
 #import "SearchCell.h"
 
 #import "TellMeMyLocation.h"
+#import "Tracker.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
@@ -90,6 +92,7 @@
     } failure:^(NSError *error) {
         [self hideHUD];
         [self doSearch];
+        [Tracker logError:error.description];
     }];
     
     // Initializes stuff
@@ -116,10 +119,6 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-//    [[TellMeMyLocation instance] findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
-//        [self repositionMapOnAnnotations:_mapView.annotations animated:TRUE];
-//    } failure:^(NSError *error) {
-//    }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -390,6 +389,7 @@
     } failure:^(ErrorModel *errorModel) {
         [self dataDidFinishRefreshing];
         [self hideHUD];
+        [Tracker logError:errorModel.error];
     }];
     
 }

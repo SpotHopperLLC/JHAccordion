@@ -8,6 +8,8 @@
 
 #import "NSNull+Debugging.h"
 
+#import "RavenClient.h"
+
 @implementation NSNull (Debugging)
 
 - (NSUInteger)count {

@@ -22,6 +22,7 @@
 #import "ErrorModel.h"
 
 #import "TellMeMyLocation.h"
+#import "Tracker.h"
 
 #import <MapKit/MapKit.h>
 
@@ -240,6 +241,7 @@
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
+        [Tracker logError:errorModel.error];
     }];
     
 }

@@ -24,6 +24,8 @@
 #import "MyReviewsViewController.h"
 
 #import "TellMeMyLocation.h"
+#import "ErrorModel.h"
+#import "Tracker.h"
 
 #import "ClientSessionManager.h"
 
@@ -378,7 +380,7 @@
         // Adds drinks to results
         [_results addObjectsFromArray:drinkModels];
     } failure:^(ErrorModel *errorModel) {
-        
+        [Tracker logError:errorModel.error];
     }];
     
     /*
@@ -402,7 +404,7 @@
         // Adds spots to results
         [_results addObjectsFromArray:spotModels];
     } failure:^(ErrorModel *errorModel) {
-        
+        [Tracker logError:errorModel.error];
     }];
     
     /*

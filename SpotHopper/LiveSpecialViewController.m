@@ -11,6 +11,7 @@
 #import "LiveSpecialModel.h"
 #import "ErrorModel.h"
 #import "SpotModel.h"
+#import "Tracker.h"
 
 #import <TTTAttributedLabel/TTTAttributedLabel.h>
 
@@ -96,6 +97,7 @@
         
     } failure:^(ErrorModel *errorModel) {
         [self showAlert:@"Oops" message:[errorModel human]];
+        [Tracker logError:errorModel.error];
     }];
 }
 
