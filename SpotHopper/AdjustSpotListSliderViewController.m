@@ -473,13 +473,12 @@
     }
     
     NSNumber *spotTypeId = [_selectedSpotType objectForKey:@"id"];
-    if (!spotTypeId) { spotTypeId = @0; }
     
     [Tracker track:@"Creating Spotlist"];
     
     [self showHUD:@"Creating spotlist"];
     [SpotListModel postSpotList:kSpotListModelDefaultName spotId:nil spotTypeId:spotTypeId latitude:latitude longitude:longitude sliders:allTheSliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
-        [Tracker track:@"Created Spotlist" properties:@{@"Success" : @TRUE, @"Spot Type ID" : spotTypeId, @"Created With Sliders" : @TRUE}];
+        [Tracker track:@"Created Spotlist" properties:@{@"Success" : @TRUE, @"Spot Type ID" : spotTypeId ?: @0, @"Created With Sliders" : @TRUE}];
         [self hideHUD];
         [self showHUDCompleted:@"Spotlist created!" block:^{
             
