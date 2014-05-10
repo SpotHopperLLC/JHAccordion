@@ -587,8 +587,6 @@
     
     NSNumber *drinkTypeID = [_selectedDrinkType objectForKey:@"id"];
     NSNumber *drinkSubTypeID = [_selectedDrinkType objectForKey:@"id"];
-    if (!drinkTypeID) { drinkTypeID = @0; }
-    if (!drinkSubTypeID) { drinkSubTypeID = @0; }
     
     [self showHUD:@"Creating drinklist"];
     [DrinkListModel postDrinkList:kDrinkListModelDefaultName
@@ -600,7 +598,7 @@
                     baseAlcoholId:_selectedBaseAlcohol.ID
                            spotId:_spot.ID
                      successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
-                         [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Drink Type ID" : drinkTypeID, @"Drink Sub Type ID" : drinkSubTypeID, @"Created With Sliders" : @TRUE}];
+                         [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Drink Type ID" : drinkTypeID ?: @0, @"Drink Sub Type ID" : drinkSubTypeID ?: @0, @"Created With Sliders" : @TRUE}];
         [self hideHUD];
         [self showHUDCompleted:@"Drinklist created!" block:^{
             
