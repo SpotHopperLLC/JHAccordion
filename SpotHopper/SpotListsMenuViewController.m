@@ -36,6 +36,7 @@
 #import "UserModel.h"
 
 #import "TellMeMyLocation.h"
+#import "Tracker.h"
 
 #import "JHAccordion.h"
 #import <Promises/Promise.h>
@@ -366,10 +367,13 @@
             longitude = spotModel.longitude;
         }
         
+        [Tracker track:@"Creating Spotlist"];
+        
         [SpotListModel postSpotList:[NSString stringWithFormat:@"Similar to %@", spotModel.name] spotId:spotModel.ID spotTypeId:spotModel.spotType.ID latitude:latitude longitude:longitude sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
             [self hideHUD];
             [self showHUDCompleted:@"Spotlist created!" block:^{
-                
+                [Tracker track:@"Created Spotlist" properties:@{@"Success" : @TRUE, @"Spot Type ID" : spotModel.spotType.ID, @"Created With Sliders" : @FALSE}];
+
                 NSMutableArray *viewControllers = self.navigationController.viewControllers.mutableCopy;
                 [viewControllers removeLastObject];
                 
@@ -385,6 +389,7 @@
         } failure:^(ErrorModel *errorModel) {
             [self hideHUD];
             [self showAlert:@"Oops" message:errorModel.human];
+            [Tracker track:@"Created Spotlist" properties:@{@"Success" : @FALSE}];
         }];
         
     } failure:^(ErrorModel *errorModel) {
@@ -650,12 +655,14 @@
     if ([self promptLoginNeeded:@"Cannot create a spotlist without logging in"] == NO) {
         [self showAdjustSlidersView:YES animated:YES];
     }
+    [Tracker track:@"Create Spotlist with Sliders Tapped"];
 }
 
 - (void)createSpotlistForSimilar {
     if ([self promptLoginNeeded:@"Cannot create a spotlist without logging in"] == NO) {
         [self goToFindSimilarSpots:self];
     }
+    [Tracker track:@"Create Spotlist for Similar Tapped"];
 }
 
 - (void)updateFeaturedSpotlists {
