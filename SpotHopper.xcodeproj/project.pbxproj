@@ -6305,6 +6305,7 @@
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-DNS_BLOCK_ASSERTIONS=1",
+					"-DNDEBUG=1",
 				);
 				PRODUCT_NAME = SpotHopperProduction;
 				PROVISIONING_PROFILE = "FE3B8B45-B514-4EF0-AB82-C66C244F0422";

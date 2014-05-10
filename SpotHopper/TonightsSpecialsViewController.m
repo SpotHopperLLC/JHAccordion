@@ -23,6 +23,7 @@
 #import "SpotModel.h"
 
 #import "TellMeMyLocation.h"
+#import "Tracker.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -252,6 +253,7 @@
         
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
+        [Tracker logError:errorModel.error];
     }];
     
 }

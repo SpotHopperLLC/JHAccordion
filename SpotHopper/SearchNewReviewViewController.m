@@ -28,6 +28,7 @@
 #import "DrinkModel.h"
 #import "ErrorModel.h"
 #import "SpotModel.h"
+#import "Tracker.h"
 
 #import "TellMeMyLocation.h"
 
@@ -486,7 +487,7 @@
         // Adds drinks to results
         [_results addObjectsFromArray:drinkModels];
     } failure:^(ErrorModel *errorModel) {
-        
+        [Tracker logError:errorModel.error];
     }];
     
     /*
@@ -514,7 +515,7 @@
         // Adds spots to results
         [_results addObjectsFromArray:spotModels];
     } failure:^(ErrorModel *errorModel) {
-        
+        [Tracker logError:errorModel.error];
     }];
     
     /*

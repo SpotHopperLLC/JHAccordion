@@ -34,6 +34,7 @@
 #import "SpotTypeModel.h"
 #import "SpotListModel.h"
 #import "UserModel.h"
+#import "Tracker.h"
 
 #import "TellMeMyLocation.h"
 #import "Tracker.h"
@@ -390,11 +391,13 @@
             [self hideHUD];
             [self showAlert:@"Oops" message:errorModel.human];
             [Tracker track:@"Created Spotlist" properties:@{@"Success" : @FALSE}];
+            [Tracker logError:errorModel.error];
         }];
         
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
+        [Tracker logError:errorModel.error];
     }];
 }
 
@@ -483,7 +486,7 @@
         }];
         [self updateFeaturedSpotlists];
     } failure:^(ErrorModel *errorModel) {
-        
+        [Tracker logError:errorModel.error];
     }];
     [promises addObject:promiseFeaturedSpotLists];
     
@@ -498,7 +501,7 @@
             }];
             [self updateMySpotlists];
         } failure:^(ErrorModel *errorModel) {
-            
+            [Tracker logError:errorModel.error];
         }];
         [promises addObject:promiseMySpotLists];
     }

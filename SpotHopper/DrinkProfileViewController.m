@@ -30,6 +30,7 @@
 #import "DrinkTypeModel.h"
 #import "DrinkSubtypeModel.h"
 #import "DrinkListModel.h"
+#import "Tracker.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import "JHAccordion.h"
@@ -131,7 +132,7 @@
         _location = newLocation;
         [self fetchSpots];
     } failure:^(NSError *error) {
-        
+        [Tracker logError:error.description];
     }];
     
     [self updateView];
@@ -532,7 +533,7 @@
         [self updateView];
         [self initSliders];
     } failure:^(ErrorModel *errorModel) {
-        
+        [Tracker logError:errorModel.error];
     }];
 }
 
@@ -553,6 +554,7 @@
         [self updateViewMap];
         
     } failure:^(ErrorModel *errorModel) {
+        [Tracker logError:errorModel.error];
     }];
     
 }
@@ -728,6 +730,7 @@
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
+        [Tracker logError:errorModel.error];
     }];
 }
 

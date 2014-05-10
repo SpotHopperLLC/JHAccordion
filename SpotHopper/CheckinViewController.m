@@ -19,6 +19,7 @@
 #import "SpotModel.h"
 #import "UserModel.h"
 #import "CheckInModel.h"
+#import "ErrorModel.h"
 
 #import "SearchCell.h"
 
@@ -95,6 +96,7 @@
     } failure:^(NSError *error) {
         [self hideHUD];
         [self doSearch];
+        [Tracker logError:error.description];
     }];
     
     // Initializes stuff
@@ -421,6 +423,7 @@
             }
         } failure:^(ErrorModel *errorModel) {
             [self showAlert:@"Oops" message:@"You are not able to check in at this time. Please try again later."];
+            [Tracker logError:errorModel.error];
         }];
     }
 }
@@ -486,6 +489,7 @@
     } failure:^(ErrorModel *errorModel) {
         [self dataDidFinishRefreshing];
         [self hideHUD];
+        [Tracker logError:errorModel.error];
     }];
     
 }
