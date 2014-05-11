@@ -96,7 +96,7 @@
     } failure:^(NSError *error) {
         [self hideHUD];
         [self doSearch];
-        [Tracker logError:error.description];
+        [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
     // Initializes stuff
@@ -408,7 +408,7 @@
             }
         } failure:^(ErrorModel *errorModel) {
             [self showAlert:@"Oops" message:@"You are not able to check in at this time. Please try again later."];
-            [Tracker logError:errorModel.error];
+            [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
     }
 }
@@ -474,7 +474,7 @@
     } failure:^(ErrorModel *errorModel) {
         [self dataDidFinishRefreshing];
         [self hideHUD];
-        [Tracker logError:errorModel.error];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
 }

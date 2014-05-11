@@ -79,6 +79,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 //    [[ClientSessionManager sharedClient] setHasSeenLaunch:NO];
     
+    [Tracker logError:@"App Delegate launching" class:[self class] trace:NSStringFromSelector(_cmd)];
+    
     [iRate sharedInstance].delegate = self;
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
@@ -113,7 +115,7 @@
         NSLog(@"We have an active FB session");
     } failure:^(FBSessionState state, NSError *error) {
         NSLog(@"We DON'T have an active FB session");
-        [Tracker logError:error.description];
+        [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 
     if (kAnalyticsEnabled) {
@@ -159,7 +161,7 @@
                                          } success:^(UserModel *userModel, NSHTTPURLResponse *response) {
                             
                         } failure:^(ErrorModel *errorModel) {
-                            [Tracker logError:errorModel.error];
+                            [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
                         }];
                     }
                     
@@ -305,7 +307,7 @@
             completionBlock();
         }
     } failure:^(NSError *error) {
-        [Tracker logError:error.description];
+        [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 

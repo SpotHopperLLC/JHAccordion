@@ -131,7 +131,7 @@
     } failure:^(FBSessionState state, NSError *error) {
         _sendToFacebook = NO;
         [self updateSocialViews];
-        [Tracker logError:error.description];
+        [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
 }

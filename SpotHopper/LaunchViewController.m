@@ -197,7 +197,7 @@
         [self hideHUD];
         [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:@"[Facebook Connect] - Failed to oauth, %@", [error localizedDescription]] level:kRavenLogLevelDebugInfo];
         [self showAlert:@"Oops" message:@"Looks like there was an error logging in with Facebook"];
-        [Tracker logError:error.description];
+        [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
@@ -306,7 +306,7 @@
         [Tracker track:@"Logged In" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
-        [Tracker logError:errorModel.error];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
 }
@@ -361,7 +361,7 @@
         } failure:^(ErrorModel *errorModel) {
             [self hideHUD];
             [self showAlert:@"Oops" message:@"Error while trying to login"];
-            [Tracker logError:errorModel.error];
+            [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
         
     } failure:^(ErrorModel *errorModel) {
@@ -369,7 +369,7 @@
         
         [self hideHUD];
         [self showAlert:@"Oops" message:@"Error while trying to login"];
-        [Tracker logError:errorModel.error];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 

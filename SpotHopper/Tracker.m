@@ -36,32 +36,29 @@
     }
 }
 
-+ (void)logInfo:(NSString *)message {
-    NSString *caller = [[NSThread callStackSymbols] objectAtIndex:1];
-    message = [NSString stringWithFormat:@"INFO: %@ (%@)", message, caller];
-    [[RavenClient sharedClient] captureMessage:message level:kRavenLogLevelDebugInfo];
-    DebugLog(@"%@", message);
++ (void)logInfo:(NSString *)message class:(Class)class trace:(NSString *)trace {
+    [self logForLevel:@"INFO" message:message class:class trace:trace];
 }
 
-+ (void)logWarning:(NSString *)message {
-    NSString *caller = [[NSThread callStackSymbols] objectAtIndex:1];
-    message = [NSString stringWithFormat:@"WARNING: %@ (%@)", message, caller];
-    [[RavenClient sharedClient] captureMessage:message level:kRavenLogLevelDebugWarning];
-    DebugLog(@"%@", message);
++ (void)logWarning:(NSString *)message class:(Class)class trace:(NSString *)trace {
+    [self logForLevel:@"WARNING" message:message class:class trace:trace];
 }
 
-+ (void)logError:(NSString *)message {
-    NSString *caller = [[NSThread callStackSymbols] objectAtIndex:1];
-    message = [NSString stringWithFormat:@"ERROR: %@ (%@)", message, caller];
-    [[RavenClient sharedClient] captureMessage:message level:kRavenLogLevelDebugError];
-    DebugLog(@"%@", message);
++ (void)logError:(NSString *)message class:(Class)class trace:(NSString *)trace {
+    [self logForLevel:@"ERROR" message:message class:class trace:trace];
 }
 
-+ (void)logFatal:(NSString *)message {
-    NSString *caller = [[NSThread callStackSymbols] objectAtIndex:1];
-    message = [NSString stringWithFormat:@"FATAL: %@ (%@)", message, caller];
-    [[RavenClient sharedClient] captureMessage:message level:kRavenLogLevelDebugFatal];
-    DebugLog(@"%@", message);
++ (void)logFatal:(NSString *)message class:(Class)class trace:(NSString *)trace {
+    [self logForLevel:@"FATAL" message:message class:class trace:trace];
+}
+
+#pragma mark - Private
+#pragma mark -
+
++ (void)logForLevel:(NSString *)level message:(NSString *)message class:(Class)class trace:(NSString *)trace {
+    NSString *logMessage = [NSString stringWithFormat:@"ERROR: %@ - %@ - %@", message, NSStringFromClass(class), trace];
+    [[RavenClient sharedClient] captureMessage:logMessage level:kRavenLogLevelDebugError];
+    DebugLog(@"%@", logMessage);
 }
 
 @end
