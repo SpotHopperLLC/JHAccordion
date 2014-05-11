@@ -523,7 +523,7 @@
         [self initSliders];
         [self updateView];
     } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel.error];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
@@ -669,7 +669,7 @@
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
-        [Tracker logError:errorModel.error];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 

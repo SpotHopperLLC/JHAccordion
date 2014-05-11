@@ -132,7 +132,7 @@
         _location = newLocation;
         [self fetchSpots];
     } failure:^(NSError *error) {
-        [Tracker logError:error.description];
+        [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
     [self updateView];
@@ -533,7 +533,7 @@
         [self updateView];
         [self initSliders];
     } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel.error];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
@@ -554,7 +554,7 @@
         [self updateViewMap];
         
     } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel.error];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
 }
@@ -660,7 +660,6 @@
         
         // Moving advanced sliders into their own array
         for (SliderModel *slider in _sliders) {
-            NSLog(@"Order - %@", slider.sliderTemplate.order);
             if (slider.sliderTemplate.required == NO) {
                 [_advancedSliders addObject:slider];
             }
@@ -730,7 +729,7 @@
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
-        [Tracker logError:errorModel.error];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 

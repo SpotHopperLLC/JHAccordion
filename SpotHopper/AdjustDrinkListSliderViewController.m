@@ -457,7 +457,7 @@
         
         [self updateDrinkTypes];
     } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel.error];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
  
     // Gets drink form data
@@ -467,7 +467,7 @@
         }];
         [self updateBaseAlcohols];
     } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel.error];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
     // Waits for both spots and drinks to finish
@@ -553,7 +553,7 @@
         [self updateAllSliderTemplates];
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
-        [Tracker logError:errorModel.error];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
@@ -612,7 +612,7 @@
         [Tracker track:@"Created Drinklist" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
-        [Tracker logError:errorModel.error];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
