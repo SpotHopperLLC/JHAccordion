@@ -20,6 +20,7 @@
 #import "DrinkSubtypeModel.h"
 #import "MenuItemModel.h"
 #import "MenuTypeModel.h"
+#import "Tracker.h"
 
 #import "JHAccordion.h"
 
@@ -234,7 +235,7 @@
         _menuItems = menuItemModels;
         _menuTypes = [[jsonApi linked] objectForKey:@"menu_types"];
     } failure:^(ErrorModel *errorModel) {
-
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
     // Gets drink form data
@@ -251,7 +252,7 @@
         }
         
     } failure:^(ErrorModel *errorModel) {
-        
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
     // Waits for both spots and drinks to finish

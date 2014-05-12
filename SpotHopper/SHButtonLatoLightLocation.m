@@ -9,6 +9,8 @@
 #import "SHButtonLatoLightLocation.h"
 
 #import "TellMeMyLocation.h"
+#import "ErrorModel.h"
+#import "Tracker.h"
 
 #import "LocationChooserViewController.h"
 
@@ -148,6 +150,7 @@
                 [_delegate locationError:self error:error];
             }
         }
+        [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 

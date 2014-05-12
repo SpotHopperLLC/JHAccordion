@@ -30,6 +30,7 @@
 #import "DrinkTypeModel.h"
 #import "DrinkSubtypeModel.h"
 #import "DrinkListModel.h"
+#import "Tracker.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import "JHAccordion.h"
@@ -131,7 +132,7 @@
         _location = newLocation;
         [self fetchSpots];
     } failure:^(NSError *error) {
-        
+        [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
     [self updateView];
@@ -149,6 +150,7 @@
         [footerViewController setRightButton:@"Info" image:[UIImage imageNamed:@"btn_context_info"]];
     }];
     
+    [self updateImageArrows];
 }
 
 - (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
@@ -197,6 +199,15 @@
     }
     
     return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (_drink.images.count > 1) {
+        [self goToPhotoAlbum:[_drink images] atIndex:indexPath.item];
+    }
+    else {
+        [self goToPhotoViewer:[_drink images] atIndex:indexPath.item fromPhotoAlbum:nil];
+    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -319,6 +330,14 @@
     return pin;
 }
 
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    if (scrollView == _collectionView) {
+        [self updateImageArrows];
+    }
+}
+
 #pragma mark - Actions
 
 - (IBAction)onClickImagePrevious:(id)sender {
@@ -331,6 +350,10 @@
         // Makes sure we can go back
         if (indexPath.row > 0) {
             [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.4 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [self updateImageArrows];
+            });
         }
     }
 }
@@ -345,6 +368,10 @@
         // Makes sure we can go forward
         if (indexPath.row < ( [self collectionView:_collectionView numberOfItemsInSection:indexPath.section] - 1) ) {
             [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.row + 1) inSection:indexPath.section] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.4 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [self updateImageArrows];
+            });
         }
     }
 }
@@ -532,7 +559,7 @@
         [self updateView];
         [self initSliders];
     } failure:^(ErrorModel *errorModel) {
-        
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
@@ -553,6 +580,7 @@
         [self updateViewMap];
         
     } failure:^(ErrorModel *errorModel) {
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
 }
@@ -658,7 +686,6 @@
         
         // Moving advanced sliders into their own array
         for (SliderModel *slider in _sliders) {
-            NSLog(@"Order - %@", slider.sliderTemplate.order);
             if (slider.sliderTemplate.required == NO) {
                 [_advancedSliders addObject:slider];
             }
@@ -728,6 +755,29 @@
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
+    }];
+}
+
+- (NSIndexPath *)indexPathForCurrentImage {
+    NSArray *indexPaths = [_collectionView indexPathsForVisibleItems];
+    if (indexPaths.count) {
+        return indexPaths[0];
+    }
+    
+    return nil;
+}
+
+- (void)updateImageArrows {
+    NSIndexPath *indexPath = [self indexPathForCurrentImage];
+    
+    BOOL hasNext = _drink.images.count ? (indexPath.item < _drink.images.count - 1) : FALSE;
+    BOOL hasPrev = _drink.images.count ? (indexPath.item > 0) : FALSE;
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        _btnImageNext.alpha = hasNext ? 1.0 : 0.1;
+        _btnImagePrev.alpha = hasPrev ? 1.0 : 0.1;
+    } completion:^(BOOL finished) {
     }];
 }
 

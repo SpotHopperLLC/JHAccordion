@@ -14,6 +14,9 @@
 
 #import "SearchCell.h"
 
+#import "ErrorModel.h"
+#import "Tracker.h"
+
 #import <JSONAPI/JSONAPI.h>
 
 @interface FindSimilarDrinksViewController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
@@ -266,8 +269,8 @@
     } failure:^(ErrorModel *errorModel) {
         [self dataDidFinishRefreshing];
         [self hideHUD];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
-
 
 @end

@@ -21,14 +21,15 @@
         return;
     }
     
-    UIImageView *imageView = [[UIImageView alloc] init];
-    
-    __weak UIImageView *weakImageView = imageView;
+    UIImageView *thumbImageView = [[UIImageView alloc] init];
+    UIImageView *fullImageView = [[UIImageView alloc] init];
     
     // first load the thumb image
     NSMutableURLRequest *thumbImageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageModel.thumbUrl]];
     [thumbImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    [weakImageView setImageWithURLRequest:thumbImageRequest placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *thumbImage) {
+    [thumbImageView setImageWithURLRequest:thumbImageRequest placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *thumbImage) {
+        
+        NSCAssert(thumbImage, @"image be defined");
         
         if (thumbImageBlock) {
             thumbImageBlock(thumbImage);
@@ -37,7 +38,9 @@
         // then load the large image
         NSMutableURLRequest *fullImageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageModel.fullUrl]];
         [fullImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-        [weakImageView setImageWithURLRequest:fullImageRequest placeholderImage:thumbImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *fullImage) {
+        [fullImageView setImageWithURLRequest:fullImageRequest placeholderImage:thumbImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *fullImage) {
+            
+            NSCAssert(fullImage, @"image be defined");
             
             if (fullImageBlock) {
                 fullImageBlock(fullImage);
@@ -57,39 +60,6 @@
         if (errorBlock) {
             errorBlock(error);
         }
-    }];
-}
-
-//+ (void)loadImage:(ImageModel *)imageModel 
-
-+ (void)loadImageProgressively:(ImageModel *)imageModel imageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage {
-    if (!imageModel.thumbUrl.length || !imageModel.fullUrl.length) {
-        // do nothing since there is no image to load
-        return;
-    }
-    
-    __weak UIImageView *weakImageView = imageView;
-    
-    // first load the thumb image
-    NSMutableURLRequest *thumbImageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageModel.thumbUrl]];
-    [thumbImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    [weakImageView setImageWithURLRequest:thumbImageRequest placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *thumbImage) {
-        
-        weakImageView.image = thumbImage;
-        
-        // then load the large image
-        NSMutableURLRequest *fullImageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageModel.fullUrl]];
-        [fullImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-        [weakImageView setImageWithURLRequest:fullImageRequest placeholderImage:thumbImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *fullImage) {
-            
-            weakImageView.image = fullImage;
-            
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            [Tracker track:@"Error Loading Image" properties:@{@"URL" : imageModel.fullUrl}];
-        }];
-        
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [Tracker track:@"Error Loading Image" properties:@{@"URL" : imageModel.thumbUrl}];
     }];
 }
 

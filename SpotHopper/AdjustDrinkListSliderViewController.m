@@ -457,7 +457,7 @@
         
         [self updateDrinkTypes];
     } failure:^(ErrorModel *errorModel) {
-        
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
  
     // Gets drink form data
@@ -467,7 +467,7 @@
         }];
         [self updateBaseAlcohols];
     } failure:^(ErrorModel *errorModel) {
-        
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
     // Waits for both spots and drinks to finish
@@ -553,6 +553,7 @@
         [self updateAllSliderTemplates];
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
@@ -585,17 +586,20 @@
     
     [Tracker track:@"Creating Drinklist"];
     
+    NSNumber *drinkTypeID = [_selectedDrinkType objectForKey:@"id"];
+    NSNumber *drinkSubTypeID = [_selectedDrinkType objectForKey:@"id"];
+    
     [self showHUD:@"Creating drinklist"];
     [DrinkListModel postDrinkList:kDrinkListModelDefaultName
                          latitude:latitude
                         longitude:longitude sliders:allTheSliders
                           drinkId:nil
-                      drinkTypeId:[_selectedDrinkType objectForKey:@"id"]
-                   drinkSubtypeId:[_selectedWineSubtype objectForKey:@"id"]
+                      drinkTypeId:drinkTypeID
+                   drinkSubtypeId:drinkSubTypeID
                     baseAlcoholId:_selectedBaseAlcohol.ID
                            spotId:_spot.ID
                      successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
-        [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE}];
+                         [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Drink Type ID" : drinkTypeID ?: @0, @"Drink Sub Type ID" : drinkSubTypeID ?: @0, @"Created With Sliders" : @TRUE}];
         [self hideHUD];
         [self showHUDCompleted:@"Drinklist created!" block:^{
             
@@ -608,6 +612,7 @@
         [Tracker track:@"Created Drinklist" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 

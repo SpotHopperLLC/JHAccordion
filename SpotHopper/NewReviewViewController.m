@@ -30,6 +30,7 @@
 
 #import "ErrorModel.h"
 #import "BaseAlcoholModel.h"
+#import "Tracker.h"
 
 #import "JHAccordion.h"
 #import <JHAutoCompleteTextField/JHAutoCompleteTextField.h>
@@ -433,7 +434,7 @@
                 // Returning results onnew main queue
                 resultsBlock(spotModels);
             } failure:^(ErrorModel *errorModel) {
-                
+                [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
             }];
             
             return;
@@ -811,6 +812,7 @@
             } failure:^(ErrorModel *errorModel) {
                 [self hideHUD];
                 [self showAlert:@"Oops" message:errorModel.human];
+                [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
             }];
             
         } else {
@@ -914,6 +916,7 @@
                                   } failure:^(ErrorModel *errorModel) {
                                       [self hideHUD];
                                       [self showAlert:@"Oops" message:errorModel.human];
+                                      [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
                                   }];
             
         } else {
@@ -935,6 +938,7 @@
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Error creating spot" message:errorModel.human];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
 }
@@ -948,6 +952,7 @@
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Error creating drink" message:errorModel.human];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
 }
@@ -1000,6 +1005,7 @@
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
@@ -1037,7 +1043,7 @@
         }
         
     } failure:^(ErrorModel *errorModel) {
-        
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
     // Gets drink form data
@@ -1057,7 +1063,7 @@
         }
         
     } failure:^(ErrorModel *errorModel) {
-        
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
     // Gets drink form data
@@ -1066,7 +1072,7 @@
             return [obj1.name caseInsensitiveCompare:obj2.name];
         }];
     } failure:^(ErrorModel *errorModel) {
-        
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
     // Waits for both spots and drinks to finish
@@ -1155,6 +1161,7 @@
             
         } failure:^(ErrorModel *errorModel) {
             [self hideHUD];
+            [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
     }
 }

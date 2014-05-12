@@ -191,6 +191,9 @@
     } else if (indexPath.section == kSectionMoods) {
         if (indexPath.row > 0) {
             _selectedSpotListMood = [_spotListMoodTypes objectAtIndex:indexPath.row - 1];
+            if (_selectedSpotListMood.name.length) {
+                [Tracker track:@"Selected Spotlist Mood" properties:@{@"Name" : _selectedSpotListMood.name}];
+            }
             [self showSubmitButton:YES];
         } else {
             _selectedSpotListMood = nil;
@@ -366,14 +369,14 @@
         
         [self updateSpotTypes];
     } failure:^(ErrorModel *errorModel) {
-
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
     [SpotListMoodModel getSpotListMoods:nil success:^(NSArray *spotListMoodModels, JSONAPI *jsonApi) {
         _spotListMoodTypesUpdate = spotListMoodModels;
         [self updateSpotListMoodTypes];
     } failure:^(ErrorModel *errorModel) {
-        
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
@@ -444,6 +447,7 @@
         [self updateAllSliderTemplates];
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
@@ -475,7 +479,7 @@
     
     [self showHUD:@"Creating spotlist"];
     [SpotListModel postSpotList:kSpotListModelDefaultName spotId:nil spotTypeId:spotTypeId latitude:latitude longitude:longitude sliders:allTheSliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
-        [Tracker track:@"Created Spotlist" properties:@{@"Success" : @TRUE}];
+        [Tracker track:@"Created Spotlist" properties:@{@"Success" : @TRUE, @"Spot Type ID" : spotTypeId ?: @0, @"Created With Sliders" : @TRUE}];
         [self hideHUD];
         [self showHUDCompleted:@"Spotlist created!" block:^{
             
@@ -489,6 +493,7 @@
         [Tracker track:@"Created Spotlist" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 

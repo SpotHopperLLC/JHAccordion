@@ -16,6 +16,7 @@
 #import "ClientSessionManager.h"
 #import "UserModel.h"
 #import "ErrorModel.h"
+#import "Tracker.h"
 
 @interface AccountSettingsViewController ()<UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 
@@ -205,6 +206,7 @@
         } failure:^(ErrorModel *errorModel) {
             [self hideHUD];
             [self showAlert:@"Oops" message:errorModel.human];
+            [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
     } else {
         [self notLoggedIn];
@@ -242,6 +244,7 @@
         } failure:^(ErrorModel *errorModel) {
             [self hideHUD];
             [self showAlert:@"Oops" message:errorModel.human];
+            [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
     } else {
         [self notLoggedIn];

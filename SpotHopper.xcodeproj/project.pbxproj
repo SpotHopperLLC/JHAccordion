@@ -2004,7 +2004,7 @@
 		03866472186D352400985CEC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		03866474186D352400985CEC /* SpotHopper-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SpotHopper-Prefix.pch"; sourceTree = "<group>"; };
 		03866475186D352400985CEC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		03866476186D352400985CEC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		03866476186D352400985CEC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		03866479186D352400985CEC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0386647E186D352400985CEC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		03866484186D352500985CEC /* SpotHopperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpotHopperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2151,9 +2151,9 @@
 		039F541718D11E57004B2B67 /* SpotListMoodModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotListMoodModel.m; sourceTree = "<group>"; };
 		039F541B18D28379004B2B67 /* Drinks.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Drinks.storyboard; sourceTree = "<group>"; };
 		039F542018D283A8004B2B67 /* DrinksNearbyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinksNearbyViewController.h; sourceTree = "<group>"; };
-		039F542118D283A8004B2B67 /* DrinksNearbyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinksNearbyViewController.m; sourceTree = "<group>"; };
+		039F542118D283A8004B2B67 /* DrinksNearbyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DrinksNearbyViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		039F542518D283D3004B2B67 /* DrinkListMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkListMenuViewController.h; sourceTree = "<group>"; };
-		039F542618D283D3004B2B67 /* DrinkListMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkListMenuViewController.m; sourceTree = "<group>"; };
+		039F542618D283D3004B2B67 /* DrinkListMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DrinkListMenuViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		039F542B18D28627004B2B67 /* btn_discover_drinks_nearby.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_discover_drinks_nearby.png; sourceTree = "<group>"; };
 		039F542C18D28627004B2B67 /* btn_discover_drinks_nearby@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_discover_drinks_nearby@2x.png"; sourceTree = "<group>"; };
 		039F542D18D28627004B2B67 /* btn_get_drinks_here.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_get_drinks_here.png; sourceTree = "<group>"; };
@@ -2164,9 +2164,9 @@
 		039F544418D29B02004B2B67 /* FindSimilarDrinksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindSimilarDrinksViewController.m; sourceTree = "<group>"; };
 		039F544518D29B02004B2B67 /* FindSimilarDrinksViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindSimilarDrinksViewController.xib; sourceTree = "<group>"; };
 		039F544C18D2A834004B2B67 /* AdjustDrinkListSliderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustDrinkListSliderViewController.h; sourceTree = "<group>"; };
-		039F544D18D2A834004B2B67 /* AdjustDrinkListSliderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustDrinkListSliderViewController.m; sourceTree = "<group>"; };
+		039F544D18D2A834004B2B67 /* AdjustDrinkListSliderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AdjustDrinkListSliderViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		039F545118D2BA15004B2B67 /* DrinkListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkListViewController.h; sourceTree = "<group>"; };
-		039F545218D2BA15004B2B67 /* DrinkListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkListViewController.m; sourceTree = "<group>"; };
+		039F545218D2BA15004B2B67 /* DrinkListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DrinkListViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		039F545618D2BB30004B2B67 /* DrinkCardCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkCardCollectionViewCell.h; sourceTree = "<group>"; };
 		039F545718D2BB30004B2B67 /* DrinkCardCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkCardCollectionViewCell.m; sourceTree = "<group>"; };
 		039F545C18D2CD35004B2B67 /* FindDrinksAtViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindDrinksAtViewController.h; sourceTree = "<group>"; };
@@ -2174,7 +2174,7 @@
 		039F546118D2D17F004B2B67 /* img_spot_pin_view.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_spot_pin_view.png; sourceTree = "<group>"; };
 		039F546218D2D17F004B2B67 /* img_spot_pin_view@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_spot_pin_view@2x.png"; sourceTree = "<group>"; };
 		039F546918D2DB32004B2B67 /* DrinkProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkProfileViewController.h; sourceTree = "<group>"; };
-		039F546A18D2DB32004B2B67 /* DrinkProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkProfileViewController.m; sourceTree = "<group>"; };
+		039F546A18D2DB32004B2B67 /* DrinkProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DrinkProfileViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		039F546E18D2DB4A004B2B67 /* DrinkProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DrinkProfileHeaderView.xib; sourceTree = "<group>"; };
 		039F547318D2DC91004B2B67 /* btn_drink_profile_description.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_drink_profile_description.png; sourceTree = "<group>"; };
 		039F547418D2DC91004B2B67 /* btn_drink_profile_description@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_drink_profile_description@2x.png"; sourceTree = "<group>"; };
@@ -2182,7 +2182,7 @@
 		039F547C18D2DDE2004B2B67 /* icon_recipe@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_recipe@2x.png"; sourceTree = "<group>"; };
 		039F548318D3393E004B2B67 /* Menu.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Menu.storyboard; sourceTree = "<group>"; };
 		039F548818D33BA9004B2B67 /* DrinkMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkMenuViewController.h; sourceTree = "<group>"; };
-		039F548918D33BA9004B2B67 /* DrinkMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkMenuViewController.m; sourceTree = "<group>"; };
+		039F548918D33BA9004B2B67 /* DrinkMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DrinkMenuViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		039F548D18D340AE004B2B67 /* MenuItemModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemModel.h; sourceTree = "<group>"; };
 		039F548E18D340AE004B2B67 /* MenuItemModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemModel.m; sourceTree = "<group>"; };
 		039F549218D34AC4004B2B67 /* DrinkSubtypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkSubtypeModel.h; sourceTree = "<group>"; };
@@ -2206,10 +2206,10 @@
 		03AF8EA118E515B900DD9356 /* LiveSpecialViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LiveSpecialViewController.xib; sourceTree = "<group>"; };
 		03AF8EBB18E5317100DD9356 /* Checkin.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Checkin.storyboard; sourceTree = "<group>"; };
 		03AF8EBF18E531CC00DD9356 /* CheckinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckinViewController.h; sourceTree = "<group>"; };
-		03AF8EC018E531CC00DD9356 /* CheckinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckinViewController.m; sourceTree = "<group>"; };
+		03AF8EC018E531CC00DD9356 /* CheckinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CheckinViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		03AF8EC518E5B63E00DD9356 /* Share.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Share.storyboard; sourceTree = "<group>"; };
 		03AF8EC818E5B6C800DD9356 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
-		03AF8EC918E5B6C800DD9356 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
+		03AF8EC918E5B6C800DD9356 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ShareViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		03AF8EEE18E5C29900DD9356 /* btn_live_special_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_live_special_share.png; sourceTree = "<group>"; };
 		03AF8EEF18E5C29900DD9356 /* btn_live_special_share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_live_special_share@2x.png"; sourceTree = "<group>"; };
 		03AF8EF018E5C29900DD9356 /* btn_live_special_x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_live_special_x.png; sourceTree = "<group>"; };
@@ -2329,7 +2329,7 @@
 		03CAC19018E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "avantgardef-book-webfont.ttf"; sourceTree = "<group>"; };
 		03CAC19518E9F5FD00FAC5F5 /* User.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = User.storyboard; sourceTree = "<group>"; };
 		03CAC19B18E9FAC300FAC5F5 /* AccountSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountSettingsViewController.h; sourceTree = "<group>"; };
-		03CAC19C18E9FAC300FAC5F5 /* AccountSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountSettingsViewController.m; sourceTree = "<group>"; };
+		03CAC19C18E9FAC300FAC5F5 /* AccountSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AccountSettingsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		03CAC19F18E9FD7400FAC5F5 /* txt_account_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = txt_account_large.png; sourceTree = "<group>"; };
 		03CAC1A018E9FD7400FAC5F5 /* txt_account_large@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "txt_account_large@2x.png"; sourceTree = "<group>"; };
 		03CAC1A118E9FD7400FAC5F5 /* txt_account_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = txt_account_small.png; sourceTree = "<group>"; };
@@ -2348,9 +2348,9 @@
 		03E4452418AEE64000C88421 /* AutoCompleteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteCell.m; sourceTree = "<group>"; };
 		03E4452618AEE65000C88421 /* AutoCompleteCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AutoCompleteCellView.xib; sourceTree = "<group>"; };
 		03E4453C18B55B9E00C88421 /* SHButtonLatoLightLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoLightLocation.h; sourceTree = "<group>"; };
-		03E4453D18B55B9E00C88421 /* SHButtonLatoLightLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoLightLocation.m; sourceTree = "<group>"; };
+		03E4453D18B55B9E00C88421 /* SHButtonLatoLightLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SHButtonLatoLightLocation.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		03E4454318B56BF700C88421 /* LocationChooserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationChooserViewController.h; sourceTree = "<group>"; };
-		03E4454418B56BF700C88421 /* LocationChooserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationChooserViewController.m; sourceTree = "<group>"; };
+		03E4454418B56BF700C88421 /* LocationChooserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = LocationChooserViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		03E4454518B56BF700C88421 /* LocationChooserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationChooserViewController.xib; sourceTree = "<group>"; };
 		03E4454818B5705800C88421 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		03E4454E18B65D7300C88421 /* icon_phone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_phone.png; sourceTree = "<group>"; };
@@ -2374,7 +2374,7 @@
 		03E882D318C78D3400BD8FBB /* btn_down_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_down_arrow.png; sourceTree = "<group>"; };
 		03E882D418C78D3400BD8FBB /* btn_down_arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_down_arrow@2x.png"; sourceTree = "<group>"; };
 		03E882D718C78D8B00BD8FBB /* AdjustSpotListSliderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustSpotListSliderViewController.h; sourceTree = "<group>"; };
-		03E882D818C78D8B00BD8FBB /* AdjustSpotListSliderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustSpotListSliderViewController.m; sourceTree = "<group>"; };
+		03E882D818C78D8B00BD8FBB /* AdjustSpotListSliderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AdjustSpotListSliderViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		03E882DA18C7953B00BD8FBB /* AdjustSliderSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdjustSliderSectionHeaderView.h; sourceTree = "<group>"; };
 		03E882DB18C7953B00BD8FBB /* AdjustSliderSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdjustSliderSectionHeaderView.m; sourceTree = "<group>"; };
 		03E882DD18C797BA00BD8FBB /* UIView+AddBorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+AddBorder.h"; sourceTree = "<group>"; };
@@ -2384,7 +2384,7 @@
 		03E882E318C7B8F400BD8FBB /* AverageReviewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AverageReviewModel.h; sourceTree = "<group>"; };
 		03E882E418C7B8F400BD8FBB /* AverageReviewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AverageReviewModel.m; sourceTree = "<group>"; };
 		03E8832B18C836A800BD8FBB /* SpotListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotListViewController.h; sourceTree = "<group>"; };
-		03E8832C18C836A800BD8FBB /* SpotListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotListViewController.m; sourceTree = "<group>"; };
+		03E8832C18C836A800BD8FBB /* SpotListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SpotListViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		03E8832E18C837B500BD8FBB /* img_card_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_card_background.png; sourceTree = "<group>"; };
 		03E8832F18C837B600BD8FBB /* img_card_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_card_background@2x.png"; sourceTree = "<group>"; };
 		03E8833018C837B600BD8FBB /* img_carousel_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_carousel_background.png; sourceTree = "<group>"; };
@@ -2414,7 +2414,7 @@
 		03F2D9301871E42800C69576 /* btn_login_spothopper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_login_spothopper.png; sourceTree = "<group>"; };
 		03F2D9311871E42800C69576 /* btn_login_spothopper@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_login_spothopper@2x.png"; sourceTree = "<group>"; };
 		03F2D9351871E88000C69576 /* LaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchViewController.h; sourceTree = "<group>"; };
-		03F2D9361871E88000C69576 /* LaunchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchViewController.m; sourceTree = "<group>"; };
+		03F2D9361871E88000C69576 /* LaunchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = LaunchViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		03F2D9381871FB4300C69576 /* UIActionSheet+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Block.h"; sourceTree = "<group>"; };
 		03F2D9391871FB4300C69576 /* UIActionSheet+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Block.m"; sourceTree = "<group>"; };
 		03F2D93C187208C200C69576 /* SHLabelLatoLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHLabelLatoLight.h; sourceTree = "<group>"; };
@@ -2486,7 +2486,7 @@
 		26B6768118E9F5B900DAD113 /* SpotHopperStaging-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperStaging-Info.plist"; sourceTree = "<group>"; };
 		26B6768218E9F61400DAD113 /* SpotHopperProduction-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperProduction-Info.plist"; sourceTree = "<group>"; };
 		26BABDCA190F698800852D73 /* DrinksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinksViewController.h; sourceTree = "<group>"; };
-		26BABDCB190F698800852D73 /* DrinksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinksViewController.m; sourceTree = "<group>"; };
+		26BABDCB190F698800852D73 /* DrinksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DrinksViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		26BABDD0190F718700852D73 /* DrinksNearbyViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DrinksNearbyViewCell.xib; sourceTree = "<group>"; };
 		26BABDD5190F739F00852D73 /* img_arrow_east_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_arrow_east_gray.png; sourceTree = "<group>"; };
 		26BABDD6190F739F00852D73 /* img_arrow_east_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_arrow_east_gray@2x.png"; sourceTree = "<group>"; };
@@ -2499,7 +2499,7 @@
 		26EB38AD18FC7E1100E84A3B /* NSNull+Debugging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNull+Debugging.h"; sourceTree = "<group>"; };
 		26EB38AE18FC7E1100E84A3B /* NSNull+Debugging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNull+Debugging.m"; sourceTree = "<group>"; };
 		26ED5CB418FDDE56006901ED /* Tracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tracker.h; sourceTree = "<group>"; };
-		26ED5CB518FDDE56006901ED /* Tracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tracker.m; sourceTree = "<group>"; };
+		26ED5CB518FDDE56006901ED /* Tracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = Tracker.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		26ED9F8818EA3A2B00C60954 /* SHLabelLatoBold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHLabelLatoBold.h; sourceTree = "<group>"; };
 		26ED9F8918EA3A2B00C60954 /* SHLabelLatoBold.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHLabelLatoBold.m; sourceTree = "<group>"; };
 		26F0FDE118EB1B18001BB0CD /* Chicago.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Chicago.gpx; sourceTree = "<group>"; };
@@ -6305,6 +6305,7 @@
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-DNS_BLOCK_ASSERTIONS=1",
+					"-DNDEBUG=1",
 				);
 				PRODUCT_NAME = SpotHopperProduction;
 				PROVISIONING_PROFILE = "FE3B8B45-B514-4EF0-AB82-C66C244F0422";

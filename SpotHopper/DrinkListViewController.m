@@ -95,7 +95,7 @@
     [_tellMeMyLocation findMe:kCLLocationAccuracyKilometer found:^(CLLocation *newLocation) {
         _currentLocation = newLocation;
     } failure:^(NSError *error) {
-        
+        [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
     // Locations
@@ -250,6 +250,7 @@
         [Tracker track:@"Fetched Drinklist Results" properties:@{@"Success" : @TRUE, @"Count" : [NSNumber numberWithUnsignedInteger:_drinkList.drinks.count]}];
         
     } failure:^(ErrorModel *errorModel) {
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
         [Tracker track:@"Fetched Drinklist Results" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
         
@@ -301,11 +302,13 @@
         } failure:^(ErrorModel *errorModel) {
             [self hideHUD];
             [self showAlert:@"Oops" message:errorModel.human];
+            [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
         
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
@@ -337,6 +340,7 @@
                 } failure:^(ErrorModel *errorModel) {
                     [self hideHUD];
                     [self showAlert:@"Oops" message:errorModel.human];
+                    [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
                 }];
                 
             } else {
@@ -370,6 +374,7 @@
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self updateEverything];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
 }
@@ -443,6 +448,7 @@
         [Tracker track:@"Delete Drinklist" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 

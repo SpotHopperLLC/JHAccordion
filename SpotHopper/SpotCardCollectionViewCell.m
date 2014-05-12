@@ -28,7 +28,13 @@
     // Sets image
     if (spot.images.count) {
         ImageModel *imageModel = spot.images[0];
-        [NetworkHelper loadImageProgressively:imageModel imageView:_imgSpot placeholderImage:spot.placeholderImage];
+        [NetworkHelper loadImage:imageModel placeholderImage:spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
+            _imgSpot.image = thumbImage;
+        } withFullImageBlock:^(UIImage *fullImage) {
+            _imgSpot.image = fullImage;
+        } withErrorBlock:^(NSError *error) {
+            // do nothing
+        }];
     } else {
         [_imgSpot setImage:spot.placeholderImage];
     }

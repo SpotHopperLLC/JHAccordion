@@ -91,7 +91,7 @@
 }
 
 - (void)goToDrinkList:(DrinkListModel*)drinkList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders atSpot:(SpotModel*)spot {
-    [Tracker track:@"View Drinklist" properties:@{@"Created with Sliders" : createdWithAdjustSliders ? @YES : @NO, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Drinklist" properties:@{@"Name" : drinkList.name,@"Created with Sliders" : createdWithAdjustSliders ? @YES : @NO, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
     DrinkListViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkListViewController"];
     [viewController setDrinkList:drinkList];
     [viewController setCreatedWithAdjustSliders:createdWithAdjustSliders];
@@ -107,7 +107,7 @@
 }
 
 - (void)goToDrinkProfile:(DrinkModel*)drink {
-    [Tracker track:@"View Drink Profile" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Drink Profile" properties:@{@"Name" : drink.name, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
     DrinkProfileViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkProfileViewController"];
     [viewController setDrink:drink];
     [self.navigationController pushViewController:viewController animated:YES];
@@ -199,7 +199,7 @@
 }
 
 - (void)goToSpotList:(SpotListModel*)spotList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders {
-    [Tracker track:@"View Spotlist" properties:@{@"Created with Sliders" : createdWithAdjustSliders ? @YES : @NO, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Spotlist" properties:@{@"Name" : spotList.name, @"Created with Sliders" : createdWithAdjustSliders ? @YES : @NO, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
     SpotListViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotListViewController"];
     [viewController setSpotList:spotList];
     [viewController setCreatedWithAdjustSliders:createdWithAdjustSliders];
@@ -207,7 +207,7 @@
 }
 
 - (void)goToSpotProfile:(SpotModel *)spot {
-    [Tracker track:@"View Spot Profile" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Spot Profile" properties:@{@"Name" : spot.name, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
     SpotProfileViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
     [viewController setSpot:spot];
     [self.navigationController pushViewController:viewController animated:YES];
@@ -292,7 +292,9 @@
     PhotoViewerViewController *viewController = [commonStoryboard instantiateViewControllerWithIdentifier:@"PhotoViewerViewController"];
     viewController.images = images;
     viewController.index = index;
-    viewController.delegate = photoAlbum;
+    if (photoAlbum) {
+        viewController.delegate = photoAlbum;
+    }
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

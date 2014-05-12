@@ -131,6 +131,7 @@
     } failure:^(FBSessionState state, NSError *error) {
         _sendToFacebook = NO;
         [self updateSocialViews];
+        [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
 }
@@ -355,21 +356,7 @@
         [self hideHUD];
         
         if (_sendToText == YES) {
-            NSString *linkToShare = [self linkToShareForSource:@"SMS"];
-            [self shortenLink:linkToShare withCompletionBlock:^(NSString *shortedLink, NSError *error) {
-                if (!shortedLink) {
-                    shortedLink = kBitlyShortURL;
-                }
-                
-                NSString *message = [NSString stringWithFormat:@"%@ - %@", _txtShare.text, shortedLink];
-                
-                MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
-                picker.messageComposeDelegate = self;
-                picker.body = message;
-                
-                [self presentViewController:picker animated:YES completion:nil];
-                
-            }];
+            [self doShareSMS];
         } else if ([_delegate respondsToSelector:@selector(shareViewControllerDidFinish:)]) {
             [_delegate shareViewControllerDidFinish:self];
         }
@@ -427,6 +414,13 @@
          }];
     }];
     
+    if (_checkIn) {
+        [Tracker track:@"Sharing Checkin" properties:@{@"Twitter" : @FALSE, @"Facebook" : @TRUE, @"SMS" : @FALSE}];
+    }
+    else {
+        [Tracker track:@"Sharing Special" properties:@{@"Twitter" : @FALSE, @"Facebook" : @TRUE, @"SMS" : @FALSE}];
+    }
+    
     return deferred.promise;
 }
 
@@ -475,8 +469,43 @@
         }];
         
     }];
+    
+    
+    if (_checkIn) {
+        [Tracker track:@"Sharing Checkin" properties:@{@"Twitter" : @TRUE, @"Facebook" : @FALSE, @"SMS" : @FALSE}];
+    }
+    else {
+        [Tracker track:@"Sharing Special" properties:@{@"Twitter" : @TRUE, @"Facebook" : @FALSE, @"SMS" : @FALSE}];
+    }
         
     return deferred.promise;
+}
+
+#pragma mark - Private Share SMS
+
+- (void)doShareSMS {
+    NSString *linkToShare = [self linkToShareForSource:@"SMS"];
+    [self shortenLink:linkToShare withCompletionBlock:^(NSString *shortedLink, NSError *error) {
+        if (!shortedLink) {
+            shortedLink = kBitlyShortURL;
+        }
+        
+        NSString *message = [NSString stringWithFormat:@"%@ - %@", _txtShare.text, shortedLink];
+        
+        MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
+        picker.messageComposeDelegate = self;
+        picker.body = message;
+        
+        [self presentViewController:picker animated:YES completion:nil];
+        
+    }];
+    
+    if (_checkIn) {
+        [Tracker track:@"Sharing Checkin" properties:@{@"Twitter" : @FALSE, @"Facebook" : @FALSE, @"SMS" : @TRUE}];
+    }
+    else {
+        [Tracker track:@"Sharing Special" properties:@{@"Twitter" : @FALSE, @"Facebook" : @FALSE, @"SMS" : @TRUE}];
+    }
 }
 
 @end

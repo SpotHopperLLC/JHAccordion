@@ -17,6 +17,8 @@
 
 #import "DrinkModel.h"
 #import "SpotModel.h"
+#import "ErrorModel.h"
+#import "Tracker.h"
 
 #import "SearchCell.h"
 
@@ -272,6 +274,7 @@
         [_results addObjectsFromArray:drinkModels];
         
     } failure:^(ErrorModel *errorModel) {
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
         
@@ -293,7 +296,7 @@
         [_results addObjectsFromArray:spotModels];
         
     } failure:^(ErrorModel *errorModel) {
-        
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
     

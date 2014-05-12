@@ -21,6 +21,7 @@
 #import "ErrorModel.h"
 #import "SpotModel.h"
 #import "CheckInModel.h"
+#import "Tracker.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -76,6 +77,7 @@
     } failure:^(NSError *error) {
         [_indFindingYou stopAnimating];
         [_lblFindingYou setText:@"Could not find you"];
+        [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
@@ -237,6 +239,7 @@
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 

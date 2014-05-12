@@ -29,7 +29,13 @@
     if (imageModel == nil) {
         [_imgSpot setImage:placeholderImage];
     } else {
-        [NetworkHelper loadImageProgressively:imageModel imageView:_imgSpot placeholderImage:placeholderImage];
+        [NetworkHelper loadImage:imageModel placeholderImage:placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
+            _imgSpot.image = thumbImage;
+        } withFullImageBlock:^(UIImage *fullImage) {
+            _imgSpot.image = fullImage;
+        } withErrorBlock:^(NSError *error) {
+            // do nothing
+        }];
     }
 }
 

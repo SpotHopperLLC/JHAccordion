@@ -23,6 +23,7 @@
 #import "ErrorModel.h"
 #import "ReviewModel.h"
 #import "UserModel.h"
+#import "Tracker.h"
 
 #import "JHAccordion.h"
 
@@ -309,6 +310,7 @@
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
