@@ -292,7 +292,9 @@
     PhotoViewerViewController *viewController = [commonStoryboard instantiateViewControllerWithIdentifier:@"PhotoViewerViewController"];
     viewController.images = images;
     viewController.index = index;
-    viewController.delegate = photoAlbum;
+    if (photoAlbum) {
+        viewController.delegate = photoAlbum;
+    }
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

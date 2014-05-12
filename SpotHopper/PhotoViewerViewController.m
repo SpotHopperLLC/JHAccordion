@@ -62,6 +62,7 @@
             self.navigationController.navigationBar.alpha = 1.0;
             self.navigationController.toolbar.alpha = 1.0;
         } completion:^(BOOL finished) {
+//            [[UIApplication sharedApplication] setStatusBarHidden:FALSE];
         }];
     }
     else {
@@ -72,6 +73,7 @@
             self.navigationController.navigationBar.alpha = 0.0;
             self.navigationController.toolbar.alpha = 0.0;
         } completion:^(BOOL finished) {
+//            [[UIApplication sharedApplication] setStatusBarHidden:TRUE];
         }];
     }
 }
