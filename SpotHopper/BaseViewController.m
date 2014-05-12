@@ -136,6 +136,10 @@ typedef void(^AlertBlock)();
     return UIStatusBarStyleDefault;
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return NO;
+}
+
 - (void)adjustIOS6Crap {
     for (UIView *view in self.view.subviews) {
         CGRect frame = view.frame;

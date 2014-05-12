@@ -204,7 +204,12 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    [self goToPhotoAlbum:[_spot images] atIndex:indexPath.item];
+    if (_spot.images.count > 1) {
+        [self goToPhotoAlbum:[_spot images] atIndex:indexPath.item];
+    }
+    else {
+        [self goToPhotoViewer:[_spot images] atIndex:indexPath.item fromPhotoAlbum:nil];
+    }
 }
 
 #pragma mark - UITableViewDataSource
