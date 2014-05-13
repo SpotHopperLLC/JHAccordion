@@ -446,7 +446,7 @@
             _drinkTypesUpdate = [forms objectForKey:@"drink_types"];
             
             // Saves off wine subtypes into list
-            for (NSDictionary *drinkType in _drinkTypes) {
+            for (NSDictionary *drinkType in _drinkTypesUpdate) {
                 if ([[drinkType objectForKey:@"name"] isEqualToString:kDrinkTypeNameWine] == YES) {
                     _wineSubtypes = [drinkType objectForKey:@"drink_subtypes"];
                     break;
