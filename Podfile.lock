@@ -20,7 +20,7 @@ PODS:
   - BitlyForiOS (0.0.3):
     - AFNetworking (~> 2.0)
   - Bolts (1.1.0)
-  - Facebook-iOS-SDK (3.14.0):
+  - Facebook-iOS-SDK (3.14.1):
     - Bolts
   - GoogleAnalytics-iOS-SDK (3.0.7)
   - iRate (1.8.3)
@@ -77,7 +77,7 @@ SPEC CHECKSUMS:
   AFNetworking: e499052cbf3d743e9bb727bb37adb9dc2547ba15
   BitlyForiOS: c6eb9b297cb503757a616fc201b3362fb857e8b4
   Bolts: dc620a31cf67c29bce3e3d14a07a12e797a1a154
-  Facebook-iOS-SDK: 63e19ff8d275d63b765819f492a4e71e445f9822
+  Facebook-iOS-SDK: 97e68fb37468bee2d90201fd0c9e4dccce5683d9
   GoogleAnalytics-iOS-SDK: 594702aaf93e6ee497140fd31e758c2e2fa44315
   iRate: 7820b59656e8ebcb09aadc0d2f710d939c15fbe4
   JHAutoCompleteTextField: 1ca69c82441d9b5bf474e10d36585247030f7594
