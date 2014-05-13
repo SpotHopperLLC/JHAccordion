@@ -587,7 +587,7 @@
     [Tracker track:@"Creating Drinklist"];
     
     NSNumber *drinkTypeID = [_selectedDrinkType objectForKey:@"id"];
-    NSNumber *drinkSubTypeID = [_selectedDrinkType objectForKey:@"id"];
+    NSNumber *drinkSubTypeID = [_selectedWineSubtype objectForKey:@"id"];
     
     [self showHUD:@"Creating drinklist"];
     [DrinkListModel postDrinkList:kDrinkListModelDefaultName
