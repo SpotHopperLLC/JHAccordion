@@ -62,6 +62,7 @@
 - (void)changeLabelToLatoLight:(UIView *)view withBoldText:(NSString *)boldText;
 
 - (UIImage *)whiteScreenImageForFrame:(CGRect)frame;
+- (UIImage *)resizeImage:(UIImage *)image toMaximumSize:(CGSize)maxSize;
 
 - (void)shortenLink:(NSString *)link withCompletionBlock:(void (^)(NSString *shortedLink, NSError *error))completionBlock;
 
@@ -73,6 +74,10 @@
 
 - (void)onClickBack:(id)sender;
 - (void)onClickShowSidebar:(id)sender;
+
+- (void)fillSubview:(UIView *)subview inSuperView:(UIView *)superview;
+- (void)embedViewController:(UIViewController *)vc intoView:(UIView *)superview placementBlock:(void (^)(UIView *view))placementBlock;
+- (void)removeEmbeddedViewController:(UIViewController *)vc;
 
 - (void)showSidebarButton:(BOOL)show animated:(BOOL)animated;
 - (void)showSidebarButton:(BOOL)show animated:(BOOL)animated navigationItem:(UINavigationItem*)navigationItem;

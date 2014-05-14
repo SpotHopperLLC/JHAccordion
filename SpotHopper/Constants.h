@@ -66,7 +66,26 @@
 
     #define kRefreshLocationTime 3600.0f
 
-    #define kAnalyticsEnabled   TRUE
+#define kAnalyticsEnabled   TRUE
+
+#elif defined(STAGING2)
+
+#define kDebug YES
+
+#define kTwitterConsumerKey @"enlXFrFlBlOPkaBoOJunQ"
+#define kTwitterConsumerSecret @"UHRcQ8WXs13Iug7VpliivDxwQuGtoMg5KsaoIF3jWbM"
+
+#define kAppURLScheme  @"spothopperappstaging"
+
+#define kBaseUrl @"http://spothopper-staging.herokuapp.com"
+#define kWebsiteUrl @"http://spothopper-staging.herokuapp.com"
+
+#define kParseApplicationID @"lu4u2Bg5pBqLg9qZEWJB5W7fjSAVQPiH39Hr29kV"
+#define kParseClientKey @"BHl8KE9ZmZgmeDFnV9H886qKB9Y7EaWzZLPdOs4J"
+
+#define kRefreshLocationTime 3600.0f
+
+#define kAnalyticsEnabled   TRUE
 
 #elif defined(PRODUCTION)
 

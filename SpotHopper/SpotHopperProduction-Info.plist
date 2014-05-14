@@ -46,6 +46,7 @@
 		<string>Lato-Regular.ttf</string>
 		<string>Lato-LightItalic.ttf</string>
 		<string>avantgardef-book-webfont.ttf</string>
+		<string>MyriadPro-Bold.ttf</string>
 	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>

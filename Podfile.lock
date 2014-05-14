@@ -37,6 +37,7 @@ PODS:
   - Reveal-iOS-SDK (1.0.4)
   - STTwitter (0.0.9)
   - TTTAttributedLabel (1.9.5)
+  - UIView-Autolayout (0.2.0)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0.0)
@@ -56,6 +57,7 @@ DEPENDENCIES:
   - Reveal-iOS-SDK
   - STTwitter (~> 0.0.7)
   - TTTAttributedLabel (~> 1.9.0)
+  - UIView-Autolayout (~> 0.2.0)
 
 EXTERNAL SOURCES:
   BitlyForiOS:
@@ -92,5 +94,6 @@ SPEC CHECKSUMS:
   Reveal-iOS-SDK: d3c8e109d42219daaa7a6e1ad2de34f0bdbb7a88
   STTwitter: bc2c74ffeeff6ead7b03cfec0c5d9e6be2d54e56
   TTTAttributedLabel: 9f727215d63a358f92317a24c83c94c72de78e80
+  UIView-Autolayout: 7c05eb666738eba682f686c2da236578177e2ebb
 
 COCOAPODS: 0.33.1

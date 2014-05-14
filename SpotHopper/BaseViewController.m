@@ -78,7 +78,6 @@ typedef void(^AlertBlock)();
     }
     
     if (![options containsObject:kDidLoadOptionsNoBackground]) {
-        
         _backgroundImage = [[UIImageView alloc] initWithFrame:self.view.frame];
         [_backgroundImage setImage:[UIImage imageNamed:( [options containsObject:kDidLoadOptionsFocusedBackground] ? @"app_background" : @"app_background_blurred" )]];
         [_backgroundImage setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
@@ -530,6 +529,20 @@ typedef void(^AlertBlock)();
     return image;
 }
 
+- (UIImage *)resizeImage:(UIImage *)image toMaximumSize:(CGSize)maxSize {
+    CGFloat widthRatio = maxSize.width / image.size.width;
+    CGFloat heightRatio = maxSize.height / image.size.height;
+    CGFloat scaleRatio = widthRatio < heightRatio ? widthRatio : heightRatio;
+    CGSize newSize = CGSizeMake(image.size.width * scaleRatio, image.size.height * scaleRatio);
+    
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, image.scale);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *resizedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return resizedImage;
+}
+
 #pragma mark - Sharing
 
 - (void)shortenLink:(NSString *)link withCompletionBlock:(void (^)(NSString *shortedLink, NSError *error))completionBlock {
@@ -629,6 +642,43 @@ typedef void(^AlertBlock)();
 
 - (void)onClickShowSidebar:(id)sender {
     [self.navigationController.sidebarViewController showRightSidebar:YES];
+}
+
+#pragma mark - Embedding View Controllers
+
+- (void)fillSubview:(UIView *)subview inSuperView:(UIView *)superview {
+    NSDictionary *views = NSDictionaryOfVariableBindings(subview);
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[subview]|" options:0 metrics:nil views:views]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[subview]|" options:0 metrics:nil views:views]];
+}
+
+- (void)embedViewController:(UIViewController *)vc intoView:(UIView *)superview placementBlock:(void (^)(UIView *view))placementBlock {
+    NSAssert(vc, @"VC must be define");
+    NSAssert(superview, @"Superview must be defined");
+    
+    UIView *view = vc.view;
+    
+    view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addChildViewController:vc];
+    [superview addSubview:view];
+    
+    if (placementBlock) {
+        placementBlock(view);
+    }
+    else {
+        [self fillSubview:vc.view inSuperView:superview];
+    }
+    
+    [self didMoveToParentViewController:self];
+    [vc didMoveToParentViewController:self];
+}
+
+- (void)removeEmbeddedViewController:(UIViewController *)vc {
+    if (vc) {
+        [vc willMoveToParentViewController:nil];
+        [vc.view removeFromSuperview];
+        [vc removeFromParentViewController];
+    }
 }
 
 #pragma mark - Sidebar
