@@ -89,4 +89,7 @@
 - (UIStoryboard*)shareStoryboard;
 - (UIStoryboard*)userStoryboard;
 
+// Redesign 2.0
+- (UIStoryboard*)spotHopperStoryboard;
+
 @end

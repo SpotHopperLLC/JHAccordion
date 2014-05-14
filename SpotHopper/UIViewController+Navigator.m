@@ -381,4 +381,13 @@
     return self.storyboard;
 }
 
+- (UIStoryboard*)spotHopperStoryboard {
+    NSString *name = [self.storyboard valueForKey:@"name"];
+    if ([name isEqualToString:@"SpotHopper"] == NO) {
+        return [UIStoryboard storyboardWithName:@"SpotHopper" bundle:[NSBundle mainBundle]];
+    }
+    
+    return self.storyboard;
+}
+
 @end

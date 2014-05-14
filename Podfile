@@ -13,6 +13,7 @@ pod 'iRate', '~> 1.8.0'
 
 # UI
 #pod 'JHAccordion', :git => 'https://github.com/joshdholtz/JHAccordion.git'
+pod 'UIView-Autolayout', '~> 0.2.0'
 pod 'JHAutoCompleteTextField', :git => 'http://github.com/joshdholtz/JHAutoCompleteTextField.git'
 pod 'JHSidebar', :git => 'https://github.com/joshdholtz/JHSidebar.git'
 pod 'TTTAttributedLabel', '~> 1.9.0'
@@ -47,3 +48,9 @@ target "SpotHopperStaging" do
     # Debugging UI
     pod 'Reveal-iOS-SDK'
 end
+
+target "SpotHopperStaging2" do
+    # Debugging UI
+    pod 'Reveal-iOS-SDK'
+end
+

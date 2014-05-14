@@ -48,6 +48,8 @@
 #import "Tracker.h"
 #import "UserState.h"
 
+#import "SHStyleKit.h"
+
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
 #import <JSONAPI/JSONAPI.h>
 #import <Parse/Parse.h>
@@ -78,6 +80,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 //    [[ClientSessionManager sharedClient] setHasSeenLaunch:NO];
+
+    [self applyApperance];
     
     [Tracker logError:@"App Delegate launching" class:[self class] trace:NSStringFromSelector(_cmd)];
     
@@ -293,6 +297,16 @@
     [JSONAPIResourceModeler useResource:[SpotListModel class] toLinkedType:@"spot_lists"];
     [JSONAPIResourceModeler useResource:[SpotListMoodModel class] toLinkedType:@"spot_list_moods"];
     [JSONAPIResourceModeler useResource:[UserModel class] toLinkedType:@"users"];
+}
+
+- (void)applyApperance {
+    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setBackgroundColor:[SHStyleKit mainColorTransparent]];
+    
+    [[UINavigationBar appearance] setTintColor:[SHStyleKit mainColorTransparent]];
+    [[UIBarButtonItem appearance] setTintColor:[SHStyleKit mainColorTransparent]];
+    [[UITabBar appearance] setTintColor:[SHStyleKit mainColorTransparent]];
+    [[UITabBar appearance] setSelectedImageTintColor:[SHStyleKit mainColorTransparent]];
 }
 
 #pragma mark - Location
