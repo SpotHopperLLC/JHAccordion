@@ -9,11 +9,13 @@
 #import "SHLocationMenuBarViewController.h"
 
 #import "SHStyleKit.h"
+#import "SHStyleKit+Additions.h"
 
 @interface SHLocationMenuBarViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *lblNear;
 @property (weak, nonatomic) IBOutlet UIButton *btnLocation;
+@property (weak, nonatomic) IBOutlet UIImageView *navigationArrowImageView;
 
 @end
 
@@ -25,8 +27,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
     
-    self.lblNear.textColor = [SHStyleKit mainTextColor];
-    self.btnLocation.tintColor = [SHStyleKit mainColor];
+    self.lblNear.textColor = [SHStyleKit myTextColor];
+    self.btnLocation.tintColor = [SHStyleKit myTextColor];
+    self.navigationArrowImageView.image = [SHStyleKit navigationArrowIconWithColor:SHStyleKitColorMyTextColor size:CGSizeMake(20, 20)];
     
     [self.btnLocation setTitle:@"Unknown" forState:UIControlStateNormal];
 }

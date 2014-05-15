@@ -300,13 +300,13 @@
 }
 
 - (void)applyApperance {
-    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-    [[UINavigationBar appearance] setBackgroundColor:[SHStyleKit mainColorTransparent]];
-    
-    [[UINavigationBar appearance] setTintColor:[SHStyleKit mainColorTransparent]];
-    [[UIBarButtonItem appearance] setTintColor:[SHStyleKit mainColorTransparent]];
-    [[UITabBar appearance] setTintColor:[SHStyleKit mainColorTransparent]];
-    [[UITabBar appearance] setSelectedImageTintColor:[SHStyleKit mainColorTransparent]];
+//    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+//    [[UINavigationBar appearance] setBackgroundColor:[SHStyleKit myTintColorTransparent]];
+//    
+//    [[UINavigationBar appearance] setTintColor:[SHStyleKit myTintColorTransparent]];
+//    [[UIBarButtonItem appearance] setTintColor:[SHStyleKit myTintColorTransparent]];
+//    [[UITabBar appearance] setTintColor:[SHStyleKit myTintColorTransparent]];
+//    [[UITabBar appearance] setSelectedImageTintColor:[SHStyleKit myTintColorTransparent]];
 }
 
 #pragma mark - Location

@@ -1,9 +1,9 @@
 //
-//  AdjustSpotListSliderViewController.m
+//  SHAdjustSpotListSliderViewController.m
 //  SpotHopper
 //
-//  Created by Josh Holtz on 3/5/14.
-//  Copyright (c) 2014 RokkinCat. All rights reserved.
+//  Created by Brennan Stehling on 5/14/14.
+//  Copyright (c) 2014 SpotHopper. All rights reserved.
 //
 
 #define kSectionTypes 0
@@ -11,7 +11,9 @@
 #define kSectionSliders 2
 #define kSectionAdvancedSliders 3
 
-#import "AdjustSpotListSliderViewController.h"
+#import "SHAdjustSpotListSliderViewController.h"
+
+#import "SHStyleKit+Additions.h"
 
 #import "SHButtonLatoLight.h"
 #import "NSDate+Globalize.h"
@@ -34,10 +36,14 @@
 #import "Tracker.h"
 
 #import "JHAccordion.h"
+#import "TellMeMyLocation.h"
 
 #import <CoreLocation/CoreLocation.h>
 
-@interface AdjustSpotListSliderViewController () <UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, ReviewSliderCellDelegate>
+@interface SHAdjustSpotListSliderViewController () <UITableViewDataSource, UITableViewDelegate, JHAccordionDelegate, ReviewSliderCellDelegate>
+
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
+@property (weak, nonatomic) IBOutlet UIButton *btnRight;
 
 @property (weak, nonatomic) IBOutlet UITableView *tblSliders;
 @property (weak, nonatomic) IBOutlet SHButtonLatoLight *btnSubmit;
@@ -64,13 +70,27 @@
 
 @end
 
-@implementation AdjustSpotListSliderViewController {
+@implementation SHAdjustSpotListSliderViewController {
     BOOL _isUpdatingTableView;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+#pragma mark - View Lifecycle
+#pragma mark -
 
+- (void)viewDidLoad {
+    [self viewDidLoad:@[kDidLoadOptionsNoBackground]];
+    
+    self.navigationController.navigationBar.barTintColor = [SHStyleKit myLightHeaderColor];
+    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [SHStyleKit myTextColor]};
+    
+    self.backgroundImageView.image = [SHStyleKit gradientBackgroundWithWidth:CGRectGetWidth(self.view.frame) height:CGRectGetHeight(self.view.frame)];
+    
+//    self.tblSliders.hidden = TRUE;
+    
+    UIImage *spotIcon = [SHStyleKit spotIconWithColor:SHStyleKitColorMyTintColor size:self.btnRight.frame.size];
+    [self.btnRight setImage:spotIcon forState:UIControlStateNormal];
+    
     // Configures accordion
     _accordion = [[JHAccordion alloc] initWithTableView:_tblSliders];
     [_accordion setDelegate:self];
@@ -127,23 +147,29 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == kSectionTypes) {
-        AdjustSliderOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AdjustSliderOptionCell" forIndexPath:indexPath];
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AdjustSliderOptionCell" forIndexPath:indexPath];
+        UILabel *lblTitle = (UILabel *)[cell viewWithTag:1];
+        NSAssert(lblTitle, @"Label must be defined");
+        
         if (indexPath.row > 0) {
             NSDictionary *spotType = [_spotTypes objectAtIndex:indexPath.row - 1];
-            [cell.lblTitle setText:[spotType objectForKey:@"name"]];
+            [lblTitle setText:[spotType objectForKey:@"name"]];
         } else {
-            [cell.lblTitle setText:@"Any"];
+            [lblTitle setText:@"Any"];
         }
         
         return cell;
     }
     else if (indexPath.section == kSectionMoods) {
-        AdjustSliderOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AdjustSliderOptionCell" forIndexPath:indexPath];
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AdjustSliderOptionCell" forIndexPath:indexPath];
+        UILabel *lblTitle = (UILabel *)[cell viewWithTag:1];
+        NSAssert(lblTitle, @"Label must be defined");
+
         if (indexPath.row > 0) {
             SpotListMoodModel *spotListMood = [_spotListMoodTypes objectAtIndex:indexPath.row - 1];
-            [cell.lblTitle setText:spotListMood.name];
+            [lblTitle setText:spotListMood.name];
         } else {
-            [cell.lblTitle setText:@"None"];
+            [lblTitle setText:@"None"];
         }
         
         return cell;
@@ -300,13 +326,7 @@
 
 #pragma mark - Actions
 
-- (IBAction)onClickClose:(id)sender {
-    if ([_delegate respondsToSelector:@selector(adjustSliderListSliderViewControllerDelegateClickClose:)]) {
-        [_delegate adjustSliderListSliderViewControllerDelegateClickClose:self];
-    }
-}
-
-- (IBAction)onClickSubmit:(id)sender {
+- (IBAction)searchButtonTapped:(id)sender {
     [self doCreateSpotlist];
 }
 
@@ -361,14 +381,14 @@
         
         [self updateSpotTypes];
     } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
     [SpotListMoodModel getSpotListMoods:nil success:^(NSArray *spotListMoodModels, JSONAPI *jsonApi) {
         _spotListMoodTypesUpdate = spotListMoodModels;
         [self updateSpotListMoodTypes];
     } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
@@ -430,7 +450,7 @@
 
 - (void)fetchSliderTemplates {
     
-//    [self showHUD:@"Loading sliders"];
+    //    [self showHUD:@"Loading sliders"];
     [SliderTemplateModel getSliderTemplates:nil success:^(NSArray *sliderTemplates, JSONAPI *jsonApi) {
         [self hideHUD];
         _allSliderTemplatesUpdate = sliderTemplates;
@@ -439,7 +459,7 @@
         [self updateAllSliderTemplates];
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
-        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
@@ -474,18 +494,18 @@
         [Tracker track:@"Created Spotlist" properties:@{@"Success" : @TRUE, @"Spot Type ID" : spotTypeId ?: @0, @"Created With Sliders" : @TRUE}];
         [self hideHUD];
         [self showHUDCompleted:@"Spotlist created!" block:^{
-            
-            if ([_delegate respondsToSelector:@selector(adjustSliderListSliderViewControllerDelegate:createdSpotList:)]) {
-                [_delegate adjustSliderListSliderViewControllerDelegate:self createdSpotList:spotListModel];
+            if ([self.delegate respondsToSelector:@selector(adjustSpotListSliderViewController:didCreateSpotList:)]) {
+                [self.delegate adjustSpotListSliderViewController:self didCreateSpotList:spotListModel];
             }
-            
+            self.spotListModel = spotListModel;
+            [self performSegueWithIdentifier:@"goToHomeMap" sender:self];
         }];
         
     } failure:^(ErrorModel *errorModel) {
         [Tracker track:@"Created Spotlist" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
-        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 

@@ -2283,6 +2283,16 @@
 		268C8CA3190089D00011E0F8 /* UserState.m in Sources */ = {isa = PBXBuildFile; fileRef = 268C8CA1190089D00011E0F8 /* UserState.m */; };
 		268C8CA4190089D00011E0F8 /* UserState.m in Sources */ = {isa = PBXBuildFile; fileRef = 268C8CA1190089D00011E0F8 /* UserState.m */; };
 		268C8CA5190089D00011E0F8 /* UserState.m in Sources */ = {isa = PBXBuildFile; fileRef = 268C8CA1190089D00011E0F8 /* UserState.m */; };
+		269B46011923EF9D00A404FA /* SHStyleKit+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 269B46001923EF9D00A404FA /* SHStyleKit+Additions.m */; };
+		269B46021923EF9D00A404FA /* SHStyleKit+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 269B46001923EF9D00A404FA /* SHStyleKit+Additions.m */; };
+		269B46031923EF9D00A404FA /* SHStyleKit+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 269B46001923EF9D00A404FA /* SHStyleKit+Additions.m */; };
+		269B46041923EF9D00A404FA /* SHStyleKit+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 269B46001923EF9D00A404FA /* SHStyleKit+Additions.m */; };
+		269B46051923EF9D00A404FA /* SHStyleKit+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 269B46001923EF9D00A404FA /* SHStyleKit+Additions.m */; };
+		269B460819241C3C00A404FA /* SHSpotsMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 269B460719241C3C00A404FA /* SHSpotsMenuViewController.m */; };
+		269B460919241C3C00A404FA /* SHSpotsMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 269B460719241C3C00A404FA /* SHSpotsMenuViewController.m */; };
+		269B460A19241C3C00A404FA /* SHSpotsMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 269B460719241C3C00A404FA /* SHSpotsMenuViewController.m */; };
+		269B460B19241C3C00A404FA /* SHSpotsMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 269B460719241C3C00A404FA /* SHSpotsMenuViewController.m */; };
+		269B460C19241C3C00A404FA /* SHSpotsMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 269B460719241C3C00A404FA /* SHSpotsMenuViewController.m */; };
 		26A7E3661922CE8000FF7B88 /* SpotHopper.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26A7E3651922CE8000FF7B88 /* SpotHopper.storyboard */; };
 		26A7E3671922CE8000FF7B88 /* SpotHopper.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26A7E3651922CE8000FF7B88 /* SpotHopper.storyboard */; };
 		26A7E3681922CE8000FF7B88 /* SpotHopper.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26A7E3651922CE8000FF7B88 /* SpotHopper.storyboard */; };
@@ -2348,6 +2358,11 @@
 		26BABDF71910688F00852D73 /* JHAccordion.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BABDF51910688F00852D73 /* JHAccordion.m */; };
 		26BABDF81910688F00852D73 /* JHAccordion.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BABDF51910688F00852D73 /* JHAccordion.m */; };
 		26BABDF91910688F00852D73 /* JHAccordion.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BABDF51910688F00852D73 /* JHAccordion.m */; };
+		26C3308319244312001383F9 /* SHAdjustSpotListSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C3308219244312001383F9 /* SHAdjustSpotListSliderViewController.m */; };
+		26C3308419244312001383F9 /* SHAdjustSpotListSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C3308219244312001383F9 /* SHAdjustSpotListSliderViewController.m */; };
+		26C3308519244312001383F9 /* SHAdjustSpotListSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C3308219244312001383F9 /* SHAdjustSpotListSliderViewController.m */; };
+		26C3308619244312001383F9 /* SHAdjustSpotListSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C3308219244312001383F9 /* SHAdjustSpotListSliderViewController.m */; };
+		26C3308719244312001383F9 /* SHAdjustSpotListSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C3308219244312001383F9 /* SHAdjustSpotListSliderViewController.m */; };
 		26E6A0B0192317C200BCA5C6 /* MyriadPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 26E6A0AF192317B700BCA5C6 /* MyriadPro-Bold.ttf */; };
 		26E6A0B1192317C200BCA5C6 /* MyriadPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 26E6A0AF192317B700BCA5C6 /* MyriadPro-Bold.ttf */; };
 		26E6A0B2192317C300BCA5C6 /* MyriadPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 26E6A0AF192317B700BCA5C6 /* MyriadPro-Bold.ttf */; };
@@ -2988,6 +3003,10 @@
 		267E06D31922CCA2004457B4 /* SpotHopperStaging2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperStaging2-Info.plist"; sourceTree = "<group>"; };
 		268C8CA0190089D00011E0F8 /* UserState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserState.h; sourceTree = "<group>"; };
 		268C8CA1190089D00011E0F8 /* UserState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserState.m; sourceTree = "<group>"; };
+		269B45FF1923EF9D00A404FA /* SHStyleKit+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SHStyleKit+Additions.h"; sourceTree = "<group>"; };
+		269B46001923EF9D00A404FA /* SHStyleKit+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SHStyleKit+Additions.m"; sourceTree = "<group>"; };
+		269B460619241C3C00A404FA /* SHSpotsMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHSpotsMenuViewController.h; sourceTree = "<group>"; };
+		269B460719241C3C00A404FA /* SHSpotsMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHSpotsMenuViewController.m; sourceTree = "<group>"; };
 		26A7E3651922CE8000FF7B88 /* SpotHopper.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SpotHopper.storyboard; sourceTree = "<group>"; };
 		26A7E36B1922D08C00FF7B88 /* SHHomeMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHHomeMapViewController.h; sourceTree = "<group>"; };
 		26A7E36C1922D08C00FF7B88 /* SHHomeMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHHomeMapViewController.m; sourceTree = "<group>"; };
@@ -3013,6 +3032,8 @@
 		26BABDEA19105A7000852D73 /* icon_search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_search@2x.png"; sourceTree = "<group>"; };
 		26BABDF41910688F00852D73 /* JHAccordion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHAccordion.h; sourceTree = "<group>"; };
 		26BABDF51910688F00852D73 /* JHAccordion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHAccordion.m; sourceTree = "<group>"; };
+		26C3308119244312001383F9 /* SHAdjustSpotListSliderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAdjustSpotListSliderViewController.h; sourceTree = "<group>"; };
+		26C3308219244312001383F9 /* SHAdjustSpotListSliderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHAdjustSpotListSliderViewController.m; sourceTree = "<group>"; };
 		26E6A0AF192317B700BCA5C6 /* MyriadPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MyriadPro-Bold.ttf"; path = "MyriadPro/MyriadPro-Bold.ttf"; sourceTree = "<group>"; };
 		26EB38AD18FC7E1100E84A3B /* NSNull+Debugging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNull+Debugging.h"; sourceTree = "<group>"; };
 		26EB38AE18FC7E1100E84A3B /* NSNull+Debugging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNull+Debugging.m"; sourceTree = "<group>"; };
@@ -4386,6 +4407,10 @@
 				26A7E3731922D09E00FF7B88 /* SHLocationMenuBarViewController.m */,
 				26A7E3791922D0B800FF7B88 /* SHHomeNavigationViewController.h */,
 				26A7E37A1922D0B800FF7B88 /* SHHomeNavigationViewController.m */,
+				26C3308119244312001383F9 /* SHAdjustSpotListSliderViewController.h */,
+				26C3308219244312001383F9 /* SHAdjustSpotListSliderViewController.m */,
+				269B460619241C3C00A404FA /* SHSpotsMenuViewController.h */,
+				269B460719241C3C00A404FA /* SHSpotsMenuViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -4395,6 +4420,8 @@
 			children = (
 				26A7E3811922D20700FF7B88 /* SHStyleKit.h */,
 				26A7E3821922D20700FF7B88 /* SHStyleKit.m */,
+				269B45FF1923EF9D00A404FA /* SHStyleKit+Additions.h */,
+				269B46001923EF9D00A404FA /* SHStyleKit+Additions.m */,
 			);
 			name = StyleKit;
 			sourceTree = "<group>";
@@ -6512,6 +6539,7 @@
 				038664CC186D376900985CEC /* NSDate+Globalize.m in Sources */,
 				038664EA186D37BC00985CEC /* RefreshView.m in Sources */,
 				038664CD186D376900985CEC /* NSDate+Util.m in Sources */,
+				269B46011923EF9D00A404FA /* SHStyleKit+Additions.m in Sources */,
 				0320236D18774DD1008368C2 /* ReviewsMenuViewController.m in Sources */,
 				03F6BF7018C6E8BD00172F13 /* ListCell.m in Sources */,
 				26F0FDE718EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
@@ -6543,7 +6571,9 @@
 				03C8DAE7188B42A40082321C /* MockData.m in Sources */,
 				03E4454618B56BF700C88421 /* LocationChooserViewController.m in Sources */,
 				03CA728F187C3B2E00815284 /* ReviewModel.m in Sources */,
+				26C3308319244312001383F9 /* SHAdjustSpotListSliderViewController.m in Sources */,
 				039BA00918906A12001AF1B9 /* NSString+Common.m in Sources */,
+				269B460819241C3C00A404FA /* SHSpotsMenuViewController.m in Sources */,
 				03E882E518C7B8F400BD8FBB /* AverageReviewModel.m in Sources */,
 				26A7E3831922D20700FF7B88 /* SHStyleKit.m in Sources */,
 				038664D0186D376900985CEC /* UIAlertView+Block.m in Sources */,
@@ -6668,6 +6698,7 @@
 				03CABFD118E7716400FAC5F5 /* NSDate+Globalize.m in Sources */,
 				03CABFD218E7716400FAC5F5 /* RefreshView.m in Sources */,
 				03CABFD318E7716400FAC5F5 /* NSDate+Util.m in Sources */,
+				269B46051923EF9D00A404FA /* SHStyleKit+Additions.m in Sources */,
 				03CABFD418E7716400FAC5F5 /* ReviewsMenuViewController.m in Sources */,
 				03CABFD518E7716400FAC5F5 /* ListCell.m in Sources */,
 				26F0FDEA18EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
@@ -6699,7 +6730,9 @@
 				03CABFEA18E7716400FAC5F5 /* FindSimilarViewController.m in Sources */,
 				03CABFEB18E7716400FAC5F5 /* MockData.m in Sources */,
 				03CABFEC18E7716400FAC5F5 /* LocationChooserViewController.m in Sources */,
+				26C3308719244312001383F9 /* SHAdjustSpotListSliderViewController.m in Sources */,
 				03CABFED18E7716400FAC5F5 /* ReviewModel.m in Sources */,
+				269B460C19241C3C00A404FA /* SHSpotsMenuViewController.m in Sources */,
 				03CABFEE18E7716400FAC5F5 /* NSString+Common.m in Sources */,
 				26A7E3871922D20700FF7B88 /* SHStyleKit.m in Sources */,
 				03CABFEF18E7716400FAC5F5 /* AverageReviewModel.m in Sources */,
@@ -6816,6 +6849,7 @@
 				03F4E77518CA33D00056EAA9 /* NSDate+Globalize.m in Sources */,
 				03F4E77618CA33D00056EAA9 /* RefreshView.m in Sources */,
 				03F4E77718CA33D00056EAA9 /* NSDate+Util.m in Sources */,
+				269B46031923EF9D00A404FA /* SHStyleKit+Additions.m in Sources */,
 				03F4E77818CA33D00056EAA9 /* ReviewsMenuViewController.m in Sources */,
 				03F4E77918CA33D00056EAA9 /* ListCell.m in Sources */,
 				26F0FDE918EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
@@ -6847,7 +6881,9 @@
 				03F4E78B18CA33D00056EAA9 /* FindSimilarViewController.m in Sources */,
 				03F4E78C18CA33D00056EAA9 /* MockData.m in Sources */,
 				03F4E78D18CA33D00056EAA9 /* LocationChooserViewController.m in Sources */,
+				26C3308519244312001383F9 /* SHAdjustSpotListSliderViewController.m in Sources */,
 				03F4E78E18CA33D00056EAA9 /* ReviewModel.m in Sources */,
+				269B460A19241C3C00A404FA /* SHSpotsMenuViewController.m in Sources */,
 				03F4E78F18CA33D00056EAA9 /* NSString+Common.m in Sources */,
 				26A7E3851922D20700FF7B88 /* SHStyleKit.m in Sources */,
 				03F4E79018CA33D00056EAA9 /* AverageReviewModel.m in Sources */,
@@ -6964,6 +7000,7 @@
 				03F4E8C318CA34260056EAA9 /* NSDate+Globalize.m in Sources */,
 				03F4E8C418CA34260056EAA9 /* RefreshView.m in Sources */,
 				03F4E8C518CA34260056EAA9 /* NSDate+Util.m in Sources */,
+				269B46021923EF9D00A404FA /* SHStyleKit+Additions.m in Sources */,
 				03F4E8C618CA34260056EAA9 /* ReviewsMenuViewController.m in Sources */,
 				03F4E8C718CA34260056EAA9 /* ListCell.m in Sources */,
 				26F0FDE818EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
@@ -6995,7 +7032,9 @@
 				03F4E8D918CA34260056EAA9 /* FindSimilarViewController.m in Sources */,
 				03F4E8DA18CA34260056EAA9 /* MockData.m in Sources */,
 				03F4E8DB18CA34260056EAA9 /* LocationChooserViewController.m in Sources */,
+				26C3308419244312001383F9 /* SHAdjustSpotListSliderViewController.m in Sources */,
 				03F4E8DC18CA34260056EAA9 /* ReviewModel.m in Sources */,
+				269B460919241C3C00A404FA /* SHSpotsMenuViewController.m in Sources */,
 				03F4E8DD18CA34260056EAA9 /* NSString+Common.m in Sources */,
 				26A7E3841922D20700FF7B88 /* SHStyleKit.m in Sources */,
 				03F4E8DE18CA34260056EAA9 /* AverageReviewModel.m in Sources */,
@@ -7112,6 +7151,7 @@
 				267E05211922CC48004457B4 /* NSDate+Globalize.m in Sources */,
 				267E05221922CC48004457B4 /* RefreshView.m in Sources */,
 				267E05231922CC48004457B4 /* NSDate+Util.m in Sources */,
+				269B46041923EF9D00A404FA /* SHStyleKit+Additions.m in Sources */,
 				267E05241922CC48004457B4 /* ReviewsMenuViewController.m in Sources */,
 				267E05251922CC48004457B4 /* ListCell.m in Sources */,
 				267E05261922CC48004457B4 /* AgeVerificationViewController.m in Sources */,
@@ -7143,7 +7183,9 @@
 				267E053F1922CC48004457B4 /* FindSimilarViewController.m in Sources */,
 				267E05401922CC48004457B4 /* MockData.m in Sources */,
 				267E05411922CC48004457B4 /* LocationChooserViewController.m in Sources */,
+				26C3308619244312001383F9 /* SHAdjustSpotListSliderViewController.m in Sources */,
 				267E05421922CC48004457B4 /* ReviewModel.m in Sources */,
+				269B460B19241C3C00A404FA /* SHSpotsMenuViewController.m in Sources */,
 				267E05431922CC48004457B4 /* NSString+Common.m in Sources */,
 				26A7E3861922D20700FF7B88 /* SHStyleKit.m in Sources */,
 				267E05441922CC48004457B4 /* AverageReviewModel.m in Sources */,
