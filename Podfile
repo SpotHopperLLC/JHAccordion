@@ -19,6 +19,7 @@ pod 'JHSidebar', :git => 'https://github.com/joshdholtz/JHSidebar.git'
 pod 'TTTAttributedLabel', '~> 1.9.0'
 pod 'PhotoZoom', :git => 'https://github.com/brennanMKE/PhotoZoom.git', :tag => '0.0.2'
 pod 'MBProgressHUD', '~> 0.8.0'
+pod 'CRGradientNavigationBar', '~> 0.3.0'
 
 # Debugging
 pod 'Raven', '~> 0.2.0'
