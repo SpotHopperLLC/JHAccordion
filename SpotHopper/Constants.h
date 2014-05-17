@@ -89,22 +89,22 @@
 
 #elif defined(PRODUCTION)
 
-    #define kDebug NO
+#define kDebug NO
 
-    #define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"
-    #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
+#define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"
+#define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
 
-    #define kBaseUrl @"https://api.spotapps.co"
-    #define kWebsiteUrl @"http://www.spothopperapp.com"
+#define kBaseUrl @"https://api.spotapps.co"
+#define kWebsiteUrl @"http://www.spothopperapp.com"
 
-    #define kParseApplicationID @"8gsK1txoPG66EvpzxhHPFJeeNjWTwe1SF5j1jIKN"
-    #define kParseClientKey @"z86QKJFiLmSxWAekThVpTo8yLpp29nekhTiUgV2i"
+#define kParseApplicationID @"8gsK1txoPG66EvpzxhHPFJeeNjWTwe1SF5j1jIKN"
+#define kParseClientKey @"z86QKJFiLmSxWAekThVpTo8yLpp29nekhTiUgV2i"
 
-    #define kAppURLScheme  @"spothopperapp"
+#define kAppURLScheme  @"spothopperapp"
 
-    #define kRefreshLocationTime 3600.0f
+#define kRefreshLocationTime 3600.0f
 
-    #define kAnalyticsEnabled   TRUE
+#define kAnalyticsEnabled   TRUE
 
 #endif
 
