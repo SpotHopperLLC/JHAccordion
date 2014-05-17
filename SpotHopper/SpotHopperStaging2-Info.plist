@@ -27,15 +27,15 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb667976203263064</string>
-				<string>spothopperappstaging</string>
+				<string>fb580342112079086</string>
+				<string>spothopperappstaging2</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.0.3</string>
+	<string>2.0</string>
 	<key>FacebookAppID</key>
-	<string>667976203263064</string>
+	<string>580342112079086</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIAppFonts</key>
