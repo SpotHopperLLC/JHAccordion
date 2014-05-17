@@ -29,7 +29,7 @@
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [SHStyleKit myTextColor]};
     
-    self.backgroundImageView.image = [SHStyleKit gradientBackgroundWithWidth:CGRectGetWidth(self.view.frame) height:CGRectGetHeight(self.view.frame)];
+    self.backgroundImageView.image = [SHStyleKit gradientBackgroundWithSize:self.view.frame.size];
     
     self.tableView.hidden = TRUE;
 }

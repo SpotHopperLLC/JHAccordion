@@ -15,4 +15,6 @@
 @property (nonatomic, strong) SpotModel *spot;
 @property (nonatomic, strong) SpotAnnotationCallout *calloutView;
 
+- (id)initWithAnnotation:(id<MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier spot:(SpotModel *)spot calloutView:(SpotAnnotationCallout *)calloutView;
+
 @end

@@ -39,25 +39,20 @@
 
     self.lblHeader.textColor = [SHStyleKit myTextColor];
     
-    CGSize iconSize = CGSizeMake(50.0f, 50.0f);
+    NSCAssert(self.btnSpots.frame.size.width > 0, @"Width must already be set");
+    NSCAssert(self.btnSpots.frame.size.height > 0, @"Height must already be set");
     
-    UIImage *spotIcon = [SHStyleKit spotIconWithColor:SHStyleKitColorMyTintColor size:iconSize];
-    UIImage *specialsIcon = [SHStyleKit specialsIconWithColor:SHStyleKitColorMyTintColor size:iconSize];
-    UIImage *beerIcon = [SHStyleKit beerIconWithColor:SHStyleKitColorMyTintColor size:iconSize];
-    UIImage *cocktailsIcon = [SHStyleKit cocktailIconWithColor:SHStyleKitColorMyTintColor size:iconSize];
-    UIImage *wineIcon = [SHStyleKit wineIconWithColor:SHStyleKitColorMyTintColor size:iconSize];
+    [SHStyleKit setButton:self.btnSpots withDrawing:SHStyleKitDrawingSpotIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setButton:self.btnSpecials withDrawing:SHStyleKitDrawingSpecialsIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setButton:self.btnBeer withDrawing:SHStyleKitDrawingBeerIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setButton:self.btnCocktails withDrawing:SHStyleKitDrawingCocktailIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setButton:self.btnWine withDrawing:SHStyleKitDrawingWineIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
     
-    [self.btnSpots setImage:spotIcon forState:UIControlStateNormal];
-    [self.btnSpecials setImage:specialsIcon forState:UIControlStateNormal];
-    [self.btnBeer setImage:beerIcon forState:UIControlStateNormal];
-    [self.btnCocktails setImage:cocktailsIcon forState:UIControlStateNormal];
-    [self.btnWine setImage:wineIcon forState:UIControlStateNormal];
-    
-    self.lblSpots.textColor = [SHStyleKit myTintColor];
-    self.lblSpecials.textColor = [SHStyleKit myTintColor];
-    self.lblBeer.textColor = [SHStyleKit myTintColor];
-    self.lblCocktails.textColor = [SHStyleKit myTintColor];
-    self.lblWine.textColor = [SHStyleKit myTintColor];
+    [SHStyleKit setLabel:self.lblSpots textColor:SHStyleKitColorMyTintColor];
+    [SHStyleKit setLabel:self.lblSpecials textColor:SHStyleKitColorMyTintColor];
+    [SHStyleKit setLabel:self.lblBeer textColor:SHStyleKitColorMyTintColor];
+    [SHStyleKit setLabel:self.lblCocktails textColor:SHStyleKitColorMyTintColor];
+    [SHStyleKit setLabel:self.lblWine textColor:SHStyleKitColorMyTintColor];
 }
 
 #pragma mark - User Actions
