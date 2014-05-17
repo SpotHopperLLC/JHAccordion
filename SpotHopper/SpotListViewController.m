@@ -224,8 +224,7 @@
     else if ([annotation isKindOfClass:[MatchPercentAnnotation class]] == YES) {
         MatchPercentAnnotation *matchAnnotation = (MatchPercentAnnotation*) annotation;
         
-        MatchPercentAnnotationView *pin = [[MatchPercentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"current"];
-        [pin setSpot:matchAnnotation.spot];
+        MatchPercentAnnotationView *pin = [[MatchPercentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"current" spot:matchAnnotation.spot calloutView:nil];
         [pin setNeedsDisplay];
         annotationView = pin;
     }

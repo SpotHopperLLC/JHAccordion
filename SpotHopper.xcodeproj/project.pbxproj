@@ -1798,6 +1798,16 @@
 		265CE70E1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */; };
 		265CE70F1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */; };
 		265CE7101911899C008DAF5E /* PhotoAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */; };
+		2678B04419269817003DCF5B /* SHMapOverlayCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2678B04319269817003DCF5B /* SHMapOverlayCollectionViewController.m */; };
+		2678B04519269817003DCF5B /* SHMapOverlayCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2678B04319269817003DCF5B /* SHMapOverlayCollectionViewController.m */; };
+		2678B04619269817003DCF5B /* SHMapOverlayCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2678B04319269817003DCF5B /* SHMapOverlayCollectionViewController.m */; };
+		2678B04719269817003DCF5B /* SHMapOverlayCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2678B04319269817003DCF5B /* SHMapOverlayCollectionViewController.m */; };
+		2678B04819269817003DCF5B /* SHMapOverlayCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2678B04319269817003DCF5B /* SHMapOverlayCollectionViewController.m */; };
+		2678B04B1926984A003DCF5B /* SHMapFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2678B04A1926984A003DCF5B /* SHMapFooterNavigationViewController.m */; };
+		2678B04C1926984A003DCF5B /* SHMapFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2678B04A1926984A003DCF5B /* SHMapFooterNavigationViewController.m */; };
+		2678B04D1926984A003DCF5B /* SHMapFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2678B04A1926984A003DCF5B /* SHMapFooterNavigationViewController.m */; };
+		2678B04E1926984A003DCF5B /* SHMapFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2678B04A1926984A003DCF5B /* SHMapFooterNavigationViewController.m */; };
+		2678B04F1926984A003DCF5B /* SHMapFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2678B04A1926984A003DCF5B /* SHMapFooterNavigationViewController.m */; };
 		267C5E3A1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
 		267C5E3B1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
 		267C5E3C1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
@@ -2355,6 +2365,11 @@
 		26C3308519244312001383F9 /* SHAdjustSpotListSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C3308219244312001383F9 /* SHAdjustSpotListSliderViewController.m */; };
 		26C3308619244312001383F9 /* SHAdjustSpotListSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C3308219244312001383F9 /* SHAdjustSpotListSliderViewController.m */; };
 		26C3308719244312001383F9 /* SHAdjustSpotListSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C3308219244312001383F9 /* SHAdjustSpotListSliderViewController.m */; };
+		26C816CA1926EC4D00E237F2 /* SHSpotsCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C816C91926EC4D00E237F2 /* SHSpotsCollectionViewManager.m */; };
+		26C816CB1926EC4D00E237F2 /* SHSpotsCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C816C91926EC4D00E237F2 /* SHSpotsCollectionViewManager.m */; };
+		26C816CC1926EC4D00E237F2 /* SHSpotsCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C816C91926EC4D00E237F2 /* SHSpotsCollectionViewManager.m */; };
+		26C816CD1926EC4D00E237F2 /* SHSpotsCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C816C91926EC4D00E237F2 /* SHSpotsCollectionViewManager.m */; };
+		26C816CE1926EC4D00E237F2 /* SHSpotsCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C816C91926EC4D00E237F2 /* SHSpotsCollectionViewManager.m */; };
 		26E6A0B0192317C200BCA5C6 /* MyriadPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 26E6A0AF192317B700BCA5C6 /* MyriadPro-Bold.ttf */; };
 		26E6A0B1192317C200BCA5C6 /* MyriadPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 26E6A0AF192317B700BCA5C6 /* MyriadPro-Bold.ttf */; };
 		26E6A0B2192317C300BCA5C6 /* MyriadPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 26E6A0AF192317B700BCA5C6 /* MyriadPro-Bold.ttf */; };
@@ -2985,6 +3000,10 @@
 		2602BD9C18E283C500C93BBF /* Common.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Common.storyboard; sourceTree = "<group>"; };
 		265CE70B1911899C008DAF5E /* PhotoAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAlbumViewController.h; sourceTree = "<group>"; };
 		265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAlbumViewController.m; sourceTree = "<group>"; };
+		2678B04219269817003DCF5B /* SHMapOverlayCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHMapOverlayCollectionViewController.h; sourceTree = "<group>"; };
+		2678B04319269817003DCF5B /* SHMapOverlayCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHMapOverlayCollectionViewController.m; sourceTree = "<group>"; };
+		2678B0491926984A003DCF5B /* SHMapFooterNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHMapFooterNavigationViewController.h; sourceTree = "<group>"; };
+		2678B04A1926984A003DCF5B /* SHMapFooterNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHMapFooterNavigationViewController.m; sourceTree = "<group>"; };
 		267C5E381908B7CC00D60EB5 /* NetworkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkHelper.h; sourceTree = "<group>"; };
 		267C5E391908B7CC00D60EB5 /* NetworkHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkHelper.m; sourceTree = "<group>"; };
 		267D78D418F4A8DD00E95D54 /* SHButtonLatoBold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoBold.h; sourceTree = "<group>"; };
@@ -3024,6 +3043,8 @@
 		26BABDF51910688F00852D73 /* JHAccordion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHAccordion.m; sourceTree = "<group>"; };
 		26C3308119244312001383F9 /* SHAdjustSpotListSliderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAdjustSpotListSliderViewController.h; sourceTree = "<group>"; };
 		26C3308219244312001383F9 /* SHAdjustSpotListSliderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHAdjustSpotListSliderViewController.m; sourceTree = "<group>"; };
+		26C816C81926EC4D00E237F2 /* SHSpotsCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHSpotsCollectionViewManager.h; sourceTree = "<group>"; };
+		26C816C91926EC4D00E237F2 /* SHSpotsCollectionViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHSpotsCollectionViewManager.m; sourceTree = "<group>"; };
 		26E6A0AF192317B700BCA5C6 /* MyriadPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MyriadPro-Bold.ttf"; path = "MyriadPro/MyriadPro-Bold.ttf"; sourceTree = "<group>"; };
 		26EB38AD18FC7E1100E84A3B /* NSNull+Debugging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNull+Debugging.h"; sourceTree = "<group>"; };
 		26EB38AE18FC7E1100E84A3B /* NSNull+Debugging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNull+Debugging.m"; sourceTree = "<group>"; };
@@ -4373,6 +4394,7 @@
 				26A7E3801922D1E700FF7B88 /* StyleKit */,
 				26A7E3631922CE5300FF7B88 /* Storyboards */,
 				26A7E3641922CE5A00FF7B88 /* View Controllers */,
+				26C816C71926EC2D00E237F2 /* Managers */,
 			);
 			name = "Redesign 2.0";
 			path = ..;
@@ -4399,6 +4421,10 @@
 				26C3308219244312001383F9 /* SHAdjustSpotListSliderViewController.m */,
 				269B460619241C3C00A404FA /* SHSpotsMenuViewController.h */,
 				269B460719241C3C00A404FA /* SHSpotsMenuViewController.m */,
+				2678B04219269817003DCF5B /* SHMapOverlayCollectionViewController.h */,
+				2678B04319269817003DCF5B /* SHMapOverlayCollectionViewController.m */,
+				2678B0491926984A003DCF5B /* SHMapFooterNavigationViewController.h */,
+				2678B04A1926984A003DCF5B /* SHMapFooterNavigationViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -4421,6 +4447,15 @@
 				26BABDF51910688F00852D73 /* JHAccordion.m */,
 			);
 			path = JHAccordion;
+			sourceTree = "<group>";
+		};
+		26C816C71926EC2D00E237F2 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				26C816C81926EC4D00E237F2 /* SHSpotsCollectionViewManager.h */,
+				26C816C91926EC4D00E237F2 /* SHSpotsCollectionViewManager.m */,
+			);
+			name = Managers;
 			sourceTree = "<group>";
 		};
 		26E6A0AE192317A800BCA5C6 /* MyriadPro */ = {
@@ -6551,6 +6586,7 @@
 				03C8DAE7188B42A40082321C /* MockData.m in Sources */,
 				03E4454618B56BF700C88421 /* LocationChooserViewController.m in Sources */,
 				03CA728F187C3B2E00815284 /* ReviewModel.m in Sources */,
+				2678B04B1926984A003DCF5B /* SHMapFooterNavigationViewController.m in Sources */,
 				26C3308319244312001383F9 /* SHAdjustSpotListSliderViewController.m in Sources */,
 				039BA00918906A12001AF1B9 /* NSString+Common.m in Sources */,
 				269B460819241C3C00A404FA /* SHSpotsMenuViewController.m in Sources */,
@@ -6571,6 +6607,7 @@
 				038664DC186D376900985CEC /* TellMeMyLocation.m in Sources */,
 				037D13A218A3DF8500B89535 /* DrinkTypeModel.m in Sources */,
 				03E882E218C7A39000BD8FBB /* AdjustSliderOptionCell.m in Sources */,
+				2678B04419269817003DCF5B /* SHMapOverlayCollectionViewController.m in Sources */,
 				0345708F18DC00EE0095E4A8 /* BaseAlcoholModel.m in Sources */,
 				03AF8ECA18E5B6C800DD9356 /* ShareViewController.m in Sources */,
 				039F542218D283A8004B2B67 /* DrinksNearbyViewController.m in Sources */,
@@ -6581,6 +6618,7 @@
 				039ABBD218CE24A400B84AE6 /* MatchPercentAnnotationView.m in Sources */,
 				039F545318D2BA15004B2B67 /* DrinkListViewController.m in Sources */,
 				039B7013188723EB00C590F8 /* MockeryURLProtocol.m in Sources */,
+				26C816CA1926EC4D00E237F2 /* SHSpotsCollectionViewManager.m in Sources */,
 				039B7012188723EB00C590F8 /* MockeryHTTPURLResponse.m in Sources */,
 				03866473186D352400985CEC /* main.m in Sources */,
 				03CA72D0187DF43B00815284 /* NewReviewViewController.m in Sources */,
@@ -6710,6 +6748,7 @@
 				03CABFEA18E7716400FAC5F5 /* FindSimilarViewController.m in Sources */,
 				03CABFEB18E7716400FAC5F5 /* MockData.m in Sources */,
 				03CABFEC18E7716400FAC5F5 /* LocationChooserViewController.m in Sources */,
+				2678B04F1926984A003DCF5B /* SHMapFooterNavigationViewController.m in Sources */,
 				26C3308719244312001383F9 /* SHAdjustSpotListSliderViewController.m in Sources */,
 				03CABFED18E7716400FAC5F5 /* ReviewModel.m in Sources */,
 				269B460C19241C3C00A404FA /* SHSpotsMenuViewController.m in Sources */,
@@ -6730,6 +6769,7 @@
 				03CABFFB18E7716400FAC5F5 /* UIActionSheet+Block.m in Sources */,
 				03CABFFC18E7716400FAC5F5 /* TellMeMyLocation.m in Sources */,
 				03CABFFD18E7716400FAC5F5 /* DrinkTypeModel.m in Sources */,
+				2678B04819269817003DCF5B /* SHMapOverlayCollectionViewController.m in Sources */,
 				03CABFFE18E7716400FAC5F5 /* AdjustSliderOptionCell.m in Sources */,
 				03CABFFF18E7716400FAC5F5 /* BaseAlcoholModel.m in Sources */,
 				03CAC00018E7716400FAC5F5 /* DrinksNearbyViewController.m in Sources */,
@@ -6740,6 +6780,7 @@
 				03CAC00518E7716400FAC5F5 /* MatchPercentAnnotationView.m in Sources */,
 				03CAC00618E7716400FAC5F5 /* DrinkListViewController.m in Sources */,
 				03CAC00818E7716400FAC5F5 /* MockeryURLProtocol.m in Sources */,
+				26C816CE1926EC4D00E237F2 /* SHSpotsCollectionViewManager.m in Sources */,
 				03CAC00918E7716400FAC5F5 /* MockeryHTTPURLResponse.m in Sources */,
 				03CAC00A18E7716400FAC5F5 /* main.m in Sources */,
 				03CAC00B18E7716400FAC5F5 /* NewReviewViewController.m in Sources */,
@@ -6861,6 +6902,7 @@
 				03F4E78B18CA33D00056EAA9 /* FindSimilarViewController.m in Sources */,
 				03F4E78C18CA33D00056EAA9 /* MockData.m in Sources */,
 				03F4E78D18CA33D00056EAA9 /* LocationChooserViewController.m in Sources */,
+				2678B04D1926984A003DCF5B /* SHMapFooterNavigationViewController.m in Sources */,
 				26C3308519244312001383F9 /* SHAdjustSpotListSliderViewController.m in Sources */,
 				03F4E78E18CA33D00056EAA9 /* ReviewModel.m in Sources */,
 				269B460A19241C3C00A404FA /* SHSpotsMenuViewController.m in Sources */,
@@ -6881,6 +6923,7 @@
 				03F4E79818CA33D00056EAA9 /* UIActionSheet+Block.m in Sources */,
 				03F4E79918CA33D00056EAA9 /* TellMeMyLocation.m in Sources */,
 				03F4E79A18CA33D00056EAA9 /* DrinkTypeModel.m in Sources */,
+				2678B04619269817003DCF5B /* SHMapOverlayCollectionViewController.m in Sources */,
 				03F4E79B18CA33D00056EAA9 /* AdjustSliderOptionCell.m in Sources */,
 				0345709118DC03020095E4A8 /* BaseAlcoholModel.m in Sources */,
 				039F542418D283A8004B2B67 /* DrinksNearbyViewController.m in Sources */,
@@ -6891,6 +6934,7 @@
 				039ABBD418CE24A800B84AE6 /* MatchPercentAnnotationView.m in Sources */,
 				039F545518D2BA15004B2B67 /* DrinkListViewController.m in Sources */,
 				03F4E7A018CA33D00056EAA9 /* MockeryURLProtocol.m in Sources */,
+				26C816CC1926EC4D00E237F2 /* SHSpotsCollectionViewManager.m in Sources */,
 				03F4E7A118CA33D00056EAA9 /* MockeryHTTPURLResponse.m in Sources */,
 				03F4E7A218CA33D00056EAA9 /* main.m in Sources */,
 				03F4E7A318CA33D00056EAA9 /* NewReviewViewController.m in Sources */,
@@ -7012,6 +7056,7 @@
 				03F4E8D918CA34260056EAA9 /* FindSimilarViewController.m in Sources */,
 				03F4E8DA18CA34260056EAA9 /* MockData.m in Sources */,
 				03F4E8DB18CA34260056EAA9 /* LocationChooserViewController.m in Sources */,
+				2678B04C1926984A003DCF5B /* SHMapFooterNavigationViewController.m in Sources */,
 				26C3308419244312001383F9 /* SHAdjustSpotListSliderViewController.m in Sources */,
 				03F4E8DC18CA34260056EAA9 /* ReviewModel.m in Sources */,
 				269B460919241C3C00A404FA /* SHSpotsMenuViewController.m in Sources */,
@@ -7032,6 +7077,7 @@
 				03F4E8E618CA34260056EAA9 /* UIActionSheet+Block.m in Sources */,
 				03F4E8E718CA34260056EAA9 /* TellMeMyLocation.m in Sources */,
 				03F4E8E818CA34260056EAA9 /* DrinkTypeModel.m in Sources */,
+				2678B04519269817003DCF5B /* SHMapOverlayCollectionViewController.m in Sources */,
 				03F4E8E918CA34260056EAA9 /* AdjustSliderOptionCell.m in Sources */,
 				0345709018DC03010095E4A8 /* BaseAlcoholModel.m in Sources */,
 				039F542318D283A8004B2B67 /* DrinksNearbyViewController.m in Sources */,
@@ -7042,6 +7088,7 @@
 				039ABBD318CE24A700B84AE6 /* MatchPercentAnnotationView.m in Sources */,
 				039F545418D2BA15004B2B67 /* DrinkListViewController.m in Sources */,
 				03F4E8EE18CA34260056EAA9 /* MockeryURLProtocol.m in Sources */,
+				26C816CB1926EC4D00E237F2 /* SHSpotsCollectionViewManager.m in Sources */,
 				03F4E8EF18CA34260056EAA9 /* MockeryHTTPURLResponse.m in Sources */,
 				03F4E8F018CA34260056EAA9 /* main.m in Sources */,
 				03F4E8F118CA34260056EAA9 /* NewReviewViewController.m in Sources */,
@@ -7163,6 +7210,7 @@
 				267E053F1922CC48004457B4 /* FindSimilarViewController.m in Sources */,
 				267E05401922CC48004457B4 /* MockData.m in Sources */,
 				267E05411922CC48004457B4 /* LocationChooserViewController.m in Sources */,
+				2678B04E1926984A003DCF5B /* SHMapFooterNavigationViewController.m in Sources */,
 				26C3308619244312001383F9 /* SHAdjustSpotListSliderViewController.m in Sources */,
 				267E05421922CC48004457B4 /* ReviewModel.m in Sources */,
 				269B460B19241C3C00A404FA /* SHSpotsMenuViewController.m in Sources */,
@@ -7183,6 +7231,7 @@
 				267E05501922CC48004457B4 /* UIActionSheet+Block.m in Sources */,
 				267E05511922CC48004457B4 /* TellMeMyLocation.m in Sources */,
 				267E05521922CC48004457B4 /* DrinkTypeModel.m in Sources */,
+				2678B04719269817003DCF5B /* SHMapOverlayCollectionViewController.m in Sources */,
 				267E05531922CC48004457B4 /* AdjustSliderOptionCell.m in Sources */,
 				267E05541922CC48004457B4 /* BaseAlcoholModel.m in Sources */,
 				267E05551922CC48004457B4 /* DrinksNearbyViewController.m in Sources */,
@@ -7193,6 +7242,7 @@
 				267E055A1922CC48004457B4 /* MatchPercentAnnotationView.m in Sources */,
 				267E055B1922CC48004457B4 /* DrinkListViewController.m in Sources */,
 				267E055C1922CC48004457B4 /* MockeryURLProtocol.m in Sources */,
+				26C816CD1926EC4D00E237F2 /* SHSpotsCollectionViewManager.m in Sources */,
 				267E055D1922CC48004457B4 /* MockeryHTTPURLResponse.m in Sources */,
 				267E055E1922CC48004457B4 /* main.m in Sources */,
 				267E055F1922CC48004457B4 /* NewReviewViewController.m in Sources */,

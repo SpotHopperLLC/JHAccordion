@@ -27,36 +27,35 @@ typedef enum {
     SHStyleKitDrawingCocktailIcon = 4,
     SHStyleKitDrawingWineIcon = 5,
     SHStyleKitDrawingNavigationIconArrow = 6,
-    SHStyleKitDrawingDirectionArrowIcon = 7,
-    SHStyleKitDrawingSearchIcon = 8
+    SHStyleKitDrawingPreviousArrowIcon = 7,
+    SHStyleKitDrawingNextArrowIcon = 8,
+    SHStyleKitDrawingSearchIcon = 9,
+    SHStyleKitDrawingMapBubblePinFilledIcon = 10,
+    SHStyleKitDrawingMapBubbleEmptyIcon = 11,
+    SHStyleKitDrawingSpotSideBarIcon = 12,
+    SHStyleKitDrawingFeaturedListIcon = 13,
+    SHStyleKitDrawingGradientBackground = 14
 } SHStyleKitDrawing;
 
 #import "SHStyleKit.h"
 
 @interface SHStyleKit (Additions)
 
-#pragma mark - Icons
+#pragma mark - UI
 #pragma mark -
 
-+ (UIImage *)spotIconWithColor:(SHStyleKitColor)color size:(CGSize)size;
++ (void)setImageView:(UIImageView *)imageView withDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color;
 
-+ (UIImage *)specialsIconWithColor:(SHStyleKitColor)color size:(CGSize)size;
++ (void)setButton:(UIButton *)button withDrawing:(SHStyleKitDrawing)drawing normalColor:(SHStyleKitColor)normalColor highlightedColor:(SHStyleKitColor)highlightedColor;
 
-+ (UIImage *)beerIconWithColor:(SHStyleKitColor)color size:(CGSize)size;
++ (void)setLabel:(UILabel *)label textColor:(SHStyleKitColor)textColor;
 
-+ (UIImage *)cocktailIconWithColor:(SHStyleKitColor)color size:(CGSize)size;
++ (UIImage *)drawImage:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size;
 
-+ (UIImage *)wineIconWithColor:(SHStyleKitColor)color size:(CGSize)size;
-
-+ (UIImage *)navigationArrowIconWithColor:(SHStyleKitColor)color size:(CGSize)size;
-
-+ (UIImage *)directionArrowIconWithColor:(SHStyleKitColor)color size:(CGSize)size;
-
-+ (UIImage *)searchIconWithColor:(SHStyleKitColor)color size:(CGSize)size;
 
 #pragma mark - Backgrounds
 #pragma mark -
 
-+ (UIImage *)gradientBackgroundWithWidth:(CGFloat)width height:(CGFloat)height;
++ (UIImage *)gradientBackgroundWithSize:(CGSize)size;
 
 @end

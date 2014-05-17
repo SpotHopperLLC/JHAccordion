@@ -29,7 +29,7 @@
     
     self.lblNear.textColor = [SHStyleKit myTextColor];
     self.btnLocation.tintColor = [SHStyleKit myTextColor];
-    self.navigationArrowImageView.image = [SHStyleKit navigationArrowIconWithColor:SHStyleKitColorMyTextColor size:CGSizeMake(20, 20)];
+    self.navigationArrowImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingNavigationIconArrow color:SHStyleKitColorMyTextColor size:CGSizeMake(20, 20)];
     
     [self.btnLocation setTitle:@"Unknown" forState:UIControlStateNormal];
 }
