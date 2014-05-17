@@ -88,6 +88,11 @@
         [self hideHUD];
         _currentLocation = newLocation;
         
+        // Updates users current location
+        [TellMeMyLocation setLastLocation:_currentLocation completionHandler:^{
+            
+        }];
+        
         [self doSearch];
     } failure:^(NSError *error) {
         [self hideHUD];
