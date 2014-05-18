@@ -31,7 +31,7 @@ typedef enum {
     SHStyleKitDrawingNextArrowIcon = 8,
     SHStyleKitDrawingSearchIcon = 9,
     SHStyleKitDrawingMapBubblePinFilledIcon = 10,
-    SHStyleKitDrawingMapBubbleEmptyIcon = 11,
+    SHStyleKitDrawingMapBubblePinEmptyIcon = 11,
     SHStyleKitDrawingSpotSideBarIcon = 12,
     SHStyleKitDrawingFeaturedListIcon = 13,
     SHStyleKitDrawingGradientBackground = 14

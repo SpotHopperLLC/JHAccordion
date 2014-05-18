@@ -33,50 +33,27 @@
 - (id)initWithAnnotation:(id<MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier spot:(SpotModel *)spot calloutView:(SpotAnnotationCallout *)calloutView {
     self = [super initWithAnnotation:annotation reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.spot = spot;
         self.calloutView = calloutView;
         
-        self.frame = CGRectMake(0, 0, 72, 62);
+        //self.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.5f];
+        
+        self.frame = CGRectMake(0, 0, 60, 60);
         self.opaque = NO;
         
-        if (!self.spot.match) {
-            UIImageView *pinImageView = [[UIImageView alloc] initWithFrame:self.frame];
-            pinImageView.image = [UIImage imageNamed:@"img_spot_pin_view"];
-            [self addSubview:pinImageView];
-            self.pinImageView = pinImageView;
-        }
-        else {
-            UIImage *image = [UIImage imageNamed:( self.isHighlighted ? @"img_match_pin_view_selected" : @"img_match_pin_view" )];
-            UIImageView *pinImageView = [[UIImageView alloc] initWithFrame:self.frame];
-            pinImageView.image = image;
-            [self addSubview:pinImageView];
-            self.pinImageView = pinImageView;
-            
-            self.pinImageView.alpha = self.isHighlighted ? 1.0 : 0.9;
-
-            // Gets attrbutes for string - uses for string size and actually drawing
-            NSDictionary *attributes = @{
-                                         NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:22.0],
-                                         NSForegroundColorAttributeName: ( self.isHighlighted ? kColorOrange : [UIColor whiteColor] )
-                                         };
-
-            // Gets string size
-            NSString *string = _spot.matchPercent;
-            CGSize sizeOfString = [string sizeWithAttributes:attributes];
-            
-            // Calculates x and y of rect to draw string in (it will appear in the middle of the bubble
-            CGFloat x = ((CGRectGetWidth(self.frame) - sizeOfString.width) / 2.0f) + kXOffset;
-            CGFloat y = ((CGRectGetHeight(self.frame) - sizeOfString.height) / 2.0f) + kYOffset;
-            CGFloat width = sizeOfString.width;
-            CGFloat height = sizeOfString.height;
-            
-            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:string attributes:attributes];
-            
-            UILabel *percentLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, y, width, height)];
-            percentLabel.attributedText = attributedString;
-            [self addSubview:percentLabel];
-            self.percentLabel = percentLabel;
-        }
+        CGRect imageFrame = CGRectMake(0, 0, 60, 60);
+        
+        UIImageView *pinImageView = [[UIImageView alloc] initWithFrame:imageFrame];
+        [self addSubview:pinImageView];
+        self.pinImageView = pinImageView;
+        
+        UILabel *percentLabel = [[UILabel alloc] initWithFrame:imageFrame];
+        percentLabel.textAlignment = NSTextAlignmentCenter;
+        [self addSubview:percentLabel];
+        self.percentLabel = percentLabel;
+        
+        self.centerOffset = CGPointMake(20, -30);
+        
+        [self setSpot:spot];
     }
     return self;
 }
@@ -89,11 +66,41 @@
     return self;
 }
 
+- (void)setSpot:(SpotModel *)spot {
+    if (![_spot isEqual:spot]) {
+        _spot = spot;
+        
+        if (!spot.match) {
+            self.percentLabel.hidden = TRUE;
+        }
+        else {
+            self.percentLabel.hidden = FALSE;
+            // Gets attrbutes for string - uses for string size and actually drawing
+            NSDictionary *attributes = @{
+                                         NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:22.0],
+                                         NSForegroundColorAttributeName: ( self.isHighlighted ? kColorOrange : [UIColor whiteColor] )
+                                         };
+            
+            // Gets string size
+            NSString *string = _spot.matchPercent;
+            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:string attributes:attributes];
+            self.percentLabel.attributedText = attributedString;
+        }
+        [self setHighlighted:FALSE];
+    }
+}
+
 - (void)setHighlighted:(BOOL)isHighlighted {
     [super setHighlighted:isHighlighted];
     
-    UIImage *image = [UIImage imageNamed:( isHighlighted ? @"img_match_pin_view_selected" : @"img_match_pin_view" )];
-    self.pinImageView.image = image;
+    self.pinImageView.alpha = isHighlighted ? 1.0 : 0.9;
+    
+    if (self.isHighlighted) {
+        [SHStyleKit setImageView:self.pinImageView withDrawing:SHStyleKitDrawingMapBubblePinEmptyIcon color:SHStyleKitColorMyTintColor];
+    }
+    else {
+        [SHStyleKit setImageView:self.pinImageView withDrawing:SHStyleKitDrawingMapBubblePinFilledIcon color:SHStyleKitColorMyWhiteColor];
+    }
     self.pinImageView.alpha = isHighlighted ? 1.0 : 0.9;
     
     NSDictionary *attributes = @{

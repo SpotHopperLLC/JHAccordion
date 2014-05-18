@@ -87,7 +87,8 @@
 - (void)changeIndex:(NSUInteger)index {
     // TODO: change collection view position if the index is in bounds and set _currentIndex
     
-    if (index != _currentIndex) {
+    if (index != _currentIndex && index < self.spotList.spots.count) {
+        NSLog(@"Manager - Changing to index: %lu", (long)index);
         _currentIndex = index;
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_currentIndex inSection:0];
         [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:TRUE];
@@ -160,7 +161,6 @@
         
         UIImageView *spotImageView = (UIImageView *)[cell viewWithTag:kSpotCellSpotImageView];
         
-        NSLog(@"spot.imageUrl: %@", spot.imageUrl);
         if (spot.imageUrl.length) {
             [spotImageView setImageWithURL:[NSURL URLWithString:spot.imageUrl] placeholderImage:nil];
         }
@@ -213,7 +213,7 @@
         CGFloat miles = meters/1609.344;
         
         distanceLabel.text = [NSString stringWithFormat:@"%0.1f miles away", miles];
-        positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", indexPath.item+1, self.spotList.spots.count];
+        positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", (long)indexPath.item+1, (long)self.spotList.spots.count];
         percentageLabel.text = [NSString stringWithFormat:@"%@", spot.matchPercent];
         
         UIImage *bubbleImage = [SHStyleKit drawImage:SHStyleKitDrawingMapBubblePinFilledIcon color:SHStyleKitColorMyWhiteColor size:CGSizeMake(60, 60)];

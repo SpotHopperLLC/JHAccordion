@@ -31,6 +31,7 @@
 #import <MapKit/MapKit.h>
 
 #define kMeterToMile 0.000621371f
+#define kDebugAnnotationViewPositions FALSE
 
 @interface SHHomeMapViewController () <SHLocationMenuBarDelegate, SHHomeNavigationDelegate, SHMapOverlayCollectionDelegate, SHMapFooterNavigationDelegate, SHSpotsCollectionViewManagerDelegate, SHAdjustSliderListSliderDelegate, SpotAnnotationCalloutDelegate, MKMapViewDelegate>
 
@@ -305,10 +306,18 @@
     for (SpotModel *spot in self.spotListModel.spots) {
         // Place pin
         if (spot.latitude != nil && spot.longitude != nil) {
+            CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(spot.latitude.floatValue, spot.longitude.floatValue);
+
             MatchPercentAnnotation *annotation = [[MatchPercentAnnotation alloc] init];
             [annotation setSpot:spot];
-            annotation.coordinate = CLLocationCoordinate2DMake(spot.latitude.floatValue, spot.longitude.floatValue);
+            annotation.coordinate = coordinate;
             [self.mapView addAnnotation:annotation];
+          
+            if (kDebugAnnotationViewPositions) {
+                MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
+                point.coordinate = coordinate;
+                [self.mapView addAnnotation:point];
+            }
         }
     }
     
@@ -463,7 +472,9 @@
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didChangeToSpotAtIndex:(NSUInteger)index {
     if (index < self.spotListModel.spots.count) {
-        [self selectSpot:self.spotListModel.spots[index]];
+        SpotModel *spot = self.spotListModel.spots[index];
+        NSLog(@"HomeMap: didChangeToSpotAtIndex: %@", spot.name);
+        [self selectSpot:spot];
     }
 }
 
@@ -514,10 +525,27 @@
         // do nothing
     }
     else if ([annotation isKindOfClass:[MatchPercentAnnotation class]] == YES) {
-        MatchPercentAnnotation *matchAnnotation = (MatchPercentAnnotation*) annotation;
+        static NSString *MatchPercentAnnotationIdentifier = @"MatchPercentAnnotationView";
+        MatchPercentAnnotation *matchPercentAnnotation = (MatchPercentAnnotation *)annotation;
+        MatchPercentAnnotationView *pin = (MatchPercentAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:MatchPercentAnnotationIdentifier];
         
-        MatchPercentAnnotationView *pin = [[MatchPercentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"current" spot:matchAnnotation.spot calloutView:nil];
+        if (!pin) {
+            pin = [[MatchPercentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:MatchPercentAnnotationIdentifier spot:matchPercentAnnotation.spot calloutView:nil];
+        }
+        else {
+            [pin setSpot:matchPercentAnnotation.spot];
+        }
+
         [pin setNeedsDisplay];
+        annotationView = pin;
+    }
+    else if ([annotation isKindOfClass:[MKPointAnnotation class]] == YES) {
+        static NSString *PinIdentifier = @"Pin";
+        MKPinAnnotationView *pin = (MKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:PinIdentifier];
+        if (!pin) {
+            pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:PinIdentifier];
+        }
+        
         annotationView = pin;
     }
     
@@ -532,22 +560,25 @@
             [pin setHighlighted:YES];
             [pin setNeedsDisplay];
             
-            SpotAnnotationCallout *callout = [SpotAnnotationCallout viewFromNib];
-            [callout setMatchPercentAnnotationView:pin];
-            [callout setDelegate:self];
-            [callout setFrame:CGRectMake(-80, -CGRectGetHeight(callout.frame), CGRectGetWidth(callout.frame), CGRectGetHeight(callout.frame))];
+            NSLog(@"HomeMap - Did select spot on map: %@", pin.spot.name);
+            [self.mapOverlayCollectionViewController displaySpot:pin.spot];
             
-            [pin setCalloutView:callout];
-            
-            if (_currentLocation != nil && pin.spot.latitude != nil && pin.spot.longitude != nil) {
-                CLLocationDistance distance = [_currentLocation distanceFromLocation:[[CLLocation alloc] initWithLatitude:pin.spot.latitude.floatValue longitude:pin.spot.longitude.floatValue]];
-                [pin.calloutView.lblDistanceAway setText:[NSString stringWithFormat:@"%.1f Miles", ( distance * kMeterToMile )]];
-            } else {
-                [pin.calloutView.lblDistanceAway setText:@""];
-            }
-            
-            [pin setUserInteractionEnabled:YES];
-            [pin addSubview:callout];
+//            SpotAnnotationCallout *callout = [SpotAnnotationCallout viewFromNib];
+//            [callout setMatchPercentAnnotationView:pin];
+//            [callout setDelegate:self];
+//            [callout setFrame:CGRectMake(-80, -CGRectGetHeight(callout.frame), CGRectGetWidth(callout.frame), CGRectGetHeight(callout.frame))];
+//            
+//            [pin setCalloutView:callout];
+//            
+//            if (_currentLocation != nil && pin.spot.latitude != nil && pin.spot.longitude != nil) {
+//                CLLocationDistance distance = [_currentLocation distanceFromLocation:[[CLLocation alloc] initWithLatitude:pin.spot.latitude.floatValue longitude:pin.spot.longitude.floatValue]];
+//                [pin.calloutView.lblDistanceAway setText:[NSString stringWithFormat:@"%.1f Miles", ( distance * kMeterToMile )]];
+//            } else {
+//                [pin.calloutView.lblDistanceAway setText:@""];
+//            }
+//            
+//            [pin setUserInteractionEnabled:YES];
+//            [pin addSubview:callout];
         }
     }
 }
