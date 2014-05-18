@@ -391,13 +391,13 @@
             [self hideHUD];
             [self showAlert:@"Oops" message:errorModel.human];
             [Tracker track:@"Created Spotlist" properties:@{@"Success" : @FALSE}];
-            [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
+            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
         
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
-        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
@@ -486,7 +486,7 @@
         }];
         [self updateFeaturedSpotlists];
     } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     [promises addObject:promiseFeaturedSpotLists];
     
@@ -501,7 +501,7 @@
             }];
             [self updateMySpotlists];
         } failure:^(ErrorModel *errorModel) {
-            [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
+            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
         [promises addObject:promiseMySpotLists];
     }

@@ -36,8 +36,10 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_index inSection:0];
-    [_collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:FALSE];
+    if (_images.count) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_index inSection:0];
+        [_collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:FALSE];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {

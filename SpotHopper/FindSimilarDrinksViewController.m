@@ -269,7 +269,7 @@
     } failure:^(ErrorModel *errorModel) {
         [self dataDidFinishRefreshing];
         [self hideHUD];
-        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 

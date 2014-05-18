@@ -235,7 +235,7 @@
         _menuItems = menuItemModels;
         _menuTypes = [[jsonApi linked] objectForKey:@"menu_types"];
     } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
     // Gets drink form data
@@ -252,7 +252,7 @@
         }
         
     } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
     // Waits for both spots and drinks to finish

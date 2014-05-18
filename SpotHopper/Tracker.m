@@ -21,6 +21,7 @@
 
 #import "Mixpanel.h"
 #import "RavenClient.h"
+#import "ErrorModel.h"
 
 @implementation Tracker
 
@@ -36,27 +37,44 @@
     }
 }
 
-+ (void)logInfo:(NSString *)message class:(Class)class trace:(NSString *)trace {
++ (void)logInfo:(id)message class:(Class)class trace:(NSString *)trace {
     [self logForLevel:@"INFO" message:message class:class trace:trace];
 }
 
-+ (void)logWarning:(NSString *)message class:(Class)class trace:(NSString *)trace {
++ (void)logWarning:(id)message class:(Class)class trace:(NSString *)trace {
     [self logForLevel:@"WARNING" message:message class:class trace:trace];
 }
 
-+ (void)logError:(NSString *)message class:(Class)class trace:(NSString *)trace {
++ (void)logError:(id)message class:(Class)class trace:(NSString *)trace {
     [self logForLevel:@"ERROR" message:message class:class trace:trace];
 }
 
-+ (void)logFatal:(NSString *)message class:(Class)class trace:(NSString *)trace {
++ (void)logFatal:(id)message class:(Class)class trace:(NSString *)trace {
     [self logForLevel:@"FATAL" message:message class:class trace:trace];
 }
 
 #pragma mark - Private
 #pragma mark -
 
-+ (void)logForLevel:(NSString *)level message:(NSString *)message class:(Class)class trace:(NSString *)trace {
-    NSString *logMessage = [NSString stringWithFormat:@"ERROR: %@ - %@ - %@", message, NSStringFromClass(class), trace];
++ (void)logForLevel:(NSString *)level message:(id)message class:(Class)class trace:(NSString *)trace {
+    NSString *logMessage = nil;
+
+    if (!message) {
+        logMessage = [NSString stringWithFormat:@"ERROR: %@ - %@ - %@", @"Error was nil!", NSStringFromClass(class), trace];
+    }
+    else if ([message isKindOfClass:[NSString class]]) {
+        NSString *msg = (NSString *)message;
+        logMessage = [NSString stringWithFormat:@"ERROR: %@ - %@ - %@", msg, NSStringFromClass(class), trace];
+    }
+    else if ([message isKindOfClass:[NSError class]]) {
+        NSError *err = (NSError *)message;
+        logMessage = [NSString stringWithFormat:@"ERROR: %@ - %@ - %@", err.description, NSStringFromClass(class), trace];
+    }
+    else if ([message isKindOfClass:[ErrorModel class]]) {
+        ErrorModel *err = (ErrorModel *)message;
+        logMessage = [NSString stringWithFormat:@"ERROR: %@ - %@ - %@", err.human, NSStringFromClass(class), trace];
+    }
+    
     [[RavenClient sharedClient] captureMessage:logMessage level:kRavenLogLevelDebugError];
     DebugLog(@"%@", logMessage);
 }
