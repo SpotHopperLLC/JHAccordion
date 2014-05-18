@@ -34,6 +34,10 @@
     [self.spotsCollectionViewManager updateSpotList:spotList];
 }
 
+- (void)displaySpot:(SpotModel *)spot {
+    [self.spotsCollectionViewManager changeSpot:spot];
+}
+
 #pragma mark - User Actions
 #pragma mark -
 
@@ -65,7 +69,7 @@
     
     NSUInteger index = [self.spotsCollectionViewManager indexForViewInCollectionViewCell:sender];
     if (index != NSNotFound) {
-        NSLog(@"index: %lu", (long)index);
+        NSLog(@"Overlay - index: %lu", (long)index);
     }
     
     [self.spotsCollectionViewManager goNext];
@@ -75,7 +79,7 @@
 #pragma mark -
 
 - (void)spotsCollectionViewManager:(SHSpotsCollectionViewManager *)manager didChangeToIndex:(NSUInteger)index {
-    NSLog(@"index: %lu", (long)index);
+    NSLog(@"Overlay - didChangeToIndex: %lu", (long)index);
     
     if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didChangeToSpotAtIndex:)]) {
         [self.delegate mapOverlayCollectionViewController:self didChangeToSpotAtIndex:index];

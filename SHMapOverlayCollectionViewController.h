@@ -20,6 +20,8 @@
 
 - (void)displaySpotList:(SpotListModel *)spotList;
 
+- (void)displaySpot:(SpotModel *)spot;
+
 @end
 
 @protocol SHMapOverlayCollectionDelegate <NSObject>

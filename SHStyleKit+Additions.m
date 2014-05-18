@@ -122,7 +122,7 @@ NSString * const SHStyleKitColorNameMyWhiteColor = @"myWhiteColor";
         case SHStyleKitDrawingMapBubblePinFilledIcon:
             image = [SHStyleKit imageOfMapBubblePinFilledIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
             break;
-        case SHStyleKitDrawingMapBubbleEmptyIcon:
+        case SHStyleKitDrawingMapBubblePinEmptyIcon:
             image = [SHStyleKit imageOfMapBubblePinEmptyIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
             break;
         case SHStyleKitDrawingSpotSideBarIcon:
