@@ -9,12 +9,13 @@
 #define kXOffset 4.0f
 #define kYOffset -2.0f
 
+#define kWidth 60
+#define kHeight 60
+
 #import "MatchPercentAnnotationView.h"
 
 #import "SpotModel.h"
 #import "SpotTypeModel.h"
-
-#import "SHStyleKit+Additions.h"
 
 #import "SpotAnnotationCallout.h"
 
@@ -24,46 +25,59 @@
 @interface MatchPercentAnnotationView ()
 
 @property (weak, nonatomic) UIImageView *pinImageView;
+@property (weak, nonatomic) UIImageView *innerImageView;
 @property (weak, nonatomic) UILabel *percentLabel;
 
 @end
 
 @implementation MatchPercentAnnotationView
 
-- (id)initWithAnnotation:(id<MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier spot:(SpotModel *)spot calloutView:(SpotAnnotationCallout *)calloutView {
+- (id)initWithAnnotation:(id<MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier calloutView:(SpotAnnotationCallout *)calloutView {
     self = [super initWithAnnotation:annotation reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.calloutView = calloutView;
-        
-        //self.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.5f];
-        
-        self.frame = CGRectMake(0, 0, 60, 60);
-        self.opaque = NO;
-        
-        CGRect imageFrame = CGRectMake(0, 0, 60, 60);
-        
-        UIImageView *pinImageView = [[UIImageView alloc] initWithFrame:imageFrame];
-        [self addSubview:pinImageView];
-        self.pinImageView = pinImageView;
-        
-        UILabel *percentLabel = [[UILabel alloc] initWithFrame:imageFrame];
-        percentLabel.textAlignment = NSTextAlignmentCenter;
-        [self addSubview:percentLabel];
-        self.percentLabel = percentLabel;
-        
-        self.centerOffset = CGPointMake(20, -30);
-        
-        [self setSpot:spot];
+        [self setupAnnotation:annotation reuseIdentifier:reuseIdentifier calloutView:calloutView drawing:SHStyleKitDrawingNone];
+    }
+    return self;
+    
+}
+
+- (id)initWithAnnotation:(id<MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier calloutView:(SpotAnnotationCallout *)calloutView drawing:(SHStyleKitDrawing)drawing {
+    self = [super initWithAnnotation:annotation reuseIdentifier:reuseIdentifier];
+    if (self) {
+        [self setupAnnotation:annotation reuseIdentifier:reuseIdentifier calloutView:calloutView drawing:drawing];
     }
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        
-    }
-    return self;
+- (void)setupAnnotation:(id<MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier calloutView:(SpotAnnotationCallout *)calloutView drawing:(SHStyleKitDrawing)drawing {
+    
+    self.calloutView = calloutView;
+    
+    self.centerOffset = CGPointMake(kWidth / 3, -1 * (kHeight / 2));
+    self.opaque = NO;
+    
+    //self.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.25f];
+    
+    CGFloat width = kWidth;
+    CGFloat height = kHeight;
+    
+    self.frame = CGRectMake(0, 0, width, height);
+    CGRect imageFrame = CGRectMake(0, 0, width, height);
+    CGRect innerFrame = CGRectMake(0, 0, width*2/3, height*2/3);
+    
+    UIImageView *pinImageView = [[UIImageView alloc] initWithFrame:imageFrame];
+    [self addSubview:pinImageView];
+    self.pinImageView = pinImageView;
+    
+    UILabel *percentLabel = [[UILabel alloc] initWithFrame:imageFrame];
+    percentLabel.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:percentLabel];
+    self.percentLabel = percentLabel;
+    
+    UIImageView *innerImageView = [[UIImageView alloc] initWithFrame:innerFrame];
+    [self addSubview:innerImageView];
+    innerImageView.center = CGPointMake(kWidth/2, kHeight/2);
+    self.innerImageView = innerImageView;
 }
 
 - (void)setSpot:(SpotModel *)spot {
@@ -73,16 +87,21 @@
         if (!spot.match) {
             self.percentLabel.hidden = TRUE;
         }
+        else if (self.drawing != SHStyleKitDrawingNone) {
+            self.innerImageView.hidden = FALSE;
+            self.percentLabel.hidden = TRUE;
+        }
         else {
+            self.innerImageView.hidden = TRUE;
             self.percentLabel.hidden = FALSE;
-            // Gets attrbutes for string - uses for string size and actually drawing
+            // Gets attributes for string - uses for string size and actually drawing
             NSDictionary *attributes = @{
                                          NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:22.0],
                                          NSForegroundColorAttributeName: ( self.isHighlighted ? kColorOrange : [UIColor whiteColor] )
                                          };
             
             // Gets string size
-            NSString *string = _spot.matchPercent;
+            NSString *string = self.spot.matchPercent;
             NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:string attributes:attributes];
             self.percentLabel.attributedText = attributedString;
         }
@@ -97,18 +116,26 @@
     
     if (self.isHighlighted) {
         [SHStyleKit setImageView:self.pinImageView withDrawing:SHStyleKitDrawingMapBubblePinEmptyIcon color:SHStyleKitColorMyTintColor];
+        if (self.drawing != SHStyleKitDrawingNone) {
+            [SHStyleKit setImageView:self.innerImageView
+                         withDrawing:self.drawing color:SHStyleKitColorMyTintColor];
+        }
     }
     else {
         [SHStyleKit setImageView:self.pinImageView withDrawing:SHStyleKitDrawingMapBubblePinFilledIcon color:SHStyleKitColorMyWhiteColor];
+        if (self.drawing != SHStyleKitDrawingNone) {
+            [SHStyleKit setImageView:self.innerImageView withDrawing:self.drawing color:SHStyleKitColorMyWhiteColor];
+        }
     }
     self.pinImageView.alpha = isHighlighted ? 1.0 : 0.9;
+    [self bringSubviewToFront:self.innerImageView];
     
     NSDictionary *attributes = @{
                                  NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:22.0],
                                  NSForegroundColorAttributeName: ( isHighlighted ? kColorOrange : [UIColor whiteColor] )
                                  };
     
-    NSString *string = _spot.matchPercent;
+    NSString *string = self.spot.matchPercent;
     NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:string attributes:attributes];
     self.percentLabel.attributedText = attributedString;
 }
@@ -116,8 +143,8 @@
 - (void)setCalloutView:(SpotAnnotationCallout *)calloutView {
     _calloutView = calloutView;
     
-    [_calloutView.lblName setText:_spot.name];
-    [_calloutView.lblType setText:_spot.spotType.name];
+    [_calloutView.lblName setText:self.spot.name];
+    [_calloutView.lblType setText:self.spot.spotType.name];
 }
 
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {

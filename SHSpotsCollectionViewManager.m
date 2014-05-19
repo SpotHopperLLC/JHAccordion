@@ -235,7 +235,11 @@
 #pragma mark -
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"Selected item!");
+    NSLog(@"Selected item %lu", (long)indexPath.item);
+    
+    if ([self.delegate respondsToSelector:@selector(spotsCollectionViewManager:didSelectSpotAtIndex:)]) {
+        [self.delegate spotsCollectionViewManager:self didSelectSpotAtIndex:indexPath.item];
+    }
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -287,8 +291,8 @@
 }
 
 - (void)reportedChangedIndex {
-    if ([self.delegate respondsToSelector:@selector(spotsCollectionViewManager:didChangeToIndex:)]) {
-        [self.delegate spotsCollectionViewManager:self didChangeToIndex:_currentIndex];
+    if ([self.delegate respondsToSelector:@selector(spotsCollectionViewManager:didChangeToSpotAtIndex:)]) {
+        [self.delegate spotsCollectionViewManager:self didChangeToSpotAtIndex:_currentIndex];
     }
 }
 

@@ -222,9 +222,13 @@
         // do nothing
     }
     else if ([annotation isKindOfClass:[MatchPercentAnnotation class]] == YES) {
-        MatchPercentAnnotation *matchAnnotation = (MatchPercentAnnotation*) annotation;
-        
-        MatchPercentAnnotationView *pin = [[MatchPercentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"current" spot:matchAnnotation.spot calloutView:nil];
+        static NSString *MatchPercentAnnotationIdentifier = @"MatchPercentAnnotationView";
+        MatchPercentAnnotation *matchPercentAnnotation = (MatchPercentAnnotation *)annotation;
+        MatchPercentAnnotationView *pin = (MatchPercentAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:MatchPercentAnnotationIdentifier];
+        if (!pin) {
+            pin = [[MatchPercentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:MatchPercentAnnotationIdentifier calloutView:nil];
+        }
+        [pin setSpot:matchPercentAnnotation.spot];
         [pin setNeedsDisplay];
         annotationView = pin;
     }

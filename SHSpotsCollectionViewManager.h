@@ -33,6 +33,7 @@
 
 @optional
 
-- (void)spotsCollectionViewManager:(SHSpotsCollectionViewManager *)manager didChangeToIndex:(NSUInteger)index;
+- (void)spotsCollectionViewManager:(SHSpotsCollectionViewManager *)manager didChangeToSpotAtIndex:(NSUInteger)index;
+- (void)spotsCollectionViewManager:(SHSpotsCollectionViewManager *)manager didSelectSpotAtIndex:(NSUInteger)index;
 
 @end

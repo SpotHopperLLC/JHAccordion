@@ -42,7 +42,6 @@
 #pragma mark -
 
 - (IBAction)spotCellNameButtonTapped:(id)sender {
-    // TODO: use sender to determine view and index for spot
     NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
     
     NSUInteger index = [self.spotsCollectionViewManager indexForViewInCollectionViewCell:sender];
@@ -52,7 +51,6 @@
 }
 
 - (IBAction)spotCellLeftButtonTapped:(id)sender {
-    // TODO: use sender to determine view and index for spot
     NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
     
     NSUInteger index = [self.spotsCollectionViewManager indexForViewInCollectionViewCell:sender];
@@ -64,7 +62,6 @@
 }
 
 - (IBAction)spotCellRightButtonTapped:(id)sender {
-    // TODO: use sender to determine view and index for spot
     NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
     
     NSUInteger index = [self.spotsCollectionViewManager indexForViewInCollectionViewCell:sender];
@@ -78,11 +75,19 @@
 #pragma mark - SHSpotsCollectionViewManagerDelegate
 #pragma mark -
 
-- (void)spotsCollectionViewManager:(SHSpotsCollectionViewManager *)manager didChangeToIndex:(NSUInteger)index {
-    NSLog(@"Overlay - didChangeToIndex: %lu", (long)index);
+- (void)spotsCollectionViewManager:(SHSpotsCollectionViewManager *)manager didChangeToSpotAtIndex:(NSUInteger)index {
+    NSLog(@"Overlay - didChangeToSpotAtIndex: %lu", (long)index);
     
     if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didChangeToSpotAtIndex:)]) {
         [self.delegate mapOverlayCollectionViewController:self didChangeToSpotAtIndex:index];
+    }
+}
+
+- (void)spotsCollectionViewManager:(SHSpotsCollectionViewManager *)manager didSelectSpotAtIndex:(NSUInteger)index {
+    NSLog(@"Overlay - didSelectSpotAtIndex: %lu", (long)index);
+
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didSelectSpotAtIndex:)]) {
+        [self.delegate mapOverlayCollectionViewController:self didSelectSpotAtIndex:index];
     }
 }
 
