@@ -8,13 +8,18 @@
 
 #import <MapKit/MapKit.h>
 
+#import "SHStyleKit+Additions.h"
+
 @class SpotAnnotationCallout, SpotModel;
 
 @interface MatchPercentAnnotationView : MKAnnotationView
 
 @property (nonatomic, strong) SpotModel *spot;
+@property (nonatomic, assign) SHStyleKitDrawing drawing;
 @property (nonatomic, strong) SpotAnnotationCallout *calloutView;
 
-- (id)initWithAnnotation:(id<MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier spot:(SpotModel *)spot calloutView:(SpotAnnotationCallout *)calloutView;
+- (id)initWithAnnotation:(id<MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier calloutView:(SpotAnnotationCallout *)calloutView;
+
+- (id)initWithAnnotation:(id<MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier calloutView:(SpotAnnotationCallout *)calloutView drawing:(SHStyleKitDrawing)drawing;
 
 @end

@@ -41,7 +41,6 @@
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet SHButtonLatoBold *btnUpdateSearchResults;
 
-@property (strong, nonatomic) IBOutlet UIView *statusBarBackgroundView;
 @property (strong, nonatomic) SHLocationMenuBarViewController *locationMenuBarViewController;
 @property (strong, nonatomic) SHHomeNavigationViewController *homeNavigationViewController;
 @property (strong, nonatomic) SHMapOverlayCollectionViewController *mapOverlayCollectionViewController;
@@ -98,18 +97,17 @@
     self.mapFooterNavigationViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHMapFooterNavigationViewController"];
     self.mapFooterNavigationViewController.delegate = self;
 
-    self.statusBarBackgroundView.backgroundColor = [SHStyleKit myTintColorTransparent];
     self.title = @"New Search";
     
     _currentLocation = [TellMeMyLocation currentDeviceLocation];
     if (_currentLocation) {
-        [self repositionMapOnLocation:_currentLocation];
+        [self repositionMapOnCoordinate:_currentLocation.coordinate animated:NO];
     }
     else {
         TellMeMyLocation *tellMeMyLocation = [[TellMeMyLocation alloc] init];
         [tellMeMyLocation findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
             _currentLocation = newLocation;
-            [self repositionMapOnLocation:_currentLocation];
+            [self repositionMapOnCoordinate:_currentLocation.coordinate animated:NO];
         } failure:^(NSError *error) {
             [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
@@ -348,10 +346,10 @@
     }
 }
 
-- (void)repositionMapOnLocation:(CLLocation *)location {
-    MKMapPoint mapPoint = MKMapPointForCoordinate(location.coordinate);
+- (void)repositionMapOnCoordinate:(CLLocationCoordinate2D)coordinate animated:(BOOL)animated {
+    MKMapPoint mapPoint = MKMapPointForCoordinate(coordinate);
     MKMapRect mapRect = MKMapRectMake(mapPoint.x, mapPoint.y, 0.25, 0.25);
-    [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(105.0, 5.0, 180.0, 5.0) animated:NO];
+    [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(105.0, 5.0, 180.0, 5.0) animated:animated];
 }
 
 - (void)repositionMapOnAnnotations:(NSArray *)annotations animated:(BOOL)animated {
@@ -478,6 +476,14 @@
     }
 }
 
+- (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didSelectSpotAtIndex:(NSUInteger)index {
+    if (index < self.spotListModel.spots.count) {
+        SpotModel *spot = self.spotListModel.spots[index];
+        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([spot.latitude floatValue], [spot.longitude floatValue]);
+        [self repositionMapOnCoordinate:coordinate animated:YES];
+    }
+}
+
 #pragma mark - SHMapFooterNavigationDelegate
 #pragma mark -
 
@@ -530,12 +536,9 @@
         MatchPercentAnnotationView *pin = (MatchPercentAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:MatchPercentAnnotationIdentifier];
         
         if (!pin) {
-            pin = [[MatchPercentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:MatchPercentAnnotationIdentifier spot:matchPercentAnnotation.spot calloutView:nil];
+            pin = [[MatchPercentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:MatchPercentAnnotationIdentifier calloutView:nil];
         }
-        else {
-            [pin setSpot:matchPercentAnnotation.spot];
-        }
-
+        [pin setSpot:matchPercentAnnotation.spot];
         [pin setNeedsDisplay];
         annotationView = pin;
     }
