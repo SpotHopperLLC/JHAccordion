@@ -31,6 +31,7 @@
 - (void)goToAgeVerification:(BOOL)animated;
 - (void)goToTutorial:(BOOL)animated;
 - (void)goToLaunch:(BOOL)animated;
+- (void)goToAccountSettings:(BOOL)animated;
 
 // Drinks
 - (void)goToDrinks;

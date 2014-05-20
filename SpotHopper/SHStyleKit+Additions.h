@@ -34,7 +34,11 @@ typedef enum {
     SHStyleKitDrawingMapBubblePinEmptyIcon = 11,
     SHStyleKitDrawingSpotSideBarIcon = 12,
     SHStyleKitDrawingFeaturedListIcon = 13,
-    SHStyleKitDrawingGradientBackground = 14
+    SHStyleKitDrawingGradientBackground = 14,
+    SHStyleKitDrawingDrinksIcon = 15,
+    SHStyleKitDrawingShareIcon = 16,
+    SHStyleKitDrawingCheckMarkIcon = 17,
+    SHStyleKitDrawingThumbsUpIcon = 18
 } SHStyleKitDrawing;
 
 #import "SHStyleKit.h"
@@ -46,12 +50,17 @@ typedef enum {
 
 + (void)setImageView:(UIImageView *)imageView withDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color;
 
++ (void)setButton:(UIButton *)button withDrawing:(SHStyleKitDrawing)drawing normalColor:(SHStyleKitColor)normalColor highlightedColor:(SHStyleKitColor)highlightedColor size:(CGSize)size;
+
 + (void)setButton:(UIButton *)button withDrawing:(SHStyleKitDrawing)drawing normalColor:(SHStyleKitColor)normalColor highlightedColor:(SHStyleKitColor)highlightedColor;
 
 + (void)setLabel:(UILabel *)label textColor:(SHStyleKitColor)textColor;
 
++ (UIImage *)drawImage:(SHStyleKitDrawing)drawing size:(CGSize)size;
+
 + (UIImage *)drawImage:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size;
 
+//+ (UIImage *)drawShareIconWithColor1:(SHStyleKitColor)color1 color2:(SHStyleKitColor)color2 color3:(SHStyleKitColor)color3 size:(CGSize)size;
 
 #pragma mark - Backgrounds
 #pragma mark -

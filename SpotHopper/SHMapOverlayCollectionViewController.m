@@ -10,10 +10,11 @@
 
 #import "SHStyleKit+Additions.h"
 
-@interface SHMapOverlayCollectionViewController () <SHSpotsCollectionViewManagerDelegate>
+@interface SHMapOverlayCollectionViewController () <SHSpotsCollectionViewManagerDelegate, SHSpecialsCollectionViewManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet SHSpotsCollectionViewManager *spotsCollectionViewManager;
+@property (weak, nonatomic) IBOutlet SHSpecialsCollectionViewManager *specialsCollectionViewManager;
 
 @end
 
@@ -24,18 +25,29 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
+    
+    NSAssert(self.collectionView, @"Outlet is required");
+    NSAssert(self.spotsCollectionViewManager, @"Outlet is required");
+    NSAssert(self.specialsCollectionViewManager, @"Outlet is required");
 }
 
 #pragma mark - Public
 #pragma mark -
 
 - (void)displaySpotList:(SpotListModel *)spotList {
-    NSCAssert(self.spotsCollectionViewManager, @"Manager outlet is required");
+    self.collectionView.dataSource = self.spotsCollectionViewManager;
+    self.collectionView.delegate = self.spotsCollectionViewManager;
     [self.spotsCollectionViewManager updateSpotList:spotList];
 }
 
 - (void)displaySpot:(SpotModel *)spot {
     [self.spotsCollectionViewManager changeSpot:spot];
+}
+
+- (void)displaySpecialsForSpots:(NSArray *)spots {
+    self.collectionView.dataSource = self.specialsCollectionViewManager;
+    self.collectionView.delegate = self.specialsCollectionViewManager;
+    [self.specialsCollectionViewManager updateSpots:spots];
 }
 
 #pragma mark - User Actions
@@ -86,6 +98,25 @@
 - (void)spotsCollectionViewManager:(SHSpotsCollectionViewManager *)manager didSelectSpotAtIndex:(NSUInteger)index {
     NSLog(@"Overlay - didSelectSpotAtIndex: %lu", (long)index);
 
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didSelectSpotAtIndex:)]) {
+        [self.delegate mapOverlayCollectionViewController:self didSelectSpotAtIndex:index];
+    }
+}
+
+#pragma mark - SHSpecialsCollectionViewManagerDelegate
+#pragma mark -
+
+- (void)specialsCollectionViewManager:(SHSpecialsCollectionViewManager *)manager didChangeToSpotAtIndex:(NSUInteger)index {
+    NSLog(@"Overlay - didChangeToSpotAtIndex: %lu", (long)index);
+    
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didChangeToSpotAtIndex:)]) {
+        [self.delegate mapOverlayCollectionViewController:self didChangeToSpotAtIndex:index];
+    }
+}
+
+- (void)specialsCollectionViewManager:(SHSpecialsCollectionViewManager *)manager didSelectSpotAtIndex:(NSUInteger)index {
+    NSLog(@"Overlay - didSelectSpotAtIndex: %lu", (long)index);
+    
     if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didSelectSpotAtIndex:)]) {
         [self.delegate mapOverlayCollectionViewController:self didSelectSpotAtIndex:index];
     }

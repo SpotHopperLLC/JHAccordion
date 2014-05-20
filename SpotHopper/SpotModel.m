@@ -13,6 +13,8 @@
 #import "LiveSpecialModel.h"
 #import "SliderTemplateModel.h"
 
+#define kPageSize @25
+
 @implementation SpotModel
 
 #pragma mark - API
@@ -46,6 +48,31 @@
     }];
     
     return deferred.promise;
+}
+
++ (Promise*)getSpotsWithSpecialsTodayForCoordinate:(CLLocationCoordinate2D)coordinate success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    
+    // Day of week
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *comps = [gregorian components:NSWeekdayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit|NSDayCalendarUnit|NSTimeZoneCalendarUnit fromDate:[NSDate date]];
+    
+    // Get open and close time
+    NSInteger dayOfWeek = [comps weekday] -1;
+    
+    /*
+     * Searches spots for specials
+     */
+    NSMutableDictionary *params = @{
+                                    kSpotModelParamPage : @1,
+                                    kSpotModelParamQueryVisibleToUsers : @"true",
+                                    kSpotModelParamsPageSize : kPageSize,
+                                    kSpotModelParamSources : kSpotModelParamSourcesSpotHopper,
+                                    kSpotModelParamQueryDayOfWeek : [NSNumber numberWithInteger:dayOfWeek],
+                                    kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:coordinate.latitude],
+                                    kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:coordinate.longitude]
+                                    }.mutableCopy;
+    
+    return [SpotModel getSpotsWithSpecials:params success:successBlock failure:failureBlock];
 }
 
 + (Promise*)getSpotsWithSpecials:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {

@@ -13,6 +13,7 @@
 #import "SHStyleKit.h"
 #import "SHStyleKit+Additions.h"
 
+#import "SHSidebarViewController.h"
 #import "SHLocationMenuBarViewController.h"
 #import "SHHomeNavigationViewController.h"
 #import "SHAdjustSpotListSliderViewController.h"
@@ -28,12 +29,29 @@
 #import "TellMeMyLocation.h"
 #import "Tracker.h"
 
+#import "SpotModel.h"
+#import "ErrorModel.h"
+
 #import <MapKit/MapKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 #define kMeterToMile 0.000621371f
 #define kDebugAnnotationViewPositions FALSE
 
-@interface SHHomeMapViewController () <SHLocationMenuBarDelegate, SHHomeNavigationDelegate, SHMapOverlayCollectionDelegate, SHMapFooterNavigationDelegate, SHSpotsCollectionViewManagerDelegate, SHAdjustSliderListSliderDelegate, SpotAnnotationCalloutDelegate, MKMapViewDelegate>
+#define kCollectionContainerViewHeight 200.0f
+#define kCollectionViewHeight 150.0f
+#define kFooterNavigationViewHeight 50.0f
+
+typedef enum {
+    SHHomeMapModeNone = 0,
+    SHHomeMapModeSpots = 1,
+    SHHomeMapModeSpecials = 2,
+    SHHomeMapModeBeer = 3,
+    SHHomeMapModeCocktail = 4,
+    SHHomeMapModeWine = 5
+} SHHomeMapMode;
+
+@interface SHHomeMapViewController () <SHSidebarViewControllerDelegate, SHLocationMenuBarDelegate, SHHomeNavigationDelegate, SHMapOverlayCollectionDelegate, SHMapFooterNavigationDelegate, SHSpotsCollectionViewManagerDelegate, SHAdjustSliderListSliderDelegate, SpotAnnotationCalloutDelegate, MKMapViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *btnLeft;
 @property (weak, nonatomic) IBOutlet UIButton *btnRight;
@@ -41,14 +59,20 @@
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet SHButtonLatoBold *btnUpdateSearchResults;
 
+@property (strong, nonatomic) SHSidebarViewController *sideBarViewController;
 @property (strong, nonatomic) SHLocationMenuBarViewController *locationMenuBarViewController;
 @property (strong, nonatomic) SHHomeNavigationViewController *homeNavigationViewController;
 @property (strong, nonatomic) SHMapOverlayCollectionViewController *mapOverlayCollectionViewController;
 @property (strong, nonatomic) SHMapFooterNavigationViewController *mapFooterNavigationViewController;
 
+@property (weak, nonatomic) NSLayoutConstraint *sideBarRightEdgeConstraint;
+
 @property (weak, nonatomic) UIView *collectionContainerView;
 
+@property (assign, nonatomic) SHHomeMapMode mode;
+
 @property (strong, nonatomic) SpotListModel *spotListModel;
+@property (strong, nonatomic) NSArray *specialsSpotModels;
 
 @end
 
@@ -63,13 +87,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
-    
-    TellMeMyLocation *tellMeMyLocation = [[TellMeMyLocation alloc] init];
-    [tellMeMyLocation findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
-        _currentLocation = newLocation;
-    } failure:^(NSError *error) {
-        [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
-    }];
     
     UIImage *backgroundImage = [SHStyleKit gradientBackgroundWithSize:self.view.frame.size];
     UIColor *backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
@@ -87,6 +104,8 @@
     
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [SHStyleKit myWhiteColor]};
     
+    self.sideBarViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHSidebarViewController"];
+    self.sideBarViewController.delegate = self;
     self.locationMenuBarViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHLocationMenuBarViewController"];
     self.locationMenuBarViewController.delegate = self;
     self.homeNavigationViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHHomeNavigationViewController"];
@@ -99,6 +118,9 @@
 
     self.title = @"New Search";
     
+    [self.locationMenuBarViewController updateLocationTitle:@"Locating..."];
+    
+    // when the Home Map is first loaded it will focus the map on the current device location
     _currentLocation = [TellMeMyLocation currentDeviceLocation];
     if (_currentLocation) {
         [self repositionMapOnCoordinate:_currentLocation.coordinate animated:NO];
@@ -107,6 +129,10 @@
         TellMeMyLocation *tellMeMyLocation = [[TellMeMyLocation alloc] init];
         [tellMeMyLocation findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
             _currentLocation = newLocation;
+            [TellMeMyLocation setLastLocation:newLocation completionHandler:^{
+                NSLog(@"lastLocationName: %@", [TellMeMyLocation lastLocationName]);
+                [self.locationMenuBarViewController updateLocationTitle:[TellMeMyLocation lastLocationName]];
+            }];
             [self repositionMapOnCoordinate:_currentLocation.coordinate animated:NO];
         } failure:^(NSError *error) {
             [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
@@ -129,8 +155,6 @@
             [view pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0];
             [view constrainToHeight:40.0f];
         }];
-        
-        [self.view bringSubviewToFront:self.locationMenuBarViewController.view];
     }
     
     if (!self.homeNavigationViewController.view.superview) {
@@ -139,13 +163,20 @@
             [view pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0];
             [view constrainToHeight:180.0f];
         }];
-        
-        [self.view bringSubviewToFront:self.homeNavigationViewController.view];
     }
     
-#define kCollectionContainerViewHeight 200.0f
-#define kCollectionViewHeight 150.0f
-#define kFooterNavigationViewHeight 50.0f
+    if (!self.sideBarViewController.view.superview) {
+        [self embedViewController:self.sideBarViewController intoView:self.view placementBlock:^(UIView *view) {
+            [view pinToSuperviewEdges:JRTViewPinTopEdge | JRTViewPinBottomEdge  inset:0.0f usingLayoutGuidesFrom:self];
+            NSArray *rightEdgesConstraints = [view pinToSuperviewEdges:JRTViewPinRightEdge inset:0.0];
+            [view constrainToWidth:CGRectGetWidth(self.view.frame)];
+            NSCAssert(rightEdgesConstraints.count == 1, @"There should only be 1 constraint for the right edge");
+            if (rightEdgesConstraints.count) {
+                self.sideBarRightEdgeConstraint = rightEdgesConstraints[0];
+            }
+            [self hideSideBar:FALSE withCompletionBlock:nil];
+        }];
+    }
 
     if (!self.collectionContainerView && !self.mapOverlayCollectionViewController.view.superview && !self.mapFooterNavigationViewController.view.superview) {
         UIView *collectionContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), kCollectionContainerViewHeight)];
@@ -175,7 +206,18 @@
         }];
     }
     
-    [self.locationMenuBarViewController updateLocationTitle:[TellMeMyLocation lastLocationName]];
+    // each time the Home Map will appear it should update the location name
+//    TellMeMyLocation *tellMeMyLocation = [[TellMeMyLocation alloc] init];
+//    [tellMeMyLocation findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
+//        _currentLocation = newLocation;
+//        [TellMeMyLocation setLastLocation:newLocation completionHandler:^{
+//            NSLog(@"lastLocationName: %@", [TellMeMyLocation lastLocationName]);
+//            [self.locationMenuBarViewController updateLocationTitle:[TellMeMyLocation lastLocationName]];
+//        }];
+//        [self.locationMenuBarViewController updateLocationTitle:[TellMeMyLocation lastLocationName]];
+//    } failure:^(NSError *error) {
+//        [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
+//    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -202,6 +244,48 @@
 
 #pragma mark - View Management
 #pragma mark -
+
+- (void)toggleSideBar:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    if (self.sideBarRightEdgeConstraint.constant == CGRectGetWidth(self.view.frame)) {
+        [self showSideBar:animated withCompletionBlock:completionBlock];
+    }
+    else {
+        [self hideSideBar:animated withCompletionBlock:completionBlock];
+    }
+}
+
+- (void)hideSideBar:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    NSLog(@"Hiding Side Bar");
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:(animated ? 0.25 : 0.0) delay:0.0 options:options animations:^{
+        self.sideBarRightEdgeConstraint.constant = CGRectGetWidth(self.view.frame);
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        if (completionBlock) {
+            completionBlock();
+        }
+    }];
+}
+
+- (void)showSideBar:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    NSLog(@"Showing Side Bar");
+
+    [self.view bringSubviewToFront:self.sideBarViewController.view];
+    [self.sideBarViewController viewWillAppear:FALSE];
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:(animated ? 0.25 : 0.0) delay:0.0 options:options animations:^{
+        self.sideBarRightEdgeConstraint.constant = CGRectGetWidth(self.view.frame) * 0.2;
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        if (completionBlock) {
+            completionBlock();
+        }
+    }];
+}
 
 - (void)hideHomeNavigation:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
     self.homeNavigationViewController.view.hidden = TRUE;
@@ -235,7 +319,6 @@
     }
 }
 
-
 #pragma mark - User Actions
 #pragma mark -
 
@@ -244,10 +327,8 @@
 }
 
 - (IBAction)rightTopButtonTapped:(id)sender {
-    [self hideCollectionContainerView:TRUE withCompletionBlock:^{
-        [self showHomeNavigation:TRUE withCompletionBlock:^{
-            NSLog(@"Showing navigation!");
-        }];
+    [self toggleSideBar:TRUE withCompletionBlock:^{
+        NSLog(@"Toggled Side Bar");
     }];
 }
 
@@ -295,22 +376,60 @@
     
     if (!self.spotListModel.spots.count) {
         [self showAlert:@"Oops" message:@"There are no spots which match in this location. Please try another search area."];
+        return;
     }
+    
+    [self populateMapWithSpots:self.spotListModel.spots mode:SHHomeMapModeSpots];
+    
+    [self hideHomeNavigation:FALSE withCompletionBlock:^{
+        [self.mapOverlayCollectionViewController displaySpotList:spotListModel];
+        [self showCollectionContainerView:FALSE withCompletionBlock:^{
+            // do nothing
+        }];
+    }];
+}
 
+- (void)fetchSpecials {
+    [self showHUD:@"Finding specials"];
+    [SpotModel getSpotsWithSpecialsTodayForCoordinate:self.mapView.centerCoordinate success:^(NSArray *spotModels, JSONAPI *jsonApi) {
+        [self hideHUD];
+        [self displaySpecialsForSpots:spotModels];
+    } failure:^(ErrorModel *errorModel) {
+        [Tracker logError:errorModel.human class:[self class] trace:NSStringFromSelector(_cmd)];
+    }];
+}
+
+- (void)displaySpecialsForSpots:(NSArray *)spots {
+    NSLog(@"spots: %@", spots);
+    
+    self.specialsSpotModels = spots;
+    [self populateMapWithSpots:spots mode:SHHomeMapModeSpecials];
+    
+    [self hideHomeNavigation:FALSE withCompletionBlock:^{
+        [self.mapOverlayCollectionViewController displaySpecialsForSpots:spots];
+        [self showCollectionContainerView:FALSE withCompletionBlock:^{
+            // do nothing
+        }];
+    }];
+}
+
+- (void)populateMapWithSpots:(NSArray *)spots mode:(SHHomeMapMode)mode {
+    self.mode = mode;
+    
     NSAssert(self.mapView, @"Map View is required");
     
     // Update map
     [self.mapView removeAnnotations:[self.mapView annotations]];
-    for (SpotModel *spot in self.spotListModel.spots) {
+    for (SpotModel *spot in spots) {
         // Place pin
         if (spot.latitude != nil && spot.longitude != nil) {
             CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(spot.latitude.floatValue, spot.longitude.floatValue);
-
+            
             MatchPercentAnnotation *annotation = [[MatchPercentAnnotation alloc] init];
             [annotation setSpot:spot];
             annotation.coordinate = coordinate;
             [self.mapView addAnnotation:annotation];
-          
+            
             if (kDebugAnnotationViewPositions) {
                 MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
                 point.coordinate = coordinate;
@@ -319,19 +438,10 @@
         }
     }
     
-    [self hideHomeNavigation:FALSE withCompletionBlock:^{
-        NSLog(@"Home navigation is now hidden");
-        
-        [self.mapOverlayCollectionViewController displaySpotList:spotListModel];
-        [self showCollectionContainerView:FALSE withCompletionBlock:^{
-            NSLog(@"Spotlist should now be displayed");
-        }];
-    }];
-    
     [self repositionMapOnAnnotations:self.mapView.annotations animated:TRUE];
-
-    if (self.spotListModel.spots.count) {
-        [self selectSpot:self.spotListModel.spots[0]];
+    
+    if (spots.count) {
+        [self selectSpot:spots[0]];
     }
 }
 
@@ -401,7 +511,7 @@
             UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
             [UIView animateWithDuration:0.5 delay:0.0 options:options animations:^{
                 // edgePadding must also account for the size and position of the annotation view
-                [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(CGRectGetHeight(topFrame) + 40, 15.0, CGRectGetHeight(bottomFrame) + 40, 15.0) animated:animated];
+                [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(CGRectGetHeight(topFrame) + 20, 15.0, CGRectGetHeight(bottomFrame) + 20, 15.0) animated:animated];
             } completion:^(BOOL finished) {
             }];
         });
@@ -435,6 +545,53 @@
     return visibleFrame;
 }
 
+#pragma mark - SHSidebarViewControllerDelegate
+#pragma mark -
+
+- (void)sidebarViewController:(SHSidebarViewController*)vc didTapSearchTextField:(id)sender {
+    // TODO: implement
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)sidebarViewController:(SHSidebarViewController*)vc closeButtonTapped:(id)sender {
+    [self hideSideBar:TRUE withCompletionBlock:^{
+        NSLog(@"Closed Side Bar");
+    }];
+}
+
+- (void)sidebarViewController:(SHSidebarViewController*)vc spotsButtonTapped:(id)sender {
+    [self hideSideBar:TRUE withCompletionBlock:^{
+        [self goToSpots];
+    }];
+}
+
+- (void)sidebarViewController:(SHSidebarViewController*)vc drinksButtonTapped:(id)sender {
+    // TODO: implement
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)sidebarViewController:(SHSidebarViewController*)vc specialsButtonTapped:(id)sender {
+    [self hideSideBar:true withCompletionBlock:^{
+        [self fetchSpecials];
+    }];
+}
+
+- (void)sidebarViewController:(SHSidebarViewController*)vc reviewButtonTapped:(id)sender {
+    // TODO: implement
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)sidebarViewController:(SHSidebarViewController*)vc checkinButtonTapped:(id)sender {
+    // TODO: implement
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)sidebarViewController:(SHSidebarViewController*)vc accountButtonTapped:(id)sender {
+    [self hideSideBar:TRUE withCompletionBlock:^{
+        [self goToAccountSettings:TRUE];
+    }];
+}
+
 #pragma mark - SHLocationMenuBarDelegate
 #pragma mark -
 
@@ -445,23 +602,23 @@
 #pragma mark - SHHomeNavigationDelegate
 #pragma mark -
 
-- (void)homeNavigationViewControllerDidRequestSpots:(SHHomeNavigationViewController *)vc {
+- (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc spotsButtonTapped:(id)sender {
     [self goToSpots];
 }
 
-- (void)homeNavigationViewControllerDidRequestSpecials:(SHHomeNavigationViewController *)vc {
-    [self goToTonightsSpecials];
+- (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc specialsButtonTapped:(id)sender {
+    [self fetchSpecials];
 }
 
-- (void)homeNavigationViewControllerDidRequestBeers:(SHHomeNavigationViewController *)vc {
+- (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc beersButtonTapped:(id)sender {
     NSLog(@"Beers!");
 }
 
-- (void)homeNavigationViewControllerDidRequestCocktails:(SHHomeNavigationViewController *)vc {
+- (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc cocktailsButtonTapped:(id)sender {
     NSLog(@"Cocktails!");
 }
 
-- (void)homeNavigationViewControllerDidRequestWines:(SHHomeNavigationViewController *)vc {
+- (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc winesButtonTapped:(id)sender {
     NSLog(@"Wines!");
 }
 
@@ -469,49 +626,56 @@
 #pragma mark -
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didChangeToSpotAtIndex:(NSUInteger)index {
-    if (index < self.spotListModel.spots.count) {
+    
+    if (self.mode == SHHomeMapModeSpots && index < self.spotListModel.spots.count) {
         SpotModel *spot = self.spotListModel.spots[index];
+        NSLog(@"HomeMap: didChangeToSpotAtIndex: %@", spot.name);
+        [self selectSpot:spot];
+    }
+    else if (self.mode == SHHomeMapModeSpecials && index < self.specialsSpotModels.count) {
+        SpotModel *spot = self.specialsSpotModels[index];
         NSLog(@"HomeMap: didChangeToSpotAtIndex: %@", spot.name);
         [self selectSpot:spot];
     }
 }
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didSelectSpotAtIndex:(NSUInteger)index {
-    if (index < self.spotListModel.spots.count) {
-        SpotModel *spot = self.spotListModel.spots[index];
-        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([spot.latitude floatValue], [spot.longitude floatValue]);
-        [self repositionMapOnCoordinate:coordinate animated:YES];
-    }
+    // Do not focus on spot when spot is selected
+//    if (index < self.spotListModel.spots.count) {
+//        SpotModel *spot = self.spotListModel.spots[index];
+//        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([spot.latitude floatValue], [spot.longitude floatValue]);
+//        [self repositionMapOnCoordinate:coordinate animated:YES];
+//    }
 }
 
 #pragma mark - SHMapFooterNavigationDelegate
 #pragma mark -
 
-- (void)footerNavigationViewControllerDidRequestSpots:(SHMapFooterNavigationViewController *)vc {
+- (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc spotsButtonTapped:(id)sender {
     [self goToSpots];
 }
 
-- (void)footerNavigationViewControllerDidRequestSpecials:(SHMapFooterNavigationViewController *)vc {
-    NSLog(@"Specials!");
+- (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc specialsButtonTapped:(id)sender {
+    [self fetchSpecials];
 }
 
-- (void)footerNavigationViewControllerDidRequestBeers:(SHMapFooterNavigationViewController *)vc {
+- (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc beersButtonTapped:(id)sender {
     NSLog(@"Beers!");
 }
 
-- (void)footerNavigationViewControllerDidRequestCocktails:(SHMapFooterNavigationViewController *)vc {
+- (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc cocktailsButtonTapped:(id)sender {
     NSLog(@"Cocktails!");
 }
 
-- (void)footerNavigationViewControllerDidRequestWines:(SHMapFooterNavigationViewController *)vc {
+- (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc winesButtonTapped:(id)sender {
     NSLog(@"Wines!");
 }
 
 #pragma mark - SHAdjustSliderListSliderDelegate
 #pragma mark -
 
--(void)adjustSpotListSliderViewController:(SHAdjustSpotListSliderViewController*)vc didCreateSpotList:(SpotListModel*)spotList {
-    NSLog(@"spots: %@", spotList.spots);
+- (void)adjustSpotListSliderViewController:(SHAdjustSpotListSliderViewController*)vc didCreateSpotList:(SpotListModel*)spotList {
+    // do nothing (handled by unwind segue)
 }
 
 #pragma mark - SpotAnnotationCalloutDelegate
@@ -536,7 +700,14 @@
         MatchPercentAnnotationView *pin = (MatchPercentAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:MatchPercentAnnotationIdentifier];
         
         if (!pin) {
-            pin = [[MatchPercentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:MatchPercentAnnotationIdentifier calloutView:nil];
+            pin = [[MatchPercentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:MatchPercentAnnotationIdentifier];
+        }
+        
+        if (self.mode == SHHomeMapModeSpots) {
+            pin.drawing = SHStyleKitDrawingNone;
+        }
+        else if (self.mode == SHHomeMapModeSpecials) {
+            pin.drawing = SHStyleKitDrawingSpecialsIcon;
         }
         [pin setSpot:matchPercentAnnotation.spot];
         [pin setNeedsDisplay];
