@@ -59,32 +59,32 @@
 #pragma mark -
 
 - (IBAction)spotsButtonTapped:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(homeNavigationViewControllerDidRequestSpots:)]) {
-        [self.delegate homeNavigationViewControllerDidRequestSpots:self];
+    if ([self.delegate respondsToSelector:@selector(homeNavigationViewController:spotsButtonTapped:)]) {
+        [self.delegate homeNavigationViewController:self spotsButtonTapped:sender];
     }
 }
 
 - (IBAction)specialsButtonTapped:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(homeNavigationViewControllerDidRequestSpecials:)]) {
-        [self.delegate homeNavigationViewControllerDidRequestSpecials:self];
+    if ([self.delegate respondsToSelector:@selector(homeNavigationViewController:specialsButtonTapped:)]) {
+        [self.delegate homeNavigationViewController:self specialsButtonTapped:sender];
     }
 }
 
 - (IBAction)beerButtonTapped:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(homeNavigationViewControllerDidRequestBeers:)]) {
-        [self.delegate homeNavigationViewControllerDidRequestBeers:self];
+    if ([self.delegate respondsToSelector:@selector(homeNavigationViewController:beersButtonTapped:)]) {
+        [self.delegate homeNavigationViewController:self beersButtonTapped:sender];
     }
 }
 
 - (IBAction)cocktailsButtonTapped:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(homeNavigationViewControllerDidRequestCocktails:)]) {
-        [self.delegate homeNavigationViewControllerDidRequestCocktails:self];
+    if ([self.delegate respondsToSelector:@selector(homeNavigationViewController:cocktailsButtonTapped:)]) {
+        [self.delegate homeNavigationViewController:self cocktailsButtonTapped:sender];
     }
 }
 
 - (IBAction)wineButtonTapped:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(homeNavigationViewControllerDidRequestWines:)]) {
-        [self.delegate homeNavigationViewControllerDidRequestWines:self];
+    if ([self.delegate respondsToSelector:@selector(homeNavigationViewController:winesButtonTapped:)]) {
+        [self.delegate homeNavigationViewController:self winesButtonTapped:sender];
     }
 }
 

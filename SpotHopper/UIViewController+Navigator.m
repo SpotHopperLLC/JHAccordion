@@ -12,6 +12,7 @@
 #import "AgeVerificationViewController.h"
 #import "TutorialViewController.h"
 #import "LaunchViewController.h"
+#import "AccountSettingsViewController.h"
 
 #import "DrinksViewController.h"
 #import "DrinksNearbyViewController.h"
@@ -62,6 +63,11 @@
 - (void)goToLaunch:(BOOL)animated {
     LaunchViewController *viewController = [[self mainStoryboard] instantiateViewControllerWithIdentifier:@"LaunchViewController"];
     [self presentViewController:viewController animated:animated completion:nil];
+}
+
+- (void)goToAccountSettings:(BOOL)animated {
+    AccountSettingsViewController *viewController = [[self userStoryboard] instantiateViewControllerWithIdentifier:@"AccountSettingsViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - Drinks

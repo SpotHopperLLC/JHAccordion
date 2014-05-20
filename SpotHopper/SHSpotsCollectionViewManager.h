@@ -13,7 +13,7 @@
 @class SpotListModel;
 @class SpotModel;
 
-@interface SHSpotsCollectionViewManager : NSObject
+@interface SHSpotsCollectionViewManager : NSObject <UICollectionViewDataSource, UICollectionViewDelegate>
 
 - (void)updateSpotList:(SpotListModel *)spotList;
 - (void)changeIndex:(NSUInteger)index;

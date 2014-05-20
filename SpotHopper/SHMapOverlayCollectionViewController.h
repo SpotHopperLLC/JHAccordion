@@ -9,6 +9,7 @@
 #import "BaseViewController.h"
 
 #import "SHSpotsCollectionViewManager.h"
+#import "SHSpecialsCollectionViewManager.h"
 
 @class SpotListModel;
 
@@ -21,6 +22,8 @@
 - (void)displaySpotList:(SpotListModel *)spotList;
 
 - (void)displaySpot:(SpotModel *)spot;
+
+- (void)displaySpecialsForSpots:(NSArray *)spots;
 
 @end
 

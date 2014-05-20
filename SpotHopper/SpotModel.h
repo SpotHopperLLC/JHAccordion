@@ -25,7 +25,6 @@
 #define kSpotModelParamLongitude @"longitude"
 #define kSpotModelParamFoursquareId @"foursquare_id"
 
-
 #define kSpotModelParamSources @"sources"
 #define kSpotModelParamSourcesSpotHopper @"spothopper"
 #define kSpotModelParamSourcesFoursquare @"foursquare"
@@ -38,6 +37,7 @@
 #import "NSArray+HoursOfOperation.h"
 
 #import <JSONAPI/JSONAPI.h>
+#import <CoreLocation/CoreLocation.h>
 
 @class ErrorModel, AverageReviewModel, SpotTypeModel, LiveSpecialModel;
 
@@ -73,6 +73,8 @@
 + (void)cancelGetSpots;
 
 + (Promise*)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise*)getSpotsWithSpecialsTodayForCoordinate:(CLLocationCoordinate2D)coordinate success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 + (Promise*)getSpotsWithSpecials:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
