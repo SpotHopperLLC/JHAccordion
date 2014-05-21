@@ -26,8 +26,10 @@
 @interface MatchPercentAnnotationView ()
 
 @property (weak, nonatomic) UIImageView *pinImageView;
+@property (weak, nonatomic) UIImageView *highlightedPinImageView;
 @property (weak, nonatomic) UIImageView *innerImageView;
 @property (weak, nonatomic) UILabel *percentLabel;
+@property (weak, nonatomic) UILabel *highlightedPercentLabel;
 
 @end
 
@@ -73,17 +75,30 @@
     CGRect imageFrame = CGRectMake(0, 0, width, height);
     CGRect innerFrame = CGRectMake(0, 0, width*2/3, height*2/3);
     
+    UIImageView *highlightedPinImageView = [[UIImageView alloc] initWithFrame:imageFrame];
+    [SHStyleKit setImageView:highlightedPinImageView withDrawing:SHStyleKitDrawingMapBubblePinFilledIcon color:SHStyleKitColorMyWhiteColor];
+    [self addSubview:highlightedPinImageView];
+    self.highlightedPinImageView = highlightedPinImageView;
+    
     UIImageView *pinImageView = [[UIImageView alloc] initWithFrame:imageFrame];
+    [SHStyleKit setImageView:pinImageView withDrawing:SHStyleKitDrawingMapBubblePinEmptyIcon color:SHStyleKitColorMyTintColor];
     [self addSubview:pinImageView];
     self.pinImageView = pinImageView;
     
     // frame has to be offset a little to the right due to the shadow below the bubble (about 5% of the width)
     CGFloat shadowOffset = CGRectGetWidth(imageFrame) * 0.05;
-    
     CGRect labelFrame = imageFrame;
     labelFrame.origin.x = shadowOffset;
+    
+    UILabel *highlightedPercentLabel = [[UILabel alloc] initWithFrame:labelFrame];
+    highlightedPercentLabel.textAlignment = NSTextAlignmentCenter;
+    highlightedPercentLabel.textColor = [SHStyleKit myWhiteColor];
+    [self addSubview:highlightedPercentLabel];
+    self.highlightedPercentLabel = highlightedPercentLabel;
+    
     UILabel *percentLabel = [[UILabel alloc] initWithFrame:labelFrame];
     percentLabel.textAlignment = NSTextAlignmentCenter;
+    percentLabel.textColor = [SHStyleKit myTintColor];
     [self addSubview:percentLabel];
     self.percentLabel = percentLabel;
     
@@ -97,17 +112,26 @@
     if (![_spot isEqual:spot]) {
         _spot = spot;
         
-        if (!spot.match) {
-            self.percentLabel.hidden = TRUE;
-        }
-        else if (self.drawing != SHStyleKitDrawingNone) {
+        if (self.drawing != SHStyleKitDrawingNone) {
             self.innerImageView.hidden = FALSE;
             self.percentLabel.hidden = TRUE;
+            self.highlightedPercentLabel.hidden = TRUE;
         }
-        else {
+        else if (self.spot.matchPercent.length) {
             self.innerImageView.hidden = TRUE;
             self.percentLabel.hidden = FALSE;
+            self.highlightedPercentLabel.hidden = FALSE;
+            
+            NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:kFontSize] };
+            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:self.spot.matchPercent attributes:attributes];
+            self.percentLabel.attributedText = attributedString;
+            self.highlightedPercentLabel.attributedText = attributedString;
         }
+        else {
+            self.percentLabel.hidden = TRUE;
+            self.highlightedPercentLabel.hidden = TRUE;
+        }
+        
         [self setHighlighted:FALSE];
     }
 }
@@ -115,33 +139,31 @@
 - (void)setHighlighted:(BOOL)isHighlighted {
     [super setHighlighted:isHighlighted];
     
-    self.pinImageView.alpha = isHighlighted ? 1.0 : 0.9;
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:0.25 delay:0.0 options:options animations:^{
+        self.pinImageView.alpha = isHighlighted ? 0.0 : 0.9;
+        self.highlightedPinImageView.alpha = isHighlighted ? 1.0 : 0.0;
+        self.percentLabel.alpha = isHighlighted ? 0.0 : 1.0;
+        self.highlightedPercentLabel.alpha = isHighlighted ? 1.0 : 0.0;
+    } completion:^(BOOL finished) {
+        if (isHighlighted) {
+            [self bounce];
+        }
+    }];
     
     if (self.isHighlighted) {
-        [SHStyleKit setImageView:self.pinImageView withDrawing:SHStyleKitDrawingMapBubblePinFilledIcon color:SHStyleKitColorMyWhiteColor];
         if (self.drawing != SHStyleKitDrawingNone) {
             [SHStyleKit setImageView:self.innerImageView
                          withDrawing:self.drawing color:SHStyleKitColorMyWhiteColor];
         }
     }
     else {
-        [SHStyleKit setImageView:self.pinImageView withDrawing:SHStyleKitDrawingMapBubblePinEmptyIcon color:SHStyleKitColorMyTintColor];
         if (self.drawing != SHStyleKitDrawingNone) {
             [SHStyleKit setImageView:self.innerImageView withDrawing:self.drawing color:SHStyleKitColorMyTintColor];
         }
     }
-    self.pinImageView.alpha = isHighlighted ? 1.0 : 0.9;
     [self bringSubviewToFront:self.innerImageView];
     
-    if (self.spot.matchPercent.length) {
-        NSDictionary *attributes = @{
-                                     NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:kFontSize],
-                                     NSForegroundColorAttributeName: ( isHighlighted ?  [UIColor whiteColor] : kColorOrange)
-                                     };
-
-        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:self.spot.matchPercent attributes:attributes];
-        self.percentLabel.attributedText = attributedString;
-    }
 }
 
 - (void)setCalloutView:(SpotAnnotationCallout *)calloutView {
@@ -157,6 +179,21 @@
         return YES;
     }
     return NO;
+}
+
+- (void)bounce {
+    // simply bounce up and back into place the catch the user's attention
+    CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"position.y"];
+    
+    anim.fromValue = [NSNumber numberWithInt:0];
+    anim.toValue = [NSNumber numberWithInt:-5];
+    anim.duration = 0.15;
+    anim.autoreverses = YES;
+    anim.repeatCount = 2;
+    anim.additive = YES;
+    anim.fillMode = kCAFillModeForwards;
+    anim.removedOnCompletion = NO;
+    [self.layer addAnimation:anim forKey:@"bounceAnimation"];
 }
 
 @end

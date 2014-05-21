@@ -21,7 +21,7 @@
 
 #define kSpecialCellSpotImageView 1
 #define kSpecialCellSpotNameButton 2
-#define kSpecialCellSpecialLabel 3
+#define kSpecialCellSpecialTextView 3
 #define kSpecialCellLikeButton 4
 #define kSpecialCellLikeLabel 5
 #define kSpecialCellShareButton 6
@@ -63,6 +63,8 @@
 #pragma mark -
 
 - (void)updateSpots:(NSArray *)spots {
+    NSAssert(self.delegate, @"Delegate must be defined");
+    
     static NSString *lock;
     @synchronized(lock) {
         if (_isUpdatingData) {
@@ -71,7 +73,9 @@
         else {
             _isUpdatingData = TRUE;
             self.spots = spots;
+            [self.collectionView setContentOffset:CGPointMake(0, 0)];
             [self.collectionView reloadData];
+            _currentIndex = 0;
             _isUpdatingData = FALSE;
         }
     }
@@ -153,6 +157,8 @@
         SpotModel *spot = self.spots[indexPath.item];
         
         UIImageView *spotImageView = (UIImageView *)[cell viewWithTag:kSpecialCellSpotImageView];
+        UIImage *placeholderImage = [SHStyleKit drawImage:SHStyleKitDrawingPlaceholderBasic size:spotImageView.frame.size];
+        spotImageView.image = placeholderImage;
         
         if (spot.imageUrl.length) {
             [spotImageView setImageWithURL:[NSURL URLWithString:spot.imageUrl] placeholderImage:nil];
@@ -168,46 +174,55 @@
                 [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
             }];
         }
-        else {
-            spotImageView.image = nil;
-        }
         
         UIButton *nameButton = [self buttonInView:cell withTag:kSpecialCellSpotNameButton];
-        UILabel *specialLabel = [self labelInView:cell withTag:kSpecialCellSpecialLabel];
+        UITextView *specialTextView = [self textViewInView:cell withTag:kSpecialCellSpecialTextView];
         UIButton *likeButton = [self buttonInView:cell withTag:kSpecialCellLikeButton];
         UILabel *likeLabel = [self labelInView:cell withTag:kSpecialCellLikeLabel];
         UIButton *shareButton = [self buttonInView:cell withTag:kSpecialCellShareButton];
         UILabel *shareLabel = [self labelInView:cell withTag:kSpecialCellShareLabel];
         UILabel *positionLabel = [self labelInView:cell withTag:kSpecialCellPositionLabel];
         
+        NSAssert(nameButton, @"View must be defined");
+        NSAssert(specialTextView, @"View must be defined");
+        NSAssert(likeButton, @"View must be defined");
+        NSAssert(likeLabel, @"View must be defined");
+        NSAssert(shareButton, @"View must be defined");
+        NSAssert(shareLabel, @"View must be defined");
+        NSAssert(positionLabel, @"View must be defined");
+        
         [SHStyleKit setButton:likeButton withDrawing:SHStyleKitDrawingThumbsUpIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyWhiteColor];
         [SHStyleKit setButton:shareButton withDrawing:SHStyleKitDrawingShareIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyWhiteColor];
-        
-        [SHStyleKit setLabel:specialLabel textColor:SHStyleKitColorMyTextColor];
         [SHStyleKit setLabel:likeLabel textColor:SHStyleKitColorMyTintColor];
         [SHStyleKit setLabel:shareLabel textColor:SHStyleKitColorMyTintColor];
         [SHStyleKit setLabel:positionLabel textColor:SHStyleKitColorMyTextColor];
         
-        [specialLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
+        [specialTextView setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
         [likeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
         [shareLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
         [positionLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
         
         [nameButton setTitle:spot.name forState:UIControlStateNormal];
-        [nameButton setTitleColor:[SHStyleKit myTextColor] forState:UIControlStateNormal];
+        [SHStyleKit setButton:nameButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
         
-        specialLabel.text = [spot.dailySpecials specialsForToday];
+        NSString *special = [spot.dailySpecials specialsForToday];
+        NSLog(@"Special: %@", special);
+        NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:14.0], NSForegroundColorAttributeName : [SHStyleKit myTextColor] };
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:special attributes:attributes];
+        specialTextView.attributedText = attributedString;
+        [specialTextView setContentOffset:CGPointMake(0, 0)];
+        [specialTextView flashScrollIndicators];
         
         likeLabel.text = @"0";
 
         positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", (long)indexPath.item+1, (long)self.spots.count];
         
         UIButton *previousButton = [self buttonInView:cell withTag:kSpecialCellLeftButton];
-        [SHStyleKit setButton:previousButton withDrawing:SHStyleKitDrawingPreviousArrowIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+        [SHStyleKit setButton:previousButton withDrawing:SHStyleKitDrawingArrowLeftIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
         previousButton.hidden = indexPath.item == 0;
         
         UIButton *nextButton = [self buttonInView:cell withTag:kSpecialCellRightButton];
-        [SHStyleKit setButton:nextButton withDrawing:SHStyleKitDrawingNextArrowIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+        [SHStyleKit setButton:nextButton withDrawing:SHStyleKitDrawingArrowRightIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
         nextButton.hidden = indexPath.item == self.spots.count - 1;
     }
     
@@ -252,6 +267,14 @@
     UIView *taggedView = [view viewWithTag:tag];
     if ([taggedView isKindOfClass:[UIButton class]]) {
         return (UIButton *)taggedView;
+    }
+    return nil;
+}
+
+- (UITextView *)textViewInView:(UIView *)view withTag:(NSUInteger)tag {
+    UIView *taggedView = [view viewWithTag:tag];
+    if ([taggedView isKindOfClass:[UITextView class]]) {
+        return (UITextView *)taggedView;
     }
     return nil;
 }

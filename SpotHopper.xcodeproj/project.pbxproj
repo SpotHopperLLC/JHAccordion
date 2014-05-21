@@ -4437,8 +4437,6 @@
 		26A7E3641922CE5A00FF7B88 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				2654B89B192BB6E000A66BED /* SHAdjustSpotListSliderViewController.h */,
-				2654B89C192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m */,
 				2654B89D192BB6E000A66BED /* SHHomeMapViewController.h */,
 				2654B89E192BB6E000A66BED /* SHHomeMapViewController.m */,
 				2654B89F192BB6E000A66BED /* SHHomeNavigationViewController.h */,
@@ -4453,6 +4451,8 @@
 				2654B8A8192BB6E000A66BED /* SHSidebarViewController.m */,
 				2654B8A9192BB6E000A66BED /* SHSpotsMenuViewController.h */,
 				2654B8AA192BB6E000A66BED /* SHSpotsMenuViewController.m */,
+				2654B89B192BB6E000A66BED /* SHAdjustSpotListSliderViewController.h */,
+				2654B89C192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";

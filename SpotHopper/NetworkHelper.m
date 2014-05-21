@@ -29,8 +29,6 @@
     [thumbImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     [thumbImageView setImageWithURLRequest:thumbImageRequest placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *thumbImage) {
         
-        NSCAssert(thumbImage, @"image be defined");
-        
         if (thumbImageBlock) {
             thumbImageBlock(thumbImage);
         }
@@ -40,9 +38,7 @@
         [fullImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
         [fullImageView setImageWithURLRequest:fullImageRequest placeholderImage:thumbImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *fullImage) {
             
-            NSCAssert(fullImage, @"image be defined");
-            
-            if (fullImageBlock) {
+            if (fullImage && fullImageBlock) {
                 fullImageBlock(fullImage);
             }
             

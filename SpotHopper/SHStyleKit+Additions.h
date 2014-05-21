@@ -13,32 +13,38 @@ extern NSString * const SHStyleKitColorNameMyWhiteColor;
 
 typedef enum {
     SHStyleKitColorNone = 0,
-    SHStyleKitColorMyTintColor = 1,
-    SHStyleKitColorMyTintColorTransparent = 2,
-    SHStyleKitColorMyTextColor = 3,
-    SHStyleKitColorMyWhiteColor = 4
+    SHStyleKitColorMyTintColor,
+    SHStyleKitColorMyTintColorTransparent,
+    SHStyleKitColorMyTextColor,
+    SHStyleKitColorMyWhiteColor
 } SHStyleKitColor;
 
 typedef enum {
     SHStyleKitDrawingNone = 0,
-    SHStyleKitDrawingSpotIcon = 1,
-    SHStyleKitDrawingSpecialsIcon = 2,
-    SHStyleKitDrawingBeerIcon = 3,
-    SHStyleKitDrawingCocktailIcon = 4,
-    SHStyleKitDrawingWineIcon = 5,
-    SHStyleKitDrawingNavigationIconArrow = 6,
-    SHStyleKitDrawingPreviousArrowIcon = 7,
-    SHStyleKitDrawingNextArrowIcon = 8,
-    SHStyleKitDrawingSearchIcon = 9,
-    SHStyleKitDrawingMapBubblePinFilledIcon = 10,
-    SHStyleKitDrawingMapBubblePinEmptyIcon = 11,
-    SHStyleKitDrawingSpotSideBarIcon = 12,
-    SHStyleKitDrawingFeaturedListIcon = 13,
-    SHStyleKitDrawingGradientBackground = 14,
-    SHStyleKitDrawingDrinksIcon = 15,
-    SHStyleKitDrawingShareIcon = 16,
-    SHStyleKitDrawingCheckMarkIcon = 17,
-    SHStyleKitDrawingThumbsUpIcon = 18
+    SHStyleKitDrawingSpotIcon,
+    SHStyleKitDrawingSpecialsIcon,
+    SHStyleKitDrawingBeerIcon,
+    SHStyleKitDrawingCocktailIcon,
+    SHStyleKitDrawingWineIcon,
+    SHStyleKitDrawingSearchIcon,
+    SHStyleKitDrawingMapBubblePinFilledIcon,
+    SHStyleKitDrawingMapBubblePinEmptyIcon,
+    SHStyleKitDrawingSpotSideBarIcon,
+    SHStyleKitDrawingFeaturedListIcon,
+    SHStyleKitDrawingDrinksIcon,
+    SHStyleKitDrawingShareIcon,
+    SHStyleKitDrawingCheckMarkIcon,
+    SHStyleKitDrawingThumbsUpIcon,
+    SHStyleKitDrawingNavigationArrowRightIcon,
+    SHStyleKitDrawingNavigationArrowLeftIcon,
+    SHStyleKitDrawingNavigationArrowUpIcon,
+    SHStyleKitDrawingNavigationArrowDownIcon,
+    SHStyleKitDrawingArrowRightIcon,
+    SHStyleKitDrawingArrowLeftIcon,
+    SHStyleKitDrawingArrowUpIcon,
+    SHStyleKitDrawingArrowDownIcon,
+    SHStyleKitDrawingPlaceholderBasic,
+    SHStyleKitDrawingGradientBackground
 } SHStyleKitDrawing;
 
 #import "SHStyleKit.h"
@@ -54,13 +60,15 @@ typedef enum {
 
 + (void)setButton:(UIButton *)button withDrawing:(SHStyleKitDrawing)drawing normalColor:(SHStyleKitColor)normalColor highlightedColor:(SHStyleKitColor)highlightedColor;
 
++ (void)setButton:(UIButton *)button normalTextColor:(SHStyleKitColor)normalTextColor highlightedTextColor:(SHStyleKitColor)highlightedTextColor;
+
 + (void)setLabel:(UILabel *)label textColor:(SHStyleKitColor)textColor;
+
++ (void)setTextView:(UITextView *)textView textColor:(SHStyleKitColor)textColor;
 
 + (UIImage *)drawImage:(SHStyleKitDrawing)drawing size:(CGSize)size;
 
 + (UIImage *)drawImage:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size;
-
-//+ (UIImage *)drawShareIconWithColor1:(SHStyleKitColor)color1 color2:(SHStyleKitColor)color2 color3:(SHStyleKitColor)color3 size:(CGSize)size;
 
 #pragma mark - Backgrounds
 #pragma mark -
