@@ -14,9 +14,9 @@ NSString * const SHStyleKitColorNameMyTextColor = @"myTextColor";
 NSString * const SHStyleKitColorNameMyWhiteColor = @"myWhiteColor";
 
 @interface SHStyleKitCache : NSCache
-- (UIImage *)cachedImageForDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size;
+- (UIImage *)cachedImageForDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size rotation:(NSInteger)rotation;
 - (void)cacheImage:(UIImage *)image
-        forDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size;
+        forDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size rotation:(NSInteger)rotation;
 @end
 
 @implementation SHStyleKit (Additions)
@@ -76,9 +76,22 @@ NSString * const SHStyleKitColorNameMyWhiteColor = @"myWhiteColor";
     [button setImage:highlightedImage forState:UIControlStateHighlighted];
 }
 
++ (void)setButton:(UIButton *)button normalTextColor:(SHStyleKitColor)normalTextColor highlightedTextColor:(SHStyleKitColor)highlightedTextColor;
+{
+    [button setTitleColor:[self color:normalTextColor] forState:UIControlStateNormal];
+    [button setTitleColor:[self color:highlightedTextColor] forState:UIControlStateHighlighted];
+}
+
 + (void)setLabel:(UILabel *)label textColor:(SHStyleKitColor)textColor;
 {
     label.textColor = [self color:textColor];
+}
+
++ (void)setTextView:(UITextView *)textView textColor:(SHStyleKitColor)textColor;
+{
+    UIColor *color = [self color:textColor];
+    textView.textColor = color;
+    [textView setTextColor:color];
 }
 
 #pragma mark - Drawing
@@ -91,7 +104,29 @@ NSString * const SHStyleKitColorNameMyWhiteColor = @"myWhiteColor";
 
 + (UIImage *)drawImage:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size;
 {
-    UIImage *image = [[self sh_sharedImageCache] cachedImageForDrawing:drawing color:color size:size];
+    NSInteger rotation = 0;
+    switch (drawing) {
+        case SHStyleKitDrawingNavigationArrowUpIcon:
+        case SHStyleKitDrawingArrowUpIcon:
+            rotation = 90;
+            break;
+
+        case SHStyleKitDrawingNavigationArrowLeftIcon:
+        case SHStyleKitDrawingArrowLeftIcon:
+            rotation = 180;
+            break;
+            
+        case SHStyleKitDrawingNavigationArrowDownIcon:
+        case SHStyleKitDrawingArrowDownIcon:
+            rotation = 270;
+            break;
+    
+        default:
+            // leave the default
+            break;
+    }
+    
+    UIImage *image = [[self sh_sharedImageCache] cachedImageForDrawing:drawing color:color size:size rotation:rotation];
     if (image) {
         return image;
     }
@@ -118,15 +153,6 @@ NSString * const SHStyleKitColorNameMyWhiteColor = @"myWhiteColor";
             break;
         case SHStyleKitDrawingWineIcon:
             [SHStyleKit drawWineIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
-            break;
-        case SHStyleKitDrawingNavigationIconArrow:
-            [SHStyleKit drawNavigationArrowIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
-            break;
-        case SHStyleKitDrawingPreviousArrowIcon:
-            [SHStyleKit drawPreviousArrowIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
-            break;
-        case SHStyleKitDrawingNextArrowIcon:
-            [SHStyleKit drawNextArrowIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
             break;
         case SHStyleKitDrawingSearchIcon:
             [SHStyleKit drawSearchIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
@@ -194,6 +220,22 @@ NSString * const SHStyleKitColorNameMyWhiteColor = @"myWhiteColor";
                                           fillColorName:[SHStyleKit colorName:SHStyleKitColorMyTintColor]];
             }
             break;
+        case SHStyleKitDrawingNavigationArrowRightIcon:
+        case SHStyleKitDrawingNavigationArrowUpIcon:
+        case SHStyleKitDrawingNavigationArrowLeftIcon:
+        case SHStyleKitDrawingNavigationArrowDownIcon:
+            [SHStyleKit drawNavigationArrowIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName rotation:rotation];
+            break;
+        case SHStyleKitDrawingArrowRightIcon:
+        case SHStyleKitDrawingArrowUpIcon:
+        case SHStyleKitDrawingArrowLeftIcon:
+        case SHStyleKitDrawingArrowDownIcon:
+            [SHStyleKit drawArrowIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName rotation:rotation];
+            break;
+            
+        case SHStyleKitDrawingPlaceholderBasic:
+            [SHStyleKit drawMyPlaceholderWithScaleX:scaleX scaleY:scaleY];
+            break;
             
         default:
             break;
@@ -204,7 +246,7 @@ NSString * const SHStyleKitColorNameMyWhiteColor = @"myWhiteColor";
     image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    [[self sh_sharedImageCache] cacheImage:image forDrawing:drawing color:color size:size];
+    [[self sh_sharedImageCache] cacheImage:image forDrawing:drawing color:color size:size rotation:rotation];
     
     return image;
 }
@@ -214,7 +256,7 @@ NSString * const SHStyleKitColorNameMyWhiteColor = @"myWhiteColor";
 
 + (UIImage *)gradientBackgroundWithSize:(CGSize)size;
 {
-    UIImage *image = [[self sh_sharedImageCache] cachedImageForDrawing:SHStyleKitDrawingGradientBackground color:SHStyleKitColorNone size:size];
+    UIImage *image = [[self sh_sharedImageCache] cachedImageForDrawing:SHStyleKitDrawingGradientBackground color:SHStyleKitColorNone size:size rotation:0];
     if (image) {
         return image;
     }
@@ -224,7 +266,7 @@ NSString * const SHStyleKitColorNameMyWhiteColor = @"myWhiteColor";
     image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    [[self sh_sharedImageCache] cacheImage:image forDrawing:SHStyleKitDrawingGradientBackground color:SHStyleKitColorNone size:size];
+    [[self sh_sharedImageCache] cacheImage:image forDrawing:SHStyleKitDrawingGradientBackground color:SHStyleKitColorNone size:size rotation:0];
     
     return image;
 }
@@ -268,21 +310,21 @@ NSString * const SHStyleKitColorNameMyWhiteColor = @"myWhiteColor";
 
 @implementation SHStyleKitCache
 
-- (NSString *)keyForDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size;
+- (NSString *)keyForDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size rotation:(NSInteger)rotation;
 {
-    return [NSString stringWithFormat:@"drawing-%li-color-%li-width-%f-height-%f", (long)drawing, (long)color, size.width, size.height];
+    return [NSString stringWithFormat:@"drawing-%li-color-%li-width-%f-height-%f-rotation-%li", (long)drawing, (long)color, size.width, size.height, rotation];
 }
 
-- (UIImage *)cachedImageForDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size;
+- (UIImage *)cachedImageForDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size rotation:(NSInteger)rotation;
 {
-    NSString *key = [self keyForDrawing:drawing color:color size:size];
+    NSString *key = [self keyForDrawing:drawing color:color size:size rotation:rotation];
     return [self objectForKey:key];
 }
 
 - (void)cacheImage:(UIImage *)image
-        forDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size;
+        forDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size rotation:(NSInteger)rotation;
 {
-    NSString *key = [self keyForDrawing:drawing color:color size:size];
+    NSString *key = [self keyForDrawing:drawing color:color size:size rotation:rotation];
     if (!image || !key.length) {
         return;
     }

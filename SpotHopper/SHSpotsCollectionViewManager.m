@@ -70,7 +70,7 @@
 #pragma mark -
 
 - (void)updateSpotList:(SpotListModel *)spotList {
-    // TODO: implement by carefully updating when the collection view if not already updating
+    NSAssert(self.delegate, @"Delegate must be defined");
 
     static NSString *lock;
     @synchronized(lock) {
@@ -80,7 +80,9 @@
         else {
             _isUpdatingData = TRUE;
             self.spotList = spotList;
+            [self.collectionView setContentOffset:CGPointMake(0, 0)];
             [self.collectionView reloadData];
+            _currentIndex = 0;
             _isUpdatingData = FALSE;
         }
     }
@@ -162,6 +164,8 @@
         SpotModel *spot = self.spotList.spots[indexPath.item];
         
         UIImageView *spotImageView = (UIImageView *)[cell viewWithTag:kSpotCellSpotImageView];
+        UIImage *placeholderImage = [SHStyleKit drawImage:SHStyleKitDrawingPlaceholderBasic size:spotImageView.frame.size];
+        spotImageView.image = placeholderImage;
         
         if (spot.imageUrl.length) {
             [spotImageView setImageWithURL:[NSURL URLWithString:spot.imageUrl] placeholderImage:nil];
@@ -176,9 +180,6 @@
                 spotImageView.image = nil;
                 [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
             }];
-        }
-        else {
-            spotImageView.image = nil;
         }
         
         UIButton *nameButton = [self buttonInView:cell withTag:kSpotCellSpotNameButton];
@@ -205,7 +206,7 @@
         [matchLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
         
         [nameButton setTitle:spot.name forState:UIControlStateNormal];
-        [nameButton setTitleColor:[SHStyleKit myTextColor] forState:UIControlStateNormal];
+        [SHStyleKit setButton:nameButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
         typeLabel.text = spot.spotType.name;
         neighborhoodLabel.text = spot.city;
         
@@ -223,11 +224,11 @@
         matchImageView.image = bubbleImage;
         
         UIButton *previousButton = [self buttonInView:cell withTag:kSpotCellLeftButton];
-        [SHStyleKit setButton:previousButton withDrawing:SHStyleKitDrawingPreviousArrowIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+        [SHStyleKit setButton:previousButton withDrawing:SHStyleKitDrawingArrowLeftIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
         previousButton.hidden = indexPath.item == 0;
     
         UIButton *nextButton = [self buttonInView:cell withTag:kSpotCellRightButton];
-        [SHStyleKit setButton:nextButton withDrawing:SHStyleKitDrawingNextArrowIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+        [SHStyleKit setButton:nextButton withDrawing:SHStyleKitDrawingArrowRightIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
         nextButton.hidden = indexPath.item == self.spotList.spots.count - 1;
     }
     

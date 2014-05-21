@@ -62,15 +62,15 @@
     /*
      * Searches spots for specials
      */
-    NSMutableDictionary *params = @{
-                                    kSpotModelParamPage : @1,
-                                    kSpotModelParamQueryVisibleToUsers : @"true",
-                                    kSpotModelParamsPageSize : kPageSize,
-                                    kSpotModelParamSources : kSpotModelParamSourcesSpotHopper,
-                                    kSpotModelParamQueryDayOfWeek : [NSNumber numberWithInteger:dayOfWeek],
-                                    kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:coordinate.latitude],
-                                    kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:coordinate.longitude]
-                                    }.mutableCopy;
+    NSDictionary *params = @{
+                            kSpotModelParamPage : @1,
+                            kSpotModelParamQueryVisibleToUsers : @"true",
+                            kSpotModelParamsPageSize : @10,
+                            kSpotModelParamSources : kSpotModelParamSourcesSpotHopper,
+                            kSpotModelParamQueryDayOfWeek : [NSNumber numberWithInteger:dayOfWeek],
+                            kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:coordinate.latitude],
+                            kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:coordinate.longitude]
+                            };
     
     return [SpotModel getSpotsWithSpecials:params success:successBlock failure:failureBlock];
 }

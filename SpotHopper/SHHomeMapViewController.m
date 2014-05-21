@@ -736,23 +736,6 @@ typedef enum {
             
             NSLog(@"HomeMap - Did select spot on map: %@", pin.spot.name);
             [self.mapOverlayCollectionViewController displaySpot:pin.spot];
-            
-//            SpotAnnotationCallout *callout = [SpotAnnotationCallout viewFromNib];
-//            [callout setMatchPercentAnnotationView:pin];
-//            [callout setDelegate:self];
-//            [callout setFrame:CGRectMake(-80, -CGRectGetHeight(callout.frame), CGRectGetWidth(callout.frame), CGRectGetHeight(callout.frame))];
-//            
-//            [pin setCalloutView:callout];
-//            
-//            if (_currentLocation != nil && pin.spot.latitude != nil && pin.spot.longitude != nil) {
-//                CLLocationDistance distance = [_currentLocation distanceFromLocation:[[CLLocation alloc] initWithLatitude:pin.spot.latitude.floatValue longitude:pin.spot.longitude.floatValue]];
-//                [pin.calloutView.lblDistanceAway setText:[NSString stringWithFormat:@"%.1f Miles", ( distance * kMeterToMile )]];
-//            } else {
-//                [pin.calloutView.lblDistanceAway setText:@""];
-//            }
-//            
-//            [pin setUserInteractionEnabled:YES];
-//            [pin addSubview:callout];
         }
     }
 }

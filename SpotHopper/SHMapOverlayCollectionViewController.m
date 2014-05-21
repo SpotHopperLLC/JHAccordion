@@ -10,11 +10,24 @@
 
 #import "SHStyleKit+Additions.h"
 
+#import "SpotListModel.h"
+#import "SpotModel.h"
+
+#import "UIAlertView+Block.h"
+
+typedef enum {
+    SHOverlayCollectionViewModeNone = 0,
+    SHOverlayCollectionViewModeSpotlists,
+    SHOverlayCollectionViewModeSpecials,
+} SHOverlayCollectionViewMode;
+
 @interface SHMapOverlayCollectionViewController () <SHSpotsCollectionViewManagerDelegate, SHSpecialsCollectionViewManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet SHSpotsCollectionViewManager *spotsCollectionViewManager;
 @property (weak, nonatomic) IBOutlet SHSpecialsCollectionViewManager *specialsCollectionViewManager;
+
+@property (assign, nonatomic) SHOverlayCollectionViewMode mode;
 
 @end
 
@@ -35,20 +48,30 @@
 #pragma mark -
 
 - (void)displaySpotList:(SpotListModel *)spotList {
+    self.mode = SHOverlayCollectionViewModeSpotlists;
     self.collectionView.dataSource = self.spotsCollectionViewManager;
     self.collectionView.delegate = self.spotsCollectionViewManager;
     [self.spotsCollectionViewManager updateSpotList:spotList];
 }
 
 - (void)displaySpot:(SpotModel *)spot {
-    [self.spotsCollectionViewManager changeSpot:spot];
+    if (self.mode == SHOverlayCollectionViewModeSpotlists) {
+        [self.spotsCollectionViewManager changeSpot:spot];
+    }
+    else if (self.mode == SHOverlayCollectionViewModeSpecials) {
+        [self.specialsCollectionViewManager changeSpot:spot];
+    }
 }
 
 - (void)displaySpecialsForSpots:(NSArray *)spots {
+    self.mode = SHOverlayCollectionViewModeSpecials;
     self.collectionView.dataSource = self.specialsCollectionViewManager;
     self.collectionView.delegate = self.specialsCollectionViewManager;
     [self.specialsCollectionViewManager updateSpots:spots];
 }
+
+#pragma mark - Private
+#pragma mark -
 
 #pragma mark - User Actions
 #pragma mark -
@@ -82,6 +105,66 @@
     }
     
     [self.spotsCollectionViewManager goNext];
+}
+
+
+- (IBAction)specialCellNameButtonTapped:(id)sender {
+    NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
+    
+    NSUInteger index = [self.specialsCollectionViewManager indexForViewInCollectionViewCell:sender];
+    if (index != NSNotFound) {
+        NSLog(@"index: %lu", (long)index);
+    }
+}
+
+- (IBAction)specialCellLeftButtonTapped:(id)sender {
+    NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
+    
+    NSUInteger index = [self.specialsCollectionViewManager indexForViewInCollectionViewCell:sender];
+    if (index != NSNotFound) {
+        NSLog(@"index: %lu", (long)index);
+    }
+    
+    [self.specialsCollectionViewManager goPrevious];
+}
+
+- (IBAction)specialCellRightButtonTapped:(id)sender {
+    NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
+    
+    NSUInteger index = [self.specialsCollectionViewManager indexForViewInCollectionViewCell:sender];
+    if (index != NSNotFound) {
+        NSLog(@"Overlay - index: %lu", (long)index);
+    }
+    
+    [self.specialsCollectionViewManager goNext];
+}
+
+- (IBAction)specialCellLikeButtonTapped:(id)sender {
+    NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
+    
+    // TODO: implement
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"This feature is not fully implemented. Please continue development." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
+    }];
+    
+    NSUInteger index = [self.specialsCollectionViewManager indexForViewInCollectionViewCell:sender];
+    if (index != NSNotFound) {
+        NSLog(@"index: %lu", (long)index);
+    }
+}
+
+- (IBAction)specialCellShareButtonTapped:(id)sender {
+    NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
+    
+    // TODO: implement
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"This feature is not fully implemented. Please continue development." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
+    }];
+    
+    NSUInteger index = [self.specialsCollectionViewManager indexForViewInCollectionViewCell:sender];
+    if (index != NSNotFound) {
+        NSLog(@"index: %lu", (long)index);
+    }
 }
 
 #pragma mark - SHSpotsCollectionViewManagerDelegate
