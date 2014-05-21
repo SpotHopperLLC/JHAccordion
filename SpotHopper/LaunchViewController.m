@@ -305,7 +305,7 @@
     } failure:^(ErrorModel *errorModel) {
         [Tracker track:@"Logged In" properties:@{@"Success" : @FALSE}];
         [self hideHUD];
-        [self showAlert:@"Oops" message:errorModel.human];
+        [self showAlert:@"Oops" message:errorModel.humanValidations];
         [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
@@ -360,7 +360,7 @@
             [self exitLaunch];
         } failure:^(ErrorModel *errorModel) {
             [self hideHUD];
-            [self showAlert:@"Oops" message:@"Error while trying to login"];
+            [self showAlert:@"Oops" message:errorModel.humanValidations];
             [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
         
@@ -368,7 +368,7 @@
         [Tracker track:@"Created User" properties:@{@"Success" : @FALSE}];
         
         [self hideHUD];
-        [self showAlert:@"Oops" message:@"Error while trying to login"];
+        [self showAlert:@"Oops" message:errorModel.humanValidations];
         [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }

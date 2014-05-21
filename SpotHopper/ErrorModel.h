@@ -14,4 +14,6 @@
 @property (nonatomic, strong) NSString *error;
 @property (nonatomic, strong) NSDictionary *validations;
 
+- (NSString*)humanValidations;
+
 @end
