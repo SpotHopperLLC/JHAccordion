@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="3f5-6R-ILz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="3f5-6R-ILz">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -900,6 +900,22 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <action selector="onClickCheckIn:" destination="GVQ-VB-zY7" eventType="touchUpInside" id="jZp-xx-d27"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="TmG-3Z-s6v" userLabel="Button - Props" customClass="SHButtonLatoLight">
+                                <rect key="frame" x="0.0" y="362" width="320" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <inset key="insetFor6xAndEarlier" minX="0.0" minY="18" maxX="0.0" maxY="-18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Give Props" image="btn_sidebar_icon_star.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onClickGiveProps:" destination="GVQ-VB-zY7" eventType="touchUpInside" id="DQy-TR-vo8"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="oG0-tn-ovb" customClass="SHButtonLatoLight">
                                 <rect key="frame" x="0.0" y="420" width="320" height="65"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -939,6 +955,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <outlet property="btnAccount" destination="oG0-tn-ovb" id="DB4-XC-JU3"/>
                         <outlet property="btnCheckIn" destination="iDQ-LH-crG" id="rCl-Bf-uMR"/>
                         <outlet property="btnDrinks" destination="TbE-N0-aPb" id="A5O-Hm-vsD"/>
+                        <outlet property="btnGiveProps" destination="TmG-3Z-s6v" id="HXY-0E-i3j"/>
                         <outlet property="btnLogin" destination="eEb-gW-dCb" id="mPi-Ja-ia5"/>
                         <outlet property="btnReviews" destination="MTm-Tt-D98" id="hn4-6v-Kp3"/>
                         <outlet property="btnSpecials" destination="oYg-0G-FUA" id="qgr-ae-l67"/>
@@ -1004,6 +1021,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="btn_sidebar_icon_reviews.png" width="42" height="26"/>
         <image name="btn_sidebar_icon_specials.png" width="42" height="36"/>
         <image name="btn_sidebar_icon_spots.png" width="42" height="34"/>
+        <image name="btn_sidebar_icon_star.png" width="42" height="27"/>
         <image name="homemenu-blurred" width="320" height="480"/>
         <image name="img_arrow_east.png" width="10" height="15"/>
         <image name="img_expand_east.png" width="27" height="27"/>

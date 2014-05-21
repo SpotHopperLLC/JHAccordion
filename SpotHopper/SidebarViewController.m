@@ -6,10 +6,15 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kAlreadyGaveProps @"alreadyGaveProps"
+
 #import "SidebarViewController.h"
 
+#import "UIAlertView+Block.h"
 #import "UIView+AddBorder.h"
 #import "UIViewController+Navigator.h"
+
+#import "Tracker.h"
 
 #import "ClientSessionManager.h"
 
@@ -24,6 +29,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnCheckIn;
 @property (weak, nonatomic) IBOutlet UIButton *btnAccount;
 @property (weak, nonatomic) IBOutlet UIButton *btnLogin;
+@property (weak, nonatomic) IBOutlet UIButton *btnGiveProps;
 
 
 @end
@@ -50,7 +56,11 @@
     [_btnSpecials setTitleEdgeInsets:insets];
     [_btnReviews setTitleEdgeInsets:insets];
     [_btnCheckIn setTitleEdgeInsets:insets];
+    [_btnGiveProps setTitleEdgeInsets:insets];
     [_btnAccount setTitleEdgeInsets:insets];
+    
+    // Hide the give props button if already gave props
+    [_btnGiveProps setHidden:[[NSUserDefaults standardUserDefaults] boolForKey:kAlreadyGaveProps]];
     
     // Add white borders
     [_btnSpots addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
@@ -59,6 +69,7 @@
     [_btnReviews addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
     [_btnCheckIn addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
     [_btnCheckIn addBottomBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
+    [_btnGiveProps addBottomBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
     [_btnAccount addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
     [_btnLogin addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
     
@@ -139,6 +150,10 @@
     }
 }
 
+- (IBAction)onClickGiveProps:(id)sender {
+    [self giveProps];
+}
+
 - (IBAction)onClickAccountSettings:(id)sender {
     [self.sidebarViewController showRightSidebar:NO];
     if ([_delegate respondsToSelector:@selector(sidebarViewControllerClickedAccount:)]) {
@@ -164,6 +179,38 @@
         [_btnLogin setHidden:( _btnLogin.alpha < 0.5f )];
     }];
 
+}
+
+- (void)giveProps {
+    // Show alert with textfield to enter code for props
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Who told you about SpotHopper?" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+    [alertView setAlertViewStyle:UIAlertViewStylePlainTextInput];
+    [[alertView textFieldAtIndex:0] setPlaceholder:@"Enter Code"];
+    [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
+        if (buttonIndex == 1) {
+            
+            // Make sure code is entered
+            NSString *code = [alertView textFieldAtIndex:0].text;
+            if (code.length > 0) {
+                
+                // Send props tracking code up to analytics
+                [Tracker track:@"Give Props" properties:@{ @"code" : code }];
+                
+                // Set user default saying props were given
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kAlreadyGaveProps];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                
+                // Animate button to hidden
+                [UIView animateWithDuration:0.35f animations:^{
+                    [_btnGiveProps setAlpha:0.0f];
+                } completion:^(BOOL finished) {
+                    [_btnGiveProps setHidden:YES];
+                }];
+            }
+            
+            
+        }
+    }];
 }
 
 @end
