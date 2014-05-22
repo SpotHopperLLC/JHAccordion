@@ -1317,4 +1317,196 @@ static UIColor* _myWhiteColorTransparent = nil;
     }
 }
 
+#pragma mark Generated Images
+
++ (UIImage*)imageOfWineIconWithScaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY strokeColorName: (NSString*)strokeColorName;
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1024, 1024), NO, 0.0f);
+    [SHStyleKit drawWineIconWithScaleX: scaleX scaleY: scaleY strokeColorName: strokeColorName];
+    UIImage* imageOfWineIcon = [UIGraphicsGetImageFromCurrentImageContext() imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+    UIGraphicsEndImageContext();
+
+    return imageOfWineIcon;
+}
+
++ (UIImage*)imageOfSpecialsIconWithScaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY strokeColorName: (NSString*)strokeColorName;
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1024, 1024), NO, 0.0f);
+    [SHStyleKit drawSpecialsIconWithScaleX: scaleX scaleY: scaleY strokeColorName: strokeColorName];
+    UIImage* imageOfSpecialsIcon = [UIGraphicsGetImageFromCurrentImageContext() imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+    UIGraphicsEndImageContext();
+
+    return imageOfSpecialsIcon;
+}
+
++ (UIImage*)imageOfSpotIconWithScaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY strokeColorName: (NSString*)strokeColorName;
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1024, 1024), NO, 0.0f);
+    [SHStyleKit drawSpotIconWithScaleX: scaleX scaleY: scaleY strokeColorName: strokeColorName];
+    UIImage* imageOfSpotIcon = [UIGraphicsGetImageFromCurrentImageContext() imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+    UIGraphicsEndImageContext();
+
+    return imageOfSpotIcon;
+}
+
++ (UIImage*)imageOfCocktailIconWithScaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY strokeColorName: (NSString*)strokeColorName;
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1024, 1024), NO, 0.0f);
+    [SHStyleKit drawCocktailIconWithScaleX: scaleX scaleY: scaleY strokeColorName: strokeColorName];
+    UIImage* imageOfCocktailIcon = [UIGraphicsGetImageFromCurrentImageContext() imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+    UIGraphicsEndImageContext();
+
+    return imageOfCocktailIcon;
+}
+
++ (UIImage*)imageOfBeerIconWithScaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY strokeColorName: (NSString*)strokeColorName;
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1024, 1024), NO, 0.0f);
+    [SHStyleKit drawBeerIconWithScaleX: scaleX scaleY: scaleY strokeColorName: strokeColorName];
+    UIImage* imageOfBeerIcon = [UIGraphicsGetImageFromCurrentImageContext() imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+    UIGraphicsEndImageContext();
+
+    return imageOfBeerIcon;
+}
+
++ (UIImage*)imageOfNavigationArrowIconWithScaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY strokeColorName: (NSString*)strokeColorName rotation: (CGFloat)rotation;
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1024, 1024), NO, 0.0f);
+    [SHStyleKit drawNavigationArrowIconWithScaleX: scaleX scaleY: scaleY strokeColorName: strokeColorName rotation: rotation];
+    UIImage* imageOfNavigationArrowIcon = [UIGraphicsGetImageFromCurrentImageContext() imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+    UIGraphicsEndImageContext();
+
+    return imageOfNavigationArrowIcon;
+}
+
++ (UIImage*)imageOfSearchIconWithScaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY strokeColorName: (NSString*)strokeColorName;
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1024, 1024), NO, 0.0f);
+    [SHStyleKit drawSearchIconWithScaleX: scaleX scaleY: scaleY strokeColorName: strokeColorName];
+    UIImage* imageOfSearchIcon = [UIGraphicsGetImageFromCurrentImageContext() imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+    UIGraphicsEndImageContext();
+
+    return imageOfSearchIcon;
+}
+
++ (UIImage*)imageOfSpotSideBarIconWithScaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY strokeColorName: (NSString*)strokeColorName;
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1024, 1024), NO, 0.0f);
+    [SHStyleKit drawSpotSideBarIconWithScaleX: scaleX scaleY: scaleY strokeColorName: strokeColorName];
+    UIImage* imageOfSpotSideBarIcon = [UIGraphicsGetImageFromCurrentImageContext() imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+    UIGraphicsEndImageContext();
+
+    return imageOfSpotSideBarIcon;
+}
+
++ (UIImage*)imageOfFeaturedListIconWithScaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY strokeColorName: (NSString*)strokeColorName;
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1024, 1024), NO, 0.0f);
+    [SHStyleKit drawFeaturedListIconWithScaleX: scaleX scaleY: scaleY strokeColorName: strokeColorName];
+    UIImage* imageOfFeaturedListIcon = [UIGraphicsGetImageFromCurrentImageContext() imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+    UIGraphicsEndImageContext();
+
+    return imageOfFeaturedListIcon;
+}
+
++ (UIImage*)imageOfArrowIconWithScaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY strokeColorName: (NSString*)strokeColorName rotation: (CGFloat)rotation;
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1024, 1024), NO, 0.0f);
+    [SHStyleKit drawArrowIconWithScaleX: scaleX scaleY: scaleY strokeColorName: strokeColorName rotation: rotation];
+    UIImage* imageOfArrowIcon = [UIGraphicsGetImageFromCurrentImageContext() imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+    UIGraphicsEndImageContext();
+
+    return imageOfArrowIcon;
+}
+
++ (UIImage*)imageOfDrinksIconWithScaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY strokeColorName: (NSString*)strokeColorName;
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1024, 1024), NO, 0.0f);
+    [SHStyleKit drawDrinksIconWithScaleX: scaleX scaleY: scaleY strokeColorName: strokeColorName];
+    UIImage* imageOfDrinksIcon = [UIGraphicsGetImageFromCurrentImageContext() imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+    UIGraphicsEndImageContext();
+
+    return imageOfDrinksIcon;
+}
+
++ (UIImage*)imageOfOutlineIconWithScaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY strokeColorName: (NSString*)strokeColorName;
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1024, 1024), NO, 0.0f);
+    [SHStyleKit drawOutlineIconWithScaleX: scaleX scaleY: scaleY strokeColorName: strokeColorName];
+    UIImage* imageOfOutlineIcon = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    return imageOfOutlineIcon;
+}
+
++ (UIImage*)imageOfCheckMarkIconWithScaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY strokeColorName: (NSString*)strokeColorName fillColorName: (NSString*)fillColorName;
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1024, 1024), NO, 0.0f);
+    [SHStyleKit drawCheckMarkIconWithScaleX: scaleX scaleY: scaleY strokeColorName: strokeColorName fillColorName: fillColorName];
+    UIImage* imageOfCheckMarkIcon = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    return imageOfCheckMarkIcon;
+}
+
++ (UIImage*)imageOfThumbsUpIconWithScaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY strokeColorName: (NSString*)strokeColorName fillColorName: (NSString*)fillColorName;
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1024, 1024), NO, 0.0f);
+    [SHStyleKit drawThumbsUpIconWithScaleX: scaleX scaleY: scaleY strokeColorName: strokeColorName fillColorName: fillColorName];
+    UIImage* imageOfThumbsUpIcon = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    return imageOfThumbsUpIcon;
+}
+
++ (UIImage*)imageOfShareIconWithScaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY color1Name: (NSString*)color1Name color2Name: (NSString*)color2Name color3Name: (NSString*)color3Name;
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1024, 1024), NO, 0.0f);
+    [SHStyleKit drawShareIconWithScaleX: scaleX scaleY: scaleY color1Name: color1Name color2Name: color2Name color3Name: color3Name];
+    UIImage* imageOfShareIcon = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    return imageOfShareIcon;
+}
+
++ (UIImage*)imageOfMapBubblePinFilledIconWithScaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY;
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1024, 1024), NO, 0.0f);
+    [SHStyleKit drawMapBubblePinFilledIconWithScaleX: scaleX scaleY: scaleY];
+    UIImage* imageOfMapBubblePinFilledIcon = [UIGraphicsGetImageFromCurrentImageContext() imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+    UIGraphicsEndImageContext();
+
+    return imageOfMapBubblePinFilledIcon;
+}
+
++ (UIImage*)imageOfMapBubblePinEmptyIconWithScaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY;
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1024, 1024), NO, 0.0f);
+    [SHStyleKit drawMapBubblePinEmptyIconWithScaleX: scaleX scaleY: scaleY];
+    UIImage* imageOfMapBubblePinEmptyIcon = [UIGraphicsGetImageFromCurrentImageContext() imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+    UIGraphicsEndImageContext();
+
+    return imageOfMapBubblePinEmptyIcon;
+}
+
++ (UIImage*)imageOfGradientBackgroundWithWidth: (CGFloat)width height: (CGFloat)height scaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY;
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(320, 568), NO, 0.0f);
+    [SHStyleKit drawGradientBackgroundWithWidth: width height: height scaleX: scaleX scaleY: scaleY];
+    UIImage* imageOfGradientBackground = [UIGraphicsGetImageFromCurrentImageContext() imageWithRenderingMode: UIImageRenderingModeAlwaysOriginal];
+    UIGraphicsEndImageContext();
+
+    return imageOfGradientBackground;
+}
+
++ (UIImage*)imageOfMyPlaceholderWithScaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY;
+{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(1024, 1024), NO, 0.0f);
+    [SHStyleKit drawMyPlaceholderWithScaleX: scaleX scaleY: scaleY];
+    UIImage* imageOfMyPlaceholder = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    return imageOfMyPlaceholder;
+}
+
 @end

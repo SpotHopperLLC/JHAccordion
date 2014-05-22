@@ -33,7 +33,9 @@
 
 @end
 
-@implementation MatchPercentAnnotationView
+@implementation MatchPercentAnnotationView {
+    BOOL _isSettingSpot;
+}
 
 - (id)initWithAnnotation:(id<MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithAnnotation:annotation reuseIdentifier:reuseIdentifier];
@@ -132,12 +134,19 @@
             self.highlightedPercentLabel.hidden = TRUE;
         }
         
+        _isSettingSpot = TRUE;
         [self setHighlighted:FALSE];
+        _isSettingSpot = FALSE;
     }
 }
 
 - (void)setHighlighted:(BOOL)isHighlighted {
+    if (!_isSettingSpot && self.isHighlighted == isHighlighted) {
+        return;
+    }
+    
     [super setHighlighted:isHighlighted];
+    
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:0.25 delay:0.0 options:options animations:^{
@@ -186,13 +195,14 @@
     CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"position.y"];
     
     anim.fromValue = [NSNumber numberWithInt:0];
-    anim.toValue = [NSNumber numberWithInt:-5];
+    anim.toValue = [NSNumber numberWithInt:-2];
     anim.duration = 0.15;
     anim.autoreverses = YES;
     anim.repeatCount = 2;
     anim.additive = YES;
     anim.fillMode = kCAFillModeForwards;
     anim.removedOnCompletion = NO;
+    anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     [self.layer addAnimation:anim forKey:@"bounceAnimation"];
 }
 

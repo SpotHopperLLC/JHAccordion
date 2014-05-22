@@ -8,12 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+#import "SHBaseCollectionViewManager.h"
+
 @protocol SHSpotsCollectionViewManagerDelegate;
 
 @class SpotListModel;
 @class SpotModel;
 
-@interface SHSpotsCollectionViewManager : NSObject <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface SHSpotsCollectionViewManager : SHBaseCollectionViewManager <UICollectionViewDataSource, UICollectionViewDelegate>
 
 - (void)updateSpotList:(SpotListModel *)spotList;
 - (void)changeIndex:(NSUInteger)index;

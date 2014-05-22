@@ -8,11 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+#import "SHBaseCollectionViewManager.h"
+
 @protocol SHSpecialsCollectionViewManagerDelegate;
 
 @class SpotModel;
 
-@interface SHSpecialsCollectionViewManager : NSObject <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface SHSpecialsCollectionViewManager : SHBaseCollectionViewManager <UICollectionViewDataSource, UICollectionViewDelegate>
 
 - (void)updateSpots:(NSArray *)spots;
 

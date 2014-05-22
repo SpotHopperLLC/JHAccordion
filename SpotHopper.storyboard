@@ -26,35 +26,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="bKj-gh-a81">
-                        <barButtonItem key="leftBarButtonItem" id="Uos-hO-eQr">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="f8s-sn-TAx">
-                                <rect key="frame" x="16" y="7" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="leftTopButtonTapped:" destination="WvW-kG-wPv" eventType="touchUpInside" id="PBY-tM-d06"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" id="ymN-Qz-bSI">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="UaE-0l-isi">
-                                <rect key="frame" x="274" y="7" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="rightTopButtonTapped:" destination="WvW-kG-wPv" eventType="touchUpInside" id="YVx-Eo-Mie"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="bKj-gh-a81"/>
                     <connections>
-                        <outlet property="btnLeft" destination="f8s-sn-TAx" id="zbq-Ne-kh7"/>
-                        <outlet property="btnRight" destination="UaE-0l-isi" id="T0b-8K-vEu"/>
                         <outlet property="mapView" destination="NLr-zB-HzB" id="2J1-1Y-jvi"/>
                         <segue destination="GR3-5Z-4Jq" kind="modal" identifier="HomeMapToSpots" id="ybR-9Z-6Rw"/>
                     </connections>
@@ -62,6 +35,55 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TBM-RD-8Ym" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="840" y="-10"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="gAc-J8-1Fq">
+            <objects>
+                <viewController id="7TX-QY-83X" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="NHf-51-BWB"/>
+                        <viewControllerLayoutGuide type="bottom" id="NBu-Sb-Q7S"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="LeN-ch-aXx">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="54" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="hb2-2Q-sG2">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="54" id="W9d-ds-HVj">
+                                        <rect key="frame" x="0.0" y="22" width="320" height="54"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="W9d-ds-HVj" id="7XL-QE-agb">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="53"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RQu-SL-xGL">
+                                                    <rect key="frame" x="20" y="12" width="97" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                                </textField>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="hb2-2Q-sG2" firstAttribute="top" secondItem="LeN-ch-aXx" secondAttribute="top" id="IwQ-06-CyE"/>
+                            <constraint firstAttribute="trailing" secondItem="hb2-2Q-sG2" secondAttribute="trailing" id="JmT-fa-VOz"/>
+                            <constraint firstItem="NBu-Sb-Q7S" firstAttribute="top" secondItem="hb2-2Q-sG2" secondAttribute="bottom" id="YAw-t4-oWL"/>
+                            <constraint firstItem="hb2-2Q-sG2" firstAttribute="leading" secondItem="LeN-ch-aXx" secondAttribute="leading" id="fet-4o-aTI"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fb7-6n-MJS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1309" y="-44"/>
         </scene>
         <!--Location Menu Bar View Controller-->
         <scene sceneID="9hJ-ox-pdc">
@@ -410,7 +432,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BhB-qj-Fti" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="OiY-Ea-XmW" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1780" y="-10"/>
+            <point key="canvasLocation" x="2222" y="340"/>
         </scene>
         <!--Map Overlay Collection View Controller-->
         <scene sceneID="9U9-je-4vL">
@@ -866,10 +888,10 @@
             </objects>
             <point key="canvasLocation" x="840" y="916"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Base Navigation Controller-->
         <scene sceneID="WQN-fx-kPc">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Tjo-bo-MqR" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Tjo-bo-MqR" customClass="SHBaseNavigationController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="gtp-pF-rHf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -884,10 +906,10 @@
             </objects>
             <point key="canvasLocation" x="391" y="-10"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Base Navigation Controller-->
         <scene sceneID="T6b-ZL-lrk">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="GR3-5Z-4Jq" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="GR3-5Z-4Jq" customClass="SHBaseNavigationController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="uek-BU-EfU">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -900,7 +922,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YeM-Pf-PKr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1309" y="-10"/>
+            <point key="canvasLocation" x="1777" y="340"/>
         </scene>
         <!--Sidebar View Controller-->
         <scene sceneID="mcz-bq-vMb">
