@@ -34,6 +34,7 @@
 
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import <QuartzCore/QuartzCore.h>
 
 #define kMeterToMile 0.000621371f
 #define kDebugAnnotationViewPositions FALSE
@@ -90,14 +91,6 @@ typedef enum {
     
     UIImage *backgroundImage = [SHStyleKit gradientBackgroundWithSize:self.view.frame.size];
     UIColor *backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
-//    [self.navigationController.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
-//    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-//    [[UINavigationBar appearance] setBackgroundColor:backgroundColor];
-    
-    UIImage *image __unused = [SHStyleKit drawImage:SHStyleKitDrawingSearchIcon color:SHStyleKitColorMyTintColor size:CGSizeMake(40, 40)];
-    
-    [SHStyleKit setButton:self.btnLeft withDrawing:SHStyleKitDrawingSearchIcon normalColor:SHStyleKitColorMyWhiteColor highlightedColor:SHStyleKitColorMyTextColor];
-    [SHStyleKit setButton:self.btnRight withDrawing:SHStyleKitDrawingFeaturedListIcon normalColor:SHStyleKitColorMyWhiteColor highlightedColor:SHStyleKitColorMyTextColor];
     
     self.navigationController.navigationBar.barTintColor = backgroundColor;
     self.navigationController.navigationBar.translucent = NO;
@@ -200,24 +193,12 @@ typedef enum {
             [view constrainToHeight:kFooterNavigationViewHeight];
         }];
         
-//        [self hideHomeNavigation:FALSE withCompletionBlock:nil];
-        [self hideCollectionContainerView:false withCompletionBlock:^{
+        [self hideCollectionContainerView:FALSE withCompletionBlock:^{
             NSLog(@"Collection container view is hidden");
         }];
     }
     
-    // each time the Home Map will appear it should update the location name
-//    TellMeMyLocation *tellMeMyLocation = [[TellMeMyLocation alloc] init];
-//    [tellMeMyLocation findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
-//        _currentLocation = newLocation;
-//        [TellMeMyLocation setLastLocation:newLocation completionHandler:^{
-//            NSLog(@"lastLocationName: %@", [TellMeMyLocation lastLocationName]);
-//            [self.locationMenuBarViewController updateLocationTitle:[TellMeMyLocation lastLocationName]];
-//        }];
-//        [self.locationMenuBarViewController updateLocationTitle:[TellMeMyLocation lastLocationName]];
-//    } failure:^(NSError *error) {
-//        [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
-//    }];
+    [self hideSearch:FALSE withCompletionBlock:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -227,7 +208,7 @@ typedef enum {
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-    return UIStatusBarStyleDefault;
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -319,17 +300,120 @@ typedef enum {
     }
 }
 
+- (void)showSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    NSAssert(self.navigationItem, @"Navigation Item is required");
+    
+    UIButton *searchCancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [searchCancelButton addTarget:self action:@selector(searchCancelButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [searchCancelButton setTitle:@"cancel" forState:UIControlStateNormal];
+    searchCancelButton.titleLabel.font = [UIFont fontWithName:@"Lato-Light" size:searchCancelButton.titleLabel.font.pointSize];
+    [SHStyleKit setButton:searchCancelButton normalTextColor:SHStyleKitColorMyWhiteColor highlightedTextColor:SHStyleKitColorMyTintColor];
+    UIBarButtonItem *searchCancelBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchCancelButton];
+    
+    CGFloat cancelButtonTextWidth = [self widthForString:searchCancelButton.titleLabel.text font:searchCancelButton.titleLabel.font maxWidth:150.0f];
+    searchCancelButton.frame = CGRectMake(0, 0, cancelButtonTextWidth + 10, 32);
+    
+    // add 10 + (20 * 2) for padding
+    CGFloat textFieldWidth = CGRectGetWidth(self.view.frame) - 50.0f - cancelButtonTextWidth;
+
+    CGRect searchFrame = CGRectMake(0, 0, 30, 30);
+    UITextField *searchTextField = [[UITextField alloc] initWithFrame:searchFrame];
+    searchTextField.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.1f];
+    UIBarButtonItem *searchTextFieldBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchTextField];
+    [SHStyleKit setTextField:searchTextField textColor:SHStyleKitColorMyWhiteColor];
+    searchTextField.alpha = 0.1f;
+    searchTextField.font = [UIFont fontWithName:@"Lato-Light" size:14.0f];
+    searchTextField.tintColor = [[SHStyleKit myWhiteColor] colorWithAlphaComponent:0.75f];
+    searchTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+
+    // set the left view
+    UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
+    UIImageView *leftImageView = [[UIImageView alloc] initWithFrame:CGRectMake(4, 4, 20, 20)];
+    [SHStyleKit setImageView:leftImageView withDrawing:SHStyleKitDrawingSearchIcon color:SHStyleKitColorMyWhiteColor];
+    [leftView addSubview:leftImageView];
+    
+    searchTextField.leftView = leftView;
+    searchTextField.leftViewMode = UITextFieldViewModeAlways;
+    searchTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    searchTextField.layer.cornerRadius = 5.0f;
+    searchTextField.clipsToBounds = TRUE;
+    
+    self.navigationItem.title = nil;
+    
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:(animated ? 0.25f : 0.0f)];
+    [CATransaction setCompletionBlock:^{
+        [searchTextField becomeFirstResponder];
+        if (completionBlock) {
+            completionBlock();
+        }
+    }];
+    [self.navigationItem setLeftBarButtonItem:searchTextFieldBarButtonItem animated:animated];
+    [self.navigationItem setRightBarButtonItem:searchCancelBarButtonItem animated:animated];
+    [UIView animateWithDuration:0.35f animations:^{
+        searchTextField.alpha = 1.0f;
+        searchTextField.frame = CGRectMake(0, 0, textFieldWidth, 30);
+    } completion:^(BOOL finished) {
+        searchTextField.placeholder = @"Find spot/drink or similar...";
+    }];
+    [CATransaction commit];
+}
+
+- (void)hideSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    NSAssert(self.navigationItem, @"Navigation Item is required");
+    
+    self.navigationItem.title = self.title;
+    
+    UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [searchButton addTarget:self action:@selector(searchButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    searchButton.frame = CGRectMake(0, 0, 30, 30);
+    [SHStyleKit setButton:searchButton withDrawing:SHStyleKitDrawingSearchIcon normalColor:SHStyleKitColorMyWhiteColor highlightedColor:SHStyleKitColorMyTextColor];
+    UIBarButtonItem *searchBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchButton];
+    
+    UIButton *sideBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [sideBarButton addTarget:self action:@selector(sideBarButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    sideBarButton.frame = CGRectMake(0, 0, 30, 30);
+    [SHStyleKit setButton:sideBarButton withDrawing:SHStyleKitDrawingSpotSideBarIcon normalColor:SHStyleKitColorMyWhiteColor highlightedColor:SHStyleKitColorMyTextColor];
+    UIBarButtonItem *sideBarBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:sideBarButton];
+
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:(animated ? 0.25f : 0.0f)];
+    [CATransaction setCompletionBlock:^{
+        if (completionBlock) {
+            completionBlock();
+        }
+    }];
+    [self.view endEditing:YES];
+    [self.navigationItem setLeftBarButtonItem:searchBarButtonItem animated:animated];
+    [self.navigationItem setRightBarButtonItem:sideBarBarButtonItem animated:animated];
+    [CATransaction commit];
+    
+}
+
+- (void)showSliders:(BOOL)animated forMode:(SHHomeMapMode)mode withCompletionBlock:(void (^)())completionBlock {
+    // 1) prepare the slider vc
+    // 2) prepare blurred image view to place behind slider vc
+    // 3)
+}
+
+- (void)hideSliders:(BOOL)animated forMode:(SHHomeMapMode)mode withCompletionBlock:(void (^)())completionBlock {
+}
+
 #pragma mark - User Actions
 #pragma mark -
 
-- (IBAction)leftTopButtonTapped:(id)sender {
-    NSLog(@"Search!");
-}
-
-- (IBAction)rightTopButtonTapped:(id)sender {
+- (IBAction)sideBarButtonTapped:(id)sender {
     [self toggleSideBar:TRUE withCompletionBlock:^{
         NSLog(@"Toggled Side Bar");
     }];
+}
+
+- (IBAction)searchButtonTapped:(id)sender {
+    [self showSearch:TRUE withCompletionBlock:nil];
+}
+
+- (IBAction)searchCancelButtonTapped:(id)sender {
+    [self hideSearch:TRUE withCompletionBlock:nil];
 }
 
 #pragma mark - Navigation

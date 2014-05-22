@@ -1,56 +1,49 @@
 //
-//  SHSpotsCollectionViewManager.m
+//  SpecialsCollectionViewManager.m
 //  SpotHopper
 //
-//  Created by Brennan Stehling on 5/16/14.
+//  Created by Brennan Stehling on 5/20/14.
 //  Copyright (c) 2014 SpotHopper. All rights reserved.
 //
 
-#import "SHSpotsCollectionViewManager.h"
+#import "SHSpecialsCollectionViewManager.h"
 
-#import "SpotListModel.h"
 #import "SpotModel.h"
-#import "SpotTypeModel.h"
-#import "ImageModel.h"
 
 #import "SHStyleKit+Additions.h"
 #import "UIImageView+AFNetworking.h"
 #import "NetworkHelper.h"
-
-#import "TellMeMyLocation.h"
 #import "Tracker.h"
 
-#import <CoreLocation/CoreLocation.h>
+#import "NSArray+DailySpecials.h"
 
-#define kMeterToMile 0.000621371f
+#define kSpecialCellIdentifier @"SpecialCell"
 
-#define kSpotCellIdentifier @"SpotCell"
-
-#define kSpotCellSpotImageView 1
-#define kSpotCellSpotNameButton 2
-#define kSpotCellSpotTypeLabel 3
-#define kSpotCellNeighborhoodLabel 4
-#define kSpotCellDistanceLabel 5
-#define kSpotCellMatchPercentageImageView 6
-#define kSpotCellPositionLabel 7
-#define kSpotCellLeftButton 8
-#define kSpotCellRightButton 9
-#define kSpotCellPercentageLabel 10
-#define kSpotCellMatchLabel 11
+#define kSpecialCellSpotImageView 1
+#define kSpecialCellSpotNameButton 2
+#define kSpecialCellSpecialTextView 3
+#define kSpecialCellLikeButton 4
+#define kSpecialCellLikeLabel 5
+#define kSpecialCellShareButton 6
+#define kSpecialCellShareLabel 7
+#define kSpecialCellLeftButton 8
+#define kSpecialCellRightButton 9
+#define kSpecialCellPositionLabel 10
+#define kSpecialCellMatchLabel 11
 
 #pragma mark - Class Extension
 #pragma mark -
 
-@interface SHSpotsCollectionViewManager () <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface SHSpecialsCollectionViewManager ()
 
-@property (nonatomic, weak) IBOutlet id<SHSpotsCollectionViewManagerDelegate> delegate;
+@property (nonatomic, weak) IBOutlet id<SHSpecialsCollectionViewManagerDelegate> delegate;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 
-@property (nonatomic, strong) SpotListModel *spotList;
+@property (nonatomic, strong) NSArray *spots;
 
 @end
 
-@implementation SHSpotsCollectionViewManager {
+@implementation SHSpecialsCollectionViewManager {
     BOOL _isUpdatingData;
     NSUInteger _currentIndex;
 }
@@ -69,17 +62,17 @@
 #pragma mark - Public
 #pragma mark -
 
-- (void)updateSpotList:(SpotListModel *)spotList {
+- (void)updateSpots:(NSArray *)spots {
     NSAssert(self.delegate, @"Delegate must be defined");
-
+    
     static NSString *lock;
     @synchronized(lock) {
         if (_isUpdatingData) {
-            [self performSelector:@selector(updateSpotList:) withObject:spotList afterDelay:0.25];
+            [self performSelector:@selector(updateSpots:) withObject:spots afterDelay:0.25];
         }
         else {
             _isUpdatingData = TRUE;
-            self.spotList = spotList;
+            self.spots = spots;
             [self.collectionView setContentOffset:CGPointMake(0, 0)];
             [self.collectionView reloadData];
             _currentIndex = 0;
@@ -91,7 +84,7 @@
 - (void)changeIndex:(NSUInteger)index {
     // TODO: change collection view position if the index is in bounds and set _currentIndex
     
-    if (index != _currentIndex && index < self.spotList.spots.count) {
+    if (index != _currentIndex && index < self.spots.count) {
         NSLog(@"Manager - Changing to index: %lu", (long)index);
         _currentIndex = index;
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_currentIndex inSection:0];
@@ -101,7 +94,7 @@
 }
 
 - (void)changeSpot:(SpotModel *)spot {
-    NSUInteger index = [self.spotList.spots indexOfObject:spot];
+    NSUInteger index = [self.spots indexOfObject:spot];
     if (index != NSNotFound) {
         [self changeIndex:index];
     }
@@ -127,12 +120,12 @@
 
 - (BOOL)hasPrevious {
     NSIndexPath *indexPath = [self indexPathForCurrentItemInCollectionView:self.collectionView];
-    return self.spotList.spots.count ? (indexPath.item > 0) : FALSE;
+    return self.spots.count ? (indexPath.item > 0) : FALSE;
 }
 
 - (BOOL)hasNext {
     NSIndexPath *indexPath = [self indexPathForCurrentItemInCollectionView:self.collectionView];
-    return self.spotList.spots.count ? (indexPath.item < self.spotList.spots.count - 1) : FALSE;
+    return self.spots.count ? (indexPath.item < self.spots.count - 1) : FALSE;
 }
 
 - (void)goPrevious {
@@ -151,14 +144,19 @@
 #pragma mark -
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.spotList.spots.count;
+    return self.spots.count;
 }
 
+// The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kSpotCellIdentifier forIndexPath:indexPath];
-    if (indexPath.item < self.spotList.spots.count) {
-        SpotModel *spot = self.spotList.spots[indexPath.item];
+    // dequeue named cell template
+    
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kSpecialCellIdentifier forIndexPath:indexPath];
+    
+    if (indexPath.item < self.spots.count) {
+        SpotModel *spot = self.spots[indexPath.item];
         [self renderCell:cell withSpot:spot atIndex:indexPath.item];
+
     }
     
     return cell;
@@ -170,8 +168,8 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"Selected item %lu", (long)indexPath.item);
     
-    if ([self.delegate respondsToSelector:@selector(spotsCollectionViewManager:didSelectSpotAtIndex:)]) {
-        [self.delegate spotsCollectionViewManager:self didSelectSpotAtIndex:indexPath.item];
+    if ([self.delegate respondsToSelector:@selector(specialsCollectionViewManager:didSelectSpotAtIndex:)]) {
+        [self.delegate specialsCollectionViewManager:self didSelectSpotAtIndex:indexPath.item];
     }
 }
 
@@ -191,7 +189,7 @@
 #pragma mark -
 
 - (void)renderCell:(UICollectionViewCell *)cell withSpot:(SpotModel *)spot atIndex:(NSUInteger)index {
-    UIImageView *spotImageView = (UIImageView *)[cell viewWithTag:kSpotCellSpotImageView];
+    UIImageView *spotImageView = (UIImageView *)[cell viewWithTag:kSpecialCellSpotImageView];
     UIImage *placeholderImage = [SHStyleKit drawImage:SHStyleKitDrawingPlaceholderBasic size:spotImageView.frame.size];
     spotImageView.image = placeholderImage;
     
@@ -210,71 +208,63 @@
         }];
     }
     
-    UIButton *nameButton = [self buttonInView:cell withTag:kSpotCellSpotNameButton];
-    UILabel *typeLabel = [self labelInView:cell withTag:kSpotCellSpotTypeLabel];
-    UILabel *neighborhoodLabel = [self labelInView:cell withTag:kSpotCellNeighborhoodLabel];
-    UILabel *distanceLabel = [self labelInView:cell withTag:kSpotCellDistanceLabel];
-    UILabel *positionLabel = [self labelInView:cell withTag:kSpotCellPositionLabel];
-    UIImageView *matchImageView = [self imageViewInView:cell withTag:kSpotCellMatchPercentageImageView];
-    UILabel *percentageLabel = [self labelInView:cell withTag:kSpotCellPercentageLabel];
-    UILabel *matchLabel = [self labelInView:cell withTag:kSpotCellMatchLabel];
+    UIButton *nameButton = [self buttonInView:cell withTag:kSpecialCellSpotNameButton];
+    UITextView *specialTextView = [self textViewInView:cell withTag:kSpecialCellSpecialTextView];
+    UIButton *likeButton = [self buttonInView:cell withTag:kSpecialCellLikeButton];
+    UILabel *likeLabel = [self labelInView:cell withTag:kSpecialCellLikeLabel];
+    UIButton *shareButton = [self buttonInView:cell withTag:kSpecialCellShareButton];
+    UILabel *shareLabel = [self labelInView:cell withTag:kSpecialCellShareLabel];
+    UILabel *positionLabel = [self labelInView:cell withTag:kSpecialCellPositionLabel];
     
     NSAssert(nameButton, @"View must be defined");
-    NSAssert(typeLabel, @"View must be defined");
-    NSAssert(neighborhoodLabel, @"View must be defined");
-    NSAssert(distanceLabel, @"View must be defined");
+    NSAssert(specialTextView, @"View must be defined");
+    NSAssert(likeButton, @"View must be defined");
+    NSAssert(likeLabel, @"View must be defined");
+    NSAssert(shareButton, @"View must be defined");
+    NSAssert(shareLabel, @"View must be defined");
     NSAssert(positionLabel, @"View must be defined");
-    NSAssert(matchImageView, @"View must be defined");
-    NSAssert(percentageLabel, @"View must be defined");
-    NSAssert(matchLabel, @"View must be defined");
     
-    [SHStyleKit setLabel:typeLabel textColor:SHStyleKitColorMyTextColor];
-    [SHStyleKit setLabel:neighborhoodLabel textColor:SHStyleKitColorMyTextColor];
-    [SHStyleKit setLabel:distanceLabel textColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setButton:likeButton withDrawing:SHStyleKitDrawingThumbsUpIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyWhiteColor];
+    [SHStyleKit setButton:shareButton withDrawing:SHStyleKitDrawingShareIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyWhiteColor];
+    [SHStyleKit setLabel:likeLabel textColor:SHStyleKitColorMyTintColor];
+    [SHStyleKit setLabel:shareLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:positionLabel textColor:SHStyleKitColorMyTextColor];
-    [SHStyleKit setLabel:percentageLabel textColor:SHStyleKitColorMyWhiteColor];
-    [SHStyleKit setLabel:matchLabel textColor:SHStyleKitColorMyTintColor];
     
-    [typeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
-    [neighborhoodLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
-    [distanceLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
+    [specialTextView setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
+    [likeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
+    [shareLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
     [positionLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
-    [percentageLabel setFont:[UIFont fontWithName:@"Lato-Light" size:22.0f]];
-    [matchLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
     
     [nameButton setTitle:spot.name forState:UIControlStateNormal];
     [SHStyleKit setButton:nameButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
-    typeLabel.text = spot.spotType.name;
-    neighborhoodLabel.text = spot.city;
     
-    CLLocation *spotLocation = [[CLLocation alloc] initWithLatitude:[spot.latitude floatValue] longitude:[spot.longitude floatValue]];
-    CLLocation *currentLocation = [TellMeMyLocation currentDeviceLocation];
-    CLLocationDistance meters = [currentLocation distanceFromLocation:spotLocation];
+    NSString *special = [spot.dailySpecials specialsForToday];
+    NSLog(@"Special: %@", special);
+    NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:14.0], NSForegroundColorAttributeName : [SHStyleKit myTextColor] };
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:special attributes:attributes];
+    specialTextView.attributedText = attributedString;
+    [specialTextView setContentOffset:CGPointMake(0, 0)];
+    [specialTextView flashScrollIndicators];
     
-    CGFloat miles = meters * kMeterToMile;
+    likeLabel.text = @"0";
     
-    distanceLabel.text = [NSString stringWithFormat:@"%0.1f miles away", miles];
-    positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", (long)index+1, (long)self.spotList.spots.count];
-    percentageLabel.text = [NSString stringWithFormat:@"%@", spot.matchPercent];
+    positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", (long)index+1, (long)self.spots.count];
     
-    UIImage *bubbleImage = [SHStyleKit drawImage:SHStyleKitDrawingMapBubblePinFilledIcon color:SHStyleKitColorNone size:CGSizeMake(60, 60)];
-    matchImageView.image = bubbleImage;
-    
-    UIButton *previousButton = [self buttonInView:cell withTag:kSpotCellLeftButton];
+    UIButton *previousButton = [self buttonInView:cell withTag:kSpecialCellLeftButton];
     [SHStyleKit setButton:previousButton withDrawing:SHStyleKitDrawingArrowLeftIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
     previousButton.hidden = index == 0;
     
-    UIButton *nextButton = [self buttonInView:cell withTag:kSpotCellRightButton];
+    UIButton *nextButton = [self buttonInView:cell withTag:kSpecialCellRightButton];
     [SHStyleKit setButton:nextButton withDrawing:SHStyleKitDrawingArrowRightIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
-    nextButton.hidden = index == self.spotList.spots.count - 1;
+    nextButton.hidden = index == self.spots.count - 1;
 }
 
 #pragma mark - Private
 #pragma mark -
 
 - (void)reportedChangedIndex {
-    if ([self.delegate respondsToSelector:@selector(spotsCollectionViewManager:didChangeToSpotAtIndex:)]) {
-        [self.delegate spotsCollectionViewManager:self didChangeToSpotAtIndex:_currentIndex];
+    if ([self.delegate respondsToSelector:@selector(specialsCollectionViewManager:didChangeToSpotAtIndex:)]) {
+        [self.delegate specialsCollectionViewManager:self didChangeToSpotAtIndex:_currentIndex];
     }
 }
 
