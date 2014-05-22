@@ -97,7 +97,7 @@
     } failure:^(NSError *error) {
         [self hideHUD];
         [self doSearch];
-        [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
     // Initializes stuff
@@ -394,7 +394,7 @@
     } failure:^(ErrorModel *errorModel) {
         [self dataDidFinishRefreshing];
         [self hideHUD];
-        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
 }

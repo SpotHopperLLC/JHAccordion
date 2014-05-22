@@ -15,9 +15,9 @@
 + (void)track:(NSString *)event properties:(NSDictionary *)properties;
 
 // Sentry
-+ (void)logInfo:(NSString *)message class:(Class)class trace:(NSString *)trace;
-+ (void)logWarning:(NSString *)message class:(Class)class trace:(NSString *)trace;
-+ (void)logError:(NSString *)message class:(Class)class trace:(NSString *)trace;
-+ (void)logFatal:(NSString *)message class:(Class)class trace:(NSString *)trace;
++ (void)logInfo:(id)message class:(Class)class trace:(NSString *)trace;
++ (void)logWarning:(id)message class:(Class)class trace:(NSString *)trace;
++ (void)logError:(id)message class:(Class)class trace:(NSString *)trace;
++ (void)logFatal:(id)message class:(Class)class trace:(NSString *)trace;
 
 @end

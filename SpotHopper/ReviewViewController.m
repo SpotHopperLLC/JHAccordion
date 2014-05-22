@@ -360,7 +360,7 @@
         } failure:^(ErrorModel *errorModel) {
             [self hideHUD];
             [self showAlert:@"Oops" message:errorModel.human];
-            [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
+            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
         
     } else if (_drink != nil || _spot != nil) {
@@ -401,7 +401,7 @@
             _review = nil;
             [self hideHUD];
             [self showAlert:@"Oops" message:errorModel.human];
-            [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
+            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
     }
 }
@@ -559,7 +559,7 @@
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self initSliders];
-        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
@@ -570,7 +570,7 @@
         _drink = drinkModel;
         [self updateView];
     } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
@@ -581,7 +581,7 @@
         _spot = spotModel;
         [self updateView];
     } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 

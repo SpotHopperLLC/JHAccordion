@@ -115,7 +115,7 @@
         NSLog(@"We have an active FB session");
     } failure:^(FBSessionState state, NSError *error) {
         NSLog(@"We DON'T have an active FB session");
-        [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 
     if (kAnalyticsEnabled) {
@@ -161,7 +161,7 @@
                                          } success:^(UserModel *userModel, NSHTTPURLResponse *response) {
                             
                         } failure:^(ErrorModel *errorModel) {
-                            [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
+                            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
                         }];
                     }
                     
@@ -307,7 +307,7 @@
             completionBlock();
         }
     } failure:^(NSError *error) {
-        [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 

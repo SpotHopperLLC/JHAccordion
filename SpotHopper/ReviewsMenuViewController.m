@@ -380,7 +380,7 @@
         // Adds drinks to results
         [_results addObjectsFromArray:drinkModels];
     } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
     /*
@@ -404,7 +404,7 @@
         // Adds spots to results
         [_results addObjectsFromArray:spotModels];
     } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
     /*

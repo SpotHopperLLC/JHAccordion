@@ -150,7 +150,7 @@
                 [_delegate locationError:self error:error];
             }
         }
-        [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 

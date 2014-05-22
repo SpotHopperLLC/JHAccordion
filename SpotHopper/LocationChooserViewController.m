@@ -134,7 +134,7 @@
         if ([error.domain isEqualToString:kTellMeMyLocationDomain]) {
             [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
         }
-        [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
