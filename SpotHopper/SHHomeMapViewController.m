@@ -47,8 +47,8 @@
 #define kCollectionViewHeight 150.0f
 #define kFooterNavigationViewHeight 50.0f
 
-#define kBlurRadius 1.5f
-#define kBlurSaturation 1.0f
+#define kBlurRadius 2.5f
+#define kBlurSaturation 1.5f
 
 #define kModalAnimationDuration 0.35f
 
@@ -434,7 +434,7 @@ typedef enum {
     // it will be initially be pushed down out of view and the bottom constaint's constant of the slider view
     // and the height constraint of the blurred image view will be animated together so achive the blurred effect properly
     
-    self.mapView.showsUserLocation = FALSE;
+//    self.mapView.showsUserLocation = FALSE;
     [self prepareBlurredScreen];
     
     UIButton *cancelButton = [self makeButtonWithTitle:@"cancel" target:self action:@selector(searchSlidersCancelButtonTapped:)];
@@ -497,7 +497,7 @@ typedef enum {
     // get rid of it to avoid holding onto state or excess memory
     
     [self updateBlurredView];
-    self.mapView.showsUserLocation = TRUE;
+//    self.mapView.showsUserLocation = TRUE;
     
     [self restoreNormalNavigationItems:animated withCompletionBlock:^{
         UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;

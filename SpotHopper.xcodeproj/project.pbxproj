@@ -1856,11 +1856,11 @@
 		265CE70E1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */; };
 		265CE70F1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */; };
 		265CE7101911899C008DAF5E /* PhotoAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */; };
-		2668970A192F1FA4004FAC2D /* BaseSlidersSearchTableViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26689709192F1FA4004FAC2D /* BaseSlidersSearchTableViewManager.m */; };
-		2668970B192F1FA4004FAC2D /* BaseSlidersSearchTableViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26689709192F1FA4004FAC2D /* BaseSlidersSearchTableViewManager.m */; };
-		2668970C192F1FA4004FAC2D /* BaseSlidersSearchTableViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26689709192F1FA4004FAC2D /* BaseSlidersSearchTableViewManager.m */; };
-		2668970D192F1FA4004FAC2D /* BaseSlidersSearchTableViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26689709192F1FA4004FAC2D /* BaseSlidersSearchTableViewManager.m */; };
-		2668970E192F1FA4004FAC2D /* BaseSlidersSearchTableViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26689709192F1FA4004FAC2D /* BaseSlidersSearchTableViewManager.m */; };
+		2668970A192F1FA4004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26689709192F1FA4004FAC2D /* SHSlidersSearchTableViewManager.m */; };
+		2668970B192F1FA4004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26689709192F1FA4004FAC2D /* SHSlidersSearchTableViewManager.m */; };
+		2668970C192F1FA4004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26689709192F1FA4004FAC2D /* SHSlidersSearchTableViewManager.m */; };
+		2668970D192F1FA4004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26689709192F1FA4004FAC2D /* SHSlidersSearchTableViewManager.m */; };
+		2668970E192F1FA4004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26689709192F1FA4004FAC2D /* SHSlidersSearchTableViewManager.m */; };
 		26689711192F2A71004FAC2D /* SHSlidersSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26689710192F2A71004FAC2D /* SHSlidersSearchViewController.m */; };
 		26689712192F2A71004FAC2D /* SHSlidersSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26689710192F2A71004FAC2D /* SHSlidersSearchViewController.m */; };
 		26689713192F2A71004FAC2D /* SHSlidersSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26689710192F2A71004FAC2D /* SHSlidersSearchViewController.m */; };
@@ -3060,8 +3060,8 @@
 		2654B8AA192BB6E000A66BED /* SHSpotsMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSpotsMenuViewController.m; path = SpotHopper/SHSpotsMenuViewController.m; sourceTree = "<group>"; };
 		265CE70B1911899C008DAF5E /* PhotoAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAlbumViewController.h; sourceTree = "<group>"; };
 		265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAlbumViewController.m; sourceTree = "<group>"; };
-		26689708192F1FA4004FAC2D /* BaseSlidersSearchTableViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseSlidersSearchTableViewManager.h; sourceTree = "<group>"; };
-		26689709192F1FA4004FAC2D /* BaseSlidersSearchTableViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseSlidersSearchTableViewManager.m; sourceTree = "<group>"; };
+		26689708192F1FA4004FAC2D /* SHSlidersSearchTableViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHSlidersSearchTableViewManager.h; sourceTree = "<group>"; };
+		26689709192F1FA4004FAC2D /* SHSlidersSearchTableViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHSlidersSearchTableViewManager.m; sourceTree = "<group>"; };
 		2668970F192F2A71004FAC2D /* SHSlidersSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSlidersSearchViewController.h; path = SpotHopper/SHSlidersSearchViewController.h; sourceTree = "<group>"; };
 		26689710192F2A71004FAC2D /* SHSlidersSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSlidersSearchViewController.m; path = SpotHopper/SHSlidersSearchViewController.m; sourceTree = "<group>"; };
 		26689716192F2A82004FAC2D /* SHBaseCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHBaseCollectionViewManager.h; path = SpotHopper/SHBaseCollectionViewManager.h; sourceTree = "<group>"; };
@@ -4526,8 +4526,8 @@
 				2654B895192BB6B200A66BED /* SHSpotsCollectionViewManager.m */,
 				26C428CB192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.h */,
 				26C428CC192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m */,
-				26689708192F1FA4004FAC2D /* BaseSlidersSearchTableViewManager.h */,
-				26689709192F1FA4004FAC2D /* BaseSlidersSearchTableViewManager.m */,
+				26689708192F1FA4004FAC2D /* SHSlidersSearchTableViewManager.h */,
+				26689709192F1FA4004FAC2D /* SHSlidersSearchTableViewManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -6641,7 +6641,7 @@
 				038664EA186D37BC00985CEC /* RefreshView.m in Sources */,
 				038664CD186D376900985CEC /* NSDate+Util.m in Sources */,
 				0320236D18774DD1008368C2 /* ReviewsMenuViewController.m in Sources */,
-				2668970A192F1FA4004FAC2D /* BaseSlidersSearchTableViewManager.m in Sources */,
+				2668970A192F1FA4004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */,
 				03F6BF7018C6E8BD00172F13 /* ListCell.m in Sources */,
 				26F0FDE718EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
 				038664D3186D376900985CEC /* UIImage+Resize.m in Sources */,
@@ -6809,7 +6809,7 @@
 				03CABFD218E7716400FAC5F5 /* RefreshView.m in Sources */,
 				03CABFD318E7716400FAC5F5 /* NSDate+Util.m in Sources */,
 				03CABFD418E7716400FAC5F5 /* ReviewsMenuViewController.m in Sources */,
-				2668970E192F1FA4004FAC2D /* BaseSlidersSearchTableViewManager.m in Sources */,
+				2668970E192F1FA4004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */,
 				03CABFD518E7716400FAC5F5 /* ListCell.m in Sources */,
 				26F0FDEA18EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
 				03CABFD618E7716400FAC5F5 /* UIImage+Resize.m in Sources */,
@@ -6969,7 +6969,7 @@
 				03F4E77618CA33D00056EAA9 /* RefreshView.m in Sources */,
 				03F4E77718CA33D00056EAA9 /* NSDate+Util.m in Sources */,
 				03F4E77818CA33D00056EAA9 /* ReviewsMenuViewController.m in Sources */,
-				2668970C192F1FA4004FAC2D /* BaseSlidersSearchTableViewManager.m in Sources */,
+				2668970C192F1FA4004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */,
 				03F4E77918CA33D00056EAA9 /* ListCell.m in Sources */,
 				26F0FDE918EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
 				03F4E77A18CA33D00056EAA9 /* UIImage+Resize.m in Sources */,
@@ -7129,7 +7129,7 @@
 				03F4E8C418CA34260056EAA9 /* RefreshView.m in Sources */,
 				03F4E8C518CA34260056EAA9 /* NSDate+Util.m in Sources */,
 				03F4E8C618CA34260056EAA9 /* ReviewsMenuViewController.m in Sources */,
-				2668970B192F1FA4004FAC2D /* BaseSlidersSearchTableViewManager.m in Sources */,
+				2668970B192F1FA4004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */,
 				03F4E8C718CA34260056EAA9 /* ListCell.m in Sources */,
 				26F0FDE818EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
 				03F4E8C818CA34260056EAA9 /* UIImage+Resize.m in Sources */,
@@ -7289,7 +7289,7 @@
 				267E05221922CC48004457B4 /* RefreshView.m in Sources */,
 				267E05231922CC48004457B4 /* NSDate+Util.m in Sources */,
 				267E05241922CC48004457B4 /* ReviewsMenuViewController.m in Sources */,
-				2668970D192F1FA4004FAC2D /* BaseSlidersSearchTableViewManager.m in Sources */,
+				2668970D192F1FA4004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */,
 				267E05251922CC48004457B4 /* ListCell.m in Sources */,
 				267E05261922CC48004457B4 /* AgeVerificationViewController.m in Sources */,
 				267E05271922CC48004457B4 /* UIImage+Resize.m in Sources */,

@@ -88,12 +88,12 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="0.25" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fb7-6n-MJS" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="b42-Mj-MDL" customClass="BaseSlidersSearchTableViewManager">
+                <customObject id="b42-Mj-MDL" customClass="SHSlidersSearchTableViewManager">
                     <connections>
                         <outlet property="tableView" destination="PZE-0K-mHj" id="OQa-Ev-gYd"/>
                     </connections>
