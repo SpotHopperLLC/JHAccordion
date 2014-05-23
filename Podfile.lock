@@ -37,7 +37,7 @@ PODS:
   - Raven (0.2.0)
   - Reveal-iOS-SDK (1.0.4)
   - STTwitter (0.0.9)
-  - TTTAttributedLabel (1.9.5)
+  - TTTAttributedLabel (1.10.0)
   - UIImage+BlurredFrame (0.0.4)
   - UIView-Autolayout (0.2.0)
 
@@ -49,18 +49,18 @@ DEPENDENCIES:
   - GoogleAnalytics-iOS-SDK (~> 3.0.0)
   - iRate (~> 1.8.0)
   - JHAutoCompleteTextField (from `http://github.com/joshdholtz/JHAutoCompleteTextField.git`)
-  - JHSidebar (from `https://github.com/joshdholtz/JHSidebar.git`)
+  - JHSidebar (~> 0.1)
   - JSONAPI (from `http://github.com/joshdholtz/jsonapi-ios.git`)
   - MBProgressHUD (~> 0.8.0)
   - Mixpanel (~> 2.3.0)
   - Parse-iOS-SDK (~> 1.2.19)
-  - PhotoZoom (from `https://github.com/brennanMKE/PhotoZoom.git`, tag `0.0.2`)
+  - PhotoZoom (~> 0.0)
   - Promises (from `http://github.com/joshdholtz/ios-promises.git`)
   - Raven (~> 0.2.0)
   - Reveal-iOS-SDK
   - STTwitter (~> 0.0.7)
-  - TTTAttributedLabel (~> 1.9.0)
-  - UIImage+BlurredFrame (~> 0.0.0)
+  - TTTAttributedLabel (~> 1.10)
+  - UIImage+BlurredFrame (~> 0.0)
   - UIView-Autolayout (~> 0.2.0)
 
 EXTERNAL SOURCES:
@@ -69,13 +69,8 @@ EXTERNAL SOURCES:
     :tag: 0.0.3
   JHAutoCompleteTextField:
     :git: http://github.com/joshdholtz/JHAutoCompleteTextField.git
-  JHSidebar:
-    :git: https://github.com/joshdholtz/JHSidebar.git
   JSONAPI:
     :git: http://github.com/joshdholtz/jsonapi-ios.git
-  PhotoZoom:
-    :git: https://github.com/brennanMKE/PhotoZoom.git
-    :tag: 0.0.2
   Promises:
     :git: http://github.com/joshdholtz/ios-promises.git
 
@@ -88,17 +83,17 @@ SPEC CHECKSUMS:
   GoogleAnalytics-iOS-SDK: bb285d8eef15a682f1b82971becd0d22edd0e53b
   iRate: a42e2ae364634fd1eb07af3cb6985905ced01fa8
   JHAutoCompleteTextField: 1ca69c82441d9b5bf474e10d36585247030f7594
-  JHSidebar: 2efb4d14cc8bb0032c75218fd3ef7db70154c07e
+  JHSidebar: 45af6fefde65c070a394c55151b05beace03b401
   JSONAPI: b98efd0e5b8bb44984373524e2ac40ef7d5455a2
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
   Mixpanel: 9aba38257fc4d2777ab5db1afc55e22bdfd57a4a
   Parse-iOS-SDK: 5e1f7e649a02f1cc19e73cc95bd43d7778848314
-  PhotoZoom: 9086ba88417c3c9acc115fbe6e5eb7a46b25dda3
+  PhotoZoom: 52b044c8086589e85415718402df6c4b5f411cb1
   Promises: f92c1068dfb1fe8501f6059c0e05edbf655f8665
   Raven: e26260198babba5e09f31425ce88a21ee0532137
   Reveal-iOS-SDK: d3c8e109d42219daaa7a6e1ad2de34f0bdbb7a88
   STTwitter: bc2c74ffeeff6ead7b03cfec0c5d9e6be2d54e56
-  TTTAttributedLabel: 9f727215d63a358f92317a24c83c94c72de78e80
+  TTTAttributedLabel: c3a11b538bc7beb4815f156e2ba4b066929e13f9
   UIImage+BlurredFrame: 0c38f5760d72125c47d16001a88faaac573bd35d
   UIView-Autolayout: 7c05eb666738eba682f686c2da236578177e2ebb
 

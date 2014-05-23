@@ -381,34 +381,6 @@ typedef enum {
     [self restoreNormalNavigationItems:animated withCompletionBlock:completionBlock];
 }
 
-- (void)restoreNormalNavigationItems:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    self.navigationItem.title = self.title;
-    
-    UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [searchButton addTarget:self action:@selector(searchButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    searchButton.frame = CGRectMake(0, 0, 30, 30);
-    [SHStyleKit setButton:searchButton withDrawing:SHStyleKitDrawingSearchIcon normalColor:SHStyleKitColorMyWhiteColor highlightedColor:SHStyleKitColorMyTextColor];
-    UIBarButtonItem *searchBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchButton];
-    
-    UIButton *sideBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [sideBarButton addTarget:self action:@selector(sideBarButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    sideBarButton.frame = CGRectMake(0, 0, 30, 30);
-    [SHStyleKit setButton:sideBarButton withDrawing:SHStyleKitDrawingSpotSideBarIcon normalColor:SHStyleKitColorMyWhiteColor highlightedColor:SHStyleKitColorMyTextColor];
-    UIBarButtonItem *sideBarBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:sideBarButton];
-    
-    [CATransaction begin];
-    [CATransaction setAnimationDuration:(animated ? 0.25f : 0.0f)];
-    [CATransaction setCompletionBlock:^{
-        if (completionBlock) {
-            completionBlock();
-        }
-    }];
-    [self.view endEditing:YES];
-    [self.navigationItem setLeftBarButtonItem:searchBarButtonItem animated:animated];
-    [self.navigationItem setRightBarButtonItem:sideBarBarButtonItem animated:animated];
-    [CATransaction commit];
-}
-
 - (void)showSlidersSearch:(BOOL)animated forMode:(SHHomeMapMode)mode withCompletionBlock:(void (^)())completionBlock {
     
     // 1) prepare the slider vc
@@ -430,33 +402,29 @@ typedef enum {
 //    }];
     
     self.mapView.showsUserLocation = FALSE;
-    
-    UIButton *searchSlidersCancelButton = [self makeButtonWithTitle:@"cancel" target:self action:@selector(searchSlidersCancelButtonTapped:)];
-    
-    
-    UIBarButtonItem *searchSlidersCancelBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchSlidersCancelButton];
-
-    [self.navigationItem setLeftBarButtonItem:searchSlidersCancelBarButtonItem animated:animated];
-    [self.navigationItem setRightBarButtonItem:nil animated:animated];
-    
-    self.navigationItem.title = nil;
-    
     [self prepareBlurredScreen];
     
-    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-    [UIView animateWithDuration:0.25f delay:0.0f options:options animations:^{
-        self.blurredViewHeightConstraint.constant = CGRectGetHeight(self.view.frame);
-        [self.view setNeedsLayout];
-        [self.view layoutIfNeeded];
-    } completion:^(BOOL finished) {
-        if (finished) {
-            self.navigationItem.title = @"What do you feel like?";
-            [self updateBlurredView];
-            if (completionBlock) {
-                completionBlock();
-            }
+    UIButton *searchSlidersCancelButton = [self makeButtonWithTitle:@"cancel" target:self action:@selector(searchSlidersCancelButtonTapped:)];
+    UIBarButtonItem *searchSlidersCancelBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchSlidersCancelButton];
+    
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:(animated ? 0.25f : 0.0f)];
+    [CATransaction setCompletionBlock:^{
+        [self updateBlurredView];
+        if (completionBlock) {
+            completionBlock();
         }
     }];
+    
+    self.blurredViewHeightConstraint.constant = CGRectGetHeight(self.view.frame);
+    [self.view setNeedsLayout];
+    [self.view layoutIfNeeded];
+    
+    [self.navigationItem setLeftBarButtonItem:searchSlidersCancelBarButtonItem animated:animated];
+    [self.navigationItem setRightBarButtonItem:nil animated:animated];
+    self.navigationItem.title = @"What do you feel like?";
+    
+    [CATransaction commit];
 }
 
 - (void)hideSlidersSearch:(BOOL)animated forMode:(SHHomeMapMode)mode withCompletionBlock:(void (^)())completionBlock {
@@ -480,49 +448,6 @@ typedef enum {
             }
         }];
     }];
-}
-
-- (void)prepareBlurredScreen {
-    // 1) initialize and add the views if necessary (view must be clipped)
-    // 2) get the blurred screenshot and set the image view
-    // 3) set the height constraint to put it out of view
-    // 4) call the completion block when done
-
-    if (!self.blurredView && !self.blurredImageView) {
-        UIView *blurredView = [[UIView alloc] initWithFrame:self.view.frame];
-        blurredView.translatesAutoresizingMaskIntoConstraints = NO;
-        blurredView.clipsToBounds = TRUE;
-        [self.view addSubview:blurredView];
-        
-        // this view contains the image view and must be docked to the bottom
-        // the height constraint must start at zero and the view must be clipped
-        NSLayoutConstraint *heightConstraint = [blurredView constrainToHeight:0.0f];
-        [blurredView pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge | JRTViewPinBottomEdge inset:0.0 usingLayoutGuidesFrom:self];
-        self.blurredViewHeightConstraint = heightConstraint;
-        
-        UIImageView *blurredImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
-        blurredImageView.translatesAutoresizingMaskIntoConstraints = NO;
-        [blurredView addSubview:blurredImageView];
-
-        // the blurred image view must be the same height and width as the main view
-        // it should be pinned to every side but the top so it docked to the bottom with a unchanging height constraint (clipping hides the image)
-        [blurredImageView constrainToHeight:CGRectGetHeight(self.view.frame)];
-        [blurredImageView pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge | JRTViewPinBottomEdge inset:0.0];
-        
-        self.blurredView = blurredView;
-        self.blurredImageView = blurredImageView;
-    }
-
-    self.blurredViewHeightConstraint.constant = 0.0f;
-    [self updateBlurredView];
-}
-
-- (void)updateBlurredView {
-    if (self.blurredView && self.blurredImageView) {
-        // blurring the screenshot takes a bit of time and currently could be done repeatedly to achive ~25 fps, not an ideal 60+ fps
-        UIImage *blurredImage = [self blurredScreenshot];
-        self.blurredImageView.image = blurredImage;
-    }
 }
 
 #pragma mark - User Actions
@@ -779,6 +704,34 @@ typedef enum {
     return visibleFrame;
 }
 
+- (void)restoreNormalNavigationItems:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    self.navigationItem.title = self.title;
+    
+    UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [searchButton addTarget:self action:@selector(searchButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    searchButton.frame = CGRectMake(0, 0, 30, 30);
+    [SHStyleKit setButton:searchButton withDrawing:SHStyleKitDrawingSearchIcon normalColor:SHStyleKitColorMyWhiteColor highlightedColor:SHStyleKitColorMyTextColor];
+    UIBarButtonItem *searchBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchButton];
+    
+    UIButton *sideBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [sideBarButton addTarget:self action:@selector(sideBarButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    sideBarButton.frame = CGRectMake(0, 0, 30, 30);
+    [SHStyleKit setButton:sideBarButton withDrawing:SHStyleKitDrawingSpotSideBarIcon normalColor:SHStyleKitColorMyWhiteColor highlightedColor:SHStyleKitColorMyTextColor];
+    UIBarButtonItem *sideBarBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:sideBarButton];
+    
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:(animated ? 0.25f : 0.0f)];
+    [CATransaction setCompletionBlock:^{
+        if (completionBlock) {
+            completionBlock();
+        }
+    }];
+    [self.view endEditing:YES];
+    [self.navigationItem setLeftBarButtonItem:searchBarButtonItem animated:animated];
+    [self.navigationItem setRightBarButtonItem:sideBarBarButtonItem animated:animated];
+    [CATransaction commit];
+}
+
 - (UIButton *)makeButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
@@ -789,6 +742,49 @@ typedef enum {
     button.frame = CGRectMake(0, 0, buttonTextWidth + 10, 32);
     
     return button;
+}
+
+- (void)prepareBlurredScreen {
+    // 1) initialize and add the views if necessary (view must be clipped)
+    // 2) get the blurred screenshot and set the image view
+    // 3) set the height constraint to put it out of view
+    // 4) call the completion block when done
+    
+    if (!self.blurredView && !self.blurredImageView) {
+        UIView *blurredView = [[UIView alloc] initWithFrame:self.view.frame];
+        blurredView.translatesAutoresizingMaskIntoConstraints = NO;
+        blurredView.clipsToBounds = TRUE;
+        [self.view addSubview:blurredView];
+        
+        // this view contains the image view and must be docked to the bottom
+        // the height constraint must start at zero and the view must be clipped
+        NSLayoutConstraint *heightConstraint = [blurredView constrainToHeight:0.0f];
+        [blurredView pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge | JRTViewPinBottomEdge inset:0.0 usingLayoutGuidesFrom:self];
+        self.blurredViewHeightConstraint = heightConstraint;
+        
+        UIImageView *blurredImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
+        blurredImageView.translatesAutoresizingMaskIntoConstraints = NO;
+        [blurredView addSubview:blurredImageView];
+        
+        // the blurred image view must be the same height and width as the main view
+        // it should be pinned to every side but the top so it docked to the bottom with a unchanging height constraint (clipping hides the image)
+        [blurredImageView constrainToHeight:CGRectGetHeight(self.view.frame)];
+        [blurredImageView pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge | JRTViewPinBottomEdge inset:0.0];
+        
+        self.blurredView = blurredView;
+        self.blurredImageView = blurredImageView;
+    }
+    
+    self.blurredViewHeightConstraint.constant = 0.0f;
+    [self updateBlurredView];
+}
+
+- (void)updateBlurredView {
+    if (self.blurredView && self.blurredImageView) {
+        // blurring the screenshot takes a bit of time and currently could be done repeatedly to achive ~25 fps, not an ideal 60+ fps
+        UIImage *blurredImage = [self blurredScreenshot];
+        self.blurredImageView.image = blurredImage;
+    }
 }
 
 - (UIImage *)screenshotOfView:(UIView *)view excludingViews:(NSArray *)excludedViews {
