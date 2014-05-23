@@ -8,15 +8,15 @@
 
 #import "BaseViewController.h"
 
-@protocol SHSidebarViewControllerDelegate;
+@protocol SHSidebarDelegate;
 
 @interface SHSidebarViewController : BaseViewController
 
-@property (nonatomic, weak) IBOutlet id<SHSidebarViewControllerDelegate> delegate;
+@property (nonatomic, weak) IBOutlet id<SHSidebarDelegate> delegate;
 
 @end
 
-@protocol SHSidebarViewControllerDelegate <NSObject>
+@protocol SHSidebarDelegate <NSObject>
 
 @optional
 

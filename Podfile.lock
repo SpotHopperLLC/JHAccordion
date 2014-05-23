@@ -38,6 +38,7 @@ PODS:
   - Reveal-iOS-SDK (1.0.4)
   - STTwitter (0.0.9)
   - TTTAttributedLabel (1.9.5)
+  - UIImage+BlurredFrame (0.0.4)
   - UIView-Autolayout (0.2.0)
 
 DEPENDENCIES:
@@ -59,6 +60,7 @@ DEPENDENCIES:
   - Reveal-iOS-SDK
   - STTwitter (~> 0.0.7)
   - TTTAttributedLabel (~> 1.9.0)
+  - UIImage+BlurredFrame (~> 0.0.0)
   - UIView-Autolayout (~> 0.2.0)
 
 EXTERNAL SOURCES:
@@ -80,11 +82,11 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: a4d0e9a64de9242986620dafd1b3cee3b413ac5c
   BitlyForiOS: c6eb9b297cb503757a616fc201b3362fb857e8b4
-  Bolts: dc620a31cf67c29bce3e3d14a07a12e797a1a154
-  CRGradientNavigationBar: dc3ffb640685b43c27f096e7d466e80f9fa887fe
-  Facebook-iOS-SDK: 97e68fb37468bee2d90201fd0c9e4dccce5683d9
-  GoogleAnalytics-iOS-SDK: 594702aaf93e6ee497140fd31e758c2e2fa44315
-  iRate: 7820b59656e8ebcb09aadc0d2f710d939c15fbe4
+  Bolts: 91c2af8eae1d44e1dd75946a5b0ae04a43ea43e4
+  CRGradientNavigationBar: e11429639a863683acc90887b9c86e75cb5d098c
+  Facebook-iOS-SDK: e9b3d5ac54ee3e5e693f4eef470b97911b3d076d
+  GoogleAnalytics-iOS-SDK: bb285d8eef15a682f1b82971becd0d22edd0e53b
+  iRate: a42e2ae364634fd1eb07af3cb6985905ced01fa8
   JHAutoCompleteTextField: 1ca69c82441d9b5bf474e10d36585247030f7594
   JHSidebar: 2efb4d14cc8bb0032c75218fd3ef7db70154c07e
   JSONAPI: b98efd0e5b8bb44984373524e2ac40ef7d5455a2
@@ -97,6 +99,7 @@ SPEC CHECKSUMS:
   Reveal-iOS-SDK: d3c8e109d42219daaa7a6e1ad2de34f0bdbb7a88
   STTwitter: bc2c74ffeeff6ead7b03cfec0c5d9e6be2d54e56
   TTTAttributedLabel: 9f727215d63a358f92317a24c83c94c72de78e80
+  UIImage+BlurredFrame: 0c38f5760d72125c47d16001a88faaac573bd35d
   UIView-Autolayout: 7c05eb666738eba682f686c2da236578177e2ebb
 
 COCOAPODS: 0.33.1

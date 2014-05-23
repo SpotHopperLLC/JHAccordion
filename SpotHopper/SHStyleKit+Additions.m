@@ -331,7 +331,7 @@ NSString * const SHStyleKitColorNameMyWhiteColor = @"myWhiteColor";
 
 - (NSString *)keyForDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size rotation:(NSInteger)rotation;
 {
-    return [NSString stringWithFormat:@"drawing-%li-color-%li-width-%f-height-%f-rotation-%li", (long)drawing, (long)color, size.width, size.height, rotation];
+    return [NSString stringWithFormat:@"drawing-%li-color-%li-width-%f-height-%f-rotation-%li", (long)drawing, (long)color, size.width, size.height, (long)rotation];
 }
 
 - (UIImage *)cachedImageForDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size rotation:(NSInteger)rotation;
