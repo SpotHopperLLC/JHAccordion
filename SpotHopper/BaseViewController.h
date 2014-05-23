@@ -63,6 +63,7 @@
 
 - (UIImage *)whiteScreenImageForFrame:(CGRect)frame;
 - (UIImage *)resizeImage:(UIImage *)image toMaximumSize:(CGSize)maxSize;
+- (UIImage *)screenshotOfView:(UIView *)view excludingViews:(NSArray *)excludedViews;
 
 - (void)shortenLink:(NSString *)link withCompletionBlock:(void (^)(NSString *shortedLink, NSError *error))completionBlock;
 

@@ -543,6 +543,36 @@ typedef void(^AlertBlock)();
     return resizedImage;
 }
 
+- (UIImage *)screenshotOfView:(UIView *)view excludingViews:(NSArray *)excludedViews {
+    if (!floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+        NSCAssert(FALSE, @"iOS 7 or later is required.");
+    }
+    
+    // hide all excluded views before capturing screen and keep initial value
+    NSMutableArray *hiddenValues = [@[] mutableCopy];
+    for (NSUInteger index=0;index<excludedViews.count;index++) {
+        [hiddenValues addObject:[NSNumber numberWithBool:((UIView *)excludedViews[index]).hidden]];
+        ((UIView *)excludedViews[index]).hidden = TRUE;
+    }
+    
+    UIImage *image = nil;
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, 0.0);
+    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:excludedViews.count > 0];
+    
+    image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    // reset hidden values
+    for (NSUInteger index=0;index<excludedViews.count;index++) {
+        ((UIView *)excludedViews[index]).hidden = [[hiddenValues objectAtIndex:index] boolValue];
+    }
+    
+    // clean up
+    hiddenValues = nil;
+    
+    return image;
+}
+
 #pragma mark - Sharing
 
 - (void)shortenLink:(NSString *)link withCompletionBlock:(void (^)(NSString *shortedLink, NSError *error))completionBlock {

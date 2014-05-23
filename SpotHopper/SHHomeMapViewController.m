@@ -50,6 +50,8 @@
 #define kBlurRadius 1.0f
 #define kBlurSaturation 1.0f
 
+#define kModalAnimationDuration 0.35f
+
 typedef enum {
     SHHomeMapModeNone = 0,
     SHHomeMapModeSpots = 1,
@@ -407,24 +409,25 @@ typedef enum {
     UIButton *searchSlidersCancelButton = [self makeButtonWithTitle:@"cancel" target:self action:@selector(searchSlidersCancelButtonTapped:)];
     UIBarButtonItem *searchSlidersCancelBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchSlidersCancelButton];
     
-    [CATransaction begin];
-    [CATransaction setAnimationDuration:(animated ? 0.25f : 0.0f)];
-    [CATransaction setCompletionBlock:^{
-        [self updateBlurredView];
-        if (completionBlock) {
-            completionBlock();
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:(animated ? kModalAnimationDuration : 0.0f) delay:0.0 options:options animations:^{
+        
+        self.blurredViewHeightConstraint.constant = CGRectGetHeight(self.view.frame);
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
+        
+        [self.navigationItem setLeftBarButtonItem:searchSlidersCancelBarButtonItem animated:animated];
+        [self.navigationItem setRightBarButtonItem:nil animated:animated];
+        self.navigationItem.title = @"What do you feel like?";
+        
+    } completion:^(BOOL finished) {
+        if (finished) {
+            [self updateBlurredView];
+            if (completionBlock) {
+                completionBlock();
+            }
         }
     }];
-    
-    self.blurredViewHeightConstraint.constant = CGRectGetHeight(self.view.frame);
-    [self.view setNeedsLayout];
-    [self.view layoutIfNeeded];
-    
-    [self.navigationItem setLeftBarButtonItem:searchSlidersCancelBarButtonItem animated:animated];
-    [self.navigationItem setRightBarButtonItem:nil animated:animated];
-    self.navigationItem.title = @"What do you feel like?";
-    
-    [CATransaction commit];
 }
 
 - (void)hideSlidersSearch:(BOOL)animated forMode:(SHHomeMapMode)mode withCompletionBlock:(void (^)())completionBlock {
@@ -438,14 +441,13 @@ typedef enum {
     
     [self restoreNormalNavigationItems:animated withCompletionBlock:^{
         UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-        [UIView animateWithDuration:0.25f delay:0.0f options:options animations:^{
+        [UIView animateWithDuration:(animated ? kModalAnimationDuration : 0.0f) delay:0.0 options:options animations:^{
+            
             self.blurredViewHeightConstraint.constant = 0.0f;
             [self.view setNeedsLayout];
             [self.view layoutIfNeeded];
+            
         } completion:^(BOOL finished) {
-            if (finished && completionBlock) {
-                completionBlock();
-            }
         }];
     }];
 }
@@ -473,6 +475,24 @@ typedef enum {
     }];
 }
 
+- (IBAction)cancelBackToHomeMap:(UIStoryboardSegue *)segue {
+    // TODO: get back to the home map view
+}
+
+- (IBAction)finishCreatingSpotListForHomeMap:(UIStoryboardSegue *)segue {
+    // TODO: get back to the home map view and get spotlist model
+    
+    // TODO: hide the home navigation and display the collection view of the spots and add the map annotations
+    
+    NSLog(@"source: %@", NSStringFromClass([segue.sourceViewController class]));
+    NSLog(@"destination: %@", NSStringFromClass([segue.destinationViewController class]));
+    
+    if ([segue.sourceViewController isKindOfClass:[SHAdjustSpotListSliderViewController class]]) {
+        SHAdjustSpotListSliderViewController *vc = (SHAdjustSpotListSliderViewController *)segue.sourceViewController;
+        [self displaySpotlist:vc.spotListModel];
+    }
+}
+
 #pragma mark - Navigation
 #pragma mark -
 
@@ -492,24 +512,6 @@ typedef enum {
 
 #pragma mark - Private
 #pragma mark -
-
-- (IBAction)cancelBackToHomeMap:(UIStoryboardSegue *)segue {
-    // TODO: get back to the home map view
-}
-
-- (IBAction)finishCreatingSpotListForHomeMap:(UIStoryboardSegue *)segue {
-    // TODO: get back to the home map view and get spotlist model
-    
-    // TODO: hide the home navigation and display the collection view of the spots and add the map annotations
-    
-    NSLog(@"source: %@", NSStringFromClass([segue.sourceViewController class]));
-    NSLog(@"destination: %@", NSStringFromClass([segue.destinationViewController class]));
-    
-    if ([segue.sourceViewController isKindOfClass:[SHAdjustSpotListSliderViewController class]]) {
-        SHAdjustSpotListSliderViewController *vc = (SHAdjustSpotListSliderViewController *)segue.sourceViewController;
-        [self displaySpotlist:vc.spotListModel];
-    }
-}
 
 - (void)showBeersSearch {
     [self showSlidersSearch:TRUE forMode:SHHomeMapModeBeer withCompletionBlock:^{
@@ -785,36 +787,6 @@ typedef enum {
         UIImage *blurredImage = [self blurredScreenshot];
         self.blurredImageView.image = blurredImage;
     }
-}
-
-- (UIImage *)screenshotOfView:(UIView *)view excludingViews:(NSArray *)excludedViews {
-    if (!floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
-        NSCAssert(FALSE, @"iOS 7 or later is required.");
-    }
-    
-    // hide all excluded views before capturing screen and keep initial value
-    NSMutableArray *hiddenValues = [@[] mutableCopy];
-    for (NSUInteger index=0;index<excludedViews.count;index++) {
-        [hiddenValues addObject:[NSNumber numberWithBool:((UIView *)excludedViews[index]).hidden]];
-        ((UIView *)excludedViews[index]).hidden = TRUE;
-    }
-    
-    UIImage *image = nil;
-    UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, 0.0);
-    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:excludedViews.count > 0];
-    
-    image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    // reset hidden values
-    for (NSUInteger index=0;index<excludedViews.count;index++) {
-        ((UIView *)excludedViews[index]).hidden = [[hiddenValues objectAtIndex:index] boolValue];
-    }
-    
-    // clean up
-    hiddenValues = nil;
-    
-    return image;
 }
 
 - (UIImage *)blurredScreenshot {
