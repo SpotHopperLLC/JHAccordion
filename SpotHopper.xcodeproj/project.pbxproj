@@ -1848,6 +1848,11 @@
 		265CE70E1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */; };
 		265CE70F1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */; };
 		265CE7101911899C008DAF5E /* PhotoAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */; };
+		26689703192E9DB7004FAC2D /* SHSlidersSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26689702192E9DB7004FAC2D /* SHSlidersSearchViewController.m */; };
+		26689704192E9DB7004FAC2D /* SHSlidersSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26689702192E9DB7004FAC2D /* SHSlidersSearchViewController.m */; };
+		26689705192E9DB7004FAC2D /* SHSlidersSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26689702192E9DB7004FAC2D /* SHSlidersSearchViewController.m */; };
+		26689706192E9DB7004FAC2D /* SHSlidersSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26689702192E9DB7004FAC2D /* SHSlidersSearchViewController.m */; };
+		26689707192E9DB7004FAC2D /* SHSlidersSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26689702192E9DB7004FAC2D /* SHSlidersSearchViewController.m */; };
 		267C5E3A1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
 		267C5E3B1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
 		267C5E3C1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
@@ -3040,6 +3045,8 @@
 		2654B8AA192BB6E000A66BED /* SHSpotsMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSpotsMenuViewController.m; path = SpotHopper/SHSpotsMenuViewController.m; sourceTree = "<group>"; };
 		265CE70B1911899C008DAF5E /* PhotoAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAlbumViewController.h; sourceTree = "<group>"; };
 		265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAlbumViewController.m; sourceTree = "<group>"; };
+		26689701192E9DB7004FAC2D /* SHSlidersSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHSlidersSearchViewController.h; sourceTree = "<group>"; };
+		26689702192E9DB7004FAC2D /* SHSlidersSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHSlidersSearchViewController.m; sourceTree = "<group>"; };
 		267C5E381908B7CC00D60EB5 /* NetworkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkHelper.h; sourceTree = "<group>"; };
 		267C5E391908B7CC00D60EB5 /* NetworkHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkHelper.m; sourceTree = "<group>"; };
 		267D78D418F4A8DD00E95D54 /* SHButtonLatoBold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoBold.h; sourceTree = "<group>"; };
@@ -4456,6 +4463,8 @@
 				2654B8AA192BB6E000A66BED /* SHSpotsMenuViewController.m */,
 				2654B89B192BB6E000A66BED /* SHAdjustSpotListSliderViewController.h */,
 				2654B89C192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m */,
+				26689701192E9DB7004FAC2D /* SHSlidersSearchViewController.h */,
+				26689702192E9DB7004FAC2D /* SHSlidersSearchViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -6598,6 +6607,7 @@
 				26BABDCC190F698800852D73 /* DrinksViewController.m in Sources */,
 				265CE70D1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */,
 				2654B8AB192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m in Sources */,
+				26689703192E9DB7004FAC2D /* SHSlidersSearchViewController.m in Sources */,
 				0372FF4D18E33B20009188B5 /* TonightsSpecialsViewController.m in Sources */,
 				038664CC186D376900985CEC /* NSDate+Globalize.m in Sources */,
 				038664EA186D37BC00985CEC /* RefreshView.m in Sources */,
@@ -6764,6 +6774,7 @@
 				26BABDCF190F698800852D73 /* DrinksViewController.m in Sources */,
 				265CE7101911899C008DAF5E /* PhotoAlbumViewController.m in Sources */,
 				2654B8AF192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m in Sources */,
+				26689707192E9DB7004FAC2D /* SHSlidersSearchViewController.m in Sources */,
 				03CABFD018E7716400FAC5F5 /* TonightsSpecialsViewController.m in Sources */,
 				03CABFD118E7716400FAC5F5 /* NSDate+Globalize.m in Sources */,
 				03CABFD218E7716400FAC5F5 /* RefreshView.m in Sources */,
@@ -6922,6 +6933,7 @@
 				26BABDCE190F698800852D73 /* DrinksViewController.m in Sources */,
 				265CE70F1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */,
 				2654B8AD192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m in Sources */,
+				26689705192E9DB7004FAC2D /* SHSlidersSearchViewController.m in Sources */,
 				0372FF5118E342D1009188B5 /* TonightsSpecialsViewController.m in Sources */,
 				03F4E77518CA33D00056EAA9 /* NSDate+Globalize.m in Sources */,
 				03F4E77618CA33D00056EAA9 /* RefreshView.m in Sources */,
@@ -7080,6 +7092,7 @@
 				26BABDCD190F698800852D73 /* DrinksViewController.m in Sources */,
 				265CE70E1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */,
 				2654B8AC192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m in Sources */,
+				26689704192E9DB7004FAC2D /* SHSlidersSearchViewController.m in Sources */,
 				0372FF5018E342D1009188B5 /* TonightsSpecialsViewController.m in Sources */,
 				03F4E8C318CA34260056EAA9 /* NSDate+Globalize.m in Sources */,
 				03F4E8C418CA34260056EAA9 /* RefreshView.m in Sources */,
@@ -7238,6 +7251,7 @@
 				267E051E1922CC48004457B4 /* DrinksViewController.m in Sources */,
 				267E051F1922CC48004457B4 /* PhotoAlbumViewController.m in Sources */,
 				2654B8AE192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m in Sources */,
+				26689706192E9DB7004FAC2D /* SHSlidersSearchViewController.m in Sources */,
 				267E05201922CC48004457B4 /* TonightsSpecialsViewController.m in Sources */,
 				267E05211922CC48004457B4 /* NSDate+Globalize.m in Sources */,
 				267E05221922CC48004457B4 /* RefreshView.m in Sources */,

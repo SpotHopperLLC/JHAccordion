@@ -38,6 +38,7 @@ PODS:
   - Reveal-iOS-SDK (1.0.4)
   - STTwitter (0.0.9)
   - TTTAttributedLabel (1.9.5)
+  - UIImage+BlurredFrame (0.0.4)
   - UIView-Autolayout (0.2.0)
 
 DEPENDENCIES:
@@ -59,6 +60,7 @@ DEPENDENCIES:
   - Reveal-iOS-SDK
   - STTwitter (~> 0.0.7)
   - TTTAttributedLabel (~> 1.9.0)
+  - UIImage+BlurredFrame (~> 0.0.0)
   - UIView-Autolayout (~> 0.2.0)
 
 EXTERNAL SOURCES:
@@ -78,25 +80,26 @@ EXTERNAL SOURCES:
     :git: http://github.com/joshdholtz/ios-promises.git
 
 SPEC CHECKSUMS:
-  AFNetworking: e499052cbf3d743e9bb727bb37adb9dc2547ba15
+  AFNetworking: a4d0e9a64de9242986620dafd1b3cee3b413ac5c
   BitlyForiOS: c6eb9b297cb503757a616fc201b3362fb857e8b4
-  Bolts: dc620a31cf67c29bce3e3d14a07a12e797a1a154
-  CRGradientNavigationBar: dc3ffb640685b43c27f096e7d466e80f9fa887fe
-  Facebook-iOS-SDK: 97e68fb37468bee2d90201fd0c9e4dccce5683d9
-  GoogleAnalytics-iOS-SDK: 594702aaf93e6ee497140fd31e758c2e2fa44315
-  iRate: 7820b59656e8ebcb09aadc0d2f710d939c15fbe4
+  Bolts: 91c2af8eae1d44e1dd75946a5b0ae04a43ea43e4
+  CRGradientNavigationBar: e11429639a863683acc90887b9c86e75cb5d098c
+  Facebook-iOS-SDK: e9b3d5ac54ee3e5e693f4eef470b97911b3d076d
+  GoogleAnalytics-iOS-SDK: bb285d8eef15a682f1b82971becd0d22edd0e53b
+  iRate: a42e2ae364634fd1eb07af3cb6985905ced01fa8
   JHAutoCompleteTextField: 1ca69c82441d9b5bf474e10d36585247030f7594
   JHSidebar: 2efb4d14cc8bb0032c75218fd3ef7db70154c07e
   JSONAPI: b98efd0e5b8bb44984373524e2ac40ef7d5455a2
-  MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
-  Mixpanel: b1c61efa748193777889dfe8b7f80471ceb95e97
-  Parse-iOS-SDK: 48e366fb9a8956c4e50d93cfd16243176938fae1
+  MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
+  Mixpanel: 9aba38257fc4d2777ab5db1afc55e22bdfd57a4a
+  Parse-iOS-SDK: 5e1f7e649a02f1cc19e73cc95bd43d7778848314
   PhotoZoom: 9086ba88417c3c9acc115fbe6e5eb7a46b25dda3
   Promises: f92c1068dfb1fe8501f6059c0e05edbf655f8665
-  Raven: 3a4c596da85c8703feb2eefe89f0647db03f2f00
-  Reveal-iOS-SDK: 9de027a2cb0812e9ae220d9047161f3a0ac2db74
-  STTwitter: f155851b9b4d1a544740c2f4ae64918cd42235e2
-  TTTAttributedLabel: 6154fd2407a03fb8d71abfa36f4710fff26a168e
-  UIView-Autolayout: e242aac5a8c5fcbf507c244eaf2bfaa876e36766
+  Raven: e26260198babba5e09f31425ce88a21ee0532137
+  Reveal-iOS-SDK: d3c8e109d42219daaa7a6e1ad2de34f0bdbb7a88
+  STTwitter: bc2c74ffeeff6ead7b03cfec0c5d9e6be2d54e56
+  TTTAttributedLabel: 9f727215d63a358f92317a24c83c94c72de78e80
+  UIImage+BlurredFrame: 0c38f5760d72125c47d16001a88faaac573bd35d
+  UIView-Autolayout: 7c05eb666738eba682f686c2da236578177e2ebb
 
-COCOAPODS: 0.32.1
+COCOAPODS: 0.33.1

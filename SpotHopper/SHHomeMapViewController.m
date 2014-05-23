@@ -17,6 +17,7 @@
 #import "SHLocationMenuBarViewController.h"
 #import "SHHomeNavigationViewController.h"
 #import "SHAdjustSpotListSliderViewController.h"
+#import "SHSlidersSearchViewController.h"
 #import "SHMapOverlayCollectionViewController.h"
 #import "SHMapFooterNavigationViewController.h"
 
@@ -32,6 +33,9 @@
 #import "SpotModel.h"
 #import "ErrorModel.h"
 
+#import "UIImage+BlurredFrame.h"
+#import "UIImage+ImageEffects.h"
+
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import <QuartzCore/QuartzCore.h>
@@ -43,6 +47,9 @@
 #define kCollectionViewHeight 150.0f
 #define kFooterNavigationViewHeight 50.0f
 
+#define kBlurRadius 2.0f
+#define kBlurSaturation 2.0f
+
 typedef enum {
     SHHomeMapModeNone = 0,
     SHHomeMapModeSpots = 1,
@@ -52,12 +59,24 @@ typedef enum {
     SHHomeMapModeWine = 5
 } SHHomeMapMode;
 
-@interface SHHomeMapViewController () <SHSidebarViewControllerDelegate, SHLocationMenuBarDelegate, SHHomeNavigationDelegate, SHMapOverlayCollectionDelegate, SHMapFooterNavigationDelegate, SHSpotsCollectionViewManagerDelegate, SHAdjustSliderListSliderDelegate, SpotAnnotationCalloutDelegate, MKMapViewDelegate>
+@interface SHHomeMapViewController ()
+    <SHSidebarDelegate,
+    SHLocationMenuBarDelegate,
+    SHHomeNavigationDelegate,
+    SHMapOverlayCollectionDelegate,
+    SHMapFooterNavigationDelegate,
+    SHSpotsCollectionViewManagerDelegate,
+    SHAdjustSliderListSliderDelegate,
+    SpotAnnotationCalloutDelegate,
+    SHSlidersSearchDelegate,
+    MKMapViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *btnLeft;
 @property (weak, nonatomic) IBOutlet UIButton *btnRight;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) UIView *blurredView;
+@property (weak, nonatomic) UIImageView *blurredImageView;
 @property (weak, nonatomic) IBOutlet SHButtonLatoBold *btnUpdateSearchResults;
 
 @property (strong, nonatomic) SHSidebarViewController *sideBarViewController;
@@ -65,8 +84,10 @@ typedef enum {
 @property (strong, nonatomic) SHHomeNavigationViewController *homeNavigationViewController;
 @property (strong, nonatomic) SHMapOverlayCollectionViewController *mapOverlayCollectionViewController;
 @property (strong, nonatomic) SHMapFooterNavigationViewController *mapFooterNavigationViewController;
+@property (strong, nonatomic) SHSlidersSearchViewController *slidersSearchViewController;
 
 @property (weak, nonatomic) NSLayoutConstraint *sideBarRightEdgeConstraint;
+@property (weak, nonatomic) NSLayoutConstraint *blurredViewHeightConstraint;
 
 @property (weak, nonatomic) UIView *collectionContainerView;
 
@@ -303,23 +324,13 @@ typedef enum {
 - (void)showSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
     NSAssert(self.navigationItem, @"Navigation Item is required");
     
-    UIButton *searchCancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [searchCancelButton addTarget:self action:@selector(searchCancelButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [searchCancelButton setTitle:@"cancel" forState:UIControlStateNormal];
-    searchCancelButton.titleLabel.font = [UIFont fontWithName:@"Lato-Light" size:searchCancelButton.titleLabel.font.pointSize];
-    [SHStyleKit setButton:searchCancelButton normalTextColor:SHStyleKitColorMyWhiteColor highlightedTextColor:SHStyleKitColorMyTintColor];
-    UIBarButtonItem *searchCancelBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchCancelButton];
-    
-    CGFloat cancelButtonTextWidth = [self widthForString:searchCancelButton.titleLabel.text font:searchCancelButton.titleLabel.font maxWidth:150.0f];
-    searchCancelButton.frame = CGRectMake(0, 0, cancelButtonTextWidth + 10, 32);
-    
+    UIButton *searchCancelButton = [self makeButtonWithTitle:@"cancel" target:self action:@selector(searchCancelButtonTapped:)];
     // add 10 + (20 * 2) for padding
-    CGFloat textFieldWidth = CGRectGetWidth(self.view.frame) - 50.0f - cancelButtonTextWidth;
+    CGFloat textFieldWidth = CGRectGetWidth(self.view.frame) - 50.0f - CGRectGetWidth(searchCancelButton.frame);
 
     CGRect searchFrame = CGRectMake(0, 0, 30, 30);
     UITextField *searchTextField = [[UITextField alloc] initWithFrame:searchFrame];
     searchTextField.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.1f];
-    UIBarButtonItem *searchTextFieldBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchTextField];
     [SHStyleKit setTextField:searchTextField textColor:SHStyleKitColorMyWhiteColor];
     searchTextField.alpha = 0.1f;
     searchTextField.font = [UIFont fontWithName:@"Lato-Light" size:14.0f];
@@ -339,6 +350,9 @@ typedef enum {
     searchTextField.clipsToBounds = TRUE;
     
     self.navigationItem.title = nil;
+    
+    UIBarButtonItem *searchCancelBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchCancelButton];
+    UIBarButtonItem *searchTextFieldBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchTextField];
     
     [CATransaction begin];
     [CATransaction setAnimationDuration:(animated ? 0.25f : 0.0f)];
@@ -390,13 +404,117 @@ typedef enum {
     
 }
 
-- (void)showSliders:(BOOL)animated forMode:(SHHomeMapMode)mode withCompletionBlock:(void (^)())completionBlock {
+- (void)showSlidersSearch:(BOOL)animated forMode:(SHHomeMapMode)mode withCompletionBlock:(void (^)())completionBlock {
+    
+    
+    
     // 1) prepare the slider vc
     // 2) prepare blurred image view to place behind slider vc
-    // 3)
+    // 3) embed slider vc and position view at the bottom before animating it up
+    // 4) while slider view is animating up also increase the height of the blurred image which is placed behind it and docked to the bottom
+    
+    // the slider view will have a height constraint and will also be docked to the bottom.
+    // it will be initially be pushed down out of view and the bottom constaint's constant of the slider view
+    // and the height constraint of the blurred image view will be animated together so achive the blurred effect properly
+    
+//    if (!self.searchDisplayController) {
+//        self.slidersSearchViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHSearchViewController"];
+//        self.slidersSearchViewController.delegate = self;
+//        
+//    }
+//    
+//    [self embedViewController:self.slidersSearchViewController intoView:self.view placementBlock:^(UIView *view) {
+//    }];
+    
+    [self prepareBlurredScreenWithCompletionBlock:^{
+        UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+        [UIView animateWithDuration:1.5 delay:0.1 options:options animations:^{
+            self.blurredViewHeightConstraint.constant = CGRectGetHeight(self.view.frame);
+            [self.view setNeedsLayout];
+            [self.view layoutIfNeeded];
+        } completion:^(BOOL finished) {
+            NSLog(@"Slider Search is now shown");
+            
+            [self updateBlurredView];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [self hideSlidersSearch:animated forMode:mode withCompletionBlock:^{
+                    NSLog(@"Slider Search is now hidden");
+                }];
+            });
+            
+            if (completionBlock) {
+                completionBlock();
+            }
+        }];
+    }];
 }
 
-- (void)hideSliders:(BOOL)animated forMode:(SHHomeMapMode)mode withCompletionBlock:(void (^)())completionBlock {
+- (void)hideSlidersSearch:(BOOL)animated forMode:(SHHomeMapMode)mode withCompletionBlock:(void (^)())completionBlock {
+    // get rid of it to avoid holding onto state or excess memory
+    
+//    [self removeEmbeddedViewController:self.slidersSearchViewController];
+//    self.slidersSearchViewController = nil;
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:1.5 delay:0.0 options:options animations:^{
+        self.blurredViewHeightConstraint.constant = 0.0f;
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        if (completionBlock) {
+            completionBlock();
+        }
+    }];
+}
+
+- (void)prepareBlurredScreenWithCompletionBlock:(void (^)())completionBlock {
+    // 1) initialize and add the views if necessary (view must be clipped)
+    // 2) get the blurred screenshot and set the image view
+    // 3) set the height constraint to put it out of view
+    // 4) call the completion block when done
+
+    if (!self.blurredView && !self.blurredImageView) {
+        UIView *blurredView = [[UIView alloc] initWithFrame:self.view.frame];
+        blurredView.translatesAutoresizingMaskIntoConstraints = NO;
+        blurredView.clipsToBounds = TRUE;
+        [self.view addSubview:blurredView];
+        
+        // this view contains the image view and must be docked to the bottom
+        // the height constraint must start at zero and the view must be clipped
+        NSLayoutConstraint *heightConstraint = [blurredView constrainToHeight:0.0f];
+        [blurredView pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge | JRTViewPinBottomEdge inset:0.0 usingLayoutGuidesFrom:self];
+        self.blurredViewHeightConstraint = heightConstraint;
+        
+        UIImageView *blurredImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
+        blurredImageView.translatesAutoresizingMaskIntoConstraints = NO;
+        [blurredView addSubview:blurredImageView];
+
+        // the blurred image view must be the same height and width as the main view
+        // it should be pinned to every side but the top so it docked to the bottom with a unchanging height constraint (clipping hides the image)
+        [blurredImageView constrainToHeight:CGRectGetHeight(self.view.frame)];
+        [blurredImageView pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge | JRTViewPinBottomEdge inset:0.0];
+        
+        self.blurredView = blurredView;
+        self.blurredImageView = blurredImageView;
+    }
+
+    [self updateBlurredView];
+    
+    
+    self.blurredViewHeightConstraint.constant = 0.0f;
+    
+    if (completionBlock) {
+        completionBlock();
+    }
+}
+
+- (void)updateBlurredView {
+    if (self.blurredView && self.blurredImageView) {
+        // blurring the screenshot takes a bit of time and currently could be done repeatedly to achive ~25 fps, not an ideal 60+ fps
+        UIImage *blurredImage = [self blurredScreenshot];
+        self.blurredImageView.image = blurredImage;
+    }
 }
 
 #pragma mark - User Actions
@@ -414,6 +532,10 @@ typedef enum {
 
 - (IBAction)searchCancelButtonTapped:(id)sender {
     [self hideSearch:TRUE withCompletionBlock:nil];
+}
+
+- (IBAction)slidersCancelButtonTapped:(id)sender {
+    // TODO: implement
 }
 
 #pragma mark - Navigation
@@ -452,6 +574,24 @@ typedef enum {
         SHAdjustSpotListSliderViewController *vc = (SHAdjustSpotListSliderViewController *)segue.sourceViewController;
         [self displaySpotlist:vc.spotListModel];
     }
+}
+
+- (void)showBeersSearch {
+    [self showSlidersSearch:TRUE forMode:SHHomeMapModeBeer withCompletionBlock:^{
+        NSLog(@"Beer!");
+    }];
+}
+
+- (void)showCocktailsSearch {
+    [self showSlidersSearch:TRUE forMode:SHHomeMapModeCocktail withCompletionBlock:^{
+        NSLog(@"Cocktails!");
+    }];
+}
+
+- (void)showWineSearch {
+    [self showSlidersSearch:TRUE forMode:SHHomeMapModeWine withCompletionBlock:^{
+        NSLog(@"Wine!");
+    }];
 }
 
 - (void)displaySpotlist:(SpotListModel *)spotListModel {
@@ -629,7 +769,56 @@ typedef enum {
     return visibleFrame;
 }
 
-#pragma mark - SHSidebarViewControllerDelegate
+- (UIButton *)makeButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    [button setTitle:title forState:UIControlStateNormal];
+    //button.titleLabel.font = [UIFont fontWithName:@"Lato-Light" size:button.titleLabel.font.pointSize];
+    [SHStyleKit setButton:button normalTextColor:SHStyleKitColorMyWhiteColor highlightedTextColor:SHStyleKitColorMyTintColor];
+    CGFloat buttonTextWidth = [self widthForString:button.titleLabel.text font:button.titleLabel.font maxWidth:150.0f];
+    button.frame = CGRectMake(0, 0, buttonTextWidth + 10, 32);
+    
+    return button;
+}
+
+- (UIImage *)screenshotOfView:(UIView *)view excludingViews:(NSArray *)excludedViews {
+    if (!floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+        NSCAssert(FALSE, @"iOS 7 or later is required.");
+    }
+    
+    // hide all excluded views before capturing screen and keep initial value
+    NSMutableArray *hiddenValues = [@[] mutableCopy];
+    for (NSUInteger index=0;index<excludedViews.count;index++) {
+        [hiddenValues addObject:[NSNumber numberWithBool:((UIView *)excludedViews[index]).hidden]];
+        ((UIView *)excludedViews[index]).hidden = TRUE;
+    }
+    
+    UIImage *image = nil;
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, 0.0);
+    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:excludedViews.count > 0];
+    
+    image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    // reset hidden values
+    for (NSUInteger index=0;index<excludedViews.count;index++) {
+        ((UIView *)excludedViews[index]).hidden = [[hiddenValues objectAtIndex:index] boolValue];
+    }
+    
+    // clean up
+    hiddenValues = nil;
+    
+    return image;
+}
+
+- (UIImage *)blurredScreenshot {
+    UIImage *screenshot = [self screenshotOfView:self.view excludingViews:@[self.blurredView]];
+    UIImage *blurredSnapshotImage = [screenshot applyBlurWithRadius:kBlurRadius tintColor:nil saturationDeltaFactor:kBlurSaturation maskImage:nil];
+    
+    return blurredSnapshotImage;
+}
+
+#pragma mark - SHSidebarDelegate
 #pragma mark -
 
 - (void)sidebarViewController:(SHSidebarViewController*)vc didTapSearchTextField:(id)sender {
@@ -695,15 +884,15 @@ typedef enum {
 }
 
 - (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc beersButtonTapped:(id)sender {
-    NSLog(@"Beers!");
+    [self showBeersSearch];
 }
 
 - (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc cocktailsButtonTapped:(id)sender {
-    NSLog(@"Cocktails!");
+    [self showCocktailsSearch];
 }
 
 - (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc winesButtonTapped:(id)sender {
-    NSLog(@"Wines!");
+    [self showWineSearch];
 }
 
 #pragma mark - SHMapOverlayCollectionDelegate
@@ -744,15 +933,15 @@ typedef enum {
 }
 
 - (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc beersButtonTapped:(id)sender {
-    NSLog(@"Beers!");
+    [self showBeersSearch];
 }
 
 - (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc cocktailsButtonTapped:(id)sender {
-    NSLog(@"Cocktails!");
+    [self showCocktailsSearch];
 }
 
 - (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc winesButtonTapped:(id)sender {
-    NSLog(@"Wines!");
+    [self showWineSearch];
 }
 
 #pragma mark - SHAdjustSliderListSliderDelegate
