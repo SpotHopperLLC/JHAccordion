@@ -14,4 +14,8 @@
 
 @implementation SHSlidersSearchViewController
 
+- (void)viewDidLoad {
+    [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
+}
+
 @end

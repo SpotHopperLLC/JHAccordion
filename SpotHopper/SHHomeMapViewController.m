@@ -47,7 +47,7 @@
 #define kCollectionViewHeight 150.0f
 #define kFooterNavigationViewHeight 50.0f
 
-#define kBlurRadius 1.0f
+#define kBlurRadius 1.5f
 #define kBlurSaturation 1.0f
 
 #define kModalAnimationDuration 0.35f
@@ -90,6 +90,7 @@ typedef enum {
 
 @property (weak, nonatomic) NSLayoutConstraint *sideBarRightEdgeConstraint;
 @property (weak, nonatomic) NSLayoutConstraint *blurredViewHeightConstraint;
+@property (weak, nonatomic) NSLayoutConstraint *slidersSearchViewTopConstraint;
 
 @property (weak, nonatomic) UIView *collectionContainerView;
 
@@ -131,6 +132,9 @@ typedef enum {
     self.mapOverlayCollectionViewController.delegate = self;
     self.mapFooterNavigationViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHMapFooterNavigationViewController"];
     self.mapFooterNavigationViewController.delegate = self;
+    
+    self.slidersSearchViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHSlidersSearchViewController"];
+    self.slidersSearchViewController.delegate = self;
 
     self.title = @"New Search";
     
@@ -221,6 +225,19 @@ typedef enum {
         }];
     }
     
+    if (!self.slidersSearchViewController.view.superview) {
+        [self embedViewController:self.slidersSearchViewController intoView:self.view placementBlock:^(UIView *view) {
+            [view pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0f];
+            [view constrainToHeight:CGRectGetHeight(self.view.frame)];
+            NSArray *topConstraints = [view pinToSuperviewEdges:JRTViewPinTopEdge inset:CGRectGetHeight(self.view.frame) usingLayoutGuidesFrom:self];
+            NSCAssert(topConstraints.count == 1, @"There should be only 1 constraint for top");
+            if (topConstraints.count) {
+                NSLayoutConstraint *topConstraint = topConstraints[0];
+                self.slidersSearchViewTopConstraint = topConstraint;
+            }
+        }];
+    }
+    
     [self hideSearch:FALSE withCompletionBlock:nil];
 }
 
@@ -285,7 +302,7 @@ typedef enum {
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
-        if (completionBlock) {
+        if (finished && completionBlock) {
             completionBlock();
         }
     }];
@@ -326,11 +343,15 @@ typedef enum {
 - (void)showSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
     NSAssert(self.navigationItem, @"Navigation Item is required");
     
-    UIButton *searchCancelButton = [self makeButtonWithTitle:@"cancel" target:self action:@selector(searchCancelButtonTapped:)];
-    // add 10 + (20 * 2) for padding
-    CGFloat textFieldWidth = CGRectGetWidth(self.view.frame) - 50.0f - CGRectGetWidth(searchCancelButton.frame);
+    UIButton *cancelButton = [self makeButtonWithTitle:@"cancel" target:self action:@selector(searchCancelButtonTapped:)];
+    CGRect cancelButtonFrame = cancelButton.frame;
+    cancelButtonFrame.origin.x = 248.0f;
+    cancelButtonFrame.origin.y = 6.0f;
+    cancelButton.frame = cancelButtonFrame;
+    // (20 * 2) for leading/trailing minus width of cancel button
+    CGFloat textFieldWidth = CGRectGetWidth(self.view.frame) - 40.0f - CGRectGetWidth(cancelButton.frame);
 
-    CGRect searchFrame = CGRectMake(0, 0, 30, 30);
+    CGRect searchFrame = CGRectMake(16.0f, 7.0f, 30.0f, 30.0f);
     UITextField *searchTextField = [[UITextField alloc] initWithFrame:searchFrame];
     searchTextField.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.1f];
     [SHStyleKit setTextField:searchTextField textColor:SHStyleKitColorMyWhiteColor];
@@ -341,7 +362,8 @@ typedef enum {
 
     // set the left view
     UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
-    UIImageView *leftImageView = [[UIImageView alloc] initWithFrame:CGRectMake(4, 4, 20, 20)];
+    UIImageView *leftImageView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 8, 16, 16)];
+    leftImageView.alpha = 0.5f;
     [SHStyleKit setImageView:leftImageView withDrawing:SHStyleKitDrawingSearchIcon color:SHStyleKitColorMyWhiteColor];
     [leftView addSubview:leftImageView];
     
@@ -353,28 +375,47 @@ typedef enum {
     
     self.navigationItem.title = nil;
     
-    UIBarButtonItem *searchCancelBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchCancelButton];
+    UIBarButtonItem *searchCancelBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     UIBarButtonItem *searchTextFieldBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchTextField];
     
-    [CATransaction begin];
-    [CATransaction setAnimationDuration:(animated ? 0.25f : 0.0f)];
-    [CATransaction setCompletionBlock:^{
-        [searchTextField becomeFirstResponder];
-        if (completionBlock) {
-            completionBlock();
-        }
-    }];
-    [self.navigationItem setLeftBarButtonItem:searchTextFieldBarButtonItem animated:animated];
-    [self.navigationItem setRightBarButtonItem:searchCancelBarButtonItem animated:animated];
-    [UIView animateWithDuration:0.35f animations:^{
+    
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:(animated ? 0.25f : 0.0f) delay:0.0 options:options animations:^{
+        
+        [self.navigationItem setLeftBarButtonItem:searchTextFieldBarButtonItem animated:animated];
+        [self.navigationItem setRightBarButtonItem:searchCancelBarButtonItem animated:animated];
         searchTextField.alpha = 1.0f;
         searchTextField.frame = CGRectMake(0, 0, textFieldWidth, 30);
+        
     } completion:^(BOOL finished) {
         if (finished) {
+            NSLog(@"cancelButton: %f, %f", cancelButton.frame.origin.x, cancelButton.frame.origin.y);
+            NSLog(@"searchTextField: %f, %f", searchTextField.frame.origin.x, searchTextField.frame.origin.y);
+
             searchTextField.placeholder = @"Find spot/drink or similar...";
+            [searchTextField becomeFirstResponder];
+            if (completionBlock) {
+                completionBlock();
+            }
         }
     }];
-    [CATransaction commit];
+    
+//    [CATransaction begin];
+//    [CATransaction setAnimationDuration:(animated ? 0.25f : 0.0f)];
+//    [CATransaction setCompletionBlock:^{
+//        
+//    }];
+//    
+//    
+//    [UIView animateWithDuration:0.35f animations:^{
+//        
+//        
+//    } completion:^(BOOL finished) {
+//        if (finished) {
+//        }
+//    }];
+//    [CATransaction commit];
 }
 
 - (void)hideSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
@@ -384,7 +425,6 @@ typedef enum {
 }
 
 - (void)showSlidersSearch:(BOOL)animated forMode:(SHHomeMapMode)mode withCompletionBlock:(void (^)())completionBlock {
-    
     // 1) prepare the slider vc
     // 2) prepare blurred image view to place behind slider vc
     // 3) embed slider vc and position view at the bottom before animating it up
@@ -394,35 +434,58 @@ typedef enum {
     // it will be initially be pushed down out of view and the bottom constaint's constant of the slider view
     // and the height constraint of the blurred image view will be animated together so achive the blurred effect properly
     
-//    if (!self.searchDisplayController) {
-//        self.slidersSearchViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHSearchViewController"];
-//        self.slidersSearchViewController.delegate = self;
-//        
-//    }
-//    
-//    [self embedViewController:self.slidersSearchViewController intoView:self.view placementBlock:^(UIView *view) {
-//    }];
-    
     self.mapView.showsUserLocation = FALSE;
     [self prepareBlurredScreen];
     
-    UIButton *searchSlidersCancelButton = [self makeButtonWithTitle:@"cancel" target:self action:@selector(searchSlidersCancelButtonTapped:)];
-    UIBarButtonItem *searchSlidersCancelBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchSlidersCancelButton];
+    UIButton *cancelButton = [self makeButtonWithTitle:@"cancel" target:self action:@selector(searchSlidersCancelButtonTapped:)];
+    CGRect cancelButtonFrame = cancelButton.frame;
+    cancelButtonFrame.origin.x = 16.0f;
+    cancelButtonFrame.origin.y = 6.0f;
+    cancelButton.frame = cancelButtonFrame;
+    UIBarButtonItem *searchSlidersCancelBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
+    
+    UIImageView *rightImageView = [[UIImageView alloc] initWithFrame:CGRectMake(274.0f, 7.0f, 30.0f, 30.0f)];
+    
+    switch (mode) {
+        case SHHomeMapModeBeer:
+            [SHStyleKit setImageView:rightImageView withDrawing:SHStyleKitDrawingBeerIcon color:SHStyleKitColorMyWhiteColor];
+            break;
+        case SHHomeMapModeCocktail:
+            [SHStyleKit setImageView:rightImageView withDrawing:SHStyleKitDrawingCocktailIcon color:SHStyleKitColorMyWhiteColor];
+            break;
+        case SHHomeMapModeWine:
+            [SHStyleKit setImageView:rightImageView withDrawing:SHStyleKitDrawingWineIcon color:SHStyleKitColorMyWhiteColor];
+            break;
+            
+        default:
+            [SHStyleKit setImageView:rightImageView withDrawing:SHStyleKitDrawingSpotIcon color:SHStyleKitColorMyWhiteColor];
+            break;
+    }
+    
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightImageView];
+    
+    NSLog(@"top: %f", self.slidersSearchViewTopConstraint.constant);
+    
+    // ensure the display order is correct
+    [self.view bringSubviewToFront:self.blurredView];
+    [self.view bringSubviewToFront:self.slidersSearchViewController.view];
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-    [UIView animateWithDuration:(animated ? kModalAnimationDuration : 0.0f) delay:0.0 options:options animations:^{
+    [UIView animateWithDuration:(animated ? kModalAnimationDuration : 0.0f) delay:0.1f options:options animations:^{
         
         self.blurredViewHeightConstraint.constant = CGRectGetHeight(self.view.frame);
+        self.slidersSearchViewTopConstraint.constant = 0.0f;
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
         
         [self.navigationItem setLeftBarButtonItem:searchSlidersCancelBarButtonItem animated:animated];
-        [self.navigationItem setRightBarButtonItem:nil animated:animated];
+        [self.navigationItem setRightBarButtonItem:rightBarButtonItem animated:animated];
         self.navigationItem.title = @"What do you feel like?";
         
     } completion:^(BOOL finished) {
         if (finished) {
             [self updateBlurredView];
+            
             if (completionBlock) {
                 completionBlock();
             }
@@ -433,21 +496,24 @@ typedef enum {
 - (void)hideSlidersSearch:(BOOL)animated forMode:(SHHomeMapMode)mode withCompletionBlock:(void (^)())completionBlock {
     // get rid of it to avoid holding onto state or excess memory
     
-//    [self removeEmbeddedViewController:self.slidersSearchViewController];
-//    self.slidersSearchViewController = nil;
-    
     [self updateBlurredView];
     self.mapView.showsUserLocation = TRUE;
     
     [self restoreNormalNavigationItems:animated withCompletionBlock:^{
         UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-        [UIView animateWithDuration:(animated ? kModalAnimationDuration : 0.0f) delay:0.0 options:options animations:^{
+        [UIView animateWithDuration:(animated ? kModalAnimationDuration : 0.0f) delay:0.1f options:options animations:^{
             
             self.blurredViewHeightConstraint.constant = 0.0f;
+            self.slidersSearchViewTopConstraint.constant = CGRectGetHeight(self.view.frame);
             [self.view setNeedsLayout];
             [self.view layoutIfNeeded];
             
         } completion:^(BOOL finished) {
+            if (finished) {
+                if (completionBlock) {
+                    completionBlock();
+                }
+            }
         }];
     }];
 }
@@ -790,7 +856,17 @@ typedef enum {
 }
 
 - (UIImage *)blurredScreenshot {
-    UIImage *screenshot = [self screenshotOfView:self.view excludingViews:@[self.blurredView]];
+    
+    NSMutableArray *viewsToExclude = [@[] mutableCopy];
+    
+    if (self.blurredView) {
+        [viewsToExclude addObject:self.blurredView];
+    }
+    if (self.slidersSearchViewController.view) {
+        [viewsToExclude addObject:self.slidersSearchViewController.view];
+    }
+    
+    UIImage *screenshot = [self screenshotOfView:self.view excludingViews:viewsToExclude];
     UIImage *blurredSnapshotImage = [screenshot applyBlurWithRadius:kBlurRadius tintColor:nil saturationDeltaFactor:kBlurSaturation maskImage:nil];
     
     return blurredSnapshotImage;
