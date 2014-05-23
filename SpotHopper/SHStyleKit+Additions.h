@@ -68,6 +68,8 @@ typedef enum {
 
 + (void)setTextView:(UITextView *)textView textColor:(SHStyleKitColor)textColor;
 
++ (UIColor *)color:(SHStyleKitColor)color;
+
 + (UIImage *)drawImage:(SHStyleKitDrawing)drawing size:(CGSize)size;
 
 + (UIImage *)drawImage:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size;
