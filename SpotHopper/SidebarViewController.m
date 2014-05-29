@@ -206,6 +206,9 @@
                 } completion:^(BOOL finished) {
                     [_btnGiveProps setHidden:YES];
                 }];
+                
+                // Close sidebar
+                [self.sidebarViewController showRightSidebar:NO];
             }
             
             
