@@ -2439,6 +2439,16 @@
 		26FFAFF7191B367B00D222B7 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */; };
 		5F881FD0AAD84878A974907D /* libPods-SpotHopperLocal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3557E960D2924E8BA2015473 /* libPods-SpotHopperLocal.a */; };
 		98B74A6E72D54C9491FDAF17 /* libPods-SpotHopperStaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 123F4C2DFBE04705AFDF66F5 /* libPods-SpotHopperStaging.a */; };
+		A6CA34201937A0F1001BB23A /* SpotHopper(petti).storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6CA341F1937A0F1001BB23A /* SpotHopper(petti).storyboard */; };
+		A6CA34211937A0F1001BB23A /* SpotHopper(petti).storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6CA341F1937A0F1001BB23A /* SpotHopper(petti).storyboard */; };
+		A6CA34221937A0F1001BB23A /* SpotHopper(petti).storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6CA341F1937A0F1001BB23A /* SpotHopper(petti).storyboard */; };
+		A6CA34231937A0F1001BB23A /* SpotHopper(petti).storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6CA341F1937A0F1001BB23A /* SpotHopper(petti).storyboard */; };
+		A6CA34241937A0F1001BB23A /* SpotHopper(petti).storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6CA341F1937A0F1001BB23A /* SpotHopper(petti).storyboard */; };
+		A6CA34281937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA34271937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m */; };
+		A6CA34291937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA34271937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m */; };
+		A6CA342A1937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA34271937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m */; };
+		A6CA342B1937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA34271937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m */; };
+		A6CA342C1937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA34271937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m */; };
 		B603C870603D4E1C905D19CD /* libPods-SpotHopperDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90AAD79CD27D48B987A3A0C5 /* libPods-SpotHopperDev.a */; };
 		C85B82DA63424167A2E62738 /* libPods-SpotHopperStaging2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F5E46AECB9784EB5975AB990 /* libPods-SpotHopperStaging2.a */; };
 		D7FCD5C8824B4FA4A7587334 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
@@ -3117,6 +3127,9 @@
 		28166567EC6E42329AF4A745 /* Pods-SpotHopperLocal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotHopperLocal.xcconfig"; path = "Pods/Pods-SpotHopperLocal.xcconfig"; sourceTree = "<group>"; };
 		3557E960D2924E8BA2015473 /* libPods-SpotHopperLocal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpotHopperLocal.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		90AAD79CD27D48B987A3A0C5 /* libPods-SpotHopperDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpotHopperDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6CA341F1937A0F1001BB23A /* SpotHopper(petti).storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "SpotHopper(petti).storyboard"; sourceTree = "<group>"; };
+		A6CA34261937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSpotDetailFooterNavigationViewController.h; path = SpotHopper/SHSpotDetailFooterNavigationViewController.h; sourceTree = "<group>"; };
+		A6CA34271937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSpotDetailFooterNavigationViewController.m; path = SpotHopper/SHSpotDetailFooterNavigationViewController.m; sourceTree = "<group>"; };
 		B1EBE873E3124E54A24ED229 /* Pods-SpotHopperDev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotHopperDev.xcconfig"; path = "Pods/Pods-SpotHopperDev.xcconfig"; sourceTree = "<group>"; };
 		B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C9816A19827543A8863B8CBF /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4457,6 +4470,7 @@
 		26A7E3631922CE5300FF7B88 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				A6CA341F1937A0F1001BB23A /* SpotHopper(petti).storyboard */,
 				26A7E3651922CE8000FF7B88 /* SpotHopper.storyboard */,
 			);
 			name = Storyboards;
@@ -4465,6 +4479,7 @@
 		26A7E3641922CE5A00FF7B88 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				A6CA34251937A9DA001BB23A /* SpotDetails */,
 				26C428D9192D623900B67F10 /* Base */,
 				2668970F192F2A71004FAC2D /* SHSlidersSearchViewController.h */,
 				26689710192F2A71004FAC2D /* SHSlidersSearchViewController.m */,
@@ -4550,6 +4565,15 @@
 			);
 			path = Locations;
 			sourceTree = SOURCE_ROOT;
+		};
+		A6CA34251937A9DA001BB23A /* SpotDetails */ = {
+			isa = PBXGroup;
+			children = (
+				A6CA34261937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.h */,
+				A6CA34271937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m */,
+			);
+			name = SpotDetails;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -4822,6 +4846,7 @@
 				03AF8F1A18E5C29900DD9356 /* img_share_background_iphone5@2x.png in Resources */,
 				0320235318772A86008368C2 /* txt_sidebar_search_background@2x.png in Resources */,
 				03E4456D18B65E1500C88421 /* Spots.storyboard in Resources */,
+				A6CA34201937A0F1001BB23A /* SpotHopper(petti).storyboard in Resources */,
 				03866543186DE0F700985CEC /* btn_sidebar_icon_checkin@2x.png in Resources */,
 				039F543218D28627004B2B67 /* btn_discover_drinks_nearby@2x.png in Resources */,
 				03265F2018C4E92C002177F7 /* bar_drink_placeholder.png in Resources */,
@@ -5163,6 +5188,7 @@
 				03CAC08118E7716400FAC5F5 /* icon_view_my_reviews@2x.png in Resources */,
 				03CAC08218E7716400FAC5F5 /* Lato-BlackItalic.ttf in Resources */,
 				03CAC08318E7716400FAC5F5 /* slider_thumb.png in Resources */,
+				A6CA34241937A0F1001BB23A /* SpotHopper(petti).storyboard in Resources */,
 				03CAC08418E7716400FAC5F5 /* img_expand_north@2x.png in Resources */,
 				03CAC08518E7716400FAC5F5 /* Drinks.storyboard in Resources */,
 				03CAC08618E7716400FAC5F5 /* btn_share_text@2x.png in Resources */,
@@ -5496,6 +5522,7 @@
 				03F4E7F918CA33D00056EAA9 /* bar_drink_placeholder.png in Resources */,
 				039F543418D28627004B2B67 /* btn_discover_drinks_nearby@2x.png in Resources */,
 				03F4E7FA18CA33D00056EAA9 /* icon_view_my_reviews@2x.png in Resources */,
+				A6CA34221937A0F1001BB23A /* SpotHopper(petti).storyboard in Resources */,
 				03F4E7FB18CA33D00056EAA9 /* Lato-BlackItalic.ttf in Resources */,
 				03F4E7FC18CA33D00056EAA9 /* slider_thumb.png in Resources */,
 				039F54CA18D7FF1C004B2B67 /* img_expand_north@2x.png in Resources */,
@@ -5829,6 +5856,7 @@
 				03F4E94718CA34260056EAA9 /* bar_drink_placeholder.png in Resources */,
 				039F543318D28627004B2B67 /* btn_discover_drinks_nearby@2x.png in Resources */,
 				03F4E94818CA34260056EAA9 /* icon_view_my_reviews@2x.png in Resources */,
+				A6CA34211937A0F1001BB23A /* SpotHopper(petti).storyboard in Resources */,
 				03F4E94918CA34260056EAA9 /* Lato-BlackItalic.ttf in Resources */,
 				03F4E94A18CA34260056EAA9 /* slider_thumb.png in Resources */,
 				039F54C618D7FF1B004B2B67 /* img_expand_north@2x.png in Resources */,
@@ -6338,6 +6366,7 @@
 				267E068C1922CC48004457B4 /* slider_background_profile_min@2x.png in Resources */,
 				267E068D1922CC48004457B4 /* icon_spot.png in Resources */,
 				267E068E1922CC48004457B4 /* img_live_special_background.png in Resources */,
+				A6CA34231937A0F1001BB23A /* SpotHopper(petti).storyboard in Resources */,
 				267E068F1922CC48004457B4 /* btn_sidebar_icon_spots.png in Resources */,
 				267E06901922CC48004457B4 /* btn_context_map.png in Resources */,
 				267E06911922CC48004457B4 /* btn_spot_profile_image_previous@2x.png in Resources */,
@@ -6606,6 +6635,7 @@
 				26BABDF61910688F00852D73 /* JHAccordion.m in Sources */,
 				039F542718D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				2654B8BA192BB6E000A66BED /* SHLocationMenuBarViewController.m in Sources */,
+				A6CA34281937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m in Sources */,
 				038664E2186D379400985CEC /* ClientSessionManager.m in Sources */,
 				03AF8F6318E6013700DD9356 /* CheckinConfirmationViewController.m in Sources */,
 				039F54AC18D35C2E004B2B67 /* MenuItemCell.m in Sources */,
@@ -6774,6 +6804,7 @@
 				26BABDF91910688F00852D73 /* JHAccordion.m in Sources */,
 				03CABFB618E7716400FAC5F5 /* DrinkListMenuViewController.m in Sources */,
 				2654B8BE192BB6E000A66BED /* SHLocationMenuBarViewController.m in Sources */,
+				A6CA342C1937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m in Sources */,
 				03CABFB718E7716400FAC5F5 /* ClientSessionManager.m in Sources */,
 				03CABFB818E7716400FAC5F5 /* CheckinConfirmationViewController.m in Sources */,
 				03CABFB918E7716400FAC5F5 /* MenuItemCell.m in Sources */,
@@ -6934,6 +6965,7 @@
 				26BABDF81910688F00852D73 /* JHAccordion.m in Sources */,
 				039F542918D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				2654B8BC192BB6E000A66BED /* SHLocationMenuBarViewController.m in Sources */,
+				A6CA342A1937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m in Sources */,
 				03F4E76218CA33D00056EAA9 /* ClientSessionManager.m in Sources */,
 				03AF8F6518E6013E00DD9356 /* CheckinConfirmationViewController.m in Sources */,
 				039F54AE18D35C2E004B2B67 /* MenuItemCell.m in Sources */,
@@ -7094,6 +7126,7 @@
 				26BABDF71910688F00852D73 /* JHAccordion.m in Sources */,
 				039F542818D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				2654B8BB192BB6E000A66BED /* SHLocationMenuBarViewController.m in Sources */,
+				A6CA34291937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m in Sources */,
 				03F4E8B018CA34260056EAA9 /* ClientSessionManager.m in Sources */,
 				03AF8F6418E6013E00DD9356 /* CheckinConfirmationViewController.m in Sources */,
 				039F54AD18D35C2E004B2B67 /* MenuItemCell.m in Sources */,
@@ -7254,6 +7287,7 @@
 				267E05011922CC48004457B4 /* JHAccordion.m in Sources */,
 				267E05021922CC48004457B4 /* DrinkListMenuViewController.m in Sources */,
 				2654B8BD192BB6E000A66BED /* SHLocationMenuBarViewController.m in Sources */,
+				A6CA342B1937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m in Sources */,
 				267E05031922CC48004457B4 /* ClientSessionManager.m in Sources */,
 				267E05041922CC48004457B4 /* CheckinConfirmationViewController.m in Sources */,
 				267E05051922CC48004457B4 /* MenuItemCell.m in Sources */,
