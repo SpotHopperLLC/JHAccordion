@@ -2449,6 +2449,11 @@
 		A6CA342A1937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA34271937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m */; };
 		A6CA342B1937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA34271937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m */; };
 		A6CA342C1937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA34271937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m */; };
+		A6CA342F1937D26F001BB23A /* SHSpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA342E1937D26F001BB23A /* SHSpotProfileViewController.m */; };
+		A6CA34301937D26F001BB23A /* SHSpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA342E1937D26F001BB23A /* SHSpotProfileViewController.m */; };
+		A6CA34311937D26F001BB23A /* SHSpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA342E1937D26F001BB23A /* SHSpotProfileViewController.m */; };
+		A6CA34321937D26F001BB23A /* SHSpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA342E1937D26F001BB23A /* SHSpotProfileViewController.m */; };
+		A6CA34331937D26F001BB23A /* SHSpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA342E1937D26F001BB23A /* SHSpotProfileViewController.m */; };
 		B603C870603D4E1C905D19CD /* libPods-SpotHopperDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90AAD79CD27D48B987A3A0C5 /* libPods-SpotHopperDev.a */; };
 		C85B82DA63424167A2E62738 /* libPods-SpotHopperStaging2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F5E46AECB9784EB5975AB990 /* libPods-SpotHopperStaging2.a */; };
 		D7FCD5C8824B4FA4A7587334 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
@@ -3130,6 +3135,8 @@
 		A6CA341F1937A0F1001BB23A /* SpotHopper(petti).storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "SpotHopper(petti).storyboard"; sourceTree = "<group>"; };
 		A6CA34261937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSpotDetailFooterNavigationViewController.h; path = SpotHopper/SHSpotDetailFooterNavigationViewController.h; sourceTree = "<group>"; };
 		A6CA34271937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSpotDetailFooterNavigationViewController.m; path = SpotHopper/SHSpotDetailFooterNavigationViewController.m; sourceTree = "<group>"; };
+		A6CA342D1937D26F001BB23A /* SHSpotProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSpotProfileViewController.h; path = SpotHopper/SHSpotProfileViewController.h; sourceTree = "<group>"; };
+		A6CA342E1937D26F001BB23A /* SHSpotProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSpotProfileViewController.m; path = SpotHopper/SHSpotProfileViewController.m; sourceTree = "<group>"; };
 		B1EBE873E3124E54A24ED229 /* Pods-SpotHopperDev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotHopperDev.xcconfig"; path = "Pods/Pods-SpotHopperDev.xcconfig"; sourceTree = "<group>"; };
 		B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C9816A19827543A8863B8CBF /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4571,6 +4578,8 @@
 			children = (
 				A6CA34261937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.h */,
 				A6CA34271937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m */,
+				A6CA342D1937D26F001BB23A /* SHSpotProfileViewController.h */,
+				A6CA342E1937D26F001BB23A /* SHSpotProfileViewController.m */,
 			);
 			name = SpotDetails;
 			sourceTree = "<group>";
@@ -6714,6 +6723,7 @@
 				0320235618772D85008368C2 /* SidebarViewController.m in Sources */,
 				039F545818D2BB30004B2B67 /* DrinkCardCollectionViewCell.m in Sources */,
 				03E8832D18C836A800BD8FBB /* SpotListViewController.m in Sources */,
+				A6CA342F1937D26F001BB23A /* SHSpotProfileViewController.m in Sources */,
 				033A3F0F18E38CEE00E07F39 /* LiveSpecialModel.m in Sources */,
 				2668971F192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */,
 				03CA72CB187DD09A00815284 /* DropdownOptionCell.m in Sources */,
@@ -6883,6 +6893,7 @@
 				03CABFF318E7716400FAC5F5 /* SpotAnnotationCallout.m in Sources */,
 				03CABFF418E7716400FAC5F5 /* SidebarViewController.m in Sources */,
 				03CABFF518E7716400FAC5F5 /* DrinkCardCollectionViewCell.m in Sources */,
+				A6CA34331937D26F001BB23A /* SHSpotProfileViewController.m in Sources */,
 				03CABFF618E7716400FAC5F5 /* SpotListViewController.m in Sources */,
 				26689723192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */,
 				03CABFF718E7716400FAC5F5 /* LiveSpecialModel.m in Sources */,
@@ -7044,6 +7055,7 @@
 				039ABBF018CE3BBC00B84AE6 /* SpotAnnotationCallout.m in Sources */,
 				03F4E79418CA33D00056EAA9 /* SidebarViewController.m in Sources */,
 				039F545A18D2BB30004B2B67 /* DrinkCardCollectionViewCell.m in Sources */,
+				A6CA34311937D26F001BB23A /* SHSpotProfileViewController.m in Sources */,
 				03F4E79518CA33D00056EAA9 /* SpotListViewController.m in Sources */,
 				26689721192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */,
 				033A3F1118E463BD00E07F39 /* LiveSpecialModel.m in Sources */,
@@ -7205,6 +7217,7 @@
 				039ABBF118CE3BBD00B84AE6 /* SpotAnnotationCallout.m in Sources */,
 				03F4E8E218CA34260056EAA9 /* SidebarViewController.m in Sources */,
 				039F545918D2BB30004B2B67 /* DrinkCardCollectionViewCell.m in Sources */,
+				A6CA34301937D26F001BB23A /* SHSpotProfileViewController.m in Sources */,
 				03F4E8E318CA34260056EAA9 /* SpotListViewController.m in Sources */,
 				26689720192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */,
 				033A3F1018E463BC00E07F39 /* LiveSpecialModel.m in Sources */,
@@ -7366,6 +7379,7 @@
 				267E05481922CC48004457B4 /* SpotAnnotationCallout.m in Sources */,
 				267E05491922CC48004457B4 /* SidebarViewController.m in Sources */,
 				267E054A1922CC48004457B4 /* DrinkCardCollectionViewCell.m in Sources */,
+				A6CA34321937D26F001BB23A /* SHSpotProfileViewController.m in Sources */,
 				267E054B1922CC48004457B4 /* SpotListViewController.m in Sources */,
 				26689722192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */,
 				267E054C1922CC48004457B4 /* LiveSpecialModel.m in Sources */,

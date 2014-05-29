@@ -10,12 +10,15 @@
 
 #import "SHStyleKit+Additions.h"
 
+static NSString* const kButtonLabelTitleFindSimilar = @"Find Similar";
+static NSString* const kButtonLabelTitleReviewIt = @"Review It";
+static NSString* const kButtonLabelTitleDrinkMenu = @"Drink Menu";
+
 @interface SHSpotDetailFooterNavigationViewController ()
 
 @property (weak, nonatomic) IBOutlet UIButton *btnFindSimilar;
 @property (weak, nonatomic) IBOutlet UIButton *btnReview;
 @property (weak, nonatomic) IBOutlet UIButton *btnDrinkMenu;
-
 
 @end
 
@@ -27,10 +30,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
     
-    //todo: change button images?
-    [SHStyleKit setButton:self.btnFindSimilar withDrawing:SHStyleKitDrawingSpotIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
-    [SHStyleKit setButton:self.btnReview withDrawing:SHStyleKitDrawingSpotIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
-    [SHStyleKit setButton:self.btnDrinkMenu withDrawing:SHStyleKitDrawingSpotIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+    //todo: change review and drink menu btn imgs
+    //todo: setup delegates in the 
+    [SHStyleKit setButton:self.btnFindSimilar withDrawing:SHStyleKitDrawingSearchIcon text:kButtonLabelTitleFindSimilar normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+    [SHStyleKit setButton:self.btnReview withDrawing:SHStyleKitDrawingSpotIcon text:kButtonLabelTitleReviewIt normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+    [SHStyleKit setButton:self.btnDrinkMenu withDrawing:SHStyleKitDrawingSpotIcon text:kButtonLabelTitleDrinkMenu normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
 }
 
 #pragma mark - User Actions
