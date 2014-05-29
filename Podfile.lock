@@ -49,7 +49,7 @@ DEPENDENCIES:
   - GoogleAnalytics-iOS-SDK (~> 3.0.0)
   - iRate (~> 1.8.0)
   - JHAutoCompleteTextField (from `http://github.com/joshdholtz/JHAutoCompleteTextField.git`)
-  - JHSidebar (~> 0.1)
+  - JHSidebar (from `https://github.com/joshdholtz/JHSidebar.git`)
   - JSONAPI (from `http://github.com/joshdholtz/jsonapi-ios.git`)
   - MBProgressHUD (~> 0.8.0)
   - Mixpanel (~> 2.3.0)
@@ -69,6 +69,8 @@ EXTERNAL SOURCES:
     :tag: 0.0.3
   JHAutoCompleteTextField:
     :git: http://github.com/joshdholtz/JHAutoCompleteTextField.git
+  JHSidebar:
+    :git: https://github.com/joshdholtz/JHSidebar.git
   JSONAPI:
     :git: http://github.com/joshdholtz/jsonapi-ios.git
   Promises:
@@ -83,7 +85,7 @@ SPEC CHECKSUMS:
   GoogleAnalytics-iOS-SDK: bb285d8eef15a682f1b82971becd0d22edd0e53b
   iRate: a42e2ae364634fd1eb07af3cb6985905ced01fa8
   JHAutoCompleteTextField: 1ca69c82441d9b5bf474e10d36585247030f7594
-  JHSidebar: 45af6fefde65c070a394c55151b05beace03b401
+  JHSidebar: 2efb4d14cc8bb0032c75218fd3ef7db70154c07e
   JSONAPI: b98efd0e5b8bb44984373524e2ac40ef7d5455a2
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
   Mixpanel: 9aba38257fc4d2777ab5db1afc55e22bdfd57a4a

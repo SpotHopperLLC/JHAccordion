@@ -14,6 +14,14 @@
 
 @implementation ImageModel
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.url];
+}
+
+#pragma mark -
+
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'url' to 'url' property
     // Maps values in JSON key 'foursquare_id' to 'foursquareId' property

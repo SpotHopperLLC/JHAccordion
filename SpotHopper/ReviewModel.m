@@ -13,11 +13,18 @@
 #import "ErrorModel.h"
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
+#import "UserModel.h"
 #import "SpotModel.h"
 
 #import <JSONAPI/JSONAPI.h>
 
 @implementation ReviewModel
+
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@/%@", self.ID, self.user.name, self.spot.name];
+}
 
 #pragma mark - API
 

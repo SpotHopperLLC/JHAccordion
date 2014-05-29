@@ -13,6 +13,14 @@
 
 @implementation BaseAlcoholModel
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.href];
+}
+
+#pragma mark -
+
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'name' to 'name' property
     return @{

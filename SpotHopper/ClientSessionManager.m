@@ -114,7 +114,7 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (_debug) {
             NSLog(@"Request Headers\n\t%@", operation.request.allHTTPHeaderFields);
-            NSLog(@"Reques Body\n\t%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
+            NSLog(@"Request Body\n\t%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
             NSLog(@"Response\n\t%@ %ld - %@", operation.request.URL.standardizedURL, (long)operation.response.statusCode, operation.responseString);
         }
         

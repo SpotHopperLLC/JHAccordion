@@ -15,6 +15,20 @@
 
 @implementation SliderTemplateModel
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@ (%@, %@)", self.ID, self.name,
+            self.minLabel.length ? self.minLabel : @"NULL",
+            self.maxLabel.length ? self.maxLabel : @"NULL"];
+}
+
+- (id)debugQuickLookObject {
+    return self.name;
+}
+
+#pragma mark - Getters
+
 - (NSString *)name {
     return [self objectForKey:@"name"];
 }

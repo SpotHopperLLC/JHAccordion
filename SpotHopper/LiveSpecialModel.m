@@ -13,6 +13,14 @@
 
 @implementation LiveSpecialModel
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.href];
+}
+
+#pragma mark -
+
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'text' to 'text' property
     // Maps values in JSON key 'start_date' to 'startDateStr' property

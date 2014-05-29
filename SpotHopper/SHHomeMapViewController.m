@@ -31,6 +31,8 @@
 #import "Tracker.h"
 
 #import "SpotModel.h"
+#import "SliderModel.h"
+#import "SliderTemplateModel.h"
 #import "ErrorModel.h"
 
 #import "UIImage+BlurredFrame.h"
@@ -51,15 +53,6 @@
 #define kBlurSaturation 1.5f
 
 #define kModalAnimationDuration 0.35f
-
-typedef enum {
-    SHHomeMapModeNone = 0,
-    SHHomeMapModeSpots = 1,
-    SHHomeMapModeSpecials = 2,
-    SHHomeMapModeBeer = 3,
-    SHHomeMapModeCocktail = 4,
-    SHHomeMapModeWine = 5
-} SHHomeMapMode;
 
 @interface SHHomeMapViewController ()
     <SHSidebarDelegate,
@@ -94,7 +87,7 @@ typedef enum {
 
 @property (weak, nonatomic) UIView *collectionContainerView;
 
-@property (assign, nonatomic) SHHomeMapMode mode;
+@property (assign, nonatomic) SHMode mode;
 
 @property (strong, nonatomic) SpotListModel *spotListModel;
 @property (strong, nonatomic) NSArray *specialsSpotModels;
@@ -105,6 +98,7 @@ typedef enum {
     CLLocation *_currentLocation;
     BOOL _isRepositioningMap;
     BOOL _doNotMoveMap;
+    BOOL _isShowingSliderSearchView;
 }
 
 #pragma mark - View Lifecyle
@@ -113,11 +107,9 @@ typedef enum {
 - (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
     
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
     UIImage *backgroundImage = [SHStyleKit gradientBackgroundWithSize:self.view.frame.size];
-    UIColor *backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
-    
-    self.navigationController.navigationBar.barTintColor = backgroundColor;
-    self.navigationController.navigationBar.translucent = NO;
+    [self.navigationController.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
     
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [SHStyleKit myWhiteColor]};
     
@@ -362,7 +354,7 @@ typedef enum {
 
     // set the left view
     UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
-    UIImageView *leftImageView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 8, 16, 16)];
+    UIImageView *leftImageView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 6, 16, 16)];
     leftImageView.alpha = 0.5f;
     [SHStyleKit setImageView:leftImageView withDrawing:SHStyleKitDrawingSearchIcon color:SHStyleKitColorMyWhiteColor];
     [leftView addSubview:leftImageView];
@@ -378,8 +370,6 @@ typedef enum {
     UIBarButtonItem *searchCancelBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     UIBarButtonItem *searchTextFieldBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchTextField];
     
-    
-    
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:(animated ? 0.25f : 0.0f) delay:0.0 options:options animations:^{
         
@@ -390,9 +380,6 @@ typedef enum {
         
     } completion:^(BOOL finished) {
         if (finished) {
-            NSLog(@"cancelButton: %f, %f", cancelButton.frame.origin.x, cancelButton.frame.origin.y);
-            NSLog(@"searchTextField: %f, %f", searchTextField.frame.origin.x, searchTextField.frame.origin.y);
-
             searchTextField.placeholder = @"Find spot/drink or similar...";
             [searchTextField becomeFirstResponder];
             if (completionBlock) {
@@ -400,22 +387,6 @@ typedef enum {
             }
         }
     }];
-    
-//    [CATransaction begin];
-//    [CATransaction setAnimationDuration:(animated ? 0.25f : 0.0f)];
-//    [CATransaction setCompletionBlock:^{
-//        
-//    }];
-//    
-//    
-//    [UIView animateWithDuration:0.35f animations:^{
-//        
-//        
-//    } completion:^(BOOL finished) {
-//        if (finished) {
-//        }
-//    }];
-//    [CATransaction commit];
 }
 
 - (void)hideSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
@@ -424,17 +395,7 @@ typedef enum {
     [self restoreNormalNavigationItems:animated withCompletionBlock:completionBlock];
 }
 
-- (void)showSlidersSearch:(BOOL)animated forMode:(SHHomeMapMode)mode withCompletionBlock:(void (^)())completionBlock {
-    // 1) prepare the slider vc
-    // 2) prepare blurred image view to place behind slider vc
-    // 3) embed slider vc and position view at the bottom before animating it up
-    // 4) while slider view is animating up also increase the height of the blurred image which is placed behind it and docked to the bottom
-    
-    // the slider view will have a height constraint and will also be docked to the bottom.
-    // it will be initially be pushed down out of view and the bottom constaint's constant of the slider view
-    // and the height constraint of the blurred image view will be animated together so achive the blurred effect properly
-    
-//    self.mapView.showsUserLocation = FALSE;
+- (void)showSlidersSearch:(BOOL)animated forMode:(SHMode)mode withCompletionBlock:(void (^)())completionBlock {
     [self prepareBlurredScreen];
     
     UIButton *cancelButton = [self makeButtonWithTitle:@"cancel" target:self action:@selector(searchSlidersCancelButtonTapped:)];
@@ -447,13 +408,13 @@ typedef enum {
     UIImageView *rightImageView = [[UIImageView alloc] initWithFrame:CGRectMake(274.0f, 7.0f, 30.0f, 30.0f)];
     
     switch (mode) {
-        case SHHomeMapModeBeer:
+        case SHModeBeer:
             [SHStyleKit setImageView:rightImageView withDrawing:SHStyleKitDrawingBeerIcon color:SHStyleKitColorMyWhiteColor];
             break;
-        case SHHomeMapModeCocktail:
+        case SHModeCocktail:
             [SHStyleKit setImageView:rightImageView withDrawing:SHStyleKitDrawingCocktailIcon color:SHStyleKitColorMyWhiteColor];
             break;
-        case SHHomeMapModeWine:
+        case SHModeWine:
             [SHStyleKit setImageView:rightImageView withDrawing:SHStyleKitDrawingWineIcon color:SHStyleKitColorMyWhiteColor];
             break;
             
@@ -463,8 +424,6 @@ typedef enum {
     }
     
     UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightImageView];
-    
-    NSLog(@"top: %f", self.slidersSearchViewTopConstraint.constant);
     
     // ensure the display order is correct
     [self.view bringSubviewToFront:self.blurredView];
@@ -482,6 +441,9 @@ typedef enum {
         [self.navigationItem setRightBarButtonItem:rightBarButtonItem animated:animated];
         self.navigationItem.title = @"What do you feel like?";
         
+        _isShowingSliderSearchView = TRUE;
+        [self refreshBlurredView];
+        
     } completion:^(BOOL finished) {
         if (finished) {
             [self updateBlurredView];
@@ -493,11 +455,8 @@ typedef enum {
     }];
 }
 
-- (void)hideSlidersSearch:(BOOL)animated forMode:(SHHomeMapMode)mode withCompletionBlock:(void (^)())completionBlock {
-    // get rid of it to avoid holding onto state or excess memory
-    
+- (void)hideSlidersSearch:(BOOL)animated forMode:(SHMode)mode withCompletionBlock:(void (^)())completionBlock {
     [self updateBlurredView];
-//    self.mapView.showsUserLocation = TRUE;
     
     [self restoreNormalNavigationItems:animated withCompletionBlock:^{
         UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
@@ -510,6 +469,9 @@ typedef enum {
             
         } completion:^(BOOL finished) {
             if (finished) {
+                
+                _isShowingSliderSearchView = FALSE;
+                
                 if (completionBlock) {
                     completionBlock();
                 }
@@ -542,16 +504,12 @@ typedef enum {
 }
 
 - (IBAction)cancelBackToHomeMap:(UIStoryboardSegue *)segue {
-    // TODO: get back to the home map view
+    // get back to the home map view
 }
 
 - (IBAction)finishCreatingSpotListForHomeMap:(UIStoryboardSegue *)segue {
     // TODO: get back to the home map view and get spotlist model
-    
     // TODO: hide the home navigation and display the collection view of the spots and add the map annotations
-    
-    NSLog(@"source: %@", NSStringFromClass([segue.sourceViewController class]));
-    NSLog(@"destination: %@", NSStringFromClass([segue.destinationViewController class]));
     
     if ([segue.sourceViewController isKindOfClass:[SHAdjustSpotListSliderViewController class]]) {
         SHAdjustSpotListSliderViewController *vc = (SHAdjustSpotListSliderViewController *)segue.sourceViewController;
@@ -580,20 +538,23 @@ typedef enum {
 #pragma mark -
 
 - (void)showBeersSearch {
-    [self showSlidersSearch:TRUE forMode:SHHomeMapModeBeer withCompletionBlock:^{
-        NSLog(@"Beer!");
+    [self.slidersSearchViewController prepareForMode:SHModeBeer];
+
+    [self showSlidersSearch:TRUE forMode:SHModeBeer withCompletionBlock:^{
     }];
 }
 
 - (void)showCocktailsSearch {
-    [self showSlidersSearch:TRUE forMode:SHHomeMapModeCocktail withCompletionBlock:^{
-        NSLog(@"Cocktails!");
+    [self.slidersSearchViewController prepareForMode:SHModeCocktail];
+
+    [self showSlidersSearch:TRUE forMode:SHModeCocktail withCompletionBlock:^{
     }];
 }
 
 - (void)showWineSearch {
-    [self showSlidersSearch:TRUE forMode:SHHomeMapModeWine withCompletionBlock:^{
-        NSLog(@"Wine!");
+    [self.slidersSearchViewController prepareForMode:SHModeWine];
+
+    [self showSlidersSearch:TRUE forMode:SHModeWine withCompletionBlock:^{
     }];
 }
 
@@ -606,7 +567,7 @@ typedef enum {
         return;
     }
     
-    [self populateMapWithSpots:self.spotListModel.spots mode:SHHomeMapModeSpots];
+    [self populateMapWithSpots:self.spotListModel.spots mode:SHModeSpots];
     
     [self hideHomeNavigation:FALSE withCompletionBlock:^{
         [self.mapOverlayCollectionViewController displaySpotList:spotListModel];
@@ -630,7 +591,7 @@ typedef enum {
     NSLog(@"spots: %@", spots);
     
     self.specialsSpotModels = spots;
-    [self populateMapWithSpots:spots mode:SHHomeMapModeSpecials];
+    [self populateMapWithSpots:spots mode:SHModeSpecials];
     
     [self hideHomeNavigation:FALSE withCompletionBlock:^{
         [self.mapOverlayCollectionViewController displaySpecialsForSpots:spots];
@@ -640,7 +601,7 @@ typedef enum {
     }];
 }
 
-- (void)populateMapWithSpots:(NSArray *)spots mode:(SHHomeMapMode)mode {
+- (void)populateMapWithSpots:(NSArray *)spots mode:(SHMode)mode {
     self.mode = mode;
     
     NSAssert(self.mapView, @"Map View is required");
@@ -686,7 +647,7 @@ typedef enum {
 - (void)repositionMapOnCoordinate:(CLLocationCoordinate2D)coordinate animated:(BOOL)animated {
     MKMapPoint mapPoint = MKMapPointForCoordinate(coordinate);
     MKMapRect mapRect = MKMapRectMake(mapPoint.x, mapPoint.y, 0.25, 0.25);
-    [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(105.0, 5.0, 180.0, 5.0) animated:animated];
+    [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(169.0, 5.0, 180.0, 5.0) animated:animated];
 }
 
 - (void)repositionMapOnAnnotations:(NSArray *)annotations animated:(BOOL)animated {
@@ -847,6 +808,13 @@ typedef enum {
     [self updateBlurredView];
 }
 
+- (void)refreshBlurredView {
+    if (_isShowingSliderSearchView) {
+        [self updateBlurredView];
+        [self performSelector:@selector(refreshBlurredView) withObject:nil afterDelay:0.1];
+    }
+}
+
 - (void)updateBlurredView {
     if (self.blurredView && self.blurredImageView) {
         // blurring the screenshot takes a bit of time and currently could be done repeatedly to achive ~25 fps, not an ideal 60+ fps
@@ -876,8 +844,9 @@ typedef enum {
 #pragma mark -
 
 - (void)sidebarViewController:(SHSidebarViewController*)vc didTapSearchTextField:(id)sender {
-    // TODO: implement
-    NSLog(@"%@", NSStringFromSelector(_cmd));
+    [self hideSideBar:TRUE withCompletionBlock:^{
+        [self showSearch:TRUE withCompletionBlock:nil];
+    }];
 }
 
 - (void)sidebarViewController:(SHSidebarViewController*)vc closeButtonTapped:(id)sender {
@@ -893,8 +862,10 @@ typedef enum {
 }
 
 - (void)sidebarViewController:(SHSidebarViewController*)vc drinksButtonTapped:(id)sender {
-    // TODO: implement
-    NSLog(@"%@", NSStringFromSelector(_cmd));
+    // TODO: break into beer, cocktail and wine
+    [self hideSideBar:TRUE withCompletionBlock:^{
+        [self showBeersSearch];
+    }];
 }
 
 - (void)sidebarViewController:(SHSidebarViewController*)vc specialsButtonTapped:(id)sender {
@@ -904,8 +875,9 @@ typedef enum {
 }
 
 - (void)sidebarViewController:(SHSidebarViewController*)vc reviewButtonTapped:(id)sender {
-    // TODO: implement
-    NSLog(@"%@", NSStringFromSelector(_cmd));
+    [self hideSideBar:TRUE withCompletionBlock:^{
+        // TODO: implement
+    }];
 }
 
 - (void)sidebarViewController:(SHSidebarViewController*)vc checkinButtonTapped:(id)sender {
@@ -954,12 +926,12 @@ typedef enum {
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didChangeToSpotAtIndex:(NSUInteger)index {
     
-    if (self.mode == SHHomeMapModeSpots && index < self.spotListModel.spots.count) {
+    if (self.mode == SHModeSpots && index < self.spotListModel.spots.count) {
         SpotModel *spot = self.spotListModel.spots[index];
         NSLog(@"HomeMap: didChangeToSpotAtIndex: %@", spot.name);
         [self selectSpot:spot];
     }
-    else if (self.mode == SHHomeMapModeSpecials && index < self.specialsSpotModels.count) {
+    else if (self.mode == SHModeSpecials && index < self.specialsSpotModels.count) {
         SpotModel *spot = self.specialsSpotModels[index];
         NSLog(@"HomeMap: didChangeToSpotAtIndex: %@", spot.name);
         [self selectSpot:spot];
@@ -1030,10 +1002,10 @@ typedef enum {
             pin = [[MatchPercentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:MatchPercentAnnotationIdentifier];
         }
         
-        if (self.mode == SHHomeMapModeSpots) {
+        if (self.mode == SHModeSpots) {
             pin.drawing = SHStyleKitDrawingNone;
         }
-        else if (self.mode == SHHomeMapModeSpecials) {
+        else if (self.mode == SHModeSpecials) {
             pin.drawing = SHStyleKitDrawingSpecialsIcon;
         }
         [pin setSpot:matchPercentAnnotation.spot];

@@ -686,26 +686,23 @@ typedef void(^AlertBlock)();
     NSAssert(vc, @"VC must be define");
     NSAssert(superview, @"Superview must be defined");
     
-    UIView *view = vc.view;
-    
-    view.translatesAutoresizingMaskIntoConstraints = NO;
+    vc.view.translatesAutoresizingMaskIntoConstraints = NO;
     [self addChildViewController:vc];
-    [superview addSubview:view];
+    [superview addSubview:vc.view];
     
     if (placementBlock) {
-        placementBlock(view);
+        placementBlock(vc.view);
     }
     else {
         [self fillSubview:vc.view inSuperView:superview];
     }
     
-    [self didMoveToParentViewController:self];
     [vc didMoveToParentViewController:self];
 }
 
 - (void)removeEmbeddedViewController:(UIViewController *)vc {
     if (vc) {
-        [vc willMoveToParentViewController:nil];
+        [vc willMoveToParentViewController:self];
         [vc.view removeFromSuperview];
         [vc removeFromParentViewController];
     }

@@ -243,6 +243,8 @@
     [matchLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
     
     [nameButton setTitle:spot.name forState:UIControlStateNormal];
+    nameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    nameButton.titleLabel.textAlignment = NSTextAlignmentLeft;
     [SHStyleKit setButton:nameButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
     typeLabel.text = spot.spotType.name;
     neighborhoodLabel.text = spot.city;

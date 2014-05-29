@@ -10,6 +10,14 @@
 
 @implementation ErrorModel
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.human];
+}
+
+#pragma mark - Getters
+
 - (NSString *)human {
     NSString *human = [self objectForKey:@"human"];
     return (human.length > 0 ? human : @"An unknown error occured");

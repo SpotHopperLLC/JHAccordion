@@ -10,7 +10,7 @@
 
 @protocol SHSliderDelegate;
 
-@interface SHSlider : UIControl
+@interface SHSlider : UISlider
 
 @property (weak, nonatomic) IBOutlet id<SHSliderDelegate>delegate;
 

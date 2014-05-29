@@ -32,6 +32,12 @@
     return nil;
 }
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.href];
+}
+
 #pragma mark - Format helpers
 
 - (NSDate *)formatBirthday:(NSString *)string {
@@ -83,8 +89,7 @@
 
 #pragma mark - NSCoding
 
-- (NSArray *)propertyKeys
-{
+- (NSArray *)propertyKeys {
     NSMutableArray *array = [NSMutableArray array];
     Class class = [self class];
     while (class != [NSObject class])
@@ -132,8 +137,7 @@
     return array;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
+- (id)initWithCoder:(NSCoder *)aDecoder {
     if ((self = [self init]))
     {
         for (NSString *key in [self propertyKeys])
@@ -145,8 +149,7 @@
     return self;
 }
 
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
+- (void)encodeWithCoder:(NSCoder *)aCoder {
     for (NSString *key in [self propertyKeys])
     {
         id value = [self valueForKey:key];

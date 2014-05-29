@@ -14,6 +14,8 @@
 
 @property (weak, nonatomic) id<SHSlidersSearchDelegate> delegate;
 
+- (void)prepareForMode:(SHMode)mode;
+
 @end
 
 @protocol SHSlidersSearchDelegate <NSObject>

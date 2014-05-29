@@ -362,6 +362,8 @@
     return [self objectForKey:@"gender"];
 }
 
+#pragma mark - Debugging
+
 - (NSString *)description {
     return [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:@{
                                                                                     @"id" : self.ID != nil ? self.ID : @"",

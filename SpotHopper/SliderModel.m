@@ -8,7 +8,21 @@
 
 #import "SliderModel.h"
 
+#import "SliderTemplateModel.h"
+
 @implementation SliderModel
+
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@ (%@)", self.ID, self.value, self.sliderTemplate];
+}
+
+- (id)debugQuickLookObject {
+    return self.value;
+}
+
+#pragma mark - Getters
 
 - (NSNumber *)value {
     if (_value != nil) return _value;

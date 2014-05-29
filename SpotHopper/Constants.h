@@ -66,45 +66,45 @@
 
     #define kRefreshLocationTime 3600.0f
 
-#define kAnalyticsEnabled   TRUE
+    #define kAnalyticsEnabled   TRUE
 
 #elif defined(STAGING2)
 
-#define kDebug YES
+    #define kDebug NO
 
-#define kTwitterConsumerKey @"enlXFrFlBlOPkaBoOJunQ"
-#define kTwitterConsumerSecret @"UHRcQ8WXs13Iug7VpliivDxwQuGtoMg5KsaoIF3jWbM"
+    #define kTwitterConsumerKey @"enlXFrFlBlOPkaBoOJunQ"
+    #define kTwitterConsumerSecret @"UHRcQ8WXs13Iug7VpliivDxwQuGtoMg5KsaoIF3jWbM"
 
-#define kAppURLScheme  @"spothopperappstaging"
+    #define kAppURLScheme  @"spothopperappstaging"
 
-#define kBaseUrl @"http://spothopper-staging.herokuapp.com"
-#define kWebsiteUrl @"http://spothopper-staging.herokuapp.com"
+    #define kBaseUrl @"http://spothopper-staging.herokuapp.com"
+    #define kWebsiteUrl @"http://spothopper-staging.herokuapp.com"
 
-#define kParseApplicationID @"lu4u2Bg5pBqLg9qZEWJB5W7fjSAVQPiH39Hr29kV"
-#define kParseClientKey @"BHl8KE9ZmZgmeDFnV9H886qKB9Y7EaWzZLPdOs4J"
+    #define kParseApplicationID @"lu4u2Bg5pBqLg9qZEWJB5W7fjSAVQPiH39Hr29kV"
+    #define kParseClientKey @"BHl8KE9ZmZgmeDFnV9H886qKB9Y7EaWzZLPdOs4J"
 
-#define kRefreshLocationTime 3600.0f
+    #define kRefreshLocationTime 3600.0f
 
-#define kAnalyticsEnabled   TRUE
+    #define kAnalyticsEnabled   TRUE
 
 #elif defined(PRODUCTION)
 
-#define kDebug NO
+    #define kDebug NO
 
-#define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"
-#define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
+    #define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"
+    #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
 
-#define kBaseUrl @"https://api.spotapps.co"
-#define kWebsiteUrl @"http://www.spothopperapp.com"
+    #define kBaseUrl @"https://api.spotapps.co"
+    #define kWebsiteUrl @"http://www.spothopperapp.com"
 
-#define kParseApplicationID @"8gsK1txoPG66EvpzxhHPFJeeNjWTwe1SF5j1jIKN"
-#define kParseClientKey @"z86QKJFiLmSxWAekThVpTo8yLpp29nekhTiUgV2i"
+    #define kParseApplicationID @"8gsK1txoPG66EvpzxhHPFJeeNjWTwe1SF5j1jIKN"
+    #define kParseClientKey @"z86QKJFiLmSxWAekThVpTo8yLpp29nekhTiUgV2i"
 
-#define kAppURLScheme  @"spothopperapp"
+    #define kAppURLScheme  @"spothopperapp"
 
-#define kRefreshLocationTime 3600.0f
+    #define kRefreshLocationTime 3600.0f
 
-#define kAnalyticsEnabled   TRUE
+    #define kAnalyticsEnabled   TRUE
 
 #endif
 
@@ -163,5 +163,14 @@
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
+
+typedef enum {
+    SHModeNone = 0,
+    SHModeSpots = 1,
+    SHModeSpecials = 2,
+    SHModeBeer = 3,
+    SHModeCocktail = 4,
+    SHModeWine = 5
+} SHMode;
 
 #endif

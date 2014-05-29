@@ -20,6 +20,14 @@
 
 @implementation DrinkListModel
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.href];
+}
+
+#pragma mark -
+
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'name' to 'name' property
     // Maps values in JSON key 'featured' to 'featured' property

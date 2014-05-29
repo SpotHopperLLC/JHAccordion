@@ -10,6 +10,14 @@
 
 @implementation SpotTypeModel
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.name];
+}
+
+#pragma mark - Getters
+
 - (NSString *)name {
     return [self objectForKey:@"name"];
 }

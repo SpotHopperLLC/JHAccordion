@@ -10,6 +10,18 @@
 
 @implementation DrinkSubtypeModel
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.name];
+}
+
+- (id)debugQuickLookObject {
+    return self.name;
+}
+
+#pragma mark - Getters
+
 - (NSString *)name {
     return [self objectForKey:@"name"];
 }

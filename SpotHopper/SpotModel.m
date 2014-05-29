@@ -17,6 +17,12 @@
 
 @implementation SpotModel
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.name];
+}
+
 #pragma mark - API
 
 + (void)cancelGetSpots {

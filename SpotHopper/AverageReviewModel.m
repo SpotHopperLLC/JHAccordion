@@ -10,6 +10,14 @@
 
 @implementation AverageReviewModel
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.href];
+}
+
+#pragma mark -
+
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'rating' to 'rating' property
     // Maps linked resource in JSON key 'sliders' to 'sliders' property

@@ -14,6 +14,14 @@
 
 @implementation PriceModel
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.priceAndSize];
+}
+
+#pragma mark -
+
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'cents' to 'cents' property
     // Maps values in JSON key 'size' to 'size' property

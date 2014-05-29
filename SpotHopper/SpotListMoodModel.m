@@ -13,6 +13,14 @@
 
 @implementation SpotListMoodModel
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.href];
+}
+
+#pragma mark -
+
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'name' to 'rating' name
     // Maps linked resource in JSON key 'sliders' to 'sliders' property

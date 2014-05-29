@@ -4465,9 +4465,9 @@
 		26A7E3641922CE5A00FF7B88 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				26C428D9192D623900B67F10 /* Base */,
 				2668970F192F2A71004FAC2D /* SHSlidersSearchViewController.h */,
 				26689710192F2A71004FAC2D /* SHSlidersSearchViewController.m */,
-				26C428D9192D623900B67F10 /* Base */,
 				2654B89D192BB6E000A66BED /* SHHomeMapViewController.h */,
 				2654B89E192BB6E000A66BED /* SHHomeMapViewController.m */,
 				2654B89F192BB6E000A66BED /* SHHomeNavigationViewController.h */,
@@ -7518,7 +7518,6 @@
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					"COCOAPODS=1",
 					"LOCAL=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperLocal-Info.plist";
@@ -7543,7 +7542,6 @@
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					"COCOAPODS=1",
 					"LOCAL=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperLocal-Info.plist";
@@ -7612,7 +7610,6 @@
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					"COCOAPODS=1",
 					"PRODUCTION=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperProduction-Info.plist";
@@ -7636,7 +7633,6 @@
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					"COCOAPODS=1",
 					"PRODUCTION=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperProduction-Info.plist";
@@ -7664,7 +7660,6 @@
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					"COCOAPODS=1",
 					"STAGING=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperStaging-Info.plist";
@@ -7688,7 +7683,6 @@
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					"COCOAPODS=1",
 					"STAGING=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperStaging-Info.plist";
@@ -7715,7 +7709,6 @@
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					"COCOAPODS=1",
 					"DEV=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperDev-Info.plist";
@@ -7739,7 +7732,6 @@
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					"COCOAPODS=1",
 					"DEV=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperDev-Info.plist";
@@ -7766,7 +7758,6 @@
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					"COCOAPODS=1",
 					"STAGING2=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperStaging2-Info.plist";
@@ -7790,7 +7781,6 @@
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					"COCOAPODS=1",
 					"STAGING2=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperStaging2-Info.plist";

@@ -20,6 +20,13 @@
 
 @implementation SpotListModel
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.href];
+}
+
+#pragma mark - Properties
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'name' to 'name' property
     // Maps values in JSON key 'featured' to 'featured' property

@@ -387,7 +387,7 @@
     [self doCreateDrinklist];
 }
 
-#pragma mark - Public
+ #pragma mark - Public
 
 - (void)resetForm {
     [_tblSliders scrollRectToVisible:CGRectMake(0, 0, CGRectGetWidth(_tblSliders.frame), 1) animated:NO];
@@ -439,7 +439,7 @@
 
 - (void)fetchFormData {
     
-    // Gets drink form data
+    // Gets drink form data (Beer, Wine and Cocktail
     Promise *promiseFormData = [DrinkModel getDrinks:@{kDrinkModelParamsPageSize:@0} success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         NSDictionary *forms = [jsonApi objectForKey:@"form"];
         if (forms != nil) {
@@ -487,15 +487,17 @@
 
 - (void)filterSliderTemplates {
     
-    NSMutableArray *slidersFiltered = [NSMutableArray array];
+    NSMutableArray *slidersFiltered = [@[] mutableCopy];
     if (_selectedDrinkType == nil) {
         _sliderTemplates = nil;
     } else {
-        NSNumber *selectedDrinkTypeId = [_selectedDrinkType objectForKey:@"id"];
-        NSNumber *selectedWineTypeId = [_selectedWineSubtype objectForKey:@"id"];
+        NSNumber *selectedDrinkTypeId = _selectedDrinkType[@"id"];
+        NSNumber *selectedWineTypeId = _selectedWineSubtype[@"id"];
         
-        // Filters by spot idea
+        // Filters by spot id
         for (SliderTemplateModel *sliderTemplate in _allSliderTemplates) {
+            
+            NSLog(@"drinkTypes: %@", sliderTemplate.drinkTypes);
             
             NSArray *drinkTypeIds = [sliderTemplate.drinkTypes valueForKey:@"ID"];
             NSArray *drinkSubtypeIds = [sliderTemplate.drinkSubtypes valueForKey:@"ID"];
@@ -508,12 +510,9 @@
             else if (_selectedWineSubtype != nil && [drinkTypeIds containsObject:selectedDrinkTypeId] && [drinkSubtypeIds containsObject:selectedWineTypeId]) {
                 [slidersFiltered addObject:sliderTemplate];
             }
-            
         }
-        
     }
     _sliderTemplates = slidersFiltered;
-    
     
     // Creating sliders
     [_sliders removeAllObjects];
@@ -540,7 +539,6 @@
     
     // Reloading table
     [_tblSliders reloadData];
-    
 }
 
 - (void)fetchSliderTemplates {
