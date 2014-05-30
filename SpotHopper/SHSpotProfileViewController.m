@@ -18,11 +18,22 @@
 #define kLabelTagSpotSpecial 6
 #define kLabelTagSpotSpecialDetails 7
 
-#define kNumberOfCells 4
+#define kNumberOfCells 3
+
+typedef enum{
+    SUNDAY = 1,
+    MONDAY,
+    TUESDAY,
+    WEDNESDAY,
+    THURSDAY,
+    FRIDAY,
+    SATURDAY
+} DaysOfTheWeek;
 
 #import "SHSpotProfileViewController.h"
 #import "SHStyleKit+Additions.h"
 #import "SpotModel.h"
+#import "SpotTypeModel.h"
 
 @interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -52,6 +63,7 @@
 }
 
 #pragma mark - UITableViewDataSource
+#pragma mark -
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -59,7 +71,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
  
-    return kNumberOfCells; //todo change? is 4 hardcoded max?
+    return kNumberOfCells; // todo: + # of slider cells needed
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -76,15 +88,23 @@
         {
             UILabel *spotName = (UILabel*)[cell viewWithTag:kLabelTagSpotName];
             [SHStyleKit setLabel:spotName textColor:SHStyleKitColorMyTintColor];
+            spotName.text = self.spot.name;
             
+            //todo:update to display the spot type as well as the expense
             UILabel *spotType = (UILabel*)[cell viewWithTag:kLabelTagSpotType];
+            spotType.text = self.spot.spotType.name;
             
             UILabel *spotRelevancy = (UILabel*)[cell viewWithTag:kLabelTagSpotRelevancy];
+            spotRelevancy.text = [NSString stringWithFormat:@"%@%% Match",self.spot.relevance];
             
             UILabel *spotCloseTime = (UILabel*)[cell viewWithTag:kLabelTagSpotCloseTime];
+            NSString *closeTime;
+            if (!(closeTime = [self findCloseTimeForToday])) {
+                spotCloseTime.text = closeTime;
+            }
             
             UILabel *spotAddress = (UILabel*)[cell viewWithTag:kLabelTagSpotAddress];
-            
+            spotAddress.text = self.spot.addressCityState;
 
             break;
         }
@@ -106,6 +126,7 @@
 }
 
 #pragma mark - UITableViewDelegate
+#pragma mark -
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -114,6 +135,66 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     //todo put logic checking if the the spot has a special to show increase height otherwise height = 0
     return 0.0f;
+}
+
+#pragma mark - Helper Methods
+#pragma mark - 
+
+- (NSString*)findCloseTimeForToday
+{
+    NSArray *hoursOfOperation = self.spot.hoursOfOperation;
+    NSString *closeTime;
+    
+    if ([hoursOfOperation count]) {
+        NSCalendar *calendar = [NSCalendar currentCalendar];
+        NSInteger day = [[calendar components:NSCalendarUnitWeekday fromDate:[NSDate date]] weekday];
+    
+        switch (day) {
+            case SUNDAY:
+            {
+                //todo: need to check what format the close time is in
+                closeTime = [[hoursOfOperation firstObject] objectAtIndex:1];
+                break;
+                
+            }
+            case MONDAY:
+            {
+                //MONDAY = 2, so to get proper index subtract by 1
+                closeTime = [[hoursOfOperation objectAtIndex: MONDAY - 1] objectAtIndex:1];
+                break;
+            }
+            case TUESDAY:
+            {
+                closeTime = [[hoursOfOperation objectAtIndex: TUESDAY - 1] objectAtIndex:1];
+                break;
+            }
+            case WEDNESDAY:
+            {
+                closeTime = [[hoursOfOperation objectAtIndex: WEDNESDAY - 1] objectAtIndex:1];
+                break;
+            }
+            case THURSDAY:
+            {
+                closeTime = [[hoursOfOperation objectAtIndex: THURSDAY - 1] objectAtIndex:1];
+                break;
+            }
+            case FRIDAY:
+            {
+                closeTime = [[hoursOfOperation objectAtIndex: FRIDAY - 1] objectAtIndex:1];
+                break;
+            }
+            case SATURDAY:
+            {
+                closeTime = [[hoursOfOperation objectAtIndex: SATURDAY - 1] objectAtIndex:1];
+                break;
+            }
+                
+            default:
+                break;
+        }
+    }
+    
+    return closeTime;
 }
 
 /*
