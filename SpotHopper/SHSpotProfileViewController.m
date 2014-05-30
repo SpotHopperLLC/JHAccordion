@@ -18,6 +18,10 @@
 #define kLabelTagSpotSpecial 6
 #define kLabelTagSpotSpecialDetails 7
 
+#define kCollectionViewTag 10
+#define kPreviousBtnTag 11
+#define kNextBtnTag 12
+
 #define kNumberOfCells 3
 
 typedef enum{
@@ -32,10 +36,13 @@ typedef enum{
 
 #import "SHSpotProfileViewController.h"
 #import "SHStyleKit+Additions.h"
+#import "NSArray+DailySpecials.h"
 #import "SpotModel.h"
+#import "LiveSpecialModel.h"
 #import "SpotTypeModel.h"
 
-@interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+
 
 @end
 
@@ -53,7 +60,6 @@ typedef enum{
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning
@@ -75,17 +81,21 @@ typedef enum{
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    static NSString *spotDetailsCellIdentifier = @"SpotDetailsCell";
-//    static NSString *spotSpecialCellIdentifier = @"SpotSpecialCell";
-
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    static NSString *CollectionViewCellIdentifier = @"CollectionViewCell";
+    static NSString *SpotDetailsCellIdentifier = @"SpotDetailsCell";
+    static NSString *SpotSpecialsCellIdentifier = @"SpotSpecialsCell";
+    
+    UITableViewCell *cell;
     
     switch (indexPath.row) {
         case kCellImageCollection:
+            cell = [tableView dequeueReusableCellWithIdentifier:CollectionViewCellIdentifier];
             //todo: place collection view here
             break;
         case kCellSpotDetails:
         {
+            cell = [tableView dequeueReusableCellWithIdentifier:SpotDetailsCellIdentifier];
+            
             UILabel *spotName = (UILabel*)[cell viewWithTag:kLabelTagSpotName];
             [SHStyleKit setLabel:spotName textColor:SHStyleKitColorMyTintColor];
             spotName.text = self.spot.name;
@@ -110,10 +120,26 @@ typedef enum{
         }
         case kCellSpotSpecials:
         {
-            //todo put logic checking if the the spot has a special to show
-            UILabel *spotSpecial = (UILabel*)[cell viewWithTag:kLabelTagSpotSpecial];
+            cell = [tableView dequeueReusableCellWithIdentifier:SpotSpecialsCellIdentifier];
             
+            NSArray *dailySpecials;
+            UILabel *spotSpecial = (UILabel*)[cell viewWithTag:kLabelTagSpotSpecial];
             UILabel *specialDetails = (UILabel*)[cell viewWithTag:kLabelTagSpotSpecialDetails];
+
+            if (!(dailySpecials = self.spot.dailySpecials)) {
+                LiveSpecialModel *liveSpecial = [self.spot currentLiveSpecial];
+                NSString *todaysSpecial = [dailySpecials specialsForToday];
+
+                if (!liveSpecial) {
+                    spotSpecial.text = @"Live Special!";
+                    specialDetails.text = liveSpecial.text;
+        
+                } else if (!todaysSpecial) {
+                    spotSpecial.text = @"Current Special!";
+                    specialDetails.text = todaysSpecial;
+                }
+            }
+    
             break;
         }
         case 3:
@@ -133,8 +159,26 @@ typedef enum{
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    //todo put logic checking if the the spot has a special to show increase height otherwise height = 0
-    return 0.0f;
+    CGFloat height;
+    
+    switch (indexPath.row) {
+        case kCellImageCollection:
+            height = 178.0f;
+            //todo: check with Brennan
+            break;
+        case kCellSpotDetails:
+            height = 131.0f;
+            //todo: check with Brennan
+            break;
+        case kCellSpotSpecials:
+            height = (!self.spot.dailySpecials) ? 91.0f : 0.0f;
+            break;
+        default:
+            //todo: figure out height of the slider cells
+            height = 0.0f;
+            break;
+    }
+    return height;
 }
 
 #pragma mark - Helper Methods
@@ -142,60 +186,96 @@ typedef enum{
 
 - (NSString*)findCloseTimeForToday
 {
-    NSArray *hoursOfOperation = self.spot.hoursOfOperation;
-    NSString *closeTime;
+    // Sets "Opens at <some time>" or "Open until <some time>"
+    NSString *closeTime = @"";
+    NSArray *hoursForToday = [self.spot.hoursOfOperation datesForToday];
     
-    if ([hoursOfOperation count]) {
-        NSCalendar *calendar = [NSCalendar currentCalendar];
-        NSInteger day = [[calendar components:NSCalendarUnitWeekday fromDate:[NSDate date]] weekday];
+    if (!hoursForToday) {
     
-        switch (day) {
-            case SUNDAY:
-            {
-                //todo: need to check what format the close time is in
-                closeTime = [[hoursOfOperation firstObject] objectAtIndex:1];
-                break;
-                
-            }
-            case MONDAY:
-            {
-                //MONDAY = 2, so to get proper index subtract by 1
-                closeTime = [[hoursOfOperation objectAtIndex: MONDAY - 1] objectAtIndex:1];
-                break;
-            }
-            case TUESDAY:
-            {
-                closeTime = [[hoursOfOperation objectAtIndex: TUESDAY - 1] objectAtIndex:1];
-                break;
-            }
-            case WEDNESDAY:
-            {
-                closeTime = [[hoursOfOperation objectAtIndex: WEDNESDAY - 1] objectAtIndex:1];
-                break;
-            }
-            case THURSDAY:
-            {
-                closeTime = [[hoursOfOperation objectAtIndex: THURSDAY - 1] objectAtIndex:1];
-                break;
-            }
-            case FRIDAY:
-            {
-                closeTime = [[hoursOfOperation objectAtIndex: FRIDAY - 1] objectAtIndex:1];
-                break;
-            }
-            case SATURDAY:
-            {
-                closeTime = [[hoursOfOperation objectAtIndex: SATURDAY - 1] objectAtIndex:1];
-                break;
-            }
-                
-            default:
-                break;
+        // Creats formatter
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"h:mm a"];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
+        
+        // Gets open and close dates
+        NSDate *dateOpen = hoursForToday.firstObject;
+        NSDate *dateClose = hoursForToday.lastObject;
+        
+        // Sets the stuff
+        NSDate *now = [NSDate date];
+        if ([now timeIntervalSinceDate:dateOpen] > 0 && [now timeIntervalSinceDate:dateClose] < 0) {
+            closeTime = [NSString stringWithFormat:@"Open until %@", [dateFormatter stringFromDate:dateClose]];
+        } else {
+            closeTime = [NSString stringWithFormat:@"Opens at %@", [dateFormatter stringFromDate:dateOpen]];
         }
     }
     
     return closeTime;
 }
+
+#pragma mark - CollectionView buttons
+#pragma mark -
+//
+//- (IBAction)onClickImagePrevious:(id)sender {
+//    NSArray *indexPaths = [_collectionView indexPathsForVisibleItems];
+//    
+//    // Makes sure we have an index path
+//    if (indexPaths.count > 0) {
+//        
+//        NSIndexPath *indexPath = [indexPaths objectAtIndex:0];
+//        // Makes sure we can go back
+//        if (indexPath.row > 0) {
+//            [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+//            
+//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.4 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//                [self updateImageArrows];
+//            });
+//        }
+//    }
+//}
+//
+//- (IBAction)onClickImageNext:(id)sender {
+//    NSArray *indexPaths = [_collectionView indexPathsForVisibleItems];
+//    
+//    // Makes sure we have an index path
+//    if (indexPaths.count > 0) {
+//        
+//        NSIndexPath *indexPath = [indexPaths objectAtIndex:0];
+//        // Makes sure we can go forward
+//        if (indexPath.row < ( [self collectionView:_collectionView numberOfItemsInSection:indexPath.section] - 1) ) {
+//            [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.row + 1) inSection:indexPath.section] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+//            
+//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.4 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//                [self updateImageArrows];
+//            });
+//        }
+//    }
+//}
+//
+//
+//- (NSIndexPath *)indexPathForCurrentImage {
+//    NSArray *indexPaths = [self.collectionView indexPathsForVisibleItems];
+//    if (indexPaths.count) {
+//        return indexPaths[0];
+//    }
+//    
+//    return nil;
+//}
+//
+//- (void)updateImageArrows {
+//    NSIndexPath *indexPath = [self indexPathForCurrentImage];
+//    
+//    BOOL hasNext = self.spot.images.count ? (indexPath.item < self.spot.images.count - 1) : FALSE;
+//    BOOL hasPrev = self.spot.images.count ? (indexPath.item > 0) : FALSE;
+//    
+//    [UIView animateWithDuration:0.25 animations:^{
+//        self.btnImageNext.alpha = hasNext ? 1.0 : 0.1;
+//        self.btnImagePrev.alpha = hasPrev ? 1.0 : 0.1;
+//    } completion:^(BOOL finished) {
+//    }];
+//}
+//
+//
 
 /*
 #pragma mark - Navigation
