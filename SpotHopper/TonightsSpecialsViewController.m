@@ -37,6 +37,7 @@
 @property (nonatomic, strong) NSNumber *page;
 @property (nonatomic, strong) NSMutableArray *spots;
 
+@property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
 @property (nonatomic, strong) CLLocation *location;
 
 @end
@@ -69,7 +70,7 @@
     _page = @1;
     _spots = [NSMutableArray array];
     
-    _updatedSearchNeeded = TRUE;
+    _updatedSearchNeeded = FALSE;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -90,6 +91,29 @@
         // Locations
         [_btnLocation setDelegate:self];
         [_btnLocation updateWithLastLocation];
+        
+        // Gets current location
+        _tellMeMyLocation = [[TellMeMyLocation alloc] init];
+        [_tellMeMyLocation findMe:kCLLocationAccuracyNearestTenMeters found:^(CLLocation *newLocation) {
+            
+            NSLog(@"New location - %@", newLocation);
+            
+            [self hideHUD];
+            _location = newLocation;
+            
+            // Updates users current location
+            [TellMeMyLocation setLastLocation:_location completionHandler:^{
+                
+            }];
+            
+            [self fetchSpecials];
+        } failure:^(NSError *error) {
+            [self hideHUD];
+            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+            
+            _location = [TellMeMyLocation lastLocation];
+            [self fetchSpecials];
+        }];
     } else {
         [self fetchSpecials];
     }
