@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "SpotModel.h"
 
-@interface SHSpotProfileViewController : UIViewController
+#import "BaseViewController.h"
+
+@interface SHSpotProfileViewController : BaseViewController
 
 //spot model which details will be shown
 @property (strong,nonatomic) SpotModel *spot;

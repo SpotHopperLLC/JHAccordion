@@ -6,6 +6,17 @@
 //  Copyright (c) 2014 SpotHopper. All rights reserved.
 //
 
+#import "SHSpotProfileViewController.h"
+
+#import "SpotModel.h"
+#import "LiveSpecialModel.h"
+#import "SpotTypeModel.h"
+
+#import "SHStyleKit+Additions.h"
+#import "NSArray+DailySpecials.h"
+
+#import "SHImageModelCollectionViewManager.h"
+
 #define kCellImageCollection 0
 #define kCellSpotDetails 1
 #define kCellSpotSpecials 2
@@ -15,57 +26,26 @@
 #define kLabelTagSpotRelevancy 3
 #define kLabelTagSpotCloseTime 4
 #define kLabelTagSpotAddress 5
-#define kLabelTagSpotSpecial 6
-#define kLabelTagSpotSpecialDetails 7
 
-#define kCollectionViewTag 10
-#define kPreviousBtnTag 11
-#define kNextBtnTag 12
+#define kLabelTagSpotSpecial 1
+#define kLabelTagSpotSpecialDetails 2
+
+#define kCollectionViewTag 1
+#define kPreviousBtnTag 2
+#define kNextBtnTag 3
 
 #define kNumberOfCells 3
 
-typedef enum{
-    SUNDAY = 1,
-    MONDAY,
-    TUESDAY,
-    WEDNESDAY,
-    THURSDAY,
-    FRIDAY,
-    SATURDAY
-} DaysOfTheWeek;
+@interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate>
 
-#import "SHSpotProfileViewController.h"
-#import "SHStyleKit+Additions.h"
-#import "NSArray+DailySpecials.h"
-#import "SpotModel.h"
-#import "LiveSpecialModel.h"
-#import "SpotTypeModel.h"
-
-@interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
-
+@property (strong, nonatomic) IBOutlet SHImageModelCollectionViewManager *imageModelCollectionViewManager;
 
 @end
 
 @implementation SHSpotProfileViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewDidLoad {
+    [self viewDidLoad:@[kDidLoadOptionsNoBackground]];
 }
 
 #pragma mark - UITableViewDataSource
@@ -76,7 +56,6 @@ typedef enum{
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
- 
     return kNumberOfCells; // todo: + # of slider cells needed
 }
 
@@ -88,12 +67,32 @@ typedef enum{
     UITableViewCell *cell;
     
     switch (indexPath.row) {
-        case kCellImageCollection:
-            cell = [tableView dequeueReusableCellWithIdentifier:CollectionViewCellIdentifier];
-            //todo: place collection view here
-            break;
-        case kCellSpotDetails:
-        {
+        case kCellImageCollection: {
+            
+                cell = [tableView dequeueReusableCellWithIdentifier:CollectionViewCellIdentifier];
+                //todo: place collection view here
+                
+                UICollectionView *collectionView = (UICollectionView *)[cell viewWithTag:kCollectionViewTag];
+            
+                self.imageModelCollectionViewManager.collectionView = collectionView;
+                collectionView.delegate = self.imageModelCollectionViewManager;
+                collectionView.dataSource = self.imageModelCollectionViewManager;
+            
+                //attach previous and next buttons to goPrevious and goNext to trigger image transitions
+                UIButton *previousButton = (UIButton *)[cell viewWithTag:kPreviousBtnTag];
+                [previousButton addTarget:self.imageModelCollectionViewManager action:@selector(goPrevious) forControlEvents:UIControlEventTouchUpInside];
+            
+                UIButton *nextButton = (UIButton *)[cell viewWithTag:kNextBtnTag];
+                [nextButton addTarget:self.imageModelCollectionViewManager action:@selector(goNext) forControlEvents:UIControlEventTouchUpInside];
+            
+                // hide and show buttons based on the number of images and current position
+                previousButton.hidden = TRUE;
+                nextButton.hidden = TRUE;
+                break;
+            }
+
+        case kCellSpotDetails:{
+            
             cell = [tableView dequeueReusableCellWithIdentifier:SpotDetailsCellIdentifier];
             
             UILabel *spotName = (UILabel*)[cell viewWithTag:kLabelTagSpotName];
@@ -115,18 +114,19 @@ typedef enum{
             
             UILabel *spotAddress = (UILabel*)[cell viewWithTag:kLabelTagSpotAddress];
             spotAddress.text = self.spot.addressCityState;
-
             break;
         }
+        
         case kCellSpotSpecials:
         {
             cell = [tableView dequeueReusableCellWithIdentifier:SpotSpecialsCellIdentifier];
             
             NSArray *dailySpecials;
-            UILabel *spotSpecial = (UILabel*)[cell viewWithTag:kLabelTagSpotSpecial];
-            UILabel *specialDetails = (UILabel*)[cell viewWithTag:kLabelTagSpotSpecialDetails];
 
             if (!(dailySpecials = self.spot.dailySpecials)) {
+                UILabel *spotSpecial = (UILabel*)[cell viewWithTag:kLabelTagSpotSpecial];
+                UILabel *specialDetails = (UILabel*)[cell viewWithTag:kLabelTagSpotSpecialDetails];
+                
                 LiveSpecialModel *liveSpecial = [self.spot currentLiveSpecial];
                 NSString *todaysSpecial = [dailySpecials specialsForToday];
 
@@ -142,10 +142,8 @@ typedef enum{
     
             break;
         }
-        case 3:
-            //todo: place switches here (add logic for creating as many switches as vibe dictates)
-            break;
         default:
+            //todo: place switches here (add logic for creating as many switches as vibe dictates)
             break;
     }
     return nil;
@@ -212,70 +210,6 @@ typedef enum{
     
     return closeTime;
 }
-
-#pragma mark - CollectionView buttons
-#pragma mark -
-//
-//- (IBAction)onClickImagePrevious:(id)sender {
-//    NSArray *indexPaths = [_collectionView indexPathsForVisibleItems];
-//    
-//    // Makes sure we have an index path
-//    if (indexPaths.count > 0) {
-//        
-//        NSIndexPath *indexPath = [indexPaths objectAtIndex:0];
-//        // Makes sure we can go back
-//        if (indexPath.row > 0) {
-//            [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
-//            
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.4 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-//                [self updateImageArrows];
-//            });
-//        }
-//    }
-//}
-//
-//- (IBAction)onClickImageNext:(id)sender {
-//    NSArray *indexPaths = [_collectionView indexPathsForVisibleItems];
-//    
-//    // Makes sure we have an index path
-//    if (indexPaths.count > 0) {
-//        
-//        NSIndexPath *indexPath = [indexPaths objectAtIndex:0];
-//        // Makes sure we can go forward
-//        if (indexPath.row < ( [self collectionView:_collectionView numberOfItemsInSection:indexPath.section] - 1) ) {
-//            [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.row + 1) inSection:indexPath.section] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
-//            
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.4 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-//                [self updateImageArrows];
-//            });
-//        }
-//    }
-//}
-//
-//
-//- (NSIndexPath *)indexPathForCurrentImage {
-//    NSArray *indexPaths = [self.collectionView indexPathsForVisibleItems];
-//    if (indexPaths.count) {
-//        return indexPaths[0];
-//    }
-//    
-//    return nil;
-//}
-//
-//- (void)updateImageArrows {
-//    NSIndexPath *indexPath = [self indexPathForCurrentImage];
-//    
-//    BOOL hasNext = self.spot.images.count ? (indexPath.item < self.spot.images.count - 1) : FALSE;
-//    BOOL hasPrev = self.spot.images.count ? (indexPath.item > 0) : FALSE;
-//    
-//    [UIView animateWithDuration:0.25 animations:^{
-//        self.btnImageNext.alpha = hasNext ? 1.0 : 0.1;
-//        self.btnImagePrev.alpha = hasPrev ? 1.0 : 0.1;
-//    } completion:^(BOOL finished) {
-//    }];
-//}
-//
-//
 
 /*
 #pragma mark - Navigation
