@@ -47,16 +47,14 @@ static NSString* const kButtonLabelTitleDrinkMenu = @"Drink Menu";
     }
 }
 
+//todo: need to change these so they push view controllers
+//todo: create segues on IB for transition
 - (IBAction)reviewButtonTapped:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(footerNavigationViewController:reviewItButtonTapped:)]) {
-        [self.delegate footerNavigationViewController:self reviewItButtonTapped:sender];
-    }
+    //todo: push review view
 }
 
 - (IBAction)drinkMenuButtonTapped:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(footerNavigationViewController:drinkMenuButtonTapped:)]) {
-        [self.delegate footerNavigationViewController:self drinkMenuButtonTapped:sender];
-    }
+    //todo: push menu view  
 }
 
 

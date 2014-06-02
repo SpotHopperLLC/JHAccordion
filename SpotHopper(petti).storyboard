@@ -1062,7 +1062,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="a9d-nz-qDq" firstAttribute="leading" secondItem="nf1-Z1-GIQ" secondAttribute="leading" constant="20" symbolic="YES" id="3QH-yf-Q9u"/>
                             <constraint firstItem="a9d-nz-qDq" firstAttribute="bottom" secondItem="8Kc-fb-h6n" secondAttribute="bottom" id="539-df-9uN"/>
@@ -1085,7 +1085,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iQt-zi-n0M" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1309" y="1375"/>
+            <point key="canvasLocation" x="1309" y="1847"/>
         </scene>
         <!--Spot Profile View Controller-->
         <scene sceneID="U99-QY-9rb">
@@ -1141,6 +1141,9 @@
                                                                 <constraint firstItem="Bex-gJ-OLh" firstAttribute="top" secondItem="VRK-95-A8I" secondAttribute="top" id="N7l-dh-RhT"/>
                                                                 <constraint firstAttribute="bottom" secondItem="Bex-gJ-OLh" secondAttribute="bottom" id="Y2a-6o-DcP"/>
                                                             </constraints>
+                                                            <connections>
+                                                                <segue destination="zt5-Ij-nKX" kind="push" identifier="albumSegue" id="wfg-hI-Pfm"/>
+                                                            </connections>
                                                         </collectionViewCell>
                                                     </cells>
                                                 </collectionView>
@@ -1148,7 +1151,7 @@
                                                     <rect key="frame" x="20" y="44" width="58" height="90"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <state key="normal" image="EDC88137-30AD-4A20-9140-36930B5B9C58">
+                                                    <state key="normal" image="FBAB3E98-CAD8-416D-9CF1-F8925FB2D941">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -1159,7 +1162,7 @@
                                                     <rect key="frame" x="249" y="44" width="58" height="90"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <state key="normal" image="3A3DD888-93B4-458F-BE0B-EB01D64DFD36">
+                                                    <state key="normal" image="B913A4C8-6F1A-4875-9DE8-2B9753C19465">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -1283,12 +1286,13 @@
                     </view>
                     <connections>
                         <outlet property="imageModelCollectionViewManager" destination="M3i-X2-0zs" id="JS5-IY-Z35"/>
+                        <segue destination="2lk-gV-oBW" kind="push" identifier="onePhotoSegue" id="hl5-Ic-whH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bbO-t7-HJk" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <customObject id="M3i-X2-0zs" customClass="SHImageModelCollectionViewManager"/>
             </objects>
-            <point key="canvasLocation" x="1309" y="709"/>
+            <point key="canvasLocation" x="1309" y="1181"/>
         </scene>
         <!--Base Navigation Controller-->
         <scene sceneID="WQN-fx-kPc">
@@ -1566,9 +1570,129 @@
             </objects>
             <point key="canvasLocation" x="391" y="693"/>
         </scene>
+        <!--Photo Album View Controller-->
+        <scene sceneID="jIH-y6-nIS">
+            <objects>
+                <viewController storyboardIdentifier="PhotoAlbumViewController" id="zt5-Ij-nKX" customClass="PhotoAlbumViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="SUa-fc-P2E"/>
+                        <viewControllerLayoutGuide type="bottom" id="eqG-Na-oc0"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bxi-mu-9hQ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Q77-qi-QOx">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="bWw-Sb-Pjx">
+                                    <size key="itemSize" width="64" height="64"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ImageCell" id="ay2-Ka-eho">
+                                        <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="03s-li-dSD">
+                                                    <rect key="frame" x="1" y="1" width="62" height="62"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <segue destination="2lk-gV-oBW" kind="push" id="OUf-0M-q6k"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="zt5-Ij-nKX" id="9u4-LG-Qf8"/>
+                                    <outlet property="delegate" destination="zt5-Ij-nKX" id="rRO-yG-jiD"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <navigationItem key="navigationItem" id="MoT-43-VJC"/>
+                    <connections>
+                        <outlet property="collectionView" destination="Q77-qi-QOx" id="4sX-55-I3l"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6Yh-gt-3cK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1777" y="1521"/>
+        </scene>
+        <!--Photo Viewer View Controller-->
+        <scene sceneID="JsL-2e-QlZ">
+            <objects>
+                <viewController storyboardIdentifier="PhotoViewerViewController" id="2lk-gV-oBW" customClass="PhotoViewerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="IdX-Ph-r5b"/>
+                        <viewControllerLayoutGuide type="bottom" id="eQJ-hF-4MN"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="G4z-oU-xvq">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" pagingEnabled="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Udt-ho-6fb">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="hvJ-E0-Fa9">
+                                    <size key="itemSize" width="320" height="568"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PhotoView" id="cOd-UT-a9H">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view tag="1" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uaR-lq-rn8" customClass="PZPhotoView">
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <connections>
+                                                        <outlet property="photoViewDelegate" destination="2lk-gV-oBW" id="64g-0A-lw3"/>
+                                                    </connections>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="2lk-gV-oBW" id="CSR-hg-uIm"/>
+                                    <outlet property="delegate" destination="2lk-gV-oBW" id="efj-ew-EBj"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="kZR-5K-zMR"/>
+                    <connections>
+                        <outlet property="collectionView" destination="Udt-ho-6fb" id="hUp-YK-P6A"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vzK-gq-har" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2210" y="1181"/>
+        </scene>
     </scenes>
     <resources>
-        <image name="3A3DD888-93B4-458F-BE0B-EB01D64DFD36" width="58" height="90">
+        <image name="51-power.png" width="28" height="29"/>
+        <image name="B913A4C8-6F1A-4875-9DE8-2B9753C19465" width="58" height="90">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -1986,8 +2110,7 @@ X3pfg1+WX5pfrV+4X8Ffxl/OX9Ff1l/lX+lf8F/4YAVgCmAMYA5gE2AbYB5gI2ArYC5gQGBDYEgAAAAA
 AAACAQAAAAAAAAA/AAAAAAAAAAAAAAAAAABgSg
 </mutableData>
         </image>
-        <image name="51-power.png" width="28" height="29"/>
-        <image name="EDC88137-30AD-4A20-9140-36930B5B9C58" width="58" height="90">
+        <image name="FBAB3E98-CAD8-416D-9CF1-F8925FB2D941" width="58" height="90">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -2420,4 +2543,7 @@ AAACAQAAAAAAAAA/AAAAAAAAAAAAAAAAAABgSg
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="hl5-Ic-whH"/>
+    </inferredMetricsTieBreakers>
 </document>

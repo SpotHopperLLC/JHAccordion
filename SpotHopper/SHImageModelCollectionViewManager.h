@@ -28,5 +28,12 @@
 - (void)goPrevious;
 - (void)goNext;
 
+@end
+
+@protocol SHImageModelCollectionDelegate<NSObject>
+
+@optional
+- (void)imageCollectionViewManager:(SHImageModelCollectionViewManager *)manager didChangeToImageAtIndex:(NSUInteger)index;
+- (void)imageCollectionViewManager:(SHImageModelCollectionViewManager *)manager didSelectImageAtIndex:(NSUInteger)index;
 
 @end

@@ -22,8 +22,4 @@
 
 - (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc findSimilarButtonTapped:(id)sender;
 
-//todo: verify that delegates for review and drink menu buttons is needed (refer to mockup)
-- (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc reviewItButtonTapped:(id)sender;
-- (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc drinkMenuButtonTapped:(id)sender;
-
 @end

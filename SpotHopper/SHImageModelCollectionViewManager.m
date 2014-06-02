@@ -24,6 +24,8 @@
 
 @interface SHImageModelCollectionViewManager ()
 
+@property (nonatomic, weak) IBOutlet id<SHImageModelCollectionDelegate> delegate;
+
 @end
 
 @implementation SHImageModelCollectionViewManager
@@ -72,38 +74,28 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"Selected item!");
     
-    // TODO: go to the photo album view with indexPath.item as the index
-    
-    if (self.imageModels.count > 1) {
-//        [self goToPhotoAlbum:self.imageModels atIndex:indexPath.item];
+    //trigger segue 
+    if ([self.delegate respondsToSelector:@selector(imageCollectionViewManager:didSelectImageAtIndex:)]) {
+        [self.delegate imageCollectionViewManager:self didSelectImageAtIndex:self.currentIndex];
     }
-    else {
-//        [self goToPhotoViewer:self.imageModels atIndex:indexPath.item fromPhotoAlbum:nil];
+    
+}
+
+#pragma mark - UIScrollViewDelegate
+#pragma mark -
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    if (scrollView == self.collectionView) {
+        NSIndexPath *indexPath = [self indexPathForCurrentItemInCollectionView:self.collectionView];
+        if (indexPath.item != self.currentIndex) {
+            self.currentIndex = indexPath.item;
+            [self reportedChangedIndex];
+        }
     }
 }
 
 #pragma mark - Public
 #pragma mark -
-
-//???
-//- (void)updateSpotList:(SpotListModel *)spotList {
-//    NSAssert(self.delegate, @"Delegate must be defined");
-//    
-//    static NSString *lock;
-//    @synchronized(lock) {
-//        if (_isUpdatingData) {
-//            [self performSelector:@selector(updateSpotList:) withObject:spotList afterDelay:0.25];
-//        }
-//        else {
-//            _isUpdatingData = TRUE;
-//            self.spotList = spotList;
-//            [self.collectionView setContentOffset:CGPointMake(0, 0)];
-//            [self.collectionView reloadData];
-//            _currentIndex = 0;
-//            _isUpdatingData = FALSE;
-//        }
-//    }
-//}
 
 /**
  changes the index of the collection view to either the previous or next image's index
@@ -165,6 +157,16 @@
         [self changeIndex:self.currentIndex+1];
     }
 }
+
+#pragma mark - Private
+#pragma mark -
+
+- (void)reportedChangedIndex {
+    if ([self.delegate respondsToSelector:@selector(imageCollectionViewManager:didChangeToImageAtIndex:)]) {
+        [self.delegate imageCollectionViewManager:self didChangeToImageAtIndex:self.currentIndex];
+    }
+}
+
 
 
 @end

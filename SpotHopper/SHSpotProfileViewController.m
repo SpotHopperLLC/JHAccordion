@@ -11,6 +11,8 @@
 #import "SpotModel.h"
 #import "LiveSpecialModel.h"
 #import "SpotTypeModel.h"
+#import "PhotoAlbumViewController.h"
+#import "PhotoViewerViewController.h"
 
 #import "SHStyleKit+Additions.h"
 #import "NSArray+DailySpecials.h"
@@ -36,7 +38,10 @@
 
 #define kNumberOfCells 3
 
-@interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate>
+NSString* const PhotoViewerSegueIdentifier = @"onePhotoSegue";
+NSString* const PhotoAlbumSegueIdentifier = @"albumSegue";
+
+@interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate, SHImageModelCollectionDelegate>
 
 @property (strong, nonatomic) IBOutlet SHImageModelCollectionViewManager *imageModelCollectionViewManager;
 
@@ -68,7 +73,7 @@
     
     switch (indexPath.row) {
         case kCellImageCollection: {
-            
+        
                 cell = [tableView dequeueReusableCellWithIdentifier:CollectionViewCellIdentifier];
                 //todo: place collection view here
                 
@@ -85,9 +90,9 @@
                 UIButton *nextButton = (UIButton *)[cell viewWithTag:kNextBtnTag];
                 [nextButton addTarget:self.imageModelCollectionViewManager action:@selector(goNext) forControlEvents:UIControlEventTouchUpInside];
             
-                // hide and show buttons based on the number of images and current position
-                previousButton.hidden = TRUE;
-                nextButton.hidden = TRUE;
+                [self didReachEnd:[self.imageModelCollectionViewManager hasPrevious] button:previousButton];
+                [self didReachEnd:[self.imageModelCollectionViewManager hasNext] button:nextButton];
+            
                 break;
             }
 
@@ -117,8 +122,8 @@
             break;
         }
         
-        case kCellSpotSpecials:
-        {
+        case kCellSpotSpecials:{
+            
             cell = [tableView dequeueReusableCellWithIdentifier:SpotSpecialsCellIdentifier];
             
             NSArray *dailySpecials;
@@ -153,7 +158,7 @@
 #pragma mark -
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    //no action on the table view being selected
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -179,8 +184,29 @@
     return height;
 }
 
+
+#pragma mark - SHImageModelCollectionDelegate
+#pragma mark -
+
+- (void)imageCollectionViewManager:(SHImageModelCollectionViewManager *)manager didChangeToImageAtIndex:(NSUInteger)index {
+    //change the collection view to show to the current cell at the index path
+    [manager.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathWithIndex:index] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:TRUE];
+}
+
+- (void)imageCollectionViewManager:(SHImageModelCollectionViewManager *)manager didSelectImageAtIndex:(NSUInteger)index {
+   //trigger segue on image selection
+    if (manager.imageModels.count > 1) {
+        [self performSegueWithIdentifier:PhotoAlbumSegueIdentifier sender:self];
+        //        [self goToPhotoAlbum:self.imageModels atIndex:indexPath.item];
+    }
+    else {
+        [self performSegueWithIdentifier:PhotoViewerSegueIdentifier sender:self];
+        //        [self goToPhotoViewer:self.imageModels atIndex:indexPath.item fromPhotoAlbum:nil];
+    }
+}
+
 #pragma mark - Helper Methods
-#pragma mark - 
+#pragma mark -
 
 - (NSString*)findCloseTimeForToday
 {
@@ -211,15 +237,35 @@
     return closeTime;
 }
 
-/*
+- (void)didReachEnd:(BOOL)hasMore button:(UIButton*)button
+{
+    if (hasMore) {
+        button.alpha = 0.1;
+        button.enabled = FALSE;
+    }else{
+        button.alpha = 1.0;
+        button.enabled = TRUE;
+    }
+}
+
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    if ([segue.identifier isEqualToString:PhotoViewerSegueIdentifier]) {
+        PhotoViewerViewController *viewController = segue.destinationViewController;
+        viewController.images = self.imageModelCollectionViewManager.imageModels;
+    
+    }else if ([segue.identifier isEqualToString:PhotoAlbumSegueIdentifier]){
+        PhotoAlbumViewController *viewController = segue.destinationViewController;
+        viewController.images = self.imageModelCollectionViewManager.imageModels;
+    }
+    
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }
-*/
+
 
 @end
