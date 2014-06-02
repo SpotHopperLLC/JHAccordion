@@ -44,6 +44,7 @@ NSString* const PhotoAlbumSegueIdentifier = @"albumSegue";
 @interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate, SHImageModelCollectionDelegate>
 
 @property (strong, nonatomic) IBOutlet SHImageModelCollectionViewManager *imageModelCollectionViewManager;
+@property (assign, nonatomic) NSInteger currentIndex;
 
 @end
 
@@ -191,10 +192,13 @@ NSString* const PhotoAlbumSegueIdentifier = @"albumSegue";
 - (void)imageCollectionViewManager:(SHImageModelCollectionViewManager *)manager didChangeToImageAtIndex:(NSUInteger)index {
     //change the collection view to show to the current cell at the index path
     [manager.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathWithIndex:index] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:TRUE];
+    //todo: verify that the currentIndex being set here is not needed
 }
 
 - (void)imageCollectionViewManager:(SHImageModelCollectionViewManager *)manager didSelectImageAtIndex:(NSUInteger)index {
    //trigger segue on image selection
+    self.currentIndex = index;
+    
     if (manager.imageModels.count > 1) {
         [self performSegueWithIdentifier:PhotoAlbumSegueIdentifier sender:self];
         //        [self goToPhotoAlbum:self.imageModels atIndex:indexPath.item];
@@ -203,6 +207,7 @@ NSString* const PhotoAlbumSegueIdentifier = @"albumSegue";
         [self performSegueWithIdentifier:PhotoViewerSegueIdentifier sender:self];
         //        [self goToPhotoViewer:self.imageModels atIndex:indexPath.item fromPhotoAlbum:nil];
     }
+    
 }
 
 #pragma mark - Helper Methods
@@ -257,10 +262,12 @@ NSString* const PhotoAlbumSegueIdentifier = @"albumSegue";
     if ([segue.identifier isEqualToString:PhotoViewerSegueIdentifier]) {
         PhotoViewerViewController *viewController = segue.destinationViewController;
         viewController.images = self.imageModelCollectionViewManager.imageModels;
+        viewController.index = self.currentIndex;
     
     }else if ([segue.identifier isEqualToString:PhotoAlbumSegueIdentifier]){
         PhotoAlbumViewController *viewController = segue.destinationViewController;
         viewController.images = self.imageModelCollectionViewManager.imageModels;
+        viewController.index = self.currentIndex;
     }
     
     // Get the new view controller using [segue destinationViewController].
