@@ -1790,7 +1790,6 @@
 		03F6BF8218C7087C00172F13 /* img_search_textfield_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF7C18C7087C00172F13 /* img_search_textfield_background@2x.png */; };
 		03F6BF8918C70A4500172F13 /* FindSimilarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF8718C70A4500172F13 /* FindSimilarViewController.m */; };
 		03F6BF8A18C70A4500172F13 /* FindSimilarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF8818C70A4500172F13 /* FindSimilarViewController.xib */; };
-		14A3CD06A4ED4AAC906B692F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
 		2602BD9618E2654900C93BBF /* table_footer_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9418E2654900C93BBF /* table_footer_background.png */; };
 		2602BD9718E2654900C93BBF /* table_footer_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9418E2654900C93BBF /* table_footer_background.png */; };
 		2602BD9818E2654900C93BBF /* table_footer_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9418E2654900C93BBF /* table_footer_background.png */; };
@@ -3144,7 +3143,6 @@
 				0386646B186D352400985CEC /* UIKit.framework in Frameworks */,
 				03866467186D352400985CEC /* Foundation.framework in Frameworks */,
 				5F881FD0AAD84878A974907D /* libPods-SpotHopperLocal.a in Frameworks */,
-				14A3CD06A4ED4AAC906B692F /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
