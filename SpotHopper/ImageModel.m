@@ -17,7 +17,7 @@
 #pragma mark - Debugging
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.url];
+    return [NSString stringWithFormat:@"%@ - %@ [%@]", self.ID, self.url, NSStringFromClass([self class])];
 }
 
 #pragma mark -

@@ -23,7 +23,7 @@
 #pragma mark - Debugging
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ - %@/%@", self.ID, self.user.name, self.spot.name];
+    return [NSString stringWithFormat:@"%@ - %@/%@ [%@]", self.ID, self.user.name, self.spot.name, NSStringFromClass([self class])];
 }
 
 #pragma mark - API

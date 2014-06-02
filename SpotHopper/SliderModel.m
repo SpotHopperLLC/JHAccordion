@@ -15,7 +15,7 @@
 #pragma mark - Debugging
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ - %@ (%@)", self.ID, self.value, self.sliderTemplate];
+    return [NSString stringWithFormat:@"%@ - %@ (%@) [%@]", self.ID, self.value, self.sliderTemplate, NSStringFromClass([self class])];
 }
 
 - (id)debugQuickLookObject {
