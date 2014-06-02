@@ -56,12 +56,14 @@ NSString * const SHStyleKitColorNameMyWhiteColor = @"myWhiteColor";
 #pragma mark - UI
 #pragma mark -
 
-+ (void)setImageView:(UIImageView *)imageView withDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color {
++ (void)setImageView:(UIImageView *)imageView withDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color;
+{
     UIImage *image = [SHStyleKit drawImage:drawing color:color size:imageView.frame.size];
     imageView.image = image;
 }
 
-+ (void)setButton:(UIButton *)button withDrawing:(SHStyleKitDrawing)drawing normalColor:(SHStyleKitColor)normalColor highlightedColor:(SHStyleKitColor)highlightedColor size:(CGSize)size {
++ (void)setButton:(UIButton *)button withDrawing:(SHStyleKitDrawing)drawing normalColor:(SHStyleKitColor)normalColor highlightedColor:(SHStyleKitColor)highlightedColor size:(CGSize)size;
+{
     UIImage *normalImage = [SHStyleKit drawImage:drawing color:normalColor size:size];
     UIImage *highlightedImage = [SHStyleKit drawImage:drawing color:highlightedColor size:size];
     [button setImage:normalImage forState:UIControlStateNormal];
@@ -92,7 +94,6 @@ NSString * const SHStyleKitColorNameMyWhiteColor = @"myWhiteColor";
     UIColor *color = [self color:textColor];
     textField.textColor = color;
 }
-
 
 + (void)setTextView:(UITextView *)textView textColor:(SHStyleKitColor)textColor;
 {

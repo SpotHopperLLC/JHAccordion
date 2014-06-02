@@ -13,7 +13,7 @@
 #pragma mark - Debugging
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.name];
+    return [NSString stringWithFormat:@"%@ - %@ [%@]", self.ID, self.name, NSStringFromClass([self class])];
 }
 
 - (id)debugQuickLookObject {

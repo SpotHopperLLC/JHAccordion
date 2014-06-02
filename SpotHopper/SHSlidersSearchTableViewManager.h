@@ -8,9 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol SHSlidersSearchTableViewDelegate;
+@class DrinkListModel;
+@class ErrorModel;
+
+@protocol SHSlidersSearchTableViewManagerDelegate;
 
 @interface SHSlidersSearchTableViewManager : NSObject <UITableViewDataSource, UITableViewDelegate>
+
+- (void)prefetchData;
 
 - (void)prepareForMode:(SHMode)mode;
 
@@ -18,10 +23,14 @@
 
 - (void)prepareTableViewForDrinkType:(NSString *)drinkTypeName andWineSubType:(NSString *)wineSubTypeName;
 
+- (void)fetchDrinkListResultsWithCompletionBlock:(void (^)(DrinkListModel *drinkListModel, ErrorModel *errorModel))completionBlock;
+
 @end
 
-@protocol SHSlidersSearchTableViewDelegate <NSObject>
+@protocol SHSlidersSearchTableViewManagerDelegate <NSObject>
 
 @optional
+
+- (void)slidersSearchTableViewManagerDidChangeSlider:(SHSlidersSearchTableViewManager *)manager;
 
 @end

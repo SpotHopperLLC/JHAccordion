@@ -70,6 +70,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnRight;
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet UIView *containerView;
+
 @property (weak, nonatomic) UIView *blurredView;
 @property (weak, nonatomic) UIImageView *blurredImageView;
 @property (weak, nonatomic) IBOutlet SHButtonLatoBold *btnUpdateSearchResults;
@@ -218,10 +220,11 @@
     }
     
     if (!self.slidersSearchViewController.view.superview) {
-        [self embedViewController:self.slidersSearchViewController intoView:self.view placementBlock:^(UIView *view) {
+        [self embedViewController:self.slidersSearchViewController intoView:self.containerView placementBlock:^(UIView *view) {
             [view pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0f];
-            [view constrainToHeight:CGRectGetHeight(self.view.frame)];
-            NSArray *topConstraints = [view pinToSuperviewEdges:JRTViewPinTopEdge inset:CGRectGetHeight(self.view.frame) usingLayoutGuidesFrom:self];
+            CGFloat height = CGRectGetHeight(self.containerView.frame);
+            [view constrainToHeight:height];
+            NSArray *topConstraints = [view pinToSuperviewEdges:JRTViewPinTopEdge inset:CGRectGetHeight(self.containerView.frame)];
             NSCAssert(topConstraints.count == 1, @"There should be only 1 constraint for top");
             if (topConstraints.count) {
                 NSLayoutConstraint *topConstraint = topConstraints[0];
@@ -427,7 +430,7 @@
     
     // ensure the display order is correct
     [self.view bringSubviewToFront:self.blurredView];
-    [self.view bringSubviewToFront:self.slidersSearchViewController.view];
+    [self.view bringSubviewToFront:self.containerView];
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:(animated ? kModalAnimationDuration : 0.0f) delay:0.1f options:options animations:^{
@@ -472,6 +475,8 @@
                 
                 _isShowingSliderSearchView = FALSE;
                 
+                [self.view sendSubviewToBack:self.containerView];
+                
                 if (completionBlock) {
                     completionBlock();
                 }
@@ -515,6 +520,20 @@
         SHAdjustSpotListSliderViewController *vc = (SHAdjustSpotListSliderViewController *)segue.sourceViewController;
         [self displaySpotlist:vc.spotListModel];
     }
+}
+
+- (IBAction)childViewControllerDidRequestSimilarSpots:(UIStoryboardSegue *)segue {
+    if ([segue.sourceViewController isKindOfClass:[NSObject class]]) {
+    }
+    
+//    segue.sourceViewController
+    
+    // is Spot Profile View Controller
+    // OK, get SpotModel from the property
+    
+//    SHSpotProfileViewController *vc;
+//    vc.spotModel
+    
 }
 
 #pragma mark - Navigation
