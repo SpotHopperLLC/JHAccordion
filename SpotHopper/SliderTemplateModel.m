@@ -18,9 +18,11 @@
 #pragma mark - Debugging
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ - %@ (%@, %@)", self.ID, self.name,
+    return [NSString stringWithFormat:@"%@ - %@ (%@, %@, %@) [%@]", self.ID, self.name,
             self.minLabel.length ? self.minLabel : @"NULL",
-            self.maxLabel.length ? self.maxLabel : @"NULL"];
+            self.maxLabel.length ? self.maxLabel : @"NULL",
+            self.order,
+            NSStringFromClass([self class])];
 }
 
 - (id)debugQuickLookObject {
@@ -96,7 +98,7 @@
         if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"slider_templates"];
             models = [models sortedArrayUsingComparator:^NSComparisonResult(SliderTemplateModel *obj1, SliderTemplateModel *obj2) {
-                return [obj1.ID compare:obj2.ID];
+                return [obj1.order compare:obj2.order];
             }];
             successBlock(models, jsonApi);
             

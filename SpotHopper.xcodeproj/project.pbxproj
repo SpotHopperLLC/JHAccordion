@@ -2429,6 +2429,11 @@
 		26F0FDE818EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F0FDE618EB4F23001BB0CD /* AgeVerificationViewController.m */; };
 		26F0FDE918EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F0FDE618EB4F23001BB0CD /* AgeVerificationViewController.m */; };
 		26F0FDEA18EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F0FDE618EB4F23001BB0CD /* AgeVerificationViewController.m */; };
+		26F55210193BD0C600A027F2 /* SHSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F5520F193BD0C600A027F2 /* SHSectionHeaderView.m */; };
+		26F55211193BD0C600A027F2 /* SHSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F5520F193BD0C600A027F2 /* SHSectionHeaderView.m */; };
+		26F55212193BD0C600A027F2 /* SHSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F5520F193BD0C600A027F2 /* SHSectionHeaderView.m */; };
+		26F55213193BD0C600A027F2 /* SHSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F5520F193BD0C600A027F2 /* SHSectionHeaderView.m */; };
+		26F55214193BD0C600A027F2 /* SHSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F5520F193BD0C600A027F2 /* SHSectionHeaderView.m */; };
 		26FF53B9191B577D00834FBD /* CheckInModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FF53B8191B577D00834FBD /* CheckInModel.m */; };
 		26FF53BA191B577D00834FBD /* CheckInModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FF53B8191B577D00834FBD /* CheckInModel.m */; };
 		26FF53BB191B577D00834FBD /* CheckInModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FF53B8191B577D00834FBD /* CheckInModel.m */; };
@@ -3130,6 +3135,8 @@
 		26F0FDE418EB1B18001BB0CD /* San Francisco.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "San Francisco.gpx"; sourceTree = "<group>"; };
 		26F0FDE518EB4F23001BB0CD /* AgeVerificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgeVerificationViewController.h; sourceTree = "<group>"; };
 		26F0FDE618EB4F23001BB0CD /* AgeVerificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgeVerificationViewController.m; sourceTree = "<group>"; };
+		26F5520E193BD0C600A027F2 /* SHSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHSectionHeaderView.h; sourceTree = "<group>"; };
+		26F5520F193BD0C600A027F2 /* SHSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHSectionHeaderView.m; sourceTree = "<group>"; };
 		26FF53B7191B577D00834FBD /* CheckInModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckInModel.h; sourceTree = "<group>"; };
 		26FF53B8191B577D00834FBD /* CheckInModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckInModel.m; sourceTree = "<group>"; };
 		26FFAFF2191B367B00D222B7 /* PhotoViewerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewerViewController.h; sourceTree = "<group>"; };
@@ -4475,6 +4482,7 @@
 				26A7E3801922D1E700FF7B88 /* StyleKit */,
 				26A7E3631922CE5300FF7B88 /* Storyboards */,
 				26A7E3641922CE5A00FF7B88 /* View Controllers */,
+				26F5520D193BD0AC00A027F2 /* Views */,
 				26C816C71926EC2D00E237F2 /* Managers */,
 			);
 			name = "Redesign 2.0";
@@ -6657,6 +6665,7 @@
 				038664E2186D379400985CEC /* ClientSessionManager.m in Sources */,
 				03AF8F6318E6013700DD9356 /* CheckinConfirmationViewController.m in Sources */,
 				039F54AC18D35C2E004B2B67 /* MenuItemCell.m in Sources */,
+				26F55210193BD0C600A027F2 /* SHSectionHeaderView.m in Sources */,
 				03F2D9371871E88000C69576 /* LaunchViewController.m in Sources */,
 				03763FB718D9EBFC00A9A30B /* SHTableViewCell.m in Sources */,
 				03F2D94D18722CAC00C69576 /* SHNavigationBar.m in Sources */,
@@ -6828,6 +6837,7 @@
 				03CABFB718E7716400FAC5F5 /* ClientSessionManager.m in Sources */,
 				03CABFB818E7716400FAC5F5 /* CheckinConfirmationViewController.m in Sources */,
 				03CABFB918E7716400FAC5F5 /* MenuItemCell.m in Sources */,
+				26F55214193BD0C600A027F2 /* SHSectionHeaderView.m in Sources */,
 				03CABFBA18E7716400FAC5F5 /* LaunchViewController.m in Sources */,
 				03CABFBB18E7716400FAC5F5 /* SHTableViewCell.m in Sources */,
 				03CABFBC18E7716400FAC5F5 /* SHNavigationBar.m in Sources */,
@@ -6991,6 +7001,7 @@
 				03F4E76218CA33D00056EAA9 /* ClientSessionManager.m in Sources */,
 				03AF8F6518E6013E00DD9356 /* CheckinConfirmationViewController.m in Sources */,
 				039F54AE18D35C2E004B2B67 /* MenuItemCell.m in Sources */,
+				26F55212193BD0C600A027F2 /* SHSectionHeaderView.m in Sources */,
 				03F4E76318CA33D00056EAA9 /* LaunchViewController.m in Sources */,
 				03763FB918D9ED7800A9A30B /* SHTableViewCell.m in Sources */,
 				03F4E76418CA33D00056EAA9 /* SHNavigationBar.m in Sources */,
@@ -7154,6 +7165,7 @@
 				03F4E8B018CA34260056EAA9 /* ClientSessionManager.m in Sources */,
 				03AF8F6418E6013E00DD9356 /* CheckinConfirmationViewController.m in Sources */,
 				039F54AD18D35C2E004B2B67 /* MenuItemCell.m in Sources */,
+				26F55211193BD0C600A027F2 /* SHSectionHeaderView.m in Sources */,
 				03F4E8B118CA34260056EAA9 /* LaunchViewController.m in Sources */,
 				03763FB818D9ED7800A9A30B /* SHTableViewCell.m in Sources */,
 				03F4E8B218CA34260056EAA9 /* SHNavigationBar.m in Sources */,
@@ -7317,6 +7329,7 @@
 				267E05031922CC48004457B4 /* ClientSessionManager.m in Sources */,
 				267E05041922CC48004457B4 /* CheckinConfirmationViewController.m in Sources */,
 				267E05051922CC48004457B4 /* MenuItemCell.m in Sources */,
+				26F55213193BD0C600A027F2 /* SHSectionHeaderView.m in Sources */,
 				267E05061922CC48004457B4 /* LaunchViewController.m in Sources */,
 				267E05071922CC48004457B4 /* SHTableViewCell.m in Sources */,
 				267E05081922CC48004457B4 /* SHNavigationBar.m in Sources */,
@@ -7678,7 +7691,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "$(inherited)";
 				PRODUCT_NAME = SpotHopperProduction;
-				PROVISIONING_PROFILE = "931528D8-7E6F-4FC5-BFEC-FB0AA3807336";
+				PROVISIONING_PROFILE = "FE3B8B45-B514-4EF0-AB82-C66C244F0422";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;

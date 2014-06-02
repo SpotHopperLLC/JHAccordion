@@ -17,7 +17,7 @@
 #pragma mark - Debugging
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.priceAndSize];
+    return [NSString stringWithFormat:@"%@ - %@ [%@]", self.ID, self.priceAndSize, NSStringFromClass([self class])];
 }
 
 #pragma mark -
