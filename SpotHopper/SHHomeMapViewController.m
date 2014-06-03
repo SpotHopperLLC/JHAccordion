@@ -874,6 +874,12 @@
 }
 
 - (void)refreshBlurredView {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone &&
+        [[[UIDevice currentDevice] model] hasPrefix:@"iPad"]) {
+        // do not refresh blurred view on the iPad due to an iOS bug
+        return;
+    }
+    
     if (_isShowingSliderSearchView) {
         [self updateBlurredView];
         [self performSelector:@selector(refreshBlurredView) withObject:nil afterDelay:0.1];
