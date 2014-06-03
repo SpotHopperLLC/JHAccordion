@@ -1799,7 +1799,7 @@
 		2602BD9D18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9E18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9F18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
-		2618EB5F193D05FE006C75DE /* SHSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2618EB5E193D05FE006C75DE /* SHSectionHeaderView.m */; };
+		2618EB5F193D05FE006C75DE /* (null) in Sources */ = {isa = PBXBuildFile; };
 		2636AB3E18F8A82100591722 /* table_footer_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9418E2654900C93BBF /* table_footer_background.png */; };
 		2636AB3F18F8A82400591722 /* table_footer_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9518E2654900C93BBF /* table_footer_background@2x.png */; };
 		2654B88F192BB68C00A66BED /* SHStyleKit+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B88E192BB68C00A66BED /* SHStyleKit+Additions.m */; };
@@ -2439,6 +2439,21 @@
 		26FFAFF7191B367B00D222B7 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */; };
 		5F881FD0AAD84878A974907D /* libPods-SpotHopperLocal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3557E960D2924E8BA2015473 /* libPods-SpotHopperLocal.a */; };
 		98B74A6E72D54C9491FDAF17 /* libPods-SpotHopperStaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 123F4C2DFBE04705AFDF66F5 /* libPods-SpotHopperStaging.a */; };
+		A62B333D193D086F00CE4BF0 /* SHSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A62B333C193D086F00CE4BF0 /* SHSectionHeaderView.m */; };
+		A62B333E193D086F00CE4BF0 /* SHSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A62B333C193D086F00CE4BF0 /* SHSectionHeaderView.m */; };
+		A62B333F193D086F00CE4BF0 /* SHSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A62B333C193D086F00CE4BF0 /* SHSectionHeaderView.m */; };
+		A62B3340193D086F00CE4BF0 /* SHSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A62B333C193D086F00CE4BF0 /* SHSectionHeaderView.m */; };
+		A62B3341193D086F00CE4BF0 /* SHSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A62B333C193D086F00CE4BF0 /* SHSectionHeaderView.m */; };
+		A62B3346193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A62B3343193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m */; };
+		A62B3347193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A62B3343193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m */; };
+		A62B3348193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A62B3343193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m */; };
+		A62B3349193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A62B3343193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m */; };
+		A62B334A193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A62B3343193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m */; };
+		A62B334B193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A62B3345193D090100CE4BF0 /* SHSpotProfileViewController.m */; };
+		A62B334C193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A62B3345193D090100CE4BF0 /* SHSpotProfileViewController.m */; };
+		A62B334D193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A62B3345193D090100CE4BF0 /* SHSpotProfileViewController.m */; };
+		A62B334E193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A62B3345193D090100CE4BF0 /* SHSpotProfileViewController.m */; };
+		A62B334F193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A62B3345193D090100CE4BF0 /* SHSpotProfileViewController.m */; };
 		A6CA34201937A0F1001BB23A /* SpotHopper(petti).storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6CA341F1937A0F1001BB23A /* SpotHopper(petti).storyboard */; };
 		A6CA34211937A0F1001BB23A /* SpotHopper(petti).storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6CA341F1937A0F1001BB23A /* SpotHopper(petti).storyboard */; };
 		A6CA34221937A0F1001BB23A /* SpotHopper(petti).storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6CA341F1937A0F1001BB23A /* SpotHopper(petti).storyboard */; };
@@ -2447,12 +2462,10 @@
 		A6CA34281937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA34271937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m */; };
 		A6CA34291937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA34271937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m */; };
 		A6CA342A1937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA34271937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m */; };
-		A6CA342B1937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA34271937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m */; };
 		A6CA342C1937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA34271937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m */; };
 		A6CA342F1937D26F001BB23A /* SHSpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA342E1937D26F001BB23A /* SHSpotProfileViewController.m */; };
 		A6CA34301937D26F001BB23A /* SHSpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA342E1937D26F001BB23A /* SHSpotProfileViewController.m */; };
 		A6CA34311937D26F001BB23A /* SHSpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA342E1937D26F001BB23A /* SHSpotProfileViewController.m */; };
-		A6CA34321937D26F001BB23A /* SHSpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA342E1937D26F001BB23A /* SHSpotProfileViewController.m */; };
 		A6CA34331937D26F001BB23A /* SHSpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA342E1937D26F001BB23A /* SHSpotProfileViewController.m */; };
 		A6CA343619390BCF001BB23A /* SHImageModelCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA343519390BCF001BB23A /* SHImageModelCollectionViewManager.m */; };
 		A6CA343719390BCF001BB23A /* SHImageModelCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA343519390BCF001BB23A /* SHImageModelCollectionViewManager.m */; };
@@ -3137,10 +3150,14 @@
 		28166567EC6E42329AF4A745 /* Pods-SpotHopperLocal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotHopperLocal.xcconfig"; path = "Pods/Pods-SpotHopperLocal.xcconfig"; sourceTree = "<group>"; };
 		3557E960D2924E8BA2015473 /* libPods-SpotHopperLocal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpotHopperLocal.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		90AAD79CD27D48B987A3A0C5 /* libPods-SpotHopperDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpotHopperDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A62B333B193D086F00CE4BF0 /* SHSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSectionHeaderView.h; path = SpotHopper/SHSectionHeaderView.h; sourceTree = "<group>"; };
+		A62B333C193D086F00CE4BF0 /* SHSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSectionHeaderView.m; path = SpotHopper/SHSectionHeaderView.m; sourceTree = "<group>"; };
+		A62B3342193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSpotDetailFooterNavigationViewController.h; path = SpotHopper/SHSpotDetailFooterNavigationViewController.h; sourceTree = "<group>"; };
+		A62B3343193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSpotDetailFooterNavigationViewController.m; path = SpotHopper/SHSpotDetailFooterNavigationViewController.m; sourceTree = "<group>"; };
+		A62B3344193D090100CE4BF0 /* SHSpotProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSpotProfileViewController.h; path = SpotHopper/SHSpotProfileViewController.h; sourceTree = "<group>"; };
+		A62B3345193D090100CE4BF0 /* SHSpotProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSpotProfileViewController.m; path = SpotHopper/SHSpotProfileViewController.m; sourceTree = "<group>"; };
 		A6CA341F1937A0F1001BB23A /* SpotHopper(petti).storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "SpotHopper(petti).storyboard"; sourceTree = "<group>"; };
-		A6CA34261937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSpotDetailFooterNavigationViewController.h; path = SpotHopper/SHSpotDetailFooterNavigationViewController.h; sourceTree = "<group>"; };
 		A6CA34271937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSpotDetailFooterNavigationViewController.m; path = SpotHopper/SHSpotDetailFooterNavigationViewController.m; sourceTree = "<group>"; };
-		A6CA342D1937D26F001BB23A /* SHSpotProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSpotProfileViewController.h; path = SpotHopper/SHSpotProfileViewController.h; sourceTree = "<group>"; };
 		A6CA342E1937D26F001BB23A /* SHSpotProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSpotProfileViewController.m; path = SpotHopper/SHSpotProfileViewController.m; sourceTree = "<group>"; };
 		A6CA343419390BCF001BB23A /* SHImageModelCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHImageModelCollectionViewManager.h; path = SpotHopper/SHImageModelCollectionViewManager.h; sourceTree = "<group>"; };
 		A6CA343519390BCF001BB23A /* SHImageModelCollectionViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHImageModelCollectionViewManager.m; path = SpotHopper/SHImageModelCollectionViewManager.m; sourceTree = "<group>"; };
@@ -4474,7 +4491,7 @@
 				26A7E3801922D1E700FF7B88 /* StyleKit */,
 				26A7E3631922CE5300FF7B88 /* Storyboards */,
 				26A7E3641922CE5A00FF7B88 /* View Controllers */,
-				26F5520D193BD0AC00A027F2 /* Views */,
+				A62B333A193D084400CE4BF0 /* Views */,
 				26C816C71926EC2D00E237F2 /* Managers */,
 			);
 			name = "Redesign 2.0";
@@ -4553,12 +4570,12 @@
 				2668971E192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m */,
 				26689716192F2A82004FAC2D /* SHBaseCollectionViewManager.h */,
 				26689717192F2A82004FAC2D /* SHBaseCollectionViewManager.m */,
+				A6CA343419390BCF001BB23A /* SHImageModelCollectionViewManager.h */,
+				A6CA343519390BCF001BB23A /* SHImageModelCollectionViewManager.m */,
 				2654B894192BB6B200A66BED /* SHSpotsCollectionViewManager.h */,
 				2654B895192BB6B200A66BED /* SHSpotsCollectionViewManager.m */,
 				26C428CB192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.h */,
 				26C428CC192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m */,
-				A6CA343419390BCF001BB23A /* SHImageModelCollectionViewManager.h */,
-				A6CA343519390BCF001BB23A /* SHImageModelCollectionViewManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -4582,11 +4599,22 @@
 			path = Locations;
 			sourceTree = SOURCE_ROOT;
 		};
+		A62B333A193D084400CE4BF0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A62B333B193D086F00CE4BF0 /* SHSectionHeaderView.h */,
+				A62B333C193D086F00CE4BF0 /* SHSectionHeaderView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		A6CA34251937A9DA001BB23A /* SpotDetails */ = {
 			isa = PBXGroup;
 			children = (
-				2618EB5D193D05FE006C75DE /* SHSectionHeaderView.h */,
-				2618EB5E193D05FE006C75DE /* SHSectionHeaderView.m */,
+				A62B3342193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.h */,
+				A62B3343193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m */,
+				A62B3344193D090100CE4BF0 /* SHSpotProfileViewController.h */,
+				A62B3345193D090100CE4BF0 /* SHSpotProfileViewController.m */,
 			);
 			name = SpotDetails;
 			sourceTree = "<group>";
@@ -6646,6 +6674,7 @@
 				03412C411882F6EC000F16A8 /* SHJSONAPIResource.m in Sources */,
 				2654B8CE192BB6E000A66BED /* SHSpotsMenuViewController.m in Sources */,
 				039F549F18D35871004B2B67 /* DrinkMenuOfferingsViewController.m in Sources */,
+				A62B3346193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m in Sources */,
 				03CAC19D18E9FAC300FAC5F5 /* AccountSettingsViewController.m in Sources */,
 				038664E1186D379400985CEC /* BaseViewController.m in Sources */,
 				26BABDF61910688F00852D73 /* JHAccordion.m in Sources */,
@@ -6655,7 +6684,7 @@
 				038664E2186D379400985CEC /* ClientSessionManager.m in Sources */,
 				03AF8F6318E6013700DD9356 /* CheckinConfirmationViewController.m in Sources */,
 				039F54AC18D35C2E004B2B67 /* MenuItemCell.m in Sources */,
-				2618EB5F193D05FE006C75DE /* SHSectionHeaderView.m in Sources */,
+				2618EB5F193D05FE006C75DE /* (null) in Sources */,
 				03F2D9371871E88000C69576 /* LaunchViewController.m in Sources */,
 				03763FB718D9EBFC00A9A30B /* SHTableViewCell.m in Sources */,
 				03F2D94D18722CAC00C69576 /* SHNavigationBar.m in Sources */,
@@ -6710,6 +6739,7 @@
 				03F6BF6B18C6E10A00172F13 /* CreateListCell.m in Sources */,
 				26689718192F2A82004FAC2D /* SHBaseCollectionViewManager.m in Sources */,
 				0381043818B6704600A410DB /* SpotImageCollectViewCell.m in Sources */,
+				A62B334B193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */,
 				26B6767C18E9F59500DAD113 /* TutorialViewController.m in Sources */,
 				039F549418D34AC4004B2B67 /* DrinkSubtypeModel.m in Sources */,
 				03E8833B18C838F600BD8FBB /* CardLayout.m in Sources */,
@@ -6742,6 +6772,7 @@
 				038664DC186D376900985CEC /* TellMeMyLocation.m in Sources */,
 				037D13A218A3DF8500B89535 /* DrinkTypeModel.m in Sources */,
 				03E882E218C7A39000BD8FBB /* AdjustSliderOptionCell.m in Sources */,
+				A62B333D193D086F00CE4BF0 /* SHSectionHeaderView.m in Sources */,
 				0345708F18DC00EE0095E4A8 /* BaseAlcoholModel.m in Sources */,
 				03AF8ECA18E5B6C800DD9356 /* ShareViewController.m in Sources */,
 				039F542218D283A8004B2B67 /* DrinksNearbyViewController.m in Sources */,
@@ -6827,7 +6858,6 @@
 				03CABFB718E7716400FAC5F5 /* ClientSessionManager.m in Sources */,
 				03CABFB818E7716400FAC5F5 /* CheckinConfirmationViewController.m in Sources */,
 				03CABFB918E7716400FAC5F5 /* MenuItemCell.m in Sources */,
-				2618EB63193D05FE006C75DE /* SHSectionHeaderView.m in Sources */,
 				03CABFBA18E7716400FAC5F5 /* LaunchViewController.m in Sources */,
 				03CABFBB18E7716400FAC5F5 /* SHTableViewCell.m in Sources */,
 				03CABFBC18E7716400FAC5F5 /* SHNavigationBar.m in Sources */,
@@ -6860,6 +6890,7 @@
 				03CABFD218E7716400FAC5F5 /* RefreshView.m in Sources */,
 				03CABFD318E7716400FAC5F5 /* NSDate+Util.m in Sources */,
 				03CABFD418E7716400FAC5F5 /* ReviewsMenuViewController.m in Sources */,
+				A62B334A193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m in Sources */,
 				03CABFD518E7716400FAC5F5 /* ListCell.m in Sources */,
 				26F0FDEA18EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
 				03CABFD618E7716400FAC5F5 /* UIImage+Resize.m in Sources */,
@@ -6868,6 +6899,7 @@
 				03CABFD918E7716400FAC5F5 /* UIViewController+Navigator.m in Sources */,
 				03CABFDA18E7716400FAC5F5 /* JHPullRefreshViewController.m in Sources */,
 				2654B89A192BB6B200A66BED /* SHSpotsCollectionViewManager.m in Sources */,
+				A62B3341193D086F00CE4BF0 /* SHSectionHeaderView.m in Sources */,
 				03CABFDB18E7716400FAC5F5 /* NSString+Currency.m in Sources */,
 				03CABFDC18E7716400FAC5F5 /* ErrorModel.m in Sources */,
 				03CABFDD18E7716400FAC5F5 /* UserModel.m in Sources */,
@@ -6897,6 +6929,7 @@
 				2654B8CD192BB6E000A66BED /* SHSidebarViewController.m in Sources */,
 				26A7E3871922D20700FF7B88 /* SHStyleKit.m in Sources */,
 				03CABFEF18E7716400FAC5F5 /* AverageReviewModel.m in Sources */,
+				A62B334F193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */,
 				03CABFF018E7716400FAC5F5 /* UIAlertView+Block.m in Sources */,
 				03CABFF118E7716400FAC5F5 /* UILabelGotham.m in Sources */,
 				03CABFF218E7716400FAC5F5 /* SHSlider.m in Sources */,
@@ -6991,7 +7024,6 @@
 				03F4E76218CA33D00056EAA9 /* ClientSessionManager.m in Sources */,
 				03AF8F6518E6013E00DD9356 /* CheckinConfirmationViewController.m in Sources */,
 				039F54AE18D35C2E004B2B67 /* MenuItemCell.m in Sources */,
-				2618EB61193D05FE006C75DE /* SHSectionHeaderView.m in Sources */,
 				03F4E76318CA33D00056EAA9 /* LaunchViewController.m in Sources */,
 				03763FB918D9ED7800A9A30B /* SHTableViewCell.m in Sources */,
 				03F4E76418CA33D00056EAA9 /* SHNavigationBar.m in Sources */,
@@ -7024,6 +7056,7 @@
 				03F4E77618CA33D00056EAA9 /* RefreshView.m in Sources */,
 				03F4E77718CA33D00056EAA9 /* NSDate+Util.m in Sources */,
 				03F4E77818CA33D00056EAA9 /* ReviewsMenuViewController.m in Sources */,
+				A62B3348193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m in Sources */,
 				03F4E77918CA33D00056EAA9 /* ListCell.m in Sources */,
 				26F0FDE918EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
 				03F4E77A18CA33D00056EAA9 /* UIImage+Resize.m in Sources */,
@@ -7032,6 +7065,7 @@
 				03F4E77D18CA33D00056EAA9 /* UIViewController+Navigator.m in Sources */,
 				03F4E77E18CA33D00056EAA9 /* JHPullRefreshViewController.m in Sources */,
 				2654B898192BB6B200A66BED /* SHSpotsCollectionViewManager.m in Sources */,
+				A62B333F193D086F00CE4BF0 /* SHSectionHeaderView.m in Sources */,
 				03F4E77F18CA33D00056EAA9 /* NSString+Currency.m in Sources */,
 				03F4E78018CA33D00056EAA9 /* ErrorModel.m in Sources */,
 				03F4E78118CA33D00056EAA9 /* UserModel.m in Sources */,
@@ -7061,6 +7095,7 @@
 				2654B8CB192BB6E000A66BED /* SHSidebarViewController.m in Sources */,
 				26A7E3851922D20700FF7B88 /* SHStyleKit.m in Sources */,
 				03F4E79018CA33D00056EAA9 /* AverageReviewModel.m in Sources */,
+				A62B334D193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */,
 				03F4E79118CA33D00056EAA9 /* UIAlertView+Block.m in Sources */,
 				03F4E79218CA33D00056EAA9 /* UILabelGotham.m in Sources */,
 				03F4E79318CA33D00056EAA9 /* SHSlider.m in Sources */,
@@ -7155,7 +7190,6 @@
 				03F4E8B018CA34260056EAA9 /* ClientSessionManager.m in Sources */,
 				03AF8F6418E6013E00DD9356 /* CheckinConfirmationViewController.m in Sources */,
 				039F54AD18D35C2E004B2B67 /* MenuItemCell.m in Sources */,
-				2618EB60193D05FE006C75DE /* SHSectionHeaderView.m in Sources */,
 				03F4E8B118CA34260056EAA9 /* LaunchViewController.m in Sources */,
 				03763FB818D9ED7800A9A30B /* SHTableViewCell.m in Sources */,
 				03F4E8B218CA34260056EAA9 /* SHNavigationBar.m in Sources */,
@@ -7188,6 +7222,7 @@
 				03F4E8C418CA34260056EAA9 /* RefreshView.m in Sources */,
 				03F4E8C518CA34260056EAA9 /* NSDate+Util.m in Sources */,
 				03F4E8C618CA34260056EAA9 /* ReviewsMenuViewController.m in Sources */,
+				A62B3347193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m in Sources */,
 				03F4E8C718CA34260056EAA9 /* ListCell.m in Sources */,
 				26F0FDE818EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
 				03F4E8C818CA34260056EAA9 /* UIImage+Resize.m in Sources */,
@@ -7196,6 +7231,7 @@
 				03F4E8CB18CA34260056EAA9 /* UIViewController+Navigator.m in Sources */,
 				03F4E8CC18CA34260056EAA9 /* JHPullRefreshViewController.m in Sources */,
 				2654B897192BB6B200A66BED /* SHSpotsCollectionViewManager.m in Sources */,
+				A62B333E193D086F00CE4BF0 /* SHSectionHeaderView.m in Sources */,
 				03F4E8CD18CA34260056EAA9 /* NSString+Currency.m in Sources */,
 				03F4E8CE18CA34260056EAA9 /* ErrorModel.m in Sources */,
 				03F4E8CF18CA34260056EAA9 /* UserModel.m in Sources */,
@@ -7225,6 +7261,7 @@
 				2654B8CA192BB6E000A66BED /* SHSidebarViewController.m in Sources */,
 				26A7E3841922D20700FF7B88 /* SHStyleKit.m in Sources */,
 				03F4E8DE18CA34260056EAA9 /* AverageReviewModel.m in Sources */,
+				A62B334C193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */,
 				03F4E8DF18CA34260056EAA9 /* UIAlertView+Block.m in Sources */,
 				03F4E8E018CA34260056EAA9 /* UILabelGotham.m in Sources */,
 				03F4E8E118CA34260056EAA9 /* SHSlider.m in Sources */,
@@ -7315,11 +7352,9 @@
 				267E05011922CC48004457B4 /* JHAccordion.m in Sources */,
 				267E05021922CC48004457B4 /* DrinkListMenuViewController.m in Sources */,
 				2654B8BD192BB6E000A66BED /* SHLocationMenuBarViewController.m in Sources */,
-				A6CA342B1937A9FC001BB23A /* SHSpotDetailFooterNavigationViewController.m in Sources */,
 				267E05031922CC48004457B4 /* ClientSessionManager.m in Sources */,
 				267E05041922CC48004457B4 /* CheckinConfirmationViewController.m in Sources */,
 				267E05051922CC48004457B4 /* MenuItemCell.m in Sources */,
-				2618EB62193D05FE006C75DE /* SHSectionHeaderView.m in Sources */,
 				267E05061922CC48004457B4 /* LaunchViewController.m in Sources */,
 				267E05071922CC48004457B4 /* SHTableViewCell.m in Sources */,
 				267E05081922CC48004457B4 /* SHNavigationBar.m in Sources */,
@@ -7352,6 +7387,7 @@
 				267E05221922CC48004457B4 /* RefreshView.m in Sources */,
 				267E05231922CC48004457B4 /* NSDate+Util.m in Sources */,
 				267E05241922CC48004457B4 /* ReviewsMenuViewController.m in Sources */,
+				A62B3349193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m in Sources */,
 				267E05251922CC48004457B4 /* ListCell.m in Sources */,
 				267E05261922CC48004457B4 /* AgeVerificationViewController.m in Sources */,
 				267E05271922CC48004457B4 /* UIImage+Resize.m in Sources */,
@@ -7360,6 +7396,7 @@
 				267E052A1922CC48004457B4 /* UIViewController+Navigator.m in Sources */,
 				267E052B1922CC48004457B4 /* JHPullRefreshViewController.m in Sources */,
 				2654B899192BB6B200A66BED /* SHSpotsCollectionViewManager.m in Sources */,
+				A62B3340193D086F00CE4BF0 /* SHSectionHeaderView.m in Sources */,
 				267E052C1922CC48004457B4 /* NSString+Currency.m in Sources */,
 				267E052D1922CC48004457B4 /* ErrorModel.m in Sources */,
 				267E052E1922CC48004457B4 /* UserModel.m in Sources */,
@@ -7389,13 +7426,13 @@
 				2654B8CC192BB6E000A66BED /* SHSidebarViewController.m in Sources */,
 				26A7E3861922D20700FF7B88 /* SHStyleKit.m in Sources */,
 				267E05441922CC48004457B4 /* AverageReviewModel.m in Sources */,
+				A62B334E193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */,
 				267E05451922CC48004457B4 /* UIAlertView+Block.m in Sources */,
 				267E05461922CC48004457B4 /* UILabelGotham.m in Sources */,
 				267E05471922CC48004457B4 /* SHSlider.m in Sources */,
 				267E05481922CC48004457B4 /* SpotAnnotationCallout.m in Sources */,
 				267E05491922CC48004457B4 /* SidebarViewController.m in Sources */,
 				267E054A1922CC48004457B4 /* DrinkCardCollectionViewCell.m in Sources */,
-				A6CA34321937D26F001BB23A /* SHSpotProfileViewController.m in Sources */,
 				267E054B1922CC48004457B4 /* SpotListViewController.m in Sources */,
 				26689722192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */,
 				A6CA343919390BCF001BB23A /* SHImageModelCollectionViewManager.m in Sources */,

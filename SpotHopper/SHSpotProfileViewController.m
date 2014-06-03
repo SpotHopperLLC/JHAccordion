@@ -38,8 +38,8 @@
 
 #define kNumberOfCells 3
 
-NSString* const PhotoViewerSegueIdentifier = @"onePhotoSegue";
-NSString* const PhotoAlbumSegueIdentifier = @"albumSegue";
+NSString* const DrinkProfileToPhotoViewer = @"DrinkProfileToPhotoViewer";
+NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 
 @interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate, SHImageModelCollectionDelegate>
 
@@ -52,6 +52,7 @@ NSString* const PhotoAlbumSegueIdentifier = @"albumSegue";
 
 - (void)viewDidLoad {
     [self viewDidLoad:@[kDidLoadOptionsNoBackground]];
+    //self.navigationController.navigationBar.opaque = YES;
 }
 
 #pragma mark - UITableViewDataSource
@@ -83,6 +84,7 @@ NSString* const PhotoAlbumSegueIdentifier = @"albumSegue";
                 self.imageModelCollectionViewManager.collectionView = collectionView;
                 collectionView.delegate = self.imageModelCollectionViewManager;
                 collectionView.dataSource = self.imageModelCollectionViewManager;
+                self.imageModelCollectionViewManager.imageModels = self.spot.images;
             
                 //attach previous and next buttons to goPrevious and goNext to trigger image transitions
                 UIButton *previousButton = (UIButton *)[cell viewWithTag:kPreviousBtnTag];
@@ -110,7 +112,7 @@ NSString* const PhotoAlbumSegueIdentifier = @"albumSegue";
             spotType.text = self.spot.spotType.name;
             
             UILabel *spotRelevancy = (UILabel*)[cell viewWithTag:kLabelTagSpotRelevancy];
-            spotRelevancy.text = [NSString stringWithFormat:@"%@%% Match",self.spot.relevance];
+            spotRelevancy.text = [NSString stringWithFormat:@"%@ Match",self.spot.matchPercent];
             
             UILabel *spotCloseTime = (UILabel*)[cell viewWithTag:kLabelTagSpotCloseTime];
             NSString *closeTime;
@@ -129,21 +131,27 @@ NSString* const PhotoAlbumSegueIdentifier = @"albumSegue";
             
             NSArray *dailySpecials;
 
-            if (!(dailySpecials = self.spot.dailySpecials)) {
+            if ((dailySpecials = self.spot.dailySpecials)) {
                 UILabel *spotSpecial = (UILabel*)[cell viewWithTag:kLabelTagSpotSpecial];
                 UILabel *specialDetails = (UILabel*)[cell viewWithTag:kLabelTagSpotSpecialDetails];
-                
-                LiveSpecialModel *liveSpecial = [self.spot currentLiveSpecial];
-                NSString *todaysSpecial = [dailySpecials specialsForToday];
 
-                if (!liveSpecial) {
-                    spotSpecial.text = @"Live Special!";
-                    specialDetails.text = liveSpecial.text;
-        
-                } else if (!todaysSpecial) {
-                    spotSpecial.text = @"Current Special!";
+                NSString *todaysSpecial = [self.spot.dailySpecials specialsForToday];
+                
+                if (todaysSpecial) {
                     specialDetails.text = todaysSpecial;
                 }
+                
+//                LiveSpecialModel *liveSpecial = [self.spot currentLiveSpecial];
+//                NSString *todaysSpecial = [dailySpecials specialsForToday];
+//
+//                if (liveSpecial) {
+//                    spotSpecial.text = @"Live Special!";
+//                    specialDetails.text = liveSpecial.text;
+//        
+//                } else if (todaysSpecial) {
+//                    spotSpecial.text = @"Current Special!";
+//                    specialDetails.text = todaysSpecial;
+//                }
             }
     
             break;
@@ -152,7 +160,7 @@ NSString* const PhotoAlbumSegueIdentifier = @"albumSegue";
             //todo: place switches here (add logic for creating as many switches as vibe dictates)
             break;
     }
-    return nil;
+    return cell;
 }
 
 #pragma mark - UITableViewDelegate
@@ -165,6 +173,8 @@ NSString* const PhotoAlbumSegueIdentifier = @"albumSegue";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat height;
     
+    NSString *todaysSpecial = [self.spot.dailySpecials specialsForToday];
+    
     switch (indexPath.row) {
         case kCellImageCollection:
             height = 178.0f;
@@ -175,7 +185,7 @@ NSString* const PhotoAlbumSegueIdentifier = @"albumSegue";
             //todo: check with Brennan
             break;
         case kCellSpotSpecials:
-            height = (!self.spot.dailySpecials) ? 91.0f : 0.0f;
+            height = todaysSpecial.length ? 91.0f : 0.0f;
             break;
         default:
             //todo: figure out height of the slider cells
@@ -200,11 +210,11 @@ NSString* const PhotoAlbumSegueIdentifier = @"albumSegue";
     self.currentIndex = index;
     
     if (manager.imageModels.count > 1) {
-        [self performSegueWithIdentifier:PhotoAlbumSegueIdentifier sender:self];
+        [self performSegueWithIdentifier:DrinkProfileToPhotoAlbum sender:self];
         //        [self goToPhotoAlbum:self.imageModels atIndex:indexPath.item];
     }
     else {
-        [self performSegueWithIdentifier:PhotoViewerSegueIdentifier sender:self];
+        [self performSegueWithIdentifier:DrinkProfileToPhotoViewer sender:self];
         //        [self goToPhotoViewer:self.imageModels atIndex:indexPath.item fromPhotoAlbum:nil];
     }
     
@@ -218,6 +228,7 @@ NSString* const PhotoAlbumSegueIdentifier = @"albumSegue";
     // Sets "Opens at <some time>" or "Open until <some time>"
     NSString *closeTime = @"";
     NSArray *hoursForToday = [self.spot.hoursOfOperation datesForToday];
+    NSLog(@"spot hours: %@", self.spot.hoursOfOperation);
     
     if (!hoursForToday) {
     
@@ -246,10 +257,10 @@ NSString* const PhotoAlbumSegueIdentifier = @"albumSegue";
 {
     if (hasMore) {
         button.alpha = 0.1;
-        button.enabled = FALSE;
+        button.enabled = TRUE;
     }else{
         button.alpha = 1.0;
-        button.enabled = TRUE;
+        button.enabled = FALSE;
     }
 }
 
@@ -259,19 +270,24 @@ NSString* const PhotoAlbumSegueIdentifier = @"albumSegue";
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.identifier isEqualToString:PhotoViewerSegueIdentifier]) {
+    
+    //todo: refactor to make semantic style of Brennan
+    if ([segue.identifier isEqualToString:DrinkProfileToPhotoViewer]) {
         PhotoViewerViewController *viewController = segue.destinationViewController;
         viewController.images = self.imageModelCollectionViewManager.imageModels;
-        viewController.index = self.currentIndex;
+        
+        if (self.currentIndex) {
+            viewController.index = self.currentIndex;
+        }
     
-    }else if ([segue.identifier isEqualToString:PhotoAlbumSegueIdentifier]){
+    }else if ([segue.identifier isEqualToString:DrinkProfileToPhotoAlbum]){
         PhotoAlbumViewController *viewController = segue.destinationViewController;
         viewController.images = self.imageModelCollectionViewManager.imageModels;
-        viewController.index = self.currentIndex;
+        
+        if (self.currentIndex) {
+            viewController.index = self.currentIndex;
+        }
     }
-    
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
 }
 
 

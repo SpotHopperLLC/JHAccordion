@@ -20,6 +20,7 @@
 #import "SHSlidersSearchViewController.h"
 #import "SHMapOverlayCollectionViewController.h"
 #import "SHMapFooterNavigationViewController.h"
+#import "SHSpotProfileViewController.h"
 
 #import "SpotAnnotationCallout.h"
 #import "MatchPercentAnnotation.h"
@@ -53,6 +54,8 @@
 #define kBlurSaturation 1.5f
 
 #define kModalAnimationDuration 0.35f
+
+NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
 
 @interface SHHomeMapViewController ()
     <SHSidebarDelegate,
@@ -93,6 +96,8 @@
 
 @property (strong, nonatomic) SpotListModel *spotListModel;
 @property (strong, nonatomic) NSArray *specialsSpotModels;
+
+@property (strong, nonatomic) SpotModel *selectedSpot;
 
 @end
 
@@ -255,6 +260,12 @@
             vc.location = location;
             vc.delegate = self;
         }
+    }
+    
+    if ([segue.destinationViewController isKindOfClass:[SHSpotProfileViewController class]]) {
+        SHSpotProfileViewController *viewController = segue.destinationViewController;
+        NSAssert(self.selectedSpot, @"Selected Spot should be defined");
+        viewController.spot = self.selectedSpot;
     }
 }
 
@@ -958,12 +969,15 @@
 }
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didSelectSpotAtIndex:(NSUInteger)index {
-    // Do not focus on spot when spot is selected
-//    if (index < self.spotListModel.spots.count) {
-//        SpotModel *spot = self.spotListModel.spots[index];
-//        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([spot.latitude floatValue], [spot.longitude floatValue]);
-//        [self repositionMapOnCoordinate:coordinate animated:YES];
-//    }
+    // Note: Do not focus on spot when spot is selected
+    
+    if (index < self.spotListModel.spots.count) {
+        self.selectedSpot = self.spotListModel.spots[index];
+        [self performSegueWithIdentifier:SpotSelectedSegueIdentifier sender:self];
+    }
+    else {
+        NSAssert(FALSE, @"Index should always be in bounds");
+    }
 }
 
 #pragma mark - SHMapFooterNavigationDelegate
