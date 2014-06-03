@@ -94,6 +94,8 @@
 @property (strong, nonatomic) SpotListModel *spotListModel;
 @property (strong, nonatomic) NSArray *specialsSpotModels;
 
+@property (strong, nonatomic) DrinkListModel *drinkListModel;
+
 @end
 
 @implementation SHHomeMapViewController {
@@ -273,14 +275,20 @@
 - (void)hideSideBar:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
     NSLog(@"Hiding Side Bar");
     
+    [self.sideBarViewController viewWillDisappear:animated];
+    
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:(animated ? 0.25 : 0.0) delay:0.0 options:options animations:^{
         self.sideBarRightEdgeConstraint.constant = CGRectGetWidth(self.view.frame);
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
-        if (finished && completionBlock) {
-            completionBlock();
+        if (finished) {
+            self.sideBarViewController.view.hidden = TRUE;
+            [self.sideBarViewController viewDidDisappear:animated];
+            if (completionBlock) {
+                completionBlock();
+            }
         }
     }];
 }
@@ -289,7 +297,8 @@
     NSLog(@"Showing Side Bar");
 
     [self.view bringSubviewToFront:self.sideBarViewController.view];
-    [self.sideBarViewController viewWillAppear:FALSE];
+    [self.sideBarViewController viewWillAppear:animated];
+    self.sideBarViewController.view.hidden = FALSE;
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:(animated ? 0.25 : 0.0) delay:0.0 options:options animations:^{
@@ -297,6 +306,7 @@
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
+        [self.sideBarViewController viewDidAppear:animated];
         if (finished && completionBlock) {
             completionBlock();
         }
@@ -322,6 +332,8 @@
 - (void)hideCollectionContainerView:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
     self.collectionContainerView.hidden = TRUE;
     
+    LOG_FRAME(@"collectionContainerView", self.collectionContainerView.frame);
+
     if (completionBlock) {
         completionBlock();
     }
@@ -329,6 +341,8 @@
 
 - (void)showCollectionContainerView:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
     self.collectionContainerView.hidden = FALSE;
+    
+    LOG_FRAME(@"collectionContainerView", self.collectionContainerView.frame);
     
     if (completionBlock) {
         completionBlock();
@@ -399,6 +413,8 @@
 }
 
 - (void)showSlidersSearch:(BOOL)animated forMode:(SHMode)mode withCompletionBlock:(void (^)())completionBlock {
+    [self.slidersSearchViewController viewWillAppear:animated];
+    
     [self prepareBlurredScreen];
     
     UIButton *cancelButton = [self makeButtonWithTitle:@"cancel" target:self action:@selector(searchSlidersCancelButtonTapped:)];
@@ -450,6 +466,7 @@
     } completion:^(BOOL finished) {
         if (finished) {
             [self updateBlurredView];
+            [self.slidersSearchViewController viewDidAppear:animated];
             
             if (completionBlock) {
                 completionBlock();
@@ -459,6 +476,7 @@
 }
 
 - (void)hideSlidersSearch:(BOOL)animated forMode:(SHMode)mode withCompletionBlock:(void (^)())completionBlock {
+    [self.slidersSearchViewController viewWillDisappear:animated];
     [self updateBlurredView];
     
     [self restoreNormalNavigationItems:animated withCompletionBlock:^{
@@ -476,6 +494,7 @@
                 _isShowingSliderSearchView = FALSE;
                 
                 [self.view sendSubviewToBack:self.containerView];
+                [self.slidersSearchViewController viewDidDisappear:animated];
                 
                 if (completionBlock) {
                     completionBlock();
@@ -520,6 +539,10 @@
         SHAdjustSpotListSliderViewController *vc = (SHAdjustSpotListSliderViewController *)segue.sourceViewController;
         [self displaySpotlist:vc.spotListModel];
     }
+}
+
+- (IBAction)finishCreatingDrinkListForHomeMap:(UIStoryboardSegue *)segue {
+    // do nothing (handled by delegate method)
 }
 
 - (IBAction)childViewControllerDidRequestSimilarSpots:(UIStoryboardSegue *)segue {
@@ -590,6 +613,29 @@
     
     [self hideHomeNavigation:FALSE withCompletionBlock:^{
         [self.mapOverlayCollectionViewController displaySpotList:spotListModel];
+        [self showCollectionContainerView:FALSE withCompletionBlock:^{
+            // do nothing
+        }];
+    }];
+}
+
+- (void)displayDrinklist:(DrinkListModel *)drinkListModel {
+    // hold onto the drinklist
+    self.drinkListModel = drinkListModel;
+    
+    if (!self.drinkListModel.drinks.count) {
+        [self showAlert:@"Oops" message:@"There are no drinks which match in this location. Please try another search area."];
+        return;
+    }
+    
+    // TODO: populate map (which comes from spots related to the drinks)
+    // for now just clear the map
+    [self.mapView removeAnnotations:[self.mapView annotations]];
+//    [self populateMapWithSpots:self.spotListModel.spots mode:SHModeSpots];
+    
+    // TODO: populate collection view with drinks
+    [self hideHomeNavigation:FALSE withCompletionBlock:^{
+        [self.mapOverlayCollectionViewController displayDrinklist:drinkListModel];
         [self showCollectionContainerView:FALSE withCompletionBlock:^{
             // do nothing
         }];
@@ -1001,6 +1047,15 @@
 
 - (void)spotAnnotationCallout:(SpotAnnotationCallout*)spotAnnotationCallout clicked:(MatchPercentAnnotationView*)matchPercentAnnotationView {
     NSLog(@"Clicked?!");
+}
+
+#pragma mark - SHSlidersSearchDelegate
+#pragma mark -
+
+- (void)slidersSearchViewController:(SHSlidersSearchViewController *)vc didPrepareDrinklist:(DrinkListModel *)drinklist {
+    [self hideSlidersSearch:TRUE forMode:SHModeNone withCompletionBlock:^{
+        [self displayDrinklist:drinklist];
+    }];
 }
 
 #pragma mark - MKMapViewDelegate

@@ -1806,6 +1806,11 @@
 		2618EB63193D05FE006C75DE /* SHSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2618EB5E193D05FE006C75DE /* SHSectionHeaderView.m */; };
 		2636AB3E18F8A82100591722 /* table_footer_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9418E2654900C93BBF /* table_footer_background.png */; };
 		2636AB3F18F8A82400591722 /* table_footer_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9518E2654900C93BBF /* table_footer_background@2x.png */; };
+		2640B00F193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */; };
+		2640B010193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */; };
+		2640B011193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */; };
+		2640B012193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */; };
+		2640B013193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */; };
 		2654B88F192BB68C00A66BED /* SHStyleKit+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B88E192BB68C00A66BED /* SHStyleKit+Additions.m */; };
 		2654B890192BB68C00A66BED /* SHStyleKit+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B88E192BB68C00A66BED /* SHStyleKit+Additions.m */; };
 		2654B891192BB68C00A66BED /* SHStyleKit+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B88E192BB68C00A66BED /* SHStyleKit+Additions.m */; };
@@ -3044,6 +3049,8 @@
 		2602BD9C18E283C500C93BBF /* Common.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Common.storyboard; sourceTree = "<group>"; };
 		2618EB5D193D05FE006C75DE /* SHSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSectionHeaderView.h; path = SpotHopper/SHSectionHeaderView.h; sourceTree = "<group>"; };
 		2618EB5E193D05FE006C75DE /* SHSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSectionHeaderView.m; path = SpotHopper/SHSectionHeaderView.m; sourceTree = "<group>"; };
+		2640B00D193E6C2D00978725 /* SHDrinksCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHDrinksCollectionViewManager.h; path = SpotHopper/SHDrinksCollectionViewManager.h; sourceTree = "<group>"; };
+		2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHDrinksCollectionViewManager.m; path = SpotHopper/SHDrinksCollectionViewManager.m; sourceTree = "<group>"; };
 		2654B88D192BB68C00A66BED /* SHStyleKit+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SHStyleKit+Additions.h"; path = "SpotHopper/SHStyleKit+Additions.h"; sourceTree = "<group>"; };
 		2654B88E192BB68C00A66BED /* SHStyleKit+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SHStyleKit+Additions.m"; path = "SpotHopper/SHStyleKit+Additions.m"; sourceTree = "<group>"; };
 		2654B894192BB6B200A66BED /* SHSpotsCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSpotsCollectionViewManager.h; path = SpotHopper/SHSpotsCollectionViewManager.h; sourceTree = "<group>"; };
@@ -4472,8 +4479,6 @@
 			isa = PBXGroup;
 			children = (
 				26C428D9192D623900B67F10 /* Base */,
-				2668970F192F2A71004FAC2D /* SHSlidersSearchViewController.h */,
-				26689710192F2A71004FAC2D /* SHSlidersSearchViewController.m */,
 				2654B89D192BB6E000A66BED /* SHHomeMapViewController.h */,
 				2654B89E192BB6E000A66BED /* SHHomeMapViewController.m */,
 				2654B89F192BB6E000A66BED /* SHHomeNavigationViewController.h */,
@@ -4488,6 +4493,8 @@
 				2654B8A8192BB6E000A66BED /* SHSidebarViewController.m */,
 				2654B8A9192BB6E000A66BED /* SHSpotsMenuViewController.h */,
 				2654B8AA192BB6E000A66BED /* SHSpotsMenuViewController.m */,
+				2668970F192F2A71004FAC2D /* SHSlidersSearchViewController.h */,
+				26689710192F2A71004FAC2D /* SHSlidersSearchViewController.m */,
 				2654B89B192BB6E000A66BED /* SHAdjustSpotListSliderViewController.h */,
 				2654B89C192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m */,
 			);
@@ -4526,6 +4533,8 @@
 		26C816C71926EC2D00E237F2 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				2640B00D193E6C2D00978725 /* SHDrinksCollectionViewManager.h */,
+				2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */,
 				2668971D192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.h */,
 				2668971E192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m */,
 				26689716192F2A82004FAC2D /* SHBaseCollectionViewManager.h */,
@@ -6761,6 +6770,7 @@
 				039B701818873DB700C590F8 /* ReviewCell.m in Sources */,
 				2654B8C4192BB6E000A66BED /* SHMapOverlayCollectionViewController.m in Sources */,
 				03121A3518BD774B00C9FFA3 /* SHViewTranlucentWhiteFooter.m in Sources */,
+				2640B00F193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */,
 				2654B8B0192BB6E000A66BED /* SHHomeMapViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6930,6 +6940,7 @@
 				03CAC02818E7716400FAC5F5 /* ReviewCell.m in Sources */,
 				2654B8C8192BB6E000A66BED /* SHMapOverlayCollectionViewController.m in Sources */,
 				03CAC02918E7716400FAC5F5 /* SHViewTranlucentWhiteFooter.m in Sources */,
+				2640B013193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */,
 				2654B8B4192BB6E000A66BED /* SHHomeMapViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7091,6 +7102,7 @@
 				03F4E7B818CA33D00056EAA9 /* ReviewCell.m in Sources */,
 				2654B8C6192BB6E000A66BED /* SHMapOverlayCollectionViewController.m in Sources */,
 				03F4E7B918CA33D00056EAA9 /* SHViewTranlucentWhiteFooter.m in Sources */,
+				2640B011193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */,
 				2654B8B2192BB6E000A66BED /* SHHomeMapViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7252,6 +7264,7 @@
 				03F4E90618CA34260056EAA9 /* ReviewCell.m in Sources */,
 				2654B8C5192BB6E000A66BED /* SHMapOverlayCollectionViewController.m in Sources */,
 				03F4E90718CA34260056EAA9 /* SHViewTranlucentWhiteFooter.m in Sources */,
+				2640B010193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */,
 				2654B8B1192BB6E000A66BED /* SHHomeMapViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7413,6 +7426,7 @@
 				267E05801922CC48004457B4 /* ReviewCell.m in Sources */,
 				2654B8C7192BB6E000A66BED /* SHMapOverlayCollectionViewController.m in Sources */,
 				267E05811922CC48004457B4 /* SHViewTranlucentWhiteFooter.m in Sources */,
+				2640B012193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */,
 				2654B8B3192BB6E000A66BED /* SHHomeMapViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

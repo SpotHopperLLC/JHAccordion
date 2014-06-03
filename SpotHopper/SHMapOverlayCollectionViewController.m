@@ -12,6 +12,7 @@
 
 #import "SpotListModel.h"
 #import "SpotModel.h"
+#import "DrinkListModel.h"
 
 #import "UIAlertView+Block.h"
 
@@ -19,13 +20,15 @@ typedef enum {
     SHOverlayCollectionViewModeNone = 0,
     SHOverlayCollectionViewModeSpotlists,
     SHOverlayCollectionViewModeSpecials,
+    SHOverlayCollectionViewModeDrinklists
 } SHOverlayCollectionViewMode;
 
-@interface SHMapOverlayCollectionViewController () <SHSpotsCollectionViewManagerDelegate, SHSpecialsCollectionViewManagerDelegate>
+@interface SHMapOverlayCollectionViewController () <SHSpotsCollectionViewManagerDelegate, SHSpecialsCollectionViewManagerDelegate, SHDrinksCollectionViewManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet SHSpotsCollectionViewManager *spotsCollectionViewManager;
 @property (weak, nonatomic) IBOutlet SHSpecialsCollectionViewManager *specialsCollectionViewManager;
+@property (weak, nonatomic) IBOutlet SHDrinksCollectionViewManager *drinksCollectionViewManager;
 
 @property (assign, nonatomic) SHOverlayCollectionViewMode mode;
 
@@ -70,6 +73,13 @@ typedef enum {
     [self.specialsCollectionViewManager updateSpots:spots];
 }
 
+- (void)displayDrinklist:(DrinkListModel *)drinklist {
+    self.mode = SHOverlayCollectionViewModeDrinklists;
+    self.collectionView.dataSource = self.drinksCollectionViewManager;
+    self.collectionView.delegate = self.drinksCollectionViewManager;
+    [self.drinksCollectionViewManager updateDrinkList:drinklist];
+}
+
 #pragma mark - Private
 #pragma mark -
 
@@ -106,7 +116,6 @@ typedef enum {
     
     [self.spotsCollectionViewManager goNext];
 }
-
 
 - (IBAction)specialCellNameButtonTapped:(id)sender {
     NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
@@ -165,6 +174,28 @@ typedef enum {
     if (index != NSNotFound) {
         NSLog(@"index: %lu", (long)index);
     }
+}
+
+- (IBAction)drinkCellLeftButtonTapped:(id)sender {
+    NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
+    
+    NSUInteger index = [self.drinksCollectionViewManager indexForViewInCollectionViewCell:sender];
+    if (index != NSNotFound) {
+        NSLog(@"index: %lu", (long)index);
+    }
+    
+    [self.drinksCollectionViewManager goPrevious];
+}
+
+- (IBAction)drinkCellRightButtonTapped:(id)sender {
+    NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
+    
+    NSUInteger index = [self.drinksCollectionViewManager indexForViewInCollectionViewCell:sender];
+    if (index != NSNotFound) {
+        NSLog(@"Overlay - index: %lu", (long)index);
+    }
+    
+    [self.drinksCollectionViewManager goNext];
 }
 
 #pragma mark - SHSpotsCollectionViewManagerDelegate

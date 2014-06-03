@@ -166,6 +166,12 @@ NSString * const SHStyleKitColorNameMyWhiteColor = @"myWhiteColor";
         case SHStyleKitDrawingWineIcon:
             [SHStyleKit drawWineIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
             break;
+        case SHStyleKitDrawingDrinkMenuIcon:
+            [SHStyleKit drawDrinkMenuIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
+            break;
+        case SHStyleKitDrawingReviewsIcon:
+            [SHStyleKit drawReviewsIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
+            break;
         case SHStyleKitDrawingSearchIcon:
             [SHStyleKit drawSearchIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
             break;

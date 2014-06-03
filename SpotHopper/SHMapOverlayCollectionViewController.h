@@ -10,8 +10,10 @@
 
 #import "SHSpotsCollectionViewManager.h"
 #import "SHSpecialsCollectionViewManager.h"
+#import "SHDrinksCollectionViewManager.h"
 
 @class SpotListModel;
+@class DrinkListModel;
 
 @protocol SHMapOverlayCollectionDelegate;
 
@@ -24,6 +26,8 @@
 - (void)displaySpot:(SpotModel *)spot;
 
 - (void)displaySpecialsForSpots:(NSArray *)spots;
+
+- (void)displayDrinklist:(DrinkListModel *)drinklist;
 
 @end
 
