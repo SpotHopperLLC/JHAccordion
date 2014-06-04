@@ -48,7 +48,7 @@
 #define kNextBtnTag 3
 
 #define kFooterNavigationViewHeight 50.0f
-#define kCutOffPoint 81.0f
+#define kCutOffPoint 116.0f
 
 #define kDefineAnimationDuration 0.25f
 
@@ -100,7 +100,20 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 }
 
 - (void)viewDidLoad {
+
     [self viewDidLoad:@[kDidLoadOptionsNoBackground]];
+    
+    //set bottom offset to account for the height of the footer navigation control
+    UIEdgeInsets contentInset = self.tableview.contentInset;
+    UIEdgeInsets scrollIndicatorInsets = self.tableview.scrollIndicatorInsets;
+    contentInset.bottom = kFooterNavigationViewHeight;
+    scrollIndicatorInsets.bottom = kFooterNavigationViewHeight;
+    self.tableview.contentInset = contentInset;
+    self.tableview.scrollIndicatorInsets = scrollIndicatorInsets;
+    
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    UIImage *backgroundImage = [SHStyleKit gradientBackgroundWithSize:self.view.frame.size];
+    [self.navigationController.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
     
     //fetch spot slider and review info
     [self.spot getSpot:nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
@@ -117,10 +130,6 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     }];
     
     self.spotfooterNavigationViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SHSpotDetailFooterNavigationViewController"];
-    
-    self.navigationController.navigationBar.shadowImage = nil;
-    [self hideTopBars:FALSE withCompletionBlock:nil];
-    
 }
 
 
@@ -327,6 +336,28 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 }
 
 
+#pragma mark - UIScrollViewDelegate
+#pragma mark -
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    //NSLog(@"offset: %f", scrollView.contentOffset.y);
+    
+    if (_topBarsClear) {
+        if (scrollView.contentOffset.y > kCutOffPoint) {
+            [self showTopBars:TRUE withCompletionBlock:^{
+                NSLog(@"Show!");
+            }];
+        }
+    }
+    else {
+        if (scrollView.contentOffset.y <= kCutOffPoint) {
+            [self hideTopBars:TRUE withCompletionBlock:^{
+                NSLog(@"Hide!");
+            }];
+        }
+    }
+}
+
 #pragma mark - Private Methods
 #pragma mark -
 
@@ -371,7 +402,7 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
         
-        UIImage *backgroundImage = [SHStyleKit drawImage:SHStyleKitDrawingGradientBackground color:SHStyleKitColorMyTintColor size:CGSizeMake(320, 64)];g
+        UIImage *backgroundImage = [SHStyleKit drawImage:SHStyleKitDrawingGradientBackground color:SHStyleKitColorMyTintColor size:CGSizeMake(320, 64)];
         [self.navigationController.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
         
         } completion:^(BOOL finished) {
