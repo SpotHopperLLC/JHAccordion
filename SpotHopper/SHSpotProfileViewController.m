@@ -12,6 +12,7 @@
 #import "LiveSpecialModel.h"
 #import "SpotTypeModel.h"
 #import "SliderTemplateModel.h"
+#import "AverageReviewModel.h"
 
 #import "SHSlider.h"
 
@@ -40,12 +41,9 @@
 #define kRightLabelVibeTag 2
 #define kSliderVibeTag 3
 
-
 #define kCollectionViewTag 1
 #define kPreviousBtnTag 2
 #define kNextBtnTag 3
-
-
 
 #define kNumberOfCells 3
 
@@ -57,15 +55,31 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 
 @property (strong, nonatomic) IBOutlet SHImageModelCollectionViewManager *imageModelCollectionViewManager;
 @property (assign, nonatomic) NSInteger currentIndex;
+@property (weak, nonatomic) IBOutlet UITableView *tableview;
 
 @end
 
 @implementation SHSpotProfileViewController
 
+
 - (void)viewDidLoad {
     [self viewDidLoad:@[kDidLoadOptionsNoBackground]];
-    //self.navigationController.navigationBar.opaque = YES;
+    
+    [self.spot getSpot:nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
+        
+        if (spotModel) {
+            self.spot = spotModel;
+            self.spot.sliderTemplates = spotModel.sliderTemplates;
+            self.spot.averageReview = spotModel.averageReview;
+            [self.tableview reloadData];
+        }
+        
+    } failure:^(ErrorModel *errorModel) {
+        //todo: error handling
+    }];
+    
 }
+
 
 #pragma mark - UITableViewDataSource
 #pragma mark -
@@ -75,18 +89,21 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+
+    NSInteger numberOfRows = 0;
     switch (section) {
         case 0:
-            return kNumberOfCells;
+            numberOfRows =  kNumberOfCells;
             break;
         case 1:
-            return [self.spot.sliderTemplates count];
+            NSLog(@"templates:  %lu", self.spot.sliderTemplates.count);
+            numberOfRows = self.spot.sliderTemplates.count;
             break;
         default:
             break;
     }
     
-    return kNumberOfCells; // todo: + # of slider cells needed
+    return numberOfRows;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -180,14 +197,17 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
         }
         case 1:{
             cell = [tableView dequeueReusableCellWithIdentifier:SpotVibeIdentifier];
+        
             SHSlider *slider = (SHSlider*)[cell viewWithTag:kSliderVibeTag];
             UILabel *minValue = (UILabel*)[cell viewWithTag:kLeftLabelVibeTag];
             UILabel *maxValue = (UILabel*)[cell viewWithTag:kRightLabelVibeTag];
             
+            NSLog(@"fetched slider templates: %@", self.spot.sliderTemplates);
+            
             SliderTemplateModel *sliderTemplate = self.spot.sliderTemplates[indexPath.row];
-            minValue.text = sliderTemplate.minLabel;
-            maxValue.text = sliderTemplate.maxLabel;
-            [slider setSelectedValue:[sliderTemplate.defaultValue floatValue]];
+            minValue.text = sliderTemplate.minLabel.length ? sliderTemplate.minLabel : @"";
+            maxValue.text = sliderTemplate.maxLabel.length ? sliderTemplate.maxLabel : @"";
+            [slider setSelectedValue:(sliderTemplate.defaultValue.floatValue / 10.0f)];
             
             break;
         }
@@ -208,17 +228,17 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat height = 0.0f;
     
-    NSString *todaysSpecial = [self.spot.dailySpecials specialsForToday];
-    
     switch (indexPath.section) {
-        case 1:{
+        case 0:{
+            NSString *todaysSpecial = [self.spot.dailySpecials specialsForToday];
+            
             switch (indexPath.row) {
                 case kCellImageCollection:
-                    height = 178.0f;
+                    height = 180.0f;
                     //todo: check with Brennan
                     break;
                 case kCellSpotDetails:
-                    height = 131.0f;
+                    height = 110.0f;
                     //todo: check with Brennan
                     break;
                 case kCellSpotSpecials:
@@ -227,17 +247,15 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
                 default:
                     break;
             }
-            break;
         }
-        case 2:{
-            height = 178.0f;
-            break;
-        }
+        break;
+        case 1:
+            height = 80.0f;
         default:
             break;
     }
   
-    return height; 
+    return height;
 }
 
 
