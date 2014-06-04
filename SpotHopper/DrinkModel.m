@@ -10,8 +10,11 @@
 
 #import "ClientSessionManager.h"
 #import "ErrorModel.h"
+#import "SpotModel.h"
 #import "DrinkTypeModel.h"
 #import "SliderTemplateModel.h"
+
+#import <CoreLocation/CoreLocation.h>
 
 @implementation DrinkModel
 
@@ -134,6 +137,63 @@
             // Rejects promise
             [deferred rejectWith:errorModel];
         }
+    }];
+    
+    return deferred.promise;
+}
+
+#pragma mark - Revised Code for 2.0
+
+- (void)getSpotsForLocation:(CLLocation *)location success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    if (!location || !CLLocationCoordinate2DIsValid(location.coordinate)) {
+        if (failureBlock) {
+            ErrorModel *errorModel = [[ErrorModel alloc] init];
+            errorModel.error = @"Location is not valid";
+            errorModel.human = @"Please select a location";
+            failureBlock(errorModel);
+        }
+        return;
+    }
+
+    // assemble params internally to encapsulate implementation details
+    NSDictionary *params = @{
+                             kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:location.coordinate.latitude],
+                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:location.coordinate.longitude]
+                             };
+    
+    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drinks/%ld/spots", (long)[self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            NSArray *models = [jsonApi resourcesForKey:@"spots"];
+            // always check that the block is defined because running it an undefined block will cause a crash
+            if (successBlock) {
+                successBlock(models, jsonApi);
+            }
+            
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            // always check that the block is defined because running it an undefined block will cause a crash
+            if (failureBlock) {
+                failureBlock(errorModel);
+            }
+        }
+    }];
+}
+
+// Promisfy the call with the callbacks and do not mix callback and promise methods
+- (Promise*)getSpotsForLocation:(CLLocation *)location {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+
+    [self getSpotsForLocation:location success:^(NSArray *spotModels, JSONAPI *jsonApi) {
+        // Resolves promise
+        [deferred resolveWith:spotModels];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
     }];
     
     return deferred.promise;

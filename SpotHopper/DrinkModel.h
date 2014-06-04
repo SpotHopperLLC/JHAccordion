@@ -35,6 +35,7 @@
 @class DrinkTypeModel;
 @class DrinkSubtypeModel;
 @class SpotModel;
+@class CLLocation;
 
 @interface DrinkModel : SHJSONAPIResource
 
@@ -68,7 +69,15 @@
 
 - (Promise*)getDrink:(NSDictionary*)params success:(void(^)(DrinkModel *drinkModel, JSONAPI *jsonAPI))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
-- (Promise*)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+- (Promise*)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock __attribute__ ((deprecated));
+
+#pragma mark - Revised Code for 2.0
+
+- (void)getSpotsForLocation:(CLLocation *)location success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
+- (Promise*)getSpotsForLocation:(CLLocation *)location;
+
+#pragma mark -
 
 - (NSString*)abvPercentString;
 

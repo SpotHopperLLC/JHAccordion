@@ -564,25 +564,12 @@
 }
 
 - (void)fetchSpots {
-    
-    if (_location == nil) {
-        return;
-    }
-    
-    NSDictionary *params = @{
-                             kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:_location.coordinate.latitude],
-                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:_location.coordinate.longitude]
-                             };
-    
-    [_drink getSpots:params success:^(NSArray *spotModels, JSONAPI *jsonApi) {
-        
+    [_drink getSpotsForLocation:_location success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         _spots = spotModels;
         [self updateViewMap];
-        
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
-    
 }
 
 #pragma mark -

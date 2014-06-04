@@ -229,13 +229,8 @@
         return;
     }
     
-    NSDictionary *params = @{
-                             kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:_location.coordinate.latitude],
-                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:_location.coordinate.longitude]
-                             };
-    
     [self showHUD:@"Finding spots"];
-    [_drink getSpots:params success:^(NSArray *spotModels, JSONAPI *jsonApi) {
+    [_drink getSpotsForLocation:_location success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         [self hideHUD];
         
         [_spots addObjectsFromArray:spotModels];
@@ -246,7 +241,6 @@
         [self showAlert:@"Oops" message:errorModel.human];
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
-    
 }
 
 @end
