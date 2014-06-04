@@ -8,18 +8,6 @@
 
 #import "BaseViewController.h"
 
-@protocol SHSpotDetailFooterNavigationDelegate;
-
 @interface SHSpotDetailFooterNavigationViewController : BaseViewController
-
-@property (weak, nonatomic) id<SHSpotDetailFooterNavigationDelegate> delegate;
-
-@end
-
-@protocol SHSpotDetailFooterNavigationDelegate <NSObject>
-
-@optional
-
-- (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc findSimilarButtonTapped:(id)sender;
 
 @end

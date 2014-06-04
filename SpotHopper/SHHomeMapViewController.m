@@ -587,6 +587,19 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
     }
 }
 
+- (IBAction)unwindFromSpotProfileToHomeMapViewController:(UIStoryboardSegue*)unwindSegue {
+    NSLog(@"made it back!");
+    
+    if ([unwindSegue.sourceViewController isKindOfClass:[SHSpotProfileViewController class]]) {
+        SHSpotProfileViewController *spotProfileViewController = unwindSegue.sourceViewController;
+        SpotModel *spot = spotProfileViewController.spot;
+        
+        //todo: api call to find similar spots and display
+        
+    }
+
+}
+
 #pragma mark - Private
 #pragma mark -
 

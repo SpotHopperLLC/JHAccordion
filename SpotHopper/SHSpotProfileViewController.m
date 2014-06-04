@@ -48,6 +48,9 @@
 #define kNextBtnTag 3
 
 #define kFooterNavigationViewHeight 50.0f
+#define kCutOffPoint 81.0f
+
+#define kDefineAnimationDuration 0.25f
 
 #define kNumberOfCells 3
 
@@ -55,7 +58,7 @@ NSString* const DrinkProfileToPhotoViewer = @"DrinkProfileToPhotoViewer";
 NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 
 
-@interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate, SHImageModelCollectionDelegate, SHSpotDetailFooterNavigationDelegate>
+@interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate, SHImageModelCollectionDelegate>
 
 @property (strong, nonatomic) IBOutlet SHImageModelCollectionViewManager *imageModelCollectionViewManager;
 @property (assign, nonatomic) NSInteger currentIndex;
@@ -65,9 +68,12 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 
 @property (strong, nonatomic) SHSpotDetailFooterNavigationViewController *spotfooterNavigationViewController;
 
+
 @end
 
-@implementation SHSpotProfileViewController
+@implementation SHSpotProfileViewController{
+    BOOL _topBarsClear;
+}
 
 #pragma mark - Lifecycle Methods
 #pragma mark -
@@ -90,20 +96,17 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
             [view pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0];
             [view constrainToHeight:kFooterNavigationViewHeight];
         }];
-        
-        [self hideCollectionContainerView:FALSE withCompletionBlock:^{
-            NSLog(@"Collection container view is hidden");
-        }];
     }
 }
 
 - (void)viewDidLoad {
     [self viewDidLoad:@[kDidLoadOptionsNoBackground]];
     
+    //fetch spot slider and review info
     [self.spot getSpot:nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
         
         if (spotModel) {
-            //self.spot = spotModel;
+            self.spot = spotModel;
             self.spot.sliderTemplates = spotModel.sliderTemplates;
             self.spot.averageReview = spotModel.averageReview;
             [self.tableview reloadData];
@@ -115,8 +118,8 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     
     self.spotfooterNavigationViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SHSpotDetailFooterNavigationViewController"];
     
-//    self.spotfooterNavigationViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHSpotDetailFooterNavigationViewController"];
-    self.spotfooterNavigationViewController.delegate = self;
+    self.navigationController.navigationBar.shadowImage = nil;
+    [self hideTopBars:FALSE withCompletionBlock:nil];
     
 }
 
@@ -136,7 +139,7 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
             numberOfRows =  kNumberOfCells;
             break;
         case 1:
-            NSLog(@"templates:  %lu", self.spot.sliderTemplates.count);
+            NSLog(@"# of templates:  %lu", self.spot.sliderTemplates.count);
             numberOfRows = self.spot.sliderTemplates.count;
             break;
         default:
@@ -323,16 +326,62 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     
 }
 
-#pragma mark - SHSpotDetailFooterNavigationDelegate
-#pragma mark -
-
-//todo: implement
-- (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc findSimilarButtonTapped:(id)sender {
-    
-}
 
 #pragma mark - Private Methods
 #pragma mark -
+
+- (void)prepareAnimationForNavigationBarWithDuration:(CGFloat)duration {
+    // prepare animation for navigation bar
+    CATransition *animation = [CATransition animation];
+    [animation setDuration:duration];
+    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+    [animation setType:kCATransitionFade];
+    [self.navigationController.navigationBar.layer addAnimation:animation forKey:nil];
+}
+
+- (void)hideTopBars:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    // sets a clear background for the top bars
+    
+    _topBarsClear = TRUE;
+    
+    CGFloat duration = animated ? kDefineAnimationDuration : 0.0f;
+    
+    [self prepareAnimationForNavigationBarWithDuration:duration];
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
+        [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+        self.navigationController.navigationBar.shadowImage = [UIImage new];
+    } completion:^(BOOL finished) {
+        if (finished && completionBlock) {
+            completionBlock();
+        }
+    }];
+}
+
+- (void)showTopBars:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    // sets the top bars to show an opaque background
+    
+    _topBarsClear = FALSE;
+    
+    CGFloat duration = animated ? kDefineAnimationDuration : 0.0f;
+    
+    [self prepareAnimationForNavigationBarWithDuration:duration];
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
+        
+        UIImage *backgroundImage = [SHStyleKit drawImage:SHStyleKitDrawingGradientBackground color:SHStyleKitColorMyTintColor size:CGSizeMake(320, 64)];g
+        [self.navigationController.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
+        
+        } completion:^(BOOL finished) {
+        if (finished && completionBlock) {
+            completionBlock();
+        }
+    }];
+}
+
+
 
 - (NSString*)findCloseTimeForToday
 {
@@ -343,7 +392,7 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     
     if (hoursForToday) {
     
-        // Creats formatter
+        // Creates formatter
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"h:mm a"];
         [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
@@ -375,29 +424,6 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     }
 }
 
-- (void)hideCollectionContainerView:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    self.footerContainerView.hidden = TRUE;
-    
-    LOG_FRAME(@"collectionContainerView", self.footerContainerView.frame);
-    
-    if (completionBlock) {
-        completionBlock();
-    }
-}
-
-//temp override
-- (UIStoryboard*)spotHopperStoryboard {
-    
-    NSLog(@"storyboard name %@",self.storyboard.class);
-    NSString *name = [self.storyboard valueForKey:@"name"];
-    if ([name isEqualToString:@"SpotHopper(petti)"] == NO) {
-        return [UIStoryboard storyboardWithName:@"SpotHopper(petti)" bundle:[NSBundle mainBundle]];
-    }
-    
-    return self.storyboard;
-}
-
-
 - (void)embedViewController:(UIViewController *)vc intoView:(UIView *)superview placementBlock:(void (^)(UIView *view))placementBlock {
     NSAssert(vc, @"VC must be define");
     NSAssert(superview, @"Superview must be defined");
@@ -425,6 +451,8 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 {
     
     //todo: refactor to make semantic style of Brennan
+//   if ([segue.destinationViewController isKindOfClass:[SHSpotProfileViewController class]]) {}
+    
     if ([segue.identifier isEqualToString:DrinkProfileToPhotoViewer]) {
         PhotoViewerViewController *viewController = segue.destinationViewController;
         viewController.images = self.imageModelCollectionViewManager.imageModels;

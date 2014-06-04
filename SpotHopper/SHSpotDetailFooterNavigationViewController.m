@@ -31,7 +31,6 @@ static NSString* const kButtonLabelTitleDrinkMenu = @"Drink Menu";
     [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
     
     //todo: change review and drink menu btn imgs
-    //todo: setup delegates in the 
     [SHStyleKit setButton:self.btnFindSimilar withDrawing:SHStyleKitDrawingSearchIcon text:kButtonLabelTitleFindSimilar normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setButton:self.btnReview withDrawing:SHStyleKitDrawingReviewsIcon text:kButtonLabelTitleReviewIt normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setButton:self.btnDrinkMenu withDrawing:SHStyleKitDrawingDrinkMenuIcon text:kButtonLabelTitleDrinkMenu normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
@@ -40,12 +39,6 @@ static NSString* const kButtonLabelTitleDrinkMenu = @"Drink Menu";
 #pragma mark - User Actions
 #pragma mark -
 
-
-- (IBAction)findSimilarButtonTapped:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(footerNavigationViewController:findSimilarButtonTapped:)]) {
-        [self.delegate footerNavigationViewController:self findSimilarButtonTapped:sender];
-    }
-}
 
 //todo: need to change these so they push view controllers
 //todo: create segues on IB for transition
