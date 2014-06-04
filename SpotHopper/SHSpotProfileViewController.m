@@ -18,9 +18,11 @@
 
 #import "PhotoAlbumViewController.h"
 #import "PhotoViewerViewController.h"
+#import "SHSpotDetailFooterNavigationViewController.h"
 
 #import "SHStyleKit+Additions.h"
 #import "NSArray+DailySpecials.h"
+#import "UIView+AutoLayout.h"
 
 #import "SHImageModelCollectionViewManager.h"
 
@@ -45,22 +47,55 @@
 #define kPreviousBtnTag 2
 #define kNextBtnTag 3
 
+#define kFooterNavigationViewHeight 50.0f
+
 #define kNumberOfCells 3
 
 NSString* const DrinkProfileToPhotoViewer = @"DrinkProfileToPhotoViewer";
 NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 
 
-@interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate, SHImageModelCollectionDelegate>
+@interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate, SHImageModelCollectionDelegate, SHSpotDetailFooterNavigationDelegate>
 
 @property (strong, nonatomic) IBOutlet SHImageModelCollectionViewManager *imageModelCollectionViewManager;
 @property (assign, nonatomic) NSInteger currentIndex;
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 
+@property (weak, nonatomic) UIView *footerContainerView;
+
+@property (strong, nonatomic) SHSpotDetailFooterNavigationViewController *spotfooterNavigationViewController;
+
 @end
 
 @implementation SHSpotProfileViewController
 
+#pragma mark - Lifecycle Methods
+#pragma mark -
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    if (!self.footerContainerView && !self.spotfooterNavigationViewController.view.superview) {
+        UIView *footerContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), kFooterNavigationViewHeight)];
+        footerContainer.translatesAutoresizingMaskIntoConstraints = NO;
+        footerContainer.backgroundColor = [UIColor clearColor];
+        [self.view addSubview:footerContainer];
+        [footerContainer pinToSuperviewEdges:JRTViewPinBottomEdge inset:0.0f usingLayoutGuidesFrom:self];
+        [footerContainer pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0];
+        [footerContainer constrainToHeight:kFooterNavigationViewHeight];
+        self.footerContainerView = footerContainer;
+        
+        [self embedViewController:self.spotfooterNavigationViewController intoView:self.footerContainerView placementBlock:^(UIView *view) {
+            [view pinToSuperviewEdges:JRTViewPinBottomEdge inset:0.0f];
+            [view pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0];
+            [view constrainToHeight:kFooterNavigationViewHeight];
+        }];
+        
+        [self hideCollectionContainerView:FALSE withCompletionBlock:^{
+            NSLog(@"Collection container view is hidden");
+        }];
+    }
+}
 
 - (void)viewDidLoad {
     [self viewDidLoad:@[kDidLoadOptionsNoBackground]];
@@ -68,7 +103,7 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     [self.spot getSpot:nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
         
         if (spotModel) {
-            self.spot = spotModel;
+            //self.spot = spotModel;
             self.spot.sliderTemplates = spotModel.sliderTemplates;
             self.spot.averageReview = spotModel.averageReview;
             [self.tableview reloadData];
@@ -77,6 +112,11 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     } failure:^(ErrorModel *errorModel) {
         //todo: error handling
     }];
+    
+    self.spotfooterNavigationViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SHSpotDetailFooterNavigationViewController"];
+    
+//    self.spotfooterNavigationViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHSpotDetailFooterNavigationViewController"];
+    self.spotfooterNavigationViewController.delegate = self;
     
 }
 
@@ -202,7 +242,7 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
             UILabel *minValue = (UILabel*)[cell viewWithTag:kLeftLabelVibeTag];
             UILabel *maxValue = (UILabel*)[cell viewWithTag:kRightLabelVibeTag];
             
-            NSLog(@"fetched slider templates: %@", self.spot.sliderTemplates);
+            //NSLog(@"fetched slider templates: %@", self.spot.sliderTemplates);
             
             SliderTemplateModel *sliderTemplate = self.spot.sliderTemplates[indexPath.row];
             minValue.text = sliderTemplate.minLabel.length ? sliderTemplate.minLabel : @"";
@@ -283,7 +323,15 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     
 }
 
-#pragma mark - Helper Methods
+#pragma mark - SHSpotDetailFooterNavigationDelegate
+#pragma mark -
+
+//todo: implement
+- (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc findSimilarButtonTapped:(id)sender {
+    
+}
+
+#pragma mark - Private Methods
 #pragma mark -
 
 - (NSString*)findCloseTimeForToday
@@ -326,6 +374,48 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
         button.enabled = FALSE;
     }
 }
+
+- (void)hideCollectionContainerView:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    self.footerContainerView.hidden = TRUE;
+    
+    LOG_FRAME(@"collectionContainerView", self.footerContainerView.frame);
+    
+    if (completionBlock) {
+        completionBlock();
+    }
+}
+
+//temp override
+- (UIStoryboard*)spotHopperStoryboard {
+    
+    NSLog(@"storyboard name %@",self.storyboard.class);
+    NSString *name = [self.storyboard valueForKey:@"name"];
+    if ([name isEqualToString:@"SpotHopper(petti)"] == NO) {
+        return [UIStoryboard storyboardWithName:@"SpotHopper(petti)" bundle:[NSBundle mainBundle]];
+    }
+    
+    return self.storyboard;
+}
+
+
+- (void)embedViewController:(UIViewController *)vc intoView:(UIView *)superview placementBlock:(void (^)(UIView *view))placementBlock {
+    NSAssert(vc, @"VC must be define");
+    NSAssert(superview, @"Superview must be defined");
+    
+    vc.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addChildViewController:vc];
+    [superview addSubview:vc.view];
+    
+    if (placementBlock) {
+        placementBlock(vc.view);
+    }
+    else {
+        [self fillSubview:vc.view inSuperView:superview];
+    }
+    
+    [vc didMoveToParentViewController:self];
+}
+
 
 
 #pragma mark - Navigation

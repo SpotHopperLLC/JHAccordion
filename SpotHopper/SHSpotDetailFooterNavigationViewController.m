@@ -33,8 +33,8 @@ static NSString* const kButtonLabelTitleDrinkMenu = @"Drink Menu";
     //todo: change review and drink menu btn imgs
     //todo: setup delegates in the 
     [SHStyleKit setButton:self.btnFindSimilar withDrawing:SHStyleKitDrawingSearchIcon text:kButtonLabelTitleFindSimilar normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
-    [SHStyleKit setButton:self.btnReview withDrawing:SHStyleKitDrawingSpotIcon text:kButtonLabelTitleReviewIt normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
-    [SHStyleKit setButton:self.btnDrinkMenu withDrawing:SHStyleKitDrawingSpotIcon text:kButtonLabelTitleDrinkMenu normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+    [SHStyleKit setButton:self.btnReview withDrawing:SHStyleKitDrawingReviewsIcon text:kButtonLabelTitleReviewIt normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+    [SHStyleKit setButton:self.btnDrinkMenu withDrawing:SHStyleKitDrawingDrinkMenuIcon text:kButtonLabelTitleDrinkMenu normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
 }
 
 #pragma mark - User Actions
