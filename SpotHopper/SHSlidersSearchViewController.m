@@ -11,9 +11,13 @@
 #import "SHSlidersSearchTableViewManager.h"
 #import "SHStyleKit+Additions.h"
 
+#import "DrinkListModel.h"
+#import "ErrorModel.h"
 #import "Tracker.h"
 
 @interface SHSlidersSearchViewController () <SHSlidersSearchTableViewManagerDelegate>
+
+@property (strong, readwrite, nonatomic) DrinkListModel *drinkListModel;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *searchButton;
@@ -50,17 +54,22 @@
 #pragma mark -
 
 - (IBAction)searchButtonTapped:(id)sender {
+    [self showHUD:@"Creating Drinklist"];
     [self.slidersSearchTableViewManager fetchDrinkListResultsWithCompletionBlock:^(DrinkListModel *drinkListModel, ErrorModel *errorModel) {
+        [self hideHUD];
         if (errorModel) {
             [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+            [self showAlert:@"Oops" message:errorModel.human];
         }
         else {
-            NSLog(@"Drink List: %@", drinkListModel);
+            self.drinkListModel = drinkListModel;
+            [self performSegueWithIdentifier:@"finishCreatingDrinkListForHomeMap" sender:self];
+            if ([self.delegate respondsToSelector:@selector(slidersSearchViewController:didPrepareDrinklist:)]) {
+                [self.delegate slidersSearchViewController:self didPrepareDrinklist:drinkListModel];
+            }
         }
     }];
 }
-
-
 
 #pragma mark - Private
 #pragma mark -

@@ -1799,11 +1799,7 @@
 		2602BD9D18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9E18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9F18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
-		2618EB5F193D05FE006C75DE /* SHSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2618EB5E193D05FE006C75DE /* SHSectionHeaderView.m */; };
-		2618EB60193D05FE006C75DE /* SHSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2618EB5E193D05FE006C75DE /* SHSectionHeaderView.m */; };
-		2618EB61193D05FE006C75DE /* SHSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2618EB5E193D05FE006C75DE /* SHSectionHeaderView.m */; };
-		2618EB62193D05FE006C75DE /* SHSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2618EB5E193D05FE006C75DE /* SHSectionHeaderView.m */; };
-		2618EB63193D05FE006C75DE /* SHSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2618EB5E193D05FE006C75DE /* SHSectionHeaderView.m */; };
+		2618EB5F193D05FE006C75DE /* (null) in Sources */ = {isa = PBXBuildFile; };
 		2636AB3E18F8A82100591722 /* table_footer_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9418E2654900C93BBF /* table_footer_background.png */; };
 		2636AB3F18F8A82400591722 /* table_footer_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9518E2654900C93BBF /* table_footer_background@2x.png */; };
 		2640B00F193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */; };
@@ -3080,10 +3076,13 @@
 		2602BD9418E2654900C93BBF /* table_footer_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table_footer_background.png; sourceTree = "<group>"; };
 		2602BD9518E2654900C93BBF /* table_footer_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table_footer_background@2x.png"; sourceTree = "<group>"; };
 		2602BD9C18E283C500C93BBF /* Common.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Common.storyboard; sourceTree = "<group>"; };
+<<<<<<< HEAD
+=======
 		2618EB5D193D05FE006C75DE /* SHSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSectionHeaderView.h; path = SpotHopper/SHSectionHeaderView.h; sourceTree = "<group>"; };
 		2618EB5E193D05FE006C75DE /* SHSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSectionHeaderView.m; path = SpotHopper/SHSectionHeaderView.m; sourceTree = "<group>"; };
 		2640B00D193E6C2D00978725 /* SHDrinksCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHDrinksCollectionViewManager.h; path = SpotHopper/SHDrinksCollectionViewManager.h; sourceTree = "<group>"; };
 		2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHDrinksCollectionViewManager.m; path = SpotHopper/SHDrinksCollectionViewManager.m; sourceTree = "<group>"; };
+>>>>>>> Release-2.0.0
 		2654B88D192BB68C00A66BED /* SHStyleKit+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SHStyleKit+Additions.h"; path = "SpotHopper/SHStyleKit+Additions.h"; sourceTree = "<group>"; };
 		2654B88E192BB68C00A66BED /* SHStyleKit+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SHStyleKit+Additions.m"; path = "SpotHopper/SHStyleKit+Additions.m"; sourceTree = "<group>"; };
 		2654B894192BB6B200A66BED /* SHSpotsCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSpotsCollectionViewManager.h; path = SpotHopper/SHSpotsCollectionViewManager.h; sourceTree = "<group>"; };
@@ -6699,7 +6698,7 @@
 				038664E2186D379400985CEC /* ClientSessionManager.m in Sources */,
 				03AF8F6318E6013700DD9356 /* CheckinConfirmationViewController.m in Sources */,
 				039F54AC18D35C2E004B2B67 /* MenuItemCell.m in Sources */,
-				2618EB5F193D05FE006C75DE /* SHSectionHeaderView.m in Sources */,
+				2618EB5F193D05FE006C75DE /* (null) in Sources */,
 				03F2D9371871E88000C69576 /* LaunchViewController.m in Sources */,
 				03763FB718D9EBFC00A9A30B /* SHTableViewCell.m in Sources */,
 				03F2D94D18722CAC00C69576 /* SHNavigationBar.m in Sources */,

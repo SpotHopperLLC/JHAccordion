@@ -41,7 +41,7 @@
 #pragma mark - Class Extension
 #pragma mark -
 
-@interface SHSpotsCollectionViewManager () <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface SHSpotsCollectionViewManager ()
 
 @property (nonatomic, weak) IBOutlet id<SHSpotsCollectionViewManagerDelegate> delegate;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
@@ -89,8 +89,6 @@
 }
 
 - (void)changeIndex:(NSUInteger)index {
-    // TODO: change collection view position if the index is in bounds and set _currentIndex
-    
     if (index != _currentIndex && index < self.spotList.spots.count) {
         NSLog(@"Manager - Changing to index: %lu", (long)index);
         _currentIndex = index;

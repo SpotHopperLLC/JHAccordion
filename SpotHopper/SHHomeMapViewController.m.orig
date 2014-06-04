@@ -97,9 +97,11 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
 @property (strong, nonatomic) SpotListModel *spotListModel;
 @property (strong, nonatomic) NSArray *specialsSpotModels;
 
-@property (strong, nonatomic) DrinkListModel *drinkListModel;
-
+<<<<<<< HEAD
 @property (strong, nonatomic) SpotModel *selectedSpot;
+=======
+@property (strong, nonatomic) DrinkListModel *drinkListModel;
+>>>>>>> Release-2.0.0
 
 @end
 

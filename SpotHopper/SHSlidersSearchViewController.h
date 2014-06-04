@@ -8,11 +8,15 @@
 
 #import "BaseViewController.h"
 
+@class DrinkListModel;
+
 @protocol SHSlidersSearchDelegate;
 
 @interface SHSlidersSearchViewController : BaseViewController
 
 @property (weak, nonatomic) id<SHSlidersSearchDelegate> delegate;
+
+@property (readonly, nonatomic) DrinkListModel *drinkListModel;
 
 - (void)prepareForMode:(SHMode)mode;
 
@@ -21,5 +25,7 @@
 @protocol SHSlidersSearchDelegate <NSObject>
 
 @optional
+
+- (void)slidersSearchViewController:(SHSlidersSearchViewController *)vc didPrepareDrinklist:(DrinkListModel *)drinklist;
 
 @end
