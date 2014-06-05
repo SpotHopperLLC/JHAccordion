@@ -97,9 +97,11 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
 @property (strong, nonatomic) SpotListModel *spotListModel;
 @property (strong, nonatomic) NSArray *specialsSpotModels;
 
-@property (strong, nonatomic) DrinkListModel *drinkListModel;
-
+<<<<<<< HEAD
 @property (strong, nonatomic) SpotModel *selectedSpot;
+=======
+@property (strong, nonatomic) DrinkListModel *drinkListModel;
+>>>>>>> Release-2.0.0
 
 @end
 
@@ -585,36 +587,6 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
             [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
     }
-}
-
-- (IBAction)unwindFromSpotProfileToHomeMapViewController:(UIStoryboardSegue*)unwindSegue {
-    NSLog(@"made it back!");
-    
-    if ([unwindSegue.sourceViewController isKindOfClass:[SHSpotProfileViewController class]]) {
-        SHSpotProfileViewController *spotProfileViewController = unwindSegue.sourceViewController;
-        SpotModel *spot = spotProfileViewController.spot;
-        
-        //todo: api call to find similar spots and display
-        
-//        [self showHUD:@"Finding similar"];
-        
-//        NSString *name = [NSString stringWithFormat:@"Similar to %@", _spot.name];
-//        [SpotListModel postSpotList:name spotId:_spot.ID spotTypeId:_spot.spotType.ID latitude:_spot.latitude longitude:_spot.longitude sliders:_averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
-//            [self hideHUD];
-//            
-//            SpotListViewController *viewController = [self.spotsStoryboard instantiateViewControllerWithIdentifier:@"SpotListViewController"];
-//            [viewController setSpotList:spotListModel];
-//            
-//            [self.navigationController pushViewController:viewController animated:YES];
-//            
-//        } failure:^(ErrorModel *errorModel) {
-//            [self hideHUD];
-//            [self showAlert:@"Oops" message:errorModel.human];
-//            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
-//        }];
-        
-    }
-
 }
 
 #pragma mark - Private

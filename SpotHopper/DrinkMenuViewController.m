@@ -65,7 +65,7 @@
     [self setTitle:@"Full Drink Menu"];
     
     // Shows sidebar button in nav
-    [self showSidebarButton:YES animated:YES];
+//    [self showSidebarButton:YES animated:YES];
     
     // Configures accordion
     _accordion = [[JHAccordion alloc] initWithTableView:_tblMenu];
