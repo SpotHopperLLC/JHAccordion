@@ -16,6 +16,8 @@
 #import "SliderTemplateModel.h"
 #import "DrinkModel.h"
 
+#import "DrinkListRequest.h"
+
 #import <CoreLocation/CoreLocation.h>
 
 @implementation DrinkListModel
@@ -273,5 +275,88 @@
     return deferred.promise;
     
 }
+
+#pragma mark - Revised Code for 2.0
+
++ (void)fetchDrinkListWithRequest:(DrinkListRequest *)request successBlock:(void (^)(DrinkListModel *drinkListModel, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {    // Creating params
+    NSMutableArray *jsonSliders = [NSMutableArray array];
+    for (SliderModel *slider in request.sliders) {
+        if (slider.value != nil) {
+            [jsonSliders addObject:@{
+                                     @"slider_template_id" : slider.sliderTemplate.ID,
+                                     @"value" : slider.value,
+                                     }];
+        }
+    }
+    
+    NSMutableDictionary *params = @{
+                                    kSpotModelParamPage : @1,
+                                    kSpotModelParamsPageSize : @10,
+                                    @"name" : request.name,
+                                    @"sliders" : jsonSliders,
+                                    kDrinkListModelParamBasedOnSlider : [NSNumber numberWithBool:YES]
+                                    }.mutableCopy;
+    
+    if (request.drinkId != nil) {
+        [params setObject:request.drinkId forKey:@"drink_id"];
+    }
+    if (request.drinkTypeId != nil) {
+        [params setObject:request.drinkTypeId forKey:@"drink_type_id"];
+    }
+    if (request.drinkSubTypeId != nil) {
+        [params setObject:request.drinkSubTypeId forKey:@"drink_subtype_id"];
+    }
+    if (request.baseAlcoholId != nil) {
+        [params setObject:request.baseAlcoholId forKey:@"base_alcohol_id"];
+    }
+    if (request.spotId != nil) {
+        [params setObject:request.spotId forKey:@"spot_id"];
+    }
+    
+    if (CLLocationCoordinate2DIsValid(request.coordinate)) {
+        [params setObject:[NSNumber numberWithFloat:request.coordinate.latitude] forKey:kDrinkListModelParamLatitude];
+        [params setObject:[NSNumber numberWithFloat:request.coordinate.longitude] forKey:kDrinkListModelParamLongitude];
+    }
+    
+    [[ClientSessionManager sharedClient] POST:@"/api/drink_lists" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            DrinkListModel *model = [jsonApi resourceForKey:@"drink_lists"];
+            
+            if (model.drinks.count > 10) {
+                model.drinks = [model.drinks subarrayWithRange:NSMakeRange(0, 10)];
+            }
+            
+            if (successBlock) {
+                successBlock(model, jsonApi);
+            }
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            if (failureBlock) {
+                failureBlock(errorModel);
+            }
+        }
+    }];
+}
+
++ (Promise *)fetchDrinkListWithRequest:(DrinkListRequest *)request {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+
+    [self fetchDrinkListWithRequest:request successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+        // Resolves promise
+        [deferred resolveWith:drinkListModel];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
+#pragma mark -
 
 @end

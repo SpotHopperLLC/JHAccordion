@@ -10,8 +10,20 @@
 
 #import "ClientSessionManager.h"
 #import "ErrorModel.h"
+#import "SpotModel.h"
 #import "DrinkTypeModel.h"
 #import "SliderTemplateModel.h"
+
+#import <CoreLocation/CoreLocation.h>
+
+@interface DrinkModelCache : NSCache
+
++ (NSString *)spotsKeyForDrink:(DrinkModel *)drink location:(CLLocation *)location;
+
+- (NSArray *)cachedSpotsForKey:(NSString *)key;
+- (void)cacheSpots:(NSArray *)spots forKey:(NSString *)key;
+
+@end
 
 @implementation DrinkModel
 
@@ -139,6 +151,91 @@
     return deferred.promise;
 }
 
+#pragma mark - Revised Code for 2.0
+
+- (void)fetchSpotsForLocation:(CLLocation *)location success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    if (!location || !CLLocationCoordinate2DIsValid(location.coordinate)) {
+        if (failureBlock) {
+            ErrorModel *errorModel = [[ErrorModel alloc] init];
+            errorModel.error = @"Location is not valid";
+            errorModel.human = @"Please select a location";
+            failureBlock(errorModel);
+        }
+        return;
+    }
+    
+    NSString *key = [DrinkModelCache spotsKeyForDrink:self location:location];
+    NSArray *spots = [[DrinkModel sh_sharedCache] cachedSpotsForKey:key];
+    if (spots && successBlock) {
+        NSLog(@"Returning %lu cached spots", (unsigned long)spots.count);
+        successBlock(spots, nil);
+        return;
+    }
+
+    // assemble params internally to encapsulate implementation details
+    NSDictionary *params = @{
+                             kSpotModelParamPage : @1,
+                             kSpotModelParamsPageSize : @10,
+                             kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:location.coordinate.latitude],
+                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:location.coordinate.longitude]
+                             };
+    
+    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drinks/%ld/spots", (long)[self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            NSArray *models = [jsonApi resourcesForKey:@"spots"];
+            // always check that the block is defined because running it an undefined block will cause a crash
+            if (successBlock) {
+                successBlock(models, jsonApi);
+            }
+            
+            NSLog(@"Caching %lu spots", (unsigned long)models.count);
+            [[DrinkModel sh_sharedCache] cacheSpots:models forKey:key];
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            // always check that the block is defined because running it an undefined block will cause a crash
+            if (failureBlock) {
+                failureBlock(errorModel);
+            }
+        }
+    }];
+}
+
+// Promisfy the call with the callbacks and do not mix callback and promise methods
+- (Promise*)fetchSpotsForLocation:(CLLocation *)location {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+
+    [self fetchSpotsForLocation:location success:^(NSArray *spotModels, JSONAPI *jsonApi) {
+        // Resolves promise
+        [deferred resolveWith:spotModels];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
+#pragma mark - Caching
+
++ (DrinkModelCache *)sh_sharedCache {
+    static DrinkModelCache *_sh_Cache = nil;
+    static dispatch_once_t oncePredicate;
+    dispatch_once(&oncePredicate, ^{
+        _sh_Cache = [[DrinkModelCache alloc] init];
+        
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * __unused notification) {
+            [_sh_Cache removeAllObjects];
+        }];
+    });
+    
+    return _sh_Cache;
+}
+
 #pragma mark - Getters
 
 - (NSString *)name {
@@ -263,6 +360,27 @@
     }
     
     return nil;
+}
+
+@end
+
+@implementation DrinkModelCache
+
++ (NSString *)spotsKeyForDrink:(DrinkModel *)drink location:(CLLocation *)location {
+    return [NSString stringWithFormat:@"key-spots-%@-%f-%f", drink.ID, location.coordinate.latitude, location.coordinate.longitude];
+}
+
+- (NSArray *)cachedSpotsForKey:(NSString *)key {
+    return [self objectForKey:key];
+}
+
+- (void)cacheSpots:(NSArray *)spots forKey:(NSString *)key {
+    if (spots.count) {
+        [self setObject:spots forKey:key];
+    }
+    else {
+        [self removeObjectForKey:key];
+    }
 }
 
 @end

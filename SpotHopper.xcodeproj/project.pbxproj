@@ -1880,6 +1880,11 @@
 		26689721192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2668971E192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m */; };
 		26689722192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2668971E192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m */; };
 		26689723192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2668971E192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m */; };
+		26723E4F193FBFC000628833 /* DrinkListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 26723E4E193FBFC000628833 /* DrinkListRequest.m */; };
+		26723E50193FBFC000628833 /* DrinkListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 26723E4E193FBFC000628833 /* DrinkListRequest.m */; };
+		26723E51193FBFC000628833 /* DrinkListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 26723E4E193FBFC000628833 /* DrinkListRequest.m */; };
+		26723E52193FBFC000628833 /* DrinkListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 26723E4E193FBFC000628833 /* DrinkListRequest.m */; };
+		26723E53193FBFC000628833 /* DrinkListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 26723E4E193FBFC000628833 /* DrinkListRequest.m */; };
 		267C5E3A1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
 		267C5E3B1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
 		267C5E3C1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
@@ -3079,6 +3084,8 @@
 		26689717192F2A82004FAC2D /* SHBaseCollectionViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHBaseCollectionViewManager.m; path = SpotHopper/SHBaseCollectionViewManager.m; sourceTree = "<group>"; };
 		2668971D192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSlidersSearchTableViewManager.h; path = SpotHopper/SHSlidersSearchTableViewManager.h; sourceTree = "<group>"; };
 		2668971E192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSlidersSearchTableViewManager.m; path = SpotHopper/SHSlidersSearchTableViewManager.m; sourceTree = "<group>"; };
+		26723E4D193FBFC000628833 /* DrinkListRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkListRequest.h; sourceTree = "<group>"; };
+		26723E4E193FBFC000628833 /* DrinkListRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkListRequest.m; sourceTree = "<group>"; };
 		267C5E381908B7CC00D60EB5 /* NetworkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkHelper.h; sourceTree = "<group>"; };
 		267C5E391908B7CC00D60EB5 /* NetworkHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkHelper.m; sourceTree = "<group>"; };
 		267D78D418F4A8DD00E95D54 /* SHButtonLatoBold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoBold.h; sourceTree = "<group>"; };
@@ -3716,6 +3723,7 @@
 		038664EC186D390700985CEC /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				26723E4C193FBF9800628833 /* Requests */,
 				039B701C1887591600C590F8 /* Helpers */,
 				03E882E318C7B8F400BD8FBB /* AverageReviewModel.h */,
 				03E882E418C7B8F400BD8FBB /* AverageReviewModel.m */,
@@ -4445,6 +4453,15 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
+		26723E4C193FBF9800628833 /* Requests */ = {
+			isa = PBXGroup;
+			children = (
+				26723E4D193FBFC000628833 /* DrinkListRequest.h */,
+				26723E4E193FBFC000628833 /* DrinkListRequest.m */,
+			);
+			name = Requests;
+			sourceTree = "<group>";
+		};
 		268C8C9F190089B50011E0F8 /* State */ = {
 			isa = PBXGroup;
 			children = (
@@ -4533,8 +4550,6 @@
 		26C816C71926EC2D00E237F2 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				2640B00D193E6C2D00978725 /* SHDrinksCollectionViewManager.h */,
-				2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */,
 				2668971D192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.h */,
 				2668971E192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m */,
 				26689716192F2A82004FAC2D /* SHBaseCollectionViewManager.h */,
@@ -4543,6 +4558,8 @@
 				2654B895192BB6B200A66BED /* SHSpotsCollectionViewManager.m */,
 				26C428CB192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.h */,
 				26C428CC192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m */,
+				2640B00D193E6C2D00978725 /* SHDrinksCollectionViewManager.h */,
+				2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -6735,6 +6752,7 @@
 				03CA726E187B53DA00815284 /* MyReviewsViewController.m in Sources */,
 				03E4453E18B55B9E00C88421 /* SHButtonLatoLightLocation.m in Sources */,
 				26FFAFF4191B367B00D222B7 /* PhotoViewerViewController.m in Sources */,
+				26723E4F193FBFC000628833 /* DrinkListRequest.m in Sources */,
 				039ABBCD18CE22E400B84AE6 /* MatchPercentAnnotation.m in Sources */,
 				03AF8EA218E515B900DD9356 /* LiveSpecialViewController.m in Sources */,
 				038664D7186D376900985CEC /* UILabelRockwell.m in Sources */,
@@ -6905,6 +6923,7 @@
 				03CAC00C18E7716400FAC5F5 /* MyReviewsViewController.m in Sources */,
 				03CAC00D18E7716400FAC5F5 /* SHButtonLatoLightLocation.m in Sources */,
 				26FFAFF7191B367B00D222B7 /* PhotoViewerViewController.m in Sources */,
+				26723E53193FBFC000628833 /* DrinkListRequest.m in Sources */,
 				03CAC00E18E7716400FAC5F5 /* MatchPercentAnnotation.m in Sources */,
 				03CAC00F18E7716400FAC5F5 /* LiveSpecialViewController.m in Sources */,
 				03CAC01018E7716400FAC5F5 /* UILabelRockwell.m in Sources */,
@@ -7067,6 +7086,7 @@
 				03F4E7A418CA33D00056EAA9 /* MyReviewsViewController.m in Sources */,
 				03F4E7A518CA33D00056EAA9 /* SHButtonLatoLightLocation.m in Sources */,
 				26FFAFF6191B367B00D222B7 /* PhotoViewerViewController.m in Sources */,
+				26723E51193FBFC000628833 /* DrinkListRequest.m in Sources */,
 				039ABBCF18CE246E00B84AE6 /* MatchPercentAnnotation.m in Sources */,
 				03AF8EA418E515B900DD9356 /* LiveSpecialViewController.m in Sources */,
 				03F4E7A618CA33D00056EAA9 /* UILabelRockwell.m in Sources */,
@@ -7229,6 +7249,7 @@
 				03F4E8F218CA34260056EAA9 /* MyReviewsViewController.m in Sources */,
 				03F4E8F318CA34260056EAA9 /* SHButtonLatoLightLocation.m in Sources */,
 				26FFAFF5191B367B00D222B7 /* PhotoViewerViewController.m in Sources */,
+				26723E50193FBFC000628833 /* DrinkListRequest.m in Sources */,
 				039ABBCE18CE246E00B84AE6 /* MatchPercentAnnotation.m in Sources */,
 				03AF8EA318E515B900DD9356 /* LiveSpecialViewController.m in Sources */,
 				03F4E8F418CA34260056EAA9 /* UILabelRockwell.m in Sources */,
@@ -7391,6 +7412,7 @@
 				267E05611922CC48004457B4 /* MyReviewsViewController.m in Sources */,
 				267E05621922CC48004457B4 /* SHButtonLatoLightLocation.m in Sources */,
 				267E05631922CC48004457B4 /* PhotoViewerViewController.m in Sources */,
+				26723E52193FBFC000628833 /* DrinkListRequest.m in Sources */,
 				267E05641922CC48004457B4 /* MatchPercentAnnotation.m in Sources */,
 				267E05651922CC48004457B4 /* LiveSpecialViewController.m in Sources */,
 				267E05661922CC48004457B4 /* UILabelRockwell.m in Sources */,
