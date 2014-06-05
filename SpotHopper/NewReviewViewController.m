@@ -923,6 +923,10 @@
                                  kDrinkModelParamVintage: vintage
                                  }.mutableCopy;
         
+        if (_selectedWineType != nil && [_selectedWineType objectForKey:@"id"] != nil) {
+            [params setObject:[_selectedWineType objectForKey:@"id"] forKey:kDrinkModelParamDrinkSubtypeId];
+        }
+        
         // Makes sure the selected drink spot is selected and that the selected drink spot is equal to the text field
         if (_selectedDrinkSpot != nil && [_selectedDrinkSpot.name isEqualToString:wineryName]) {
             [params setObject:_selectedDrinkSpot.ID forKey:kDrinkModelParamSpotId];
