@@ -17,6 +17,8 @@
 
 @interface SHSlidersSearchViewController () <SHSlidersSearchTableViewManagerDelegate>
 
+@property (assign, nonatomic) SHMode mode;
+
 @property (strong, readwrite, nonatomic) DrinkListModel *drinkListModel;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -54,6 +56,15 @@
 #pragma mark -
 
 - (IBAction)searchButtonTapped:(id)sender {
+    [self prepareSearchResults];
+}
+
+#pragma mark - Private
+#pragma mark -
+
+- (void)prepareSearchResults {
+    // TODO: adjust for spotlists
+    
     [self showHUD:@"Creating Drinklist"];
     [self.slidersSearchTableViewManager fetchDrinkListResultsWithCompletionBlock:^(DrinkListModel *drinkListModel, ErrorModel *errorModel) {
         [self hideHUD];
@@ -64,15 +75,12 @@
         else {
             self.drinkListModel = drinkListModel;
             [self performSegueWithIdentifier:@"finishCreatingDrinkListForHomeMap" sender:self];
-            if ([self.delegate respondsToSelector:@selector(slidersSearchViewController:didPrepareDrinklist:)]) {
-                [self.delegate slidersSearchViewController:self didPrepareDrinklist:drinkListModel];
+            if ([self.delegate respondsToSelector:@selector(slidersSearchViewController:didPrepareDrinklist:forMode:)]) {
+                [self.delegate slidersSearchViewController:self didPrepareDrinklist:drinkListModel forMode:self.mode];
             }
         }
     }];
 }
-
-#pragma mark - Private
-#pragma mark -
 
 - (void)hideSearchButton:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
     CGFloat duration = animated ? 0.25f : 0.0f;
@@ -134,6 +142,7 @@
 #pragma mark -
 
 - (void)prepareForMode:(SHMode)mode {
+    self.mode = mode;
     [self hideSearchButton:FALSE withCompletionBlock:nil];
     [[self slidersSearchTableViewManager] prepareForMode:mode];
 }

@@ -30,6 +30,7 @@
 #import "DrinkTypeModel.h"
 #import "DrinkSubtypeModel.h"
 #import "DrinkListModel.h"
+#import "DrinkListRequest.h"
 #import "Tracker.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
@@ -564,7 +565,7 @@
 }
 
 - (void)fetchSpots {
-    [_drink getSpotsForLocation:_location success:^(NSArray *spotModels, JSONAPI *jsonApi) {
+    [_drink fetchSpotsForLocation:_location success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         _spots = spotModels;
         [self updateViewMap];
     } failure:^(ErrorModel *errorModel) {
@@ -722,23 +723,22 @@
     
     [self showHUD:@"Finding similar"];
     NSString *name = [NSString stringWithFormat:@"Similar to %@", _drink.name];
-    [DrinkListModel postDrinkList:name
-                         latitude:[NSNumber numberWithFloat:_location.coordinate.latitude]
-                        longitude:[NSNumber numberWithFloat:_location.coordinate.longitude]
-                          sliders:_averageReview.sliders
-                          drinkId:_drink.ID
-                      drinkTypeId:_drink.drinkType.ID
-                   drinkSubtypeId:_drink.drinkSubtype.ID
-                    baseAlcoholId:nil
-                           spotId:nil
-                     successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+    
+    DrinkListRequest *request = [[DrinkListRequest alloc] init];
+    request.name = name;
+    request.coordinate = _location.coordinate;
+    request.sliders = _averageReview.sliders;
+    request.drinkId = _drink.ID;
+    request.drinkTypeId = _drink.drinkType.ID;
+    request.drinkSubTypeId = _drink.drinkSubtype.ID;
+    
+    [DrinkListModel fetchDrinkListWithRequest:request successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
         [self hideHUD];
         
         DrinkListViewController *viewController = [self.drinksStoryboard instantiateViewControllerWithIdentifier:@"DrinkListViewController"];
         [viewController setDrinkList:drinkListModel];
         
         [self.navigationController pushViewController:viewController animated:YES];
-        
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];

@@ -15,6 +15,7 @@
 #import "SpotModel.h"
 #import "SliderModel.h"
 #import "DrinkListModel.h"
+#import "DrinkListRequest.h"
 #import "SpotListModel.h"
 #import "SliderTemplateModel.h"
 #import "ErrorModel.h"
@@ -204,33 +205,55 @@ NSString * const WineSubTypesKey = @"WineSubTypesKey";
     NSDictionary *selectedDrinkType = [self selectedDrinkType];
     NSDictionary *selectedWineSubType = [self selectedWineSubType];
     
-    NSLog(@"selectedDrinkType: %@", selectedDrinkType);
-    NSLog(@"selectedWineSubType: %@", selectedWineSubType);
-    
     NSNumber *drinkTypeID = selectedDrinkType[@"id"];
     NSNumber *drinkSubTypeID = selectedWineSubType[@"id"];
     
-    [DrinkListModel postDrinkList:kDrinkListModelDefaultName
-                         latitude:latitude
-                        longitude:longitude sliders:allTheSliders
-                          drinkId:nil
-                      drinkTypeId:drinkTypeID
-                   drinkSubtypeId:drinkSubTypeID
-                    baseAlcoholId:nil
-                           spotId:nil
-                     successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
-                         [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Drink Type ID" : drinkTypeID ?: @0, @"Drink Sub Type ID" : drinkSubTypeID ?: @0, @"Created With Sliders" : @TRUE}];
-                         if (completionBlock) {
-                             completionBlock(drinkListModel, nil);
-                         }
-                         
-                     } failure:^(ErrorModel *errorModel) {
-                         [Tracker track:@"Created Drinklist" properties:@{@"Success" : @FALSE}];
-                         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
-                         if (completionBlock) {
-                             completionBlock(nil, errorModel);
-                         }
-                     }];
+    DrinkListRequest *request = [[DrinkListRequest alloc] init];
+    request.name = kDrinkListModelDefaultName;
+    request.coordinate = location.coordinate;
+    request.sliders = allTheSliders;
+    request.drinkTypeId = drinkTypeID;
+    request.drinkSubTypeId = drinkSubTypeID;
+    
+    [DrinkListModel fetchDrinkListWithRequest:request successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+        [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Drink Type ID" : drinkTypeID ?: @0, @"Drink Sub Type ID" : drinkSubTypeID ?: @0, @"Created With Sliders" : @TRUE}];
+        
+        // now fetch the spots for the first drink so it is ready then request the rest cache all of the results for fast access
+        
+        if (drinkListModel.drinks.count) {
+            DrinkModel *firstDrink = drinkListModel.drinks[0];
+            [[firstDrink fetchSpotsForLocation:location] then:^(NSArray *spots) {
+                if (completionBlock) {
+                    completionBlock(drinkListModel, nil);
+                }
+
+                // now that the spots for the first drink are fetched now prefetch the rest
+                if (drinkListModel.drinks.count > 1) {
+                    NSMutableArray *promises = @[].mutableCopy;
+                    for (NSUInteger i=1; i<drinkListModel.drinks.count; i++) {
+                        DrinkModel *drink = drinkListModel.drinks[i];
+                        Promise *promise = [drink fetchSpotsForLocation:location];
+                        [promises addObject:promise];
+                    }
+                    
+                    [When when:promises then:^{
+                        DebugLog(@"Finished all drink/spot fetches");
+                    } fail:nil always:nil];
+                }
+            } fail:nil always:nil];
+        }
+        else {
+            if (completionBlock) {
+                completionBlock(drinkListModel, nil);
+            }
+        }
+    } failure:^(ErrorModel *errorModel) {
+        [Tracker track:@"Created Drinklist" properties:@{@"Success" : @FALSE}];
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+        if (completionBlock) {
+            completionBlock(nil, errorModel);
+        }
+    }];
 }
 
 #pragma mark - User Actions
