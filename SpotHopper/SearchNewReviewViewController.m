@@ -78,7 +78,7 @@
     }
     
     // Shows sidebar button in nav
-    [self showSidebarButton:YES animated:YES];
+//    [self showSidebarButton:YES animated:YES];
     
     // Configures table
     [_tblSearches setTableFooterView:[[UIView alloc] init]];

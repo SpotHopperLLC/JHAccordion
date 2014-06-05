@@ -596,6 +596,23 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
         
         //todo: api call to find similar spots and display
         
+//        [self showHUD:@"Finding similar"];
+        
+//        NSString *name = [NSString stringWithFormat:@"Similar to %@", _spot.name];
+//        [SpotListModel postSpotList:name spotId:_spot.ID spotTypeId:_spot.spotType.ID latitude:_spot.latitude longitude:_spot.longitude sliders:_averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+//            [self hideHUD];
+//            
+//            SpotListViewController *viewController = [self.spotsStoryboard instantiateViewControllerWithIdentifier:@"SpotListViewController"];
+//            [viewController setSpotList:spotListModel];
+//            
+//            [self.navigationController pushViewController:viewController animated:YES];
+//            
+//        } failure:^(ErrorModel *errorModel) {
+//            [self hideHUD];
+//            [self showAlert:@"Oops" message:errorModel.human];
+//            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+//        }];
+        
     }
 
 }

@@ -103,8 +103,10 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 }
 
 - (void)viewDidLoad {
-
     [self viewDidLoad:@[kDidLoadOptionsNoBackground]];
+    
+    //todo: vv ask Brennan vv
+    [[UIBarButtonItem appearance]setBackButtonBackgroundImage:[SHStyleKit drawImage:SHStyleKitDrawingNavigationArrowLeftIcon color:SHStyleKitColorMyWhiteColor size:CGSizeMake(44, 44)] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
 
     self.spotfooterNavigationViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SHSpotDetailFooterNavigationViewController"];
     self.spotfooterNavigationViewController.delegate = self;
@@ -207,17 +209,21 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
                     cell = [tableView dequeueReusableCellWithIdentifier:SpotDetailsCellIdentifier];
                     
                     UILabel *spotName = (UILabel*)[cell viewWithTag:kLabelTagSpotName];
+                    spotName.font = [UIFont fontWithName:@"Lato-Bold" size:20.0f];
                     [SHStyleKit setLabel:spotName textColor:SHStyleKitColorMyTintColor];
                     spotName.text = self.spot.name;
                     
                     //todo:update to display the spot type as well as the expense
                     UILabel *spotType = (UILabel*)[cell viewWithTag:kLabelTagSpotType];
+                    spotType.font = [UIFont fontWithName:@"Lato-LightItalic" size:18.0f];
                     spotType.text = self.spot.spotType.name;
                     
                     UILabel *spotRelevancy = (UILabel*)[cell viewWithTag:kLabelTagSpotRelevancy];
+                    spotRelevancy.font = [UIFont fontWithName:@"Lato-LightItalic" size:18.0f];
                     spotRelevancy.text = [NSString stringWithFormat:@"%@ Match",self.spot.matchPercent];
                     
                     UILabel *spotCloseTime = (UILabel*)[cell viewWithTag:kLabelTagSpotCloseTime];
+                    spotCloseTime.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
                     NSString *closeTime;
                     
                     if (!(closeTime = [self findCloseTimeForToday])) {
@@ -225,6 +231,7 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
                     }
                     
                     UILabel *spotAddress = (UILabel*)[cell viewWithTag:kLabelTagSpotAddress];
+                    spotAddress.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
                     spotAddress.text = self.spot.addressCityState;
                     break;
                 }
@@ -237,8 +244,11 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
                     
                     if ((dailySpecials = self.spot.dailySpecials)) {
                         //todo: ask if this is needed
-                        //UILabel *spotSpecial = (UILabel*)[cell viewWithTag:kLabelTagSpotSpecial];
+                        UILabel *spotSpecial = (UILabel*)[cell viewWithTag:kLabelTagSpotSpecial];
+                        spotSpecial.font = [UIFont fontWithName:@"Lato-Bold" size:20.0f];
+                        
                         UILabel *specialDetails = (UILabel*)[cell viewWithTag:kLabelTagSpotSpecialDetails];
+                        specialDetails.font = [UIFont fontWithName:@"Lato-Light" size:16.0f];
                         
                         NSString *todaysSpecial = [self.spot.dailySpecials specialsForToday];
                         
@@ -260,7 +270,7 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
             UILabel *minValue = (UILabel*)[cell viewWithTag:kLeftLabelVibeTag];
             UILabel *maxValue = (UILabel*)[cell viewWithTag:kRightLabelVibeTag];
             
-            NSLog(@"fetched slider templates: %@", self.spot.sliderTemplates);
+//            NSLog(@"fetched slider templates: %@", self.spot.sliderTemplates);
             
             SliderTemplateModel *sliderTemplate = self.spot.sliderTemplates[indexPath.row];
             minValue.text = sliderTemplate.minLabel.length ? sliderTemplate.minLabel : @"";

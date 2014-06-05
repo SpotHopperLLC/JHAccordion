@@ -80,7 +80,7 @@ NSString * const SHStyleKitColorNameMyWhiteColor = @"myWhiteColor";
 
 + (void)setButton:(UIButton *)button withDrawing:(SHStyleKitDrawing)drawing text:(NSString*)text normalColor:(SHStyleKitColor)normalColor highlightedColor:(SHStyleKitColor)highlightedColor;
 {
-    button.titleLabel.text = text;
+    [button setTitle:text forState:UIControlStateNormal];
     UIImage *normalImage = [SHStyleKit drawImage:drawing color:normalColor size:button.frame.size];
     UIImage *highlightedImage = [SHStyleKit drawImage:drawing color:highlightedColor size:button.frame.size];
     [button setImage:normalImage forState:UIControlStateNormal];
