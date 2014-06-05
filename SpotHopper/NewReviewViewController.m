@@ -110,6 +110,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtCocktailName;
 @property (weak, nonatomic) IBOutlet UITextField *txtCocktailType;
 @property (weak, nonatomic) IBOutlet UITextField *txtCocktailAlcoholType;
+@property (weak, nonatomic) IBOutlet UIImageView *imgCocktailWhichSpot;
 @property (weak, nonatomic) IBOutlet UITextField *txtCocktailWhichSpot;
 @property (nonatomic, strong) UIPickerView *pickerViewCocktailType;
 @property (nonatomic, strong) UISegmentedControl *segControlForCocktailType;
@@ -663,7 +664,12 @@
     _selectedCocktailSubtype = [_cocktailTypes objectAtIndex:[_pickerViewCocktailType selectedRowInComponent:0]];
     [self.view endEditing:YES];
     
-    _txtCocktailType.text = [_selectedCocktailSubtype objectForKey:@"name"];
+    NSString *name = [_selectedCocktailSubtype objectForKey:@"name"];
+    _txtCocktailType.text = name;
+    
+    BOOL containsHouse = [name.lowercaseString contains:@"house"];
+    [_imgCocktailWhichSpot setHidden:!containsHouse];
+    [_txtCocktailWhichSpot setHidden:!containsHouse];
 }
 
 - (void)onClickChooseCocktailAlcoholType:(id)sender {
