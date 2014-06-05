@@ -667,6 +667,7 @@
     NSString *name = [_selectedCocktailSubtype objectForKey:@"name"];
     _txtCocktailType.text = name;
     
+    // Only show "At which spot?" when its a house cocktail
     BOOL containsHouse = [name.lowercaseString contains:@"house"];
     [_imgCocktailWhichSpot setHidden:!containsHouse];
     [_txtCocktailWhichSpot setHidden:!containsHouse];
