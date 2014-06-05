@@ -28,6 +28,7 @@
 #import "BaseAlcoholModel.h"
 #import "ErrorModel.h"
 #import "DrinkModel.h"
+#import "DrinkListRequest.h"
 #import "DrinkListModel.h"
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
@@ -576,28 +577,24 @@
         }
     }
     
-    NSNumber *latitude = nil, *longitude = nil;
-    if (_location != nil) {
-        latitude = [NSNumber numberWithFloat:_location.coordinate.latitude];
-        longitude = [NSNumber numberWithFloat:_location.coordinate.longitude];
-    }
-    
     [Tracker track:@"Creating Drinklist"];
     
     NSNumber *drinkTypeID = [_selectedDrinkType objectForKey:@"id"];
     NSNumber *drinkSubTypeID = [_selectedWineSubtype objectForKey:@"id"];
     
-    [self showHUD:@"Creating drinklist"];
-    [DrinkListModel postDrinkList:kDrinkListModelDefaultName
-                         latitude:latitude
-                        longitude:longitude sliders:allTheSliders
-                          drinkId:nil
-                      drinkTypeId:drinkTypeID
-                   drinkSubtypeId:drinkSubTypeID
-                    baseAlcoholId:_selectedBaseAlcohol.ID
-                           spotId:_spot.ID
-                     successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
-                         [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Drink Type ID" : drinkTypeID ?: @0, @"Drink Sub Type ID" : drinkSubTypeID ?: @0, @"Created With Sliders" : @TRUE}];
+    [self showHUD:@"Creating Drinklist"];
+    
+    DrinkListRequest *request = [[DrinkListRequest alloc] init];
+    request.name = kDrinkListModelDefaultName;
+    request.coordinate = _location.coordinate;
+    request.sliders = allTheSliders;
+    request.drinkTypeId = drinkTypeID;
+    request.drinkSubTypeId = drinkSubTypeID;
+    request.baseAlcoholId = _selectedBaseAlcohol.ID;
+    request.spotId = _spot.ID;
+    
+    [DrinkListModel fetchDrinkListWithRequest:request successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+        [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Drink Type ID" : drinkTypeID ?: @0, @"Drink Sub Type ID" : drinkSubTypeID ?: @0, @"Created With Sliders" : @TRUE}];
         [self hideHUD];
         [self showHUDCompleted:@"Drinklist created!" block:^{
             

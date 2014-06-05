@@ -101,6 +101,8 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
 
 @property (strong, nonatomic) SpotModel *selectedSpot;
 
+@property (assign, nonatomic) NSUInteger currentIndex;
+
 @end
 
 @implementation SHHomeMapViewController {
@@ -545,6 +547,7 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
 - (IBAction)finishCreatingSpotListForHomeMap:(UIStoryboardSegue *)segue {
     // TODO: get back to the home map view and get spotlist model
     // TODO: hide the home navigation and display the collection view of the spots and add the map annotations
+    // TODO: remove this unwind segue since it does not dismiss the custom child view controller
     
     if ([segue.sourceViewController isKindOfClass:[SHAdjustSpotListSliderViewController class]]) {
         SHAdjustSpotListSliderViewController *vc = (SHAdjustSpotListSliderViewController *)segue.sourceViewController;
@@ -554,6 +557,7 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
 
 - (IBAction)finishCreatingDrinkListForHomeMap:(UIStoryboardSegue *)segue {
     // do nothing (handled by delegate method)
+    // TODO: remove this unwind segue since it does not dismiss the custom child view controller
 }
 
 - (IBAction)childViewControllerDidRequestSimilarSpots:(UIStoryboardSegue *)segue {
@@ -643,7 +647,12 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
 
 - (void)displaySpotlist:(SpotListModel *)spotListModel {
     // hold onto the spotlist
+    
+    self.drinkListModel = nil;
+    self.specialsSpotModels = nil;
     self.spotListModel = spotListModel;
+    
+    self.currentIndex = 0;
     
     if (!self.spotListModel.spots.count) {
         [self showAlert:@"Oops" message:@"There are no spots which match in this location. Please try another search area."];
@@ -660,19 +669,45 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
     }];
 }
 
+- (void)displaySpecialsForSpots:(NSArray *)spots {
+    NSLog(@"spots: %@", spots);
+    
+    self.spotListModel = nil;
+    self.drinkListModel = nil;
+    self.specialsSpotModels = spots;
+    
+    self.currentIndex = 0;
+
+    [self populateMapWithSpots:spots mode:SHModeSpecials];
+    
+    [self hideHomeNavigation:FALSE withCompletionBlock:^{
+        [self.mapOverlayCollectionViewController displaySpecialsForSpots:spots];
+        [self showCollectionContainerView:FALSE withCompletionBlock:^{
+            // do nothing
+        }];
+    }];
+}
+
 - (void)displayDrinklist:(DrinkListModel *)drinkListModel {
     // hold onto the drinklist
+    self.spotListModel = nil;
+    self.specialsSpotModels = nil;
     self.drinkListModel = drinkListModel;
+    
+    self.currentIndex = 0;
+    
+    // clear the map right away because it may currently show other results
+    [self.mapView removeAnnotations:[self.mapView annotations]];
     
     if (!self.drinkListModel.drinks.count) {
         [self showAlert:@"Oops" message:@"There are no drinks which match in this location. Please try another search area."];
         return;
     }
     
-    // TODO: populate map (which comes from spots related to the drinks)
-    // for now just clear the map
-    [self.mapView removeAnnotations:[self.mapView annotations]];
-//    [self populateMapWithSpots:self.spotListModel.spots mode:SHModeSpots];
+    if (self.drinkListModel.drinks.count) {
+        DrinkModel *drink = self.drinkListModel.drinks[0];
+        [self updateMapWithCurrentDrink:drink];
+    }
     
     // TODO: populate collection view with drinks
     [self hideHomeNavigation:FALSE withCompletionBlock:^{
@@ -693,17 +728,13 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
     }];
 }
 
-- (void)displaySpecialsForSpots:(NSArray *)spots {
-    NSLog(@"spots: %@", spots);
-    
-    self.specialsSpotModels = spots;
-    [self populateMapWithSpots:spots mode:SHModeSpecials];
-    
-    [self hideHomeNavigation:FALSE withCompletionBlock:^{
-        [self.mapOverlayCollectionViewController displaySpecialsForSpots:spots];
-        [self showCollectionContainerView:FALSE withCompletionBlock:^{
-            // do nothing
-        }];
+- (void)updateMapWithCurrentDrink:(DrinkModel *)drink {
+    [[drink fetchSpotsForLocation:self.drinkListModel.location] then:^(NSArray *spots) {
+        [self populateMapWithSpots:spots mode:self.mode];
+    } fail:^(ErrorModel *errorModel) {
+        [Tracker logError:errorModel.human class:[self class] trace:NSStringFromSelector(_cmd)];
+    } always:^{
+        
     }];
 }
 
@@ -753,7 +784,7 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
 - (void)repositionMapOnCoordinate:(CLLocationCoordinate2D)coordinate animated:(BOOL)animated {
     MKMapPoint mapPoint = MKMapPointForCoordinate(coordinate);
     MKMapRect mapRect = MKMapRectMake(mapPoint.x, mapPoint.y, 0.25, 0.25);
-    [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(169.0, 5.0, 180.0, 5.0) animated:animated];
+    [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(169.0, 45.0, 180.0, 45.0) animated:animated];
 }
 
 - (void)repositionMapOnAnnotations:(NSArray *)annotations animated:(BOOL)animated {
@@ -805,7 +836,7 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
             UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
             [UIView animateWithDuration:0.5 delay:0.0 options:options animations:^{
                 // edgePadding must also account for the size and position of the annotation view
-                [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(CGRectGetHeight(topFrame) + 20, 15.0, CGRectGetHeight(bottomFrame) + 20, 15.0) animated:animated];
+                [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(CGRectGetHeight(topFrame) + 30, 45.0, CGRectGetHeight(bottomFrame) + 30, 45.0) animated:animated];
             } completion:^(BOOL finished) {
             }];
         });
@@ -915,6 +946,12 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
 }
 
 - (void)refreshBlurredView {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone &&
+        [[[UIDevice currentDevice] model] hasPrefix:@"iPad"]) {
+        // do not refresh blurred view on the iPad due to an iOS bug
+        return;
+    }
+    
     if (_isShowingSliderSearchView) {
         [self updateBlurredView];
         [self performSelector:@selector(refreshBlurredView) withObject:nil afterDelay:0.1];
@@ -1031,7 +1068,7 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
 #pragma mark -
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didChangeToSpotAtIndex:(NSUInteger)index {
-    
+    DebugLog(@"%@ (%lu)", NSStringFromSelector(_cmd), (unsigned long)index);
     if (self.mode == SHModeSpots && index < self.spotListModel.spots.count) {
         SpotModel *spot = self.spotListModel.spots[index];
         NSLog(@"HomeMap: didChangeToSpotAtIndex: %@", spot.name);
@@ -1045,15 +1082,26 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
 }
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didSelectSpotAtIndex:(NSUInteger)index {
-    // Note: Do not focus on spot when spot is selected
+    // Do not focus on spot when spot is selected
+    DebugLog(@"%@ (%lu)", NSStringFromSelector(_cmd), (unsigned long)index);
+//    if (index < self.spotListModel.spots.count) {
+//        SpotModel *spot = self.spotListModel.spots[index];
+//        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([spot.latitude floatValue], [spot.longitude floatValue]);
+//        [self repositionMapOnCoordinate:coordinate animated:YES];
+//    }
+}
+
+- (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didChangeToDrinkAtIndex:(NSUInteger)index {
+    DebugLog(@"%@ (%lu)", NSStringFromSelector(_cmd), (unsigned long)index);
     
-    if (index < self.spotListModel.spots.count) {
-        self.selectedSpot = self.spotListModel.spots[index];
-        [self performSegueWithIdentifier:SpotSelectedSegueIdentifier sender:self];
+    if (self.drinkListModel.drinks.count && index < self.drinkListModel.drinks.count) {
+        DrinkModel *drink = self.drinkListModel.drinks[index];
+        [self updateMapWithCurrentDrink:drink];
     }
-    else {
-        NSAssert(FALSE, @"Index should always be in bounds");
-    }
+}
+
+- (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didSelectDrinkAtIndex:(NSUInteger)index {
+    DebugLog(@"%@ (%lu)", NSStringFromSelector(_cmd), (unsigned long)index);
 }
 
 #pragma mark - SHMapFooterNavigationDelegate
@@ -1096,8 +1144,9 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
 #pragma mark - SHSlidersSearchDelegate
 #pragma mark -
 
-- (void)slidersSearchViewController:(SHSlidersSearchViewController *)vc didPrepareDrinklist:(DrinkListModel *)drinklist {
-    [self hideSlidersSearch:TRUE forMode:SHModeNone withCompletionBlock:^{
+- (void)slidersSearchViewController:(SHSlidersSearchViewController *)vc didPrepareDrinklist:(DrinkListModel *)drinklist forMode:(SHMode)mode {
+    self.mode = mode;
+    [self hideSlidersSearch:TRUE forMode:mode withCompletionBlock:^{
         [self displayDrinklist:drinklist];
     }];
 }
@@ -1120,11 +1169,30 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
             pin = [[MatchPercentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:MatchPercentAnnotationIdentifier];
         }
         
+        switch (self.mode) {
+            case SHModeSpots:
+                pin.drawing = SHStyleKitDrawingSpotIcon;
+                break;
+            case SHModeSpecials:
+                pin.drawing = SHStyleKitDrawingSpecialsIcon;
+                break;
+            case SHModeBeer:
+                pin.drawing = SHStyleKitDrawingBeerIcon;
+                break;
+            case SHModeCocktail:
+                pin.drawing = SHStyleKitDrawingCocktailIcon;
+                break;
+            case SHModeWine:
+                pin.drawing = SHStyleKitDrawingWineIcon;
+                break;
+                
+            default:
+                break;
+        }
+        
         if (self.mode == SHModeSpots) {
-            pin.drawing = SHStyleKitDrawingNone;
         }
         else if (self.mode == SHModeSpecials) {
-            pin.drawing = SHStyleKitDrawingSpecialsIcon;
         }
         [pin setSpot:matchPercentAnnotation.spot];
         [pin setNeedsDisplay];
@@ -1149,8 +1217,21 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
         
         if (pin.isHighlighted == NO) {
             [pin setHighlighted:YES];
-            [pin setNeedsDisplay];
             
+            if (self.mode == SHModeBeer || self.mode == SHModeCocktail || self.mode == SHModeWine) {
+                SpotAnnotationCallout *callout = [SpotAnnotationCallout viewFromNib];
+                [callout setMatchPercentAnnotationView:pin];
+                [callout setDelegate:self];
+                [callout setFrame:CGRectMake(0.0f, -CGRectGetHeight(callout.frame), CGRectGetWidth(callout.frame), CGRectGetHeight(callout.frame))];
+                
+                [pin setCalloutView:callout];
+                
+                [pin setUserInteractionEnabled:YES];
+                [pin addSubview:callout];
+            }
+            
+            [pin setNeedsDisplay];
+
             NSLog(@"HomeMap - Did select spot on map: %@", pin.spot.name);
             [self.mapOverlayCollectionViewController displaySpot:pin.spot];
         }

@@ -238,4 +238,19 @@ typedef enum {
     }
 }
 
+#pragma mark - SHDrinksCollectionViewManagerDelegate
+#pragma mark -
+
+- (void)drinksCollectionViewManager:(SHDrinksCollectionViewManager *)manager didChangeToDrinkAtIndex:(NSUInteger)index {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didChangeToDrinkAtIndex:)]) {
+        [self.delegate mapOverlayCollectionViewController:self didChangeToDrinkAtIndex:index];
+    }
+}
+
+- (void)drinksCollectionViewManager:(SHDrinksCollectionViewManager *)manager didSelectDrinkAtIndex:(NSUInteger)index {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didSelectDrinkAtIndex:)]) {
+        [self.delegate mapOverlayCollectionViewController:self didSelectDrinkAtIndex:index];
+    }
+}
+
 @end

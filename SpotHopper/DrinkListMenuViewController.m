@@ -32,6 +32,7 @@
 #import "DrinkTypeModel.h"
 #import "DrinkSubtypeModel.h"
 #import "DrinkListModel.h"
+#import "DrinkListRequest.h"
 #import "ErrorModel.h"
 #import "UserModel.h"
 #import "CheckInModel.h"
@@ -351,19 +352,20 @@
     [Tracker track:@"Creating Drinklist"];
 
     [self showHUD:@"Creating drinklist"];
-    [drink getDrink:Nil success:^(DrinkModel *drinkModel, JSONAPI *jsonApi) {
+    [drink getDrink:nil success:^(DrinkModel *drinkModel, JSONAPI *jsonApi) {
         
-        [DrinkListModel postDrinkList:[NSString stringWithFormat:@"Similar to %@", drinkModel.name]
-                             latitude:[NSNumber numberWithFloat:_location.coordinate.latitude]
-                            longitude:[NSNumber numberWithFloat:_location.coordinate.longitude]
-                              sliders:drinkModel.averageReview.sliders drinkId:drinkModel.ID
-                          drinkTypeId:drinkModel.drinkType.ID
-                       drinkSubtypeId:drinkModel.drinkSubtype.ID
-                        baseAlcoholId:nil
-                               spotId:_spot.ID
-                         successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
-                             
-                             [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Drink Type ID" : drinkModel.drinkType.ID ?: @0, @"Drink Sub Type ID" : drinkModel.drinkSubtype.ID ?: @0, @"Created With Sliders" : @FALSE}];
+        DrinkListRequest *request = [[DrinkListRequest alloc] init];
+        request.name = [NSString stringWithFormat:@"Similar to %@", drinkModel.name];
+        request.coordinate = _location.coordinate;
+        request.sliders = drinkModel.averageReview.sliders;
+        request.drinkId = drinkModel.ID;
+        request.drinkTypeId = drinkModel.drinkType.ID;
+        request.drinkSubTypeId = drinkModel.drinkSubtype.ID;
+        request.spotId = _spot.ID;
+        
+        [DrinkListModel fetchDrinkListWithRequest:request successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+        
+                                     [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Drink Type ID" : drinkModel.drinkType.ID ?: @0, @"Drink Sub Type ID" : drinkModel.drinkSubtype.ID ?: @0, @"Created With Sliders" : @FALSE}];
             
             [self hideHUD];
             [self showHUDCompleted:@"Drinklist created!" block:^{
