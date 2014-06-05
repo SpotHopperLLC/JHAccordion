@@ -118,12 +118,6 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
 - (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
     
-    self.navigationController.navigationBar.shadowImage = [UIImage new];
-    UIImage *backgroundImage = [SHStyleKit gradientBackgroundWithSize:self.view.frame.size];
-    [self.navigationController.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
-    
-    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [SHStyleKit myWhiteColor]};
-    
     self.sideBarViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHSidebarViewController"];
     self.sideBarViewController.delegate = self;
     self.locationMenuBarViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHLocationMenuBarViewController"];
@@ -171,6 +165,8 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
     [super viewWillAppear:animated];
     
     [self setNeedsStatusBarAppearanceUpdate];
+    
+    [self styleBars];
     
     if (!self.locationMenuBarViewController.view.superview) {
         [self embedViewController:self.locationMenuBarViewController intoView:self.view placementBlock:^(UIView *view) {
@@ -648,6 +644,8 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
 - (void)displaySpotlist:(SpotListModel *)spotListModel {
     // hold onto the spotlist
     
+    self.mode = SHModeSpots;
+    
     self.drinkListModel = nil;
     self.specialsSpotModels = nil;
     self.spotListModel = spotListModel;
@@ -659,7 +657,7 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
         return;
     }
     
-    [self populateMapWithSpots:self.spotListModel.spots mode:SHModeSpots];
+    [self populateMapWithSpots:self.spotListModel.spots];
     
     [self hideHomeNavigation:FALSE withCompletionBlock:^{
         [self.mapOverlayCollectionViewController displaySpotList:spotListModel];
@@ -672,13 +670,15 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
 - (void)displaySpecialsForSpots:(NSArray *)spots {
     NSLog(@"spots: %@", spots);
     
+    self.mode = SHModeSpecials;
+    
     self.spotListModel = nil;
     self.drinkListModel = nil;
     self.specialsSpotModels = spots;
     
     self.currentIndex = 0;
 
-    [self populateMapWithSpots:spots mode:SHModeSpecials];
+    [self populateMapWithSpots:spots];
     
     [self hideHomeNavigation:FALSE withCompletionBlock:^{
         [self.mapOverlayCollectionViewController displaySpecialsForSpots:spots];
@@ -718,6 +718,13 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
     }];
 }
 
+- (void)styleBars {
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    UIImage *backgroundImage = [SHStyleKit gradientBackgroundWithSize:self.view.frame.size];
+    [self.navigationController.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [SHStyleKit myWhiteColor]};
+}
+
 - (void)fetchSpecials {
     [self showHUD:@"Finding specials"];
     [SpotModel getSpotsWithSpecialsTodayForCoordinate:self.mapView.centerCoordinate success:^(NSArray *spotModels, JSONAPI *jsonApi) {
@@ -725,22 +732,20 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
         [self displaySpecialsForSpots:spotModels];
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel.human class:[self class] trace:NSStringFromSelector(_cmd)];
+        // TODO: tell the user abou the error
     }];
 }
 
 - (void)updateMapWithCurrentDrink:(DrinkModel *)drink {
     [[drink fetchSpotsForLocation:self.drinkListModel.location] then:^(NSArray *spots) {
-        [self populateMapWithSpots:spots mode:self.mode];
+        [self populateMapWithSpots:spots];
     } fail:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel.human class:[self class] trace:NSStringFromSelector(_cmd)];
-    } always:^{
-        
-    }];
+        // TODO: tell the user about the error
+    } always:nil];
 }
 
-- (void)populateMapWithSpots:(NSArray *)spots mode:(SHMode)mode {
-    self.mode = mode;
-    
+- (void)populateMapWithSpots:(NSArray *)spots {
     NSAssert(self.mapView, @"Map View is required");
     
     // Update map
@@ -1084,8 +1089,12 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didSelectSpotAtIndex:(NSUInteger)index {
     // Note: Do not focus on spot when spot is selected
     
-    if (index < self.spotListModel.spots.count) {
+    if (self.spotListModel && index < self.spotListModel.spots.count) {
         self.selectedSpot = self.spotListModel.spots[index];
+        [self performSegueWithIdentifier:SpotSelectedSegueIdentifier sender:self];
+    }
+    else if (self.specialsSpotModels && index < self.specialsSpotModels.count) {
+        self.selectedSpot = self.specialsSpotModels[index];
         [self performSegueWithIdentifier:SpotSelectedSegueIdentifier sender:self];
     }
     else {
@@ -1173,7 +1182,8 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
         
         switch (self.mode) {
             case SHModeSpots:
-                pin.drawing = SHStyleKitDrawingSpotIcon;
+                // setting to none allows match percentage to appear
+                pin.drawing = SHStyleKitDrawingNone;
                 break;
             case SHModeSpecials:
                 pin.drawing = SHStyleKitDrawingSpecialsIcon;

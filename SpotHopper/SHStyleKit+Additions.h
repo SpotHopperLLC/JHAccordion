@@ -10,13 +10,19 @@ extern NSString * const SHStyleKitColorNameMyTintColor;
 extern NSString * const SHStyleKitColorNameMyTintTransparentColor;
 extern NSString * const SHStyleKitColorNameMyTextColor;
 extern NSString * const SHStyleKitColorNameMyWhiteColor;
+extern NSString * const SHStyleKitColorNameMyWhiteColorTransparent;
+extern NSString * const SHStyleKitColorNameMyBlackColor;
+extern NSString * const SHStyleKitColorNameMyClearColor;
 
 typedef enum {
     SHStyleKitColorNone = 0,
     SHStyleKitColorMyTintColor,
     SHStyleKitColorMyTintColorTransparent,
     SHStyleKitColorMyTextColor,
-    SHStyleKitColorMyWhiteColor
+    SHStyleKitColorMyWhiteColor,
+    SHStyleKitColorMyWhiteColorTransparent,
+    SHStyleKitColorMyBlackColor,
+    SHStyleKitColorMyClearColor
 } SHStyleKitColor;
 
 typedef enum {
@@ -46,7 +52,9 @@ typedef enum {
     SHStyleKitDrawingArrowUpIcon,
     SHStyleKitDrawingArrowDownIcon,
     SHStyleKitDrawingPlaceholderBasic,
-    SHStyleKitDrawingGradientBackground
+    SHStyleKitDrawingGradientBackground,
+    SHStyleKitDrawingTopBarBackground,
+    SHStyleKitDrawingTopBarWhiteShadowBackground
 } SHStyleKitDrawing;
 
 #import "SHStyleKit.h"
