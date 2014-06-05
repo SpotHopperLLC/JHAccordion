@@ -1082,13 +1082,15 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
 }
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didSelectSpotAtIndex:(NSUInteger)index {
-    // Do not focus on spot when spot is selected
-    DebugLog(@"%@ (%lu)", NSStringFromSelector(_cmd), (unsigned long)index);
-//    if (index < self.spotListModel.spots.count) {
-//        SpotModel *spot = self.spotListModel.spots[index];
-//        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([spot.latitude floatValue], [spot.longitude floatValue]);
-//        [self repositionMapOnCoordinate:coordinate animated:YES];
-//    }
+    // Note: Do not focus on spot when spot is selected
+    
+    if (index < self.spotListModel.spots.count) {
+        self.selectedSpot = self.spotListModel.spots[index];
+        [self performSegueWithIdentifier:SpotSelectedSegueIdentifier sender:self];
+    }
+    else {
+        NSAssert(FALSE, @"Index should always be in bounds");
+    }
 }
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didChangeToDrinkAtIndex:(NSUInteger)index {
