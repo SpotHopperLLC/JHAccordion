@@ -59,7 +59,7 @@
 
 NSString* const DrinkProfileToPhotoViewer = @"DrinkProfileToPhotoViewer";
 NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
-
+NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 
 @interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate, SHImageModelCollectionDelegate, SHSpotDetailFooterNavigationDelegate>
 
@@ -296,10 +296,15 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat height = 0.0f;
+
     
     switch (indexPath.section) {
         case 0:{
             NSString *todaysSpecial = [self.spot.dailySpecials specialsForToday];
+            
+            CGFloat heightForSpotSpecialHeaderText = [self heightForString:SpotSpecialLabelText font:[UIFont fontWithName:@"Lato-Bold" size:20.0f] maxWidth:self.tableview.frame.size.width];
+            CGFloat heightForSpotSpecialDetailText = [self heightForString:todaysSpecial font:[UIFont fontWithName:@"Lato-Light" size:16.0f] maxWidth:self.tableview.frame.size.width];
+    
             
             switch (indexPath.row) {
                 case kCellImageCollection:
@@ -311,7 +316,7 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
                     //todo: check with Brennan
                     break;
                 case kCellSpotSpecials:
-                    height = todaysSpecial.length ? 91.0f : 0.0f;
+                    height = todaysSpecial.length ? (heightForSpotSpecialHeaderText + heightForSpotSpecialDetailText) : 0.0f;
                     break;
                 default:
                     break;
@@ -343,11 +348,9 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     
     if (manager.imageModels.count > 1) {
         [self performSegueWithIdentifier:DrinkProfileToPhotoAlbum sender:self];
-        //        [self goToPhotoAlbum:self.imageModels atIndex:indexPath.item];
     }
     else {
         [self performSegueWithIdentifier:DrinkProfileToPhotoViewer sender:self];
-        //        [self goToPhotoViewer:self.imageModels atIndex:indexPath.item fromPhotoAlbum:nil];
     }
     
 }
