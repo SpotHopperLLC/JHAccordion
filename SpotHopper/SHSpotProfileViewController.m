@@ -23,8 +23,11 @@
 #import "SHStyleKit+Additions.h"
 #import "NSArray+DailySpecials.h"
 #import "UIView+AutoLayout.h"
+#import "UIViewController+Navigator.h"
 
 #import "SHImageModelCollectionViewManager.h"
+
+#import "Tracker.h"
 
 #define kCellImageCollection 0
 #define kCellSpotDetails 1
@@ -58,7 +61,7 @@ NSString* const DrinkProfileToPhotoViewer = @"DrinkProfileToPhotoViewer";
 NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 
 
-@interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate, SHImageModelCollectionDelegate>
+@interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate, SHImageModelCollectionDelegate, SHSpotDetailFooterNavigationDelegate>
 
 @property (strong, nonatomic) IBOutlet SHImageModelCollectionViewManager *imageModelCollectionViewManager;
 @property (assign, nonatomic) NSInteger currentIndex;
@@ -102,6 +105,9 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 - (void)viewDidLoad {
 
     [self viewDidLoad:@[kDidLoadOptionsNoBackground]];
+
+    self.spotfooterNavigationViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SHSpotDetailFooterNavigationViewController"];
+    self.spotfooterNavigationViewController.delegate = self;
     
     //set bottom offset to account for the height of the footer navigation control
     UIEdgeInsets contentInset = self.tableview.contentInset;
@@ -126,10 +132,10 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
         }
         
     } failure:^(ErrorModel *errorModel) {
-        //todo: error handling
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
-    self.spotfooterNavigationViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SHSpotDetailFooterNavigationViewController"];
+    
 }
 
 
@@ -254,11 +260,12 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
             UILabel *minValue = (UILabel*)[cell viewWithTag:kLeftLabelVibeTag];
             UILabel *maxValue = (UILabel*)[cell viewWithTag:kRightLabelVibeTag];
             
-            //NSLog(@"fetched slider templates: %@", self.spot.sliderTemplates);
+            NSLog(@"fetched slider templates: %@", self.spot.sliderTemplates);
             
             SliderTemplateModel *sliderTemplate = self.spot.sliderTemplates[indexPath.row];
             minValue.text = sliderTemplate.minLabel.length ? sliderTemplate.minLabel : @"";
             maxValue.text = sliderTemplate.maxLabel.length ? sliderTemplate.maxLabel : @"";
+            //todo: vv check to see if this logic is right vv
             [slider setSelectedValue:(sliderTemplate.defaultValue.floatValue / 10.0f)];
             
             break;
@@ -335,6 +342,17 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     
 }
 
+#pragma mark - SHSpotDetailFooterNavigationDelegate
+#pragma mark -
+- (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc spotReviewButtonTapped:(id)sender {
+    NSLog(@"spot review transition");
+    [self goToNewReviewForSpot:self.spot];
+}
+
+- (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc drinkMenuButtonTapped:(id)sender {
+    NSLog(@"spot menu transition");
+    [self goToMenu:_spot];
+}
 
 #pragma mark - UIScrollViewDelegate
 #pragma mark -

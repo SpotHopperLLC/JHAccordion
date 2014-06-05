@@ -8,6 +8,19 @@
 
 #import "BaseViewController.h"
 
+@protocol SHSpotDetailFooterNavigationDelegate;
+
 @interface SHSpotDetailFooterNavigationViewController : BaseViewController
+
+@property (weak, nonatomic) id<SHSpotDetailFooterNavigationDelegate> delegate;
+
+@end
+
+@protocol SHSpotDetailFooterNavigationDelegate <NSObject>
+
+@optional
+
+- (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc spotReviewButtonTapped:(id)sender;
+- (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc drinkMenuButtonTapped:(id)sender;
 
 @end
