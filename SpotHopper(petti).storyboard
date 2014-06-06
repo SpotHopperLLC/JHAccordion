@@ -56,7 +56,7 @@
         <!--Sliders Search View Controller-->
         <scene sceneID="gAc-J8-1Fq">
             <objects>
-                <viewController storyboardIdentifier="SHSlidersSearchViewController" id="7TX-QY-83X" customClass="SHSlidersSearchViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SHSlidersSearchViewController" automaticallyAdjustsScrollViewInsets="NO" id="7TX-QY-83X" customClass="SHSlidersSearchViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="NHf-51-BWB"/>
                         <viewControllerLayoutGuide type="bottom" id="NBu-Sb-Q7S"/>
@@ -199,7 +199,7 @@
         <!--Location Menu Bar View Controller-->
         <scene sceneID="9hJ-ox-pdc">
             <objects>
-                <viewController storyboardIdentifier="SHLocationMenuBarViewController" id="hgm-K9-o02" customClass="SHLocationMenuBarViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SHLocationMenuBarViewController" automaticallyAdjustsScrollViewInsets="NO" id="hgm-K9-o02" customClass="SHLocationMenuBarViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="upZ-BT-2Vw"/>
                         <viewControllerLayoutGuide type="bottom" id="VHb-8y-JPM"/>
@@ -285,7 +285,7 @@
         <!--Home Navigation View Controller-->
         <scene sceneID="RMJ-R3-Ys7">
             <objects>
-                <viewController storyboardIdentifier="SHHomeNavigationViewController" id="Yvi-9q-jBp" customClass="SHHomeNavigationViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SHHomeNavigationViewController" automaticallyAdjustsScrollViewInsets="NO" id="Yvi-9q-jBp" customClass="SHHomeNavigationViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="BPR-yg-vdG"/>
                         <viewControllerLayoutGuide type="bottom" id="Rvn-Su-EfJ"/>
@@ -569,7 +569,7 @@
         <!--Map Overlay Collection View Controller-->
         <scene sceneID="9U9-je-4vL">
             <objects>
-                <viewController storyboardIdentifier="SHMapOverlayCollectionViewController" id="w1s-o9-ykd" customClass="SHMapOverlayCollectionViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SHMapOverlayCollectionViewController" automaticallyAdjustsScrollViewInsets="NO" id="w1s-o9-ykd" customClass="SHMapOverlayCollectionViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="nzZ-te-WBL"/>
                         <viewControllerLayoutGuide type="bottom" id="ROu-NK-OQI"/>
@@ -900,7 +900,7 @@
         <!--Map Footer Navigation View Controller-->
         <scene sceneID="nGW-SN-df5">
             <objects>
-                <viewController storyboardIdentifier="SHMapFooterNavigationViewController" id="6UL-ip-5XI" customClass="SHMapFooterNavigationViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SHMapFooterNavigationViewController" automaticallyAdjustsScrollViewInsets="NO" id="6UL-ip-5XI" customClass="SHMapFooterNavigationViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jI4-tC-Mgm"/>
                         <viewControllerLayoutGuide type="bottom" id="K9O-Y2-xWJ"/>
