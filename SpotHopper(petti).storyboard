@@ -1351,7 +1351,8 @@
                         <outlet property="tableview" destination="wMd-zj-T8y" id="P8H-hy-hBN"/>
                         <outlet property="topShadowImageView" destination="mfa-cW-FDi" id="jgJ-HV-PUg"/>
                         <segue destination="2lk-gV-oBW" kind="push" identifier="DrinkProfileToPhotoViewer" id="hl5-Ic-whH"/>
-                        <segue destination="lDz-S2-0z5" kind="unwind" identifier="unwindFromSpotProfileToHomeMapViewController" unwindAction="unwindFromSpotProfileToHomeMapViewController:" id="NEx-wY-DDU"/>
+                        <segue destination="lDz-S2-0z5" kind="unwind" identifier="unwindFromSpotProfileToHomeMapFindSimilar" unwindAction="unwindFromSpotProfileToHomeMapViewControllerFindSimilar:" id="d45-vu-ovb"/>
+                        <segue destination="lDz-S2-0z5" kind="unwind" identifier="unwindFromSpotProfileToHomeMap" unwindAction="unwindFromSpotProfileToHomeMapViewController:" id="vGI-y0-vmI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bbO-t7-HJk" userLabel="First Responder" sceneMemberID="firstResponder"/>

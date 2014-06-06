@@ -40,10 +40,14 @@
 
 - (void)previousButtonTapped:(id)sender {
     [self goPrevious];
+//    [self didReachEnd:[self hasPrevious] button:sender];
+
 }
 
 - (void)nextButtonTapped:(id)sender {
     [self goNext];
+ //   [self didReachEnd:[self hasNext] button:sender];
+
 }
 
 
@@ -63,9 +67,6 @@
         
         UIButton *nextButton = (UIButton *)[cell viewWithTag:kNextButton];
         [nextButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [self didReachEnd:[self hasPrevious] button:previousButton];
-        [self didReachEnd:[self hasNext] button:nextButton];
         
         UIImageView *imageView = (UIImageView *)[cell viewWithTag:kImageView];
         

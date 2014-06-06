@@ -591,6 +591,9 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
 }
 
 - (IBAction)unwindFromSpotProfileToHomeMapViewController:(UIStoryboardSegue*)unwindSegue {
+}
+
+- (IBAction)unwindFromSpotProfileToHomeMapViewControllerFindSimilar:(UIStoryboardSegue*)unwindSegue {
     NSLog(@"made it back!");
     
     if ([unwindSegue.sourceViewController isKindOfClass:[SHSpotProfileViewController class]]) {

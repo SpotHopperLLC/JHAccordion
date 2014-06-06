@@ -57,7 +57,7 @@
 
 NSString* const DrinkProfileToPhotoViewer = @"DrinkProfileToPhotoViewer";
 NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
-NSString* const UnwindFromSpotProfileToHomeMap = @"unwindFromSpotProfileToHomeMapViewController";
+NSString* const UnwindFromSpotProfileToHomeMap = @"unwindFromSpotProfileToHomeMapFindSimilar";
 
 NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 
@@ -145,7 +145,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 #pragma mark -
 
 - (void)backButtonTapped:(id)sender {
-    [self performSegueWithIdentifier:@"unwindFromSpotProfileToHomeMapViewController" sender:self];
+    [self performSegueWithIdentifier:@"unwindFromSpotProfileToHomeMap" sender:self];
 }
 
 #pragma mark - UITableViewDataSource
