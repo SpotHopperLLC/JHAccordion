@@ -36,6 +36,11 @@ static NSString* const kButtonLabelTitleDrinkMenu = @"Drink Menu";
 
 #pragma mark - User Actions
 #pragma mark -
+- (IBAction)findSimilarButtonTapped:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(footerNavigationViewController:findSimilarButtonTapped:)]) {
+        [self.delegate footerNavigationViewController:self findSimilarButtonTapped:sender];
+    }
+}
 
 //todo: need to change these so they push view controllers
 //todo: create segues on IB for transition

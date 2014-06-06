@@ -599,7 +599,6 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
         
         //todo: api call to find similar spots and display
         NSString *name = [NSString stringWithFormat:@"Similar to %@", spot.name];
-
         
         [SpotListModel postSpotList:name spotId:spot.ID spotTypeId:spot.spotType.ID latitude:spot.latitude longitude:spot.longitude sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
             [self hideHUD];

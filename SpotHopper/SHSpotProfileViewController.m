@@ -59,6 +59,8 @@
 
 NSString* const DrinkProfileToPhotoViewer = @"DrinkProfileToPhotoViewer";
 NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
+NSString* const UnwindFromSpotProfileToHomeMap = @"unwindFromSpotProfileToHomeMapViewController";
+
 NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 
 @interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate, SHImageModelCollectionDelegate, SHSpotDetailFooterNavigationDelegate>
@@ -365,6 +367,10 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 
 #pragma mark - SHSpotDetailFooterNavigationDelegate
 #pragma mark -
+- (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc findSimilarButtonTapped:(id)sender {
+
+    [self performSegueWithIdentifier:UnwindFromSpotProfileToHomeMap sender:self];
+}
 
 - (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc spotReviewButtonTapped:(id)sender {
     NSLog(@"spot review transition");
