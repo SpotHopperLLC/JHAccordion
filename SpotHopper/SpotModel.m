@@ -17,6 +17,50 @@
 
 @implementation SpotModel
 
+- (NSDictionary *)mapKeysToProperties {
+    // Maps values in JSON key 'name' to 'name' property
+    // Maps values in JSON key 'image_url' to 'imageUrl' property
+    // Maps values in JSON key 'address' to 'address' property
+    // Maps values in JSON key 'city' to 'city' property
+    // Maps values in JSON key 'state' to 'state' property
+    // Maps values in JSON key 'zip' to 'zip' property
+    // Maps values in JSON key 'phone_number' to 'phoneNumber' property
+    // Maps values in JSON key 'hours_of_operation' to 'hoursOfOperation' property
+    // Maps values in JSON key 'latitude' to 'latitude' property
+    // Maps values in JSON key 'longitude' to 'longitude' property
+    // Maps values in JSON key 'foursquare_id' to 'foursquareId' property
+    // Maps values in JSON key 'match' to 'match' property
+    // Maps values in JSON key 'relevance' to 'relevance' property
+    // Maps values in JSON key 'daily_specials' to 'dailySpecials' property
+    // Maps linked resource in JSON key 'slider_templates' to 'sliderTemplates' property
+    // Maps linked resource in JSON key 'spot_type' to 'spotType' property
+    // Maps linked resource in JSON key 'images' to 'images' property
+    // Maps linked resource in JSON key 'live_specials' to 'liveSpecials' property
+    // Maps linked resource in JSON key 'average_review' to 'averageReview' property
+    return @{
+             @"name" : @"name",
+             @"image_url" : @"imageUrl",
+             @"address" : @"address",
+             @"city" : @"city",
+             @"state" : @"state",
+             @"zip" : @"zip",
+             @"phone_number" : @"phoneNumber",
+             @"hours_of_operation" : @"hoursOfOperation",
+             @"latitude" : @"latitude",
+             @"longitude" : @"longitude",
+             @"foursquare_id" : @"foursquareId",
+             @"match" : @"match",
+             @"relevance" : @"relevance",
+             @"daily_specials" : @"dailySpecials",
+             
+             @"links.slider_templates" : @"sliderTemplates",
+             @"links.spot_type" : @"spotType",
+             @"links.images" : @"images",
+             @"links.live_specials" : @"liveSpecials",
+             @"links.average_review" : @"averageReview",
+             };
+}
+
 #pragma mark - Debugging
 
 - (NSString *)description {
@@ -69,14 +113,14 @@
      * Searches spots for specials
      */
     NSDictionary *params = @{
-                            kSpotModelParamPage : @1,
-                            kSpotModelParamQueryVisibleToUsers : @"true",
-                            kSpotModelParamsPageSize : @10,
-                            kSpotModelParamSources : kSpotModelParamSourcesSpotHopper,
-                            kSpotModelParamQueryDayOfWeek : [NSNumber numberWithInteger:dayOfWeek],
-                            kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:coordinate.latitude],
-                            kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:coordinate.longitude]
-                            };
+                             kSpotModelParamPage : @1,
+                             kSpotModelParamQueryVisibleToUsers : @"true",
+                             kSpotModelParamsPageSize : @10,
+                             kSpotModelParamSources : kSpotModelParamSourcesSpotHopper,
+                             kSpotModelParamQueryDayOfWeek : [NSNumber numberWithInteger:dayOfWeek],
+                             kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:coordinate.latitude],
+                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:coordinate.longitude]
+                             };
     
     return [SpotModel getSpotsWithSpecials:params success:successBlock failure:failureBlock];
 }
@@ -191,30 +235,6 @@
 
 #pragma mark - Getters
 
-- (NSString *)name {
-    return [self objectForKey:@"name"];
-}
-
-- (NSString *)imageUrl {
-    return [self objectForKey:@"image_url"];
-}
-
-- (NSString *)address {
-    return [self objectForKey:@"address"];
-}
-
--(NSString *)city {
-    return [self objectForKey:@"city"];
-}
-
-- (NSString *)state {
-    return [self objectForKey:@"state"];
-}
-
-- (NSString *)zip {
-    return [self objectForKey:@"zip"];
-}
-
 - (NSString*)addressCityState {
     NSMutableArray *parts = [NSMutableArray array];
     if ([self address].length > 0 && [self cityState].length > 0) {
@@ -264,63 +284,14 @@
     return [NSString stringWithFormat:@"%d%%", (int)([self match].floatValue * 100)];
 }
 
-- (NSString *)phoneNumber {
-    return [self objectForKey:@"phone_number"];
-}
-
-- (NSArray *)hoursOfOperation {
-    return [self objectForKey:@"hours_of_operation"];
-}
-
-- (NSNumber *)latitude {
-    return [self objectForKey:@"latitude"];
-}
-
-- (NSNumber *)longitude {
-    return [self objectForKey:@"longitude"];
-}
-
-- (NSArray *)sliders {
-    return [self objectForKey:@"sliders"];
-}
-
 - (NSArray *)sliderTemplates {
-    return [[self linkedResourceForKey:@"slider_templates"] sortedArrayUsingComparator:^NSComparisonResult(SliderTemplateModel *obj1, SliderTemplateModel *obj2) {
+    return [_sliderTemplates sortedArrayUsingComparator:^NSComparisonResult(SliderTemplateModel *obj1, SliderTemplateModel *obj2) {
         return [obj1.order compare:obj2.order];
     }];
 }
 
-- (NSString *)foursquareId {
-    return [self objectForKey:@"foursquare_id"];
-}
-
-- (SpotTypeModel *)spotType {
-    return [self linkedResourceForKey:@"spot_type"];
-}
-
-- (AverageReviewModel *)averageReview {
-    return [self linkedResourceForKey:@"average_review"];
-}
-
-- (NSNumber *)match {
-    return [self objectForKey:@"match"];
-}
-
 - (NSNumber *)relevance {
-    NSNumber *rel = [self objectForKey:@"relevance"];
-    return ( rel == nil ? @0 : rel );
-}
-
-- (NSArray *)images {
-    return [self linkedResourceForKey:@"images"];
-}
-
-- (NSArray *)dailySpecials {
-    return [self objectForKey:@"daily_specials"];
-}
-
-- (NSArray *)liveSpecials {
-    return [self linkedResourceForKey:@"live_specials"];
+    return _relevance ?: @0;
 }
 
 - (LiveSpecialModel*)currentLiveSpecial {
@@ -328,7 +299,7 @@
     
     NSDate *now = [NSDate date];
     for (LiveSpecialModel *liveSpecial in [self liveSpecials]) {
-
+        
         NSLog(@"LS Start date - %@", [liveSpecial startDate]);
         NSLog(@"LS End date - %@", [liveSpecial endDate]);
         
