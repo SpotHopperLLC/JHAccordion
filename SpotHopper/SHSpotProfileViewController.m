@@ -64,13 +64,14 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 @interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate, SHImageModelCollectionDelegate, SHSpotDetailFooterNavigationDelegate>
 
 @property (strong, nonatomic) IBOutlet SHImageModelCollectionViewManager *imageModelCollectionViewManager;
+
 @property (assign, nonatomic) NSInteger currentIndex;
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 
+@property (weak, nonatomic) IBOutlet UIImageView *topShadowImageView;
 @property (weak, nonatomic) UIView *footerContainerView;
 
 @property (strong, nonatomic) SHSpotDetailFooterNavigationViewController *spotfooterNavigationViewController;
-
 
 @end
 
@@ -81,8 +82,46 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 #pragma mark - Lifecycle Methods
 #pragma mark -
 
+- (void)viewDidLoad {
+    [self viewDidLoad:@[kDidLoadOptionsNoBackground]];
+    
+    NSDictionary *titleTextAttributes = @{ NSForegroundColorAttributeName : [SHStyleKit color:SHStyleKitColorMyTextColor]};
+    self.navigationController.navigationBar.titleTextAttributes = titleTextAttributes;
+    
+    self.topShadowImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingTopBarWhiteShadowBackground size:CGSizeMake(320, 64)];
+    
+    self.spotfooterNavigationViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SHSpotDetailFooterNavigationViewController"];
+    self.spotfooterNavigationViewController.delegate = self;
+    
+    //set bottom offset to account for the height of the footer navigation control
+    UIEdgeInsets contentInset = self.tableview.contentInset;
+    UIEdgeInsets scrollIndicatorInsets = self.tableview.scrollIndicatorInsets;
+    contentInset.bottom = kFooterNavigationViewHeight;
+    scrollIndicatorInsets.bottom = kFooterNavigationViewHeight;
+    self.tableview.contentInset = contentInset;
+    self.tableview.scrollIndicatorInsets = scrollIndicatorInsets;
+    
+    //fetch spot slider and review info
+    [self.spot getSpot:nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
+        
+        if (spotModel) {
+            self.spot = spotModel;
+            self.spot.sliderTemplates = spotModel.sliderTemplates;
+            self.spot.averageReview = spotModel.averageReview;
+            [self.tableview reloadData];
+        }
+        
+    } failure:^(ErrorModel *errorModel) {
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+    }];
+}
+
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    [self hideTopBars:TRUE withCompletionBlock:^{
+        DebugLog(@"Done hiding top bars");
+    }];
     
     if (!self.footerContainerView && !self.spotfooterNavigationViewController.view.superview) {
         UIView *footerContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), kFooterNavigationViewHeight)];
@@ -102,44 +141,12 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     }
 }
 
-- (void)viewDidLoad {
-    [self viewDidLoad:@[kDidLoadOptionsNoBackground]];
-    
-    //todo: vv ask Brennan vv
-    [[UIBarButtonItem appearance]setBackButtonBackgroundImage:[SHStyleKit drawImage:SHStyleKitDrawingNavigationArrowLeftIcon color:SHStyleKitColorMyWhiteColor size:CGSizeMake(44, 44)] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+#pragma mark -
+#pragma mark -
 
-    self.spotfooterNavigationViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SHSpotDetailFooterNavigationViewController"];
-    self.spotfooterNavigationViewController.delegate = self;
-    
-    //set bottom offset to account for the height of the footer navigation control
-    UIEdgeInsets contentInset = self.tableview.contentInset;
-    UIEdgeInsets scrollIndicatorInsets = self.tableview.scrollIndicatorInsets;
-    contentInset.bottom = kFooterNavigationViewHeight;
-    scrollIndicatorInsets.bottom = kFooterNavigationViewHeight;
-    self.tableview.contentInset = contentInset;
-    self.tableview.scrollIndicatorInsets = scrollIndicatorInsets;
-    
-    self.navigationController.navigationBar.shadowImage = [UIImage new];
-    UIImage *backgroundImage = [SHStyleKit gradientBackgroundWithSize:self.view.frame.size];
-    [self.navigationController.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
-    
-    //fetch spot slider and review info
-    [self.spot getSpot:nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
-        
-        if (spotModel) {
-            self.spot = spotModel;
-            self.spot.sliderTemplates = spotModel.sliderTemplates;
-            self.spot.averageReview = spotModel.averageReview;
-            [self.tableview reloadData];
-        }
-        
-    } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
-    }];
-    
-    
+- (void)backButtonTapped:(id)sender {
+    [self performSegueWithIdentifier:@"unwindFromSpotProfileToHomeMapViewController" sender:self];
 }
-
 
 #pragma mark - UITableViewDataSource
 #pragma mark -
@@ -239,10 +246,12 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
                 case kCellSpotSpecials:{
                     
                     cell = [tableView dequeueReusableCellWithIdentifier:SpotSpecialsCellIdentifier];
-
-                    NSArray *dailySpecials;
                     
-                    if ((dailySpecials = self.spot.dailySpecials)) {
+                    // TODO: remove these debugging values later
+                    NSArray *specials = @[@"Special!", @"Special!", @"Special!", @"Special!", @"Special!", @"Special!", @"Special!"];
+//                    NSArray *specials = self.spot.dailySpecials;
+
+                    if (specials.count) {
                         //todo: ask if this is needed
                         UILabel *spotSpecial = (UILabel*)[cell viewWithTag:kLabelTagSpotSpecial];
                         spotSpecial.font = [UIFont fontWithName:@"Lato-Bold" size:20.0f];
@@ -250,7 +259,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
                         UILabel *specialDetails = (UILabel*)[cell viewWithTag:kLabelTagSpotSpecialDetails];
                         specialDetails.font = [UIFont fontWithName:@"Lato-Light" size:16.0f];
                         
-                        NSString *todaysSpecial = [self.spot.dailySpecials specialsForToday];
+                        NSString *todaysSpecial = [specials specialsForToday];
                         
                         if (todaysSpecial) {
                             specialDetails.text = todaysSpecial;
@@ -316,7 +325,8 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
                     //todo: check with Brennan
                     break;
                 case kCellSpotSpecials:
-                    height = todaysSpecial.length ? (heightForSpotSpecialHeaderText + heightForSpotSpecialDetailText) : 0.0f;
+                    // 8 + headerHeight + 5 + specialText + 8 for padding above, between and below
+                    height = todaysSpecial.length ? (heightForSpotSpecialHeaderText + heightForSpotSpecialDetailText + 21.0f ) : 0.0f;
                     break;
                 default:
                     break;
@@ -331,7 +341,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
   
     return height;
 }
-
 
 #pragma mark - SHImageModelCollectionDelegate
 #pragma mark -
@@ -357,6 +366,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 
 #pragma mark - SHSpotDetailFooterNavigationDelegate
 #pragma mark -
+
 - (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc spotReviewButtonTapped:(id)sender {
     NSLog(@"spot review transition");
     [self goToNewReviewForSpot:self.spot];
@@ -402,6 +412,8 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 }
 
 - (void)hideTopBars:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
     // sets a clear background for the top bars
     
     _topBarsClear = TRUE;
@@ -414,14 +426,23 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
         [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
         self.navigationController.navigationBar.shadowImage = [UIImage new];
+        [self.navigationController.navigationItem setTitle:nil];
     } completion:^(BOOL finished) {
-        if (finished && completionBlock) {
+        [self.navigationItem setTitle:nil];
+        
+        UIImage *backArrowImage = [[SHStyleKit drawImage:SHStyleKitDrawingArrowLeftIcon color:SHStyleKitColorMyWhiteColor size:CGSizeMake(30, 30)] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        UIBarButtonItem *backBarItem = [[UIBarButtonItem alloc] initWithImage:backArrowImage style:UIBarButtonItemStylePlain target:self action:@selector(backButtonTapped:)];
+        self.navigationItem.leftBarButtonItem = backBarItem;
+        
+        if (completionBlock) {
             completionBlock();
         }
     }];
 }
 
 - (void)showTopBars:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
     // sets the top bars to show an opaque background
     
     _topBarsClear = FALSE;
@@ -433,20 +454,24 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
         
-        UIImage *backgroundImage = [SHStyleKit drawImage:SHStyleKitDrawingGradientBackground color:SHStyleKitColorMyTintColor size:CGSizeMake(320, 64)];
+        UIImage *backgroundImage = [SHStyleKit drawImage:SHStyleKitDrawingTopBarBackground color:SHStyleKitColorMyWhiteColor size:CGSizeMake(320, 64)];
         [self.navigationController.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
+        [self.navigationController.navigationItem setTitle:self.spot.name];
         
-        } completion:^(BOOL finished) {
-        if (finished && completionBlock) {
+    } completion:^(BOOL finished) {
+        [self.navigationItem setTitle:self.spot.name];
+        
+        UIImage *backArrowImage = [[SHStyleKit drawImage:SHStyleKitDrawingArrowLeftIcon color:SHStyleKitColorMyTintColor size:CGSizeMake(30, 30)] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        UIBarButtonItem *backBarItem = [[UIBarButtonItem alloc] initWithImage:backArrowImage style:UIBarButtonItemStylePlain target:self action:@selector(backButtonTapped:)];
+        self.navigationItem.leftBarButtonItem = backBarItem;
+        
+        if (completionBlock) {
             completionBlock();
         }
     }];
 }
 
-
-
-- (NSString*)findCloseTimeForToday
-{
+- (NSString*)findCloseTimeForToday {
     // Sets "Opens at <some time>" or "Open until <some time>"
     NSString *closeTime = @"";
     NSArray *hoursForToday = [self.spot.hoursOfOperation datesForToday];
@@ -475,8 +500,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     return closeTime;
 }
 
-- (void)didReachEnd:(BOOL)hasMore button:(UIButton*)button
-{
+- (void)didReachEnd:(BOOL)hasMore button:(UIButton*)button {
     if (hasMore) {
         button.alpha = 0.1;
         button.enabled = TRUE;
@@ -504,13 +528,11 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     [vc didMoveToParentViewController:self];
 }
 
-
-
 #pragma mark - Navigation
+#pragma mark -
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
     //todo: refactor to make semantic style of Brennan
 //   if ([segue.destinationViewController isKindOfClass:[SHSpotProfileViewController class]]) {}
@@ -532,6 +554,5 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
         }
     }
 }
-
 
 @end

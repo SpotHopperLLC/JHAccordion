@@ -125,6 +125,7 @@ typedef enum {
     NSUInteger index = [self.specialsCollectionViewManager indexForViewInCollectionViewCell:sender];
     if (index != NSNotFound) {
         NSLog(@"index: %lu", (long)index);
+        [self spotsCollectionViewManager:self.spotsCollectionViewManager didSelectSpotAtIndex:index];
     }
 }
 
@@ -235,6 +236,21 @@ typedef enum {
     
     if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didSelectSpotAtIndex:)]) {
         [self.delegate mapOverlayCollectionViewController:self didSelectSpotAtIndex:index];
+    }
+}
+
+#pragma mark - SHDrinksCollectionViewManagerDelegate
+#pragma mark -
+
+- (void)drinksCollectionViewManager:(SHDrinksCollectionViewManager *)manager didChangeToDrinkAtIndex:(NSUInteger)index {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didChangeToDrinkAtIndex:)]) {
+        [self.delegate mapOverlayCollectionViewController:self didChangeToDrinkAtIndex:index];
+    }
+}
+
+- (void)drinksCollectionViewManager:(SHDrinksCollectionViewManager *)manager didSelectDrinkAtIndex:(NSUInteger)index {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didSelectDrinkAtIndex:)]) {
+        [self.delegate mapOverlayCollectionViewController:self didSelectDrinkAtIndex:index];
     }
 }
 
