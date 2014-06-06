@@ -55,7 +55,7 @@
 
 #define kModalAnimationDuration 0.35f
 
-NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
+NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
 
 @interface SHHomeMapViewController ()
     <SHSidebarDelegate,
