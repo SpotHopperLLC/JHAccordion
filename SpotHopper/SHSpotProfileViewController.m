@@ -246,10 +246,8 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
                 case kCellSpotSpecials:{
                     
                     cell = [tableView dequeueReusableCellWithIdentifier:SpotSpecialsCellIdentifier];
-                    
-                    // TODO: remove these debugging values later
-                    NSArray *specials = @[@"Special!", @"Special!", @"Special!", @"Special!", @"Special!", @"Special!", @"Special!"];
-//                    NSArray *specials = self.spot.dailySpecials;
+       
+                    NSArray *specials = self.spot.dailySpecials;
 
                     if (specials.count) {
                         //todo: ask if this is needed
@@ -278,6 +276,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
             SHSlider *slider = (SHSlider*)[cell viewWithTag:kSliderVibeTag];
             UILabel *minValue = (UILabel*)[cell viewWithTag:kLeftLabelVibeTag];
             UILabel *maxValue = (UILabel*)[cell viewWithTag:kRightLabelVibeTag];
+            slider.vibeFeel = TRUE;
             
 //            NSLog(@"fetched slider templates: %@", self.spot.sliderTemplates);
             

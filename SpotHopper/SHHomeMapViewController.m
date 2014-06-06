@@ -35,6 +35,8 @@
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
 #import "ErrorModel.h"
+#import "SpotTypeModel.h"
+#import "AverageReviewModel.h"
 
 #import "UIImage+BlurredFrame.h"
 #import "UIImage+ImageEffects.h"
@@ -263,9 +265,10 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
     }
     
     if ([segue.destinationViewController isKindOfClass:[SHSpotProfileViewController class]]) {
-        SHSpotProfileViewController *viewController = segue.destinationViewController;
+        SHSpotProfileViewController *vc = segue.destinationViewController;
         NSAssert(self.selectedSpot, @"Selected Spot should be defined");
-        viewController.spot = self.selectedSpot;
+        vc.spot = self.selectedSpot;
+        
     }
 }
 
@@ -595,23 +598,23 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
         SpotModel *spot = spotProfileViewController.spot;
         
         //todo: api call to find similar spots and display
+        NSString *name = [NSString stringWithFormat:@"Similar to %@", spot.name];
+
         
-//        [self showHUD:@"Finding similar"];
+        [SpotListModel postSpotList:name spotId:spot.ID spotTypeId:spot.spotType.ID latitude:spot.latitude longitude:spot.longitude sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+            [self hideHUD];
+            
+            if (spotListModel) {
+                [self displaySpotlist:spotListModel];
+            }
+          
+            
+        } failure:^(ErrorModel *errorModel) {
+            [self hideHUD];
+            [self showAlert:@"Oops" message:errorModel.human];
+            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+        }];
         
-//        NSString *name = [NSString stringWithFormat:@"Similar to %@", _spot.name];
-//        [SpotListModel postSpotList:name spotId:_spot.ID spotTypeId:_spot.spotType.ID latitude:_spot.latitude longitude:_spot.longitude sliders:_averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
-//            [self hideHUD];
-//            
-//            SpotListViewController *viewController = [self.spotsStoryboard instantiateViewControllerWithIdentifier:@"SpotListViewController"];
-//            [viewController setSpotList:spotListModel];
-//            
-//            [self.navigationController pushViewController:viewController animated:YES];
-//            
-//        } failure:^(ErrorModel *errorModel) {
-//            [self hideHUD];
-//            [self showAlert:@"Oops" message:errorModel.human];
-//            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
-//        }];
         
     }
 
