@@ -56,7 +56,7 @@
         <!--Sliders Search View Controller-->
         <scene sceneID="gAc-J8-1Fq">
             <objects>
-                <viewController storyboardIdentifier="SHSlidersSearchViewController" id="7TX-QY-83X" customClass="SHSlidersSearchViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SHSlidersSearchViewController" automaticallyAdjustsScrollViewInsets="NO" id="7TX-QY-83X" customClass="SHSlidersSearchViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="NHf-51-BWB"/>
                         <viewControllerLayoutGuide type="bottom" id="NBu-Sb-Q7S"/>
@@ -199,7 +199,7 @@
         <!--Location Menu Bar View Controller-->
         <scene sceneID="9hJ-ox-pdc">
             <objects>
-                <viewController storyboardIdentifier="SHLocationMenuBarViewController" id="hgm-K9-o02" customClass="SHLocationMenuBarViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SHLocationMenuBarViewController" automaticallyAdjustsScrollViewInsets="NO" id="hgm-K9-o02" customClass="SHLocationMenuBarViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="upZ-BT-2Vw"/>
                         <viewControllerLayoutGuide type="bottom" id="VHb-8y-JPM"/>
@@ -285,7 +285,7 @@
         <!--Home Navigation View Controller-->
         <scene sceneID="RMJ-R3-Ys7">
             <objects>
-                <viewController storyboardIdentifier="SHHomeNavigationViewController" id="Yvi-9q-jBp" customClass="SHHomeNavigationViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SHHomeNavigationViewController" automaticallyAdjustsScrollViewInsets="NO" id="Yvi-9q-jBp" customClass="SHHomeNavigationViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="BPR-yg-vdG"/>
                         <viewControllerLayoutGuide type="bottom" id="Rvn-Su-EfJ"/>
@@ -569,7 +569,7 @@
         <!--Map Overlay Collection View Controller-->
         <scene sceneID="9U9-je-4vL">
             <objects>
-                <viewController storyboardIdentifier="SHMapOverlayCollectionViewController" id="w1s-o9-ykd" customClass="SHMapOverlayCollectionViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SHMapOverlayCollectionViewController" automaticallyAdjustsScrollViewInsets="NO" id="w1s-o9-ykd" customClass="SHMapOverlayCollectionViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="nzZ-te-WBL"/>
                         <viewControllerLayoutGuide type="bottom" id="ROu-NK-OQI"/>
@@ -900,7 +900,7 @@
         <!--Map Footer Navigation View Controller-->
         <scene sceneID="nGW-SN-df5">
             <objects>
-                <viewController storyboardIdentifier="SHMapFooterNavigationViewController" id="6UL-ip-5XI" customClass="SHMapFooterNavigationViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SHMapFooterNavigationViewController" automaticallyAdjustsScrollViewInsets="NO" id="6UL-ip-5XI" customClass="SHMapFooterNavigationViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jI4-tC-Mgm"/>
                         <viewControllerLayoutGuide type="bottom" id="K9O-Y2-xWJ"/>
@@ -1164,7 +1164,7 @@
                                                         <constraint firstAttribute="width" constant="58" id="kLN-3j-HEX"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <state key="normal" image="1D4B8892-9A1F-4813-8481-0F7760D3F9EC">
+                                                    <state key="normal" image="284D3A37-7FA6-4C14-BB29-9BF132134814">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                 </button>
@@ -1176,7 +1176,7 @@
                                                         <constraint firstAttribute="height" constant="90" id="riq-WY-7Hx"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <state key="normal" image="3E5F6E50-F51B-44FA-AEAB-76953BA46620">
+                                                    <state key="normal" image="DF1AC4D4-EFBF-4F64-9FEA-9EBCDD4B3840">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                 </button>
@@ -1756,7 +1756,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="1D4B8892-9A1F-4813-8481-0F7760D3F9EC" width="58" height="90">
+        <image name="284D3A37-7FA6-4C14-BB29-9BF132134814" width="58" height="90">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -2174,7 +2174,8 @@ X3pfg1+WX5pfrV+4X8Ffxl/OX9Ff1l/lX+lf8F/4YAVgCmAMYA5gE2AbYB5gI2ArYC5gQGBDYEgAAAAA
 AAACAQAAAAAAAAA/AAAAAAAAAAAAAAAAAABgSg
 </mutableData>
         </image>
-        <image name="3E5F6E50-F51B-44FA-AEAB-76953BA46620" width="58" height="90">
+        <image name="51-power.png" width="28" height="29"/>
+        <image name="DF1AC4D4-EFBF-4F64-9FEA-9EBCDD4B3840" width="58" height="90">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -2592,7 +2593,6 @@ X3pfg1+WX5pfrV+4X8Ffxl/OX9Ff1l/lX+lf8F/4YAVgCmAMYA5gE2AbYB5gI2ArYC5gQGBDYEgAAAAA
 AAACAQAAAAAAAAA/AAAAAAAAAAAAAAAAAABgSg
 </mutableData>
         </image>
-        <image name="51-power.png" width="28" height="29"/>
         <image name="btn_nav_arrow_east.png" width="22" height="22"/>
         <image name="btn_sidebar_icon_account.png" width="42" height="28"/>
         <image name="btn_sidebar_icon_checkin.png" width="42" height="29"/>
