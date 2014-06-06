@@ -62,6 +62,7 @@ static NSString* const kButtonLabelTitleDrinkMenu = @"Drink Menu";
 #pragma mark - Private
 #pragma mark -
 
+
 - (void)setButtonStyles {
     [SHStyleKit setButton:self.btnFindSimilar withDrawing:SHStyleKitDrawingSearchIcon text:kButtonLabelTitleFindSimilar normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setButton:self.btnReview withDrawing:SHStyleKitDrawingReviewsIcon text:kButtonLabelTitleReviewIt normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];

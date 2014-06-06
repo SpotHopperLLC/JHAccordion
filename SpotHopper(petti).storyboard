@@ -46,7 +46,7 @@
                         <outlet property="containerView" destination="kU8-su-8mF" id="Jif-Cm-0SF"/>
                         <outlet property="mapView" destination="NLr-zB-HzB" id="2J1-1Y-jvi"/>
                         <segue destination="GR3-5Z-4Jq" kind="modal" identifier="HomeMapToSpots" id="ybR-9Z-6Rw"/>
-                        <segue destination="jc0-Vp-lRa" kind="push" identifier="HomeMapToSpotDetail" id="mrw-8s-6dm"/>
+                        <segue destination="jc0-Vp-lRa" kind="push" identifier="HomeMapToSpotProfile" id="mrw-8s-6dm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TBM-RD-8Ym" userLabel="First Responder" sceneMemberID="firstResponder"/>

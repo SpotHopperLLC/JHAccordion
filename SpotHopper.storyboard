@@ -1683,17 +1683,20 @@
                     </view>
                     <navigationItem key="navigationItem" id="VPy-e2-vwz"/>
                     <connections>
+                        <outlet property="imageModelCollectionViewManager" destination="3Uh-BU-0DC" id="bMp-uG-kcM"/>
                         <outlet property="tableview" destination="MNf-hf-of5" id="8Vv-xH-lPS"/>
                         <outlet property="topShadowImageView" destination="yap-AA-Rfr" id="pdi-py-o0q"/>
                         <segue destination="liI-3A-pN5" kind="push" identifier="SpotProfileToPhotoAlbum" id="PTO-KV-aZc"/>
                         <segue destination="GlZ-9f-e0n" kind="push" identifier="SpotProfileToPhotoViewer" id="A0Q-cR-i6Z"/>
-                        <segue destination="3qZ-LX-58x" kind="unwind" identifier="unwindFromSpotProfileToHomeMapViewController" unwindAction="unwindFromSpotProfileToHomeMapViewController:" id="qP2-YF-pB2"/>
+                        <segue destination="3qZ-LX-58x" kind="unwind" identifier="unwindFromSpotProfileToHomeMapFindSimilar" unwindAction="unwindFromSpotProfileToHomeMapViewControllerFindSimilar:" id="qP2-YF-pB2"/>
+                        <segue destination="3qZ-LX-58x" kind="unwind" identifier="unwindFromSpotProfileToHomeMap" unwindAction="unwindFromSpotProfileToHomeMapViewController:" id="m5y-Ef-ehv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YVY-r2-TVp" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="3qZ-LX-58x" userLabel="Exit" sceneMemberID="exit"/>
+                <customObject id="3Uh-BU-0DC" customClass="SHImageModelCollectionViewManager"/>
             </objects>
-            <point key="canvasLocation" x="808" y="1125"/>
+            <point key="canvasLocation" x="1296" y="1457"/>
         </scene>
         <!--Spot Detail Footer Navigation View Controller-->
         <scene sceneID="RQM-Ad-ORt">
@@ -1729,6 +1732,9 @@
                                 <state key="normal" title="1">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="findSimilarButtonTapped:" destination="HpH-Eg-qaF" eventType="touchUpInside" id="QCp-dD-m0P"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b9B-vY-M2b" userLabel="Drink Menu Button">
                                 <rect key="frame" x="195" y="10" width="30" height="30"/>
@@ -1764,7 +1770,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jIX-Hd-l5E" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="808" y="1799"/>
+            <point key="canvasLocation" x="1296" y="2131"/>
         </scene>
         <!--Photo Album View Controller-->
         <scene sceneID="5aD-5C-4aJ">
@@ -1822,7 +1828,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n3F-3j-ffA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1864" y="1291"/>
+            <point key="canvasLocation" x="1890" y="1857"/>
         </scene>
         <!--Photo Viewer View Controller-->
         <scene sceneID="axD-7g-QTR">
@@ -1881,7 +1887,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ANo-6a-Vr4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2299" y="1291"/>
+            <point key="canvasLocation" x="2439" y="1457"/>
         </scene>
         <!--Sidebar View Controller-->
         <scene sceneID="mcz-bq-vMb">

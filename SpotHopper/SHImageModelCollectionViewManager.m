@@ -39,15 +39,13 @@
 }
 
 - (void)previousButtonTapped:(id)sender {
+    
     [self goPrevious];
-//    [self didReachEnd:[self hasPrevious] button:sender];
 
 }
 
 - (void)nextButtonTapped:(id)sender {
     [self goNext];
- //   [self didReachEnd:[self hasNext] button:sender];
-
 }
 
 
@@ -55,6 +53,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     // dequeue named cell template
     
+    NSLog(@"made it into manager!");
     static NSString *ImageCellIdentifier = @"ImageCell";
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ImageCellIdentifier forIndexPath:indexPath];
@@ -180,6 +179,25 @@
 
 #pragma mark - Private
 #pragma mark -
+
+//- (void)updateImageArrows {
+//    NSIndexPath *indexPath = [self indexPathForCurrentImage];
+//    
+//    [UIView animateWithDuration:0.25 animations:^{
+//        _btnImageNext.alpha = [self hasNext] ? 1.0 : 0.1;
+//        _btnImagePrev.alpha = [self hasPrevious] ? 1.0 : 0.1;
+//    } completion:^(BOOL finished) {
+//    }];
+//}
+
+- (NSIndexPath *)indexPathForCurrentImage {
+    NSArray *indexPaths = [_collectionView indexPathsForVisibleItems];
+    if (indexPaths.count) {
+        return indexPaths[0];
+    }
+    
+    return nil;
+}
 
 - (void)didReachEnd:(BOOL)hasMore button:(UIButton*)button {
     if (hasMore) {

@@ -48,7 +48,7 @@
 		<string>MyriadPro-Bold.ttf</string>
 	</array>
 	<key>UIMainStoryboardFile</key>
-	<string>SpotHopper</string>
+	<string>SpotHopper(petti)</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
