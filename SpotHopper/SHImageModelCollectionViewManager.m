@@ -38,6 +38,15 @@
     return MAX(1, self.imageModels.count);
 }
 
+- (void)previousButtonTapped:(id)sender {
+    [self goPrevious];
+}
+
+- (void)nextButtonTapped:(id)sender {
+    [self goNext];
+}
+
+
 // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     // dequeue named cell template
@@ -50,14 +59,13 @@
         // get image view by tag and use NetworkHelper to load image
         //attach previous and next buttons to goPrevious and goNext to trigger image transitions
         UIButton *previousButton = (UIButton *)[cell viewWithTag:kPreviousButton];
-        [previousButton addTarget:self action:@selector(goPrevious) forControlEvents:UIControlEventTouchUpInside];
+        [previousButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         
         UIButton *nextButton = (UIButton *)[cell viewWithTag:kNextButton];
-        [nextButton addTarget:self action:@selector(goNext) forControlEvents:UIControlEventTouchUpInside];
+        [nextButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         
         [self didReachEnd:[self hasPrevious] button:previousButton];
         [self didReachEnd:[self hasNext] button:nextButton];
-        
         
         UIImageView *imageView = (UIImageView *)[cell viewWithTag:kImageView];
         

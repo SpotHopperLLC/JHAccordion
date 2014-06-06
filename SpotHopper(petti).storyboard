@@ -1138,8 +1138,12 @@
                                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <subviews>
-                                                                    <button opaque="NO" tag="2" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HLp-Em-yNr" userLabel="Previous Image Button">
-                                                                        <rect key="frame" x="8" y="44" width="58" height="90"/>
+                                                                    <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Bex-gJ-OLh">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
+                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                    </imageView>
+                                                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HLp-Em-yNr" userLabel="Previous Image Button">
+                                                                        <rect key="frame" x="8" y="45" width="58" height="90"/>
                                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="90" id="b1c-fI-VYi"/>
@@ -1150,8 +1154,8 @@
                                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                                         </state>
                                                                     </button>
-                                                                    <button opaque="NO" tag="2" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ddy-7I-p5Q" userLabel="Next Image Button">
-                                                                        <rect key="frame" x="254" y="44" width="58" height="90"/>
+                                                                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ddy-7I-p5Q" userLabel="Next Image Button">
+                                                                        <rect key="frame" x="254" y="45" width="58" height="90"/>
                                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="58" id="jEx-Eo-UXT"/>
@@ -1162,18 +1166,18 @@
                                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                                         </state>
                                                                     </button>
-                                                                    <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Bex-gJ-OLh">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
-                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                    </imageView>
                                                                 </subviews>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             </view>
                                                             <constraints>
+                                                                <constraint firstAttribute="trailing" secondItem="Ddy-7I-p5Q" secondAttribute="trailing" constant="8" id="6Bb-rp-LEH"/>
                                                                 <constraint firstAttribute="trailing" secondItem="Bex-gJ-OLh" secondAttribute="trailing" id="Ct9-VL-oZC"/>
                                                                 <constraint firstItem="Bex-gJ-OLh" firstAttribute="leading" secondItem="VRK-95-A8I" secondAttribute="leading" id="LP4-mc-3a3"/>
                                                                 <constraint firstItem="Bex-gJ-OLh" firstAttribute="top" secondItem="VRK-95-A8I" secondAttribute="top" id="N7l-dh-RhT"/>
                                                                 <constraint firstAttribute="bottom" secondItem="Bex-gJ-OLh" secondAttribute="bottom" id="Y2a-6o-DcP"/>
+                                                                <constraint firstAttribute="centerY" secondItem="Ddy-7I-p5Q" secondAttribute="centerY" id="igF-CA-DrQ"/>
+                                                                <constraint firstItem="HLp-Em-yNr" firstAttribute="leading" secondItem="VRK-95-A8I" secondAttribute="leading" constant="8" id="twn-IK-Uft"/>
+                                                                <constraint firstAttribute="centerY" secondItem="HLp-Em-yNr" secondAttribute="centerY" id="zhm-aS-meV"/>
                                                             </constraints>
                                                             <connections>
                                                                 <segue destination="zt5-Ij-nKX" kind="push" identifier="DrinkProfileToPhotoAlbum" id="wfg-hI-Pfm"/>
