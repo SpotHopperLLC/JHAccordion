@@ -85,7 +85,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 - (void)viewDidLoad {
     [self viewDidLoad:@[kDidLoadOptionsNoBackground]];
     
-    NSDictionary *titleTextAttributes = @{ NSForegroundColorAttributeName : [SHStyleKit color:SHStyleKitColorMyTextColor]};
+    NSDictionary *titleTextAttributes = @{ NSForegroundColorAttributeName : [SHStyleKit color:SHStyleKitColorMyTextColor], NSFontAttributeName : [UIFont fontWithName:@"Lato-Bold" size:20.0f]};
     self.navigationController.navigationBar.titleTextAttributes = titleTextAttributes;
     
     self.topShadowImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingTopBarWhiteShadowBackground size:CGSizeMake(320, 64)];
