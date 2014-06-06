@@ -20,6 +20,7 @@
 #import "SHSlidersSearchViewController.h"
 #import "SHMapOverlayCollectionViewController.h"
 #import "SHMapFooterNavigationViewController.h"
+#import "SHSpotProfileViewController.h"
 
 #import "SpotAnnotationCallout.h"
 #import "MatchPercentAnnotation.h"
@@ -53,6 +54,8 @@
 #define kBlurSaturation 1.5f
 
 #define kModalAnimationDuration 0.35f
+
+NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotDetail";
 
 @interface SHHomeMapViewController ()
     <SHSidebarDelegate,
@@ -96,6 +99,8 @@
 
 @property (strong, nonatomic) DrinkListModel *drinkListModel;
 
+@property (strong, nonatomic) SpotModel *selectedSpot;
+
 @property (assign, nonatomic) NSUInteger currentIndex;
 
 @end
@@ -112,12 +117,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
-    
-    self.navigationController.navigationBar.shadowImage = [UIImage new];
-    UIImage *backgroundImage = [SHStyleKit gradientBackgroundWithSize:self.view.frame.size];
-    [self.navigationController.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
-    
-    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [SHStyleKit myWhiteColor]};
     
     self.sideBarViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHSidebarViewController"];
     self.sideBarViewController.delegate = self;
@@ -166,6 +165,8 @@
     [super viewWillAppear:animated];
     
     [self setNeedsStatusBarAppearanceUpdate];
+    
+    [self styleBars];
     
     if (!self.locationMenuBarViewController.view.superview) {
         [self embedViewController:self.locationMenuBarViewController intoView:self.view placementBlock:^(UIView *view) {
@@ -259,6 +260,12 @@
             vc.location = location;
             vc.delegate = self;
         }
+    }
+    
+    if ([segue.destinationViewController isKindOfClass:[SHSpotProfileViewController class]]) {
+        SHSpotProfileViewController *viewController = segue.destinationViewController;
+        NSAssert(self.selectedSpot, @"Selected Spot should be defined");
+        viewController.spot = self.selectedSpot;
     }
 }
 
@@ -580,6 +587,36 @@
     }
 }
 
+- (IBAction)unwindFromSpotProfileToHomeMapViewController:(UIStoryboardSegue*)unwindSegue {
+    NSLog(@"made it back!");
+    
+    if ([unwindSegue.sourceViewController isKindOfClass:[SHSpotProfileViewController class]]) {
+        SHSpotProfileViewController *spotProfileViewController = unwindSegue.sourceViewController;
+        SpotModel *spot = spotProfileViewController.spot;
+        
+        //todo: api call to find similar spots and display
+        
+//        [self showHUD:@"Finding similar"];
+        
+//        NSString *name = [NSString stringWithFormat:@"Similar to %@", _spot.name];
+//        [SpotListModel postSpotList:name spotId:_spot.ID spotTypeId:_spot.spotType.ID latitude:_spot.latitude longitude:_spot.longitude sliders:_averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+//            [self hideHUD];
+//            
+//            SpotListViewController *viewController = [self.spotsStoryboard instantiateViewControllerWithIdentifier:@"SpotListViewController"];
+//            [viewController setSpotList:spotListModel];
+//            
+//            [self.navigationController pushViewController:viewController animated:YES];
+//            
+//        } failure:^(ErrorModel *errorModel) {
+//            [self hideHUD];
+//            [self showAlert:@"Oops" message:errorModel.human];
+//            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+//        }];
+        
+    }
+
+}
+
 #pragma mark - Private
 #pragma mark -
 
@@ -607,6 +644,8 @@
 - (void)displaySpotlist:(SpotListModel *)spotListModel {
     // hold onto the spotlist
     
+    self.mode = SHModeSpots;
+    
     self.drinkListModel = nil;
     self.specialsSpotModels = nil;
     self.spotListModel = spotListModel;
@@ -618,7 +657,7 @@
         return;
     }
     
-    [self populateMapWithSpots:self.spotListModel.spots mode:SHModeSpots];
+    [self populateMapWithSpots:self.spotListModel.spots];
     
     [self hideHomeNavigation:FALSE withCompletionBlock:^{
         [self.mapOverlayCollectionViewController displaySpotList:spotListModel];
@@ -631,13 +670,15 @@
 - (void)displaySpecialsForSpots:(NSArray *)spots {
     NSLog(@"spots: %@", spots);
     
+    self.mode = SHModeSpecials;
+    
     self.spotListModel = nil;
     self.drinkListModel = nil;
     self.specialsSpotModels = spots;
     
     self.currentIndex = 0;
 
-    [self populateMapWithSpots:spots mode:SHModeSpecials];
+    [self populateMapWithSpots:spots];
     
     [self hideHomeNavigation:FALSE withCompletionBlock:^{
         [self.mapOverlayCollectionViewController displaySpecialsForSpots:spots];
@@ -677,6 +718,13 @@
     }];
 }
 
+- (void)styleBars {
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    UIImage *backgroundImage = [SHStyleKit gradientBackgroundWithSize:self.view.frame.size];
+    [self.navigationController.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [SHStyleKit myWhiteColor]};
+}
+
 - (void)fetchSpecials {
     [self showHUD:@"Finding specials"];
     [SpotModel getSpotsWithSpecialsTodayForCoordinate:self.mapView.centerCoordinate success:^(NSArray *spotModels, JSONAPI *jsonApi) {
@@ -684,22 +732,20 @@
         [self displaySpecialsForSpots:spotModels];
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel.human class:[self class] trace:NSStringFromSelector(_cmd)];
+        // TODO: tell the user abou the error
     }];
 }
 
 - (void)updateMapWithCurrentDrink:(DrinkModel *)drink {
     [[drink fetchSpotsForLocation:self.drinkListModel.location] then:^(NSArray *spots) {
-        [self populateMapWithSpots:spots mode:self.mode];
+        [self populateMapWithSpots:spots];
     } fail:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel.human class:[self class] trace:NSStringFromSelector(_cmd)];
-    } always:^{
-        
-    }];
+        // TODO: tell the user about the error
+    } always:nil];
 }
 
-- (void)populateMapWithSpots:(NSArray *)spots mode:(SHMode)mode {
-    self.mode = mode;
-    
+- (void)populateMapWithSpots:(NSArray *)spots {
     NSAssert(self.mapView, @"Map View is required");
     
     // Update map
@@ -1041,13 +1087,19 @@
 }
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didSelectSpotAtIndex:(NSUInteger)index {
-    // Do not focus on spot when spot is selected
-    DebugLog(@"%@ (%lu)", NSStringFromSelector(_cmd), (unsigned long)index);
-//    if (index < self.spotListModel.spots.count) {
-//        SpotModel *spot = self.spotListModel.spots[index];
-//        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([spot.latitude floatValue], [spot.longitude floatValue]);
-//        [self repositionMapOnCoordinate:coordinate animated:YES];
-//    }
+    // Note: Do not focus on spot when spot is selected
+    
+    if (self.spotListModel && index < self.spotListModel.spots.count) {
+        self.selectedSpot = self.spotListModel.spots[index];
+        [self performSegueWithIdentifier:SpotSelectedSegueIdentifier sender:self];
+    }
+    else if (self.specialsSpotModels && index < self.specialsSpotModels.count) {
+        self.selectedSpot = self.specialsSpotModels[index];
+        [self performSegueWithIdentifier:SpotSelectedSegueIdentifier sender:self];
+    }
+    else {
+        NSAssert(FALSE, @"Index should always be in bounds");
+    }
 }
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didChangeToDrinkAtIndex:(NSUInteger)index {
@@ -1130,7 +1182,8 @@
         
         switch (self.mode) {
             case SHModeSpots:
-                pin.drawing = SHStyleKitDrawingSpotIcon;
+                // setting to none allows match percentage to appear
+                pin.drawing = SHStyleKitDrawingNone;
                 break;
             case SHModeSpecials:
                 pin.drawing = SHStyleKitDrawingSpecialsIcon;

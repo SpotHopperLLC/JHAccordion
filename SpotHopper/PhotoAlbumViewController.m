@@ -63,13 +63,29 @@
     return nil;
 }
 
+
+#pragma mark - Navigation
+#pragma mark -
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.destinationViewController isKindOfClass:[PhotoViewerViewController class]]) {
+        PhotoViewerViewController *photoViewerViewController = segue.destinationViewController;
+        photoViewerViewController.images = self.images;
+        NSIndexPath *index = [[self.collectionView indexPathsForSelectedItems]lastObject];
+        photoViewerViewController.index = index.item;
+    
+    }
+}
+
 #pragma mark - UICollectionViewDelegate
 #pragma mark -
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    [self goToPhotoViewer:_images atIndex:indexPath.item fromPhotoAlbum:self];
-    _index = indexPath.item;
-}
+//- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+//    [self goToPhotoViewer:_images atIndex:indexPath.item fromPhotoAlbum:self];
+//    _index = indexPath.item;
+//}
+
+
 
 #pragma mark - PhotoViewerDelegate
 #pragma mark -

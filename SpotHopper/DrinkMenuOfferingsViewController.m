@@ -48,7 +48,7 @@
     [self setTitle:@"Full Drink Menu"];
     
     // Shows sidebar button in nav
-    [self showSidebarButton:YES animated:YES];
+//    [self showSidebarButton:YES animated:YES];
     
     // Configures table
     [_tblMenu setTableFooterView:[[UIView alloc] init]];

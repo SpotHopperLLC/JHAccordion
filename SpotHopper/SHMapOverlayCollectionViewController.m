@@ -92,6 +92,8 @@ typedef enum {
     NSUInteger index = [self.spotsCollectionViewManager indexForViewInCollectionViewCell:sender];
     if (index != NSNotFound) {
         NSLog(@"index: %lu", (long)index);
+        //call the delegate to trigger transition
+        [self spotsCollectionViewManager:self.spotsCollectionViewManager didSelectSpotAtIndex:index];
     }
 }
 
@@ -123,6 +125,7 @@ typedef enum {
     NSUInteger index = [self.specialsCollectionViewManager indexForViewInCollectionViewCell:sender];
     if (index != NSNotFound) {
         NSLog(@"index: %lu", (long)index);
+        [self spotsCollectionViewManager:self.spotsCollectionViewManager didSelectSpotAtIndex:index];
     }
 }
 

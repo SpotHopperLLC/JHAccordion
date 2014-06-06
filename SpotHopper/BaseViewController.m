@@ -288,8 +288,8 @@ typedef void(^AlertBlock)();
 }
 
 - (void)showHUD:(NSString*)label {
+    [_HUD removeFromSuperViewOnHide];
     [_HUD hide:YES];
-    [_HUD removeFromSuperview];
     _HUD = nil;
     
     _HUD = [MBProgressHUD showHUDAddedTo:[[[UIApplication sharedApplication] delegate] window] animated:YES];
@@ -299,6 +299,7 @@ typedef void(^AlertBlock)();
 }
 
 - (void)hideHUD {
+    [_HUD removeFromSuperViewOnHide];
     [_HUD hide:YES];
     _HUD = nil;
 }
