@@ -47,8 +47,6 @@
 #define kSliderVibeTag 3
 
 #define kCollectionViewTag 1
-#define kPreviousBtnTag 2
-#define kNextBtnTag 3
 
 #define kFooterNavigationViewHeight 50.0f
 #define kCutOffPoint 116.0f
@@ -198,16 +196,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
                     collectionView.delegate = self.imageModelCollectionViewManager;
                     collectionView.dataSource = self.imageModelCollectionViewManager;
                     self.imageModelCollectionViewManager.imageModels = self.spot.images;
-                    
-                    //attach previous and next buttons to goPrevious and goNext to trigger image transitions
-                    UIButton *previousButton = (UIButton *)[cell viewWithTag:kPreviousBtnTag];
-                    [previousButton addTarget:self.imageModelCollectionViewManager action:@selector(goPrevious) forControlEvents:UIControlEventTouchUpInside];
-                    
-                    UIButton *nextButton = (UIButton *)[cell viewWithTag:kNextBtnTag];
-                    [nextButton addTarget:self.imageModelCollectionViewManager action:@selector(goNext) forControlEvents:UIControlEventTouchUpInside];
-                    
-                    [self didReachEnd:[self.imageModelCollectionViewManager hasPrevious] button:previousButton];
-                    [self didReachEnd:[self.imageModelCollectionViewManager hasNext] button:nextButton];
+                
                     
                     break;
                 }
@@ -505,15 +494,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     return closeTime;
 }
 
-- (void)didReachEnd:(BOOL)hasMore button:(UIButton*)button {
-    if (hasMore) {
-        button.alpha = 0.1;
-        button.enabled = TRUE;
-    }else{
-        button.alpha = 1.0;
-        button.enabled = FALSE;
-    }
-}
 
 - (void)embedViewController:(UIViewController *)vc intoView:(UIView *)superview placementBlock:(void (^)(UIView *view))placementBlock {
     NSAssert(vc, @"VC must be define");

@@ -48,6 +48,16 @@
     
     if (self.imageModels.count) {
         // get image view by tag and use NetworkHelper to load image
+        //attach previous and next buttons to goPrevious and goNext to trigger image transitions
+        UIButton *previousButton = (UIButton *)[cell viewWithTag:kPreviousButton];
+        [previousButton addTarget:self action:@selector(goPrevious) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIButton *nextButton = (UIButton *)[cell viewWithTag:kNextButton];
+        [nextButton addTarget:self action:@selector(goNext) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self didReachEnd:[self hasPrevious] button:previousButton];
+        [self didReachEnd:[self hasNext] button:nextButton];
+        
         
         UIImageView *imageView = (UIImageView *)[cell viewWithTag:kImageView];
         
@@ -161,6 +171,16 @@
 
 #pragma mark - Private
 #pragma mark -
+
+- (void)didReachEnd:(BOOL)hasMore button:(UIButton*)button {
+    if (hasMore) {
+        button.alpha = 0.1;
+        button.enabled = TRUE;
+    }else{
+        button.alpha = 1.0;
+        button.enabled = FALSE;
+    }
+}
 
 - (void)reportedChangedIndex {
     if ([self.delegate respondsToSelector:@selector(imageCollectionViewManager:didChangeToImageAtIndex:)]) {
