@@ -39,6 +39,8 @@
 #import <JHSidebar/JHSidebarViewController.h>
 #import <FacebookSDK/FacebookSDK.h>
 
+#define kTagHUD 1025
+
 typedef void(^AlertBlock)();
 
 @interface BaseViewController ()<UINavigationControllerDelegate, SidebarViewControllerDelegate, LiveSpecialViewControllerDelegate, SearchViewControllerDelegate>
@@ -266,17 +268,15 @@ typedef void(^AlertBlock)();
 }
 
 - (void)showHUD:(NSString *)text time:(NSInteger)time image:(NSString*)image block:(dispatch_block_t)block {
-    [_HUD hide:YES];
-    [_HUD removeFromSuperview];
-    _HUD = nil;
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[[[UIApplication sharedApplication] delegate] window] animated:YES];
+    hud.tag = kTagHUD;
+    hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:image]];
+    [hud setLabelText:text];
+	hud.mode = MBProgressHUDModeCustomView;
+    [hud setDimBackground:YES];
+    [hud removeFromSuperViewOnHide];
     
-    _HUD = [MBProgressHUD showHUDAddedTo:[[[UIApplication sharedApplication] delegate] window] animated:YES];
-    _HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:image]];
-    [_HUD setLabelText:text];
-	_HUD.mode = MBProgressHUDModeCustomView;
-    [_HUD setDimBackground:YES];
-    
-	[_HUD hide:YES afterDelay:time];
+	[hud hide:YES afterDelay:time];
     
     if (block != nil) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, time * NSEC_PER_SEC), dispatch_get_main_queue(), block);
@@ -288,20 +288,16 @@ typedef void(^AlertBlock)();
 }
 
 - (void)showHUD:(NSString*)label {
-    [_HUD removeFromSuperViewOnHide];
-    [_HUD hide:YES];
-    _HUD = nil;
-    
-    _HUD = [MBProgressHUD showHUDAddedTo:[[[UIApplication sharedApplication] delegate] window] animated:YES];
-    [_HUD setMode:MBProgressHUDModeIndeterminate];
-    [_HUD setDimBackground:YES];
-    [_HUD setLabelText:label];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[[[UIApplication sharedApplication] delegate] window] animated:YES];
+    hud.tag = kTagHUD;
+    [hud setMode:MBProgressHUDModeIndeterminate];
+    [hud setDimBackground:YES];
+    [hud setLabelText:label];
+    [hud removeFromSuperViewOnHide];
 }
 
 - (void)hideHUD {
-    [_HUD removeFromSuperViewOnHide];
-    [_HUD hide:YES];
-    _HUD = nil;
+    [MBProgressHUD hideHUDForView:[[[UIApplication sharedApplication] delegate] window] animated:YES];
 }
 
 - (UIAlertView *)showAlert:(NSString *)title message:(NSString *)message {

@@ -278,7 +278,7 @@
 
 #pragma mark - Revised Code for 2.0
 
-+ (void)fetchDrinkListWithRequest:(DrinkListRequest *)request successBlock:(void (^)(DrinkListModel *drinkListModel, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {    // Creating params
++ (void)fetchDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinkListModel, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {    // Creating params
     NSMutableArray *jsonSliders = [NSMutableArray array];
     for (SliderModel *slider in request.sliders) {
         if (slider.value != nil) {
@@ -346,7 +346,7 @@
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
 
-    [self fetchDrinkListWithRequest:request successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+    [self fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
         // Resolves promise
         [deferred resolveWith:drinkListModel];
     } failure:^(ErrorModel *errorModel) {

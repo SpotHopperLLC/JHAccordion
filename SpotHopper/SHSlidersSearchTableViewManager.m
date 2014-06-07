@@ -215,7 +215,7 @@ NSString * const WineSubTypesKey = @"WineSubTypesKey";
     request.drinkTypeId = drinkTypeID;
     request.drinkSubTypeId = drinkSubTypeID;
     
-    [DrinkListModel fetchDrinkListWithRequest:request successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+    [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
         [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Drink Type ID" : drinkTypeID ?: @0, @"Drink Sub Type ID" : drinkSubTypeID ?: @0, @"Created With Sliders" : @TRUE}];
         
         // now fetch the spots for the first drink so it is ready then request the rest cache all of the results for fast access

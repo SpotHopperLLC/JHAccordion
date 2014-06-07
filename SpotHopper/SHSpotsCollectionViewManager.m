@@ -80,8 +80,8 @@
         else {
             _isUpdatingData = TRUE;
             self.spotList = spotList;
-            [self.collectionView setContentOffset:CGPointMake(0, 0)];
             [self.collectionView reloadData];
+            [self.collectionView setContentOffset:CGPointMake(0, 0)];
             _currentIndex = 0;
             _isUpdatingData = FALSE;
         }

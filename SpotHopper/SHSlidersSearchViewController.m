@@ -93,8 +93,8 @@
         
         UIEdgeInsets contentInset = self.tableView.contentInset;
         UIEdgeInsets scrollIndicatorInsets = self.tableView.scrollIndicatorInsets;
-        contentInset.bottom = height;
-        scrollIndicatorInsets.bottom = height;
+        contentInset.bottom = 0.0f;
+        scrollIndicatorInsets.bottom = 0.0f;
         self.tableView.contentInset = contentInset;
         self.tableView.scrollIndicatorInsets = scrollIndicatorInsets;
         

@@ -23,26 +23,98 @@
                                     <outlet property="delegate" destination="WvW-kG-wPv" id="37p-FU-NG7"/>
                                 </connections>
                             </mapView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V3V-T6-eR1" userLabel="Container View">
-                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                            <view tag="500" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V3V-T6-eR1" userLabel="Container View">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view tag="600" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2SI-rp-QfL" userLabel="Check In Prompt View">
+                                <rect key="frame" x="20" y="243" width="280" height="85"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Are you at [SPOT NAME HERE]?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Pjs-u1-LFU" customClass="TTTAttributedLabel">
+                                        <rect key="frame" x="0.0" y="8" width="280" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e9R-d4-3Dt" userLabel="Buttons View">
+                                        <rect key="frame" x="65" y="47" width="150" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SBh-he-D2s">
+                                                <rect key="frame" x="0.0" y="0.0" width="60" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="1ef-6U-F7u"/>
+                                                </constraints>
+                                                <state key="normal" title="Yep!">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="checkInYesButtonTapped:" destination="WvW-kG-wPv" eventType="touchUpInside" id="NFr-cV-EgL"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pT5-WV-ARm">
+                                                <rect key="frame" x="90" y="0.0" width="60" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" title="No">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="checkInNoButtonTapped:" destination="WvW-kG-wPv" eventType="touchUpInside" id="rVA-GB-VCg"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="SBh-he-D2s" firstAttribute="width" secondItem="pT5-WV-ARm" secondAttribute="width" id="1Gq-pe-kSC"/>
+                                            <constraint firstAttribute="trailing" secondItem="pT5-WV-ARm" secondAttribute="trailing" id="4pz-BZ-6et"/>
+                                            <constraint firstItem="pT5-WV-ARm" firstAttribute="leading" secondItem="SBh-he-D2s" secondAttribute="trailing" constant="30" id="GmA-Iw-stY"/>
+                                            <constraint firstItem="SBh-he-D2s" firstAttribute="height" secondItem="pT5-WV-ARm" secondAttribute="height" id="LzB-nv-G7s"/>
+                                            <constraint firstAttribute="centerY" secondItem="SBh-he-D2s" secondAttribute="centerY" id="Za5-hR-eMA"/>
+                                            <constraint firstAttribute="bottom" secondItem="SBh-he-D2s" secondAttribute="bottom" id="Zt5-8q-88W"/>
+                                            <constraint firstAttribute="centerY" secondItem="pT5-WV-ARm" secondAttribute="centerY" id="am7-gY-aSA"/>
+                                            <constraint firstItem="SBh-he-D2s" firstAttribute="top" secondItem="e9R-d4-3Dt" secondAttribute="top" id="an1-JJ-dPp"/>
+                                            <constraint firstItem="SBh-he-D2s" firstAttribute="leading" secondItem="e9R-d4-3Dt" secondAttribute="leading" id="wTP-Js-ILV"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerX" secondItem="Pjs-u1-LFU" secondAttribute="centerX" id="6PR-NL-cFJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="Pjs-u1-LFU" secondAttribute="trailing" id="8Ez-t6-MNQ"/>
+                                    <constraint firstAttribute="bottom" secondItem="e9R-d4-3Dt" secondAttribute="bottom" constant="8" id="CAk-Jb-a5W"/>
+                                    <constraint firstItem="Pjs-u1-LFU" firstAttribute="top" secondItem="2SI-rp-QfL" secondAttribute="top" constant="8" id="Uyv-o4-6jR"/>
+                                    <constraint firstAttribute="centerX" secondItem="e9R-d4-3Dt" secondAttribute="centerX" id="XwX-Sy-dqu"/>
+                                    <constraint firstItem="Pjs-u1-LFU" firstAttribute="leading" secondItem="2SI-rp-QfL" secondAttribute="leading" id="cTy-wS-o26"/>
+                                    <constraint firstItem="e9R-d4-3Dt" firstAttribute="top" secondItem="Pjs-u1-LFU" secondAttribute="bottom" constant="18" id="uXy-2t-NeW"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="V3V-T6-eR1" firstAttribute="leading" secondItem="7So-m6-aYn" secondAttribute="leading" id="A2k-sJ-74k"/>
+                            <constraint firstItem="V3V-T6-eR1" firstAttribute="top" secondItem="7So-m6-aYn" secondAttribute="top" id="AR4-sg-n8R"/>
                             <constraint firstItem="NLr-zB-HzB" firstAttribute="top" secondItem="7So-m6-aYn" secondAttribute="top" id="C62-f7-FXM"/>
+                            <constraint firstItem="lVO-Li-dx2" firstAttribute="top" secondItem="2SI-rp-QfL" secondAttribute="bottom" constant="240" id="Hwu-CO-RK2"/>
                             <constraint firstAttribute="trailing" secondItem="NLr-zB-HzB" secondAttribute="trailing" id="a8M-qL-z4P"/>
                             <constraint firstItem="lVO-Li-dx2" firstAttribute="top" secondItem="NLr-zB-HzB" secondAttribute="bottom" id="d1O-4E-9kj"/>
                             <constraint firstItem="NLr-zB-HzB" firstAttribute="leading" secondItem="7So-m6-aYn" secondAttribute="leading" id="gGB-tk-mwA"/>
                             <constraint firstAttribute="trailing" secondItem="V3V-T6-eR1" secondAttribute="trailing" id="lq3-Wn-Uk0"/>
+                            <constraint firstItem="2SI-rp-QfL" firstAttribute="leading" secondItem="7So-m6-aYn" secondAttribute="leading" constant="20" id="mLI-nu-Cc9"/>
                             <constraint firstItem="lVO-Li-dx2" firstAttribute="top" secondItem="V3V-T6-eR1" secondAttribute="bottom" id="n0b-PH-Mum"/>
-                            <constraint firstItem="V3V-T6-eR1" firstAttribute="top" secondItem="rOU-zM-hsm" secondAttribute="bottom" id="yKz-g4-QVa"/>
+                            <constraint firstAttribute="trailing" secondItem="2SI-rp-QfL" secondAttribute="trailing" constant="20" id="ziC-gs-b89"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="bKj-gh-a81"/>
                     <connections>
+                        <outlet property="checkInNoButton" destination="pT5-WV-ARm" id="xGE-Va-RMm"/>
+                        <outlet property="checkInPromptLabel" destination="Pjs-u1-LFU" id="evC-cv-czv"/>
+                        <outlet property="checkInPromptView" destination="2SI-rp-QfL" id="n1i-Wl-Z6Z"/>
+                        <outlet property="checkInViewBottomConstraint" destination="Hwu-CO-RK2" id="YdF-s0-90C"/>
+                        <outlet property="checkInYesButton" destination="SBh-he-D2s" id="RoQ-NX-Ktb"/>
                         <outlet property="containerView" destination="V3V-T6-eR1" id="3Px-Gf-6Yu"/>
                         <outlet property="mapView" destination="NLr-zB-HzB" id="2J1-1Y-jvi"/>
                         <segue destination="GR3-5Z-4Jq" kind="modal" identifier="HomeMapToSpots" id="ybR-9Z-6Rw"/>
@@ -56,7 +128,7 @@
         <!--Sliders Search View Controller-->
         <scene sceneID="gAc-J8-1Fq">
             <objects>
-                <viewController storyboardIdentifier="SHSlidersSearchViewController" id="7TX-QY-83X" customClass="SHSlidersSearchViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SHSlidersSearchViewController" automaticallyAdjustsScrollViewInsets="NO" id="7TX-QY-83X" customClass="SHSlidersSearchViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="NHf-51-BWB"/>
                         <viewControllerLayoutGuide type="bottom" id="NBu-Sb-Q7S"/>
@@ -65,7 +137,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="PZE-0K-mHj">
+                            <tableView clipsSubviews="YES" tag="200" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="PZE-0K-mHj">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
