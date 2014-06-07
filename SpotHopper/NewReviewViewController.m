@@ -28,6 +28,7 @@
 #import "ReviewsMenuViewController.h"
 #import "SearchNewReviewViewController.h"
 
+#import "ClientSessionManager.h"
 #import "ErrorModel.h"
 #import "BaseAlcoholModel.h"
 #import "Tracker.h"
@@ -73,6 +74,7 @@
 @property (nonatomic, strong) SpotModel *selectedDrinkSpot;
 @property (nonatomic, strong) NSDictionary *selectedSpotType;
 @property (nonatomic, strong) NSDictionary *selectedCocktailSubtype;
+@property (nonatomic, strong) SpotModel *selectedHouseCocktailSpot;
 @property (nonatomic, strong) BaseAlcoholModel *selectedCocktailBaseAlcohol;
 @property (nonatomic, strong) NSDictionary *selectedWineType;
 
@@ -115,6 +117,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtCocktailName;
 @property (weak, nonatomic) IBOutlet UITextField *txtCocktailType;
 @property (weak, nonatomic) IBOutlet UITextField *txtCocktailAlcoholType;
+@property (weak, nonatomic) IBOutlet UIImageView *imgCocktailWhichSpot;
+@property (weak, nonatomic) IBOutlet UITextField *txtCocktailWhichSpot;
 @property (nonatomic, strong) UIPickerView *pickerViewCocktailType;
 @property (nonatomic, strong) UISegmentedControl *segControlForCocktailType;
 @property (nonatomic, strong) UIPickerView *pickerViewCocktailBaseAlcoholType;
@@ -417,7 +421,8 @@
     if (resultsBlock != nil) {
         
         if (autocompleteView.textfield == _txtBeerBreweryName ||
-            autocompleteView.textfield == _txtWineWineryName) {
+            autocompleteView.textfield == _txtWineWineryName ||
+            autocompleteView.textfield == _txtCocktailWhichSpot) {
             
             NSString *spotTypeId = nil;
             if (autocompleteView.textfield == _txtBeerBreweryName) {
@@ -428,20 +433,22 @@
                 spotTypeId = [winerySpotTypeIds componentsJoinedByString:@","];
             }
             
-            if (spotTypeId == nil) {
-                return;
+            NSMutableDictionary *params = @{
+                                     kSpotModelParamQuery : query,
+                                     }.mutableCopy;
+            
+            if (spotTypeId != nil) {
+                [params setObject:spotTypeId forKey:kSpotModelParamQuerySpotTypeId];
             }
             
-            NSDictionary *params = @{
-                                     kSpotModelParamQuery : query,
-                                     kSpotModelParamQuerySpotTypeId : spotTypeId
-                                     };
-            
+            [[ClientSessionManager sharedClient] cancelAllHTTPOperationsWithMethod:@"GET" path:@"/api/spots" parameters:nil ignoreParams:YES];
             [SpotModel getSpots:params success:^(NSArray *spotModels, JSONAPI *jsonApi) {
                 // Returning results onnew main queue
                 resultsBlock(spotModels);
             } failure:^(ErrorModel *errorModel) {
-                [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+                if (errorModel != nil) {
+                    [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+                }
             }];
             
             return;
@@ -524,6 +531,13 @@
     } else if (autocomplete.textfield == _txtWineWineryName) {
         SpotModel *spot = (SpotModel*)object;
         autoCompleteCell.lblTitle.text = spot.name;
+    } else if (autocomplete.textfield == _txtCocktailWhichSpot) {
+        SpotModel *spot = (SpotModel*)object;
+        if ([spot cityState] != nil) {
+            autoCompleteCell.lblTitle.text = [NSString stringWithFormat:@"%@ - %@", spot.name, [spot cityState]];
+        } else {
+            autoCompleteCell.lblTitle.text = [NSString stringWithFormat:@"%@", spot.name];
+        }
     }
 }
 
@@ -540,6 +554,9 @@
     } else if (textField == _txtWineWineryName) {
         _selectedDrinkSpot = object;
         textField.text = _selectedDrinkSpot.name;
+    } else if (textField == _txtCocktailWhichSpot) {
+        _selectedHouseCocktailSpot = object;
+        textField.text = _selectedHouseCocktailSpot.name;
     } else if ([object isKindOfClass:[NSString class]] == YES) {
         textField.text = object;
     }
@@ -663,7 +680,13 @@
     _selectedCocktailSubtype = [_cocktailTypes objectAtIndex:[_pickerViewCocktailType selectedRowInComponent:0]];
     [self.view endEditing:YES];
     
-    _txtCocktailType.text = [_selectedCocktailSubtype objectForKey:@"name"];
+    NSString *name = [_selectedCocktailSubtype objectForKey:@"name"];
+    _txtCocktailType.text = name;
+    
+    // Only show "At which spot?" when its a house cocktail
+    BOOL containsHouse = [name.lowercaseString contains:@"house"];
+    [_imgCocktailWhichSpot setHidden:!containsHouse];
+    [_txtCocktailWhichSpot setHidden:!containsHouse];
 }
 
 - (void)onClickChooseCocktailAlcoholType:(id)sender {
@@ -880,12 +903,17 @@
             return;
         }
         
-        NSDictionary *params = @{
+        NSMutableDictionary *params = @{
                                  kDrinkModelParamName: name,
                                  kDrinkModelParamDrinkTypeId: drinkId,
                                  kDrinkModelParamDrinkSubtypeId: drinkSubtypeId,
                                  kDrinkModelParamBaseAlcohols : @[ _selectedCocktailBaseAlcohol.ID ]
-                                 };
+                                 }.mutableCopy;
+        
+        // Set house cocktail owner
+        if (_selectedHouseCocktailSpot != nil) {
+            [params setObject:_selectedHouseCocktailSpot.ID forKey:kDrinkModelParamSpotId];
+        }
         
         // Send request to create drink
         [self createDrink:params];
@@ -1380,6 +1408,10 @@
         // Configure picker...
         [_txtCocktailAlcoholType setInputView:_pickerViewCocktailBaseAlcoholType];
         [_txtCocktailAlcoholType setInputAccessoryView:[self keyboardToolBarForCocktailAlcoholType]];
+        
+        // Sets autocomplete
+        [_txtCocktailWhichSpot setAutocompleteWithDataSource:self delegate:self];
+        [_txtCocktailWhichSpot registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
         
         return _viewFormNewCocktail;
     }
