@@ -158,7 +158,7 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
     }
     else {
         TellMeMyLocation *tellMeMyLocation = [[TellMeMyLocation alloc] init];
-        [tellMeMyLocation findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
+        [tellMeMyLocation findMe:kCLLocationAccuracyNearestTenMeters found:^(CLLocation *newLocation) {
             _currentLocation = newLocation;
             [TellMeMyLocation setLastLocation:newLocation completionHandler:^{
                 NSLog(@"lastLocationName: %@", [TellMeMyLocation lastLocationName]);
@@ -730,7 +730,7 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
     
     if ([unwindSegue.sourceViewController isKindOfClass:[SHSpotProfileViewController class]]) {
         SHSpotProfileViewController *spotProfileViewController = unwindSegue.sourceViewController;
-        SpotModel *spot = spotProfileViewController.spot;
+        SpotModel *spot __unused = spotProfileViewController.spot;
         
         //todo: api call to find similar spots and display
         
