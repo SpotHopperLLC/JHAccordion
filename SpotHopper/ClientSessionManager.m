@@ -217,6 +217,11 @@
 #pragma mark - Handle error response 
 
 - (void)handleError:(AFHTTPRequestOperation*)operation withResponseObject:(id)responseObject timeStarted:(NSDate*)date {
+    
+    if (operation.isCancelled) {
+        return;
+    }
+    
     long statusCode = operation.response.statusCode;
     if (statusCode >= 200 && statusCode < 400) {
         // 200s are okay, 300s are redirects and things
