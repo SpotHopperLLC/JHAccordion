@@ -1894,7 +1894,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n3F-3j-ffA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1864" y="1291"/>
+            <point key="canvasLocation" x="1732" y="1291"/>
         </scene>
         <!--Photo Viewer View Controller-->
         <scene sceneID="axD-7g-QTR">
@@ -1953,7 +1953,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ANo-6a-Vr4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2299" y="1291"/>
+            <point key="canvasLocation" x="2199" y="1291"/>
         </scene>
         <!--Sidebar View Controller-->
         <scene sceneID="mcz-bq-vMb">
@@ -2219,6 +2219,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="A0Q-cR-i6Z"/>
+        <segue reference="rI9-Ty-e5P"/>
     </inferredMetricsTieBreakers>
 </document>

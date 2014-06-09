@@ -111,6 +111,8 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
 @property (strong, nonatomic) DrinkListModel *drinkListModel;
 @property (strong, nonatomic) SpotModel *selectedSpot;
 
+@property (strong, nonatomic) NSArray *spotsForDrink;
+
 @property (assign, nonatomic) NSUInteger currentIndex;
 @property (strong, nonatomic) NSArray *nearbySpots;
 
@@ -1003,6 +1005,7 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
 - (void)updateMapWithCurrentDrink:(DrinkModel *)drink {
     [[drink fetchSpotsForLocation:self.drinkListModel.location] then:^(NSArray *spots) {
         [self populateMapWithSpots:spots];
+        self.spotsForDrink = spots;
     } fail:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel.human class:[self class] trace:NSStringFromSelector(_cmd)];
         // TODO: tell the user about the error
@@ -1364,6 +1367,10 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
     }
     else if (self.specialsSpotModels && index < self.specialsSpotModels.count) {
         self.selectedSpot = self.specialsSpotModels[index];
+        [self performSegueWithIdentifier:SpotSelectedSegueIdentifier sender:self];
+    }
+    else if (self.drinkListModel && index < self.spotsForDrink.count) {
+        self.selectedSpot = self.spotsForDrink[index];
         [self performSegueWithIdentifier:SpotSelectedSegueIdentifier sender:self];
     }
     else {
