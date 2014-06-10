@@ -91,6 +91,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     
     NSDictionary *titleTextAttributes = @{ NSForegroundColorAttributeName : [SHStyleKit color:SHStyleKitColorMyTextColor], NSFontAttributeName : [UIFont fontWithName:@"Lato-Bold" size:20.0f]};
     self.navigationController.navigationBar.titleTextAttributes = titleTextAttributes;
+    NSLog(@"nav controller babiees: %@", self.navigationController.viewControllers);
     
     self.topShadowImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingTopBarWhiteShadowBackground size:CGSizeMake(320, 64)];
     
@@ -419,7 +420,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 }
 
 - (void)hideTopBars:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    //DebugLog(@"%@", NSStringFromSelector(_cmd));
     
     // sets a clear background for the top bars
     
@@ -448,7 +449,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 }
 
 - (void)showTopBars:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
+   // DebugLog(@"%@", NSStringFromSelector(_cmd));
     
     // sets the top bars to show an opaque background
     
