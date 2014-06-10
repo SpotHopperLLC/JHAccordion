@@ -1881,6 +1881,9 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <segue destination="GlZ-9f-e0n" kind="push" identifier="PhotoAlbumToPhotoViewer" id="nlg-bf-HOg"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
@@ -1895,7 +1898,6 @@
                     <navigationItem key="navigationItem" id="sY3-hI-R7G"/>
                     <connections>
                         <outlet property="collectionView" destination="eUL-bg-PfB" id="WW0-M7-C31"/>
-                        <segue destination="GlZ-9f-e0n" kind="push" identifier="PhotoAlbumToPhotoViewer" id="rI9-Ty-e5P"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n3F-3j-ffA" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2225,6 +2227,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="A0Q-cR-i6Z"/>
+        <segue reference="nlg-bf-HOg"/>
     </inferredMetricsTieBreakers>
 </document>

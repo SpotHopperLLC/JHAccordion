@@ -56,8 +56,8 @@
 
 #define kNumberOfCells 3
 
-NSString* const DrinkProfileToPhotoViewer = @"DrinkProfileToPhotoViewer";
-NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
+NSString* const SpotProfileToPhotoViewer = @"SpotProfileToPhotoViewer";
+NSString* const SpotProfileToPhotoAlbum = @"SpotProfileToPhotoAlbum";
 NSString* const UnwindFromSpotProfileToHomeMapFindSimilar = @"unwindFromSpotProfileToHomeMapFindSimilar";
 
 NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
@@ -208,6 +208,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
                     collectionView.delegate = self.imageModelCollectionViewManager;
                     collectionView.dataSource = self.imageModelCollectionViewManager;
                     self.imageModelCollectionViewManager.imageModels = self.spot.images;
+                    self.imageModelCollectionViewManager.delegate = self;
                     
                     
                     break;
@@ -358,10 +359,10 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     self.currentIndex = index;
     
     if (manager.imageModels.count > 1) {
-        [self performSegueWithIdentifier:DrinkProfileToPhotoAlbum sender:self];
+        [self performSegueWithIdentifier:SpotProfileToPhotoAlbum sender:self];
     }
     else {
-        [self performSegueWithIdentifier:DrinkProfileToPhotoViewer sender:self];
+        [self performSegueWithIdentifier:SpotProfileToPhotoViewer sender:self];
     }
     
 }

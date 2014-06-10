@@ -24,8 +24,6 @@
 
 @interface SHImageModelCollectionViewManager ()
 
-@property (nonatomic, weak) IBOutlet id<SHImageModelCollectionDelegate> delegate;
-
 @end
 
 @implementation SHImageModelCollectionViewManager
