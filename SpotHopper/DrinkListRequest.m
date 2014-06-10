@@ -10,4 +10,19 @@
 
 @implementation DrinkListRequest
 
+- (id)copyWithZone:(NSZone *)zone {
+	DrinkListRequest *copy = [[[self class] alloc] init];
+    
+    copy.name = self.name;
+    copy.coordinate = self.coordinate;
+    copy.sliders = self.sliders;
+    copy.drinkId = self.drinkId;
+    copy.drinkTypeId = self.drinkTypeId;
+    copy.drinkSubTypeId = self.drinkSubTypeId;
+    copy.baseAlcoholId = self.baseAlcoholId;
+    copy.spotId = self.spotId;
+
+    return copy;
+}
+
 @end

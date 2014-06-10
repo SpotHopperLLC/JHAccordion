@@ -10,7 +10,7 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-@interface DrinkListRequest : NSObject
+@interface DrinkListRequest : NSObject <NSCopying>
 
 @property (copy, nonatomic) NSString *name;
 @property (assign, nonatomic) CLLocationCoordinate2D coordinate;
