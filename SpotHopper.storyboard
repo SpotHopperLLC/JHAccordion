@@ -1484,49 +1484,49 @@
                                                                         <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     </imageView>
+                                                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GkF-Z6-1R0" userLabel="Previous Image Button">
+                                                                        <rect key="frame" x="8" y="45" width="58" height="90"/>
+                                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="width" constant="58" id="1k5-Dh-JU0"/>
+                                                                            <constraint firstAttribute="height" constant="90" id="8wb-8p-xbW"/>
+                                                                        </constraints>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                        <state key="normal" image="btn_spot_profile_image_previous.png">
+                                                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                                        </state>
+                                                                    </button>
+                                                                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oh4-3f-LSd" userLabel="Next Image Button">
+                                                                        <rect key="frame" x="254" y="45" width="58" height="90"/>
+                                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="width" constant="58" id="3pB-ZB-zNS"/>
+                                                                            <constraint firstAttribute="height" constant="90" id="qBa-ND-44l"/>
+                                                                        </constraints>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                        <state key="normal" image="btn_spot_profile_image_next.png">
+                                                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                                        </state>
+                                                                    </button>
                                                                 </subviews>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             </view>
                                                             <constraints>
+                                                                <constraint firstAttribute="centerY" secondItem="Oh4-3f-LSd" secondAttribute="centerY" id="34f-2g-moY"/>
                                                                 <constraint firstAttribute="trailing" secondItem="0Tg-EN-TYe" secondAttribute="trailing" id="DA5-av-zah"/>
                                                                 <constraint firstItem="0Tg-EN-TYe" firstAttribute="top" secondItem="dJI-fA-FRq" secondAttribute="top" id="Obf-5y-35E"/>
                                                                 <constraint firstAttribute="bottom" secondItem="0Tg-EN-TYe" secondAttribute="bottom" id="ZOW-a7-Zqw"/>
+                                                                <constraint firstAttribute="trailing" secondItem="Oh4-3f-LSd" secondAttribute="trailing" constant="8" id="bRU-6Z-SFQ"/>
+                                                                <constraint firstAttribute="centerY" secondItem="GkF-Z6-1R0" secondAttribute="centerY" id="kTK-0A-hXN"/>
+                                                                <constraint firstItem="GkF-Z6-1R0" firstAttribute="leading" secondItem="dJI-fA-FRq" secondAttribute="leading" constant="8" id="qav-CM-rfS"/>
                                                                 <constraint firstItem="0Tg-EN-TYe" firstAttribute="leading" secondItem="dJI-fA-FRq" secondAttribute="leading" id="ywW-Au-ZaW"/>
                                                             </constraints>
                                                         </collectionViewCell>
                                                     </cells>
                                                 </collectionView>
-                                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GkF-Z6-1R0" userLabel="Previous Image Button">
-                                                    <rect key="frame" x="8" y="44" width="58" height="90"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="58" id="Cq4-2u-NO0"/>
-                                                        <constraint firstAttribute="height" constant="90" id="va7-I9-QQR"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <state key="normal" image="btn_spot_profile_image_previous.png">
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                </button>
-                                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oh4-3f-LSd" userLabel="Next Image Button">
-                                                    <rect key="frame" x="254" y="44" width="58" height="90"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="58" id="KwA-Ik-tS7"/>
-                                                        <constraint firstAttribute="height" constant="90" id="RJM-c1-zNh"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <state key="normal" image="btn_spot_profile_image_next.png">
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="centerY" secondItem="Oh4-3f-LSd" secondAttribute="centerY" id="6DD-oQ-dVb"/>
                                                 <constraint firstAttribute="bottom" secondItem="5wi-Cj-xec" secondAttribute="bottom" id="8fv-JM-t9g"/>
-                                                <constraint firstItem="GkF-Z6-1R0" firstAttribute="leading" secondItem="7Zp-gf-m23" secondAttribute="leading" constant="8" id="DDg-6O-4MC"/>
-                                                <constraint firstAttribute="trailing" secondItem="Oh4-3f-LSd" secondAttribute="trailing" constant="8" id="LS0-Kx-5Ts"/>
-                                                <constraint firstAttribute="centerY" secondItem="GkF-Z6-1R0" secondAttribute="centerY" id="MZB-Vz-XjO"/>
                                                 <constraint firstAttribute="trailing" secondItem="5wi-Cj-xec" secondAttribute="trailing" id="hMq-nJ-H8X"/>
                                                 <constraint firstItem="5wi-Cj-xec" firstAttribute="top" secondItem="7Zp-gf-m23" secondAttribute="top" id="pqK-Gv-Jh0"/>
                                                 <constraint firstItem="5wi-Cj-xec" firstAttribute="leading" secondItem="7Zp-gf-m23" secondAttribute="leading" id="s7g-he-Kad"/>

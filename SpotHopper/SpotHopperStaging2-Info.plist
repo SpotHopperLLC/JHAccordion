@@ -38,6 +38,8 @@
 	<string>580342112079086</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSMainNibFile</key>
+	<string>SpotHopper</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Lato-Light.ttf</string>
@@ -47,8 +49,6 @@
 		<string>avantgardef-book-webfont.ttf</string>
 		<string>MyriadPro-Bold.ttf</string>
 	</array>
-	<key>UIMainStoryboardFile</key>
-	<string>SpotHopper(petti)</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
