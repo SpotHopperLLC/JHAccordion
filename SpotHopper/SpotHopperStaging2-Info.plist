@@ -38,7 +38,7 @@
 	<string>580342112079086</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSMainNibFile</key>
+	<key>UIMainStoryboardFile</key>
 	<string>SpotHopper</string>
 	<key>UIAppFonts</key>
 	<array>
