@@ -11,7 +11,7 @@
 #import "SHStyleKit+Additions.h"
 
 static NSString* const kButtonLabelTitleFindSimilar = @"Find Similar";
-static NSString* const kButtonLabelTitleReviewIt = @"Review It";
+static NSString* const kButtonLabelTitleReviewIt = @"  Review It"; //cheap fix for the odd spacing in between btn image and text
 static NSString* const kButtonLabelTitleDrinkMenu = @"Drink Menu";
 
 @interface SHSpotDetailFooterNavigationViewController ()
@@ -30,14 +30,17 @@ static NSString* const kButtonLabelTitleDrinkMenu = @"Drink Menu";
 - (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
     
-    //todo: vv ask Brennan vv
-    [SHStyleKit setButton:self.btnFindSimilar withDrawing:SHStyleKitDrawingSearchIcon text:kButtonLabelTitleFindSimilar normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
-    [SHStyleKit setButton:self.btnReview withDrawing:SHStyleKitDrawingReviewsIcon text:kButtonLabelTitleReviewIt normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
-    [SHStyleKit setButton:self.btnDrinkMenu withDrawing:SHStyleKitDrawingDrinkMenuIcon text:kButtonLabelTitleDrinkMenu normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+    [self setButtonStyles];
+
 }
 
 #pragma mark - User Actions
 #pragma mark -
+- (IBAction)findSimilarButtonTapped:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(footerNavigationViewController:findSimilarButtonTapped:)]) {
+        [self.delegate footerNavigationViewController:self findSimilarButtonTapped:sender];
+    }
+}
 
 //todo: need to change these so they push view controllers
 //todo: create segues on IB for transition
@@ -56,7 +59,23 @@ static NSString* const kButtonLabelTitleDrinkMenu = @"Drink Menu";
     }
 }
 
+#pragma mark - Private
+#pragma mark -
 
 
+- (void)setButtonStyles {
+    [SHStyleKit setButton:self.btnFindSimilar withDrawing:SHStyleKitDrawingSearchIcon text:kButtonLabelTitleFindSimilar normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+    [SHStyleKit setButton:self.btnReview withDrawing:SHStyleKitDrawingReviewsIcon text:kButtonLabelTitleReviewIt normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+    [SHStyleKit setButton:self.btnDrinkMenu withDrawing:SHStyleKitDrawingDrinkMenuIcon text:kButtonLabelTitleDrinkMenu normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+    
+    self.btnFindSimilar.titleLabel.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
+    [self.btnFindSimilar setTitleColor:SHStyleKit.myTextColor forState:UIControlStateNormal];
+    
+    self.btnReview.titleLabel.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
+    [self.btnReview setTitleColor:SHStyleKit.myTextColor forState:UIControlStateNormal];
+    
+    self.btnDrinkMenu.titleLabel.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
+    [self.btnDrinkMenu setTitleColor:SHStyleKit.myTextColor forState:UIControlStateNormal];
+}
 
 @end
