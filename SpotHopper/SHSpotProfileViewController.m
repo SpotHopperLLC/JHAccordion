@@ -209,7 +209,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
                     collectionView.delegate = self.imageModelCollectionViewManager;
                     collectionView.dataSource = self.imageModelCollectionViewManager;
                     self.imageModelCollectionViewManager.imageModels = self.spot.images;
-                    self.imageModelCollectionViewManager.delegate = self;
+                  //  self.imageModelCollectionViewManager.delegate = self;
                     
                     
                     break;
