@@ -1121,8 +1121,17 @@
         [_sliders removeObject:slider];
     }
     
+    
+    // Wrapped in CATransaction so we can make sure table scrolls to top
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:^{
+        [_tblReviews scrollRectToVisible:CGRectMake(0.0f, 0.0, CGRectGetWidth(_tblReviews.frame), 1.0f) animated:YES];
+    }];
+    
     // Reloading table
     [_tblReviews reloadData];
+    
+    [CATransaction commit];
     
 }
 
@@ -1248,33 +1257,8 @@
                 return [(obj1.order ?: @0) compare:(obj2.order ?: @0)];
             }];
             
-            // Creating sliders
-            [_sliders removeAllObjects];
-            for (SliderTemplateModel *sliderTemplate in _allSliderTemplates) {
-                SliderModel *slider = [[SliderModel alloc] init];
-                [slider setSliderTemplate:sliderTemplate];
-                [_sliders addObject:slider];
-            }
-            
-            // Filling advanced sliders if nil
-            if (_advancedSliders == nil) {
-                _advancedSliders = [NSMutableArray array];
-                
-                // Moving advanced sliders into their own array
-                for (SliderModel *slider in _sliders) {
-                    if (slider.sliderTemplate.required == NO) {
-                        [_advancedSliders addObject:slider];
-                    }
-                }
-                
-                // Removing advances sliders from basic array
-                for (SliderModel *slider in _advancedSliders) {
-                    [_sliders removeObject:slider];
-                }
-            }
-            
             // Reloading table
-            [_tblReviews reloadData];
+            [self filterSliderTemplates];
             
         } failure:^(ErrorModel *errorModel) {
             [self hideHUD];
