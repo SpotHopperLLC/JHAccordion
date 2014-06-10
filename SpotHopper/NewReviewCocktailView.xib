@@ -58,11 +58,11 @@
                         <outlet property="delegate" destination="-1" id="gT6-DK-xvx"/>
                     </connections>
                 </textField>
-                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="txt_review_form_background.png" id="jTe-Yx-UdE">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="txt_review_form_background.png" id="jTe-Yx-UdE">
                     <rect key="frame" x="11" y="179" width="298" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="At which spot?" minimumFontSize="17" id="a8S-rF-Zx1" customClass="SHTextFieldLatoLight">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="At which spot?" minimumFontSize="17" id="a8S-rF-Zx1" customClass="SHTextFieldLatoLight">
                     <rect key="frame" x="28" y="187" width="265" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
