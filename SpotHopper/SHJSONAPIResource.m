@@ -157,4 +157,27 @@
     }
 }
 
+#pragma mark - Equality
+
+- (BOOL)isEqual:(id)object {
+    if ([object isKindOfClass:[SHJSONAPIResource class]]) {
+        return [self isEqualToJSONAPIResource:(SHJSONAPIResource *)object];
+    }
+    return FALSE;
+}
+
+- (BOOL)isEqualToJSONAPIResource:(SHJSONAPIResource *)other {
+    return [self.ID isEqualToNumber:other.ID];
+}
+
+- (NSUInteger)hash {
+    if ([self.ID isKindOfClass:[NSNumber class]]) {
+        return [((NSNumber *)self.ID) hash];
+    }
+    else if ([self.ID isKindOfClass:[NSString class]]) {
+        return [((NSString *)self.ID) hash];
+    }
+    return [super hash];
+}
+
 @end

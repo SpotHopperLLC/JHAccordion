@@ -66,17 +66,18 @@
     // TODO: adjust for spotlists
     
     [self showHUD:@"Creating Drinklist"];
-    [self.slidersSearchTableViewManager fetchDrinkListResultsWithCompletionBlock:^(DrinkListModel *drinkListModel, ErrorModel *errorModel) {
+    [self.slidersSearchTableViewManager fetchDrinkListResultsWithCompletionBlock:^(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel) {
         [self hideHUD];
         if (errorModel) {
             [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
             [self showAlert:@"Oops" message:errorModel.human];
         }
         else {
+            // TODO: determine why this property is needed
             self.drinkListModel = drinkListModel;
             [self performSegueWithIdentifier:@"finishCreatingDrinkListForHomeMap" sender:self];
-            if ([self.delegate respondsToSelector:@selector(slidersSearchViewController:didPrepareDrinklist:forMode:)]) {
-                [self.delegate slidersSearchViewController:self didPrepareDrinklist:drinkListModel forMode:self.mode];
+            if ([self.delegate respondsToSelector:@selector(slidersSearchViewController:didPrepareDrinklist:withRequest:forMode:)]) {
+                [self.delegate slidersSearchViewController:self didPrepareDrinklist:drinkListModel withRequest:request forMode:self.mode];
             }
         }
     }];
