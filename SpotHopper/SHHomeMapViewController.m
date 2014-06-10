@@ -37,6 +37,8 @@
 #import "DrinkListRequest.h"
 #import "DrinkListModel.h"
 #import "ErrorModel.h"
+#import "SpotTypeModel.h"
+#import "AverageReviewModel.h"
 
 #import "UIImage+BlurredFrame.h"
 #import "UIImage+ImageEffects.h"
@@ -292,9 +294,10 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
     }
     
     if ([segue.destinationViewController isKindOfClass:[SHSpotProfileViewController class]]) {
-        SHSpotProfileViewController *viewController = segue.destinationViewController;
+        SHSpotProfileViewController *vc = segue.destinationViewController;
         NSAssert(self.selectedSpot, @"Selected Spot should be defined");
-        viewController.spot = self.selectedSpot;
+        vc.spot = self.selectedSpot;
+        
     }
 }
 
@@ -754,6 +757,9 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
 }
 
 - (IBAction)unwindFromSpotProfileToHomeMapViewController:(UIStoryboardSegue*)unwindSegue {
+}
+
+- (IBAction)unwindFromSpotProfileToHomeMapViewControllerFindSimilar:(UIStoryboardSegue*)unwindSegue {
     NSLog(@"made it back!");
     
     if ([unwindSegue.sourceViewController isKindOfClass:[SHSpotProfileViewController class]]) {
@@ -761,23 +767,22 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
         SpotModel *spot __unused = spotProfileViewController.spot;
         
         //todo: api call to find similar spots and display
+        NSString *name = [NSString stringWithFormat:@"Similar to %@", spot.name];
         
-//        [self showHUD:@"Finding similar"];
+        [SpotListModel postSpotList:name spotId:spot.ID spotTypeId:spot.spotType.ID latitude:spot.latitude longitude:spot.longitude sliders:spot.averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+            [self hideHUD];
+            
+            if (spotListModel) {
+                [self displaySpotlist:spotListModel];
+            }
+          
+            
+        } failure:^(ErrorModel *errorModel) {
+            [self hideHUD];
+            [self showAlert:@"Oops" message:errorModel.human];
+            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+        }];
         
-//        NSString *name = [NSString stringWithFormat:@"Similar to %@", _spot.name];
-//        [SpotListModel postSpotList:name spotId:_spot.ID spotTypeId:_spot.spotType.ID latitude:_spot.latitude longitude:_spot.longitude sliders:_averageReview.sliders successBlock:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
-//            [self hideHUD];
-//            
-//            SpotListViewController *viewController = [self.spotsStoryboard instantiateViewControllerWithIdentifier:@"SpotListViewController"];
-//            [viewController setSpotList:spotListModel];
-//            
-//            [self.navigationController pushViewController:viewController animated:YES];
-//            
-//        } failure:^(ErrorModel *errorModel) {
-//            [self hideHUD];
-//            [self showAlert:@"Oops" message:errorModel.human];
-//            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
-//        }];
         
     }
 
@@ -1139,17 +1144,19 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
         
         // give it a little extra space
         if (MKMapRectGetWidth(mapRect) == 0.0f && MKMapRectGetHeight(mapRect) == 0.0f) {
-            mapRect.size = MKMapSizeMake(MKMapRectGetWidth(mapRect) + 20.0f, MKMapRectGetHeight(mapRect) + 20.0f);
+            CGFloat padding = 8000.0;
+            mapRect.origin.x -= padding/2;
+            mapRect.origin.y -= padding/2;
+            mapRect.size = MKMapSizeMake(MKMapRectGetWidth(mapRect) + padding, MKMapRectGetHeight(mapRect) + padding);
         }
         
         CGRect topFrame = [self topFrame];
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            //DebugLog(@"Repositioning map");
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-            [UIView animateWithDuration:1.5f delay:0.0f options:options animations:^{
+            [UIView animateWithDuration:1.5 delay:0.0 options:options animations:^{
                 // edgePadding must also account for the size and position of the annotation view
-                [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(CGRectGetHeight(topFrame) + 30, 45.0, CGRectGetHeight(self.collectionContainerView.frame) + 30, 45.0) animated:animated];
+                [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(CGRectGetHeight(topFrame) + 104.0, 45.0, CGRectGetHeight(self.collectionContainerView.frame) + 30, 45.0) animated:animated];
             } completion:^(BOOL finished) {
             }];
         });
