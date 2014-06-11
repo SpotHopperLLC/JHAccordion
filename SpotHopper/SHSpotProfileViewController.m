@@ -364,7 +364,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 #pragma mark - SHSpotDetailFooterNavigationDelegate
 #pragma mark -
 - (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc findSimilarButtonTapped:(id)sender {
-    
     [self performSegueWithIdentifier:UnwindFromSpotProfileToHomeMapFindSimilar sender:self];
 }
 

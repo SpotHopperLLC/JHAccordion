@@ -34,10 +34,12 @@
 #define kCellDrinkDetails 1
 
 #define kLabelTagDrinkName 1
-#define kLabelTagDrinkType 2
-#define kLabelTagDrinkRelevancy 3
-#define kLabelTagDrinkCloseTime 4
-#define kLabelTagDrinkAddress 5
+#define kLabelTagDrinkVintage 2
+#define kLabelTagDrinkRegion 3
+#define kLabelTagDrinkBrewery 4
+#define kLabelTagDrinkMatch 5
+#define kLabelTagDrinkTypeSpecificInfo 6
+#define kLabelTagDrinkBeerWineInfo 7
 
 #define kLabelTagDrinkSpecial 1
 #define kLabelTagDrinkSpecialDetails 2
@@ -77,6 +79,12 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
 
 @implementation SHDrinkProfileViewController{
     BOOL _topBarsClear;
+    
+    BOOL _isBeer;
+    BOOL _isWine;
+    BOOL _isCocktail;
+    BOOL _isLiquor;
+    
 }
 
 #pragma mark - Lifecycle Methods
@@ -102,9 +110,7 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
     self.tableview.contentInset = contentInset;
     self.tableview.scrollIndicatorInsets = scrollIndicatorInsets;
     
-    
     self.matchPercentage = [self.drink matchPercent];
-    NSLog(@"before: %ld", self.drink.averageReview.sliders.count);
     
     //fetch drink sliders and review info
     [self.drink getDrink:nil success:^(DrinkModel *drinkModel, JSONAPI *jsonApi) {
@@ -119,8 +125,8 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
-    NSLog(@"after: %ld", self.drink.averageReview.sliders.count);
-
+    [self findDrinkType];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -211,34 +217,74 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
                     
                 case kCellDrinkDetails:{
                     
+                    /**
+                     #define kLabelTagDrinkName 1
+                     #define kLabelTagDrinkVintage 2
+                     #define kLabelTagDrinkRegion 3
+                     #define kLabelTagDrinkBrewery 4
+                     #define kLabelTagDrinkMatch 5
+                     #define kLabelTagDrinkTypeSpecificInfo 5
+                     #define kLabelTagDrinkBeerWineInfo 6
+                     */
+                    
+                    
                     cell = [tableView dequeueReusableCellWithIdentifier:DrinkDetailsCellIdentifier forIndexPath:indexPath];
                     
-                    UILabel *drinkName = (UILabel*)[cell viewWithTag:kLabelTagDrinkName];
-                    drinkName.font = [UIFont fontWithName:@"Lato-Bold" size:20.0f];
-                    [SHStyleKit setLabel:drinkName textColor:SHStyleKitColorMyTintColor];
-                    drinkName.text = self.drink.name;
+                    UILabel *name = (UILabel*)[cell viewWithTag:kLabelTagDrinkName];
+                    name.font = [UIFont fontWithName:@"Lato-Bold" size:20.0f];
+                    [SHStyleKit setLabel:name textColor:SHStyleKitColorMyTintColor];
+                    name.text = self.drink.name;
                     
                     //todo: change all of the details shown in the view
+                    UILabel *vintage = (UILabel*)[cell viewWithTag:kLabelTagDrinkVintage];
+                    UILabel *region = (UILabel*)[cell viewWithTag:kLabelTagDrinkRegion];
                     
-                    UILabel *drinkType = (UILabel*)[cell viewWithTag:kLabelTagDrinkType];
-                    drinkType.font = [UIFont fontWithName:@"Lato-LightItalic" size:18.0f];
-                    drinkType.text = self.drink.drinkType.name;
-                    
-                    UILabel *drinkMatch = (UILabel*)[cell viewWithTag:kLabelTagDrinkRelevancy];
-                    if (self.matchPercentage) {
-                        drinkMatch.font = [UIFont fontWithName:@"Lato-LightItalic" size:18.0f];
-                        drinkMatch.text = [NSString stringWithFormat:@"%@ Match",self.matchPercentage];
+                    if (_isWine) {
+                        vintage.font = [UIFont fontWithName:@"Lato-Light" size:14.0f];
+                        vintage.text = [NSString stringWithFormat:@"%ld",[self.drink.vintage integerValue] ];
+                        
+                        region.font = [UIFont fontWithName:@"Lato-Light" size:14.0f];
+                        region.text = self.drink.region;
                     }else{
-                        drinkMatch.text = @"";
+                        vintage.text = @"";
+                        region.text = @"";
+                    }
+                   
+                    UILabel *match = (UILabel*)[cell viewWithTag:kLabelTagDrinkMatch];
+                    if (self.matchPercentage) {
+                        match.font = [UIFont fontWithName:@"Lato-LightItalic" size:18.0f];
+                        match.text = [NSString stringWithFormat:@"%@ Match",self.matchPercentage];
+                    }else{
+                        match.text = @"";
+                    }
+                   
+                    UILabel *brewery = (UILabel*)[cell viewWithTag:kLabelTagDrinkBrewery];
+                    brewery.font = [UIFont fontWithName:@"Lato-LightItalic" size:18.0f];
+                    brewery.text = self.drink.spot.name;
+                    
+                    UILabel *drinkSpecific = (UILabel*)[cell viewWithTag:kLabelTagDrinkTypeSpecificInfo];
+                    drinkSpecific.font = [UIFont fontWithName:@"Lato-Light" size:14.0f];
+
+                    NSString *message;
+                    if (_isWine) {
+                        message = self.drink.varietal;
+                    }else if (_isBeer) {
+                        message = self.drink.style;
+                    }else {
+                        message = [self.drink.baseAlochols firstObject];
                     }
                     
-//                    UILabel *drinkCloseTime = (UILabel*)[cell viewWithTag:kLabelTagDrinkCloseTime];
-//                    drinkCloseTime.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
-//                    drinkCloseTime.text = self.closeTime;
+                    drinkSpecific.text = message;
                     
-                    UILabel *drinkAddress = (UILabel*)[cell viewWithTag:kLabelTagDrinkAddress];
-                    drinkAddress.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
-                    drinkAddress.text = self.drink.descriptionOfDrink;
+                    UILabel *beerAndWineInfo = (UILabel*)[cell viewWithTag:kLabelTagDrinkBeerWineInfo];
+                    
+                    if (_isWine || _isBeer) {
+                        beerAndWineInfo.font = [UIFont fontWithName:@"Lato-Light" size:14.0f];
+                        beerAndWineInfo.text = [NSString stringWithFormat:@"%.3f ABV", [self.drink.abv floatValue]];
+                    }else {
+                        beerAndWineInfo.text = @"";
+                    }
+                
                     break;
                 }
 
@@ -289,7 +335,7 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
                     height = 180.0f;
                     break;
                 case kCellDrinkDetails:
-                    height = 110.0f;
+                    height = 154.0f;
                     break;
                 default:
                     break;
@@ -339,10 +385,6 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
 //    [self goToNewReviewForDrink:self.drink];
 //}
 //
-//- (void)footerNavigationViewController:(SHDrinkDetailFooterNavigationViewController *)vc drinkMenuButtonTapped:(id)sender {
-//    NSLog(@"drink menu transition");
-//    [self goToMenu:_drink];
-//}
 
 #pragma mark - UIScrollViewDelegate
 #pragma mark -
@@ -455,6 +497,19 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
     }
     
     [vc didMoveToParentViewController:self];
+}
+
+- (void)findDrinkType {
+    if ([self.drink isBeer]) {
+        _isBeer = TRUE;
+    }else if ([self.drink isWine]) {
+        _isWine = TRUE;
+    }else if ([self.drink isCocktail]) {
+        _isCocktail = TRUE;
+    }else {
+        NSAssert(self.drink, @"drink must have a defined type");
+    }
+    
 }
 
 #pragma mark - Navigation

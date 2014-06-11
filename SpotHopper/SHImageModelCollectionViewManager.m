@@ -61,11 +61,18 @@
     if (self.imageModels.count) {
         // get image view by tag and use NetworkHelper to load image
         //attach previous and next buttons to goPrevious and goNext to trigger image transitions
-        UIButton *previousButton = (UIButton *)[cell viewWithTag:kPreviousButton];
-        [previousButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         
+        UIButton *previousButton = (UIButton *)[cell viewWithTag:kPreviousButton];
         UIButton *nextButton = (UIButton *)[cell viewWithTag:kNextButton];
-        [nextButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        
+        if (self.imageModels.count > 1) {
+            [previousButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+            [nextButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+            
+        }else{
+            previousButton.hidden = TRUE;
+            nextButton.hidden = TRUE;
+        }
         
         UIImageView *imageView = (UIImageView *)[cell viewWithTag:kImageView];
         
