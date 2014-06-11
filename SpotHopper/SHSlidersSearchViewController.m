@@ -49,6 +49,8 @@
     NSAssert(self.searchButton, @"Outlet is required");
     NSAssert(self.searchButtonBottomConstraint, @"Outlet is required");
     
+    self.tableView.contentOffset = CGPointMake(0, self.tableView.contentInset.top * -1);
+    
     [self hideSearchButton:FALSE withCompletionBlock:nil];
 }
 

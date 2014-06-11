@@ -1007,8 +1007,9 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
 - (void)fetchSpecials {
     [self showHUD:@"Finding specials"];
     
+    // TODO: only use map center if the user is searching this area otherwise use device location
     [self prepareToDisplaySliderSearchWithCompletionBlock:^{
-        [SpotModel getSpotsWithSpecialsTodayForCoordinate:self.mapView.centerCoordinate success:^(NSArray *spotModels, JSONAPI *jsonApi) {
+        [SpotModel getSpotsWithSpecialsTodayForCoordinate:_currentLocation.coordinate success:^(NSArray *spotModels, JSONAPI *jsonApi) {
             [self hideHUD];
             [self displaySpecialsForSpots:spotModels];
         } failure:^(ErrorModel *errorModel) {
@@ -1108,7 +1109,7 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
 - (void)repositionMapOnCoordinate:(CLLocationCoordinate2D)coordinate animated:(BOOL)animated {
     MKMapPoint mapPoint = MKMapPointForCoordinate(coordinate);
     MKMapRect mapRect = MKMapRectMake(mapPoint.x, mapPoint.y, 0.25, 0.25);
-    [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(169.0, 45.0, 180.0, 45.0) animated:animated];
+    [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(129.0, 45.0, 140.0, 45.0) animated:animated];
 }
 
 - (void)repositionMapOnAnnotations:(NSArray *)annotations animated:(BOOL)animated {
@@ -1156,7 +1157,7 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
             UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
             [UIView animateWithDuration:1.5 delay:0.0 options:options animations:^{
                 // edgePadding must also account for the size and position of the annotation view
-                [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(CGRectGetHeight(topFrame) + 104.0, 45.0, CGRectGetHeight(self.collectionContainerView.frame) + 30, 45.0) animated:animated];
+                [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(CGRectGetHeight(topFrame) + 44.0, 45.0, CGRectGetHeight(self.collectionContainerView.frame) + 10, 45.0) animated:animated];
             } completion:^(BOOL finished) {
             }];
         });
