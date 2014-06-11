@@ -1521,13 +1521,13 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
                 pin.drawing = SHStyleKitDrawingSpecialsIcon;
                 break;
             case SHModeBeer:
-                pin.drawing = SHStyleKitDrawingBeerIcon;
+                pin.drawing = SHStyleKitDrawingBeerDrinklistIcon;
                 break;
             case SHModeCocktail:
-                pin.drawing = SHStyleKitDrawingCocktailIcon;
+                pin.drawing = SHStyleKitDrawingCocktailDrinklistIcon;
                 break;
             case SHModeWine:
-                pin.drawing = SHStyleKitDrawingWineIcon;
+                pin.drawing = SHStyleKitDrawingWineDrinklistIcon;
                 break;
                 
             default:
