@@ -180,6 +180,16 @@ typedef enum {
     }
 }
 
+- (IBAction)drinkCellNameButtonTapped:(id)sender {
+    NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
+    
+    NSUInteger index = [self.drinksCollectionViewManager indexForViewInCollectionViewCell:sender];
+    if (index != NSNotFound) {
+        NSLog(@"index: %lu", (long)index);
+        [self drinksCollectionViewManager:self.drinksCollectionViewManager didSelectDrinkAtIndex:index];
+    }
+}
+
 - (IBAction)drinkCellLeftButtonTapped:(id)sender {
     NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
     
@@ -242,6 +252,7 @@ typedef enum {
 
 #pragma mark - SHDrinksCollectionViewManagerDelegate
 #pragma mark -
+
 
 - (void)drinksCollectionViewManager:(SHDrinksCollectionViewManager *)manager didChangeToDrinkAtIndex:(NSUInteger)index {
     if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didChangeToDrinkAtIndex:)]) {
