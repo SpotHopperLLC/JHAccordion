@@ -233,6 +233,56 @@
     return deferred.promise;
 }
 
+#pragma mark - Revised Code for 2.0
+
++ (void)fetchSpotsNearLocation:(CLLocation *)location success:(void (^)(NSArray *spots))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    NSMutableDictionary *params = @{
+                                         kSpotModelParamQuery : @"",
+                                         kSpotModelParamQueryVisibleToUsers : @"true",
+                                         kSpotModelParamPage : @1,
+                                         kSpotModelParamsPageSize : @10,
+                                         kSpotModelParamSources : kSpotModelParamSourcesSpotHopper
+                                         }.mutableCopy;
+    
+    if (location != nil && CLLocationCoordinate2DIsValid(location.coordinate)) {
+        [params setObject:[NSNumber numberWithFloat:location.coordinate.latitude] forKey:kSpotModelParamQueryLatitude];
+        [params setObject:[NSNumber numberWithFloat:location.coordinate.longitude] forKey:kSpotModelParamQueryLongitude];
+    }
+    
+    [[ClientSessionManager sharedClient] GET:@"/api/spots" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            NSArray *models = [jsonApi resourcesForKey:@"spots"];
+            if (successBlock) {
+                successBlock(models);
+            }
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            if (failureBlock) {
+                failureBlock(errorModel);
+            }
+        }
+    }];
+}
+
++ (Promise *)fetchSpotsNearLocation:(CLLocation *)location {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [self fetchSpotsNearLocation:location success:^(NSArray *spots) {
+        // Resolves promise
+        [deferred resolveWith:spots];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
 #pragma mark - Getters
 
 - (NSString*)addressCityState {

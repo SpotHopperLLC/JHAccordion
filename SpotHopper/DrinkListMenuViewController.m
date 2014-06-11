@@ -363,7 +363,7 @@
         request.drinkSubTypeId = drinkModel.drinkSubtype.ID;
         request.spotId = _spot.ID;
         
-        [DrinkListModel fetchDrinkListWithRequest:request successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+        [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
         
                                      [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Drink Type ID" : drinkModel.drinkType.ID ?: @0, @"Drink Sub Type ID" : drinkModel.drinkSubtype.ID ?: @0, @"Created With Sliders" : @FALSE}];
             

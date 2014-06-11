@@ -13,6 +13,7 @@
 #import "SpotTypeModel.h"
 #import "SliderTemplateModel.h"
 #import "AverageReviewModel.h"
+#import "SliderModel.h"
 
 #import "SHSlider.h"
 
@@ -55,9 +56,9 @@
 
 #define kNumberOfCells 3
 
-NSString* const DrinkProfileToPhotoViewer = @"DrinkProfileToPhotoViewer";
-NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
-NSString* const UnwindFromSpotProfileToHomeMap = @"unwindFromSpotProfileToHomeMapFindSimilar";
+NSString* const SpotProfileToPhotoViewer = @"SpotProfileToPhotoViewer";
+NSString* const SpotProfileToPhotoAlbum = @"SpotProfileToPhotoAlbum";
+NSString* const UnwindFromSpotProfileToHomeMapFindSimilar = @"unwindFromSpotProfileToHomeMapFindSimilar";
 
 NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 
@@ -70,6 +71,9 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 
 @property (weak, nonatomic) IBOutlet UIImageView *topShadowImageView;
 @property (weak, nonatomic) UIView *footerContainerView;
+
+@property (strong, nonatomic)  NSString *matchPercentage;
+@property (strong, nonatomic)  NSString *closeTime;
 
 @property (strong, nonatomic) SHSpotDetailFooterNavigationViewController *spotfooterNavigationViewController;
 
@@ -87,6 +91,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     
     NSDictionary *titleTextAttributes = @{ NSForegroundColorAttributeName : [SHStyleKit color:SHStyleKitColorMyTextColor], NSFontAttributeName : [UIFont fontWithName:@"Lato-Bold" size:20.0f]};
     self.navigationController.navigationBar.titleTextAttributes = titleTextAttributes;
+    NSLog(@"nav controller babiees: %@", self.navigationController.viewControllers);
     
     self.topShadowImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingTopBarWhiteShadowBackground size:CGSizeMake(320, 64)];
     
@@ -100,6 +105,13 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     scrollIndicatorInsets.bottom = kFooterNavigationViewHeight;
     self.tableview.contentInset = contentInset;
     self.tableview.scrollIndicatorInsets = scrollIndicatorInsets;
+    
+    
+    self.matchPercentage = [self.spot matchPercent];
+    //here
+    if ([self findCloseTimeForToday]) {
+        self.closeTime = [self findCloseTimeForToday];
+    }
     
     //fetch spot slider and review info
     [self.spot getSpot:nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
@@ -145,6 +157,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 #pragma mark -
 
 - (void)backButtonTapped:(id)sender {
+    NSLog(@"back btn tapped");
     [self performSegueWithIdentifier:@"unwindFromSpotProfileToHomeMap" sender:self];
 }
 
@@ -156,7 +169,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-
+    
     NSInteger numberOfRows = 0;
     switch (section) {
         case 0:
@@ -178,7 +191,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     static NSString *SpotDetailsCellIdentifier = @"SpotDetailsCell";
     static NSString *SpotSpecialsCellIdentifier = @"SpotSpecialsCell";
     static NSString *SpotVibeIdentifier = @"SpotVibeCell";
-
+    
     
     UITableViewCell *cell;
     
@@ -196,7 +209,8 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
                     collectionView.delegate = self.imageModelCollectionViewManager;
                     collectionView.dataSource = self.imageModelCollectionViewManager;
                     self.imageModelCollectionViewManager.imageModels = self.spot.images;
-                
+                  //  self.imageModelCollectionViewManager.delegate = self;
+                    
                     
                     break;
                 }
@@ -216,17 +230,17 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
                     spotType.font = [UIFont fontWithName:@"Lato-LightItalic" size:18.0f];
                     spotType.text = self.spot.spotType.name;
                     
-                    UILabel *spotRelevancy = (UILabel*)[cell viewWithTag:kLabelTagSpotRelevancy];
-                    spotRelevancy.font = [UIFont fontWithName:@"Lato-LightItalic" size:18.0f];
-                    spotRelevancy.text = [NSString stringWithFormat:@"%@ Match",self.spot.matchPercent];
+                    UILabel *spotMatch = (UILabel*)[cell viewWithTag:kLabelTagSpotRelevancy];
+                    if (self.matchPercentage) {
+                        spotMatch.font = [UIFont fontWithName:@"Lato-LightItalic" size:18.0f];
+                        spotMatch.text = [NSString stringWithFormat:@"%@ Match",self.matchPercentage];
+                    }else{
+                        spotMatch.text = @"";
+                    }
                     
                     UILabel *spotCloseTime = (UILabel*)[cell viewWithTag:kLabelTagSpotCloseTime];
                     spotCloseTime.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
-                    NSString *closeTime;
-                    
-                    if (!(closeTime = [self findCloseTimeForToday])) {
-                        spotCloseTime.text = closeTime;
-                    }
+                    spotCloseTime.text = self.closeTime;
                     
                     UILabel *spotAddress = (UILabel*)[cell viewWithTag:kLabelTagSpotAddress];
                     spotAddress.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
@@ -237,9 +251,9 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
                 case kCellSpotSpecials:{
                     
                     cell = [tableView dequeueReusableCellWithIdentifier:SpotSpecialsCellIdentifier];
-       
+                    
                     NSArray *specials = self.spot.dailySpecials;
-
+                    
                     if (specials.count) {
                         //todo: ask if this is needed
                         UILabel *spotSpecial = (UILabel*)[cell viewWithTag:kLabelTagSpotSpecial];
@@ -263,19 +277,19 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
         }
         case 1:{
             cell = [tableView dequeueReusableCellWithIdentifier:SpotVibeIdentifier];
-        
+            
             SHSlider *slider = (SHSlider*)[cell viewWithTag:kSliderVibeTag];
             UILabel *minValue = (UILabel*)[cell viewWithTag:kLeftLabelVibeTag];
             UILabel *maxValue = (UILabel*)[cell viewWithTag:kRightLabelVibeTag];
             slider.vibeFeel = TRUE;
             
-//            NSLog(@"fetched slider templates: %@", self.spot.sliderTemplates);
+            SliderModel *sliderModel = self.spot.averageReview.sliders[indexPath.row];
+            SliderTemplateModel *sliderTemplate = sliderModel.sliderTemplate;
             
-            SliderTemplateModel *sliderTemplate = self.spot.sliderTemplates[indexPath.row];
             minValue.text = sliderTemplate.minLabel.length ? sliderTemplate.minLabel : @"";
             maxValue.text = sliderTemplate.maxLabel.length ? sliderTemplate.maxLabel : @"";
             //todo: vv check to see if this logic is right vv
-            [slider setSelectedValue:(sliderTemplate.defaultValue.floatValue / 10.0f)];
+            [slider setSelectedValue:(sliderModel.value.floatValue / 10.0f)];
             
             break;
         }
@@ -283,7 +297,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
             break;
     }
     
-        return cell;
+    return cell;
 }
 
 #pragma mark - UITableViewDelegate
@@ -295,7 +309,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat height = 0.0f;
-
+    
     
     switch (indexPath.section) {
         case 0:{
@@ -303,7 +317,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
             
             CGFloat heightForSpotSpecialHeaderText = [self heightForString:SpotSpecialLabelText font:[UIFont fontWithName:@"Lato-Bold" size:20.0f] maxWidth:self.tableview.frame.size.width];
             CGFloat heightForSpotSpecialDetailText = [self heightForString:todaysSpecial font:[UIFont fontWithName:@"Lato-Light" size:16.0f] maxWidth:self.tableview.frame.size.width];
-    
+            
             
             switch (indexPath.row) {
                 case kCellImageCollection:
@@ -322,13 +336,13 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
                     break;
             }
         }
-        break;
+            break;
         case 1:
             height = 80.0f;
         default:
             break;
     }
-  
+    
     return height;
 }
 
@@ -342,14 +356,14 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 }
 
 - (void)imageCollectionViewManager:(SHImageModelCollectionViewManager *)manager didSelectImageAtIndex:(NSUInteger)index {
-   //trigger segue on image selection
+    //trigger segue on image selection
     self.currentIndex = index;
     
     if (manager.imageModels.count > 1) {
-        [self performSegueWithIdentifier:DrinkProfileToPhotoAlbum sender:self];
+        [self performSegueWithIdentifier:SpotProfileToPhotoAlbum sender:self];
     }
     else {
-        [self performSegueWithIdentifier:DrinkProfileToPhotoViewer sender:self];
+        [self performSegueWithIdentifier:SpotProfileToPhotoViewer sender:self];
     }
     
 }
@@ -357,8 +371,8 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 #pragma mark - SHSpotDetailFooterNavigationDelegate
 #pragma mark -
 - (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc findSimilarButtonTapped:(id)sender {
-
-    [self performSegueWithIdentifier:UnwindFromSpotProfileToHomeMap sender:self];
+    
+    [self performSegueWithIdentifier:UnwindFromSpotProfileToHomeMapFindSimilar sender:self];
 }
 
 - (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc spotReviewButtonTapped:(id)sender {
@@ -406,7 +420,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 }
 
 - (void)hideTopBars:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    //DebugLog(@"%@", NSStringFromSelector(_cmd));
     
     // sets a clear background for the top bars
     
@@ -435,7 +449,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 }
 
 - (void)showTopBars:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
+   // DebugLog(@"%@", NSStringFromSelector(_cmd));
     
     // sets the top bars to show an opaque background
     
@@ -472,7 +486,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     
     
     if (hoursForToday) {
-    
         // Creates formatter
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"h:mm a"];
@@ -520,17 +533,17 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
     //todo: refactor to make semantic style of Brennan
-//   if ([segue.destinationViewController isKindOfClass:[SHSpotProfileViewController class]]) {}
+    //   if ([segue.destinationViewController isKindOfClass:[SHSpotProfileViewController class]]) {}
     
-    if ([segue.identifier isEqualToString:DrinkProfileToPhotoViewer]) {
+    if ([segue.destinationViewController isKindOfClass:[PhotoViewerViewController class]]) {
         PhotoViewerViewController *viewController = segue.destinationViewController;
         viewController.images = self.imageModelCollectionViewManager.imageModels;
         
         if (self.currentIndex) {
             viewController.index = self.currentIndex;
         }
-    
-    }else if ([segue.identifier isEqualToString:DrinkProfileToPhotoAlbum]){
+        
+    }else if ([segue.destinationViewController isKindOfClass:[PhotoAlbumViewController class]]){
         PhotoAlbumViewController *viewController = segue.destinationViewController;
         viewController.images = self.imageModelCollectionViewManager.imageModels;
         

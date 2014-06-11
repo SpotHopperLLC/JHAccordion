@@ -34,12 +34,17 @@
 #import "SpotModel.h"
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
+#import "DrinkListRequest.h"
+#import "DrinkListModel.h"
 #import "ErrorModel.h"
 #import "SpotTypeModel.h"
 #import "AverageReviewModel.h"
 
 #import "UIImage+BlurredFrame.h"
 #import "UIImage+ImageEffects.h"
+
+#import "TTTAttributedLabel.h"
+#import "TTTAttributedLabel+QuickFonting.h"
 
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
@@ -92,18 +97,31 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
 @property (weak, nonatomic) NSLayoutConstraint *blurredViewHeightConstraint;
 @property (weak, nonatomic) NSLayoutConstraint *slidersSearchViewTopConstraint;
 
+@property (weak, nonatomic) NSLayoutConstraint *homeNavigationViewBottomConstraint;
+@property (weak, nonatomic) NSLayoutConstraint *collectionContainerViewBottomConstraint;
+
 @property (weak, nonatomic) UIView *collectionContainerView;
+
+@property (weak, nonatomic) IBOutlet UIView *checkInPromptView;
+@property (weak, nonatomic) IBOutlet TTTAttributedLabel *checkInPromptLabel;
+@property (weak, nonatomic) IBOutlet UIButton *checkInYesButton;
+@property (weak, nonatomic) IBOutlet UIButton *checkInNoButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *checkInViewBottomConstraint;
 
 @property (assign, nonatomic) SHMode mode;
 
 @property (strong, nonatomic) SpotListModel *spotListModel;
 @property (strong, nonatomic) NSArray *specialsSpotModels;
-
 @property (strong, nonatomic) DrinkListModel *drinkListModel;
-
 @property (strong, nonatomic) SpotModel *selectedSpot;
+@property (strong, nonatomic) DrinkListRequest *drinkListRequest;
+
+@property (strong, nonatomic) NSArray *spotsForDrink;
 
 @property (assign, nonatomic) NSUInteger currentIndex;
+@property (strong, nonatomic) NSArray *nearbySpots;
+
+@property (strong, nonatomic) NSDate *lastCheckInPrompt;
 
 @end
 
@@ -141,18 +159,20 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
     
     // when the Home Map is first loaded it will focus the map on the current device location
     _currentLocation = [TellMeMyLocation currentDeviceLocation];
-    if (_currentLocation) {
+    if (_currentLocation && CLLocationCoordinate2DIsValid(_currentLocation.coordinate)) {
         [self repositionMapOnCoordinate:_currentLocation.coordinate animated:NO];
+        [self fetchNearbySpotsAtLocation:_currentLocation];
     }
     else {
         TellMeMyLocation *tellMeMyLocation = [[TellMeMyLocation alloc] init];
-        [tellMeMyLocation findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
+        [tellMeMyLocation findMe:kCLLocationAccuracyNearestTenMeters found:^(CLLocation *newLocation) {
             _currentLocation = newLocation;
             [TellMeMyLocation setLastLocation:newLocation completionHandler:^{
                 NSLog(@"lastLocationName: %@", [TellMeMyLocation lastLocationName]);
                 [self.locationMenuBarViewController updateLocationTitle:[TellMeMyLocation lastLocationName]];
             }];
             [self repositionMapOnCoordinate:_currentLocation.coordinate animated:NO];
+            [self fetchNearbySpotsAtLocation:_currentLocation];
         } failure:^(NSError *error) {
             [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
@@ -161,6 +181,8 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
     self.mapView.showsUserLocation = TRUE;
     
     self.view.backgroundColor = [UIColor clearColor];
+    
+    [self hideCheckInPromptForSpot:nil animated:FALSE withCompletionBlock:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -168,7 +190,10 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
     
     [self setNeedsStatusBarAppearanceUpdate];
     
+    [self.view sendSubviewToBack:self.containerView];
+    
     [self styleBars];
+    [self styleCheckInPrompt];
     
     if (!self.locationMenuBarViewController.view.superview) {
         [self embedViewController:self.locationMenuBarViewController intoView:self.view placementBlock:^(UIView *view) {
@@ -180,7 +205,9 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
     
     if (!self.homeNavigationViewController.view.superview) {
         [self embedViewController:self.homeNavigationViewController intoView:self.view placementBlock:^(UIView *view) {
-            [view pinToSuperviewEdges:JRTViewPinBottomEdge inset:0.0f usingLayoutGuidesFrom:self];
+            NSArray *bottomConstaints = [view pinToSuperviewEdges:JRTViewPinBottomEdge inset:0.0f usingLayoutGuidesFrom:self];
+            NSAssert(bottomConstaints.count == 1, @"There should be only 1 bottom constraint.");
+            self.homeNavigationViewBottomConstraint = bottomConstaints[0];
             [view pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0];
             [view constrainToHeight:180.0f];
         }];
@@ -204,7 +231,9 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
         collectionContainerView.translatesAutoresizingMaskIntoConstraints = NO;
         collectionContainerView.backgroundColor = [UIColor clearColor];
         [self.view addSubview:collectionContainerView];
-        [collectionContainerView pinToSuperviewEdges:JRTViewPinBottomEdge inset:0.0f usingLayoutGuidesFrom:self];
+        NSArray *bottomConstaints = [collectionContainerView pinToSuperviewEdges:JRTViewPinBottomEdge inset:0.0f usingLayoutGuidesFrom:self];
+        NSAssert(bottomConstaints.count == 1, @"There should be only 1 bottom constraint.");
+        self.collectionContainerViewBottomConstraint = bottomConstaints[0];
         [collectionContainerView pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0];
         [collectionContainerView constrainToHeight:kCollectionContainerViewHeight];
         self.collectionContainerView = collectionContainerView;
@@ -326,39 +355,81 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
 }
 
 - (void)hideHomeNavigation:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    self.homeNavigationViewController.view.hidden = TRUE;
+    DebugLog(@"%@ (%0.2f)", NSStringFromSelector(_cmd), CGRectGetHeight(self.homeNavigationViewController.view.frame));
     
-    if (completionBlock) {
-        completionBlock();
-    }
+    CGFloat duration = animated ? 0.25f : 0.0f;
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.8f initialSpringVelocity:5.f options:options animations:^{
+        self.homeNavigationViewBottomConstraint.constant = CGRectGetHeight(self.homeNavigationViewController.view.frame);
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        if (finished) {
+            self.homeNavigationViewController.view.hidden = TRUE;
+            if (completionBlock) {
+                completionBlock();
+            }
+        }
+    }];
 }
 
 - (void)showHomeNavigation:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    DebugLog(@"%@ (%0.2f)", NSStringFromSelector(_cmd), CGRectGetHeight(self.homeNavigationViewController.view.frame));
     self.homeNavigationViewController.view.hidden = FALSE;
     
-    if (completionBlock) {
-        completionBlock();
-    }
+    CGFloat duration = animated ? 0.25f : 0.0f;
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.8f initialSpringVelocity:5.f options:options animations:^{
+        self.homeNavigationViewBottomConstraint.constant = 0.0f;
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        if (finished) {
+            if (completionBlock) {
+                completionBlock();
+            }
+        }
+    }];
 }
 
 - (void)hideCollectionContainerView:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    self.collectionContainerView.hidden = TRUE;
-    
     LOG_FRAME(@"collectionContainerView", self.collectionContainerView.frame);
-
-    if (completionBlock) {
-        completionBlock();
-    }
+    
+    CGFloat duration = animated ? 0.25f : 0.0f;
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.8f initialSpringVelocity:10.f options:options animations:^{
+        self.collectionContainerViewBottomConstraint.constant = CGRectGetHeight(self.collectionContainerView.frame);
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        if (finished) {
+            self.collectionContainerView.hidden = TRUE;
+            if (completionBlock) {
+                completionBlock();
+            }
+        }
+    }];
 }
 
 - (void)showCollectionContainerView:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    // set the bottom constraint to 0
     self.collectionContainerView.hidden = FALSE;
     
     LOG_FRAME(@"collectionContainerView", self.collectionContainerView.frame);
     
-    if (completionBlock) {
-        completionBlock();
-    }
+    CGFloat duration = animated ? 0.25f : 0.0f;
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.8f initialSpringVelocity:10.f options:options animations:^{
+        self.collectionContainerViewBottomConstraint.constant = 0.0f;
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        if (finished) {
+            if (completionBlock) {
+                completionBlock();
+            }
+        }
+    }];
 }
 
 - (void)showSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
@@ -516,6 +587,70 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
     }];
 }
 
+- (BOOL)isLocationAccurateEnough:(CLLocation *)location {
+    return location && CLLocationCoordinate2DIsValid(location.coordinate) &&
+        location.horizontalAccuracy < kCLLocationAccuracyHundredMeters;
+}
+
+- (void)showCheckInPromptForSpot:(SpotModel *)spot animated:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    // 1) set the lable with attribututed text
+    // 2) set view to not hidden
+    // 3) set bottom constraint to be 20 points above the bottom view
+    
+    // set the label
+    UIFont *font = [UIFont fontWithName:@"Lato-Regular" size:self.checkInPromptLabel.font.pointSize];
+    NSString *name = spot.name;
+    NSString *text = [NSString stringWithFormat:@"Are you at %@?", name];
+    [self.checkInPromptLabel setText:text withFont:font onString:name];
+    
+    
+    // ensure it is out of view and layout is updated before adding the shadow
+//    self.checkInViewBottomConstraint.constant = CGRectGetHeight(self.view.frame);
+//    [self.view setNeedsLayout];
+//    [self.view layoutIfNeeded];
+    
+    self.checkInPromptView.hidden = FALSE;
+    
+    // set the constraint and finish
+    CGRect bottomFrame = [self bottomFrame];
+    CGFloat duration = animated ? 0.35f : 0.0f;
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.75f initialSpringVelocity:10.f options:options animations:^{
+        self.checkInViewBottomConstraint.constant = CGRectGetHeight(bottomFrame) + 20.0f;
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        if (finished) {
+            if (completionBlock) {
+                completionBlock();
+            }
+        }
+    }];
+}
+
+- (void)hideCheckInPromptForSpot:(SpotModel *)spot animated:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    
+    // 1) set the bottom constraint to the height of the view
+    // 2) complete by setting view to hidden
+    
+    CGFloat duration = animated ? 0.35f : 0.0f;
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.75f initialSpringVelocity:10.f options:options animations:^{
+        self.checkInViewBottomConstraint.constant = CGRectGetHeight(self.view.frame);
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        if (finished) {
+            self.checkInPromptView.hidden = TRUE;
+            self.checkInPromptLabel.text = nil;
+            
+            if (completionBlock) {
+                completionBlock();
+            }
+        }
+    }];
+}
+
 #pragma mark - User Actions
 #pragma mark -
 
@@ -529,18 +664,47 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
     [self showSearch:TRUE withCompletionBlock:nil];
 }
 
+- (IBAction)checkInYesButtonTapped:(id)sender {
+    // TODO: implement by checking in the user at the nearest spot
+    DebugLog(@"selectedSpot: %@", self.selectedSpot);
+    
+    SpotModel *spot = self.nearbySpots[0];
+    [self hideCheckInPromptForSpot:spot animated:TRUE withCompletionBlock:^{
+        DrinkListRequest *request = [self.drinkListRequest copy];
+        request.name = kDrinkListModelDefaultName;
+        request.spotId = spot.ID;
+        
+        self.selectedSpot = spot;
+        
+        [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+            DebugLog(@"drinkListModel: %@", drinkListModel);
+            [self displayDrinklist:drinkListModel];
+        } failure:^(ErrorModel *errorModel) {
+            // TODO: track error
+        }];
+    }];
+}
+
+- (IBAction)checkInNoButtonTapped:(id)sender {
+    SpotModel *spot = self.nearbySpots[0];
+    [self hideCheckInPromptForSpot:spot animated:TRUE withCompletionBlock:nil];
+}
+
 - (IBAction)searchCancelButtonTapped:(id)sender {
-    [self hideSearch:TRUE withCompletionBlock:nil];
+    [self hideSearch:TRUE withCompletionBlock:^{
+    }];
 }
 
 - (IBAction)searchSlidersCancelButtonTapped:(id)sender {
     [self hideSlidersSearch:TRUE forMode:self.mode withCompletionBlock:^{
         NSLog(@"Slider search should now be hidden");
+        [self showHomeNavigation:TRUE withCompletionBlock:nil];
     }];
 }
 
 - (IBAction)cancelBackToHomeMap:(UIStoryboardSegue *)segue {
     // get back to the home map view
+    [self restoreNavigationIfNeeded];
 }
 
 - (IBAction)finishCreatingSpotListForHomeMap:(UIStoryboardSegue *)segue {
@@ -580,12 +744,14 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
     // updating the location is redundant, but necessary to ensure it is current
     
     if ([self promptLoginNeeded:@"Please log in before creating a Spotlist"] == NO) {
-        TellMeMyLocation *tellMeMyLocation = [[TellMeMyLocation alloc] init];
-        [tellMeMyLocation findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
-            _currentLocation = newLocation;
-            [self performSegueWithIdentifier:@"HomeMapToSpots" sender:self];
-        } failure:^(NSError *error) {
-            [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
+        [self prepareToDisplaySliderSearchWithCompletionBlock:^{
+            TellMeMyLocation *tellMeMyLocation = [[TellMeMyLocation alloc] init];
+            [tellMeMyLocation findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
+                _currentLocation = newLocation;
+                [self performSegueWithIdentifier:@"HomeMapToSpots" sender:self];
+            } failure:^(NSError *error) {
+                [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
+            }];
         }];
     }
 }
@@ -598,7 +764,7 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
     
     if ([unwindSegue.sourceViewController isKindOfClass:[SHSpotProfileViewController class]]) {
         SHSpotProfileViewController *spotProfileViewController = unwindSegue.sourceViewController;
-        SpotModel *spot = spotProfileViewController.spot;
+        SpotModel *spot __unused = spotProfileViewController.spot;
         
         //todo: api call to find similar spots and display
         NSString *name = [NSString stringWithFormat:@"Similar to %@", spot.name];
@@ -625,24 +791,57 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
 #pragma mark - Private
 #pragma mark -
 
+- (void)restoreNavigationIfNeeded {
+    if (self.homeNavigationViewController.view.hidden && self.collectionContainerView.hidden) {
+        if (self.drinkListModel.drinks.count || self.specialsSpotModels.count || self.spotListModel.spots.count) {
+            [self showCollectionContainerView:TRUE withCompletionBlock:nil];
+        }
+        else {
+            [self showHomeNavigation:true withCompletionBlock:nil];
+        }
+    }
+}
+
+- (void)prepareToDisplaySliderSearchWithCompletionBlock:(void (^)())completionBlock {
+    if (completionBlock) {
+        if (!self.homeNavigationViewController.view.hidden) {
+            [self hideHomeNavigation:TRUE withCompletionBlock:completionBlock];
+        }
+        else if (!self.collectionContainerView.hidden) {
+            [self hideCollectionContainerView:TRUE withCompletionBlock:completionBlock];
+        }
+        else {
+            completionBlock();
+            
+        }
+        
+    }
+}
+
 - (void)showBeersSearch {
     [self.slidersSearchViewController prepareForMode:SHModeBeer];
-
-    [self showSlidersSearch:TRUE forMode:SHModeBeer withCompletionBlock:^{
+    
+    [self prepareToDisplaySliderSearchWithCompletionBlock:^{
+        [self showSlidersSearch:TRUE forMode:SHModeBeer withCompletionBlock:^{
+        }];
     }];
 }
 
 - (void)showCocktailsSearch {
     [self.slidersSearchViewController prepareForMode:SHModeCocktail];
 
-    [self showSlidersSearch:TRUE forMode:SHModeCocktail withCompletionBlock:^{
+    [self prepareToDisplaySliderSearchWithCompletionBlock:^{
+        [self showSlidersSearch:TRUE forMode:SHModeCocktail withCompletionBlock:^{
+        }];
     }];
 }
 
 - (void)showWineSearch {
     [self.slidersSearchViewController prepareForMode:SHModeWine];
-
-    [self showSlidersSearch:TRUE forMode:SHModeWine withCompletionBlock:^{
+    
+    [self prepareToDisplaySliderSearchWithCompletionBlock:^{
+        [self showSlidersSearch:TRUE forMode:SHModeWine withCompletionBlock:^{
+        }];
     }];
 }
 
@@ -659,16 +858,24 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
     
     if (!self.spotListModel.spots.count) {
         [self showAlert:@"Oops" message:@"There are no spots which match in this location. Please try another search area."];
+        [self showHomeNavigation:TRUE withCompletionBlock:nil];
         return;
     }
     
     [self populateMapWithSpots:self.spotListModel.spots];
+
+    if (!self.homeNavigationViewController.view.hidden) {
+        [self hideHomeNavigation:FALSE withCompletionBlock:nil];
+    }
     
-    [self hideHomeNavigation:FALSE withCompletionBlock:^{
-        [self.mapOverlayCollectionViewController displaySpotList:spotListModel];
-        [self showCollectionContainerView:FALSE withCompletionBlock:^{
-            // do nothing
-        }];
+    [self.mapOverlayCollectionViewController displaySpotList:spotListModel];
+    
+    [self showCollectionContainerView:TRUE withCompletionBlock:^{
+        // do nothing
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            DebugLog(@"Nothing?");
+        });
     }];
 }
 
@@ -685,15 +892,24 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
 
     [self populateMapWithSpots:spots];
     
-    [self hideHomeNavigation:FALSE withCompletionBlock:^{
-        [self.mapOverlayCollectionViewController displaySpecialsForSpots:spots];
-        [self showCollectionContainerView:FALSE withCompletionBlock:^{
-            // do nothing
-        }];
+    if (!self.homeNavigationViewController.view.hidden) {
+        [self hideHomeNavigation:FALSE withCompletionBlock:nil];
+    }
+    
+    [self.mapOverlayCollectionViewController displaySpecialsForSpots:spots];
+    
+    [self showCollectionContainerView:TRUE withCompletionBlock:^{
+        // do nothing
     }];
 }
 
 - (void)displayDrinklist:(DrinkListModel *)drinkListModel {
+    if (!drinkListModel.drinks.count) {
+        [self showAlert:@"Oops" message:@"There are no drinks which match in this location. Please try another search area."];
+        [self restoreNavigationIfNeeded];
+        return;
+    }
+
     // hold onto the drinklist
     self.spotListModel = nil;
     self.specialsSpotModels = nil;
@@ -704,22 +920,30 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
     // clear the map right away because it may currently show other results
     [self.mapView removeAnnotations:[self.mapView annotations]];
     
-    if (!self.drinkListModel.drinks.count) {
-        [self showAlert:@"Oops" message:@"There are no drinks which match in this location. Please try another search area."];
-        return;
-    }
-    
     if (self.drinkListModel.drinks.count) {
         DrinkModel *drink = self.drinkListModel.drinks[0];
         [self updateMapWithCurrentDrink:drink];
     }
     
-    // TODO: populate collection view with drinks
-    [self hideHomeNavigation:FALSE withCompletionBlock:^{
-        [self.mapOverlayCollectionViewController displayDrinklist:drinkListModel];
-        [self showCollectionContainerView:FALSE withCompletionBlock:^{
-            // do nothing
-        }];
+    if (!self.homeNavigationViewController.view.hidden) {
+        [self hideHomeNavigation:FALSE withCompletionBlock:nil];
+    }
+    
+    [self.mapOverlayCollectionViewController displayDrinklist:drinkListModel];
+    
+    [self showCollectionContainerView:TRUE withCompletionBlock:^{
+        // prompt the user to select the nearest spot with a 1 hour period between prompts
+        NSTimeInterval seconds = self.lastCheckInPrompt ? [[NSDate date] timeIntervalSinceDate:self.lastCheckInPrompt] : NSIntegerMax;
+        
+        
+//        kCLLocationAccuracyHundredMeters
+        
+//        self.lo
+        
+        if (seconds > 3600 && self.nearbySpots.count) {
+            [self showCheckInPromptForSpot:self.nearbySpots[0] animated:TRUE withCompletionBlock:nil];
+            self.lastCheckInPrompt = [NSDate date];
+        }
     }];
 }
 
@@ -730,20 +954,108 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [SHStyleKit myWhiteColor]};
 }
 
+- (void)styleCheckInPrompt {
+    UIColor *backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintColorTransparent];
+    UIColor *borderColor = [SHStyleKit color:SHStyleKitColorMyWhiteColor];
+    UIColor *labelTextColor = [SHStyleKit color:SHStyleKitColorMyWhiteColor];
+    UIColor *buttonTextColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
+    UIColor *buttonBackgroundColor = [SHStyleKit color:SHStyleKitColorMyWhiteColor];
+    
+    self.checkInPromptView.backgroundColor = backgroundColor;
+    self.checkInPromptView.layer.borderColor = [borderColor CGColor];
+    self.checkInPromptView.layer.borderWidth = 2.0f;
+    self.checkInPromptView.layer.cornerRadius = 10.0f;
+    self.checkInPromptView.clipsToBounds = YES;
+    
+    self.checkInPromptLabel.font = [UIFont fontWithName:@"Lato-Light" size:self.checkInPromptLabel.font.pointSize];
+    self.checkInPromptLabel.textColor = labelTextColor;
+    
+    [self.checkInYesButton setTitleColor:buttonTextColor forState:UIControlStateNormal];
+    [self.checkInNoButton setTitleColor:buttonTextColor forState:UIControlStateNormal];
+    
+    [self.checkInYesButton setBackgroundColor:buttonBackgroundColor];
+    [self.checkInNoButton setBackgroundColor:buttonBackgroundColor];
+    
+    self.checkInYesButton.layer.cornerRadius = 5.0f;
+    self.checkInNoButton.layer.cornerRadius = 5.0f;
+    
+    // add a shadow
+    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:self.checkInPromptView.bounds];
+    self.checkInPromptView.layer.masksToBounds = NO;
+    self.checkInPromptView.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.checkInPromptView.layer.shadowOffset = CGSizeMake(0.0f, 5.0f);
+    self.checkInPromptView.layer.shadowOpacity = 0.35f;
+    self.checkInPromptView.layer.shadowRadius = 10.0f;
+    self.checkInPromptView.layer.shadowPath = shadowPath.CGPath;
+}
+
+- (void)fetchNearbySpotsAtLocation:(CLLocation *)location {
+    if (location && CLLocationCoordinate2DIsValid(location.coordinate)) {
+        [[SpotModel fetchSpotsNearLocation:location] then:^(NSArray *spots) {
+            DebugLog("spots: %@", spots);
+            self.nearbySpots = spots;
+            
+            [self hideAndShowPrompt];
+
+        } fail:^(ErrorModel *errorModel) {
+            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+        } always:^{
+        }];
+    }
+}
+
 - (void)fetchSpecials {
     [self showHUD:@"Finding specials"];
-    [SpotModel getSpotsWithSpecialsTodayForCoordinate:self.mapView.centerCoordinate success:^(NSArray *spotModels, JSONAPI *jsonApi) {
-        [self hideHUD];
-        [self displaySpecialsForSpots:spotModels];
-    } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel.human class:[self class] trace:NSStringFromSelector(_cmd)];
-        // TODO: tell the user abou the error
+    
+    // TODO: only use map center if the user is searching this area otherwise use device location
+    [self prepareToDisplaySliderSearchWithCompletionBlock:^{
+        [SpotModel getSpotsWithSpecialsTodayForCoordinate:_currentLocation.coordinate success:^(NSArray *spotModels, JSONAPI *jsonApi) {
+            [self hideHUD];
+            [self displaySpecialsForSpots:spotModels];
+        } failure:^(ErrorModel *errorModel) {
+            [Tracker logError:errorModel.human class:[self class] trace:NSStringFromSelector(_cmd)];
+            // TODO: tell the user abou the error
+        }];
     }];
+}
+
+- (void)hideAndShowPrompt {
+    
+//    if (self.nearbySpots.count) {
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//            [self showCheckInPromptForSpot:self.nearbySpots[0] animated:TRUE withCompletionBlock:^{
+//                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//                    [self hideCheckInPromptForSpot:self.nearbySpots[0] animated:TRUE withCompletionBlock:nil];
+//                    
+//                    [self performSelector:@selector(hideAndShowPrompt) withObject:nil afterDelay:3.0f];
+//                    
+//                });
+//            }];
+//        });
+//    }
+    
+//    [self hideHomeNavigation:TRUE withCompletionBlock:^{
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//            [self showHomeNavigation:TRUE withCompletionBlock:^{
+//                [self performSelector:@selector(hideAndShowPrompt) withObject:nil afterDelay:3.0f];
+//            }];
+//        });
+//    }];
+    
+//    [self hideHomeNavigation:FALSE withCompletionBlock:nil];
+//    [self hideCollectionContainerView:TRUE withCompletionBlock:^{
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//            [self showCollectionContainerView:TRUE withCompletionBlock:^{
+//                [self performSelector:@selector(hideAndShowPrompt) withObject:nil afterDelay:3.0f];
+//            }];
+//        });
+//    }];
 }
 
 - (void)updateMapWithCurrentDrink:(DrinkModel *)drink {
     [[drink fetchSpotsForLocation:self.drinkListModel.location] then:^(NSArray *spots) {
         [self populateMapWithSpots:spots];
+        self.spotsForDrink = spots;
     } fail:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel.human class:[self class] trace:NSStringFromSelector(_cmd)];
         // TODO: tell the user about the error
@@ -775,7 +1087,10 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
     
     [self repositionMapOnAnnotations:self.mapView.annotations animated:TRUE];
     
-    if (spots.count) {
+    if ([spots containsObject:self.selectedSpot]) {
+        [self selectSpot:self.selectedSpot];
+    }
+    else if (spots.count) {
         [self selectSpot:spots[0]];
     }
 }
@@ -794,7 +1109,7 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
 - (void)repositionMapOnCoordinate:(CLLocationCoordinate2D)coordinate animated:(BOOL)animated {
     MKMapPoint mapPoint = MKMapPointForCoordinate(coordinate);
     MKMapRect mapRect = MKMapRectMake(mapPoint.x, mapPoint.y, 0.25, 0.25);
-    [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(169.0, 45.0, 180.0, 45.0) animated:animated];
+    [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(129.0, 45.0, 140.0, 45.0) animated:animated];
 }
 
 - (void)repositionMapOnAnnotations:(NSArray *)annotations animated:(BOOL)animated {
@@ -829,24 +1144,20 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
         // ensure points are not positioned below the header by setting the edge padding
         
         // give it a little extra space
-        if (MKMapRectGetWidth(mapRect) == 0.0 && MKMapRectGetHeight(mapRect) == 0.0) {
-            mapRect.size = MKMapSizeMake(MKMapRectGetWidth(mapRect) + 20.0, MKMapRectGetHeight(mapRect) + 20.0);
+        if (MKMapRectGetWidth(mapRect) == 0.0f && MKMapRectGetHeight(mapRect) == 0.0f) {
+            CGFloat padding = 8000.0;
+            mapRect.origin.x -= padding/2;
+            mapRect.origin.y -= padding/2;
+            mapRect.size = MKMapSizeMake(MKMapRectGetWidth(mapRect) + padding, MKMapRectGetHeight(mapRect) + padding);
         }
         
-//        convertRegion:toRectToView
-//        CGRect regionRect = [self.mapView convertRegion:self.mapView.region toRectToView:self.mapView];
-//        CGRect visibleFrame = [self visibleMapFrame];
-//        NSLog(@"visibleFrame: %f, %f", visibleFrame.size.width, visibleFrame.size.height);
-//        MKCoordinateRegion mapRegion = [self.mapView convertRect:visibleFrame toRegionFromView:self.mapView];
-        
         CGRect topFrame = [self topFrame];
-        CGRect bottomFrame = [self bottomFrame];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-            [UIView animateWithDuration:0.5 delay:0.0 options:options animations:^{
+            [UIView animateWithDuration:1.5 delay:0.0 options:options animations:^{
                 // edgePadding must also account for the size and position of the annotation view
-                [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(CGRectGetHeight(topFrame) + 30, 45.0, CGRectGetHeight(bottomFrame) + 30, 45.0) animated:animated];
+                [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(CGRectGetHeight(topFrame) + 44.0, 45.0, CGRectGetHeight(self.collectionContainerView.frame) + 10, 45.0) animated:animated];
             } completion:^(BOOL finished) {
             }];
         });
@@ -863,7 +1174,19 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
 }
 
 - (CGRect)bottomFrame {
-    return self.homeNavigationViewController.view.frame; // bottom frame will change
+    if (!self.homeNavigationViewController.view.hidden) {
+        return self.homeNavigationViewController.view.frame;
+    }
+    else if (!self.collectionContainerView.hidden) {
+        return self.collectionContainerView.frame;
+    }
+
+    // default to returning a frame with 0 height which is at the very bottom
+    CGRect frame = self.view.frame;
+    frame.origin.x = CGRectGetHeight(frame);
+    frame.size.height = 0.0f;
+    
+    return frame;
 }
 
 - (CGRect)visibleMapFrame {
@@ -1102,8 +1425,9 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
         self.selectedSpot = self.specialsSpotModels[index];
         [self performSegueWithIdentifier:SpotSelectedSegueIdentifier sender:self];
     }
-    else {
-        NSAssert(FALSE, @"Index should always be in bounds");
+    else if (self.drinkListModel && index < self.spotsForDrink.count) {
+        self.selectedSpot = self.spotsForDrink[index];
+        [self performSegueWithIdentifier:SpotSelectedSegueIdentifier sender:self];
     }
 }
 
@@ -1160,10 +1484,13 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
 #pragma mark - SHSlidersSearchDelegate
 #pragma mark -
 
-- (void)slidersSearchViewController:(SHSlidersSearchViewController *)vc didPrepareDrinklist:(DrinkListModel *)drinklist forMode:(SHMode)mode {
+- (void)slidersSearchViewController:(SHSlidersSearchViewController *)vc didPrepareDrinklist:(DrinkListModel *)drinklist withRequest:(DrinkListRequest *)request forMode:(SHMode)mode {
     self.mode = mode;
+    self.drinkListRequest = request;
     [self hideSlidersSearch:TRUE forMode:mode withCompletionBlock:^{
         [self displayDrinklist:drinklist];
+        
+        // TODO: if there are nearby spots, prompt the user to check in at the nearest one (first in the array)
     }];
 }
 

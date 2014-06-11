@@ -51,6 +51,7 @@ typedef enum {
 #pragma mark -
 
 - (void)displaySpotList:(SpotListModel *)spotList {
+    self.collectionView.frame = self.view.frame;
     self.mode = SHOverlayCollectionViewModeSpotlists;
     self.collectionView.dataSource = self.spotsCollectionViewManager;
     self.collectionView.delegate = self.spotsCollectionViewManager;

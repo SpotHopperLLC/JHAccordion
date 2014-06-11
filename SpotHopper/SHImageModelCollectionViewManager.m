@@ -41,7 +41,7 @@
 - (void)previousButtonTapped:(id)sender {
     
     [self goPrevious];
-
+    
 }
 
 - (void)nextButtonTapped:(id)sender {
@@ -93,7 +93,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"Selected item!");
     
-    //trigger segue 
+    //trigger segue
     if ([self.delegate respondsToSelector:@selector(imageCollectionViewManager:didSelectImageAtIndex:)]) {
         [self.delegate imageCollectionViewManager:self didSelectImageAtIndex:self.currentIndex];
     }
@@ -182,7 +182,7 @@
 
 //- (void)updateImageArrows {
 //    NSIndexPath *indexPath = [self indexPathForCurrentImage];
-//    
+//
 //    [UIView animateWithDuration:0.25 animations:^{
 //        _btnImageNext.alpha = [self hasNext] ? 1.0 : 0.1;
 //        _btnImagePrev.alpha = [self hasPrevious] ? 1.0 : 0.1;

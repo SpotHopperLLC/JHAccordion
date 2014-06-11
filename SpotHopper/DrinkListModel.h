@@ -43,7 +43,7 @@
 
 #pragma mark - Revised Code for 2.0
 
-+ (void)fetchDrinkListWithRequest:(DrinkListRequest *)request successBlock:(void (^)(DrinkListModel *drinkListModel, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
++ (void)fetchDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinkListModel, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
 
 + (Promise *)fetchDrinkListWithRequest:(DrinkListRequest *)request;
 

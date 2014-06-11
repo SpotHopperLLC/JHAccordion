@@ -732,7 +732,7 @@
     request.drinkTypeId = _drink.drinkType.ID;
     request.drinkSubTypeId = _drink.drinkSubtype.ID;
     
-    [DrinkListModel fetchDrinkListWithRequest:request successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+    [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
         [self hideHUD];
         
         DrinkListViewController *viewController = [self.drinksStoryboard instantiateViewControllerWithIdentifier:@"DrinkListViewController"];
