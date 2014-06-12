@@ -28,6 +28,8 @@
 
 #import "SHImageModelCollectionViewManager.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "Tracker.h"
 
 #define kCellImageCollection 0
@@ -40,6 +42,8 @@
 #define kLabelTagDrinkMatch 5
 #define kLabelTagDrinkTypeSpecificInfo 6
 #define kLabelTagDrinkBeerWineInfo 7
+#define kViewTagDrinkRating 8
+#define kLabelTagDrinkRating 9
 
 #define kLabelTagDrinkSpecial 1
 #define kLabelTagDrinkSpecialDetails 2
@@ -217,17 +221,6 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
                     
                 case kCellDrinkDetails:{
                     
-                    /**
-                     #define kLabelTagDrinkName 1
-                     #define kLabelTagDrinkVintage 2
-                     #define kLabelTagDrinkRegion 3
-                     #define kLabelTagDrinkBrewery 4
-                     #define kLabelTagDrinkMatch 5
-                     #define kLabelTagDrinkTypeSpecificInfo 5
-                     #define kLabelTagDrinkBeerWineInfo 6
-                     */
-                    
-                    
                     cell = [tableView dequeueReusableCellWithIdentifier:DrinkDetailsCellIdentifier forIndexPath:indexPath];
                     
                     UILabel *name = (UILabel*)[cell viewWithTag:kLabelTagDrinkName];
@@ -241,7 +234,13 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
                     
                     if (_isWine) {
                         vintage.font = [UIFont fontWithName:@"Lato-Light" size:14.0f];
-                        vintage.text = [NSString stringWithFormat:@"%ld",[self.drink.vintage integerValue] ];
+                        
+                        if (self.drink.vintage > 0) {
+                            vintage.text = [NSString stringWithFormat:@"%ld",[self.drink.vintage integerValue] ];
+                        }else {
+                            vintage.text = @"";
+                        }
+                        
                         
                         region.font = [UIFont fontWithName:@"Lato-Light" size:14.0f];
                         region.text = self.drink.region;
@@ -285,6 +284,17 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
                         beerAndWineInfo.text = @"";
                     }
                 
+                    UIView *ratingView = [cell viewWithTag:kViewTagDrinkRating];
+                    ratingView.layer.cornerRadius = CGRectGetHeight(ratingView.frame)/2;
+                    ratingView.clipsToBounds = YES;
+                    ratingView.backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
+                    
+                    UILabel *rating = (UILabel*)[cell viewWithTag:kLabelTagDrinkRating];
+                    rating.font = [UIFont fontWithName:@"Lato-Light" size:16.0f];
+                    rating.textColor = [SHStyleKit color:SHStyleKitColorMyWhiteColor];
+                    rating.text = [NSString stringWithFormat:@"%.1f/10", [self.drink.averageReview.rating floatValue]];
+    
+                    
                     break;
                 }
 
