@@ -208,9 +208,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
                     collectionView.delegate = self.imageModelCollectionViewManager;
                     collectionView.dataSource = self.imageModelCollectionViewManager;
                     self.imageModelCollectionViewManager.imageModels = self.spot.images;
-                  //  self.imageModelCollectionViewManager.delegate = self;
-                    
-                    
                     break;
                 }
                     
@@ -345,7 +342,8 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 
 - (void)imageCollectionViewManager:(SHImageModelCollectionViewManager *)manager didChangeToImageAtIndex:(NSUInteger)index {
     //change the collection view to show to the current cell at the index path
-    [manager.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathWithIndex:index] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:TRUE];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+    [manager.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:TRUE];
 }
 
 - (void)imageCollectionViewManager:(SHImageModelCollectionViewManager *)manager didSelectImageAtIndex:(NSUInteger)index {

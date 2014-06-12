@@ -1773,7 +1773,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YVY-r2-TVp" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="3qZ-LX-58x" userLabel="Exit" sceneMemberID="exit"/>
-                <customObject id="3Uh-BU-0DC" customClass="SHImageModelCollectionViewManager"/>
+                <customObject id="3Uh-BU-0DC" customClass="SHImageModelCollectionViewManager">
+                    <connections>
+                        <outlet property="delegate" destination="hqs-WD-w9i" id="zbs-b9-Gkf"/>
+                    </connections>
+                </customObject>
             </objects>
             <point key="canvasLocation" x="1309" y="1457"/>
         </scene>
@@ -2301,6 +2305,10 @@
                                                             </constraints>
                                                         </collectionViewCell>
                                                     </cells>
+                                                    <connections>
+                                                        <outlet property="dataSource" destination="MoW-va-KOf" id="M1U-e2-hVf"/>
+                                                        <outlet property="delegate" destination="MoW-va-KOf" id="anP-ql-TVW"/>
+                                                    </connections>
                                                 </collectionView>
                                             </subviews>
                                             <constraints>
@@ -2478,7 +2486,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ebu-40-aIb" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="VQg-Hm-FD3" userLabel="Exit" sceneMemberID="exit"/>
-                <customObject id="MoW-va-KOf" customClass="SHImageModelCollectionViewManager"/>
+                <customObject id="MoW-va-KOf" customClass="SHImageModelCollectionViewManager">
+                    <connections>
+                        <outlet property="delegate" destination="g2C-SZ-b4O" id="P4Y-iz-6II"/>
+                    </connections>
+                </customObject>
             </objects>
             <point key="canvasLocation" x="1309" y="2387"/>
         </scene>
