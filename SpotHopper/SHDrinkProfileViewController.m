@@ -267,7 +267,8 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
                     }else if (_isBeer) {
                         message = self.drink.style;
                     }else {
-                        message = [self.drink.baseAlochols firstObject];
+                        //todo: ask about base alcohols behavior
+                        //message = [self.drink.baseAlochols firstObject];
                     }
                     
                     drinkSpecific.text = message;
