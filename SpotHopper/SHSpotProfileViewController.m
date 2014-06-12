@@ -200,8 +200,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
             switch (indexPath.row) {
                 case kCellImageCollection: {
                     
-                    cell = [tableView dequeueReusableCellWithIdentifier:CollectionViewCellIdentifier];
-                    //todo: place collection view here
+                    cell = [tableView dequeueReusableCellWithIdentifier:CollectionViewCellIdentifier forIndexPath:indexPath];
                     
                     UICollectionView *collectionView = (UICollectionView *)[cell viewWithTag:kCollectionViewTag];
                     
@@ -209,16 +208,12 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
                     collectionView.delegate = self.imageModelCollectionViewManager;
                     collectionView.dataSource = self.imageModelCollectionViewManager;
                     self.imageModelCollectionViewManager.imageModels = self.spot.images;
-                  //  self.imageModelCollectionViewManager.delegate = self;
-                    
-                    
                     break;
                 }
                     
                 case kCellSpotDetails:{
                     
-                    //todo: add defensive programming for checking whether labels exist?
-                    cell = [tableView dequeueReusableCellWithIdentifier:SpotDetailsCellIdentifier];
+                    cell = [tableView dequeueReusableCellWithIdentifier:SpotDetailsCellIdentifier forIndexPath:indexPath];
                     
                     UILabel *spotName = (UILabel*)[cell viewWithTag:kLabelTagSpotName];
                     spotName.font = [UIFont fontWithName:@"Lato-Bold" size:20.0f];
@@ -250,12 +245,11 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
                     
                 case kCellSpotSpecials:{
                     
-                    cell = [tableView dequeueReusableCellWithIdentifier:SpotSpecialsCellIdentifier];
+                    cell = [tableView dequeueReusableCellWithIdentifier:SpotSpecialsCellIdentifier forIndexPath:indexPath];
                     
                     NSArray *specials = self.spot.dailySpecials;
                     
                     if (specials.count) {
-                        //todo: ask if this is needed
                         UILabel *spotSpecial = (UILabel*)[cell viewWithTag:kLabelTagSpotSpecial];
                         spotSpecial.font = [UIFont fontWithName:@"Lato-Bold" size:20.0f];
                         
@@ -276,7 +270,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
             break;
         }
         case 1:{
-            cell = [tableView dequeueReusableCellWithIdentifier:SpotVibeIdentifier];
+            cell = [tableView dequeueReusableCellWithIdentifier:SpotVibeIdentifier forIndexPath:indexPath];
             
             SHSlider *slider = (SHSlider*)[cell viewWithTag:kSliderVibeTag];
             UILabel *minValue = (UILabel*)[cell viewWithTag:kLeftLabelVibeTag];
@@ -288,7 +282,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
             
             minValue.text = sliderTemplate.minLabel.length ? sliderTemplate.minLabel : @"";
             maxValue.text = sliderTemplate.maxLabel.length ? sliderTemplate.maxLabel : @"";
-            //todo: vv check to see if this logic is right vv
             [slider setSelectedValue:(sliderModel.value.floatValue / 10.0f)];
             
             break;
@@ -322,11 +315,9 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
             switch (indexPath.row) {
                 case kCellImageCollection:
                     height = 180.0f;
-                    //todo: check with Brennan
                     break;
                 case kCellSpotDetails:
                     height = 110.0f;
-                    //todo: check with Brennan
                     break;
                 case kCellSpotSpecials:
                     // 8 + headerHeight + 5 + specialText + 8 for padding above, between and below
@@ -351,8 +342,8 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 
 - (void)imageCollectionViewManager:(SHImageModelCollectionViewManager *)manager didChangeToImageAtIndex:(NSUInteger)index {
     //change the collection view to show to the current cell at the index path
-    [manager.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathWithIndex:index] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:TRUE];
-    //todo: verify that the currentIndex being set here is not needed
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+    [manager.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:TRUE];
 }
 
 - (void)imageCollectionViewManager:(SHImageModelCollectionViewManager *)manager didSelectImageAtIndex:(NSUInteger)index {
@@ -371,7 +362,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 #pragma mark - SHSpotDetailFooterNavigationDelegate
 #pragma mark -
 - (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc findSimilarButtonTapped:(id)sender {
-    
     [self performSegueWithIdentifier:UnwindFromSpotProfileToHomeMapFindSimilar sender:self];
 }
 
@@ -531,9 +521,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    
-    //todo: refactor to make semantic style of Brennan
-    //   if ([segue.destinationViewController isKindOfClass:[SHSpotProfileViewController class]]) {}
     
     if ([segue.destinationViewController isKindOfClass:[PhotoViewerViewController class]]) {
         PhotoViewerViewController *viewController = segue.destinationViewController;

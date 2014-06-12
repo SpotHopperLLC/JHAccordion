@@ -23,12 +23,13 @@
 #pragma mark -
 
 @interface SHImageModelCollectionViewManager ()
-
 @property (nonatomic, weak) IBOutlet id<SHImageModelCollectionDelegate> delegate;
-
 @end
 
-@implementation SHImageModelCollectionViewManager
+@implementation SHImageModelCollectionViewManager {
+//    @property (assign, nonatomic) NSUInteger currentIndex;
+    NSUInteger _currentIndex;
+}
 
 
 #pragma mark - UICollectionViewDataSource
@@ -61,11 +62,18 @@
     if (self.imageModels.count) {
         // get image view by tag and use NetworkHelper to load image
         //attach previous and next buttons to goPrevious and goNext to trigger image transitions
-        UIButton *previousButton = (UIButton *)[cell viewWithTag:kPreviousButton];
-        [previousButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         
+        UIButton *previousButton = (UIButton *)[cell viewWithTag:kPreviousButton];
         UIButton *nextButton = (UIButton *)[cell viewWithTag:kNextButton];
-        [nextButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        
+        if (self.imageModels.count > 1) {
+            [previousButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+            [nextButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+            
+        }else{
+            previousButton.hidden = TRUE;
+            nextButton.hidden = TRUE;
+        }
         
         UIImageView *imageView = (UIImageView *)[cell viewWithTag:kImageView];
         
@@ -95,7 +103,7 @@
     
     //trigger segue
     if ([self.delegate respondsToSelector:@selector(imageCollectionViewManager:didSelectImageAtIndex:)]) {
-        [self.delegate imageCollectionViewManager:self didSelectImageAtIndex:self.currentIndex];
+        [self.delegate imageCollectionViewManager:self didSelectImageAtIndex:_currentIndex];
     }
     
 }
@@ -106,8 +114,8 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView == self.collectionView) {
         NSIndexPath *indexPath = [self indexPathForCurrentItemInCollectionView:self.collectionView];
-        if (indexPath.item != self.currentIndex) {
-            self.currentIndex = indexPath.item;
+        if (indexPath.item != _currentIndex) {
+            _currentIndex = indexPath.item;
             [self reportedChangedIndex];
         }
     }
@@ -122,10 +130,10 @@
 - (void)changeIndex:(NSUInteger)index {
     // TODO: change collection view position if the index is in bounds and set _currentIndex
     
-    if (index != self.currentIndex && index < self.imageModels.count) {
+    if (index != _currentIndex && index < self.imageModels.count) {
         NSLog(@"Manager - Changing to index: %lu", (long)index);
-        self.currentIndex = index;
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.currentIndex inSection:0];
+        _currentIndex = index;
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_currentIndex inSection:0];
         [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:TRUE];
     }
 }
@@ -166,30 +174,20 @@
 }
 
 - (void)goPrevious {
-    if ([self hasPrevious] && self.currentIndex > 0) {
-        [self changeIndex:self.currentIndex - 1];
+    if ([self hasPrevious] && _currentIndex > 0) {
+        [self changeIndex:(_currentIndex - 1)];
     }
 }
 
 - (void)goNext {
     if ([self hasNext]) {
-        [self changeIndex:self.currentIndex+1];
+        [self changeIndex:(_currentIndex+1)];
     }
 }
 
 #pragma mark - Private
 #pragma mark -
-
-//- (void)updateImageArrows {
-//    NSIndexPath *indexPath = [self indexPathForCurrentImage];
-//
-//    [UIView animateWithDuration:0.25 animations:^{
-//        _btnImageNext.alpha = [self hasNext] ? 1.0 : 0.1;
-//        _btnImagePrev.alpha = [self hasPrevious] ? 1.0 : 0.1;
-//    } completion:^(BOOL finished) {
-//    }];
-//}
-
+ 
 - (NSIndexPath *)indexPathForCurrentImage {
     NSArray *indexPaths = [_collectionView indexPathsForVisibleItems];
     if (indexPaths.count) {
@@ -211,7 +209,7 @@
 
 - (void)reportedChangedIndex {
     if ([self.delegate respondsToSelector:@selector(imageCollectionViewManager:didChangeToImageAtIndex:)]) {
-        [self.delegate imageCollectionViewManager:self didChangeToImageAtIndex:self.currentIndex];
+        [self.delegate imageCollectionViewManager:self didChangeToImageAtIndex:_currentIndex];
     }
 }
 
