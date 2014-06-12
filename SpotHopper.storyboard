@@ -1764,7 +1764,7 @@
                         <segue destination="3qZ-LX-58x" kind="unwind" identifier="unwindFromSpotProfileToHomeMapFindSimilar" unwindAction="unwindFromSpotProfileToHomeMapViewControllerFindSimilar:" id="qP2-YF-pB2"/>
                         <segue destination="3qZ-LX-58x" kind="unwind" identifier="unwindFromSpotProfileToHomeMap" unwindAction="unwindFromProfileViewToHomeMapViewController:" id="m5y-Ef-ehv"/>
                         <segue destination="liI-3A-pN5" kind="push" identifier="SpotProfileToPhotoAlbum" id="m5e-QT-orl"/>
-                        <segue destination="GlZ-9f-e0n" kind="push" identifier="SpotProfileToPhotoAlbum" id="Ags-6p-98d"/>
+                        <segue destination="GlZ-9f-e0n" kind="push" identifier="SpotProfileToPhotoViewer" id="Ags-6p-98d"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YVY-r2-TVp" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2517,6 +2517,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="m5e-QT-orl"/>
-        <segue reference="nlg-bf-HOg"/>
+        <segue reference="Ags-6p-98d"/>
     </inferredMetricsTieBreakers>
 </document>
