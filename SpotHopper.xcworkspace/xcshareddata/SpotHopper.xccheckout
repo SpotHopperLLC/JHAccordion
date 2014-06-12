@@ -5,19 +5,19 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>90A4EE07-8F12-4D3D-A51E-8AE0441C0DAB</string>
+	<string>CDA18879-86F0-463B-9D5C-ED732C4DC3C0</string>
 	<key>IDESourceControlProjectName</key>
 	<string>SpotHopper</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>84AF6C36-7EE8-4DAC-82DA-FE0A7B746BE6</key>
+		<key>446B2BF8-15D4-4C0A-AF2E-53CE2115DE2B</key>
 		<string>https://github.com/SpotHopperLLC/SpotHopper-iOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>SpotHopper.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>84AF6C36-7EE8-4DAC-82DA-FE0A7B746BE6</key>
+		<key>446B2BF8-15D4-4C0A-AF2E-53CE2115DE2B</key>
 		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
@@ -25,16 +25,16 @@
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>84AF6C36-7EE8-4DAC-82DA-FE0A7B746BE6</string>
+	<string>446B2BF8-15D4-4C0A-AF2E-53CE2115DE2B</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>84AF6C36-7EE8-4DAC-82DA-FE0A7B746BE6</string>
+			<string>446B2BF8-15D4-4C0A-AF2E-53CE2115DE2B</string>
 			<key>IDESourceControlWCCName</key>
-			<string>SpotHopper-iOS</string>
+			<string>iOS-SpotHopper</string>
 		</dict>
 	</array>
 </dict>

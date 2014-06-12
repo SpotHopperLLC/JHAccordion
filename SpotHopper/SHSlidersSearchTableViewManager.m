@@ -173,7 +173,7 @@ NSString * const WineSubTypesKey = @"WineSubTypesKey";
     return !self.drinkTypeName.length;
 }
 
-- (void)fetchDrinkListResultsWithCompletionBlock:(void (^)(DrinkListModel *drinkListModel, ErrorModel *errorModel))completionBlock {
+- (void)fetchDrinkListResultsWithCompletionBlock:(void (^)(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel))completionBlock {
     NSMutableArray *allTheSliders = [NSMutableArray array];
     [allTheSliders addObjectsFromArray:self.sliders];
     [allTheSliders addObjectsFromArray:self.advancedSliders];
@@ -224,7 +224,7 @@ NSString * const WineSubTypesKey = @"WineSubTypesKey";
             DrinkModel *firstDrink = drinkListModel.drinks[0];
             [[firstDrink fetchSpotsForLocation:location] then:^(NSArray *spots) {
                 if (completionBlock) {
-                    completionBlock(drinkListModel, nil);
+                    completionBlock(drinkListModel, request, nil);
                 }
 
                 // now that the spots for the first drink are fetched now prefetch the rest
@@ -244,14 +244,14 @@ NSString * const WineSubTypesKey = @"WineSubTypesKey";
         }
         else {
             if (completionBlock) {
-                completionBlock(drinkListModel, nil);
+                completionBlock(drinkListModel, request, nil);
             }
         }
     } failure:^(ErrorModel *errorModel) {
         [Tracker track:@"Created Drinklist" properties:@{@"Success" : @FALSE}];
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
         if (completionBlock) {
-            completionBlock(nil, errorModel);
+            completionBlock(nil, nil, errorModel);
         }
     }];
 }

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class DrinkListRequest;
 @class DrinkListModel;
 @class ErrorModel;
 
@@ -23,7 +24,7 @@
 
 - (void)prepareTableViewForDrinkType:(NSString *)drinkTypeName andWineSubType:(NSString *)wineSubTypeName;
 
-- (void)fetchDrinkListResultsWithCompletionBlock:(void (^)(DrinkListModel *drinkListModel, ErrorModel *errorModel))completionBlock;
+- (void)fetchDrinkListResultsWithCompletionBlock:(void (^)(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel))completionBlock;
 
 @end
 

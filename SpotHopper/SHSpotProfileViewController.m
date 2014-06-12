@@ -176,7 +176,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
             numberOfRows =  kNumberOfCells;
             break;
         case 1:
-            NSLog(@"# of templates:  %lu", self.spot.sliderTemplates.count);
+            NSLog(@"# of templates:  %lu", (unsigned long)self.spot.sliderTemplates.count);
             numberOfRows = self.spot.sliderTemplates.count;
             break;
         default:

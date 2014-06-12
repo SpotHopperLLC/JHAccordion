@@ -191,6 +191,15 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
         case SHStyleKitDrawingWineIcon:
             [SHStyleKit drawWineIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
             break;
+        case SHStyleKitDrawingBeerDrinklistIcon:
+            [SHStyleKit drawBeerDrinklistIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
+            break;
+        case SHStyleKitDrawingCocktailDrinklistIcon:
+            [SHStyleKit drawCocktailDrinklistIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
+            break;
+        case SHStyleKitDrawingWineDrinklistIcon:
+            [SHStyleKit drawWineDrinklistIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
+            break;
         case SHStyleKitDrawingDrinkMenuIcon:
             [SHStyleKit drawDrinkMenuIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
             break;

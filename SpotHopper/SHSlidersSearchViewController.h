@@ -8,6 +8,7 @@
 
 #import "BaseViewController.h"
 
+@class DrinkListRequest;
 @class DrinkListModel;
 
 @protocol SHSlidersSearchDelegate;
@@ -26,6 +27,6 @@
 
 @optional
 
-- (void)slidersSearchViewController:(SHSlidersSearchViewController *)vc didPrepareDrinklist:(DrinkListModel *)drinklist forMode:(SHMode)mode;
+- (void)slidersSearchViewController:(SHSlidersSearchViewController *)vc didPrepareDrinklist:(DrinkListModel *)drinklist withRequest:(DrinkListRequest *)request forMode:(SHMode)mode;
 
 @end

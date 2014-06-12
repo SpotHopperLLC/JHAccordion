@@ -278,7 +278,8 @@
 
 #pragma mark - Revised Code for 2.0
 
-+ (void)fetchDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinkListModel, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {    // Creating params
++ (void)fetchDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinkListModel, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    // Creating params
     NSMutableArray *jsonSliders = [NSMutableArray array];
     for (SliderModel *slider in request.sliders) {
         if (slider.value != nil) {
