@@ -116,7 +116,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 @property (strong, nonatomic) NSArray *specialsSpotModels;
 @property (strong, nonatomic) DrinkListModel *drinkListModel;
 @property (strong, nonatomic) SpotModel *selectedSpot;
+@property (strong, nonatomic) DrinkListRequest *drinkListRequest;
 @property (strong, nonatomic) DrinkModel *selectedDrink;
+
+@property (strong, nonatomic) NSArray *spotsForDrink;
 
 @property (assign, nonatomic) NSUInteger currentIndex;
 @property (strong, nonatomic) NSArray *nearbySpots;
