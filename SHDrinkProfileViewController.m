@@ -205,7 +205,6 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
                 case kCellImageCollection: {
                     
                     cell = [tableView dequeueReusableCellWithIdentifier:CollectionViewCellIdentifier forIndexPath:indexPath];
-                    //todo: place collection view here
                     
                     UICollectionView *collectionView = (UICollectionView *)[cell viewWithTag:kCollectionViewTag];
                     
@@ -213,8 +212,6 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
                     collectionView.delegate = self.imageModelCollectionViewManager;
                     collectionView.dataSource = self.imageModelCollectionViewManager;
                     self.imageModelCollectionViewManager.imageModels = self.drink.images;
-                  //  self.imageModelCollectionViewManager.delegate = self;
-                    
                     
                     break;
                 }
@@ -366,8 +363,8 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
 
 - (void)imageCollectionViewManager:(SHImageModelCollectionViewManager *)manager didChangeToImageAtIndex:(NSUInteger)index {
     //change the collection view to show to the current cell at the index path
-    [manager.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathWithIndex:index] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:TRUE];
-    //todo: verify that the currentIndex being set here is not needed
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+    [manager.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:TRUE];
 }
 
 - (void)imageCollectionViewManager:(SHImageModelCollectionViewManager *)manager didSelectImageAtIndex:(NSUInteger)index {
@@ -527,9 +524,6 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    
-    //todo: refactor to make semantic style of Brennan
-    //   if ([segue.destinationViewController isKindOfClass:[SHDrinkProfileViewController class]]) {}
     
     if ([segue.destinationViewController isKindOfClass:[PhotoViewerViewController class]]) {
         PhotoViewerViewController *viewController = segue.destinationViewController;

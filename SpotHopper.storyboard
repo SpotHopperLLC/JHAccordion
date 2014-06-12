@@ -1663,9 +1663,6 @@
                                                 <constraint firstItem="bpB-ZK-56G" firstAttribute="leading" secondItem="3JY-zR-cLR" secondAttribute="leading" constant="20" id="zQL-2m-MMJ"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="GlZ-9f-e0n" kind="push" identifier="SpotProfileToPhotoViewer" id="5h8-BH-s79"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SpotSpecialsCell" rowHeight="84" id="sOi-4Z-iUc">
                                         <rect key="frame" x="0.0" y="312" width="320" height="84"/>
@@ -1733,9 +1730,6 @@
                                                 </view>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="liI-3A-pN5" kind="push" identifier="SpotProfileToPhotoAlbum" id="vUt-hH-x0N"/>
-                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -1769,6 +1763,8 @@
                         <outlet property="topShadowImageView" destination="yap-AA-Rfr" id="pdi-py-o0q"/>
                         <segue destination="3qZ-LX-58x" kind="unwind" identifier="unwindFromSpotProfileToHomeMapFindSimilar" unwindAction="unwindFromSpotProfileToHomeMapViewControllerFindSimilar:" id="qP2-YF-pB2"/>
                         <segue destination="3qZ-LX-58x" kind="unwind" identifier="unwindFromSpotProfileToHomeMap" unwindAction="unwindFromProfileViewToHomeMapViewController:" id="m5y-Ef-ehv"/>
+                        <segue destination="liI-3A-pN5" kind="push" identifier="SpotProfileToPhotoAlbum" id="m5e-QT-orl"/>
+                        <segue destination="GlZ-9f-e0n" kind="push" identifier="SpotProfileToPhotoAlbum" id="Ags-6p-98d"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YVY-r2-TVp" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1779,7 +1775,7 @@
                     </connections>
                 </customObject>
             </objects>
-            <point key="canvasLocation" x="1309" y="1457"/>
+            <point key="canvasLocation" x="1309" y="1441"/>
         </scene>
         <!--Spot Detail Footer Navigation View Controller-->
         <scene sceneID="RQM-Ad-ORt">
@@ -1853,7 +1849,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jIX-Hd-l5E" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1296" y="2131"/>
+            <point key="canvasLocation" x="1309" y="2175"/>
         </scene>
         <!--Photo Album View Controller-->
         <scene sceneID="5aD-5C-4aJ">
@@ -1913,7 +1909,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n3F-3j-ffA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1890" y="1857"/>
+            <point key="canvasLocation" x="1858" y="1916"/>
         </scene>
         <!--Photo Viewer View Controller-->
         <scene sceneID="axD-7g-QTR">
@@ -1972,7 +1968,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ANo-6a-Vr4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2439" y="1457"/>
+            <point key="canvasLocation" x="2487" y="1916"/>
         </scene>
         <!--Sidebar View Controller-->
         <scene sceneID="mcz-bq-vMb">
@@ -2482,6 +2478,8 @@
                         <outlet property="tableview" destination="CY5-tV-GxO" id="DoU-kr-Ynb"/>
                         <outlet property="topShadowImageView" destination="c7S-i7-0th" id="gub-5L-d3P"/>
                         <segue destination="VQg-Hm-FD3" kind="unwind" identifier="unwindFromDrinkProfileToHomeMap" unwindAction="unwindFromProfileViewToHomeMapViewController:" id="0EY-qh-udU"/>
+                        <segue destination="GlZ-9f-e0n" kind="push" identifier="DrinkProfileToPhotoViewer" id="JUZ-1I-e8k"/>
+                        <segue destination="liI-3A-pN5" kind="push" identifier="DrinkProfileToPhotoAlbum" id="bf7-dq-aod"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ebu-40-aIb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2518,6 +2516,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="5h8-BH-s79"/>
+        <segue reference="m5e-QT-orl"/>
+        <segue reference="nlg-bf-HOg"/>
     </inferredMetricsTieBreakers>
 </document>
