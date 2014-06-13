@@ -2469,6 +2469,11 @@
 		A62B334D193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A62B3345193D090100CE4BF0 /* SHSpotProfileViewController.m */; };
 		A62B334E193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A62B3345193D090100CE4BF0 /* SHSpotProfileViewController.m */; };
 		A62B334F193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A62B3345193D090100CE4BF0 /* SHSpotProfileViewController.m */; };
+		A688DB57194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A688DB56194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m */; };
+		A688DB58194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A688DB56194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m */; };
+		A688DB59194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A688DB56194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m */; };
+		A688DB5A194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A688DB56194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m */; };
+		A688DB5B194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A688DB56194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m */; };
 		A6CA343619390BCF001BB23A /* SHImageModelCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA343519390BCF001BB23A /* SHImageModelCollectionViewManager.m */; };
 		A6CA343719390BCF001BB23A /* SHImageModelCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA343519390BCF001BB23A /* SHImageModelCollectionViewManager.m */; };
 		A6CA343819390BCF001BB23A /* SHImageModelCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CA343519390BCF001BB23A /* SHImageModelCollectionViewManager.m */; };
@@ -3164,6 +3169,8 @@
 		A62B3343193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSpotDetailFooterNavigationViewController.m; path = SpotHopper/SHSpotDetailFooterNavigationViewController.m; sourceTree = "<group>"; };
 		A62B3344193D090100CE4BF0 /* SHSpotProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSpotProfileViewController.h; path = SpotHopper/SHSpotProfileViewController.h; sourceTree = "<group>"; };
 		A62B3345193D090100CE4BF0 /* SHSpotProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSpotProfileViewController.m; path = SpotHopper/SHSpotProfileViewController.m; sourceTree = "<group>"; };
+		A688DB55194A2ACA00AA3CE8 /* SHDrinkProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHDrinkProfileViewController.h; path = SpotHopper/SHDrinkProfileViewController.h; sourceTree = "<group>"; };
+		A688DB56194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHDrinkProfileViewController.m; path = SpotHopper/SHDrinkProfileViewController.m; sourceTree = "<group>"; };
 		A6CA343419390BCF001BB23A /* SHImageModelCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHImageModelCollectionViewManager.h; path = SpotHopper/SHImageModelCollectionViewManager.h; sourceTree = "<group>"; };
 		A6CA343519390BCF001BB23A /* SHImageModelCollectionViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHImageModelCollectionViewManager.m; path = SpotHopper/SHImageModelCollectionViewManager.m; sourceTree = "<group>"; };
 		B1EBE873E3124E54A24ED229 /* Pods-SpotHopperDev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotHopperDev.xcconfig"; path = "Pods/Pods-SpotHopperDev.xcconfig"; sourceTree = "<group>"; };
@@ -4527,8 +4534,10 @@
 		26A7E3641922CE5A00FF7B88 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				A6CA34251937A9DA001BB23A /* SpotDetails */,
 				26C428D9192D623900B67F10 /* Base */,
+				A6CA34251937A9DA001BB23A /* SpotDetails */,
+				A688DB55194A2ACA00AA3CE8 /* SHDrinkProfileViewController.h */,
+				A688DB56194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m */,
 				2654B89D192BB6E000A66BED /* SHHomeMapViewController.h */,
 				2654B89E192BB6E000A66BED /* SHHomeMapViewController.m */,
 				2654B89F192BB6E000A66BED /* SHHomeNavigationViewController.h */,
@@ -6817,6 +6826,7 @@
 				03CA7289187C26B300815284 /* SpotModel.m in Sources */,
 				038664CB186D376900985CEC /* NSArray+SaveLoad.m in Sources */,
 				03E882D918C78D8B00BD8FBB /* AdjustSpotListSliderViewController.m in Sources */,
+				A688DB57194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m in Sources */,
 				03E882DF18C797BA00BD8FBB /* UIView+AddBorder.m in Sources */,
 				039F548A18D33BA9004B2B67 /* DrinkMenuViewController.m in Sources */,
 				26C428CD192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m in Sources */,
@@ -6855,6 +6865,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A688DB5B194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m in Sources */,
 				2654B8B9192BB6E000A66BED /* SHHomeNavigationViewController.m in Sources */,
 				03CABFAF18E7716400FAC5F5 /* NSArray+DailySpecials.m in Sources */,
 				03CABFB018E7716400FAC5F5 /* UIImage+FixOrientation.m in Sources */,
@@ -7176,6 +7187,7 @@
 				2688CF1F194B3A0600C37DE3 /* SpotListRequest.m in Sources */,
 				26C428DE192D625A00B67F10 /* SHBaseNavigationController.m in Sources */,
 				03F4E7B518CA33D00056EAA9 /* FooterViewController.m in Sources */,
+				A688DB59194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m in Sources */,
 				03F4E7B618CA33D00056EAA9 /* SHLabelLatoRegular.m in Sources */,
 				03F4E7B818CA33D00056EAA9 /* ReviewCell.m in Sources */,
 				2654B8C6192BB6E000A66BED /* SHMapOverlayCollectionViewController.m in Sources */,
@@ -7343,6 +7355,7 @@
 				2688CF1E194B3A0600C37DE3 /* SpotListRequest.m in Sources */,
 				26C428DD192D625A00B67F10 /* SHBaseNavigationController.m in Sources */,
 				03F4E90318CA34260056EAA9 /* FooterViewController.m in Sources */,
+				A688DB58194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m in Sources */,
 				03F4E90418CA34260056EAA9 /* SHLabelLatoRegular.m in Sources */,
 				03F4E90618CA34260056EAA9 /* ReviewCell.m in Sources */,
 				2654B8C5192BB6E000A66BED /* SHMapOverlayCollectionViewController.m in Sources */,
@@ -7356,6 +7369,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A688DB5A194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m in Sources */,
 				2654B8B8192BB6E000A66BED /* SHHomeNavigationViewController.m in Sources */,
 				267E04F91922CC48004457B4 /* NSArray+DailySpecials.m in Sources */,
 				267E04FA1922CC48004457B4 /* UIImage+FixOrientation.m in Sources */,

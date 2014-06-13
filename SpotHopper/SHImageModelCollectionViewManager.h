@@ -15,10 +15,8 @@
 
 @interface SHImageModelCollectionViewManager : SHBaseCollectionViewManager <UICollectionViewDelegate, UICollectionViewDataSource>
 
-//@property (nonatomic, weak) IBOutlet id<SHImageModelCollectionDelegate> delegate;
 @property (weak, nonatomic) UICollectionView *collectionView;
 @property (strong, nonatomic) NSArray *imageModels;
-@property (assign, nonatomic) NSUInteger currentIndex;
 
 - (void)changeIndex:(NSUInteger)index;
 - (void)changeImage:(ImageModel *)spot;
