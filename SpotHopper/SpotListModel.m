@@ -15,6 +15,7 @@
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
 #import "SpotModel.h"
+#import "SpotListRequest.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -203,8 +204,6 @@
         [params setObject:jsonSliders forKey:@"sliders"];
     }
     
-    
-    
     [[ClientSessionManager sharedClient] PUT:[NSString stringWithFormat:@"/api/spot_lists/%ld", (long)[self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI
@@ -256,6 +255,74 @@
     
     return deferred.promise;
     
+}
+
+#pragma mark - Revised Code for 2.0
+
++ (void)fetchSpotListWithRequest:(SpotListRequest *)request success:(void (^)(SpotListModel *spotListModel, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    // Creating params
+    NSMutableArray *jsonSliders = [NSMutableArray array];
+    for (SliderModel *slider in request.sliders) {
+        if (slider.value != nil) {
+            [jsonSliders addObject:@{
+                                     @"slider_template_id" : slider.sliderTemplate.ID,
+                                     @"value" : slider.value,
+                                     }];
+        }
+    }
+    
+    NSMutableDictionary *params = @{
+                                    @"name" : request.name,
+                                    @"sliders" : jsonSliders,
+                                    kSpotListModelParamBasedOnSlider : [NSNumber numberWithBool:YES]
+                                    }.mutableCopy;
+    
+    if (request.spotId != nil) {
+        [params setObject:request.spotId forKey:@"spot_id"];
+    }
+    
+    if (request.spotTypeId != nil) {
+        [params setObject:request.spotTypeId forKey:@"spot_type_id"];
+    }
+    
+    if (CLLocationCoordinate2DIsValid(request.coordinate)) {
+        [params setObject:[NSNumber numberWithFloat:request.coordinate.latitude] forKey:kSpotListModelParamLatitude];
+        [params setObject:[NSNumber numberWithFloat:request.coordinate.longitude] forKey:kSpotListModelParamLongitude];
+    }
+    
+    [[ClientSessionManager sharedClient] POST:@"/api/spot_lists" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            SpotListModel *model = [jsonApi resourceForKey:@"spot_lists"];
+            
+            // limit to 10
+            if (model.spots.count > 10) {
+                model.spots = [model.spots subarrayWithRange:NSMakeRange(0, 10)];
+            }
+            
+            successBlock(model, jsonApi);
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+        }
+    }];
+}
+
++ (Promise *)fetchSpotListWithRequest:(SpotListRequest *)request {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [self fetchSpotListWithRequest:request success:^(SpotListModel *spotListModel, JSONAPI *jsonApi) {
+        // Resolves promise
+        [deferred resolveWith:spotListModel];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
 }
 
 @end

@@ -90,4 +90,8 @@
 
 + (Promise *)fetchSpotsNearLocation:(CLLocation *)location;
 
++ (void)fetchSpotTypes:(void (^)(NSArray *spotTypes))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise *)fetchSpotTypes;
+
 @end

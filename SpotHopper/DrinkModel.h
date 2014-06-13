@@ -77,6 +77,10 @@
 
 - (Promise*)fetchSpotsForLocation:(CLLocation *)location;
 
++ (void)fetchDrinkTypes:(void (^)(NSArray *drinkTypes))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise *)fetchDrinkTypes;
+
 #pragma mark -
 
 - (NSString*)abvPercentString;

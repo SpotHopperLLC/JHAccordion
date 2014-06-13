@@ -10,6 +10,8 @@
 
 @class DrinkListRequest;
 @class DrinkListModel;
+@class SpotListRequest;
+@class SpotListModel;
 
 @protocol SHSlidersSearchDelegate;
 
@@ -17,7 +19,7 @@
 
 @property (weak, nonatomic) id<SHSlidersSearchDelegate> delegate;
 
-@property (readonly, nonatomic) DrinkListModel *drinkListModel;
+//@property (readonly, nonatomic) DrinkListModel *drinkListModel;
 
 - (void)prepareForMode:(SHMode)mode;
 
@@ -26,6 +28,8 @@
 @protocol SHSlidersSearchDelegate <NSObject>
 
 @optional
+
+- (void)slidersSearchViewController:(SHSlidersSearchViewController *)vc didPrepareSpotlist:(SpotListModel *)spotlist withRequest:(SpotListRequest *)request forMode:(SHMode)mode;
 
 - (void)slidersSearchViewController:(SHSlidersSearchViewController *)vc didPrepareDrinklist:(DrinkListModel *)drinklist withRequest:(DrinkListRequest *)request forMode:(SHMode)mode;
 

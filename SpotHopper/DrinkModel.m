@@ -220,6 +220,35 @@
     return deferred.promise;
 }
 
++ (void)fetchDrinkTypes:(void (^)(NSArray *drinkTypes))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    // Gets drink form data (Beer, Wine and Cocktail)
+    [DrinkModel getDrinks:@{kDrinkModelParamsPageSize:@0} success:^(NSArray *spotModels, JSONAPI *jsonApi) {
+        NSDictionary *forms = [jsonApi objectForKey:@"form"];
+        if (forms != nil) {
+            NSArray *drinkTypes = [forms objectForKey:@"drink_types"];
+            if (successBlock) {
+                successBlock(drinkTypes);
+            }
+        }
+    } failure:^(ErrorModel *errorModel) {
+        if (failureBlock) {
+            failureBlock(errorModel);
+        }
+    }];
+}
+
++ (Promise *)fetchDrinkTypes {
+    Deferred *deferred = [Deferred deferred];
+    
+    [DrinkModel fetchDrinkTypes:^(NSArray *drinkTypes) {
+        [deferred resolveWith:drinkTypes];
+    } failure:^(ErrorModel *errorModel) {
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
 #pragma mark - Caching
 
 + (DrinkModelCache *)sh_sharedCache {

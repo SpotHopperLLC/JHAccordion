@@ -2353,6 +2353,11 @@
 		267E06CA1922CC48004457B4 /* img_match_pin_view@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039ABBC218CE1DA500B84AE6 /* img_match_pin_view@2x.png */; };
 		267E06CB1922CC48004457B4 /* icon_my_spotlists.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF6018C6DC8500172F13 /* icon_my_spotlists.png */; };
 		267E06CC1922CC48004457B4 /* slider_background_max@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72BA187C4FB300815284 /* slider_background_max@2x.png */; };
+		2688CF1D194B3A0600C37DE3 /* SpotListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */; };
+		2688CF1E194B3A0600C37DE3 /* SpotListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */; };
+		2688CF1F194B3A0600C37DE3 /* SpotListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */; };
+		2688CF20194B3A0600C37DE3 /* SpotListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */; };
+		2688CF21194B3A0600C37DE3 /* SpotListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */; };
 		268C8CA2190089D00011E0F8 /* UserState.m in Sources */ = {isa = PBXBuildFile; fileRef = 268C8CA1190089D00011E0F8 /* UserState.m */; };
 		268C8CA3190089D00011E0F8 /* UserState.m in Sources */ = {isa = PBXBuildFile; fileRef = 268C8CA1190089D00011E0F8 /* UserState.m */; };
 		268C8CA4190089D00011E0F8 /* UserState.m in Sources */ = {isa = PBXBuildFile; fileRef = 268C8CA1190089D00011E0F8 /* UserState.m */; };
@@ -3111,6 +3116,8 @@
 		267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoBold.m; sourceTree = "<group>"; };
 		267E06D11922CC48004457B4 /* SH2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SH2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		267E06D31922CCA2004457B4 /* SpotHopperStaging2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperStaging2-Info.plist"; sourceTree = "<group>"; };
+		2688CF1B194B3A0600C37DE3 /* SpotListRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotListRequest.h; sourceTree = "<group>"; };
+		2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotListRequest.m; sourceTree = "<group>"; };
 		268C8CA0190089D00011E0F8 /* UserState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserState.h; sourceTree = "<group>"; };
 		268C8CA1190089D00011E0F8 /* UserState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserState.m; sourceTree = "<group>"; };
 		26A7E3651922CE8000FF7B88 /* SpotHopper.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SpotHopper.storyboard; sourceTree = "<group>"; };
@@ -4486,6 +4493,8 @@
 		26723E4C193FBF9800628833 /* Requests */ = {
 			isa = PBXGroup;
 			children = (
+				2688CF1B194B3A0600C37DE3 /* SpotListRequest.h */,
+				2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */,
 				26723E4D193FBFC000628833 /* DrinkListRequest.h */,
 				26723E4E193FBFC000628833 /* DrinkListRequest.m */,
 			);
@@ -6832,6 +6841,7 @@
 				0372FF9418E36535009188B5 /* ImageModel.m in Sources */,
 				26EB38AF18FC7E1100E84A3B /* NSNull+Debugging.m in Sources */,
 				03AF8EC118E531CC00DD9356 /* CheckinViewController.m in Sources */,
+				2688CF1D194B3A0600C37DE3 /* SpotListRequest.m in Sources */,
 				26C428DC192D625A00B67F10 /* SHBaseNavigationController.m in Sources */,
 				0320233B1875E060008368C2 /* FooterViewController.m in Sources */,
 				039B6FF1188711B800C590F8 /* SHLabelLatoRegular.m in Sources */,
@@ -7007,6 +7017,7 @@
 				03CAC02318E7716400FAC5F5 /* ImageModel.m in Sources */,
 				26EB38B218FC7E1100E84A3B /* NSNull+Debugging.m in Sources */,
 				03CAC02418E7716400FAC5F5 /* CheckinViewController.m in Sources */,
+				2688CF21194B3A0600C37DE3 /* SpotListRequest.m in Sources */,
 				26C428E0192D625A00B67F10 /* SHBaseNavigationController.m in Sources */,
 				03CAC02518E7716400FAC5F5 /* FooterViewController.m in Sources */,
 				03CAC02618E7716400FAC5F5 /* SHLabelLatoRegular.m in Sources */,
@@ -7173,6 +7184,7 @@
 				0372FF9518E36677009188B5 /* ImageModel.m in Sources */,
 				26EB38B118FC7E1100E84A3B /* NSNull+Debugging.m in Sources */,
 				03AF8EC318E531CC00DD9356 /* CheckinViewController.m in Sources */,
+				2688CF1F194B3A0600C37DE3 /* SpotListRequest.m in Sources */,
 				26C428DE192D625A00B67F10 /* SHBaseNavigationController.m in Sources */,
 				03F4E7B518CA33D00056EAA9 /* FooterViewController.m in Sources */,
 				A688DB59194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m in Sources */,
@@ -7340,6 +7352,7 @@
 				0372FF9618E36677009188B5 /* ImageModel.m in Sources */,
 				26EB38B018FC7E1100E84A3B /* NSNull+Debugging.m in Sources */,
 				03AF8EC218E531CC00DD9356 /* CheckinViewController.m in Sources */,
+				2688CF1E194B3A0600C37DE3 /* SpotListRequest.m in Sources */,
 				26C428DD192D625A00B67F10 /* SHBaseNavigationController.m in Sources */,
 				03F4E90318CA34260056EAA9 /* FooterViewController.m in Sources */,
 				A688DB58194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m in Sources */,
@@ -7508,6 +7521,7 @@
 				267E057B1922CC48004457B4 /* ImageModel.m in Sources */,
 				267E057C1922CC48004457B4 /* NSNull+Debugging.m in Sources */,
 				267E057D1922CC48004457B4 /* CheckinViewController.m in Sources */,
+				2688CF20194B3A0600C37DE3 /* SpotListRequest.m in Sources */,
 				26C428DF192D625A00B67F10 /* SHBaseNavigationController.m in Sources */,
 				267E057E1922CC48004457B4 /* FooterViewController.m in Sources */,
 				267E057F1922CC48004457B4 /* SHLabelLatoRegular.m in Sources */,
