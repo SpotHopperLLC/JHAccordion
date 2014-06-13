@@ -317,9 +317,11 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
             
         case SHStyleKitDrawingTopBarWhiteShadowBackground:
             [SHStyleKit drawTopBarWhiteShadowBackground];
+            break;
             
         case SHStyleKitDrawingBottomBarBlackShadowBackground:
-            [SHStyleKit drawBottomDarkShadowBackground];
+            [SHStyleKit drawBottomBarBlackShadowBackground];
+            break;
             
         default:
             break;

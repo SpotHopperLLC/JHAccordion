@@ -73,7 +73,7 @@
 + (void)drawGradientBackgroundWithWidth: (CGFloat)width height: (CGFloat)height scaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY;
 + (void)drawTopBarBackgroundWithFillColorName: (NSString*)fillColorName;
 + (void)drawTopBarWhiteShadowBackground;
-+ (void)drawBottomDarkShadowBackground;
++ (void)drawBottomBarBlackShadowBackground;
 + (void)drawMyPlaceholderWithScaleX: (CGFloat)scaleX scaleY: (CGFloat)scaleY;
 
 // Generated Images
