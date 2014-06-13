@@ -21,6 +21,7 @@
 #import "SHMapOverlayCollectionViewController.h"
 #import "SHMapFooterNavigationViewController.h"
 #import "SHSpotProfileViewController.h"
+#import "SHDrinkProfileViewController.h"
 
 #import "SpotAnnotationCallout.h"
 #import "MatchPercentAnnotation.h"
@@ -64,7 +65,8 @@
 
 #define kModalAnimationDuration 0.35f
 
-NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
+NSString* const HomeMapToSpotProfile = @"HomeMapToSpotProfile";
+NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 @interface SHHomeMapViewController ()
     <SHSidebarDelegate,
@@ -118,6 +120,7 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
 @property (strong, nonatomic) SpotModel *selectedSpot;
 @property (strong, nonatomic) SpotListRequest *spotListRequest;
 @property (strong, nonatomic) DrinkListRequest *drinkListRequest;
+@property (strong, nonatomic) DrinkModel *selectedDrink;
 
 @property (strong, nonatomic) NSArray *spotsForDrink;
 
@@ -300,8 +303,15 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
         SHSpotProfileViewController *vc = segue.destinationViewController;
         NSAssert(self.selectedSpot, @"Selected Spot should be defined");
         vc.spot = self.selectedSpot;
-        
     }
+    
+    else if ([segue.destinationViewController isKindOfClass:[SHDrinkProfileViewController class]]) {
+        SHDrinkProfileViewController *vc = segue.destinationViewController;
+        NSAssert(self.selectedDrink, @"Selected Spot should be defined");
+        vc.drink = self.selectedDrink;
+    }
+    
+    
 }
 
 #pragma mark - View Management
@@ -762,7 +772,7 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
     }
 }
 
-- (IBAction)unwindFromSpotProfileToHomeMapViewController:(UIStoryboardSegue*)unwindSegue {
+- (IBAction)unwindFromProfileViewToHomeMapViewController:(UIStoryboardSegue*)unwindSegue {
 }
 
 - (IBAction)unwindFromSpotProfileToHomeMapViewControllerFindSimilar:(UIStoryboardSegue*)unwindSegue {
@@ -1439,15 +1449,15 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
     
     if (self.spotListModel && index < self.spotListModel.spots.count) {
         self.selectedSpot = self.spotListModel.spots[index];
-        [self performSegueWithIdentifier:SpotSelectedSegueIdentifier sender:self];
+        [self performSegueWithIdentifier:HomeMapToSpotProfile sender:self];
     }
     else if (self.specialsSpotModels && index < self.specialsSpotModels.count) {
         self.selectedSpot = self.specialsSpotModels[index];
-        [self performSegueWithIdentifier:SpotSelectedSegueIdentifier sender:self];
+        [self performSegueWithIdentifier:HomeMapToSpotProfile sender:self];
     }
     else if (self.drinkListModel && index < self.spotsForDrink.count) {
         self.selectedSpot = self.spotsForDrink[index];
-        [self performSegueWithIdentifier:SpotSelectedSegueIdentifier sender:self];
+        [self performSegueWithIdentifier:HomeMapToSpotProfile sender:self];
     }
 }
 
@@ -1462,6 +1472,16 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didSelectDrinkAtIndex:(NSUInteger)index {
     DebugLog(@"%@ (%lu)", NSStringFromSelector(_cmd), (unsigned long)index);
+    
+    if (self.drinkListModel.drinks.count && index < self.drinkListModel.drinks.count) {
+        self.selectedDrink = self.drinkListModel.drinks[index];
+
+        [self performSegueWithIdentifier:HomeMapToDrinkProfile sender:self];
+    
+    }else {
+        NSAssert(FALSE, @"Index should always be in bounds");
+    }
+
 }
 
 #pragma mark - SHMapFooterNavigationDelegate
@@ -1548,13 +1568,13 @@ NSString* const SpotSelectedSegueIdentifier = @"HomeMapToSpotProfile";
                 pin.drawing = SHStyleKitDrawingSpecialsIcon;
                 break;
             case SHModeBeer:
-                pin.drawing = SHStyleKitDrawingBeerIcon;
+                pin.drawing = SHStyleKitDrawingBeerDrinklistIcon;
                 break;
             case SHModeCocktail:
-                pin.drawing = SHStyleKitDrawingCocktailIcon;
+                pin.drawing = SHStyleKitDrawingCocktailDrinklistIcon;
                 break;
             case SHModeWine:
-                pin.drawing = SHStyleKitDrawingWineIcon;
+                pin.drawing = SHStyleKitDrawingWineDrinklistIcon;
                 break;
                 
             default:
