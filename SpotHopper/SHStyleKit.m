@@ -1838,7 +1838,7 @@ static UIColor* _myWhiteColorTransparent = nil;
     CGColorSpaceRelease(colorSpace);
 }
 
-+ (void)drawBottomDarkShadowBackground;
++ (void)drawBottomBarBlackShadowBackground;
 {
     //// General Declarations
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
