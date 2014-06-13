@@ -173,7 +173,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     NSInteger numberOfRows = 0;
     switch (section) {
         case 0:
-            numberOfRows =  kNumberOfCells;
+            numberOfRows = kNumberOfCells;
             break;
         case 1:
             NSLog(@"# of templates:  %lu", (unsigned long)self.spot.sliderTemplates.count);
@@ -191,7 +191,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     static NSString *SpotDetailsCellIdentifier = @"SpotDetailsCell";
     static NSString *SpotSpecialsCellIdentifier = @"SpotSpecialsCell";
     static NSString *SpotVibeIdentifier = @"SpotVibeCell";
-    
     
     UITableViewCell *cell;
     
@@ -261,8 +260,8 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
                         if (todaysSpecial) {
                             specialDetails.text = todaysSpecial;
                         }
-                        
                     }
+                    
                     break;
                 }
             }
@@ -272,17 +271,22 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
         case 1:{
             cell = [tableView dequeueReusableCellWithIdentifier:SpotVibeIdentifier forIndexPath:indexPath];
             
-            SHSlider *slider = (SHSlider*)[cell viewWithTag:kSliderVibeTag];
-            UILabel *minValue = (UILabel*)[cell viewWithTag:kLeftLabelVibeTag];
-            UILabel *maxValue = (UILabel*)[cell viewWithTag:kRightLabelVibeTag];
-            slider.vibeFeel = TRUE;
-            
-            SliderModel *sliderModel = self.spot.averageReview.sliders[indexPath.row];
-            SliderTemplateModel *sliderTemplate = sliderModel.sliderTemplate;
-            
-            minValue.text = sliderTemplate.minLabel.length ? sliderTemplate.minLabel : @"";
-            maxValue.text = sliderTemplate.maxLabel.length ? sliderTemplate.maxLabel : @"";
-            [slider setSelectedValue:(sliderModel.value.floatValue / 10.0f)];
+            if (indexPath.row < self.spot.averageReview.sliders.count) {
+                SliderModel *sliderModel = self.spot.averageReview.sliders[indexPath.row];
+                SliderTemplateModel *sliderTemplate = sliderModel.sliderTemplate;
+                
+                SHSlider *slider = (SHSlider*)[cell viewWithTag:kSliderVibeTag];
+                UILabel *minValue = (UILabel*)[cell viewWithTag:kLeftLabelVibeTag];
+                UILabel *maxValue = (UILabel*)[cell viewWithTag:kRightLabelVibeTag];
+                slider.vibeFeel = TRUE;
+                
+                minValue.text = sliderTemplate.minLabel.length ? sliderTemplate.minLabel : @"";
+                maxValue.text = sliderTemplate.maxLabel.length ? sliderTemplate.maxLabel : @"";
+                [slider setSelectedValue:(sliderModel.value.floatValue / 10.0f)];
+            }
+            else {
+                NSAssert(FALSE, @"Index should never be out of range");
+            }
             
             break;
         }
@@ -361,6 +365,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 
 #pragma mark - SHSpotDetailFooterNavigationDelegate
 #pragma mark -
+
 - (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc findSimilarButtonTapped:(id)sender {
     [self performSegueWithIdentifier:UnwindFromSpotProfileToHomeMapFindSimilar sender:self];
 }
@@ -496,7 +501,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     
     return closeTime;
 }
-
 
 - (void)embedViewController:(UIViewController *)vc intoView:(UIView *)superview placementBlock:(void (^)(UIView *view))placementBlock {
     NSAssert(vc, @"VC must be define");
