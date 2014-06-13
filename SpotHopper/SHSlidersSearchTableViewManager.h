@@ -10,6 +10,8 @@
 
 @class DrinkListRequest;
 @class DrinkListModel;
+@class SpotListRequest;
+@class SpotListModel;
 @class ErrorModel;
 
 @protocol SHSlidersSearchTableViewManagerDelegate;
@@ -23,6 +25,8 @@
 - (void)prepareTableViewForDrinkType:(NSString *)drinkTypeName;
 
 - (void)prepareTableViewForDrinkType:(NSString *)drinkTypeName andWineSubType:(NSString *)wineSubTypeName;
+
+- (void)fetchSpotListResultsWithCompletionBlock:(void (^)(SpotListModel *spotListModel, SpotListRequest *request, ErrorModel *errorModel))completionBlock;
 
 - (void)fetchDrinkListResultsWithCompletionBlock:(void (^)(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel))completionBlock;
 

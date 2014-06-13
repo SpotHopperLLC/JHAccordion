@@ -21,7 +21,7 @@
 
 #import <JSONAPI/JSONAPI.h>
 
-@class ErrorModel, SpotModel, CLLocation;
+@class ErrorModel, SpotModel, SpotListRequest, CLLocation;
 
 @interface SpotListModel : SHJSONAPIResource
 
@@ -40,5 +40,11 @@
 - (Promise *)getSpotList:(NSDictionary *)params success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
 - (Promise *)putSpotList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude radius:(NSNumber*)radius sliders:(NSArray*)sliders success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
 - (Promise *)deleteSpotList:(NSDictionary *)params success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
+
+#pragma mark - Revised Code for 2.0
+
++ (void)fetchSpotListWithRequest:(SpotListRequest *)request success:(void (^)(SpotListModel *spotListModel, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise *)fetchSpotListWithRequest:(SpotListRequest *)request;
 
 @end

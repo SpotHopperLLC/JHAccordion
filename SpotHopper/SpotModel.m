@@ -283,6 +283,42 @@
     return deferred.promise;
 }
 
++ (void)fetchSpotTypes:(void (^)(NSArray *spotTypes))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    [SpotModel getSpots:@{kSpotModelParamsPageSize:@0} success:^(NSArray *spotModels, JSONAPI *jsonApi) {
+        NSDictionary *forms = [jsonApi objectForKey:@"form"];
+        if (forms != nil) {
+            // Get spot types only user can see
+            NSMutableArray *userSpotTypes = [@[] mutableCopy];
+            NSArray *allSpotTypes = [forms objectForKey:@"spot_types"];
+            for (NSDictionary *spotType in allSpotTypes) {
+                if ([[spotType objectForKey:@"visible_to_users"] boolValue] == YES) {
+                    [userSpotTypes addObject:spotType];
+                }
+            }
+            
+            if (successBlock) {
+                successBlock(userSpotTypes);
+            }
+        }
+    } failure:^(ErrorModel *errorModel) {
+        if (failureBlock) {
+            failureBlock(errorModel);
+        }
+    }];
+}
+
++ (Promise *)fetchSpotTypes {
+    Deferred *deferred = [Deferred deferred];
+    
+    [SpotModel fetchSpotTypes:^(NSArray *spotTypes) {
+        [deferred resolveWith:spotTypes];
+    } failure:^(ErrorModel *errorModel) {
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
 #pragma mark - Getters
 
 - (NSString*)addressCityState {

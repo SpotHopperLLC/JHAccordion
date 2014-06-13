@@ -347,6 +347,7 @@
                         <outlet property="slidersSearchTableViewManager" destination="b42-Mj-MDL" id="LCl-s3-mNm"/>
                         <outlet property="tableView" destination="PZE-0K-mHj" id="xsd-TR-XbL"/>
                         <segue destination="8xl-qj-G9G" kind="unwind" identifier="finishCreatingDrinkListForHomeMap" unwindAction="finishCreatingDrinkListForHomeMap:" id="ze3-f7-Zym"/>
+                        <segue destination="8xl-qj-G9G" kind="unwind" identifier="finishCreatingSpotListForHomeMap" unwindAction="finishCreatingSpotListForHomeMap:" id="s9c-v6-7Sy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fb7-6n-MJS" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -327,6 +327,7 @@
         if (operation.response.statusCode == 200) {
             DrinkListModel *model = [jsonApi resourceForKey:@"drink_lists"];
             
+            // limit to 10
             if (model.drinks.count > 10) {
                 model.drinks = [model.drinks subarrayWithRange:NSMakeRange(0, 10)];
             }

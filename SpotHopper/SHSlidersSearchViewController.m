@@ -12,6 +12,9 @@
 #import "SHStyleKit+Additions.h"
 
 #import "DrinkListModel.h"
+#import "SpotListModel.h"
+#import "DrinkListRequest.h"
+#import "SpotListRequest.h"
 #import "ErrorModel.h"
 #import "Tracker.h"
 
@@ -19,7 +22,7 @@
 
 @property (assign, nonatomic) SHMode mode;
 
-@property (strong, readwrite, nonatomic) DrinkListModel *drinkListModel;
+//@property (strong, readwrite, nonatomic) DrinkListModel *drinkListModel;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *searchButton;
@@ -65,24 +68,38 @@
 #pragma mark -
 
 - (void)prepareSearchResults {
-    // TODO: adjust for spotlists
-    
-    [self showHUD:@"Creating Drinklist"];
-    [self.slidersSearchTableViewManager fetchDrinkListResultsWithCompletionBlock:^(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel) {
-        [self hideHUD];
-        if (errorModel) {
-            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
-            [self showAlert:@"Oops" message:errorModel.human];
-        }
-        else {
-            // TODO: determine why this property is needed
-            self.drinkListModel = drinkListModel;
-            [self performSegueWithIdentifier:@"finishCreatingDrinkListForHomeMap" sender:self];
-            if ([self.delegate respondsToSelector:@selector(slidersSearchViewController:didPrepareDrinklist:withRequest:forMode:)]) {
-                [self.delegate slidersSearchViewController:self didPrepareDrinklist:drinkListModel withRequest:request forMode:self.mode];
+    if (self.mode == SHModeSpots) {
+        [self showHUD:@"Creating Spotlist"];
+        [self.slidersSearchTableViewManager fetchSpotListResultsWithCompletionBlock:^(SpotListModel *spotListModel, SpotListRequest *request, ErrorModel *errorModel) {
+            [self hideHUD];
+            if (errorModel) {
+                [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+                [self showAlert:@"Oops" message:errorModel.human];
             }
-        }
-    }];
+            else {
+                [self performSegueWithIdentifier:@"finishCreatingSpotListForHomeMap" sender:self];
+                if ([self.delegate respondsToSelector:@selector(slidersSearchViewController:didPrepareDrinklist:withRequest:forMode:)]) {
+                    [self.delegate slidersSearchViewController:self didPrepareSpotlist:spotListModel withRequest:request forMode:self.mode];
+                }
+            }
+        }];
+    }
+    else {
+        [self showHUD:@"Creating Drinklist"];
+        [self.slidersSearchTableViewManager fetchDrinkListResultsWithCompletionBlock:^(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel) {
+            [self hideHUD];
+            if (errorModel) {
+                [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+                [self showAlert:@"Oops" message:errorModel.human];
+            }
+            else {
+                [self performSegueWithIdentifier:@"finishCreatingDrinkListForHomeMap" sender:self];
+                if ([self.delegate respondsToSelector:@selector(slidersSearchViewController:didPrepareDrinklist:withRequest:forMode:)]) {
+                    [self.delegate slidersSearchViewController:self didPrepareDrinklist:drinkListModel withRequest:request forMode:self.mode];
+                }
+            }
+        }];
+    }
 }
 
 - (void)hideSearchButton:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {

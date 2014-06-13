@@ -17,6 +17,7 @@
 #import "DrinkListModel.h"
 #import "DrinkListRequest.h"
 #import "SpotListModel.h"
+#import "SpotListRequest.h"
 #import "SliderTemplateModel.h"
 #import "ErrorModel.h"
 
@@ -26,6 +27,7 @@
 #import "SHStyleKit+Additions.h"
 
 NSString * const SliderTemplatesKey = @"SliderTemplatesKey";
+NSString * const SpotTypesKey = @"SpotTypesKey";
 NSString * const DrinkTypesKey = @"DrinkTypesKey";
 NSString * const WineSubTypesKey = @"WineSubTypesKey";
 
@@ -40,6 +42,9 @@ NSString * const WineSubTypesKey = @"WineSubTypesKey";
 
 - (NSArray *)cachedSliderTemplates;
 - (void)cacheSliderTemplates:(NSArray *)sliderTemplates;
+
+- (NSArray *)cachedSpotTypes;
+- (void)cacheSpotTypes:(NSArray *)spotTypes;
 
 - (NSArray *)cachedDrinkTypes;
 - (void)cacheDrinkTypes:(NSArray *)drinkTypes;
@@ -87,6 +92,9 @@ NSString * const WineSubTypesKey = @"WineSubTypesKey";
     [self.tableView registerClass:[SHSectionHeaderView class] forHeaderFooterViewReuseIdentifier:@"SectionHeader"];
 
     switch (mode) {
+        case SHModeSpots:
+            [self prepareTableViewForSpots];
+            break;
         case SHModeBeer:
             [self prepareTableViewForDrinkType:kDrinkTypeNameBeer];
             break;
@@ -100,6 +108,24 @@ NSString * const WineSubTypesKey = @"WineSubTypesKey";
         default:
             break;
     }
+}
+
+- (void)prepareTableViewForSpots {
+    [self fetchSpotTypesWithCompletionBlock:^(NSArray *spotTypes) {
+        [self fetchSliderTemplatesWithCompletionBlock:^(NSArray *sliderTemplates) {
+            [self filterSlidersTemplatesForSpots:sliderTemplates withCompletionBlock:^(NSArray *sliders, NSArray *advancedSliders) {
+                NSLog(@"sliders: %li", (long)sliders.count);
+                NSLog(@"advancedSliders: %li", (long)advancedSliders.count);
+                
+                self.sliders = sliders;
+                self.advancedSliders = advancedSliders;
+                
+                [self.tableView reloadData];
+                
+                // TODO: open/close sections as appropriate
+            }];
+        }];
+    }];
 }
 
 - (void)prepareTableViewForDrinkType:(NSString *)drinkTypeName {
@@ -116,7 +142,6 @@ NSString * const WineSubTypesKey = @"WineSubTypesKey";
     return nil;
 }
 
-
 - (NSDictionary *)selectedWineSubType {
     if (self.wineSubTypeName.length) {
         for (NSDictionary *wineSubType in self.wineSubTypes) {
@@ -130,7 +155,7 @@ NSString * const WineSubTypesKey = @"WineSubTypesKey";
 }
 
 - (void)prepareTableViewForDrinkType:(NSString *)drinkTypeName andWineSubType:(NSString *)wineSubTypeName {
-    [self.tableView setContentOffset:CGPointMake(0, 0) animated:FALSE];
+    //[self.tableView setContentOffset:CGPointMake(0, 0) animated:FALSE];
     
     self.drinkTypeName = drinkTypeName;
     self.wineSubTypeName = wineSubTypeName;
@@ -145,8 +170,8 @@ NSString * const WineSubTypesKey = @"WineSubTypesKey";
         else {
             self.wineSubTypes = nil;
         }
+        
         [self fetchSliderTemplatesWithCompletionBlock:^(NSArray *sliderTemplates) {
-            
             NSDictionary *selectedDrinkType = [self selectedDrinkType];
             NSDictionary *selectedWineSubType = [self selectedWineSubType];
             
@@ -163,7 +188,7 @@ NSString * const WineSubTypesKey = @"WineSubTypesKey";
                 
                 [self.tableView reloadData];
                 
-                // open/close sections as appropriate
+                // TODO: open/close sections as appropriate
             }];
         }];
     }];
@@ -171,6 +196,57 @@ NSString * const WineSubTypesKey = @"WineSubTypesKey";
 
 - (BOOL)isSelectingSpotlist {
     return !self.drinkTypeName.length;
+}
+
+- (void)fetchSpotListResultsWithCompletionBlock:(void (^)(SpotListModel *spotListModel, SpotListRequest *request, ErrorModel *errorModel))completionBlock {
+    NSMutableArray *allTheSliders = [NSMutableArray array];
+    [allTheSliders addObjectsFromArray:self.sliders];
+    [allTheSliders addObjectsFromArray:self.advancedSliders];
+    
+    NSString *sliderType = [self isSelectingSpotlist] ? @"Spotlist" : @"Drinklist";
+    
+    for (SliderModel *sliderModel in self.sliders) {
+        if (sliderModel.value) {
+            [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @NO}];
+        }
+    }
+    for (SliderModel *sliderModel in self.advancedSliders) {
+        if (sliderModel.value) {
+            [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @YES}];
+        }
+    }
+    
+    // TODO: review how the last location is set
+    CLLocation *location = [TellMeMyLocation lastLocation];
+    
+    NSNumber *latitude = nil, *longitude = nil;
+    if (location != nil) {
+        latitude = [NSNumber numberWithFloat:location.coordinate.latitude];
+        longitude = [NSNumber numberWithFloat:location.coordinate.longitude];
+    }
+    
+    [Tracker track:@"Creating Spotlist"];
+    
+    SpotListRequest *request = [[SpotListRequest alloc] init];
+    request.name = kSpotListModelDefaultName;
+    request.coordinate = location.coordinate;
+    request.sliders = allTheSliders;
+    
+    // TODO: add spotId and/or spotTypeId if it is defined
+    
+    [[SpotListModel fetchSpotListWithRequest:request] then:^(SpotListModel *spotListModel) {
+        // TODO: add tracking for spotId and spotTypeId when those values are added to this search filter
+        [Tracker track:@"Created Spotlist" properties:@{@"Success" : @TRUE, @"Created With Sliders" : @TRUE}];
+        
+        if (completionBlock) {
+            completionBlock(spotListModel, request, nil);
+        }
+    } fail:^(ErrorModel *errorModel) {
+        if (completionBlock) {
+            completionBlock(nil, nil, errorModel);
+        }
+    } always:^{
+    }];
 }
 
 - (void)fetchDrinkListResultsWithCompletionBlock:(void (^)(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel))completionBlock {
@@ -529,28 +605,42 @@ NSString * const WineSubTypesKey = @"WineSubTypesKey";
 #pragma mark - API Methods
 #pragma mark -
 
+- (void)fetchSpotTypesWithCompletionBlock:(void (^)(NSArray * spotTypes))completionBlock {
+    NSArray *spotTypes = [[SHSlidersSearchTableViewManager sh_sharedCache] cachedSpotTypes];
+    if (spotTypes.count && completionBlock) {
+        completionBlock(spotTypes);
+        return;
+    }
+    
+    [[SpotModel fetchSpotTypes] then:^(NSArray *spotTypes) {
+        // Any is the option when no spot type is defined
+        DebugLog(@"spotTypes: %@", spotTypes);
+        [[SHSlidersSearchTableViewManager sh_sharedCache] cacheSpotTypes:spotTypes];
+        if (completionBlock) {
+            completionBlock(spotTypes);
+        }
+    } fail:^(ErrorModel *errorModel) {
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+    } always:^{
+    }];
+}
+
 - (void)fetchDrinkTypesWithCompletionBlock:(void (^)(NSArray * drinkTypes))completionBlock {
-    NSArray *drinkTypes = [[SHSlidersSearchTableViewManager sh_sharedCache] objectForKey:DrinkTypesKey];
+    NSArray *drinkTypes = [[SHSlidersSearchTableViewManager sh_sharedCache] cachedDrinkTypes];
     if (drinkTypes.count && completionBlock) {
         completionBlock(drinkTypes);
         return;
     }
     
-    // Gets drink form data (Beer, Wine and Cocktail)
-    [DrinkModel getDrinks:@{kDrinkModelParamsPageSize:@0} success:^(NSArray *spotModels, JSONAPI *jsonApi) {
-        NSDictionary *forms = [jsonApi objectForKey:@"form"];
-        if (forms != nil) {
-            NSArray *drinkTypes = [forms objectForKey:@"drink_types"];
-            [[SHSlidersSearchTableViewManager sh_sharedCache] cacheDrinkTypes:drinkTypes];
-            if (completionBlock) {
-                completionBlock(drinkTypes);
-            }
-        }
-    } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+    [[DrinkModel fetchDrinkTypes] then:^(NSArray *drinkTypes) {
+        DebugLog(@"drinkTypes: %@", drinkTypes);
+        [[SHSlidersSearchTableViewManager sh_sharedCache] cacheDrinkTypes:drinkTypes];
         if (completionBlock) {
-            completionBlock(nil);
+            completionBlock(drinkTypes);
         }
+    } fail:^(ErrorModel *errorModel) {
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+    } always:^{
     }];
 }
 
@@ -585,10 +675,38 @@ NSString * const WineSubTypesKey = @"WineSubTypesKey";
     }];
 }
 
+- (void)filterSlidersTemplatesForSpots:(NSArray *)sliderTemplates withCompletionBlock:(void (^)(NSArray *sliders, NSArray *advancedSliders))completionBlock {
+    NSMutableArray *sliders = [@[] mutableCopy];
+    NSMutableArray *advancedSliders = [@[] mutableCopy];
+
+    NSMutableArray *slidersFiltered = [@[] mutableCopy];
+
+    for (SliderTemplateModel *sliderTemplate in sliderTemplates) {
+        if (sliderTemplate.spotTypes.count) {
+            [slidersFiltered addObject:sliderTemplate];
+        }
+    }
+    
+    // Creating sliders
+    for (SliderTemplateModel *sliderTemplate in slidersFiltered) {
+        SliderModel *slider = [[SliderModel alloc] init];
+        [slider setSliderTemplate:sliderTemplate];
+        if (slider.sliderTemplate.required) {
+            [sliders addObject:slider];
+        }
+        else {
+            [advancedSliders addObject:slider];
+        }
+    }
+    
+    if (completionBlock) {
+        completionBlock(sliders, advancedSliders);
+    }
+}
+
 - (void)filterSlidersTemplates:(NSArray *)sliderTemplates forDrinkType:(NSDictionary *)selectedDrinkType andWineSubType:(NSDictionary *)selectedWineSubType withCompletionBlock:(void (^)(NSArray *sliders, NSArray *advancedSliders))completionBlock {
     NSMutableArray *sliders = [@[] mutableCopy];
     NSMutableArray *advancedSliders = [@[] mutableCopy];
-    
     
     NSMutableArray *slidersFiltered = [@[] mutableCopy];
     if (selectedDrinkType == nil) {
@@ -599,7 +717,7 @@ NSString * const WineSubTypesKey = @"WineSubTypesKey";
         NSNumber *selectedDrinkTypeId = selectedDrinkType[@"id"];
         NSNumber *selectedWineTypeId = selectedWineSubType[@"id"];
         
-        // Filters by spot id
+        // Filters by drink id
         for (SliderTemplateModel *sliderTemplate in sliderTemplates) {
             NSArray *drinkTypeIds = [sliderTemplate.drinkTypes valueForKey:@"ID"];
             NSArray *drinkSubtypeIds = [sliderTemplate.drinkSubtypes valueForKey:@"ID"];
@@ -696,6 +814,19 @@ NSString * const WineSubTypesKey = @"WineSubTypesKey";
     }
     else {
         [self removeObjectForKey:SliderTemplatesKey];
+    }
+}
+
+- (NSArray *)cachedSpotTypes {
+    return [self objectForKey:SpotTypesKey];
+}
+
+- (void)cacheSpotTypes:(NSArray *)spotTypes {
+    if (spotTypes.count) {
+        [self setObject:spotTypes forKey:SpotTypesKey];
+    }
+    else {
+        [self removeObjectForKey:SpotTypesKey];
     }
 }
 
