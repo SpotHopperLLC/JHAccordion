@@ -57,7 +57,8 @@ typedef enum {
     SHStyleKitDrawingPlaceholderBasic,
     SHStyleKitDrawingGradientBackground,
     SHStyleKitDrawingTopBarBackground,
-    SHStyleKitDrawingTopBarWhiteShadowBackground
+    SHStyleKitDrawingTopBarWhiteShadowBackground,
+    SHStyleKitDrawingBottomBarBlackShadowBackground
 } SHStyleKitDrawing;
 
 #import "SHStyleKit.h"
