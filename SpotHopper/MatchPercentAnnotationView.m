@@ -13,6 +13,10 @@
 #define kHeight 40
 #define kFontSize 14.0
 
+#define kLargeWidth 60
+#define kLargeHeight 60
+#define kLargeFontSize 18.0
+
 #import "MatchPercentAnnotationView.h"
 
 #import "SpotModel.h"
@@ -65,17 +69,32 @@
     self.calloutView = calloutView;
     self.drawing = drawing;
     
-    self.centerOffset = CGPointMake(kWidth / 3, -1 * (kHeight / 2));
+    [self addSubviews];
+}
+
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    
+    [self addSubviews];
+    [self setNeedsDisplay];
+}
+
+- (void)addSubviews {
+    for (UIView *subview in self.subviews) {
+        [subview removeFromSuperview];
+    }
+    
+    CGFloat width = self.useLargeIcon ? kLargeWidth : kWidth;
+    CGFloat height = self.useLargeIcon ? kLargeHeight : kHeight;
+    
+    self.centerOffset = CGPointMake(width / 3, -1 * (height / 2));
     self.opaque = NO;
     
     //self.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.25f];
     
-    CGFloat width = kWidth;
-    CGFloat height = kHeight;
-    
     self.frame = CGRectMake(0, 0, width, height);
     CGRect imageFrame = CGRectMake(0, 0, width, height);
-    CGRect innerFrame = CGRectMake(0, 0, width*2/3, height*2/3);
+    CGRect innerFrame = CGRectMake(0, 0, width*0.6f, height*0.6f);
     
     UIImageView *highlightedPinImageView = [[UIImageView alloc] initWithFrame:imageFrame];
     [SHStyleKit setImageView:highlightedPinImageView withDrawing:SHStyleKitDrawingMapBubblePinFilledIcon color:SHStyleKitColorMyWhiteColor];
@@ -106,11 +125,15 @@
     
     UIImageView *innerImageView = [[UIImageView alloc] initWithFrame:innerFrame];
     [self addSubview:innerImageView];
-    innerImageView.center = CGPointMake((kWidth/2) + shadowOffset, kHeight/2);
+    innerImageView.center = CGPointMake((width/2) + shadowOffset, height/2);
     self.innerImageView = innerImageView;
 }
 
 - (void)setSpot:(SpotModel *)spot {
+    [self setSpot:spot highlighted:FALSE];
+}
+
+- (void)setSpot:(SpotModel *)spot highlighted:(BOOL)highlighted {
     if (![_spot isEqual:spot]) {
         _spot = spot;
         
@@ -135,7 +158,7 @@
         }
         
         _isSettingSpot = TRUE;
-        [self setHighlighted:FALSE];
+        self.highlighted = highlighted;
         _isSettingSpot = FALSE;
     }
 }
@@ -146,7 +169,6 @@
     }
     
     [super setHighlighted:isHighlighted];
-    
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:0.25 delay:0.0 options:options animations:^{

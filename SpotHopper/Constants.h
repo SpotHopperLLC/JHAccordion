@@ -166,11 +166,11 @@
 
 typedef enum {
     SHModeNone = 0,
-    SHModeSpots = 1,
-    SHModeSpecials = 2,
-    SHModeBeer = 3,
-    SHModeCocktail = 4,
-    SHModeWine = 5
+    SHModeSpots,
+    SHModeSpecials,
+    SHModeBeer,
+    SHModeCocktail,
+    SHModeWine
 } SHMode;
 
 #endif
