@@ -302,13 +302,25 @@
         _tellMeMyLocation = [[TellMeMyLocation alloc] init];
     }
     
-    [_tellMeMyLocation findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
-        if (completionBlock) {
-            completionBlock();
-        }
-    } failure:^(NSError *error) {
-        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
-    }];
+    // Only check location if within time limit
+    NSDate *date = [TellMeMyLocation lastLocationDate];
+    if (date != nil && abs([date timeIntervalSinceNow]) > kRefreshLocationTime) {
+    
+        // Gets current location
+        [_tellMeMyLocation findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
+            
+            // Saves current location
+            [TellMeMyLocation setLastLocation:newLocation completionHandler:^{
+                if (completionBlock) {
+                    completionBlock();
+                }
+            }];
+
+        } failure:^(NSError *error) {
+            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+        }];
+        
+    }
 }
 
 #pragma mark - iRateDelegate

@@ -64,7 +64,7 @@
     #define kParseApplicationID @"lu4u2Bg5pBqLg9qZEWJB5W7fjSAVQPiH39Hr29kV"
     #define kParseClientKey @"BHl8KE9ZmZgmeDFnV9H886qKB9Y7EaWzZLPdOs4J"
 
-    #define kRefreshLocationTime 3600.0f
+    #define kRefreshLocationTime 10.0f
 
     #define kAnalyticsEnabled   TRUE
 
@@ -83,7 +83,7 @@
 
     #define kAppURLScheme  @"spothopperapp"
 
-    #define kRefreshLocationTime 3600.0f
+    #define kRefreshLocationTime 300.0f
 
     #define kAnalyticsEnabled   TRUE
 
