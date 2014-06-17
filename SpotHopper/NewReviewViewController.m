@@ -683,10 +683,7 @@
     NSString *name = [_selectedCocktailSubtype objectForKey:@"name"];
     _txtCocktailType.text = name;
     
-    // Only show "At which spot?" when its a house cocktail
-    BOOL containsHouse = [name.lowercaseString contains:@"house"];
-    [_imgCocktailWhichSpot setHidden:!containsHouse];
-    [_txtCocktailWhichSpot setHidden:!containsHouse];
+    [self updateViewCocktailHeader:YES];
 }
 
 - (void)onClickChooseCocktailAlcoholType:(id)sender {
@@ -1121,8 +1118,17 @@
         [_sliders removeObject:slider];
     }
     
+    
+    // Wrapped in CATransaction so we can make sure table scrolls to top
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:^{
+        [_tblReviews scrollRectToVisible:CGRectMake(0.0f, 0.0, CGRectGetWidth(_tblReviews.frame), 1.0f) animated:YES];
+    }];
+    
     // Reloading table
     [_tblReviews reloadData];
+    
+    [CATransaction commit];
     
 }
 
@@ -1248,33 +1254,8 @@
                 return [(obj1.order ?: @0) compare:(obj2.order ?: @0)];
             }];
             
-            // Creating sliders
-            [_sliders removeAllObjects];
-            for (SliderTemplateModel *sliderTemplate in _allSliderTemplates) {
-                SliderModel *slider = [[SliderModel alloc] init];
-                [slider setSliderTemplate:sliderTemplate];
-                [_sliders addObject:slider];
-            }
-            
-            // Filling advanced sliders if nil
-            if (_advancedSliders == nil) {
-                _advancedSliders = [NSMutableArray array];
-                
-                // Moving advanced sliders into their own array
-                for (SliderModel *slider in _sliders) {
-                    if (slider.sliderTemplate.required == NO) {
-                        [_advancedSliders addObject:slider];
-                    }
-                }
-                
-                // Removing advances sliders from basic array
-                for (SliderModel *slider in _advancedSliders) {
-                    [_sliders removeObject:slider];
-                }
-            }
-            
             // Reloading table
-            [_tblReviews reloadData];
+            [self filterSliderTemplates];
             
         } failure:^(ErrorModel *errorModel) {
             [self hideHUD];
@@ -1322,6 +1303,33 @@
         return _sectionHeaderReviewType;
     }
     return nil;
+}
+
+- (void)updateViewCocktailHeader:(BOOL)animate {
+    
+    NSString *name = [_selectedCocktailSubtype objectForKey:@"name"];
+    
+    // Only show "At which spot?" when its a house cocktail
+    BOOL containsHouse = [name.lowercaseString contains:@"house"];
+    
+    CGRect frame = _viewFormNewCocktail.frame;
+    CGFloat heightDiff = 0.0f;
+    if (!containsHouse) {
+        frame.size.height = CGRectGetMaxY(_txtCocktailAlcoholType.frame) + 16.0f;
+    } else {
+        frame.size.height = CGRectGetMaxY(_txtCocktailWhichSpot.frame) + 16.0f;
+        heightDiff = CGRectGetHeight(_viewFormNewCocktail.frame) - CGRectGetHeight(frame);
+    }
+    
+    [UIView animateWithDuration:(animate ? 0.35f : 0.0f) animations:^{
+        [_viewFormNewCocktail setFrame:frame];
+        [_tblReviews setTableHeaderView:_viewFormNewCocktail];
+        
+        [_imgCocktailWhichSpot setAlpha:(containsHouse ? 1.0f : 0.0f)];
+        [_txtCocktailWhichSpot setAlpha:(containsHouse ? 1.0f : 0.0f)];
+    } completion:^(BOOL finished) {
+        
+    }];
 }
 
 - (void)updateViewHeader:(NSInteger)section {
@@ -1387,6 +1395,7 @@
     else if (index == 2) {
         if (_viewFormNewCocktail == nil) {
             _viewFormNewCocktail = [UIView viewFromNibNamed:@"NewReviewCocktailView" withOwner:self];
+            [_viewFormNewCocktail setClipsToBounds:YES];
         }
         
         // Sets cocktail type picker view
@@ -1412,6 +1421,9 @@
         // Sets autocomplete
         [_txtCocktailWhichSpot setAutocompleteWithDataSource:self delegate:self];
         [_txtCocktailWhichSpot registerAutoCompleteCell:[UINib nibWithNibName:@"AutoCompleteCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"AutoCompleteCellView"];
+        
+        // Resizing
+        [self updateViewCocktailHeader:NO];
         
         return _viewFormNewCocktail;
     }
