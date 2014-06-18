@@ -31,7 +31,7 @@
     self.btnLocation.tintColor = [SHStyleKit myTextColor];
     self.navigationArrowImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingNavigationArrowRightIcon color:SHStyleKitColorMyTextColor size:CGSizeMake(20, 20)];
     
-    [self.btnLocation setTitle:@"Unknown" forState:UIControlStateNormal];
+    [self.btnLocation setTitle:@"Locating..." forState:UIControlStateNormal];
 }
 
 #pragma mark - Public

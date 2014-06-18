@@ -690,7 +690,7 @@ NSString * const WineSubTypesKey = @"WineSubTypesKey";
     // Creating sliders
     for (SliderTemplateModel *sliderTemplate in slidersFiltered) {
         SliderModel *slider = [[SliderModel alloc] init];
-        [slider setSliderTemplate:sliderTemplate];
+        slider.sliderTemplate = sliderTemplate;
         if (slider.sliderTemplate.required) {
             [sliders addObject:slider];
         }

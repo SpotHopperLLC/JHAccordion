@@ -127,6 +127,8 @@
     [self addSubview:innerImageView];
     innerImageView.center = CGPointMake((width/2) + shadowOffset, height/2);
     self.innerImageView = innerImageView;
+    
+    [self drawIcon];
 }
 
 - (void)setSpot:(SpotModel *)spot {
@@ -182,19 +184,7 @@
         }
     }];
     
-    if (self.isHighlighted) {
-        if (self.drawing != SHStyleKitDrawingNone) {
-            [SHStyleKit setImageView:self.innerImageView
-                         withDrawing:self.drawing color:SHStyleKitColorMyWhiteColor];
-        }
-    }
-    else {
-        if (self.drawing != SHStyleKitDrawingNone) {
-            [SHStyleKit setImageView:self.innerImageView withDrawing:self.drawing color:SHStyleKitColorMyTintColor];
-        }
-    }
-    [self bringSubviewToFront:self.innerImageView];
-    
+    [self drawIcon];
 }
 
 - (void)setCalloutView:(SpotAnnotationCallout *)calloutView {
@@ -226,6 +216,25 @@
     anim.removedOnCompletion = NO;
     anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     [self.layer addAnimation:anim forKey:@"bounceAnimation"];
+}
+
+- (void)drawIcon {
+    if (self.drawing == SHStyleKitDrawingNone) {
+        self.innerImageView.image = nil;
+    }
+    else {
+        if (self.isHighlighted) {
+            [SHStyleKit setImageView:self.innerImageView
+                         withDrawing:self.drawing
+                               color:SHStyleKitColorMyWhiteColor];
+        }
+        else {
+            [SHStyleKit setImageView:self.innerImageView
+                         withDrawing:self.drawing
+                               color:SHStyleKitColorMyTintColor];
+        }
+        [self bringSubviewToFront:self.innerImageView];
+    }
 }
 
 @end

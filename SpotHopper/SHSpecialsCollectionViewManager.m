@@ -85,7 +85,7 @@
     // TODO: change collection view position if the index is in bounds and set _currentIndex
     
     if (index != _currentIndex && index < self.spots.count) {
-        NSLog(@"Manager - Changing to index: %lu", (long)index);
+        DebugLog(@"Manager - Changing to index: %lu", (long)index);
         _currentIndex = index;
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_currentIndex inSection:0];
         [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:TRUE];
@@ -166,7 +166,7 @@
 #pragma mark -
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"Selected item %lu", (long)indexPath.item);
+    DebugLog(@"Selected item %lu", (long)indexPath.item);
     
     if ([self.delegate respondsToSelector:@selector(specialsCollectionViewManager:didSelectSpotAtIndex:)]) {
         [self.delegate specialsCollectionViewManager:self didSelectSpotAtIndex:indexPath.item];
@@ -239,7 +239,6 @@
     [SHStyleKit setButton:nameButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
     
     NSString *special = [spot.dailySpecials specialsForToday];
-    NSLog(@"Special: %@", special);
     NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:14.0], NSForegroundColorAttributeName : [SHStyleKit myTextColor] };
     NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:special attributes:attributes];
     specialTextView.attributedText = attributedString;
