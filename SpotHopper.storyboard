@@ -430,17 +430,13 @@
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1aX-TE-lJz">
-                                        <rect key="frame" x="68" y="4" width="104" height="32"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Brewcity, USA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fzu-d7-rM6">
+                                        <rect key="frame" x="68" y="10" width="104" height="20"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                        <state key="normal" title="Brewcity, USA">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="locationButtonTapped:" destination="hgm-K9-o02" eventType="touchUpInside" id="J3V-Ct-NrL"/>
-                                        </connections>
-                                    </button>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="igv-Hy-OSe">
                                         <rect key="frame" x="280" y="10" width="20" height="20"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -449,22 +445,44 @@
                                             <constraint firstAttribute="width" constant="20" id="WTD-7Q-AJU"/>
                                         </constraints>
                                     </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1aX-TE-lJz" userLabel="Location Button">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="locationButtonTapped:" destination="hgm-K9-o02" eventType="touchUpInside" id="J3V-Ct-NrL"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="centerY" secondItem="fzu-d7-rM6" secondAttribute="centerY" id="8UB-Nk-5ME"/>
+                                    <constraint firstItem="igv-Hy-OSe" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fzu-d7-rM6" secondAttribute="trailing" constant="8" symbolic="YES" id="AKb-ij-djb"/>
+                                    <constraint firstAttribute="trailing" secondItem="1aX-TE-lJz" secondAttribute="trailing" id="Dkt-4U-NHm"/>
                                     <constraint firstItem="9Id-UH-9Q9" firstAttribute="leading" secondItem="lf5-fx-KqW" secondAttribute="leading" constant="20" symbolic="YES" id="H50-oX-xGo"/>
                                     <constraint firstAttribute="centerY" secondItem="9Id-UH-9Q9" secondAttribute="centerY" id="I9W-ah-4S9"/>
-                                    <constraint firstItem="1aX-TE-lJz" firstAttribute="leading" secondItem="9Id-UH-9Q9" secondAttribute="trailing" constant="8" symbolic="YES" id="Upc-dx-x8P"/>
-                                    <constraint firstItem="igv-Hy-OSe" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1aX-TE-lJz" secondAttribute="trailing" constant="8" id="gfg-Jx-aTB"/>
+                                    <constraint firstAttribute="bottom" secondItem="1aX-TE-lJz" secondAttribute="bottom" id="PmC-Fp-dfJ"/>
+                                    <constraint firstItem="1aX-TE-lJz" firstAttribute="top" secondItem="lf5-fx-KqW" secondAttribute="top" id="cAg-Bo-r5J"/>
+                                    <constraint firstItem="1aX-TE-lJz" firstAttribute="leading" secondItem="lf5-fx-KqW" secondAttribute="leading" id="kbM-qF-fZ4"/>
                                     <constraint firstAttribute="trailing" secondItem="igv-Hy-OSe" secondAttribute="trailing" constant="20" symbolic="YES" id="m22-nl-3Vn"/>
-                                    <constraint firstAttribute="centerY" secondItem="1aX-TE-lJz" secondAttribute="centerY" id="oo9-NX-LxQ"/>
+                                    <constraint firstItem="fzu-d7-rM6" firstAttribute="leading" secondItem="9Id-UH-9Q9" secondAttribute="trailing" constant="8" id="oyO-Fp-IC3"/>
                                     <constraint firstAttribute="centerY" secondItem="igv-Hy-OSe" secondAttribute="centerY" id="qeB-K5-rP3"/>
                                 </constraints>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hid-sB-YIK" userLabel="Spot Drinklist View">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hid-sB-YIK" userLabel="Filter View">
+                                <rect key="frame" x="320" y="0.0" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filter results to Spot?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vhA-3z-ZbE">
+                                        <rect key="frame" x="20" y="10" width="156" height="20"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="P6q-Ol-we7">
                                         <rect key="frame" x="280" y="10" width="20" height="20"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -473,19 +491,37 @@
                                             <constraint firstAttribute="height" constant="20" id="HrR-PF-XZ3"/>
                                         </constraints>
                                     </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sc2-0F-i4q" userLabel="Filter Button">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="filterButtonTapped:" destination="hgm-K9-o02" eventType="touchUpInside" id="J6b-Ea-KcI"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="P6q-Ol-we7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vhA-3z-ZbE" secondAttribute="trailing" constant="8" symbolic="YES" id="5Vh-Cl-zY5"/>
                                     <constraint firstAttribute="trailing" secondItem="P6q-Ol-we7" secondAttribute="trailing" constant="20" symbolic="YES" id="6X3-7F-IBz"/>
+                                    <constraint firstAttribute="trailing" secondItem="sc2-0F-i4q" secondAttribute="trailing" id="C1F-ho-F01"/>
+                                    <constraint firstAttribute="bottom" secondItem="sc2-0F-i4q" secondAttribute="bottom" id="Meu-9o-G9b"/>
+                                    <constraint firstAttribute="centerY" secondItem="vhA-3z-ZbE" secondAttribute="centerY" id="Xi3-b5-bOE"/>
+                                    <constraint firstItem="sc2-0F-i4q" firstAttribute="leading" secondItem="Hid-sB-YIK" secondAttribute="leading" id="a3s-4l-orA"/>
                                     <constraint firstAttribute="centerY" secondItem="P6q-Ol-we7" secondAttribute="centerY" id="aoc-7T-jJ9"/>
+                                    <constraint firstItem="sc2-0F-i4q" firstAttribute="top" secondItem="Hid-sB-YIK" secondAttribute="top" id="bD4-w6-hFj"/>
+                                    <constraint firstItem="vhA-3z-ZbE" firstAttribute="leading" secondItem="Hid-sB-YIK" secondAttribute="leading" constant="20" symbolic="YES" id="tH4-g4-Od1"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.89915497448979598" green="0.89915497448979598" blue="0.89915497448979598" alpha="0.75" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Hid-sB-YIK" firstAttribute="height" secondItem="OnX-bJ-WmE" secondAttribute="height" id="6mb-sd-qmx"/>
-                            <constraint firstItem="Hid-sB-YIK" firstAttribute="leading" secondItem="OnX-bJ-WmE" secondAttribute="leading" id="Eqz-Iq-zTU"/>
                             <constraint firstAttribute="trailing" secondItem="bxr-V4-gqu" secondAttribute="trailing" id="FBl-FP-d3M"/>
+                            <constraint firstItem="Hid-sB-YIK" firstAttribute="leading" secondItem="lf5-fx-KqW" secondAttribute="trailing" id="Oaz-Tk-2FP"/>
                             <constraint firstAttribute="trailing" secondItem="jh8-WW-LU6" secondAttribute="trailing" id="Rxm-Kn-OEo"/>
                             <constraint firstItem="jh8-WW-LU6" firstAttribute="top" secondItem="upZ-BT-2Vw" secondAttribute="bottom" id="Z6p-1e-ft2"/>
                             <constraint firstItem="jh8-WW-LU6" firstAttribute="leading" secondItem="OnX-bJ-WmE" secondAttribute="leading" id="bVK-hy-dXD"/>
@@ -505,9 +541,16 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="40"/>
                     <connections>
-                        <outlet property="btnLocation" destination="1aX-TE-lJz" id="ia3-pz-VdA"/>
-                        <outlet property="lblNear" destination="9Id-UH-9Q9" id="zRQ-dr-FO2"/>
-                        <outlet property="navigationArrowImageView" destination="igv-Hy-OSe" id="i4O-ei-zNJ"/>
+                        <outlet property="filterArrowImageView" destination="P6q-Ol-we7" id="f26-My-IOy"/>
+                        <outlet property="filterButton" destination="sc2-0F-i4q" id="2wk-kj-73r"/>
+                        <outlet property="filterLabel" destination="vhA-3z-ZbE" id="bYn-Xn-0p9"/>
+                        <outlet property="filterView" destination="Hid-sB-YIK" id="7B8-cf-Pah"/>
+                        <outlet property="leadingConstraint" destination="uA4-kv-FO0" id="Xkf-JV-IgT"/>
+                        <outlet property="locationArrowImageView" destination="igv-Hy-OSe" id="nva-EP-E2d"/>
+                        <outlet property="locationLabel" destination="fzu-d7-rM6" id="DwF-Nu-nUZ"/>
+                        <outlet property="locationView" destination="lf5-fx-KqW" id="i17-ed-g2c"/>
+                        <outlet property="nearLabel" destination="9Id-UH-9Q9" id="Mdf-Au-HNU"/>
+                        <outlet property="pickLocationButton" destination="1aX-TE-lJz" id="Q2y-yy-0jP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3VH-BK-Rcy" userLabel="First Responder" sceneMemberID="firstResponder"/>

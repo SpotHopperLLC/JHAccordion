@@ -10,11 +10,21 @@
 
 @protocol SHLocationMenuBarDelegate;
 
+@class SpotModel;
+
 @interface SHLocationMenuBarViewController : BaseViewController
 
 @property (weak, nonatomic) id<SHLocationMenuBarDelegate> delegate;
 
 - (void)updateLocationTitle:(NSString *)locationTitle;
+
+- (void)selectSpot:(SpotModel *)spot;
+
+- (void)deselectSpot:(SpotModel *)spot;
+
+- (void)selectSpotDrinkListForSpot:(SpotModel *)spot;
+
+- (void)deselectSpotDrinkList;
 
 @end
 
@@ -23,5 +33,10 @@
 @optional
 
 - (void)locationMenuBarViewControllerDidRequestLocationChange:(SHLocationMenuBarViewController *)vc;
+
+- (void)locationMenuBarViewController:(SHLocationMenuBarViewController *)vc didSelectSpot:(SpotModel *)spot;
+
+- (void)locationMenuBarViewController:(SHLocationMenuBarViewController *)vc didDeselectSpot:(SpotModel *)spot;
+
 
 @end

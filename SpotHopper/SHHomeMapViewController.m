@@ -1018,6 +1018,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         request.spotId = spot.ID;
         
         self.selectedSpot = spot;
+        [self.locationMenuBarViewController selectSpotDrinkListForSpot:spot];
         
         [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
             DebugLog(@"drinkListModel: %@", drinkListModel);
@@ -1208,11 +1209,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     [self repositionMapOnAnnotations:self.mapView.annotations animated:TRUE];
     
-    if ([spots containsObject:self.selectedSpot]) {
-        [self selectSpot:self.selectedSpot];
-    }
-    else if (spots.count) {
-        [self selectSpot:spots[0]];
+    if (!self.drinkListModel || self.selectedSpot) {
+        if ([spots containsObject:self.selectedSpot]) {
+            [self selectSpot:self.selectedSpot];
+        }
+        else if (spots.count) {
+            [self selectSpot:spots[0]];
+        }
     }
 }
 
@@ -1261,6 +1264,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)repositionMapOnAnnotations:(NSArray *)annotations animated:(BOOL)animated {
     _isRepositioningMap = TRUE;
+    
+    if (!self.searchThisAreaView.hidden) {
+        [self hideSearchThisArea:TRUE withCompletionBlock:nil];
+    }
 
     MKMapRect mapRect = MKMapRectNull;
     
@@ -1514,6 +1521,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         request.spotId = nil;
         request.coordinate = [self visibleMapCenter];
         
+        _isSpotDrinkList = FALSE;
+        [self.locationMenuBarViewController deselectSpotDrinkList];
+        
         [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
             self.selectedSpot = nil;
             [self displayDrinklist:drinkListModel];
@@ -1589,6 +1599,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)locationMenuBarViewControllerDidRequestLocationChange:(SHLocationMenuBarViewController *)vc {
     NSLog(@"Change Location!");
+}
+
+- (void)locationMenuBarViewController:(SHLocationMenuBarViewController *)vc didSelectSpot:(SpotModel *)spot {
+    [self displaySpotDrinkListForSpot:spot];
+}
+
+- (void)locationMenuBarViewController:(SHLocationMenuBarViewController *)vc didDeselectSpot:(SpotModel *)spot {
+    [self searchAgain];
 }
 
 #pragma mark - SHHomeNavigationDelegate
@@ -1797,20 +1815,26 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     if ([view isKindOfClass:[MatchPercentAnnotationView class]] == YES) {
         MatchPercentAnnotationView *pin = (MatchPercentAnnotationView*) view;
         
-        if (pin.isHighlighted == NO) {
-            [pin setHighlighted:YES];
+        if (!pin.isHighlighted) {
+            pin.highlighted = YES;
             
             if (self.mode == SHModeBeer || self.mode == SHModeCocktail || self.mode == SHModeWine) {
-                SpotAnnotationCallout *callout = [SpotAnnotationCallout viewFromNib];
-                [callout setMatchPercentAnnotationView:pin];
-                [callout setDelegate:self];
-                [callout setFrame:CGRectMake(0.0f, -CGRectGetHeight(callout.frame), CGRectGetWidth(callout.frame), CGRectGetHeight(callout.frame))];
-                
-                [pin setCalloutView:callout];
-                
-                [pin setUserInteractionEnabled:YES];
-                [pin addSubview:callout];
+                DebugLog(@"showing filter");
+                [self.locationMenuBarViewController selectSpot:pin.spot];
             }
+            
+            // disable callout for now
+//            if (self.mode == SHModeBeer || self.mode == SHModeCocktail || self.mode == SHModeWine) {
+//                SpotAnnotationCallout *callout = [SpotAnnotationCallout viewFromNib];
+//                [callout setMatchPercentAnnotationView:pin];
+//                [callout setDelegate:self];
+//                [callout setFrame:CGRectMake(0.0f, -CGRectGetHeight(callout.frame), CGRectGetWidth(callout.frame), CGRectGetHeight(callout.frame))];
+//                
+//                [pin setCalloutView:callout];
+//                
+//                [pin setUserInteractionEnabled:YES];
+//                [pin addSubview:callout];
+//            }
             
             [pin setNeedsDisplay];
 
@@ -1828,6 +1852,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         
         [pin.calloutView removeFromSuperview];
         [pin setCalloutView:nil];
+        
+        DebugLog(@"hiding filter (and clearing label)");
+        [self.locationMenuBarViewController deselectSpot:pin.spot];
     }
 }
 

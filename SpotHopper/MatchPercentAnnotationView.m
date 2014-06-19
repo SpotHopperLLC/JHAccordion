@@ -90,7 +90,14 @@
     self.centerOffset = CGPointMake(width / 3, -1 * (height / 2));
     self.opaque = NO;
     
-    //self.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.25f];
+    /*
+    if (self.useLargeIcon) {
+        self.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.25f];
+    }
+    else {
+        self.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.25f];
+    }
+     */
     
     self.frame = CGRectMake(0, 0, width, height);
     CGRect imageFrame = CGRectMake(0, 0, width, height);
