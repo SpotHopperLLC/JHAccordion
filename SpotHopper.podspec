@@ -8,14 +8,14 @@ Pod::Spec.new do |s|
 
   s.homepage     = "http://www.spothopperapp.com/"
 
-  s.license      = "MIT"
+  s.license = { :type => 'MIT', :file => 'LICENSE' }
 
   s.author       = { "Tech" => "tech@spothopperapp.com" }
 
   s.platform     = :ios, '7.0'
-  s.source       = { :git => "https://github.com/SpotHopperLLC/SpotHopper-iOS.git", :tag => "Podspec-2.0.0" }
+  s.source       = { :git => "https://github.com/SpotHopperLLC/SpotHopper-iOS.git", :tag => s.version }
 
-  spec.prefix_header_contents = '#import "Constants.h"'
+  s.prefix_header_contents = '#import "Constants.h"', '<Raven/RavenClient.h>', '#import <Promises/Promise.h>'
 
   s.source_files = 'SpotHopper/Constants.h', 'SpotHopper/**/DrinkListRequest.{h,m}', 'SpotHopper/**/SpotListRequest.{h,m}', 
       'SpotHopper/**/NSArray+HoursOfOperation.{h,m}', 'SpotHopper/**/NSNumber+Currency.{h,m}', 'SpotHopper/**/SHStyleKit.{h,m}',

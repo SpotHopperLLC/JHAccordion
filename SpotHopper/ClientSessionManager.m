@@ -17,8 +17,9 @@
 
 #import "UserModel.h"
 
+#import "Parse.h"
+
 #import <FacebookSDK/Facebook.h>
-#import <Parse/Parse.h>
 #import <Raven/RavenClient.h>
 
 @interface ClientSessionManager()
