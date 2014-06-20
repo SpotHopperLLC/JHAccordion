@@ -11,6 +11,7 @@
 @class ErrorModel;
 
 #import <JSONAPI/JSONAPI.h>
+#import <Promises/Promise.h>
 
 @interface BaseAlcoholModel : SHJSONAPIResource
 

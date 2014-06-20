@@ -19,6 +19,7 @@
 
 #import <FacebookSDK/Facebook.h>
 #import <Parse/Parse.h>
+#import <Raven/RavenClient.h>
 
 @interface ClientSessionManager()
 

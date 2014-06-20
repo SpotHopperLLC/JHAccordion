@@ -37,6 +37,8 @@
 #import "NSArray+HoursOfOperation.h"
 
 #import <JSONAPI/JSONAPI.h>
+#import <Promises/Promise.h>
+
 #import <CoreLocation/CoreLocation.h>
 
 @class ErrorModel, AverageReviewModel, SpotTypeModel, LiveSpecialModel, CLLocation;

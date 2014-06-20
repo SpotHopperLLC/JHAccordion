@@ -18,6 +18,9 @@
 #import "TellMeMyLocation.h"
 #import "Tracker.h"
 
+#import <Promises/Promise.h>
+#import <Raven/RavenClient.h>
+
 @interface LaunchViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgLogo;

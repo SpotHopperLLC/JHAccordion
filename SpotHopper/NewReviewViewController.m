@@ -33,7 +33,10 @@
 #import "Tracker.h"
 
 #import "JHAccordion.h"
+
 #import <JHAutoCompleteTextField/JHAutoCompleteTextField.h>
+#import <Promises/Promise.h>
+#import <Raven/RavenClient.h>
 
 #import "NewReviewViewController.h"
 

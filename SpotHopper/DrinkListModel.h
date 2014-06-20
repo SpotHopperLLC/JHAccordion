@@ -20,6 +20,7 @@
 #import "SHJSONAPIResource.h"
 
 #import <JSONAPI/JSONAPI.h>
+#import <Promises/Promise.h>
 
 @class ErrorModel, SpotModel, DrinkTypeModel, DrinkListRequest, CLLocation;
 

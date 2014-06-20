@@ -29,6 +29,7 @@
 #import "SHJSONAPIResource.h"
 
 #import <JSONAPI/JSONAPI.h>
+#import <Promises/Promise.h>
 
 @class AverageReviewModel;
 @class ErrorModel;

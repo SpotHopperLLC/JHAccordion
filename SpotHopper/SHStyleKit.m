@@ -1552,7 +1552,7 @@ static UIColor* _myWhiteColorTransparent = nil;
 + (void)drawFillerUpIconWithYPos: (CGFloat)yPos;
 {
     //// General Declarations
-    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextRef context __unused = UIGraphicsGetCurrentContext();
 
     //// Color Declarations
     UIColor* color = [UIColor colorWithRed: 0.878 green: 0.399 blue: 0.148 alpha: 1];
