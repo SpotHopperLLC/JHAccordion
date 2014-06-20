@@ -38,6 +38,11 @@
 @class SpotModel;
 @class CLLocation;
 
+#define kDrinkTypeNameBeer @"Beer"
+#define kDrinkTypeNameCocktail @"Cocktail"
+#define kDrinkTypeNameWine @"Wine"
+#define kDrinkTypeNameLiquor @"Liquor"
+
 @interface DrinkModel : SHJSONAPIResource
 
 @property (nonatomic, strong) NSString *name;

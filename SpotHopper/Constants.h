@@ -146,11 +146,6 @@
 #define kReviewTypesWine @"Wine"
 #define kReviewTypes @[kReviewTypesSpot, kReviewTypesBeer, kReviewTypesCocktail, kReviewTypesWine]
 
-#define kDrinkTypeNameBeer @"Beer"
-#define kDrinkTypeNameCocktail @"Cocktail"
-#define kDrinkTypeNameWine @"Wine"
-#define kDrinkTypeNameLiquor @"Liquor"
-
 #define kStateList @[@"AL",@"AK",@"AZ",@"AR",@"CA",@"CO",@"CT",@"DE",@"FL",@"GA",@"HI",@"ID",@"IL",@"IN",@"IA",@"KS",@"KY",@"LA",@"ME",@"MD",@"MA",@"MI",@"MN",@"MS",@"MO",@"MT",@"NE",@"NV",@"NH",@"NJ",@"NM",@"NY",@"NC",@"ND",@"OH",@"OK",@"OR",@"PA",@"RI",@"SC",@"SD",@"TN",@"TX",@"UT",@"VT",@"VA",@"WA",@"WV",@"WI",@"WY"]
 
 // Service configurations
