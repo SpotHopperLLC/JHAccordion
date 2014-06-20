@@ -15,7 +15,8 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '7.0'
   s.source       = { :git => "https://github.com/SpotHopperLLC/SpotHopper-iOS.git", :tag => "Podspec-2.0.0" }
 
-  s.source_files = 'SpotHopper/**/SHStyleKit.{h,m}', 'SpotHopper/**/ClientSessionManager.{h,m}', 'SpotHopper/**/SHJSONAPIResource.{h,m}', 'SpotHopper/**/*Model.{h,m}'
+  s.source_files = 'SpotHopper/**/NSArray+HoursOfOperation.{h,m}', 'SpotHopper/**/ NSNumber+Currency.{h,m}', 'SpotHopper/**/SHStyleKit.{h,m}',
+      'SpotHopper/**/ClientSessionManager.{h,m}', 'SpotHopper/**/SHJSONAPIResource.{h,m}', 'SpotHopper/**/*Model.{h,m}'
 
   s.requires_arc = true
 
@@ -24,5 +25,6 @@ Pod::Spec.new do |s|
   s.dependency 'Promises', '~> 0.1.0'
   s.dependency 'Raven', '~> 0.2.0'
   s.dependency 'Facebook-iOS-SDK', '~> 3.0'
+  s.dependency 'Parse-iOS-SDK', '~> 1.2.19'
 
 end
