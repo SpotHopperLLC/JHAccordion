@@ -15,7 +15,9 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '7.0'
   s.source       = { :git => "https://github.com/SpotHopperLLC/SpotHopper-iOS.git", :tag => "Podspec-2.0.0" }
 
-  s.source_files = 'SpotHopper/**/DrinkListRequest.{h,m}', 'SpotHopper/**/SpotListRequest.{h,m}', 
+  spec.prefix_header_contents = '#import "Constants.h"'
+
+  s.source_files = 'SpotHopper/Constants.h', 'SpotHopper/**/DrinkListRequest.{h,m}', 'SpotHopper/**/SpotListRequest.{h,m}', 
       'SpotHopper/**/NSArray+HoursOfOperation.{h,m}', 'SpotHopper/**/NSNumber+Currency.{h,m}', 'SpotHopper/**/SHStyleKit.{h,m}',
       'SpotHopper/**/ClientSessionManager.{h,m}', 'SpotHopper/**/SHJSONAPIResource.{h,m}', 'SpotHopper/**/*Model.{h,m}'
 
