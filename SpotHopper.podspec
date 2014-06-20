@@ -23,5 +23,6 @@ Pod::Spec.new do |s|
   s.dependency 'JSONAPI', '~> 0.1.0'
   s.dependency 'Promises', '~> 0.1.0'
   s.dependency 'Raven', '~> 0.2.0'
+  s.dependency 'Facebook-iOS-SDK', '~> 3.0'
 
 end
