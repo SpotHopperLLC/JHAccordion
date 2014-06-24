@@ -1799,6 +1799,11 @@
 		2602BD9D18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9E18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9F18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
+		262A65B2195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
+		262A65B3195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
+		262A65B4195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
+		262A65B5195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
+		262A65B6195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
 		2636AB3E18F8A82100591722 /* table_footer_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9418E2654900C93BBF /* table_footer_background.png */; };
 		2636AB3F18F8A82400591722 /* table_footer_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9518E2654900C93BBF /* table_footer_background@2x.png */; };
 		2640B00F193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */; };
@@ -3078,6 +3083,8 @@
 		2602BD9418E2654900C93BBF /* table_footer_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table_footer_background.png; sourceTree = "<group>"; };
 		2602BD9518E2654900C93BBF /* table_footer_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table_footer_background@2x.png"; sourceTree = "<group>"; };
 		2602BD9C18E283C500C93BBF /* Common.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Common.storyboard; sourceTree = "<group>"; };
+		262A65B0195893F800A4DACD /* MenuModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuModel.h; sourceTree = "<group>"; };
+		262A65B1195893F800A4DACD /* MenuModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuModel.m; sourceTree = "<group>"; };
 		2640B00D193E6C2D00978725 /* SHDrinksCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHDrinksCollectionViewManager.h; path = SpotHopper/SHDrinksCollectionViewManager.h; sourceTree = "<group>"; };
 		2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHDrinksCollectionViewManager.m; path = SpotHopper/SHDrinksCollectionViewManager.m; sourceTree = "<group>"; };
 		2654B88D192BB68C00A66BED /* SHStyleKit+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SHStyleKit+Additions.h"; path = "SpotHopper/SHStyleKit+Additions.h"; sourceTree = "<group>"; };
@@ -3812,6 +3819,8 @@
 				26ED5CB518FDDE56006901ED /* Tracker.m */,
 				038664ED186D391E00985CEC /* UserModel.h */,
 				038664EE186D391E00985CEC /* UserModel.m */,
+				262A65B0195893F800A4DACD /* MenuModel.h */,
+				262A65B1195893F800A4DACD /* MenuModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -6729,6 +6738,7 @@
 				03E882DC18C7953B00BD8FBB /* AdjustSliderSectionHeaderView.m in Sources */,
 				03F6BF5C18C6D5BB00172F13 /* SpotListsMenuViewController.m in Sources */,
 				039F546B18D2DB32004B2B67 /* DrinkProfileViewController.m in Sources */,
+				262A65B2195893F800A4DACD /* MenuModel.m in Sources */,
 				039F548F18D340AE004B2B67 /* MenuItemModel.m in Sources */,
 				26BABDCC190F698800852D73 /* DrinksViewController.m in Sources */,
 				265CE70D1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */,
@@ -6905,6 +6915,7 @@
 				03CABFCC18E7716400FAC5F5 /* AdjustSliderSectionHeaderView.m in Sources */,
 				03CABFCD18E7716400FAC5F5 /* SpotListsMenuViewController.m in Sources */,
 				03CABFCE18E7716400FAC5F5 /* DrinkProfileViewController.m in Sources */,
+				262A65B6195893F800A4DACD /* MenuModel.m in Sources */,
 				03CABFCF18E7716400FAC5F5 /* MenuItemModel.m in Sources */,
 				26BABDCF190F698800852D73 /* DrinksViewController.m in Sources */,
 				265CE7101911899C008DAF5E /* PhotoAlbumViewController.m in Sources */,
@@ -7073,6 +7084,7 @@
 				03F4E77418CA33D00056EAA9 /* SpotListsMenuViewController.m in Sources */,
 				039F546D18D2DB32004B2B67 /* DrinkProfileViewController.m in Sources */,
 				039F549118D340AE004B2B67 /* MenuItemModel.m in Sources */,
+				262A65B4195893F800A4DACD /* MenuModel.m in Sources */,
 				26BABDCE190F698800852D73 /* DrinksViewController.m in Sources */,
 				265CE70F1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */,
 				2654B8AD192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m in Sources */,
@@ -7241,6 +7253,7 @@
 				03F4E8C218CA34260056EAA9 /* SpotListsMenuViewController.m in Sources */,
 				039F546C18D2DB32004B2B67 /* DrinkProfileViewController.m in Sources */,
 				039F549018D340AE004B2B67 /* MenuItemModel.m in Sources */,
+				262A65B3195893F800A4DACD /* MenuModel.m in Sources */,
 				26BABDCD190F698800852D73 /* DrinksViewController.m in Sources */,
 				265CE70E1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */,
 				2654B8AC192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m in Sources */,
@@ -7409,6 +7422,7 @@
 				267E051A1922CC48004457B4 /* AdjustSliderSectionHeaderView.m in Sources */,
 				267E051B1922CC48004457B4 /* SpotListsMenuViewController.m in Sources */,
 				267E051C1922CC48004457B4 /* DrinkProfileViewController.m in Sources */,
+				262A65B5195893F800A4DACD /* MenuModel.m in Sources */,
 				267E051D1922CC48004457B4 /* MenuItemModel.m in Sources */,
 				267E051E1922CC48004457B4 /* DrinksViewController.m in Sources */,
 				267E051F1922CC48004457B4 /* PhotoAlbumViewController.m in Sources */,

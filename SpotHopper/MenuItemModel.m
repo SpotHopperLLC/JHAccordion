@@ -11,11 +11,13 @@
 @implementation MenuItemModel
 
 #pragma mark - Debugging
+#pragma mark -
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"%@ - %@", self.ID, self.href];
 }
 
+#pragma mark - Mapping
 #pragma mark -
 
 - (NSDictionary *)mapKeysToProperties {
@@ -34,7 +36,7 @@
              @"links.drink" : @"drink",
              @"links.spot" : @"spot",
              @"links.menu_type" : @"menuType",
-             @"links.prices" : @"prices",
+             @"links.prices" : @"prices"
              };
 }
 

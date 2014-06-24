@@ -164,44 +164,45 @@
         return;
     }
     
-    NSString *key = [DrinkModelCache spotsKeyForDrink:self location:location];
-    NSArray *spots = [[DrinkModel sh_sharedCache] cachedSpotsForKey:key];
+    // look for cached spots
+    NSString *cacheKey = [DrinkModelCache spotsKeyForDrink:self location:location];
+    NSArray *spots = [[DrinkModel sh_sharedCache] cachedSpotsForKey:cacheKey];
     if (spots && successBlock) {
         NSLog(@"Returning %lu cached spots", (unsigned long)spots.count);
         successBlock(spots, nil);
-        return;
     }
-
-    // assemble params internally to encapsulate implementation details
-    NSDictionary *params = @{
-                             kSpotModelParamPage : @1,
-                             kSpotModelParamsPageSize : @10,
-                             kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:location.coordinate.latitude],
-                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:location.coordinate.longitude]
-                             };
-    
-    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drinks/%ld/spots", (long)[self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    else {
+        // assemble params internally to encapsulate implementation details
+        NSDictionary *params = @{
+                                 kSpotModelParamPage : @1,
+                                 kSpotModelParamsPageSize : @10,
+                                 kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:location.coordinate.latitude],
+                                 kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:location.coordinate.longitude]
+                                 };
         
-        // Parses response with JSONAPI
-        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
-        
-        if (operation.response.statusCode == 200) {
-            NSArray *models = [jsonApi resourcesForKey:@"spots"];
-            // always check that the block is defined because running it an undefined block will cause a crash
-            if (successBlock) {
-                successBlock(models, jsonApi);
-            }
+        [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drinks/%ld/spots", (long)[self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
-            NSLog(@"Caching %lu spots", (unsigned long)models.count);
-            [[DrinkModel sh_sharedCache] cacheSpots:models forKey:key];
-        } else {
-            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
-            // always check that the block is defined because running it an undefined block will cause a crash
-            if (failureBlock) {
-                failureBlock(errorModel);
+            // Parses response with JSONAPI
+            JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+            
+            if (operation.response.statusCode == 200) {
+                NSArray *spotModels = [jsonApi resourcesForKey:@"spots"];
+                NSLog(@"Caching %lu spots", (unsigned long)spotModels.count);
+                [[DrinkModel sh_sharedCache] cacheSpots:spotModels forKey:cacheKey];
+                
+                // always check that the block is defined because running it an undefined block will cause a crash
+                if (successBlock) {
+                    successBlock(spotModels, jsonApi);
+                }
+            } else {
+                ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+                // always check that the block is defined because running it an undefined block will cause a crash
+                if (failureBlock) {
+                    failureBlock(errorModel);
+                }
             }
-        }
-    }];
+        }];
+    }
 }
 
 // Promisfy the call with the callbacks and do not mix callback and promise methods

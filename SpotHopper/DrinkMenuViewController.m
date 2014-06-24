@@ -20,6 +20,7 @@
 #import "DrinkSubtypeModel.h"
 #import "MenuItemModel.h"
 #import "MenuTypeModel.h"
+#import "MenuModel.h"
 #import "Tracker.h"
 
 #import "JHAccordion.h"
@@ -230,13 +231,13 @@
     
     [self showHUD:@"Loading menu"];
     
-    // Gets menu items
-    Promise *promiseMenuItems = [_spot getMenuItems:@{ kMenuItemParamsInStock : @"true" } success:^(NSArray *menuItemModels, JSONAPI *jsonApi) {
-        _menuItems = menuItemModels;
-        _menuTypes = [[jsonApi linked] objectForKey:@"menu_types"];
-    } failure:^(ErrorModel *errorModel) {
+    Promise *promiseMenuItems = [_spot fetchMenu];
+    [promiseMenuItems then:^(MenuModel *menu) {
+        _menuItems = menu.items;
+        _menuTypes = menu.types;
+    } fail:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
-    }];
+    } always:nil];
     
     // Gets drink form data
     Promise *promiseDrinkForm = [DrinkModel getDrinks:@{kDrinkModelParamsPageSize:@0} success:^(NSArray *drinkModels, JSONAPI *jsonApi) {

@@ -12,8 +12,20 @@
 #import "ErrorModel.h"
 #import "LiveSpecialModel.h"
 #import "SliderTemplateModel.h"
+#import "MenuItemModel.h"
+#import "MenuTypeModel.h"
+#import "MenuModel.h"
 
 #define kPageSize @25
+
+@interface SpotModelCache : NSCache
+
++ (NSString *)menuKeyForSpot:(SpotModel *)spot;
+
+- (MenuModel *)cachedMenuForKey:(NSString *)key;
+- (void)cacheMenu:(MenuModel *)menu forKey:(NSString *)key;
+
+@end
 
 @implementation SpotModel
 
@@ -179,7 +191,7 @@
     return deferred.promise;
 }
 
-- (Promise *)getSpot:(NSDictionary *)params success:(void (^)(SpotModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+- (Promise *)getSpot:(NSDictionary *)params success:(void (^)(SpotModel *spotModel, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
@@ -206,7 +218,7 @@
     return deferred.promise;
 }
 
-- (Promise *)getMenuItems:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+- (Promise *)getMenuItems:(NSDictionary *)params success:(void (^)(NSArray *menuItems, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
@@ -319,9 +331,72 @@
     return deferred.promise;
 }
 
+- (void)fetchMenu:(void (^)(MenuModel *menu))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    NSString *cacheKey = [SpotModelCache menuKeyForSpot:self];
+    MenuModel *menu = [[SpotModel sh_sharedCache] cachedMenuForKey:cacheKey];
+    if (menu && successBlock) {
+        successBlock(menu);
+    }
+    else {
+        NSDictionary *params = @{ kMenuItemParamsInStock : @"true" };
+        
+        [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/spots/%ld/menu_items", (long)[self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            // Parses response with JSONAPI
+            JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+            
+            if (operation.response.statusCode == 200) {
+                MenuModel *menu = [[MenuModel alloc] init];
+                menu.items = [jsonApi resourcesForKey:@"menu_items"];
+                menu.types = [[jsonApi linked] objectForKey:@"menu_types"];
+                
+                [[SpotModel sh_sharedCache] cacheMenu:menu forKey:cacheKey];
+                
+                if (successBlock) {
+                    successBlock(menu);
+                }
+            }
+            else {
+                ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+                if (failureBlock) {
+                    failureBlock(errorModel);
+                }
+            }
+        }];
+    }
+}
+
+- (Promise *)fetchMenu {
+    Deferred *deferred = [Deferred deferred];
+    
+    [self fetchMenu:^(MenuModel *menu) {
+        [deferred resolveWith:menu];
+    } failure:^(ErrorModel *errorModel) {
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
+#pragma mark - Caching
+
++ (SpotModelCache *)sh_sharedCache {
+    static SpotModelCache *_sh_Cache = nil;
+    static dispatch_once_t oncePredicate;
+    dispatch_once(&oncePredicate, ^{
+        _sh_Cache = [[SpotModelCache alloc] init];
+        
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * __unused notification) {
+            [_sh_Cache removeAllObjects];
+        }];
+    });
+    
+    return _sh_Cache;
+}
+
 #pragma mark - Getters
 
-- (NSString*)addressCityState {
+- (NSString *)addressCityState {
     NSMutableArray *parts = [NSMutableArray array];
     if ([self address].length > 0 && [self cityState].length > 0) {
         [parts addObject:[NSString stringWithFormat:@"%@, %@", [self address], [self cityState]]];
@@ -334,7 +409,7 @@
     return [parts componentsJoinedByString:@", "];
 }
 
-- (NSString*)fullAddress {
+- (NSString *)fullAddress {
     NSMutableArray *parts = [NSMutableArray array];
     if ([self address].length > 0 && [self cityState].length > 0) {
         [parts addObject:[NSString stringWithFormat:@"%@, %@", [self address], [self cityState]]];
@@ -351,7 +426,7 @@
     return [parts componentsJoinedByString:@", "];
 }
 
-- (NSString*)cityState {
+- (NSString *)cityState {
     if ([self city].length > 0 && [self state].length > 0) {
         return [NSString stringWithFormat:@"%@, %@", [self city], [self state]];
     } else if ([self city].length > 0) {
@@ -402,6 +477,27 @@
 
 - (UIImage *)placeholderImage {
     return [UIImage imageNamed:@"spot_placeholder"];
+}
+
+@end
+
+@implementation SpotModelCache
+
++ (NSString *)menuKeyForSpot:(SpotModel *)spot {
+    return [NSString stringWithFormat:@"key-menu-%@", spot.ID];
+}
+
+- (MenuModel *)cachedMenuForKey:(NSString *)key {
+    return [self objectForKey:key];
+}
+
+- (void)cacheMenu:(MenuModel *)menu forKey:(NSString *)key {
+    if (menu) {
+        [self setObject:menu forKey:key];
+    }
+    else {
+        [self removeObjectForKey:key];
+    }
 }
 
 @end

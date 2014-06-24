@@ -299,6 +299,11 @@ NSString * const WineSubTypesKey = @"WineSubTypesKey";
         if (drinkListModel.drinks.count) {
             DrinkModel *firstDrink = drinkListModel.drinks[0];
             [[firstDrink fetchSpotsForLocation:location] then:^(NSArray *spots) {
+                // pre-cache the menu for each spot
+                for (SpotModel *spotModel in spots) {
+                    [spotModel fetchMenu];
+                }
+                
                 if (completionBlock) {
                     completionBlock(drinkListModel, request, nil);
                 }
@@ -310,6 +315,12 @@ NSString * const WineSubTypesKey = @"WineSubTypesKey";
                         DrinkModel *drink = drinkListModel.drinks[i];
                         Promise *promise = [drink fetchSpotsForLocation:location];
                         [promises addObject:promise];
+                        [promise then:^(NSArray *spots) {
+                            // pre-cache the menu for each spot
+                            for (SpotModel *spotModel in spots) {
+                                [spotModel fetchMenu];
+                            }
+                        } fail:nil always:nil];
                     }
                     
                     [When when:promises then:^{

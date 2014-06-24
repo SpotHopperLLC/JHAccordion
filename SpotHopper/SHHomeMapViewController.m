@@ -42,6 +42,8 @@
 #import "ErrorModel.h"
 #import "SpotTypeModel.h"
 #import "AverageReviewModel.h"
+#import "MenuModel.h"
+#import "MenuItemModel.h"
 
 #import "UIImage+BlurredFrame.h"
 #import "UIImage+ImageEffects.h"
@@ -1024,7 +1026,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             DebugLog(@"drinkListModel: %@", drinkListModel);
             [self displayDrinklist:drinkListModel];
         } failure:^(ErrorModel *errorModel) {
-            // TODO: track error
+            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+            // TODO: tell the user about the error
         }];
         
         [self showSearchThisArea:TRUE withCompletionBlock:nil];
@@ -1821,6 +1824,38 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             if (self.mode == SHModeBeer || self.mode == SHModeCocktail || self.mode == SHModeWine) {
                 DebugLog(@"showing filter");
                 [self.locationMenuBarViewController selectSpot:pin.spot];
+                
+                [[pin.spot fetchMenu] then:^(MenuModel *menu) {
+                    for (MenuItemModel *menuItem in menu.items) {
+                        NSString *prices = [menu pricesForMenuItem:menuItem];
+                        if (prices.length) {
+                            DebugLog(@"menu item: %@", prices);
+                        }
+                        BOOL isBeerOnTap = [menu isBeerOnTap:menuItem];
+                        BOOL isBeerInBottle = [menu isBeerInBottle:menuItem];
+                        BOOL isCocktail = [menu isCocktail:menuItem];
+                        BOOL isWine = [menu isWine:menuItem];
+                        if (isBeerOnTap && isBeerInBottle) {
+                            DebugLog(@"type: beer on tap and in bottle/can");
+                        }
+                        else if (isBeerOnTap) {
+                            DebugLog(@"type: beer on tap");
+                        }
+                        else if (isBeerInBottle) {
+                            DebugLog(@"type: beer in bottle/can");
+                        }
+                        else if (isCocktail) {
+                            DebugLog(@"type: cocktail");
+                        }
+                        else if (isWine) {
+                            DebugLog(@"type: wine");
+                        }
+                        
+                    }
+                } fail:^(ErrorModel *errorModel) {
+                    [Tracker logError:errorModel.human class:[self class] trace:NSStringFromSelector(_cmd)];
+                    // TODO: tell the user about the error
+                } always:nil];
             }
             
             // disable callout for now
