@@ -19,3 +19,7 @@ Pods/
 
 # Merges
 *.orig
+
+# vim
+*.swp
+

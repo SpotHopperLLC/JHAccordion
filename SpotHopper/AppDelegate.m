@@ -81,7 +81,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 //    [[ClientSessionManager sharedClient] setHasSeenLaunch:NO];
 
-    [self applyApperance];
+    [self applyAppearance];
     
     [Tracker logError:@"App Delegate launching" class:[self class] trace:NSStringFromSelector(_cmd)];
     
@@ -299,14 +299,8 @@
     [JSONAPIResourceModeler useResource:[UserModel class] toLinkedType:@"users"];
 }
 
-- (void)applyApperance {
-//    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-//    [[UINavigationBar appearance] setBackgroundColor:[SHStyleKit myTintColorTransparent]];
-//    
-//    [[UINavigationBar appearance] setTintColor:[SHStyleKit myTintColorTransparent]];
-//    [[UIBarButtonItem appearance] setTintColor:[SHStyleKit myTintColorTransparent]];
-//    [[UITabBar appearance] setTintColor:[SHStyleKit myTintColorTransparent]];
-//    [[UITabBar appearance] setSelectedImageTintColor:[SHStyleKit myTintColorTransparent]];
+- (void)applyAppearance {
+    // do nothing
 }
 
 #pragma mark - Location

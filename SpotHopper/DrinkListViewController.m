@@ -30,6 +30,7 @@
 #import "ClientSessionManager.h"
 #import "ErrorModel.h"
 #import "CheckInModel.h"
+#import "MenuModel.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -363,19 +364,17 @@
     [_menuItems removeAllObjects];
     
     [self showHUD:@"Getting menu"];
-    [_spotAt getMenuItems:nil success:^(NSArray *menuItems, JSONAPI *jsonApi) {
-        
-        for (MenuItemModel *menuItem in menuItems) {
+    [[_spotAt fetchMenu] then:^(MenuModel *menu) {
+        for (MenuItemModel *menuItem in menu.items) {
             [_menuItems setObject:menuItem forKey:menuItem.drink.ID];
         }
-        
         [self hideHUD];
         [self updateEverything];
-    } failure:^(ErrorModel *errorModel) {
+    } fail:^(ErrorModel *errorModel) {
         [self hideHUD];
-        [self updateEverything];
+        [self showAlert:@"Oops" message:errorModel.human];
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
-    }];
+    } always:nil];
     
 }
     
