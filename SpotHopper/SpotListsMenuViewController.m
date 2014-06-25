@@ -62,6 +62,7 @@
 @property (nonatomic, strong) SectionHeaderView *sectionHeader0;
 @property (nonatomic, strong) SectionHeaderView *sectionHeader1;
 @property (nonatomic, strong) SectionHeaderView *sectionHeader2;
+@property (nonatomic, strong) SectionHeaderView *sectionHeader3;
 
 @property (nonatomic, strong) AdjustSpotListSliderViewController *adjustSpotListSliderViewController;
 
@@ -218,19 +219,26 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Don't show my reviews if no logged in
     if ([self isShowingMySpots]) {
-        return 3;
+        return 4;
     }
     else {
-        return 2;
+        return 3;
     }
 }
 
+#define kSectionSearchBySliders 0
+#define kSectionNameFavorite 1
+#define kSectionFeaturedSpotlists 2
+#define kSectionMySpotlists 3
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 0) {
+    if (section == kSectionSearchBySliders) {
         return 0;
-    } else if (section == 1) {
+    } else if (section == kSectionNameFavorite) {
+        return 0;
+    } else if (section == kSectionFeaturedSpotlists) {
         return _featuredSpotLists.count;
-    } else if (section == 2) {
+    } else if (section == kSectionMySpotlists) {
         return _mySpotLists.count;
     }
     
@@ -238,7 +246,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 1) {
+    if (indexPath.section == kSectionFeaturedSpotlists) {
         ListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ListCell" forIndexPath:indexPath];
         
         SpotListModel *spotList = [_featuredSpotLists objectAtIndex:indexPath.row];
@@ -246,7 +254,7 @@
         
         return cell;
     }
-    else if (indexPath.section == 2) {
+    else if (indexPath.section == kSectionMySpotlists) {
         ListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ListCell" forIndexPath:indexPath];
         
         SpotListModel *spotList = [_mySpotLists objectAtIndex:indexPath.row];
@@ -263,25 +271,26 @@
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 1) {
+    if (indexPath.section == kSectionFeaturedSpotlists) {
         SpotListModel *spotList = [_featuredSpotLists objectAtIndex:indexPath.row];
         [self goToSpotList:spotList createdWithAdjustSliders:NO];
     }
-    else if (indexPath.section == 2) {
+    else if (indexPath.section == kSectionMySpotlists) {
         SpotListModel *spotList = [_mySpotLists objectAtIndex:indexPath.row];
         [self goToSpotList:spotList createdWithAdjustSliders:NO];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
+    if (indexPath.section == kSectionSearchBySliders) {
         return ( [_accordion isSectionOpened:indexPath.section] ? 58.0f : 0.0f);
-    } else if (indexPath.section == 1) {
+    } else if (indexPath.section == kSectionNameFavorite) {
         return ( [_accordion isSectionOpened:indexPath.section] ? 48.0f : 0.0f);
-    } else if (indexPath.section == 2) {
+    } else if (indexPath.section == kSectionFeaturedSpotlists) {
+        return ( [_accordion isSectionOpened:indexPath.section] ? 48.0f : 0.0f);
+    } else if (indexPath.section == kSectionMySpotlists) {
         return ( [_accordion isSectionOpened:indexPath.section] ? 48.0f : 0.0f);
     }
     
@@ -293,9 +302,9 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section < 2) {
+    if (section < kSectionFeaturedSpotlists) {
         return 65.0f;
-    } else if ( section == 2 && [self hasBeenSeenBefore] == YES && _mySpotLists.count > 0 ) {
+    } else if ((section == kSectionFeaturedSpotlists && _featuredSpotLists.count) || (section == kSectionMySpotlists && _mySpotLists.count)) {
         return 65.0f;
     }
     
@@ -305,15 +314,24 @@
 #pragma mark - JHAccordionDelegate
 
 - (void)accordion:(JHAccordion *)accordion openingSection:(NSInteger)section {
-    if (section == 2) [_sectionHeader2 setSelected:YES];
+    if (section == kSectionFeaturedSpotlists) {
+        [_sectionHeader2 setSelected:YES];
+    }
+    else if (section == kSectionMySpotlists) {
+        [_sectionHeader3 setSelected:YES];
+    }
 }
 
 - (void)accordion:(JHAccordion *)accordion closingSection:(NSInteger)section {
-    if (section == 2) [_sectionHeader2 setSelected:NO];
+    if (section == kSectionFeaturedSpotlists) {
+        [_sectionHeader2 setSelected:NO];
+    }
+    else if (section == kSectionMySpotlists) {
+        [_sectionHeader3 setSelected:NO];
+    }
 }
 
 - (void)accordion:(JHAccordion *)accordion openedSection:(NSInteger)section {
-    
 }
 
 - (void)accordion:(JHAccordion *)accordion closedSection:(NSInteger)section {
@@ -601,7 +619,7 @@
 
 - (SectionHeaderView*)sectionHeaderViewForSection:(NSInteger)section {
     
-    if (section == 0) {
+    if (section == kSectionSearchBySliders) {
         if (_sectionHeader0 == nil) {
             
             _sectionHeader0 = [self instantiateSectionHeaderView];
@@ -620,7 +638,7 @@
         }
         
         return _sectionHeader0;
-    } else if (section == 1) {
+    } else if (section == kSectionNameFavorite) {
         if (_sectionHeader1 == nil) {
             _sectionHeader1 = [self instantiateSectionHeaderView];
             [_sectionHeader1 setIconImage:[UIImage imageNamed:@"icon_search"]];
@@ -638,16 +656,16 @@
         }
         
         return _sectionHeader1;
-    } else if (section == 2) {
+    } else if (section == kSectionFeaturedSpotlists) {
         if (_sectionHeader2 == nil) {
             
             _sectionHeader2 = [self instantiateSectionHeaderView];
             
-            UIFont *font = _sectionHeader2.lblText.font;
+            UIFont *font = _sectionHeader3.lblText.font;
             [_sectionHeader2.lblText setFont:[UIFont fontWithName:font.fontName size:15.0]];
             
-            [_sectionHeader2 setIconImage:[UIImage imageNamed:@"icon_my_spotlists"]];
-            [_sectionHeader2 setText:@"My Spotlists"];
+            [_sectionHeader2 setIconImage:[UIImage imageNamed:@"icon_featured_lists.png"]];
+            [_sectionHeader2 setText:@"Featured Spotlists"];
             
             [_sectionHeader2.btnBackground setTag:section];
             [_sectionHeader2.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
@@ -656,6 +674,24 @@
         }
         
         return _sectionHeader2;
+    } else if (section == kSectionMySpotlists) {
+        if (_sectionHeader3 == nil) {
+            
+            _sectionHeader3 = [self instantiateSectionHeaderView];
+            
+            UIFont *font = _sectionHeader3.lblText.font;
+            [_sectionHeader3.lblText setFont:[UIFont fontWithName:font.fontName size:15.0]];
+            
+            [_sectionHeader3 setIconImage:[UIImage imageNamed:@"icon_my_spotlists"]];
+            [_sectionHeader3 setText:@"My Spotlists"];
+            
+            [_sectionHeader3.btnBackground setTag:section];
+            [_sectionHeader3.btnBackground addTarget:_accordion action:@selector(onClickSection:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [_sectionHeader3 setSelected:[_accordion isSectionOpened:section]];
+        }
+        
+        return _sectionHeader3;
     }
     
     return nil;
