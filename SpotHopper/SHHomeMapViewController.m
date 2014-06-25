@@ -1740,6 +1740,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     self.mode = mode;
     _isSpotDrinkList = FALSE;
     self.spotListRequest = request;
+    self.drinkListRequest = nil;
     [self hideSlidersSearch:TRUE forMode:mode withCompletionBlock:^{
         [self displaySpotlist:spotlist];
     }];
@@ -1749,6 +1750,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     self.mode = mode;
     _isSpotDrinkList = FALSE;
     self.drinkListRequest = request;
+    self.spotListRequest = nil;
     [self hideSlidersSearch:TRUE forMode:mode withCompletionBlock:^{
         [self displayDrinklist:drinklist];
     }];
@@ -1879,7 +1881,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             calloutView.alpha = 0.0f;
             
             [view addSubview:calloutView];
-            [calloutView setIcon:SpotCalloutIconBeerOnTap spotNameText:@"Spot Name which is really long and should wrap" drink1Text:@"Drink 1 which is also long and should wrap as well" drink2Text:@"Drink 2 which is in a wrapping mood as well, because."];
+            [calloutView setIcon:SpotCalloutIconBeerOnTap spotNameText:@"Spot Name" drink1Text:@"Drink 1" drink2Text:@"Drink 2"];
             calloutView.center = CGPointMake((CGRectGetWidth(view.bounds) / 2.0) - 9.0, -1.0 * CGRectGetHeight(calloutView.frame) / 2);
             
             UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;

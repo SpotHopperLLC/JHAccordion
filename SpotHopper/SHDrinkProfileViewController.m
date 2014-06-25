@@ -162,8 +162,11 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
 #pragma mark -
 
 - (void)backButtonTapped:(id)sender {
-    NSLog(@"back btn tapped");
-    [self performSegueWithIdentifier:@"unwindFromDrinkProfileToHomeMap" sender:self];
+    NSLog(@"vc stack: %@", self.navigationController.viewControllers);
+    
+    [self.navigationController popViewControllerAnimated:TRUE];
+//    NSLog(@"back btn tapped");
+//    [self performSegueWithIdentifier:@"unwindFromDrinkProfileToHomeMap" sender:self];
 }
 
 #pragma mark - UITableViewDataSource
