@@ -1811,6 +1811,11 @@
 		2640B011193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */; };
 		2640B012193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */; };
 		2640B013193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */; };
+		2645E30E195B37660021D2BC /* SpotCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2645E30D195B37660021D2BC /* SpotCalloutView.m */; };
+		2645E30F195B37660021D2BC /* SpotCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2645E30D195B37660021D2BC /* SpotCalloutView.m */; };
+		2645E310195B37660021D2BC /* SpotCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2645E30D195B37660021D2BC /* SpotCalloutView.m */; };
+		2645E311195B37660021D2BC /* SpotCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2645E30D195B37660021D2BC /* SpotCalloutView.m */; };
+		2645E312195B37660021D2BC /* SpotCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2645E30D195B37660021D2BC /* SpotCalloutView.m */; };
 		2654B88F192BB68C00A66BED /* SHStyleKit+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B88E192BB68C00A66BED /* SHStyleKit+Additions.m */; };
 		2654B890192BB68C00A66BED /* SHStyleKit+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B88E192BB68C00A66BED /* SHStyleKit+Additions.m */; };
 		2654B891192BB68C00A66BED /* SHStyleKit+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B88E192BB68C00A66BED /* SHStyleKit+Additions.m */; };
@@ -3087,6 +3092,8 @@
 		262A65B1195893F800A4DACD /* MenuModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuModel.m; sourceTree = "<group>"; };
 		2640B00D193E6C2D00978725 /* SHDrinksCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHDrinksCollectionViewManager.h; path = SpotHopper/SHDrinksCollectionViewManager.h; sourceTree = "<group>"; };
 		2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHDrinksCollectionViewManager.m; path = SpotHopper/SHDrinksCollectionViewManager.m; sourceTree = "<group>"; };
+		2645E30C195B37660021D2BC /* SpotCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotCalloutView.h; sourceTree = "<group>"; };
+		2645E30D195B37660021D2BC /* SpotCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotCalloutView.m; sourceTree = "<group>"; };
 		2654B88D192BB68C00A66BED /* SHStyleKit+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SHStyleKit+Additions.h"; path = "SpotHopper/SHStyleKit+Additions.h"; sourceTree = "<group>"; };
 		2654B88E192BB68C00A66BED /* SHStyleKit+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SHStyleKit+Additions.m"; path = "SpotHopper/SHStyleKit+Additions.m"; sourceTree = "<group>"; };
 		2654B894192BB6B200A66BED /* SHSpotsCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSpotsCollectionViewManager.h; path = SpotHopper/SHSpotsCollectionViewManager.h; sourceTree = "<group>"; };
@@ -3563,6 +3570,8 @@
 				03E4457218B6607900C88421 /* SpotProfileHeaderView.xib */,
 				039F546E18D2DB4A004B2B67 /* DrinkProfileHeaderView.xib */,
 				03CA72D1187DFC2F00815284 /* NewReviewForms */,
+				2645E30C195B37660021D2BC /* SpotCalloutView.h */,
+				2645E30D195B37660021D2BC /* SpotCalloutView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -6798,6 +6807,7 @@
 				03CA72CB187DD09A00815284 /* DropdownOptionCell.m in Sources */,
 				039F544618D29B02004B2B67 /* FindSimilarDrinksViewController.m in Sources */,
 				03CA7260187B45B400815284 /* SectionHeaderView.m in Sources */,
+				2645E30E195B37660021D2BC /* SpotCalloutView.m in Sources */,
 				03F2D93A1871FB4300C69576 /* UIActionSheet+Block.m in Sources */,
 				038664DC186D376900985CEC /* TellMeMyLocation.m in Sources */,
 				037D13A218A3DF8500B89535 /* DrinkTypeModel.m in Sources */,
@@ -6975,6 +6985,7 @@
 				26689723192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */,
 				A6CA343A19390BCF001BB23A /* SHImageModelCollectionViewManager.m in Sources */,
 				03CABFF718E7716400FAC5F5 /* LiveSpecialModel.m in Sources */,
+				2645E312195B37660021D2BC /* SpotCalloutView.m in Sources */,
 				03CABFF818E7716400FAC5F5 /* DropdownOptionCell.m in Sources */,
 				03CABFF918E7716400FAC5F5 /* FindSimilarDrinksViewController.m in Sources */,
 				03CABFFA18E7716400FAC5F5 /* SectionHeaderView.m in Sources */,
@@ -7144,6 +7155,7 @@
 				A6CA343819390BCF001BB23A /* SHImageModelCollectionViewManager.m in Sources */,
 				033A3F1118E463BD00E07F39 /* LiveSpecialModel.m in Sources */,
 				03F4E79618CA33D00056EAA9 /* DropdownOptionCell.m in Sources */,
+				2645E310195B37660021D2BC /* SpotCalloutView.m in Sources */,
 				039F544B18D29B12004B2B67 /* FindSimilarDrinksViewController.m in Sources */,
 				03F4E79718CA33D00056EAA9 /* SectionHeaderView.m in Sources */,
 				03F4E79818CA33D00056EAA9 /* UIActionSheet+Block.m in Sources */,
@@ -7313,6 +7325,7 @@
 				A6CA343719390BCF001BB23A /* SHImageModelCollectionViewManager.m in Sources */,
 				033A3F1018E463BC00E07F39 /* LiveSpecialModel.m in Sources */,
 				03F4E8E418CA34260056EAA9 /* DropdownOptionCell.m in Sources */,
+				2645E30F195B37660021D2BC /* SpotCalloutView.m in Sources */,
 				039F544A18D29B12004B2B67 /* FindSimilarDrinksViewController.m in Sources */,
 				03F4E8E518CA34260056EAA9 /* SectionHeaderView.m in Sources */,
 				03F4E8E618CA34260056EAA9 /* UIActionSheet+Block.m in Sources */,
@@ -7482,6 +7495,7 @@
 				26689722192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */,
 				A6CA343919390BCF001BB23A /* SHImageModelCollectionViewManager.m in Sources */,
 				267E054C1922CC48004457B4 /* LiveSpecialModel.m in Sources */,
+				2645E311195B37660021D2BC /* SpotCalloutView.m in Sources */,
 				267E054D1922CC48004457B4 /* DropdownOptionCell.m in Sources */,
 				267E054E1922CC48004457B4 /* FindSimilarDrinksViewController.m in Sources */,
 				267E054F1922CC48004457B4 /* SectionHeaderView.m in Sources */,
