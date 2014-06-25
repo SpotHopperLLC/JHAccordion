@@ -226,8 +226,10 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 0 || section == 1) {
+    if (section == 0) {
         return 0;
+    } else if (section == 1) {
+        return _featuredSpotLists.count;
     } else if (section == 2) {
         return _mySpotLists.count;
     }
@@ -236,7 +238,15 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 2) {
+    if (indexPath.section == 1) {
+        ListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ListCell" forIndexPath:indexPath];
+        
+        SpotListModel *spotList = [_featuredSpotLists objectAtIndex:indexPath.row];
+        [cell.lblName setText:spotList.name];
+        
+        return cell;
+    }
+    else if (indexPath.section == 2) {
         ListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ListCell" forIndexPath:indexPath];
         
         SpotListModel *spotList = [_mySpotLists objectAtIndex:indexPath.row];
@@ -245,13 +255,19 @@
         return cell;
     }
     
+    NSAssert(FALSE, @"Condition should not be met");
+    
     return nil;
 }
 
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 2) {
+    if (indexPath.section == 1) {
+        SpotListModel *spotList = [_featuredSpotLists objectAtIndex:indexPath.row];
+        [self goToSpotList:spotList createdWithAdjustSliders:NO];
+    }
+    else if (indexPath.section == 2) {
         SpotListModel *spotList = [_mySpotLists objectAtIndex:indexPath.row];
         [self goToSpotList:spotList createdWithAdjustSliders:NO];
     }
@@ -669,12 +685,12 @@
 }
 
 - (void)updateFeaturedSpotlists {
-    if (!_isUpdatingTableView && _featuredSpotLists) {
+    if (!_isUpdatingTableView && _featuredSpotListsUpdate) {
         _featuredSpotLists = _featuredSpotListsUpdate;
         _featuredSpotListsUpdate = nil;
         [_tblMenu reloadData];
     }
-    else if (_isUpdatingTableView && _featuredSpotLists) {
+    else if (_isUpdatingTableView && _featuredSpotListsUpdate) {
         // update later when the table may be done updating
         [self performSelector:@selector(updateFeaturedSpotlists) withObject:nil afterDelay:0.25];
     }
