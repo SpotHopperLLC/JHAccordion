@@ -65,7 +65,7 @@
     return [menuItem.drink isWine];
 }
 
-- (NSString *)pricesForMenuItem:(MenuItemModel *)menuItem {
+- (NSArray *)pricesForMenuItem:(MenuItemModel *)menuItem {
     NSArray *sorted = [menuItem.prices sortedArrayUsingComparator:^NSComparisonResult(PriceModel *obj1, PriceModel *obj2) {
         NSNumber *price1 = (obj1.cents ?: @0);
         NSNumber *price2 = (obj2.cents ?: @0);
@@ -75,17 +75,15 @@
     
     NSMutableArray *prices = @[].mutableCopy;
     for (PriceModel *price in sorted) {
-        [prices addObject:[price priceAndSize]];
+        NSString *priceAndSize = [price priceAndSize];
+        if (priceAndSize.length) {
+            [prices addObject:priceAndSize];
+        }
     }
     
     //[prices addObject:@"$3 / Bottle"];
     
-    if (prices.count) {
-        return [prices componentsJoinedByString:@"\n"];
-    }
-    else {
-        return @"";
-    }
+    return prices;
 }
 
 @end

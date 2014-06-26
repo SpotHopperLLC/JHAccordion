@@ -3798,6 +3798,8 @@
 				0372FF9318E36535009188B5 /* ImageModel.m */,
 				033A3F0D18E38CEE00E07F39 /* LiveSpecialModel.h */,
 				033A3F0E18E38CEE00E07F39 /* LiveSpecialModel.m */,
+				262A65B0195893F800A4DACD /* MenuModel.h */,
+				262A65B1195893F800A4DACD /* MenuModel.m */,
 				039F548D18D340AE004B2B67 /* MenuItemModel.h */,
 				039F548E18D340AE004B2B67 /* MenuItemModel.m */,
 				0345709218DF7DDD0095E4A8 /* MenuTypeModel.h */,
@@ -3828,8 +3830,6 @@
 				26ED5CB518FDDE56006901ED /* Tracker.m */,
 				038664ED186D391E00985CEC /* UserModel.h */,
 				038664EE186D391E00985CEC /* UserModel.m */,
-				262A65B0195893F800A4DACD /* MenuModel.h */,
-				262A65B1195893F800A4DACD /* MenuModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";

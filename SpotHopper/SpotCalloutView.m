@@ -12,8 +12,8 @@
 
 NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
 
-#define kHeightOfArrow 15
-#define kWidthOfArrow 10
+#define kHeightOfArrow 14
+#define kWidthOfArrow 20
 
 #pragma mark - Class Extension
 #pragma mark -
@@ -96,9 +96,6 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
     frame.size.height = CGRectGetHeight(self.containerView.frame) + kHeightOfArrow;
     self.frame = frame;
     
-    LOG_FRAME(@"main", self.frame);
-    LOG_FRAME(@"container", self.containerView.frame);
-    
     UIImage *backgroundImage = [self drawRoundedCorners:self.frame.size position:0.5 borderRadius:10 strokeWidth:1];
     self.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
 }
@@ -157,10 +154,15 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
     if (position > 0) {
         // line from F to right arrow base
         CGContextAddLineToPoint(context, arrowRightBase.x, arrowRightBase.y);
+        
+        // to arrow point then left base
+//        CGContextAddArcToPoint(context, arrowPoint.x, arrowPoint.y, arrowLeftBase.x, arrowLeftBase.y, borderRadius/4);
+        
         // line from right arrow base to arrow point
         CGContextAddLineToPoint(context, arrowPoint.x, arrowPoint.y);
         // line from arrow point to left arrow base
         CGContextAddLineToPoint(context, arrowLeftBase.x, arrowLeftBase.y);
+        
         // line from left arrow base to G
         CGContextAddLineToPoint(context, pointG.x, pointG.y);
     }

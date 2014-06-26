@@ -26,6 +26,6 @@
 
 - (BOOL)isWine:(MenuItemModel *)menuItem;
 
-- (NSString *)pricesForMenuItem:(MenuItemModel *)menuItem;
+- (NSArray *)pricesForMenuItem:(MenuItemModel *)menuItem;
 
 @end
