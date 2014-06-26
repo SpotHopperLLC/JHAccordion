@@ -36,7 +36,8 @@
     static ClientSessionManager *_sharedClient = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _sharedClient = [[ClientSessionManager alloc] initWithBaseURL:[NSURL URLWithString:kBaseUrl]];
+        NSURL *baseURL = [NSURL URLWithString:kBaseUrl];
+        _sharedClient = [[ClientSessionManager alloc] initWithBaseURL:baseURL];
         [_sharedClient setRequestSerializer:[AFJSONRequestSerializer serializer]];
         [_sharedClient setResponseSerializer:[AFJSONResponseSerializer serializer]];
 

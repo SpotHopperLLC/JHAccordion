@@ -26,6 +26,7 @@
 #import "SpotAnnotationCallout.h"
 #import "MatchPercentAnnotation.h"
 #import "MatchPercentAnnotationView.h"
+#import "SpotCalloutView.h"
 
 #import "SHButtonLatoBold.h"
 
@@ -42,6 +43,8 @@
 #import "ErrorModel.h"
 #import "SpotTypeModel.h"
 #import "AverageReviewModel.h"
+#import "MenuModel.h"
+#import "MenuItemModel.h"
 
 #import "UIImage+BlurredFrame.h"
 #import "UIImage+ImageEffects.h"
@@ -924,13 +927,12 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         return;
     }
     
+    [self.mapOverlayCollectionViewController displaySpotList:spotListModel];
     [self populateMapWithSpots:self.spotListModel.spots];
 
     if (!self.homeNavigationViewController.view.hidden) {
         [self hideHomeNavigation:FALSE withCompletionBlock:nil];
     }
-    
-    [self.mapOverlayCollectionViewController displaySpotList:spotListModel];
     
     [self showCollectionContainerView:TRUE withCompletionBlock:^{
         // do nothing
@@ -1024,7 +1026,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             DebugLog(@"drinkListModel: %@", drinkListModel);
             [self displayDrinklist:drinkListModel];
         } failure:^(ErrorModel *errorModel) {
-            // TODO: track error
+            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+            // TODO: tell the user about the error
         }];
         
         [self showSearchThisArea:TRUE withCompletionBlock:nil];
@@ -1151,6 +1154,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.spotsForDrink = @[self.selectedSpot];
     }
     else {
+        self.selectedDrink = drink;
         [[drink fetchSpotsForLocation:self.drinkListModel.location] then:^(NSArray *spots) {
             [self populateMapWithSpots:spots];
             self.spotsForDrink = spots;
@@ -1736,6 +1740,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     self.mode = mode;
     _isSpotDrinkList = FALSE;
     self.spotListRequest = request;
+    self.drinkListRequest = nil;
     [self hideSlidersSearch:TRUE forMode:mode withCompletionBlock:^{
         [self displaySpotlist:spotlist];
     }];
@@ -1745,6 +1750,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     self.mode = mode;
     _isSpotDrinkList = FALSE;
     self.drinkListRequest = request;
+    self.spotListRequest = nil;
     [self hideSlidersSearch:TRUE forMode:mode withCompletionBlock:^{
         [self displayDrinklist:drinklist];
     }];
@@ -1794,6 +1800,49 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [pin prepareForReuse];
         [pin setSpot:matchPercentAnnotation.spot highlighted:_isSpotDrinkList];
         
+        pin.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+        pin.canShowCallout = NO;
+        
+        [[pin.spot fetchMenu] then:^(MenuModel *menu) {
+//                    for (MenuItemModel *menuItem in menu.items) {
+//                        NSString *prices = [[menu pricesForMenuItem:menuItem] componentsJoinedByString:@"\n"];
+//                        if (prices.length) {
+//                            DebugLog(@"menu item: %@", prices);
+//                        }
+//                        BOOL isBeerOnTap = [menu isBeerOnTap:menuItem];
+//                        BOOL isBeerInBottle = [menu isBeerInBottle:menuItem];
+//                        BOOL isCocktail = [menu isCocktail:menuItem];
+//                        BOOL isWine = [menu isWine:menuItem];
+//                        if (isBeerOnTap && isBeerInBottle) {
+//                            DebugLog(@"type: beer on tap and in bottle/can");
+//                        }
+//                        else if (isBeerOnTap) {
+//                            DebugLog(@"type: beer on tap");
+//                        }
+//                        else if (isBeerInBottle) {
+//                            DebugLog(@"type: beer in bottle/can");
+//                        }
+//                        else if (isCocktail) {
+//                            DebugLog(@"type: cocktail");
+//                        }
+//                        else if (isWine) {
+//                            DebugLog(@"type: wine");
+//                        }
+//                    }
+//            MenuItemModel *menuItem = [menu menuItemForDrink:nil];
+            
+//            UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 32.0, 32.0)];
+//            containerView.backgroundColor = [UIColor blackColor];
+//            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(1.0, 1.0, 30.0, 30.0)];
+//            imageView.image = [SHStyleKit drawImage:SHStyleKitDrawingBeerIcon size:CGSizeMake(30.0, 30.0)];
+//            [containerView addSubview:imageView];
+//            pin.leftCalloutAccessoryView = containerView;
+            
+        } fail:^(ErrorModel *errorModel) {
+            [Tracker logError:errorModel.human class:[self class] trace:NSStringFromSelector(_cmd)];
+            // TODO: tell the user about the error
+        } always:nil];
+        
         annotationView = pin;
     }
     else if ([annotation isKindOfClass:[MKPointAnnotation class]]) {
@@ -1823,6 +1872,72 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                 [self.locationMenuBarViewController selectSpot:pin.spot];
             }
             
+            if (self.drinkListRequest && self.selectedDrink && [view isKindOfClass:[MatchPercentAnnotationView class]]) {
+                MatchPercentAnnotationView *pin = (MatchPercentAnnotationView *)view;
+                
+                [[pin.spot fetchMenu] then:^(MenuModel *menu) {
+                    // TODO: get drink
+                    MenuItemModel *menuItem = [menu menuItemForDrink:self.selectedDrink];
+                    NSArray *prices = [menu pricesForMenuItem:menuItem];
+                    
+                    NSString *spotName = [NSString stringWithFormat:@"%@ (%@)", pin.spot.name, pin.spot.spotType.name];
+                    NSString *drink1 = prices.count > 0 ? prices[0] : nil;
+                    NSString *drink2 = prices.count > 1 ? prices[1] : nil;
+                    
+                    BOOL isBeerOnTap = [menu isBeerOnTap:menuItem];
+                    BOOL isBeerInBottle = [menu isBeerInBottle:menuItem];
+                    BOOL isCocktail = [menu isCocktail:menuItem];
+                    BOOL isWine = [menu isWine:menuItem];
+                    
+                    SpotCalloutIcon calloutIcon = SpotCalloutIconNone;
+                    
+                    if (isBeerOnTap && isBeerInBottle) {
+                        calloutIcon = SpotCalloutIconBeerOnTapAndInBottle;
+                    }
+                    else if (isBeerOnTap) {
+                        calloutIcon = SpotCalloutIconBeerOnTap;
+                    }
+                    else if (isBeerInBottle) {
+                        calloutIcon = SpotCalloutIconBeerInBottle;
+                    }
+                    else if (isCocktail) {
+                        calloutIcon = SpotCalloutIconCocktail;
+                    }
+                    else if (isWine) {
+                        calloutIcon = SpotCalloutIconWine;
+                    }
+                    
+                    UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:SpotCalloutViewIdentifier];
+                    
+                    SpotCalloutView *calloutView = (SpotCalloutView *)vc.view;
+                    calloutView.translatesAutoresizingMaskIntoConstraints = YES;
+                    
+                    calloutView.tag = NSIntegerMax;
+                    calloutView.alpha = 0.0f;
+                    
+                    [view addSubview:calloutView];
+                    [calloutView setIcon:calloutIcon spotNameText:spotName drink1Text:drink1 drink2Text:drink2];
+                    calloutView.center = CGPointMake((CGRectGetWidth(view.bounds) / 2.0) + 2.0, -1.0 * CGRectGetHeight(calloutView.frame) / 2);
+                    
+                    _isRepositioningMap = TRUE;
+                    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+                    [UIView animateWithDuration:0.25f delay:0.0f usingSpringWithDamping:9.0 initialSpringVelocity:9.0 options:options animations:^{
+                        calloutView.alpha = 1.0f;
+                        [self.mapView setCenterCoordinate:view.annotation.coordinate animated:TRUE];
+                    } completion:^(BOOL finished) {
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                            _isRepositioningMap = FALSE;
+                        });
+                    }];
+                } fail:^(ErrorModel *errorModel) {
+                    [self showAlert:@"Oops" message:errorModel.human];
+                    [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+                } always:nil];
+            }
+            
+            CGPoint point = [mapView convertCoordinate:view.annotation.coordinate toPointToView:mapView];
+            NSLog(@"point: %f, %f", point.x, point.y);
+            
             // disable callout for now
 //            if (self.mode == SHModeBeer || self.mode == SHModeCocktail || self.mode == SHModeWine) {
 //                SpotAnnotationCallout *callout = [SpotAnnotationCallout viewFromNib];
@@ -1850,8 +1965,11 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [pin setHighlighted:NO];
         [pin setNeedsDisplay];
         
-        [pin.calloutView removeFromSuperview];
-        [pin setCalloutView:nil];
+//        [pin.calloutView removeFromSuperview];
+//        [pin setCalloutView:nil];
+        
+        UIView *calloutView = [view viewWithTag:NSIntegerMax];
+        [calloutView removeFromSuperview];
         
         DebugLog(@"hiding filter (and clearing label)");
         [self.locationMenuBarViewController deselectSpot:pin.spot];

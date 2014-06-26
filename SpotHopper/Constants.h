@@ -70,18 +70,18 @@
 
 #elif defined(STAGING2)
 
-    #define kDebug NO
+    #define kDebug YES
 
-    #define kTwitterConsumerKey @"enlXFrFlBlOPkaBoOJunQ"
-    #define kTwitterConsumerSecret @"UHRcQ8WXs13Iug7VpliivDxwQuGtoMg5KsaoIF3jWbM"
+    #define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"
+    #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
+
+    #define kBaseUrl @"https://api.spotapps.co"
+    #define kWebsiteUrl @"http://www.spothopperapp.com"
+
+    #define kParseApplicationID @"8gsK1txoPG66EvpzxhHPFJeeNjWTwe1SF5j1jIKN"
+    #define kParseClientKey @"z86QKJFiLmSxWAekThVpTo8yLpp29nekhTiUgV2i"
 
     #define kAppURLScheme  @"spothopperappstaging"
-
-    #define kBaseUrl @"http://spothopper-staging.herokuapp.com"
-    #define kWebsiteUrl @"http://spothopper-staging.herokuapp.com"
-
-    #define kParseApplicationID @"lu4u2Bg5pBqLg9qZEWJB5W7fjSAVQPiH39Hr29kV"
-    #define kParseClientKey @"BHl8KE9ZmZgmeDFnV9H886qKB9Y7EaWzZLPdOs4J"
 
     #define kRefreshLocationTime 3600.0f
 
