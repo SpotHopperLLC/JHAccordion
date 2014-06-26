@@ -22,6 +22,7 @@ typedef void (^TellMeMyLocationCompletionHandler)();
 @interface TellMeMyLocation : NSObject
 
 - (void)findMe:(CLLocationAccuracy)accuracy found:(FoundBlock)foundBlock failure:(FailureBlock)failureBlock;
++ (BOOL)needsLocationServicesPermissions;
 + (CLLocation *)currentDeviceLocation;
 
 + (void)setLastLocation:(CLLocation*)location completionHandler:(TellMeMyLocationCompletionHandler)completionHandler;
