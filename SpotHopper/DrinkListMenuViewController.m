@@ -38,6 +38,7 @@
 #import "Tracker.h"
 
 #import "JHAccordion.h"
+#import "TellMeMyLocation.h"
 #import "Tracker.h"
 
 #import <CoreLocation/CoreLocation.h>
@@ -140,17 +141,33 @@
     // Bring container to front so its slides over footer
     [self.view bringSubviewToFront:_containerAdjustSliders];
     
-    // Fetching spot lists
-    if (_spot == nil && _location == nil) {
-        // Locations
-        _updatedSearchNeeded = TRUE;
-        [_btnLocation setDelegate:self];
-        [_btnLocation updateWithLastLocation];
-    } else {
-        [self fetchDrinkLists];
+    if ([TellMeMyLocation needsLocationServicesPermissions]) {
+        TellMeMyLocation *tellMeMyLocation = [[TellMeMyLocation alloc] init];
+        [tellMeMyLocation findMe:kCLLocationAccuracyKilometer found:^(CLLocation *newLocation) {
+            _location = newLocation;
+            [self updateLocationButton];
+            [self fetchDrinkLists];
+        } failure:^(NSError *error) {
+            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+        }];
+    }
+    else {
+        // Fetching drink lists
+        if (_spot == nil && _location == nil) {
+            [self updateLocationButton];
+        } else {
+            [self fetchDrinkLists];
+        }
     }
     
     [_adjustDrinkListSliderViewController closeSection:0];
+}
+
+- (void)updateLocationButton {
+    // Locations
+    _updatedSearchNeeded = TRUE;
+    [_btnLocation setDelegate:self];
+    [_btnLocation updateWithLastLocation];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
