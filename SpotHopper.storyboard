@@ -636,7 +636,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="0.90000000000000002" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="apI-6g-LM2" secondAttribute="trailing" id="IA3-SB-qts"/>
                             <constraint firstItem="apI-6g-LM2" firstAttribute="leading" secondItem="ZlA-ef-byj" secondAttribute="leading" id="L44-8q-OFJ"/>

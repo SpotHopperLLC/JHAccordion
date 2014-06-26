@@ -72,14 +72,14 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
     else {
         self.drink1Label.text = nil;
     }
-    
+
     if (drink2Text.length) {
         self.drink2Label.text = drink2Text;
     }
     else {
         self.drink2Label.text = nil;
     }
-    
+
     if (self.superview) {
         [self adjustHeightWithIntrinsicSize];
     }
