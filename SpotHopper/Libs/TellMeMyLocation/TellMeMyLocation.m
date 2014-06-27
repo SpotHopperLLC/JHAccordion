@@ -83,6 +83,10 @@ static NSDate *_lastDeviceLocationRefresh;
 
 }
 
++ (BOOL)needsLocationServicesPermissions {
+    return ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus]==kCLAuthorizationStatusNotDetermined);
+}
+
 + (CLLocation *)currentDeviceLocation {
     return _currentDeviceLocation;
 }

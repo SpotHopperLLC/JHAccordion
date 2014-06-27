@@ -44,6 +44,11 @@
 
 #import <CoreLocation/CoreLocation.h>
 
+#define kSectionSearchBySliders 0
+#define kSectionNameFavorite 1
+#define kSectionFeaturedSpotlists 2
+#define kSectionMySpotlists 3
+
 @interface SpotListsMenuViewController ()<UITableViewDataSource, UITableViewDelegate, FindSimilarViewControllerDelegate, AdjustSliderListSliderViewControllerDelegate, JHAccordionDelegate, SHButtonLatoLightLocationDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *viewInfo;
@@ -85,14 +90,6 @@
     BOOL _isUpdatingTableView;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
     
@@ -105,9 +102,9 @@
     // Configures accordion
     _accordion = [[JHAccordion alloc] initWithTableView:_tblMenu];
     [_accordion setDelegate:self];
-    [_accordion openSection:0];
-    [_accordion openSection:1];
-    [_accordion openSection:2];
+    [_accordion openSection:kSectionNameFavorite];
+    [_accordion openSection:kSectionSearchBySliders];
+    [_accordion openSection:kSectionFeaturedSpotlists];
     
     // Configures table
     [_tblMenu registerNib:[UINib nibWithNibName:@"CreateListCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"CreateListCell"];
@@ -132,7 +129,7 @@
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     
     // Open when the view appears
-    [_accordion openSection:0];
+    [_accordion openSection:kSectionMySpotlists];
     
     // Deselects cell
     [_tblMenu deselectRowAtIndexPath:[_tblMenu indexPathForSelectedRow] animated:NO];
@@ -146,18 +143,23 @@
     // Bring container to front so its slides over footer
     [self.view bringSubviewToFront:_containerAdjustSliders];
     
-    // Fetching spot lists
-    if (_location == nil) {
-        // Locations
-        [_btnLocation setDelegate:self];
-        [_btnLocation updateWithLastLocation];
-        // place the image after the text
-        NSString *text = [_btnLocation titleForState:UIControlStateNormal];
-        CGFloat textWidth = [self widthForString:text font:_btnLocation.titleLabel.font maxWidth:CGFLOAT_MAX];
-        _btnLocation.imageEdgeInsets = UIEdgeInsetsMake(0, (textWidth + 15), 0, 0);
-        _btnLocation.titleEdgeInsets = UIEdgeInsetsMake(0, -7, 0, 0);
-    } else {
-        [self fetchSpotLists];
+    if ([TellMeMyLocation needsLocationServicesPermissions]) {
+        TellMeMyLocation *tellMeMyLocation = [[TellMeMyLocation alloc] init];
+        [tellMeMyLocation findMe:kCLLocationAccuracyKilometer found:^(CLLocation *newLocation) {
+            _location = newLocation;
+            [self updateLocationButton];
+            [self fetchSpotLists];
+        } failure:^(NSError *error) {
+            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+        }];
+    }
+    else {
+        // Fetching spot lists
+        if (_location == nil) {
+            [self updateLocationButton];
+        } else {
+            [self fetchSpotLists];
+        }
     }
     
     [_lblNear setFont:[UIFont fontWithName:@"Lato-Regular" size:_lblNear.font.pointSize]];
@@ -178,20 +180,6 @@
         });
         
         [[ClientSessionManager sharedClient] setHasSeenSpotlists:TRUE];
-    }
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    
-    // Setting has seen before
-    if ([self hasBeenSeenBefore] == NO) {
-        
-        // Sets has seen before
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSpotListsMenuViewControllerViewedAlready
-         ];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
     }
 }
 
@@ -225,11 +213,6 @@
         return 3;
     }
 }
-
-#define kSectionSearchBySliders 0
-#define kSectionNameFavorite 1
-#define kSectionFeaturedSpotlists 2
-#define kSectionMySpotlists 3
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == kSectionSearchBySliders) {
@@ -465,6 +448,17 @@
 
 #pragma mark - Private
 
+- (void)updateLocationButton {
+    // Locations
+    [_btnLocation setDelegate:self];
+    [_btnLocation updateWithLastLocation];
+    // place the image after the text
+    NSString *text = [_btnLocation titleForState:UIControlStateNormal];
+    CGFloat textWidth = [self widthForString:text font:_btnLocation.titleLabel.font maxWidth:CGFLOAT_MAX];
+    _btnLocation.imageEdgeInsets = UIEdgeInsetsMake(0, (textWidth + 15), 0, 0);
+    _btnLocation.titleEdgeInsets = UIEdgeInsetsMake(0, -7, 0, 0);
+}
+
 - (void)hideInfo:(BOOL)animated {
     CGFloat duration = animated ? 0.25f : 0.0f;
     
@@ -490,10 +484,6 @@
 
 - (BOOL)isShowingMySpots {
     return [ClientSessionManager sharedClient].isLoggedIn;
-}
-
-- (BOOL)hasBeenSeenBefore {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:kSpotListsMenuViewControllerViewedAlready];
 }
 
 - (void)fetchSpotLists {
