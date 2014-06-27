@@ -163,13 +163,6 @@
     [_adjustDrinkListSliderViewController closeSection:0];
 }
 
-- (void)updateLocationButton {
-    // Locations
-    _updatedSearchNeeded = TRUE;
-    [_btnLocation setDelegate:self];
-    [_btnLocation updateWithLastLocation];
-}
-
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
@@ -442,6 +435,13 @@
 }
 
 #pragma mark - Private
+
+- (void)updateLocationButton {
+    // Locations
+    _updatedSearchNeeded = TRUE;
+    [_btnLocation setDelegate:self];
+    [_btnLocation updateWithLastLocation];
+}
 
 - (void)hideInfo:(BOOL)animated {
     CGFloat duration = animated ? 0.25f : 0.0f;
