@@ -15,6 +15,7 @@
 #import "MenuItemModel.h"
 #import "MenuTypeModel.h"
 #import "MenuModel.h"
+#import "SpotTypeModel.h"
 
 #define kPageSize @25
 
@@ -301,9 +302,11 @@
         if (forms != nil) {
             // Get spot types only user can see
             NSMutableArray *userSpotTypes = [@[] mutableCopy];
+            
             NSArray *allSpotTypes = [forms objectForKey:@"spot_types"];
-            for (NSDictionary *spotType in allSpotTypes) {
-                if ([[spotType objectForKey:@"visible_to_users"] boolValue] == YES) {
+            for (NSDictionary *spotTypeDictionary in allSpotTypes) {
+                if ([[spotTypeDictionary objectForKey:@"visible_to_users"] boolValue] == YES) {
+                    SpotTypeModel *spotType = [SHJSONAPIResource jsonAPIResource:spotTypeDictionary withLinked:jsonApi.linked withClass:[SpotTypeModel class]];
                     [userSpotTypes addObject:spotType];
                 }
             }
