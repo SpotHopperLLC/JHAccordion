@@ -1906,7 +1906,6 @@
 		267E04FE1922CC48004457B4 /* DrinkMenuOfferingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F549E18D35871004B2B67 /* DrinkMenuOfferingsViewController.m */; };
 		267E04FF1922CC48004457B4 /* AccountSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CAC19C18E9FAC300FAC5F5 /* AccountSettingsViewController.m */; };
 		267E05001922CC48004457B4 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664DE186D379400985CEC /* BaseViewController.m */; };
-		267E05011922CC48004457B4 /* JHAccordion.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BABDF51910688F00852D73 /* JHAccordion.m */; };
 		267E05021922CC48004457B4 /* DrinkListMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F542618D283D3004B2B67 /* DrinkListMenuViewController.m */; };
 		267E05031922CC48004457B4 /* ClientSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664E0186D379400985CEC /* ClientSessionManager.m */; };
 		267E05041922CC48004457B4 /* CheckinConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AF8F6218E6013700DD9356 /* CheckinConfirmationViewController.m */; };
@@ -2418,10 +2417,6 @@
 		26BABDF019105A7000852D73 /* icon_search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 26BABDEA19105A7000852D73 /* icon_search@2x.png */; };
 		26BABDF119105A7000852D73 /* icon_search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 26BABDEA19105A7000852D73 /* icon_search@2x.png */; };
 		26BABDF219105A7000852D73 /* icon_search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 26BABDEA19105A7000852D73 /* icon_search@2x.png */; };
-		26BABDF61910688F00852D73 /* JHAccordion.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BABDF51910688F00852D73 /* JHAccordion.m */; };
-		26BABDF71910688F00852D73 /* JHAccordion.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BABDF51910688F00852D73 /* JHAccordion.m */; };
-		26BABDF81910688F00852D73 /* JHAccordion.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BABDF51910688F00852D73 /* JHAccordion.m */; };
-		26BABDF91910688F00852D73 /* JHAccordion.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BABDF51910688F00852D73 /* JHAccordion.m */; };
 		26C428CD192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C428CC192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m */; };
 		26C428CE192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C428CC192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m */; };
 		26C428CF192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C428CC192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m */; };
@@ -3151,8 +3146,6 @@
 		26BABDE01910458700852D73 /* icon_sliders@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_sliders@2x.png"; sourceTree = "<group>"; };
 		26BABDE919105A7000852D73 /* icon_search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_search.png; sourceTree = "<group>"; };
 		26BABDEA19105A7000852D73 /* icon_search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_search@2x.png"; sourceTree = "<group>"; };
-		26BABDF41910688F00852D73 /* JHAccordion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHAccordion.h; sourceTree = "<group>"; };
-		26BABDF51910688F00852D73 /* JHAccordion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHAccordion.m; sourceTree = "<group>"; };
 		26C428CB192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSpecialsCollectionViewManager.h; path = SpotHopper/SHSpecialsCollectionViewManager.h; sourceTree = "<group>"; };
 		26C428CC192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSpecialsCollectionViewManager.m; path = SpotHopper/SHSpecialsCollectionViewManager.m; sourceTree = "<group>"; };
 		26C428DA192D625A00B67F10 /* SHBaseNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHBaseNavigationController.h; path = SpotHopper/SHBaseNavigationController.h; sourceTree = "<group>"; };
@@ -3639,7 +3632,6 @@
 		038664A1186D370E00985CEC /* Libs */ = {
 			isa = PBXGroup;
 			children = (
-				26BABDF31910688F00852D73 /* JHAccordion */,
 				037D13A318A450C000B89535 /* DoubleGeocoder */,
 				039B700A188723EB00C590F8 /* Mockery */,
 				038664E3186D37BC00985CEC /* JHTableViewPullRefresh */,
@@ -4587,15 +4579,6 @@
 				26A7E3821922D20700FF7B88 /* SHStyleKit.m */,
 			);
 			name = StyleKit;
-			sourceTree = "<group>";
-		};
-		26BABDF31910688F00852D73 /* JHAccordion */ = {
-			isa = PBXGroup;
-			children = (
-				26BABDF41910688F00852D73 /* JHAccordion.h */,
-				26BABDF51910688F00852D73 /* JHAccordion.m */,
-			);
-			path = JHAccordion;
 			sourceTree = "<group>";
 		};
 		26C428D9192D623900B67F10 /* Base */ = {
@@ -6718,7 +6701,6 @@
 				A62B3346193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m in Sources */,
 				03CAC19D18E9FAC300FAC5F5 /* AccountSettingsViewController.m in Sources */,
 				038664E1186D379400985CEC /* BaseViewController.m in Sources */,
-				26BABDF61910688F00852D73 /* JHAccordion.m in Sources */,
 				039F542718D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				2654B8BA192BB6E000A66BED /* SHLocationMenuBarViewController.m in Sources */,
 				038664E2186D379400985CEC /* ClientSessionManager.m in Sources */,
@@ -6896,7 +6878,6 @@
 				03CABFB418E7716400FAC5F5 /* DrinkMenuOfferingsViewController.m in Sources */,
 				03D7F56C18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */,
 				03CABFB518E7716400FAC5F5 /* BaseViewController.m in Sources */,
-				26BABDF91910688F00852D73 /* JHAccordion.m in Sources */,
 				03CABFB618E7716400FAC5F5 /* DrinkListMenuViewController.m in Sources */,
 				2654B8BE192BB6E000A66BED /* SHLocationMenuBarViewController.m in Sources */,
 				03CABFB718E7716400FAC5F5 /* ClientSessionManager.m in Sources */,
@@ -7065,7 +7046,6 @@
 				039F54A118D35871004B2B67 /* DrinkMenuOfferingsViewController.m in Sources */,
 				03D7F56B18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */,
 				03F4E76118CA33D00056EAA9 /* BaseViewController.m in Sources */,
-				26BABDF81910688F00852D73 /* JHAccordion.m in Sources */,
 				039F542918D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				2654B8BC192BB6E000A66BED /* SHLocationMenuBarViewController.m in Sources */,
 				03F4E76218CA33D00056EAA9 /* ClientSessionManager.m in Sources */,
@@ -7235,7 +7215,6 @@
 				039F54A018D35871004B2B67 /* DrinkMenuOfferingsViewController.m in Sources */,
 				03D7F56A18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */,
 				03F4E8AF18CA34260056EAA9 /* BaseViewController.m in Sources */,
-				26BABDF71910688F00852D73 /* JHAccordion.m in Sources */,
 				039F542818D283D3004B2B67 /* DrinkListMenuViewController.m in Sources */,
 				2654B8BB192BB6E000A66BED /* SHLocationMenuBarViewController.m in Sources */,
 				03F4E8B018CA34260056EAA9 /* ClientSessionManager.m in Sources */,
@@ -7406,7 +7385,6 @@
 				267E04FE1922CC48004457B4 /* DrinkMenuOfferingsViewController.m in Sources */,
 				267E04FF1922CC48004457B4 /* AccountSettingsViewController.m in Sources */,
 				267E05001922CC48004457B4 /* BaseViewController.m in Sources */,
-				267E05011922CC48004457B4 /* JHAccordion.m in Sources */,
 				267E05021922CC48004457B4 /* DrinkListMenuViewController.m in Sources */,
 				2654B8BD192BB6E000A66BED /* SHLocationMenuBarViewController.m in Sources */,
 				267E05031922CC48004457B4 /* ClientSessionManager.m in Sources */,

@@ -10,8 +10,6 @@
 
 @implementation DrinkTypeModel
 
-#pragma mark - Getters
-
 #pragma mark - Debugging
 
 - (NSString *)description {
@@ -22,18 +20,15 @@
     return self.name;
 }
 
-#pragma mark - Getters
+#pragma mark -
 
-- (NSString *)name {
-    return [self objectForKey:@"name"];
-}
-
-- (NSDate *)createdAt {
-    return [self formatDateTimestamp:[self objectForKey:@"created_at"]];
-}
-
-- (NSDate *)updatedAt {
-    return [self formatDateTimestamp:[self objectForKey:@"updated_at"]];
+- (NSDictionary *)mapKeysToProperties {
+    // Maps linked resource in JSON key 'name' to 'name' property
+    return @{
+             @"name" : @"name",
+             @"createdAt" : @"createdAt",
+             @"updatedAt" : @"updatedAt"
+             };
 }
 
 @end

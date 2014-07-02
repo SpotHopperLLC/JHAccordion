@@ -18,7 +18,7 @@
 
 @interface SHSlidersSearchTableViewManager : NSObject <UITableViewDataSource, UITableViewDelegate>
 
-- (void)prefetchData;
+- (void)prepare;
 
 - (void)prepareForMode:(SHMode)mode;
 
@@ -34,8 +34,13 @@
 
 @protocol SHSlidersSearchTableViewManagerDelegate <NSObject>
 
+@required
+
+- (UIStoryboard *)slidersSearchTableViewManagerStoryboard:(SHSlidersSearchTableViewManager *)manager;
+
 @optional
 
 - (void)slidersSearchTableViewManagerDidChangeSlider:(SHSlidersSearchTableViewManager *)manager;
+
 
 @end

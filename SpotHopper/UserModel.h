@@ -56,4 +56,11 @@
 
 - (Promise *)getCheckIns:(NSDictionary *)params success:(void(^)(NSArray *checkInModels, JSONAPI* jsonAPI))successBlock failure:(void(^)(ErrorModel* errorModel))failureBlock;
 
+#pragma mark - Revised Code for 2.0
+
++ (BOOL)isLoggedIn;
++ (UserModel *)currentUser;
+- (void)fetchMySpotLists:(NSDictionary *)params success:(void (^)(NSArray *spotlists))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
+- (Promise *)fetchMySpotLists;
+
 @end

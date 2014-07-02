@@ -26,6 +26,9 @@
 - (MenuModel *)cachedMenuForKey:(NSString *)key;
 - (void)cacheMenu:(MenuModel *)menu forKey:(NSString *)key;
 
+- (NSArray *)cachedSpotTypes;
+- (void)cacheSpotTypes:(NSArray *)spotTypes;
+
 @end
 
 @implementation SpotModel
@@ -297,6 +300,8 @@
 }
 
 + (void)fetchSpotTypes:(void (^)(NSArray *spotTypes))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    // TODO: add caching
+    
     [SpotModel getSpots:@{kSpotModelParamsPageSize:@0} success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         NSDictionary *forms = [jsonApi objectForKey:@"form"];
         if (forms != nil) {
@@ -304,12 +309,20 @@
             NSMutableArray *userSpotTypes = [@[] mutableCopy];
             
             NSArray *allSpotTypes = [forms objectForKey:@"spot_types"];
+            
+            // Add an Any item
+            NSDictionary *anyDictionary = @{@"id" : [NSNull null], @"name" : @"Any"};
+            SpotTypeModel *anySpotType = [SHJSONAPIResource jsonAPIResource:anyDictionary withLinked:jsonApi.linked withClass:[SpotTypeModel class]];
+            [userSpotTypes addObject:anySpotType];
+            
             for (NSDictionary *spotTypeDictionary in allSpotTypes) {
                 if ([[spotTypeDictionary objectForKey:@"visible_to_users"] boolValue] == YES) {
                     SpotTypeModel *spotType = [SHJSONAPIResource jsonAPIResource:spotTypeDictionary withLinked:jsonApi.linked withClass:[SpotTypeModel class]];
                     [userSpotTypes addObject:spotType];
                 }
             }
+            
+            // TODO: cache value
             
             if (successBlock) {
                 successBlock(userSpotTypes);
@@ -486,6 +499,8 @@
 
 @implementation SpotModelCache
 
+NSString * const SpotTypesKey = @"SpotTypesKey";
+
 + (NSString *)menuKeyForSpot:(SpotModel *)spot {
     return [NSString stringWithFormat:@"key-menu-%@", spot.ID];
 }
@@ -500,6 +515,19 @@
     }
     else {
         [self removeObjectForKey:key];
+    }
+}
+
+- (NSArray *)cachedSpotTypes {
+    return [self objectForKey:SpotTypesKey];
+}
+
+- (void)cacheSpotTypes:(NSArray *)spotTypes {
+    if (spotTypes.count) {
+        [self setObject:spotTypes forKey:SpotTypesKey];
+    }
+    else {
+        [self removeObjectForKey:SpotTypesKey];
     }
 }
 

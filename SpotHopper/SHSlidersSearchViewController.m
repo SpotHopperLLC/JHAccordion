@@ -41,7 +41,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
     
-    [self.slidersSearchTableViewManager prefetchData];
+    [self.slidersSearchTableViewManager prepare];
     
     self.searchButton.titleLabel.font = [UIFont fontWithName:@"Lato-Light" size:26.0f];
 }
@@ -77,7 +77,6 @@
                 [self showAlert:@"Oops" message:errorModel.human];
             }
             else {
-                [self performSegueWithIdentifier:@"finishCreatingSpotListForHomeMap" sender:self];
                 if ([self.delegate respondsToSelector:@selector(slidersSearchViewController:didPrepareDrinklist:withRequest:forMode:)]) {
                     [self.delegate slidersSearchViewController:self didPrepareSpotlist:spotListModel withRequest:request forMode:self.mode];
                 }
@@ -93,7 +92,6 @@
                 [self showAlert:@"Oops" message:errorModel.human];
             }
             else {
-                [self performSegueWithIdentifier:@"finishCreatingDrinkListForHomeMap" sender:self];
                 if ([self.delegate respondsToSelector:@selector(slidersSearchViewController:didPrepareDrinklist:withRequest:forMode:)]) {
                     [self.delegate slidersSearchViewController:self didPrepareDrinklist:drinkListModel withRequest:request forMode:self.mode];
                 }
@@ -169,6 +167,10 @@
 
 #pragma mark - SHSlidersSearchTableViewManagerDelegate
 #pragma mark -
+
+- (UIStoryboard *)slidersSearchTableViewManagerStoryboard:(SHSlidersSearchTableViewManager *)manager {
+    return self.storyboard;
+}
 
 - (void)slidersSearchTableViewManagerDidChangeSlider:(SHSlidersSearchTableViewManager *)manager {
     if (self.searchButton.hidden) {

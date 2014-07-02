@@ -24,6 +24,10 @@
 
 #pragma mark - Getters
 
+- (NSString *)name {
+    return self.sliderTemplate.name;
+}
+
 - (NSNumber *)value {
     if (_value != nil) return _value;
     _value = [self objectForKey:@"value"];

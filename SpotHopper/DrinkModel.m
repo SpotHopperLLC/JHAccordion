@@ -12,6 +12,7 @@
 #import "ErrorModel.h"
 #import "SpotModel.h"
 #import "DrinkTypeModel.h"
+#import "DrinkSubtypeModel.h"
 #import "SliderTemplateModel.h"
 
 #import <CoreLocation/CoreLocation.h>
@@ -22,6 +23,9 @@
 
 - (NSArray *)cachedSpotsForKey:(NSString *)key;
 - (void)cacheSpots:(NSArray *)spots forKey:(NSString *)key;
+
+- (NSArray *)cachedDrinkTypes;
+- (void)cacheDrinkTypes:(NSArray *)drinkTypes;
 
 @end
 
@@ -222,13 +226,30 @@
 }
 
 + (void)fetchDrinkTypes:(void (^)(NSArray *drinkTypes))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    NSArray *drinkTypes = [[DrinkModel sh_sharedCache] cachedDrinkTypes];
+    if (drinkTypes.count && successBlock) {
+        successBlock(drinkTypes);
+        return;
+    }
+    
     // Gets drink form data (Beer, Wine and Cocktail)
     [DrinkModel getDrinks:@{kDrinkModelParamsPageSize:@0} success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         NSDictionary *forms = [jsonApi objectForKey:@"form"];
         if (forms != nil) {
             NSArray *drinkTypes = [forms objectForKey:@"drink_types"];
+            NSMutableArray *mappedDrinkTypes = @[].mutableCopy;
+            for (NSDictionary *drinkTypeDictionary in drinkTypes) {
+                DrinkTypeModel *drinkType = [SHJSONAPIResource jsonAPIResource:drinkTypeDictionary withLinked:jsonApi.linked withClass:[DrinkTypeModel class]];
+                
+                NSArray *subtypes = [SHJSONAPIResource jsonAPIResources:drinkTypeDictionary[@"drink_subtypes"] withLinked:jsonApi.linked withClass:[DrinkSubtypeModel class]];
+                drinkType.subtypes = subtypes;
+                [mappedDrinkTypes addObject:drinkType];
+            }
+            
+            [[DrinkModel sh_sharedCache] cacheDrinkTypes:mappedDrinkTypes];
+            
             if (successBlock) {
-                successBlock(drinkTypes);
+                successBlock(mappedDrinkTypes);
             }
         }
     } failure:^(ErrorModel *errorModel) {
@@ -396,6 +417,8 @@
 
 @implementation DrinkModelCache
 
+NSString * const DrinkTypesKey = @"DrinkTypes";
+
 + (NSString *)spotsKeyForDrink:(DrinkModel *)drink location:(CLLocation *)location {
     return [NSString stringWithFormat:@"key-spots-%@-%f-%f", drink.ID, location.coordinate.latitude, location.coordinate.longitude];
 }
@@ -411,6 +434,20 @@
     else {
         [self removeObjectForKey:key];
     }
+}
+
+- (NSArray *)cachedDrinkTypes {
+    return [self objectForKey:DrinkTypesKey];
+}
+
+- (void)cacheDrinkTypes:(NSArray *)drinkTypes {
+    if (drinkTypes.count) {
+        [self setObject:drinkTypes forKey:DrinkTypesKey];
+    }
+    else {
+        [self removeObjectForKey:DrinkTypesKey];
+    }
+    
 }
 
 @end

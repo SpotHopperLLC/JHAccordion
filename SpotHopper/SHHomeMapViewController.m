@@ -16,7 +16,6 @@
 #import "SHSidebarViewController.h"
 #import "SHLocationMenuBarViewController.h"
 #import "SHHomeNavigationViewController.h"
-#import "SHAdjustSpotListSliderViewController.h"
 #import "SHSlidersSearchViewController.h"
 #import "SHMapOverlayCollectionViewController.h"
 #import "SHMapFooterNavigationViewController.h"
@@ -33,6 +32,7 @@
 #import "TellMeMyLocation.h"
 #import "Tracker.h"
 
+#import "UserModel.h"
 #import "SpotModel.h"
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
@@ -78,7 +78,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     SHMapOverlayCollectionDelegate,
     SHMapFooterNavigationDelegate,
     SHSpotsCollectionViewManagerDelegate,
-    SHAdjustSliderListSliderDelegate,
     SpotAnnotationCalloutDelegate,
     SHSlidersSearchDelegate,
     MKMapViewDelegate>
@@ -176,6 +175,15 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     self.view.backgroundColor = [UIColor clearColor];
     
     [self hideAreYouHerePrompt:FALSE withCompletionBlock:nil];
+    
+    if ([UserModel isLoggedIn]) {
+        UserModel *user = [UserModel currentUser];
+        [[user fetchMySpotLists] then:^(NSArray *spotlists) {
+            NSLog(@"Spotlists: %@", spotlists);
+        } fail:^(ErrorModel *errorModel) {
+            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+        } always:nil];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -206,16 +214,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.destinationViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *nc = (UINavigationController *)segue.destinationViewController;
-        if ([nc.topViewController isKindOfClass:[SHAdjustSpotListSliderViewController class]]) {
-            SHAdjustSpotListSliderViewController *vc = (SHAdjustSpotListSliderViewController *)nc.topViewController;
-            CLLocation *location = _currentLocation;
-            vc.location = location;
-            vc.delegate = self;
-        }
-    }
-    
     if ([segue.destinationViewController isKindOfClass:[SHSpotProfileViewController class]]) {
         SHSpotProfileViewController *vc = segue.destinationViewController;
         NSAssert(self.selectedSpot, @"Selected Spot should be defined");
@@ -757,36 +755,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [self restoreNavigationIfNeeded];
 }
 
-- (IBAction)finishCreatingSpotListForHomeMap:(UIStoryboardSegue *)segue {
-    // TODO: get back to the home map view and get spotlist model
-    // TODO: hide the home navigation and display the collection view of the spots and add the map annotations
-    // TODO: remove this unwind segue since it does not dismiss the custom child view controller
-    
-    if ([segue.sourceViewController isKindOfClass:[SHAdjustSpotListSliderViewController class]]) {
-        SHAdjustSpotListSliderViewController *vc = (SHAdjustSpotListSliderViewController *)segue.sourceViewController;
-        [self displaySpotlist:vc.spotListModel];
-    }
-}
-
-- (IBAction)finishCreatingDrinkListForHomeMap:(UIStoryboardSegue *)segue {
-    // do nothing (handled by delegate method)
-    // TODO: remove this unwind segue since it does not dismiss the custom child view controller
-}
-
-- (IBAction)childViewControllerDidRequestSimilarSpots:(UIStoryboardSegue *)segue {
-    if ([segue.sourceViewController isKindOfClass:[NSObject class]]) {
-    }
-    
-//    segue.sourceViewController
-    
-    // is Spot Profile View Controller
-    // OK, get SpotModel from the property
-    
-//    SHSpotProfileViewController *vc;
-//    vc.spotModel
-    
-}
-
 #pragma mark - Navigation
 #pragma mark -
 
@@ -802,7 +770,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                 _currentLocation = newLocation;
                 [self performSegueWithIdentifier:@"HomeMapToSpots" sender:self];
             } failure:^(NSError *error) {
-                [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
+                [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
             }];
         }];
     }
@@ -1248,7 +1216,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self repositionMapOnCoordinate:_currentLocation.coordinate animated:NO];
         [self fetchNearbySpotsAtLocation:_currentLocation];
     } failure:^(NSError *error) {
-        [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
@@ -1714,13 +1682,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc winesButtonTapped:(id)sender {
     [self showWineSearch];
-}
-
-#pragma mark - SHAdjustSliderListSliderDelegate
-#pragma mark -
-
-- (void)adjustSpotListSliderViewController:(SHAdjustSpotListSliderViewController*)vc didCreateSpotList:(SpotListModel*)spotList {
-    // do nothing (handled by unwind segue)
 }
 
 #pragma mark - SpotAnnotationCalloutDelegate

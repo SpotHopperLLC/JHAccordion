@@ -12,6 +12,8 @@
 
 @interface SliderModel : SHJSONAPIResource
 
+@property (readonly) NSString *name;
+
 @property (nonatomic, strong) NSNumber *value;
 @property (nonatomic, strong) SliderTemplateModel *sliderTemplate;
 
