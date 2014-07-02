@@ -188,24 +188,28 @@
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vwZ-aL-6qh" userLabel="Arrow Image View">
+                                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Au2-eX-c6N" userLabel="Delete Button">
                                                     <rect key="frame" x="270" y="7" width="30" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="qZW-OC-WJh"/>
-                                                        <constraint firstAttribute="width" constant="30" id="y5z-sX-40F"/>
+                                                        <constraint firstAttribute="width" constant="30" id="CbI-LN-4Fb"/>
+                                                        <constraint firstAttribute="height" constant="30" id="Kfw-KO-Io5"/>
                                                     </constraints>
-                                                </imageView>
+                                                    <state key="normal">
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="vwZ-aL-6qh" secondAttribute="trailing" constant="20" symbolic="YES" id="O90-QZ-5ZJ"/>
+                                                <constraint firstAttribute="centerY" secondItem="Au2-eX-c6N" secondAttribute="centerY" id="B3j-22-ggj"/>
                                                 <constraint firstAttribute="centerY" secondItem="HS5-ij-VMr" secondAttribute="centerY" id="U5F-1l-fbO"/>
-                                                <constraint firstAttribute="centerY" secondItem="vwZ-aL-6qh" secondAttribute="centerY" id="UVo-FF-mCs"/>
-                                                <constraint firstItem="vwZ-aL-6qh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HS5-ij-VMr" secondAttribute="trailing" constant="8" id="ZKi-3Y-n1L"/>
                                                 <constraint firstItem="HS5-ij-VMr" firstAttribute="leading" secondItem="lSZ-XW-qAU" secondAttribute="leading" constant="20" symbolic="YES" id="ldp-B0-UDV"/>
+                                                <constraint firstAttribute="trailing" secondItem="Au2-eX-c6N" secondAttribute="trailing" constant="20" id="wRl-gm-sx7"/>
+                                                <constraint firstItem="Au2-eX-c6N" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HS5-ij-VMr" secondAttribute="trailing" constant="8" symbolic="YES" id="zFw-5J-be0"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SubTypeCell" id="75X-oz-hfg">
                                         <rect key="frame" x="0.0" y="66" width="320" height="44"/>
@@ -239,7 +243,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="4Hi-en-bRr" userLabel="Left Label" customClass="SHLabelLatoLight">
-                                                    <rect key="frame" x="20" y="13" width="42" height="21"/>
+                                                    <rect key="frame" x="20" y="8" width="42" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -247,7 +251,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="zjA-4d-Oaj" userLabel="Right Label" customClass="SHLabelLatoLight">
-                                                    <rect key="frame" x="258" y="13" width="42" height="21"/>
+                                                    <rect key="frame" x="258" y="8" width="42" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -255,7 +259,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <slider opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="cRP-Wt-nB2" userLabel="Custom Slider" customClass="SHSlider">
-                                                    <rect key="frame" x="18" y="30" width="284" height="31"/>
+                                                    <rect key="frame" x="18" y="24" width="284" height="31"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="b42-Mj-MDL" id="j9R-wW-uhK"/>
@@ -276,13 +280,13 @@
                                                 <constraint firstAttribute="bottom" secondItem="RSn-Nc-RyQ" secondAttribute="bottom" id="Cfm-F1-nWc"/>
                                                 <constraint firstItem="zjA-4d-Oaj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4Hi-en-bRr" secondAttribute="trailing" constant="8" id="D8H-W3-Tqh"/>
                                                 <constraint firstAttribute="trailing" secondItem="zjA-4d-Oaj" secondAttribute="trailing" constant="20" id="EBN-sL-Xoy"/>
-                                                <constraint firstAttribute="centerY" secondItem="cRP-Wt-nB2" secondAttribute="centerY" constant="-6" id="Fmq-wt-XM4"/>
+                                                <constraint firstAttribute="centerY" secondItem="cRP-Wt-nB2" secondAttribute="centerY" id="Fmq-wt-XM4"/>
                                                 <constraint firstItem="cRP-Wt-nB2" firstAttribute="leading" secondItem="uWa-nO-xSc" secondAttribute="leading" constant="20" id="IQh-b5-qPu"/>
                                                 <constraint firstAttribute="trailing" secondItem="RSn-Nc-RyQ" secondAttribute="trailing" constant="10" id="T34-tV-8YP"/>
                                                 <constraint firstItem="RSn-Nc-RyQ" firstAttribute="leading" secondItem="uWa-nO-xSc" secondAttribute="leading" constant="10" id="e3q-5M-ZFH"/>
                                                 <constraint firstItem="4Hi-en-bRr" firstAttribute="leading" secondItem="uWa-nO-xSc" secondAttribute="leading" constant="20" id="e9l-Uh-EB7"/>
-                                                <constraint firstItem="zjA-4d-Oaj" firstAttribute="top" secondItem="uWa-nO-xSc" secondAttribute="top" constant="13" id="tab-R2-1vv"/>
-                                                <constraint firstItem="4Hi-en-bRr" firstAttribute="top" secondItem="uWa-nO-xSc" secondAttribute="top" constant="13" id="vte-Lk-HV2"/>
+                                                <constraint firstItem="zjA-4d-Oaj" firstAttribute="top" secondItem="uWa-nO-xSc" secondAttribute="top" constant="8" id="tab-R2-1vv"/>
+                                                <constraint firstItem="4Hi-en-bRr" firstAttribute="top" secondItem="uWa-nO-xSc" secondAttribute="top" constant="8" id="vte-Lk-HV2"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

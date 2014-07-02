@@ -89,6 +89,9 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
 {
     UIImage *normalImage = [SHStyleKit drawImage:drawing color:normalColor size:button.frame.size];
     UIImage *highlightedImage = [SHStyleKit drawImage:drawing color:highlightedColor size:button.frame.size];
+    
+//    [button setBackgroundImage:normalImage forState:UIControlStateNormal];
+    
     [button setImage:normalImage forState:UIControlStateNormal];
     [button setImage:highlightedImage forState:UIControlStateHighlighted];
 }
@@ -138,7 +141,7 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
 + (UIImage *)drawImage:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size;
 {
     if (CGSizeEqualToSize(size, CGSizeZero)) {
-        NSLog(@"Size canot be zero");
+        NSLog(@"Size cannot be zero");
         return nil;
     }
     
@@ -277,6 +280,10 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
         case SHStyleKitDrawingNavigationArrowLeftIcon:
         case SHStyleKitDrawingNavigationArrowDownIcon:
             [SHStyleKit drawNavigationArrowIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName rotation:rotation];
+            break;
+            
+        case SHStyleKitDrawingDeleteIcon:
+            [SHStyleKit drawDeleteIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
             break;
         case SHStyleKitDrawingArrowRightIcon:
         case SHStyleKitDrawingArrowUpIcon:

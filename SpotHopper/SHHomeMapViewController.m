@@ -143,6 +143,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     BOOL _doNotMoveMap;
     BOOL _isShowingSliderSearchView;
     BOOL _isSpotDrinkList;
+    BOOL _isOverlayAnimating;
 }
 
 #pragma mark - View Lifecyle
@@ -1449,7 +1450,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }
     
     if (_isShowingSliderSearchView) {
-        [self updateBlurredView];
+        if (!_isOverlayAnimating) {
+            [self updateBlurredView];
+        }
         [self performSelector:@selector(refreshBlurredView) withObject:nil afterDelay:0.1];
     }
 }
@@ -1715,6 +1718,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [self hideSlidersSearch:TRUE forMode:mode withCompletionBlock:^{
         [self displayDrinklist:drinklist];
     }];
+}
+
+- (void)slidersSearchViewControllerWillAnimate:(SHSlidersSearchViewController *)vc {
+    _isOverlayAnimating = TRUE;
+}
+
+- (void)slidersSearchViewControllerDidAnimate:(SHSlidersSearchViewController *)vc {
+    _isOverlayAnimating = FALSE;
 }
 
 #pragma mark - MKMapViewDelegate

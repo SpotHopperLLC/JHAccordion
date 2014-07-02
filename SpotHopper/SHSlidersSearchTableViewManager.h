@@ -42,5 +42,8 @@
 
 - (void)slidersSearchTableViewManagerDidChangeSlider:(SHSlidersSearchTableViewManager *)manager;
 
+// TODO: use these methods to indicate whent eh sliders search screen is animating to avoid performance issues with the blurred background
+- (void)slidersSearchTableViewManagerWillAnimate:(SHSlidersSearchTableViewManager *)manager;
+- (void)slidersSearchTableViewManagerDidAnimate:(SHSlidersSearchTableViewManager *)manager;
 
 @end

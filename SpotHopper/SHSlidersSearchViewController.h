@@ -33,4 +33,8 @@
 
 - (void)slidersSearchViewController:(SHSlidersSearchViewController *)vc didPrepareDrinklist:(DrinkListModel *)drinklist withRequest:(DrinkListRequest *)request forMode:(SHMode)mode;
 
+- (void)slidersSearchViewControllerWillAnimate:(SHSlidersSearchViewController *)vc;
+
+- (void)slidersSearchViewControllerDidAnimate:(SHSlidersSearchViewController *)vc;
+
 @end

@@ -34,6 +34,7 @@
 #import "UIControl+BlocksKit.h"
 
 #define kListCellTitleLabel 1
+#define kListCellDeleteButton 2
 #define kSubTypeCellTitleLabel 1
 
 #define kSliderCellLeftLabel 1
@@ -627,9 +628,8 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
     if (self.mode == SHModeSpots) {
-        DebugLog(@"Spots");
+//        DebugLog(@"Spots");
         if (indexPath.section == kSection_Spots_Type && indexPath.row < self.spotTypes.count) {
             SpotTypeModel *spotType = self.spotTypes[indexPath.row];
             return [self configureSubTypeCellForIndexPath:indexPath forTableView:tableView withTitle:spotType.name];
@@ -646,7 +646,7 @@
         }
     }
     else if (self.mode == SHModeBeer) {
-        DebugLog(@"Beer");
+//        DebugLog(@"Beer");
         if (indexPath.section == kSection_Wine_Type && indexPath.row < self.wineSubtypes.count) {
 //            NSDictionary *wineSubType = self.wineSubTypes[indexPath.row];
 //            titleLabel.text = wineSubType[@"name"];
@@ -654,10 +654,10 @@
         }
     }
     else if (self.mode == SHModeCocktail) {
-        DebugLog(@"Cocktail");
+//        DebugLog(@"Cocktail");
     }
     else if (self.mode == SHModeWine) {
-        DebugLog(@"Wine");
+//        DebugLog(@"Wine");
     }
     else {
         DebugLog(@"Mode is %@", self.mode == SHModeNone ? @"None" : @"Unknown");
@@ -815,8 +815,21 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ListCellIdentifier forIndexPath:indexPath];
     
     UILabel *titleLabel = [self labelInView:cell withTag:kListCellTitleLabel];
+    UIButton *deleteButton = [self buttonInView:cell withTag:kListCellDeleteButton];
+    
     [SHStyleKit setLabel:titleLabel textColor:SHStyleKitColorMyTextColor];
     titleLabel.text = title;
+    
+    [SHStyleKit setButton:deleteButton withDrawing:SHStyleKitDrawingDeleteIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyTextColor];
+    
+    if ([deleteButton bk_hasEventHandlersForControlEvents:UIControlEventTouchUpInside]) {
+        [deleteButton bk_removeEventHandlersForControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    [deleteButton bk_addEventHandler:^(id sender) {
+        // TODO: implement prompt to delete list
+        DebugLog(@"delete list?");
+    } forControlEvents:UIControlEventTouchUpInside];
     
     return cell;
 }
@@ -885,6 +898,14 @@
     UIView *taggedView = [view viewWithTag:tag];
     if ([taggedView isKindOfClass:[UILabel class]]) {
         return (UILabel *)taggedView;
+    }
+    return nil;
+}
+
+- (UIButton *)buttonInView:(UIView *)view withTag:(NSUInteger)tag {
+    UIView *taggedView = [view viewWithTag:tag];
+    if ([taggedView isKindOfClass:[UIButton class]]) {
+        return (UIButton *)taggedView;
     }
     return nil;
 }
@@ -1147,10 +1168,12 @@
 }
 
 - (void)accordion:(JHAccordion*)accordion contentSizeChanged:(CGSize)contentSize {
+//    DebugLog(@"%@", NSStringFromSelector(_cmd));
     [accordion slideUpLastOpenedSection];
 }
 
 - (void)accordion:(JHAccordion*)accordion openingSection:(NSInteger)section {
+//    DebugLog(@"%@", NSStringFromSelector(_cmd));
     UIView *headerView = [self getSectionHeaderView:section];
     UIImageView *arrowImageView = (UIImageView *)[headerView viewWithTag:2];
     [UIView animateWithDuration:0.35 animations:^{
@@ -1159,11 +1182,25 @@
 }
 
 - (void)accordion:(JHAccordion*)accordion closingSection:(NSInteger)section {
+//    DebugLog(@"%@", NSStringFromSelector(_cmd));
     UIView *headerView = [self getSectionHeaderView:section];
     UIImageView *arrowImageView = (UIImageView *)[headerView viewWithTag:2];
     [UIView animateWithDuration:0.35 animations:^{
         arrowImageView.transform = CGAffineTransformMakeRotation(kClosedPosition);
     }];
+}
+
+- (void)accordion:(JHAccordion*)accordion willUpdateTableView:(UITableView *)tableView {
+    if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerWillAnimate:)]) {
+        [self.delegate slidersSearchTableViewManagerWillAnimate:self];
+    }
+    
+}
+
+- (void)accordion:(JHAccordion*)accordion didUpdateTableView:(UITableView *)tableView {
+    if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerDidAnimate:)]) {
+        [self.delegate slidersSearchTableViewManagerDidAnimate:self];
+    }
 }
 
 @end

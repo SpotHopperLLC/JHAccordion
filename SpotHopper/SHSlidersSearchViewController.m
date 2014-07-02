@@ -178,4 +178,17 @@
     }
 }
 
+- (void)slidersSearchTableViewManagerWillAnimate:(SHSlidersSearchTableViewManager *)manager {
+    if ([self.delegate respondsToSelector:@selector(slidersSearchViewControllerWillAnimate:)]) {
+        [self.delegate slidersSearchViewControllerWillAnimate:self];
+    }
+}
+
+- (void)slidersSearchTableViewManagerDidAnimate:(SHSlidersSearchTableViewManager *)manager {
+    if ([self.delegate respondsToSelector:@selector(slidersSearchViewControllerDidAnimate:)]) {
+        [self.delegate slidersSearchViewControllerDidAnimate:self];
+    }
+    
+}
+
 @end
