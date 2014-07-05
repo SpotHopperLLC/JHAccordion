@@ -128,6 +128,24 @@
     return deferred.promise;
 }
 
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone {
+	SliderTemplateModel *copy = [[[self class] alloc] init];
+
+    copy.name = self.name;
+    copy.minLabel = self.minLabel;
+    copy.maxLabel = self.maxLabel;
+    copy.defaultValue = self.defaultValue;
+    copy.required = self.required;
+    copy.spotTypes = self.spotTypes;
+    copy.drinkTypes = self.drinkTypes;
+    copy.drinkSubtypes = self.drinkSubtypes;
+    copy.order = self.order;
+    
+    return copy;
+}
+
 #pragma mark - Revised Code for 2.0
 
 + (void)fetchSliderTemplates:(void(^)(NSArray *sliderTemplates))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {

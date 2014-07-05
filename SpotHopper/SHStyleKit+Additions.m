@@ -319,6 +319,10 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
             [SHStyleKit drawMyPlaceholderWithScaleX:scaleX scaleY:scaleY];
             break;
             
+        case SHStyleKitDrawingDefaultAvatarIcon:
+            [SHStyleKit drawDefaultAvatarIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
+            break;
+            
         case SHStyleKitDrawingTopBarBackground:
             [SHStyleKit drawTopBarBackgroundWithFillColorName:colorName];
             

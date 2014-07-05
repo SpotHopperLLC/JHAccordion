@@ -73,6 +73,7 @@
 }
 
 - (void)prepareForReuse {
+    self.spot = nil;
     [super prepareForReuse];
     
     [self addSubviews];
@@ -89,15 +90,6 @@
     
     self.centerOffset = CGPointMake(width / 3, -1 * (height / 2));
     self.opaque = NO;
-    
-    /*
-    if (self.useLargeIcon) {
-        self.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.25f];
-    }
-    else {
-        self.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.25f];
-    }
-     */
     
     self.frame = CGRectMake(0, 0, width, height);
     CGRect imageFrame = CGRectMake(0, 0, width, height);
@@ -143,7 +135,10 @@
 }
 
 - (void)setSpot:(SpotModel *)spot highlighted:(BOOL)highlighted {
-    if (![_spot isEqual:spot]) {
+    if (!spot) {
+        _spot = nil;
+    }
+    else if (![_spot isEqual:spot]) {
         _spot = spot;
         
         if (self.drawing != SHStyleKitDrawingNone) {
@@ -162,8 +157,14 @@
             self.highlightedPercentLabel.attributedText = attributedString;
         }
         else {
-            self.percentLabel.hidden = TRUE;
-            self.highlightedPercentLabel.hidden = TRUE;
+            self.innerImageView.hidden = TRUE;
+            self.percentLabel.hidden = FALSE;
+            self.highlightedPercentLabel.hidden = FALSE;
+            
+            NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:kFontSize] };
+            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:@"?" attributes:attributes];
+            self.percentLabel.attributedText = attributedString;
+            self.highlightedPercentLabel.attributedText = attributedString;
         }
         
         _isSettingSpot = TRUE;

@@ -19,13 +19,7 @@
 #import "SpotTypeModel.h"
 #import "DrinkModel.h"
 #import "DrinkTypeModel.h"
-
-@interface UserModelCache : NSCache
-
-- (NSArray *)cachedSpotlists;
-- (void)cacheSpotlists:(NSArray *)spotlists;
-
-@end
+#import "SpotListModel.h"
 
 @implementation UserModel
 
@@ -346,62 +340,6 @@
     return user;
 }
 
-- (void)fetchMySpotLists:(NSDictionary *)params success:(void (^)(NSArray *spotlists))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
-    NSArray *spotlists = [[UserModel sh_sharedCache] cachedSpotlists];
-    if (spotlists.count && successBlock) {
-        successBlock(spotlists);
-        return;
-    }
-    
-    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/users/%ld/spot_lists", (long)[self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        // Parses response with JSONAPI
-        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
-        
-        if (operation.response.statusCode == 200) {
-            NSArray *spotlists = [jsonApi resourcesForKey:@"spot_lists"];
-            [[UserModel sh_sharedCache] cacheSpotlists:spotlists];
-            if (successBlock) {
-                successBlock(spotlists);
-            }
-        } else {
-            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
-            if (failureBlock) {
-                failureBlock(errorModel);
-            }
-        }
-    }];
-}
-
-- (Promise *)fetchMySpotLists {
-    // Creating deferred for promises
-    Deferred *deferred = [Deferred deferred];
-    
-    [self fetchMySpotLists:nil success:^(NSArray *spotlists) {
-        [deferred resolveWith:spotlists];
-    } failure:^(ErrorModel *errorModel) {
-        [deferred rejectWith:errorModel];
-    }];
-    
-    return deferred.promise;
-}
-
-#pragma mark - Caching
-
-+ (UserModelCache *)sh_sharedCache {
-    static UserModelCache *_sh_Cache = nil;
-    static dispatch_once_t oncePredicate;
-    dispatch_once(&oncePredicate, ^{
-        _sh_Cache = [[UserModelCache alloc] init];
-        
-        [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * __unused notification) {
-            [_sh_Cache removeAllObjects];
-        }];
-    });
-    
-    return _sh_Cache;
-}
-
 #pragma mark - Getters
 
 - (NSString *)email {
@@ -448,25 +386,6 @@
                                                                                     @"twitter_id" : self.twitterId != nil ? self.twitterId : @"",
                                                                                     @"birthday" : self.birthday != nil ? self.birthday : @""
                                                                                     } options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding];
-}
-
-@end
-
-@implementation UserModelCache
-
-NSString * const SpotlistsKey = @"Spotlists";
-
-- (NSArray *)cachedSpotlists {
-    return [self objectForKey:SpotlistsKey];
-}
-
-- (void)cacheSpotlists:(NSArray *)spotlists {
-    if (spotlists.count) {
-        [self setObject:spotlists forKey:SpotlistsKey];
-    }
-    else {
-        [self removeObjectForKey:SpotlistsKey];
-    }
 }
 
 @end

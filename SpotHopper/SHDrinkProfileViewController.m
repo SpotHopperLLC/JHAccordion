@@ -184,7 +184,7 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
             numberOfRows =  kNumberOfCells;
             break;
         case 1:
-            NSLog(@"# of templates:  %lu", self.drink.averageReview.sliders.count);
+            NSLog(@"# of templates:  %lu", (unsigned long)self.drink.averageReview.sliders.count);
             numberOfRows = self.drink.averageReview.sliders.count;
             break;
         default:
@@ -236,7 +236,7 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
                         vintage.font = [UIFont fontWithName:@"Lato-Light" size:14.0f];
                         
                         if (self.drink.vintage > 0) {
-                            vintage.text = [NSString stringWithFormat:@"%ld",[self.drink.vintage integerValue] ];
+                            vintage.text = [NSString stringWithFormat:@"%ld",(long)[self.drink.vintage integerValue] ];
                         }else {
                             vintage.text = @"";
                         }

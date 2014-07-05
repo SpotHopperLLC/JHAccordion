@@ -8,7 +8,7 @@
 
 #import "SHJSONAPIResource.h"
 
-@interface DrinkSubtypeModel : SHJSONAPIResource
+@interface DrinkSubtypeModel : SHJSONAPIResource<NSCopying>
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSDate *createdAt;

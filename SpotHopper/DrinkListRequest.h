@@ -14,6 +14,7 @@
 
 @property (copy, nonatomic) NSString *name;
 @property (assign, nonatomic) CLLocationCoordinate2D coordinate;
+@property (assign, nonatomic) CGFloat radius;
 @property (strong, nonatomic) NSArray *sliders;
 @property (strong, nonatomic) NSNumber *drinkId;
 @property (strong, nonatomic) NSNumber *drinkTypeId;

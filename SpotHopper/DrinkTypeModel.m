@@ -31,4 +31,18 @@
              };
 }
 
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone {
+	DrinkTypeModel *copy = [[[self class] alloc] init];
+    
+    copy.name = self.name;
+    copy.createdAt = self.createdAt;
+    copy.updateAt = self.updateAt;
+    
+    copy.subtypes = self.subtypes;
+    
+    return copy;
+}
+
 @end

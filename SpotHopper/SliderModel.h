@@ -10,7 +10,7 @@
 
 @class SliderTemplateModel;
 
-@interface SliderModel : SHJSONAPIResource
+@interface SliderModel : SHJSONAPIResource<NSCopying>
 
 @property (readonly) NSString *name;
 

@@ -12,6 +12,17 @@
 
 @implementation SliderModel
 
+#pragma mark -
+
+- (NSDictionary *)mapKeysToProperties {
+    // Maps values in JSON key 'value' to 'value' property
+    return @{
+             @"value" : @"value",
+             @"links.slider_template" : @"sliderTemplate"
+             };
+    
+}
+
 #pragma mark - Debugging
 
 - (NSString *)description {
@@ -28,17 +39,15 @@
     return self.sliderTemplate.name;
 }
 
-- (NSNumber *)value {
-    if (_value != nil) return _value;
-    _value = [self objectForKey:@"value"];
-    return _value;
-//    return [self objectForKey:@"value"];
-}
+#pragma mark - NSCopying
 
-- (SliderTemplateModel *)sliderTemplate {
-    if (_sliderTemplate != nil) return _sliderTemplate;
-    _sliderTemplate = [self linkedResourceForKey:@"slider_template"];
-    return _sliderTemplate;
+- (id)copyWithZone:(NSZone *)zone {
+	SliderModel *copy = [[[self class] alloc] init];
+    
+    copy.value = self.value;
+    copy.sliderTemplate = self.sliderTemplate;
+        
+    return copy;
 }
 
 @end

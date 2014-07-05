@@ -20,7 +20,7 @@
 
 @class ErrorModel;
 
-@interface SliderTemplateModel : SHJSONAPIResource
+@interface SliderTemplateModel : SHJSONAPIResource<NSCopying>
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *minLabel;

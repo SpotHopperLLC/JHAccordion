@@ -8,7 +8,7 @@
 
 #import "JSONAPIResource.h"
 
-@interface SHJSONAPIResource : JSONAPIResource<NSCoding>
+@interface SHJSONAPIResource : JSONAPIResource
 
 - (NSDate*)formatBirthday:(NSString*)string;
 - (NSDate*)formatDateTimestamp:(NSString*)string;

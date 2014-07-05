@@ -123,7 +123,7 @@
     NSDateComponents *comps = [gregorian components:NSWeekdayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit|NSDayCalendarUnit|NSTimeZoneCalendarUnit fromDate:[NSDate date]];
     
     // Get open and close time
-    NSInteger dayOfWeek = [comps weekday] -1;
+    NSInteger dayOfWeek = [comps weekday] - 1;
     
     /*
      * Searches spots for specials

@@ -31,6 +31,7 @@
 @property (nonatomic, strong) NSNumber *latitude;
 @property (nonatomic, strong) NSNumber *longitude;
 @property (nonatomic, strong) SpotModel *spot;
+@property (nonatomic, strong) NSArray *sliders;
 
 @property (nonatomic, readonly) CLLocation *location;
 

@@ -13,6 +13,8 @@
 @class SpotListRequest;
 @class SpotListModel;
 
+#import <CoreLocation/CoreLocation.h>
+
 @protocol SHSlidersSearchDelegate;
 
 @interface SHSlidersSearchViewController : BaseViewController
@@ -36,5 +38,10 @@
 - (void)slidersSearchViewControllerWillAnimate:(SHSlidersSearchViewController *)vc;
 
 - (void)slidersSearchViewControllerDidAnimate:(SHSlidersSearchViewController *)vc;
+
+@required
+
+- (CLLocationCoordinate2D)searchCoordinateForSlidersSearchViewController:(SHSlidersSearchViewController *)vc;
+- (CLLocationDistance)searchRadiusForSlidersSearchViewController:(SHSlidersSearchViewController *)vc;
 
 @end

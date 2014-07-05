@@ -14,6 +14,8 @@
 @class SpotListModel;
 @class ErrorModel;
 
+#import <CoreLocation/CoreLocation.h>
+
 @protocol SHSlidersSearchTableViewManagerDelegate;
 
 @interface SHSlidersSearchTableViewManager : NSObject <UITableViewDataSource, UITableViewDelegate>
@@ -42,8 +44,16 @@
 
 - (void)slidersSearchTableViewManagerDidChangeSlider:(SHSlidersSearchTableViewManager *)manager;
 
-// TODO: use these methods to indicate whent eh sliders search screen is animating to avoid performance issues with the blurred background
+// TODO: use these methods to indicate when the sliders search screen is animating to avoid performance issues with the blurred background
 - (void)slidersSearchTableViewManagerWillAnimate:(SHSlidersSearchTableViewManager *)manager;
 - (void)slidersSearchTableViewManagerDidAnimate:(SHSlidersSearchTableViewManager *)manager;
+
+- (void)slidersSearchTableViewManagerIsBusy:(SHSlidersSearchTableViewManager *)manager;
+- (void)slidersSearchTableViewManagerIsFree:(SHSlidersSearchTableViewManager *)manager;
+
+@required
+
+- (CLLocationCoordinate2D)searchCoordinateForSlidersSearchTableViewManager:(SHSlidersSearchTableViewManager *)manager;
+- (CLLocationDistance)searchRadiusForSlidersSearchTableViewManager:(SHSlidersSearchTableViewManager *)manager;
 
 @end

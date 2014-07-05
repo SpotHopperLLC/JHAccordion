@@ -43,7 +43,8 @@
              @"latitude" : @"latitude",
              @"longitude" : @"longitude",
              @"links.drinks" : @"drinks",
-             @"links.spot" : @"spot"
+             @"links.spot" : @"spot",
+             @"links.sliders" : @"sliders"
              };
     
 }

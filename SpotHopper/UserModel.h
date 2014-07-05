@@ -60,7 +60,5 @@
 
 + (BOOL)isLoggedIn;
 + (UserModel *)currentUser;
-- (void)fetchMySpotLists:(NSDictionary *)params success:(void (^)(NSArray *spotlists))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
-- (Promise *)fetchMySpotLists;
 
 @end

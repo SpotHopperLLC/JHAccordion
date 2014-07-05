@@ -156,6 +156,24 @@
     }];
 }
 
+- (CLLocationCoordinate2D)searchCenterCoordinate {
+    if ([self.delegate respondsToSelector:@selector(searchCoordinateForSlidersSearchViewController:)]) {
+        CLLocationCoordinate2D coordinate = [self.delegate searchCoordinateForSlidersSearchViewController:self];
+        return coordinate;
+    }
+    
+    return kCLLocationCoordinate2DInvalid;
+}
+
+- (CGFloat)searchRadius {
+    if ([self.delegate respondsToSelector:@selector(searchRadiusForSlidersSearchViewController:)]) {
+        CLLocationDistance meters = [self.delegate searchRadiusForSlidersSearchViewController:self];
+        return meters;
+    }
+    
+    return 1000.0f;
+}
+
 #pragma mark - Public Methods
 #pragma mark -
 
@@ -189,6 +207,22 @@
         [self.delegate slidersSearchViewControllerDidAnimate:self];
     }
     
+}
+
+- (void)slidersSearchTableViewManagerIsBusy:(SHSlidersSearchTableViewManager *)manager {
+    [self showHUD];
+}
+
+- (void)slidersSearchTableViewManagerIsFree:(SHSlidersSearchTableViewManager *)manager {
+    [self hideHUD];
+}
+
+- (CLLocationCoordinate2D)searchCoordinateForSlidersSearchTableViewManager:(SHSlidersSearchTableViewManager *)manager {
+    return [self searchCenterCoordinate];
+}
+
+- (CLLocationDistance)searchRadiusForSlidersSearchTableViewManager:(SHSlidersSearchTableViewManager *)manager {
+    return [self searchRadius];
 }
 
 @end

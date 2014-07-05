@@ -20,18 +20,44 @@
     return self.name;
 }
 
+#pragma mark -
+
+- (NSDictionary *)mapKeysToProperties {
+    // Maps linked resource in JSON key 'name' to 'name' property
+    return @{
+             @"name" : @"name",
+             @"createdAt" : @"createdAt",
+             @"updatedAt" : @"updatedAt"
+             };
+}
+
+// TODO: test that values are being mapped
+
 #pragma mark - Getters
 
-- (NSString *)name {
-    return [self objectForKey:@"name"];
+//- (NSString *)name {
+//    return [self objectForKey:@"name"];
+//}
+//
+//- (NSDate *)createdAt {
+//    return [self formatDateTimestamp:[self objectForKey:@"created_at"]];
+//}
+//
+//- (NSDate *)updatedAt {
+//    return [self formatDateTimestamp:[self objectForKey:@"updated_at"]];
+//}
+
+#pragma mark - DrinkSubtypeModel
+
+- (id)copyWithZone:(NSZone *)zone {
+	DrinkSubtypeModel *copy = [[[self class] alloc] init];
+    
+    copy.name = self.name;
+    copy.createdAt = self.createdAt;
+    copy.updateAt = self.updateAt;
+    
+    return copy;
 }
 
-- (NSDate *)createdAt {
-    return [self formatDateTimestamp:[self objectForKey:@"created_at"]];
-}
-
-- (NSDate *)updatedAt {
-    return [self formatDateTimestamp:[self objectForKey:@"updated_at"]];
-}
 
 @end
