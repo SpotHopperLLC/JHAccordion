@@ -1,14 +1,14 @@
 //
-//  DrinkSubtypeModel.m
+//  DrinkSubTypeModel.m
 //  SpotHopper
 //
 //  Created by Josh Holtz on 3/14/14.
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#import "DrinkSubtypeModel.h"
+#import "DrinkSubTypeModel.h"
 
-@implementation DrinkSubtypeModel
+@implementation DrinkSubTypeModel
 
 #pragma mark - Debugging
 
@@ -47,10 +47,10 @@
 //    return [self formatDateTimestamp:[self objectForKey:@"updated_at"]];
 //}
 
-#pragma mark - DrinkSubtypeModel
+#pragma mark - DrinkSubTypeModel
 
 - (id)copyWithZone:(NSZone *)zone {
-	DrinkSubtypeModel *copy = [[[self class] alloc] init];
+	DrinkSubTypeModel *copy = [[[self class] alloc] init];
     
     copy.name = self.name;
     copy.createdAt = self.createdAt;

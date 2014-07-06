@@ -66,7 +66,7 @@
 
 #pragma mark - API
 
-+ (Promise *)getFeaturedSpotLists:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
++ (Promise *)getFeaturedSpotLists:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
@@ -95,7 +95,7 @@
     
 }
 
-+ (Promise *)postSpotList:(NSString*)name spotId:(NSNumber*)spotId spotTypeId:(NSNumber*)spotTypeId latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders successBlock:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
++ (Promise *)postSpotList:(NSString*)name spotId:(NSNumber*)spotId spotTypeId:(NSNumber*)spotTypeId latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders successBlock:(void (^)(SpotListModel *, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
@@ -152,7 +152,7 @@
     return deferred.promise;
 }
 
-- (Promise *)getSpotList:(NSDictionary *)params success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+- (Promise *)getSpotList:(NSDictionary *)params success:(void (^)(SpotListModel *, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
@@ -181,7 +181,7 @@
     
 }
 
-- (Promise *)putSpotList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude radius:(NSNumber*)radius sliders:(NSArray*)sliders success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+- (Promise *)putSpotList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude radius:(NSNumber*)radius sliders:(NSArray*)sliders success:(void (^)(SpotListModel *, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
@@ -239,7 +239,7 @@
     
 }
 
-- (Promise *)deleteSpotList:(NSDictionary *)params success:(void (^)(SpotListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+- (Promise *)deleteSpotList:(NSDictionary *)params success:(void (^)(SpotListModel *, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
@@ -326,7 +326,7 @@
             
             [[SpotListModel sh_sharedCache] cacheSpotlists:filteredSpotlist];
             if (successBlock) {
-                successBlock(spotlists);
+                successBlock(filteredSpotlist);
             }
         } else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
@@ -383,7 +383,7 @@
     
     if (request.radius) {
         CGFloat miles = request.radius / kMetersPerMile;
-        NSNumber *radiusParam = [NSNumber numberWithFloat:MIN(kMaxRadiusFloat, miles)];
+        NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), 0.1f)];
         DebugLog(@"radiusParam: %@", radiusParam);
         params[kSpotListModelParamRadius] = radiusParam;
     }
@@ -446,10 +446,35 @@
     }];
 }
 
++ (void)fetchFeaturedSpotListWithRequest:(SpotListRequest *)request success:(void (^)(SpotListModel *spotListModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    NSDictionary *params = [self prepareSearchParametersWithRequest:request];
+    
+    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/spot_lists/%ld", (long)[request.spotListId integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            SpotListModel *spotlist = [jsonApi resourceForKey:@"spot_lists"];
+            if (successBlock) {
+                successBlock(spotlist);
+            }
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            if (errorModel) {
+                failureBlock(errorModel);
+            }
+        }
+    }];
+}
+
 + (void)fetchSpotListWithRequest:(SpotListRequest *)request success:(void (^)(SpotListModel *spotListModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     // if request has a spotlist id then it is an updated (PUT) otherwise it is a create (POST) action and both should return a result set with an identical structure
     if (!request.spotListId) {
         [self createSpotListWithRequest:request success:successBlock failure:failureBlock];
+    }
+    else if (request.spotListId && request.isFeatured) {
+        [self fetchFeaturedSpotListWithRequest:request success:successBlock failure:failureBlock];
     }
     else {
         [self updateSpotListWithRequest:request success:successBlock failure:failureBlock];

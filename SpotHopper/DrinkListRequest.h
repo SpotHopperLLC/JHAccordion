@@ -12,7 +12,9 @@
 
 @interface DrinkListRequest : NSObject <NSCopying>
 
+@property (strong, nonatomic) NSNumber *drinkListId;
 @property (copy, nonatomic) NSString *name;
+@property (assign, nonatomic) BOOL isFeatured;
 @property (assign, nonatomic) CLLocationCoordinate2D coordinate;
 @property (assign, nonatomic) CGFloat radius;
 @property (strong, nonatomic) NSArray *sliders;

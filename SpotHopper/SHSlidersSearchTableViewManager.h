@@ -26,7 +26,7 @@
 
 - (void)prepareTableViewForDrinkType:(NSString *)drinkTypeName;
 
-- (void)prepareTableViewForDrinkType:(NSString *)drinkTypeName andWineSubType:(NSString *)wineSubTypeName;
+//- (void)prepareTableViewForDrinkType:(NSString *)drinkTypeName andDrinkSubType:(NSString *)drinkSubTypeName;
 
 - (void)fetchSpotListResultsWithCompletionBlock:(void (^)(SpotListModel *spotListModel, SpotListRequest *request, ErrorModel *errorModel))completionBlock;
 

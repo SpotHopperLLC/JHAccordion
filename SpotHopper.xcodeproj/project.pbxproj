@@ -361,9 +361,9 @@
 		039F548F18D340AE004B2B67 /* MenuItemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F548E18D340AE004B2B67 /* MenuItemModel.m */; };
 		039F549018D340AE004B2B67 /* MenuItemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F548E18D340AE004B2B67 /* MenuItemModel.m */; };
 		039F549118D340AE004B2B67 /* MenuItemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F548E18D340AE004B2B67 /* MenuItemModel.m */; };
-		039F549418D34AC4004B2B67 /* DrinkSubtypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F549318D34AC4004B2B67 /* DrinkSubtypeModel.m */; };
-		039F549518D34AC4004B2B67 /* DrinkSubtypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F549318D34AC4004B2B67 /* DrinkSubtypeModel.m */; };
-		039F549618D34AC4004B2B67 /* DrinkSubtypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F549318D34AC4004B2B67 /* DrinkSubtypeModel.m */; };
+		039F549418D34AC4004B2B67 /* DrinkSubTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F549318D34AC4004B2B67 /* DrinkSubTypeModel.m */; };
+		039F549518D34AC4004B2B67 /* DrinkSubTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F549318D34AC4004B2B67 /* DrinkSubTypeModel.m */; };
+		039F549618D34AC4004B2B67 /* DrinkSubTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F549318D34AC4004B2B67 /* DrinkSubTypeModel.m */; };
 		039F549A18D3501C004B2B67 /* MenuItemSubtypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F549918D3501C004B2B67 /* MenuItemSubtypeCell.m */; };
 		039F549B18D3501C004B2B67 /* MenuItemSubtypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F549918D3501C004B2B67 /* MenuItemSubtypeCell.m */; };
 		039F549C18D3501C004B2B67 /* MenuItemSubtypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F549918D3501C004B2B67 /* MenuItemSubtypeCell.m */; };
@@ -631,7 +631,7 @@
 		03CABFE418E7716400FAC5F5 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AF8EC918E5B6C800DD9356 /* ShareViewController.m */; };
 		03CABFE518E7716400FAC5F5 /* CreateListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF6A18C6E10A00172F13 /* CreateListCell.m */; };
 		03CABFE618E7716400FAC5F5 /* SpotImageCollectViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0381043718B6704600A410DB /* SpotImageCollectViewCell.m */; };
-		03CABFE718E7716400FAC5F5 /* DrinkSubtypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F549318D34AC4004B2B67 /* DrinkSubtypeModel.m */; };
+		03CABFE718E7716400FAC5F5 /* DrinkSubTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F549318D34AC4004B2B67 /* DrinkSubTypeModel.m */; };
 		03CABFE818E7716400FAC5F5 /* CardLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E8833A18C838F600BD8FBB /* CardLayout.m */; };
 		03CABFE918E7716400FAC5F5 /* SHViewTranlucentWhite.m in Sources */ = {isa = PBXBuildFile; fileRef = 0320237B187773C0008368C2 /* SHViewTranlucentWhite.m */; };
 		03CABFEA18E7716400FAC5F5 /* FindSimilarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF8718C70A4500172F13 /* FindSimilarViewController.m */; };
@@ -1963,7 +1963,7 @@
 		267E05381922CC48004457B4 /* CreateListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF6A18C6E10A00172F13 /* CreateListCell.m */; };
 		267E05391922CC48004457B4 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B6767B18E9F59500DAD113 /* TutorialViewController.m */; };
 		267E053A1922CC48004457B4 /* SpotImageCollectViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0381043718B6704600A410DB /* SpotImageCollectViewCell.m */; };
-		267E053B1922CC48004457B4 /* DrinkSubtypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F549318D34AC4004B2B67 /* DrinkSubtypeModel.m */; };
+		267E053B1922CC48004457B4 /* DrinkSubTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F549318D34AC4004B2B67 /* DrinkSubTypeModel.m */; };
 		267E053C1922CC48004457B4 /* Tracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 26ED5CB518FDDE56006901ED /* Tracker.m */; };
 		267E053D1922CC48004457B4 /* CardLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E8833A18C838F600BD8FBB /* CardLayout.m */; };
 		267E053E1922CC48004457B4 /* SHViewTranlucentWhite.m in Sources */ = {isa = PBXBuildFile; fileRef = 0320237B187773C0008368C2 /* SHViewTranlucentWhite.m */; };
@@ -2796,8 +2796,8 @@
 		039F548918D33BA9004B2B67 /* DrinkMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DrinkMenuViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		039F548D18D340AE004B2B67 /* MenuItemModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemModel.h; sourceTree = "<group>"; };
 		039F548E18D340AE004B2B67 /* MenuItemModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemModel.m; sourceTree = "<group>"; };
-		039F549218D34AC4004B2B67 /* DrinkSubtypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkSubtypeModel.h; sourceTree = "<group>"; };
-		039F549318D34AC4004B2B67 /* DrinkSubtypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkSubtypeModel.m; sourceTree = "<group>"; };
+		039F549218D34AC4004B2B67 /* DrinkSubTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkSubTypeModel.h; sourceTree = "<group>"; };
+		039F549318D34AC4004B2B67 /* DrinkSubTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkSubTypeModel.m; sourceTree = "<group>"; };
 		039F549818D3501C004B2B67 /* MenuItemSubtypeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSubtypeCell.h; sourceTree = "<group>"; };
 		039F549918D3501C004B2B67 /* MenuItemSubtypeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSubtypeCell.m; sourceTree = "<group>"; };
 		039F549D18D35871004B2B67 /* DrinkMenuOfferingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkMenuOfferingsViewController.h; sourceTree = "<group>"; };
@@ -3780,8 +3780,8 @@
 				039F543C18D28F5E004B2B67 /* DrinkListModel.m */,
 				03CA728A187C26BD00815284 /* DrinkModel.h */,
 				03CA728B187C26BD00815284 /* DrinkModel.m */,
-				039F549218D34AC4004B2B67 /* DrinkSubtypeModel.h */,
-				039F549318D34AC4004B2B67 /* DrinkSubtypeModel.m */,
+				039F549218D34AC4004B2B67 /* DrinkSubTypeModel.h */,
+				039F549318D34AC4004B2B67 /* DrinkSubTypeModel.m */,
 				037D13A018A3DF8500B89535 /* DrinkTypeModel.h */,
 				037D13A118A3DF8500B89535 /* DrinkTypeModel.m */,
 				03412C3C18805693000F16A8 /* ErrorModel.h */,
@@ -6763,7 +6763,7 @@
 				0381043818B6704600A410DB /* SpotImageCollectViewCell.m in Sources */,
 				A62B334B193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */,
 				26B6767C18E9F59500DAD113 /* TutorialViewController.m in Sources */,
-				039F549418D34AC4004B2B67 /* DrinkSubtypeModel.m in Sources */,
+				039F549418D34AC4004B2B67 /* DrinkSubTypeModel.m in Sources */,
 				03E8833B18C838F600BD8FBB /* CardLayout.m in Sources */,
 				26ED5CB618FDDE56006901ED /* Tracker.m in Sources */,
 				0320237C187773C0008368C2 /* SHViewTranlucentWhite.m in Sources */,
@@ -6942,7 +6942,7 @@
 				03CABFE518E7716400FAC5F5 /* CreateListCell.m in Sources */,
 				26B6767F18E9F59500DAD113 /* TutorialViewController.m in Sources */,
 				03CABFE618E7716400FAC5F5 /* SpotImageCollectViewCell.m in Sources */,
-				03CABFE718E7716400FAC5F5 /* DrinkSubtypeModel.m in Sources */,
+				03CABFE718E7716400FAC5F5 /* DrinkSubTypeModel.m in Sources */,
 				26ED5CB918FDDE56006901ED /* Tracker.m in Sources */,
 				03CABFE818E7716400FAC5F5 /* CardLayout.m in Sources */,
 				03CABFE918E7716400FAC5F5 /* SHViewTranlucentWhite.m in Sources */,
@@ -7110,7 +7110,7 @@
 				03F4E78718CA33D00056EAA9 /* CreateListCell.m in Sources */,
 				26B6767E18E9F59500DAD113 /* TutorialViewController.m in Sources */,
 				03F4E78818CA33D00056EAA9 /* SpotImageCollectViewCell.m in Sources */,
-				039F549618D34AC4004B2B67 /* DrinkSubtypeModel.m in Sources */,
+				039F549618D34AC4004B2B67 /* DrinkSubTypeModel.m in Sources */,
 				26ED5CB818FDDE56006901ED /* Tracker.m in Sources */,
 				03F4E78918CA33D00056EAA9 /* CardLayout.m in Sources */,
 				03F4E78A18CA33D00056EAA9 /* SHViewTranlucentWhite.m in Sources */,
@@ -7279,7 +7279,7 @@
 				03F4E8D518CA34260056EAA9 /* CreateListCell.m in Sources */,
 				26B6767D18E9F59500DAD113 /* TutorialViewController.m in Sources */,
 				03F4E8D618CA34260056EAA9 /* SpotImageCollectViewCell.m in Sources */,
-				039F549518D34AC4004B2B67 /* DrinkSubtypeModel.m in Sources */,
+				039F549518D34AC4004B2B67 /* DrinkSubTypeModel.m in Sources */,
 				26ED5CB718FDDE56006901ED /* Tracker.m in Sources */,
 				03F4E8D718CA34260056EAA9 /* CardLayout.m in Sources */,
 				03F4E8D818CA34260056EAA9 /* SHViewTranlucentWhite.m in Sources */,
@@ -7449,7 +7449,7 @@
 				267E05381922CC48004457B4 /* CreateListCell.m in Sources */,
 				267E05391922CC48004457B4 /* TutorialViewController.m in Sources */,
 				267E053A1922CC48004457B4 /* SpotImageCollectViewCell.m in Sources */,
-				267E053B1922CC48004457B4 /* DrinkSubtypeModel.m in Sources */,
+				267E053B1922CC48004457B4 /* DrinkSubTypeModel.m in Sources */,
 				267E053C1922CC48004457B4 /* Tracker.m in Sources */,
 				267E053D1922CC48004457B4 /* CardLayout.m in Sources */,
 				267E053E1922CC48004457B4 /* SHViewTranlucentWhite.m in Sources */,

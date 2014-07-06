@@ -12,7 +12,7 @@
 #import "ErrorModel.h"
 #import "SpotModel.h"
 #import "DrinkTypeModel.h"
-#import "DrinkSubtypeModel.h"
+#import "DrinkSubTypeModel.h"
 #import "SliderTemplateModel.h"
 
 #import <CoreLocation/CoreLocation.h>
@@ -241,7 +241,7 @@
             for (NSDictionary *drinkTypeDictionary in drinkTypes) {
                 DrinkTypeModel *drinkType = [SHJSONAPIResource jsonAPIResource:drinkTypeDictionary withLinked:jsonApi.linked withClass:[DrinkTypeModel class]];
                 
-                NSArray *subtypes = [SHJSONAPIResource jsonAPIResources:drinkTypeDictionary[@"drink_subtypes"] withLinked:jsonApi.linked withClass:[DrinkSubtypeModel class]];
+                NSArray *subtypes = [SHJSONAPIResource jsonAPIResources:drinkTypeDictionary[@"drink_subtypes"] withLinked:jsonApi.linked withClass:[DrinkSubTypeModel class]];
                 drinkType.subtypes = subtypes;
                 [mappedDrinkTypes addObject:drinkType];
             }
@@ -301,7 +301,7 @@
     return [self linkedResourceForKey:@"drink_type"];
 }
 
-- (DrinkSubtypeModel *)drinkSubtype {
+- (DrinkSubTypeModel *)drinkSubtype {
     return [self linkedResourceForKey:@"drink_subtype"];
 }
 

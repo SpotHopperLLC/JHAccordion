@@ -416,11 +416,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
-        if (finished) {
-            self.collectionContainerView.hidden = TRUE;
-            if (completionBlock) {
-                completionBlock();
-            }
+        self.collectionContainerView.hidden = TRUE;
+        if (completionBlock) {
+            completionBlock();
         }
     }];
 }
@@ -998,7 +996,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.selectedSpot = spot;
         [self.locationMenuBarViewController selectSpotDrinkListForSpot:spot];
         
-        [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+        [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
             DebugLog(@"drinkListModel: %@", drinkListModel);
             [self displayDrinklist:drinkListModel];
         } failure:^(ErrorModel *errorModel) {
@@ -1079,7 +1077,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)fetchSpecials {
     [self showHUD:@"Finding specials"];
     
-    // TODO: only use map center if the user is searching this area otherwise use device location
+    self.spotListRequest = nil;
+    self.drinkListRequest = nil;
+    
     [self prepareToDisplaySliderSearchWithCompletionBlock:^{
         [SpotModel getSpotsWithSpecialsTodayForCoordinate:[self visibleMapCenterCoordinate] success:^(NSArray *spotModels, JSONAPI *jsonApi) {
             [self hideHUD];
@@ -1130,13 +1130,15 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.spotsForDrink = @[self.selectedSpot];
     }
     else {
+        CLLocationCoordinate2D coordinate = self.drinkListRequest.coordinate;
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
+        
         self.selectedDrink = drink;
-        [[drink fetchSpotsForLocation:self.drinkListModel.location] then:^(NSArray *spots) {
+        [[drink fetchSpotsForLocation:location] then:^(NSArray *spots) {
             [self populateMapWithSpots:spots];
             self.spotsForDrink = spots;
         } fail:^(ErrorModel *errorModel) {
             [Tracker logError:errorModel.human class:[self class] trace:NSStringFromSelector(_cmd)];
-            // TODO: tell the user about the error
         } always:nil];
     }
 }
@@ -1373,7 +1375,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     CLLocationDistance distance = [centerLocation distanceFromLocation:boundaryLocation];
     CLLocationDistance radius = distance / 2;
     
-    return MAX(MIN(1000, radius), 100);
+    return radius;
 }
 
 - (void)restoreNormalNavigationItems:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
@@ -1511,7 +1513,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         _isSpotDrinkList = FALSE;
         [self.locationMenuBarViewController deselectSpotDrinkList];
         
-        [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+        [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
             self.selectedSpot = nil;
             [self displayDrinklist:drinkListModel];
         } failure:^(ErrorModel *errorModel) {
@@ -1796,45 +1798,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         pin.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
         pin.canShowCallout = NO;
         
-        [[pin.spot fetchMenu] then:^(MenuModel *menu) {
-//                    for (MenuItemModel *menuItem in menu.items) {
-//                        NSString *prices = [[menu pricesForMenuItem:menuItem] componentsJoinedByString:@"\n"];
-//                        if (prices.length) {
-//                            DebugLog(@"menu item: %@", prices);
-//                        }
-//                        BOOL isBeerOnTap = [menu isBeerOnTap:menuItem];
-//                        BOOL isBeerInBottle = [menu isBeerInBottle:menuItem];
-//                        BOOL isCocktail = [menu isCocktail:menuItem];
-//                        BOOL isWine = [menu isWine:menuItem];
-//                        if (isBeerOnTap && isBeerInBottle) {
-//                            DebugLog(@"type: beer on tap and in bottle/can");
-//                        }
-//                        else if (isBeerOnTap) {
-//                            DebugLog(@"type: beer on tap");
-//                        }
-//                        else if (isBeerInBottle) {
-//                            DebugLog(@"type: beer in bottle/can");
-//                        }
-//                        else if (isCocktail) {
-//                            DebugLog(@"type: cocktail");
-//                        }
-//                        else if (isWine) {
-//                            DebugLog(@"type: wine");
-//                        }
-//                    }
-//            MenuItemModel *menuItem = [menu menuItemForDrink:nil];
-            
-//            UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 32.0, 32.0)];
-//            containerView.backgroundColor = [UIColor blackColor];
-//            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(1.0, 1.0, 30.0, 30.0)];
-//            imageView.image = [SHStyleKit drawImage:SHStyleKitDrawingBeerIcon size:CGSizeMake(30.0, 30.0)];
-//            [containerView addSubview:imageView];
-//            pin.leftCalloutAccessoryView = containerView;
-            
-        } fail:^(ErrorModel *errorModel) {
-            [Tracker logError:errorModel.human class:[self class] trace:NSStringFromSelector(_cmd)];
-            // TODO: tell the user about the error
-        } always:nil];
+        // precache the menu details
+        [pin.spot fetchMenu];
         
         annotationView = pin;
     }
@@ -1857,8 +1822,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     if ([overlay isKindOfClass:[MKCircle class]]) {
         MKCircleRenderer *circleView = [[MKCircleRenderer alloc] initWithCircle:overlay];
         
-        circleView.strokeColor = [[SHStyleKit color:SHStyleKitColorMyTextColor] colorWithAlphaComponent:0.1f];
-        circleView.fillColor = [[SHStyleKit color:SHStyleKitColorMyTintColor] colorWithAlphaComponent:0.25f];
+        circleView.strokeColor = [[SHStyleKit color:SHStyleKitColorMyTextColor] colorWithAlphaComponent:0.35f];
+        circleView.fillColor = [[SHStyleKit color:SHStyleKitColorMyTintColor] colorWithAlphaComponent:0.1f];
         circleView.lineWidth = 1.0f;
         circleView.alpha = 1.0f;
         
