@@ -715,7 +715,7 @@
                 [self updateSectionTitle:drinkSubType.name section:indexPath.section];
                 [self.accordion closeSection:kSection_Cocktail_Type];
                 
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.45 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                     [self prepareTableViewForDrinkType:self.drinkTypeName andDrinkSubType:drinkSubType.name];
                 });
             }
@@ -734,7 +734,7 @@
                 [self updateSectionTitle:drinkSubType.name section:indexPath.section];
                 [self.accordion closeSection:kSection_Wine_Type];
                 
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.45 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                     [self prepareTableViewForDrinkType:self.drinkTypeName andDrinkSubType:drinkSubType.name];
                 });
             }

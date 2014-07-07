@@ -24,13 +24,13 @@
                                 </connections>
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tKe-Qo-IuZ" userLabel="Compass Button">
-                                <rect key="frame" x="0.0" y="308" width="70" height="70"/>
+                                <rect key="frame" x="0.0" y="328" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="70" id="6uc-Kc-MWk"/>
-                                    <constraint firstAttribute="width" constant="70" id="btO-Ic-EtB"/>
+                                    <constraint firstAttribute="height" constant="50" id="6uc-Kc-MWk"/>
+                                    <constraint firstAttribute="width" constant="50" id="btO-Ic-EtB"/>
                                 </constraints>
-                                <state key="normal" title="Button" image="icon_arrow_shadow.png">
+                                <state key="normal" image="icon_arrow_shadow.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>

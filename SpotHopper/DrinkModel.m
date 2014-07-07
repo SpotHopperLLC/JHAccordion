@@ -157,7 +157,7 @@
 
 #pragma mark - Revised Code for 2.0
 
-- (void)fetchSpotsForLocation:(CLLocation *)location success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+- (void)fetchSpotsForLocation:(CLLocation *)location success:(void(^)(NSArray *spotModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
     if (!location || !CLLocationCoordinate2DIsValid(location.coordinate)) {
         if (failureBlock) {
             ErrorModel *errorModel = [[ErrorModel alloc] init];
@@ -173,7 +173,7 @@
     NSArray *spots = [[DrinkModel sh_sharedCache] cachedSpotsForKey:cacheKey];
     if (spots && successBlock) {
         NSLog(@"Returning %lu cached spots", (unsigned long)spots.count);
-        successBlock(spots, nil);
+        successBlock(spots);
     }
     else {
         // assemble params internally to encapsulate implementation details
@@ -196,7 +196,7 @@
                 
                 // always check that the block is defined because running it an undefined block will cause a crash
                 if (successBlock) {
-                    successBlock(spotModels, jsonApi);
+                    successBlock(spotModels);
                 }
             } else {
                 ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
@@ -214,7 +214,7 @@
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
 
-    [self fetchSpotsForLocation:location success:^(NSArray *spotModels, JSONAPI *jsonApi) {
+    [self fetchSpotsForLocation:location success:^(NSArray *spotModels) {
         // Resolves promise
         [deferred resolveWith:spotModels];
     } failure:^(ErrorModel *errorModel) {

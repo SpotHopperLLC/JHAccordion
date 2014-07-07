@@ -168,7 +168,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     self.slidersSearchViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHSlidersSearchViewController"];
     self.slidersSearchViewController.delegate = self;
-
+    
     self.title = @"New Search";
     
     [self repositionOnCurrentDeviceLocation:NO];
@@ -1178,13 +1178,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     [self repositionMapOnAnnotations:self.mapView.annotations animated:TRUE];
     
+    // TODO: fix issue for calling being shown when it should not (only for drinklists when selected)
     if (!self.drinkListModel || self.selectedSpot) {
         if ([spots containsObject:self.selectedSpot]) {
             [self selectSpot:self.selectedSpot];
         }
-        else if (spots.count) {
-            [self selectSpot:spots[0]];
-        }
+//        else if (spots.count) {
+//            [self selectSpot:spots[0]];
+//        }
     }
 }
 

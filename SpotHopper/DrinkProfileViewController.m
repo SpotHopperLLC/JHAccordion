@@ -565,7 +565,7 @@
 }
 
 - (void)fetchSpots {
-    [_drink fetchSpotsForLocation:_location success:^(NSArray *spotModels, JSONAPI *jsonApi) {
+    [_drink fetchSpotsForLocation:_location success:^(NSArray *spotModels) {
         _spots = spotModels;
         [self updateViewMap];
     } failure:^(ErrorModel *errorModel) {

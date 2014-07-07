@@ -73,7 +73,7 @@
 
 #pragma mark - Revised Code for 2.0
 
-- (void)fetchSpotsForLocation:(CLLocation *)location success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+- (void)fetchSpotsForLocation:(CLLocation *)location success:(void(^)(NSArray *spotModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 - (Promise*)fetchSpotsForLocation:(CLLocation *)location;
 

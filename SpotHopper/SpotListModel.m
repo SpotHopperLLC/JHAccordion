@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
+#define kMinRadiusFloat 0.5f
 #define kMaxRadiusFloat 5.0f
 #define kMaxRadius @kMaxRadiusFloat
 #define kMetersPerMile 1609.344
@@ -383,7 +384,7 @@
     
     if (request.radius) {
         CGFloat miles = request.radius / kMetersPerMile;
-        NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), 0.1f)];
+        NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
         DebugLog(@"radiusParam: %@", radiusParam);
         params[kSpotListModelParamRadius] = radiusParam;
     }
