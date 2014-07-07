@@ -19,7 +19,7 @@
 #import "CheckInModel.h"
 #import "DrinkModel.h"
 #import "DrinkTypeModel.h"
-#import "DrinkSubtypeModel.h"
+#import "DrinkSubTypeModel.h"
 #import "DrinkListModel.h"
 #import "ErrorModel.h"
 #import "ImageModel.h"
@@ -81,7 +81,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 //    [[ClientSessionManager sharedClient] setHasSeenLaunch:NO];
 
-    [self applyApperance];
+    [self applyAppearance];
     
     [Tracker logError:@"App Delegate launching" class:[self class] trace:NSStringFromSelector(_cmd)];
     
@@ -280,7 +280,7 @@
     [JSONAPIResourceModeler useResource:[CheckInModel class] toLinkedType:@"checkins"];
     [JSONAPIResourceModeler useResource:[DrinkModel class] toLinkedType:@"drinks"];
     [JSONAPIResourceModeler useResource:[DrinkTypeModel class] toLinkedType:@"drink_types"];
-    [JSONAPIResourceModeler useResource:[DrinkSubtypeModel class] toLinkedType:@"drink_subtypes"];
+    [JSONAPIResourceModeler useResource:[DrinkSubTypeModel class] toLinkedType:@"drink_subtypes"];
     [JSONAPIResourceModeler useResource:[DrinkListModel class] toLinkedType:@"drink_lists"];
     [JSONAPIResourceModeler useResource:[ErrorModel class] toLinkedType:@"errors"];
     [JSONAPIResourceModeler useResource:[ImageModel class] toLinkedType:@"images"];
@@ -299,14 +299,8 @@
     [JSONAPIResourceModeler useResource:[UserModel class] toLinkedType:@"users"];
 }
 
-- (void)applyApperance {
-//    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-//    [[UINavigationBar appearance] setBackgroundColor:[SHStyleKit myTintColorTransparent]];
-//    
-//    [[UINavigationBar appearance] setTintColor:[SHStyleKit myTintColorTransparent]];
-//    [[UIBarButtonItem appearance] setTintColor:[SHStyleKit myTintColorTransparent]];
-//    [[UITabBar appearance] setTintColor:[SHStyleKit myTintColorTransparent]];
-//    [[UITabBar appearance] setSelectedImageTintColor:[SHStyleKit myTintColorTransparent]];
+- (void)applyAppearance {
+    // do nothing
 }
 
 #pragma mark - Location

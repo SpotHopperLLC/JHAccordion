@@ -230,7 +230,7 @@
     }
     
     [self showHUD:@"Finding spots"];
-    [_drink fetchSpotsForLocation:_location success:^(NSArray *spotModels, JSONAPI *jsonApi) {
+    [_drink fetchSpotsForLocation:_location success:^(NSArray *spotModels) {
         [self hideHUD];
         
         [_spots addObjectsFromArray:spotModels];

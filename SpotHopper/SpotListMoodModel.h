@@ -17,6 +17,6 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSArray *sliders;
 
-+ (Promise *)getSpotListMoods:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
++ (Promise *)getSpotListMoods:(NSDictionary *)params success:(void (^)(NSArray *moods, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
 
 @end
