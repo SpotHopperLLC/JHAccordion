@@ -19,6 +19,7 @@
 #import "SpotTypeModel.h"
 #import "DrinkModel.h"
 #import "DrinkTypeModel.h"
+#import "SpotListModel.h"
 
 @implementation UserModel
 
@@ -243,7 +244,7 @@
     return deferred.promise;
 }
 
-- (Promise *)getSpotLists:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+- (Promise *)getSpotLists:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
@@ -272,7 +273,7 @@
     
 }
 
-- (Promise *)getDrinkLists:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+- (Promise *)getDrinkLists:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
@@ -326,6 +327,17 @@
     }];
     
     return deferred.promise;
+}
+
+#pragma mark - Revised Code for 2.0
+
++ (BOOL)isLoggedIn {
+    return [ClientSessionManager sharedClient].isLoggedIn == YES;
+}
+
++ (UserModel *)currentUser {
+    UserModel *user = [ClientSessionManager sharedClient].currentUser;
+    return user;
 }
 
 #pragma mark - Getters

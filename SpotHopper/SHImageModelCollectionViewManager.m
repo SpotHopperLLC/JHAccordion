@@ -18,6 +18,7 @@
 #define kImageView 1
 #define kPreviousButton 2
 #define kNextButton 3
+#define kDescriptionLabel 4
 
 #pragma mark - Class Extension
 #pragma mark -
@@ -86,6 +87,10 @@
         } withErrorBlock:^(NSError *error) {
             
         }];
+        
+        UILabel *descriptionLabel = (UILabel *)[cell viewWithTag:kDescriptionLabel];
+        descriptionLabel.hidden = TRUE;
+        
     }
     else {
         // TODO: use placeholder image

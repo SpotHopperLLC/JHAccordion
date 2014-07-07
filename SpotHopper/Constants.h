@@ -66,7 +66,7 @@
 
     #define kRefreshLocationTime 3600.0f
 
-    #define kAnalyticsEnabled   TRUE
+    #define kAnalyticsEnabled   FALSE
 
 #elif defined(STAGING2)
 
@@ -85,7 +85,7 @@
 
     #define kRefreshLocationTime 3600.0f
 
-    #define kAnalyticsEnabled   TRUE
+    #define kAnalyticsEnabled   FALSE
 
 #elif defined(PRODUCTION)
 
@@ -110,7 +110,8 @@
 
 // Mixpanel - https://mixpanel.com/help/reference/ios
 
-#define kMixPanelToken @"b7cdce62dcc827c0955766058d7696c4"
+// updated for 2.0
+#define kMixPanelToken @"003978c7399ef9503dd3edbc92ca50d0"
 
 // Google Analytics - https://developers.google.com/analytics/devguides/collection/ios/v3/
 #define kGoogleAnalyticsTrackingId @"UA-49583937-2"

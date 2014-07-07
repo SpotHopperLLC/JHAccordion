@@ -171,12 +171,10 @@
 }
 
 - (NSUInteger)hash {
-    if ([self.ID isKindOfClass:[NSNumber class]]) {
-        return [((NSNumber *)self.ID) hash];
+    if ([self.ID respondsToSelector:@selector(hash)]) {
+        return [self.ID hash];
     }
-    else if ([self.ID isKindOfClass:[NSString class]]) {
-        return [((NSString *)self.ID) hash];
-    }
+    
     return [super hash];
 }
 

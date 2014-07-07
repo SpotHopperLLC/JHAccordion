@@ -39,7 +39,7 @@
 #import <JSONAPI/JSONAPI.h>
 #import <CoreLocation/CoreLocation.h>
 
-@class ErrorModel, AverageReviewModel, SpotTypeModel, LiveSpecialModel, CLLocation;
+@class ErrorModel, AverageReviewModel, SpotTypeModel, LiveSpecialModel, MenuModel, CLLocation;
 
 @interface SpotModel : SHJSONAPIResource
 
@@ -82,7 +82,7 @@
 
 - (Promise*)getSpot:(NSDictionary*)params success:(void(^)(SpotModel *spotModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
-- (Promise *)getMenuItems:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
+- (Promise *)getMenuItems:(NSDictionary *)params success:(void (^)(NSArray *menuItems, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock __deprecated;
 
 #pragma mark - Revised Code for 2.0
 
@@ -93,5 +93,9 @@
 + (void)fetchSpotTypes:(void (^)(NSArray *spotTypes))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
 
 + (Promise *)fetchSpotTypes;
+
+- (void)fetchMenu:(void (^)(MenuModel *menu))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
+
+- (Promise *)fetchMenu;
 
 @end

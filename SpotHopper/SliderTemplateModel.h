@@ -20,7 +20,7 @@
 
 @class ErrorModel;
 
-@interface SliderTemplateModel : SHJSONAPIResource
+@interface SliderTemplateModel : SHJSONAPIResource<NSCopying>
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *minLabel;
@@ -32,6 +32,13 @@
 @property (nonatomic, strong) NSArray *drinkSubtypes;
 @property (nonatomic, strong) NSNumber *order;
 
+@property (readonly) BOOL isAdvanced;
+
 + (Promise*)getSliderTemplates:(NSDictionary*)params success:(void(^)(NSArray *sliderTemplates, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
+#pragma mark - Revised Code for 2.0
+
++ (void)fetchSliderTemplates:(void(^)(NSArray *sliderTemplates))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
++ (Promise*)fetchSliderTemplates;
 
 @end

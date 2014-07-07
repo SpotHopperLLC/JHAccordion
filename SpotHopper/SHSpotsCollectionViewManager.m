@@ -204,7 +204,7 @@
             spotImageView.image = fullImage;
         } withErrorBlock:^(NSError *error) {
             spotImageView.image = nil;
-            [Tracker logError:error.description class:[self class] trace:NSStringFromSelector(_cmd)];
+            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
     }
     

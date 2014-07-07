@@ -55,7 +55,7 @@
     return deferred.promise;
 }
 
-- (Promise *)postReviews:(void (^)(ReviewModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+- (Promise *)postReviews:(void (^)(ReviewModel *, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     

@@ -30,7 +30,7 @@
 #import "AverageReviewModel.h"
 #import "DrinkModel.h"
 #import "DrinkTypeModel.h"
-#import "DrinkSubtypeModel.h"
+#import "DrinkSubTypeModel.h"
 #import "DrinkListModel.h"
 #import "DrinkListRequest.h"
 #import "ErrorModel.h"
@@ -363,7 +363,7 @@
         request.drinkSubTypeId = drinkModel.drinkSubtype.ID;
         request.spotId = _spot.ID;
         
-        [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+        [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
         
                                      [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Drink Type ID" : drinkModel.drinkType.ID ?: @0, @"Drink Sub Type ID" : drinkModel.drinkSubtype.ID ?: @0, @"Created With Sliders" : @FALSE}];
             

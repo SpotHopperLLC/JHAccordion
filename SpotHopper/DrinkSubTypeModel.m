@@ -1,14 +1,14 @@
 //
-//  DrinkTypeModel.m
+//  DrinkSubTypeModel.m
 //  SpotHopper
 //
-//  Created by Josh Holtz on 2/6/14.
+//  Created by Josh Holtz on 3/14/14.
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#import "DrinkTypeModel.h"
+#import "DrinkSubTypeModel.h"
 
-@implementation DrinkTypeModel
+@implementation DrinkSubTypeModel
 
 #pragma mark - Debugging
 
@@ -31,18 +31,33 @@
              };
 }
 
-#pragma mark - NSCopying
+// TODO: test that values are being mapped
+
+#pragma mark - Getters
+
+//- (NSString *)name {
+//    return [self objectForKey:@"name"];
+//}
+//
+//- (NSDate *)createdAt {
+//    return [self formatDateTimestamp:[self objectForKey:@"created_at"]];
+//}
+//
+//- (NSDate *)updatedAt {
+//    return [self formatDateTimestamp:[self objectForKey:@"updated_at"]];
+//}
+
+#pragma mark - DrinkSubTypeModel
 
 - (id)copyWithZone:(NSZone *)zone {
-	DrinkTypeModel *copy = [[[self class] alloc] init];
+	DrinkSubTypeModel *copy = [[[self class] alloc] init];
     
     copy.name = self.name;
     copy.createdAt = self.createdAt;
     copy.updateAt = self.updateAt;
     
-    copy.subtypes = self.subtypes;
-    
     return copy;
 }
+
 
 @end
