@@ -560,7 +560,7 @@
         if (operation.response.statusCode == 200 || operation.response.statusCode == 204) {
             // update the cache
             NSMutableArray *cachedSpotlists = [[DrinkListModel sh_sharedCache] cachedDrinklists].mutableCopy;
-            [cachedSpotlists removeObject:cachedSpotlists];
+            [cachedSpotlists removeObject:self];
             [[DrinkListModel sh_sharedCache] cacheDrinklists:cachedSpotlists];
             
             successBlock(TRUE);

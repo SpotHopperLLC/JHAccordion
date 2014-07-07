@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#define kSpotListModelDefaultName @"Custom Spotlist"
+#define kSpotListModelDefaultName @"Custom Mood"
 
 #define kSpotListModelParamName @"name"
 #define kSpotListModelParamLatitude @"latitude"
@@ -56,8 +56,8 @@
 
 - (Promise *)fetchSpotList;
 
-- (Promise *)purgeSpotList;
-
 - (void)purgeSpotList:(void (^)(BOOL success))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
+
+- (Promise *)purgeSpotList;
 
 @end

@@ -30,6 +30,7 @@
 #import "TellMeMyLocation.h"
 #import "Tracker.h"
 
+#import "UIAlertView+Block.h"
 #import "SHStyleKit+Additions.h"
 #import "UIControl+BlocksKit.h"
 
@@ -266,168 +267,6 @@
     return !self.drinkTypeName.length;
 }
 
-- (void)fetchSpotListResultsWithCompletionBlock:(void (^)(SpotListModel *spotListModel, SpotListRequest *request, ErrorModel *errorModel))completionBlock {
-    NSMutableArray *allTheSliders = @[].mutableCopy;
-    [allTheSliders addObjectsFromArray:self.sliders];
-    [allTheSliders addObjectsFromArray:self.advancedSliders];
-    
-    NSString *sliderType = [self isSelectingSpotlist] ? @"Spotlist" : @"Drinklist";
-    
-    for (SliderModel *sliderModel in self.sliders) {
-        if (sliderModel.value) {
-            [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @NO}];
-        }
-    }
-    for (SliderModel *sliderModel in self.advancedSliders) {
-        if (sliderModel.value) {
-            [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @YES}];
-        }
-    }
-    
-    CLLocationCoordinate2D coordinate = [self searchCenterCoordinate];
-    CGFloat radius = [self searchRadius];
-    
-    DebugLog(@"center: %f, %f", coordinate.latitude, coordinate.longitude);
-    DebugLog(@"radius: %f", radius);
-    
-    NSNumber *latitude = nil, *longitude = nil;
-    if (CLLocationCoordinate2DIsValid(coordinate)) {
-        latitude = [NSNumber numberWithFloat:coordinate.latitude];
-        longitude = [NSNumber numberWithFloat:coordinate.longitude];
-    }
-    
-    [Tracker track:@"Creating Spotlist"];
-    
-    SpotListRequest *request = [[SpotListRequest alloc] init];
-    if (self.selectedSpotlist && ![[NSNull null] isEqual:self.selectedSpotlist.ID]) {
-        request.spotListId = self.selectedSpotlist.ID;
-    }
-    request.name = self.selectedSpotlist.name.length ? self.selectedSpotlist.name : kSpotListModelDefaultName;
-    request.coordinate = coordinate;
-    request.radius = radius;
-    request.sliders = allTheSliders;
-    
-    // TODO: add spotId and/or spotTypeId if it is defined
-    
-    [[SpotListModel fetchSpotListWithRequest:request] then:^(SpotListModel *spotListModel) {
-        // TODO: add tracking for spotId and spotTypeId when those values are added to this search filter
-        [Tracker track:@"Created Spotlist" properties:@{@"Success" : @TRUE, @"Created With Sliders" : @TRUE}];
-        
-        if (completionBlock) {
-            completionBlock(spotListModel, request, nil);
-        }
-    } fail:^(ErrorModel *errorModel) {
-        if (completionBlock) {
-            completionBlock(nil, nil, errorModel);
-        }
-    } always:^{
-    }];
-    
-    if (![[NSNull null] isEqual:self.selectedSpotlist.ID]) {
-        // save the changes to the spotlist if it is an existing spotlist
-    }
-
-}
-
-- (void)fetchDrinkListResultsWithCompletionBlock:(void (^)(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel))completionBlock {
-    NSMutableArray *allTheSliders = @[].mutableCopy;
-    [allTheSliders addObjectsFromArray:self.sliders];
-    [allTheSliders addObjectsFromArray:self.advancedSliders];
-
-    NSString *sliderType = [self isSelectingSpotlist] ? @"Spotlist" : @"Drinklist";
-    
-    for (SliderModel *sliderModel in self.sliders) {
-        if (sliderModel.value) {
-            [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @NO}];
-        }
-    }
-    for (SliderModel *sliderModel in self.advancedSliders) {
-        if (sliderModel.value) {
-            [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @YES}];
-        }
-    }
-    
-    CLLocationCoordinate2D coordinate = [self searchCenterCoordinate];
-    CGFloat radiusInMiles = [self searchRadius];
-    
-    NSNumber *latitude = nil, *longitude = nil;
-    if (CLLocationCoordinate2DIsValid(coordinate)) {
-        latitude = [NSNumber numberWithFloat:coordinate.latitude];
-        longitude = [NSNumber numberWithFloat:coordinate.longitude];
-    }
-    
-    [Tracker track:@"Creating Drinklist"];
-    
-    DrinkTypeModel *selectedDrinkType = [self selectedDrinkType];
-    DrinkSubTypeModel *selectedDrinkSubType = self.selectedDrinkSubType;
-    
-    NSNumber *drinkTypeID = selectedDrinkType.ID;
-    NSNumber *drinkSubTypeID = selectedDrinkSubType.ID;
-    
-    DrinkListRequest *request = [[DrinkListRequest alloc] init];
-    if (self.selectedDrinklist && ![[NSNull null] isEqual:self.selectedDrinklist.ID]) {
-        request.drinkListId = self.selectedDrinklist.ID;
-    }
-    request.name = self.selectedDrinklist.name.length ? self.selectedDrinklist.name : kDrinkListModelDefaultName;
-    request.coordinate = coordinate;
-    request.radius = radiusInMiles;
-    request.sliders = allTheSliders;
-    request.drinkTypeId = drinkTypeID;
-    request.drinkSubTypeId = drinkSubTypeID;
-    
-    [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
-        [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Drink Type ID" : drinkTypeID ?: @0, @"Drink Sub Type ID" : drinkSubTypeID ?: @0, @"Created With Sliders" : @TRUE}];
-        
-        // now fetch the spots for the first drink so it is ready then request the rest cache all of the results for fast access
-        
-        if (drinkListModel.drinks.count) {
-            DrinkModel *firstDrink = drinkListModel.drinks[0];
-            CLLocation *location = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
-            [[firstDrink fetchSpotsForLocation:location] then:^(NSArray *spots) {
-                // pre-cache the menu for each spot
-                for (SpotModel *spotModel in spots) {
-                    [spotModel fetchMenu];
-                }
-                
-                if (completionBlock) {
-                    completionBlock(drinkListModel, request, nil);
-                }
-
-                // now that the spots for the first drink are fetched now prefetch the rest
-                if (drinkListModel.drinks.count > 1) {
-                    NSMutableArray *promises = @[].mutableCopy;
-                    for (NSUInteger i=1; i<drinkListModel.drinks.count; i++) {
-                        DrinkModel *drink = drinkListModel.drinks[i];
-                        Promise *promise = [drink fetchSpotsForLocation:location];
-                        [promises addObject:promise];
-                        [promise then:^(NSArray *spots) {
-                            // pre-cache the menu for each spot
-                            for (SpotModel *spotModel in spots) {
-                                [spotModel fetchMenu];
-                            }
-                        } fail:nil always:nil];
-                    }
-                    
-                    [When when:promises then:^{
-                        DebugLog(@"Finished all drink/spot fetches");
-                    } fail:nil always:nil];
-                }
-            } fail:nil always:nil];
-        }
-        else {
-            if (completionBlock) {
-                completionBlock(drinkListModel, request, nil);
-            }
-        }
-    } failure:^(ErrorModel *errorModel) {
-        [Tracker track:@"Created Drinklist" properties:@{@"Success" : @FALSE}];
-        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
-        if (completionBlock) {
-            completionBlock(nil, nil, errorModel);
-        }
-    }];
-}
-
 #pragma mark - Location
 #pragma mark -
 
@@ -468,6 +307,10 @@
 
 - (IBAction)sliderValueChanged:(id)sender {
 }
+
+//- (IBAction)deleteListButtonTapped:(id)sender {
+//    NSIndexPath *indexPath = [self indexPathForView:sender inTableView:self.tableView];
+//}
 
 #pragma mark - UITableViewDataSource
 #pragma mark -
@@ -842,7 +685,6 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         if (self.mode == SHModeSpots) {
             if (indexPath.section == kSection_Spots_Type) {
-                
                 SpotTypeModel *spotType = [self spotTypeAtIndexPath:indexPath];
                 [self userDidSelectSpotType:spotType];
                 [self updateSectionTitle:spotType.name section:indexPath.section];
@@ -1010,7 +852,55 @@
     
     [deleteButton bk_addEventHandler:^(id sender) {
         // TODO: implement prompt to delete list
-        DebugLog(@"delete list?");
+        
+        NSString *message = nil;
+        
+        if (self.mode == SHModeSpots) {
+            message = @"Are you sure you want to delete this mood?";
+        }
+        else {
+            message = @"Are you sure you want to delete this style?";
+        }
+        
+        [self notifyThatManagerWillAnimate];
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Confirm Delete" message:message delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+        [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
+            if (buttonIndex == 1) {
+                DebugLog(@"Delete Confirmed!");
+                
+                if (self.mode == SHModeSpots && indexPath.section == kSection_Spots_Spotlists) {
+                    SpotListModel *spotlist = [self spotlistAtIndexPath:indexPath];
+                    [[spotlist purgeSpotList] then:^(NSNumber *success) {
+                        DebugLog(@"Deleted: %@", [success boolValue] ? @"YES" : @"NO");
+                    } fail:^(ErrorModel *errorModel) {
+                        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+                    } always:^{
+                        [self prepareTableViewForDrinkType:self.drinkTypeName andDrinkSubType:self.drinkSubTypeName];
+                    }];
+                }
+                else if ((self.mode == SHModeBeer && indexPath.section == kSection_Beer_Drinklists) ||
+                         (self.mode == SHModeCocktail && indexPath.section == kSection_Cocktail_Drinklists) ||
+                         (self.mode == SHModeWine && indexPath.section == kSection_Wine_Drinklists))
+                {
+                    DrinkListModel *drinklist = [self drinklistAtIndexPath:indexPath];
+                    [[drinklist purgeDrinkList] then:^(NSNumber *success) {
+                        DebugLog(@"Deleted: %@", [success boolValue] ? @"YES" : @"NO");
+                    } fail:^(ErrorModel *errorModel) {
+                        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+                    } always:^{
+                        [self prepareTableViewForDrinkType:self.drinkTypeName andDrinkSubType:self.drinkSubTypeName];
+                    }];
+                }
+                else {
+                    DebugLog(@"No action taken");
+                }
+            }
+            
+            [self notifyThatManagerDidAnimate];
+        }];
+        
+        
     } forControlEvents:UIControlEventTouchUpInside];
     
     return cell;
@@ -1070,8 +960,6 @@
 
 - (void)userDidSelectSpotType:(SpotTypeModel *)spotType {
     self.selectedSpotType = spotType;
-    
-    // TODO: handle spot type selection
 }
 
 - (void)userDidSelectSpotlist:(SpotListModel *)spotlist {
@@ -1401,6 +1289,18 @@
 #pragma mark - Busy Status
 #pragma mark -
 
+- (void)notifyThatManagerWillAnimate {
+    if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerWillAnimate:)]) {
+        [self.delegate slidersSearchTableViewManagerWillAnimate:self];
+    }
+}
+
+- (void)notifyThatManagerDidAnimate {
+    if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerDidAnimate:)]) {
+        [self.delegate slidersSearchTableViewManagerDidAnimate:self];
+    }
+}
+
 - (void)notifyThatManagerIsBusy {
     if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerIsBusy:)]) {
         [self.delegate slidersSearchTableViewManagerIsBusy:self];
@@ -1625,6 +1525,169 @@
     }
 }
 
+- (void)fetchSpotListResultsWithCompletionBlock:(void (^)(SpotListModel *spotListModel, SpotListRequest *request, ErrorModel *errorModel))completionBlock {
+    NSMutableArray *allTheSliders = @[].mutableCopy;
+    [allTheSliders addObjectsFromArray:self.sliders];
+    [allTheSliders addObjectsFromArray:self.advancedSliders];
+    
+    NSString *sliderType = [self isSelectingSpotlist] ? @"Spotlist" : @"Drinklist";
+    
+    for (SliderModel *sliderModel in self.sliders) {
+        if (sliderModel.value) {
+            [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @NO}];
+        }
+    }
+    for (SliderModel *sliderModel in self.advancedSliders) {
+        if (sliderModel.value) {
+            [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @YES}];
+        }
+    }
+    
+    CLLocationCoordinate2D coordinate = [self searchCenterCoordinate];
+    CGFloat radius = [self searchRadius];
+    
+    DebugLog(@"center: %f, %f", coordinate.latitude, coordinate.longitude);
+    DebugLog(@"radius: %f", radius);
+    
+    NSNumber *latitude = nil, *longitude = nil;
+    if (CLLocationCoordinate2DIsValid(coordinate)) {
+        latitude = [NSNumber numberWithFloat:coordinate.latitude];
+        longitude = [NSNumber numberWithFloat:coordinate.longitude];
+    }
+    
+    [Tracker track:@"Creating Spotlist"];
+    
+    SpotListRequest *request = [[SpotListRequest alloc] init];
+    if (self.selectedSpotlist && ![[NSNull null] isEqual:self.selectedSpotlist.ID]) {
+        request.spotListId = self.selectedSpotlist.ID;
+    }
+    if (self.selectedSpotType && ![[NSNull null] isEqual:self.selectedSpotType.ID]) {
+        request.spotTypeId = self.selectedSpotType.ID;
+    }
+    request.name = self.selectedSpotlist.name.length ? self.selectedSpotlist.name : kSpotListModelDefaultName;
+    request.coordinate = coordinate;
+    request.radius = radius;
+    request.sliders = allTheSliders;
+    
+    [[SpotListModel fetchSpotListWithRequest:request] then:^(SpotListModel *spotListModel) {
+        // TODO: add tracking for spotId and spotTypeId when those values are added to this search filter
+        [Tracker track:@"Created Spotlist" properties:@{@"Success" : @TRUE, @"Created With Sliders" : @TRUE}];
+        
+        if (completionBlock) {
+            completionBlock(spotListModel, request, nil);
+        }
+    } fail:^(ErrorModel *errorModel) {
+        if (completionBlock) {
+            completionBlock(nil, nil, errorModel);
+        }
+    } always:^{
+    }];
+    
+    if (![[NSNull null] isEqual:self.selectedSpotlist.ID]) {
+        // save the changes to the spotlist if it is an existing spotlist
+    }
+    
+}
+
+- (void)fetchDrinkListResultsWithCompletionBlock:(void (^)(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel))completionBlock {
+    NSMutableArray *allTheSliders = @[].mutableCopy;
+    [allTheSliders addObjectsFromArray:self.sliders];
+    [allTheSliders addObjectsFromArray:self.advancedSliders];
+    
+    NSString *sliderType = [self isSelectingSpotlist] ? @"Spotlist" : @"Drinklist";
+    
+    for (SliderModel *sliderModel in self.sliders) {
+        if (sliderModel.value) {
+            [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @NO}];
+        }
+    }
+    for (SliderModel *sliderModel in self.advancedSliders) {
+        if (sliderModel.value) {
+            [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @YES}];
+        }
+    }
+    
+    CLLocationCoordinate2D coordinate = [self searchCenterCoordinate];
+    CGFloat radiusInMiles = [self searchRadius];
+    
+    NSNumber *latitude = nil, *longitude = nil;
+    if (CLLocationCoordinate2DIsValid(coordinate)) {
+        latitude = [NSNumber numberWithFloat:coordinate.latitude];
+        longitude = [NSNumber numberWithFloat:coordinate.longitude];
+    }
+    
+    [Tracker track:@"Creating Drinklist"];
+    
+    DrinkTypeModel *selectedDrinkType = [self selectedDrinkType];
+    DrinkSubTypeModel *selectedDrinkSubType = self.selectedDrinkSubType;
+    
+    NSNumber *drinkTypeID = selectedDrinkType.ID;
+    NSNumber *drinkSubTypeID = selectedDrinkSubType.ID;
+    
+    DrinkListRequest *request = [[DrinkListRequest alloc] init];
+    if (self.selectedDrinklist && ![[NSNull null] isEqual:self.selectedDrinklist.ID]) {
+        request.drinkListId = self.selectedDrinklist.ID;
+    }
+    request.name = self.selectedDrinklist.name.length ? self.selectedDrinklist.name : kDrinkListModelDefaultName;
+    request.coordinate = coordinate;
+    request.radius = radiusInMiles;
+    request.sliders = allTheSliders;
+    request.drinkTypeId = drinkTypeID;
+    request.drinkSubTypeId = drinkSubTypeID;
+    
+    [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
+        [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Drink Type ID" : drinkTypeID ?: @0, @"Drink Sub Type ID" : drinkSubTypeID ?: @0, @"Created With Sliders" : @TRUE}];
+        
+        // now fetch the spots for the first drink so it is ready then request the rest cache all of the results for fast access
+        
+        if (drinkListModel.drinks.count) {
+            DrinkModel *firstDrink = drinkListModel.drinks[0];
+            CLLocation *location = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
+            [[firstDrink fetchSpotsForLocation:location] then:^(NSArray *spots) {
+                // pre-cache the menu for each spot
+                for (SpotModel *spotModel in spots) {
+                    [spotModel fetchMenu];
+                }
+                
+                if (completionBlock) {
+                    completionBlock(drinkListModel, request, nil);
+                }
+                
+                // now that the spots for the first drink are fetched now prefetch the rest
+                if (drinkListModel.drinks.count > 1) {
+                    NSMutableArray *promises = @[].mutableCopy;
+                    for (NSUInteger i=1; i<drinkListModel.drinks.count; i++) {
+                        DrinkModel *drink = drinkListModel.drinks[i];
+                        Promise *promise = [drink fetchSpotsForLocation:location];
+                        [promises addObject:promise];
+                        [promise then:^(NSArray *spots) {
+                            // pre-cache the menu for each spot
+                            for (SpotModel *spotModel in spots) {
+                                [spotModel fetchMenu];
+                            }
+                        } fail:nil always:nil];
+                    }
+                    
+                    [When when:promises then:^{
+                        DebugLog(@"Finished all drink/spot fetches");
+                    } fail:nil always:nil];
+                }
+            } fail:nil always:nil];
+        }
+        else {
+            if (completionBlock) {
+                completionBlock(drinkListModel, request, nil);
+            }
+        }
+    } failure:^(ErrorModel *errorModel) {
+        [Tracker track:@"Created Drinklist" properties:@{@"Success" : @FALSE}];
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+        if (completionBlock) {
+            completionBlock(nil, nil, errorModel);
+        }
+    }];
+}
+
 #pragma mark - SHSliderDelegate
 #pragma mark -
 
@@ -1688,16 +1751,11 @@
 }
 
 - (void)accordion:(JHAccordion*)accordion willUpdateTableView:(UITableView *)tableView {
-    if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerWillAnimate:)]) {
-        [self.delegate slidersSearchTableViewManagerWillAnimate:self];
-    }
-    
+    [self notifyThatManagerWillAnimate];
 }
 
 - (void)accordion:(JHAccordion*)accordion didUpdateTableView:(UITableView *)tableView {
-    if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerDidAnimate:)]) {
-        [self.delegate slidersSearchTableViewManagerDidAnimate:self];
-    }
+    [self notifyThatManagerDidAnimate];
 }
 
 @end

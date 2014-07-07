@@ -539,7 +539,7 @@
         if (operation.response.statusCode == 200 || operation.response.statusCode == 204) {
             // update the cache
             NSMutableArray *cachedSpotlists = [[SpotListModel sh_sharedCache] cachedSpotlists].mutableCopy;
-            [cachedSpotlists removeObject:cachedSpotlists];
+            [cachedSpotlists removeObject:self];
             [[SpotListModel sh_sharedCache] cacheSpotlists:cachedSpotlists];
             
             successBlock(TRUE);

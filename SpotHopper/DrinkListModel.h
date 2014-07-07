@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#define kDrinkListModelDefaultName @"Custom Drinklist"
+#define kDrinkListModelDefaultName @"Custom Style"
 
 #define kDrinkListModelParamName @"name"
 #define kDrinkListModelParamLatitude @"latitude"
@@ -58,6 +58,10 @@
 - (void)fetchDrinkList:(void (^)(DrinkListModel *spotlist))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
 
 - (Promise *)fetchDrinkList;
+
+- (void)purgeDrinkList:(void (^)(BOOL success))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
+
+- (Promise *)purgeDrinkList;
 
 #pragma mark -
 

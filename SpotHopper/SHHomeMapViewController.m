@@ -330,12 +330,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
-        if (finished) {
-            self.sideBarViewController.view.hidden = TRUE;
-            [self.sideBarViewController viewDidDisappear:animated];
-            if (completionBlock) {
-                completionBlock();
-            }
+        self.sideBarViewController.view.hidden = TRUE;
+        [self.sideBarViewController viewDidDisappear:animated];
+        if (completionBlock) {
+            completionBlock();
         }
     }];
 }
@@ -374,11 +372,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
-        if (finished) {
-            self.homeNavigationViewController.view.hidden = TRUE;
-            if (completionBlock) {
-                completionBlock();
-            }
+        self.homeNavigationViewController.view.hidden = TRUE;
+        if (completionBlock) {
+            completionBlock();
         }
     }];
 }
@@ -394,10 +390,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
-        if (finished) {
-            if (completionBlock) {
-                completionBlock();
-            }
+        if (completionBlock) {
+            completionBlock();
         }
     }];
 }
@@ -434,10 +428,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
-        if (finished) {
-            if (completionBlock) {
-                completionBlock();
-            }
+        if (completionBlock) {
+            completionBlock();
         }
     }];
 }
@@ -489,12 +481,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         searchTextField.frame = CGRectMake(0, 0, textFieldWidth, 30);
         
     } completion:^(BOOL finished) {
-        if (finished) {
-            searchTextField.placeholder = @"Find spot/drink or similar...";
-            [searchTextField becomeFirstResponder];
-            if (completionBlock) {
-                completionBlock();
-            }
+        searchTextField.placeholder = @"Find spot/drink or similar...";
+        [searchTextField becomeFirstResponder];
+        if (completionBlock) {
+            completionBlock();
         }
     }];
 }
@@ -558,13 +548,11 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         _isShowingSliderSearchView = TRUE;
         
     } completion:^(BOOL finished) {
-        if (finished) {
-            [self refreshBlurredView];
-            [self.slidersSearchViewController viewDidAppear:animated];
-            
-            if (completionBlock) {
-                completionBlock();
-            }
+        [self refreshBlurredView];
+        [self.slidersSearchViewController viewDidAppear:animated];
+        
+        if (completionBlock) {
+            completionBlock();
         }
     }];
 }
@@ -585,14 +573,11 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             [self.view layoutIfNeeded];
             
         } completion:^(BOOL finished) {
-            if (finished) {
-                
-                [self.view sendSubviewToBack:self.containerView];
-                [self.slidersSearchViewController viewDidDisappear:animated];
-                
-                if (completionBlock) {
-                    completionBlock();
-                }
+            [self.view sendSubviewToBack:self.containerView];
+            [self.slidersSearchViewController viewDidDisappear:animated];
+            
+            if (completionBlock) {
+                completionBlock();
             }
         }];
     }];
@@ -627,10 +612,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
-        if (finished) {
-            if (completionBlock) {
-                completionBlock();
-            }
+        if (completionBlock) {
+            completionBlock();
         }
     }];
 }
@@ -647,13 +630,11 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
-        if (finished) {
-            self.areYouHerePromptView.hidden = TRUE;
-            self.areYouHerePromptLabel.text = nil;
-            
-            if (completionBlock) {
-                completionBlock();
-            }
+        self.areYouHerePromptView.hidden = TRUE;
+        self.areYouHerePromptLabel.text = nil;
+        
+        if (completionBlock) {
+            completionBlock();
         }
     }];
 }
@@ -1460,11 +1441,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         return;
     }
     
-    if (_isShowingSliderSearchView) {
-        if (!_isOverlayAnimating) {
-            [self updateBlurredView];
-        }
-        [self performSelector:@selector(refreshBlurredView) withObject:nil afterDelay:0.1];
+    if (_isShowingSliderSearchView && !_isOverlayAnimating) {
+        [self updateBlurredView];
     }
 }
 
