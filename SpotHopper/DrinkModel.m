@@ -15,11 +15,17 @@
 #import "DrinkSubTypeModel.h"
 #import "SliderTemplateModel.h"
 
+#import "DrinkListRequest.h"
+
 #import <CoreLocation/CoreLocation.h>
+
+#define kMinRadiusFloat 0.5f
+#define kMaxRadiusFloat 5.0f
+#define kMetersPerMile 1609.344
 
 @interface DrinkModelCache : NSCache
 
-+ (NSString *)spotsKeyForDrink:(DrinkModel *)drink location:(CLLocation *)location;
++ (NSString *)spotsKeyForDrink:(DrinkModel *)drink coordinate:(CLLocationCoordinate2D)coordinate radius:(CGFloat)radius;
 
 - (NSArray *)cachedSpotsForKey:(NSString *)key;
 - (void)cacheSpots:(NSArray *)spots forKey:(NSString *)key;
@@ -157,11 +163,11 @@
 
 #pragma mark - Revised Code for 2.0
 
-- (void)fetchSpotsForLocation:(CLLocation *)location success:(void(^)(NSArray *spotModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
-    if (!location || !CLLocationCoordinate2DIsValid(location.coordinate)) {
+- (void)fetchSpotsForDrinkListRequest:(DrinkListRequest *)request success:(void(^)(NSArray *spotModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    if (!CLLocationCoordinate2DIsValid(request.coordinate)) {
         if (failureBlock) {
             ErrorModel *errorModel = [[ErrorModel alloc] init];
-            errorModel.error = @"Location is not valid";
+            errorModel.error = @"Coordinate is not valid";
             errorModel.human = @"Please select a location";
             failureBlock(errorModel);
         }
@@ -169,7 +175,7 @@
     }
     
     // look for cached spots
-    NSString *cacheKey = [DrinkModelCache spotsKeyForDrink:self location:location];
+    NSString *cacheKey = [DrinkModelCache spotsKeyForDrink:self coordinate:request.coordinate radius:request.radius];
     NSArray *spots = [[DrinkModel sh_sharedCache] cachedSpotsForKey:cacheKey];
     if (spots && successBlock) {
         NSLog(@"Returning %lu cached spots", (unsigned long)spots.count);
@@ -177,11 +183,17 @@
     }
     else {
         // assemble params internally to encapsulate implementation details
+        
+        CGFloat miles = request.radius / kMetersPerMile;
+        NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
+        DebugLog(@"radiusParam: %@", radiusParam);
+        
         NSDictionary *params = @{
                                  kSpotModelParamPage : @1,
                                  kSpotModelParamsPageSize : @10,
-                                 kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:location.coordinate.latitude],
-                                 kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:location.coordinate.longitude]
+                                 kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:request.coordinate.latitude],
+                                 kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:request.coordinate.longitude],
+                                 kSpotModelParamQueryRadius : radiusParam
                                  };
         
         [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drinks/%ld/spots", (long)[self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -209,7 +221,29 @@
     }
 }
 
-// Promisfy the call with the callbacks and do not mix callback and promise methods
+- (Promise*)fetchSpotsForDrinkListRequest:(DrinkListRequest *)request {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [self fetchSpotsForDrinkListRequest:request success:^(NSArray *spotModels) {
+        // Resolves promise
+        [deferred resolveWith:spotModels];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
+- (void)fetchSpotsForLocation:(CLLocation *)location success:(void(^)(NSArray *spotModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    DrinkListRequest *request = [[DrinkListRequest alloc] init];
+    request.coordinate = location.coordinate;
+    request.radius = kMaxRadiusFloat;
+    
+    [self fetchSpotsForDrinkListRequest:request success:successBlock failure:failureBlock];
+}
+
 - (Promise*)fetchSpotsForLocation:(CLLocation *)location {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
@@ -419,8 +453,8 @@
 
 NSString * const DrinkTypesKey = @"DrinkTypes";
 
-+ (NSString *)spotsKeyForDrink:(DrinkModel *)drink location:(CLLocation *)location {
-    return [NSString stringWithFormat:@"key-spots-%@-%f-%f", drink.ID, location.coordinate.latitude, location.coordinate.longitude];
++ (NSString *)spotsKeyForDrink:(DrinkModel *)drink coordinate:(CLLocationCoordinate2D)coordinate radius:(CGFloat)radius {
+    return [NSString stringWithFormat:@"key-spots-%@-%f-%f-%f", drink.ID, coordinate.latitude, coordinate.longitude, radius];
 }
 
 - (NSArray *)cachedSpotsForKey:(NSString *)key {

@@ -35,6 +35,7 @@
 @class DrinkTypeModel;
 @class DrinkSubTypeModel;
 @class SpotModel;
+@class DrinkListRequest;
 @class CLLocation;
 
 @interface DrinkModel : SHJSONAPIResource
@@ -72,6 +73,10 @@
 - (Promise*)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock __attribute__ ((deprecated));
 
 #pragma mark - Revised Code for 2.0
+
+- (void)fetchSpotsForDrinkListRequest:(DrinkListRequest *)request success:(void(^)(NSArray *spotModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
+- (Promise*)fetchSpotsForDrinkListRequest:(DrinkListRequest *)request;
 
 - (void)fetchSpotsForLocation:(CLLocation *)location success:(void(^)(NSArray *spotModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 

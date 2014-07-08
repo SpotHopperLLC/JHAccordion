@@ -132,7 +132,8 @@
 
 - (id)copyWithZone:(NSZone *)zone {
 	SliderTemplateModel *copy = [[[self class] alloc] init];
-
+    
+    copy.ID = self.ID;
     copy.name = self.name;
     copy.minLabel = self.minLabel;
     copy.maxLabel = self.maxLabel;

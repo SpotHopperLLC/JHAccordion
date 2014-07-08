@@ -44,6 +44,7 @@
 - (id)copyWithZone:(NSZone *)zone {
 	SliderModel *copy = [[[self class] alloc] init];
     
+    copy.ID = self.ID;
     copy.value = self.value;
     copy.sliderTemplate = self.sliderTemplate;
         

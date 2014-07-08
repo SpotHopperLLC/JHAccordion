@@ -12,6 +12,8 @@
 @class DrinkListModel;
 @class SpotListRequest;
 @class SpotListModel;
+@class DrinkTypeModel;
+@class DrinkSubTypeModel;
 @class ErrorModel;
 
 #import <CoreLocation/CoreLocation.h>
@@ -24,9 +26,9 @@
 
 - (void)prepareForMode:(SHMode)mode;
 
-- (void)prepareTableViewForDrinkType:(NSString *)drinkTypeName;
+- (void)prepareTableViewForDrinkType:(DrinkTypeModel *)drinkTypeName;
 
-//- (void)prepareTableViewForDrinkType:(NSString *)drinkTypeName andDrinkSubType:(NSString *)drinkSubTypeName;
+//- (void)prepareTableViewForDrinkType:(DrinkTypeModel *)drinkTypeName andDrinkSubType:(DrinkSubTypeModel *)drinkSubTypeName;
 
 - (void)fetchSpotListResultsWithCompletionBlock:(void (^)(SpotListModel *spotListModel, SpotListRequest *request, ErrorModel *errorModel))completionBlock;
 

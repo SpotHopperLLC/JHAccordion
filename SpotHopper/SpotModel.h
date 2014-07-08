@@ -11,6 +11,7 @@
 #define kSpotModelParamQuery @"query"
 #define kSpotModelParamQueryLatitude @"lat"
 #define kSpotModelParamQueryLongitude @"lng"
+#define kSpotModelParamQueryRadius @"radius"
 #define kSpotModelParamQuerySpotTypeId @"spot_type_id"
 #define kSpotModelParamQueryDayOfWeek @"day_of_week"
 #define kSpotModelParamQueryVisibleToUsers @"visible_to_users"

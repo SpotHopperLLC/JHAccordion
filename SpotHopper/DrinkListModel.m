@@ -23,6 +23,10 @@
 
 #import <CoreLocation/CoreLocation.h>
 
+#define kMinRadiusFloat 0.5f
+#define kMaxRadiusFloat 5.0f
+#define kMetersPerMile 1609.344
+
 @interface DrinkListCache : NSCache
 
 - (NSArray *)cachedDrinklists;
@@ -58,8 +62,9 @@
              @"links.drinks" : @"drinks",
              @"links.spot" : @"spot",
              @"links.sliders" : @"sliders",
+             @"links.base_alcohol" : @"baseAlcohol",
              @"links.drink_type" : @"drinkType",
-             @"links.drink_subtype" : @"drinkSubtype"
+             @"links.drink_subtype" : @"drinkSubType"
              };
 }
 
@@ -323,11 +328,20 @@
     
     [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/users/%ld/drink_lists", (long)[user.ID integerValue]] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
+        DebugLog(@"responseObject: %@", responseObject);
+        
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
         if (operation.response.statusCode == 200) {
             NSArray *drinklists = [jsonApi resourcesForKey:@"drink_lists"];
+
+#ifndef NDEBUG
+            for (DrinkListModel *drinklist in drinklists) {
+                NSAssert(drinklist.drinkType, @"Drink type must be defined");
+            }
+#endif
+            
             NSMutableArray *filteredDrinklist = @[].mutableCopy;
             for (DrinkListModel *drinklist in drinklists) {
                 // delete spotlists with default names (temporary measure)
@@ -340,6 +354,12 @@
                     [filteredDrinklist addObject:drinklist];
                 }
             }
+            
+#ifndef NDEBUG
+            for (DrinkListModel *drinklist in filteredDrinklist) {
+                NSAssert(drinklist.drinkType, @"Drink type must be defined");
+            }
+#endif
             
             [[DrinkListModel sh_sharedCache] cacheDrinklists:filteredDrinklist];
             if (successBlock) {
@@ -404,9 +424,14 @@
     }
     
     if (CLLocationCoordinate2DIsValid(request.coordinate)) {
-        [params setObject:[NSNumber numberWithFloat:request.coordinate.latitude] forKey:kDrinkListModelParamLatitude];
-        [params setObject:[NSNumber numberWithFloat:request.coordinate.longitude] forKey:kDrinkListModelParamLongitude];
+        params[kDrinkListModelParamLatitude] = [NSNumber numberWithFloat:request.coordinate.latitude];
+        params[kDrinkListModelParamLongitude] = [NSNumber numberWithFloat:request.coordinate.longitude];
     }
+    
+    CGFloat miles = request.radius / kMetersPerMile;
+    NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
+    DebugLog(@"radiusParam: %@", radiusParam);
+    params[kDrinkListModelParamRadius] = radiusParam;
     
     return params;
 }

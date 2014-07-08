@@ -178,13 +178,11 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     self.view.backgroundColor = [UIColor clearColor];
     
     [self hideAreYouHerePrompt:FALSE withCompletionBlock:nil];
-    
+
+    // pre-cache the lists
     if ([UserModel isLoggedIn]) {
-        [[SpotListModel fetchMySpotLists] then:^(NSArray *spotlists) {
-            NSLog(@"Spotlists: %@", spotlists);
-        } fail:^(ErrorModel *errorModel) {
-            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
-        } always:nil];
+        [SpotListModel fetchMySpotLists];
+        [DrinkListModel fetchMyDrinkLists];
     }
 }
 
@@ -1117,11 +1115,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.spotsForDrink = @[self.selectedSpot];
     }
     else {
-        CLLocationCoordinate2D coordinate = self.drinkListRequest.coordinate;
-        CLLocation *location = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
-        
         self.selectedDrink = drink;
-        [[drink fetchSpotsForLocation:location] then:^(NSArray *spots) {
+        [[drink fetchSpotsForDrinkListRequest:self.drinkListRequest] then:^(NSArray *spots) {
             [self populateMapWithSpots:spots];
             self.spotsForDrink = spots;
         } fail:^(ErrorModel *errorModel) {
@@ -1326,12 +1321,17 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (CGFloat)topEdgePadding {
     CGRect topFrame = [self topFrame];
     // 40 for height of the annotation view
-    return CGRectGetHeight(topFrame) + self.topLayoutGuide.length + 40.f;
+    
+    return CGRectGetHeight(topFrame) + ([self hasFourInchDisplay] ? self.topLayoutGuide.length : 0.0f) + 40.f;
 }
 
 - (CGFloat)bottomEdgePadding {
     CGRect bottomFrame = [self bottomFrame];
     return CGRectGetHeight(bottomFrame) + self.bottomLayoutGuide.length;
+}
+
+- (BOOL)hasFourInchDisplay {
+    return ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone && [UIScreen mainScreen].bounds.size.height == 568.0);
 }
 
 - (CGRect)visibleMapFrame {
@@ -1523,6 +1523,48 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             // TODO: track error
         }];
     }
+}
+
+- (void)flashSearchRegion {
+    CLLocationCoordinate2D center = [self visibleMapCenterCoordinate];
+    CGFloat radius = [self searchRadius];
+    
+    DebugLog(@"center: %f, %f", center.latitude, center.longitude);
+    DebugLog(@"radius: %f", radius);
+    
+    MKCircle *circleOverlay = [MKCircle circleWithCenterCoordinate:center radius:radius];
+    [self.mapView addOverlay:circleOverlay];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [self.mapView removeOverlay:circleOverlay];
+    });
+}
+
+- (void)flashMapBoxing {
+    CGFloat topEdgePadding = [self topEdgePadding];
+    DebugLog(@"topEdgePadding: %f", topEdgePadding);
+    
+    CGRect visibleFrame = [self.mapView convertRegion:[self visibleMapRegion] toRectToView:self.mapView];
+    
+    __block UIView *markerView = [[UIView alloc] initWithFrame:visibleFrame];
+    markerView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.75f];
+    markerView.alpha = 0.0f;
+    [self.view addSubview:markerView];
+    [self.view bringSubviewToFront:markerView];
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    CGFloat duration = 0.25f;
+    [UIView animateWithDuration:duration delay:0.0f options:options animations:^{
+        markerView.alpha = 1.0f;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:duration delay:0.0f options:options animations:^{
+            markerView.alpha = 0.0f;
+        } completion:^(BOOL finished) {
+            [markerView removeFromSuperview];
+            markerView = nil;
+        }];
+    }];
+    
 }
 
 #pragma mark - SHSidebarDelegate
@@ -1938,47 +1980,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }
 }
 
-- (void)flashSearchRegion {
-    CLLocationCoordinate2D center = [self visibleMapCenterCoordinate];
-    CGFloat radius = [self searchRadius];
-    
-    DebugLog(@"center: %f, %f", center.latitude, center.longitude);
-    DebugLog(@"radius: %f", radius);
-    
-    MKCircle *circleOverlay = [MKCircle circleWithCenterCoordinate:center radius:radius];
-    [self.mapView addOverlay:circleOverlay];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        [self.mapView removeOverlay:circleOverlay];
-    });
-}
-
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
     if (_isRepositioningMap) {
         return;
     }
     
     [self flashSearchRegion];
-    
-//    CGRect visibleFrame = [self.mapView convertRegion:[self visibleMapRegion] toRectToView:self.mapView];
-//    __block UIView *markerView = [[UIView alloc] initWithFrame:visibleFrame];
-//    markerView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.75f];
-//    markerView.alpha = 0.0f;
-//    [self.view addSubview:markerView];
-//    [self.view bringSubviewToFront:markerView];
-//    
-//    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-//    CGFloat duration = 0.25f;
-//    [UIView animateWithDuration:duration delay:0.0f options:options animations:^{
-//        markerView.alpha = 1.0f;
-//    } completion:^(BOOL finished) {
-//        [UIView animateWithDuration:duration delay:0.0f options:options animations:^{
-//            markerView.alpha = 0.0f;
-//        } completion:^(BOOL finished) {
-//            [markerView removeFromSuperview];
-//            markerView = nil;
-//        }];
-//    }];
+    [self flashMapBoxing];
     
     if ([self canSearchAgain]) {
         [self showSearchThisArea:TRUE withCompletionBlock:nil];

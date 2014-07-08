@@ -11,6 +11,7 @@
 #define kDrinkListModelParamName @"name"
 #define kDrinkListModelParamLatitude @"latitude"
 #define kDrinkListModelParamLongitude @"longitude"
+#define kDrinkListModelParamRadius @"radius"
 #define kDrinkListModelParamBasedOnSlider @"based_on_sliders"
 
 #define kDrinkListModelQueryParamLat @"lat"
@@ -21,7 +22,7 @@
 
 #import <JSONAPI/JSONAPI.h>
 
-@class ErrorModel, SpotModel, DrinkTypeModel, DrinkListRequest, DrinkTypeModel, DrinkSubTypeModel, CLLocation;
+@class ErrorModel, SpotModel, DrinkTypeModel, DrinkListRequest, BaseAlcoholModel, DrinkTypeModel, DrinkSubTypeModel, CLLocation;
 
 @interface DrinkListModel : SHJSONAPIResource
 
@@ -33,8 +34,9 @@
 @property (nonatomic, strong) SpotModel *spot;
 @property (nonatomic, strong) NSArray *sliders;
 
+@property (nonatomic, strong) BaseAlcoholModel *baseAlcohol;
 @property (nonatomic, strong) DrinkTypeModel *drinkType;
-@property (nonatomic, strong) DrinkSubTypeModel *drinkSubtype;
+@property (nonatomic, strong) DrinkSubTypeModel *drinkSubType;
 
 @property (nonatomic, readonly) CLLocation *location;
 

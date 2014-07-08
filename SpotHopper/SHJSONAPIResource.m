@@ -167,7 +167,7 @@
 }
 
 - (BOOL)isEqualToJSONAPIResource:(SHJSONAPIResource *)other {
-    return [self.ID isEqualToNumber:other.ID];
+    return self.ID && other.ID && [self.ID isEqual:other.ID];
 }
 
 - (NSUInteger)hash {

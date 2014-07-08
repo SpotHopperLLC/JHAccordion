@@ -52,6 +52,7 @@
 - (id)copyWithZone:(NSZone *)zone {
 	DrinkSubTypeModel *copy = [[[self class] alloc] init];
     
+    copy.ID = self.ID;
     copy.name = self.name;
     copy.createdAt = self.createdAt;
     copy.updateAt = self.updateAt;

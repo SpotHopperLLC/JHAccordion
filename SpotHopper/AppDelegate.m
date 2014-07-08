@@ -83,7 +83,7 @@
 
     [self applyAppearance];
     
-    [Tracker logError:@"App Delegate launching" class:[self class] trace:NSStringFromSelector(_cmd)];
+    [Tracker logInfo:@"App Delegate launching" class:[self class] trace:NSStringFromSelector(_cmd)];
     
     [iRate sharedInstance].delegate = self;
     
