@@ -123,7 +123,9 @@
 
 #pragma mark -
 
-@implementation SHSlidersSearchTableViewManager
+@implementation SHSlidersSearchTableViewManager {
+    BOOL _isPreparingForMode;
+}
 
 #pragma mark - Public Methods
 #pragma mark -
@@ -143,6 +145,9 @@
 }
 
 - (void)prepareForMode:(SHMode)mode {
+    _isPreparingForMode = TRUE;
+    [self.tableView reloadData];
+    
     self.mode = mode;
     
     self.selectedSpotlist = nil;
@@ -153,9 +158,6 @@
     self.baseAlcoholName = nil;
 
     switch (mode) {
-        case SHModeSpots:
-            [self prepareTableViewForSpots];
-            break;
         case SHModeBeer:
             self.drinkTypeName = kDrinkTypeNameBeer;
             break;
@@ -170,7 +172,13 @@
             break;
     }
     
-    if (mode != SHModeSpots) {
+    if (mode == SHModeSpots) {
+        [self prepareTableViewForSpotsWithCompletionBlock:^{
+            _isPreparingForMode = FALSE;
+            [self.tableView reloadData];
+        }];
+    }
+    else {
         [self fetchDrinkTypesWithCompletionBlock:^(NSArray *drinkTypes) {
             self.drinkTypes = drinkTypes;
             
@@ -186,13 +194,15 @@
             
             NSAssert(self.selectedDrinkType, @"Selected drink type must be set");
             
-            [self prepareTableViewForDrinkType:self.selectedDrinkType];
-            
+            [self prepareTableViewForDrinkType:self.selectedDrinkType withCompletionBlock:^{
+                _isPreparingForMode = FALSE;
+                [self.tableView reloadData];
+            }];
         }];
     }
 }
 
-- (void)prepareTableViewForSpots {
+- (void)prepareTableViewForSpotsWithCompletionBlock:(void (^)())completionBlock {
     BOOL isDataCached = self.spotTypes.count && self.spotlists.count;
     
     if (!isDataCached) {
@@ -214,18 +224,21 @@
                     if (!isDataCached) {
                         [self notifyThatManagerIsFree];
                     }
+                    
+                    if (completionBlock) {
+                        completionBlock();
+                    }
                 }];
             }];
         }];
     }];
 }
 
-- (void)prepareTableViewForDrinkType:(DrinkTypeModel *)drinkType {
-    [self.accordion immediatelyResetOpenedSections:@[]];
-    [self prepareTableViewForDrinkType:drinkType andDrinkSubType:nil];
+- (void)prepareTableViewForDrinkType:(DrinkTypeModel *)drinkType withCompletionBlock:(void (^)())completionBlock {
+    [self prepareTableViewForDrinkType:drinkType andDrinkSubType:nil withCompletionBlock:completionBlock];
 }
 
-- (void)prepareTableViewForDrinkType:(DrinkTypeModel *)drinkType andDrinkSubType:(DrinkSubTypeModel *)drinkSubType {
+- (void)prepareTableViewForDrinkType:(DrinkTypeModel *)drinkType andDrinkSubType:(DrinkSubTypeModel *)drinkSubType withCompletionBlock:(void (^)())completionBlock {
     BOOL isDataCached = self.drinkTypes.count && self.drinklists.count;
     
     self.drinkTypeName = drinkType.name;
@@ -265,6 +278,10 @@
                         else {
                             [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Wine_Type]]];
                         }
+                    }
+                    
+                    if (completionBlock) {
+                        completionBlock();
                     }
                     
                     if (!isDataCached) {
@@ -341,6 +358,10 @@
 #pragma mark -
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (_isPreparingForMode) {
+        return 0;
+    }
+    
     if (self.mode == SHModeSpots) {
         return 4;
     }
@@ -358,6 +379,10 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (_isPreparingForMode) {
+        return 0;
+    }
+    
     if (self.mode == SHModeSpots) {
         switch (section) {
             case kSection_Spots_Type:
@@ -867,7 +892,7 @@
                     } fail:^(ErrorModel *errorModel) {
                         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
                     } always:^{
-                        [self prepareTableViewForDrinkType:self.selectedDrinkType andDrinkSubType:self.selectedDrinkSubType];
+                        [self prepareTableViewForDrinkType:self.selectedDrinkType andDrinkSubType:self.selectedDrinkSubType withCompletionBlock:nil];
                     }];
                 }
                 else if ((self.mode == SHModeBeer && indexPath.section == kSection_Beer_Drinklists) ||
@@ -880,7 +905,7 @@
                     } fail:^(ErrorModel *errorModel) {
                         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
                     } always:^{
-                        [self prepareTableViewForDrinkType:self.selectedDrinkType andDrinkSubType:self.selectedDrinkSubType];
+                        [self prepareTableViewForDrinkType:self.selectedDrinkType andDrinkSubType:self.selectedDrinkSubType withCompletionBlock:nil];
                     }];
                 }
                 else {
@@ -1057,7 +1082,7 @@
         NSAssert(self.selectedDrinkType.ID, @"ID must be defined");
         NSAssert(!self.selectedDrinkSubType || self.selectedDrinkSubType.ID, @"ID must be defined is the model instance is defined");
         
-        [self prepareTableViewForDrinkType:self.selectedDrinkType andDrinkSubType:self.selectedDrinkSubType];
+        [self prepareTableViewForDrinkType:self.selectedDrinkType andDrinkSubType:self.selectedDrinkSubType withCompletionBlock:nil];
         [self notifyThatManagerIsFree];
     });
 }
