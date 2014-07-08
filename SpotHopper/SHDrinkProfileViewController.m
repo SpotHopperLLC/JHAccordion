@@ -70,7 +70,7 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
 @property (strong, nonatomic) IBOutlet SHImageModelCollectionViewManager *imageModelCollectionViewManager;
 
 @property (assign, nonatomic) NSInteger currentIndex;
-@property (weak, nonatomic) IBOutlet UITableView *tableview;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (weak, nonatomic) IBOutlet UIImageView *topShadowImageView;
 @property (weak, nonatomic) UIView *footerContainerView;
@@ -107,12 +107,12 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
 //    self.drinkfooterNavigationViewController.delegate = self;
     
     //set bottom offset to account for the height of the footer navigation control
-    UIEdgeInsets contentInset = self.tableview.contentInset;
-    UIEdgeInsets scrollIndicatorInsets = self.tableview.scrollIndicatorInsets;
+    UIEdgeInsets contentInset = self.tableView.contentInset;
+    UIEdgeInsets scrollIndicatorInsets = self.tableView.scrollIndicatorInsets;
     contentInset.bottom = kFooterNavigationViewHeight;
     scrollIndicatorInsets.bottom = kFooterNavigationViewHeight;
-    self.tableview.contentInset = contentInset;
-    self.tableview.scrollIndicatorInsets = scrollIndicatorInsets;
+    self.tableView.contentInset = contentInset;
+    self.tableView.scrollIndicatorInsets = scrollIndicatorInsets;
     
     self.matchPercentage = [self.drink matchPercent];
     
@@ -122,7 +122,7 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
         if (drinkModel) {
             self.drink = drinkModel;
             self.drink.averageReview = drinkModel.averageReview;
-            [self.tableview reloadData];
+            [self.tableView reloadData];
         }
     
     } failure:^(ErrorModel *errorModel) {
@@ -400,22 +400,48 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
 #pragma mark - UIScrollViewDelegate
 #pragma mark -
 
+#define kTopImageHeight 180.0f
+
+#define kTagCollectionView 1
+#define kTagImageView 1
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    //NSLog(@"offset: %f", scrollView.contentOffset.y);
+    // adjust the top image view
+    CGFloat topImageHeight = kTopImageHeight;
+    CGFloat yPos = 0.0f;
     
-    if (_topBarsClear) {
-        if (scrollView.contentOffset.y > kCutOffPoint) {
-            [self showTopBars:TRUE withCompletionBlock:^{
-                NSLog(@"Show!");
-            }];
+    if (scrollView.contentOffset.y < 0) {
+        topImageHeight += MIN(kTopImageHeight, ABS(scrollView.contentOffset.y));
+        yPos += MIN(0, scrollView.contentOffset.y);
+    }
+    
+    UITableViewCell *tableCell = (UITableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    
+    if (tableCell) {
+        UICollectionView *collectionView = (UICollectionView *)[tableCell viewWithTag:kTagCollectionView];
+        NSAssert(collectionView, @"Collection View is required");
+        if (collectionView) {
+            NSArray *indexPaths = [collectionView indexPathsForVisibleItems];
+            if (indexPaths.count) {
+                UICollectionViewCell *collectionCell = [collectionView cellForItemAtIndexPath:indexPaths[0]];
+                if (collectionCell) {
+                    UIImageView *imageView = (UIImageView *)[collectionCell viewWithTag:kTagImageView];
+                    NSAssert(imageView, @"Image View is required");
+                    CGRect frame = imageView.frame;
+                    frame.size.height = topImageHeight;
+                    frame.origin.y = yPos;
+                    imageView.frame = frame;
+                    //LOG_FRAME(@"frame", frame);
+                }
+            }
         }
     }
-    else {
-        if (scrollView.contentOffset.y <= kCutOffPoint) {
-            [self hideTopBars:TRUE withCompletionBlock:^{
-                NSLog(@"Hide!");
-            }];
-        }
+    
+    if (_topBarsClear && scrollView.contentOffset.y > kCutOffPoint) {
+        [self showTopBars:TRUE withCompletionBlock:nil];
+    }
+    else if (!_topBarsClear && scrollView.contentOffset.y <= kCutOffPoint) {
+        [self hideTopBars:TRUE withCompletionBlock:nil];
     }
 }
 

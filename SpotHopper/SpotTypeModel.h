@@ -8,7 +8,7 @@
 
 #import "SHJSONAPIResource.h"
 
-@interface SpotTypeModel : SHJSONAPIResource
+@interface SpotTypeModel : SHJSONAPIResource<NSCopying>
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSDate *createdAt;
