@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Tjo-bo-MqR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Tjo-bo-MqR">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -16,13 +16,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="NLr-zB-HzB">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" rotateEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NLr-zB-HzB">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="WvW-kG-wPv" id="37p-FU-NG7"/>
                                 </connections>
                             </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tKe-Qo-IuZ" userLabel="Compass Button">
+                                <rect key="frame" x="0.0" y="328" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="6uc-Kc-MWk"/>
+                                    <constraint firstAttribute="width" constant="50" id="btO-Ic-EtB"/>
+                                </constraints>
+                                <state key="normal" image="icon_arrow_shadow.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="compassButtonTapped:" destination="WvW-kG-wPv" eventType="touchUpInside" id="na7-ug-sDG"/>
+                                </connections>
+                            </button>
                             <view tag="500" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V3V-T6-eR1" userLabel="Container View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -124,9 +138,11 @@
                             <constraint firstItem="V3V-T6-eR1" firstAttribute="top" secondItem="7So-m6-aYn" secondAttribute="top" id="AR4-sg-n8R"/>
                             <constraint firstItem="NLr-zB-HzB" firstAttribute="top" secondItem="7So-m6-aYn" secondAttribute="top" id="C62-f7-FXM"/>
                             <constraint firstItem="lVO-Li-dx2" firstAttribute="top" secondItem="2SI-rp-QfL" secondAttribute="bottom" constant="240" id="Hwu-CO-RK2"/>
+                            <constraint firstItem="lVO-Li-dx2" firstAttribute="top" secondItem="tKe-Qo-IuZ" secondAttribute="bottom" constant="190" id="YZi-pw-peN"/>
                             <constraint firstAttribute="centerX" secondItem="QHs-5Q-8nO" secondAttribute="centerX" id="a3S-Ob-GSz"/>
                             <constraint firstAttribute="trailing" secondItem="NLr-zB-HzB" secondAttribute="trailing" id="a8M-qL-z4P"/>
                             <constraint firstItem="lVO-Li-dx2" firstAttribute="top" secondItem="NLr-zB-HzB" secondAttribute="bottom" id="d1O-4E-9kj"/>
+                            <constraint firstItem="tKe-Qo-IuZ" firstAttribute="leading" secondItem="7So-m6-aYn" secondAttribute="leading" id="fV1-2M-AC9"/>
                             <constraint firstItem="NLr-zB-HzB" firstAttribute="leading" secondItem="7So-m6-aYn" secondAttribute="leading" id="gGB-tk-mwA"/>
                             <constraint firstAttribute="trailing" secondItem="V3V-T6-eR1" secondAttribute="trailing" id="lq3-Wn-Uk0"/>
                             <constraint firstItem="2SI-rp-QfL" firstAttribute="leading" secondItem="7So-m6-aYn" secondAttribute="leading" constant="20" id="mLI-nu-Cc9"/>
@@ -2695,6 +2711,7 @@
         <image name="btn_sidebar_icon_spots.png" width="42" height="34"/>
         <image name="btn_spot_profile_image_next.png" width="58" height="90"/>
         <image name="btn_spot_profile_image_previous.png" width="58" height="90"/>
+        <image name="icon_arrow_shadow.png" width="61" height="64"/>
         <image name="orange_gradient_background.png" width="259" height="564"/>
         <image name="txt_sidebar_search_background.png" width="251" height="32"/>
     </resources>

@@ -68,6 +68,8 @@
 
 #define kModalAnimationDuration 0.35f
 
+#define kMapPadding 4000.0f
+
 NSString* const HomeMapToSpotProfile = @"HomeMapToSpotProfile";
 NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
@@ -166,10 +168,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     self.slidersSearchViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHSlidersSearchViewController"];
     self.slidersSearchViewController.delegate = self;
-
+    
     self.title = @"New Search";
     
-    [self repositionOnCurrentDeviceLocation];
+    [self repositionOnCurrentDeviceLocation:NO];
     
     self.mapView.showsUserLocation = TRUE;
     
@@ -717,6 +719,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [self hideAreYouHerePrompt:TRUE withCompletionBlock:nil];
 }
 
+- (IBAction)compassButtonTapped:(id)sender {
+    [self repositionOnCurrentDeviceLocation:YES];
+}
+
 - (IBAction)searchCancelButtonTapped:(id)sender {
     [self hideSearch:TRUE withCompletionBlock:^{
     }];
@@ -1172,13 +1178,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     [self repositionMapOnAnnotations:self.mapView.annotations animated:TRUE];
     
+    // TODO: fix issue for calling being shown when it should not (only for drinklists when selected)
     if (!self.drinkListModel || self.selectedSpot) {
         if ([spots containsObject:self.selectedSpot]) {
             [self selectSpot:self.selectedSpot];
         }
-        else if (spots.count) {
-            [self selectSpot:spots[0]];
-        }
+//        else if (spots.count) {
+//            [self selectSpot:spots[0]];
+//        }
     }
 }
 
@@ -1194,7 +1201,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }
 }
 
-- (void)repositionOnCurrentDeviceLocation {
+- (void)repositionOnCurrentDeviceLocation:(BOOL)animated {
     [self.locationMenuBarViewController updateLocationTitle:@"Locating..."];
     
     TellMeMyLocation *tellMeMyLocation = [[TellMeMyLocation alloc] init];
@@ -1204,7 +1211,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             NSLog(@"lastLocationName: %@", [TellMeMyLocation lastLocationName]);
             [self.locationMenuBarViewController updateLocationTitle:[TellMeMyLocation lastLocationName]];
         }];
-        [self repositionMapOnCoordinate:_currentLocation.coordinate animated:NO];
+        [self repositionMapOnCoordinate:_currentLocation.coordinate animated:animated];
         [self fetchNearbySpotsAtLocation:_currentLocation];
     } failure:^(NSError *error) {
         [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
@@ -1213,11 +1220,18 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)repositionMapOnCoordinate:(CLLocationCoordinate2D)coordinate animated:(BOOL)animated {
     _isRepositioningMap = TRUE;
+    
+    MKMapRect mapRect = MKMapRectNull;
     MKMapPoint mapPoint = MKMapPointForCoordinate(coordinate);
-    MKMapRect mapRect = MKMapRectMake(mapPoint.x, mapPoint.y, 0.25, 0.25);
+    
+    CGFloat padding = kMapPadding;
+    mapRect.origin.x = mapPoint.x - padding/2;
+    mapRect.origin.y = mapPoint.y - padding/2;
+    mapRect.size = MKMapSizeMake(MKMapRectGetWidth(mapRect) + padding, MKMapRectGetHeight(mapRect) + padding);
+    
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:0.5 delay:0.0 options:options animations:^{
-        [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake([self topEdgePadding], 45.0, [self bottomEdgePadding], 45.0) animated:animated];
+        [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake([self topEdgePadding], 45.0f, [self bottomEdgePadding], 45.0f) animated:animated];
     } completion:^(BOOL finished) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             _isRepositioningMap = FALSE;
@@ -1264,7 +1278,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         
         // give it a little extra space
         if (MKMapRectGetWidth(mapRect) == 0.0f && MKMapRectGetHeight(mapRect) == 0.0f) {
-            CGFloat padding = 8000.0;
+            CGFloat padding = kMapPadding;
             mapRect.origin.x -= padding/2;
             mapRect.origin.y -= padding/2;
             mapRect.size = MKMapSizeMake(MKMapRectGetWidth(mapRect) + padding, MKMapRectGetHeight(mapRect) + padding);
