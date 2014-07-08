@@ -337,7 +337,7 @@
             NSArray *drinklists = [jsonApi resourcesForKey:@"drink_lists"];
 
 #ifndef NDEBUG
-            for (DrinkListModel *drinklist in drinklists) {
+            for (DrinkListModel *drinklist __unused in drinklists) {
                 NSAssert(drinklist.drinkType, @"Drink type must be defined");
             }
 #endif
@@ -356,7 +356,7 @@
             }
             
 #ifndef NDEBUG
-            for (DrinkListModel *drinklist in filteredDrinklist) {
+            for (DrinkListModel *drinklist __unused in filteredDrinklist) {
                 NSAssert(drinklist.drinkType, @"Drink type must be defined");
             }
 #endif

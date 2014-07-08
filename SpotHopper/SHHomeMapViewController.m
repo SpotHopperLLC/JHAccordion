@@ -1124,6 +1124,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.spotsForDrink = @[self.selectedSpot];
     }
     else {
+        // remove existing annotations prior to waiting to load spots for this drink
+        [self.mapView removeAnnotations:self.mapView.annotations];
+        
         self.selectedDrink = drink;
         [[drink fetchSpotsForDrinkListRequest:self.drinkListRequest] then:^(NSArray *spots) {
             [self populateMapWithSpots:spots];
