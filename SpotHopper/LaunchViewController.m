@@ -177,10 +177,12 @@
 }
 
 - (IBAction)onClickDoLogin:(id)sender {
+    [self.view endEditing:YES];
     [self doLoginSpotHopper];
 }
 
 - (IBAction)onClickDoCreate:(id)sender {
+    [self.view endEditing:YES];
     [self doRegistration];
 }
 

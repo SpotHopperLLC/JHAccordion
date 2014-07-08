@@ -1,5 +1,5 @@
 //
-//  DrinkSubtypeModel.h
+//  DrinkSubTypeModel.h
 //  SpotHopper
 //
 //  Created by Josh Holtz on 3/14/14.
@@ -8,7 +8,7 @@
 
 #import "SHJSONAPIResource.h"
 
-@interface DrinkSubtypeModel : SHJSONAPIResource
+@interface DrinkSubTypeModel : SHJSONAPIResource<NSCopying>
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSDate *createdAt;

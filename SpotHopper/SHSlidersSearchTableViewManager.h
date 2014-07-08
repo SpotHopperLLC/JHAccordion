@@ -12,19 +12,23 @@
 @class DrinkListModel;
 @class SpotListRequest;
 @class SpotListModel;
+@class DrinkTypeModel;
+@class DrinkSubTypeModel;
 @class ErrorModel;
+
+#import <CoreLocation/CoreLocation.h>
 
 @protocol SHSlidersSearchTableViewManagerDelegate;
 
 @interface SHSlidersSearchTableViewManager : NSObject <UITableViewDataSource, UITableViewDelegate>
 
-- (void)prefetchData;
+- (void)prepare;
 
 - (void)prepareForMode:(SHMode)mode;
 
-- (void)prepareTableViewForDrinkType:(NSString *)drinkTypeName;
+- (void)prepareTableViewForDrinkType:(DrinkTypeModel *)drinkTypeName;
 
-- (void)prepareTableViewForDrinkType:(NSString *)drinkTypeName andWineSubType:(NSString *)wineSubTypeName;
+//- (void)prepareTableViewForDrinkType:(DrinkTypeModel *)drinkTypeName andDrinkSubType:(DrinkSubTypeModel *)drinkSubTypeName;
 
 - (void)fetchSpotListResultsWithCompletionBlock:(void (^)(SpotListModel *spotListModel, SpotListRequest *request, ErrorModel *errorModel))completionBlock;
 
@@ -34,8 +38,24 @@
 
 @protocol SHSlidersSearchTableViewManagerDelegate <NSObject>
 
+@required
+
+- (UIStoryboard *)slidersSearchTableViewManagerStoryboard:(SHSlidersSearchTableViewManager *)manager;
+
 @optional
 
 - (void)slidersSearchTableViewManagerDidChangeSlider:(SHSlidersSearchTableViewManager *)manager;
+
+// TODO: use these methods to indicate when the sliders search screen is animating to avoid performance issues with the blurred background
+- (void)slidersSearchTableViewManagerWillAnimate:(SHSlidersSearchTableViewManager *)manager;
+- (void)slidersSearchTableViewManagerDidAnimate:(SHSlidersSearchTableViewManager *)manager;
+
+- (void)slidersSearchTableViewManagerIsBusy:(SHSlidersSearchTableViewManager *)manager;
+- (void)slidersSearchTableViewManagerIsFree:(SHSlidersSearchTableViewManager *)manager;
+
+@required
+
+- (CLLocationCoordinate2D)searchCoordinateForSlidersSearchTableViewManager:(SHSlidersSearchTableViewManager *)manager;
+- (CLLocationDistance)searchRadiusForSlidersSearchTableViewManager:(SHSlidersSearchTableViewManager *)manager;
 
 @end

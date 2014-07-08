@@ -41,7 +41,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
     
-    [self.slidersSearchTableViewManager prefetchData];
+    [self.slidersSearchTableViewManager prepare];
     
     self.searchButton.titleLabel.font = [UIFont fontWithName:@"Lato-Light" size:26.0f];
 }
@@ -77,7 +77,6 @@
                 [self showAlert:@"Oops" message:errorModel.human];
             }
             else {
-                [self performSegueWithIdentifier:@"finishCreatingSpotListForHomeMap" sender:self];
                 if ([self.delegate respondsToSelector:@selector(slidersSearchViewController:didPrepareDrinklist:withRequest:forMode:)]) {
                     [self.delegate slidersSearchViewController:self didPrepareSpotlist:spotListModel withRequest:request forMode:self.mode];
                 }
@@ -93,7 +92,6 @@
                 [self showAlert:@"Oops" message:errorModel.human];
             }
             else {
-                [self performSegueWithIdentifier:@"finishCreatingDrinkListForHomeMap" sender:self];
                 if ([self.delegate respondsToSelector:@selector(slidersSearchViewController:didPrepareDrinklist:withRequest:forMode:)]) {
                     [self.delegate slidersSearchViewController:self didPrepareDrinklist:drinkListModel withRequest:request forMode:self.mode];
                 }
@@ -158,6 +156,24 @@
     }];
 }
 
+- (CLLocationCoordinate2D)searchCenterCoordinate {
+    if ([self.delegate respondsToSelector:@selector(searchCoordinateForSlidersSearchViewController:)]) {
+        CLLocationCoordinate2D coordinate = [self.delegate searchCoordinateForSlidersSearchViewController:self];
+        return coordinate;
+    }
+    
+    return kCLLocationCoordinate2DInvalid;
+}
+
+- (CGFloat)searchRadius {
+    if ([self.delegate respondsToSelector:@selector(searchRadiusForSlidersSearchViewController:)]) {
+        CLLocationDistance meters = [self.delegate searchRadiusForSlidersSearchViewController:self];
+        return meters;
+    }
+    
+    return 1000.0f;
+}
+
 #pragma mark - Public Methods
 #pragma mark -
 
@@ -170,10 +186,43 @@
 #pragma mark - SHSlidersSearchTableViewManagerDelegate
 #pragma mark -
 
+- (UIStoryboard *)slidersSearchTableViewManagerStoryboard:(SHSlidersSearchTableViewManager *)manager {
+    return self.storyboard;
+}
+
 - (void)slidersSearchTableViewManagerDidChangeSlider:(SHSlidersSearchTableViewManager *)manager {
     if (self.searchButton.hidden) {
         [self showSearchButton:TRUE withCompletionBlock:nil];
     }
+}
+
+- (void)slidersSearchTableViewManagerWillAnimate:(SHSlidersSearchTableViewManager *)manager {
+    if ([self.delegate respondsToSelector:@selector(slidersSearchViewControllerWillAnimate:)]) {
+        [self.delegate slidersSearchViewControllerWillAnimate:self];
+    }
+}
+
+- (void)slidersSearchTableViewManagerDidAnimate:(SHSlidersSearchTableViewManager *)manager {
+    if ([self.delegate respondsToSelector:@selector(slidersSearchViewControllerDidAnimate:)]) {
+        [self.delegate slidersSearchViewControllerDidAnimate:self];
+    }
+    
+}
+
+- (void)slidersSearchTableViewManagerIsBusy:(SHSlidersSearchTableViewManager *)manager {
+    [self showHUD];
+}
+
+- (void)slidersSearchTableViewManagerIsFree:(SHSlidersSearchTableViewManager *)manager {
+    [self hideHUD];
+}
+
+- (CLLocationCoordinate2D)searchCoordinateForSlidersSearchTableViewManager:(SHSlidersSearchTableViewManager *)manager {
+    return [self searchCenterCoordinate];
+}
+
+- (CLLocationDistance)searchRadiusForSlidersSearchTableViewManager:(SHSlidersSearchTableViewManager *)manager {
+    return [self searchRadius];
 }
 
 @end

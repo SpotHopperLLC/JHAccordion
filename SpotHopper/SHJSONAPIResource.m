@@ -167,16 +167,14 @@
 }
 
 - (BOOL)isEqualToJSONAPIResource:(SHJSONAPIResource *)other {
-    return [self.ID isEqualToNumber:other.ID];
+    return self.ID && other.ID && [self.ID isEqual:other.ID];
 }
 
 - (NSUInteger)hash {
-    if ([self.ID isKindOfClass:[NSNumber class]]) {
-        return [((NSNumber *)self.ID) hash];
+    if ([self.ID respondsToSelector:@selector(hash)]) {
+        return [self.ID hash];
     }
-    else if ([self.ID isKindOfClass:[NSString class]]) {
-        return [((NSString *)self.ID) hash];
-    }
+    
     return [super hash];
 }
 

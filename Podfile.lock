@@ -19,12 +19,28 @@ PODS:
     - AFNetworking/NSURLConnection
   - BitlyForiOS (0.0.3):
     - AFNetworking (~> 2.0)
+  - BlocksKit (2.2.3):
+    - BlocksKit/All
+  - BlocksKit/All (2.2.3):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
+    - BlocksKit/MessageUI
+    - BlocksKit/UIKit
+  - BlocksKit/Core (2.2.3)
+  - BlocksKit/DynamicDelegate (2.2.3)
+  - BlocksKit/MessageUI (2.2.3):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
+  - BlocksKit/UIKit (2.2.3):
+    - BlocksKit/Core
+    - BlocksKit/DynamicDelegate
   - Bolts (1.1.0)
   - CRGradientNavigationBar (0.3.2)
-  - Facebook-iOS-SDK (3.14.1):
+  - Facebook-iOS-SDK (3.15.1):
     - Bolts
   - GoogleAnalytics-iOS-SDK (3.0.7)
   - iRate (1.8.3)
+  - JHAccordion (0.1.0)
   - JHAutoCompleteTextField (0.1.0)
   - JHSidebar (0.1.1)
   - JSONAPI (0.1.2)
@@ -37,17 +53,19 @@ PODS:
   - Raven (0.2.0)
   - Reveal-iOS-SDK (1.0.4)
   - STTwitter (0.0.9)
-  - TTTAttributedLabel (1.10.0)
+  - TTTAttributedLabel (1.10.1)
   - UIImage+BlurredFrame (0.0.4)
   - UIView-Autolayout (0.2.0)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0.0)
   - BitlyForiOS (from `https://github.com/brennanMKE/BitlyForiOS.git`, tag `0.0.3`)
+  - BlocksKit (~> 2.2.0)
   - CRGradientNavigationBar (~> 0.3.0)
   - Facebook-iOS-SDK (~> 3.0)
   - GoogleAnalytics-iOS-SDK (~> 3.0.0)
   - iRate (~> 1.8.0)
+  - JHAccordion (from `https://github.com/brennanMKE/JHAccordion.git`, tag `current`)
   - JHAutoCompleteTextField (from `http://github.com/joshdholtz/JHAutoCompleteTextField.git`)
   - JHSidebar (from `https://github.com/joshdholtz/JHSidebar.git`)
   - JSONAPI (from `http://github.com/joshdholtz/jsonapi-ios.git`)
@@ -67,6 +85,9 @@ EXTERNAL SOURCES:
   BitlyForiOS:
     :git: https://github.com/brennanMKE/BitlyForiOS.git
     :tag: 0.0.3
+  JHAccordion:
+    :git: https://github.com/brennanMKE/JHAccordion.git
+    :tag: current
   JHAutoCompleteTextField:
     :git: http://github.com/joshdholtz/JHAutoCompleteTextField.git
   JHSidebar:
@@ -79,11 +100,13 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: a4d0e9a64de9242986620dafd1b3cee3b413ac5c
   BitlyForiOS: c6eb9b297cb503757a616fc201b3362fb857e8b4
+  BlocksKit: 07c8a80f04275efac6a5f8b973782489c083a182
   Bolts: 91c2af8eae1d44e1dd75946a5b0ae04a43ea43e4
   CRGradientNavigationBar: e11429639a863683acc90887b9c86e75cb5d098c
-  Facebook-iOS-SDK: e9b3d5ac54ee3e5e693f4eef470b97911b3d076d
+  Facebook-iOS-SDK: 56214af8e0ef16e751eb2804250326b709e571b8
   GoogleAnalytics-iOS-SDK: bb285d8eef15a682f1b82971becd0d22edd0e53b
   iRate: a42e2ae364634fd1eb07af3cb6985905ced01fa8
+  JHAccordion: 4f0337990465b25f8de5ed304609fa9362281db0
   JHAutoCompleteTextField: 1ca69c82441d9b5bf474e10d36585247030f7594
   JHSidebar: 2efb4d14cc8bb0032c75218fd3ef7db70154c07e
   JSONAPI: b98efd0e5b8bb44984373524e2ac40ef7d5455a2
@@ -95,7 +118,7 @@ SPEC CHECKSUMS:
   Raven: e26260198babba5e09f31425ce88a21ee0532137
   Reveal-iOS-SDK: d3c8e109d42219daaa7a6e1ad2de34f0bdbb7a88
   STTwitter: bc2c74ffeeff6ead7b03cfec0c5d9e6be2d54e56
-  TTTAttributedLabel: c3a11b538bc7beb4815f156e2ba4b066929e13f9
+  TTTAttributedLabel: 94bb04f1e005616002dd2cee0262a0082e533627
   UIImage+BlurredFrame: 0c38f5760d72125c47d16001a88faaac573bd35d
   UIView-Autolayout: 7c05eb666738eba682f686c2da236578177e2ebb
 

@@ -33,8 +33,9 @@
 @class AverageReviewModel;
 @class ErrorModel;
 @class DrinkTypeModel;
-@class DrinkSubtypeModel;
+@class DrinkSubTypeModel;
 @class SpotModel;
+@class DrinkListRequest;
 @class CLLocation;
 
 @interface DrinkModel : SHJSONAPIResource
@@ -42,7 +43,7 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *imageUrl;
 @property (nonatomic, strong) DrinkTypeModel *drinkType;
-@property (nonatomic, strong) DrinkSubtypeModel *drinkSubtype;
+@property (nonatomic, strong) DrinkSubTypeModel *drinkSubtype;
 @property (nonatomic, strong) NSString *descriptionOfDrink;
 @property (nonatomic, strong) NSString *recipeOfDrink;
 @property (nonatomic, strong) NSNumber *abv;
@@ -73,7 +74,11 @@
 
 #pragma mark - Revised Code for 2.0
 
-- (void)fetchSpotsForLocation:(CLLocation *)location success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+- (void)fetchSpotsForDrinkListRequest:(DrinkListRequest *)request success:(void(^)(NSArray *spotModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
+- (Promise*)fetchSpotsForDrinkListRequest:(DrinkListRequest *)request;
+
+- (void)fetchSpotsForLocation:(CLLocation *)location success:(void(^)(NSArray *spotModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 - (Promise*)fetchSpotsForLocation:(CLLocation *)location;
 

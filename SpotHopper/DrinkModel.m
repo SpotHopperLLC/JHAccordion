@@ -12,16 +12,26 @@
 #import "ErrorModel.h"
 #import "SpotModel.h"
 #import "DrinkTypeModel.h"
+#import "DrinkSubTypeModel.h"
 #import "SliderTemplateModel.h"
+
+#import "DrinkListRequest.h"
 
 #import <CoreLocation/CoreLocation.h>
 
+#define kMinRadiusFloat 0.5f
+#define kMaxRadiusFloat 5.0f
+#define kMetersPerMile 1609.344
+
 @interface DrinkModelCache : NSCache
 
-+ (NSString *)spotsKeyForDrink:(DrinkModel *)drink location:(CLLocation *)location;
++ (NSString *)spotsKeyForDrink:(DrinkModel *)drink coordinate:(CLLocationCoordinate2D)coordinate radius:(CGFloat)radius;
 
 - (NSArray *)cachedSpotsForKey:(NSString *)key;
 - (void)cacheSpots:(NSArray *)spots forKey:(NSString *)key;
+
+- (NSArray *)cachedDrinkTypes;
+- (void)cacheDrinkTypes:(NSArray *)drinkTypes;
 
 @end
 
@@ -153,63 +163,92 @@
 
 #pragma mark - Revised Code for 2.0
 
-- (void)fetchSpotsForLocation:(CLLocation *)location success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
-    if (!location || !CLLocationCoordinate2DIsValid(location.coordinate)) {
+- (void)fetchSpotsForDrinkListRequest:(DrinkListRequest *)request success:(void(^)(NSArray *spotModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    if (!CLLocationCoordinate2DIsValid(request.coordinate)) {
         if (failureBlock) {
             ErrorModel *errorModel = [[ErrorModel alloc] init];
-            errorModel.error = @"Location is not valid";
+            errorModel.error = @"Coordinate is not valid";
             errorModel.human = @"Please select a location";
             failureBlock(errorModel);
         }
         return;
     }
     
-    NSString *key = [DrinkModelCache spotsKeyForDrink:self location:location];
-    NSArray *spots = [[DrinkModel sh_sharedCache] cachedSpotsForKey:key];
+    // look for cached spots
+    NSString *cacheKey = [DrinkModelCache spotsKeyForDrink:self coordinate:request.coordinate radius:request.radius];
+    NSArray *spots = [[DrinkModel sh_sharedCache] cachedSpotsForKey:cacheKey];
     if (spots && successBlock) {
         NSLog(@"Returning %lu cached spots", (unsigned long)spots.count);
-        successBlock(spots, nil);
-        return;
+        successBlock(spots);
     }
-
-    // assemble params internally to encapsulate implementation details
-    NSDictionary *params = @{
-                             kSpotModelParamPage : @1,
-                             kSpotModelParamsPageSize : @10,
-                             kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:location.coordinate.latitude],
-                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:location.coordinate.longitude]
-                             };
-    
-    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drinks/%ld/spots", (long)[self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    else {
+        // assemble params internally to encapsulate implementation details
         
-        // Parses response with JSONAPI
-        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        CGFloat miles = request.radius / kMetersPerMile;
+        NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
+        DebugLog(@"radiusParam: %@", radiusParam);
         
-        if (operation.response.statusCode == 200) {
-            NSArray *models = [jsonApi resourcesForKey:@"spots"];
-            // always check that the block is defined because running it an undefined block will cause a crash
-            if (successBlock) {
-                successBlock(models, jsonApi);
-            }
+        NSDictionary *params = @{
+                                 kSpotModelParamPage : @1,
+                                 kSpotModelParamsPageSize : @10,
+                                 kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:request.coordinate.latitude],
+                                 kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:request.coordinate.longitude],
+                                 kSpotModelParamQueryRadius : radiusParam
+                                 };
+        
+        [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drinks/%ld/spots", (long)[self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
-            NSLog(@"Caching %lu spots", (unsigned long)models.count);
-            [[DrinkModel sh_sharedCache] cacheSpots:models forKey:key];
-        } else {
-            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
-            // always check that the block is defined because running it an undefined block will cause a crash
-            if (failureBlock) {
-                failureBlock(errorModel);
+            // Parses response with JSONAPI
+            JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+            
+            if (operation.response.statusCode == 200) {
+                NSArray *spotModels = [jsonApi resourcesForKey:@"spots"];
+                NSLog(@"Caching %lu spots", (unsigned long)spotModels.count);
+                [[DrinkModel sh_sharedCache] cacheSpots:spotModels forKey:cacheKey];
+                
+                // always check that the block is defined because running it an undefined block will cause a crash
+                if (successBlock) {
+                    successBlock(spotModels);
+                }
+            } else {
+                ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+                // always check that the block is defined because running it an undefined block will cause a crash
+                if (failureBlock) {
+                    failureBlock(errorModel);
+                }
             }
-        }
-    }];
+        }];
+    }
 }
 
-// Promisfy the call with the callbacks and do not mix callback and promise methods
+- (Promise*)fetchSpotsForDrinkListRequest:(DrinkListRequest *)request {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [self fetchSpotsForDrinkListRequest:request success:^(NSArray *spotModels) {
+        // Resolves promise
+        [deferred resolveWith:spotModels];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
+- (void)fetchSpotsForLocation:(CLLocation *)location success:(void(^)(NSArray *spotModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    DrinkListRequest *request = [[DrinkListRequest alloc] init];
+    request.coordinate = location.coordinate;
+    request.radius = kMaxRadiusFloat;
+    
+    [self fetchSpotsForDrinkListRequest:request success:successBlock failure:failureBlock];
+}
+
 - (Promise*)fetchSpotsForLocation:(CLLocation *)location {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
 
-    [self fetchSpotsForLocation:location success:^(NSArray *spotModels, JSONAPI *jsonApi) {
+    [self fetchSpotsForLocation:location success:^(NSArray *spotModels) {
         // Resolves promise
         [deferred resolveWith:spotModels];
     } failure:^(ErrorModel *errorModel) {
@@ -221,13 +260,30 @@
 }
 
 + (void)fetchDrinkTypes:(void (^)(NSArray *drinkTypes))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    NSArray *drinkTypes = [[DrinkModel sh_sharedCache] cachedDrinkTypes];
+    if (drinkTypes.count && successBlock) {
+        successBlock(drinkTypes);
+        return;
+    }
+    
     // Gets drink form data (Beer, Wine and Cocktail)
     [DrinkModel getDrinks:@{kDrinkModelParamsPageSize:@0} success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         NSDictionary *forms = [jsonApi objectForKey:@"form"];
         if (forms != nil) {
             NSArray *drinkTypes = [forms objectForKey:@"drink_types"];
+            NSMutableArray *mappedDrinkTypes = @[].mutableCopy;
+            for (NSDictionary *drinkTypeDictionary in drinkTypes) {
+                DrinkTypeModel *drinkType = [SHJSONAPIResource jsonAPIResource:drinkTypeDictionary withLinked:jsonApi.linked withClass:[DrinkTypeModel class]];
+                
+                NSArray *subtypes = [SHJSONAPIResource jsonAPIResources:drinkTypeDictionary[@"drink_subtypes"] withLinked:jsonApi.linked withClass:[DrinkSubTypeModel class]];
+                drinkType.subtypes = subtypes;
+                [mappedDrinkTypes addObject:drinkType];
+            }
+            
+            [[DrinkModel sh_sharedCache] cacheDrinkTypes:mappedDrinkTypes];
+            
             if (successBlock) {
-                successBlock(drinkTypes);
+                successBlock(mappedDrinkTypes);
             }
         }
     } failure:^(ErrorModel *errorModel) {
@@ -279,7 +335,7 @@
     return [self linkedResourceForKey:@"drink_type"];
 }
 
-- (DrinkSubtypeModel *)drinkSubtype {
+- (DrinkSubTypeModel *)drinkSubtype {
     return [self linkedResourceForKey:@"drink_subtype"];
 }
 
@@ -395,8 +451,10 @@
 
 @implementation DrinkModelCache
 
-+ (NSString *)spotsKeyForDrink:(DrinkModel *)drink location:(CLLocation *)location {
-    return [NSString stringWithFormat:@"key-spots-%@-%f-%f", drink.ID, location.coordinate.latitude, location.coordinate.longitude];
+NSString * const DrinkTypesKey = @"DrinkTypes";
+
++ (NSString *)spotsKeyForDrink:(DrinkModel *)drink coordinate:(CLLocationCoordinate2D)coordinate radius:(CGFloat)radius {
+    return [NSString stringWithFormat:@"key-spots-%@-%f-%f-%f", drink.ID, coordinate.latitude, coordinate.longitude, radius];
 }
 
 - (NSArray *)cachedSpotsForKey:(NSString *)key {
@@ -410,6 +468,20 @@
     else {
         [self removeObjectForKey:key];
     }
+}
+
+- (NSArray *)cachedDrinkTypes {
+    return [self objectForKey:DrinkTypesKey];
+}
+
+- (void)cacheDrinkTypes:(NSArray *)drinkTypes {
+    if (drinkTypes.count) {
+        [self setObject:drinkTypes forKey:DrinkTypesKey];
+    }
+    else {
+        [self removeObjectForKey:DrinkTypesKey];
+    }
+    
 }
 
 @end

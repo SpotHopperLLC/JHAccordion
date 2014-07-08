@@ -473,7 +473,7 @@
 }
 
 - (void)fetchSliderTemplates {
-    [SliderTemplateModel getSliderTemplates:nil success:^(NSArray *sliderTemplates, JSONAPI *jsonApi) {
+    [SliderTemplateModel fetchSliderTemplates:^(NSArray *sliderTemplates) {
         [self hideHUD];
         self.allSliderTemplatesUpdate = sliderTemplates;
         

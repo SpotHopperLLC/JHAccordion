@@ -15,17 +15,31 @@
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
 #import "DrinkModel.h"
+#import "UserModel.h"
+#import "DrinkTypeModel.h"
+#import "DrinkSubTypeModel.h"
 
 #import "DrinkListRequest.h"
 
 #import <CoreLocation/CoreLocation.h>
+
+#define kMinRadiusFloat 0.5f
+#define kMaxRadiusFloat 5.0f
+#define kMetersPerMile 1609.344
+
+@interface DrinkListCache : NSCache
+
+- (NSArray *)cachedDrinklists;
+- (void)cacheDrinklists:(NSArray *)drinklists;
+
+@end
 
 @implementation DrinkListModel
 
 #pragma mark - Debugging
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ - %@ [%@]", self.ID, self.href, NSStringFromClass([self class])];
+    return [NSString stringWithFormat:@"%@ - %@ (%@) [%@]", self.ID, self.name, self.drinkType.name, NSStringFromClass([self class])];
 }
 
 #pragma mark -
@@ -37,22 +51,22 @@
     // Maps values in JSON key 'longitude' to 'longitude' property
     // Maps linked resource in JSON key 'drinks' to 'drinks' property
     // Maps linked resource in JSON key 'spot' to 'spot' property
+    // Maps linked resource in JSON key 'sliders' to 'sliders' property
+    // Maps linked resource in JSON key 'drink_type' to 'drinkType' property
+    // Maps linked resource in JSON key 'drink_subtype' to 'drinkSubtype' property
     return @{
              @"name" : @"name",
              @"featured" : @"featured",
              @"latitude" : @"latitude",
              @"longitude" : @"longitude",
              @"links.drinks" : @"drinks",
-             @"links.spot" : @"spot"
+             @"links.spot" : @"spot",
+             @"links.sliders" : @"sliders",
+             @"links.base_alcohol" : @"baseAlcohol",
+             @"links.drink_type" : @"drinkType",
+             @"links.drink_subtype" : @"drinkSubType"
              };
-    
 }
-
-//- (SpotModel *)spot {
-//    if (_spot != nil) return _spot;
-//    _spot = [self linkedResourceForKey:@"spot"];
-//    return _spot;
-//}
 
 - (CLLocation *)location {
     if (_latitude != nil && _longitude != nil) {
@@ -63,7 +77,7 @@
 
 #pragma mark - API
 
-+ (Promise *)getFeaturedDrinkLists:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
++ (Promise *)getFeaturedDrinkLists:(NSDictionary *)params success:(void (^)(NSArray *drinklists, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
@@ -92,7 +106,7 @@
     
 }
 
-+ (Promise *)postDrinkList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders drinkId:(NSNumber*)drinkId drinkTypeId:(NSNumber*)drinkTypeId drinkSubtypeId:(NSNumber*)drinkSubtypeId baseAlcoholId:(NSNumber*)baseAlcoholId spotId:(NSNumber*)spotId successBlock:(void (^)(DrinkListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
++ (Promise *)postDrinkList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude sliders:(NSArray*)sliders drinkId:(NSNumber*)drinkId drinkTypeId:(NSNumber*)drinkTypeId drinkSubtypeId:(NSNumber*)drinkSubtypeId baseAlcoholId:(NSNumber*)baseAlcoholId spotId:(NSNumber*)spotId successBlock:(void (^)(DrinkListModel *, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
@@ -157,7 +171,7 @@
     return deferred.promise;
 }
 
-- (Promise *)getDrinkList:(NSDictionary *)params success:(void (^)(DrinkListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+- (Promise *)getDrinkList:(NSDictionary *)params success:(void (^)(DrinkListModel *drinkListModel, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
@@ -186,7 +200,7 @@
     
 }
 
-- (Promise *)putDrinkList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude spotId:(NSNumber*)spotId sliders:(NSArray*)sliders success:(void (^)(DrinkListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+- (Promise *)putDrinkList:(NSString*)name latitude:(NSNumber*)latitude longitude:(NSNumber*)longitude spotId:(NSNumber*)spotId sliders:(NSArray*)sliders success:(void (^)(DrinkListModel *drinklist, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
@@ -247,7 +261,7 @@
     
 }
 
-- (Promise *)deleteDrinkList:(NSDictionary *)params success:(void (^)(DrinkListModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+- (Promise *)deleteDrinkList:(NSDictionary *)params success:(void (^)(DrinkListModel *drinkListModel, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
@@ -276,9 +290,104 @@
     
 }
 
+#pragma mark - Caching
+
++ (DrinkListCache *)sh_sharedCache {
+    static DrinkListCache *_sh_Cache = nil;
+    static dispatch_once_t oncePredicate;
+    dispatch_once(&oncePredicate, ^{
+        _sh_Cache = [[DrinkListCache alloc] init];
+        
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * __unused notification) {
+            [_sh_Cache removeAllObjects];
+        }];
+    });
+    
+    return _sh_Cache;
+}
+
 #pragma mark - Revised Code for 2.0
 
-+ (void)fetchDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinkListModel, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
++ (void)refreshSpotlistCache {
+    [[self sh_sharedCache] cacheDrinklists:nil];
+    if ([UserModel isLoggedIn]) {
+        [[self fetchMyDrinkLists] then:^(NSArray *spotlists) {
+            DebugLog(@"Refreshed drinklist cache");
+        } fail:nil always:nil];
+    }
+}
+
++ (void)fetchMyDrinkLists:(void (^)(NSArray *spotlists))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    NSArray *drinklists = [[DrinkListModel sh_sharedCache] cachedDrinklists];
+    if (drinklists.count && successBlock) {
+        successBlock(drinklists);
+        return;
+    }
+    
+    UserModel *user = [UserModel currentUser];
+    
+    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/users/%ld/drink_lists", (long)[user.ID integerValue]] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        DebugLog(@"responseObject: %@", responseObject);
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            NSArray *drinklists = [jsonApi resourcesForKey:@"drink_lists"];
+
+#ifndef NDEBUG
+            for (DrinkListModel *drinklist in drinklists) {
+                NSAssert(drinklist.drinkType, @"Drink type must be defined");
+            }
+#endif
+            
+            NSMutableArray *filteredDrinklist = @[].mutableCopy;
+            for (DrinkListModel *drinklist in drinklists) {
+                // delete spotlists with default names (temporary measure)
+                if ([kDrinkListModelDefaultName isEqualToString:drinklist.name]) {
+                    [[drinklist purgeDrinkList] then:^(id value) {
+                        DebugLog(@"Deleted spotlist %@", drinklist.ID);
+                    } fail:nil always:nil];
+                }
+                else {
+                    [filteredDrinklist addObject:drinklist];
+                }
+            }
+            
+#ifndef NDEBUG
+            for (DrinkListModel *drinklist in filteredDrinklist) {
+                NSAssert(drinklist.drinkType, @"Drink type must be defined");
+            }
+#endif
+            
+            [[DrinkListModel sh_sharedCache] cacheDrinklists:filteredDrinklist];
+            if (successBlock) {
+                successBlock(filteredDrinklist);
+            }
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            if (failureBlock) {
+                failureBlock(errorModel);
+            }
+        }
+    }];
+}
+
++ (Promise *)fetchMyDrinkLists {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [self fetchMyDrinkLists:^(NSArray *drinklists) {
+        [deferred resolveWith:drinklists];
+    } failure:^(ErrorModel *errorModel) {
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
++ (NSDictionary *)prepareSearchParametersWithRequest:(DrinkListRequest *)request {
     // Creating params
     NSMutableArray *jsonSliders = [NSMutableArray array];
     for (SliderModel *slider in request.sliders) {
@@ -315,9 +424,20 @@
     }
     
     if (CLLocationCoordinate2DIsValid(request.coordinate)) {
-        [params setObject:[NSNumber numberWithFloat:request.coordinate.latitude] forKey:kDrinkListModelParamLatitude];
-        [params setObject:[NSNumber numberWithFloat:request.coordinate.longitude] forKey:kDrinkListModelParamLongitude];
+        params[kDrinkListModelParamLatitude] = [NSNumber numberWithFloat:request.coordinate.latitude];
+        params[kDrinkListModelParamLongitude] = [NSNumber numberWithFloat:request.coordinate.longitude];
     }
+    
+    CGFloat miles = request.radius / kMetersPerMile;
+    NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
+    DebugLog(@"radiusParam: %@", radiusParam);
+    params[kDrinkListModelParamRadius] = radiusParam;
+    
+    return params;
+}
+
++ (void)createDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinkListModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    NSDictionary *params = [self prepareSearchParametersWithRequest:request];
     
     [[ClientSessionManager sharedClient] POST:@"/api/drink_lists" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -333,7 +453,7 @@
             }
             
             if (successBlock) {
-                successBlock(model, jsonApi);
+                successBlock(model);
             }
         } else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
@@ -344,11 +464,74 @@
     }];
 }
 
++ (void)updateDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinkListModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    NSDictionary *params = [self prepareSearchParametersWithRequest:request];
+    
+    [[ClientSessionManager sharedClient] PUT:[NSString stringWithFormat:@"/api/drink_lists/%ld", (long)[request.drinkListId integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            DrinkListModel *model = [jsonApi resourceForKey:@"drink_lists"];
+            
+            // limit to 10
+            if (model.drinks.count > 10) {
+                model.drinks = [model.drinks subarrayWithRange:NSMakeRange(0, 10)];
+            }
+            
+            if (successBlock) {
+                successBlock(model);
+            }
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            if (failureBlock) {
+                failureBlock(errorModel);
+            }
+        }
+    }];
+}
+
++ (void)fetchFeaturedDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinkListModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    NSDictionary *params = [self prepareSearchParametersWithRequest:request];
+
+    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drink_lists/%ld", (long)[request.drinkListId integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            DrinkListModel *model = [jsonApi resourceForKey:@"drink_lists"];
+            if (successBlock) {
+                successBlock(model);
+            }
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            if (failureBlock) {
+                failureBlock(errorModel);
+            }
+        }
+    }];
+}
+
++ (void)fetchDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinkListModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    // if request has a drinklist id then it is an updated (PUT) otherwise it is a create (POST) action and both should return a result set with an identical structure
+    if (!request.drinkListId) {
+        [self createDrinkListWithRequest:request success:successBlock failure:failureBlock];
+    }
+    else if (request.drinkListId && request.isFeatured) {
+        [self fetchFeaturedDrinkListWithRequest:request success:successBlock failure:failureBlock];
+    }
+    else {
+        [self updateDrinkListWithRequest:request success:successBlock failure:failureBlock];
+    }
+}
+
 + (Promise *)fetchDrinkListWithRequest:(DrinkListRequest *)request {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
 
-    [self fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+    [self fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
         // Resolves promise
         [deferred resolveWith:drinkListModel];
     } failure:^(ErrorModel *errorModel) {
@@ -359,6 +542,103 @@
     return deferred.promise;
 }
 
+- (void)fetchDrinkList:(void (^)(DrinkListModel *spotlist))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drink_lists/%ld", (long)[self.ID integerValue]] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            DrinkListModel *model = [jsonApi resourceForKey:@"drink_lists"];
+            if (successBlock) {
+                successBlock(model);
+            }
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            if (failureBlock) {
+                failureBlock(errorModel);
+            }
+        }
+    }];
+}
+
+- (Promise *)fetchDrinkList {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [self fetchDrinkList:^(DrinkListModel *drinklist) {
+        // Resolves promise
+        [deferred resolveWith:drinklist];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
+- (void)purgeDrinkList:(void (^)(BOOL success))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    [[ClientSessionManager sharedClient] DELETE:[NSString stringWithFormat:@"/api/drink_lists/%ld", (long)[self.ID integerValue]] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200 || operation.response.statusCode == 204) {
+            // update the cache
+            NSMutableArray *cachedSpotlists = [[DrinkListModel sh_sharedCache] cachedDrinklists].mutableCopy;
+            [cachedSpotlists removeObject:self];
+            [[DrinkListModel sh_sharedCache] cacheDrinklists:cachedSpotlists];
+            
+            successBlock(TRUE);
+        }
+        else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+        }
+    }];
+}
+
+- (Promise *)purgeDrinkList {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [self purgeDrinkList:^(BOOL success) {
+        // Resolves promise
+        [deferred resolveWith:[NSNumber numberWithBool:success]];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
 #pragma mark -
+
+@end
+
+@implementation DrinkListCache
+
+NSString * const DrinklistsKey = @"Drinklists";
+
+- (NSArray *)cachedDrinklists {
+    return [self objectForKey:DrinklistsKey];
+}
+
+- (void)cacheDrinklists:(NSArray *)spotlists {
+    if (spotlists.count) {
+        [self setObject:spotlists forKey:DrinklistsKey];
+        
+        // automatically expire the cache after 90 seconds to ensure it does not get stale
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(expireSpotlistsCache) object:nil];
+        [self performSelector:@selector(expireSpotlistsCache) withObject:self afterDelay:90];
+    }
+    else {
+        [self removeObjectForKey:DrinklistsKey];
+    }
+}
+
+- (void)expireSpotlistsCache {
+    [self cacheDrinklists:nil];
+}
 
 @end

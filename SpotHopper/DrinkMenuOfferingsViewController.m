@@ -17,7 +17,7 @@
 #import "ErrorModel.h"
 #import "DrinkModel.h"
 #import "DrinkTypeModel.h"
-#import "DrinkSubtypeModel.h"
+#import "DrinkSubTypeModel.h"
 #import "MenuItemModel.h"
 #import "SpotModel.h"
 

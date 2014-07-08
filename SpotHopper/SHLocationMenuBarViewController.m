@@ -70,11 +70,17 @@
 }
 
 - (void)selectSpot:(SpotModel *)spot {
+    if (!spot) {
+        return;
+    }
     [self.selectedQueue addObject:spot];
     [self processQueue];
 }
 
 - (void)deselectSpot:(SpotModel *)spot {
+    if (!spot) {
+        return;
+    }
     if (_isDisplayingSpotDrinklist) { return; }
     [self.deselectedQueue addObject:spot];
     [self processQueue];
