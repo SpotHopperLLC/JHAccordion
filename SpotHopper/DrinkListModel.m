@@ -361,7 +361,10 @@
             }
 #endif
             
-            [[DrinkListModel sh_sharedCache] cacheDrinklists:filteredDrinklist];
+            if (filteredDrinklist.count) {
+                [[DrinkListModel sh_sharedCache] cacheDrinklists:filteredDrinklist];
+            }
+            
             if (successBlock) {
                 successBlock(filteredDrinklist);
             }

@@ -325,7 +325,10 @@
                 }
             }
             
-            [[SpotListModel sh_sharedCache] cacheSpotlists:filteredSpotlist];
+            if (filteredSpotlist.count) {
+                [[SpotListModel sh_sharedCache] cacheSpotlists:filteredSpotlist];
+            }
+            
             if (successBlock) {
                 successBlock(filteredSpotlist);
             }
