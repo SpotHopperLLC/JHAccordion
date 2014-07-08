@@ -12,7 +12,7 @@ pod 'Promises', :git => 'http://github.com/joshdholtz/ios-promises.git'
 pod 'iRate', '~> 1.8.0'
 
 # UI
-#pod 'JHAccordion', :git => 'https://github.com/joshdholtz/JHAccordion.git'
+pod 'JHAccordion', :git => 'https://github.com/brennanMKE/JHAccordion.git', :tag => 'current'
 pod 'UIView-Autolayout', '~> 0.2.0'
 pod 'JHAutoCompleteTextField', :git => 'http://github.com/joshdholtz/JHAutoCompleteTextField.git'
 pod 'JHSidebar', :git => 'https://github.com/joshdholtz/JHSidebar.git'
@@ -21,6 +21,7 @@ pod 'PhotoZoom', '~> 0.0'
 pod 'MBProgressHUD', '~> 0.8.0'
 pod 'CRGradientNavigationBar', '~> 0.3.0'
 pod 'UIImage+BlurredFrame', '~> 0.0'
+pod 'BlocksKit', '~> 2.2.0'
 
 # Debugging
 pod 'Raven', '~> 0.2.0'

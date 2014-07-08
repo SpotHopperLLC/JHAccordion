@@ -28,7 +28,7 @@
 #import "ImageModel.h"
 #import "SpotModel.h"
 #import "DrinkTypeModel.h"
-#import "DrinkSubtypeModel.h"
+#import "DrinkSubTypeModel.h"
 #import "DrinkListModel.h"
 #import "DrinkListRequest.h"
 #import "Tracker.h"
@@ -732,7 +732,7 @@
     request.drinkTypeId = _drink.drinkType.ID;
     request.drinkSubTypeId = _drink.drinkSubtype.ID;
     
-    [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+    [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
         [self hideHUD];
         
         DrinkListViewController *viewController = [self.drinksStoryboard instantiateViewControllerWithIdentifier:@"DrinkListViewController"];

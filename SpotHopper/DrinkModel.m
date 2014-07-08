@@ -12,6 +12,7 @@
 #import "ErrorModel.h"
 #import "SpotModel.h"
 #import "DrinkTypeModel.h"
+#import "DrinkSubTypeModel.h"
 #import "SliderTemplateModel.h"
 
 #import <CoreLocation/CoreLocation.h>
@@ -22,6 +23,9 @@
 
 - (NSArray *)cachedSpotsForKey:(NSString *)key;
 - (void)cacheSpots:(NSArray *)spots forKey:(NSString *)key;
+
+- (NSArray *)cachedDrinkTypes;
+- (void)cacheDrinkTypes:(NSArray *)drinkTypes;
 
 @end
 
@@ -164,44 +168,45 @@
         return;
     }
     
-    NSString *key = [DrinkModelCache spotsKeyForDrink:self location:location];
-    NSArray *spots = [[DrinkModel sh_sharedCache] cachedSpotsForKey:key];
+    // look for cached spots
+    NSString *cacheKey = [DrinkModelCache spotsKeyForDrink:self location:location];
+    NSArray *spots = [[DrinkModel sh_sharedCache] cachedSpotsForKey:cacheKey];
     if (spots && successBlock) {
         NSLog(@"Returning %lu cached spots", (unsigned long)spots.count);
         successBlock(spots, nil);
-        return;
     }
-
-    // assemble params internally to encapsulate implementation details
-    NSDictionary *params = @{
-                             kSpotModelParamPage : @1,
-                             kSpotModelParamsPageSize : @10,
-                             kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:location.coordinate.latitude],
-                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:location.coordinate.longitude]
-                             };
-    
-    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drinks/%ld/spots", (long)[self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    else {
+        // assemble params internally to encapsulate implementation details
+        NSDictionary *params = @{
+                                 kSpotModelParamPage : @1,
+                                 kSpotModelParamsPageSize : @10,
+                                 kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:location.coordinate.latitude],
+                                 kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:location.coordinate.longitude]
+                                 };
         
-        // Parses response with JSONAPI
-        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
-        
-        if (operation.response.statusCode == 200) {
-            NSArray *models = [jsonApi resourcesForKey:@"spots"];
-            // always check that the block is defined because running it an undefined block will cause a crash
-            if (successBlock) {
-                successBlock(models, jsonApi);
-            }
+        [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drinks/%ld/spots", (long)[self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
-            NSLog(@"Caching %lu spots", (unsigned long)models.count);
-            [[DrinkModel sh_sharedCache] cacheSpots:models forKey:key];
-        } else {
-            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
-            // always check that the block is defined because running it an undefined block will cause a crash
-            if (failureBlock) {
-                failureBlock(errorModel);
+            // Parses response with JSONAPI
+            JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+            
+            if (operation.response.statusCode == 200) {
+                NSArray *spotModels = [jsonApi resourcesForKey:@"spots"];
+                NSLog(@"Caching %lu spots", (unsigned long)spotModels.count);
+                [[DrinkModel sh_sharedCache] cacheSpots:spotModels forKey:cacheKey];
+                
+                // always check that the block is defined because running it an undefined block will cause a crash
+                if (successBlock) {
+                    successBlock(spotModels, jsonApi);
+                }
+            } else {
+                ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+                // always check that the block is defined because running it an undefined block will cause a crash
+                if (failureBlock) {
+                    failureBlock(errorModel);
+                }
             }
-        }
-    }];
+        }];
+    }
 }
 
 // Promisfy the call with the callbacks and do not mix callback and promise methods
@@ -221,13 +226,30 @@
 }
 
 + (void)fetchDrinkTypes:(void (^)(NSArray *drinkTypes))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    NSArray *drinkTypes = [[DrinkModel sh_sharedCache] cachedDrinkTypes];
+    if (drinkTypes.count && successBlock) {
+        successBlock(drinkTypes);
+        return;
+    }
+    
     // Gets drink form data (Beer, Wine and Cocktail)
     [DrinkModel getDrinks:@{kDrinkModelParamsPageSize:@0} success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         NSDictionary *forms = [jsonApi objectForKey:@"form"];
         if (forms != nil) {
             NSArray *drinkTypes = [forms objectForKey:@"drink_types"];
+            NSMutableArray *mappedDrinkTypes = @[].mutableCopy;
+            for (NSDictionary *drinkTypeDictionary in drinkTypes) {
+                DrinkTypeModel *drinkType = [SHJSONAPIResource jsonAPIResource:drinkTypeDictionary withLinked:jsonApi.linked withClass:[DrinkTypeModel class]];
+                
+                NSArray *subtypes = [SHJSONAPIResource jsonAPIResources:drinkTypeDictionary[@"drink_subtypes"] withLinked:jsonApi.linked withClass:[DrinkSubTypeModel class]];
+                drinkType.subtypes = subtypes;
+                [mappedDrinkTypes addObject:drinkType];
+            }
+            
+            [[DrinkModel sh_sharedCache] cacheDrinkTypes:mappedDrinkTypes];
+            
             if (successBlock) {
-                successBlock(drinkTypes);
+                successBlock(mappedDrinkTypes);
             }
         }
     } failure:^(ErrorModel *errorModel) {
@@ -279,7 +301,7 @@
     return [self linkedResourceForKey:@"drink_type"];
 }
 
-- (DrinkSubtypeModel *)drinkSubtype {
+- (DrinkSubTypeModel *)drinkSubtype {
     return [self linkedResourceForKey:@"drink_subtype"];
 }
 
@@ -395,6 +417,8 @@
 
 @implementation DrinkModelCache
 
+NSString * const DrinkTypesKey = @"DrinkTypes";
+
 + (NSString *)spotsKeyForDrink:(DrinkModel *)drink location:(CLLocation *)location {
     return [NSString stringWithFormat:@"key-spots-%@-%f-%f", drink.ID, location.coordinate.latitude, location.coordinate.longitude];
 }
@@ -410,6 +434,20 @@
     else {
         [self removeObjectForKey:key];
     }
+}
+
+- (NSArray *)cachedDrinkTypes {
+    return [self objectForKey:DrinkTypesKey];
+}
+
+- (void)cacheDrinkTypes:(NSArray *)drinkTypes {
+    if (drinkTypes.count) {
+        [self setObject:drinkTypes forKey:DrinkTypesKey];
+    }
+    else {
+        [self removeObjectForKey:DrinkTypesKey];
+    }
+    
 }
 
 @end

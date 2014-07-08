@@ -32,10 +32,12 @@
 }
 
 - (NSString *)priceAndSize {
-    if (_cents == nil && _size == nil) return @"";
+    if (_cents.floatValue == 0.0f && !_size.name.length) {
+        return nil;
+    }
     
     NSString *price = [NSNumber numberWithFloat:(_cents.floatValue / 100.0f)].currencyFormat;
-    if (_cents != nil && _size != nil) {
+    if (_cents.floatValue == 0.0f && !_size.name.length) {
         return [NSString stringWithFormat:@"%@ / %@", price, _size.name];
     } else if (_cents != nil) {
         return price;

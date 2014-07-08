@@ -8,7 +8,7 @@
 
 #import "SHJSONAPIResource.h"
 
-@class DrinkTypeModel, DrinkSubtypeModel;
+@class DrinkTypeModel, DrinkSubTypeModel;
 
 @interface MenuTypeModel : SHJSONAPIResource
 

@@ -16,6 +16,6 @@
 
 @property (nonatomic, strong) NSString *name;
 
-+ (Promise *)getBaseAlcohols:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
++ (Promise *)getBaseAlcohols:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
 
 @end
