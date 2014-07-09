@@ -44,7 +44,26 @@ typedef enum {
     
     NSAssert(self.collectionView, @"Outlet is required");
     NSAssert(self.spotsCollectionViewManager, @"Outlet is required");
+    NSAssert(self.drinksCollectionViewManager, @"Outlet is required");
     NSAssert(self.specialsCollectionViewManager, @"Outlet is required");
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self.collectionView flashScrollIndicators];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
 }
 
 #pragma mark - Public

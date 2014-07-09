@@ -56,7 +56,10 @@
     // Prices
     NSMutableArray *priceStrs = [NSMutableArray array];
     for (PriceModel *price in sortedPrices) {
-        [priceStrs addObject:[price priceAndSize]];
+        NSString *priceAndSize = [price priceAndSize];
+        if (priceAndSize.length) {
+            [priceStrs addObject:[price priceAndSize]];
+        }
     }
     [_lblPrices setText:[priceStrs componentsJoinedByString:@"\n"]];
     

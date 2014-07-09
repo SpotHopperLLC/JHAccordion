@@ -171,7 +171,9 @@
                 return [obj1.order compare:obj2.order];
             }];
             
-            [[SliderTemplateModel sh_sharedCache] cacheSliderTemplates:models];
+            if (models.count) {
+                [[SliderTemplateModel sh_sharedCache] cacheSliderTemplates:models];
+            }
             
             if (successBlock) {
                 successBlock([models copy]);

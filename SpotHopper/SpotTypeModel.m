@@ -10,6 +10,18 @@
 
 @implementation SpotTypeModel
 
+#pragma mark -
+
+- (NSDictionary *)mapKeysToProperties {
+    // Maps values in JSON key 'name' to 'name' property
+    // Maps values in JSON key 'created_at' to 'createdAt' property
+    // Maps values in JSON key 'updated_at' to 'updatedAt' property
+    return @{
+             @"name" : @"name"
+             };
+    
+}
+
 #pragma mark - Debugging
 
 - (NSString *)description {
@@ -18,16 +30,31 @@
 
 #pragma mark - Getters
 
-- (NSString *)name {
-    return [self objectForKey:@"name"];
-}
-
 - (NSDate *)createdAt {
-    return [self formatDateTimestamp:[self objectForKey:@"created_at"]];
+    if (!_createdAt) {
+        _createdAt = [self formatDateTimestamp:[self objectForKey:@"created_at"]];
+    }
+    return _createdAt;
 }
 
 - (NSDate *)updatedAt {
-    return [self formatDateTimestamp:[self objectForKey:@"updated_at"]];
+    if (!_updateAt) {
+        _updateAt = [self formatDateTimestamp:[self objectForKey:@"updated_at"]];
+    }
+    return _updateAt;
+}
+
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone {
+	SpotTypeModel *copy = [[[self class] alloc] init];
+    
+    copy.ID = self.ID;
+    copy.name = self.name;
+    copy.createdAt = self.createdAt;
+    copy.updateAt = self.updateAt;
+    
+    return copy;
 }
 
 @end

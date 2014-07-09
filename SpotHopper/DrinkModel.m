@@ -203,8 +203,10 @@
             
             if (operation.response.statusCode == 200) {
                 NSArray *spotModels = [jsonApi resourcesForKey:@"spots"];
-                NSLog(@"Caching %lu spots", (unsigned long)spotModels.count);
-                [[DrinkModel sh_sharedCache] cacheSpots:spotModels forKey:cacheKey];
+                
+                if (spotModels.count) {
+                    [[DrinkModel sh_sharedCache] cacheSpots:spotModels forKey:cacheKey];
+                }
                 
                 // always check that the block is defined because running it an undefined block will cause a crash
                 if (successBlock) {
@@ -280,7 +282,9 @@
                 [mappedDrinkTypes addObject:drinkType];
             }
             
-            [[DrinkModel sh_sharedCache] cacheDrinkTypes:mappedDrinkTypes];
+            if (mappedDrinkTypes.count) {
+                [[DrinkModel sh_sharedCache] cacheDrinkTypes:mappedDrinkTypes];
+            }
             
             if (successBlock) {
                 successBlock(mappedDrinkTypes);

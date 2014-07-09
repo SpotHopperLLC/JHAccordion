@@ -106,7 +106,9 @@ static NSDate *_lastDeviceLocationRefresh;
         // Saves location name
         if (!error) {
             if (placemarks.count > 0) {
-                CLPlacemark *placemark = [placemarks objectAtIndex:0];
+                CLPlacemark *placemark = placemarks[0];
+                
+                [self setLastLocationName:[self locationNameFromPlacemark:placemark]];
                 
                 if (placemark.locality.length > 0 && placemark.administrativeArea.length > 0) {
                     NSString *locationName = [NSString stringWithFormat:@"%@, %@, %@", placemark.subLocality, placemark.locality, placemark.administrativeArea];
@@ -121,9 +123,9 @@ static NSDate *_lastDeviceLocationRefresh;
                     [self setLastLocationName:placemark.administrativeArea];
                 }
                 
-                [self setLastLocationNameShort:[NSString stringWithFormat:@"%@, %@", placemark.locality, placemark.administrativeArea]];
+                [self setLastLocationNameShort:[self shortLocationNameFromPlacemark:placemark]];
             } else {
-                [self setLastLocationName:nil];
+                [self setLastLocationName:[TellMeMyLocation locationNameFromPlacemark:nil]];
             }
             
             NSCAssert([NSThread isMainThread], @"Must be main thread");
@@ -133,6 +135,45 @@ static NSDate *_lastDeviceLocationRefresh;
         
         completionHandler();
     }];
+}
+
++ (NSString *)locationNameFromPlacemark:(CLPlacemark *)placemark {
+    if (!placemark) {
+        return @"Middle of Nowhere";
+    }
+    
+    if (placemark.subLocality.length && placemark.locality.length && placemark.administrativeArea.length) {
+        NSString *locationName = [NSString stringWithFormat:@"%@, %@, %@", placemark.subLocality, placemark.locality, placemark.administrativeArea];
+        
+        if (locationName.length > 25) {
+            locationName = [NSString stringWithFormat:@"%@, %@", placemark.locality, placemark.administrativeArea];
+        }
+        
+        return locationName;
+    } else if (placemark.locality.length > 0) {
+        return placemark.locality;
+    }
+    else if (placemark.name.length) {
+        return placemark.name;
+    }
+    
+    return @"Unknown";
+}
+
++ (NSString *)shortLocationNameFromPlacemark:(CLPlacemark *)placemark {
+    if (!placemark) {
+        return @"Middle of Nowhere";
+    }
+    
+    if (placemark.locality.length && placemark.administrativeArea.length) {
+        return [NSString stringWithFormat:@"%@, %@", placemark.locality, placemark.administrativeArea];
+    }
+    else if (placemark.name.length) {
+        return placemark.name;
+    }
+    else {
+        return @"Unknown";
+    }
 }
 
 + (void)setLastLocationName:(NSString*)name {
