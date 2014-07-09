@@ -87,6 +87,8 @@
 
     #define kAnalyticsEnabled   FALSE
 
+    #define kUseLegacyScreens TRUE
+
 #elif defined(PRODUCTION)
 
     #define kDebug NO

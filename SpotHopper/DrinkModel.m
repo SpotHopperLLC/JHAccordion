@@ -186,7 +186,6 @@
         
         CGFloat miles = request.radius / kMetersPerMile;
         NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
-        DebugLog(@"radiusParam: %@", radiusParam);
         
         NSDictionary *params = @{
                                  kSpotModelParamPage : @1,

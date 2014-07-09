@@ -114,7 +114,7 @@
 
 - (void)goToDrinkProfile:(DrinkModel*)drink {
     [Tracker track:@"View Drink Profile" properties:@{@"Name" : drink.name, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    DrinkProfileViewController *viewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHDrinkProfileVC"];
+    DrinkProfileViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkProfileViewController"];
     [viewController setDrink:drink];
     [self.navigationController pushViewController:viewController animated:YES];
 }

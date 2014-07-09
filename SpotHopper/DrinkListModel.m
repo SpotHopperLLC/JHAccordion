@@ -328,8 +328,6 @@
     
     [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/users/%ld/drink_lists", (long)[user.ID integerValue]] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        DebugLog(@"responseObject: %@", responseObject);
-        
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
@@ -433,7 +431,6 @@
     
     CGFloat miles = request.radius / kMetersPerMile;
     NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
-    DebugLog(@"radiusParam: %@", radiusParam);
     params[kDrinkListModelParamRadius] = radiusParam;
     
     return params;
