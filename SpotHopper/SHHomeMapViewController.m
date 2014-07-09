@@ -397,7 +397,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)hideCollectionContainerView:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    LOG_FRAME(@"collectionContainerView", self.collectionContainerView.frame);
+    [self.mapOverlayCollectionViewController viewWillDisappear:animated];
 
     if (!self.searchThisAreaView.hidden) {
         [self hideSearchThisArea:animated withCompletionBlock:nil];
@@ -410,6 +410,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
+        [self.mapOverlayCollectionViewController viewDidDisappear:animated];
         self.collectionContainerView.hidden = TRUE;
         if (completionBlock) {
             completionBlock();
@@ -418,6 +419,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)showCollectionContainerView:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    [self.mapOverlayCollectionViewController viewWillAppear:animated];
+    
     // set the bottom constraint to 0
     self.collectionContainerView.hidden = FALSE;
     
@@ -428,6 +431,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
+        [self.mapOverlayCollectionViewController viewDidAppear:animated];
         if (completionBlock) {
             completionBlock();
         }
@@ -498,6 +502,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)showSlidersSearch:(BOOL)animated forMode:(SHMode)mode withCompletionBlock:(void (^)())completionBlock {
     [self.slidersSearchViewController viewWillAppear:animated];
     
+    _isShowingSliderSearchView = TRUE;
+    
     [self prepareBlurredScreen];
     
     UIButton *cancelButton = [self makeButtonWithTitle:@"cancel" target:self action:@selector(searchSlidersCancelButtonTapped:)];
@@ -544,8 +550,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self.navigationItem setLeftBarButtonItem:searchSlidersCancelBarButtonItem animated:animated];
         [self.navigationItem setRightBarButtonItem:rightBarButtonItem animated:animated];
         self.navigationItem.title = @"What do you feel like?";
-        
-        _isShowingSliderSearchView = TRUE;
         
     } completion:^(BOOL finished) {
         [self refreshBlurredView];
@@ -641,6 +645,11 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)showSearchThisArea:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
     // Note: it will be necessary to hide another view if it is visible while this button is shown
+    
+    if (_isShowingSliderSearchView) {
+        // do not show while sliders search view is displayed
+        return;
+    }
     
     if (!self.areYouHerePromptView.hidden) {
         [self hideAreYouHerePrompt:TRUE withCompletionBlock:nil];
@@ -1115,6 +1124,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.spotsForDrink = @[self.selectedSpot];
     }
     else {
+        // remove existing annotations prior to waiting to load spots for this drink
+        [self.mapView removeAnnotations:self.mapView.annotations];
+        
         self.selectedDrink = drink;
         [[drink fetchSpotsForDrinkListRequest:self.drinkListRequest] then:^(NSArray *spots) {
             [self populateMapWithSpots:spots];
@@ -1856,8 +1868,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     if ([overlay isKindOfClass:[MKCircle class]]) {
         MKCircleRenderer *circleView = [[MKCircleRenderer alloc] initWithCircle:overlay];
         
-        circleView.strokeColor = [[SHStyleKit color:SHStyleKitColorMyTextColor] colorWithAlphaComponent:0.35f];
-        circleView.fillColor = [[SHStyleKit color:SHStyleKitColorMyTintColor] colorWithAlphaComponent:0.1f];
+        circleView.strokeColor = [[SHStyleKit color:SHStyleKitColorMyWhiteColor] colorWithAlphaComponent:0.1f];
+        circleView.fillColor = [[SHStyleKit color:SHStyleKitColorMyWhiteColor] colorWithAlphaComponent:0.25f];
         circleView.lineWidth = 1.0f;
         circleView.alpha = 1.0f;
         
@@ -1985,8 +1997,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         return;
     }
     
-    [self flashSearchRegion];
-    [self flashMapBoxing];
+    //[self flashSearchRegion];
+    //[self flashMapBoxing];
     
     if ([self canSearchAgain]) {
         [self showSearchThisArea:TRUE withCompletionBlock:nil];

@@ -26,9 +26,9 @@
 
 - (void)prepareForMode:(SHMode)mode;
 
-- (void)prepareTableViewForDrinkType:(DrinkTypeModel *)drinkTypeName;
+- (void)prepareTableViewForDrinkType:(DrinkTypeModel *)drinkTypeName withCompletionBlock:(void (^)())completionBlock;
 
-//- (void)prepareTableViewForDrinkType:(DrinkTypeModel *)drinkTypeName andDrinkSubType:(DrinkSubTypeModel *)drinkSubTypeName;
+//- (void)prepareTableViewForDrinkType:(DrinkTypeModel *)drinkTypeName andDrinkSubType:(DrinkSubTypeModel *)drinkSubTypeName withCompletionBlock:(void (^)())completionBlock;
 
 - (void)fetchSpotListResultsWithCompletionBlock:(void (^)(SpotListModel *spotListModel, SpotListRequest *request, ErrorModel *errorModel))completionBlock;
 
