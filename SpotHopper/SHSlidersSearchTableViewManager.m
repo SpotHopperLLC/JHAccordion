@@ -860,6 +860,10 @@
     [SHStyleKit setLabel:titleLabel textColor:SHStyleKitColorMyTextColor];
     titleLabel.text = title;
     
+    UIView *backgroundView = [[UIView alloc] init];
+    backgroundView.backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintColorTransparent];
+    cell.selectedBackgroundView = backgroundView;
+    
     [SHStyleKit setButton:deleteButton withDrawing:SHStyleKitDrawingDeleteIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyTextColor];
     
     if ([deleteButton bk_hasEventHandlersForControlEvents:UIControlEventTouchUpInside]) {
@@ -930,6 +934,10 @@
     UILabel *titleLabel = [self labelInView:cell withTag:kSubTypeCellTitleLabel];
     [SHStyleKit setLabel:titleLabel textColor:SHStyleKitColorMyTextColor];
     titleLabel.text = title;
+    
+    UIView *backgroundView = [[UIView alloc] init];
+    backgroundView.backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintColorTransparent];
+    cell.selectedBackgroundView = backgroundView;
     
     return cell;
 }
