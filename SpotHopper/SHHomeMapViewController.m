@@ -218,7 +218,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    [self updateLocationName];
+
+    // update location name again once the map settles
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [self updateLocationName];
     });
 }
@@ -1212,17 +1215,21 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     TellMeMyLocation *tellMeMyLocation = [[TellMeMyLocation alloc] init];
     [tellMeMyLocation findMe:kCLLocationAccuracyNearestTenMeters found:^(CLLocation *newLocation) {
         _currentLocation = newLocation;
-        [TellMeMyLocation setLastLocation:newLocation completionHandler:^{
-            [self.locationMenuBarViewController updateLocationTitle:[TellMeMyLocation lastLocationName]];
-        }];
         [self repositionMapOnCoordinate:_currentLocation.coordinate animated:animated];
         [self fetchNearbySpotsAtLocation:_currentLocation];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self updateLocationName];
+        });
     } failure:^(NSError *error) {
         [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
 - (void)repositionMapOnCoordinate:(CLLocationCoordinate2D)coordinate animated:(BOOL)animated {
+    [self repositionMapOnCoordinate:coordinate animated:animated withCompletionBlock:nil];
+}
+
+- (void)repositionMapOnCoordinate:(CLLocationCoordinate2D)coordinate animated:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
     _isRepositioningMap = TRUE;
     
     MKMapRect mapRect = MKMapRectNull;
@@ -1239,6 +1246,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     } completion:^(BOOL finished) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             _isRepositioningMap = FALSE;
+            [self updateLocationName];
         });
     }];
 }
@@ -1294,8 +1302,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                 // edgePadding must also account for the size and position of the annotation view
                 [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake([self topEdgePadding], 45.0, [self bottomEdgePadding], 45.0) animated:animated];
             } completion:^(BOOL finished) {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                     _isRepositioningMap = FALSE;
+                    [self updateLocationName];
                 });
 
             }];
@@ -1880,17 +1889,24 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)locationPickerViewController:(SHLocationPickerViewController*)viewController didSelectRegion:(MKCoordinateRegion)region {
     [self.navigationController popViewControllerAnimated:TRUE];
     
-    [self.mapView setRegion:region animated:FALSE];
-    [self updateLocationName];
+    _isRepositioningMap = TRUE;
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.75f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        if ([self canSearchAgain]) {
-            [self showHUD:@"Updating for New Location"];
-            [self searchAgainWithCompletionBlock:^{
-                [self hideHUD];
-            }];
-        }
-    });
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:0.5 delay:0.0 options:options animations:^{
+        [self.mapView setRegion:region animated:FALSE];
+    } completion:^(BOOL finished) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            _isRepositioningMap = FALSE;
+            [self updateLocationName];
+            
+            if ([self canSearchAgain]) {
+                [self showHUD:@"Updating for New Location"];
+                [self searchAgainWithCompletionBlock:^{
+                    [self hideHUD];
+                }];
+            }
+        });
+    }];
 }
 
 #pragma mark - MKMapViewDelegate
