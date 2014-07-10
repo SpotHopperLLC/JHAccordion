@@ -388,7 +388,6 @@
     if (request.radius) {
         CGFloat miles = request.radius / kMetersPerMile;
         NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
-        DebugLog(@"radiusParam: %@", radiusParam);
         params[kSpotListModelParamRadius] = radiusParam;
     }
     
@@ -397,8 +396,6 @@
 
 + (void)createSpotListWithRequest:(SpotListRequest *)request success:(void (^)(SpotListModel *spotListModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     NSDictionary *params = [self prepareSearchParametersWithRequest:request];
-    
-    DebugLog(@"params: %@", params);
     
     [[ClientSessionManager sharedClient] POST:@"/api/spot_lists" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Parses response with JSONAPI
@@ -424,9 +421,6 @@
 
 + (void)updateSpotListWithRequest:(SpotListRequest *)request success:(void (^)(SpotListModel *spotListModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     NSDictionary *params = [self prepareSearchParametersWithRequest:request];
-    
-    DebugLog(@"ID: %@", request.spotListId);
-    DebugLog(@"params: %@", params);
     
     [[ClientSessionManager sharedClient] PUT:[NSString stringWithFormat:@"/api/spot_lists/%ld", (long)[request.spotListId integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Parses response with JSONAPI

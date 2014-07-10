@@ -299,6 +299,43 @@
     return deferred.promise;
 }
 
+- (void)fetchSpot:(void (^)(SpotModel *spotModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/spots/%ld", (long)[self.ID integerValue]] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            SpotModel *model = [jsonApi resourceForKey:@"spots"];
+            
+            if (successBlock) {
+                successBlock(model);
+            }
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            
+            if (failureBlock) {
+                failureBlock(errorModel);
+            }
+        }
+    }];
+}
+
+- (Promise *)fetchSpot {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+
+    [self fetchSpot:^(SpotModel *spotModel) {
+        // Resolves promise
+        [deferred resolveWith:spotModel];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
 + (void)fetchSpotTypes:(void (^)(NSArray *spotTypes))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     // TODO: add caching
     

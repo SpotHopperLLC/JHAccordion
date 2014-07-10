@@ -182,8 +182,6 @@
         [self fetchDrinkTypesWithCompletionBlock:^(NSArray *drinkTypes) {
             self.drinkTypes = drinkTypes;
             
-            DebugLog(@"Drink Type: %@", self.drinkTypeName);
-            
             for (DrinkTypeModel *drinkType in self.drinkTypes) {
                 if ([self.drinkTypeName isEqualToString:drinkType.name]) {
                     NSAssert(drinkType.ID, @"ID must be defined");
@@ -692,7 +690,7 @@
         DebugLog(@"Mode is %@", self.mode == SHModeNone ? @"None" : @"Unknown");
     }
     
-    NSAssert(false, @"Condition should never be met");
+    NSAssert(FALSE, @"Condition should never be met");
     
     return nil;
 }
@@ -726,8 +724,6 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    DebugLog(@"selected: %li, %li", (long)indexPath.section, (long)indexPath.row);
-    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [tableView deselectRowAtIndexPath:indexPath animated:TRUE];
     });
@@ -887,8 +883,6 @@
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Confirm Delete" message:message delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
         [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
             if (buttonIndex == 1) {
-                DebugLog(@"Delete Confirmed!");
-                
                 if (self.mode == SHModeSpots && indexPath.section == kSection_Spots_Spotlists) {
                     SpotListModel *spotlist = [self spotlistAtIndexPath:indexPath];
                     [[spotlist purgeSpotList] then:^(NSNumber *success) {
@@ -1045,8 +1039,6 @@
     }
     else {
         [[spotlist fetchSpotList] then:^(SpotListModel *spotlist) {
-            DebugLog(@"sliders: %@", spotlist.sliders);
-            
             [self updateSliders:spotlist.sliders withCompletionBlock:completeBlock];
         } fail:^(ErrorModel *errorModel) {
             [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
@@ -1153,8 +1145,6 @@
     }
     else {
         [[drinklist fetchDrinkList] then:^(DrinkListModel *drinklist) {
-            DebugLog(@"sliders: %@", drinklist.sliders);
-            
             [self updateSliders:drinklist.sliders withCompletionBlock:completeBlock];
         } fail:^(ErrorModel *errorModel) {
             [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
@@ -1242,13 +1232,9 @@
         return drinklists;
     }
     
-    DebugLog(@"drinklists: %li", (long)drinklists.count);
-    
     NSMutableArray *filteredLists = @[].mutableCopy;
     
     for (DrinkListModel *drinklist in drinklists) {
-        DebugLog(@"drink type: %@", drinklist.drinkType.name);
-        DebugLog(@"drink sub type: %@", drinklist.drinkSubType.name);
         
         NSAssert(drinklist.drinkType, @"Drinklist must have a drink type");
         
@@ -1269,8 +1255,6 @@
             }
         }
     }
-    
-    DebugLog(@"filteredLists: %li", (long)filteredLists.count);
     
     return filteredLists;
 }
@@ -1446,7 +1430,6 @@
 - (void)fetchMyDrinklistsWithCompletionBlock:(void (^)(NSArray * drinklists))completionBlock {
     if ([UserModel isLoggedIn]) {
         [[DrinkListModel fetchMyDrinkLists] then:^(NSArray *drinklists) {
-            DebugLog(@"drinklists: %@", drinklists);
             
             // add Custom Mood at the top
             DrinkListModel *customDrinklist = [[DrinkListModel alloc] init];
@@ -1497,7 +1480,6 @@
 
 - (void)fetchDrinkTypesWithCompletionBlock:(void (^)(NSArray * drinkTypes))completionBlock {
     [[DrinkModel fetchDrinkTypes] then:^(NSArray *drinkTypes) {
-        DebugLog(@"drinkTypes: %@", drinkTypes);
         
         for (DrinkTypeModel *drinkType in drinkTypes) {
             NSAssert(drinkType.ID, @"ID must be defined");
@@ -1690,9 +1672,6 @@
     CLLocationCoordinate2D coordinate = [self searchCenterCoordinate];
     CGFloat radius = [self searchRadius];
     
-    DebugLog(@"center: %f, %f", coordinate.latitude, coordinate.longitude);
-    DebugLog(@"radius: %f", radius);
-    
     NSNumber *latitude = nil, *longitude = nil;
     if (CLLocationCoordinate2DIsValid(coordinate)) {
         latitude = [NSNumber numberWithFloat:coordinate.latitude];
@@ -1811,7 +1790,7 @@
                     }
                     
                     [When when:promises then:^{
-                        DebugLog(@"Finished all drink/spot fetches");
+                        // do nothing
                     } fail:nil always:nil];
                 }
             } fail:nil always:nil];
@@ -1835,16 +1814,10 @@
 
 // as the user moves the slider this callback will fire each time the value is changed
 - (void)slider:(SHSlider *)slider valueDidChange:(CGFloat)value {
-//    DebugLog(@"slider did change: %f", value);
 }
 
 // one the user completes the gesture this callback is fired
 - (void)slider:(SHSlider *)slider valueDidFinishChanging:(CGFloat)value {
-//    DebugLog(@"slider did finish changing: %f", value);
-    
-//    NSIndexPath *indexPath = [self indexPathForView:slider inTableView:self.tableView];
-//    DebugLog(@"indexPath: %@", indexPath);
-    
     NSAssert(self.delegate, @"Delegate is required");
     
     if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerDidChangeSlider:)]) {
@@ -1860,12 +1833,10 @@
 }
 
 - (void)accordion:(JHAccordion*)accordion contentSizeChanged:(CGSize)contentSize {
-//    DebugLog(@"%@", NSStringFromSelector(_cmd));
     [accordion slideUpLastOpenedSection];
 }
 
 - (void)accordion:(JHAccordion*)accordion openingSection:(NSInteger)section {
-//    DebugLog(@"%@", NSStringFromSelector(_cmd));
     UIView *view = [self getSectionHeaderView:section];
     UILabel *titleLabel = (UILabel *)[view viewWithTag:1];
     UIImageView *arrowImageView = (UIImageView *)[view viewWithTag:2];
@@ -1879,7 +1850,6 @@
 }
 
 - (void)accordion:(JHAccordion*)accordion closingSection:(NSInteger)section {
-    //    DebugLog(@"%@", NSStringFromSelector(_cmd));
     UIView *view = [self getSectionHeaderView:section];
     UILabel *titleLabel = (UILabel *)[view viewWithTag:1];
     UIImageView *arrowImageView = (UIImageView *)[view viewWithTag:2];

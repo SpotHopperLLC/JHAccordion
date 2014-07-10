@@ -14,7 +14,7 @@
 
 @property (weak, nonatomic) IBOutlet id<PhotoViewerDelegate> delegate;
 @property (strong, nonatomic) NSArray *images;
-@property (assign, nonatomic) NSUInteger index;
+@property (assign, nonatomic) NSUInteger selectedIndex;
 
 @end
 

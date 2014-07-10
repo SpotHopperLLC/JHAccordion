@@ -39,6 +39,8 @@
 #import "CheckInModel.h"
 #import "Tracker.h"
 
+#import "SHStyleKit+Additions.h"
+
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import "JHAccordion.h"
 
@@ -641,6 +643,17 @@
     }
     
     [NetworkHelper preloadImageModels:_spot.images];
+    
+#ifdef kUseLegacyScreens
+    
+    UIImage *topBarBackgroundImage = [SHStyleKit drawImage:SHStyleKitDrawingTopBarBackground color:SHStyleKitColorMyWhiteColor size:CGSizeMake(320, 64)];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName: [SHStyleKit color:SHStyleKitColorMyTextColor]}];
+    [self.navigationController.navigationBar setBackgroundImage:topBarBackgroundImage forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+//    self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
+
+#endif
+
 }
 
 - (void)updateViewSpecials:(BOOL)animate {

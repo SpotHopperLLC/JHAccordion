@@ -20,14 +20,12 @@
 
 @optional
 
-- (void)sidebarViewController:(SHSidebarViewController*)vc didTapSearchTextField:(id)sender;
-
-- (void)sidebarViewController:(SHSidebarViewController*)vc closeButtonTapped:(id)sender;
-- (void)sidebarViewController:(SHSidebarViewController*)vc spotsButtonTapped:(id)sender;
-- (void)sidebarViewController:(SHSidebarViewController*)vc drinksButtonTapped:(id)sender;
-- (void)sidebarViewController:(SHSidebarViewController*)vc specialsButtonTapped:(id)sender;
-- (void)sidebarViewController:(SHSidebarViewController*)vc reviewButtonTapped:(id)sender;
-- (void)sidebarViewController:(SHSidebarViewController*)vc checkinButtonTapped:(id)sender;
-- (void)sidebarViewController:(SHSidebarViewController*)vc accountButtonTapped:(id)sender;
+- (void)sidebarViewControllerDidRequestSearch:(SHSidebarViewController*)vc;
+- (void)sidebarViewControllerDidRequestClose:(SHSidebarViewController*)vc;
+- (void)sidebarViewControllerDidRequestReviews:(SHSidebarViewController*)vc;
+- (void)sidebarViewControllerDidRequestCheckin:(SHSidebarViewController*)vc;
+- (void)sidebarViewControllerDidRequestGiveProps:(SHSidebarViewController*)vc;
+- (void)sidebarViewControllerDidRequestAccount:(SHSidebarViewController*)vc;
+- (void)sidebarViewControllerDidRequestLogin:(SHSidebarViewController*)vc;
 
 @end
