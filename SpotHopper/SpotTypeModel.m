@@ -28,6 +28,8 @@
     return [NSString stringWithFormat:@"%@ - %@ [%@]", self.ID, self.name, NSStringFromClass([self class])];
 }
 
+#pragma mark - Getters
+
 - (NSDate *)createdAt {
     if (!_createdAt) {
         _createdAt = [self formatDateTimestamp:[self objectForKey:@"created_at"]];
@@ -36,7 +38,10 @@
 }
 
 - (NSDate *)updatedAt {
-    return [self formatDateTimestamp:[self objectForKey:@"updated_at"]];
+    if (!_updateAt) {
+        _updateAt = [self formatDateTimestamp:[self objectForKey:@"updated_at"]];
+    }
+    return _updateAt;
 }
 
 #pragma mark - NSCopying

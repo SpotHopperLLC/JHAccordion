@@ -1890,6 +1890,11 @@
 		26723E51193FBFC000628833 /* DrinkListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 26723E4E193FBFC000628833 /* DrinkListRequest.m */; };
 		26723E52193FBFC000628833 /* DrinkListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 26723E4E193FBFC000628833 /* DrinkListRequest.m */; };
 		26723E53193FBFC000628833 /* DrinkListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 26723E4E193FBFC000628833 /* DrinkListRequest.m */; };
+		26733EDA196CA56A0058384A /* SHLocationPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26733ED9196CA56A0058384A /* SHLocationPickerViewController.m */; };
+		26733EDB196CA56B0058384A /* SHLocationPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26733ED9196CA56A0058384A /* SHLocationPickerViewController.m */; };
+		26733EDC196CA56B0058384A /* SHLocationPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26733ED9196CA56A0058384A /* SHLocationPickerViewController.m */; };
+		26733EDD196CA56B0058384A /* SHLocationPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26733ED9196CA56A0058384A /* SHLocationPickerViewController.m */; };
+		26733EDE196CA56B0058384A /* SHLocationPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26733ED9196CA56A0058384A /* SHLocationPickerViewController.m */; };
 		267C5E3A1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
 		267C5E3B1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
 		267C5E3C1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
@@ -3119,6 +3124,8 @@
 		2668971E192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSlidersSearchTableViewManager.m; path = SpotHopper/SHSlidersSearchTableViewManager.m; sourceTree = "<group>"; };
 		26723E4D193FBFC000628833 /* DrinkListRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkListRequest.h; sourceTree = "<group>"; };
 		26723E4E193FBFC000628833 /* DrinkListRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkListRequest.m; sourceTree = "<group>"; };
+		26733ED8196CA56A0058384A /* SHLocationPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHLocationPickerViewController.h; sourceTree = "<group>"; };
+		26733ED9196CA56A0058384A /* SHLocationPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHLocationPickerViewController.m; sourceTree = "<group>"; };
 		267C5E381908B7CC00D60EB5 /* NetworkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkHelper.h; sourceTree = "<group>"; };
 		267C5E391908B7CC00D60EB5 /* NetworkHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkHelper.m; sourceTree = "<group>"; };
 		267D78D418F4A8DD00E95D54 /* SHButtonLatoBold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoBold.h; sourceTree = "<group>"; };
@@ -4566,6 +4573,8 @@
 				26689710192F2A71004FAC2D /* SHSlidersSearchViewController.m */,
 				2654B89B192BB6E000A66BED /* SHAdjustSpotListSliderViewController.h */,
 				2654B89C192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m */,
+				26733ED8196CA56A0058384A /* SHLocationPickerViewController.h */,
+				26733ED9196CA56A0058384A /* SHLocationPickerViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -6804,6 +6813,7 @@
 				039F545E18D2CD35004B2B67 /* FindDrinksAtViewController.m in Sources */,
 				039ABBD218CE24A400B84AE6 /* MatchPercentAnnotationView.m in Sources */,
 				039F545318D2BA15004B2B67 /* DrinkListViewController.m in Sources */,
+				26733EDA196CA56A0058384A /* SHLocationPickerViewController.m in Sources */,
 				039B7013188723EB00C590F8 /* MockeryURLProtocol.m in Sources */,
 				039B7012188723EB00C590F8 /* MockeryHTTPURLResponse.m in Sources */,
 				03866473186D352400985CEC /* main.m in Sources */,
@@ -6981,6 +6991,7 @@
 				03CAC00318E7716400FAC5F5 /* NSNumber+Helpers.m in Sources */,
 				03CAC00418E7716400FAC5F5 /* FindDrinksAtViewController.m in Sources */,
 				03CAC00518E7716400FAC5F5 /* MatchPercentAnnotationView.m in Sources */,
+				26733EDE196CA56B0058384A /* SHLocationPickerViewController.m in Sources */,
 				03CAC00618E7716400FAC5F5 /* DrinkListViewController.m in Sources */,
 				03CAC00818E7716400FAC5F5 /* MockeryURLProtocol.m in Sources */,
 				03CAC00918E7716400FAC5F5 /* MockeryHTTPURLResponse.m in Sources */,
@@ -7150,6 +7161,7 @@
 				039F546018D2CD35004B2B67 /* FindDrinksAtViewController.m in Sources */,
 				039ABBD418CE24A800B84AE6 /* MatchPercentAnnotationView.m in Sources */,
 				039F545518D2BA15004B2B67 /* DrinkListViewController.m in Sources */,
+				26733EDC196CA56B0058384A /* SHLocationPickerViewController.m in Sources */,
 				03F4E7A018CA33D00056EAA9 /* MockeryURLProtocol.m in Sources */,
 				03F4E7A118CA33D00056EAA9 /* MockeryHTTPURLResponse.m in Sources */,
 				03F4E7A218CA33D00056EAA9 /* main.m in Sources */,
@@ -7319,6 +7331,7 @@
 				039F545F18D2CD35004B2B67 /* FindDrinksAtViewController.m in Sources */,
 				039ABBD318CE24A700B84AE6 /* MatchPercentAnnotationView.m in Sources */,
 				039F545418D2BA15004B2B67 /* DrinkListViewController.m in Sources */,
+				26733EDB196CA56B0058384A /* SHLocationPickerViewController.m in Sources */,
 				03F4E8EE18CA34260056EAA9 /* MockeryURLProtocol.m in Sources */,
 				03F4E8EF18CA34260056EAA9 /* MockeryHTTPURLResponse.m in Sources */,
 				03F4E8F018CA34260056EAA9 /* main.m in Sources */,
@@ -7488,6 +7501,7 @@
 				267E05581922CC48004457B4 /* NSNumber+Helpers.m in Sources */,
 				267E05591922CC48004457B4 /* FindDrinksAtViewController.m in Sources */,
 				267E055A1922CC48004457B4 /* MatchPercentAnnotationView.m in Sources */,
+				26733EDD196CA56B0058384A /* SHLocationPickerViewController.m in Sources */,
 				267E055B1922CC48004457B4 /* DrinkListViewController.m in Sources */,
 				267E055C1922CC48004457B4 /* MockeryURLProtocol.m in Sources */,
 				267E055D1922CC48004457B4 /* MockeryHTTPURLResponse.m in Sources */,
