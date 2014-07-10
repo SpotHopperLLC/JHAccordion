@@ -33,6 +33,8 @@
 #import "DrinkListRequest.h"
 #import "Tracker.h"
 
+#import "SHStyleKit+Additions.h"
+
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import "JHAccordion.h"
 
@@ -655,6 +657,16 @@
         [_lblABV setText:_drink.varietal];
         
     }
+    
+#ifdef kUseLegacyScreens
+    
+    UIImage *topBarBackgroundImage = [SHStyleKit drawImage:SHStyleKitDrawingTopBarBackground color:SHStyleKitColorMyWhiteColor size:CGSizeMake(320, 64)];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName: [SHStyleKit color:SHStyleKitColorMyTextColor]}];
+    [self.navigationController.navigationBar setBackgroundImage:topBarBackgroundImage forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+//    self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
+    
+#endif
     
 }
 

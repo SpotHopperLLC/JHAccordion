@@ -689,7 +689,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (IBAction)searchThisAreaButtonTapped:(id)sender {
     [self hideSearchThisArea:TRUE withCompletionBlock:^{
         if ([self canSearchAgain]) {
-            [self searchAgain];
+            [self showHUD:@"Updating for New Location"];
+            [self searchAgainWithCompletionBlock:^{
+                [self hideHUD];
+            }];
         }
     }];
 }
@@ -1060,16 +1063,24 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }
 }
 
-- (void)fetchSpecials {
+- (void)fetchSpecialsWithCompletionBlock:(void (^)())completionBlock {
     [self showHUD:@"Finding specials"];
     
     [self prepareToDisplaySliderSearchWithCompletionBlock:^{
         [SpotModel getSpotsWithSpecialsTodayForCoordinate:[self visibleMapCenterCoordinate] success:^(NSArray *spotModels, JSONAPI *jsonApi) {
             [self hideHUD];
             [self displaySpecialsForSpots:spotModels];
+            
+            if (completionBlock) {
+                completionBlock();
+            }
         } failure:^(ErrorModel *errorModel) {
             [Tracker logError:errorModel.human class:[self class] trace:NSStringFromSelector(_cmd)];
             [self showAlert:@"Oops" message:@"There was a problem while fetching drink specials. Please try again."];
+            
+            if (completionBlock) {
+                completionBlock();
+            }
         }];
     }];
 }
@@ -1488,11 +1499,11 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     return self.mode == SHModeSpecials || self.drinkListRequest != nil || self.spotListRequest != nil;
 }
 
-- (void)searchAgain {
-    [self flashSearchRegion];
+- (void)searchAgainWithCompletionBlock:(void (^)())completionBlock {
+    [self flashSearchRadius];
     
     if (self.mode == SHModeSpecials) {
-        [self fetchSpecials];
+        [self fetchSpecialsWithCompletionBlock:completionBlock];
     }
     else if (self.drinkListRequest) {
         DrinkListRequest *request = [self.drinkListRequest copy];
@@ -1506,9 +1517,17 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
             self.selectedSpot = nil;
             [self displayDrinklist:drinkListModel];
+            
+            if (completionBlock) {
+                completionBlock();
+            }
         } failure:^(ErrorModel *errorModel) {
             [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
             [self showAlert:@"Oops" message:errorModel.human];
+            
+            if (completionBlock) {
+                completionBlock();
+            }
         }];
     }
     else if (self.spotListRequest) {
@@ -1518,14 +1537,22 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         
         [SpotListModel fetchSpotListWithRequest:request success:^(SpotListModel *spotListModel) {
             [self displaySpotlist:spotListModel];
+            
+            if (completionBlock) {
+                completionBlock();
+            }
         } failure:^(ErrorModel *errorModel) {
             [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
             [self showAlert:@"Oops" message:errorModel.human];
+            
+            if (completionBlock) {
+                completionBlock();
+            }
         }];
     }
 }
 
-- (void)flashSearchRegion {
+- (void)flashSearchRadius {
     CLLocationCoordinate2D center = [self visibleMapCenterCoordinate];
     CGFloat radius = [self searchRadius];
     
@@ -1664,7 +1691,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)locationMenuBarViewController:(SHLocationMenuBarViewController *)vc didDeselectSpot:(SpotModel *)spot {
-    [self searchAgain];
+    [self showHUD:@"Searching Neighborhood"];
+    [self searchAgainWithCompletionBlock:^{
+        [self hideHUD];
+    }];
 }
 
 #pragma mark - SHHomeNavigationDelegate
@@ -1675,7 +1705,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc specialsButtonTapped:(id)sender {
-    [self fetchSpecials];
+    [self fetchSpecialsWithCompletionBlock:nil];
 }
 
 - (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc beersButtonTapped:(id)sender {
@@ -1780,7 +1810,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc specialsButtonTapped:(id)sender {
-    [self fetchSpecials];
+    [self fetchSpecialsWithCompletionBlock:nil];
 }
 
 - (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc beersButtonTapped:(id)sender {
@@ -1852,6 +1882,15 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     [self.mapView setRegion:region animated:FALSE];
     [self updateLocationName];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.75f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        if ([self canSearchAgain]) {
+            [self showHUD:@"Updating for New Location"];
+            [self searchAgainWithCompletionBlock:^{
+                [self hideHUD];
+            }];
+        }
+    });
 }
 
 #pragma mark - MKMapViewDelegate

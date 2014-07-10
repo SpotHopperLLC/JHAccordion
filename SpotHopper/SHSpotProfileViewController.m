@@ -501,7 +501,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     NSString *closeTime = @"";
     NSArray *hoursForToday = [self.spot.hoursOfOperation datesForToday];
     
-    
     if (hoursForToday) {
         // Creates formatter
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -524,45 +523,21 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     return closeTime;
 }
 
-- (void)embedViewController:(UIViewController *)vc intoView:(UIView *)superview placementBlock:(void (^)(UIView *view))placementBlock {
-    NSAssert(vc, @"VC must be define");
-    NSAssert(superview, @"Superview must be defined");
-    
-    vc.view.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addChildViewController:vc];
-    [superview addSubview:vc.view];
-    
-    if (placementBlock) {
-        placementBlock(vc.view);
-    }
-    else {
-        [self fillSubview:vc.view inSuperView:superview];
-    }
-    
-    [vc didMoveToParentViewController:self];
-}
-
 #pragma mark - Navigation
 #pragma mark -
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    
     if ([segue.destinationViewController isKindOfClass:[PhotoViewerViewController class]]) {
-        PhotoViewerViewController *viewController = segue.destinationViewController;
-        viewController.images = self.imageModelCollectionViewManager.imageModels;
+        PhotoViewerViewController *vc = segue.destinationViewController;
+        vc.images = self.imageModelCollectionViewManager.imageModels;
         
-        if (self.currentIndex) {
-            viewController.index = self.currentIndex;
-        }
+        vc.selectedIndex = self.currentIndex;
+    }
+    else if ([segue.destinationViewController isKindOfClass:[PhotoAlbumViewController class]]) {
+        PhotoAlbumViewController *vc = segue.destinationViewController;
+        vc.images = self.imageModelCollectionViewManager.imageModels;
         
-    }else if ([segue.destinationViewController isKindOfClass:[PhotoAlbumViewController class]]){
-        PhotoAlbumViewController *viewController = segue.destinationViewController;
-        viewController.images = self.imageModelCollectionViewManager.imageModels;
-        
-        if (self.currentIndex) {
-            viewController.index = self.currentIndex;
-        }
+        vc.selectedIndex = self.currentIndex;
     }
 }
 
