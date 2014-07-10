@@ -9,6 +9,7 @@
 #import "SHHomeMapViewController.h"
 
 #import "UIViewController+Navigator.h"
+#import "JHSidebarViewController.h"
 #import "UIView+AutoLayout.h"
 #import "SHStyleKit.h"
 #import "SHStyleKit+Additions.h"
@@ -50,6 +51,7 @@
 #import "UIImage+BlurredFrame.h"
 #import "UIImage+ImageEffects.h"
 
+#import "UIAlertView+Block.h"
 #import "TTTAttributedLabel.h"
 #import "TTTAttributedLabel+QuickFonting.h"
 
@@ -96,7 +98,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 @property (weak, nonatomic) UIImageView *blurredImageView;
 @property (weak, nonatomic) IBOutlet SHButtonLatoBold *btnUpdateSearchResults;
 
-@property (strong, nonatomic) SHSidebarViewController *sideBarViewController;
+@property (strong, nonatomic) SHSidebarViewController *mySideBarViewController;
 @property (strong, nonatomic) SHLocationMenuBarViewController *locationMenuBarViewController;
 @property (strong, nonatomic) SHHomeNavigationViewController *homeNavigationViewController;
 @property (strong, nonatomic) SHMapOverlayCollectionViewController *mapOverlayCollectionViewController;
@@ -156,8 +158,16 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
     
-    self.sideBarViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHSidebarViewController"];
-    self.sideBarViewController.delegate = self;
+    NSAssert(self.navigationController.sidebarViewController, @"Sidebar controller must be defined");
+    NSAssert(self.navigationController.sidebarViewController.rightViewController, @"Right VC on sidebar must be defined");
+    
+    self.mySideBarViewController = (SHSidebarViewController *)self.navigationController.sidebarViewController.rightViewController;
+//    self.mySideBarViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"JHRightSidebar"];
+    self.mySideBarViewController.delegate = self;
+    
+    NSAssert(self.mySideBarViewController.delegate == self, @"My sidebar delegate must be self");
+    NSAssert([self.mySideBarViewController.delegate isKindOfClass:[SHHomeMapViewController class]], @"My sidebar delegate must be this class");
+    
     self.locationMenuBarViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHLocationMenuBarViewController"];
     self.locationMenuBarViewController.delegate = self;
     self.homeNavigationViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHHomeNavigationViewController"];
@@ -237,7 +247,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark -
 
 - (void)embedChildViewControllers {
-    
     if (!self.locationMenuBarViewController.view.superview) {
         [self embedViewController:self.locationMenuBarViewController intoView:self.view placementBlock:^(UIView *view) {
             [view pinToSuperviewEdges:JRTViewPinTopEdge inset:0.0f usingLayoutGuidesFrom:self];
@@ -253,19 +262,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             self.homeNavigationViewBottomConstraint = bottomConstaints[0];
             [view pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0];
             [view constrainToHeight:180.0f];
-        }];
-    }
-    
-    if (!self.sideBarViewController.view.superview) {
-        [self embedViewController:self.sideBarViewController intoView:self.view placementBlock:^(UIView *view) {
-            [view pinToSuperviewEdges:JRTViewPinTopEdge | JRTViewPinBottomEdge  inset:0.0f usingLayoutGuidesFrom:self];
-            NSArray *rightEdgesConstraints = [view pinToSuperviewEdges:JRTViewPinRightEdge inset:0.0];
-            [view constrainToWidth:CGRectGetWidth(self.view.frame)];
-            NSCAssert(rightEdgesConstraints.count == 1, @"There should only be 1 constraint for the right edge");
-            if (rightEdgesConstraints.count) {
-                self.sideBarRightEdgeConstraint = rightEdgesConstraints[0];
-            }
-            [self hideSideBar:FALSE withCompletionBlock:nil];
         }];
     }
 
@@ -315,47 +311,32 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)toggleSideBar:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    if (self.sideBarRightEdgeConstraint.constant == CGRectGetWidth(self.view.frame)) {
-        [self showSideBar:animated withCompletionBlock:completionBlock];
-    }
-    else {
-        [self hideSideBar:animated withCompletionBlock:completionBlock];
-    }
+    NSAssert(self.navigationController.sidebarViewController.rightViewController == self.mySideBarViewController, @"Sidebar VC must match");
+    [self.navigationController.sidebarViewController toggleRightSidebar];
 }
 
 - (void)hideSideBar:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    [self.sideBarViewController viewWillDisappear:animated];
+    [self.mySideBarViewController viewWillDisappear:animated];
     
-    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-    [UIView animateWithDuration:(animated ? 0.25 : 0.0) delay:0.0 options:options animations:^{
-        self.sideBarRightEdgeConstraint.constant = CGRectGetWidth(self.view.frame);
-        [self.view setNeedsLayout];
-        [self.view layoutIfNeeded];
-    } completion:^(BOOL finished) {
-        self.sideBarViewController.view.hidden = TRUE;
-        [self.sideBarViewController viewDidDisappear:animated];
+    [self.navigationController.sidebarViewController toggleRightSidebar];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.45f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         if (completionBlock) {
             completionBlock();
         }
-    }];
+    });
 }
 
 - (void)showSideBar:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    [self.view bringSubviewToFront:self.sideBarViewController.view];
-    [self.sideBarViewController viewWillAppear:animated];
-    self.sideBarViewController.view.hidden = FALSE;
+    [self.mySideBarViewController viewWillDisappear:animated];
     
-    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-    [UIView animateWithDuration:(animated ? 0.25 : 0.0) delay:0.0 options:options animations:^{
-        self.sideBarRightEdgeConstraint.constant = CGRectGetWidth(self.view.frame) * 0.2;
-        [self.view setNeedsLayout];
-        [self.view layoutIfNeeded];
-    } completion:^(BOOL finished) {
-        [self.sideBarViewController viewDidAppear:animated];
-        if (finished && completionBlock) {
+    [self.navigationController.sidebarViewController toggleRightSidebar];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.45f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        if (completionBlock) {
             completionBlock();
         }
-    }];
+    });
 }
 
 - (void)hideHomeNavigation:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
@@ -1557,8 +1538,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)flashMapBoxing {
-    CGFloat topEdgePadding = [self topEdgePadding];
-    
     CGRect visibleFrame = [self.mapView convertRegion:[self visibleMapRegion] toRectToView:self.mapView];
     
     __block UIView *markerView = [[UIView alloc] initWithFrame:visibleFrame];
@@ -1596,51 +1575,75 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }];
 }
 
+#define kAlreadyGaveProps @"alreadyGaveProps"
+
+- (void)giveProps {
+    // Show alert with textfield to enter code for props
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Who told you about SpotHopper?" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+    [alertView setAlertViewStyle:UIAlertViewStylePlainTextInput];
+    [[alertView textFieldAtIndex:0] setPlaceholder:@"Enter Code"];
+    [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
+        if (buttonIndex == 1) {
+            
+            // Make sure code is entered
+            NSString *code = [alertView textFieldAtIndex:0].text;
+            if (code.length > 0) {
+                
+                // Send props tracking code up to analytics
+                [Tracker track:@"Give Props" properties:@{ @"code" : code }];
+                
+                // Set user default saying props were given
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kAlreadyGaveProps];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+        }
+    }];
+}
+
 #pragma mark - SHSidebarDelegate
 #pragma mark -
 
-- (void)sidebarViewController:(SHSidebarViewController*)vc didTapSearchTextField:(id)sender {
+- (void)sidebarViewControllerDidRequestSearch:(SHSidebarViewController*)vc {
     [self hideSideBar:TRUE withCompletionBlock:^{
         [self showSearch:TRUE withCompletionBlock:nil];
     }];
 }
 
-- (void)sidebarViewController:(SHSidebarViewController*)vc closeButtonTapped:(id)sender {
-    [self hideSideBar:TRUE withCompletionBlock:nil];
-}
-
-- (void)sidebarViewController:(SHSidebarViewController*)vc spotsButtonTapped:(id)sender {
+- (void)sidebarViewControllerDidRequestClose:(SHSidebarViewController*)vc {
     [self hideSideBar:TRUE withCompletionBlock:^{
-        [self showSpotsSearch];
+        [self showSearch:TRUE withCompletionBlock:nil];
     }];
 }
 
-- (void)sidebarViewController:(SHSidebarViewController*)vc drinksButtonTapped:(id)sender {
-    // TODO: break into beer, cocktail and wine
-    [self hideSideBar:TRUE withCompletionBlock:^{
-        [self showBeersSearch];
-    }];
-}
-
-- (void)sidebarViewController:(SHSidebarViewController*)vc specialsButtonTapped:(id)sender {
-    [self hideSideBar:true withCompletionBlock:^{
-        [self fetchSpecials];
-    }];
-}
-
-- (void)sidebarViewController:(SHSidebarViewController*)vc reviewButtonTapped:(id)sender {
+- (void)sidebarViewControllerDidRequestReviews:(SHSidebarViewController*)vc {
     [self hideSideBar:TRUE withCompletionBlock:^{
         [self goToMyReviews];
     }];
 }
 
-- (void)sidebarViewController:(SHSidebarViewController*)vc checkinButtonTapped:(id)sender {
-    // TODO: implement checkin
+- (void)sidebarViewControllerDidRequestGiveProps:(SHSidebarViewController*)vc {
+    [self hideSideBar:TRUE withCompletionBlock:^{
+        [self giveProps];
+    }];
 }
 
-- (void)sidebarViewController:(SHSidebarViewController*)vc accountButtonTapped:(id)sender {
+- (void)sidebarViewControllerDidRequestCheckin:(SHSidebarViewController*)vc {
+    [self hideSideBar:TRUE withCompletionBlock:^{
+        if ([self promptLoginNeeded:@"Cannot checkin without logging in"] == NO) {
+            [self goToCheckin:nil];
+        }
+    }];
+}
+
+- (void)sidebarViewControllerDidRequestAccount:(SHSidebarViewController*)vc {
     [self hideSideBar:TRUE withCompletionBlock:^{
         [self goToAccountSettings:TRUE];
+    }];
+}
+
+- (void)sidebarViewControllerDidRequestLogin:(SHSidebarViewController*)vc {
+    [self hideSideBar:TRUE withCompletionBlock:^{
+        [self goToLaunch:YES];
     }];
 }
 
@@ -1648,15 +1651,12 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark -
 
 - (void)locationMenuBarViewControllerDidRequestLocationChange:(SHLocationMenuBarViewController *)vc {
-    NSLog(@"Change Location!");
-    
     SHLocationPickerViewController *locationPickerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SHLocationPickerViewController"];
     CLLocationCoordinate2D coordinate = [self visibleMapCenterCoordinate];
     CLLocation *location = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
     locationPickerVC.initialLocation = location;
     locationPickerVC.delegate = self;
     [self.navigationController pushViewController:locationPickerVC animated:TRUE];
-    
 }
 
 - (void)locationMenuBarViewController:(SHLocationMenuBarViewController *)vc didSelectSpot:(SpotModel *)spot {
@@ -1710,17 +1710,21 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     // Note: Do not focus on spot when spot is selected
 
 #ifdef kUseLegacyScreens
+    SpotModel *spot = nil;
+    
     if (self.spotListModel && index < self.spotListModel.spots.count) {
-        self.selectedSpot = self.spotListModel.spots[index];
-        [self goToSpotProfile:self.selectedSpot];
+        spot = self.spotListModel.spots[index];
     }
     else if (self.drinkListModel && index < self.spotsForDrink.count) {
-        self.selectedSpot = self.spotsForDrink[index];
-        [self goToSpotProfile:self.selectedSpot];
+        spot = self.spotsForDrink[index];
     }
     else if (self.specialsSpotModels && index < self.specialsSpotModels.count) {
-        self.selectedSpot = self.specialsSpotModels[index];
-        [self goToSpotProfile:self.selectedSpot];
+        spot = self.specialsSpotModels[index];
+    }
+    
+    if (spot) {
+        self.selectedSpot = spot;
+        [self goToSpotProfile:spot];
     }
 #else
     if (self.spotListModel && index < self.spotListModel.spots.count) {
