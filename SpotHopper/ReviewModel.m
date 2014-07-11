@@ -26,6 +26,18 @@
     return [NSString stringWithFormat:@"%@ - %@/%@ [%@]", self.ID, self.user.name, self.spot.name, NSStringFromClass([self class])];
 }
 
+#pragma mark -
+
+- (NSDictionary *)mapKeysToProperties {
+    // Maps values in JSON key 'created_at' to 'Date:createdAt' property
+    // Maps values in JSON key 'updated_at' to 'Date:updatedAt' property
+    return @{
+             @"created_at" : @"Date:createdAt",
+             @"updated_at" : @"Date:updatedAt"
+             };
+    
+}
+
 #pragma mark - API
 
 + (Promise*)getReviews:(NSDictionary*)params success:(void(^)(NSArray *reviewModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
@@ -189,14 +201,6 @@
     return [_sliders sortedArrayUsingComparator:^NSComparisonResult(SliderModel *obj1, SliderModel *obj2) {
         return [obj1.sliderTemplate.ID compare:obj2.sliderTemplate.ID];
     }];
-}
-
-- (NSDate *)createdAt {
-    return [self formatDateTimestamp:[self objectForKey:@"created_at"]];
-}
-
-- (NSDate *)updatedAt {
-    return [self formatDateTimestamp:[self objectForKey:@"updated_at"]];
 }
 
 #pragma mark - SliderModel for rating

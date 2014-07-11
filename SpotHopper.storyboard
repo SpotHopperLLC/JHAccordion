@@ -605,6 +605,16 @@
                                     <constraint firstAttribute="bottom" secondItem="gil-6U-86q" secondAttribute="bottom" id="ci5-kY-qE2"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Amr-p6-Odc" userLabel="Callout Button">
+                                <rect key="frame" x="0.0" y="0.0" width="200" height="69"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="calloutButtonTapped:" destination="ZlA-ef-byj" eventType="touchUpInside" id="zbo-oB-N4g"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -613,6 +623,7 @@
                             <constraint firstItem="apI-6g-LM2" firstAttribute="top" secondItem="ep9-Re-Hvg" secondAttribute="bottom" id="dKj-FA-u5R"/>
                         </constraints>
                         <connections>
+                            <outlet property="calloutButton" destination="Amr-p6-Odc" id="AqY-cn-pvl"/>
                             <outlet property="containerView" destination="apI-6g-LM2" id="EW6-YQ-LkL"/>
                             <outlet property="drink1Label" destination="Zc8-Nz-2g7" id="al2-NK-dJ7"/>
                             <outlet property="drink2Label" destination="e3V-HS-MZK" id="Qf1-68-1Yb"/>

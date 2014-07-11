@@ -131,9 +131,8 @@
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
-	SliderTemplateModel *copy = [[[self class] alloc] init];
+	SliderTemplateModel *copy = [super copyWithZone:zone];
     
-    copy.ID = self.ID;
     copy.name = self.name;
     copy.minLabel = self.minLabel;
     copy.maxLabel = self.maxLabel;

@@ -297,6 +297,34 @@
     [JSONAPIResourceModeler useResource:[SpotListModel class] toLinkedType:@"spot_lists"];
     [JSONAPIResourceModeler useResource:[SpotListMoodModel class] toLinkedType:@"spot_list_moods"];
     [JSONAPIResourceModeler useResource:[UserModel class] toLinkedType:@"users"];
+    
+    NSDateFormatter *dateFormatterSeconds = [[NSDateFormatter alloc] init];
+    [dateFormatterSeconds setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+    [dateFormatterSeconds setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
+    
+    NSDateFormatter *dateFormatterMilliseconds = [[NSDateFormatter alloc] init];
+    [dateFormatterMilliseconds setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+    [dateFormatterMilliseconds setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];
+
+    // Register formatting
+    [JSONAPIResourceFormatter registerFormat:@"Date" withBlock:^id(id jsonValue) {
+        NSDate *date = nil;
+        NSError *error = nil;
+        
+        if ([jsonValue isKindOfClass:[NSString class]]) {
+            NSString *dateString = (NSString *)jsonValue;
+            if (dateString.length) {
+                if (![dateFormatterSeconds getObjectValue:&date forString:jsonValue range:nil error:&error]) {
+                    // if it fails with seconds try milliseconds
+                    if (![dateFormatterMilliseconds getObjectValue:&date forString:jsonValue range:nil error:&error]) {
+                        DebugLog(@"Date '%@' could not be parsed: %@", jsonValue, error);
+                    }
+                }
+            }
+        }
+        
+        return date;
+    }];
 }
 
 - (void)applyAppearance {

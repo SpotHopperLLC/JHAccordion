@@ -1067,11 +1067,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)fetchSpecialsWithCompletionBlock:(void (^)())completionBlock {
-    [self showHUD:@"Finding specials"];
-    
     [self prepareToDisplaySliderSearchWithCompletionBlock:^{
         [SpotModel getSpotsWithSpecialsTodayForCoordinate:[self visibleMapCenterCoordinate] success:^(NSArray *spotModels, JSONAPI *jsonApi) {
-            [self hideHUD];
             [self displaySpecialsForSpots:spotModels];
             
             if (completionBlock) {
@@ -1714,7 +1711,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc specialsButtonTapped:(id)sender {
-    [self fetchSpecialsWithCompletionBlock:nil];
+    [self showHUD:@"Finding specials"];
+    [self fetchSpecialsWithCompletionBlock:^{
+        [self hideHUD];
+    }];
 }
 
 - (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc beersButtonTapped:(id)sender {
@@ -1819,7 +1819,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc specialsButtonTapped:(id)sender {
-    [self fetchSpecialsWithCompletionBlock:nil];
+    [self showHUD:@"Finding specials"];
+    [self fetchSpecialsWithCompletionBlock:^{
+        [self hideHUD];
+    }];
 }
 
 - (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc beersButtonTapped:(id)sender {
@@ -1892,10 +1895,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     _isRepositioningMap = TRUE;
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-    [UIView animateWithDuration:0.5 delay:0.0 options:options animations:^{
+    [UIView animateWithDuration:0.25 delay:0.0 options:options animations:^{
         [self.mapView setRegion:region animated:FALSE];
     } completion:^(BOOL finished) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             _isRepositioningMap = FALSE;
             [self updateLocationName];
             
