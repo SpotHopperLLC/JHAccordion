@@ -198,12 +198,13 @@
     }
     else if (spot.images.count) {
         ImageModel *imageModel = spot.images[0];
+        __weak UIImageView *weakImageView = spotImageView;
         [NetworkHelper loadImage:imageModel placeholderImage:nil withThumbImageBlock:^(UIImage *thumbImage) {
-            spotImageView.image = thumbImage;
+            weakImageView.image = thumbImage;
         } withFullImageBlock:^(UIImage *fullImage) {
-            spotImageView.image = fullImage;
+            weakImageView.image = fullImage;
         } withErrorBlock:^(NSError *error) {
-            spotImageView.image = nil;
+            weakImageView.image = nil;
             [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
     }

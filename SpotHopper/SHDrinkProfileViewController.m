@@ -560,7 +560,7 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
         viewController.images = self.imageModelCollectionViewManager.imageModels;
         
         if (self.currentIndex) {
-            viewController.index = self.currentIndex;
+            viewController.selectedIndex = self.currentIndex;
         }
         
     }else if ([segue.destinationViewController isKindOfClass:[PhotoAlbumViewController class]]){
@@ -568,7 +568,7 @@ NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkPr
         viewController.images = self.imageModelCollectionViewManager.imageModels;
         
         if (self.currentIndex) {
-            viewController.index = self.currentIndex;
+            viewController.selectedIndex = self.currentIndex;
         }
     }
 }

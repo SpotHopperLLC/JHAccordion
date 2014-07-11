@@ -80,12 +80,14 @@
         
         ImageModel *imageModel = self.imageModels[indexPath.item];
         
+        __weak UIImageView *weakImageView = imageView;
         [NetworkHelper loadImage:imageModel placeholderImage:nil withThumbImageBlock:^(UIImage *thumbImage) {
-            imageView.image = thumbImage;
+            weakImageView.image = thumbImage;
         } withFullImageBlock:^(UIImage *fullImage) {
-            imageView.image = fullImage;
+            weakImageView.image = fullImage;
         } withErrorBlock:^(NSError *error) {
-            
+            weakImageView.image = nil;
+            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
         
         UILabel *descriptionLabel = (UILabel *)[cell viewWithTag:kDescriptionLabel];

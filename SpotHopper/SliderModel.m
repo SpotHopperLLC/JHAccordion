@@ -42,9 +42,8 @@
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
-	SliderModel *copy = [[[self class] alloc] init];
+	SliderModel *copy = [super copyWithZone:zone];
     
-    copy.ID = self.ID;
     copy.value = self.value;
     copy.sliderTemplate = self.sliderTemplate;
         

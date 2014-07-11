@@ -37,7 +37,7 @@
     [super viewWillAppear:animated];
     
     if (_images.count) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_index inSection:0];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.selectedIndex inSection:0];
         [_collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:FALSE];
     }
 }
@@ -92,7 +92,7 @@
     
     UIView *view = [cell viewWithTag:1];
     if ([view isKindOfClass:[PZPhotoView class]]) {
-        PZPhotoView *photoView = (PZPhotoView *)view;
+        __weak PZPhotoView *photoView = (PZPhotoView *)view;
         ImageModel *imageModel = (ImageModel *)_images[indexPath.item];
         [NetworkHelper loadImage:imageModel placeholderImage:nil withThumbImageBlock:^(UIImage *thumbImage) {
             [photoView displayImage:thumbImage];
@@ -109,8 +109,13 @@
 #pragma mark - UICollectionViewDelegate
 #pragma mark -
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    return FALSE;
 }
+
+//- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+//    // do nothing
+//}
 
 #pragma mark - UIScrollViewDelegate
 #pragma mark -
@@ -119,10 +124,10 @@
     NSArray *visibleItems = [_collectionView indexPathsForVisibleItems];
     if (visibleItems.count) {
         NSIndexPath *indexPath = (NSIndexPath *)visibleItems[0];
-        _index = indexPath.item;
+        self.selectedIndex = indexPath.item;
         
         if ([_delegate respondsToSelector:@selector(photoViewer:didChangeIndex:)]) {
-            [_delegate photoViewer:self didChangeIndex:_index];
+            [_delegate photoViewer:self didChangeIndex:self.selectedIndex];
         }
     }
 }

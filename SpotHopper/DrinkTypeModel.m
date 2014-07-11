@@ -24,22 +24,23 @@
 
 - (NSDictionary *)mapKeysToProperties {
     // Maps linked resource in JSON key 'name' to 'name' property
+    // Maps values in JSON key 'created_at' to 'Date:createdAt' property
+    // Maps values in JSON key 'updated_at' to 'Date:updatedAt' property
     return @{
              @"name" : @"name",
-             @"createdAt" : @"createdAt",
-             @"updatedAt" : @"updatedAt"
+             @"created_at" : @"Date:createdAt",
+             @"updated_at" : @"Date:updatedAt"
              };
 }
 
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
-	DrinkTypeModel *copy = [[[self class] alloc] init];
+	DrinkTypeModel *copy = [super copyWithZone:zone];
     
-    copy.ID = self.ID;
     copy.name = self.name;
     copy.createdAt = self.createdAt;
-    copy.updateAt = self.updateAt;
+    copy.updatedAt = self.updatedAt;
     
     copy.subtypes = self.subtypes;
     

@@ -26,9 +26,22 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
 @property (weak, nonatomic) IBOutlet UILabel *drink1Label;
 @property (weak, nonatomic) IBOutlet UILabel *drink2Label;
 
+@property (weak, nonatomic) IBOutlet UIButton *calloutButton;
+
 @end
 
 @implementation SpotCalloutView
+
+#pragma mark - User Action
+#pragma mark -
+
+- (IBAction)calloutButtonTapped:(id)sender {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    if ([self.delegate respondsToSelector:@selector(spotCalloutViewDidFocus:)]) {
+        [self.delegate spotCalloutViewDidFocus:self];
+    }
+}
 
 #pragma mark - Public
 #pragma mark -

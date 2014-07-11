@@ -124,8 +124,10 @@ typedef void(^AlertBlock)();
         [tracker send:[[GAIDictionaryBuilder createAppView] build]];
     }
     
+#ifndef kDisableSideBarDelegateInBase
     SidebarViewController *sidebar = (SidebarViewController*)self.navigationController.sidebarViewController.rightViewController;
     [sidebar setDelegate:self];
+#endif
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

@@ -19,10 +19,21 @@ typedef enum {
 
 extern NSString * const SpotCalloutViewIdentifier;
 
+@protocol SpotCalloutViewDelegate;
+
 @interface SpotCalloutView : UIView
 
+@property (weak, nonatomic) id<SpotCalloutViewDelegate> delegate;
 @property (weak, nonatomic, readonly) UIView *containerView;
 
 - (void)setIcon:(SpotCalloutIcon)icon spotNameText:(NSString *)spotNameText drink1Text:(NSString *)drink1Text drink2Text:(NSString *)drink2Text;
+
+@end
+
+@protocol SpotCalloutViewDelegate <NSObject>
+
+@optional
+
+- (void)spotCalloutViewDidFocus:(SpotCalloutView *)spotCalloutView;
 
 @end

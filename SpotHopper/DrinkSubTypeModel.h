@@ -12,6 +12,6 @@
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSDate *createdAt;
-@property (nonatomic, strong) NSDate *updateAt;
+@property (nonatomic, strong) NSDate *updatedAt;
 
 @end

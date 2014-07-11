@@ -29,14 +29,14 @@
     if (spot.images.count) {
         ImageModel *imageModel = spot.images[0];
         [NetworkHelper loadImage:imageModel placeholderImage:spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
-            _imgSpot.image = thumbImage;
+            self.imgSpot.image = thumbImage;
         } withFullImageBlock:^(UIImage *fullImage) {
-            _imgSpot.image = fullImage;
+            self.imgSpot.image = fullImage;
         } withErrorBlock:^(NSError *error) {
-            // do nothing
+            [self.imgSpot setImage:spot.placeholderImage];
         }];
     } else {
-        [_imgSpot setImage:spot.placeholderImage];
+        [self.imgSpot setImage:spot.placeholderImage];
     }
     
     [_lblName setText:spot.name];

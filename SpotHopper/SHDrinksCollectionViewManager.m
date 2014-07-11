@@ -234,12 +234,13 @@
     }
     else if (drink.images.count) {
         ImageModel *imageModel = drink.images[0];
+        __weak UIImageView *weakImageView = drinkImageView;
         [NetworkHelper loadImage:imageModel placeholderImage:nil withThumbImageBlock:^(UIImage *thumbImage) {
-            drinkImageView.image = thumbImage;
+            weakImageView.image = thumbImage;
         } withFullImageBlock:^(UIImage *fullImage) {
-            drinkImageView.image = fullImage;
+            weakImageView.image = fullImage;
         } withErrorBlock:^(NSError *error) {
-            drinkImageView.image = nil;
+            weakImageView.image = nil;
             [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
     }

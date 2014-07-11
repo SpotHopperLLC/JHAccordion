@@ -114,7 +114,7 @@
 
 - (void)goToDrinkProfile:(DrinkModel*)drink {
     [Tracker track:@"View Drink Profile" properties:@{@"Name" : drink.name, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    DrinkProfileViewController *viewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHDrinkProfileVC"];
+    DrinkProfileViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkProfileViewController"];
     [viewController setDrink:drink];
     [self.navigationController pushViewController:viewController animated:YES];
 }
@@ -288,7 +288,7 @@
     UIStoryboard *commonStoryboard = [UIStoryboard storyboardWithName:@"Common" bundle:nil];
     PhotoAlbumViewController *viewController = [commonStoryboard instantiateViewControllerWithIdentifier:@"PhotoAlbumViewController"];
     viewController.images = images;
-    viewController.index = index;
+    viewController.selectedIndex = index;
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -297,7 +297,7 @@
     UIStoryboard *commonStoryboard = [UIStoryboard storyboardWithName:@"Common" bundle:nil];
     PhotoViewerViewController *viewController = [commonStoryboard instantiateViewControllerWithIdentifier:@"PhotoViewerViewController"];
     viewController.images = images;
-    viewController.index = index;
+    viewController.selectedIndex = index;
     if (photoAlbum) {
         viewController.delegate = photoAlbum;
     }

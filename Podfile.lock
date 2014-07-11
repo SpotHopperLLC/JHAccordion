@@ -43,7 +43,7 @@ PODS:
   - JHAccordion (0.1.0)
   - JHAutoCompleteTextField (0.1.0)
   - JHSidebar (0.1.1)
-  - JSONAPI (0.1.2)
+  - JSONAPI (0.2.0)
   - MBProgressHUD (0.8)
   - Mixpanel (2.3.6)
   - Parse-iOS-SDK (1.2.19):
@@ -68,7 +68,7 @@ DEPENDENCIES:
   - JHAccordion (from `https://github.com/brennanMKE/JHAccordion.git`, tag `current`)
   - JHAutoCompleteTextField (from `http://github.com/joshdholtz/JHAutoCompleteTextField.git`)
   - JHSidebar (from `https://github.com/joshdholtz/JHSidebar.git`)
-  - JSONAPI (from `http://github.com/joshdholtz/jsonapi-ios.git`)
+  - JSONAPI (~> 0.2)
   - MBProgressHUD (~> 0.8.0)
   - Mixpanel (~> 2.3.0)
   - Parse-iOS-SDK (~> 1.2.19)
@@ -92,8 +92,6 @@ EXTERNAL SOURCES:
     :git: http://github.com/joshdholtz/JHAutoCompleteTextField.git
   JHSidebar:
     :git: https://github.com/joshdholtz/JHSidebar.git
-  JSONAPI:
-    :git: http://github.com/joshdholtz/jsonapi-ios.git
   Promises:
     :git: http://github.com/joshdholtz/ios-promises.git
 
@@ -109,7 +107,7 @@ SPEC CHECKSUMS:
   JHAccordion: 4f0337990465b25f8de5ed304609fa9362281db0
   JHAutoCompleteTextField: 1ca69c82441d9b5bf474e10d36585247030f7594
   JHSidebar: 2efb4d14cc8bb0032c75218fd3ef7db70154c07e
-  JSONAPI: b98efd0e5b8bb44984373524e2ac40ef7d5455a2
+  JSONAPI: 9b8f1449bcdcbb00a3c1efc37effbb881093b4dd
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
   Mixpanel: 9aba38257fc4d2777ab5db1afc55e22bdfd57a4a
   Parse-iOS-SDK: 5e1f7e649a02f1cc19e73cc95bd43d7778848314

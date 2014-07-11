@@ -179,6 +179,27 @@
 
 - (void)prepareForMode:(SHMode)mode {
     self.mode = mode;
+    
+    switch (mode) {
+        case SHModeSpots:
+            [self.searchButton setTitle:@"Find Spots" forState:UIControlStateNormal];
+            break;
+        case SHModeBeer:
+            [self.searchButton setTitle:@"Find Beers" forState:UIControlStateNormal];
+            break;
+        case SHModeCocktail:
+            [self.searchButton setTitle:@"Find Cocktails" forState:UIControlStateNormal];
+            break;
+        case SHModeWine:
+            [self.searchButton setTitle:@"Find Wines" forState:UIControlStateNormal];
+            break;
+            
+        default:
+            [self.searchButton setTitle:@"Find" forState:UIControlStateNormal];
+            break;
+    }
+    
+    
     [self hideSearchButton:FALSE withCompletionBlock:nil];
     [[self slidersSearchTableViewManager] prepareForMode:mode];
 }
