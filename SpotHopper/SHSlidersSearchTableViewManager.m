@@ -590,7 +590,7 @@
         UIButton *button = (UIButton *)[view viewWithTag:3];
 
         BOOL isOpened = [self.accordion isSectionOpened:section];
-        SHStyleKitColor tintColor = isOpened ? SHStyleKitColorMyTextColor : SHStyleKitColorMyTintColor;
+        SHStyleKitColor tintColor = isOpened ? SHStyleKitColorMyTintColor : SHStyleKitColorMyTextColor;
         
         titleLabel.text = sectionTitle;
         [SHStyleKit setLabel:titleLabel textColor:tintColor];
@@ -1868,8 +1868,8 @@
     UILabel *titleLabel = (UILabel *)[view viewWithTag:1];
     UIImageView *arrowImageView = (UIImageView *)[view viewWithTag:2];
     
-    [SHStyleKit setLabel:titleLabel textColor:SHStyleKitColorMyTextColor];
-    [SHStyleKit setImageView:arrowImageView withDrawing:SHStyleKitDrawingNavigationArrowRightIcon color:SHStyleKitColorMyTextColor];
+    [SHStyleKit setLabel:titleLabel textColor:SHStyleKitColorMyTintColor];
+    [SHStyleKit setImageView:arrowImageView withDrawing:SHStyleKitDrawingNavigationArrowRightIcon color:SHStyleKitColorMyTintColor];
     
     [UIView animateWithDuration:0.35 animations:^{
         arrowImageView.transform = CGAffineTransformMakeRotation(kOpenedPosition);
@@ -1881,8 +1881,8 @@
     UILabel *titleLabel = (UILabel *)[view viewWithTag:1];
     UIImageView *arrowImageView = (UIImageView *)[view viewWithTag:2];
     
-    [SHStyleKit setLabel:titleLabel textColor:SHStyleKitColorMyTintColor];
-    [SHStyleKit setImageView:arrowImageView withDrawing:SHStyleKitDrawingNavigationArrowRightIcon color:SHStyleKitColorMyTintColor];
+    [SHStyleKit setLabel:titleLabel textColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setImageView:arrowImageView withDrawing:SHStyleKitDrawingNavigationArrowRightIcon color:SHStyleKitColorMyTextColor];
     
     [UIView animateWithDuration:0.35 animations:^{
         arrowImageView.transform = CGAffineTransformMakeRotation(kClosedPosition);
