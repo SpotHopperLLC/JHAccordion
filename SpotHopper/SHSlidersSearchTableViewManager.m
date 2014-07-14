@@ -640,7 +640,7 @@
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
         }
         else {
-            DebugLog(@"indexPath: %li, %li", indexPath.section, indexPath.row);
+            DebugLog(@"indexPath: %li, %li", (long)indexPath.section, (long)indexPath.row);
         }
     }
     else if (self.mode == SHModeBeer) {
@@ -655,7 +655,7 @@
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
         }
         else {
-            DebugLog(@"indexPath: %li, %li", indexPath.section, indexPath.row);
+            DebugLog(@"indexPath: %li, %li", (long)indexPath.section, (long)indexPath.row);
         }
     }
     else if (self.mode == SHModeCocktail) {
@@ -674,7 +674,7 @@
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
         }
         else {
-            DebugLog(@"indexPath: %li, %li", indexPath.section, indexPath.row);
+            DebugLog(@"indexPath: %li, %li", (long)indexPath.section, (long)indexPath.row);
         }
     }
     else if (self.mode == SHModeWine) {
@@ -693,7 +693,7 @@
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
         }
         else {
-            DebugLog(@"indexPath: %li, %li", indexPath.section, indexPath.row);
+            DebugLog(@"indexPath: %li, %li", (long)indexPath.section, (long)indexPath.row);
         }
     }
     else {
