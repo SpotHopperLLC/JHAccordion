@@ -121,12 +121,9 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
     frame.origin = self.calculatedOrigin;
     self.frame = frame;
     
-    [mapView setCenterCoordinate:annotationView.annotation.coordinate animated:TRUE];
-    
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:0.25f delay:0.0f usingSpringWithDamping:9.0 initialSpringVelocity:9.0 options:options animations:^{
         self.alpha = 1.0f;
-        [self.mapView setCenterCoordinate:annotationView.annotation.coordinate animated:TRUE];
     } completion:^(BOOL finished) {
     }];
 }

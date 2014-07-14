@@ -248,8 +248,6 @@
     
     NSAssert(self.drinkTypes, @"Drink types should already be set");
     
-    // TODO: populate self.baseAlcohols
-    
     [self fetchBaseAlcohols:^(NSArray *baseAlcohols) {
         self.baseAlcohols = baseAlcohols;
         [self fetchMyDrinklistsWithCompletionBlock:^(NSArray *drinklists) {
@@ -641,6 +639,9 @@
         else if (indexPath.section == kSection_Spots_AdvancedSliders) {
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
         }
+        else {
+            DebugLog(@"indexPath: %li, %li", indexPath.section, indexPath.row);
+        }
     }
     else if (self.mode == SHModeBeer) {
         if (indexPath.section == kSection_Beer_Drinklists && indexPath.row < self.drinklists.count) {
@@ -652,6 +653,9 @@
         }
         else if (indexPath.section == kSection_Beer_AdvancedSliders) {
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
+        }
+        else {
+            DebugLog(@"indexPath: %li, %li", indexPath.section, indexPath.row);
         }
     }
     else if (self.mode == SHModeCocktail) {
@@ -669,6 +673,9 @@
         else if (indexPath.section == kSection_Cocktail_AdvancedSliders) {
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
         }
+        else {
+            DebugLog(@"indexPath: %li, %li", indexPath.section, indexPath.row);
+        }
     }
     else if (self.mode == SHModeWine) {
         if (indexPath.section == kSection_Wine_Type && indexPath.row < self.wineSubTypes.count) {
@@ -684,6 +691,9 @@
         }
         else if (indexPath.section == kSection_Wine_AdvancedSliders) {
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
+        }
+        else {
+            DebugLog(@"indexPath: %li, %li", indexPath.section, indexPath.row);
         }
     }
     else {
@@ -867,8 +877,6 @@
     }
     
     [deleteButton bk_addEventHandler:^(id sender) {
-        // TODO: implement prompt to delete list
-        
         NSString *message = nil;
         
         if (self.mode == SHModeSpots) {
@@ -890,7 +898,7 @@
                     } fail:^(ErrorModel *errorModel) {
                         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
                     } always:^{
-                        [self prepareTableViewForDrinkType:self.selectedDrinkType andDrinkSubType:self.selectedDrinkSubType withCompletionBlock:nil];
+                        [self prepareTableViewForSpotsWithCompletionBlock:nil];
                     }];
                 }
                 else if ((self.mode == SHModeBeer && indexPath.section == kSection_Beer_Drinklists) ||

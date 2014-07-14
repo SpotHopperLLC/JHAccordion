@@ -2161,7 +2161,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                     calloutView.translatesAutoresizingMaskIntoConstraints = YES;
                     
                     calloutView.alpha = 0.0f;
-                    
+
                     [calloutView setIcon:calloutIcon spotNameText:spotName drink1Text:drink1 drink2Text:drink2];
                     [calloutView placeInMapView:mapView insideAnnotationView:annotationView];
                     
@@ -2171,7 +2171,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                         calloutView.alpha = 1.0f;
                         [self.mapView setCenterCoordinate:annotationView.annotation.coordinate animated:TRUE];
                     } completion:^(BOOL finished) {
-                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                             self.repositioningMap = FALSE;
                         });
                     }];
@@ -2216,7 +2216,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         return;
     }
     
-    //[self flashSearchRegion];
+    [self flashSearchRadius];
     //[self flashMapBoxing];
     
     [self updateLocationName];
