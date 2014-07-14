@@ -87,7 +87,7 @@
 
     #define kAnalyticsEnabled   FALSE
 
-    #define kUseLegacyScreens TRUE
+    #define kIntegrateDeprecatedScreens TRUE
 
     #define kDisableSideBarDelegateInBase TRUE
 

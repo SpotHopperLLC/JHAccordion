@@ -274,7 +274,7 @@
         [_results addObjectsFromArray:drinkModels];
         
     } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+        [self oops:errorModel caller:_cmd];
     }];
     
         
@@ -299,7 +299,7 @@
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
     
-    
+    [self hideHUD];
     [self showHUD:@"Searching"];
     [When when:@[promiseDrink, promiseSpot] then:^{
     } fail:^(id error) {

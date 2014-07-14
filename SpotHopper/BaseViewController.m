@@ -36,6 +36,9 @@
 #import "SSTURLShortener.h"
 #import "UIAlertView+Block.h"
 
+#import "Tracker.h"
+#import "ErrorModel.h"
+
 #import <JHSidebar/JHSidebarViewController.h>
 #import <FacebookSDK/FacebookSDK.h>
 
@@ -216,6 +219,26 @@ typedef void(^AlertBlock)();
 
 - (NSString *)screenName {
     return self.title;
+}
+
+#pragma mark - Errors
+
+- (void)oops:(ErrorModel *)errorModel caller:(SEL)caller {
+    [self oops:errorModel caller:caller message:nil];
+}
+
+- (void)oops:(ErrorModel *)errorModel caller:(SEL)caller message:(NSString *)message {
+    [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(caller)];
+    
+    if (errorModel.human.length && !message.length) {
+        [self showAlert:@"Oops" message:errorModel.human];
+    }
+    else if (message.length) {
+        [self showAlert:@"Oops" message:message];
+    }
+    else {
+        [self showAlert:@"Oops" message:@"Something went wrong. Please try again."];
+    }
 }
 
 #pragma mark - SidebarViewControllerDelegate

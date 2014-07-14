@@ -255,17 +255,46 @@
     rankingLabel.text = [NSString stringWithFormat:@"%.1f/10", [drink.averageReview.rating floatValue]];
     
     positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", (long)index+1, (long)self.drinkList.drinks.count];
-    percentageLabel.text = [NSString stringWithFormat:@"%@", drink.matchPercent];
     
-    [SHStyleKit setButton:previousButton withDrawing:SHStyleKitDrawingArrowLeftIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
-    previousButton.hidden = index == 0;
+    if (drink.matchPercent.length) {
+        percentageLabel.hidden = FALSE;
+        matchLabel.hidden = FALSE;
+        percentageLabel.text = [NSString stringWithFormat:@"%@", drink.matchPercent];
+        UIImage *bubbleImage = [SHStyleKit drawImage:SHStyleKitDrawingMapBubblePinFilledIcon color:SHStyleKitColorNone size:CGSizeMake(60, 60)];
+        matchImageView.image = bubbleImage;
+    }
+    else {
+        percentageLabel.hidden = TRUE;
+        matchLabel.hidden = TRUE;
+        
+        UIImage *image = nil;
+        if (drink.isBeer) {
+            image = [SHStyleKit drawImage:SHStyleKitDrawingBeerIcon color:SHStyleKitColorMyTintColor size:CGSizeMake(60, 60)];
+        }
+        else if (drink.isCocktail) {
+            image = [SHStyleKit drawImage:SHStyleKitDrawingCocktailIcon color:SHStyleKitColorMyTintColor size:CGSizeMake(60, 60)];
+        }
+        else if (drink.isWine) {
+            image = [SHStyleKit drawImage:SHStyleKitDrawingWineIcon color:SHStyleKitColorMyTintColor size:CGSizeMake(60, 60)];
+        }
+        
+        matchImageView.image = image;
+    }
     
-    [SHStyleKit setButton:nextButton withDrawing:SHStyleKitDrawingArrowRightIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
-    nextButton.hidden = index == self.drinkList.drinks.count - 1;
-    
-    UIImage *bubbleImage = [SHStyleKit drawImage:SHStyleKitDrawingMapBubblePinFilledIcon color:SHStyleKitColorNone size:CGSizeMake(60, 60)];
-    matchImageView.image = bubbleImage;
-
+    if (self.drinkList.drinks.count == 1) {
+        previousButton.hidden = TRUE;
+        nextButton.hidden = TRUE;
+        positionLabel.hidden = TRUE;
+    }
+    else {
+        positionLabel.hidden = FALSE;
+        
+        [SHStyleKit setButton:previousButton withDrawing:SHStyleKitDrawingArrowLeftIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+        previousButton.hidden = index == 0;
+        
+        [SHStyleKit setButton:nextButton withDrawing:SHStyleKitDrawingArrowRightIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+        nextButton.hidden = index == self.drinkList.drinks.count - 1;
+    }
 }
 
 #pragma mark - Private

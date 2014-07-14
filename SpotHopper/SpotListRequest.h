@@ -14,7 +14,8 @@
 
 @property (strong, nonatomic) NSNumber *spotListId;
 @property (copy, nonatomic) NSString *name;
-@property (assign, nonatomic) BOOL isFeatured;
+@property (assign, nonatomic, getter = isFeatured) BOOL featured;
+@property (assign, nonatomic, getter = isBasedOnSliders) BOOL basedOnSliders;
 @property (assign, nonatomic) CLLocationCoordinate2D coordinate;
 @property (assign, nonatomic) CGFloat radius;
 @property (strong, nonatomic) NSArray *sliders;

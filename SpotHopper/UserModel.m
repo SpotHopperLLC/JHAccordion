@@ -41,7 +41,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             UserModel *userModel = [jsonApi resourceForKey:@"users"];
             successBlock(userModel, operation.response);
             
@@ -71,7 +76,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             UserModel *userModel = [jsonApi resourceForKey:@"users"];
             [[ClientSessionManager sharedClient] login:operation.response user:userModel];
             successBlock(userModel, operation.response);
@@ -99,7 +109,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             UserModel *userModel = [jsonApi resourceForKey:@"users"];
             successBlock(userModel, operation.response);
             
@@ -126,7 +141,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             UserModel *userModel = [jsonApi resourceForKey:@"users"];
             successBlock(userModel, operation.response);
             
@@ -153,7 +173,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"reviews"];
             successBlock(models, jsonApi);
             
@@ -195,11 +220,13 @@
         
         [SliderTemplateModel getSliderTemplates:params success:^(NSArray *sliderTemplates, JSONAPI *jsonApiDontNeed) {
             
-            if (operation.response.statusCode == 200) {
-                
-                
+            if (operation.isCancelled) {
+                if (successBlock) {
+                    successBlock(nil, nil);
+                }
+            }
+            else if (operation.response.statusCode == 200) {
                 if (model != nil) {
-                    
                     NSMutableDictionary *sliderTemplateToSliderMap = [NSMutableDictionary dictionary];
                     for (SliderModel *slider in model.sliders) {
                         [sliderTemplateToSliderMap setObject:slider forKey:slider.sliderTemplate.ID];
@@ -254,7 +281,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"spot_lists"];
             successBlock(models, jsonApi);
             
@@ -283,7 +315,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"drink_lists"];
             successBlock(models, jsonApi);
             
@@ -311,7 +348,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"checkins"];
             successBlock(models, jsonApi);
             

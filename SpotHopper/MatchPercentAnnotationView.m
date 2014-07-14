@@ -23,6 +23,7 @@
 #import "SpotTypeModel.h"
 
 #import "SpotAnnotationCallout.h"
+#import "SpotCalloutView.h"
 
 #pragma mark - Class Extension
 #pragma mark -
@@ -202,14 +203,6 @@
     [_calloutView.lblType setText:self.spot.spotType.name];
 }
 
-- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
-    // Makes callout clickable if touch point was inside callout
-    if (CGRectContainsPoint(_calloutView.frame, point)) {
-        return YES;
-    }
-    return NO;
-}
-
 - (void)bounce {
     // simply bounce up and back into place the catch the user's attention
     CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"position.y"];
@@ -243,6 +236,36 @@
         }
         [self bringSubviewToFront:self.innerImageView];
     }
+}
+
+#pragma mark - Hit Test
+#pragma mark -
+
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+    SpotCalloutView *calloutView = nil;
+    
+    // find the callout view
+    for (UIView *subview in self.subviews) {
+        if ([subview isKindOfClass:[SpotCalloutView class]]) {
+            calloutView = (SpotCalloutView *)subview;
+            break;
+        }
+    }
+    
+    if (calloutView) {
+        // adjust point for placement of callout view
+        CGPoint calculatedOrigin = calloutView.frame.origin;
+        CGPoint adjustedPoint = CGPointMake((calculatedOrigin.x - point.x) * -1, (calculatedOrigin.y - point.y) * -1);
+        
+        // check with the callout view (proper encapsultation)
+        UIView *view = [calloutView hitTest:adjustedPoint withEvent:event];
+        
+        if (view) {
+            return view;
+        }
+    }
+    
+    return CGRectContainsPoint(self.frame, point) ? self : nil;
 }
 
 @end

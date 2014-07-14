@@ -44,6 +44,8 @@
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import "JHAccordion.h"
 
+#import "SHNotifications.h"
+
 #import <MapKit/MapKit.h>
 
 @interface SpotProfileViewController () <UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, MKMapViewDelegate, JHAccordionDelegate, CheckinConfirmationViewControllerDelegate>
@@ -644,7 +646,7 @@
     
     [NetworkHelper preloadImageModels:_spot.images];
     
-#ifdef kUseLegacyScreens
+#ifdef kIntegrateDeprecatedScreens
     
     UIImage *topBarBackgroundImage = [SHStyleKit drawImage:SHStyleKitDrawingTopBarBackground color:SHStyleKitColorMyWhiteColor size:CGSizeMake(320, 64)];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName: [SHStyleKit color:SHStyleKitColorMyTextColor]}];
@@ -673,6 +675,12 @@
 }
 
 - (void)doFindSimilar {
+#ifdef kIntegrateDeprecatedScreens
+
+    [SHNotifications findSimilarToSpot:_spot];
+    
+#else
+    
     [self showHUD:@"Finding similar"];
     
     NSString *name = [NSString stringWithFormat:@"Similar to %@", _spot.name];
@@ -689,6 +697,8 @@
         [self showAlert:@"Oops" message:errorModel.human];
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
+    
+#endif
 }
 
 - (NSIndexPath *)indexPathForCurrentImage {

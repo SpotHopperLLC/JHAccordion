@@ -28,9 +28,21 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
 
 @property (weak, nonatomic) IBOutlet UIButton *calloutButton;
 
+@property (weak, nonatomic) MKMapView *mapView;
+@property (weak, nonatomic) MKAnnotationView *annotationView;
+
+@property (nonatomic, readonly) CGPoint calculatedOrigin;
+
 @end
 
 @implementation SpotCalloutView
+
+#pragma mark - Hit Test
+#pragma mark -
+
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+    return CGRectContainsPoint(self.calloutButton.frame, point) ? self.calloutButton : nil;
+}
 
 #pragma mark - User Action
 #pragma mark -
@@ -38,8 +50,8 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
 - (IBAction)calloutButtonTapped:(id)sender {
     DebugLog(@"%@", NSStringFromSelector(_cmd));
     
-    if ([self.delegate respondsToSelector:@selector(spotCalloutViewDidFocus:)]) {
-        [self.delegate spotCalloutViewDidFocus:self];
+    if ([self.delegate respondsToSelector:@selector(spotCalloutView:didSelectAnnotationView:)]) {
+        [self.delegate spotCalloutView:self didSelectAnnotationView:self.annotationView];
     }
 }
 
@@ -94,12 +106,43 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
     }
 
     if (self.superview) {
-        [self adjustHeightWithIntrinsicSize];
     }
+}
+
+- (void)placeInMapView:(MKMapView *)mapView insideAnnotationView:(MKAnnotationView *)annotationView {
+    self.mapView = mapView;
+    self.annotationView = annotationView;
+    self.alpha = 0.0f;
+    
+	[annotationView addSubview:self];
+    [self adjustHeightWithIntrinsicSize];
+    
+    CGRect frame = self.frame;
+    frame.origin = self.calculatedOrigin;
+    self.frame = frame;
+    
+    [mapView setCenterCoordinate:annotationView.annotation.coordinate animated:TRUE];
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:0.25f delay:0.0f usingSpringWithDamping:9.0 initialSpringVelocity:9.0 options:options animations:^{
+        self.alpha = 1.0f;
+        [self.mapView setCenterCoordinate:annotationView.annotation.coordinate animated:TRUE];
+    } completion:^(BOOL finished) {
+    }];
 }
 
 #pragma mark - Private
 #pragma mark -
+
+- (CGPoint)calculatedOrigin {
+    NSAssert(self.annotationView, @"AnnotationView is required");
+    
+    CGFloat xPos = (((CGRectGetWidth(self.frame) / 2) - (CGRectGetWidth(self.annotationView.frame) / 2)) * -1) + self.annotationView.calloutOffset.x;
+    CGFloat yPos = CGRectGetHeight(self.frame) * -1;
+    CGPoint origin = CGPointMake(xPos, yPos);
+    
+    return origin;
+}
 
 - (void)adjustHeightWithIntrinsicSize {
     [self setNeedsLayout];

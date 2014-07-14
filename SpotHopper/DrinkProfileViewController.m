@@ -38,6 +38,8 @@
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import "JHAccordion.h"
 
+#import "SHNotifications.h"
+
 #import <MapKit/MapKit.h>
 
 @interface DrinkProfileViewController ()<UITableViewDataSource, UITableViewDelegate, MKMapViewDelegate, JHAccordionDelegate>
@@ -420,7 +422,15 @@
 }
 
 - (IBAction)onClickFindIt:(id)sender {
+#ifdef kIntegrateDeprecatedScreens
+    
+    [SHNotifications displayDrink:_drink];
+    
+#else
+    
     [self goToFindDrinksAt:_drink];
+    
+#endif
 }
 
 #pragma mark - Private Expand
@@ -658,7 +668,7 @@
         
     }
     
-#ifdef kUseLegacyScreens
+#ifdef kIntegrateDeprecatedScreens
     
     UIImage *topBarBackgroundImage = [SHStyleKit drawImage:SHStyleKitDrawingTopBarBackground color:SHStyleKitColorMyWhiteColor size:CGSizeMake(320, 64)];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName: [SHStyleKit color:SHStyleKitColorMyTextColor]}];
@@ -727,13 +737,17 @@
 }
 
 - (void)doFindSimilar {
-    
     if (_location == nil) {
         [self showAlert:@"Oops" message:@"Please choose a location"];
         return;
     }
     
-    [self showHUD:@"Finding similar"];
+#ifdef kIntegrateDeprecatedScreens
+    
+    [SHNotifications findSimilarToDrink:_drink];
+    
+#else
+    
     NSString *name = [NSString stringWithFormat:@"Similar to %@", _drink.name];
     
     DrinkListRequest *request = [[DrinkListRequest alloc] init];
@@ -743,7 +757,8 @@
     request.drinkId = _drink.ID;
     request.drinkTypeId = _drink.drinkType.ID;
     request.drinkSubTypeId = _drink.drinkSubtype.ID;
-    
+
+    [self showHUD:@"Finding similar"];
     [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
         [self hideHUD];
         
@@ -756,6 +771,9 @@
         [self showAlert:@"Oops" message:errorModel.human];
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
+    
+#endif
+    
 }
 
 - (NSIndexPath *)indexPathForCurrentImage {

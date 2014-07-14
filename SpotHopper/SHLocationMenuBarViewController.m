@@ -100,15 +100,12 @@
 #pragma mark -
 
 - (IBAction)locationButtonTapped:(id)sender {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
     if ([self.delegate respondsToSelector:@selector(locationMenuBarViewControllerDidRequestLocationChange:)]) {
         [self.delegate locationMenuBarViewControllerDidRequestLocationChange:self];
     }
 }
 
 - (IBAction)filterButtonTapped:(id)sender {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
-    
     if (_isDisplayingSpotDrinklist) {
         if (self.spot && [self.delegate respondsToSelector:@selector(locationMenuBarViewController:didDeselectSpot:)]) {
             [self.delegate locationMenuBarViewController:self didDeselectSpot:self.spot];
@@ -129,16 +126,13 @@
 }
 
 - (void)processQueue {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
     if (!_isShowing && self.deselectedQueue.count) {
-        DebugLog(@"hiding");
         [self.deselectedQueue removeAllObjects];
         [self hideFilterView:TRUE withCompletionBlock:^{
             [self processQueue];
         }];
     }
     else if (!_isHiding && self.selectedQueue.count) {
-        DebugLog(@"showing");
         SpotModel *spot = [self.selectedQueue lastObject];
         [self.selectedQueue removeAllObjects];
         [self showFilterViewForSpot:spot animated:TRUE withCompletionBlock:^{

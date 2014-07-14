@@ -10,6 +10,25 @@
 
 @implementation SpotListRequest
 
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self.basedOnSliders = FALSE;
+    }
+    return self;
+}
+
+- (void)setSliders:(NSArray *)sliders {
+    if (sliders.count) {
+        _basedOnSliders = TRUE;
+        _sliders = sliders;
+    }
+    else {
+        _basedOnSliders = FALSE;
+        _sliders = nil;
+    }
+}
+
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
@@ -17,7 +36,8 @@
     
     copy.spotListId = self.spotListId;
     copy.name = self.name;
-    copy.isFeatured = self.isFeatured;
+    copy.featured = self.isFeatured;
+    copy.basedOnSliders = self.isBasedOnSliders;
     copy.coordinate = self.coordinate;
     copy.radius = self.radius;
     copy.sliders = self.sliders;

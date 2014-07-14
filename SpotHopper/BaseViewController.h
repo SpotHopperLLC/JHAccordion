@@ -22,7 +22,7 @@
 
 #import "TTTAttributedLabel+QuickFonting.h"
 
-@class LiveSpecialModel, SpotModel;
+@class LiveSpecialModel, SpotModel, ErrorModel;
 @class LiveSpecialViewController;
 
 @interface BaseViewController : JHPullRefreshViewController<FooterViewControllerDelegate, ShareViewControllerDelegate>
@@ -41,6 +41,9 @@
 - (void)showHUD;
 - (void)showHUD:(NSString*)label;
 - (void)hideHUD;
+
+- (void)oops:(ErrorModel *)errorModel caller:(SEL)caller;
+- (void)oops:(ErrorModel *)errorModel caller:(SEL)caller message:(NSString *)message;
 
 - (UIAlertView*)showAlert:(NSString*)title message:(NSString*)message;
 - (UIAlertView *)showAlert:(NSString *)title message:(NSString *)message block:(void(^)())alertBlock;

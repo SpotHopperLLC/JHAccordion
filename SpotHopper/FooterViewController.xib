@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -11,7 +11,6 @@
                 <outlet property="btnButtonMiddle" destination="x8D-Ha-7FJ" id="5xY-ca-bi0"/>
                 <outlet property="btnButtonRight" destination="laJ-Ri-pzu" id="7yD-Co-9w9"/>
                 <outlet property="btnHome" destination="Thq-jZ-JWB" id="zPu-ZO-dmv"/>
-                <outlet property="gestureTap" destination="vjw-Ad-B88" id="7qr-nb-xCV"/>
                 <outlet property="lblHome" destination="5aX-6M-MyT" id="pLS-tD-bC5"/>
                 <outlet property="lblLeft" destination="4lW-xn-3wG" id="1Rl-9P-MqJ"/>
                 <outlet property="lblMiddle" destination="9d9-fz-mBF" id="WRQ-Y4-Q8T"/>
@@ -102,19 +101,11 @@
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="vjw-Ad-B88" appends="YES" id="Sfe-vt-HCF"/>
-                    </connections>
                 </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
-        <tapGestureRecognizer id="vjw-Ad-B88">
-            <connections>
-                <action selector="onTapGesture:" destination="-1" id="0m0-AW-srE"/>
-            </connections>
-        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="btn_context_home.png" width="35" height="37"/>
