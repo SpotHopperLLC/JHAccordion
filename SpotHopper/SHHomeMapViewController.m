@@ -2017,7 +2017,12 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark -
 
 - (void)spotCalloutView:(SpotCalloutView *)spotCalloutView didSelectAnnotationView:(MKAnnotationView *)annotationView {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    if ([annotationView isKindOfClass:[MatchPercentAnnotationView class]]) {
+        MatchPercentAnnotationView *pin = (MatchPercentAnnotationView *)annotationView;
+        if (pin.spot) {
+            [self goToSpotProfile:pin.spot];
+        }
+    }
 }
 
 #pragma mark - MKMapViewDelegate
