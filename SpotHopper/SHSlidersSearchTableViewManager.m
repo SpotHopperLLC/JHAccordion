@@ -365,7 +365,7 @@
         return 3;
     }
     else if (self.mode == SHModeCocktail) {
-        return 3;
+        return 4;
     }
     else if (self.mode == SHModeWine) {
         return 4;
