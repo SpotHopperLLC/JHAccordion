@@ -1733,9 +1733,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)sidebarViewControllerDidRequestClose:(SHSidebarViewController*)vc {
-    [self hideSideBar:TRUE withCompletionBlock:^{
-        [self showSearch:TRUE withCompletionBlock:nil];
-    }];
+    [self hideSideBar:TRUE withCompletionBlock:nil];
 }
 
 - (void)sidebarViewControllerDidRequestReviews:(SHSidebarViewController*)vc {
