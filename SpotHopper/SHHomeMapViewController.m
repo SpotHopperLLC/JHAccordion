@@ -356,7 +356,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)showSideBar:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    [self.mySideBarViewController viewWillDisappear:animated];
+    [self.mySideBarViewController viewWillAppear:animated];
     
     [self.navigationController.sidebarViewController toggleRightSidebar];
     
@@ -712,7 +712,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark -
 
 - (IBAction)sideBarButtonTapped:(id)sender {
-    [self toggleSideBar:TRUE withCompletionBlock:nil];
+    [self showSideBar:TRUE withCompletionBlock:nil];
 }
 
 - (IBAction)searchButtonTapped:(id)sender {
