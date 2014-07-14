@@ -107,7 +107,7 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.isCancelled) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
             if (successBlock) {
                 successBlock(nil, nil);
             }
@@ -169,7 +169,7 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.isCancelled) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
             if (successBlock) {
                 successBlock(nil);
             }

@@ -41,7 +41,7 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.isCancelled) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
             if (successBlock) {
                 successBlock(nil, nil);
             }
@@ -76,7 +76,7 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.isCancelled) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
             if (successBlock) {
                 successBlock(nil, nil);
             }
@@ -109,7 +109,7 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.isCancelled) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
             if (successBlock) {
                 successBlock(nil, nil);
             }
@@ -141,7 +141,7 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.isCancelled) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
             if (successBlock) {
                 successBlock(nil, nil);
             }
@@ -173,7 +173,7 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.isCancelled) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
             if (successBlock) {
                 successBlock(nil, nil);
             }
@@ -220,7 +220,7 @@
         
         [SliderTemplateModel getSliderTemplates:params success:^(NSArray *sliderTemplates, JSONAPI *jsonApiDontNeed) {
             
-            if (operation.isCancelled) {
+            if (operation.isCancelled || operation.response.statusCode == 204) {
                 if (successBlock) {
                     successBlock(nil, nil);
                 }
@@ -281,7 +281,7 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.isCancelled) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
             if (successBlock) {
                 successBlock(nil, nil);
             }
@@ -315,7 +315,7 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.isCancelled) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
             if (successBlock) {
                 successBlock(nil, nil);
             }
@@ -348,7 +348,7 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.isCancelled) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
             if (successBlock) {
                 successBlock(nil, nil);
             }

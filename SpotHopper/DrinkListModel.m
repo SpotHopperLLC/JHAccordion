@@ -87,7 +87,7 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.isCancelled) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
             if (successBlock) {
                 successBlock(nil, nil);
             }
@@ -158,7 +158,7 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.isCancelled) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
             if (successBlock) {
                 successBlock(nil, nil);
             }
@@ -191,7 +191,7 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.isCancelled) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
             if (successBlock) {
                 successBlock(nil, nil);
             }
@@ -346,7 +346,7 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.isCancelled) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
             if (successBlock) {
                 successBlock(nil);
             }
@@ -360,7 +360,7 @@
 //            }
 //#endif
             
-            NSMutableArray *filteredDrinklist = @[].mutableCopy;
+            NSMutableArray *filteredDrinklists = @[].mutableCopy;
             for (DrinkListModel *drinklist in drinklists) {
                 // delete spotlists with default names (temporary measure)
                 if ([kDrinkListModelDefaultName isEqualToString:drinklist.name]) {
@@ -369,22 +369,20 @@
                     } fail:nil always:nil];
                 }
                 else {
-                    [filteredDrinklist addObject:drinklist];
+                    [filteredDrinklists addObject:drinklist];
                 }
             }
             
-#ifndef NDEBUG
-            for (DrinkListModel *drinklist __unused in filteredDrinklist) {
-                NSAssert(drinklist.drinkType, @"Drink type must be defined");
-            }
-#endif
+            // Note: The last modified appears to be last, so reversing the order would be better
+            // At this time the updated_at value for a spotlist is not provided.
+            NSArray *reversedArray = [[filteredDrinklists reverseObjectEnumerator] allObjects];
             
-            if (filteredDrinklist.count) {
-                [[DrinkListModel sh_sharedCache] cacheDrinklists:filteredDrinklist];
+            if (filteredDrinklists.count) {
+                [[DrinkListModel sh_sharedCache] cacheDrinklists:reversedArray];
             }
             
             if (successBlock) {
-                successBlock(filteredDrinklist);
+                successBlock(reversedArray);
             }
         } else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
@@ -464,7 +462,7 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.isCancelled) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
             if (successBlock) {
                 successBlock(nil);
             }
@@ -497,7 +495,7 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.isCancelled) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
             if (successBlock) {
                 successBlock(nil);
             }
@@ -530,7 +528,7 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.isCancelled) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
             if (successBlock) {
                 successBlock(nil);
             }
@@ -583,7 +581,7 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.isCancelled) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
             if (successBlock) {
                 successBlock(nil);
             }

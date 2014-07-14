@@ -1763,37 +1763,56 @@
         // now fetch the spots for the first drink so it is ready then request the rest cache all of the results for fast access
         
         if (drinkListModel.drinks.count) {
-            DrinkModel *firstDrink = drinkListModel.drinks[0];
-            [[firstDrink fetchSpotsForDrinkListRequest:request] then:^(NSArray *spots) {
-                // pre-cache the menu for each spot
-                for (SpotModel *spotModel in spots) {
-                    [spotModel fetchMenu];
-                }
-                
+            NSMutableArray *promises = @[].mutableCopy;
+            for (DrinkModel *drink in drinkListModel.drinks) {
+                DebugLog(@"Fetching spots for %@", drink.name);
+                Promise *promise = [drink fetchSpotsForDrinkListRequest:request];
+                [promises addObject:promise];
+                [promise then:^(NSArray *spots) {
+                    // pre-cache the menu for each spot
+                    for (SpotModel *spotModel in spots) {
+                        [spotModel fetchMenu];
+                    }
+                } fail:nil always:nil];
+            }
+            
+            [When when:promises then:^{
                 if (completionBlock) {
                     completionBlock(drinkListModel, request, nil);
                 }
-                
-                // now that the spots for the first drink are fetched now prefetch the rest
-                if (drinkListModel.drinks.count > 1) {
-                    NSMutableArray *promises = @[].mutableCopy;
-                    for (NSUInteger i=1; i<drinkListModel.drinks.count; i++) {
-                        DrinkModel *drink = drinkListModel.drinks[i];
-                        Promise *promise = [drink fetchSpotsForDrinkListRequest:request];
-                        [promises addObject:promise];
-                        [promise then:^(NSArray *spots) {
-                            // pre-cache the menu for each spot
-                            for (SpotModel *spotModel in spots) {
-                                [spotModel fetchMenu];
-                            }
-                        } fail:nil always:nil];
-                    }
-                    
-                    [When when:promises then:^{
-                        // do nothing
-                    } fail:nil always:nil];
-                }
             } fail:nil always:nil];
+            
+//            DrinkModel *firstDrink = drinkListModel.drinks[0];
+//            [[firstDrink fetchSpotsForDrinkListRequest:request] then:^(NSArray *spots) {
+//                // pre-cache the menu for each spot
+//                for (SpotModel *spotModel in spots) {
+//                    [spotModel fetchMenu];
+//                }
+//                
+//                if (completionBlock) {
+//                    completionBlock(drinkListModel, request, nil);
+//                }
+//                
+//                // now that the spots for the first drink are fetched now prefetch the rest
+//                if (drinkListModel.drinks.count > 1) {
+//                    NSMutableArray *promises = @[].mutableCopy;
+//                    for (NSUInteger i=1; i<drinkListModel.drinks.count; i++) {
+//                        DrinkModel *drink = drinkListModel.drinks[i];
+//                        Promise *promise = [drink fetchSpotsForDrinkListRequest:request];
+//                        [promises addObject:promise];
+//                        [promise then:^(NSArray *spots) {
+//                            // pre-cache the menu for each spot
+//                            for (SpotModel *spotModel in spots) {
+//                                [spotModel fetchMenu];
+//                            }
+//                        } fail:nil always:nil];
+//                    }
+//                    
+//                    [When when:promises then:^{
+//                        // do nothing
+//                    } fail:nil always:nil];
+//                }
+//            } fail:nil always:nil];
         }
         else {
             if (completionBlock) {

@@ -231,6 +231,7 @@
     [SHStyleKit setLabel:shareLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:positionLabel textColor:SHStyleKitColorMyTextColor];
     
+    specialTextView.contentOffset = CGPointMake(0.0f, 0.0f);
     [specialTextView setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [likeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [shareLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];

@@ -153,15 +153,17 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 @property (strong, nonatomic) NSDate *lastAreYouHerePrompt;
 
+@property (assign, nonatomic, getter = isRepositioningMap) BOOL repositioningMap;
+
 @end
 
 @implementation SHHomeMapViewController {
     CLLocation *_currentLocation;
-    BOOL _isRepositioningMap;
     BOOL _doNotMoveMap;
     BOOL _isShowingSliderSearchView;
     BOOL _isSpotDrinkList;
     BOOL _isOverlayAnimating;
+    NSInteger _repositioningMapCount;
 }
 
 #pragma mark - View Lifecyle
@@ -256,6 +258,17 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }
     
     
+}
+
+#pragma mark - Properties
+#pragma mark -
+
+- (void)setRepositioningMap:(BOOL)repositioningMap {
+    _repositioningMapCount += repositioningMap ? 1 : -1;
+}
+
+- (BOOL)isRepositioningMap {
+    return _repositioningMapCount > 0;
 }
 
 #pragma mark - View Management
@@ -1235,11 +1248,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     [self repositionMapOnAnnotations:self.mapView.annotations animated:TRUE];
     
-    if (!self.drinkListRequest || self.selectedSpot) {
-        if ([spots containsObject:self.selectedSpot]) {
+    if (spots.count) {
+        if (self.selectedSpot && [spots containsObject:self.selectedSpot]) {
             [self selectSpot:self.selectedSpot];
         }
-        else if (spots.count && self.drinkListRequest) {
+        else if (self.spotListRequest) {
+            [self selectSpot:spots[0]];
+        }
+        else if (self.mode == SHModeSpecials) {
             [self selectSpot:spots[0]];
         }
     }
@@ -1277,7 +1293,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)repositionMapOnCoordinate:(CLLocationCoordinate2D)coordinate animated:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    _isRepositioningMap = TRUE;
+    self.repositioningMap = TRUE;
     
     MKMapRect mapRect = MKMapRectNull;
     MKMapPoint mapPoint = MKMapPointForCoordinate(coordinate);
@@ -1292,14 +1308,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake([self topEdgePadding], 45.0f, [self bottomEdgePadding], 45.0f) animated:animated];
     } completion:^(BOOL finished) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            _isRepositioningMap = FALSE;
+            self.repositioningMap = FALSE;
             [self updateLocationName];
         });
     }];
 }
 
 - (void)repositionMapOnAnnotations:(NSArray *)annotations animated:(BOOL)animated {
-    _isRepositioningMap = TRUE;
+    self.repositioningMap = TRUE;
     
     if (!self.searchThisAreaView.hidden) {
         [self hideSearchThisArea:TRUE withCompletionBlock:nil];
@@ -1350,7 +1366,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                 [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake([self topEdgePadding], 45.0, [self bottomEdgePadding], 45.0) animated:animated];
             } completion:^(BOOL finished) {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                    _isRepositioningMap = FALSE;
+                    self.repositioningMap = FALSE;
                     [self updateLocationName];
                 });
 
@@ -1359,7 +1375,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }
     else {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            _isRepositioningMap = FALSE;
+            self.repositioningMap = FALSE;
         });
     }
     
@@ -1966,14 +1982,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)locationPickerViewController:(SHLocationPickerViewController*)viewController didSelectRegion:(MKCoordinateRegion)region {
     [self.navigationController popViewControllerAnimated:TRUE];
     
-    _isRepositioningMap = TRUE;
+    self.repositioningMap = TRUE;
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:0.25 delay:0.0 options:options animations:^{
         [self.mapView setRegion:region animated:FALSE];
     } completion:^(BOOL finished) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            _isRepositioningMap = FALSE;
+            self.repositioningMap = FALSE;
             [self updateLocationName];
             
             if ([self canSearchAgain]) {
@@ -2149,14 +2165,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                     [calloutView setIcon:calloutIcon spotNameText:spotName drink1Text:drink1 drink2Text:drink2];
                     [calloutView placeInMapView:mapView insideAnnotationView:annotationView];
                     
-                    _isRepositioningMap = TRUE;
+                    self.repositioningMap = TRUE;
                     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
                     [UIView animateWithDuration:0.25f delay:0.0f usingSpringWithDamping:9.0 initialSpringVelocity:9.0 options:options animations:^{
                         calloutView.alpha = 1.0f;
                         [self.mapView setCenterCoordinate:annotationView.annotation.coordinate animated:TRUE];
                     } completion:^(BOOL finished) {
                         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                            _isRepositioningMap = FALSE;
+                            self.repositioningMap = FALSE;
                         });
                     }];
                 } fail:^(ErrorModel *errorModel) {
@@ -2196,7 +2212,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
-    if (_isRepositioningMap) {
+    if (self.repositioningMap) {
         return;
     }
     
