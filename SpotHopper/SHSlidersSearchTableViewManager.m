@@ -346,10 +346,6 @@
 - (IBAction)sliderValueChanged:(id)sender {
 }
 
-//- (IBAction)deleteListButtonTapped:(id)sender {
-//    NSIndexPath *indexPath = [self indexPathForView:sender inTableView:self.tableView];
-//}
-
 #pragma mark - UITableViewDataSource
 #pragma mark -
 
@@ -1316,6 +1312,10 @@
     }
 }
 
+- (BOOL)hasFourInchDisplay {
+    return ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone && [UIScreen mainScreen].bounds.size.height == 568.0);
+}
+
 #pragma mark - Data Lookups
 #pragma mark -
 
@@ -1883,6 +1883,15 @@
     
     [SHStyleKit setLabel:titleLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setImageView:arrowImageView withDrawing:SHStyleKitDrawingNavigationArrowRightIcon color:SHStyleKitColorMyTextColor];
+
+    // scroll to the top when a list is selected
+    if ((self.mode == SHModeSpots && section == kSection_Spots_Spotlists) ||
+        (self.mode == SHModeBeer && section == kSection_Beer_Drinklists) ||
+        (self.mode == SHModeCocktail && section == kSection_Cocktail_Drinklists) ||
+        (self.mode == SHModeWine && section == kSection_Wine_Drinklists)) {
+        CGPoint offset = CGPointMake(0.0f, [self hasFourInchDisplay] ? -64.0f : 0.0f);
+        [self.tableView setContentOffset:offset animated:TRUE];
+    }
     
     [UIView animateWithDuration:0.35 animations:^{
         arrowImageView.transform = CGAffineTransformMakeRotation(kClosedPosition);
