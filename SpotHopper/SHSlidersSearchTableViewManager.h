@@ -50,7 +50,7 @@
 - (void)slidersSearchTableViewManagerWillAnimate:(SHSlidersSearchTableViewManager *)manager;
 - (void)slidersSearchTableViewManagerDidAnimate:(SHSlidersSearchTableViewManager *)manager;
 
-- (void)slidersSearchTableViewManagerIsBusy:(SHSlidersSearchTableViewManager *)manager;
+- (void)slidersSearchTableViewManagerIsBusy:(SHSlidersSearchTableViewManager *)manager text:(NSString *)text;
 - (void)slidersSearchTableViewManagerIsFree:(SHSlidersSearchTableViewManager *)manager;
 
 @required

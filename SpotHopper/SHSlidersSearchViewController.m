@@ -230,8 +230,13 @@
     
 }
 
-- (void)slidersSearchTableViewManagerIsBusy:(SHSlidersSearchTableViewManager *)manager {
-    [self showHUD];
+- (void)slidersSearchTableViewManagerIsBusy:(SHSlidersSearchTableViewManager *)manager text:(NSString *)text {
+    if (text.length) {
+        [self showHUD:text];
+    }
+    else {
+        [self showHUD];
+    }
 }
 
 - (void)slidersSearchTableViewManagerIsFree:(SHSlidersSearchTableViewManager *)manager {

@@ -1008,7 +1008,7 @@
         [self notifyThatManagerIsFree];
     };
     
-    [self notifyThatManagerIsBusy];
+    [self notifyThatManagerIsBusy:@"Pre-setting mood sliders"];
     if ([[NSNull null] isEqual:spotlist.ID]) {
         [self updateSliders:nil withCompletionBlock:completeBlock];
     }
@@ -1109,14 +1109,13 @@
             }
             else {
                 [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Wine_Sliders]]];
-                
             }
         }
         
         [self notifyThatManagerIsFree];
     };
     
-    [self notifyThatManagerIsBusy];
+    [self notifyThatManagerIsBusy:@"Pre-setting flavor sliders"];
     if ([[NSNull null] isEqual:drinklist.ID]) {
         [self updateSliders:nil withCompletionBlock:completeBlock];
     }
@@ -1361,8 +1360,12 @@
 }
 
 - (void)notifyThatManagerIsBusy {
-    if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerIsBusy:)]) {
-        [self.delegate slidersSearchTableViewManagerIsBusy:self];
+    [self notifyThatManagerIsBusy:nil];
+}
+
+- (void)notifyThatManagerIsBusy:(NSString *)text {
+    if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerIsBusy:text:)]) {
+        [self.delegate slidersSearchTableViewManagerIsBusy:self text:text];
     }
 }
 
