@@ -1382,13 +1382,13 @@
     if ([UserModel isLoggedIn]) {
         [[SpotListModel fetchMySpotLists] then:^(NSArray *spotlists) {
             // add Custom Mood at the top
-            SpotListModel *customSpotlist = [[SpotListModel alloc] init];
-            customSpotlist.ID = [NSNull null];
-            customSpotlist.name = @"Custom Mood";
+            SpotListModel *skipSpotlist = [[SpotListModel alloc] init];
+            skipSpotlist.ID = [NSNull null];
+            skipSpotlist.name = @"Skip";
             
             NSMutableArray *allSpotlists = @[].mutableCopy;
-            [allSpotlists addObject:customSpotlist];
             [allSpotlists addObjectsFromArray:spotlists];
+            [allSpotlists addObject:skipSpotlist];
             
             if (completionBlock) {
                 completionBlock(allSpotlists);
@@ -1407,16 +1407,16 @@
         [[DrinkListModel fetchMyDrinkLists] then:^(NSArray *drinklists) {
             
             // add Custom Mood at the top
-            DrinkListModel *customDrinklist = [[DrinkListModel alloc] init];
-            customDrinklist.ID = [NSNull null];
-            customDrinklist.name = @"Custom Mood";
+            DrinkListModel *skipDrinklist = [[DrinkListModel alloc] init];
+            skipDrinklist.ID = [NSNull null];
+            skipDrinklist.name = @"Skip";
             if (drinklists.count) {
-                customDrinklist.drinkType = ((DrinkListModel *)drinklists[0]).drinkType;
+                skipDrinklist.drinkType = ((DrinkListModel *)drinklists[0]).drinkType;
             }
             
             NSMutableArray *allDrinklists = @[].mutableCopy;
-            [allDrinklists addObject:customDrinklist];
             [allDrinklists addObjectsFromArray:drinklists];
+            [allDrinklists addObject:skipDrinklist];
             
 #ifndef NDEBUG
             for (DrinkListModel *drinklist __unused in allDrinklists) {
