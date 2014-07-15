@@ -69,7 +69,7 @@
 
 - (void)prepareSearchResults {
     if (self.mode == SHModeSpots) {
-        [self showHUD:@"Creating Spotlist"];
+        [self showHUD:@"Finding Best Matches"];
         [self.slidersSearchTableViewManager fetchSpotListResultsWithCompletionBlock:^(SpotListModel *spotListModel, SpotListRequest *request, ErrorModel *errorModel) {
             [self hideHUD];
             if (errorModel) {
@@ -84,7 +84,7 @@
         }];
     }
     else {
-        [self showHUD:@"Creating Drinklist"];
+        [self showHUD:@"Finding Best Matches"];
         [self.slidersSearchTableViewManager fetchDrinkListResultsWithCompletionBlock:^(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel) {
             [self hideHUD];
             if (errorModel) {
