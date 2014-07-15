@@ -2126,7 +2126,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                     MenuItemModel *menuItem = [menu menuItemForDrink:self.selectedDrink];
                     NSArray *prices = [menu pricesForMenuItem:menuItem];
                     
-                    NSString *spotName = [NSString stringWithFormat:@"%@ (%@)", pin.spot.name, pin.spot.spotType.name];
+                    NSString *spotName = pin.spot.spotType.name.length > 0 ? [NSString stringWithFormat:@"%@ (%@)", pin.spot.name, pin.spot.spotType.name] : pin.spot.name;
                     NSString *drink1 = prices.count > 0 ? prices[0] : nil;
                     NSString *drink2 = prices.count > 1 ? prices[1] : nil;
                     

@@ -218,9 +218,9 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="centerY" secondItem="Au2-eX-c6N" secondAttribute="centerY" id="B3j-22-ggj"/>
-                                                <constraint firstAttribute="centerY" secondItem="HS5-ij-VMr" secondAttribute="centerY" id="U5F-1l-fbO"/>
+                                                <constraint firstItem="HS5-ij-VMr" firstAttribute="centerY" secondItem="Au2-eX-c6N" secondAttribute="centerY" id="7Bg-D5-1rb"/>
                                                 <constraint firstItem="HS5-ij-VMr" firstAttribute="leading" secondItem="lSZ-XW-qAU" secondAttribute="leading" constant="20" symbolic="YES" id="ldp-B0-UDV"/>
+                                                <constraint firstItem="HS5-ij-VMr" firstAttribute="top" secondItem="lSZ-XW-qAU" secondAttribute="top" constant="11" id="qZh-b7-uak"/>
                                                 <constraint firstAttribute="trailing" secondItem="Au2-eX-c6N" secondAttribute="trailing" constant="20" id="wRl-gm-sx7"/>
                                                 <constraint firstItem="Au2-eX-c6N" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HS5-ij-VMr" secondAttribute="trailing" constant="8" symbolic="YES" id="zFw-5J-be0"/>
                                             </constraints>
@@ -244,8 +244,8 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="centerY" secondItem="0cV-Su-7I7" secondAttribute="centerY" id="GqF-DB-gU8"/>
                                                 <constraint firstAttribute="trailing" secondItem="0cV-Su-7I7" secondAttribute="trailing" constant="20" symbolic="YES" id="LLz-w4-xUN"/>
+                                                <constraint firstItem="0cV-Su-7I7" firstAttribute="top" secondItem="uCW-aH-d6m" secondAttribute="top" constant="11" id="dmH-2T-qGr"/>
                                                 <constraint firstItem="0cV-Su-7I7" firstAttribute="leading" secondItem="uCW-aH-d6m" secondAttribute="leading" constant="20" id="u2h-mH-4Ub"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -275,7 +275,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <slider opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="cRP-Wt-nB2" userLabel="Custom Slider" customClass="SHSlider">
-                                                    <rect key="frame" x="18" y="24" width="284" height="31"/>
+                                                    <rect key="frame" x="18" y="28" width="284" height="31"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="b42-Mj-MDL" id="j9R-wW-uhK"/>
@@ -292,11 +292,11 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
+                                                <constraint firstItem="cRP-Wt-nB2" firstAttribute="top" secondItem="uWa-nO-xSc" secondAttribute="top" constant="28" id="0rg-zu-2Su"/>
                                                 <constraint firstAttribute="trailing" secondItem="cRP-Wt-nB2" secondAttribute="trailing" constant="20" id="919-mP-WHf"/>
                                                 <constraint firstAttribute="bottom" secondItem="RSn-Nc-RyQ" secondAttribute="bottom" id="Cfm-F1-nWc"/>
                                                 <constraint firstItem="zjA-4d-Oaj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4Hi-en-bRr" secondAttribute="trailing" constant="8" id="D8H-W3-Tqh"/>
                                                 <constraint firstAttribute="trailing" secondItem="zjA-4d-Oaj" secondAttribute="trailing" constant="20" id="EBN-sL-Xoy"/>
-                                                <constraint firstAttribute="centerY" secondItem="cRP-Wt-nB2" secondAttribute="centerY" id="Fmq-wt-XM4"/>
                                                 <constraint firstItem="cRP-Wt-nB2" firstAttribute="leading" secondItem="uWa-nO-xSc" secondAttribute="leading" constant="20" id="IQh-b5-qPu"/>
                                                 <constraint firstAttribute="trailing" secondItem="RSn-Nc-RyQ" secondAttribute="trailing" constant="10" id="T34-tV-8YP"/>
                                                 <constraint firstItem="RSn-Nc-RyQ" firstAttribute="leading" secondItem="uWa-nO-xSc" secondAttribute="leading" constant="10" id="e3q-5M-ZFH"/>
