@@ -22,8 +22,6 @@
 
 @property (assign, nonatomic) SHMode mode;
 
-//@property (strong, readwrite, nonatomic) DrinkListModel *drinkListModel;
-
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *searchButton;
 

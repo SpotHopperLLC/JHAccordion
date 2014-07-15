@@ -190,7 +190,6 @@
 #pragma mark -
 
 - (void)renderCell:(UICollectionViewCell *)cell withDrink:(DrinkModel *)drink atIndex:(NSUInteger)index {
-    
     UIImageView *drinkImageView = [self imageViewInView:cell withTag:kDrinkCellDrinkImageView];
     UIButton *nameButton = [self buttonInView:cell withTag:kDrinkCellDrinkNameButton];
     UILabel *breweryLabel = [self labelInView:cell withTag:kDrinkCellBreweryLabel];
@@ -226,21 +225,18 @@
     [positionLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
     [matchLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     
-    UIImage *placeholderImage = [SHStyleKit drawImage:SHStyleKitDrawingPlaceholderBasic size:drinkImageView.frame.size];
-    drinkImageView.image = placeholderImage;
-    
     if (drink.imageUrl.length) {
-        [drinkImageView setImageWithURL:[NSURL URLWithString:drink.imageUrl] placeholderImage:nil];
+        [drinkImageView setImageWithURL:[NSURL URLWithString:drink.imageUrl] placeholderImage:drink.placeholderImage];
     }
     else if (drink.images.count) {
         ImageModel *imageModel = drink.images[0];
         __weak UIImageView *weakImageView = drinkImageView;
-        [NetworkHelper loadImage:imageModel placeholderImage:nil withThumbImageBlock:^(UIImage *thumbImage) {
+        [NetworkHelper loadImage:imageModel placeholderImage:drink.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
             weakImageView.image = thumbImage;
         } withFullImageBlock:^(UIImage *fullImage) {
             weakImageView.image = fullImage;
         } withErrorBlock:^(NSError *error) {
-            weakImageView.image = nil;
+            weakImageView.image = drink.placeholderImage;
             [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
     }

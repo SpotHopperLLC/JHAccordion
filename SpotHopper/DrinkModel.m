@@ -503,11 +503,11 @@
 }
 
 - (UIImage *)placeholderImage {
-    if ([self isBeer] == YES) {
+    if (self.isBeer) {
         return [UIImage imageNamed:@"beer_placeholder"];
-    } else if ([self isCocktail] == YES) {
+    } else if (self.isCocktail) {
         return [UIImage imageNamed:@"cocktail_placeholder"];
-    } else if ([self isWine] == YES) {
+    } else if (self.isWine) {
         return [UIImage imageNamed:@"wine_placeholder"];
     }
     
