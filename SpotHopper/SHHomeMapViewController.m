@@ -532,18 +532,24 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     UIImageView *rightImageView = [[UIImageView alloc] initWithFrame:CGRectMake(274.0f, 7.0f, 30.0f, 30.0f)];
     
+    NSString *title = nil;
+    
     switch (mode) {
         case SHModeSpots:
             [SHStyleKit setImageView:rightImageView withDrawing:SHStyleKitDrawingSpotIcon color:SHStyleKitColorMyWhiteColor];
+            title = @"Find Spots";
             break;
         case SHModeBeer:
             [SHStyleKit setImageView:rightImageView withDrawing:SHStyleKitDrawingBeerIcon color:SHStyleKitColorMyWhiteColor];
+            title = @"Find Beers";
             break;
         case SHModeCocktail:
             [SHStyleKit setImageView:rightImageView withDrawing:SHStyleKitDrawingCocktailIcon color:SHStyleKitColorMyWhiteColor];
+            title = @"Find Cocktails";
             break;
         case SHModeWine:
             [SHStyleKit setImageView:rightImageView withDrawing:SHStyleKitDrawingWineIcon color:SHStyleKitColorMyWhiteColor];
+            title = @"Find Wines";
             break;
             
         default:
@@ -566,7 +572,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         
         [self.navigationItem setLeftBarButtonItem:searchSlidersCancelBarButtonItem animated:animated];
         [self.navigationItem setRightBarButtonItem:rightBarButtonItem animated:animated];
-        self.navigationItem.title = @"What do you feel like?";
+        self.navigationItem.title = title.length ? title : @"What do you feel like?";
         
     } completion:^(BOOL finished) {
         [self refreshBlurredView];

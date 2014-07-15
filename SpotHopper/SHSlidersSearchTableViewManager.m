@@ -76,6 +76,8 @@
 #define kOpenedPosition M_PI_2
 #define kClosedPosition M_PI_2 * -1
 
+#define kCustomSlidersTitle @"Skip"
+
 #pragma mark - Class Extension
 #pragma mark -
 
@@ -461,7 +463,7 @@
                     break;
                     
                 case kSection_Spots_Sliders:
-                    sectionTitle = @"Step 2 - Sliders";
+                    sectionTitle = @"Step 2 - Tweak Sliders";
                     break;
                     
                 case kSection_Spots_AdvancedSliders:
@@ -518,7 +520,7 @@
                     break;
                     
                 case kSection_Cocktail_Sliders:
-                    sectionTitle = @"Step 3 - Sliders";
+                    sectionTitle = @"Step 3 - Tweak Sliders";
                     break;
                     
                 case kSection_Cocktail_AdvancedSliders:
@@ -551,7 +553,7 @@
                     break;
                     
                 case kSection_Wine_Sliders:
-                    sectionTitle = @"Step 3 - Sliders";
+                    sectionTitle = @"Step 3 - Tweak Sliders";
                     break;
                     
                 case kSection_Wine_AdvancedSliders:
@@ -837,6 +839,8 @@
     
     UILabel *titleLabel = [self labelInView:cell withTag:kListCellTitleLabel];
     UIButton *deleteButton = [self buttonInView:cell withTag:kListCellDeleteButton];
+    
+    deleteButton.hidden = ![kCustomSlidersTitle isEqualToString:title] ? FALSE : TRUE;
     
     [SHStyleKit setLabel:titleLabel textColor:SHStyleKitColorMyTextColor];
     titleLabel.text = title;
@@ -1384,7 +1388,7 @@
             // add Custom Mood at the top
             SpotListModel *skipSpotlist = [[SpotListModel alloc] init];
             skipSpotlist.ID = [NSNull null];
-            skipSpotlist.name = @"Skip";
+            skipSpotlist.name = kCustomSlidersTitle;
             
             NSMutableArray *allSpotlists = @[].mutableCopy;
             [allSpotlists addObjectsFromArray:spotlists];
@@ -1409,7 +1413,7 @@
             // add Custom Mood at the top
             DrinkListModel *skipDrinklist = [[DrinkListModel alloc] init];
             skipDrinklist.ID = [NSNull null];
-            skipDrinklist.name = @"Skip";
+            skipDrinklist.name = kCustomSlidersTitle;
             if (drinklists.count) {
                 skipDrinklist.drinkType = ((DrinkListModel *)drinklists[0]).drinkType;
             }
