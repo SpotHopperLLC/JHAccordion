@@ -1031,7 +1031,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             SpotModel *nearestSpot = self.nearbySpots[0];
             CLLocation *nearestLocation = [[CLLocation alloc] initWithLatitude:nearestSpot.latitude.floatValue longitude:nearestSpot.longitude.floatValue];
             CLLocationDistance meters = [_currentLocation distanceFromLocation:nearestLocation];
-            if (meters < 200) {
+            if (meters < 150) {
                 [self showAreYouHerePromptForSpot:nearestSpot animated:TRUE withCompletionBlock:nil];
                 self.lastAreYouHerePrompt = [NSDate date];
             }
