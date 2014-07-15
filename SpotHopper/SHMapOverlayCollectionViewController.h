@@ -14,6 +14,8 @@
 
 @class SpotListModel;
 @class DrinkListModel;
+@class SpotModel;
+@class DrinkModel;
 
 @protocol SHMapOverlayCollectionDelegate;
 
@@ -24,6 +26,8 @@
 - (void)displaySpotList:(SpotListModel *)spotList;
 
 - (void)displaySpot:(SpotModel *)spot;
+
+- (void)displayDrink:(DrinkModel *)drink;
 
 - (void)displaySpecialsForSpots:(NSArray *)spots;
 

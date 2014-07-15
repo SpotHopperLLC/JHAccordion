@@ -10,12 +10,34 @@
 
 @implementation DrinkListRequest
 
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self.basedOnSliders = FALSE;
+    }
+    return self;
+}
+
+- (void)setSliders:(NSArray *)sliders {
+    if (sliders.count) {
+        _basedOnSliders = TRUE;
+        _sliders = sliders;
+    }
+    else {
+        _basedOnSliders = FALSE;
+        _sliders = nil;
+    }
+}
+
+#pragma mark - NSCopying
+
 - (id)copyWithZone:(NSZone *)zone {
 	DrinkListRequest *copy = [[[self class] alloc] init];
     
     copy.drinkListId = self.drinkListId;
     copy.name = self.name;
-    copy.isFeatured = self.isFeatured;
+    copy.featured = self.isFeatured;
+    copy.basedOnSliders = self.basedOnSliders;
     copy.coordinate = self.coordinate;
     copy.sliders = self.sliders;
     copy.drinkId = self.drinkId;

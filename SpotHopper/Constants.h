@@ -87,6 +87,10 @@
 
     #define kAnalyticsEnabled   FALSE
 
+    #define kIntegrateDeprecatedScreens TRUE
+
+    #define kDisableSideBarDelegateInBase TRUE
+
 #elif defined(PRODUCTION)
 
     #define kDebug NO

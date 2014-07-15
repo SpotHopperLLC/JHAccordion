@@ -138,10 +138,8 @@
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-    if ((self = [self init]))
-    {
-        for (NSString *key in [self propertyKeys])
-        {
+    if ((self = [self init])) {
+        for (NSString *key in [self propertyKeys]) {
             id value = [aDecoder decodeObjectForKey:key];
             [self setValue:value forKey:key];
         }
@@ -150,11 +148,20 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
-    for (NSString *key in [self propertyKeys])
-    {
+    for (NSString *key in [self propertyKeys]) {
         id value = [self valueForKey:key];
         [aCoder encodeObject:value forKey:key];
     }
+}
+
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone {
+	SHJSONAPIResource *copy = [super copyWithZone:zone];
+    
+    copy.ID = self.ID;
+    
+    return copy;
 }
 
 #pragma mark - Equality

@@ -198,12 +198,13 @@
     }
     else if (spot.images.count) {
         ImageModel *imageModel = spot.images[0];
+        __weak UIImageView *weakImageView = spotImageView;
         [NetworkHelper loadImage:imageModel placeholderImage:nil withThumbImageBlock:^(UIImage *thumbImage) {
-            spotImageView.image = thumbImage;
+            weakImageView.image = thumbImage;
         } withFullImageBlock:^(UIImage *fullImage) {
-            spotImageView.image = fullImage;
+            weakImageView.image = fullImage;
         } withErrorBlock:^(NSError *error) {
-            spotImageView.image = nil;
+            weakImageView.image = nil;
             [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
     }
@@ -230,6 +231,7 @@
     [SHStyleKit setLabel:shareLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:positionLabel textColor:SHStyleKitColorMyTextColor];
     
+    specialTextView.contentOffset = CGPointMake(0.0f, 0.0f);
     [specialTextView setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [likeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [shareLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];

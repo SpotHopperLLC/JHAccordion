@@ -14,6 +14,8 @@
 #import "GAIFields.h"
 #import "GAIDictionaryBuilder.h"
 
+#import "SHNotifications.h"
+
 @interface FooterViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *viewBackground;
@@ -115,18 +117,10 @@
 
 #pragma mark - Actions
 
-- (IBAction)onTapGesture:(id)sender {
-#ifndef PRODUCTION
-    if (self.view.alpha == 1.0f) {
-        self.view.alpha = 0.1f;
-    }
-    else {
-        self.view.alpha = 1.0f;
-    }
-#endif
-}
-
 - (IBAction)onClickHome:(id)sender {
+#ifdef kIntegrateDeprecatedScreens
+    [SHNotifications goToHomeMap];
+#else
     if ([_delegate respondsToSelector:@selector(footerViewController:clickedButton:)]) {
         BOOL handled = [_delegate footerViewController:self clickedButton:FooterViewButtonHome];
         if (handled == NO) {
@@ -135,6 +129,7 @@
     } else {
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
+#endif
 }
 
 - (IBAction)onClickLeft:(id)sender {

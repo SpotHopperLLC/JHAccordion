@@ -13,7 +13,7 @@
 @interface PhotoAlbumViewController : BaseViewController <PhotoViewerDelegate>
 
 @property (nonatomic, strong) NSArray *images;
-@property (nonatomic, assign) NSUInteger index;
+@property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, strong) UIImage *placeholderImage;
 
 @end

@@ -182,8 +182,6 @@
         [self fetchDrinkTypesWithCompletionBlock:^(NSArray *drinkTypes) {
             self.drinkTypes = drinkTypes;
             
-            DebugLog(@"Drink Type: %@", self.drinkTypeName);
-            
             for (DrinkTypeModel *drinkType in self.drinkTypes) {
                 if ([self.drinkTypeName isEqualToString:drinkType.name]) {
                     NSAssert(drinkType.ID, @"ID must be defined");
@@ -249,8 +247,6 @@
     }
     
     NSAssert(self.drinkTypes, @"Drink types should already be set");
-    
-    // TODO: populate self.baseAlcohols
     
     [self fetchBaseAlcohols:^(NSArray *baseAlcohols) {
         self.baseAlcohols = baseAlcohols;
@@ -350,10 +346,6 @@
 - (IBAction)sliderValueChanged:(id)sender {
 }
 
-//- (IBAction)deleteListButtonTapped:(id)sender {
-//    NSIndexPath *indexPath = [self indexPathForView:sender inTableView:self.tableView];
-//}
-
 #pragma mark - UITableViewDataSource
 #pragma mark -
 
@@ -369,7 +361,7 @@
         return 3;
     }
     else if (self.mode == SHModeCocktail) {
-        return 3;
+        return 4;
     }
     else if (self.mode == SHModeWine) {
         return 4;
@@ -594,7 +586,7 @@
         UIButton *button = (UIButton *)[view viewWithTag:3];
 
         BOOL isOpened = [self.accordion isSectionOpened:section];
-        SHStyleKitColor tintColor = isOpened ? SHStyleKitColorMyTextColor : SHStyleKitColorMyTintColor;
+        SHStyleKitColor tintColor = isOpened ? SHStyleKitColorMyTintColor : SHStyleKitColorMyTextColor;
         
         titleLabel.text = sectionTitle;
         [SHStyleKit setLabel:titleLabel textColor:tintColor];
@@ -643,6 +635,9 @@
         else if (indexPath.section == kSection_Spots_AdvancedSliders) {
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
         }
+        else {
+            DebugLog(@"indexPath: %li, %li", (long)indexPath.section, (long)indexPath.row);
+        }
     }
     else if (self.mode == SHModeBeer) {
         if (indexPath.section == kSection_Beer_Drinklists && indexPath.row < self.drinklists.count) {
@@ -654,6 +649,9 @@
         }
         else if (indexPath.section == kSection_Beer_AdvancedSliders) {
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
+        }
+        else {
+            DebugLog(@"indexPath: %li, %li", (long)indexPath.section, (long)indexPath.row);
         }
     }
     else if (self.mode == SHModeCocktail) {
@@ -671,6 +669,9 @@
         else if (indexPath.section == kSection_Cocktail_AdvancedSliders) {
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
         }
+        else {
+            DebugLog(@"indexPath: %li, %li", (long)indexPath.section, (long)indexPath.row);
+        }
     }
     else if (self.mode == SHModeWine) {
         if (indexPath.section == kSection_Wine_Type && indexPath.row < self.wineSubTypes.count) {
@@ -687,12 +688,15 @@
         else if (indexPath.section == kSection_Wine_AdvancedSliders) {
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
         }
+        else {
+            DebugLog(@"indexPath: %li, %li", (long)indexPath.section, (long)indexPath.row);
+        }
     }
     else {
         DebugLog(@"Mode is %@", self.mode == SHModeNone ? @"None" : @"Unknown");
     }
     
-    NSAssert(false, @"Condition should never be met");
+    NSAssert(FALSE, @"Condition should never be met");
     
     return nil;
 }
@@ -726,8 +730,6 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    DebugLog(@"selected: %li, %li", (long)indexPath.section, (long)indexPath.row);
-    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [tableView deselectRowAtIndexPath:indexPath animated:TRUE];
     });
@@ -871,8 +873,6 @@
     }
     
     [deleteButton bk_addEventHandler:^(id sender) {
-        // TODO: implement prompt to delete list
-        
         NSString *message = nil;
         
         if (self.mode == SHModeSpots) {
@@ -887,8 +887,6 @@
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Confirm Delete" message:message delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
         [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
             if (buttonIndex == 1) {
-                DebugLog(@"Delete Confirmed!");
-                
                 if (self.mode == SHModeSpots && indexPath.section == kSection_Spots_Spotlists) {
                     SpotListModel *spotlist = [self spotlistAtIndexPath:indexPath];
                     [[spotlist purgeSpotList] then:^(NSNumber *success) {
@@ -896,7 +894,7 @@
                     } fail:^(ErrorModel *errorModel) {
                         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
                     } always:^{
-                        [self prepareTableViewForDrinkType:self.selectedDrinkType andDrinkSubType:self.selectedDrinkSubType withCompletionBlock:nil];
+                        [self prepareTableViewForSpotsWithCompletionBlock:nil];
                     }];
                 }
                 else if ((self.mode == SHModeBeer && indexPath.section == kSection_Beer_Drinklists) ||
@@ -1045,8 +1043,6 @@
     }
     else {
         [[spotlist fetchSpotList] then:^(SpotListModel *spotlist) {
-            DebugLog(@"sliders: %@", spotlist.sliders);
-            
             [self updateSliders:spotlist.sliders withCompletionBlock:completeBlock];
         } fail:^(ErrorModel *errorModel) {
             [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
@@ -1153,8 +1149,6 @@
     }
     else {
         [[drinklist fetchDrinkList] then:^(DrinkListModel *drinklist) {
-            DebugLog(@"sliders: %@", drinklist.sliders);
-            
             [self updateSliders:drinklist.sliders withCompletionBlock:completeBlock];
         } fail:^(ErrorModel *errorModel) {
             [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
@@ -1242,13 +1236,9 @@
         return drinklists;
     }
     
-    DebugLog(@"drinklists: %li", (long)drinklists.count);
-    
     NSMutableArray *filteredLists = @[].mutableCopy;
     
     for (DrinkListModel *drinklist in drinklists) {
-        DebugLog(@"drink type: %@", drinklist.drinkType.name);
-        DebugLog(@"drink sub type: %@", drinklist.drinkSubType.name);
         
         NSAssert(drinklist.drinkType, @"Drinklist must have a drink type");
         
@@ -1269,8 +1259,6 @@
             }
         }
     }
-    
-    DebugLog(@"filteredLists: %li", (long)filteredLists.count);
     
     return filteredLists;
 }
@@ -1322,6 +1310,10 @@
     if (completionBlock) {
         completionBlock(didSetAdvancedSlider);
     }
+}
+
+- (BOOL)hasFourInchDisplay {
+    return ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone && [UIScreen mainScreen].bounds.size.height == 568.0);
 }
 
 #pragma mark - Data Lookups
@@ -1446,7 +1438,6 @@
 - (void)fetchMyDrinklistsWithCompletionBlock:(void (^)(NSArray * drinklists))completionBlock {
     if ([UserModel isLoggedIn]) {
         [[DrinkListModel fetchMyDrinkLists] then:^(NSArray *drinklists) {
-            DebugLog(@"drinklists: %@", drinklists);
             
             // add Custom Mood at the top
             DrinkListModel *customDrinklist = [[DrinkListModel alloc] init];
@@ -1497,7 +1488,6 @@
 
 - (void)fetchDrinkTypesWithCompletionBlock:(void (^)(NSArray * drinkTypes))completionBlock {
     [[DrinkModel fetchDrinkTypes] then:^(NSArray *drinkTypes) {
-        DebugLog(@"drinkTypes: %@", drinkTypes);
         
         for (DrinkTypeModel *drinkType in drinkTypes) {
             NSAssert(drinkType.ID, @"ID must be defined");
@@ -1690,9 +1680,6 @@
     CLLocationCoordinate2D coordinate = [self searchCenterCoordinate];
     CGFloat radius = [self searchRadius];
     
-    DebugLog(@"center: %f, %f", coordinate.latitude, coordinate.longitude);
-    DebugLog(@"radius: %f", radius);
-    
     NSNumber *latitude = nil, *longitude = nil;
     if (CLLocationCoordinate2DIsValid(coordinate)) {
         latitude = [NSNumber numberWithFloat:coordinate.latitude];
@@ -1784,37 +1771,56 @@
         // now fetch the spots for the first drink so it is ready then request the rest cache all of the results for fast access
         
         if (drinkListModel.drinks.count) {
-            DrinkModel *firstDrink = drinkListModel.drinks[0];
-            [[firstDrink fetchSpotsForDrinkListRequest:request] then:^(NSArray *spots) {
-                // pre-cache the menu for each spot
-                for (SpotModel *spotModel in spots) {
-                    [spotModel fetchMenu];
-                }
-                
+            NSMutableArray *promises = @[].mutableCopy;
+            for (DrinkModel *drink in drinkListModel.drinks) {
+                DebugLog(@"Fetching spots for %@", drink.name);
+                Promise *promise = [drink fetchSpotsForDrinkListRequest:request];
+                [promises addObject:promise];
+                [promise then:^(NSArray *spots) {
+                    // pre-cache the menu for each spot
+                    for (SpotModel *spotModel in spots) {
+                        [spotModel fetchMenu];
+                    }
+                } fail:nil always:nil];
+            }
+            
+            [When when:promises then:^{
                 if (completionBlock) {
                     completionBlock(drinkListModel, request, nil);
                 }
-                
-                // now that the spots for the first drink are fetched now prefetch the rest
-                if (drinkListModel.drinks.count > 1) {
-                    NSMutableArray *promises = @[].mutableCopy;
-                    for (NSUInteger i=1; i<drinkListModel.drinks.count; i++) {
-                        DrinkModel *drink = drinkListModel.drinks[i];
-                        Promise *promise = [drink fetchSpotsForDrinkListRequest:request];
-                        [promises addObject:promise];
-                        [promise then:^(NSArray *spots) {
-                            // pre-cache the menu for each spot
-                            for (SpotModel *spotModel in spots) {
-                                [spotModel fetchMenu];
-                            }
-                        } fail:nil always:nil];
-                    }
-                    
-                    [When when:promises then:^{
-                        DebugLog(@"Finished all drink/spot fetches");
-                    } fail:nil always:nil];
-                }
             } fail:nil always:nil];
+            
+//            DrinkModel *firstDrink = drinkListModel.drinks[0];
+//            [[firstDrink fetchSpotsForDrinkListRequest:request] then:^(NSArray *spots) {
+//                // pre-cache the menu for each spot
+//                for (SpotModel *spotModel in spots) {
+//                    [spotModel fetchMenu];
+//                }
+//                
+//                if (completionBlock) {
+//                    completionBlock(drinkListModel, request, nil);
+//                }
+//                
+//                // now that the spots for the first drink are fetched now prefetch the rest
+//                if (drinkListModel.drinks.count > 1) {
+//                    NSMutableArray *promises = @[].mutableCopy;
+//                    for (NSUInteger i=1; i<drinkListModel.drinks.count; i++) {
+//                        DrinkModel *drink = drinkListModel.drinks[i];
+//                        Promise *promise = [drink fetchSpotsForDrinkListRequest:request];
+//                        [promises addObject:promise];
+//                        [promise then:^(NSArray *spots) {
+//                            // pre-cache the menu for each spot
+//                            for (SpotModel *spotModel in spots) {
+//                                [spotModel fetchMenu];
+//                            }
+//                        } fail:nil always:nil];
+//                    }
+//                    
+//                    [When when:promises then:^{
+//                        // do nothing
+//                    } fail:nil always:nil];
+//                }
+//            } fail:nil always:nil];
         }
         else {
             if (completionBlock) {
@@ -1835,16 +1841,10 @@
 
 // as the user moves the slider this callback will fire each time the value is changed
 - (void)slider:(SHSlider *)slider valueDidChange:(CGFloat)value {
-//    DebugLog(@"slider did change: %f", value);
 }
 
 // one the user completes the gesture this callback is fired
 - (void)slider:(SHSlider *)slider valueDidFinishChanging:(CGFloat)value {
-//    DebugLog(@"slider did finish changing: %f", value);
-    
-//    NSIndexPath *indexPath = [self indexPathForView:slider inTableView:self.tableView];
-//    DebugLog(@"indexPath: %@", indexPath);
-    
     NSAssert(self.delegate, @"Delegate is required");
     
     if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerDidChangeSlider:)]) {
@@ -1860,18 +1860,16 @@
 }
 
 - (void)accordion:(JHAccordion*)accordion contentSizeChanged:(CGSize)contentSize {
-//    DebugLog(@"%@", NSStringFromSelector(_cmd));
     [accordion slideUpLastOpenedSection];
 }
 
 - (void)accordion:(JHAccordion*)accordion openingSection:(NSInteger)section {
-//    DebugLog(@"%@", NSStringFromSelector(_cmd));
     UIView *view = [self getSectionHeaderView:section];
     UILabel *titleLabel = (UILabel *)[view viewWithTag:1];
     UIImageView *arrowImageView = (UIImageView *)[view viewWithTag:2];
     
-    [SHStyleKit setLabel:titleLabel textColor:SHStyleKitColorMyTextColor];
-    [SHStyleKit setImageView:arrowImageView withDrawing:SHStyleKitDrawingNavigationArrowRightIcon color:SHStyleKitColorMyTextColor];
+    [SHStyleKit setLabel:titleLabel textColor:SHStyleKitColorMyTintColor];
+    [SHStyleKit setImageView:arrowImageView withDrawing:SHStyleKitDrawingNavigationArrowRightIcon color:SHStyleKitColorMyTintColor];
     
     [UIView animateWithDuration:0.35 animations:^{
         arrowImageView.transform = CGAffineTransformMakeRotation(kOpenedPosition);
@@ -1879,13 +1877,21 @@
 }
 
 - (void)accordion:(JHAccordion*)accordion closingSection:(NSInteger)section {
-    //    DebugLog(@"%@", NSStringFromSelector(_cmd));
     UIView *view = [self getSectionHeaderView:section];
     UILabel *titleLabel = (UILabel *)[view viewWithTag:1];
     UIImageView *arrowImageView = (UIImageView *)[view viewWithTag:2];
     
-    [SHStyleKit setLabel:titleLabel textColor:SHStyleKitColorMyTintColor];
-    [SHStyleKit setImageView:arrowImageView withDrawing:SHStyleKitDrawingNavigationArrowRightIcon color:SHStyleKitColorMyTintColor];
+    [SHStyleKit setLabel:titleLabel textColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setImageView:arrowImageView withDrawing:SHStyleKitDrawingNavigationArrowRightIcon color:SHStyleKitColorMyTextColor];
+
+    // scroll to the top when a list is selected
+    if ((self.mode == SHModeSpots && section == kSection_Spots_Spotlists) ||
+        (self.mode == SHModeBeer && section == kSection_Beer_Drinklists) ||
+        (self.mode == SHModeCocktail && section == kSection_Cocktail_Drinklists) ||
+        (self.mode == SHModeWine && section == kSection_Wine_Drinklists)) {
+        CGPoint offset = CGPointMake(0.0f, [self hasFourInchDisplay] ? -64.0f : 0.0f);
+        [self.tableView setContentOffset:offset animated:TRUE];
+    }
     
     [UIView animateWithDuration:0.35 animations:^{
         arrowImageView.transform = CGAffineTransformMakeRotation(kClosedPosition);

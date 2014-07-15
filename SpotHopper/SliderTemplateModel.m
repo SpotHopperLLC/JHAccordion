@@ -107,7 +107,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"slider_templates"];
             models = [models sortedArrayUsingComparator:^NSComparisonResult(SliderTemplateModel *obj1, SliderTemplateModel *obj2) {
                 return [obj1.order compare:obj2.order];
@@ -131,9 +136,8 @@
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
-	SliderTemplateModel *copy = [[[self class] alloc] init];
+	SliderTemplateModel *copy = [super copyWithZone:zone];
     
-    copy.ID = self.ID;
     copy.name = self.name;
     copy.minLabel = self.minLabel;
     copy.maxLabel = self.maxLabel;
@@ -165,7 +169,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"slider_templates"];
             models = [models sortedArrayUsingComparator:^NSComparisonResult(SliderTemplateModel *obj1, SliderTemplateModel *obj2) {
                 return [obj1.order compare:obj2.order];

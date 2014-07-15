@@ -86,6 +86,12 @@ typedef enum {
     }
 }
 
+- (void)displayDrink:(DrinkModel *)drink {
+    if (self.mode == SHOverlayCollectionViewModeDrinklists) {
+        [self.drinksCollectionViewManager changeDrink:drink];
+    }
+}
+
 - (void)displaySpecialsForSpots:(NSArray *)spots {
     self.mode = SHOverlayCollectionViewModeSpecials;
     self.collectionView.dataSource = self.specialsCollectionViewManager;

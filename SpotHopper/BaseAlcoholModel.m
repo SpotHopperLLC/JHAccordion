@@ -47,7 +47,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"base_alcohols"];
             successBlock(models, jsonApi);
             
@@ -97,7 +102,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"base_alcohols"];
             
             if (models.count) {

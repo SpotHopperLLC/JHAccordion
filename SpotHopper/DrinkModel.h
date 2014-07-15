@@ -60,6 +60,12 @@
 @property (nonatomic, strong) NSArray *images;
 @property (nonatomic, strong) NSNumber *relevance;
 
+@property (nonatomic, readonly) BOOL isBeer;
+@property (nonatomic, readonly) BOOL isCocktail;
+@property (nonatomic, readonly) BOOL isWine;
+
+@property (nonatomic, readonly) UIImage *placeholderImage;
+
 - (NSString *)matchPercent;
 
 + (void)cancelGetDrinks;
@@ -73,6 +79,10 @@
 - (Promise*)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock __attribute__ ((deprecated));
 
 #pragma mark - Revised Code for 2.0
+
+- (void)fetchDrink:(void(^)(DrinkModel *drinkModel))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
+- (Promise*)fetchDrink;
 
 - (void)fetchSpotsForDrinkListRequest:(DrinkListRequest *)request success:(void(^)(NSArray *spotModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
@@ -89,12 +99,5 @@
 #pragma mark -
 
 - (NSString*)abvPercentString;
-
-#pragma mark - Helpers
-
-- (BOOL)isBeer;
-- (BOOL)isCocktail;
-- (BOOL)isWine;
-- (UIImage *)placeholderImage;
 
 @end

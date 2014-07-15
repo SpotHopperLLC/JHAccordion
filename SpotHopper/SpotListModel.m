@@ -35,7 +35,7 @@
 #pragma mark - Debugging
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ - %@ [%@]", self.ID, self.href, NSStringFromClass([self class])];
+    return [NSString stringWithFormat:@"%@ - %@ [%@]", self.ID, self.name, NSStringFromClass([self class])];
 }
 
 #pragma mark - Properties
@@ -77,7 +77,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"spot_lists"];
             successBlock(models, jsonApi);
             
@@ -135,7 +140,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             SpotListModel *model = [jsonApi resourceForKey:@"spot_lists"];
             successBlock(model, jsonApi);
             
@@ -163,7 +173,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             SpotListModel *model = [jsonApi resourceForKey:@"spot_lists"];
             successBlock(model, jsonApi);
             
@@ -310,9 +325,14 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *spotlists = [jsonApi resourcesForKey:@"spot_lists"];
-            NSMutableArray *filteredSpotlist = @[].mutableCopy;
+            NSMutableArray *filteredSpotlists = @[].mutableCopy;
             for (SpotListModel *spotlist in spotlists) {
                 // delete spotlists with default names (temporary measure)
                 if ([kSpotListModelDefaultName isEqualToString:spotlist.name]) {
@@ -321,16 +341,20 @@
                     } fail:nil always:nil];
                 }
                 else {
-                    [filteredSpotlist addObject:spotlist];
+                    [filteredSpotlists addObject:spotlist];
                 }
             }
             
-            if (filteredSpotlist.count) {
-                [[SpotListModel sh_sharedCache] cacheSpotlists:filteredSpotlist];
+            // Note: The last modified appears to be last, so reversing the order would be better
+            // At this time the updated_at value for a spotlist is not provided.
+            NSArray *reversedArray = [[filteredSpotlists reverseObjectEnumerator] allObjects];
+            
+            if (reversedArray.count) {
+                [[SpotListModel sh_sharedCache] cacheSpotlists:reversedArray];
             }
             
             if (successBlock) {
-                successBlock(filteredSpotlist);
+                successBlock(reversedArray);
             }
         } else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
@@ -357,7 +381,7 @@
 + (NSDictionary *)prepareSearchParametersWithRequest:(SpotListRequest *)request {
     NSMutableDictionary *params = @{
                                     @"name" : request.name,
-                                    kSpotListModelParamBasedOnSlider : [NSNumber numberWithBool:YES]
+                                    kSpotListModelParamBasedOnSlider : [NSNumber numberWithBool:request.isBasedOnSliders]
                                     }.mutableCopy;
     
     NSMutableArray *jsonSliders = @[].mutableCopy;
@@ -388,7 +412,6 @@
     if (request.radius) {
         CGFloat miles = request.radius / kMetersPerMile;
         NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
-        DebugLog(@"radiusParam: %@", radiusParam);
         params[kSpotListModelParamRadius] = radiusParam;
     }
     
@@ -398,13 +421,16 @@
 + (void)createSpotListWithRequest:(SpotListRequest *)request success:(void (^)(SpotListModel *spotListModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     NSDictionary *params = [self prepareSearchParametersWithRequest:request];
     
-    DebugLog(@"params: %@", params);
-    
     [[ClientSessionManager sharedClient] POST:@"/api/spot_lists" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             SpotListModel *model = [jsonApi resourceForKey:@"spot_lists"];
             
             // limit to 10
@@ -425,14 +451,16 @@
 + (void)updateSpotListWithRequest:(SpotListRequest *)request success:(void (^)(SpotListModel *spotListModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     NSDictionary *params = [self prepareSearchParametersWithRequest:request];
     
-    DebugLog(@"ID: %@", request.spotListId);
-    DebugLog(@"params: %@", params);
-    
     [[ClientSessionManager sharedClient] PUT:[NSString stringWithFormat:@"/api/spot_lists/%ld", (long)[request.spotListId integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             SpotListModel *model = [jsonApi resourceForKey:@"spot_lists"];
             
             // limit to 10
@@ -458,7 +486,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             SpotListModel *spotlist = [jsonApi resourceForKey:@"spot_lists"];
             if (successBlock) {
                 successBlock(spotlist);
@@ -506,7 +539,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             SpotListModel *model = [jsonApi resourceForKey:@"spot_lists"];
             if (successBlock) {
                 successBlock(model);

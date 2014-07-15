@@ -14,10 +14,12 @@
 
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'name' to 'name' property
-    // Maps values in JSON key 'created_at' to 'createdAt' property
-    // Maps values in JSON key 'updated_at' to 'updatedAt' property
+    // Maps values in JSON key 'created_at' to 'Date:createdAt' property
+    // Maps values in JSON key 'updated_at' to 'Date:updatedAt' property
     return @{
-             @"name" : @"name"
+             @"name" : @"name",
+             @"created_at" : @"Date:createdAt",
+             @"updated_at" : @"Date:updatedAt"
              };
     
 }
@@ -30,29 +32,28 @@
 
 #pragma mark - Getters
 
-- (NSDate *)createdAt {
-    if (!_createdAt) {
-        _createdAt = [self formatDateTimestamp:[self objectForKey:@"created_at"]];
-    }
-    return _createdAt;
-}
-
-- (NSDate *)updatedAt {
-    if (!_updateAt) {
-        _updateAt = [self formatDateTimestamp:[self objectForKey:@"updated_at"]];
-    }
-    return _updateAt;
-}
+//- (NSDate *)createdAt {
+//    if (!_createdAt) {
+//        _createdAt = [self formatDateTimestamp:[self objectForKey:@"created_at"]];
+//    }
+//    return _createdAt;
+//}
+//
+//- (NSDate *)updatedAt {
+//    if (!_updateAt) {
+//        _updateAt = [self formatDateTimestamp:[self objectForKey:@"updated_at"]];
+//    }
+//    return _updateAt;
+//}
 
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
-	SpotTypeModel *copy = [[[self class] alloc] init];
+	SpotTypeModel *copy = [super copyWithZone:zone];
     
-    copy.ID = self.ID;
     copy.name = self.name;
     copy.createdAt = self.createdAt;
-    copy.updateAt = self.updateAt;
+    copy.updatedAt = self.updatedAt;
     
     return copy;
 }

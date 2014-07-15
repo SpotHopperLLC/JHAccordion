@@ -87,7 +87,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"drink_lists"];
             successBlock(models, jsonApi);
             
@@ -153,7 +158,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             DrinkListModel *model = [jsonApi resourceForKey:@"drink_lists"];
             successBlock(model, jsonApi);
             
@@ -181,7 +191,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             DrinkListModel *model = [jsonApi resourceForKey:@"drink_lists"];
             successBlock(model, jsonApi);
             
@@ -328,21 +343,24 @@
     
     [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/users/%ld/drink_lists", (long)[user.ID integerValue]] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        DebugLog(@"responseObject: %@", responseObject);
-        
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *drinklists = [jsonApi resourcesForKey:@"drink_lists"];
 
-#ifndef NDEBUG
-            for (DrinkListModel *drinklist __unused in drinklists) {
-                NSAssert(drinklist.drinkType, @"Drink type must be defined");
-            }
-#endif
+//#ifndef NDEBUG
+//            for (DrinkListModel *drinklist __unused in drinklists) {
+//                NSAssert(drinklist.drinkType, @"Drink type must be defined");
+//            }
+//#endif
             
-            NSMutableArray *filteredDrinklist = @[].mutableCopy;
+            NSMutableArray *filteredDrinklists = @[].mutableCopy;
             for (DrinkListModel *drinklist in drinklists) {
                 // delete spotlists with default names (temporary measure)
                 if ([kDrinkListModelDefaultName isEqualToString:drinklist.name]) {
@@ -351,22 +369,20 @@
                     } fail:nil always:nil];
                 }
                 else {
-                    [filteredDrinklist addObject:drinklist];
+                    [filteredDrinklists addObject:drinklist];
                 }
             }
             
-#ifndef NDEBUG
-            for (DrinkListModel *drinklist __unused in filteredDrinklist) {
-                NSAssert(drinklist.drinkType, @"Drink type must be defined");
-            }
-#endif
+            // Note: The last modified appears to be last, so reversing the order would be better
+            // At this time the updated_at value for a spotlist is not provided.
+            NSArray *reversedArray = [[filteredDrinklists reverseObjectEnumerator] allObjects];
             
-            if (filteredDrinklist.count) {
-                [[DrinkListModel sh_sharedCache] cacheDrinklists:filteredDrinklist];
+            if (filteredDrinklists.count) {
+                [[DrinkListModel sh_sharedCache] cacheDrinklists:reversedArray];
             }
             
             if (successBlock) {
-                successBlock(filteredDrinklist);
+                successBlock(reversedArray);
             }
         } else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
@@ -407,7 +423,7 @@
                                     kSpotModelParamsPageSize : @10,
                                     @"name" : request.name,
                                     @"sliders" : jsonSliders,
-                                    kDrinkListModelParamBasedOnSlider : [NSNumber numberWithBool:YES]
+                                    kDrinkListModelParamBasedOnSlider : [NSNumber numberWithBool:request.isBasedOnSliders]
                                     }.mutableCopy;
     
     if (request.drinkId != nil) {
@@ -433,7 +449,6 @@
     
     CGFloat miles = request.radius / kMetersPerMile;
     NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
-    DebugLog(@"radiusParam: %@", radiusParam);
     params[kDrinkListModelParamRadius] = radiusParam;
     
     return params;
@@ -447,7 +462,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             DrinkListModel *model = [jsonApi resourceForKey:@"drink_lists"];
             
             // limit to 10
@@ -475,7 +495,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             DrinkListModel *model = [jsonApi resourceForKey:@"drink_lists"];
             
             // limit to 10
@@ -503,7 +528,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             DrinkListModel *model = [jsonApi resourceForKey:@"drink_lists"];
             if (successBlock) {
                 successBlock(model);
@@ -551,7 +581,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             DrinkListModel *model = [jsonApi resourceForKey:@"drink_lists"];
             if (successBlock) {
                 successBlock(model);

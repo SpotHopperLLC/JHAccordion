@@ -98,7 +98,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"spots"];
             successBlock(models, jsonApi);
             
@@ -150,7 +155,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"spots"];
             successBlock(models, jsonApi);
             
@@ -177,7 +187,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             SpotModel *model = [jsonApi resourceForKey:@"spots"];
             successBlock(model, jsonApi);
             
@@ -204,7 +219,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             SpotModel *model = [jsonApi resourceForKey:@"spots"];
             successBlock(model, jsonApi);
             
@@ -231,7 +251,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"menu_items"];
             successBlock(models, jsonApi);
             
@@ -270,7 +295,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"spots"];
             if (successBlock) {
                 successBlock(models);
@@ -291,6 +321,48 @@
     [self fetchSpotsNearLocation:location success:^(NSArray *spots) {
         // Resolves promise
         [deferred resolveWith:spots];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
+- (void)fetchSpot:(void (^)(SpotModel *spotModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/spots/%ld", (long)[self.ID integerValue]] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
+            SpotModel *model = [jsonApi resourceForKey:@"spots"];
+            
+            if (successBlock) {
+                successBlock(model);
+            }
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            
+            if (failureBlock) {
+                failureBlock(errorModel);
+            }
+        }
+    }];
+}
+
+- (Promise *)fetchSpot {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+
+    [self fetchSpot:^(SpotModel *spotModel) {
+        // Resolves promise
+        [deferred resolveWith:spotModel];
     } failure:^(ErrorModel *errorModel) {
         // Rejects promise
         [deferred rejectWith:errorModel];
@@ -361,7 +433,12 @@
             // Parses response with JSONAPI
             JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
             
-            if (operation.response.statusCode == 200) {
+            if (operation.isCancelled || operation.response.statusCode == 204) {
+                if (successBlock) {
+                    successBlock(nil);
+                }
+            }
+            else if (operation.response.statusCode == 200) {
                 MenuModel *menu = [[MenuModel alloc] init];
                 menu.items = [jsonApi resourcesForKey:@"menu_items"];
                 menu.types = [[jsonApi linked] objectForKey:@"menu_types"];

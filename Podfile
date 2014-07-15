@@ -4,7 +4,7 @@ platform :ios, '7.0'
 
 # Networking
 pod 'AFNetworking', '~> 2.0.0'
-pod 'JSONAPI', :git => 'http://github.com/joshdholtz/jsonapi-ios.git'
+pod 'JSONAPI', '~> 0.2'
 pod 'BitlyForiOS', :git => 'https://github.com/brennanMKE/BitlyForiOS.git', :tag => '0.0.3'
 
 # Helpers

@@ -62,7 +62,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"drinks"];
             successBlock(models, jsonApi);
             
@@ -89,7 +94,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             DrinkModel *model = [jsonApi resourceForKey:@"drinks"];
             successBlock(model, jsonApi);
             
@@ -116,7 +126,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             DrinkModel *model = [jsonApi resourceForKey:@"drinks"];
             successBlock(model, jsonApi);
             
@@ -143,7 +158,12 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"spots"];
             successBlock(models, jsonApi);
             
@@ -162,6 +182,45 @@
 }
 
 #pragma mark - Revised Code for 2.0
+
+- (void)fetchDrink:(void(^)(DrinkModel *drinkModel))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drinks/%ld", (long)[self.ID integerValue] ] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
+            DrinkModel *model = [jsonApi resourceForKey:@"drinks"];
+            if (successBlock) {
+                successBlock(model);
+            }
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            if (failureBlock) {
+                failureBlock(errorModel);
+            }
+        }
+    }];
+}
+
+- (Promise*)fetchDrink {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+
+    [self fetchDrink:^(DrinkModel *drinkModel) {
+        // Resolves promise
+        [deferred resolveWith:drinkModel];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
 
 - (void)fetchSpotsForDrinkListRequest:(DrinkListRequest *)request success:(void(^)(NSArray *spotModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
     if (!CLLocationCoordinate2DIsValid(request.coordinate)) {
@@ -186,7 +245,6 @@
         
         CGFloat miles = request.radius / kMetersPerMile;
         NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
-        DebugLog(@"radiusParam: %@", radiusParam);
         
         NSDictionary *params = @{
                                  kSpotModelParamPage : @1,
@@ -201,7 +259,12 @@
             // Parses response with JSONAPI
             JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
             
-            if (operation.response.statusCode == 200) {
+            if (operation.isCancelled || operation.response.statusCode == 204) {
+                if (successBlock) {
+                    successBlock(nil);
+                }
+            }
+            else if (operation.response.statusCode == 200) {
                 NSArray *spotModels = [jsonApi resourcesForKey:@"spots"];
                 
                 if (spotModels.count) {
@@ -428,15 +491,15 @@
 #pragma mark - Helpers
 
 - (BOOL)isBeer {
-    return [[self drinkType].name isEqualToString:kDrinkTypeNameBeer];
+    return [kDrinkTypeNameBeer isEqualToString:self.drinkType.name];
 }
 
 - (BOOL)isCocktail {
-    return [[self drinkType].name isEqualToString:kDrinkTypeNameCocktail];
+    return [kDrinkTypeNameCocktail isEqualToString:self.drinkType.name];
 }
 
 - (BOOL)isWine {
-    return [[self drinkType].name isEqualToString:kDrinkTypeNameWine];
+    return [kDrinkTypeNameWine isEqualToString:self.drinkType.name];
 }
 
 - (UIImage *)placeholderImage {
