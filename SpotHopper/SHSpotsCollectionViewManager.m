@@ -191,6 +191,8 @@
 - (void)renderCell:(UICollectionViewCell *)cell withSpot:(SpotModel *)spot atIndex:(NSUInteger)index {
     UIImageView *spotImageView = (UIImageView *)[cell viewWithTag:kSpotCellSpotImageView];
     
+    spotImageView.image = nil;
+    
     if (spot.imageUrl.length) {
         [spotImageView setImageWithURL:[NSURL URLWithString:spot.imageUrl] placeholderImage:spot.placeholderImage];
     }
@@ -205,6 +207,9 @@
             weakImageView.image = spot.placeholderImage;
             [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
+    }
+    else {
+        spotImageView.image = spot.placeholderImage;
     }
     
     UIButton *nameButton = [self buttonInView:cell withTag:kSpotCellSpotNameButton];

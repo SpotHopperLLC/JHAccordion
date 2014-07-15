@@ -29,7 +29,7 @@
     [thumbImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     [thumbImageView setImageWithURLRequest:thumbImageRequest placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *thumbImage) {
         
-        if (thumbImageBlock) {
+        if (thumbImage && thumbImageBlock) {
             thumbImageBlock(thumbImage);
         }
         

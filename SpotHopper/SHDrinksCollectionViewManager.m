@@ -225,6 +225,8 @@
     [positionLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
     [matchLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     
+    drinkImageView.image = nil;
+    
     if (drink.imageUrl.length) {
         [drinkImageView setImageWithURL:[NSURL URLWithString:drink.imageUrl] placeholderImage:drink.placeholderImage];
     }
@@ -239,6 +241,9 @@
             weakImageView.image = drink.placeholderImage;
             [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
+    }
+    else {
+        drinkImageView.image = drink.placeholderImage;
     }
    
     [nameButton setTitle:drink.name forState:UIControlStateNormal];

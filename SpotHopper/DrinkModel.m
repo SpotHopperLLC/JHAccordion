@@ -237,7 +237,6 @@
     NSString *cacheKey = [DrinkModelCache spotsKeyForDrink:self coordinate:request.coordinate radius:request.radius];
     NSArray *spots = [[DrinkModel sh_sharedCache] cachedSpotsForKey:cacheKey];
     if (spots && successBlock) {
-        NSLog(@"Returning %lu cached spots", (unsigned long)spots.count);
         successBlock(spots);
     }
     else {
