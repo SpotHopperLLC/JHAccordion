@@ -24,6 +24,7 @@
 #import "SHDrinkProfileViewController.h"
 #import "SHLocationPickerViewController.h"
 #import "SearchViewController.h"
+#import "ShareViewController.h"
 
 #import "SHNotifications.h"
 
@@ -95,6 +96,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     SHLocationPickerDelegate,
     SearchViewControllerDelegate,
     SpotCalloutViewDelegate,
+    ShareViewControllerDelegate,
     MKMapViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *btnLeft;
@@ -317,9 +319,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             [view constrainToHeight:kFooterNavigationViewHeight];
         }];
         
-        [self hideCollectionContainerView:FALSE withCompletionBlock:^{
-            NSLog(@"Collection container view is hidden");
-        }];
+        [self hideCollectionContainerView:FALSE withCompletionBlock:nil];
     }
     
     if (!self.slidersSearchViewController.view.superview) {
@@ -448,9 +448,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     NSAssert(self.navigationItem, @"Navigation Item is required");
     
 #ifdef kIntegrateDeprecatedScreens
-    // TODO: implement navigation to legacy screens
-    DebugLog(@"Present legacy global search");
-    
     SearchViewController *viewController = [[SearchViewController alloc] initWithNibName:@"SearchViewController" bundle:[NSBundle mainBundle]];
     viewController.delegate = self;
     [self.navigationController pushViewController:viewController animated:YES];
@@ -530,33 +527,26 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     cancelButton.frame = cancelButtonFrame;
     UIBarButtonItem *searchSlidersCancelBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     
-    UIImageView *rightImageView = [[UIImageView alloc] initWithFrame:CGRectMake(274.0f, 7.0f, 30.0f, 30.0f)];
-    
     NSString *title = nil;
     
     switch (mode) {
         case SHModeSpots:
-            [SHStyleKit setImageView:rightImageView withDrawing:SHStyleKitDrawingSpotIcon color:SHStyleKitColorMyWhiteColor];
             title = @"Find Spots";
             break;
         case SHModeBeer:
-            [SHStyleKit setImageView:rightImageView withDrawing:SHStyleKitDrawingBeerIcon color:SHStyleKitColorMyWhiteColor];
             title = @"Find Beers";
             break;
         case SHModeCocktail:
-            [SHStyleKit setImageView:rightImageView withDrawing:SHStyleKitDrawingCocktailIcon color:SHStyleKitColorMyWhiteColor];
             title = @"Find Cocktails";
             break;
         case SHModeWine:
-            [SHStyleKit setImageView:rightImageView withDrawing:SHStyleKitDrawingWineIcon color:SHStyleKitColorMyWhiteColor];
             title = @"Find Wines";
             break;
             
         default:
-            [SHStyleKit setImageView:rightImageView withDrawing:SHStyleKitDrawingSpotIcon color:SHStyleKitColorMyWhiteColor];
+            // do nothing
+            break;
     }
-    
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightImageView];
     
     // ensure the display order is correct
     [self.view bringSubviewToFront:self.blurredView];
@@ -571,7 +561,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self.view layoutIfNeeded];
         
         [self.navigationItem setLeftBarButtonItem:searchSlidersCancelBarButtonItem animated:animated];
-        [self.navigationItem setRightBarButtonItem:rightBarButtonItem animated:animated];
+        [self.navigationItem setRightBarButtonItem:nil animated:animated];
         self.navigationItem.title = title.length ? title : @"What do you feel like?";
         
     } completion:^(BOOL finished) {
@@ -1729,6 +1719,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }];
 }
 
+- (void)shareSpecialForSpot:(SpotModel *)spot {
+    [self showShareViewControllerWithSpot:spot shareType:ShareViewControllerShareSpecial];
+}
+
 #pragma mark - SHSidebarDelegate
 #pragma mark -
 
@@ -1829,12 +1823,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didChangeToSpotAtIndex:(NSUInteger)index {
     if (self.mode == SHModeSpots && index < self.spotListModel.spots.count) {
         SpotModel *spot = self.spotListModel.spots[index];
-        NSLog(@"HomeMap: didChangeToSpotAtIndex: %@", spot.name);
         [self selectSpot:spot];
     }
     else if (self.mode == SHModeSpecials && index < self.specialsSpotModels.count) {
         SpotModel *spot = self.specialsSpotModels[index];
-        NSLog(@"HomeMap: didChangeToSpotAtIndex: %@", spot.name);
         [self selectSpot:spot];
     }
 }
@@ -1874,6 +1866,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }
 #endif
     
+}
+
+- (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didRequestShareSpecialForSpotAtIndex:(NSUInteger)index {
+    if (index < self.specialsSpotModels.count) {
+        SpotModel *spot = self.specialsSpotModels[index];
+        [self shareSpecialForSpot:spot];
+    }
 }
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didChangeToDrinkAtIndex:(NSUInteger)index {
@@ -2027,6 +2026,21 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             [self goToSpotProfile:pin.spot];
         }
     }
+}
+
+#pragma mark - ShareViewControllerDelegate
+#pragma mark -
+
+- (void)shareViewControllerClickedClose:(ShareViewController*)viewController {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    [self hideShareViewController:nil];
+}
+
+- (void)shareViewControllerDidFinish:(ShareViewController*)viewController {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    [self hideShareViewController:nil];
 }
 
 #pragma mark - MKMapViewDelegate
@@ -2186,12 +2200,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                 } always:nil];
             }
             
-            CGPoint point = [mapView convertCoordinate:annotationView.annotation.coordinate toPointToView:mapView];
-            NSLog(@"point: %f, %f", point.x, point.y);
-            
             [pin setNeedsDisplay];
 
-            NSLog(@"HomeMap - Did select spot on map: %@", pin.spot.name);
             [self.mapOverlayCollectionViewController displaySpot:pin.spot];
         }
     }

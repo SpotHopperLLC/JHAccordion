@@ -10,8 +10,10 @@
 
 #import "DrinkListModel.h"
 #import "DrinkModel.h"
+#import "DrinkSubTypeModel.h"
 #import "ImageModel.h"
 #import "SpotModel.h"
+#import "BaseAlcoholModel.h"
 #import "AverageReviewModel.h"
 
 #import "SHStyleKit+Additions.h"
@@ -252,8 +254,26 @@
     [SHStyleKit setButton:nameButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
 
     breweryLabel.text = drink.spot.name;
-    styleLabel.text = drink.style;
-    rankingLabel.text = [NSString stringWithFormat:@"%.1f/10", [drink.averageReview.rating floatValue]];
+    if (drink.isBeer) {
+        styleLabel.text = drink.style;
+    }
+    else if (drink.isCocktail && drink.baseAlochols) {
+        BaseAlcoholModel *baseAlcohol = drink.baseAlochols[0];
+        styleLabel.text = baseAlcohol.name;
+    }
+    else if (drink.isWine && drink.varietal) {
+        styleLabel.text = drink.varietal;
+    }
+    else {
+        styleLabel.text = nil;
+    }
+    
+    if (drink.isWine && ![@"Sparkling" isEqualToString:drink.drinkSubtype.name]) {
+        rankingLabel.text = [NSString stringWithFormat:@"%@ - Rating %.0f/10", drink.drinkSubtype.name, [drink.averageReview.rating floatValue]];
+    }
+    else {
+        rankingLabel.text = [NSString stringWithFormat:@"Rating %.0f/10", [drink.averageReview.rating floatValue]];
+    }
     
     positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", (long)index+1, (long)self.drinkList.drinks.count];
     
