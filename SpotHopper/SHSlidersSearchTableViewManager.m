@@ -458,7 +458,7 @@
                         sectionTitle = [NSString stringWithFormat:@"Step 1 - %@", self.selectedSpotlist.name];
                     }
                     else {
-                        sectionTitle = @"Step 1 - Moods";
+                        sectionTitle = @"Step 1 - Select Mood";
                     }
                     break;
                     
@@ -482,7 +482,7 @@
                         sectionTitle = [NSString stringWithFormat:@"Step 1 - %@", self.selectedDrinklist.name];
                     }
                     else {
-                        sectionTitle = @"Step 1 - Style";
+                        sectionTitle = @"Step 1 - Select Style";
                     }
                     break;
                     
@@ -515,7 +515,7 @@
                         sectionTitle = [NSString stringWithFormat:@"Step 2 - %@", self.selectedDrinklist.name];
                     }
                     else {
-                        sectionTitle = @"Step 2 - Style";
+                        sectionTitle = @"Step 2 - Select Style";
                     }
                     break;
                     
@@ -548,7 +548,7 @@
                         sectionTitle = [NSString stringWithFormat:@"Step 2 - %@", self.selectedDrinklist.name];
                     }
                     else {
-                        sectionTitle = @"Step 2 - Style";
+                        sectionTitle = @"Step 2 - Select Style";
                     }
                     break;
                     
