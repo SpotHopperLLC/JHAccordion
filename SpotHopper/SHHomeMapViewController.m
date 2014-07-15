@@ -78,7 +78,7 @@
 
 #define kModalAnimationDuration 0.35f
 
-#define kMapPadding 4000.0f
+#define kMapPadding 14000.0f
 
 NSString* const HomeMapToSpotProfile = @"HomeMapToSpotProfile";
 NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
@@ -2124,6 +2124,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                 [[pin.spot fetchMenu] then:^(MenuModel *menu) {
                     // TODO: get drink
                     MenuItemModel *menuItem = [menu menuItemForDrink:self.selectedDrink];
+                    NSAssert(menuItem, @"Menu Item is required");
                     NSArray *prices = [menu pricesForMenuItem:menuItem];
                     
                     NSString *spotName = pin.spot.spotType.name.length > 0 ? [NSString stringWithFormat:@"%@ (%@)", pin.spot.name, pin.spot.spotType.name] : pin.spot.name;
@@ -2152,10 +2153,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                     else if (isWine) {
                         calloutIcon = SpotCalloutIconWine;
                     }
-                    
-//                    calloutView.delegate = self;
-//                    self.calloutView = calloutView;
-//                    [calloutView placeInMapView:self.mapView insideAnnotationView:annotationView];
                     
                     UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:SpotCalloutViewIdentifier];
                     

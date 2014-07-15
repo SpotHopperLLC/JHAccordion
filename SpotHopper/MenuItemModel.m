@@ -8,13 +8,15 @@
 
 #import "MenuItemModel.h"
 
+#import "MenuTypeModel.h"
+
 @implementation MenuItemModel
 
 #pragma mark - Debugging
 #pragma mark -
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.href];
+    return [NSString stringWithFormat:@"%@ - %@ (%@)", self.ID, self.name, self.menuType.name];
 }
 
 #pragma mark - Mapping
