@@ -2174,6 +2174,22 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                         calloutIcon = SpotCalloutIconWine;
                     }
                     
+                    if (!prices.count) {
+                        if (isBeerOnTap && isBeerInBottle) {
+                            drink1 = @"Available on Tap";
+                            drink2 = @"Available by the bottle";
+                        }
+                        else if (isBeerOnTap && !isBeerInBottle) {
+                            drink1 = @"Available on Tap";
+                        }
+                        else if (isBeerInBottle && !isBeerOnTap) {
+                            drink1 = @"Available by the bottle";
+                        }
+                        else if (isWine) {
+                            drink1 = @"Available";
+                        }
+                    }
+                    
                     UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:SpotCalloutViewIdentifier];
                     
                     SpotCalloutView *calloutView = (SpotCalloutView *)vc.view;
