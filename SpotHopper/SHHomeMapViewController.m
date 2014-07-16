@@ -55,6 +55,7 @@
 #import "AverageReviewModel.h"
 #import "MenuModel.h"
 #import "MenuItemModel.h"
+#import "PriceModel.h"
 
 #import "UIImage+BlurredFrame.h"
 #import "UIImage+ImageEffects.h"
@@ -2142,7 +2143,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                 MatchPercentAnnotationView *pin = (MatchPercentAnnotationView *)annotationView;
                 
                 [[pin.spot fetchMenu] then:^(MenuModel *menu) {
-                    // TODO: get drink
                     MenuItemModel *menuItem = [menu menuItemForDrink:self.selectedDrink];
                     NSAssert(menuItem, @"Menu Item is required");
                     NSArray *prices = [menu pricesForMenuItem:menuItem];
