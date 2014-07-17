@@ -577,7 +577,10 @@
         SHStyleKitColor tintColor = isOpened ? SHStyleKitColorMyTintColor : SHStyleKitColorMyTextColor;
         
         titleLabel.text = sectionTitle;
-        [SHStyleKit setLabel:titleLabel textColor:tintColor];
+        titleLabel.textColor = [SHStyleKit color:SHStyleKitColorMyTextColor];
+        titleLabel.highlightedTextColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
+        titleLabel.highlighted = isOpened;
+        
         [SHStyleKit setImageView:arrowImageView withDrawing:SHStyleKitDrawingNavigationArrowRightIcon color:tintColor];
         
         if ([button bk_hasEventHandlersForControlEvents:UIControlEventTouchUpInside]) {
@@ -1792,7 +1795,7 @@
     UILabel *titleLabel = (UILabel *)[view viewWithTag:1];
     UIImageView *arrowImageView = (UIImageView *)[view viewWithTag:2];
     
-    [SHStyleKit setLabel:titleLabel textColor:SHStyleKitColorMyTintColor];
+    titleLabel.highlighted =  TRUE;
     [SHStyleKit setImageView:arrowImageView withDrawing:SHStyleKitDrawingNavigationArrowRightIcon color:SHStyleKitColorMyTintColor];
     
     [UIView animateWithDuration:0.35 animations:^{
@@ -1805,7 +1808,7 @@
     UILabel *titleLabel = (UILabel *)[view viewWithTag:1];
     UIImageView *arrowImageView = (UIImageView *)[view viewWithTag:2];
     
-    [SHStyleKit setLabel:titleLabel textColor:SHStyleKitColorMyTextColor];
+    titleLabel.highlighted = FALSE;
     [SHStyleKit setImageView:arrowImageView withDrawing:SHStyleKitDrawingNavigationArrowRightIcon color:SHStyleKitColorMyTextColor];
 
     // scroll to the top when a list is selected
