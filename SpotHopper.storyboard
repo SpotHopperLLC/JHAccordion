@@ -42,6 +42,30 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="65M-In-Igo" userLabel="Status View">
+                                <rect key="frame" x="42" y="181" width="236" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status Text" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="220" translatesAutoresizingMaskIntoConstraints="NO" id="v4X-PM-32V" userLabel="Status Label">
+                                        <rect key="frame" x="8" y="8" width="220" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="300" id="B9x-jx-w6R"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="220" id="OKI-g8-rFX"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="0.75" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="v4X-PM-32V" firstAttribute="leading" secondItem="65M-In-Igo" secondAttribute="leading" constant="8" id="5Pr-yL-tA7"/>
+                                    <constraint firstAttribute="bottom" secondItem="v4X-PM-32V" secondAttribute="bottom" constant="8" id="CqT-dX-fIC"/>
+                                    <constraint firstItem="v4X-PM-32V" firstAttribute="top" secondItem="65M-In-Igo" secondAttribute="top" constant="8" id="PZj-kJ-YOq"/>
+                                    <constraint firstAttribute="trailing" secondItem="v4X-PM-32V" secondAttribute="trailing" constant="8" id="fxW-ZP-MdB"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QHs-5Q-8nO" userLabel="Search This Area View">
                                 <rect key="frame" x="60" y="348" width="200" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -137,6 +161,7 @@
                             <constraint firstItem="V3V-T6-eR1" firstAttribute="leading" secondItem="7So-m6-aYn" secondAttribute="leading" id="A2k-sJ-74k"/>
                             <constraint firstItem="V3V-T6-eR1" firstAttribute="top" secondItem="7So-m6-aYn" secondAttribute="top" id="AR4-sg-n8R"/>
                             <constraint firstItem="NLr-zB-HzB" firstAttribute="top" secondItem="7So-m6-aYn" secondAttribute="top" id="C62-f7-FXM"/>
+                            <constraint firstAttribute="centerX" secondItem="65M-In-Igo" secondAttribute="centerX" id="DSW-tW-XmY"/>
                             <constraint firstItem="lVO-Li-dx2" firstAttribute="top" secondItem="2SI-rp-QfL" secondAttribute="bottom" constant="240" id="Hwu-CO-RK2"/>
                             <constraint firstItem="lVO-Li-dx2" firstAttribute="top" secondItem="tKe-Qo-IuZ" secondAttribute="bottom" constant="190" id="YZi-pw-peN"/>
                             <constraint firstAttribute="centerX" secondItem="QHs-5Q-8nO" secondAttribute="centerX" id="a3S-Ob-GSz"/>
@@ -144,6 +169,7 @@
                             <constraint firstItem="lVO-Li-dx2" firstAttribute="top" secondItem="NLr-zB-HzB" secondAttribute="bottom" id="d1O-4E-9kj"/>
                             <constraint firstItem="tKe-Qo-IuZ" firstAttribute="leading" secondItem="7So-m6-aYn" secondAttribute="leading" id="fV1-2M-AC9"/>
                             <constraint firstItem="NLr-zB-HzB" firstAttribute="leading" secondItem="7So-m6-aYn" secondAttribute="leading" id="gGB-tk-mwA"/>
+                            <constraint firstItem="lVO-Li-dx2" firstAttribute="top" secondItem="65M-In-Igo" secondAttribute="bottom" constant="350" id="hkN-n9-Ub0"/>
                             <constraint firstAttribute="trailing" secondItem="V3V-T6-eR1" secondAttribute="trailing" id="lq3-Wn-Uk0"/>
                             <constraint firstItem="2SI-rp-QfL" firstAttribute="leading" secondItem="7So-m6-aYn" secondAttribute="leading" constant="20" id="mLI-nu-Cc9"/>
                             <constraint firstItem="lVO-Li-dx2" firstAttribute="top" secondItem="QHs-5Q-8nO" secondAttribute="bottom" constant="180" id="mdZ-nH-hLn"/>
@@ -163,6 +189,9 @@
                         <outlet property="searchThisAreaBottomConstraint" destination="mdZ-nH-hLn" id="qEb-gE-Qol"/>
                         <outlet property="searchThisAreaButton" destination="CqU-uV-Vmo" id="nGp-ys-PPp"/>
                         <outlet property="searchThisAreaView" destination="QHs-5Q-8nO" id="BFC-Bm-lod"/>
+                        <outlet property="statusBottomConstraint" destination="hkN-n9-Ub0" id="q6A-UL-dst"/>
+                        <outlet property="statusLabel" destination="v4X-PM-32V" id="OG4-jw-r6f"/>
+                        <outlet property="statusView" destination="65M-In-Igo" id="qOV-vP-iiL"/>
                         <segue destination="GR3-5Z-4Jq" kind="modal" identifier="HomeMapToSpots" id="ybR-9Z-6Rw"/>
                         <segue destination="hqs-WD-w9i" kind="push" identifier="HomeMapToSpotProfile" id="rZh-fx-1kK"/>
                         <segue destination="g2C-SZ-b4O" kind="push" identifier="HomeMapToDrinkProfile" id="gNm-my-qe1"/>

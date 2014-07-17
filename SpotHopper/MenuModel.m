@@ -76,8 +76,56 @@
     NSMutableArray *prices = @[].mutableCopy;
     for (PriceModel *price in sorted) {
         NSString *priceAndSize = [price priceAndSize];
+        
+        NSAssert(menuItem.menuType.name.length, @"Menu Type and Name is required");
+        
         if (priceAndSize.length) {
-            [prices addObject:priceAndSize];
+            if ([menuItem.drink isBeer]) {
+                BOOL isOnTap = [@"Draft" isEqualToString:menuItem.menuType.name];
+                NSString *fullName = [NSString stringWithFormat:@"%@ (%@)", priceAndSize, isOnTap ? @"Tap" : @"Bottle"];
+                [prices addObject:fullName];
+            }
+            else {
+                [prices addObject:priceAndSize];
+            }
+        }
+        else if ([menuItem.drink isWine]) {
+            [prices addObject:@"Available"];
+        }
+        
+    }
+    
+    if (!prices.count) {
+        if ([menuItem.drink isBeer]) {
+            // TODO: iterate over all menu items to find a matching drink and check if it is available on tap and bottle
+            
+            BOOL isBeerOnTap = FALSE;
+            BOOL isBeerInBottle = FALSE;
+            
+            for (MenuItemModel *aMenuItem in self.items) {
+                if ([menuItem.drink isEqual:aMenuItem.drink]) {
+                    if ([@"Draft" isEqualToString:aMenuItem.menuType.name]) {
+                        isBeerOnTap = TRUE;
+                    }
+                    if ([@"Cans/Bottles" isEqualToString:aMenuItem.menuType.name]) {
+                        isBeerInBottle = TRUE;
+                    }
+                }
+            }
+            
+            if (isBeerOnTap && isBeerInBottle) {
+                [prices addObject:@"Available on Tap"];
+                [prices addObject:@"Available by the bottle"];
+            }
+            else if (isBeerOnTap && !isBeerInBottle) {
+                [prices addObject:@"Available on Tap"];
+            }
+            else if (isBeerInBottle && !isBeerOnTap) {
+                [prices addObject:@"Available by the bottle"];
+            }
+        }
+        else if ([menuItem.drink isWine]) {
+            [prices addObject:@"Available on Tap"];
         }
     }
     
