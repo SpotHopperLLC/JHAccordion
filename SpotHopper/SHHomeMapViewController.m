@@ -858,6 +858,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (IBAction)areYouHereYesButtonTapped:(id)sender {
+    [self hideAreYouHerePrompt:TRUE withCompletionBlock:nil];
+    
     if (self.nearbySpots.count) {
         SpotModel *spot = self.nearbySpots[0];
         [self displaySpotDrinkListForSpot:spot];
@@ -865,7 +867,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (IBAction)areYouHereNoButtonTapped:(id)sender {
-    _isSpotDrinkList = FALSE;
     [self hideAreYouHerePrompt:TRUE withCompletionBlock:nil];
 }
 
@@ -972,7 +973,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)resetSearch {
     DebugLog(@"%@", NSStringFromSelector(_cmd));
-    self.selectedSpot = nil;
+//    self.selectedSpot = nil;
     self.drinkListRequest = nil;
     self.spotListRequest = nil;
     
@@ -981,10 +982,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     [self hideStatus:TRUE withCompletionBlock:nil];
     
-    if (_isSpotDrinkList) {
-        _isSpotDrinkList = FALSE;
-        [self.locationMenuBarViewController deselectSpotDrinkList];
-    }
+//    if (_isSpotDrinkList) {
+//        _isSpotDrinkList = FALSE;
+//        [self.locationMenuBarViewController deselectSpotDrinkList];
+//    }
 }
 
 - (void)restoreNavigationIfNeeded {
@@ -1011,7 +1012,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)promptUserToCheckIn {
-    if (self.drinkListRequest) {
+    if (!_isSpotDrinkList && self.drinkListRequest) {
         // prompt the user to select the nearest spot with a 1 hour period between prompts
         NSTimeInterval seconds = 5000.0f;
         if (self.lastAreYouHerePrompt) {
@@ -1030,7 +1031,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                 request.radius = [self searchRadius];
                 
                 [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
-                    if (drinkListModel.drinks.count) {
+                    if (!_isSpotDrinkList && drinkListModel.drinks.count) {
                         [self showAreYouHerePromptForSpot:nearestSpot animated:TRUE withCompletionBlock:nil];
                         self.lastAreYouHerePrompt = [NSDate date];
                     }
@@ -1192,25 +1193,27 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)displaySpotDrinkListForSpot:(SpotModel *)spot {
     _isSpotDrinkList = TRUE;
+    self.selectedSpot = spot;
     
-    [self hideAreYouHerePrompt:TRUE withCompletionBlock:^{
-        DrinkListRequest *request = [self.drinkListRequest copy];
-        request.spotId = spot.ID;
-        
-        self.selectedSpot = spot;
-        [self.locationMenuBarViewController selectSpotDrinkListForSpot:spot];
-        
-        [self showHUD:@"Fetching drinks for Spot"];
-        [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
-            [self hideHUD];
-            [self displayDrinklist:drinkListModel];
-        } failure:^(ErrorModel *errorModel) {
-            [self hideHUD];
-            [self oops:errorModel caller:_cmd message:@"There was a problem while fetching drinks for this spot. Please try again."];
-        }];
-        
-        [self showSearchThisArea:TRUE withCompletionBlock:nil];
+    if (!self.areYouHerePromptView.hidden) {
+        [self hideAreYouHerePrompt:TRUE withCompletionBlock:nil];
+    }
+    
+    DrinkListRequest *request = [self.drinkListRequest copy];
+    request.spotId = spot.ID;
+    
+    [self.locationMenuBarViewController selectSpotDrinkListForSpot:spot];
+    
+    [self showHUD:@"Fetching drinks for Spot"];
+    [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
+        [self hideHUD];
+        [self displayDrinklist:drinkListModel];
+    } failure:^(ErrorModel *errorModel) {
+        [self hideHUD];
+        [self oops:errorModel caller:_cmd message:@"There was a problem while fetching drinks for this spot. Please try again."];
     }];
+    
+    [self showSearchThisArea:TRUE withCompletionBlock:nil];
 }
 
 - (void)styleBars {
@@ -1760,8 +1763,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         
         self.drinkListRequest = request;
         
-        _isSpotDrinkList = FALSE;
-        [self.locationMenuBarViewController deselectSpotDrinkList];
+//        _isSpotDrinkList = FALSE;
+//        [self.locationMenuBarViewController deselectSpotDrinkList];
         
         if (!request.isBasedOnSliders && [self.selectedDrink.ID isEqual:request.drinkId]) {
             DrinkListModel *drinklist = [[DrinkListModel alloc] init];
@@ -2034,6 +2037,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)locationMenuBarViewController:(SHLocationMenuBarViewController *)vc didDeselectSpot:(SpotModel *)spot {
+    _isSpotDrinkList = FALSE;
+    self.selectedSpot = nil;
+    
     [self showHUD:@"Searching Neighborhood"];
     [self searchAgainWithCompletionBlock:^{
         [self hideHUD];
@@ -2231,7 +2237,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)slidersSearchViewController:(SHSlidersSearchViewController *)vc didPrepareSpotlist:(SpotListModel *)spotlist withRequest:(SpotListRequest *)request forMode:(SHMode)mode {
     [self resetSearch];
     self.mode = mode;
-    _isSpotDrinkList = FALSE;
     self.spotListRequest = request;
     [self hideSlidersSearch:TRUE forMode:mode withCompletionBlock:^{
         [self displaySpotlist:spotlist];
@@ -2241,7 +2246,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)slidersSearchViewController:(SHSlidersSearchViewController *)vc didPrepareDrinklist:(DrinkListModel *)drinklist withRequest:(DrinkListRequest *)request forMode:(SHMode)mode {
     [self resetSearch];
     self.mode = mode;
-    _isSpotDrinkList = FALSE;
     self.drinkListRequest = request;
     [self hideSlidersSearch:TRUE forMode:mode withCompletionBlock:^{
         [self displayDrinklist:drinklist];
@@ -2262,6 +2266,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (CLLocationDistance)searchRadiusForSlidersSearchViewController:(SHSlidersSearchViewController *)vc {
     return [self searchRadius];
+}
+
+- (SpotModel *)slidersSearchViewControllerSelectedSpot:(SHSlidersSearchViewController *)vc {
+    return self.selectedSpot;
 }
 
 #pragma mark - SHLocationPickerDelegate
@@ -2525,7 +2533,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     [self updateLocationName];
     
-    if ([self canSearchAgain]) {
+    if (!_isSpotDrinkList && [self canSearchAgain]) {
         [self showSearchThisArea:TRUE withCompletionBlock:nil];
     }
     

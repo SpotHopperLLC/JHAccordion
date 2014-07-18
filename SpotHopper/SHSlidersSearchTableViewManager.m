@@ -1724,8 +1724,11 @@
     request.drinkSubTypeId = drinkSubTypeID;
     request.baseAlcoholId = baseAlcoholID;
     
-    // TODO: get selected spot (if any)
-    
+    if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerSelectedSpot:)]) {
+        SpotModel *spot = [self.delegate slidersSearchTableViewManagerSelectedSpot:self];
+        request.spotId = spot.ID;
+    }
+
     [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
         [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Drink Type ID" : drinkTypeID ?: @0, @"Drink Sub Type ID" : drinkSubTypeID ?: @0, @"Created With Sliders" : @TRUE}];
         

@@ -107,8 +107,14 @@
 
 - (IBAction)filterButtonTapped:(id)sender {
     if (_isDisplayingSpotDrinklist) {
-        if (self.spot && [self.delegate respondsToSelector:@selector(locationMenuBarViewController:didDeselectSpot:)]) {
-            [self.delegate locationMenuBarViewController:self didDeselectSpot:self.spot];
+        
+        if (self.spot) {
+            _isDisplayingSpotDrinklist = FALSE;
+            [self updateFilterLabelWithSpot:self.spot];
+            self.spot = nil;
+            if ([self.delegate respondsToSelector:@selector(locationMenuBarViewController:didDeselectSpot:)]) {
+                [self.delegate locationMenuBarViewController:self didDeselectSpot:self.spot];
+            }
         }
     }
     else {
@@ -143,10 +149,14 @@
 
 - (void)updateFilterLabelWithSpot:(SpotModel *)spot {
     if (_isDisplayingSpotDrinklist) {
-        self.filterLabel.text = [NSString stringWithFormat:@"%@", spot.name];
+        self.filterLabel.text = [NSString stringWithFormat:@"Where? %@", spot.name];
+        UIImage *closeImage = [SHStyleKit drawImage:SHStyleKitDrawingCloseIcon color:SHStyleKitColorMyTextColor size:CGSizeMake(20, 20)];
+        self.filterArrowImageView.image = closeImage;
     }
     else {
         self.filterLabel.text = [NSString stringWithFormat:@"Filter results to %@?", spot.name];
+        UIImage *arrowImage = [SHStyleKit drawImage:SHStyleKitDrawingNavigationArrowRightIcon color:SHStyleKitColorMyTextColor size:CGSizeMake(20, 20)];
+        self.filterArrowImageView.image = arrowImage;
     }
 }
 

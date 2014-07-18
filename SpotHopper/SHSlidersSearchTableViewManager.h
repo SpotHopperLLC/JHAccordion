@@ -14,6 +14,7 @@
 @class SpotListModel;
 @class DrinkTypeModel;
 @class DrinkSubTypeModel;
+@class SpotModel;
 @class ErrorModel;
 
 #import <CoreLocation/CoreLocation.h>
@@ -52,6 +53,8 @@
 
 - (void)slidersSearchTableViewManagerIsBusy:(SHSlidersSearchTableViewManager *)manager text:(NSString *)text;
 - (void)slidersSearchTableViewManagerIsFree:(SHSlidersSearchTableViewManager *)manager;
+
+- (SpotModel *)slidersSearchTableViewManagerSelectedSpot:(SHSlidersSearchTableViewManager *)manager;
 
 @required
 
