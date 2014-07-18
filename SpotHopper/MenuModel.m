@@ -126,8 +126,8 @@
                 [prices addObject:@"Available by the bottle"];
             }
         }
-        else if ([menuItem.drink isWine]) {
-            [prices addObject:@"Available on Tap"];
+        else if ([menuItem.drink isCocktail] || [menuItem.drink isWine]) {
+            [prices addObject:@"Available"];
         }
     }
     
