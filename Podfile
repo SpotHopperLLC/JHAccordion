@@ -22,6 +22,7 @@ pod 'MBProgressHUD', '~> 0.8.0'
 pod 'CRGradientNavigationBar', '~> 0.3.0'
 pod 'UIImage+BlurredFrame', '~> 0.0'
 pod 'BlocksKit', '~> 2.2.0'
+pod 'SVPulsingAnnotationView', '~> 0.3.0'
 
 # Debugging
 pod 'Raven', '~> 0.2.0'

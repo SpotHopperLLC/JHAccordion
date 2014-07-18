@@ -343,7 +343,7 @@
             completionBlock();
         }
     } failure:^(NSError *error) {
-        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+        // do nothing
     }];
 }
 

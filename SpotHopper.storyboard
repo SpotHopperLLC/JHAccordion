@@ -90,6 +90,9 @@
                                     <constraint firstAttribute="bottom" secondItem="CqU-uV-Vmo" secondAttribute="bottom" id="bwI-n8-w2Z"/>
                                     <constraint firstAttribute="trailing" secondItem="CqU-uV-Vmo" secondAttribute="trailing" id="e3a-v7-qlA"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Iyg-eq-Jgm" appends="YES" id="8qJ-BA-TTo"/>
+                                </connections>
                             </view>
                             <view hidden="YES" tag="600" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2SI-rp-QfL" userLabel="Spot Drinklist Prompt View">
                                 <rect key="frame" x="20" y="243" width="280" height="85"/>
@@ -198,6 +201,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TBM-RD-8Ym" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="down" id="Iyg-eq-Jgm">
+                    <connections>
+                        <action selector="searchThisAreaSwipedDown:" destination="WvW-kG-wPv" id="MaZ-an-lBC"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="840" y="-10"/>
         </scene>

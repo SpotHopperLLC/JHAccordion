@@ -9,6 +9,7 @@
 #import "SHLocationPickerViewController.h"
 
 #import "TellMeMyLocation.h"
+#import "SVPulsingAnnotationView.h"
 
 #import "SHStyleKit+Additions.h"
 #import "ErrorModel.h"
@@ -70,7 +71,7 @@
     UIBarButtonItem *barButtonRight = [[UIBarButtonItem alloc] initWithTitle:@"Select" style:UIBarButtonItemStylePlain target:self action:@selector(selectButtonTapped:)];
     [self.navigationItem setRightBarButtonItem:barButtonRight];
     
-    [self repositionMapViewOnLocation:self.initialLocation animated:FALSE];
+    [self.mapView setRegion:self.initialRegion animated:FALSE];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -115,7 +116,6 @@
         if ([error.domain isEqualToString:kTellMeMyLocationDomain]) {
             [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
         }
-        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
@@ -170,19 +170,48 @@
 
 #pragma mark - MKMapViewDelegate
 
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
+    MKAnnotationView *annotationView = nil;
+
+    if ([annotation isKindOfClass:[MKUserLocation class]]) {
+        static NSString *identifier = @"CurrentLocation";
+        SVPulsingAnnotationView *pulsingView = (SVPulsingAnnotationView *)[self.mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
+        
+        if (!pulsingView) {
+            pulsingView = [[SVPulsingAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
+            pulsingView.annotationColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
+        }
+        
+        pulsingView.canShowCallout = YES;
+        
+        annotationView = pulsingView;
+    }
+    
+    return annotationView;
+}
+
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
     [self.searchTextField resignFirstResponder];
     
-    CLLocationCoordinate2D coordinate = self.mapView.centerCoordinate;
-    CLLocation *location = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
-    
-    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-    [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
-        if (placemarks.count) {
-            CLPlacemark *placemark = placemarks[0];
-            self.navigationItem.title = [TellMeMyLocation locationNameFromPlacemark:placemark];
-        }
-    }];
+    CLLocation *boundaryLocation = [[CLLocation alloc] initWithLatitude:(mapView.region.center.latitude + mapView.region.span.latitudeDelta) longitude:mapView.region.center.longitude];
+    CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:mapView.region.center.latitude longitude:mapView.region.center.longitude];
+    CLLocationDistance distance = [centerLocation distanceFromLocation:boundaryLocation];
+
+    if (distance > 10000) {
+        self.navigationItem.title = @"Location";
+    }
+    else {
+        CLLocationCoordinate2D coordinate = self.mapView.centerCoordinate;
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
+        
+        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+        [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+            if (placemarks.count) {
+                CLPlacemark *placemark = placemarks[0];
+                self.navigationItem.title = [TellMeMyLocation locationNameFromPlacemark:placemark];
+            }
+        }];
+    }
 }
 
 @end

@@ -387,84 +387,42 @@
     return _sh_Cache;
 }
 
+#pragma mark - Mappings
+
+- (NSDictionary *)mapKeysToProperties {
+    return @{
+             @"name" : @"name",
+             @"image_url" : @"imageUrl",
+             @"links.drink_type" : @"drinkType",
+             @"links.drink_subtype" : @"drinkSubtype",
+             @"type" : @"type",
+             @"subtype" : @"subtype",
+             @"description" : @"descriptionOfDrink",
+             @"recipe" : @"recipeOfDrink",
+             @"abv" : @"abv",
+             @"style" : @"style",
+             @"varietal" : @"varietal",
+             @"vintage" : @"vintage",
+             @"region" : @"region",
+             @"links.spot" : @"spot",
+             @"links.spot_id" : @"spotId",
+             @"links.average_review" : @"averageReview",
+             @"match" : @"match",
+             @"links.base_alcohols" : @"baseAlochols",
+             @"links.images" : @"images"
+             };
+}
+
 #pragma mark - Getters
-
-- (NSString *)name {
-    return [self objectForKey:@"name"];
-}
-
-- (NSString *)imageUrl {
-    return [self objectForKey:@"image_url"];
-}
-
-- (DrinkTypeModel *)drinkType {
-    return [self linkedResourceForKey:@"drink_type"];
-}
-
-- (DrinkSubTypeModel *)drinkSubtype {
-    return [self linkedResourceForKey:@"drink_subtype"];
-}
-
-- (NSString *)type {
-    return [self objectForKey:@"type"];
-}
-
-- (NSString *)subtype {
-    return [self objectForKey:@"subtype"];
-}
-
-- (NSString *)descriptionOfDrink {
-    return [self objectForKey:@"description"];
-}
-
-- (NSString *)recipeOfDrink {
-    return [self objectForKey:@"recipe"];
-}
-
-- (NSNumber *)abv {
-    return [self objectForKey:@"abv"];
-}
 
 - (NSString*)abvPercentString {
     return [NSString stringWithFormat:@"%.02f %%", (self.abv.floatValue * 100.0f)];
-}
-
-- (NSString *)style {
-    return [self objectForKey:@"style"];
-}
-
-- (NSString *)varietal {
-    return [self objectForKey:@"varietal"];
-}
-
-- (NSNumber *)vintage {
-    return [self objectForKey:@"vintage"];
-}
-
-- (NSNumber *)region {
-    return [self objectForKey:@"region"];
-}
-
-- (SpotModel *)spot {
-    return [self linkedResourceForKey:@"spot"];
-}
-
-- (NSNumber *)spotId {
-    return [self objectForKey:@"spot_id"];
 }
 
 - (NSArray *)sliderTemplates {
     return [[self linkedResourceForKey:@"slider_templates"] sortedArrayUsingComparator:^NSComparisonResult(SliderTemplateModel *obj1, SliderTemplateModel *obj2) {
         return [obj1.order compare:obj2.order];
     }];
-}
-
-- (AverageReviewModel *)averageReview {
-    return [self linkedResourceForKey:@"average_review"];
-}
-
-- (NSNumber *)match {
-    return [self objectForKey:@"match"];
 }
 
 - (NSString *)matchPercent {
@@ -479,13 +437,87 @@
     return ( rel == nil ? @0 : rel );
 }
 
-- (NSArray *)baseAlochols {
-    return [self linkedResourceForKey:@"base_alcohols"];
-}
+// properties are now mapped
 
-- (NSArray *)images {
-    return [self linkedResourceForKey:@"images"];
-}
+/*
+ 
+//- (NSString *)name {
+//    return [self objectForKey:@"name"];
+//}
+
+//- (NSString *)imageUrl {
+//    return [self objectForKey:@"image_url"];
+//}
+
+//- (DrinkTypeModel *)drinkType {
+//    return [self linkedResourceForKey:@"drink_type"];
+//}
+ 
+//- (DrinkSubTypeModel *)drinkSubtype {
+//    return [self linkedResourceForKey:@"drink_subtype"];
+//}
+
+//- (NSString *)type {
+//    return [self objectForKey:@"type"];
+//}
+
+//- (NSString *)subtype {
+//    return [self objectForKey:@"subtype"];
+//}
+
+//- (NSString *)descriptionOfDrink {
+//    return [self objectForKey:@"description"];
+//}
+
+//- (NSString *)recipeOfDrink {
+//    return [self objectForKey:@"recipe"];
+//}
+
+//- (NSNumber *)abv {
+//    return [self objectForKey:@"abv"];
+//}
+ 
+//- (NSString *)style {
+//    return [self objectForKey:@"style"];
+//}
+
+//- (NSString *)varietal {
+//    return [self objectForKey:@"varietal"];
+//}
+
+//- (NSNumber *)vintage {
+//    return [self objectForKey:@"vintage"];
+//}
+
+//- (NSNumber *)region {
+//    return [self objectForKey:@"region"];
+//}
+
+//- (SpotModel *)spot {
+//    return [self linkedResourceForKey:@"spot"];
+//}
+
+//- (NSNumber *)spotId {
+//    return [self objectForKey:@"spot_id"];
+//}
+
+//- (AverageReviewModel *)averageReview {
+//    return [self linkedResourceForKey:@"average_review"];
+//}
+
+//- (NSNumber *)match {
+//    return [self objectForKey:@"match"];
+//}
+
+//- (NSArray *)baseAlochols {
+//    return [self linkedResourceForKey:@"base_alcohols"];
+//}
+
+//- (NSArray *)images {
+//    return [self linkedResourceForKey:@"images"];
+//}
+
+ */
 
 #pragma mark - Helpers
 

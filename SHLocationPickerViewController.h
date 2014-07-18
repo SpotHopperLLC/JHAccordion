@@ -15,7 +15,7 @@
 
 @interface SHLocationPickerViewController : BaseViewController
 
-@property (nonatomic, strong) CLLocation *initialLocation;
+@property (nonatomic, assign) MKCoordinateRegion initialRegion;
 
 @property (nonatomic, weak) id<SHLocationPickerDelegate> delegate;
 

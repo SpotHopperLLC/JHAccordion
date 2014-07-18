@@ -22,6 +22,8 @@
         }
     }
     
+    DebugLog(@"Unable to find menu item for drink: %@", drink.name);
+    
     return nil;
 }
 
@@ -89,7 +91,7 @@
                 [prices addObject:priceAndSize];
             }
         }
-        else if ([menuItem.drink isWine]) {
+        else if ([menuItem.drink isCocktail] || [menuItem.drink isWine]) {
             [prices addObject:@"Available"];
         }
         
