@@ -82,8 +82,7 @@
 }
 
 - (void)changeIndex:(NSUInteger)index {
-    // TODO: change collection view position if the index is in bounds and set _currentIndex
-    
+    // change collection view position if the index is in bounds and set _currentIndex
     if (index != _currentIndex && index < self.spots.count) {
         DebugLog(@"Manager - Changing to index: %lu", (long)index);
         _currentIndex = index;

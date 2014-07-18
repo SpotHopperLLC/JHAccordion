@@ -64,6 +64,8 @@
 @property (nonatomic, strong) NSArray *liveSpecials;
 @property (nonatomic, strong) NSNumber *relevance;
 
+@property (nonatomic, strong) MenuModel *menu;
+
 - (NSString*)addressCityState;
 - (NSString*)fullAddress;
 - (NSString*)cityState;

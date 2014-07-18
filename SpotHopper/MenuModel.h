@@ -8,11 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+#import "SpotModel.h"
 #import "DrinkModel.h"
 #import "MenuItemModel.h"
 
 @interface MenuModel : NSObject
 
+@property (strong, nonatomic) SpotModel *spot;
 @property (strong, nonatomic) NSArray *items;
 @property (strong, nonatomic) NSDictionary *types;
 

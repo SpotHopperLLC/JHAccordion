@@ -180,7 +180,6 @@ typedef enum {
 - (IBAction)specialCellLikeButtonTapped:(id)sender {
     NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
     
-    // TODO: implement
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"This feature is not fully implemented. Please continue development." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
     }];

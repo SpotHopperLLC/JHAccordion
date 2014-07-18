@@ -207,8 +207,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == 0) {
-        // TODO: implement
-        //[self goToDrinksNearBy];
         [self goToDrinkListMenu];
     }
     else {

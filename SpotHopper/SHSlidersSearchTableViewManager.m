@@ -11,7 +11,6 @@
 #import "JHAccordion.h"
 
 #import "SHSlider.h"
-#import "SHSectionHeaderView.h"
 
 #import "UserModel.h"
 #import "DrinkModel.h"
@@ -1724,6 +1723,8 @@
     request.drinkTypeId = drinkTypeID;
     request.drinkSubTypeId = drinkSubTypeID;
     request.baseAlcoholId = baseAlcoholID;
+    
+    // TODO: get selected spot (if any)
     
     [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
         [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Drink Type ID" : drinkTypeID ?: @0, @"Drink Sub Type ID" : drinkSubTypeID ?: @0, @"Created With Sliders" : @TRUE}];
