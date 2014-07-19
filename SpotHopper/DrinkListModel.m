@@ -423,24 +423,13 @@
                                     kSpotModelParamsPageSize : @10,
                                     @"name" : request.name,
                                     @"sliders" : jsonSliders,
-                                    kDrinkListModelParamBasedOnSlider : [NSNumber numberWithBool:request.isBasedOnSliders]
+                                    kDrinkListModelParamBasedOnSlider : [NSNumber numberWithBool:request.isBasedOnSliders],
+                                    @"drink_id" : request.drinkId ? request.drinkId : [NSNull null],
+                                    @"drink_type_id" : request.drinkTypeId ? request.drinkTypeId : [NSNull null],
+                                    @"drink_subtype_id" : request.drinkSubTypeId ? request.drinkSubTypeId : [NSNull null],
+                                    @"base_alcohol_id" : request.baseAlcoholId ? request.baseAlcoholId : [NSNull null],
+                                    @"spot_id" : request.spotId ? request.spotId : [NSNull null]
                                     }.mutableCopy;
-    
-    if (request.drinkId != nil) {
-        [params setObject:request.drinkId forKey:@"drink_id"];
-    }
-    if (request.drinkTypeId != nil) {
-        [params setObject:request.drinkTypeId forKey:@"drink_type_id"];
-    }
-    if (request.drinkSubTypeId != nil) {
-        [params setObject:request.drinkSubTypeId forKey:@"drink_subtype_id"];
-    }
-    if (request.baseAlcoholId != nil) {
-        [params setObject:request.baseAlcoholId forKey:@"base_alcohol_id"];
-    }
-    if (request.spotId != nil) {
-        [params setObject:request.spotId forKey:@"spot_id"];
-    }
     
     if (CLLocationCoordinate2DIsValid(request.coordinate)) {
         params[kDrinkListModelParamLatitude] = [NSNumber numberWithFloat:request.coordinate.latitude];
@@ -450,6 +439,8 @@
     CGFloat miles = request.radius / kMetersPerMile;
     NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
     params[kDrinkListModelParamRadius] = radiusParam;
+    
+    DebugLog(@"params: %@", params);
     
     return params;
 }

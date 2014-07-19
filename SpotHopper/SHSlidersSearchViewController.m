@@ -22,8 +22,6 @@
 
 @property (assign, nonatomic) SHMode mode;
 
-//@property (strong, readwrite, nonatomic) DrinkListModel *drinkListModel;
-
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *searchButton;
 
@@ -69,7 +67,7 @@
 
 - (void)prepareSearchResults {
     if (self.mode == SHModeSpots) {
-        [self showHUD:@"Creating Spotlist"];
+        [self showHUD:@"Finding Best Matches"];
         [self.slidersSearchTableViewManager fetchSpotListResultsWithCompletionBlock:^(SpotListModel *spotListModel, SpotListRequest *request, ErrorModel *errorModel) {
             [self hideHUD];
             if (errorModel) {
@@ -84,7 +82,7 @@
         }];
     }
     else {
-        [self showHUD:@"Creating Drinklist"];
+        [self showHUD:@"Finding Best Matches"];
         [self.slidersSearchTableViewManager fetchDrinkListResultsWithCompletionBlock:^(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel) {
             [self hideHUD];
             if (errorModel) {
@@ -180,26 +178,6 @@
 - (void)prepareForMode:(SHMode)mode {
     self.mode = mode;
     
-    switch (mode) {
-        case SHModeSpots:
-            [self.searchButton setTitle:@"Find Spots" forState:UIControlStateNormal];
-            break;
-        case SHModeBeer:
-            [self.searchButton setTitle:@"Find Beers" forState:UIControlStateNormal];
-            break;
-        case SHModeCocktail:
-            [self.searchButton setTitle:@"Find Cocktails" forState:UIControlStateNormal];
-            break;
-        case SHModeWine:
-            [self.searchButton setTitle:@"Find Wines" forState:UIControlStateNormal];
-            break;
-            
-        default:
-            [self.searchButton setTitle:@"Find" forState:UIControlStateNormal];
-            break;
-    }
-    
-    
     [self hideSearchButton:FALSE withCompletionBlock:nil];
     [[self slidersSearchTableViewManager] prepareForMode:mode];
 }
@@ -230,8 +208,13 @@
     
 }
 
-- (void)slidersSearchTableViewManagerIsBusy:(SHSlidersSearchTableViewManager *)manager {
-    [self showHUD];
+- (void)slidersSearchTableViewManagerIsBusy:(SHSlidersSearchTableViewManager *)manager text:(NSString *)text {
+    if (text.length) {
+        [self showHUD:text];
+    }
+    else {
+        [self showHUD];
+    }
 }
 
 - (void)slidersSearchTableViewManagerIsFree:(SHSlidersSearchTableViewManager *)manager {
@@ -244,6 +227,15 @@
 
 - (CLLocationDistance)searchRadiusForSlidersSearchTableViewManager:(SHSlidersSearchTableViewManager *)manager {
     return [self searchRadius];
+}
+
+- (SpotModel *)slidersSearchTableViewManagerSelectedSpot:(SHSlidersSearchTableViewManager *)manager {
+    if ([self.delegate respondsToSelector:@selector(slidersSearchViewControllerSelectedSpot:)]) {
+        SpotModel *spot = [self.delegate slidersSearchViewControllerSelectedSpot:self];
+        return spot;
+    }
+    
+    return nil;
 }
 
 @end

@@ -180,7 +180,6 @@ typedef enum {
 - (IBAction)specialCellLikeButtonTapped:(id)sender {
     NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
     
-    // TODO: implement
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"This feature is not fully implemented. Please continue development." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
     }];
@@ -194,14 +193,9 @@ typedef enum {
 - (IBAction)specialCellShareButtonTapped:(id)sender {
     NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
     
-    // TODO: implement
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"This feature is not fully implemented. Please continue development." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
-    }];
-    
-    NSUInteger index = [self.specialsCollectionViewManager indexForViewInCollectionViewCell:sender];
-    if (index != NSNotFound) {
-        NSLog(@"index: %lu", (long)index);
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didRequestShareSpecialForSpotAtIndex:)]) {
+        NSUInteger index = [self.specialsCollectionViewManager indexForViewInCollectionViewCell:sender];
+        [self.delegate mapOverlayCollectionViewController:self didRequestShareSpecialForSpotAtIndex:index];
     }
 }
 
@@ -275,9 +269,14 @@ typedef enum {
     }
 }
 
+- (void)specialsCollectionViewManager:(SHSpecialsCollectionViewManager *)manager didRequestShareSpecialForSpotAtIndex:(NSUInteger)index {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didRequestShareSpecialForSpotAtIndex:)]) {
+        [self.delegate mapOverlayCollectionViewController:self didRequestShareSpecialForSpotAtIndex:index];
+    }
+}
+
 #pragma mark - SHDrinksCollectionViewManagerDelegate
 #pragma mark -
-
 
 - (void)drinksCollectionViewManager:(SHDrinksCollectionViewManager *)manager didChangeToDrinkAtIndex:(NSUInteger)index {
     if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didChangeToDrinkAtIndex:)]) {

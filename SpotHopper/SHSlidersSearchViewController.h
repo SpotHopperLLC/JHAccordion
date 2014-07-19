@@ -12,6 +12,7 @@
 @class DrinkListModel;
 @class SpotListRequest;
 @class SpotListModel;
+@class SpotModel;
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -38,6 +39,8 @@
 - (void)slidersSearchViewControllerWillAnimate:(SHSlidersSearchViewController *)vc;
 
 - (void)slidersSearchViewControllerDidAnimate:(SHSlidersSearchViewController *)vc;
+
+- (SpotModel *)slidersSearchViewControllerSelectedSpot:(SHSlidersSearchViewController *)vc;
 
 @required
 

@@ -83,6 +83,11 @@
     return [NSString stringWithFormat:@"%@ - %@ [%@]", self.ID, self.name, NSStringFromClass([self class])];
 }
 
+- (id)debugQuickLookObject {
+    CLLocation *location = [[CLLocation alloc] initWithLatitude:self.latitude.floatValue longitude:self.longitude.floatValue];
+    return location;
+}
+
 #pragma mark - API
 
 + (void)cancelGetSpots {
@@ -372,7 +377,11 @@
 }
 
 + (void)fetchSpotTypes:(void (^)(NSArray *spotTypes))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
-    // TODO: add caching
+    NSArray *cachedSpotTypes = [[SpotModel sh_sharedCache] cachedSpotTypes];
+    if (cachedSpotTypes.count && successBlock) {
+        successBlock(cachedSpotTypes);
+        return;
+    }
     
     [SpotModel getSpots:@{kSpotModelParamsPageSize:@0} success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         NSDictionary *forms = [jsonApi objectForKey:@"form"];
@@ -394,7 +403,7 @@
                 }
             }
             
-            // TODO: cache value
+            [[SpotModel sh_sharedCache] cacheSpotTypes:userSpotTypes];
             
             if (successBlock) {
                 successBlock(userSpotTypes);
@@ -420,6 +429,13 @@
 }
 
 - (void)fetchMenu:(void (^)(MenuModel *menu))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    if (self.menu && successBlock) {
+        successBlock(self.menu);
+        return;
+    }
+    
     NSString *cacheKey = [SpotModelCache menuKeyForSpot:self];
     MenuModel *menu = [[SpotModel sh_sharedCache] cachedMenuForKey:cacheKey];
     if (menu && successBlock) {
@@ -440,10 +456,13 @@
             }
             else if (operation.response.statusCode == 200) {
                 MenuModel *menu = [[MenuModel alloc] init];
+                menu.spot = self;
                 menu.items = [jsonApi resourcesForKey:@"menu_items"];
                 menu.types = [[jsonApi linked] objectForKey:@"menu_types"];
                 
                 [[SpotModel sh_sharedCache] cacheMenu:menu forKey:cacheKey];
+                
+                self.menu = menu;
                 
                 if (successBlock) {
                     successBlock(menu);

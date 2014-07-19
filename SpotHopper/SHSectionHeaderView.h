@@ -14,8 +14,6 @@
 
 @interface SHSectionHeaderView : UITableViewHeaderFooterView
 
-// TODO: refactor to put more details into the Storyboard and hide more from the header
-
 @property (nonatomic, strong) IBOutlet UIView *viewContent;
 @property (nonatomic, strong) IBOutlet UIButton *btnBackground;
 @property (nonatomic, strong) IBOutlet UIImageView *imgIcon;

@@ -28,9 +28,13 @@ extern NSString * const SpotCalloutViewIdentifier;
 @property (weak, nonatomic) id<SpotCalloutViewDelegate> delegate;
 @property (weak, nonatomic, readonly) UIView *containerView;
 
++ (SpotCalloutView *)loadView;
+
 - (void)setIcon:(SpotCalloutIcon)icon spotNameText:(NSString *)spotNameText drink1Text:(NSString *)drink1Text drink2Text:(NSString *)drink2Text;
 
 - (void)placeInMapView:(MKMapView *)mapView insideAnnotationView:(MKAnnotationView *)annotationView;
+
++ (void)removeCalloutViewFromAnnotationView:(MKAnnotationView *)annotationView;
 
 @end
 

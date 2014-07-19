@@ -379,10 +379,6 @@
 }
 
 + (NSDictionary *)prepareSearchParametersWithRequest:(SpotListRequest *)request {
-    NSMutableDictionary *params = @{
-                                    @"name" : request.name,
-                                    kSpotListModelParamBasedOnSlider : [NSNumber numberWithBool:request.isBasedOnSliders]
-                                    }.mutableCopy;
     
     NSMutableArray *jsonSliders = @[].mutableCopy;
     for (SliderModel *slider in request.sliders) {
@@ -393,17 +389,15 @@
                                      }];
         }
     }
+    
+    NSMutableDictionary *params = @{
+                                    @"name" : request.name,
+                                    kSpotListModelParamBasedOnSlider : [NSNumber numberWithBool:request.isBasedOnSliders],
+                                    @"sliders" : jsonSliders,
+                                    @"spot_id" : request.spotId ? request.spotId : [NSNull null],
+                                    @"spot_type_id" : request.spotTypeId ? request.spotTypeId : [NSNull null],
+                                    }.mutableCopy;
 
-    params[@"sliders"] = jsonSliders;
-    
-    if (request.spotId != nil) {
-        [params setObject:request.spotId forKey:@"spot_id"];
-    }
-    
-    if (request.spotTypeId != nil) {
-        [params setObject:request.spotTypeId forKey:@"spot_type_id"];
-    }
-    
     if (CLLocationCoordinate2DIsValid(request.coordinate)) {
         params[kSpotListModelParamLatitude] = [NSNumber numberWithFloat:request.coordinate.latitude];
         params[kSpotListModelParamLongitude] = [NSNumber numberWithFloat:request.coordinate.longitude];

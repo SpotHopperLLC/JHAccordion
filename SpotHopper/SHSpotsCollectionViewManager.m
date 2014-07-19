@@ -190,23 +190,26 @@
 
 - (void)renderCell:(UICollectionViewCell *)cell withSpot:(SpotModel *)spot atIndex:(NSUInteger)index {
     UIImageView *spotImageView = (UIImageView *)[cell viewWithTag:kSpotCellSpotImageView];
-    UIImage *placeholderImage = [SHStyleKit drawImage:SHStyleKitDrawingPlaceholderBasic size:spotImageView.frame.size];
-    spotImageView.image = placeholderImage;
+    
+    spotImageView.image = nil;
     
     if (spot.imageUrl.length) {
-        [spotImageView setImageWithURL:[NSURL URLWithString:spot.imageUrl] placeholderImage:nil];
+        [spotImageView setImageWithURL:[NSURL URLWithString:spot.imageUrl] placeholderImage:spot.placeholderImage];
     }
     else if (spot.images.count) {
         ImageModel *imageModel = spot.images[0];
         __weak UIImageView *weakImageView = spotImageView;
-        [NetworkHelper loadImage:imageModel placeholderImage:nil withThumbImageBlock:^(UIImage *thumbImage) {
+        [NetworkHelper loadImage:imageModel placeholderImage:spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
             weakImageView.image = thumbImage;
         } withFullImageBlock:^(UIImage *fullImage) {
             weakImageView.image = fullImage;
         } withErrorBlock:^(NSError *error) {
-            weakImageView.image = nil;
+            weakImageView.image = spot.placeholderImage;
             [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
+    }
+    else {
+        spotImageView.image = spot.placeholderImage;
     }
     
     UIButton *nameButton = [self buttonInView:cell withTag:kSpotCellSpotNameButton];

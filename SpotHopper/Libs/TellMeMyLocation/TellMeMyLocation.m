@@ -51,36 +51,46 @@ static NSDate *_lastDeviceLocationRefresh;
             return;
         }
     }
-    
-    if ([CLLocationManager locationServicesEnabled]) {
-        if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied){
-            failureBlock([NSError errorWithDomain:kTellMeMyLocationDomain code:1 userInfo:@{
-                                                                                              NSLocalizedDescriptionKey : @"App Permission Denied",
-                                                                                              NSLocalizedRecoverySuggestionErrorKey : @"To re-enable, please go to Settings and turn on Location Service for this app."
-                                                                                              }]);
-            return;
+
+    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
+        if (_locationManager == nil) {
+            _locationManager = [[CLLocationManager alloc] init];
+            [_locationManager setDelegate:self];
+        }
+        
+        _foundBlock = [foundBlock copy];
+        _failureBlock = [failureBlock copy];
+        
+        [_locationManager setDesiredAccuracy:accuracy];
+        [_locationManager startUpdatingLocation];
+        [self performSelector:@selector(stopUpdatingLocationAfterTimeout:) withObject:_locationManager afterDelay:kLocationUpdateTimeout];
+    }
+    else if (![CLLocationManager locationServicesEnabled]) {
+        if (failureBlock) {
+            NSDictionary *userInfo = @{
+                                       NSLocalizedDescriptionKey : @"App Permission Denied",
+                                       NSLocalizedRecoverySuggestionErrorKey : @"To re-enable, please go to Settings and turn on Location Service for this app."
+                                       };
+            failureBlock([NSError errorWithDomain:kTellMeMyLocationDomain code:1 userInfo:userInfo]);
+        }
+    }
+    else if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
+        if (failureBlock) {
+            NSDictionary *userInfo = @{
+                                       NSLocalizedDescriptionKey : @"Permission Denied",
+                                       NSLocalizedRecoverySuggestionErrorKey : @"To re-enable, please go to Settings and turn on Location Services"
+                                       };
+            failureBlock([NSError errorWithDomain:kTellMeMyLocationDomain code:1 userInfo:userInfo]);
         }
     }
     else {
-        failureBlock([NSError errorWithDomain:kTellMeMyLocationDomain code:1 userInfo:@{
-                                                                                          NSLocalizedDescriptionKey : @"Permission Denied",
-                                                                                          NSLocalizedRecoverySuggestionErrorKey : @"To re-enable, please go to Settings and turn on Location Services"
-                                                                                          }]);
-        return;
+        // fall through with an invalid location
+        CLLocationCoordinate2D coordinate = kCLLocationCoordinate2DInvalid;
+        CLLocation * location = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
+        if (foundBlock) {
+            foundBlock(location);
+        }
     }
-    
-    if (_locationManager == nil) {
-        _locationManager = [[CLLocationManager alloc] init];
-        [_locationManager setDelegate:self];
-    }
-    
-    _foundBlock = [foundBlock copy];
-    _failureBlock = [failureBlock copy];
-
-    [_locationManager setDesiredAccuracy:accuracy];
-    [_locationManager startUpdatingLocation];
-    [self performSelector:@selector(stopUpdatingLocationAfterTimeout:) withObject:_locationManager afterDelay:kLocationUpdateTimeout];
-
 }
 
 + (CLLocation *)currentDeviceLocation {

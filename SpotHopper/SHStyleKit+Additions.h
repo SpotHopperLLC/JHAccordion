@@ -55,6 +55,7 @@ typedef enum {
     SHStyleKitDrawingArrowUpIcon,
     SHStyleKitDrawingArrowDownIcon,
     SHStyleKitDrawingDeleteIcon,
+    SHStyleKitDrawingCloseIcon,
     SHStyleKitDrawingPlaceholderBasic,
     SHStyleKitDrawingDefaultAvatarIcon,
     SHStyleKitDrawingGradientBackground,

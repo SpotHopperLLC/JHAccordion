@@ -37,6 +37,14 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
 
 @implementation SpotCalloutView
 
++ (SpotCalloutView *)loadView {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SpotHopper" bundle:nil];
+    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:SpotCalloutViewIdentifier];
+    SpotCalloutView *calloutView = (SpotCalloutView *)vc.view;
+    
+    return calloutView;
+}
+
 #pragma mark - Hit Test
 #pragma mark -
 
@@ -110,6 +118,8 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
 }
 
 - (void)placeInMapView:(MKMapView *)mapView insideAnnotationView:(MKAnnotationView *)annotationView {
+    [SpotCalloutView removeCalloutViewFromAnnotationView:annotationView];
+    
     self.mapView = mapView;
     self.annotationView = annotationView;
     self.alpha = 0.0f;
@@ -126,6 +136,14 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
         self.alpha = 1.0f;
     } completion:^(BOOL finished) {
     }];
+}
+
++ (void)removeCalloutViewFromAnnotationView:(MKAnnotationView *)annotationView {
+    for (UIView *subview in annotationView.subviews) {
+        if ([subview isKindOfClass:[SpotCalloutView class]]) {
+            [subview removeFromSuperview];
+        }
+    }
 }
 
 #pragma mark - Private

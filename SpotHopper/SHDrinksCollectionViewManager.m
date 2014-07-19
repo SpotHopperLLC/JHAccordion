@@ -10,8 +10,10 @@
 
 #import "DrinkListModel.h"
 #import "DrinkModel.h"
+#import "DrinkSubTypeModel.h"
 #import "ImageModel.h"
 #import "SpotModel.h"
+#import "BaseAlcoholModel.h"
 #import "AverageReviewModel.h"
 
 #import "SHStyleKit+Additions.h"
@@ -190,7 +192,6 @@
 #pragma mark -
 
 - (void)renderCell:(UICollectionViewCell *)cell withDrink:(DrinkModel *)drink atIndex:(NSUInteger)index {
-    
     UIImageView *drinkImageView = [self imageViewInView:cell withTag:kDrinkCellDrinkImageView];
     UIButton *nameButton = [self buttonInView:cell withTag:kDrinkCellDrinkNameButton];
     UILabel *breweryLabel = [self labelInView:cell withTag:kDrinkCellBreweryLabel];
@@ -226,23 +227,25 @@
     [positionLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
     [matchLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     
-    UIImage *placeholderImage = [SHStyleKit drawImage:SHStyleKitDrawingPlaceholderBasic size:drinkImageView.frame.size];
-    drinkImageView.image = placeholderImage;
+    drinkImageView.image = nil;
     
     if (drink.imageUrl.length) {
-        [drinkImageView setImageWithURL:[NSURL URLWithString:drink.imageUrl] placeholderImage:nil];
+        [drinkImageView setImageWithURL:[NSURL URLWithString:drink.imageUrl] placeholderImage:drink.placeholderImage];
     }
     else if (drink.images.count) {
         ImageModel *imageModel = drink.images[0];
         __weak UIImageView *weakImageView = drinkImageView;
-        [NetworkHelper loadImage:imageModel placeholderImage:nil withThumbImageBlock:^(UIImage *thumbImage) {
+        [NetworkHelper loadImage:imageModel placeholderImage:drink.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
             weakImageView.image = thumbImage;
         } withFullImageBlock:^(UIImage *fullImage) {
             weakImageView.image = fullImage;
         } withErrorBlock:^(NSError *error) {
-            weakImageView.image = nil;
+            weakImageView.image = drink.placeholderImage;
             [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
+    }
+    else {
+        drinkImageView.image = drink.placeholderImage;
     }
    
     [nameButton setTitle:drink.name forState:UIControlStateNormal];
@@ -251,8 +254,26 @@
     [SHStyleKit setButton:nameButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
 
     breweryLabel.text = drink.spot.name;
-    styleLabel.text = drink.style;
-    rankingLabel.text = [NSString stringWithFormat:@"%.1f/10", [drink.averageReview.rating floatValue]];
+    if (drink.isBeer) {
+        styleLabel.text = drink.style;
+    }
+    else if (drink.isCocktail && drink.baseAlochols) {
+        BaseAlcoholModel *baseAlcohol = drink.baseAlochols[0];
+        styleLabel.text = baseAlcohol.name;
+    }
+    else if (drink.isWine && drink.varietal) {
+        styleLabel.text = drink.varietal;
+    }
+    else {
+        styleLabel.text = nil;
+    }
+    
+    if (drink.isWine && ![@"Sparkling" isEqualToString:drink.drinkSubtype.name]) {
+        rankingLabel.text = [NSString stringWithFormat:@"%@ - Rating %.0f/10", drink.drinkSubtype.name, [drink.averageReview.rating floatValue]];
+    }
+    else {
+        rankingLabel.text = [NSString stringWithFormat:@"Rating %.0f/10", [drink.averageReview.rating floatValue]];
+    }
     
     positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", (long)index+1, (long)self.drinkList.drinks.count];
     

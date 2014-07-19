@@ -282,6 +282,10 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
             [SHStyleKit drawNavigationArrowIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName rotation:rotation];
             break;
             
+        case SHStyleKitDrawingCloseIcon:
+            [SHStyleKit drawCloseIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
+            break;
+            
         case SHStyleKitDrawingDeleteIcon:
             [SHStyleKit drawDeleteIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
             break;
