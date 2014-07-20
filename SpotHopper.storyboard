@@ -242,11 +242,11 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Au2-eX-c6N" userLabel="Delete Button">
-                                                    <rect key="frame" x="270" y="7" width="30" height="30"/>
+                                                    <rect key="frame" x="260" y="2" width="40" height="40"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="30" id="CbI-LN-4Fb"/>
-                                                        <constraint firstAttribute="height" constant="30" id="Kfw-KO-Io5"/>
+                                                        <constraint firstAttribute="width" constant="40" id="CbI-LN-4Fb"/>
+                                                        <constraint firstAttribute="height" constant="40" id="Kfw-KO-Io5"/>
                                                     </constraints>
                                                     <state key="normal">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>

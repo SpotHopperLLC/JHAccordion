@@ -90,8 +90,6 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
     UIImage *normalImage = [SHStyleKit drawImage:drawing color:normalColor size:button.frame.size];
     UIImage *highlightedImage = [SHStyleKit drawImage:drawing color:highlightedColor size:button.frame.size];
     
-//    [button setBackgroundImage:normalImage forState:UIControlStateNormal];
-    
     [button setImage:normalImage forState:UIControlStateNormal];
     [button setImage:highlightedImage forState:UIControlStateHighlighted];
 }
