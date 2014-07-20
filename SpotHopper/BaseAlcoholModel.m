@@ -109,13 +109,18 @@
         }
         else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"base_alcohols"];
+
+            // sort the base alchohols alphanumerically by name
+            NSArray *sorted = [models sortedArrayUsingComparator:^NSComparisonResult(BaseAlcoholModel *obj1, BaseAlcoholModel *obj2) {
+                return [obj1.name caseInsensitiveCompare:obj2.name];
+            }];
             
-            if (models.count) {
-                [[BaseAlcoholModel sh_sharedCache] cacheBaseAlcohols:models];
+            if (sorted.count) {
+                [[BaseAlcoholModel sh_sharedCache] cacheBaseAlcohols:sorted];
             }
             
             if (successBlock) {
-                successBlock(models);
+                successBlock(sorted);
             }
         } else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
