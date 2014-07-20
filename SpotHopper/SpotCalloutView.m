@@ -44,6 +44,7 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SpotHopper" bundle:nil];
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:SpotCalloutViewIdentifier];
     SpotCalloutView *calloutView = (SpotCalloutView *)vc.view;
+    calloutView.translatesAutoresizingMaskIntoConstraints = YES;
     
     return calloutView;
 }

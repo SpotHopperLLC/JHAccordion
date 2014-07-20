@@ -328,7 +328,7 @@
 
 #pragma mark - Revised Code for 2.0
 
-+ (void)refreshSpotlistCache {
++ (void)refreshDrinklistCache {
     [[self sh_sharedCache] cacheDrinklists:nil];
     if ([UserModel isLoggedIn]) {
         [[self fetchMyDrinkLists] then:^(NSArray *spotlists) {
@@ -471,6 +471,8 @@
                 model.drinks = [model.drinks subarrayWithRange:NSMakeRange(0, 10)];
             }
             
+            [DrinkListModel refreshDrinklistCache];
+            
             if (successBlock) {
                 successBlock(model);
             }
@@ -503,6 +505,8 @@
             if (model.drinks.count > 10) {
                 model.drinks = [model.drinks subarrayWithRange:NSMakeRange(0, 10)];
             }
+            
+            [DrinkListModel refreshDrinklistCache];
             
             if (successBlock) {
                 successBlock(model);
@@ -617,10 +621,7 @@
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
         if (operation.response.statusCode == 200 || operation.response.statusCode == 204) {
-            // update the cache
-            NSMutableArray *cachedSpotlists = [[DrinkListModel sh_sharedCache] cachedDrinklists].mutableCopy;
-            [cachedSpotlists removeObject:self];
-            [[DrinkListModel sh_sharedCache] cacheDrinklists:cachedSpotlists];
+            [DrinkListModel refreshDrinklistCache];
             
             successBlock(TRUE);
         }

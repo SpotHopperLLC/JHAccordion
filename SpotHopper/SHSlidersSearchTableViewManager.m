@@ -613,7 +613,7 @@
     if (self.mode == SHModeSpots) {
         if (indexPath.section == kSection_Spots_Spotlists && indexPath.row < self.spotlists.count) {
             SpotListModel *spotlist = [self spotlistAtIndexPath:indexPath];
-            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:spotlist.name];
+            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:spotlist.name deleteEnabled:[spotlist.ID isEqual:[NSNull null]]];
         }
         else if (indexPath.section == kSection_Spots_Sliders && indexPath.row < self.sliders.count) {
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
@@ -628,7 +628,7 @@
     else if (self.mode == SHModeBeer) {
         if (indexPath.section == kSection_Beer_Drinklists && indexPath.row < self.drinklists.count) {
             DrinkListModel *drinklist = [self drinklistAtIndexPath:indexPath];
-            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:drinklist.name];
+            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:drinklist.name deleteEnabled:[drinklist.ID isEqual:[NSNull null]]];
         }
         else if (indexPath.section == kSection_Beer_Sliders && indexPath.row < self.sliders.count) {
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
@@ -647,7 +647,7 @@
         }
         else if (indexPath.section == kSection_Cocktail_Drinklists && indexPath.row < self.drinklists.count) {
             DrinkListModel *drinklist = [self drinklistAtIndexPath:indexPath];
-            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:drinklist.name];
+            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:drinklist.name deleteEnabled:[drinklist.ID isEqual:[NSNull null]]];
         }
         else if (indexPath.section == kSection_Cocktail_Sliders && indexPath.row < self.sliders.count) {
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
@@ -666,7 +666,7 @@
         }
         else if (indexPath.section == kSection_Wine_Drinklists && indexPath.row < self.drinklists.count) {
             DrinkListModel *drinklist = [self drinklistAtIndexPath:indexPath];
-            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:drinklist.name];
+            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:drinklist.name deleteEnabled:[drinklist.ID isEqual:[NSNull null]]];
         }
         else if (indexPath.section == kSection_Wine_Sliders && indexPath.row < self.sliders.count) {
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
@@ -834,7 +834,7 @@
 #pragma mark - Cell Configuration
 #pragma mark -
 
-- (UITableViewCell *)configureListCellForIndexPath:(NSIndexPath *)indexPath forTableView:(UITableView *)tableView withTitle:(NSString *)title {
+- (UITableViewCell *)configureListCellForIndexPath:(NSIndexPath *)indexPath forTableView:(UITableView *)tableView withTitle:(NSString *)title deleteEnabled:(BOOL)deleteEnabled {
     static NSString *ListCellIdentifier = @"ListCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ListCellIdentifier forIndexPath:indexPath];
@@ -842,7 +842,7 @@
     UILabel *titleLabel = [self labelInView:cell withTag:kListCellTitleLabel];
     UIButton *deleteButton = [self buttonInView:cell withTag:kListCellDeleteButton];
     
-    deleteButton.hidden = ![kCustomSlidersTitle isEqualToString:title] ? FALSE : TRUE;
+    deleteButton.hidden = deleteEnabled;
     
     [SHStyleKit setLabel:titleLabel textColor:SHStyleKitColorMyTextColor];
     titleLabel.text = title;

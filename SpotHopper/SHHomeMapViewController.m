@@ -1932,13 +1932,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (SHMode)modeForDrink:(DrinkModel *)drink {
     SHMode mode = SHModeNone;
     
-    if (self.selectedDrink.isBeer) {
+    if (drink.isBeer) {
         mode = SHModeBeer;
     }
-    else if (self.selectedDrink.isCocktail) {
+    else if (drink.isCocktail) {
         mode = SHModeCocktail;
     }
-    else if (self.selectedDrink.isWine) {
+    else if (drink.isWine) {
         mode = SHModeWine;
     }
     
@@ -1954,7 +1954,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             
             SpotCalloutView *calloutView = [SpotCalloutView loadView];
             calloutView.delegate = self;
-            calloutView.translatesAutoresizingMaskIntoConstraints = YES;
             
             calloutView.alpha = 0.0f;
             
@@ -2012,6 +2011,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             
             if (pin.highlighted) {
                 SpotCalloutView *updatedCalloutView = [SpotCalloutView loadView];
+                updatedCalloutView.delegate = self;
                 [updatedCalloutView setIcon:calloutIcon spotNameText:spotName drink1Text:drink1 drink2Text:drink2];
                 [updatedCalloutView placeInMapView:mapView insideAnnotationView:pin];
             }

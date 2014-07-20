@@ -578,10 +578,7 @@
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
         if (operation.response.statusCode == 200 || operation.response.statusCode == 204) {
-            // update the cache
-            NSMutableArray *cachedSpotlists = [[SpotListModel sh_sharedCache] cachedSpotlists].mutableCopy;
-            [cachedSpotlists removeObject:self];
-            [[SpotListModel sh_sharedCache] cacheSpotlists:cachedSpotlists];
+            [SpotListModel refreshSpotlistCache];
             
             successBlock(TRUE);
         }
