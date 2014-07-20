@@ -38,22 +38,22 @@
                                 </connections>
                             </button>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="65M-In-Igo" userLabel="Status View">
-                                <rect key="frame" x="42" y="181" width="236" height="37"/>
+                                <rect key="frame" x="42" y="185" width="236" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status Text" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="220" translatesAutoresizingMaskIntoConstraints="NO" id="v4X-PM-32V" userLabel="Status Label" customClass="SHLabelLatoRegular">
-                                        <rect key="frame" x="8" y="8" width="220" height="21"/>
+                                        <rect key="frame" x="8" y="8" width="220" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="lessThanOrEqual" constant="300" id="B9x-jx-w6R"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="220" id="OKI-g8-rFX"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="0.75" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="1" alpha="0.90000000000000002" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="v4X-PM-32V" firstAttribute="leading" secondItem="65M-In-Igo" secondAttribute="leading" constant="8" id="5Pr-yL-tA7"/>
                                     <constraint firstAttribute="bottom" secondItem="v4X-PM-32V" secondAttribute="bottom" constant="8" id="CqT-dX-fIC"/>

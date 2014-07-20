@@ -20,6 +20,7 @@
 #import "DrinkSubTypeModel.h"
 
 #import "DrinkListRequest.h"
+#import "SHNotifications.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -314,6 +315,10 @@
         _sh_Cache = [[DrinkListCache alloc] init];
         
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * __unused notification) {
+            [_sh_Cache removeAllObjects];
+        }];
+        
+        [[NSNotificationCenter defaultCenter] addObserverForName:SHUserDidLogOutNotificationKey object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * __unused notification) {
             [_sh_Cache removeAllObjects];
         }];
     });
@@ -657,9 +662,9 @@ NSString * const DrinklistsKey = @"Drinklists";
     if (spotlists.count) {
         [self setObject:spotlists forKey:DrinklistsKey];
         
-        // automatically expire the cache after 90 seconds to ensure it does not get stale
+        // automatically expire the cache after 30 seconds to ensure it does not get stale
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(expireSpotlistsCache) object:nil];
-        [self performSelector:@selector(expireSpotlistsCache) withObject:self afterDelay:90];
+        [self performSelector:@selector(expireSpotlistsCache) withObject:self afterDelay:30];
     }
     else {
         [self removeObjectForKey:DrinklistsKey];

@@ -28,6 +28,9 @@ NSString * const SHFindSimilarToDrinkNotificationKey = @"SHFindSimilarToDrinkNot
 NSString * const SHFindSimilarToSpotNotificationName = @"SHFindSimilarToSpotNotificationName";
 NSString * const SHFindSimilarToSpotNotificationKey = @"SHFindSimilarToSpotNotificationKey";
 
+NSString * const SHUserDidLogInNotificationKey = @"SHUserDidLogInNotificationKey";
+NSString * const SHUserDidLogOutNotificationKey = @"SHUserDidLogOutNotificationKey";
+
 @implementation SHNotifications
 
 + (void)goToHomeMap {
@@ -74,6 +77,18 @@ NSString * const SHFindSimilarToSpotNotificationKey = @"SHFindSimilarToSpotNotif
     [[NSNotificationCenter defaultCenter] postNotificationName:SHFindSimilarToSpotNotificationName
                                                         object:nil
                                                       userInfo:userInfo];
+}
+
++ (void)userDidLoginIn {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHUserDidLogInNotificationKey
+                                                        object:nil
+                                                      userInfo:nil];
+}
+
++ (void)userDidLoginOut {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHUserDidLogOutNotificationKey
+                                                        object:nil
+                                                      userInfo:nil];
 }
 
 @end

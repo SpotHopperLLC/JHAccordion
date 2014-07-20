@@ -1654,7 +1654,14 @@
     if (self.selectedSpotType && ![[NSNull null] isEqual:self.selectedSpotType.ID]) {
         request.spotTypeId = self.selectedSpotType.ID;
     }
-    request.name = self.selectedSpotlist.name.length ? self.selectedSpotlist.name : kSpotListModelDefaultName;
+    
+    if ([kCustomSlidersTitle isEqualToString:self.selectedSpotlist.name]) {
+        request.name = kSpotListModelDefaultName;
+    }
+    else {
+        request.name = self.selectedSpotlist.name.length ? self.selectedSpotlist.name : kSpotListModelDefaultName;
+    }
+    
     request.coordinate = coordinate;
     request.radius = radius;
     request.sliders = allTheSliders;
@@ -1716,7 +1723,14 @@
     if (self.selectedDrinklist && ![[NSNull null] isEqual:self.selectedDrinklist.ID]) {
         request.drinkListId = self.selectedDrinklist.ID;
     }
-    request.name = self.selectedDrinklist.name.length ? self.selectedDrinklist.name : kDrinkListModelDefaultName;
+    
+    if ([kCustomSlidersTitle isEqualToString:self.selectedDrinklist.name]) {
+        request.name = kDrinkListModelDefaultName;
+    }
+    else {
+        request.name = self.selectedDrinklist.name.length ? self.selectedDrinklist.name : kDrinkListModelDefaultName;
+    }
+    
     request.coordinate = coordinate;
     request.radius = radiusInMiles;
     request.sliders = allTheSliders;
@@ -1739,12 +1753,6 @@
             for (DrinkModel *drink in drinkListModel.drinks) {
                 Promise *promise = [drink fetchSpotsForDrinkListRequest:request];
                 [promises addObject:promise];
-//                [promise then:^(NSArray *spots) {
-//                    // pre-cache the menu for each spot
-//                    for (SpotModel *spotModel in spots) {
-//                        [spotModel fetchMenu];
-//                    }
-//                } fail:nil always:nil];
             }
             
             [When when:promises then:^{

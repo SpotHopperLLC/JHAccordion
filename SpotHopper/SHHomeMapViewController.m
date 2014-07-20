@@ -651,12 +651,12 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.75f initialSpringVelocity:10.f options:options animations:^{
         self.areYouHereViewBottomConstraint.constant = distanceFromBottom + 20.0f;
-        [self repositionStatus];
+        [self repositionStatusView];
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
-            [self repositionStatus];
+            [self repositionStatusView];
         } completion:^(BOOL finished) {
         }];
 
@@ -674,14 +674,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.75f initialSpringVelocity:10.f options:options animations:^{
         self.areYouHereViewBottomConstraint.constant = CGRectGetHeight(self.view.frame);
-        [self repositionStatus];
+        [self repositionStatusView];
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
         self.areYouHerePromptView.hidden = TRUE;
         self.areYouHerePromptLabel.text = nil;
         [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
-            [self repositionStatus];
+            [self repositionStatusView];
         } completion:^(BOOL finished) {
         }];
 
@@ -691,16 +691,17 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }];
 }
 
-- (void)repositionStatus {
-    //[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(repositionStatus) object:nil];
+- (void)repositionStatusView {
+    //[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(repositionStatusView) object:nil];
     
     CGFloat padding = 8.0f;
     CGFloat lengthFromBottom = 0.0f;
     
-    if (!self.areYouHerePromptView.hidden) {
-        lengthFromBottom = CGRectGetHeight(self.view.frame) - self.areYouHerePromptView.frame.origin.y + padding;
-    }
-    else if (!self.searchThisAreaView.hidden) {
+//    if (!self.areYouHerePromptView.hidden) {
+//        lengthFromBottom = CGRectGetHeight(self.view.frame) - self.areYouHerePromptView.frame.origin.y + padding;
+//    }
+//    else
+    if (!self.searchThisAreaView.hidden) {
         lengthFromBottom = CGRectGetHeight(self.view.frame) - self.searchThisAreaView.frame.origin.y + padding;
     }
     else {
@@ -713,7 +714,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [self.view setNeedsLayout];
     [self.view layoutIfNeeded];
     
-    //[self performSelector:@selector(repositionStatus) withObject:nil afterDelay:2.0f];
+    //[self performSelector:@selector(repositionStatusView) withObject:nil afterDelay:2.0f];
 }
 
 - (void)showStatus:(NSString *)text animated:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
@@ -741,7 +742,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.75f initialSpringVelocity:10.f options:options animations:^{
         self.statusView.alpha = 1.0f;
-        [self repositionStatus];
+        [self repositionStatusView];
     } completion:^(BOOL finished) {
         if (completionBlock) {
             completionBlock();
@@ -815,12 +816,12 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
         self.searchThisAreaView.alpha = 0.0f;
-        [self repositionStatus];
+        [self repositionStatusView];
     } completion:^(BOOL finished) {
         self.searchThisAreaView.hidden = TRUE;
         
         [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
-            [self repositionStatus];
+            [self repositionStatusView];
         } completion:^(BOOL finished) {
         }];
         
@@ -844,6 +845,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (IBAction)searchThisAreaButtonTapped:(id)sender {
     [self hideSearchThisArea:TRUE withCompletionBlock:^{
         if ([self canSearchAgain]) {
+            [self descope];
             [self showHUD:@"Updating for New Location"];
             [self searchAgainWithCompletionBlock:^{
                 [self hideHUD];
@@ -1146,9 +1148,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)descope {
     if (self.scopedSpot) {
-        [self.locationMenuBarViewController descopeFromSpot:self.scopedSpot withCompletionBlock:^{
-            self.scopedSpot = nil;
-        }];
+        self.scopedSpot = nil;
+        [self.locationMenuBarViewController descopeFromSpot:self.scopedSpot withCompletionBlock:nil];
     }
 }
 
@@ -1213,9 +1214,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)fetchSpecialsWithCompletionBlock:(void (^)())completionBlock {
     [self hideBottomViewWithCompletionBlock:^{
-        [self showHUD:@"Finding Today's Specials"];
         [SpotModel getSpotsWithSpecialsTodayForCoordinate:[self visibleMapCenterCoordinate] success:^(NSArray *spotModels, JSONAPI *jsonApi) {
-            [self hideHUD];
             
             [self processSpecialsWithSpots:spotModels];
             
@@ -1223,8 +1222,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                 completionBlock();
             }
         } failure:^(ErrorModel *errorModel) {
-            [self hideHUD];
-
             [self oops:errorModel caller:_cmd message:@"There was a problem while fetching drink specials. Please try again."];
             
             if (completionBlock) {
@@ -2035,7 +2032,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         }];
     }
     else {
-        [self descope];
+        if (self.isScopedToSpot) {
+            [self.locationMenuBarViewController descopeFromSpot:self.scopedSpot withCompletionBlock:nil];
+            [self descope];
+        }
         [self resetSearch];
         self.mode = SHModeSpecials;
         self.specialsSpotModels = spotModels;
@@ -2161,7 +2161,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc specialsButtonTapped:(id)sender {
     [self checkLocationAndFinishWithCompletionBlock:^{
-        [self fetchSpecialsWithCompletionBlock:nil];
+        [self showHUD:@"Finding Today's Specials"];
+        [self fetchSpecialsWithCompletionBlock:^{
+            [self hideHUD];
+        }];
     }];
 }
 
@@ -2297,7 +2300,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc specialsButtonTapped:(id)sender {
     [self checkLocationAndFinishWithCompletionBlock:^{
-        [self fetchSpecialsWithCompletionBlock:nil];
+        [self showHUD:@"Finding Today's Specials"];
+        [self fetchSpecialsWithCompletionBlock:^{
+            [self hideHUD];
+        }];
     }];
 }
 
@@ -2665,7 +2671,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         // fetch the full details for a spot to get the sliders
         [[drink fetchDrink] then:^(DrinkModel *drinkModel) {
             DrinkListRequest *request = [[DrinkListRequest alloc] init];
-            request.name = kDrinkListModelDefaultName;
+            request.name = [NSString stringWithFormat:@"Similar to %@", drinkModel.name];
             request.coordinate = [self visibleMapCenterCoordinate];
             request.radius = [self searchRadius];
             request.sliders = drinkModel.averageReview.sliders;
@@ -2702,7 +2708,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         // fetch the full details for a spot to get the sliders
         [[spot fetchSpot] then:^(SpotModel *spotModel) {
             SpotListRequest *request = [[SpotListRequest alloc] init];
-            request.name = kSpotListModelDefaultName;
+            request.name = [NSString stringWithFormat:@"Similar to %@", spotModel.name];
             request.coordinate = [self visibleMapCenterCoordinate];
             request.radius = [self searchRadius];
             request.sliders = spotModel.averageReview.sliders;

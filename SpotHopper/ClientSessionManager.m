@@ -17,6 +17,7 @@
 
 #import "UserModel.h"
 #import "Tracker.h"
+#import "SHNotifications.h"
 
 #import <FacebookSDK/Facebook.h>
 #import <Parse/Parse.h>
@@ -307,6 +308,8 @@
         [currentInstallation addUniqueObject:[NSString stringWithFormat:@"user-%@", self.currentUser.ID] forKey:@"channels"];
         [currentInstallation saveInBackground];
     }
+    
+    [SHNotifications userDidLoginIn];
 }
 
 - (void)logout {
@@ -330,6 +333,8 @@
     [self.requestSerializer setValue:@"" forHTTPHeaderField:@"Cookie"];
     [self setCookie:nil];
     [self setCurrentUser:nil];
+    
+    [SHNotifications userDidLoginOut];
 }
 
 #pragma mark - Settings
