@@ -1148,8 +1148,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)descope {
     if (self.scopedSpot) {
-        self.scopedSpot = nil;
         [self.locationMenuBarViewController descopeFromSpot:self.scopedSpot withCompletionBlock:nil];
+        self.scopedSpot = nil;
     }
 }
 
@@ -2032,10 +2032,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         }];
     }
     else {
-        if (self.isScopedToSpot) {
-            [self.locationMenuBarViewController descopeFromSpot:self.scopedSpot withCompletionBlock:nil];
-            [self descope];
-        }
+        [self descope];
         [self resetSearch];
         self.mode = SHModeSpecials;
         self.specialsSpotModels = spotModels;
