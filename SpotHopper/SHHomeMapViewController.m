@@ -990,6 +990,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             CLLocationDistance meters = [_currentLocation distanceFromLocation:nearestLocation];
             if (meters < 150) {
                 DrinkListRequest *request = [self.drinkListRequest copy];
+                request.name = kDrinkListModelDefaultName;
                 request.spotId = nearestSpot.ID;
                 request.coordinate = [self visibleMapCenterCoordinate];
                 request.radius = [self searchRadius];
@@ -2662,13 +2663,34 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     [self.navigationController popToViewController:self animated:TRUE];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [self showHUD:@"Finding Similar Drinks"];
+        
+        NSString *name = [NSString stringWithFormat:@"Similar to %@", drink.name];
+        
+//        [[DrinkListModel fetchMyDrinkLists] then:^(NSArray *drinklists) {
+//            
+//            DrinkListModel *matchedDrinklist = nil;
+//            
+//            for (DrinkListModel *myDrinklist in drinklists) {
+//                if ([myDrinklist.name isEqualToString:name]) {
+//                    matchedDrinklist = myDrinklist;
+//                    break;
+//                }
+//            }
+//            
+//            // TODO: use the matched drinklist
+//            
+//        } fail:^(ErrorModel *errorModel) {
+//            [self hideHUD];
+//            [self oops:errorModel caller:_cmd];
+//        } always:nil];
         
         // fetch the full details for a spot to get the sliders
         [[drink fetchDrink] then:^(DrinkModel *drinkModel) {
+            
             DrinkListRequest *request = [[DrinkListRequest alloc] init];
-            request.name = [NSString stringWithFormat:@"Similar to %@", drinkModel.name];
+            request.name = name;
             request.coordinate = [self visibleMapCenterCoordinate];
             request.radius = [self searchRadius];
             request.sliders = drinkModel.averageReview.sliders;

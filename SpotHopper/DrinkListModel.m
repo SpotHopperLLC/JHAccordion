@@ -451,6 +451,8 @@
 }
 
 + (void)createDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinkListModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    DebugLog(@"Creating drinklist: %@", request.name);
+    
     NSDictionary *params = [self prepareSearchParametersWithRequest:request];
     
     [[ClientSessionManager sharedClient] POST:@"/api/drink_lists" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -486,6 +488,8 @@
 }
 
 + (void)updateDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinkListModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    DebugLog(@"Updating drinklist: %@", request.name);
+
     NSDictionary *params = [self prepareSearchParametersWithRequest:request];
     
     [[ClientSessionManager sharedClient] PUT:[NSString stringWithFormat:@"/api/drink_lists/%ld", (long)[request.drinkListId integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
