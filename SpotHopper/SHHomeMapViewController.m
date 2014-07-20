@@ -2098,7 +2098,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)sidebarViewControllerDidRequestReviews:(SHSidebarViewController*)vc {
     [self hideSideBar:TRUE withCompletionBlock:^{
-        [self goToMyReviews];
+        [self goToReviewMenu];
     }];
 }
 
