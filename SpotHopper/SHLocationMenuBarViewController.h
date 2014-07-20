@@ -18,13 +18,11 @@
 
 - (void)updateLocationTitle:(NSString *)locationTitle;
 
-- (void)selectSpot:(SpotModel *)spot;
+- (void)selectSpot:(SpotModel *)spot withCompletionBlock:(void (^)())completionBlock;
+- (void)deselectSpot:(SpotModel *)spot withCompletionBlock:(void (^)())completionBlock;
 
-- (void)deselectSpot:(SpotModel *)spot;
-
-- (void)selectSpotDrinkListForSpot:(SpotModel *)spot;
-
-- (void)deselectSpotDrinkList;
+- (void)scopeToSpot:(SpotModel *)spot withCompletionBlock:(void (^)())completionBlock;
+- (void)descopeFromSpot:(SpotModel *)spot withCompletionBlock:(void (^)())completionBlock;
 
 @end
 
@@ -34,9 +32,8 @@
 
 - (void)locationMenuBarViewControllerDidRequestLocationChange:(SHLocationMenuBarViewController *)vc;
 
-- (void)locationMenuBarViewController:(SHLocationMenuBarViewController *)vc didSelectSpot:(SpotModel *)spot;
+- (void)locationMenuBarViewController:(SHLocationMenuBarViewController *)vc didScopeToSpot:(SpotModel *)spot;
 
-- (void)locationMenuBarViewController:(SHLocationMenuBarViewController *)vc didDeselectSpot:(SpotModel *)spot;
-
+- (void)locationMenuBarViewControllerDidDescope:(SHLocationMenuBarViewController *)vc;
 
 @end

@@ -13,6 +13,8 @@
 #import "MenuTypeModel.h"
 #import "PriceModel.h"
 
+#import "Tracker.h"
+
 @implementation MenuModel
 
 - (MenuItemModel *)menuItemForDrink:(DrinkModel *)drink {
@@ -21,8 +23,13 @@
             return menuItem;
         }
     }
-    
-    DebugLog(@"Unable to find menu item for drink: %@", drink.name);
+
+    NSDictionary *properties = @{@"Drink Name" : drink.name.length ? drink.name : @"Unknown",
+                                 @"Spot Name" : self.spot.name.length ? self.spot.name : @"Unknown",
+                                 @"Drink ID" : drink.ID ? drink.ID : [NSNull null],
+                                 @"Spot ID" : self.spot.ID ? self.spot.ID : [NSNull null]};
+    DebugLog(@"Unable to find menu item for drink: %@", properties);
+    [Tracker track:@"Missing Menu Item" properties:properties];
     
     return nil;
 }

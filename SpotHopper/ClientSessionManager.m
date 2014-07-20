@@ -16,6 +16,7 @@
 #import "ClientSessionManager.h"
 
 #import "UserModel.h"
+#import "Tracker.h"
 
 #import <FacebookSDK/Facebook.h>
 #import <Parse/Parse.h>
@@ -40,7 +41,6 @@
         _sharedClient = [[ClientSessionManager alloc] initWithBaseURL:baseURL];
         [_sharedClient setRequestSerializer:[AFJSONRequestSerializer serializer]];
         [_sharedClient setResponseSerializer:[AFJSONResponseSerializer serializer]];
-
     });
     
     return _sharedClient;
@@ -82,6 +82,8 @@
             NSLog(@"%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
         }
         
+        [self logResponse:operation.response];
+        
         success(operation, responseObject);
         [self handleError:operation withResponseObject:responseObject timeStarted:now];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -109,6 +111,8 @@
             NSLog(@"Request Body\n\t%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
             NSLog(@"Response\n\t%@ %ld - %@", operation.request.URL.standardizedURL, (long)operation.response.statusCode, operation.responseString);
         }
+        
+        [self logResponse:operation.response];
         
         success(operation, responseObject);
         [self handleError:operation withResponseObject:responseObject timeStarted:now];
@@ -138,6 +142,8 @@
             NSLog(@"Request Headers - %@", operation.request.allHTTPHeaderFields);
             NSLog(@"%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
         }
+        
+        [self logResponse:operation.response];
         
         success(operation, responseObject);
         [self handleError:operation withResponseObject:responseObject timeStarted:now];
@@ -169,6 +175,8 @@
             NSLog(@"%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
         }
         
+        [self logResponse:operation.response];
+        
         success(operation, responseObject);
         [self handleError:operation withResponseObject:responseObject timeStarted:now];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -195,6 +203,8 @@
             NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, (long)operation.response.statusCode, operation.responseString);
             NSLog(@"%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
         }
+        
+        [self logResponse:operation.response];
         
         success(operation, responseObject);
         [self handleError:operation withResponseObject:responseObject timeStarted:now];
@@ -228,6 +238,19 @@
     NSString *body = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
     NSString *message = [NSString stringWithFormat:@"[Error] %ld '%@' [%.04f s]: %@", statusCode, [[operation.response URL] absoluteString], elapsedTime, body];
     [[RavenClient sharedClient] captureMessage:message level:kRavenLogLevelDebugWarning];
+}
+
+#pragma mark - Logging
+
+- (void)logResponse:(NSHTTPURLResponse *)response {
+    if (response.allHeaderFields[@"Content-Length"] != nil) {
+        NSString *contentLength = response.allHeaderFields[@"Content-Length"];
+        if (_debug) {
+            NSLog(@"Content-Length: %@", contentLength);
+        }
+        NSNumber *number = [NSNumber numberWithInteger:[contentLength integerValue]];
+        [Tracker track:@"API Content Length" properties:@{@"Content-Length" : number}];
+    }
 }
 
 #pragma mark - Session Helpers
@@ -362,7 +385,6 @@
         NSFileManager *fileMgr = [[NSFileManager alloc] init];
         [fileMgr removeItemAtPath:path error:nil];
     }
-    
 }
 
 - (id)load:(Class)clazz forKey:(NSString*)key {

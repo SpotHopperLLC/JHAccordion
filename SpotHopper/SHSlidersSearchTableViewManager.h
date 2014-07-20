@@ -54,7 +54,7 @@
 - (void)slidersSearchTableViewManagerIsBusy:(SHSlidersSearchTableViewManager *)manager text:(NSString *)text;
 - (void)slidersSearchTableViewManagerIsFree:(SHSlidersSearchTableViewManager *)manager;
 
-- (SpotModel *)slidersSearchTableViewManagerSelectedSpot:(SHSlidersSearchTableViewManager *)manager;
+- (SpotModel *)slidersSearchTableViewManagerScopedSpot:(SHSlidersSearchTableViewManager *)manager;
 
 @required
 

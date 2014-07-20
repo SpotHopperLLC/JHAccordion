@@ -1724,8 +1724,8 @@
     request.drinkSubTypeId = drinkSubTypeID;
     request.baseAlcoholId = baseAlcoholID;
     
-    if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerSelectedSpot:)]) {
-        SpotModel *spot = [self.delegate slidersSearchTableViewManagerSelectedSpot:self];
+    if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerScopedSpot:)]) {
+        SpotModel *spot = [self.delegate slidersSearchTableViewManagerScopedSpot:self];
         request.spotId = spot.ID;
     }
 
@@ -1739,12 +1739,12 @@
             for (DrinkModel *drink in drinkListModel.drinks) {
                 Promise *promise = [drink fetchSpotsForDrinkListRequest:request];
                 [promises addObject:promise];
-                [promise then:^(NSArray *spots) {
-                    // pre-cache the menu for each spot
-                    for (SpotModel *spotModel in spots) {
-                        [spotModel fetchMenu];
-                    }
-                } fail:nil always:nil];
+//                [promise then:^(NSArray *spots) {
+//                    // pre-cache the menu for each spot
+//                    for (SpotModel *spotModel in spots) {
+//                        [spotModel fetchMenu];
+//                    }
+//                } fail:nil always:nil];
             }
             
             [When when:promises then:^{

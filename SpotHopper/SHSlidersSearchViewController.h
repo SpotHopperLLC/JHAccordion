@@ -32,15 +32,15 @@
 
 @optional
 
-- (void)slidersSearchViewController:(SHSlidersSearchViewController *)vc didPrepareSpotlist:(SpotListModel *)spotlist withRequest:(SpotListRequest *)request forMode:(SHMode)mode;
+- (void)slidersSearchViewController:(SHSlidersSearchViewController *)vc didPrepareSpotlist:(SpotListModel *)spotlistModel withRequest:(SpotListRequest *)request forMode:(SHMode)mode;
 
-- (void)slidersSearchViewController:(SHSlidersSearchViewController *)vc didPrepareDrinklist:(DrinkListModel *)drinklist withRequest:(DrinkListRequest *)request forMode:(SHMode)mode;
+- (void)slidersSearchViewController:(SHSlidersSearchViewController *)vc didPrepareDrinklist:(DrinkListModel *)drinkListModel withRequest:(DrinkListRequest *)request forMode:(SHMode)mode;
 
 - (void)slidersSearchViewControllerWillAnimate:(SHSlidersSearchViewController *)vc;
 
 - (void)slidersSearchViewControllerDidAnimate:(SHSlidersSearchViewController *)vc;
 
-- (SpotModel *)slidersSearchViewControllerSelectedSpot:(SHSlidersSearchViewController *)vc;
+- (SpotModel *)slidersSearchViewControllerScopedSpot:(SHSlidersSearchViewController *)vc;
 
 @required
 
