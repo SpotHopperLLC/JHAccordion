@@ -228,7 +228,6 @@
 #pragma mark - Private
 
 - (void)fetchMenuItems {
-    
     [self showHUD:@"Loading menu"];
     
     Promise *promiseMenuItems = [_spot fetchMenu];

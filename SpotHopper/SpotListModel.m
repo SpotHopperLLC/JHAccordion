@@ -20,6 +20,7 @@
 #import "SpotModel.h"
 #import "SpotListRequest.h"
 #import "UserModel.h"
+#import "SHNotifications.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -293,6 +294,10 @@
         _sh_Cache = [[SpotListCache alloc] init];
         
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * __unused notification) {
+            [_sh_Cache removeAllObjects];
+        }];
+        
+        [[NSNotificationCenter defaultCenter] addObserverForName:SHUserDidLogOutNotificationKey object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * __unused notification) {
             [_sh_Cache removeAllObjects];
         }];
     });
@@ -573,10 +578,7 @@
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
         if (operation.response.statusCode == 200 || operation.response.statusCode == 204) {
-            // update the cache
-            NSMutableArray *cachedSpotlists = [[SpotListModel sh_sharedCache] cachedSpotlists].mutableCopy;
-            [cachedSpotlists removeObject:self];
-            [[SpotListModel sh_sharedCache] cacheSpotlists:cachedSpotlists];
+            [SpotListModel refreshSpotlistCache];
             
             successBlock(TRUE);
         }
@@ -616,9 +618,9 @@ NSString * const SpotlistsKey = @"Spotlists";
     if (spotlists.count) {
         [self setObject:spotlists forKey:SpotlistsKey];
         
-        // automatically expire the cache after 90 seconds to ensure it does not get stale
+        // automatically expire the cache after 30 seconds to ensure it does not get stale
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(expireSpotlistsCache) object:nil];
-        [self performSelector:@selector(expireSpotlistsCache) withObject:self afterDelay:90];
+        [self performSelector:@selector(expireSpotlistsCache) withObject:self afterDelay:30];
     }
     else {
         [self removeObjectForKey:SpotlistsKey];

@@ -229,9 +229,9 @@
     return [self searchRadius];
 }
 
-- (SpotModel *)slidersSearchTableViewManagerSelectedSpot:(SHSlidersSearchTableViewManager *)manager {
-    if ([self.delegate respondsToSelector:@selector(slidersSearchViewControllerSelectedSpot:)]) {
-        SpotModel *spot = [self.delegate slidersSearchViewControllerSelectedSpot:self];
+- (SpotModel *)slidersSearchTableViewManagerScopedSpot:(SHSlidersSearchTableViewManager *)manager {
+    if ([self.delegate respondsToSelector:@selector(slidersSearchViewControllerScopedSpot:)]) {
+        SpotModel *spot = [self.delegate slidersSearchViewControllerScopedSpot:self];
         return spot;
     }
     

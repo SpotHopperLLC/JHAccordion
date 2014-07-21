@@ -98,6 +98,8 @@
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
+    DebugLog(@"params: %@", params);
+    
     [[ClientSessionManager sharedClient] GET:@"/api/spots" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI

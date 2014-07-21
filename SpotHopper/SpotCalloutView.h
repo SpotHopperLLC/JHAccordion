@@ -12,6 +12,7 @@
 
 typedef enum {
     SpotCalloutIconNone = 0,
+    SpotCalloutIconLoading,
     SpotCalloutIconBeerOnTap,
     SpotCalloutIconBeerInBottle,
     SpotCalloutIconBeerOnTapAndInBottle,
@@ -29,6 +30,8 @@ extern NSString * const SpotCalloutViewIdentifier;
 @property (weak, nonatomic, readonly) UIView *containerView;
 
 + (SpotCalloutView *)loadView;
+
++ (BOOL)hasCalloutViewInAnnotationView:(MKAnnotationView *)annotationView;
 
 - (void)setIcon:(SpotCalloutIcon)icon spotNameText:(NSString *)spotNameText drink1Text:(NSString *)drink1Text drink2Text:(NSString *)drink2Text;
 

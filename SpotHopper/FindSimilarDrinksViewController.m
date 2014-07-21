@@ -226,6 +226,7 @@
 
 - (void)startSearch {
     [DrinkModel cancelGetDrinks];
+    [self hideHUD];
     
     // Resets pages and clears results
     _page = @1;
@@ -241,9 +242,6 @@
 }
 
 - (void)doSearch {
-    
-    [self showHUD:@"Searching"];
-    
     /*
      * Searches drinks
      */
@@ -253,6 +251,7 @@
                                    kDrinkModelParamsPageSize : kPageSize
                                    };
     
+    [self showHUD:@"Searching"];
     [DrinkModel getDrinks:paramsDrinks success:^(NSArray *drinkModels, JSONAPI *jsonApi) {
         [self hideHUD];
         

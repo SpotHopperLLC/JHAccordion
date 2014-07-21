@@ -240,6 +240,7 @@
 - (void)startSearch {
     [DrinkModel cancelGetDrinks];
     [SpotModel cancelGetSpots];
+    [self hideHUD];
     
     // Resets pages and clears results
     _page = @1;
@@ -256,7 +257,6 @@
 
 - (void)doSearch {
     
-    [self showHUD:@"Searching"];
     
     if (_searchDrinks == YES) {
         /*
@@ -268,6 +268,7 @@
                                        kDrinkModelParamsPageSize : kPageSize
                                        };
         
+        [self showHUD:@"Searching"];
         [DrinkModel getDrinks:paramsDrinks success:^(NSArray *drinkModels, JSONAPI *jsonApi) {
             [self hideHUD];
             
@@ -306,6 +307,7 @@
             [paramsSpots setObject:[NSNumber numberWithFloat:_location.coordinate.longitude] forKey:kSpotModelParamQueryLongitude];
         }
         
+        [self showHUD:@"Searching"];
         [SpotModel getSpots:paramsSpots success:^(NSArray *spotModels, JSONAPI *jsonApi) {
             [self hideHUD];
             

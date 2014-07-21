@@ -613,7 +613,7 @@
     if (self.mode == SHModeSpots) {
         if (indexPath.section == kSection_Spots_Spotlists && indexPath.row < self.spotlists.count) {
             SpotListModel *spotlist = [self spotlistAtIndexPath:indexPath];
-            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:spotlist.name];
+            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:spotlist.name deleteEnabled:[spotlist.ID isEqual:[NSNull null]]];
         }
         else if (indexPath.section == kSection_Spots_Sliders && indexPath.row < self.sliders.count) {
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
@@ -628,7 +628,7 @@
     else if (self.mode == SHModeBeer) {
         if (indexPath.section == kSection_Beer_Drinklists && indexPath.row < self.drinklists.count) {
             DrinkListModel *drinklist = [self drinklistAtIndexPath:indexPath];
-            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:drinklist.name];
+            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:drinklist.name deleteEnabled:[drinklist.ID isEqual:[NSNull null]]];
         }
         else if (indexPath.section == kSection_Beer_Sliders && indexPath.row < self.sliders.count) {
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
@@ -647,7 +647,7 @@
         }
         else if (indexPath.section == kSection_Cocktail_Drinklists && indexPath.row < self.drinklists.count) {
             DrinkListModel *drinklist = [self drinklistAtIndexPath:indexPath];
-            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:drinklist.name];
+            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:drinklist.name deleteEnabled:[drinklist.ID isEqual:[NSNull null]]];
         }
         else if (indexPath.section == kSection_Cocktail_Sliders && indexPath.row < self.sliders.count) {
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
@@ -666,7 +666,7 @@
         }
         else if (indexPath.section == kSection_Wine_Drinklists && indexPath.row < self.drinklists.count) {
             DrinkListModel *drinklist = [self drinklistAtIndexPath:indexPath];
-            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:drinklist.name];
+            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:drinklist.name deleteEnabled:[drinklist.ID isEqual:[NSNull null]]];
         }
         else if (indexPath.section == kSection_Wine_Sliders && indexPath.row < self.sliders.count) {
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
@@ -834,7 +834,7 @@
 #pragma mark - Cell Configuration
 #pragma mark -
 
-- (UITableViewCell *)configureListCellForIndexPath:(NSIndexPath *)indexPath forTableView:(UITableView *)tableView withTitle:(NSString *)title {
+- (UITableViewCell *)configureListCellForIndexPath:(NSIndexPath *)indexPath forTableView:(UITableView *)tableView withTitle:(NSString *)title deleteEnabled:(BOOL)deleteEnabled {
     static NSString *ListCellIdentifier = @"ListCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ListCellIdentifier forIndexPath:indexPath];
@@ -842,7 +842,7 @@
     UILabel *titleLabel = [self labelInView:cell withTag:kListCellTitleLabel];
     UIButton *deleteButton = [self buttonInView:cell withTag:kListCellDeleteButton];
     
-    deleteButton.hidden = ![kCustomSlidersTitle isEqualToString:title] ? FALSE : TRUE;
+    deleteButton.hidden = deleteEnabled;
     
     [SHStyleKit setLabel:titleLabel textColor:SHStyleKitColorMyTextColor];
     titleLabel.text = title;
@@ -851,7 +851,7 @@
     backgroundView.backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintColorTransparent];
     cell.selectedBackgroundView = backgroundView;
     
-    [SHStyleKit setButton:deleteButton withDrawing:SHStyleKitDrawingDeleteIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setButton:deleteButton withDrawing:SHStyleKitDrawingDeleteIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyTextColor size:CGSizeMake(30, 30)];
     
     if ([deleteButton bk_hasEventHandlersForControlEvents:UIControlEventTouchUpInside]) {
         [deleteButton bk_removeEventHandlersForControlEvents:UIControlEventTouchUpInside];
@@ -1654,7 +1654,14 @@
     if (self.selectedSpotType && ![[NSNull null] isEqual:self.selectedSpotType.ID]) {
         request.spotTypeId = self.selectedSpotType.ID;
     }
-    request.name = self.selectedSpotlist.name.length ? self.selectedSpotlist.name : kSpotListModelDefaultName;
+    
+    if ([kCustomSlidersTitle isEqualToString:self.selectedSpotlist.name]) {
+        request.name = kSpotListModelDefaultName;
+    }
+    else {
+        request.name = self.selectedSpotlist.name.length ? self.selectedSpotlist.name : kSpotListModelDefaultName;
+    }
+    
     request.coordinate = coordinate;
     request.radius = radius;
     request.sliders = allTheSliders;
@@ -1716,7 +1723,14 @@
     if (self.selectedDrinklist && ![[NSNull null] isEqual:self.selectedDrinklist.ID]) {
         request.drinkListId = self.selectedDrinklist.ID;
     }
-    request.name = self.selectedDrinklist.name.length ? self.selectedDrinklist.name : kDrinkListModelDefaultName;
+    
+    if ([kCustomSlidersTitle isEqualToString:self.selectedDrinklist.name]) {
+        request.name = kDrinkListModelDefaultName;
+    }
+    else {
+        request.name = self.selectedDrinklist.name.length ? self.selectedDrinklist.name : kDrinkListModelDefaultName;
+    }
+    
     request.coordinate = coordinate;
     request.radius = radiusInMiles;
     request.sliders = allTheSliders;
@@ -1724,8 +1738,8 @@
     request.drinkSubTypeId = drinkSubTypeID;
     request.baseAlcoholId = baseAlcoholID;
     
-    if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerSelectedSpot:)]) {
-        SpotModel *spot = [self.delegate slidersSearchTableViewManagerSelectedSpot:self];
+    if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerScopedSpot:)]) {
+        SpotModel *spot = [self.delegate slidersSearchTableViewManagerScopedSpot:self];
         request.spotId = spot.ID;
     }
 
@@ -1739,12 +1753,6 @@
             for (DrinkModel *drink in drinkListModel.drinks) {
                 Promise *promise = [drink fetchSpotsForDrinkListRequest:request];
                 [promises addObject:promise];
-                [promise then:^(NSArray *spots) {
-                    // pre-cache the menu for each spot
-                    for (SpotModel *spotModel in spots) {
-                        [spotModel fetchMenu];
-                    }
-                } fail:nil always:nil];
             }
             
             [When when:promises then:^{

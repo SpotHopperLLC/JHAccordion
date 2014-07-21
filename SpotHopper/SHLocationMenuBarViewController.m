@@ -13,6 +13,8 @@
 
 #import "SpotModel.h"
 
+#define kAnimationDuration 0.35f
+
 @interface SHLocationMenuBarViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *locationView;
@@ -28,16 +30,12 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingConstraint;
 
-@property (weak, nonatomic) SpotModel *spot;
-
-@property (strong, nonatomic) NSMutableArray *selectedQueue;
-@property (strong, nonatomic) NSMutableArray *deselectedQueue;
+@property (weak, nonatomic) SpotModel *scopedSpot;
+@property (weak, nonatomic) SpotModel *selectedSpot;
 
 @end
 
 @implementation SHLocationMenuBarViewController {
-    BOOL _isHiding;
-    BOOL _isShowing;
     BOOL _isDisplayingSpotDrinklist;
 }
 
@@ -46,9 +44,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
-    
-    self.selectedQueue = @[].mutableCopy;
-    self.deselectedQueue = @[].mutableCopy;
     
     UIColor *textColor = [SHStyleKit myTextColor];
     self.nearLabel.textColor = textColor;
@@ -69,31 +64,60 @@
     self.locationLabel.text = locationTitle;
 }
 
-- (void)selectSpot:(SpotModel *)spot {
-    if (!spot) {
-        return;
+- (void)selectSpot:(SpotModel *)spot withCompletionBlock:(void (^)())completionBlock {
+    if (!self.scopedSpot && self.selectedSpot) {
+        self.selectedSpot = spot;
+        [self showFilterView:TRUE withCompletionBlock:completionBlock];
     }
-    [self.selectedQueue addObject:spot];
-    [self processQueue];
-}
-
-- (void)deselectSpot:(SpotModel *)spot {
-    if (!spot) {
-        return;
+    else if (!self.scopedSpot && !self.selectedSpot) {
+        self.selectedSpot = spot;
+        [self showFilterView:TRUE withCompletionBlock:completionBlock];
     }
-    if (_isDisplayingSpotDrinklist) { return; }
-    [self.deselectedQueue addObject:spot];
-    [self processQueue];
+    else {
+        self.selectedSpot = spot;
+        if (completionBlock) {
+            completionBlock();
+        }
+    }
 }
 
-- (void)selectSpotDrinkListForSpot:(SpotModel *)spot {
-    _isDisplayingSpotDrinklist = TRUE;
-    [self selectSpot:spot];
+- (void)deselectSpot:(SpotModel *)spot withCompletionBlock:(void (^)())completionBlock {
+    // deselection/selection can happen in an unexpected order
+    if (!self.scopedSpot && [spot isEqual:self.selectedSpot]) {
+        self.selectedSpot = nil;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            if (!self.selectedSpot) {
+                [self hideFilterView:TRUE withCompletionBlock:completionBlock];
+            }
+        });
+    }
+    else {
+        self.selectedSpot = nil;
+        if (completionBlock) {
+            completionBlock();
+        }
+    }
 }
 
-- (void)deselectSpotDrinkList {
-    _isDisplayingSpotDrinklist = FALSE;
-    [self deselectSpot:self.spot];
+- (void)scopeToSpot:(SpotModel *)spot withCompletionBlock:(void (^)())completionBlock {
+    if (![spot isEqual:self.scopedSpot]) {
+        self.scopedSpot = spot;
+        [self showFilterView:TRUE withCompletionBlock:completionBlock];
+    }
+    else if (completionBlock) {
+        completionBlock();
+    }
+}
+
+- (void)descopeFromSpot:(SpotModel *)spot withCompletionBlock:(void (^)())completionBlock {
+    if ([spot isEqual:self.scopedSpot]) {
+        self.scopedSpot = nil;
+        self.selectedSpot = nil;
+        [self hideFilterView:TRUE withCompletionBlock:completionBlock];
+    }
+    else if (completionBlock) {
+        completionBlock();
+    }
 }
 
 #pragma mark - User Actions
@@ -106,21 +130,24 @@
 }
 
 - (IBAction)filterButtonTapped:(id)sender {
-    if (_isDisplayingSpotDrinklist) {
+    if (self.scopedSpot) {
+        // descope the scoped spot
         
-        if (self.spot) {
-            _isDisplayingSpotDrinklist = FALSE;
-            [self updateFilterLabelWithSpot:self.spot];
-            self.spot = nil;
-            if ([self.delegate respondsToSelector:@selector(locationMenuBarViewController:didDeselectSpot:)]) {
-                [self.delegate locationMenuBarViewController:self didDeselectSpot:self.spot];
+        [self descopeFromSpot:self.scopedSpot withCompletionBlock:^{
+            if ([self.delegate respondsToSelector:@selector(locationMenuBarViewControllerDidDescope:)]) {
+                [self.delegate locationMenuBarViewControllerDidDescope:self];
             }
-        }
+        }];
     }
-    else {
-        if (self.spot && [self.delegate respondsToSelector:@selector(locationMenuBarViewController:didSelectSpot:)]) {
-            [self.delegate locationMenuBarViewController:self didSelectSpot:self.spot];
-        }
+    else if (self.selectedSpot) {
+        // scope to selected spot
+        self.scopedSpot = self.selectedSpot;
+        
+        [self showFilterView:TRUE withCompletionBlock:^{
+            if ([self.delegate respondsToSelector:@selector(locationMenuBarViewController:didScopeToSpot:)]) {
+                [self.delegate locationMenuBarViewController:self didScopeToSpot:self.scopedSpot];
+            }
+        }];
     }
 }
 
@@ -131,54 +158,36 @@
     return self.leadingConstraint.constant != 0.0;
 }
 
-- (void)processQueue {
-    if (!_isShowing && self.deselectedQueue.count) {
-        [self.deselectedQueue removeAllObjects];
-        [self hideFilterView:TRUE withCompletionBlock:^{
-            [self processQueue];
-        }];
-    }
-    else if (!_isHiding && self.selectedQueue.count) {
-        SpotModel *spot = [self.selectedQueue lastObject];
-        [self.selectedQueue removeAllObjects];
-        [self showFilterViewForSpot:spot animated:TRUE withCompletionBlock:^{
-            [self processQueue];
-        }];
-    }
-}
-
-- (void)updateFilterLabelWithSpot:(SpotModel *)spot {
-    if (_isDisplayingSpotDrinklist) {
-        self.filterLabel.text = [NSString stringWithFormat:@"Where? %@", spot.name];
+- (void)updateFilterLabel {
+    if (self.scopedSpot) {
+        self.filterLabel.text = [NSString stringWithFormat:@"Where? %@", self.scopedSpot.name];
         UIImage *closeImage = [SHStyleKit drawImage:SHStyleKitDrawingCloseIcon color:SHStyleKitColorMyTextColor size:CGSizeMake(20, 20)];
         self.filterArrowImageView.image = closeImage;
     }
-    else {
-        self.filterLabel.text = [NSString stringWithFormat:@"Filter results to %@?", spot.name];
+    else if (self.selectedSpot) {
+        self.filterLabel.text = [NSString stringWithFormat:@"Filter results to %@?", self.selectedSpot.name];
         UIImage *arrowImage = [SHStyleKit drawImage:SHStyleKitDrawingNavigationArrowRightIcon color:SHStyleKitColorMyTextColor size:CGSizeMake(20, 20)];
         self.filterArrowImageView.image = arrowImage;
     }
+    else {
+        self.filterLabel.text = nil;
+    }
 }
 
-- (void)showFilterViewForSpot:(SpotModel *)spot animated:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+- (void)showFilterView:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
     // set filterLabel with spot name and animate views to the left
     
-    _isShowing = TRUE;
-    
-    self.spot = spot;
-    
-    [self updateFilterLabelWithSpot:spot];
+    [self updateFilterLabel];
     
     CGFloat newConstant = CGRectGetWidth(self.view.frame) * -1;
     
-    CGFloat duration = animated ? 0.35 : 0.0;
+    CGFloat duration = animated ? kAnimationDuration : 0.0f;
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-    [UIView animateWithDuration:duration delay:0.0 usingSpringWithDamping:0.9 initialSpringVelocity:9.0 options:options animations:^{
+    [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.9f initialSpringVelocity:9.0f options:options animations:^{
         self.leadingConstraint.constant = newConstant;
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
-        _isShowing = FALSE;
         if (completionBlock) {
             completionBlock();
         }
@@ -186,15 +195,13 @@
 }
 
 - (void)hideFilterView:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    _isHiding = TRUE;
-    CGFloat duration = animated ? 0.35 : 0.0;
+    CGFloat duration = animated ? kAnimationDuration : 0.0f;
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-    [UIView animateWithDuration:duration delay:0.0 usingSpringWithDamping:0.9 initialSpringVelocity:9.0 options:options animations:^{
-        self.leadingConstraint.constant = 0.0;
+    [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.9f initialSpringVelocity:9.0f options:options animations:^{
+        self.leadingConstraint.constant = 0.0f;
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
-        _isHiding = FALSE;
         if (completionBlock) {
             completionBlock();
         }

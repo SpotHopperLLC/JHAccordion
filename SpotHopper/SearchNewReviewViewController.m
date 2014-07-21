@@ -144,6 +144,10 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
 #pragma mark - Tracking
 
 - (NSString *)screenName {
@@ -450,6 +454,7 @@
     
     [DrinkModel cancelGetDrinks];
     [SpotModel cancelGetSpots];
+    [self hideHUD];
     
     // Resets pages and clears results
     _drinkPage = @1;
@@ -465,7 +470,6 @@
 }
 
 - (void)doSearch {
-    
     if (_txtSearch.text.length == 0) {
         [_results removeAllObjects];
         [self dataDidFinishRefreshing];
@@ -474,58 +478,11 @@
 
     [self showHUD:@"Searching"];
     
-    /*
-     * Searches drinks
-     */
-    NSDictionary *paramsDrinks = @{
-                             kDrinkModelParamQuery : _txtSearch.text,
-                             kDrinkModelParamPage : _drinkPage,
-                             kDrinkModelParamsPageSize : kPageSize
-                             };
-    
-    Promise *promiseDrinks = [DrinkModel getDrinks:paramsDrinks success:^(NSArray *drinkModels, JSONAPI *jsonApi) {
-        // Adds drinks to results
-        [_results addObjectsFromArray:drinkModels];
-    } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
-    }];
-    
-    /*
-     * Searches spots
-     */
-    NSMutableDictionary *paramsSpots = @{
-                             kSpotModelParamQuery : _txtSearch.text,
-                             kSpotModelParamQueryVisibleToUsers : @"true",
-                             kSpotModelParamPage : _spotPage,
-                             kSpotModelParamsPageSize : kPageSize
-                             }.mutableCopy;
-    
-    if (_createReview == YES) {
-        [paramsSpots setObject:[@[kSpotModelParamSourcesSpotHopper,kSpotModelParamSourcesFoursquare] componentsJoinedByString:@","] forKey:kSpotModelParamSources];
-    } else {
-        [paramsSpots setObject:kSpotModelParamSourcesSpotHopper forKey:kSpotModelParamSources];
-    }
-    
-    if (_location != nil) {
-        [paramsSpots setObject:[NSNumber numberWithFloat:_location.coordinate.latitude] forKey:kSpotModelParamQueryLatitude];
-        [paramsSpots setObject:[NSNumber numberWithFloat:_location.coordinate.longitude] forKey:kSpotModelParamQueryLongitude];
-    }
-    
-    Promise *promiseSpots = [SpotModel getSpots:paramsSpots success:^(NSArray *spotModels, JSONAPI *jsonApi) {
-        // Adds spots to results
-        [_results addObjectsFromArray:spotModels];
-    } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
-    }];
-    
-    /*
-     * When
-     */
-    [When when:@[promiseDrinks, promiseSpots] then:^{
-        
+    NSString *text = _txtSearch.text;
+    [When when:@[[self searchDrinks:text], [self searchSpots:text]] then:^{
     } fail:^(id error) {
-        
     } always:^{
+        [self hideHUD];
 
         [_results sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             NSNumber *revObj1 = [obj1 valueForKey:@"relevance"];
@@ -534,8 +491,53 @@
         }];
         
         [self dataDidFinishRefreshing];
-        [self hideHUD];
     }];
+}
+
+- (Promise *)searchDrinks:(NSString *)text {
+    NSDictionary *params = @{
+                             kDrinkModelParamQuery : text.length ? text : @"",
+                             kDrinkModelParamPage : _drinkPage,
+                             kDrinkModelParamsPageSize : kPageSize
+                             };
+    
+    Promise *promise = [DrinkModel getDrinks:params success:^(NSArray *drinkModels, JSONAPI *jsonApi) {
+        // Adds drinks to results
+        [_results addObjectsFromArray:drinkModels];
+    } failure:^(ErrorModel *errorModel) {
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+    }];
+    
+    return promise;
+}
+
+- (Promise *)searchSpots:(NSString *)text {
+    NSMutableDictionary *params = @{
+                                    kSpotModelParamQuery : text.length ? text : @"",
+                                    kSpotModelParamQueryVisibleToUsers : @"true",
+                                    kSpotModelParamPage : _spotPage,
+                                    kSpotModelParamsPageSize : kPageSize
+                                    }.mutableCopy;
+    
+    if (_createReview == YES) {
+        [params setObject:[@[kSpotModelParamSourcesSpotHopper,kSpotModelParamSourcesFoursquare] componentsJoinedByString:@","] forKey:kSpotModelParamSources];
+    } else {
+        [params setObject:kSpotModelParamSourcesSpotHopper forKey:kSpotModelParamSources];
+    }
+    
+    if (_location != nil) {
+        [params setObject:[NSNumber numberWithFloat:_location.coordinate.latitude] forKey:kSpotModelParamQueryLatitude];
+        [params setObject:[NSNumber numberWithFloat:_location.coordinate.longitude] forKey:kSpotModelParamQueryLongitude];
+    }
+    
+    Promise *promise = [SpotModel getSpots:params success:^(NSArray *spotModels, JSONAPI *jsonApi) {
+        // Adds spots to results
+        [_results addObjectsFromArray:spotModels];
+    } failure:^(ErrorModel *errorModel) {
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+    }];
+    
+    return promise;
 }
 
 @end

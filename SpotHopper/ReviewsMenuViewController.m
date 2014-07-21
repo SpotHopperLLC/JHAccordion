@@ -348,6 +348,7 @@
     
     [DrinkModel cancelGetDrinks];
     [SpotModel cancelGetSpots];
+    [self hideHUD];
     
     // Resets pages and clears results
     _drinkPage = @1;
@@ -415,6 +416,7 @@
     } fail:^(id error) {
         
     } always:^{
+        [self hideHUD];
         
         [_results sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             NSNumber *revObj1 = [obj1 valueForKey:@"relevance"];
@@ -423,7 +425,6 @@
         }];
         
         [self dataDidFinishRefreshing];
-        [self hideHUD];
     }];
 }
 

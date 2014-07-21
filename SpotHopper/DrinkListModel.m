@@ -20,6 +20,7 @@
 #import "DrinkSubTypeModel.h"
 
 #import "DrinkListRequest.h"
+#import "SHNotifications.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -316,6 +317,10 @@
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * __unused notification) {
             [_sh_Cache removeAllObjects];
         }];
+        
+        [[NSNotificationCenter defaultCenter] addObserverForName:SHUserDidLogOutNotificationKey object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * __unused notification) {
+            [_sh_Cache removeAllObjects];
+        }];
     });
     
     return _sh_Cache;
@@ -323,7 +328,7 @@
 
 #pragma mark - Revised Code for 2.0
 
-+ (void)refreshSpotlistCache {
++ (void)refreshDrinklistCache {
     [[self sh_sharedCache] cacheDrinklists:nil];
     if ([UserModel isLoggedIn]) {
         [[self fetchMyDrinkLists] then:^(NSArray *spotlists) {
@@ -446,6 +451,8 @@
 }
 
 + (void)createDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinkListModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    DebugLog(@"Creating drinklist: %@", request.name);
+    
     NSDictionary *params = [self prepareSearchParametersWithRequest:request];
     
     [[ClientSessionManager sharedClient] POST:@"/api/drink_lists" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -466,6 +473,8 @@
                 model.drinks = [model.drinks subarrayWithRange:NSMakeRange(0, 10)];
             }
             
+            [DrinkListModel refreshDrinklistCache];
+            
             if (successBlock) {
                 successBlock(model);
             }
@@ -479,6 +488,8 @@
 }
 
 + (void)updateDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinkListModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    DebugLog(@"Updating drinklist: %@", request.name);
+
     NSDictionary *params = [self prepareSearchParametersWithRequest:request];
     
     [[ClientSessionManager sharedClient] PUT:[NSString stringWithFormat:@"/api/drink_lists/%ld", (long)[request.drinkListId integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -498,6 +509,8 @@
             if (model.drinks.count > 10) {
                 model.drinks = [model.drinks subarrayWithRange:NSMakeRange(0, 10)];
             }
+            
+            [DrinkListModel refreshDrinklistCache];
             
             if (successBlock) {
                 successBlock(model);
@@ -612,10 +625,7 @@
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
         if (operation.response.statusCode == 200 || operation.response.statusCode == 204) {
-            // update the cache
-            NSMutableArray *cachedSpotlists = [[DrinkListModel sh_sharedCache] cachedDrinklists].mutableCopy;
-            [cachedSpotlists removeObject:self];
-            [[DrinkListModel sh_sharedCache] cacheDrinklists:cachedSpotlists];
+            [DrinkListModel refreshDrinklistCache];
             
             successBlock(TRUE);
         }
@@ -657,9 +667,9 @@ NSString * const DrinklistsKey = @"Drinklists";
     if (spotlists.count) {
         [self setObject:spotlists forKey:DrinklistsKey];
         
-        // automatically expire the cache after 90 seconds to ensure it does not get stale
+        // automatically expire the cache after 30 seconds to ensure it does not get stale
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(expireSpotlistsCache) object:nil];
-        [self performSelector:@selector(expireSpotlistsCache) withObject:self afterDelay:90];
+        [self performSelector:@selector(expireSpotlistsCache) withObject:self afterDelay:30];
     }
     else {
         [self removeObjectForKey:DrinklistsKey];

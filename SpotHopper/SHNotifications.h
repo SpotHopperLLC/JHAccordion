@@ -31,6 +31,9 @@ extern NSString * const SHFindSimilarToDrinkNotificationKey;
 extern NSString * const SHFindSimilarToSpotNotificationName;
 extern NSString * const SHFindSimilarToSpotNotificationKey;
 
+extern NSString * const SHUserDidLogInNotificationKey;
+extern NSString * const SHUserDidLogOutNotificationKey;
+
 @interface SHNotifications : NSObject
 
 + (void)goToHomeMap;
@@ -46,5 +49,9 @@ extern NSString * const SHFindSimilarToSpotNotificationKey;
 + (void)findSimilarToDrink:(DrinkModel *)drink;
 
 + (void)findSimilarToSpot:(SpotModel *)spot;
+
++ (void)userDidLoginIn;
+
++ (void)userDidLoginOut;
 
 @end

@@ -21,6 +21,9 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
 @interface SpotCalloutView ()
 
 @property (weak, nonatomic, readwrite) IBOutlet UIView *containerView;
+
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
 @property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
 @property (weak, nonatomic) IBOutlet UILabel *spotNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *drink1Label;
@@ -41,8 +44,19 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SpotHopper" bundle:nil];
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:SpotCalloutViewIdentifier];
     SpotCalloutView *calloutView = (SpotCalloutView *)vc.view;
+    calloutView.translatesAutoresizingMaskIntoConstraints = YES;
     
     return calloutView;
+}
+
++ (BOOL)hasCalloutViewInAnnotationView:(MKAnnotationView *)annotationView {
+    for (UIView *subview in annotationView.subviews) {
+        if ([subview isKindOfClass:[SpotCalloutView class]]) {
+            return TRUE;
+        }
+    }
+
+    return FALSE;
 }
 
 #pragma mark - Hit Test
@@ -56,8 +70,6 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
 #pragma mark -
 
 - (IBAction)calloutButtonTapped:(id)sender {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
-    
     if ([self.delegate respondsToSelector:@selector(spotCalloutView:didSelectAnnotationView:)]) {
         [self.delegate spotCalloutView:self didSelectAnnotationView:self.annotationView];
     }
@@ -68,6 +80,13 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
 
 - (void)setIcon:(SpotCalloutIcon)icon spotNameText:(NSString *)spotNameText drink1Text:(NSString *)drink1Text drink2Text:(NSString *)drink2Text {
     CGSize iconSize = CGSizeMake(40.0f, 40.f);
+    
+    if (icon == SpotCalloutIconLoading) {
+        [self.activityIndicator startAnimating];
+    }
+    else {
+        [self.activityIndicator stopAnimating];
+    }
     
     switch (icon) {
         case SpotCalloutIconBeerOnTap:
@@ -112,9 +131,6 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
     else {
         self.drink2Label.text = nil;
     }
-
-    if (self.superview) {
-    }
 }
 
 - (void)placeInMapView:(MKMapView *)mapView insideAnnotationView:(MKAnnotationView *)annotationView {
@@ -122,7 +138,6 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
     
     self.mapView = mapView;
     self.annotationView = annotationView;
-    self.alpha = 0.0f;
     
 	[annotationView addSubview:self];
     [self adjustHeightWithIntrinsicSize];
@@ -130,12 +145,6 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
     CGRect frame = self.frame;
     frame.origin = self.calculatedOrigin;
     self.frame = frame;
-    
-    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-    [UIView animateWithDuration:0.25f delay:0.0f usingSpringWithDamping:9.0 initialSpringVelocity:9.0 options:options animations:^{
-        self.alpha = 1.0f;
-    } completion:^(BOOL finished) {
-    }];
 }
 
 + (void)removeCalloutViewFromAnnotationView:(MKAnnotationView *)annotationView {
