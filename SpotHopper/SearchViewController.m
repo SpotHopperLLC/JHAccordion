@@ -243,7 +243,6 @@
 - (void)startSearch {
     [DrinkModel cancelGetDrinks];
     [SpotModel cancelGetSpots];
-    [self hideHUD];
     
     // Resets pages and clears results
     _page = @1;

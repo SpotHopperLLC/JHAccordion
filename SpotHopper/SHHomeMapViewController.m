@@ -243,10 +243,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     [self hideSearch:FALSE withCompletionBlock:nil];
     [self hideSearchThisArea:FALSE withCompletionBlock:nil];
-    
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-//        [self showStatus:@"Hello World!" animated:TRUE withCompletionBlock:nil];
-//    });
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -2576,7 +2572,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     [self updateLocationName];
     
-    if (!self.selectedSpot && [self canSearchAgain]) {
+    if (!self.scopedSpot && [self canSearchAgain]) {
         [self showSearchThisArea:TRUE withCompletionBlock:nil];
     }
     

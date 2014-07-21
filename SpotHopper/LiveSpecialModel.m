@@ -58,6 +58,9 @@
             if (successBlock) {
                 successBlock(nil, nil);
             }
+            
+            // Resolves promise
+            [deferred resolve];
         }
         else if (operation.response.statusCode == 200) {
             LiveSpecialModel *model = [jsonApi resourceForKey:@"live_specials"];

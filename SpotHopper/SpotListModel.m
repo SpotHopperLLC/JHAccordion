@@ -82,6 +82,9 @@
             if (successBlock) {
                 successBlock(nil, nil);
             }
+            
+            // Resolves promise
+            [deferred resolve];
         }
         else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"spot_lists"];
@@ -145,6 +148,9 @@
             if (successBlock) {
                 successBlock(nil, nil);
             }
+            
+            // Resolves promise
+            [deferred resolve];
         }
         else if (operation.response.statusCode == 200) {
             SpotListModel *model = [jsonApi resourceForKey:@"spot_lists"];
@@ -178,6 +184,9 @@
             if (successBlock) {
                 successBlock(nil, nil);
             }
+            
+            // Resolves promise
+            [deferred resolve];
         }
         else if (operation.response.statusCode == 200) {
             SpotListModel *model = [jsonApi resourceForKey:@"spot_lists"];

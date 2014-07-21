@@ -230,20 +230,19 @@
 
 - (void)goToSpotProfile:(SpotModel *)spot {
 #ifdef kIntegrateDeprecatedScreens
-    SpotProfileViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
-    [viewController setSpot:spot];
+    SpotProfileViewController *vc = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
+    [vc setSpot:spot];
     
     if (self.navigationController.viewControllers.count && [self isEqual:self.navigationController.viewControllers[0]]) {
-        [self.navigationController pushViewController:viewController animated:TRUE];
+        [self.navigationController pushViewController:vc animated:TRUE];
     }
     else {
         NSMutableArray *viewControllers = self.navigationController.viewControllers.mutableCopy;
         [viewControllers removeLastObject];
-        [viewControllers addObject:viewController];
+        [viewControllers addObject:vc];
         [self.navigationController setViewControllers:viewControllers animated:YES];
     }
 #else
-    
     [Tracker track:@"View Spot Profile" properties:@{@"Name" : spot.name, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
     SpotProfileViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
     [viewController setSpot:spot];

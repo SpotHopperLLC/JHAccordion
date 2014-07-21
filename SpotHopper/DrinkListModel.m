@@ -92,6 +92,9 @@
             if (successBlock) {
                 successBlock(nil, nil);
             }
+            
+            // Resolves promise
+            [deferred resolve];
         }
         else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"drink_lists"];
@@ -163,6 +166,9 @@
             if (successBlock) {
                 successBlock(nil, nil);
             }
+            
+            // Resolves promise
+            [deferred resolve];
         }
         else if (operation.response.statusCode == 200) {
             DrinkListModel *model = [jsonApi resourceForKey:@"drink_lists"];
@@ -196,6 +202,9 @@
             if (successBlock) {
                 successBlock(nil, nil);
             }
+            
+            // Resolves promise
+            [deferred resolve];
         }
         else if (operation.response.statusCode == 200) {
             DrinkListModel *model = [jsonApi resourceForKey:@"drink_lists"];

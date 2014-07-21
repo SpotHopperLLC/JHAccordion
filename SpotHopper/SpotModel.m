@@ -109,6 +109,9 @@
             if (successBlock) {
                 successBlock(nil, nil);
             }
+            
+            // Resolves promise
+            [deferred resolve];
         }
         else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"spots"];
@@ -166,6 +169,9 @@
             if (successBlock) {
                 successBlock(nil, nil);
             }
+            
+            // Resolves promise
+            [deferred resolve];
         }
         else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"spots"];
@@ -198,6 +204,9 @@
             if (successBlock) {
                 successBlock(nil, nil);
             }
+            
+            // Resolves promise
+            [deferred resolve];
         }
         else if (operation.response.statusCode == 200) {
             SpotModel *model = [jsonApi resourceForKey:@"spots"];
@@ -230,6 +239,9 @@
             if (successBlock) {
                 successBlock(nil, nil);
             }
+            
+            // Resolves promise
+            [deferred resolve];
         }
         else if (operation.response.statusCode == 200) {
             SpotModel *model = [jsonApi resourceForKey:@"spots"];
@@ -262,6 +274,9 @@
             if (successBlock) {
                 successBlock(nil, nil);
             }
+            
+            // Resolves promise
+            [deferred resolve];
         }
         else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"menu_items"];

@@ -53,6 +53,9 @@
             if (successBlock) {
                 successBlock(nil, nil);
             }
+            
+            // Resolves promise
+            [deferred resolve];
         }
         else if (operation.response.statusCode == 200) {
             CheckInModel *model = [jsonApi resourceForKey:@"checkins"];
@@ -85,6 +88,9 @@
             if (successBlock) {
                 successBlock(nil, nil);
             }
+            
+            // Resolves promise
+            [deferred resolve];
         }
         else if (operation.response.statusCode == 200) {
             CheckInModel *model = [jsonApi resourceForKey:@"checkins"];
@@ -117,6 +123,9 @@
             if (successBlock) {
                 successBlock(nil, nil);
             }
+            
+            // Resolves promise
+            [deferred resolve];
         }
         else if (operation.response.statusCode == 200) {
             CheckInModel *model = [jsonApi resourceForKey:@"checkins"];
