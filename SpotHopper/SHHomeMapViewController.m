@@ -991,6 +991,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             if (meters < 150) {
                 DrinkListRequest *request = [self.drinkListRequest copy];
                 request.name = kDrinkListModelDefaultName;
+                request.drinkListId = nil;
                 request.spotId = nearestSpot.ID;
                 request.coordinate = [self visibleMapCenterCoordinate];
                 request.radius = [self searchRadius];
@@ -1737,6 +1738,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             } failure:^(ErrorModel *errorModel) {
                 [self oops:errorModel caller:_cmd];
                 
+                [self restoreNavigationIfNeeded];
+                
                 if (completionBlock) {
                     completionBlock();
                 }
@@ -1767,6 +1770,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                 }
             } failure:^(ErrorModel *errorModel) {
                 [self oops:errorModel caller:_cmd];
+                
+                [self restoreNavigationIfNeeded];
                 
                 if (completionBlock) {
                     completionBlock();
