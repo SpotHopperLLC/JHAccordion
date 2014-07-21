@@ -851,7 +851,7 @@
     backgroundView.backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintColorTransparent];
     cell.selectedBackgroundView = backgroundView;
     
-    [SHStyleKit setButton:deleteButton withDrawing:SHStyleKitDrawingDeleteIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setButton:deleteButton withDrawing:SHStyleKitDrawingDeleteIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyTextColor size:CGSizeMake(30, 30)];
     
     if ([deleteButton bk_hasEventHandlersForControlEvents:UIControlEventTouchUpInside]) {
         [deleteButton bk_removeEventHandlersForControlEvents:UIControlEventTouchUpInside];

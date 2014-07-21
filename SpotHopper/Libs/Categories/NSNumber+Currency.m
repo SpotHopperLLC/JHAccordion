@@ -11,9 +11,14 @@
 @implementation NSNumber (Currency)
 
 - (NSString*)currencyFormat {
-    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-    [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-    [numberFormatter setLocale:[NSLocale currentLocale]];
+    static NSNumberFormatter *numberFormatter = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        numberFormatter = [[NSNumberFormatter alloc] init];
+        [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+        [numberFormatter setLocale:[NSLocale currentLocale]];
+    });
     
     return [numberFormatter stringFromNumber:self];
 }
