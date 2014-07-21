@@ -108,6 +108,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 
+@property (readonly, nonatomic) CGFloat topEdgePadding;
+@property (readonly, nonatomic) CGFloat bottomEdgePadding;
+
 @property (weak, nonatomic) UIView *blurredView;
 @property (weak, nonatomic) UIImageView *blurredImageView;
 @property (weak, nonatomic) IBOutlet SHButtonLatoBold *btnUpdateSearchResults;
@@ -724,7 +727,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     // 4) fade in status view
 
     // prepare view
-    self.statusView.alpha = 0.0f;
     self.statusView.hidden = FALSE;
     
     // hide search this area view if it is visible
@@ -774,6 +776,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)showSearchThisArea:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
     // Note: it will be necessary to hide another view if it is visible while this button is shown
+    
+    if (![self isDisplayingSearchResults]) {
+        return;
+    }
     
     if (_isShowingSliderSearchView) {
         // do not show while sliders search view is displayed
@@ -869,10 +875,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (IBAction)compassButtonTapped:(id)sender {
     [self repositionOnCurrentDeviceLocation:YES];
-    
-//    if (!_isInvalidLocation && [self canSearchAgain]) {
-//        [self showSearchThisArea:TRUE withCompletionBlock:nil];
-//    }
 }
 
 - (IBAction)searchCancelButtonTapped:(id)sender {
@@ -952,9 +954,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [self hideStatus:TRUE withCompletionBlock:nil];
 }
 
+- (BOOL)isDisplayingSearchResults {
+    return (self.drinkListModel.drinks.count || self.specialsSpotModels.count || self.spotListModel.spots.count);
+}
+
 - (void)restoreNavigationIfNeeded {
     if (self.homeNavigationViewController.view.hidden && self.collectionContainerView.hidden) {
-        if (self.drinkListModel.drinks.count || self.specialsSpotModels.count || self.spotListModel.spots.count) {
+        if ([self isDisplayingSearchResults]) {
             [self showCollectionContainerView:TRUE withCompletionBlock:nil];
         }
         else {
@@ -1110,7 +1116,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self promptUserToCheckIn];
         
         if (self.isScopedToSpot) {
-            NSString *text = drinklistModel.drinks.count > 1 ? [NSString stringWithFormat:@"Found %lu drinks at %@", (unsigned long)drinklistModel.drinks.count, self.scopedSpot.name] : [NSString stringWithFormat:@"Found 1 drink at %@", self.scopedSpot.name];
+            NSString *text = drinklistModel.drinks.count > 1 ? [NSString stringWithFormat:@"Found %lu matches at %@", (unsigned long)drinklistModel.drinks.count, self.scopedSpot.name] : [NSString stringWithFormat:@"Found 1 match at %@", self.scopedSpot.name];
             [self showStatus:text animated:TRUE withCompletionBlock:nil];
         }
     }];
@@ -1242,6 +1248,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     else {
         // remove existing annotations prior to waiting to load spots for this drink
         [self.mapView removeAnnotations:self.mapView.annotations];
+        [self showStatus:@"Locating..." animated:TRUE withCompletionBlock:nil];
         
         self.selectedDrink = drink;
         
@@ -1413,7 +1420,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         
         UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
         [UIView animateWithDuration:0.5 delay:0.0 options:options animations:^{
-            [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake([self topEdgePadding], 45.0f, [self bottomEdgePadding], 45.0f) animated:animated];
+            [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(self.topEdgePadding, 45.0f, self.bottomEdgePadding, 45.0f) animated:animated];
         } completion:^(BOOL finished) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                 self.repositioningMap = FALSE;
@@ -1431,13 +1438,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         MKMapRect mapRect = MKMapRectNull;
         MKMapPoint mapPoint = MKMapPointForCoordinate(coordinate);
         mapRect.origin.x = mapPoint.x - kMapPadding/2;
-        mapRect.origin.y = mapPoint.y - kMapPadding*0.9f; // push the placement down to make room for the callout
+        mapRect.origin.y = mapPoint.y - kMapPadding/2;
         mapRect.size = MKMapSizeMake(kMapPadding, kMapPadding);
         
         UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
         [UIView animateWithDuration:0.4f delay:0.0f options:options animations:^{
             if (widthPadding > kMapPadding/2 || heightPadding > kMapPadding/2) {
-                [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake([self topEdgePadding], 45.0f, [self bottomEdgePadding], 45.0f) animated:animated];
+                [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(self.topEdgePadding, 45.0f, self.bottomEdgePadding, 45.0f) animated:animated];
             }
             else {
                 [self.mapView setCenterCoordinate:coordinate animated:TRUE];
@@ -1500,7 +1507,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
             [UIView animateWithDuration:1.5 delay:0.0 options:options animations:^{
                 // edgePadding must also account for the size and position of the annotation view
-                [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake([self topEdgePadding], 45.0, [self bottomEdgePadding], 45.0) animated:animated];
+                [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(self.topEdgePadding, 45.0, self.bottomEdgePadding, 45.0) animated:animated];
             } completion:^(BOOL finished) {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                     self.repositioningMap = FALSE;
@@ -1540,7 +1547,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     CGRect topFrame = [self topFrame];
     // 40 for height of the annotation view
     
-    return CGRectGetHeight(topFrame) + ([self hasFourInchDisplay] ? self.topLayoutGuide.length : 0.0f) + 40.f;
+    CGFloat padding = CGRectGetHeight(topFrame) + ([self hasFourInchDisplay] ? self.topLayoutGuide.length : 0.0f) + 40.f;
+    DebugLog(@"padding: %f", padding);
+    
+    return padding;
 }
 
 - (CGFloat)bottomEdgePadding {

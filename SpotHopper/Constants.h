@@ -110,6 +110,10 @@
 
     #define kAnalyticsEnabled   TRUE
 
+    #define kIntegrateDeprecatedScreens TRUE
+
+    #define kDisableSideBarDelegateInBase TRUE
+
 #endif
 
 // Mixpanel - https://mixpanel.com/help/reference/ios
