@@ -257,7 +257,7 @@
     if (drink.isBeer) {
         styleLabel.text = drink.style;
     }
-    else if (drink.isCocktail && drink.baseAlochols) {
+    else if (drink.isCocktail && drink.baseAlochols.count) {
         BaseAlcoholModel *baseAlcohol = drink.baseAlochols[0];
         styleLabel.text = baseAlcohol.name;
     }

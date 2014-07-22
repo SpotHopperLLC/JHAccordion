@@ -137,7 +137,7 @@
         _location = newLocation;
         [self fetchSpots];
     } failure:^(NSError *error) {
-        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+        // do nothing
     }];
     
     [self updateView];
@@ -737,16 +737,15 @@
 }
 
 - (void)doFindSimilar {
-    if (_location == nil) {
-        [self showAlert:@"Oops" message:@"Please choose a location"];
-        return;
-    }
-    
 #ifdef kIntegrateDeprecatedScreens
     
     [SHNotifications findSimilarToDrink:_drink];
     
 #else
+    if (_location == nil) {
+        [self showAlert:@"Oops" message:@"Please choose a location"];
+        return;
+    }
     
     NSString *name = [NSString stringWithFormat:@"Similar to %@", _drink.name];
     
