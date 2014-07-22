@@ -243,10 +243,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     [self hideSearch:FALSE withCompletionBlock:nil];
     [self hideSearchThisArea:FALSE withCompletionBlock:nil];
-    
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-//        [self showStatus:@"Hello World!" animated:TRUE withCompletionBlock:nil];
-//    });
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -1588,6 +1584,23 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     return visibleRegion.center;
 }
 
+- (CLLocationCoordinate2D)adjustedCenterCoordinate {
+    // the target coordinate is directly in the center horizontally
+    // and just above the bottom of the status view by half of the
+    // annotation view and a margin value of about 10 points.
+    
+    // the key is that the zoom level is not changing
+    
+    // weighted center is south of the visible center
+    
+    // 1) get the UIView position for the target position
+    // 2) translate the target position to map coordinates
+    // 3) calculate the latitude delta between center coord and target coord
+    // 4) calcualate new center coord using new point
+    
+    return kCLLocationCoordinate2DInvalid;
+}
+
 - (CLLocationDistance)searchRadius {
     MKCoordinateRegion visibleRegion = [self visibleMapRegion];
     CLLocationCoordinate2D visibleCenter = visibleRegion.center;
@@ -2576,7 +2589,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     [self updateLocationName];
     
-    if (!self.selectedSpot && [self canSearchAgain]) {
+    if ([self canSearchAgain]) {
         [self showSearchThisArea:TRUE withCompletionBlock:nil];
     }
     
@@ -2712,6 +2725,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             request.drinkId = drinkModel.ID;
             request.drinkTypeId = drinkModel.drinkType.ID;
             request.drinkSubTypeId = drinkModel.drinkSubtype.ID;
+            
+            if (self.isScopedToSpot) {
+                request.spotId = self.scopedSpot.ID;
+            }
             
             SHMode mode = [self modeForDrink:drinkModel];
             
