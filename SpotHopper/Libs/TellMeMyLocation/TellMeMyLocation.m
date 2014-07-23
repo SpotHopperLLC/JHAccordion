@@ -40,8 +40,6 @@ NSString * const kTellMeMyLocationChangedNotification = @"TellMeMyLocationChange
 static CLLocation *_currentDeviceLocation;
 static NSDate *_lastDeviceLocationRefresh;
 
-static NSUInteger count;
-
 #pragma mark - Public Implemention
 
 - (void)findMe:(CLLocationAccuracy)accuracy found:(FoundBlock)foundBlock failure:(FailureBlock)failureBlock {
