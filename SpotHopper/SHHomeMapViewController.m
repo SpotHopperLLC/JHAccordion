@@ -2507,8 +2507,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         pin.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
         pin.canShowCallout = NO;
         
-        // precache the menu details
-        [pin.spot fetchMenu];
+        // precache the menu details (turned off to see if it fixes #861)
+        //[pin.spot fetchMenu];
         
         annotationView = pin;
     }
