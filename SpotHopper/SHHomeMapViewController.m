@@ -176,7 +176,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     BOOL _doNotMoveMap;
     BOOL _isShowingSliderSearchView;
     BOOL _isOverlayAnimating;
-    BOOL _isInvalidLocation;
+    BOOL _isValidLocation;
     NSInteger _repositioningMapCount;
 }
 
@@ -1386,6 +1386,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             [self updateLocationName];
         });
     } failure:^(NSError *error) {
+        DebugLog(@"tellMeMyLocation: %@", tellMeMyLocation);
         if (_currentLocation) {
             [self repositionMapOnCoordinate:_currentLocation.coordinate animated:animated];
         }
@@ -1401,7 +1402,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)repositionMapOnCoordinate:(CLLocationCoordinate2D)coordinate animated:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
     if (!CLLocationCoordinate2DIsValid(coordinate)) {
-        _isInvalidLocation = TRUE;
+        _isValidLocation = FALSE;
         self.repositioningMap = TRUE;
 
         CLLocationCoordinate2D nationalMapCenterCoordinate = CLLocationCoordinate2DMake(kNationalMapCenterLatitude, kNationalMapCenterLongitude);
@@ -1425,7 +1426,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         }];
     }
     else {
-        _isInvalidLocation = FALSE;
+        _isValidLocation = TRUE;
         self.repositioningMap = TRUE;
         
         CGFloat widthPadding = MKMapRectGetHeight(self.mapView.visibleMapRect);
@@ -1523,7 +1524,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.35 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         self.mapView.userInteractionEnabled = TRUE;
     });
-    
 }
 
 - (CGRect)topFrame {
@@ -1865,7 +1865,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)updateLocationName {
-    if (_isInvalidLocation) {
+    if (!_isValidLocation) {
         [self.locationMenuBarViewController updateLocationTitle:@"Where are you at?"];
     }
     else {
@@ -2303,7 +2303,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark -
 
 - (void)checkLocationAndFinishWithCompletionBlock:(void (^)())completionBlock {
-    if (_isInvalidLocation) {
+    if (!_isValidLocation) {
         // prompt user to chooser their location manually
         
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"What is your location?" message:@"We are unable to determine your location. Would you like to select your location?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
@@ -2386,7 +2386,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark -
 
 - (void)locationPickerViewController:(SHLocationPickerViewController*)viewController didSelectRegion:(MKCoordinateRegion)region {
-    _isInvalidLocation = FALSE;
+    _isValidLocation = TRUE;
     
     [self.navigationController popViewControllerAnimated:TRUE];
     
@@ -2587,7 +2587,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     //[self flashSearchRadius];
     //[self flashMapBoxing];
     
-    [self updateLocationName];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [self updateLocationName];
+    });
     
     if ([self canSearchAgain]) {
         [self showSearchThisArea:TRUE withCompletionBlock:nil];
