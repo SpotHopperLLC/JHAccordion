@@ -871,6 +871,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (IBAction)compassButtonTapped:(id)sender {
     [self repositionOnCurrentDeviceLocation:YES];
+    
+    if (!self.isScopedToSpot && [self canSearchAgain]) {
+        [self showSearchThisArea:TRUE withCompletionBlock:nil];
+    }
 }
 
 - (IBAction)searchCancelButtonTapped:(id)sender {
