@@ -27,7 +27,7 @@
 #define kSpotCellIdentifier @"SpotCell"
 
 #define kSpotCellSpotImageView 1
-#define kSpotCellSpotNameButton 2
+#define kSpotCellSpotNameLabel 2
 #define kSpotCellSpotTypeLabel 3
 #define kSpotCellNeighborhoodLabel 4
 #define kSpotCellDistanceLabel 5
@@ -212,7 +212,7 @@
         spotImageView.image = spot.placeholderImage;
     }
     
-    UIButton *nameButton = [self buttonInView:cell withTag:kSpotCellSpotNameButton];
+    UILabel *nameLabel = [self labelInView:cell withTag:kSpotCellSpotNameLabel];
     UILabel *typeLabel = [self labelInView:cell withTag:kSpotCellSpotTypeLabel];
     UILabel *neighborhoodLabel = [self labelInView:cell withTag:kSpotCellNeighborhoodLabel];
     UILabel *distanceLabel = [self labelInView:cell withTag:kSpotCellDistanceLabel];
@@ -221,7 +221,7 @@
     UILabel *percentageLabel = [self labelInView:cell withTag:kSpotCellPercentageLabel];
     UILabel *matchLabel = [self labelInView:cell withTag:kSpotCellMatchLabel];
     
-    NSAssert(nameButton, @"View must be defined");
+    NSAssert(nameLabel, @"View must be defined");
     NSAssert(typeLabel, @"View must be defined");
     NSAssert(neighborhoodLabel, @"View must be defined");
     NSAssert(distanceLabel, @"View must be defined");
@@ -237,6 +237,7 @@
     [SHStyleKit setLabel:percentageLabel textColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setLabel:matchLabel textColor:SHStyleKitColorMyTintColor];
     
+    [nameLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
     [typeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [neighborhoodLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [distanceLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
@@ -244,10 +245,9 @@
     [percentageLabel setFont:[UIFont fontWithName:@"Lato-Light" size:22.0f]];
     [matchLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
     
-    [nameButton setTitle:spot.name forState:UIControlStateNormal];
-    nameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    nameButton.titleLabel.textAlignment = NSTextAlignmentLeft;
-    [SHStyleKit setButton:nameButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
+    nameLabel.text = spot.name;
+    nameLabel.textColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
+    
     typeLabel.text = spot.spotType.name;
     neighborhoodLabel.text = spot.city;
     
