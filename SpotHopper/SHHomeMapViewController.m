@@ -85,6 +85,18 @@
 
 #define kMapPadding 14000.0f
 
+#define kEnteredBackgroundDateKey @"EnteredBackgroundDate"
+
+#define kLastRepositioningToDeviceLocationKey @"LastRepositioningToDeviceLocation"
+
+#define kLastSelectedLocationKey @"LastSelectedLocation"
+
+#ifndef NDEBUG
+#define kResetCooldownPeriodInSeconds 30
+#else
+#define kResetCooldownPeriodInSeconds 1200
+#endif
+
 NSString* const HomeMapToSpotProfile = @"HomeMapToSpotProfile";
 NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
@@ -168,6 +180,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 @property (strong, nonatomic) NSDate *lastAreYouHerePrompt;
 
 @property (assign, nonatomic, getter = isRepositioningMap) BOOL repositioningMap;
+
+@property (strong, nonatomic) NSDate *enteredBackgroundDate;
+@property (strong, nonatomic) NSDate *lastRepositioningToDeviceLocationDate;
+@property (strong, nonatomic) CLLocation *lastSelectedLocation;
 
 @end
 
@@ -281,6 +297,52 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (BOOL)isRepositioningMap {
     return _repositioningMapCount > 0;
+}
+
+- (NSDate *)enteredBackgroundDate {
+    NSDate *date = (NSDate *)[[NSUserDefaults standardUserDefaults] objectForKey:kEnteredBackgroundDateKey];
+    if (!date) {
+        return [NSDate distantPast];
+    }
+    return date;
+}
+
+- (void)setEnteredBackgroundDate:(NSDate *)date {
+    [[NSUserDefaults standardUserDefaults] setObject:date forKey:kEnteredBackgroundDateKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSDate *)lastRepositioningToDeviceLocationDate {
+    NSDate *date = (NSDate *)[[NSUserDefaults standardUserDefaults] objectForKey:kLastRepositioningToDeviceLocationKey];
+    if (!date) {
+        return [NSDate distantPast];
+    }
+    return date;
+}
+
+- (void)setLastRepositioningToDeviceLocationDate:(NSDate *)date {
+    [[NSUserDefaults standardUserDefaults] setObject:date forKey:kLastRepositioningToDeviceLocationKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (CLLocation *)lastSelectedLocation {
+    NSDictionary *dict = [[NSUserDefaults standardUserDefaults] objectForKey:kLastSelectedLocationKey];
+    if (dict) {
+        CLLocation *date = [[CLLocation alloc] initWithLatitude:[dict[@"lat"] floatValue] longitude:[dict[@"long"] floatValue]];
+        return date;
+    }
+    
+    return nil;
+}
+
+- (void)setLastSelectedLocation:(CLLocation *)location {
+    NSDictionary *dict = @{
+                           @"lat" : [NSNumber numberWithFloat:location.coordinate.latitude],
+                           @"long" : [NSNumber numberWithFloat:location.coordinate.longitude]
+                          };
+    
+    [[NSUserDefaults standardUserDefaults] setObject:dict forKey:kLastSelectedLocationKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark - View Management
@@ -907,6 +969,16 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)observeNotifications {
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleApplicationDidEnterBackgroundNotification:)
+                                                 name:UIApplicationDidEnterBackgroundNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleApplicationWillEnterForegroundNotification:)
+                                                 name:UIApplicationWillEnterForegroundNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleGoToHomeMapNotification:)
                                                  name:SHGoToHomeMapNotificationName
                                                object:nil];
@@ -1391,6 +1463,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         });
     } failure:^(NSError *error) {
         DebugLog(@"tellMeMyLocation: %@", tellMeMyLocation);
+        if (!_currentLocation && self.lastSelectedLocation) {
+            _currentLocation = self.lastSelectedLocation;
+        }
+        
         if (_currentLocation) {
             [self repositionMapOnCoordinate:_currentLocation.coordinate animated:animated];
         }
@@ -2054,6 +2130,28 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }
 }
 
+- (void)resetView {
+    // pop to the home map if necessary
+    if (![self.navigationController.topViewController isEqual:self]) {
+        [self.navigationController popToViewController:self animated:FALSE];
+    }
+    
+    [self.mapView removeAnnotations:self.mapView.annotations];
+    [self resetSearch];
+    
+    [self hideCollectionContainerView:FALSE withCompletionBlock:^{
+        [self showHomeNavigation:FALSE withCompletionBlock:nil];
+    }];
+    
+    if (self.lastSelectedLocation) {
+        _currentLocation = self.lastSelectedLocation;
+    }
+    
+    [self repositionOnCurrentDeviceLocation:FALSE];
+    
+    self.navigationItem.title = @"New Search";
+}
+
 #pragma mark - Processing Search Results
 #pragma mark -
 
@@ -2396,7 +2494,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     self.repositioningMap = TRUE;
     
-    _currentLocation = [[CLLocation alloc] initWithLatitude:region.center.latitude longitude:region.center.longitude];
+    CLLocation *selectedLocation = [[CLLocation alloc] initWithLatitude:region.center.latitude longitude:region.center.longitude];
+    
+    _currentLocation = selectedLocation;
+    self.lastSelectedLocation = selectedLocation;
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:0.25 delay:0.0 options:options animations:^{
@@ -2610,6 +2711,20 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 #pragma mark - Notifications
 #pragma mark -
+
+- (void)handleApplicationDidEnterBackgroundNotification:(NSNotification *)notification {
+    self.enteredBackgroundDate = [NSDate date];
+}
+
+- (void)handleApplicationWillEnterForegroundNotification:(NSNotification *)notification {
+    // if has been more than 20 minutes since the app repositioned
+    NSTimeInterval seconds = [[NSDate date] timeIntervalSinceDate:self.enteredBackgroundDate];
+    
+    // 20 minutes is 1200 seconds
+    if (seconds > kResetCooldownPeriodInSeconds) {
+        [self resetView];
+    }
+}
 
 - (void)handleGoToHomeMapNotification:(NSNotification *)notification {
     NSAssert([self.navigationController.viewControllers containsObject:self], @"Home Map must be on the view controllers stack");
