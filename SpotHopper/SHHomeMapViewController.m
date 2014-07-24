@@ -641,7 +641,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:(animated ? kModalAnimationDuration : 0.0f) delay:0.1f options:options animations:^{
-        
         self.blurredViewHeightConstraint.constant = CGRectGetHeight(self.view.frame);
         self.slidersSearchViewTopConstraint.constant = 0.0f;
         [self.view setNeedsLayout];
@@ -2352,7 +2351,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     if (spot) {
         self.selectedSpot = spot;
-        [self goToSpotProfile:spot];
+        [self performSegueWithIdentifier:HomeMapToSpotProfile sender:self];
     }
 #else
     if (self.spotListModel && index < self.spotListModel.spots.count) {
@@ -2390,7 +2389,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #ifdef kIntegrateDeprecatedScreens
     if (self.drinkListModel.drinks.count && index < self.drinkListModel.drinks.count) {
         self.selectedDrink = self.drinkListModel.drinks[index];
-        [self goToDrinkProfile:self.selectedDrink];
+        [self performSegueWithIdentifier:HomeMapToDrinkProfile sender:self];
     }
     else {
         NSAssert(FALSE, @"Index should always be in bounds");
@@ -2527,11 +2526,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark -
 
 - (void)searchViewController:(SearchViewController*)viewController selectedDrink:(DrinkModel*)drink {
-    [self goToDrinkProfile:drink];
+    self.selectedDrink = drink;
+    [self performSegueWithIdentifier:HomeMapToDrinkProfile sender:self];
 }
 
 - (void)searchViewController:(SearchViewController*)viewController selectedSpot:(SpotModel*)spot {
-    [self goToSpotProfile:spot];
+    self.selectedSpot = spot;
+    [self performSegueWithIdentifier:HomeMapToSpotProfile sender:self];
 }
 
 #pragma mark - SpotCalloutViewDelegate
@@ -2541,7 +2542,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     if ([annotationView isKindOfClass:[MatchPercentAnnotationView class]]) {
         MatchPercentAnnotationView *pin = (MatchPercentAnnotationView *)annotationView;
         if (pin.spot) {
-            [self goToSpotProfile:pin.spot];
+            self.selectedSpot = pin.spot;
+            [self performSegueWithIdentifier:HomeMapToSpotProfile sender:self];
         }
     }
 }

@@ -34,20 +34,18 @@
 #define kCellSpotDetails 1
 #define kCellSpotSpecials 2
 
-#define kLabelTagSpotName 1
-#define kLabelTagSpotType 2
-#define kLabelTagSpotRelevancy 3
-#define kLabelTagSpotCloseTime 4
-#define kLabelTagSpotAddress 5
+#define kTagSpotNameLabel 1
+#define kTagSpotTypeLabel 2
+#define kTagSpotRelevancyLabel 3
+#define kTagSpotCloseTimeLabel 4
+#define kTagSpotAddressLabel 5
 
-#define kLabelTagSpotSpecial 1
-#define kLabelTagSpotSpecialDetails 2
+#define kTagSpotSpecialLabel 1
+#define kTagSpotSpecialDetailsLabel 2
 
-#define kLeftLabelVibeTag 1
-#define kRightLabelVibeTag 2
-#define kSliderVibeTag 3
-
-#define kCollectionViewTag 1
+#define kTagLeftVibeLabel 1
+#define kTagRightVibeLabel 2
+#define kTagVibeSlider 3
 
 #define kFooterNavigationViewHeight 50.0f
 #define kCutOffPoint 116.0f
@@ -55,6 +53,14 @@
 #define kDefineAnimationDuration 0.25f
 
 #define kNumberOfCells 3
+
+#define kTopImageHeight 180.0f
+
+#define kTagCollectionView 1
+#define kTagImageView 1
+
+#define kTagPreviousImageButton 2
+#define kTagNextImageButton 3
 
 NSString* const SpotProfileToPhotoViewer = @"SpotProfileToPhotoViewer";
 NSString* const SpotProfileToPhotoAlbum = @"SpotProfileToPhotoAlbum";
@@ -65,6 +71,9 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 @interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate, SHImageModelCollectionDelegate, SHSpotDetailFooterNavigationDelegate>
 
 @property (strong, nonatomic) IBOutlet SHImageModelCollectionViewManager *imageModelCollectionViewManager;
+
+@property (weak, nonatomic) UIButton *previousImageButton;
+@property (weak, nonatomic) UIButton *nextImageButton;
 
 @property (assign, nonatomic) NSInteger currentIndex;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -154,8 +163,15 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 #pragma mark -
 
 - (void)backButtonTapped:(id)sender {
-    NSLog(@"back btn tapped");
-    [self performSegueWithIdentifier:@"unwindFromSpotProfileToHomeMap" sender:self];
+    [self.navigationController popViewControllerAnimated:TRUE];
+}
+
+- (void)previousButtonTapped:(id)sender {
+    [self.imageModelCollectionViewManager goPrevious];
+}
+
+- (void)nextButtonTapped:(id)sender {
+    [self.imageModelCollectionViewManager goNext];
 }
 
 #pragma mark - UITableViewDataSource
@@ -195,15 +211,23 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
         case 0:{
             switch (indexPath.row) {
                 case kCellImageCollection: {
-                    
                     cell = [tableView dequeueReusableCellWithIdentifier:CollectionViewCellIdentifier forIndexPath:indexPath];
                     
-                    UICollectionView *collectionView = (UICollectionView *)[cell viewWithTag:kCollectionViewTag];
+                    UICollectionView *collectionView = (UICollectionView *)[cell viewWithTag:kTagCollectionView];
                     
                     self.imageModelCollectionViewManager.collectionView = collectionView;
                     collectionView.delegate = self.imageModelCollectionViewManager;
                     collectionView.dataSource = self.imageModelCollectionViewManager;
                     self.imageModelCollectionViewManager.imageModels = self.spot.images;
+                    
+                    self.previousImageButton = (UIButton *)[cell viewWithTag:kTagPreviousImageButton];
+                    self.nextImageButton = (UIButton *)[cell viewWithTag:kTagNextImageButton];
+                    
+                    [self.previousImageButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+                    [self.nextImageButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    [self updateImageArrows];
+                    
                     break;
                 }
                     
@@ -211,17 +235,17 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
                     
                     cell = [tableView dequeueReusableCellWithIdentifier:SpotDetailsCellIdentifier forIndexPath:indexPath];
                     
-                    UILabel *spotName = (UILabel*)[cell viewWithTag:kLabelTagSpotName];
+                    UILabel *spotName = (UILabel*)[cell viewWithTag:kTagSpotNameLabel];
                     spotName.font = [UIFont fontWithName:@"Lato-Bold" size:20.0f];
                     [SHStyleKit setLabel:spotName textColor:SHStyleKitColorMyTintColor];
                     spotName.text = self.spot.name;
                     
                     //todo:update to display the spot type as well as the expense
-                    UILabel *spotType = (UILabel*)[cell viewWithTag:kLabelTagSpotType];
+                    UILabel *spotType = (UILabel*)[cell viewWithTag:kTagSpotTypeLabel];
                     spotType.font = [UIFont fontWithName:@"Lato-LightItalic" size:18.0f];
                     spotType.text = self.spot.spotType.name;
                     
-                    UILabel *spotMatch = (UILabel*)[cell viewWithTag:kLabelTagSpotRelevancy];
+                    UILabel *spotMatch = (UILabel*)[cell viewWithTag:kTagSpotRelevancyLabel];
                     if (self.matchPercentage) {
                         spotMatch.font = [UIFont fontWithName:@"Lato-LightItalic" size:18.0f];
                         spotMatch.text = [NSString stringWithFormat:@"%@ Match",self.matchPercentage];
@@ -229,11 +253,11 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
                         spotMatch.text = @"";
                     }
                     
-                    UILabel *spotCloseTime = (UILabel*)[cell viewWithTag:kLabelTagSpotCloseTime];
+                    UILabel *spotCloseTime = (UILabel*)[cell viewWithTag:kTagSpotCloseTimeLabel];
                     spotCloseTime.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
                     spotCloseTime.text = self.closeTime;
                     
-                    UILabel *spotAddress = (UILabel*)[cell viewWithTag:kLabelTagSpotAddress];
+                    UILabel *spotAddress = (UILabel*)[cell viewWithTag:kTagSpotAddressLabel];
                     spotAddress.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
                     spotAddress.text = self.spot.addressCityState;
                     break;
@@ -246,10 +270,10 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
                     NSArray *specials = self.spot.dailySpecials;
                     
                     if (specials.count) {
-                        UILabel *spotSpecial = (UILabel*)[cell viewWithTag:kLabelTagSpotSpecial];
+                        UILabel *spotSpecial = (UILabel*)[cell viewWithTag:kTagSpotSpecialLabel];
                         spotSpecial.font = [UIFont fontWithName:@"Lato-Bold" size:20.0f];
                         
-                        UILabel *specialDetails = (UILabel*)[cell viewWithTag:kLabelTagSpotSpecialDetails];
+                        UILabel *specialDetails = (UILabel*)[cell viewWithTag:kTagSpotSpecialDetailsLabel];
                         specialDetails.font = [UIFont fontWithName:@"Lato-Light" size:16.0f];
                         
                         NSString *todaysSpecial = [specials specialsForToday];
@@ -272,9 +296,9 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
                 SliderModel *sliderModel = self.spot.averageReview.sliders[indexPath.row];
                 SliderTemplateModel *sliderTemplate = sliderModel.sliderTemplate;
                 
-                SHSlider *slider = (SHSlider*)[cell viewWithTag:kSliderVibeTag];
-                UILabel *minValue = (UILabel*)[cell viewWithTag:kLeftLabelVibeTag];
-                UILabel *maxValue = (UILabel*)[cell viewWithTag:kRightLabelVibeTag];
+                SHSlider *slider = (SHSlider*)[cell viewWithTag:kTagVibeSlider];
+                UILabel *minValue = (UILabel*)[cell viewWithTag:kTagLeftVibeLabel];
+                UILabel *maxValue = (UILabel*)[cell viewWithTag:kTagRightVibeLabel];
                 slider.vibeFeel = TRUE;
                 
                 minValue.text = sliderTemplate.minLabel.length ? sliderTemplate.minLabel : @"";
@@ -344,6 +368,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     //change the collection view to show to the current cell at the index path
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
     [manager.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:TRUE];
+    [self updateImageArrows];
 }
 
 - (void)imageCollectionViewManager:(SHImageModelCollectionViewManager *)manager didSelectImageAtIndex:(NSUInteger)index {
@@ -378,11 +403,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 
 #pragma mark - UIScrollViewDelegate
 #pragma mark -
-
-#define kTopImageHeight 180.0f
-
-#define kTagCollectionView 1
-#define kTagImageView 1
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     // adjust the top image view
@@ -424,7 +444,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     }
 }
 
-#pragma mark - Private Methods
+#pragma mark - Private
 #pragma mark -
 
 - (void)prepareAnimationForNavigationBarWithDuration:(CGFloat)duration {
@@ -521,6 +541,19 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     }
     
     return closeTime;
+}
+
+- (void)updateImageArrows {
+    NSUInteger index = self.imageModelCollectionViewManager.currentIndex;
+                              
+    BOOL hasNext = _spot.images.count ? (index < _spot.images.count - 1) : FALSE;
+    BOOL hasPrev = _spot.images.count ? (index > 0) : FALSE;
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        self.nextImageButton.alpha = hasNext ? 1.0 : 0.1;
+        self.previousImageButton.alpha = hasPrev ? 1.0 : 0.1;
+    } completion:^(BOOL finished) {
+    }];
 }
 
 #pragma mark - Navigation

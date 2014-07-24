@@ -674,7 +674,6 @@
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName: [SHStyleKit color:SHStyleKitColorMyTextColor]}];
     [self.navigationController.navigationBar setBackgroundImage:topBarBackgroundImage forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = [UIImage new];
-//    self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
     
 #endif
     

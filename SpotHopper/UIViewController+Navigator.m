@@ -229,6 +229,8 @@
 }
 
 - (void)goToSpotProfile:(SpotModel *)spot {
+    [Tracker track:@"View Spot Profile" properties:@{@"Name" : spot.name, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    
 #ifdef kIntegrateDeprecatedScreens
     SpotProfileViewController *vc = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
     [vc setSpot:spot];
@@ -243,7 +245,6 @@
         [self.navigationController setViewControllers:viewControllers animated:YES];
     }
 #else
-    [Tracker track:@"View Spot Profile" properties:@{@"Name" : spot.name, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
     SpotProfileViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
     [viewController setSpot:spot];
     [self.navigationController pushViewController:viewController animated:YES];

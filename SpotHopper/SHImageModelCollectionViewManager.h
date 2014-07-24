@@ -17,6 +17,7 @@
 
 @property (weak, nonatomic) UICollectionView *collectionView;
 @property (strong, nonatomic) NSArray *imageModels;
+@property (assign, nonatomic) NSUInteger currentIndex;
 
 - (void)changeIndex:(NSUInteger)index;
 - (void)changeImage:(ImageModel *)spot;

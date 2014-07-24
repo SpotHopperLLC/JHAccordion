@@ -16,9 +16,6 @@
 #import "Tracker.h"
 
 #define kImageView 1
-#define kPreviousButton 2
-#define kNextButton 3
-#define kDescriptionLabel 4
 
 #pragma mark - Class Extension
 #pragma mark -
@@ -27,11 +24,7 @@
 @property (nonatomic, weak) IBOutlet id<SHImageModelCollectionDelegate> delegate;
 @end
 
-@implementation SHImageModelCollectionViewManager {
-//    @property (assign, nonatomic) NSUInteger currentIndex;
-    NSUInteger _currentIndex;
-}
-
+@implementation SHImageModelCollectionViewManager
 
 #pragma mark - UICollectionViewDataSource
 #pragma mark -
@@ -40,22 +33,10 @@
     return MAX(1, self.imageModels.count);
 }
 
-- (void)previousButtonTapped:(id)sender {
-    
-    [self goPrevious];
-    
-}
-
-- (void)nextButtonTapped:(id)sender {
-    [self goNext];
-}
-
-
 // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     // dequeue named cell template
     
-    NSLog(@"made it into manager!");
     static NSString *ImageCellIdentifier = @"ImageCell";
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ImageCellIdentifier forIndexPath:indexPath];
@@ -64,17 +45,17 @@
         // get image view by tag and use NetworkHelper to load image
         //attach previous and next buttons to goPrevious and goNext to trigger image transitions
         
-        UIButton *previousButton = (UIButton *)[cell viewWithTag:kPreviousButton];
-        UIButton *nextButton = (UIButton *)[cell viewWithTag:kNextButton];
+//        UIButton *previousButton = (UIButton *)[cell viewWithTag:kPreviousButton];
+//        UIButton *nextButton = (UIButton *)[cell viewWithTag:kNextButton];
         
-        if (self.imageModels.count > 1) {
-            [previousButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-            [nextButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-            
-        }else{
-            previousButton.hidden = TRUE;
-            nextButton.hidden = TRUE;
-        }
+//        if (self.imageModels.count > 1) {
+//            [previousButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+//            [nextButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+//            
+//        }else{
+//            previousButton.hidden = TRUE;
+//            nextButton.hidden = TRUE;
+//        }
         
         UIImageView *imageView = (UIImageView *)[cell viewWithTag:kImageView];
         
@@ -89,17 +70,12 @@
             weakImageView.image = nil;
             [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
-        
-        UILabel *descriptionLabel = (UILabel *)[cell viewWithTag:kDescriptionLabel];
-        descriptionLabel.hidden = TRUE;
-        
     }
     else {
         // TODO: use placeholder image
     }
     
     return cell;
-    
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -112,7 +88,6 @@
     if ([self.delegate respondsToSelector:@selector(imageCollectionViewManager:didSelectImageAtIndex:)]) {
         [self.delegate imageCollectionViewManager:self didSelectImageAtIndex:_currentIndex];
     }
-    
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -141,6 +116,7 @@
         _currentIndex = index;
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_currentIndex inSection:0];
         [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:TRUE];
+        [self reportedChangedIndex];
     }
 }
 
@@ -207,7 +183,8 @@
     if (hasMore) {
         button.alpha = 0.1;
         button.enabled = TRUE;
-    }else{
+    }
+    else{
         button.alpha = 1.0;
         button.enabled = FALSE;
     }
@@ -218,7 +195,5 @@
         [self.delegate imageCollectionViewManager:self didChangeToImageAtIndex:_currentIndex];
     }
 }
-
-
 
 @end
