@@ -116,7 +116,7 @@
     _initialHeaderContentFrame = _headerContent.frame;
     [_tblSliders setTableHeaderView:_headerContent];
     
-    // COnfigure table
+    // Configure table
     [_tblSliders registerNib:[UINib nibWithNibName:@"ReviewSliderCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ReviewSliderCell"];
     
     // Custom collection view layout
