@@ -343,7 +343,9 @@
             completionBlock();
         }
     } failure:^(NSError *error) {
-        // do nothing
+        if (completionBlock) {
+            completionBlock();
+        }
     }];
 }
 

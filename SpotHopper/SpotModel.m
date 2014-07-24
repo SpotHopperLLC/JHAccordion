@@ -452,10 +452,12 @@
         successBlock(self.menu);
         return;
     }
-    
+
+    // a cached copy of the menu may no be set on this instance of a spot while it is still cached
     NSString *cacheKey = [SpotModelCache menuKeyForSpot:self];
     MenuModel *menu = [[SpotModel sh_sharedCache] cachedMenuForKey:cacheKey];
     if (menu && successBlock) {
+        self.menu = menu;
         successBlock(menu);
     }
     else {

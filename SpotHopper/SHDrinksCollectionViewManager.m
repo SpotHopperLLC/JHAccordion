@@ -30,7 +30,7 @@
 #define kDrinkCellIdentifier @"DrinkCell"
 
 #define kDrinkCellDrinkImageView 1
-#define kDrinkCellDrinkNameButton 2
+#define kDrinkCellDrinkNameLabel 2
 #define kDrinkCellBreweryLabel 3
 #define kDrinkCellStyleLabel 4
 #define kDrinkCellRankingLabel 5
@@ -193,7 +193,7 @@
 
 - (void)renderCell:(UICollectionViewCell *)cell withDrink:(DrinkModel *)drink atIndex:(NSUInteger)index {
     UIImageView *drinkImageView = [self imageViewInView:cell withTag:kDrinkCellDrinkImageView];
-    UIButton *nameButton = [self buttonInView:cell withTag:kDrinkCellDrinkNameButton];
+    UILabel *nameLabel = [self labelInView:cell withTag:kDrinkCellDrinkNameLabel];
     UILabel *breweryLabel = [self labelInView:cell withTag:kDrinkCellBreweryLabel];
     UILabel *styleLabel = [self labelInView:cell withTag:kDrinkCellStyleLabel];
     UILabel *rankingLabel = [self labelInView:cell withTag:kDrinkCellRankingLabel];
@@ -205,7 +205,7 @@
     UILabel *positionLabel = [self labelInView:cell withTag:kDrinkCellPositionLabel];
     
     NSAssert(drinkImageView, @"View must be defined");
-    NSAssert(nameButton, @"View must be defined");
+    NSAssert(nameLabel, @"View must be defined");
     NSAssert(breweryLabel, @"View must be defined");
     NSAssert(styleLabel, @"View must be defined");
     NSAssert(rankingLabel, @"View must be defined");
@@ -215,12 +215,14 @@
     NSAssert(nextButton, @"View must be defined");
     NSAssert(positionLabel, @"View must be defined");
     
+    [SHStyleKit setLabel:nameLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:breweryLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setLabel:styleLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setLabel:rankingLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setLabel:matchLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:positionLabel textColor:SHStyleKitColorMyTextColor];
     
+    [nameLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
     [breweryLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [styleLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [rankingLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
@@ -248,16 +250,13 @@
         drinkImageView.image = drink.placeholderImage;
     }
    
-    [nameButton setTitle:drink.name forState:UIControlStateNormal];
-    nameButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    nameButton.titleLabel.textAlignment = NSTextAlignmentLeft;
-    [SHStyleKit setButton:nameButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
-
+    nameLabel.text = drink.name;
+    
     breweryLabel.text = drink.spot.name;
     if (drink.isBeer) {
         styleLabel.text = drink.style;
     }
-    else if (drink.isCocktail && drink.baseAlochols) {
+    else if (drink.isCocktail && drink.baseAlochols.count) {
         BaseAlcoholModel *baseAlcohol = drink.baseAlochols[0];
         styleLabel.text = baseAlcohol.name;
     }

@@ -36,9 +36,9 @@ PODS:
     - BlocksKit/DynamicDelegate
   - Bolts (1.1.0)
   - CRGradientNavigationBar (0.3.2)
-  - Facebook-iOS-SDK (3.15.1):
+  - Facebook-iOS-SDK (3.16.1):
     - Bolts
-  - GoogleAnalytics-iOS-SDK (3.0.7)
+  - GoogleAnalytics-iOS-SDK (3.0.8)
   - iRate (1.8.3)
   - JHAccordion (0.1.0)
   - JHAutoCompleteTextField (0.1.0)
@@ -49,7 +49,7 @@ PODS:
   - Parse-iOS-SDK (1.2.19):
     - Facebook-iOS-SDK (~> 3.7)
   - PhotoZoom (0.0.2)
-  - Promises (0.1.0)
+  - Promises (0.1.1)
   - Raven (0.2.0)
   - Reveal-iOS-SDK (1.0.4)
   - STTwitter (0.0.9)
@@ -103,8 +103,8 @@ SPEC CHECKSUMS:
   BlocksKit: 07c8a80f04275efac6a5f8b973782489c083a182
   Bolts: 91c2af8eae1d44e1dd75946a5b0ae04a43ea43e4
   CRGradientNavigationBar: e11429639a863683acc90887b9c86e75cb5d098c
-  Facebook-iOS-SDK: 56214af8e0ef16e751eb2804250326b709e571b8
-  GoogleAnalytics-iOS-SDK: bb285d8eef15a682f1b82971becd0d22edd0e53b
+  Facebook-iOS-SDK: 594f0e2398fe62b0a44b6f7ae113c7795cfabfa4
+  GoogleAnalytics-iOS-SDK: a3206c68ee5f2a014ed67383d1f779072b653988
   iRate: a42e2ae364634fd1eb07af3cb6985905ced01fa8
   JHAccordion: 4f0337990465b25f8de5ed304609fa9362281db0
   JHAutoCompleteTextField: 1ca69c82441d9b5bf474e10d36585247030f7594
@@ -114,7 +114,7 @@ SPEC CHECKSUMS:
   Mixpanel: 9aba38257fc4d2777ab5db1afc55e22bdfd57a4a
   Parse-iOS-SDK: 5e1f7e649a02f1cc19e73cc95bd43d7778848314
   PhotoZoom: 52b044c8086589e85415718402df6c4b5f411cb1
-  Promises: f92c1068dfb1fe8501f6059c0e05edbf655f8665
+  Promises: c032fdae454bac7c08c7082c8f56beaa3f3e791d
   Raven: e26260198babba5e09f31425ce88a21ee0532137
   Reveal-iOS-SDK: d3c8e109d42219daaa7a6e1ad2de34f0bdbb7a88
   STTwitter: bc2c74ffeeff6ead7b03cfec0c5d9e6be2d54e56

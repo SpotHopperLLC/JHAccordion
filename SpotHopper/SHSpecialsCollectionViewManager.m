@@ -20,7 +20,7 @@
 #define kSpecialCellIdentifier @"SpecialCell"
 
 #define kSpecialCellSpotImageView 1
-#define kSpecialCellSpotNameButton 2
+#define kSpecialCellSpotNameLabel 2
 #define kSpecialCellSpecialTextView 3
 #define kSpecialCellLikeButton 4
 #define kSpecialCellLikeLabel 5
@@ -211,7 +211,7 @@
         spotImageView.image = spot.placeholderImage;
     }
     
-    UIButton *nameButton = [self buttonInView:cell withTag:kSpecialCellSpotNameButton];
+    UILabel *nameLabel = [self labelInView:cell withTag:kSpecialCellSpotNameLabel];
     UITextView *specialTextView = [self textViewInView:cell withTag:kSpecialCellSpecialTextView];
     UIButton *likeButton = [self buttonInView:cell withTag:kSpecialCellLikeButton];
     UILabel *likeLabel = [self labelInView:cell withTag:kSpecialCellLikeLabel];
@@ -219,7 +219,7 @@
     UILabel *shareLabel = [self labelInView:cell withTag:kSpecialCellShareLabel];
     UILabel *positionLabel = [self labelInView:cell withTag:kSpecialCellPositionLabel];
     
-    NSAssert(nameButton, @"View must be defined");
+    NSAssert(nameLabel, @"View must be defined");
     NSAssert(specialTextView, @"View must be defined");
     NSAssert(likeButton, @"View must be defined");
     NSAssert(likeLabel, @"View must be defined");
@@ -227,21 +227,21 @@
     NSAssert(shareLabel, @"View must be defined");
     NSAssert(positionLabel, @"View must be defined");
     
+    [SHStyleKit setLabel:nameLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setButton:likeButton withDrawing:SHStyleKitDrawingThumbsUpIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setButton:shareButton withDrawing:SHStyleKitDrawingShareIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setLabel:likeLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:shareLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:positionLabel textColor:SHStyleKitColorMyTextColor];
     
+    [nameLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
     specialTextView.contentOffset = CGPointMake(0.0f, 0.0f);
     [specialTextView setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [likeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [shareLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
     [positionLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     
-    [nameButton setTitle:spot.name forState:UIControlStateNormal];
-    [SHStyleKit setButton:nameButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
-    
+    nameLabel.text = spot.name;
     NSString *special = [spot.dailySpecials specialsForToday];
     NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:14.0], NSForegroundColorAttributeName : [SHStyleKit myTextColor] };
     NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:special attributes:attributes];
