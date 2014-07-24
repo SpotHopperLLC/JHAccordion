@@ -1080,7 +1080,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                         self.lastAreYouHerePrompt = [NSDate date];
                     }
                 } failure:^(ErrorModel *errorModel) {
-                    [self oops:errorModel caller:_cmd];
+#ifndef NDEBUG
+                    [self oops:errorModel caller:_cmd message:[NSString stringWithFormat:@"Error in %@", NSStringFromSelector(_cmd)]];
+#endif
                 }];
             }
         }
@@ -1286,7 +1288,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [[SpotModel fetchSpotsNearLocation:location] then:^(NSArray *spots) {
             self.nearbySpots = spots;
         } fail:^(ErrorModel *errorModel) {
-            [self oops:errorModel caller:_cmd];
+#ifndef NDEBUG
+            [self oops:errorModel caller:_cmd message:[NSString stringWithFormat:@"Error in %@", NSStringFromSelector(_cmd)]];
+#endif
         } always:^{
         }];
     }
@@ -1334,7 +1338,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                 DebugLog(@"The drink used to fetch spots and the currently selected spot do not match.");
             }
         } fail:^(ErrorModel *errorModel) {
-            [self oops:errorModel caller:_cmd];
+#ifndef NDEBUG
+            [self oops:errorModel caller:_cmd message:[NSString stringWithFormat:@"Error in %@", NSStringFromSelector(_cmd)]];
+#endif
         } always:nil];
     }
 }
@@ -1839,8 +1845,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                     completionBlock();
                 }
             } failure:^(ErrorModel *errorModel) {
-                [self oops:errorModel caller:_cmd];
-                
+                [self oops:errorModel caller:_cmd message:@"There was a problem while fetching drinks for this spot. Please try again."];
                 [self restoreNavigationIfNeeded];
                 
                 if (completionBlock) {
@@ -1872,8 +1877,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                     completionBlock();
                 }
             } failure:^(ErrorModel *errorModel) {
-                [self oops:errorModel caller:_cmd];
-                
+                [self oops:errorModel caller:_cmd message:@"Request failed. Please try again."];
                 [self restoreNavigationIfNeeded];
                 
                 if (completionBlock) {
@@ -2125,7 +2129,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                 [updatedCalloutView placeInMapView:mapView insideAnnotationView:pin];
             }
         } fail:^(ErrorModel *errorModel) {
-            [self oops:errorModel caller:_cmd];
+#ifndef NDEBUG
+            [self oops:errorModel caller:_cmd message:[NSString stringWithFormat:@"Error in %@", NSStringFromSelector(_cmd)]];
+#endif
         } always:nil];
     }
 }
@@ -2747,7 +2753,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             
             [self processDrinklistModel:drinklist withRequest:request forMode:mode];
         } fail:^(ErrorModel *errorModel) {
-            [self oops:errorModel caller:_cmd];
+#ifndef NDEBUG
+            [self oops:errorModel caller:_cmd message:[NSString stringWithFormat:@"Error in %@", NSStringFromSelector(_cmd)]];
+#endif
         } always:nil];
     });
 }
@@ -2761,7 +2769,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [[SpotListModel fetchSpotListWithRequest:request] then:^(SpotListModel *spotlist) {
             [self processSpotlistModel:spotlist withRequest:request];
         } fail:^(ErrorModel *errorModel) {
-            [self oops:errorModel caller:_cmd];
+#ifndef NDEBUG
+            [self oops:errorModel caller:_cmd message:[NSString stringWithFormat:@"Error in %@", NSStringFromSelector(_cmd)]];
+#endif
         } always:nil];
     });
 }
@@ -2859,12 +2869,16 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                 [self processDrinklistModel:drinklist withRequest:request forMode:mode];
             } fail:^(ErrorModel *errorModel) {
                 [self hideHUD];
-                [self oops:errorModel caller:_cmd];
+#ifndef NDEBUG
+                [self oops:errorModel caller:_cmd message:[NSString stringWithFormat:@"Error in %@", NSStringFromSelector(_cmd)]];
+#endif
             } always:nil];
             
         } fail:^(ErrorModel *errorModel) {
             [self hideHUD];
-            [self oops:errorModel caller:_cmd];
+#ifndef NDEBUG
+            [self oops:errorModel caller:_cmd message:[NSString stringWithFormat:@"Error in %@", NSStringFromSelector(_cmd)]];
+#endif
         } always:nil];
     });
 }
@@ -2892,12 +2906,16 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                 [self processSpotlistModel:spotlist withRequest:request];
             } fail:^(ErrorModel *errorModel) {
                 [self hideHUD];
-                [self oops:errorModel caller:_cmd];
+#ifndef NDEBUG
+                [self oops:errorModel caller:_cmd message:[NSString stringWithFormat:@"Error in %@", NSStringFromSelector(_cmd)]];
+#endif
             } always:nil];
             
         } fail:^(ErrorModel *errorModel) {
             [self hideHUD];
-            [self oops:errorModel caller:_cmd];
+#ifndef NDEBUG
+            [self oops:errorModel caller:_cmd message:[NSString stringWithFormat:@"Error in %@", NSStringFromSelector(_cmd)]];
+#endif
         } always:nil];
     });
 }
