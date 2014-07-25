@@ -607,7 +607,6 @@
 		03CABFCB18E7716400FAC5F5 /* SHButtonLatoLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */; };
 		03CABFCC18E7716400FAC5F5 /* AdjustSliderSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E882DB18C7953B00BD8FBB /* AdjustSliderSectionHeaderView.m */; };
 		03CABFCD18E7716400FAC5F5 /* SpotListsMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF5B18C6D5BB00172F13 /* SpotListsMenuViewController.m */; };
-		03CABFCE18E7716400FAC5F5 /* DrinkProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F546A18D2DB32004B2B67 /* DrinkProfileViewController.m */; };
 		03CABFCF18E7716400FAC5F5 /* MenuItemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F548E18D340AE004B2B67 /* MenuItemModel.m */; };
 		03CABFD018E7716400FAC5F5 /* TonightsSpecialsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0372FF4C18E33B20009188B5 /* TonightsSpecialsViewController.m */; };
 		03CABFD118E7716400FAC5F5 /* NSDate+Globalize.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664A8186D376900985CEC /* NSDate+Globalize.m */; };
@@ -674,7 +673,6 @@
 		03CAC01018E7716400FAC5F5 /* UILabelRockwell.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664BF186D376900985CEC /* UILabelRockwell.m */; };
 		03CAC01118E7716400FAC5F5 /* CLGeocoder+DoubleLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 037D13A518A450DB00B89535 /* CLGeocoder+DoubleLookup.m */; };
 		03CAC01218E7716400FAC5F5 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664B2186D376900985CEC /* UIImage+Alpha.m */; };
-		03CAC01318E7716400FAC5F5 /* SpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4457018B65F3000C88421 /* SpotProfileViewController.m */; };
 		03CAC01418E7716400FAC5F5 /* SHNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D95218722FB700C69576 /* SHNavigationController.m */; };
 		03CAC01518E7716400FAC5F5 /* SpecialsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0372FF5418E34E88009188B5 /* SpecialsCell.m */; };
 		03CAC01618E7716400FAC5F5 /* SpotListMoodModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F541718D11E57004B2B67 /* SpotListMoodModel.m */; };
@@ -725,7 +723,6 @@
 		03CAC04618E7716400FAC5F5 /* img_expand_south@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F54C018D7FE93004B2B67 /* img_expand_south@2x.png */; };
 		03CAC04718E7716400FAC5F5 /* app_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 038664F2186DE0F700985CEC /* app_background@2x.png */; };
 		03CAC04818E7716400FAC5F5 /* btn_launch_item_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 0386654E186E050500985CEC /* btn_launch_item_background.png */; };
-		03CAC04918E7716400FAC5F5 /* btn_spot_profile_review_it.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4456018B65D8A00C88421 /* btn_spot_profile_review_it.png */; };
 		03CAC04A18E7716400FAC5F5 /* icon_beer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7271187B8FD800815284 /* icon_beer@2x.png */; };
 		03CAC04B18E7716400FAC5F5 /* btn_search_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF7718C7087C00172F13 /* btn_search_back.png */; };
 		03CAC04C18E7716400FAC5F5 /* bar_drink_placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03265F1F18C4E92C002177F7 /* bar_drink_placeholder@2x.png */; };
@@ -737,13 +734,11 @@
 		03CAC05218E7716400FAC5F5 /* btn_get_drinks_here.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F542D18D28627004B2B67 /* btn_get_drinks_here.png */; };
 		03CAC05418E7716400FAC5F5 /* img_share_background_iphone4.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F5318E5D19D00DD9356 /* img_share_background_iphone4.png */; };
 		03CAC05518E7716400FAC5F5 /* LiveSpecialViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EA118E515B900DD9356 /* LiveSpecialViewController.xib */; };
-		03CAC05618E7716400FAC5F5 /* DrinkProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039F546E18D2DB4A004B2B67 /* DrinkProfileHeaderView.xib */; };
 		03CAC05718E7716400FAC5F5 /* btn_home_drinks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866502186DE0F700985CEC /* btn_home_drinks@2x.png */; };
 		03CAC05818E7716400FAC5F5 /* img_arrow_west_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F54A218D35A53004B2B67 /* img_arrow_west_circle.png */; };
 		03CAC05918E7716400FAC5F5 /* btn_live_special_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EEE18E5C29900DD9356 /* btn_live_special_share.png */; };
 		03CAC05A18E7716400FAC5F5 /* slider_thumb_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72A5187C4D0E00815284 /* slider_thumb_selected@2x.png */; };
 		03CAC05B18E7716400FAC5F5 /* btn_home_specials@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866504186DE0F700985CEC /* btn_home_specials@2x.png */; };
-		03CAC05C18E7716400FAC5F5 /* btn_spot_profile_find_similar.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455C18B65D8A00C88421 /* btn_spot_profile_find_similar.png */; };
 		03CAC05D18E7716400FAC5F5 /* btn_context_checkin.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455218B65D7F00C88421 /* btn_context_checkin.png */; };
 		03CAC05E18E7716400FAC5F5 /* FindSimilarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF8818C70A4500172F13 /* FindSimilarViewController.xib */; };
 		03CAC05F18E7716400FAC5F5 /* img_checkin_iphone4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1C18E4D63D00E07F39 /* img_checkin_iphone4@2x.png */; };
@@ -764,7 +759,6 @@
 		03CAC06E18E7716400FAC5F5 /* icon_phone.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4454E18B65D7300C88421 /* icon_phone.png */; };
 		03CAC06F18E7716400FAC5F5 /* btn_context_home@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 038664FB186DE0F700985CEC /* btn_context_home@2x.png */; };
 		03CAC07018E7716400FAC5F5 /* btn_sidebar_icon_drinks.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866518186DE0F700985CEC /* btn_sidebar_icon_drinks.png */; };
-		03CAC07118E7716400FAC5F5 /* btn_spot_profile_find_similar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455D18B65D8A00C88421 /* btn_spot_profile_find_similar@2x.png */; };
 		03CAC07218E7716400FAC5F5 /* img_expand_south.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F54BF18D7FE93004B2B67 /* img_expand_south.png */; };
 		03CAC07318E7716400FAC5F5 /* btn_live_special_x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF018E5C29900DD9356 /* btn_live_special_x.png */; };
 		03CAC07418E7716400FAC5F5 /* img_expand_east@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 038664F6186DE0F700985CEC /* img_expand_east@2x.png */; };
@@ -789,7 +783,6 @@
 		03CAC08818E7716400FAC5F5 /* btn_share_unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F0118E5C29900DD9356 /* btn_share_unselected.png */; };
 		03CAC08918E7716400FAC5F5 /* slider_thumb_selected_light.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72A6187C4D0E00815284 /* slider_thumb_selected_light.png */; };
 		03CAC08A18E7716400FAC5F5 /* img_spot_pin_view@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F546218D2D17F004B2B67 /* img_spot_pin_view@2x.png */; };
-		03CAC08B18E7716400FAC5F5 /* SpotProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E4457218B6607900C88421 /* SpotProfileHeaderView.xib */; };
 		03CAC08C18E7716400FAC5F5 /* img_match_pin_view_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 039ABBD918CE306B00B84AE6 /* img_match_pin_view_selected.png */; };
 		03CAC08D18E7716400FAC5F5 /* txt_sidebar_search_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320235018772A86008368C2 /* txt_sidebar_search_background.png */; };
 		03CAC08E18E7716400FAC5F5 /* img_spot_special_header.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1218E4B5B400E07F39 /* img_spot_special_header.png */; };
@@ -840,10 +833,8 @@
 		03CAC0BD18E7716400FAC5F5 /* btn_sidebar_icon_specials.png in Resources */ = {isa = PBXBuildFile; fileRef = 0386651C186DE0F700985CEC /* btn_sidebar_icon_specials.png */; };
 		03CAC0BF18E7716400FAC5F5 /* Lato-HairlineItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9181871DC1400C69576 /* Lato-HairlineItalic.ttf */; };
 		03CAC0C018E7716400FAC5F5 /* logo_spothopper@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 038664F8186DE0F700985CEC /* logo_spothopper@2x.png */; };
-		03CAC0C118E7716400FAC5F5 /* btn_spot_profile_review_it@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4456118B65D8A00C88421 /* btn_spot_profile_review_it@2x.png */; };
 		03CAC0C218E7716400FAC5F5 /* icon_beer.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7270187B8FD800815284 /* icon_beer.png */; };
 		03CAC0C318E7716400FAC5F5 /* slider_background_profile_max@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F4E74C18CA2A5C0056EAA9 /* slider_background_profile_max@2x.png */; };
-		03CAC0C418E7716400FAC5F5 /* btn_spot_profile_drink_menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455B18B65D8A00C88421 /* btn_spot_profile_drink_menu@2x.png */; };
 		03CAC0C518E7716400FAC5F5 /* icon_my_spotlists@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF6118C6DC8500172F13 /* icon_my_spotlists@2x.png */; };
 		03CAC0C618E7716400FAC5F5 /* img_checkin_iphone4.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1B18E4D63D00E07F39 /* img_checkin_iphone4.png */; };
 		03CAC0C718E7716400FAC5F5 /* Lato-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D91B1871DC1400C69576 /* Lato-LightItalic.ttf */; };
@@ -922,14 +913,12 @@
 		03CAC11218E7716400FAC5F5 /* img_arrow_east.png in Resources */ = {isa = PBXBuildFile; fileRef = 03412C351880535B000F16A8 /* img_arrow_east.png */; };
 		03CAC11318E7716400FAC5F5 /* btn_home_add_reveiew@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866500186DE0F700985CEC /* btn_home_add_reveiew@2x.png */; };
 		03CAC11418E7716400FAC5F5 /* ReviewCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039B701918873DD400C590F8 /* ReviewCellView.xib */; };
-		03CAC11518E7716400FAC5F5 /* btn_spot_profile_drink_menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455A18B65D8A00C88421 /* btn_spot_profile_drink_menu.png */; };
 		03CAC11618E7716400FAC5F5 /* cocktail_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF5B18E35816009188B5 /* cocktail_placeholder.png */; };
 		03CAC11718E7716400FAC5F5 /* btn_sidebar_icon_spots@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0386651F186DE0F700985CEC /* btn_sidebar_icon_spots@2x.png */; };
 		03CAC11818E7716400FAC5F5 /* icon_search_drink.png in Resources */ = {isa = PBXBuildFile; fileRef = 039B6FF71887167200C590F8 /* icon_search_drink.png */; };
 		03CAC11918E7716400FAC5F5 /* icon_search_drink_similar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039B6FF61887167200C590F8 /* icon_search_drink_similar@2x.png */; };
 		03CAC11A18E7716400FAC5F5 /* btn_sidebar_search_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866520186DE0F700985CEC /* btn_sidebar_search_icon.png */; };
 		03CAC11B18E7716400FAC5F5 /* img_expand_east.png in Resources */ = {isa = PBXBuildFile; fileRef = 038664F5186DE0F700985CEC /* img_expand_east.png */; };
-		03CAC11C18E7716400FAC5F5 /* btn_drink_profile_description@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F547418D2DC91004B2B67 /* btn_drink_profile_description@2x.png */; };
 		03CAC11D18E7716400FAC5F5 /* btn_nav_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D954187231C600C69576 /* btn_nav_back.png */; };
 		03CAC11E18E7716400FAC5F5 /* img_carousel_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E8833118C837B600BD8FBB /* img_carousel_background@2x.png */; };
 		03CAC11F18E7716400FAC5F5 /* btn_context_list.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E8834418C8FA5300BD8FBB /* btn_context_list.png */; };
@@ -980,7 +969,6 @@
 		03CAC14C18E7716400FAC5F5 /* icon_featured_lists.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF5E18C6DC8500172F13 /* icon_featured_lists.png */; };
 		03CAC14D18E7716400FAC5F5 /* table_header_background_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7263187B4EB700815284 /* table_header_background_selected.png */; };
 		03CAC14E18E7716400FAC5F5 /* 723-location-arrow-selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03121A3618BD786D00C9FFA3 /* 723-location-arrow-selected.png */; };
-		03CAC14F18E7716400FAC5F5 /* btn_drink_profile_description.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F547318D2DC91004B2B67 /* btn_drink_profile_description.png */; };
 		03CAC15018E7716400FAC5F5 /* btn_share_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF818E5C29900DD9356 /* btn_share_close@2x.png */; };
 		03CAC15118E7716400FAC5F5 /* img_live_special_white_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF518E5C29900DD9356 /* img_live_special_white_arrow@2x.png */; };
 		03CAC15318E7716400FAC5F5 /* FindSimilarDrinksViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039F544518D29B02004B2B67 /* FindSimilarDrinksViewController.xib */; };
@@ -1937,7 +1925,6 @@
 		267E05191922CC48004457B4 /* SHButtonLatoLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D9041871DB5B00C69576 /* SHButtonLatoLight.m */; };
 		267E051A1922CC48004457B4 /* AdjustSliderSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E882DB18C7953B00BD8FBB /* AdjustSliderSectionHeaderView.m */; };
 		267E051B1922CC48004457B4 /* SpotListsMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF5B18C6D5BB00172F13 /* SpotListsMenuViewController.m */; };
-		267E051C1922CC48004457B4 /* DrinkProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F546A18D2DB32004B2B67 /* DrinkProfileViewController.m */; };
 		267E051D1922CC48004457B4 /* MenuItemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F548E18D340AE004B2B67 /* MenuItemModel.m */; };
 		267E051E1922CC48004457B4 /* DrinksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BABDCB190F698800852D73 /* DrinksViewController.m */; };
 		267E051F1922CC48004457B4 /* PhotoAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */; };
@@ -2015,7 +2002,6 @@
 		267E05671922CC48004457B4 /* CLGeocoder+DoubleLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 037D13A518A450DB00B89535 /* CLGeocoder+DoubleLookup.m */; };
 		267E05681922CC48004457B4 /* PriceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CAC18518E9C74000FAC5F5 /* PriceModel.m */; };
 		267E05691922CC48004457B4 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664B2186D376900985CEC /* UIImage+Alpha.m */; };
-		267E056A1922CC48004457B4 /* SpotProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E4457018B65F3000C88421 /* SpotProfileViewController.m */; };
 		267E056B1922CC48004457B4 /* SHNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D95218722FB700C69576 /* SHNavigationController.m */; };
 		267E056C1922CC48004457B4 /* SpecialsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0372FF5418E34E88009188B5 /* SpecialsCell.m */; };
 		267E056D1922CC48004457B4 /* SpotListMoodModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 039F541718D11E57004B2B67 /* SpotListMoodModel.m */; };
@@ -2069,7 +2055,6 @@
 		267E05A01922CC48004457B4 /* img_expand_south@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F54C018D7FE93004B2B67 /* img_expand_south@2x.png */; };
 		267E05A11922CC48004457B4 /* app_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 038664F2186DE0F700985CEC /* app_background@2x.png */; };
 		267E05A21922CC48004457B4 /* btn_launch_item_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 0386654E186E050500985CEC /* btn_launch_item_background.png */; };
-		267E05A31922CC48004457B4 /* btn_spot_profile_review_it.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4456018B65D8A00C88421 /* btn_spot_profile_review_it.png */; };
 		267E05A41922CC48004457B4 /* icon_beer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7271187B8FD800815284 /* icon_beer@2x.png */; };
 		267E05A51922CC48004457B4 /* btn_search_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF7718C7087C00172F13 /* btn_search_back.png */; };
 		267E05A61922CC48004457B4 /* bar_drink_placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03265F1F18C4E92C002177F7 /* bar_drink_placeholder@2x.png */; };
@@ -2081,13 +2066,11 @@
 		267E05AC1922CC48004457B4 /* btn_get_drinks_here.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F542D18D28627004B2B67 /* btn_get_drinks_here.png */; };
 		267E05AD1922CC48004457B4 /* img_share_background_iphone4.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8F5318E5D19D00DD9356 /* img_share_background_iphone4.png */; };
 		267E05AE1922CC48004457B4 /* LiveSpecialViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EA118E515B900DD9356 /* LiveSpecialViewController.xib */; };
-		267E05AF1922CC48004457B4 /* DrinkProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039F546E18D2DB4A004B2B67 /* DrinkProfileHeaderView.xib */; };
 		267E05B01922CC48004457B4 /* btn_home_drinks@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866502186DE0F700985CEC /* btn_home_drinks@2x.png */; };
 		267E05B11922CC48004457B4 /* img_arrow_west_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F54A218D35A53004B2B67 /* img_arrow_west_circle.png */; };
 		267E05B21922CC48004457B4 /* btn_live_special_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EEE18E5C29900DD9356 /* btn_live_special_share.png */; };
 		267E05B31922CC48004457B4 /* slider_thumb_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72A5187C4D0E00815284 /* slider_thumb_selected@2x.png */; };
 		267E05B41922CC48004457B4 /* btn_home_specials@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866504186DE0F700985CEC /* btn_home_specials@2x.png */; };
-		267E05B51922CC48004457B4 /* btn_spot_profile_find_similar.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455C18B65D8A00C88421 /* btn_spot_profile_find_similar.png */; };
 		267E05B61922CC48004457B4 /* btn_context_checkin.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455218B65D7F00C88421 /* btn_context_checkin.png */; };
 		267E05B71922CC48004457B4 /* FindSimilarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF8818C70A4500172F13 /* FindSimilarViewController.xib */; };
 		267E05B81922CC48004457B4 /* img_checkin_iphone4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1C18E4D63D00E07F39 /* img_checkin_iphone4@2x.png */; };
@@ -2113,7 +2096,6 @@
 		267E05CC1922CC48004457B4 /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03D7F56F18EADCF3007B9E78 /* SearchViewController.xib */; };
 		267E05CD1922CC48004457B4 /* btn_context_home@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 038664FB186DE0F700985CEC /* btn_context_home@2x.png */; };
 		267E05CE1922CC48004457B4 /* btn_sidebar_icon_drinks.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866518186DE0F700985CEC /* btn_sidebar_icon_drinks.png */; };
-		267E05CF1922CC48004457B4 /* btn_spot_profile_find_similar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455D18B65D8A00C88421 /* btn_spot_profile_find_similar@2x.png */; };
 		267E05D01922CC48004457B4 /* img_expand_south.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F54BF18D7FE93004B2B67 /* img_expand_south.png */; };
 		267E05D11922CC48004457B4 /* btn_live_special_x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF018E5C29900DD9356 /* btn_live_special_x.png */; };
 		267E05D21922CC48004457B4 /* img_expand_east@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 038664F6186DE0F700985CEC /* img_expand_east@2x.png */; };
@@ -2141,7 +2123,6 @@
 		267E05E81922CC48004457B4 /* slider_thumb_selected_light.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72A6187C4D0E00815284 /* slider_thumb_selected_light.png */; };
 		267E05E91922CC48004457B4 /* img_spot_pin_view@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F546218D2D17F004B2B67 /* img_spot_pin_view@2x.png */; };
 		267E05EA1922CC48004457B4 /* avantgardef-book-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC19018E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf */; };
-		267E05EB1922CC48004457B4 /* SpotProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E4457218B6607900C88421 /* SpotProfileHeaderView.xib */; };
 		267E05EC1922CC48004457B4 /* img_match_pin_view_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 039ABBD918CE306B00B84AE6 /* img_match_pin_view_selected.png */; };
 		267E05ED1922CC48004457B4 /* txt_sidebar_search_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 0320235018772A86008368C2 /* txt_sidebar_search_background.png */; };
 		267E05EE1922CC48004457B4 /* img_spot_special_header.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1218E4B5B400E07F39 /* img_spot_special_header.png */; };
@@ -2194,10 +2175,8 @@
 		267E061D1922CC48004457B4 /* btn_sidebar_icon_specials.png in Resources */ = {isa = PBXBuildFile; fileRef = 0386651C186DE0F700985CEC /* btn_sidebar_icon_specials.png */; };
 		267E061E1922CC48004457B4 /* Lato-HairlineItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9181871DC1400C69576 /* Lato-HairlineItalic.ttf */; };
 		267E061F1922CC48004457B4 /* logo_spothopper@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 038664F8186DE0F700985CEC /* logo_spothopper@2x.png */; };
-		267E06201922CC48004457B4 /* btn_spot_profile_review_it@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4456118B65D8A00C88421 /* btn_spot_profile_review_it@2x.png */; };
 		267E06211922CC48004457B4 /* icon_beer.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7270187B8FD800815284 /* icon_beer.png */; };
 		267E06221922CC48004457B4 /* slider_background_profile_max@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F4E74C18CA2A5C0056EAA9 /* slider_background_profile_max@2x.png */; };
-		267E06231922CC48004457B4 /* btn_spot_profile_drink_menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455B18B65D8A00C88421 /* btn_spot_profile_drink_menu@2x.png */; };
 		267E06241922CC48004457B4 /* icon_my_spotlists@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF6118C6DC8500172F13 /* icon_my_spotlists@2x.png */; };
 		267E06251922CC48004457B4 /* img_checkin_iphone4.png in Resources */ = {isa = PBXBuildFile; fileRef = 033A3F1B18E4D63D00E07F39 /* img_checkin_iphone4.png */; };
 		267E06261922CC48004457B4 /* Lato-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D91B1871DC1400C69576 /* Lato-LightItalic.ttf */; };
@@ -2281,7 +2260,6 @@
 		267E06741922CC48004457B4 /* img_arrow_east.png in Resources */ = {isa = PBXBuildFile; fileRef = 03412C351880535B000F16A8 /* img_arrow_east.png */; };
 		267E06751922CC48004457B4 /* btn_home_add_reveiew@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866500186DE0F700985CEC /* btn_home_add_reveiew@2x.png */; };
 		267E06761922CC48004457B4 /* ReviewCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039B701918873DD400C590F8 /* ReviewCellView.xib */; };
-		267E06771922CC48004457B4 /* btn_spot_profile_drink_menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E4455A18B65D8A00C88421 /* btn_spot_profile_drink_menu.png */; };
 		267E06781922CC48004457B4 /* txt_account_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CAC1A218E9FD7400FAC5F5 /* txt_account_small@2x.png */; };
 		267E06791922CC48004457B4 /* cocktail_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 0372FF5B18E35816009188B5 /* cocktail_placeholder.png */; };
 		267E067A1922CC48004457B4 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D7F58118EB3937007B9E78 /* Icon-Small.png */; };
@@ -2290,7 +2268,6 @@
 		267E067D1922CC48004457B4 /* icon_search_drink_similar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039B6FF61887167200C590F8 /* icon_search_drink_similar@2x.png */; };
 		267E067E1922CC48004457B4 /* btn_sidebar_search_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 03866520186DE0F700985CEC /* btn_sidebar_search_icon.png */; };
 		267E067F1922CC48004457B4 /* img_expand_east.png in Resources */ = {isa = PBXBuildFile; fileRef = 038664F5186DE0F700985CEC /* img_expand_east.png */; };
-		267E06801922CC48004457B4 /* btn_drink_profile_description@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F547418D2DC91004B2B67 /* btn_drink_profile_description@2x.png */; };
 		267E06811922CC48004457B4 /* btn_nav_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D954187231C600C69576 /* btn_nav_back.png */; };
 		267E06821922CC48004457B4 /* img_carousel_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E8833118C837B600BD8FBB /* img_carousel_background@2x.png */; };
 		267E06831922CC48004457B4 /* btn_context_list.png in Resources */ = {isa = PBXBuildFile; fileRef = 03E8834418C8FA5300BD8FBB /* btn_context_list.png */; };
@@ -2344,7 +2321,6 @@
 		267E06B31922CC48004457B4 /* icon_featured_lists.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF5E18C6DC8500172F13 /* icon_featured_lists.png */; };
 		267E06B41922CC48004457B4 /* table_header_background_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA7263187B4EB700815284 /* table_header_background_selected.png */; };
 		267E06B51922CC48004457B4 /* 723-location-arrow-selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 03121A3618BD786D00C9FFA3 /* 723-location-arrow-selected.png */; };
-		267E06B61922CC48004457B4 /* btn_drink_profile_description.png in Resources */ = {isa = PBXBuildFile; fileRef = 039F547318D2DC91004B2B67 /* btn_drink_profile_description.png */; };
 		267E06B71922CC48004457B4 /* btn_share_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF818E5C29900DD9356 /* btn_share_close@2x.png */; };
 		267E06B81922CC48004457B4 /* img_live_special_white_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EF518E5C29900DD9356 /* img_live_special_white_arrow@2x.png */; };
 		267E06B91922CC48004457B4 /* FindSimilarDrinksViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039F544518D29B02004B2B67 /* FindSimilarDrinksViewController.xib */; };
@@ -5224,7 +5200,6 @@
 				03CAC04618E7716400FAC5F5 /* img_expand_south@2x.png in Resources */,
 				03CAC04718E7716400FAC5F5 /* app_background@2x.png in Resources */,
 				03CAC04818E7716400FAC5F5 /* btn_launch_item_background.png in Resources */,
-				03CAC04918E7716400FAC5F5 /* btn_spot_profile_review_it.png in Resources */,
 				03CAC04A18E7716400FAC5F5 /* icon_beer@2x.png in Resources */,
 				03CAC04B18E7716400FAC5F5 /* btn_search_back.png in Resources */,
 				03CAC04C18E7716400FAC5F5 /* bar_drink_placeholder@2x.png in Resources */,
@@ -5237,13 +5212,11 @@
 				03CAC05418E7716400FAC5F5 /* img_share_background_iphone4.png in Resources */,
 				03D7F59618EB3937007B9E78 /* Icon-Small-40@2x.png in Resources */,
 				03CAC05518E7716400FAC5F5 /* LiveSpecialViewController.xib in Resources */,
-				03CAC05618E7716400FAC5F5 /* DrinkProfileHeaderView.xib in Resources */,
 				03CAC05718E7716400FAC5F5 /* btn_home_drinks@2x.png in Resources */,
 				03CAC05818E7716400FAC5F5 /* img_arrow_west_circle.png in Resources */,
 				03CAC05918E7716400FAC5F5 /* btn_live_special_share.png in Resources */,
 				03CAC05A18E7716400FAC5F5 /* slider_thumb_selected@2x.png in Resources */,
 				03CAC05B18E7716400FAC5F5 /* btn_home_specials@2x.png in Resources */,
-				03CAC05C18E7716400FAC5F5 /* btn_spot_profile_find_similar.png in Resources */,
 				03CAC05D18E7716400FAC5F5 /* btn_context_checkin.png in Resources */,
 				03CAC05E18E7716400FAC5F5 /* FindSimilarViewController.xib in Resources */,
 				03CAC05F18E7716400FAC5F5 /* img_checkin_iphone4@2x.png in Resources */,
@@ -5266,7 +5239,6 @@
 				03CAC06E18E7716400FAC5F5 /* icon_phone.png in Resources */,
 				03CAC06F18E7716400FAC5F5 /* btn_context_home@2x.png in Resources */,
 				03CAC07018E7716400FAC5F5 /* btn_sidebar_icon_drinks.png in Resources */,
-				03CAC07118E7716400FAC5F5 /* btn_spot_profile_find_similar@2x.png in Resources */,
 				03CAC07218E7716400FAC5F5 /* img_expand_south.png in Resources */,
 				03CAC07318E7716400FAC5F5 /* btn_live_special_x.png in Resources */,
 				03CAC07418E7716400FAC5F5 /* img_expand_east@2x.png in Resources */,
@@ -5294,7 +5266,6 @@
 				03CAC08918E7716400FAC5F5 /* slider_thumb_selected_light.png in Resources */,
 				03CAC08A18E7716400FAC5F5 /* img_spot_pin_view@2x.png in Resources */,
 				03CAC19418E9D5F700FAC5F5 /* avantgardef-book-webfont.ttf in Resources */,
-				03CAC08B18E7716400FAC5F5 /* SpotProfileHeaderView.xib in Resources */,
 				03CAC08C18E7716400FAC5F5 /* img_match_pin_view_selected.png in Resources */,
 				03CAC08D18E7716400FAC5F5 /* txt_sidebar_search_background.png in Resources */,
 				03CAC08E18E7716400FAC5F5 /* img_spot_special_header.png in Resources */,
@@ -5347,11 +5318,9 @@
 				03CAC0BD18E7716400FAC5F5 /* btn_sidebar_icon_specials.png in Resources */,
 				03CAC0BF18E7716400FAC5F5 /* Lato-HairlineItalic.ttf in Resources */,
 				03CAC0C018E7716400FAC5F5 /* logo_spothopper@2x.png in Resources */,
-				03CAC0C118E7716400FAC5F5 /* btn_spot_profile_review_it@2x.png in Resources */,
 				03CAC0C218E7716400FAC5F5 /* icon_beer.png in Resources */,
 				26E6A0B4192317C400BCA5C6 /* MyriadPro-Bold.ttf in Resources */,
 				03CAC0C318E7716400FAC5F5 /* slider_background_profile_max@2x.png in Resources */,
-				03CAC0C418E7716400FAC5F5 /* btn_spot_profile_drink_menu@2x.png in Resources */,
 				03CAC0C518E7716400FAC5F5 /* icon_my_spotlists@2x.png in Resources */,
 				03CAC0C618E7716400FAC5F5 /* img_checkin_iphone4.png in Resources */,
 				03D7F58618EB3937007B9E78 /* Icon-60@2x.png in Resources */,
@@ -5440,14 +5409,12 @@
 				03CAC11218E7716400FAC5F5 /* img_arrow_east.png in Resources */,
 				03CAC11318E7716400FAC5F5 /* btn_home_add_reveiew@2x.png in Resources */,
 				03CAC11418E7716400FAC5F5 /* ReviewCellView.xib in Resources */,
-				03CAC11518E7716400FAC5F5 /* btn_spot_profile_drink_menu.png in Resources */,
 				03CAC11618E7716400FAC5F5 /* cocktail_placeholder.png in Resources */,
 				03CAC11718E7716400FAC5F5 /* btn_sidebar_icon_spots@2x.png in Resources */,
 				03CAC11818E7716400FAC5F5 /* icon_search_drink.png in Resources */,
 				03CAC11918E7716400FAC5F5 /* icon_search_drink_similar@2x.png in Resources */,
 				03CAC11A18E7716400FAC5F5 /* btn_sidebar_search_icon.png in Resources */,
 				03CAC11B18E7716400FAC5F5 /* img_expand_east.png in Resources */,
-				03CAC11C18E7716400FAC5F5 /* btn_drink_profile_description@2x.png in Resources */,
 				03CAC11D18E7716400FAC5F5 /* btn_nav_back.png in Resources */,
 				03CAC11E18E7716400FAC5F5 /* img_carousel_background@2x.png in Resources */,
 				03CAC11F18E7716400FAC5F5 /* btn_context_list.png in Resources */,
@@ -5503,7 +5470,6 @@
 				03CAC14C18E7716400FAC5F5 /* icon_featured_lists.png in Resources */,
 				03CAC14D18E7716400FAC5F5 /* table_header_background_selected.png in Resources */,
 				03CAC14E18E7716400FAC5F5 /* 723-location-arrow-selected.png in Resources */,
-				03CAC14F18E7716400FAC5F5 /* btn_drink_profile_description.png in Resources */,
 				03CAC15018E7716400FAC5F5 /* btn_share_close@2x.png in Resources */,
 				03CAC15118E7716400FAC5F5 /* img_live_special_white_arrow@2x.png in Resources */,
 				03CAC19918E9F5FD00FAC5F5 /* User.storyboard in Resources */,
@@ -6223,7 +6189,6 @@
 				267E05A01922CC48004457B4 /* img_expand_south@2x.png in Resources */,
 				267E05A11922CC48004457B4 /* app_background@2x.png in Resources */,
 				267E05A21922CC48004457B4 /* btn_launch_item_background.png in Resources */,
-				267E05A31922CC48004457B4 /* btn_spot_profile_review_it.png in Resources */,
 				267E05A41922CC48004457B4 /* icon_beer@2x.png in Resources */,
 				267E05A51922CC48004457B4 /* btn_search_back.png in Resources */,
 				267E05A61922CC48004457B4 /* bar_drink_placeholder@2x.png in Resources */,
@@ -6235,13 +6200,11 @@
 				267E05AC1922CC48004457B4 /* btn_get_drinks_here.png in Resources */,
 				267E05AD1922CC48004457B4 /* img_share_background_iphone4.png in Resources */,
 				267E05AE1922CC48004457B4 /* LiveSpecialViewController.xib in Resources */,
-				267E05AF1922CC48004457B4 /* DrinkProfileHeaderView.xib in Resources */,
 				267E05B01922CC48004457B4 /* btn_home_drinks@2x.png in Resources */,
 				267E05B11922CC48004457B4 /* img_arrow_west_circle.png in Resources */,
 				267E05B21922CC48004457B4 /* btn_live_special_share.png in Resources */,
 				267E05B31922CC48004457B4 /* slider_thumb_selected@2x.png in Resources */,
 				267E05B41922CC48004457B4 /* btn_home_specials@2x.png in Resources */,
-				267E05B51922CC48004457B4 /* btn_spot_profile_find_similar.png in Resources */,
 				267E05B61922CC48004457B4 /* btn_context_checkin.png in Resources */,
 				267E05B71922CC48004457B4 /* FindSimilarViewController.xib in Resources */,
 				267E05B81922CC48004457B4 /* img_checkin_iphone4@2x.png in Resources */,
@@ -6267,7 +6230,6 @@
 				267E05CC1922CC48004457B4 /* SearchViewController.xib in Resources */,
 				267E05CD1922CC48004457B4 /* btn_context_home@2x.png in Resources */,
 				267E05CE1922CC48004457B4 /* btn_sidebar_icon_drinks.png in Resources */,
-				267E05CF1922CC48004457B4 /* btn_spot_profile_find_similar@2x.png in Resources */,
 				267E05D01922CC48004457B4 /* img_expand_south.png in Resources */,
 				267E05D11922CC48004457B4 /* btn_live_special_x.png in Resources */,
 				267E05D21922CC48004457B4 /* img_expand_east@2x.png in Resources */,
@@ -6295,7 +6257,6 @@
 				267E05E81922CC48004457B4 /* slider_thumb_selected_light.png in Resources */,
 				267E05E91922CC48004457B4 /* img_spot_pin_view@2x.png in Resources */,
 				267E05EA1922CC48004457B4 /* avantgardef-book-webfont.ttf in Resources */,
-				267E05EB1922CC48004457B4 /* SpotProfileHeaderView.xib in Resources */,
 				267E05EC1922CC48004457B4 /* img_match_pin_view_selected.png in Resources */,
 				267E05ED1922CC48004457B4 /* txt_sidebar_search_background.png in Resources */,
 				267E05EE1922CC48004457B4 /* img_spot_special_header.png in Resources */,
@@ -6349,10 +6310,8 @@
 				26E6A0B3192317C300BCA5C6 /* MyriadPro-Bold.ttf in Resources */,
 				267E061E1922CC48004457B4 /* Lato-HairlineItalic.ttf in Resources */,
 				267E061F1922CC48004457B4 /* logo_spothopper@2x.png in Resources */,
-				267E06201922CC48004457B4 /* btn_spot_profile_review_it@2x.png in Resources */,
 				267E06211922CC48004457B4 /* icon_beer.png in Resources */,
 				267E06221922CC48004457B4 /* slider_background_profile_max@2x.png in Resources */,
-				267E06231922CC48004457B4 /* btn_spot_profile_drink_menu@2x.png in Resources */,
 				267E06241922CC48004457B4 /* icon_my_spotlists@2x.png in Resources */,
 				267E06251922CC48004457B4 /* img_checkin_iphone4.png in Resources */,
 				267E06261922CC48004457B4 /* Lato-LightItalic.ttf in Resources */,
@@ -6437,7 +6396,6 @@
 				267E06741922CC48004457B4 /* img_arrow_east.png in Resources */,
 				267E06751922CC48004457B4 /* btn_home_add_reveiew@2x.png in Resources */,
 				267E06761922CC48004457B4 /* ReviewCellView.xib in Resources */,
-				267E06771922CC48004457B4 /* btn_spot_profile_drink_menu.png in Resources */,
 				267E06781922CC48004457B4 /* txt_account_small@2x.png in Resources */,
 				267E06791922CC48004457B4 /* cocktail_placeholder.png in Resources */,
 				267E067A1922CC48004457B4 /* Icon-Small.png in Resources */,
@@ -6446,7 +6404,6 @@
 				267E067D1922CC48004457B4 /* icon_search_drink_similar@2x.png in Resources */,
 				267E067E1922CC48004457B4 /* btn_sidebar_search_icon.png in Resources */,
 				267E067F1922CC48004457B4 /* img_expand_east.png in Resources */,
-				267E06801922CC48004457B4 /* btn_drink_profile_description@2x.png in Resources */,
 				267E06811922CC48004457B4 /* btn_nav_back.png in Resources */,
 				267E06821922CC48004457B4 /* img_carousel_background@2x.png in Resources */,
 				267E06831922CC48004457B4 /* btn_context_list.png in Resources */,
@@ -6500,7 +6457,6 @@
 				267E06B31922CC48004457B4 /* icon_featured_lists.png in Resources */,
 				267E06B41922CC48004457B4 /* table_header_background_selected.png in Resources */,
 				267E06B51922CC48004457B4 /* 723-location-arrow-selected.png in Resources */,
-				267E06B61922CC48004457B4 /* btn_drink_profile_description.png in Resources */,
 				267E06B71922CC48004457B4 /* btn_share_close@2x.png in Resources */,
 				267E06B81922CC48004457B4 /* img_live_special_white_arrow@2x.png in Resources */,
 				267E06B91922CC48004457B4 /* FindSimilarDrinksViewController.xib in Resources */,
@@ -6933,7 +6889,6 @@
 				03CABFCB18E7716400FAC5F5 /* SHButtonLatoLight.m in Sources */,
 				03CABFCC18E7716400FAC5F5 /* AdjustSliderSectionHeaderView.m in Sources */,
 				03CABFCD18E7716400FAC5F5 /* SpotListsMenuViewController.m in Sources */,
-				03CABFCE18E7716400FAC5F5 /* DrinkProfileViewController.m in Sources */,
 				262A65B6195893F800A4DACD /* MenuModel.m in Sources */,
 				03CABFCF18E7716400FAC5F5 /* MenuItemModel.m in Sources */,
 				26D0A8A219704BCB00F64384 /* SHNotifications.m in Sources */,
@@ -7028,7 +6983,6 @@
 				03CAC18918E9C74000FAC5F5 /* PriceModel.m in Sources */,
 				26689715192F2A71004FAC2D /* SHSlidersSearchViewController.m in Sources */,
 				03CAC01218E7716400FAC5F5 /* UIImage+Alpha.m in Sources */,
-				03CAC01318E7716400FAC5F5 /* SpotProfileViewController.m in Sources */,
 				03CAC01418E7716400FAC5F5 /* SHNavigationController.m in Sources */,
 				03CAC01518E7716400FAC5F5 /* SpecialsCell.m in Sources */,
 				03CAC01618E7716400FAC5F5 /* SpotListMoodModel.m in Sources */,
@@ -7446,7 +7400,6 @@
 				267E05191922CC48004457B4 /* SHButtonLatoLight.m in Sources */,
 				267E051A1922CC48004457B4 /* AdjustSliderSectionHeaderView.m in Sources */,
 				267E051B1922CC48004457B4 /* SpotListsMenuViewController.m in Sources */,
-				267E051C1922CC48004457B4 /* DrinkProfileViewController.m in Sources */,
 				262A65B5195893F800A4DACD /* MenuModel.m in Sources */,
 				267E051D1922CC48004457B4 /* MenuItemModel.m in Sources */,
 				26D0A8A119704BCB00F64384 /* SHNotifications.m in Sources */,
@@ -7541,7 +7494,6 @@
 				267E05681922CC48004457B4 /* PriceModel.m in Sources */,
 				26689714192F2A71004FAC2D /* SHSlidersSearchViewController.m in Sources */,
 				267E05691922CC48004457B4 /* UIImage+Alpha.m in Sources */,
-				267E056A1922CC48004457B4 /* SpotProfileViewController.m in Sources */,
 				267E056B1922CC48004457B4 /* SHNavigationController.m in Sources */,
 				267E056C1922CC48004457B4 /* SpecialsCell.m in Sources */,
 				267E056D1922CC48004457B4 /* SpotListMoodModel.m in Sources */,

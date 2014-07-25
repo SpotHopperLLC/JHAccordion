@@ -1129,6 +1129,7 @@
         [[drinklist fetchDrinkList] then:^(DrinkListModel *drinklist) {
             [self updateSliders:drinklist.sliders withCompletionBlock:completeBlock];
         } fail:^(ErrorModel *errorModel) {
+            [self notifyThatManagerIsFree];
             [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
         } always:nil];
     }

@@ -18,7 +18,6 @@
 #import "DrinksNearbyViewController.h"
 #import "DrinkListMenuViewController.h"
 #import "DrinkListViewController.h"
-#import "DrinkProfileViewController.h"
 #import "FindSimilarDrinksViewController.h"
 #import "FindDrinksAtViewController.h"
 
@@ -30,7 +29,6 @@
 #import "SearchNewReviewViewController.h"
 #import "SpotListsMenuViewController.h"
 #import "SpotListViewController.h"
-#import "SpotProfileViewController.h"
 
 #import "DrinkMenuViewController.h"
 #import "DrinkMenuOfferingsViewController.h"
@@ -40,6 +38,9 @@
 #import "CheckinViewController.h"
 #import "PhotoAlbumViewController.h"
 #import "PhotoViewerViewController.h"
+
+#import "SHDrinkProfileViewController.h"
+#import "SHSpotProfileViewController.h"
 
 #import "Tracker.h"
 #import "TellMeMyLocation.h"
@@ -115,8 +116,7 @@
 - (void)goToDrinkProfile:(DrinkModel*)drink {
     [Tracker track:@"View Drink Profile" properties:@{@"Name" : drink.name, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
     
-#ifdef kIntegrateDeprecatedScreens
-    DrinkProfileViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkProfileViewController"];
+    SHDrinkProfileViewController *viewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHDrinkProfileVC"];
     [viewController setDrink:drink];
     
     if (self.navigationController.viewControllers.count && [self isEqual:self.navigationController.viewControllers[0]]) {
@@ -128,11 +128,6 @@
         [viewControllers addObject:viewController];
         [self.navigationController setViewControllers:viewControllers animated:YES];
     }
-#else
-    DrinkProfileViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkProfileViewController"];
-    [viewController setDrink:drink];
-    [self.navigationController pushViewController:viewController animated:YES];
-#endif
 }
 
 #pragma mark - Reviews
@@ -229,8 +224,9 @@
 }
 
 - (void)goToSpotProfile:(SpotModel *)spot {
-#ifdef kIntegrateDeprecatedScreens
-    SpotProfileViewController *vc = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
+    [Tracker track:@"View Spot Profile" properties:@{@"Name" : spot.name, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    
+    SHSpotProfileViewController *vc = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHSpotProfileVC"];
     [vc setSpot:spot];
     
     if (self.navigationController.viewControllers.count && [self isEqual:self.navigationController.viewControllers[0]]) {
@@ -242,13 +238,6 @@
         [viewControllers addObject:vc];
         [self.navigationController setViewControllers:viewControllers animated:YES];
     }
-#else
-    [Tracker track:@"View Spot Profile" properties:@{@"Name" : spot.name, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    SpotProfileViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
-    [viewController setSpot:spot];
-    [self.navigationController pushViewController:viewController animated:YES];
-    
-#endif
 }
 
 #pragma mark - Menu
@@ -287,15 +276,8 @@
 
 - (void)goToCheckIn:(CheckInModel*)checkIn {
     [Tracker track:@"View Check In" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    SpotProfileViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
-    [viewController setCheckIn:checkIn];
-    [viewController setSpot:checkIn.spot];
-    [viewController setIsCheckin:YES];
     
-    NSMutableArray *viewControllers = self.navigationController.viewControllers.mutableCopy;
-    [viewControllers removeLastObject];
-    [viewControllers addObject:viewController];
-    [self.navigationController setViewControllers:viewControllers animated:YES];
+    [self goToSpotProfile:checkIn.spot];
 }
 
 #pragma mark - Commons

@@ -94,15 +94,13 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
     [button setImage:highlightedImage forState:UIControlStateHighlighted];
 }
 
-+ (void)setButton:(UIButton *)button withDrawing:(SHStyleKitDrawing)drawing text:(NSString*)text normalColor:(SHStyleKitColor)normalColor highlightedColor:(SHStyleKitColor)highlightedColor;
++ (void)setButton:(UIButton *)button withDrawing:(SHStyleKitDrawing)drawing text:(NSString *)text normalColor:(SHStyleKitColor)normalColor highlightedColor:(SHStyleKitColor)highlightedColor;
 {
     UIImage *normalImage = [SHStyleKit drawImage:drawing color:normalColor size:button.frame.size];
     UIImage *highlightedImage = [SHStyleKit drawImage:drawing color:highlightedColor size:button.frame.size];
     [button setImage:normalImage forState:UIControlStateNormal];
     [button setImage:highlightedImage forState:UIControlStateHighlighted];
     [button setTitle:text forState:UIControlStateNormal];
-    [button setTitle:text forState:UIControlStateHighlighted];
-    [button setTitle:text forState:UIControlStateSelected];
 }
 
 + (void)setButton:(UIButton *)button normalTextColor:(SHStyleKitColor)normalTextColor highlightedTextColor:(SHStyleKitColor)highlightedTextColor;

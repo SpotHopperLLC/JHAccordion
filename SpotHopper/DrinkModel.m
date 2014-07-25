@@ -14,6 +14,8 @@
 #import "DrinkTypeModel.h"
 #import "DrinkSubTypeModel.h"
 #import "SliderTemplateModel.h"
+#import "AverageReviewModel.h"
+#import "BaseAlcoholModel.h"
 
 #import "DrinkListRequest.h"
 
@@ -545,6 +547,35 @@
 
 - (BOOL)isWine {
     return [kDrinkTypeNameWine isEqualToString:self.drinkType.name];
+}
+
+- (NSString *)rating {
+    if (self.isWine && ![@"Sparkling" isEqualToString:self.drinkSubtype.name]) {
+        return [NSString stringWithFormat:@"%@ - Rating %.0f/10", self.drinkSubtype.name, [self.averageReview.rating floatValue]];
+    }
+    else {
+        return [NSString stringWithFormat:@"Rating %.0f/10", [self.averageReview.rating floatValue]];
+    }
+}
+
+- (NSString *)ratingShort {
+    return [NSString stringWithFormat:@"%.0f/10", [self.averageReview.rating floatValue]];
+}
+
+- (NSString *)drinkStyle {
+    if (self.isBeer) {
+        return self.style;
+    }
+    else if (self.isCocktail && self.baseAlochols.count) {
+        BaseAlcoholModel *baseAlcohol = self.baseAlochols[0];
+        return baseAlcohol.name;
+    }
+    else if (self.isWine && self.varietal) {
+        return self.varietal;
+    }
+    else {
+        return nil;
+    }
 }
 
 - (UIImage *)placeholderImage {
