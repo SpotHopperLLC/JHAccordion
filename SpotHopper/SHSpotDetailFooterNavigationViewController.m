@@ -29,9 +29,7 @@ static NSString* const kButtonLabelTitleDrinkMenu = @"Drink Menu";
 
 - (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
-    
     [self setButtonStyles];
-
 }
 
 #pragma mark - User Actions

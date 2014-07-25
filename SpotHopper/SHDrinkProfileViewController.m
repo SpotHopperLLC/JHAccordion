@@ -19,7 +19,6 @@
 
 #import "PhotoAlbumViewController.h"
 #import "PhotoViewerViewController.h"
-//#import "SHDrinkDetailFooterNavigationViewController.h"
 
 #import "SHStyleKit+Additions.h"
 #import "NSArray+DailySpecials.h"
@@ -27,6 +26,7 @@
 #import "UIViewController+Navigator.h"
 
 #import "SHImageModelCollectionViewManager.h"
+#import "SHNotifications.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -69,6 +69,7 @@
 #define kTagPreviousImageButton 2
 #define kTagNextImageButton 3
 #define kTagDescriptionLabel 4
+#define kTagBottomShadowImageView 5
 
 NSString* const DrinkProfileToPhotoViewer = @"DrinkProfileToPhotoViewer";
 NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
@@ -82,6 +83,9 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 
 @property (assign, nonatomic) NSInteger currentIndex;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+@property (weak, nonatomic) IBOutlet UIButton *similarDrinksButton;
+@property (weak, nonatomic) IBOutlet UIButton *reviewItButton;
 
 @property (weak, nonatomic) IBOutlet UIImageView *topShadowImageView;
 @property (weak, nonatomic) UIView *footerContainerView;
@@ -114,17 +118,25 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     self.tableView.contentInset = contentInset;
     self.tableView.scrollIndicatorInsets = scrollIndicatorInsets;
     
+    CGSize buttonImageSize = CGSizeMake(30, 30);
+    [SHStyleKit setButton:self.similarDrinksButton withDrawing:SHStyleKitDrawingSearchIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor size:buttonImageSize];
+    [SHStyleKit setButton:self.reviewItButton withDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor size:buttonImageSize];
+    
+    self.similarDrinksButton.titleLabel.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
+    [self.similarDrinksButton setTitleColor:SHStyleKit.myTextColor forState:UIControlStateNormal];
+    
+    self.reviewItButton.titleLabel.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
+    [self.reviewItButton setTitleColor:SHStyleKit.myTextColor forState:UIControlStateNormal];
+    
     self.matchPercentage = [self.drink matchPercent];
     
     //fetch drink sliders and review info
     [self.drink getDrink:nil success:^(DrinkModel *drinkModel, JSONAPI *jsonApi) {
-        
         if (drinkModel) {
             self.drink = drinkModel;
             self.drink.averageReview = drinkModel.averageReview;
             [self.tableView reloadData];
         }
-    
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
@@ -150,6 +162,7 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     else if ([segue.destinationViewController isKindOfClass:[PhotoAlbumViewController class]]) {
         PhotoAlbumViewController *vc = segue.destinationViewController;
         vc.images = self.imageModelCollectionViewManager.imageModels;
+        vc.placeholderImage = self.drink.placeholderImage;
         
         if (self.currentIndex) {
             vc.selectedIndex = self.currentIndex;
@@ -170,6 +183,14 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 
 - (void)nextButtonTapped:(id)sender {
     [self.imageModelCollectionViewManager goNext];
+}
+
+- (IBAction)similarDrinksButtonTapped:(id)sender {
+    [SHNotifications findSimilarToDrink:self.drink];
+}
+
+- (IBAction)reviewItButtonTapped:(id)sender {
+    [self goToNewReviewForDrink:self.drink];
 }
 
 #pragma mark - Private
@@ -197,8 +218,6 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 }
 
 - (void)hideTopBars:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    //DebugLog(@"%@", NSStringFromSelector(_cmd));
-    
     // sets a clear background for the top bars
     
     _topBarsClear = TRUE;
@@ -226,8 +245,6 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 }
 
 - (void)showTopBars:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-   // DebugLog(@"%@", NSStringFromSelector(_cmd));
-    
     // sets the top bars to show an opaque background
     
     _topBarsClear = FALSE;
@@ -320,8 +337,6 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     static NSString *DrinkDetailsCellIdentifier = @"DrinkDetailsCell";
     static NSString *DrinkVibeIdentifier = @"DrinkVibeCell";
     
-    DebugLog(@"index path: %lu, %lu", (unsigned long)indexPath.section, (unsigned long)indexPath.row);
-    
     UITableViewCell *cell = nil;
     
     if (kSectionImages == indexPath.section) {
@@ -333,6 +348,7 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
         collectionView.delegate = self.imageModelCollectionViewManager;
         collectionView.dataSource = self.imageModelCollectionViewManager;
         self.imageModelCollectionViewManager.imageModels = self.drink.images;
+        self.imageModelCollectionViewManager.placeholderImage = self.drink.placeholderImage;
         
         self.previousImageButton = (UIButton *)[cell viewWithTag:kTagPreviousImageButton];
         self.nextImageButton = (UIButton *)[cell viewWithTag:kTagNextImageButton];
@@ -342,14 +358,22 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
         
         [self updateImageArrows];
         
+        UIImageView *bottomShadowImageView = (UIImageView *)[cell viewWithTag:kTagBottomShadowImageView];
+        NSAssert(bottomShadowImageView, @"Image View is required");
+        bottomShadowImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingBottomBarBlackShadowBackground size:CGSizeMake(320, 64)];
+        
         UILabel *descriptionLabel = (UILabel *)[cell viewWithTag:kTagDescriptionLabel];
+        NSAssert(descriptionLabel, @"Label is required");
         
         if (self.drink.descriptionOfDrink.length) {
             descriptionLabel.text = self.drink.descriptionOfDrink;
+            descriptionLabel.font = [UIFont fontWithName:@"Lato-Regular" size:14.0f];
             descriptionLabel.hidden = FALSE;
+            bottomShadowImageView.hidden = FALSE;
         }
         else {
             descriptionLabel.hidden = TRUE;
+            bottomShadowImageView.hidden = TRUE;
         }
     }
     else if (kSectionDrinkDetails == indexPath.section) {
@@ -360,7 +384,6 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
         [SHStyleKit setLabel:name textColor:SHStyleKitColorMyTintColor];
         name.text = self.drink.name;
         
-        // TODO: change all of the details shown in the view
         UILabel *vintage = (UILabel*)[cell viewWithTag:kTagDrinkVintageLabel];
         UILabel *region = (UILabel*)[cell viewWithTag:kTagDrinkRegionLabel];
         
@@ -429,7 +452,7 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
         UILabel *rating = (UILabel*)[cell viewWithTag:kTagDrinkRatingLabel];
         rating.font = [UIFont fontWithName:@"Lato-Light" size:16.0f];
         rating.textColor = [SHStyleKit color:SHStyleKitColorMyWhiteColor];
-        rating.text = [NSString stringWithFormat:@"%.1f/10", [self.drink.averageReview.rating floatValue]];
+        rating.text = self.drink.ratingShort;
     }
     else if (kSectionSliders == indexPath.section) {
         cell = [tableView dequeueReusableCellWithIdentifier:DrinkVibeIdentifier forIndexPath:indexPath];
@@ -487,22 +510,15 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 }
 
 - (void)imageCollectionViewManager:(SHImageModelCollectionViewManager *)manager didSelectImageAtIndex:(NSUInteger)index {
-    [self pushToImageAtIndex:index];
+    if (self.drink.images.count) {
+        [self pushToImageAtIndex:index];
+    }
 }
 
 #pragma mark - UIScrollViewDelegate
 #pragma mark -
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    DebugLog(@"scrollView.contentOffset.y: %f", scrollView.contentOffset.y);
-//    DebugLog(@"calculated: %f", CGRectGetHeight(self.view.frame) * -0.2);
-//    DebugLog(@"calculated: %f", CGRectGetHeight(self.view.frame) * -0.8);
-//    
-//    if (scrollView.contentOffset.y < CGRectGetHeight(self.view.frame) * -0.2) {
-//        [self pushToImageAtIndex:self.imageModelCollectionViewManager.currentIndex];
-//        return;
-//    }
-    
     // adjust the top image view
     CGFloat topImageHeight = kTopImageHeight;
     CGFloat yPos = 0.0f;

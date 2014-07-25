@@ -64,6 +64,9 @@
 @property (nonatomic, readonly) BOOL isCocktail;
 @property (nonatomic, readonly) BOOL isWine;
 
+@property (nonatomic, readonly) NSString *rating;
+@property (nonatomic, readonly) NSString *ratingShort;
+@property (nonatomic, readonly) NSString *drinkStyle;
 @property (nonatomic, readonly) UIImage *placeholderImage;
 
 - (NSString *)matchPercent;

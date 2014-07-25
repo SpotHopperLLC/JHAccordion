@@ -19,7 +19,6 @@
 
 #import "PhotoAlbumViewController.h"
 #import "PhotoViewerViewController.h"
-#import "SHSpotDetailFooterNavigationViewController.h"
 
 #import "SHStyleKit+Additions.h"
 #import "NSArray+DailySpecials.h"
@@ -49,7 +48,7 @@
 #define kTagRightVibeLabel 2
 #define kTagVibeSlider 3
 
-#define kFooterNavigationViewHeight 50.0f
+#define kFooterViewHeight 50.0f
 #define kCutOffPoint 116.0f
 
 #define kDefineAnimationDuration 0.25f
@@ -74,7 +73,7 @@ NSString* const SpotProfileToPhotoAlbum = @"SpotProfileToPhotoAlbum";
 
 NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 
-@interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate, SHImageModelCollectionDelegate, SHSpotDetailFooterNavigationDelegate>
+@interface SHSpotProfileViewController () <UITableViewDataSource, UITableViewDelegate, SHImageModelCollectionDelegate>
 
 @property (strong, nonatomic) IBOutlet SHImageModelCollectionViewManager *imageModelCollectionViewManager;
 
@@ -84,13 +83,15 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 @property (assign, nonatomic) NSInteger currentIndex;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+@property (weak, nonatomic) IBOutlet UIButton *similarSpotsButton;
+@property (weak, nonatomic) IBOutlet UIButton *reviewItButton;
+@property (weak, nonatomic) IBOutlet UIButton *drinkMenuButton;
+
 @property (weak, nonatomic) IBOutlet UIImageView *topShadowImageView;
 @property (weak, nonatomic) UIView *footerContainerView;
 
 @property (strong, nonatomic)  NSString *matchPercentage;
 @property (strong, nonatomic)  NSString *closeTime;
-
-@property (strong, nonatomic) SHSpotDetailFooterNavigationViewController *spotfooterNavigationViewController;
 
 @end
 
@@ -109,16 +110,27 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     
     self.topShadowImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingTopBarWhiteShadowBackground size:CGSizeMake(320, 64)];
     
-    self.spotfooterNavigationViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SHSpotDetailFooterNavigationViewController"];
-    self.spotfooterNavigationViewController.delegate = self;
-    
     //set bottom offset to account for the height of the footer navigation control
     UIEdgeInsets contentInset = self.tableView.contentInset;
     UIEdgeInsets scrollIndicatorInsets = self.tableView.scrollIndicatorInsets;
-    contentInset.bottom = kFooterNavigationViewHeight;
-    scrollIndicatorInsets.bottom = kFooterNavigationViewHeight;
+    contentInset.bottom = kFooterViewHeight;
+    scrollIndicatorInsets.bottom = kFooterViewHeight;
     self.tableView.contentInset = contentInset;
     self.tableView.scrollIndicatorInsets = scrollIndicatorInsets;
+    
+    CGSize buttonImageSize = CGSizeMake(30, 30);
+    [SHStyleKit setButton:self.similarSpotsButton withDrawing:SHStyleKitDrawingSearchIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor size:buttonImageSize];
+    [SHStyleKit setButton:self.reviewItButton withDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor size:buttonImageSize];
+    [SHStyleKit setButton:self.drinkMenuButton withDrawing:SHStyleKitDrawingDrinkMenuIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor size:buttonImageSize];
+    
+    self.similarSpotsButton.titleLabel.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
+    [self.similarSpotsButton setTitleColor:SHStyleKit.myTextColor forState:UIControlStateNormal];
+    
+    self.reviewItButton.titleLabel.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
+    [self.reviewItButton setTitleColor:SHStyleKit.myTextColor forState:UIControlStateNormal];
+    
+    self.drinkMenuButton.titleLabel.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
+    [self.drinkMenuButton setTitleColor:SHStyleKit.myTextColor forState:UIControlStateNormal];
     
     self.matchPercentage = [self.spot matchPercent];
     if ([self findCloseTimeForToday]) {
@@ -146,23 +158,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     [self hideTopBars:TRUE withCompletionBlock:^{
         DebugLog(@"Done hiding top bars");
     }];
-    
-    if (!self.footerContainerView && !self.spotfooterNavigationViewController.view.superview) {
-        UIView *footerContainer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), kFooterNavigationViewHeight)];
-        footerContainer.translatesAutoresizingMaskIntoConstraints = NO;
-        footerContainer.backgroundColor = [UIColor clearColor];
-        [self.view addSubview:footerContainer];
-        [footerContainer pinToSuperviewEdges:JRTViewPinBottomEdge inset:0.0f usingLayoutGuidesFrom:self];
-        [footerContainer pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0];
-        [footerContainer constrainToHeight:kFooterNavigationViewHeight];
-        self.footerContainerView = footerContainer;
-        
-        [self embedViewController:self.spotfooterNavigationViewController intoView:self.footerContainerView placementBlock:^(UIView *view) {
-            [view pinToSuperviewEdges:JRTViewPinBottomEdge inset:0.0f];
-            [view pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0];
-            [view constrainToHeight:kFooterNavigationViewHeight];
-        }];
-    }
 }
 
 #pragma mark - User Actions
@@ -178,6 +173,18 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 
 - (void)nextButtonTapped:(id)sender {
     [self.imageModelCollectionViewManager goNext];
+}
+
+- (IBAction)similarDrinksButtonTapped:(id)sender {
+    [SHNotifications findSimilarToSpot:self.spot];
+}
+
+- (IBAction)reviewItButtonTapped:(id)sender {
+    [self goToNewReviewForSpot:self.spot];
+}
+
+- (IBAction)drinkMenuButtonTapped:(id)sender {
+    [self goToMenu:self.spot];
 }
 
 #pragma mark - Private
@@ -205,8 +212,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 }
 
 - (void)hideTopBars:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    //DebugLog(@"%@", NSStringFromSelector(_cmd));
-    
     // sets a clear background for the top bars
     
     _topBarsClear = TRUE;
@@ -234,8 +239,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 }
 
 - (void)showTopBars:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    // DebugLog(@"%@", NSStringFromSelector(_cmd));
-    
     // sets the top bars to show an opaque background
     
     _topBarsClear = FALSE;
@@ -332,8 +335,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = nil;
     
-    DebugLog(@"index path: %lu, %lu", (unsigned long)indexPath.section, (unsigned long)indexPath.row);
-    
     if (kSectionImages == indexPath.section) {
         static NSString *CollectionViewCellIdentifier = @"CollectionViewCell";
         cell = [tableView dequeueReusableCellWithIdentifier:CollectionViewCellIdentifier forIndexPath:indexPath];
@@ -344,6 +345,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
         collectionView.delegate = self.imageModelCollectionViewManager;
         collectionView.dataSource = self.imageModelCollectionViewManager;
         self.imageModelCollectionViewManager.imageModels = self.spot.images;
+        self.imageModelCollectionViewManager.placeholderImage = self.spot.placeholderImage;
         
         self.previousImageButton = (UIButton *)[cell viewWithTag:kTagPreviousImageButton];
         self.nextImageButton = (UIButton *)[cell viewWithTag:kTagNextImageButton];
@@ -444,8 +446,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
         
         CGFloat height = special.length ? titleHeight + detailHeight + 24.0f : 0.0f;
         
-        DebugLog(@"height: %f", height);
-        
         return height;
     }
     else if (kSectionSliders == indexPath.section) {
@@ -459,38 +459,20 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 #pragma mark -
 
 - (void)imageCollectionViewManager:(SHImageModelCollectionViewManager *)manager didChangeToImageAtIndex:(NSUInteger)index {
-    //change the collection view to show to the current cell at the index path
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
     [manager.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:TRUE];
     [self updateImageArrows];
 }
 
 - (void)imageCollectionViewManager:(SHImageModelCollectionViewManager *)manager didSelectImageAtIndex:(NSUInteger)index {
-    //trigger segue on image selection
     self.currentIndex = index;
     
     if (manager.imageModels.count > 1) {
         [self performSegueWithIdentifier:SpotProfileToPhotoAlbum sender:self];
     }
-    else {
+    else if (manager.imageModels.count == 1) {
         [self performSegueWithIdentifier:SpotProfileToPhotoViewer sender:self];
     }
-    
-}
-
-#pragma mark - SHSpotDetailFooterNavigationDelegate
-#pragma mark -
-
-- (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc findSimilarButtonTapped:(id)sender {
-    [SHNotifications findSimilarToSpot:_spot];
-}
-
-- (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc spotReviewButtonTapped:(id)sender {
-    [self goToNewReviewForSpot:self.spot];
-}
-
-- (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc drinkMenuButtonTapped:(id)sender {
-    [self goToMenu:_spot];
 }
 
 #pragma mark - UIScrollViewDelegate

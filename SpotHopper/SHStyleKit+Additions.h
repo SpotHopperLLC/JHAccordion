@@ -77,7 +77,7 @@ typedef enum {
 
 + (void)setButton:(UIButton *)button withDrawing:(SHStyleKitDrawing)drawing normalColor:(SHStyleKitColor)normalColor highlightedColor:(SHStyleKitColor)highlightedColor;
 
-+(void)setButton:(UIButton *)button withDrawing:(SHStyleKitDrawing)drawing text:(NSString*)text normalColor:(SHStyleKitColor)normalColor highlightedColor:(SHStyleKitColor)highlightedColor;
++(void)setButton:(UIButton *)button withDrawing:(SHStyleKitDrawing)drawing text:(NSString *)text normalColor:(SHStyleKitColor)normalColor highlightedColor:(SHStyleKitColor)highlightedColor;
 
 + (void)setButton:(UIButton *)button normalTextColor:(SHStyleKitColor)normalTextColor highlightedTextColor:(SHStyleKitColor)highlightedTextColor;
 

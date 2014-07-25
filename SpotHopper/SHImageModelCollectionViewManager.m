@@ -41,24 +41,9 @@
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ImageCellIdentifier forIndexPath:indexPath];
     
+    UIImageView *imageView = (UIImageView *)[cell viewWithTag:kImageView];
+
     if (self.imageModels.count) {
-        // get image view by tag and use NetworkHelper to load image
-        //attach previous and next buttons to goPrevious and goNext to trigger image transitions
-        
-//        UIButton *previousButton = (UIButton *)[cell viewWithTag:kPreviousButton];
-//        UIButton *nextButton = (UIButton *)[cell viewWithTag:kNextButton];
-        
-//        if (self.imageModels.count > 1) {
-//            [previousButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-//            [nextButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-//            
-//        }else{
-//            previousButton.hidden = TRUE;
-//            nextButton.hidden = TRUE;
-//        }
-        
-        UIImageView *imageView = (UIImageView *)[cell viewWithTag:kImageView];
-        
         ImageModel *imageModel = self.imageModels[indexPath.item];
         
         __weak UIImageView *weakImageView = imageView;
@@ -72,7 +57,7 @@
         }];
     }
     else {
-        // TODO: use placeholder image
+        imageView.image = self.placeholderImage;
     }
     
     return cell;

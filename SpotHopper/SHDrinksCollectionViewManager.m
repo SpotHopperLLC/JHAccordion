@@ -253,26 +253,10 @@
     nameLabel.text = drink.name;
     
     breweryLabel.text = drink.spot.name;
-    if (drink.isBeer) {
-        styleLabel.text = drink.style;
-    }
-    else if (drink.isCocktail && drink.baseAlochols.count) {
-        BaseAlcoholModel *baseAlcohol = drink.baseAlochols[0];
-        styleLabel.text = baseAlcohol.name;
-    }
-    else if (drink.isWine && drink.varietal) {
-        styleLabel.text = drink.varietal;
-    }
-    else {
-        styleLabel.text = nil;
-    }
     
-    if (drink.isWine && ![@"Sparkling" isEqualToString:drink.drinkSubtype.name]) {
-        rankingLabel.text = [NSString stringWithFormat:@"%@ - Rating %.0f/10", drink.drinkSubtype.name, [drink.averageReview.rating floatValue]];
-    }
-    else {
-        rankingLabel.text = [NSString stringWithFormat:@"Rating %.0f/10", [drink.averageReview.rating floatValue]];
-    }
+    styleLabel.text = drink.drinkStyle;
+    
+    rankingLabel.text = drink.rating;
     
     positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", (long)index+1, (long)self.drinkList.drinks.count];
     
