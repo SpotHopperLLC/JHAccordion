@@ -28,6 +28,8 @@
 
 #import "SHImageModelCollectionViewManager.h"
 
+#import "SHNotifications.h"
+
 #import "Tracker.h"
 
 #define kCellImageCollection 0
@@ -62,9 +64,13 @@
 #define kTagPreviousImageButton 2
 #define kTagNextImageButton 3
 
+#define kSectionImages 0
+#define kSectionDetails 1
+#define kSectionSpecials 2
+#define kSectionSliders 3
+
 NSString* const SpotProfileToPhotoViewer = @"SpotProfileToPhotoViewer";
 NSString* const SpotProfileToPhotoAlbum = @"SpotProfileToPhotoAlbum";
-NSString* const UnwindFromSpotProfileToHomeMapFindSimilar = @"unwindFromSpotProfileToHomeMapFindSimilar";
 
 NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 
@@ -159,7 +165,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     }
 }
 
-#pragma mark -
+#pragma mark - User Actions
 #pragma mark -
 
 - (void)backButtonTapped:(id)sender {
@@ -174,145 +180,242 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     [self.imageModelCollectionViewManager goNext];
 }
 
+#pragma mark - Private
+#pragma mark -
+
+- (NSString *)specialsForToday {
+    return self.spot.dailySpecials.specialsForToday;
+}
+
+- (UIFont *)specialTitleFont {
+    return [UIFont fontWithName:@"Lato-Bold" size:20.0f];
+}
+
+- (UIFont *)specialDetailFont {
+    return [UIFont fontWithName:@"Lato-Light" size:16.0f];
+}
+
+- (void)prepareAnimationForNavigationBarWithDuration:(CGFloat)duration {
+    // prepare animation for navigation bar
+    CATransition *animation = [CATransition animation];
+    [animation setDuration:duration];
+    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+    [animation setType:kCATransitionFade];
+    [self.navigationController.navigationBar.layer addAnimation:animation forKey:nil];
+}
+
+- (void)hideTopBars:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    //DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    // sets a clear background for the top bars
+    
+    _topBarsClear = TRUE;
+    
+    CGFloat duration = animated ? kDefineAnimationDuration : 0.0f;
+    
+    [self prepareAnimationForNavigationBarWithDuration:duration];
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
+        [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+        self.navigationController.navigationBar.shadowImage = [UIImage new];
+        [self.navigationController.navigationItem setTitle:nil];
+    } completion:^(BOOL finished) {
+        [self.navigationItem setTitle:nil];
+        
+        UIImage *backArrowImage = [[SHStyleKit drawImage:SHStyleKitDrawingArrowLeftIcon color:SHStyleKitColorMyWhiteColor size:CGSizeMake(30, 30)] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        UIBarButtonItem *backBarItem = [[UIBarButtonItem alloc] initWithImage:backArrowImage style:UIBarButtonItemStylePlain target:self action:@selector(backButtonTapped:)];
+        self.navigationItem.leftBarButtonItem = backBarItem;
+        
+        if (completionBlock) {
+            completionBlock();
+        }
+    }];
+}
+
+- (void)showTopBars:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    // DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    // sets the top bars to show an opaque background
+    
+    _topBarsClear = FALSE;
+    
+    CGFloat duration = animated ? kDefineAnimationDuration : 0.0f;
+    
+    [self prepareAnimationForNavigationBarWithDuration:duration];
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
+        
+        UIImage *backgroundImage = [SHStyleKit drawImage:SHStyleKitDrawingTopBarBackground color:SHStyleKitColorMyWhiteColor size:CGSizeMake(320, 64)];
+        [self.navigationController.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
+        [self.navigationController.navigationItem setTitle:self.spot.name];
+        
+    } completion:^(BOOL finished) {
+        [self.navigationItem setTitle:self.spot.name];
+        
+        UIImage *backArrowImage = [[SHStyleKit drawImage:SHStyleKitDrawingArrowLeftIcon color:SHStyleKitColorMyTintColor size:CGSizeMake(30, 30)] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        UIBarButtonItem *backBarItem = [[UIBarButtonItem alloc] initWithImage:backArrowImage style:UIBarButtonItemStylePlain target:self action:@selector(backButtonTapped:)];
+        self.navigationItem.leftBarButtonItem = backBarItem;
+        
+        if (completionBlock) {
+            completionBlock();
+        }
+    }];
+}
+
+- (NSString *)findCloseTimeForToday {
+    // Sets "Opens at <some time>" or "Open until <some time>"
+    NSString *closeTime = nil;
+    NSArray *hoursForToday = [self.spot.hoursOfOperation datesForToday];
+    
+    if (hoursForToday) {
+        // Creates formatter
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"h:mm a"];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
+        
+        // Gets open and close dates
+        NSDate *dateOpen = hoursForToday.firstObject;
+        NSDate *dateClose = hoursForToday.lastObject;
+        
+        // Sets the stuff
+        NSDate *now = [NSDate date];
+        if ([now timeIntervalSinceDate:dateOpen] > 0 && [now timeIntervalSinceDate:dateClose] < 0) {
+            closeTime = [NSString stringWithFormat:@"Open until %@", [dateFormatter stringFromDate:dateClose]];
+        } else {
+            closeTime = [NSString stringWithFormat:@"Opens at %@", [dateFormatter stringFromDate:dateOpen]];
+        }
+    }
+    
+    return closeTime;
+}
+
+- (void)updateImageArrows {
+    NSUInteger index = self.imageModelCollectionViewManager.currentIndex;
+    
+    BOOL hasNext = _spot.images.count ? (index < _spot.images.count - 1) : FALSE;
+    BOOL hasPrev = _spot.images.count ? (index > 0) : FALSE;
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        self.nextImageButton.alpha = hasNext ? 1.0 : 0.1;
+        self.previousImageButton.alpha = hasPrev ? 1.0 : 0.1;
+    } completion:^(BOOL finished) {
+    }];
+}
+
 #pragma mark - UITableViewDataSource
 #pragma mark -
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
-    NSInteger numberOfRows = 0;
-    switch (section) {
-        case 0:
-            numberOfRows = kNumberOfCells;
-            break;
-        case 1:
-            NSLog(@"# of templates:  %lu", (unsigned long)self.spot.sliderTemplates.count);
-            numberOfRows = self.spot.sliderTemplates.count;
-            break;
-        default:
-            break;
+    if (kSectionImages == section) {
+        return 1;
+    }
+    else if (kSectionDetails == section) {
+        return 1;
+    }
+    else if (kSectionSpecials == section) {
+        return 1;
+    }
+    else if (kSectionSliders == section) {
+        NSLog(@"# of templates:  %lu", (unsigned long)self.spot.sliderTemplates.count);
+        return self.spot.sliderTemplates.count;
     }
     
-    return numberOfRows;
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CollectionViewCellIdentifier = @"CollectionViewCell";
-    static NSString *SpotDetailsCellIdentifier = @"SpotDetailsCell";
-    static NSString *SpotSpecialsCellIdentifier = @"SpotSpecialsCell";
-    static NSString *SpotVibeIdentifier = @"SpotVibeCell";
+    UITableViewCell *cell = nil;
     
-    UITableViewCell *cell;
+    DebugLog(@"index path: %lu, %lu", (unsigned long)indexPath.section, (unsigned long)indexPath.row);
     
-    switch (indexPath.section) {
-        case 0:{
-            switch (indexPath.row) {
-                case kCellImageCollection: {
-                    cell = [tableView dequeueReusableCellWithIdentifier:CollectionViewCellIdentifier forIndexPath:indexPath];
-                    
-                    UICollectionView *collectionView = (UICollectionView *)[cell viewWithTag:kTagCollectionView];
-                    
-                    self.imageModelCollectionViewManager.collectionView = collectionView;
-                    collectionView.delegate = self.imageModelCollectionViewManager;
-                    collectionView.dataSource = self.imageModelCollectionViewManager;
-                    self.imageModelCollectionViewManager.imageModels = self.spot.images;
-                    
-                    self.previousImageButton = (UIButton *)[cell viewWithTag:kTagPreviousImageButton];
-                    self.nextImageButton = (UIButton *)[cell viewWithTag:kTagNextImageButton];
-                    
-                    [self.previousImageButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-                    [self.nextImageButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-                    
-                    [self updateImageArrows];
-                    
-                    break;
-                }
-                    
-                case kCellSpotDetails:{
-                    
-                    cell = [tableView dequeueReusableCellWithIdentifier:SpotDetailsCellIdentifier forIndexPath:indexPath];
-                    
-                    UILabel *spotName = (UILabel*)[cell viewWithTag:kTagSpotNameLabel];
-                    spotName.font = [UIFont fontWithName:@"Lato-Bold" size:20.0f];
-                    [SHStyleKit setLabel:spotName textColor:SHStyleKitColorMyTintColor];
-                    spotName.text = self.spot.name;
-                    
-                    //todo:update to display the spot type as well as the expense
-                    UILabel *spotType = (UILabel*)[cell viewWithTag:kTagSpotTypeLabel];
-                    spotType.font = [UIFont fontWithName:@"Lato-LightItalic" size:18.0f];
-                    spotType.text = self.spot.spotType.name;
-                    
-                    UILabel *spotMatch = (UILabel*)[cell viewWithTag:kTagSpotRelevancyLabel];
-                    if (self.matchPercentage) {
-                        spotMatch.font = [UIFont fontWithName:@"Lato-LightItalic" size:18.0f];
-                        spotMatch.text = [NSString stringWithFormat:@"%@ Match",self.matchPercentage];
-                    }else{
-                        spotMatch.text = @"";
-                    }
-                    
-                    UILabel *spotCloseTime = (UILabel*)[cell viewWithTag:kTagSpotCloseTimeLabel];
-                    spotCloseTime.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
-                    spotCloseTime.text = self.closeTime;
-                    
-                    UILabel *spotAddress = (UILabel*)[cell viewWithTag:kTagSpotAddressLabel];
-                    spotAddress.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
-                    spotAddress.text = self.spot.addressCityState;
-                    break;
-                }
-                    
-                case kCellSpotSpecials:{
-                    
-                    cell = [tableView dequeueReusableCellWithIdentifier:SpotSpecialsCellIdentifier forIndexPath:indexPath];
-                    
-                    NSArray *specials = self.spot.dailySpecials;
-                    
-                    if (specials.count) {
-                        UILabel *spotSpecial = (UILabel*)[cell viewWithTag:kTagSpotSpecialLabel];
-                        spotSpecial.font = [UIFont fontWithName:@"Lato-Bold" size:20.0f];
-                        
-                        UILabel *specialDetails = (UILabel*)[cell viewWithTag:kTagSpotSpecialDetailsLabel];
-                        specialDetails.font = [UIFont fontWithName:@"Lato-Light" size:16.0f];
-                        
-                        NSString *todaysSpecial = [specials specialsForToday];
-                        
-                        if (todaysSpecial) {
-                            specialDetails.text = todaysSpecial;
-                        }
-                    }
-                    
-                    break;
-                }
-            }
-            
-            break;
+    if (kSectionImages == indexPath.section) {
+        static NSString *CollectionViewCellIdentifier = @"CollectionViewCell";
+        cell = [tableView dequeueReusableCellWithIdentifier:CollectionViewCellIdentifier forIndexPath:indexPath];
+        
+        UICollectionView *collectionView = (UICollectionView *)[cell viewWithTag:kTagCollectionView];
+        
+        self.imageModelCollectionViewManager.collectionView = collectionView;
+        collectionView.delegate = self.imageModelCollectionViewManager;
+        collectionView.dataSource = self.imageModelCollectionViewManager;
+        self.imageModelCollectionViewManager.imageModels = self.spot.images;
+        
+        self.previousImageButton = (UIButton *)[cell viewWithTag:kTagPreviousImageButton];
+        self.nextImageButton = (UIButton *)[cell viewWithTag:kTagNextImageButton];
+        
+        [self.previousImageButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [self.nextImageButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self updateImageArrows];
+    }
+    else if (kSectionDetails == indexPath.section) {
+        static NSString *SpotDetailsCellIdentifier = @"SpotDetailsCell";
+        cell = [tableView dequeueReusableCellWithIdentifier:SpotDetailsCellIdentifier forIndexPath:indexPath];
+        
+        UILabel *spotName = (UILabel*)[cell viewWithTag:kTagSpotNameLabel];
+        spotName.font = [UIFont fontWithName:@"Lato-Bold" size:20.0f];
+        [SHStyleKit setLabel:spotName textColor:SHStyleKitColorMyTintColor];
+        spotName.text = self.spot.name;
+        
+        //todo:update to display the spot type as well as the expense
+        UILabel *spotType = (UILabel*)[cell viewWithTag:kTagSpotTypeLabel];
+        spotType.font = [UIFont fontWithName:@"Lato-LightItalic" size:18.0f];
+        spotType.text = self.spot.spotType.name;
+        
+        UILabel *spotMatch = (UILabel*)[cell viewWithTag:kTagSpotRelevancyLabel];
+        if (self.matchPercentage) {
+            spotMatch.font = [UIFont fontWithName:@"Lato-LightItalic" size:18.0f];
+            spotMatch.text = [NSString stringWithFormat:@"%@ Match",self.matchPercentage];
         }
-        case 1:{
-            cell = [tableView dequeueReusableCellWithIdentifier:SpotVibeIdentifier forIndexPath:indexPath];
-            
-            if (indexPath.row < self.spot.averageReview.sliders.count) {
-                SliderModel *sliderModel = self.spot.averageReview.sliders[indexPath.row];
-                SliderTemplateModel *sliderTemplate = sliderModel.sliderTemplate;
-                
-                SHSlider *slider = (SHSlider*)[cell viewWithTag:kTagVibeSlider];
-                UILabel *minValue = (UILabel*)[cell viewWithTag:kTagLeftVibeLabel];
-                UILabel *maxValue = (UILabel*)[cell viewWithTag:kTagRightVibeLabel];
-                slider.vibeFeel = TRUE;
-                
-                minValue.text = sliderTemplate.minLabel.length ? sliderTemplate.minLabel : @"";
-                maxValue.text = sliderTemplate.maxLabel.length ? sliderTemplate.maxLabel : @"";
-                [slider setSelectedValue:(sliderModel.value.floatValue / 10.0f)];
-            }
-            else {
-                NSAssert(FALSE, @"Index should never be out of range");
-            }
-            
-            break;
+        else{
+            spotMatch.text = @"";
         }
-        default:
-            break;
+        
+        UILabel *spotCloseTime = (UILabel*)[cell viewWithTag:kTagSpotCloseTimeLabel];
+        spotCloseTime.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
+        spotCloseTime.text = self.closeTime;
+        
+        UILabel *spotAddress = (UILabel*)[cell viewWithTag:kTagSpotAddressLabel];
+        spotAddress.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
+        spotAddress.text = self.spot.addressCityState;
+    }
+    else if (kSectionSpecials == indexPath.section) {
+        static NSString *SpotSpecialsCellIdentifier = @"SpotSpecialsCell";
+        cell = [tableView dequeueReusableCellWithIdentifier:SpotSpecialsCellIdentifier forIndexPath:indexPath];
+        
+        UILabel *titleLabel = (UILabel *)[cell viewWithTag:kTagSpotSpecialLabel];
+        UILabel *detailsLabel = (UILabel *)[cell viewWithTag:kTagSpotSpecialDetailsLabel];
+
+        titleLabel.font = [self specialTitleFont];
+        detailsLabel.font = [self specialDetailFont];
+        
+        detailsLabel.text = [self specialsForToday];
+    }
+    else if (kSectionSliders == indexPath.section) {
+        static NSString *SpotVibeIdentifier = @"SpotVibeCell";
+        cell = [tableView dequeueReusableCellWithIdentifier:SpotVibeIdentifier forIndexPath:indexPath];
+        
+        if (indexPath.row < self.spot.averageReview.sliders.count) {
+            SliderModel *sliderModel = self.spot.averageReview.sliders[indexPath.row];
+            SliderTemplateModel *sliderTemplate = sliderModel.sliderTemplate;
+            
+            SHSlider *slider = (SHSlider *)[cell viewWithTag:kTagVibeSlider];
+            UILabel *minValue = (UILabel *)[cell viewWithTag:kTagLeftVibeLabel];
+            UILabel *maxValue = (UILabel *)[cell viewWithTag:kTagRightVibeLabel];
+            slider.vibeFeel = TRUE;
+            
+            minValue.text = sliderTemplate.minLabel.length ? sliderTemplate.minLabel : nil;
+            maxValue.text = sliderTemplate.maxLabel.length ? sliderTemplate.maxLabel : nil;
+            [slider setSelectedValue:(sliderModel.value.floatValue / 10.0f)];
+        }
+        else {
+            NSAssert(FALSE, @"Index should never be out of range");
+        }
     }
     
     return cell;
@@ -322,43 +425,34 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 #pragma mark -
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //no action on the table view being selected
+    // do nothing
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat height = 0.0f;
-    
-    
-    switch (indexPath.section) {
-        case 0:{
-            NSString *todaysSpecial = [self.spot.dailySpecials specialsForToday];
-            
-            CGFloat heightForSpotSpecialHeaderText = [self heightForString:SpotSpecialLabelText font:[UIFont fontWithName:@"Lato-Bold" size:20.0f] maxWidth:self.tableView.frame.size.width];
-            CGFloat heightForSpotSpecialDetailText = [self heightForString:todaysSpecial font:[UIFont fontWithName:@"Lato-Light" size:16.0f] maxWidth:self.tableView.frame.size.width];
-            
-            switch (indexPath.row) {
-                case kCellImageCollection:
-                    height = 180.0f;
-                    break;
-                case kCellSpotDetails:
-                    height = 110.0f;
-                    break;
-                case kCellSpotSpecials:
-                    // 8 + headerHeight + 5 + specialText + 8 for padding above, between and below
-                    height = todaysSpecial.length ? (heightForSpotSpecialHeaderText + heightForSpotSpecialDetailText + 21.0f ) : 0.0f;
-                    break;
-                default:
-                    break;
-            }
-        }
-            break;
-        case 1:
-            height = 80.0f;
-        default:
-            break;
+    if (kSectionImages == indexPath.section) {
+        return 180.0f;
+    }
+    else if (kSectionDetails == indexPath.section) {
+        return 95.0f;
+    }
+    else if (kSectionSpecials == indexPath.section) {
+        NSString *special = [self specialsForToday];
+        
+        CGFloat maxWidth = 280.f;
+        CGFloat titleHeight = [self heightForString:SpotSpecialLabelText font:[self specialTitleFont] maxWidth:maxWidth];
+        CGFloat detailHeight = [self heightForString:special font:[self specialDetailFont] maxWidth:maxWidth];
+        
+        CGFloat height = special.length ? titleHeight + detailHeight + 24.0f : 0.0f;
+        
+        DebugLog(@"height: %f", height);
+        
+        return height;
+    }
+    else if (kSectionSliders == indexPath.section) {
+        return 80.0f;
     }
     
-    return height;
+    return 0.0f;
 }
 
 #pragma mark - SHImageModelCollectionDelegate
@@ -388,16 +482,14 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 #pragma mark -
 
 - (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc findSimilarButtonTapped:(id)sender {
-    [self performSegueWithIdentifier:UnwindFromSpotProfileToHomeMapFindSimilar sender:self];
+    [SHNotifications findSimilarToSpot:_spot];
 }
 
 - (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc spotReviewButtonTapped:(id)sender {
-    NSLog(@"spot review transition");
     [self goToNewReviewForSpot:self.spot];
 }
 
 - (void)footerNavigationViewController:(SHSpotDetailFooterNavigationViewController *)vc drinkMenuButtonTapped:(id)sender {
-    NSLog(@"spot menu transition");
     [self goToMenu:_spot];
 }
 
@@ -442,118 +534,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     else if (!_topBarsClear && scrollView.contentOffset.y <= kCutOffPoint) {
         [self hideTopBars:TRUE withCompletionBlock:nil];
     }
-}
-
-#pragma mark - Private
-#pragma mark -
-
-- (void)prepareAnimationForNavigationBarWithDuration:(CGFloat)duration {
-    // prepare animation for navigation bar
-    CATransition *animation = [CATransition animation];
-    [animation setDuration:duration];
-    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-    [animation setType:kCATransitionFade];
-    [self.navigationController.navigationBar.layer addAnimation:animation forKey:nil];
-}
-
-- (void)hideTopBars:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    //DebugLog(@"%@", NSStringFromSelector(_cmd));
-    
-    // sets a clear background for the top bars
-    
-    _topBarsClear = TRUE;
-    
-    CGFloat duration = animated ? kDefineAnimationDuration : 0.0f;
-    
-    [self prepareAnimationForNavigationBarWithDuration:duration];
-    
-    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-    [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
-        [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-        self.navigationController.navigationBar.shadowImage = [UIImage new];
-        [self.navigationController.navigationItem setTitle:nil];
-    } completion:^(BOOL finished) {
-        [self.navigationItem setTitle:nil];
-        
-        UIImage *backArrowImage = [[SHStyleKit drawImage:SHStyleKitDrawingArrowLeftIcon color:SHStyleKitColorMyWhiteColor size:CGSizeMake(30, 30)] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        UIBarButtonItem *backBarItem = [[UIBarButtonItem alloc] initWithImage:backArrowImage style:UIBarButtonItemStylePlain target:self action:@selector(backButtonTapped:)];
-        self.navigationItem.leftBarButtonItem = backBarItem;
-        
-        if (completionBlock) {
-            completionBlock();
-        }
-    }];
-}
-
-- (void)showTopBars:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-   // DebugLog(@"%@", NSStringFromSelector(_cmd));
-    
-    // sets the top bars to show an opaque background
-    
-    _topBarsClear = FALSE;
-    
-    CGFloat duration = animated ? kDefineAnimationDuration : 0.0f;
-    
-    [self prepareAnimationForNavigationBarWithDuration:duration];
-    
-    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-    [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
-        
-        UIImage *backgroundImage = [SHStyleKit drawImage:SHStyleKitDrawingTopBarBackground color:SHStyleKitColorMyWhiteColor size:CGSizeMake(320, 64)];
-        [self.navigationController.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
-        [self.navigationController.navigationItem setTitle:self.spot.name];
-        
-    } completion:^(BOOL finished) {
-        [self.navigationItem setTitle:self.spot.name];
-        
-        UIImage *backArrowImage = [[SHStyleKit drawImage:SHStyleKitDrawingArrowLeftIcon color:SHStyleKitColorMyTintColor size:CGSizeMake(30, 30)] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        UIBarButtonItem *backBarItem = [[UIBarButtonItem alloc] initWithImage:backArrowImage style:UIBarButtonItemStylePlain target:self action:@selector(backButtonTapped:)];
-        self.navigationItem.leftBarButtonItem = backBarItem;
-        
-        if (completionBlock) {
-            completionBlock();
-        }
-    }];
-}
-
-- (NSString*)findCloseTimeForToday {
-    // Sets "Opens at <some time>" or "Open until <some time>"
-    NSString *closeTime = @"";
-    NSArray *hoursForToday = [self.spot.hoursOfOperation datesForToday];
-    
-    if (hoursForToday) {
-        // Creates formatter
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"h:mm a"];
-        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
-        
-        // Gets open and close dates
-        NSDate *dateOpen = hoursForToday.firstObject;
-        NSDate *dateClose = hoursForToday.lastObject;
-        
-        // Sets the stuff
-        NSDate *now = [NSDate date];
-        if ([now timeIntervalSinceDate:dateOpen] > 0 && [now timeIntervalSinceDate:dateClose] < 0) {
-            closeTime = [NSString stringWithFormat:@"Open until %@", [dateFormatter stringFromDate:dateClose]];
-        } else {
-            closeTime = [NSString stringWithFormat:@"Opens at %@", [dateFormatter stringFromDate:dateOpen]];
-        }
-    }
-    
-    return closeTime;
-}
-
-- (void)updateImageArrows {
-    NSUInteger index = self.imageModelCollectionViewManager.currentIndex;
-                              
-    BOOL hasNext = _spot.images.count ? (index < _spot.images.count - 1) : FALSE;
-    BOOL hasPrev = _spot.images.count ? (index > 0) : FALSE;
-    
-    [UIView animateWithDuration:0.25 animations:^{
-        self.nextImageButton.alpha = hasNext ? 1.0 : 0.1;
-        self.previousImageButton.alpha = hasPrev ? 1.0 : 0.1;
-    } completion:^(BOOL finished) {
-    }];
 }
 
 #pragma mark - Navigation

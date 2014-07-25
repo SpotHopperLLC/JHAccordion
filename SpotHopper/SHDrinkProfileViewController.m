@@ -72,7 +72,6 @@
 
 NSString* const DrinkProfileToPhotoViewer = @"DrinkProfileToPhotoViewer";
 NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
-NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkProfileToHomeMapFindSimilar";
 
 @interface SHDrinkProfileViewController () <UITableViewDataSource, UITableViewDelegate, SHImageModelCollectionDelegate>
 
