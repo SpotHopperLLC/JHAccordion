@@ -18,6 +18,8 @@
 #import "ErrorModel.h"
 #import "Tracker.h"
 
+#import "UIAlertView+Block.h"
+
 @interface SHSlidersSearchViewController () <SHSlidersSearchTableViewManagerDelegate>
 
 @property (assign, nonatomic) SHMode mode;
@@ -66,35 +68,66 @@
 #pragma mark -
 
 - (void)prepareSearchResults {
-    if (self.mode == SHModeSpots) {
-        [self showHUD:@"Finding Best Matches"];
-        [self.slidersSearchTableViewManager fetchSpotListResultsWithCompletionBlock:^(SpotListModel *spotListModel, SpotListRequest *request, ErrorModel *errorModel) {
-            [self hideHUD];
-            if (errorModel) {
-                [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
-                [self showAlert:@"Oops" message:errorModel.human];
-            }
-            else {
-                if ([self.delegate respondsToSelector:@selector(slidersSearchViewController:didPrepareDrinklist:withRequest:forMode:)]) {
-                    [self.delegate slidersSearchViewController:self didPrepareSpotlist:spotListModel withRequest:request forMode:self.mode];
+    void (^continueBlock)(NSString *) = ^void(NSString *listName) {
+        if (self.mode == SHModeSpots) {
+            [self showHUD:@"Finding Best Matches"];
+            [self.slidersSearchTableViewManager fetchSpotListResultsWithListName:listName withCompletionBlock:^(SpotListModel *spotListModel, SpotListRequest *request, ErrorModel *errorModel) {
+                [self hideHUD];
+                if (errorModel) {
+                    [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+                    [self showAlert:@"Oops" message:errorModel.human];
                 }
+                else {
+                    if ([self.delegate respondsToSelector:@selector(slidersSearchViewController:didPrepareDrinklist:withRequest:forMode:)]) {
+                        [self.delegate slidersSearchViewController:self didPrepareSpotlist:spotListModel withRequest:request forMode:self.mode];
+                    }
+                }
+            }];
+        }
+        else {
+            [self showHUD:@"Finding Best Matches"];
+            [self.slidersSearchTableViewManager fetchDrinkListResultsWithListName:listName withCompletionBlock:^(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel) {
+                [self hideHUD];
+                if (errorModel) {
+                    [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+                    [self showAlert:@"Oops" message:errorModel.human];
+                }
+                else {
+                    if ([self.delegate respondsToSelector:@selector(slidersSearchViewController:didPrepareDrinklist:withRequest:forMode:)]) {
+                        [self.delegate slidersSearchViewController:self didPrepareDrinklist:drinkListModel withRequest:request forMode:self.mode];
+                    }
+                }
+            }];
+        }
+    };
+    
+    if (self.slidersSearchTableViewManager.isCustomRequest) {
+        NSString *title = nil;
+        NSString *message = nil;
+        NSString *defaultListName = self.slidersSearchTableViewManager.customListName;
+        if (SHModeSpots == self.mode) {
+            title = @"Name this mood?";
+            message = @"Do you want to save your slider criteria as a new custom mood?";
+        }
+        else {
+            title = @"Name this style?";
+            message = @"Do you want to save your slider criteria as a new custom style?";
+        }
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"Skip" otherButtonTitles:@"Save", nil];
+        [alertView setAlertViewStyle:UIAlertViewStylePlainTextInput];
+        [[alertView textFieldAtIndex:0] setPlaceholder:defaultListName];
+        [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
+            NSString *listName = nil;
+            if (buttonIndex == 1) {
+                listName = [alertView textFieldAtIndex:0].text;
             }
+            
+            continueBlock(listName);
         }];
     }
     else {
-        [self showHUD:@"Finding Best Matches"];
-        [self.slidersSearchTableViewManager fetchDrinkListResultsWithCompletionBlock:^(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel) {
-            [self hideHUD];
-            if (errorModel) {
-                [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
-                [self showAlert:@"Oops" message:errorModel.human];
-            }
-            else {
-                if ([self.delegate respondsToSelector:@selector(slidersSearchViewController:didPrepareDrinklist:withRequest:forMode:)]) {
-                    [self.delegate slidersSearchViewController:self didPrepareDrinklist:drinkListModel withRequest:request forMode:self.mode];
-                }
-            }
-        }];
+        continueBlock(nil);
     }
 }
 

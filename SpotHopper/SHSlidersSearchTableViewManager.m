@@ -1619,7 +1619,25 @@
     }
 }
 
-- (void)fetchSpotListResultsWithCompletionBlock:(void (^)(SpotListModel *spotListModel, SpotListRequest *request, ErrorModel *errorModel))completionBlock {
+- (BOOL)isCustomRequest {
+    if (SHModeSpots == self.mode) {
+        return [[NSNull null] isEqual:self.selectedSpotlist.ID];
+    }
+    else {
+        return [[NSNull null] isEqual:self.selectedDrinklist.ID];
+    }
+}
+
+- (NSString *)customListName {
+    if (SHModeSpots == self.mode) {
+        return kSpotListModelDefaultName;
+    }
+    else {
+        return kDrinkListModelDefaultName;
+    }
+}
+
+- (void)fetchSpotListResultsWithListName:(NSString *)listName withCompletionBlock:(void (^)(SpotListModel *spotListModel, SpotListRequest *request, ErrorModel *errorModel))completionBlock {
     NSMutableArray *allTheSliders = @[].mutableCopy;
     [allTheSliders addObjectsFromArray:self.sliders];
     [allTheSliders addObjectsFromArray:self.advancedSliders];
@@ -1656,11 +1674,13 @@
         request.spotTypeId = self.selectedSpotType.ID;
     }
     
-    if ([kCustomSlidersTitle isEqualToString:self.selectedSpotlist.name]) {
-        request.name = kSpotListModelDefaultName;
+    if (self.selectedSpotlist && ![[NSNull null] isEqual:self.selectedSpotlist.ID]) {
+        request.spotListId = self.selectedSpotlist.ID;
+        request.name = self.selectedSpotlist.name;
     }
     else {
-        request.name = self.selectedSpotlist.name.length ? self.selectedSpotlist.name : kSpotListModelDefaultName;
+        request.spotListId = nil;
+        request.name = listName.length > 0 ? listName : kSpotListModelDefaultName;
     }
     
     request.coordinate = coordinate;
@@ -1680,14 +1700,9 @@
         }
     } always:^{
     }];
-    
-    if (![[NSNull null] isEqual:self.selectedSpotlist.ID]) {
-        // save the changes to the spotlist if it is an existing spotlist
-    }
-    
 }
 
-- (void)fetchDrinkListResultsWithCompletionBlock:(void (^)(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel))completionBlock {
+- (void)fetchDrinkListResultsWithListName:(NSString *)listName withCompletionBlock:(void (^)(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel))completionBlock {
     NSMutableArray *allTheSliders = @[].mutableCopy;
     [allTheSliders addObjectsFromArray:self.sliders];
     [allTheSliders addObjectsFromArray:self.advancedSliders];
@@ -1723,13 +1738,11 @@
     DrinkListRequest *request = [[DrinkListRequest alloc] init];
     if (self.selectedDrinklist && ![[NSNull null] isEqual:self.selectedDrinklist.ID]) {
         request.drinkListId = self.selectedDrinklist.ID;
-    }
-    
-    if ([kCustomSlidersTitle isEqualToString:self.selectedDrinklist.name]) {
-        request.name = kDrinkListModelDefaultName;
+        request.name = self.selectedDrinklist.name;
     }
     else {
-        request.name = self.selectedDrinklist.name.length ? self.selectedDrinklist.name : kDrinkListModelDefaultName;
+        request.drinkListId = nil;
+        request.name = listName.length > 0 ? listName : kDrinkListModelDefaultName;
     }
     
     request.coordinate = coordinate;
