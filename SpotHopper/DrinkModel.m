@@ -600,7 +600,12 @@
 
 - (NSString *)rating {
     if (self.isWine && ![@"Sparkling" isEqualToString:self.drinkSubtype.name]) {
-        return [NSString stringWithFormat:@"%@ - Rating %.0f/10", self.drinkSubtype.name, [self.averageReview.rating floatValue]];
+        if (self.drinkSubtype.name.length) {
+            return [NSString stringWithFormat:@"%@ - Rating %.0f/10", self.drinkSubtype.name, [self.averageReview.rating floatValue]];
+        }
+        else {
+            return [NSString stringWithFormat:@"Rating %.0f/10", [self.averageReview.rating floatValue]];
+        }
     }
     else {
         return [NSString stringWithFormat:@"Rating %.0f/10", [self.averageReview.rating floatValue]];

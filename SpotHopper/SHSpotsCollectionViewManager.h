@@ -20,6 +20,7 @@
 - (void)updateSpotList:(SpotListModel *)spotList;
 - (void)changeIndex:(NSUInteger)index;
 - (void)changeSpot:(SpotModel *)spot;
+- (SpotModel *)spotAtIndex:(NSUInteger)index;
 
 - (NSUInteger)indexForViewInCollectionViewCell:(UIView *)view;
 
