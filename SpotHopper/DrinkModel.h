@@ -83,6 +83,10 @@
 
 #pragma mark - Revised Code for 2.0
 
++ (void)fetchDrinksWithText:(NSString *)text page:(NSNumber *)page success:(void(^)(NSArray *drinks))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise*)fetchDrinksWithText:(NSString *)text page:(NSNumber *)page;
+
 - (void)fetchDrink:(void(^)(DrinkModel *drinkModel))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 - (Promise*)fetchDrink;

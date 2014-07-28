@@ -28,8 +28,17 @@ extern NSString * const SHDisplaySpotNotificationKey;
 extern NSString * const SHFindSimilarToDrinkNotificationName;
 extern NSString * const SHFindSimilarToDrinkNotificationKey;
 
+extern NSString * const SHReviewDrinkNotificationName;
+extern NSString * const SHReviewDrinkNotificationKey;
+
 extern NSString * const SHFindSimilarToSpotNotificationName;
 extern NSString * const SHFindSimilarToSpotNotificationKey;
+
+extern NSString * const SHReviewSpotNotificationName;
+extern NSString * const SHReviewSpotNotificationKey;
+
+extern NSString * const SHOpenMenuForSpotNotificationName;
+extern NSString * const SHOpenMenuForSpotNotificationKey;
 
 extern NSString * const SHUserDidLogInNotificationKey;
 extern NSString * const SHUserDidLogOutNotificationKey;
@@ -48,7 +57,13 @@ extern NSString * const SHUserDidLogOutNotificationKey;
 
 + (void)findSimilarToDrink:(DrinkModel *)drink;
 
++ (void)reviewDrink:(DrinkModel *)drink;
+
 + (void)findSimilarToSpot:(SpotModel *)spot;
+
++ (void)reviewSpot:(SpotModel *)spot;
+
++ (void)openMenuForSpot:(SpotModel *)spot;
 
 + (void)userDidLoginIn;
 

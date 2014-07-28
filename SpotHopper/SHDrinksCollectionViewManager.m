@@ -40,6 +40,8 @@
 #define kDrinkCellPreviousButton 9
 #define kDrinkCellPositionLabel 10
 #define kDrinkCellNextButton 11
+#define kDrinkCellFindSimilarButton 12
+#define kDrinkCellReviewItButton 13
 
 #pragma mark - Class Extension
 #pragma mark -
@@ -106,6 +108,15 @@
     if (index != NSNotFound) {
         [self changeIndex:index];
     }
+}
+
+- (DrinkModel *)drinkAtIndex:(NSUInteger)index {
+    if (index < self.drinkList.drinks.count) {
+        DrinkModel *drink = (DrinkModel *)self.drinkList.drinks[index];
+        return drink;
+    }
+    
+    return nil;
 }
 
 - (NSUInteger)indexForViewInCollectionViewCell:(UIView *)view {
@@ -203,6 +214,8 @@
     UIButton *previousButton = [self buttonInView:cell withTag:kDrinkCellPreviousButton];
     UIButton *nextButton = [self buttonInView:cell withTag:kDrinkCellNextButton];
     UILabel *positionLabel = [self labelInView:cell withTag:kDrinkCellPositionLabel];
+    UIButton *findSimilarButton = [self buttonInView:cell withTag:kDrinkCellFindSimilarButton];
+    UIButton *reviewItButton = [self buttonInView:cell withTag:kDrinkCellReviewItButton];
     
     NSAssert(drinkImageView, @"View must be defined");
     NSAssert(nameLabel, @"View must be defined");
@@ -214,6 +227,8 @@
     NSAssert(previousButton, @"View must be defined");
     NSAssert(nextButton, @"View must be defined");
     NSAssert(positionLabel, @"View must be defined");
+    NSAssert(findSimilarButton, @"View must be defined");
+    NSAssert(reviewItButton, @"View must be defined");
     
     [SHStyleKit setLabel:nameLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:breweryLabel textColor:SHStyleKitColorMyTextColor];
@@ -221,6 +236,8 @@
     [SHStyleKit setLabel:rankingLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setLabel:matchLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:positionLabel textColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setButton:findSimilarButton normalTextColor:SHStyleKitColorMyTextColor highlightedTextColor:SHStyleKitColorMyWhiteColor];
+    [SHStyleKit setButton:reviewItButton normalTextColor:SHStyleKitColorMyTextColor highlightedTextColor:SHStyleKitColorMyWhiteColor];
     
     [nameLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
     [breweryLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
@@ -228,6 +245,12 @@
     [rankingLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [positionLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
     [matchLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
+    [findSimilarButton.titleLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
+    [reviewItButton.titleLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
+    
+    CGSize buttonImageSize = CGSizeMake(30, 30);
+    [SHStyleKit setButton:findSimilarButton withDrawing:SHStyleKitDrawingSearchIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor size:buttonImageSize];
+    [SHStyleKit setButton:reviewItButton withDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor size:buttonImageSize];
     
     drinkImageView.image = nil;
     
@@ -289,9 +312,13 @@
         previousButton.hidden = TRUE;
         nextButton.hidden = TRUE;
         positionLabel.hidden = TRUE;
+        findSimilarButton.hidden = FALSE;
+        reviewItButton.hidden = FALSE;
     }
     else {
         positionLabel.hidden = FALSE;
+        findSimilarButton.hidden = TRUE;
+        reviewItButton.hidden = TRUE;
         
         [SHStyleKit setButton:previousButton withDrawing:SHStyleKitDrawingArrowLeftIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
         previousButton.hidden = index == 0;

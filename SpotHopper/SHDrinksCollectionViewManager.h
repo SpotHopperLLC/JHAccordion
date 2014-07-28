@@ -18,6 +18,7 @@
 - (void)updateDrinkList:(DrinkListModel *)drinkList;
 - (void)changeIndex:(NSUInteger)index;
 - (void)changeDrink:(DrinkModel *)drink;
+- (DrinkModel *)drinkAtIndex:(NSUInteger)index;
 
 - (NSUInteger)indexForViewInCollectionViewCell:(UIView *)view;
 
