@@ -38,14 +38,6 @@
 
 @implementation SearchViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -58,8 +50,7 @@
     
     // Initializes stuff
     _tblResultsInitialFrame = CGRectZero;
-    _results = [NSMutableArray array];
-    
+    _results = @[].mutableCopy;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -99,11 +90,6 @@
     return UIStatusBarStyleLightContent;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - Tracking
 
 - (NSString *)screenName {
@@ -132,7 +118,7 @@
     CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     
     CGRect frame = _tblResults.frame;
-    if (show == YES) {
+    if (show) {
         frame.size.height = CGRectGetHeight(self.view.frame) - CGRectGetMinY(frame) - CGRectGetHeight(keyboardFrame);
         if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
             frame.size.height -= 20.0f;
@@ -159,16 +145,18 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    JSONAPIResource *result = [_results objectAtIndex:indexPath.row];
-    
     SearchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell" forIndexPath:indexPath];
-    if ([result isKindOfClass:[DrinkModel class]] == YES) {
-        DrinkModel *drink = (DrinkModel*)result;
-        [cell setDrink:drink];
-    } else if ([result isKindOfClass:[SpotModel class]] == YES) {
-        SpotModel *spot = (SpotModel*)result;
-        [cell setSpot:spot];
+    
+    if (indexPath.row < _results.count) {
+        JSONAPIResource *result = [_results objectAtIndex:indexPath.row];
+        
+        if ([result isKindOfClass:[DrinkModel class]]) {
+            DrinkModel *drink = (DrinkModel*)result;
+            [cell setDrink:drink];
+        } else if ([result isKindOfClass:[SpotModel class]]) {
+            SpotModel *spot = (SpotModel*)result;
+            [cell setSpot:spot];
+        }
     }
     
     return cell;
@@ -178,19 +166,21 @@
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    JSONAPIResource *result = [_results objectAtIndex:indexPath.row];
-    if ([result isKindOfClass:[DrinkModel class]] == YES) {
-        DrinkModel *drink = (DrinkModel*)result;
-        
-        if ([_delegate respondsToSelector:@selector(searchViewController:selectedDrink:)]) {
-            [_delegate searchViewController:self selectedDrink:drink];
-        }
-        
-    } else if ([result isKindOfClass:[SpotModel class]] == YES) {
-        SpotModel *spot = (SpotModel*)result;
-        
-        if ([_delegate respondsToSelector:@selector(searchViewController:selectedSpot:)]) {
-            [_delegate searchViewController:self selectedSpot:spot];
+    if (indexPath.row < _results.count) {
+        JSONAPIResource *result = [_results objectAtIndex:indexPath.row];
+        if ([result isKindOfClass:[DrinkModel class]]) {
+            DrinkModel *drink = (DrinkModel *)result;
+            
+            if ([_delegate respondsToSelector:@selector(searchViewController:selectedDrink:)]) {
+                [_delegate searchViewController:self selectedDrink:drink];
+            }
+            
+        } else if ([result isKindOfClass:[SpotModel class]]) {
+            SpotModel *spot = (SpotModel *)result;
+            
+            if ([_delegate respondsToSelector:@selector(searchViewController:selectedSpot:)]) {
+                [_delegate searchViewController:self selectedSpot:spot];
+            }
         }
     }
     
@@ -250,64 +240,32 @@
     
     [self dataDidFinishRefreshing];
     
-    if (_txtSearch.text.length > 0) {
+    if (_txtSearch.text.length) {
         [self doSearch];
-    } else {
+    }
+    else {
         [self dataDidFinishRefreshing];
     }
 }
 
 - (void)doSearch {
-    
-    /*
-     * Searches drinks
-     */
-    NSDictionary *paramsDrinks = @{
-                                   kDrinkModelParamQuery : _txtSearch.text,
-                                   kDrinkModelParamPage : _page,
-                                   kDrinkModelParamsPageSize : kPageSize
-                                   };
-    
-    Promise *promiseDrink = [DrinkModel getDrinks:paramsDrinks success:^(NSArray *drinkModels, JSONAPI *jsonApi) {
-        
-        // Adds drinks to results
-        [_results addObjectsFromArray:drinkModels];
-        
-    } failure:^(ErrorModel *errorModel) {
-        [self oops:errorModel caller:_cmd];
-    }];
-    
-        
-    /*
-     * Searches spots
-     */
-    NSMutableDictionary *paramsSpots = @{
-                                         kSpotModelParamQuery : _txtSearch.text,
-                                         kSpotModelParamQueryVisibleToUsers : @"true",
-                                         kSpotModelParamPage : _page,
-                                         kSpotModelParamsPageSize : kPageSize
-                                         }.mutableCopy;
-    
-    [paramsSpots setObject:kSpotModelParamSourcesSpotHopper forKey:kSpotModelParamSources];
-    
-    Promise *promiseSpot = [SpotModel getSpots:paramsSpots success:^(NSArray *spotModels, JSONAPI *jsonApi) {
-        
-        // Adds spots to results
-        [_results addObjectsFromArray:spotModels];
-        
-    } failure:^(ErrorModel *errorModel) {
-        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
-    }];
-    
     [self hideHUD];
     [self showHUD:@"Searching"];
-    [When when:@[promiseDrink, promiseSpot] then:^{
-    } fail:^(id error) {
-
-    } always:^{
+    
+    Promise *spotsPromise = [[SpotModel fetchSpotsWithText:_txtSearch.text page:_page] then:^(NSArray *spots) {
+        DebugLog(@"spots: %@", spots);
+        [self.results addObjectsFromArray:spots];
+    } fail:nil always:nil];
+    
+    Promise *drinksPromise = [[DrinkModel fetchDrinksWithText:_txtSearch.text page:_page] then:^(NSArray *drinks) {
+        DebugLog(@"drinks: %@", drinks);
+        [self.results addObjectsFromArray:drinks];
+    } fail:nil always:nil];
+    
+    [When when:@[spotsPromise, drinksPromise] then:nil fail:nil always:^{
         [self hideHUD];
 
-        [_results sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        [self.results sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             NSNumber *revObj1 = [obj1 valueForKey:@"relevance"];
             NSNumber *revObj2 = [obj2 valueForKey:@"relevance"];
             return [revObj2 compare:revObj1];

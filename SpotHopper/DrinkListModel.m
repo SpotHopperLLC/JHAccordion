@@ -589,7 +589,7 @@
 }
 
 - (void)fetchDrinkList:(void (^)(DrinkListModel *spotlist))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
-    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drink_lists/%ld", (long)[self.ID integerValue]] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    AFHTTPRequestOperation *operation = [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drink_lists/%ld", (long)[self.ID integerValue]] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
@@ -611,6 +611,18 @@
             }
         }
     }];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 30.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        if (operation.isExecuting) {
+            [operation cancel];
+            
+            if (failureBlock) {
+                ErrorModel *errorModel = [[ErrorModel alloc] init];
+                errorModel.human = @"Request timed out.";
+                failureBlock(errorModel);
+            }
+        }
+    });
 }
 
 - (Promise *)fetchDrinkList {

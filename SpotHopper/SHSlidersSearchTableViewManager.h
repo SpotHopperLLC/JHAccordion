@@ -23,17 +23,18 @@
 
 @interface SHSlidersSearchTableViewManager : NSObject <UITableViewDataSource, UITableViewDelegate>
 
+@property (readonly, nonatomic) BOOL isCustomRequest;
+@property (readonly, nonatomic) NSString *customListName;
+
 - (void)prepare;
 
 - (void)prepareForMode:(SHMode)mode;
 
 - (void)prepareTableViewForDrinkType:(DrinkTypeModel *)drinkTypeName withCompletionBlock:(void (^)())completionBlock;
 
-//- (void)prepareTableViewForDrinkType:(DrinkTypeModel *)drinkTypeName andDrinkSubType:(DrinkSubTypeModel *)drinkSubTypeName withCompletionBlock:(void (^)())completionBlock;
+- (void)fetchSpotListResultsWithListName:(NSString *)listName withCompletionBlock:(void (^)(SpotListModel *spotListModel, SpotListRequest *request, ErrorModel *errorModel))completionBlock;
 
-- (void)fetchSpotListResultsWithCompletionBlock:(void (^)(SpotListModel *spotListModel, SpotListRequest *request, ErrorModel *errorModel))completionBlock;
-
-- (void)fetchDrinkListResultsWithCompletionBlock:(void (^)(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel))completionBlock;
+- (void)fetchDrinkListResultsWithListName:(NSString *)listName withCompletionBlock:(void (^)(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel))completionBlock;
 
 @end
 

@@ -431,6 +431,62 @@ typedef void(^AlertBlock)();
     [UIView commitAnimations];
 }
 
+- (NSTimeInterval)getKeyboardDuration:(NSNotification *)notification {
+	NSDictionary *info = [notification userInfo];
+	
+	NSTimeInterval duration;
+	
+	NSValue *durationValue = [info objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+	[durationValue getValue:&duration];
+	
+	return duration;
+}
+
+- (CGFloat)getKeyboardHeight:(NSNotification *)notification forBeginning:(BOOL)forBeginning {
+	NSDictionary *info = [notification userInfo];
+	
+	CGFloat keyboardHeight;
+    
+    NSValue *boundsValue = nil;
+    if (forBeginning) {
+        boundsValue = [info valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    }
+    else {
+        boundsValue = [info valueForKey:UIKeyboardFrameEndUserInfoKey];
+    }
+    
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    if (UIDeviceOrientationIsLandscape(orientation)) {
+        keyboardHeight = [boundsValue CGRectValue].size.width;
+    }
+    else {
+        keyboardHeight = [boundsValue CGRectValue].size.height;
+    }
+    
+	return keyboardHeight;
+}
+
+- (UIViewAnimationOptions)getKeyboardAnimationCurve:(NSNotification *)notification {
+	UIViewAnimationCurve curve = [[notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    
+    switch (curve) {
+        case UIViewAnimationCurveEaseInOut:
+            return UIViewAnimationOptionCurveEaseInOut;
+            break;
+        case UIViewAnimationCurveEaseIn:
+            return UIViewAnimationOptionCurveEaseIn;
+            break;
+        case UIViewAnimationCurveEaseOut:
+            return UIViewAnimationOptionCurveEaseOut;
+            break;
+        case UIViewAnimationCurveLinear:
+            return UIViewAnimationOptionCurveLinear;
+            break;
+    }
+    
+    return kNilOptions;
+}
+
 #pragma mark - Text
 
 - (CGFloat)heightForAttributedString:(NSAttributedString *)text maxWidth:(CGFloat)maxWidth {

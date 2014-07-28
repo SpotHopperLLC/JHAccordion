@@ -14,13 +14,17 @@
 #import "SpotModel.h"
 #import "DrinkListModel.h"
 
+#import "SHNotifications.h"
+
 #import "UIAlertView+Block.h"
 
 typedef enum {
     SHOverlayCollectionViewModeNone = 0,
     SHOverlayCollectionViewModeSpotlists,
     SHOverlayCollectionViewModeSpecials,
-    SHOverlayCollectionViewModeDrinklists
+    SHOverlayCollectionViewModeDrinklists,
+    SHOverlayCollectionViewModeSpot,
+    SHOverlayCollectionViewModeDrink
 } SHOverlayCollectionViewMode;
 
 @interface SHMapOverlayCollectionViewController () <SHSpotsCollectionViewManagerDelegate, SHSpecialsCollectionViewManagerDelegate, SHDrinksCollectionViewManagerDelegate>
@@ -86,10 +90,32 @@ typedef enum {
     }
 }
 
+- (void)displaySingleSpot:(SpotModel *)spot {
+    self.mode = SHOverlayCollectionViewModeSpot;
+
+    self.collectionView.dataSource = self.spotsCollectionViewManager;
+    self.collectionView.delegate = self.spotsCollectionViewManager;
+    
+    SpotListModel *spotlist = [[SpotListModel alloc] init];
+    spotlist.spots = @[spot];
+    [self.spotsCollectionViewManager updateSpotList:spotlist];
+}
+
 - (void)displayDrink:(DrinkModel *)drink {
     if (self.mode == SHOverlayCollectionViewModeDrinklists) {
         [self.drinksCollectionViewManager changeDrink:drink];
     }
+}
+
+- (void)displaySingleDrink:(DrinkModel *)drink {
+    self.mode = SHOverlayCollectionViewModeDrink;
+    
+    self.collectionView.dataSource = self.drinksCollectionViewManager;
+    self.collectionView.delegate = self.drinksCollectionViewManager;
+
+    DrinkListModel *drinklist = [[DrinkListModel alloc] init];
+    drinklist.drinks = @[drink];
+    [self.drinksCollectionViewManager updateDrinkList:drinklist];
 }
 
 - (void)displaySpecialsForSpots:(NSArray *)spots {
@@ -117,8 +143,6 @@ typedef enum {
     
     NSUInteger index = [self.spotsCollectionViewManager indexForViewInCollectionViewCell:sender];
     if (index != NSNotFound) {
-        NSLog(@"index: %lu", (long)index);
-        //call the delegate to trigger transition
         [self spotsCollectionViewManager:self.spotsCollectionViewManager didSelectSpotAtIndex:index];
     }
 }
@@ -143,6 +167,42 @@ typedef enum {
     }
     
     [self.spotsCollectionViewManager goNext];
+}
+
+- (IBAction)spotCellFindSimilarButtonTapped:(id)sender {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    if (self.mode == SHOverlayCollectionViewModeSpot) {
+        NSUInteger index = [self.spotsCollectionViewManager indexForViewInCollectionViewCell:sender];
+        if (index != NSNotFound) {
+            SpotModel *spot = [self.spotsCollectionViewManager spotAtIndex:index];
+            [SHNotifications findSimilarToSpot:spot];
+        }
+    }
+}
+
+- (IBAction)spotCellReviewItButtonTapped:(id)sender {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    if (self.mode == SHOverlayCollectionViewModeSpot) {
+        NSUInteger index = [self.spotsCollectionViewManager indexForViewInCollectionViewCell:sender];
+        if (index != NSNotFound) {
+            SpotModel *spot = [self.spotsCollectionViewManager spotAtIndex:index];
+            [SHNotifications reviewSpot:spot];
+        }
+    }
+}
+
+- (IBAction)spotCellMenuButtonTapped:(id)sender {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    if (self.mode == SHOverlayCollectionViewModeSpot) {
+        NSUInteger index = [self.spotsCollectionViewManager indexForViewInCollectionViewCell:sender];
+        if (index != NSNotFound) {
+            SpotModel *spot = [self.spotsCollectionViewManager spotAtIndex:index];
+            [SHNotifications openMenuForSpot:spot];
+        }
+    }
 }
 
 - (IBAction)specialCellNameButtonTapped:(id)sender {
@@ -229,6 +289,30 @@ typedef enum {
     }
     
     [self.drinksCollectionViewManager goNext];
+}
+
+- (IBAction)drinkCellFindSimilarButtonTapped:(id)sender {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    if (self.mode == SHOverlayCollectionViewModeDrink) {
+        NSUInteger index = [self.drinksCollectionViewManager indexForViewInCollectionViewCell:sender];
+        if (index != NSNotFound) {
+            DrinkModel *drink = [self.drinksCollectionViewManager drinkAtIndex:index];
+            [SHNotifications findSimilarToDrink:drink];
+        }
+    }
+}
+
+- (IBAction)drinkCellReviewItButtonTapped:(id)sender {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    if (self.mode == SHOverlayCollectionViewModeDrink) {
+        NSUInteger index = [self.drinksCollectionViewManager indexForViewInCollectionViewCell:sender];
+        if (index != NSNotFound) {
+            DrinkModel *drink = [self.drinksCollectionViewManager drinkAtIndex:index];
+            [SHNotifications reviewDrink:drink];
+        }
+    }
 }
 
 #pragma mark - SHSpotsCollectionViewManagerDelegate

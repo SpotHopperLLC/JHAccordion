@@ -25,8 +25,17 @@ NSString * const SHDisplaySpotNotificationKey = @"SHDisplaySpotNotificationKey";
 NSString * const SHFindSimilarToDrinkNotificationName = @"SHFindSimilarToDrinkNotificationName";
 NSString * const SHFindSimilarToDrinkNotificationKey = @"SHFindSimilarToDrinkNotificationKey";
 
+NSString * const SHReviewDrinkNotificationName = @"SHReviewDrinkNotificationName";
+NSString * const SHReviewDrinkNotificationKey = @"SHReviewDrinkNotificationKey";
+
 NSString * const SHFindSimilarToSpotNotificationName = @"SHFindSimilarToSpotNotificationName";
 NSString * const SHFindSimilarToSpotNotificationKey = @"SHFindSimilarToSpotNotificationKey";
+
+NSString * const SHReviewSpotNotificationName = @"SHReviewSpotNotificationName";
+NSString * const SHReviewSpotNotificationKey =  @"SHReviewSpotNotificationKey";
+
+NSString * const SHOpenMenuForSpotNotificationName = @"SHOpenMenuForSpotNotificationName";
+NSString * const SHOpenMenuForSpotNotificationKey = @"SHOpenMenuForSpotNotificationKey";
 
 NSString * const SHUserDidLogInNotificationKey = @"SHUserDidLogInNotificationKey";
 NSString * const SHUserDidLogOutNotificationKey = @"SHUserDidLogOutNotificationKey";
@@ -72,9 +81,30 @@ NSString * const SHUserDidLogOutNotificationKey = @"SHUserDidLogOutNotificationK
                                                       userInfo:userInfo];
 }
 
++ (void)reviewDrink:(DrinkModel *)drink {
+    NSDictionary *userInfo = @{ SHReviewDrinkNotificationKey : drink };
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHReviewDrinkNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
 + (void)findSimilarToSpot:(SpotModel *)spot {
     NSDictionary *userInfo = @{ SHFindSimilarToSpotNotificationKey : spot };
     [[NSNotificationCenter defaultCenter] postNotificationName:SHFindSimilarToSpotNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
++ (void)reviewSpot:(SpotModel *)spot {
+    NSDictionary *userInfo = @{ SHReviewSpotNotificationKey : spot };
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHReviewSpotNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
++ (void)openMenuForSpot:(SpotModel *)spot {
+    NSDictionary *userInfo = @{ SHOpenMenuForSpotNotificationKey : spot };
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHOpenMenuForSpotNotificationName
                                                         object:nil
                                                       userInfo:userInfo];
 }

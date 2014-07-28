@@ -94,11 +94,9 @@
     [[ClientSessionManager sharedClient] cancelAllHTTPOperationsWithMethod:@"GET" path:@"/api/spots" parameters:nil ignoreParams:YES];
 }
 
-+ (Promise*)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
++ (Promise *)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
-    
-    DebugLog(@"params: %@", params);
     
     [[ClientSessionManager sharedClient] GET:@"/api/spots" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -119,7 +117,8 @@
             
             // Resolves promise
             [deferred resolve];
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             failureBlock(errorModel);
             
@@ -131,7 +130,7 @@
     return deferred.promise;
 }
 
-+ (Promise*)getSpotsWithSpecialsTodayForCoordinate:(CLLocationCoordinate2D)coordinate success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
++ (Promise *)getSpotsWithSpecialsTodayForCoordinate:(CLLocationCoordinate2D)coordinate success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
     
     // Day of week
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -156,7 +155,7 @@
     return [SpotModel getSpotsWithSpecials:params success:successBlock failure:failureBlock];
 }
 
-+ (Promise*)getSpotsWithSpecials:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
++ (Promise *)getSpotsWithSpecials:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
@@ -191,7 +190,7 @@
     return deferred.promise;
 }
 
-+ (Promise*)postSpot:(NSDictionary*)params success:(void(^)(SpotModel *spotModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
++ (Promise *)postSpot:(NSDictionary*)params success:(void(^)(SpotModel *spotModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
@@ -341,6 +340,55 @@
     Deferred *deferred = [Deferred deferred];
     
     [self fetchSpotsNearLocation:location success:^(NSArray *spots) {
+        // Resolves promise
+        [deferred resolveWith:spots];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
++ (void)fetchSpotsWithText:(NSString *)text page:(NSNumber *)page success:(void(^)(NSArray *spots))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    NSMutableDictionary *params = @{
+                                    kSpotModelParamQuery : text,
+                                    kSpotModelParamQueryVisibleToUsers : @"true",
+                                    kSpotModelParamPage : page,
+                                    kSpotModelParamsPageSize : kPageSize,
+                                    kSpotModelParamSources : kSpotModelParamSourcesSpotHopper
+                                    }.mutableCopy;
+    
+    [[ClientSessionManager sharedClient] GET:@"/api/spots" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
+            NSArray *spots = [jsonApi resourcesForKey:@"spots"];
+            
+            if (successBlock) {
+                successBlock(spots);
+            }
+        }
+        else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            if (failureBlock) {
+                failureBlock(errorModel);
+            }
+        }
+    }];
+}
+
++ (Promise *)fetchSpotsWithText:(NSString *)text page:(NSNumber *)page {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [self fetchSpotsWithText:text page:page success:^(NSArray *spots) {
         // Resolves promise
         [deferred resolveWith:spots];
     } failure:^(ErrorModel *errorModel) {
