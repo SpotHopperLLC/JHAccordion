@@ -635,9 +635,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             break;
     }
     
-    // ensure the display order is correct
-    [self.view bringSubviewToFront:self.blurredView];
     [self.view bringSubviewToFront:self.containerView];
+    [self.view insertSubview:self.blurredView belowSubview:self.containerView];
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:(animated ? kModalAnimationDuration : 0.0f) delay:0.1f options:options animations:^{
@@ -649,7 +648,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self.navigationItem setLeftBarButtonItem:searchSlidersCancelBarButtonItem animated:animated];
         [self.navigationItem setRightBarButtonItem:nil animated:animated];
         self.navigationItem.title = title.length ? title : @"What do you feel like?";
-        
     } completion:^(BOOL finished) {
         [self refreshBlurredView];
         [self.slidersSearchViewController viewDidAppear:animated];
@@ -684,6 +682,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             }
         }];
     }];
+}
+
+- (void)showGlobalSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    [self prepareBlurredScreen];
+}
+
+- (void)hideGlobalSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
 }
 
 - (BOOL)isLocationAccurateEnough:(CLLocation *)location {
@@ -1747,7 +1752,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         UIView *blurredView = [[UIView alloc] initWithFrame:self.view.frame];
         blurredView.translatesAutoresizingMaskIntoConstraints = NO;
         blurredView.clipsToBounds = TRUE;
-        [self.view addSubview:blurredView];
+        [self.view insertSubview:blurredView belowSubview:self.containerView];
         
         // this view contains the image view and must be docked to the bottom
         // the height constraint must start at zero and the view must be clipped
@@ -1929,8 +1934,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     __block UIView *markerView = [[UIView alloc] initWithFrame:visibleFrame];
     markerView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.75f];
     markerView.alpha = 0.0f;
-    [self.view addSubview:markerView];
-    [self.view bringSubviewToFront:markerView];
+    [self.view insertSubview:markerView belowSubview:self.containerView];
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     CGFloat duration = 0.25f;
@@ -2828,24 +2832,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self showHUD:@"Finding Similar Drinks"];
         
         NSString *name = [NSString stringWithFormat:@"Similar to %@", drink.name];
-        
-//        [[DrinkListModel fetchMyDrinkLists] then:^(NSArray *drinklists) {
-//            
-//            DrinkListModel *matchedDrinklist = nil;
-//            
-//            for (DrinkListModel *myDrinklist in drinklists) {
-//                if ([myDrinklist.name isEqualToString:name]) {
-//                    matchedDrinklist = myDrinklist;
-//                    break;
-//                }
-//            }
-//            
-//            // TODO: use the matched drinklist
-//            
-//        } fail:^(ErrorModel *errorModel) {
-//            [self hideHUD];
-//            [self oops:errorModel caller:_cmd];
-//        } always:nil];
         
         // fetch the full details for a spot to get the sliders
         [[drink fetchDrink] then:^(DrinkModel *drinkModel) {

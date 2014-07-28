@@ -1787,6 +1787,11 @@
 		2602BD9D18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9E18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9F18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
+		26041B7A19849E7400E0C554 /* SHGlobalSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26041B7919849E7400E0C554 /* SHGlobalSearchViewController.m */; };
+		26041B7B19849E7400E0C554 /* SHGlobalSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26041B7919849E7400E0C554 /* SHGlobalSearchViewController.m */; };
+		26041B7C19849E7400E0C554 /* SHGlobalSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26041B7919849E7400E0C554 /* SHGlobalSearchViewController.m */; };
+		26041B7D19849E7400E0C554 /* SHGlobalSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26041B7919849E7400E0C554 /* SHGlobalSearchViewController.m */; };
+		26041B7E19849E7400E0C554 /* SHGlobalSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26041B7919849E7400E0C554 /* SHGlobalSearchViewController.m */; };
 		262A65B2195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
 		262A65B3195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
 		262A65B4195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
@@ -3069,6 +3074,8 @@
 		2602BD9418E2654900C93BBF /* table_footer_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table_footer_background.png; sourceTree = "<group>"; };
 		2602BD9518E2654900C93BBF /* table_footer_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "table_footer_background@2x.png"; sourceTree = "<group>"; };
 		2602BD9C18E283C500C93BBF /* Common.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Common.storyboard; sourceTree = "<group>"; };
+		26041B7819849E7400E0C554 /* SHGlobalSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHGlobalSearchViewController.h; sourceTree = "<group>"; };
+		26041B7919849E7400E0C554 /* SHGlobalSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHGlobalSearchViewController.m; sourceTree = "<group>"; };
 		262A65B0195893F800A4DACD /* MenuModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuModel.h; sourceTree = "<group>"; };
 		262A65B1195893F800A4DACD /* MenuModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuModel.m; sourceTree = "<group>"; };
 		2640B00D193E6C2D00978725 /* SHDrinksCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHDrinksCollectionViewManager.h; path = SpotHopper/SHDrinksCollectionViewManager.h; sourceTree = "<group>"; };
@@ -4559,6 +4566,8 @@
 				2654B89C192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m */,
 				26733ED8196CA56A0058384A /* SHLocationPickerViewController.h */,
 				26733ED9196CA56A0058384A /* SHLocationPickerViewController.m */,
+				26041B7819849E7400E0C554 /* SHGlobalSearchViewController.h */,
+				26041B7919849E7400E0C554 /* SHGlobalSearchViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -6791,6 +6800,7 @@
 				039B7013188723EB00C590F8 /* MockeryURLProtocol.m in Sources */,
 				039B7012188723EB00C590F8 /* MockeryHTTPURLResponse.m in Sources */,
 				03866473186D352400985CEC /* main.m in Sources */,
+				26041B7A19849E7400E0C554 /* SHGlobalSearchViewController.m in Sources */,
 				03CA72D0187DF43B00815284 /* NewReviewViewController.m in Sources */,
 				26FF53B9191B577D00834FBD /* CheckInModel.m in Sources */,
 				03CA726E187B53DA00815284 /* MyReviewsViewController.m in Sources */,
@@ -6864,6 +6874,7 @@
 				03CABFB518E7716400FAC5F5 /* BaseViewController.m in Sources */,
 				03CABFB618E7716400FAC5F5 /* DrinkListMenuViewController.m in Sources */,
 				2654B8BE192BB6E000A66BED /* SHLocationMenuBarViewController.m in Sources */,
+				26041B7E19849E7400E0C554 /* SHGlobalSearchViewController.m in Sources */,
 				03CABFB718E7716400FAC5F5 /* ClientSessionManager.m in Sources */,
 				03CABFB818E7716400FAC5F5 /* CheckinConfirmationViewController.m in Sources */,
 				03CABFB918E7716400FAC5F5 /* MenuItemCell.m in Sources */,
@@ -7139,6 +7150,7 @@
 				03F4E7A018CA33D00056EAA9 /* MockeryURLProtocol.m in Sources */,
 				03F4E7A118CA33D00056EAA9 /* MockeryHTTPURLResponse.m in Sources */,
 				03F4E7A218CA33D00056EAA9 /* main.m in Sources */,
+				26041B7C19849E7400E0C554 /* SHGlobalSearchViewController.m in Sources */,
 				03F4E7A318CA33D00056EAA9 /* NewReviewViewController.m in Sources */,
 				26FF53BB191B577D00834FBD /* CheckInModel.m in Sources */,
 				03F4E7A418CA33D00056EAA9 /* MyReviewsViewController.m in Sources */,
@@ -7310,6 +7322,7 @@
 				03F4E8EE18CA34260056EAA9 /* MockeryURLProtocol.m in Sources */,
 				03F4E8EF18CA34260056EAA9 /* MockeryHTTPURLResponse.m in Sources */,
 				03F4E8F018CA34260056EAA9 /* main.m in Sources */,
+				26041B7B19849E7400E0C554 /* SHGlobalSearchViewController.m in Sources */,
 				03F4E8F118CA34260056EAA9 /* NewReviewViewController.m in Sources */,
 				26FF53BA191B577D00834FBD /* CheckInModel.m in Sources */,
 				03F4E8F218CA34260056EAA9 /* MyReviewsViewController.m in Sources */,
@@ -7375,6 +7388,7 @@
 				267E05001922CC48004457B4 /* BaseViewController.m in Sources */,
 				267E05021922CC48004457B4 /* DrinkListMenuViewController.m in Sources */,
 				2654B8BD192BB6E000A66BED /* SHLocationMenuBarViewController.m in Sources */,
+				26041B7D19849E7400E0C554 /* SHGlobalSearchViewController.m in Sources */,
 				267E05031922CC48004457B4 /* ClientSessionManager.m in Sources */,
 				267E05041922CC48004457B4 /* CheckinConfirmationViewController.m in Sources */,
 				267E05051922CC48004457B4 /* MenuItemCell.m in Sources */,

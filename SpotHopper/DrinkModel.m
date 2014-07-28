@@ -21,6 +21,8 @@
 
 #import <CoreLocation/CoreLocation.h>
 
+#define kPageSize @15
+
 #define kMinRadiusFloat 0.5f
 #define kMaxRadiusFloat 5.0f
 #define kMetersPerMile 1609.344
@@ -198,6 +200,53 @@
 }
 
 #pragma mark - Revised Code for 2.0
+
++ (void)fetchDrinksWithText:(NSString *)text page:(NSNumber *)page success:(void(^)(NSArray *drinks))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    NSDictionary *params = @{
+                             kDrinkModelParamQuery : text,
+                             kDrinkModelParamPage : page,
+                             kDrinkModelParamsPageSize : kPageSize
+                             };
+    
+    [[ClientSessionManager sharedClient] GET:@"/api/drinks" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
+            NSArray *drinks = [jsonApi resourcesForKey:@"drinks"];
+            
+            if (successBlock) {
+                successBlock(drinks);
+            }
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            
+            if (failureBlock) {
+                failureBlock(errorModel);
+            }
+        }
+    }];
+}
+
++ (Promise*)fetchDrinksWithText:(NSString *)text page:(NSNumber *)page {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [self fetchDrinksWithText:text page:page success:^(NSArray *drinks) {
+        // Resolves promise
+        [deferred resolveWith:drinks];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
 
 - (void)fetchDrink:(void(^)(DrinkModel *drinkModel))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
     [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drinks/%ld", (long)[self.ID integerValue] ] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
