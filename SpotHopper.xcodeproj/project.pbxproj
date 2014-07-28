@@ -1792,6 +1792,11 @@
 		26041B7C19849E7400E0C554 /* SHGlobalSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26041B7919849E7400E0C554 /* SHGlobalSearchViewController.m */; };
 		26041B7D19849E7400E0C554 /* SHGlobalSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26041B7919849E7400E0C554 /* SHGlobalSearchViewController.m */; };
 		26041B7E19849E7400E0C554 /* SHGlobalSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26041B7919849E7400E0C554 /* SHGlobalSearchViewController.m */; };
+		262380201986F83500F0940A /* Tracker+Events.m in Sources */ = {isa = PBXBuildFile; fileRef = 2623801F1986F83500F0940A /* Tracker+Events.m */; };
+		262380211986F83500F0940A /* Tracker+Events.m in Sources */ = {isa = PBXBuildFile; fileRef = 2623801F1986F83500F0940A /* Tracker+Events.m */; };
+		262380221986F83500F0940A /* Tracker+Events.m in Sources */ = {isa = PBXBuildFile; fileRef = 2623801F1986F83500F0940A /* Tracker+Events.m */; };
+		262380231986F83500F0940A /* Tracker+Events.m in Sources */ = {isa = PBXBuildFile; fileRef = 2623801F1986F83500F0940A /* Tracker+Events.m */; };
+		262380241986F83500F0940A /* Tracker+Events.m in Sources */ = {isa = PBXBuildFile; fileRef = 2623801F1986F83500F0940A /* Tracker+Events.m */; };
 		262A65B2195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
 		262A65B3195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
 		262A65B4195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
@@ -3076,6 +3081,8 @@
 		2602BD9C18E283C500C93BBF /* Common.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Common.storyboard; sourceTree = "<group>"; };
 		26041B7819849E7400E0C554 /* SHGlobalSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHGlobalSearchViewController.h; sourceTree = "<group>"; };
 		26041B7919849E7400E0C554 /* SHGlobalSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHGlobalSearchViewController.m; sourceTree = "<group>"; };
+		2623801E1986F83500F0940A /* Tracker+Events.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tracker+Events.h"; sourceTree = "<group>"; };
+		2623801F1986F83500F0940A /* Tracker+Events.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Tracker+Events.m"; sourceTree = "<group>"; };
 		262A65B0195893F800A4DACD /* MenuModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuModel.h; sourceTree = "<group>"; };
 		262A65B1195893F800A4DACD /* MenuModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuModel.m; sourceTree = "<group>"; };
 		2640B00D193E6C2D00978725 /* SHDrinksCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHDrinksCollectionViewManager.h; path = SpotHopper/SHDrinksCollectionViewManager.h; sourceTree = "<group>"; };
@@ -3819,6 +3826,8 @@
 				26ED5CB518FDDE56006901ED /* Tracker.m */,
 				038664ED186D391E00985CEC /* UserModel.h */,
 				038664EE186D391E00985CEC /* UserModel.m */,
+				2623801E1986F83500F0940A /* Tracker+Events.h */,
+				2623801F1986F83500F0940A /* Tracker+Events.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -6824,6 +6833,7 @@
 				03E882D918C78D8B00BD8FBB /* AdjustSpotListSliderViewController.m in Sources */,
 				A688DB57194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m in Sources */,
 				03E882DF18C797BA00BD8FBB /* UIView+AddBorder.m in Sources */,
+				262380201986F83500F0940A /* Tracker+Events.m in Sources */,
 				039F548A18D33BA9004B2B67 /* DrinkMenuViewController.m in Sources */,
 				26C428CD192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m in Sources */,
 				03D7F57018EADCF3007B9E78 /* SearchViewController.m in Sources */,
@@ -6912,6 +6922,7 @@
 				03CABFD318E7716400FAC5F5 /* NSDate+Util.m in Sources */,
 				03CABFD418E7716400FAC5F5 /* ReviewsMenuViewController.m in Sources */,
 				A62B334A193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m in Sources */,
+				262380241986F83500F0940A /* Tracker+Events.m in Sources */,
 				03CABFD518E7716400FAC5F5 /* ListCell.m in Sources */,
 				26F0FDEA18EB4F23001BB0CD /* AgeVerificationViewController.m in Sources */,
 				03CABFD618E7716400FAC5F5 /* UIImage+Resize.m in Sources */,
@@ -7174,6 +7185,7 @@
 				03F4E7AE18CA33D00056EAA9 /* AdjustSpotListSliderViewController.m in Sources */,
 				03F4E7AF18CA33D00056EAA9 /* UIView+AddBorder.m in Sources */,
 				039F548C18D33BA9004B2B67 /* DrinkMenuViewController.m in Sources */,
+				262380221986F83500F0940A /* Tracker+Events.m in Sources */,
 				26C428CF192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m in Sources */,
 				03D7F57418EADEF7007B9E78 /* SearchViewController.m in Sources */,
 				03F4E7B018CA33D00056EAA9 /* SHLabelLatoLight.m in Sources */,
@@ -7346,6 +7358,7 @@
 				03F4E8FC18CA34260056EAA9 /* AdjustSpotListSliderViewController.m in Sources */,
 				03F4E8FD18CA34260056EAA9 /* UIView+AddBorder.m in Sources */,
 				039F548B18D33BA9004B2B67 /* DrinkMenuViewController.m in Sources */,
+				262380211986F83500F0940A /* Tracker+Events.m in Sources */,
 				26C428CE192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m in Sources */,
 				03D7F57218EADEF7007B9E78 /* SearchViewController.m in Sources */,
 				03F4E8FE18CA34260056EAA9 /* SHLabelLatoLight.m in Sources */,
@@ -7426,6 +7439,7 @@
 				267E05231922CC48004457B4 /* NSDate+Util.m in Sources */,
 				267E05241922CC48004457B4 /* ReviewsMenuViewController.m in Sources */,
 				A62B3349193D090100CE4BF0 /* SHSpotDetailFooterNavigationViewController.m in Sources */,
+				262380231986F83500F0940A /* Tracker+Events.m in Sources */,
 				267E05251922CC48004457B4 /* ListCell.m in Sources */,
 				267E05261922CC48004457B4 /* AgeVerificationViewController.m in Sources */,
 				267E05271922CC48004457B4 /* UIImage+Resize.m in Sources */,
