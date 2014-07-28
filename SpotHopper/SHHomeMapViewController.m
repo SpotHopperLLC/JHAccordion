@@ -1392,22 +1392,18 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     request.radius = [self searchRadius];
     self.drinkListRequest = request;
     
-    [self showStatus:@"Locating..." animated:TRUE withCompletionBlock:nil];
-    [[drink fetchSpotsForDrinkListRequest:request] then:^(NSArray *spots) {
-        [self populateMapWithSpots:spots];
-        self.spotsForDrink = spots;
-    } fail:^(ErrorModel *errorModel) {
-        [self oops:errorModel caller:_cmd];
-    } always:^{
-        
-    }];
-    
     if (!self.homeNavigationViewController.view.hidden) {
         [self hideHomeNavigation:FALSE withCompletionBlock:nil];
     }
     
     [self showCollectionContainerView:TRUE withCompletionBlock:^{
-        // do nothing
+        [self showStatus:@"Locating..." animated:TRUE withCompletionBlock:nil];
+        [[drink fetchSpotsForDrinkListRequest:request] then:^(NSArray *spots) {
+            [self populateMapWithSpots:spots];
+            self.spotsForDrink = spots;
+        } fail:^(ErrorModel *errorModel) {
+            [self oops:errorModel caller:_cmd];
+        } always:nil];
     }];
 };
 
