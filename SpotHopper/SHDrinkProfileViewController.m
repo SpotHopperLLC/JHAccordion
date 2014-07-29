@@ -31,6 +31,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "Tracker.h"
+#import "Tracker+Events.h"
 
 #define kSectionImages 0
 #define kSectionDrinkDetails 1
@@ -144,6 +145,8 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    [Tracker trackDrinkProfileScreenViewed:self.drink];
     
     [self hideTopBars:TRUE withCompletionBlock:^{
         DebugLog(@"Done hiding top bars");

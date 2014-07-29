@@ -67,4 +67,65 @@
     [Tracker track:@"Exiting GlobalSearch" properties:@{@"Selected a result" : [NSNumber numberWithBool:selected]}];
 }
 
++ (void)trackLeavingHomeToSpots {
+    [Tracker track:@"Home to Spots"];
+}
+
++ (void)trackLeavingHomeToSpecials {
+    [Tracker track:@"Home to Specials"];
+}
+
++ (void)trackLeavingHomeToBeer {
+    [Tracker track:@"Home to Beer"];
+}
+
++ (void)trackLeavingHomeToCocktails {
+    [Tracker track:@"Home to Cocktails"];
+}
+
++ (void)trackLeavingHomeToWine {
+    [Tracker track:@"Home to Wine"];
+}
+
++ (void)trackSpotsMoodSelected:(NSString *)moodName {
+    [Tracker track:@"Spots Mood Selected" properties:@{@"Mood name" : moodName.length ? moodName : [NSNull null]}];
+}
+
++ (void)trackBeerStyleSelected:(NSString *)moodName {
+    [Tracker track:@"Beer Style Selected" properties:@{@"Mood name" : moodName.length ? moodName : [NSNull null]}];
+}
+
++ (void)trackCocktailStyleSelected:(NSString *)moodName {
+    [Tracker track:@"Cocktail Style Selected" properties:@{@"Mood name" : moodName.length ? moodName : [NSNull null]}];
+}
+
+//Pass property mood name
++ (void)trackWineStyleSelected:(NSString *)moodName {
+    [Tracker track:@"Wine Style Selected" properties:@{@"Mood name" : moodName.length ? moodName : [NSNull null]}];
+}
+
++ (void)trackSliderSearchSubmitTapped {
+    [Tracker track:@"Slider Search Submit Clicked"];
+}
+
++ (void)trackSpotlistViewed {
+    [Tracker track:@"View Spotlist"];
+}
+
++ (void)trackDrinklistViewed {
+    [Tracker track:@"View Drinklist"];
+}
+
++ (void)trackAreYouHere:(BOOL)yesOrNo {
+    [Tracker track:@"Are you at this bar?" properties:@{@"yesOrNo" : [NSNumber numberWithBool:yesOrNo]}];
+}
+
++ (void)trackUserTappedLocationPickerButton {
+    [Tracker track:@"User Clicks on Location Picker Button"];
+}
+
++ (void)trackUserSetNewLocation {
+    [Tracker track:@"User sets new location"];
+}
+
 @end

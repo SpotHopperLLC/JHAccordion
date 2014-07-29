@@ -30,6 +30,7 @@
 #import "SHNotifications.h"
 
 #import "Tracker.h"
+#import "Tracker+Events.h"
 
 #define kCellImageCollection 0
 #define kCellSpotDetails 1
@@ -154,6 +155,8 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    [Tracker trackSpotProfileScreenViewed:self.spot];
     
     [self hideTopBars:TRUE withCompletionBlock:^{
         DebugLog(@"Done hiding top bars");

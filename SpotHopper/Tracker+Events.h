@@ -28,4 +28,34 @@
 
 + (void)trackLeavingGlobalSearch:(BOOL)selected;
 
++ (void)trackLeavingHomeToSpots;
+
++ (void)trackLeavingHomeToSpecials;
+
++ (void)trackLeavingHomeToBeer;
+
++ (void)trackLeavingHomeToCocktails;
+
++ (void)trackLeavingHomeToWine;
+
++ (void)trackSpotsMoodSelected:(NSString *)moodName;
+
++ (void)trackBeerStyleSelected:(NSString *)moodName;
+
++ (void)trackCocktailStyleSelected:(NSString *)moodName;
+
++ (void)trackWineStyleSelected:(NSString *)moodName;
+
++ (void)trackSliderSearchSubmitTapped;
+
++ (void)trackSpotlistViewed;
+
++ (void)trackDrinklistViewed;
+
++ (void)trackAreYouHere:(BOOL)yesOrNo;
+
++ (void)trackUserTappedLocationPickerButton;
+
++ (void)trackUserSetNewLocation;
+
 @end

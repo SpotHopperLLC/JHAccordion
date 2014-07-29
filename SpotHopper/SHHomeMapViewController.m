@@ -38,7 +38,9 @@
 #import "SHButtonLatoBold.h"
 
 #import "TellMeMyLocation.h"
+
 #import "Tracker.h"
+#import "Tracker+Events.h"
 
 #import "UserModel.h"
 #import "SpotModel.h"
@@ -999,6 +1001,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (IBAction)areYouHereYesButtonTapped:(id)sender {
+    [Tracker trackAreYouHere:YES];
+    
     [self hideAreYouHerePrompt:TRUE withCompletionBlock:nil];
     
     if (self.nearbySpots.count) {
@@ -1008,6 +1012,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (IBAction)areYouHereNoButtonTapped:(id)sender {
+    [Tracker trackAreYouHere:NO];
+    
     [self hideAreYouHerePrompt:TRUE withCompletionBlock:nil];
 }
 
@@ -1020,6 +1026,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (IBAction)searchCancelButtonTapped:(id)sender {
+    [Tracker trackLeavingGlobalSearch:FALSE];
+
     [self hideSearch:TRUE withCompletionBlock:^{
     }];
 }
@@ -1228,6 +1236,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)showSpotsSearch {
+    [Tracker trackLeavingHomeToSpots];
     if (![self promptLoginNeeded:@"Cannot create a spotlist without logging in"]) {
         [self.slidersSearchViewController prepareForMode:SHModeSpots];
         
@@ -1239,6 +1248,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)showBeersSearch {
+    [Tracker trackLeavingHomeToBeer];
     if (![self promptLoginNeeded:@"Cannot create a drinklist without logging in"]) {
         [self.slidersSearchViewController prepareForMode:SHModeBeer];
         
@@ -1250,6 +1260,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)showCocktailsSearch {
+    [Tracker trackLeavingHomeToCocktails];
     if (![self promptLoginNeeded:@"Cannot create a spotlist without logging in"]) {
         [self.slidersSearchViewController prepareForMode:SHModeCocktail];
 
@@ -1261,6 +1272,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)showWineSearch {
+    [Tracker trackLeavingHomeToWine];
     if (![self promptLoginNeeded:@"Cannot create a spotlist without logging in"]) {
         [self.slidersSearchViewController prepareForMode:SHModeWine];
         
@@ -1291,6 +1303,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)displaySpotlist:(SpotListModel *)spotlistModel {
     self.navigationItem.title = spotlistModel.name;
     
+    [Tracker trackSpotlistViewed];
+    
     self.currentIndex = 0;
     
     [self.mapOverlayCollectionViewController displaySpotList:spotlistModel];
@@ -1307,6 +1321,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)displayDrinklist:(DrinkListModel *)drinklistModel forMode:(SHMode)mode {
     self.navigationItem.title = drinklistModel.name;
+    
+    [Tracker trackDrinklistViewed];
     
     self.currentIndex = 0;
     
@@ -1659,6 +1675,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)pickLocation {
+    [Tracker trackUserTappedLocationPickerButton];
+    
     SHLocationPickerViewController *locationPickerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SHLocationPickerViewController"];
     
     locationPickerVC.initialRegion = self.mapView.region;
@@ -2705,6 +2723,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark -
 
 - (void)locationPickerViewController:(SHLocationPickerViewController*)viewController didSelectRegion:(MKCoordinateRegion)region {
+    [Tracker trackUserSetNewLocation];
+    
     _isValidLocation = TRUE;
     
     [self.navigationController popViewControllerAnimated:TRUE];
@@ -2779,12 +2799,16 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark -
 
 - (void)globalSearchViewController:(SHGlobalSearchViewController *)vc didSelectSpot:(SpotModel *)spot {
+    [Tracker trackLeavingGlobalSearch:TRUE];
+
     [self hideSearch:TRUE withCompletionBlock:^{
         [self displaySingleSpot:spot];
     }];
 }
 
 - (void)globalSearchViewController:(SHGlobalSearchViewController *)vc didSelectDrink:(DrinkModel *)drink {
+    [Tracker trackLeavingGlobalSearch:TRUE];
+
     [self hideSearch:TRUE withCompletionBlock:^{
         [self displaySingleDrink:drink];
     }];

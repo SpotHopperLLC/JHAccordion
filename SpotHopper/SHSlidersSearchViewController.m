@@ -16,7 +16,9 @@
 #import "DrinkListRequest.h"
 #import "SpotListRequest.h"
 #import "ErrorModel.h"
+
 #import "Tracker.h"
+#import "Tracker+Events.h"
 
 #import "UIAlertView+Block.h"
 
@@ -61,6 +63,7 @@
 #pragma mark -
 
 - (IBAction)searchButtonTapped:(id)sender {
+    [Tracker trackSliderSearchSubmitTapped];
     [self prepareSearchResults];
 }
 

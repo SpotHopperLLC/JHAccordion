@@ -28,7 +28,9 @@
 #import "BaseAlcoholModel.h"
 
 #import "TellMeMyLocation.h"
+
 #import "Tracker.h"
+#import "Tracker+Events.h"
 
 #import "UIAlertView+Block.h"
 #import "SHStyleKit+Additions.h"
@@ -969,6 +971,8 @@
     SpotListModel *spotlist = [self spotlistAtIndexPath:indexPath];
     self.selectedSpotlist = spotlist;
     
+    [Tracker trackSpotsMoodSelected:spotlist.name];
+    
     [self updateSectionTitle:[NSString stringWithFormat:@"Step 1 - %@", spotlist.name] section:indexPath.section];
     
     void (^completeBlock)(BOOL) = ^void (BOOL didSetAdvancedSlider) {
@@ -983,32 +987,8 @@
                 [self.accordion openSections:@[[NSNumber numberWithInteger:kSection_Spots_Sliders]]];
             }
         }
-        else if (self.mode == SHModeBeer) {
-            if (didSetAdvancedSlider) {
-                [self.accordion openSections:@[[NSNumber numberWithInteger:kSection_Beer_Sliders],
-                                                                 [NSNumber numberWithInteger:kSection_Beer_AdvancedSliders]]];
-            }
-            else {
-                [self.accordion openSections:@[[NSNumber numberWithInteger:kSection_Beer_Sliders]]];
-            }
-        }
-        else if (self.mode == SHModeCocktail) {
-            if (didSetAdvancedSlider) {
-                [self.accordion openSections:@[[NSNumber numberWithInteger:kSection_Cocktail_Sliders],
-                                                                 [NSNumber numberWithInteger:kSection_Cocktail_AdvancedSliders]]];
-            }
-            else {
-                [self.accordion openSections:@[[NSNumber numberWithInteger:kSection_Cocktail_Sliders]]];
-            }
-        }
-        else if (self.mode == SHModeWine) {
-            if (didSetAdvancedSlider) {
-                [self.accordion openSections:@[[NSNumber numberWithInteger:kSection_Wine_Sliders],
-                                                                 [NSNumber numberWithInteger:kSection_Wine_AdvancedSliders]]];
-            }
-            else {
-                [self.accordion openSections:@[[NSNumber numberWithInteger:kSection_Wine_Sliders]]];
-            }
+        else {
+            NSAssert(FALSE, @"Condition should not be met");
         }
         
         [self notifyThatManagerIsFree];
@@ -1081,17 +1061,9 @@
     void (^completeBlock)(BOOL) = ^void (BOOL didSetAdvancedSlider) {
         [self.accordion closeSection:indexPath.section];
         
-        if (self.mode == SHModeSpots) {
+        if (self.mode == SHModeBeer) {
             if (didSetAdvancedSlider) {
-                [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Spots_Sliders],
-                                                                 [NSNumber numberWithInteger:kSection_Spots_AdvancedSliders]]];
-            }
-            else {
-                [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Spots_Sliders]]];
-            }
-        }
-        else if (self.mode == SHModeBeer) {
-            if (didSetAdvancedSlider) {
+                [Tracker trackBeerStyleSelected:drinklist.name];
                 [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Beer_Sliders],
                                                                  [NSNumber numberWithInteger:kSection_Beer_AdvancedSliders]]];
             }
@@ -1100,6 +1072,7 @@
             }
         }
         else if (self.mode == SHModeCocktail) {
+            [Tracker trackCocktailStyleSelected:drinklist.name];
             if (didSetAdvancedSlider) {
                 [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Cocktail_Sliders],
                                                                  [NSNumber numberWithInteger:kSection_Cocktail_AdvancedSliders]]];
@@ -1109,6 +1082,7 @@
             }
         }
         else if (self.mode == SHModeWine) {
+            [Tracker trackWineStyleSelected:drinklist.name];
             if (didSetAdvancedSlider) {
                 [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Wine_Sliders],
                                                                  [NSNumber numberWithInteger:kSection_Wine_AdvancedSliders]]];
@@ -1116,6 +1090,9 @@
             else {
                 [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Wine_Sliders]]];
             }
+        }
+        else {
+            NSAssert(FALSE, @"Condition should not be met");
         }
         
         [self notifyThatManagerIsFree];

@@ -11,8 +11,10 @@
 #import "DrinkModel.h"
 #import "SpotModel.h"
 #import "ErrorModel.h"
-#import "Tracker.h"
 #import "SHStyleKit+Additions.h"
+
+#import "Tracker.h"
+#import "Tracker+Events.h"
 
 #import "NSNumber+Helpers.h"
 
@@ -34,7 +36,9 @@
 
 @end
 
-@implementation SHGlobalSearchViewController
+@implementation SHGlobalSearchViewController {
+    BOOL _isSeachRunning;
+}
 
 #pragma mark - View Lifecycle
 #pragma mark -
@@ -206,9 +210,13 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        if (indexPath.row < self.results.count) {
-            JSONAPIResource *result = [self.results objectAtIndex:indexPath.row];
+    if (indexPath.row < self.results.count) {
+        SHJSONAPIResource *result = [self.results objectAtIndex:indexPath.row];
+        
+        [Tracker trackGlobalSearchResultTapped:result searchText:self.searchText];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            
             if ([result isKindOfClass:[SpotModel class]]) {
                 SpotModel *spot = (SpotModel *)result;
                 DebugLog(@"spot: %@", spot);
@@ -225,10 +233,10 @@
                     [self.delegate globalSearchViewController:self didSelectDrink:drink];
                 }
             }
-        }
-        
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    });
+            
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        });
+    }
 }
 
 #pragma mark - JHPullToRefresh
@@ -250,8 +258,12 @@
 #pragma mark -
 
 - (void)startSearch {
-    [DrinkModel cancelGetDrinks];
-    [SpotModel cancelGetSpots];
+    if (_isSeachRunning) {
+        [DrinkModel cancelGetDrinks];
+        [SpotModel cancelGetSpots];
+        [Tracker trackGlobalSearchRequestCancelled];
+        _isSeachRunning = FALSE;
+    }
     
     // Resets pages and clears results
     self.page = @1;
@@ -271,6 +283,8 @@
     [self hideHUD];
     [self showHUD:@"Searching"];
     
+    _isSeachRunning = TRUE;
+    
     Promise *spotsPromise = [[SpotModel fetchSpotsWithText:self.searchText page:self.page] then:^(NSArray *spots) {
         DebugLog(@"spots: %@", spots);
         [self.results addObjectsFromArray:spots];
@@ -281,8 +295,14 @@
         [self.results addObjectsFromArray:drinks];
     } fail:nil always:nil];
     
+    [Tracker trackGlobalSearchRequestStarted];
+    
     [When when:@[spotsPromise, drinksPromise] then:nil fail:nil always:^{
+        _isSeachRunning = FALSE;
         [self hideHUD];
+        
+        [Tracker trackGlobalSearchRequestCompleted];
+        [Tracker trackGlobalSearchHappened:self.searchText];
         
         [self.results sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             NSNumber *revObj1 = [obj1 valueForKey:@"relevance"];
