@@ -56,7 +56,7 @@
 
 #define kNumberOfCells 3
 
-#define kTopImageHeight 180.0f
+#define kTopImageHeight 220.0f
 
 #define kTagCollectionView 1
 #define kTagImageView 1
@@ -435,7 +435,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (kSectionImages == indexPath.section) {
-        return 180.0f;
+        return kTopImageHeight;
     }
     else if (kSectionDetails == indexPath.section) {
         return 95.0f;

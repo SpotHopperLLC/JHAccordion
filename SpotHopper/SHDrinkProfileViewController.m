@@ -62,7 +62,7 @@
 
 #define kDefineAnimationDuration 0.25f
 
-#define kTopImageHeight 180.0f
+#define kTopImageHeight 220.0f
 
 #define kTagCollectionView 1
 #define kTagImageView 1
@@ -489,7 +489,7 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     CGFloat height = 0.0f;
     
     if (kSectionImages == indexPath.section) {
-        height = 180.0f;
+        height = kTopImageHeight;
     }
     else if (kSectionDrinkDetails == indexPath.section) {
         height = 130.0f;
