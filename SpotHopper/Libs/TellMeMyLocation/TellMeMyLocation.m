@@ -38,6 +38,7 @@ NSString * const kTellMeMyLocationChangedNotification = @"TellMeMyLocationChange
 }
 
 static CLLocation *_currentDeviceLocation;
+static CLLocation *_currentSelectedLocation;
 static NSDate *_lastDeviceLocationRefresh;
 
 #pragma mark - Public Implemention
@@ -93,6 +94,25 @@ static NSDate *_lastDeviceLocationRefresh;
 
 + (CLLocation *)currentDeviceLocation {
     return _currentDeviceLocation;
+}
+
++ (CLLocation *)currentSelectedLocation {
+    return _currentSelectedLocation;
+}
+
++ (void)setCurrentSelectedLocation:(CLLocation *)selectedLocation {
+    _currentSelectedLocation = selectedLocation;
+}
+
++ (CLLocation *)currentLocation {
+    if (_currentDeviceLocation && CLLocationCoordinate2DIsValid(_currentDeviceLocation.coordinate)) {
+        return _currentDeviceLocation;
+    }
+    else if (_currentSelectedLocation && CLLocationCoordinate2DIsValid(_currentSelectedLocation.coordinate)) {
+        return _currentSelectedLocation;
+    }
+    
+    return nil;
 }
 
 + (void)setLastLocation:(CLLocation*)location completionHandler:(TellMeMyLocationCompletionHandler)completionHandler {

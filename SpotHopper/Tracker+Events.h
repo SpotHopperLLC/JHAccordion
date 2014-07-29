@@ -42,17 +42,17 @@
 
 + (void)trackSpotsMoodSelected:(NSString *)moodName;
 
-+ (void)trackBeerStyleSelected:(NSString *)moodName;
++ (void)trackBeerStyleSelected:(NSString *)styleName;
 
-+ (void)trackCocktailStyleSelected:(NSString *)moodName;
++ (void)trackCocktailStyleSelected:(NSString *)styleName;
 
-+ (void)trackWineStyleSelected:(NSString *)moodName;
++ (void)trackWineStyleSelected:(NSString *)styleName;
 
-+ (void)trackSliderSearchSubmitTapped;
++ (void)trackSliderSearchButtonTapped:(SHMode)mode;
 
 + (void)trackSpotlistViewed;
 
-+ (void)trackDrinklistViewed;
++ (void)trackDrinklistViewed:(SHMode)mode;
 
 + (void)trackAreYouHere:(BOOL)yesOrNo;
 
@@ -64,6 +64,6 @@
 
 + (void)trackSpotlist:(SpotListModel *)spotlist request:(SpotListRequest *)request currentLocation:(CLLocation *)currentLocation;
 
-+ (void)trackDrinklist:(DrinkListModel *)drinklist request:(DrinkListRequest *)request currentLocation:(CLLocation *)currentLocation;
++ (void)trackDrinklist:(DrinkListModel *)drinklist mode:(SHMode)mode request:(DrinkListRequest *)request currentLocation:(CLLocation *)currentLocation;
 
 @end

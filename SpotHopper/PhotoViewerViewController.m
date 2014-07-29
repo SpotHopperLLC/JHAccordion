@@ -46,6 +46,10 @@
     [super viewDidAppear:animated];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleDefault;
+}
+
 - (BOOL)prefersStatusBarHidden {
     return _isFullScreen;
 }

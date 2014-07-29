@@ -248,9 +248,12 @@
         NSString *contentLength = response.allHeaderFields[@"Content-Length"];
         if (_debug) {
             NSLog(@"Content-Length: %@", contentLength);
+            NSLog(@"Path: %@", response.URL.path);
         }
-        NSNumber *number = [NSNumber numberWithInteger:[contentLength integerValue]];
-        [Tracker track:@"API Content Length" properties:@{@"Content-Length" : number}];
+        
+        [Tracker track:@"API Content Length" properties:@{
+                                                          @"Content-Length" : [NSNumber numberWithInteger:[contentLength integerValue]],
+                                                          @"Path" : response.URL.path.length ? response.URL.path : @"Unknown"}];
     }
 }
 

@@ -63,7 +63,8 @@
 #pragma mark -
 
 - (IBAction)searchButtonTapped:(id)sender {
-    [Tracker trackSliderSearchSubmitTapped];
+    [Tracker trackSliderSearchButtonTapped:self.mode];
+    
     [self prepareSearchResults];
 }
 

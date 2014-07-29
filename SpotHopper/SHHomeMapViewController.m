@@ -447,8 +447,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     if (!self.globalSearchViewController.view.superview) {
         [self embedViewController:self.globalSearchViewController intoView:self.view placementBlock:^(UIView *view) {
-            NSArray *constraints = [view pinToSuperviewEdges:JRTViewPinAllEdges inset:0.0f usingLayoutGuidesFrom:self];
-            DebugLog(@"constraints: %@", constraints);
+            [view pinToSuperviewEdges:JRTViewPinAllEdges inset:0.0f usingLayoutGuidesFrom:self];
         }];
     }
 
@@ -1327,7 +1326,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)displayDrinklist:(DrinkListModel *)drinklistModel forMode:(SHMode)mode {
     self.navigationItem.title = drinklistModel.name;
     
-    [Tracker trackDrinklistViewed];
+    [Tracker trackDrinklistViewed:mode];
     
     self.currentIndex = 0;
     
@@ -1560,9 +1559,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         
         self.selectedDrink = drink;
         
-        __weak DrinkModel *weakDrink = drink;
         [[drink fetchSpotsForDrinkListRequest:self.drinkListRequest] then:^(NSArray *spots) {
-            if ([weakDrink isEqual:self.selectedDrink]) {
+            if ([drink isEqual:self.selectedDrink]) {
                 [self populateMapWithSpots:spots];
                 self.spotsForDrink = spots;
             }
@@ -1705,6 +1703,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         DebugLog(@"tellMeMyLocation: %@", tellMeMyLocation);
         if (!self.currentLocation && self.lastSelectedLocation) {
             self.currentLocation = self.lastSelectedLocation;
+            [TellMeMyLocation setCurrentSelectedLocation:self.lastSelectedLocation];
         }
         
         if (self.currentLocation) {
@@ -2437,7 +2436,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)processDrinklistModel:(DrinkListModel *)drinklistModel withRequest:(DrinkListRequest *)request forMode:(SHMode)mode {
-    [Tracker trackDrinklist:drinklistModel request:request currentLocation:self.currentLocation];
+    [Tracker trackDrinklist:drinklistModel mode:mode request:request currentLocation:self.currentLocation];
     
     if (!drinklistModel.drinks.count) {
         [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
@@ -2743,6 +2742,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     self.repositioningMap = TRUE;
     
     CLLocation *selectedLocation = [[CLLocation alloc] initWithLatitude:region.center.latitude longitude:region.center.longitude];
+    [TellMeMyLocation setCurrentSelectedLocation:selectedLocation];
     
     self.currentLocation = selectedLocation;
     self.lastSelectedLocation = selectedLocation;

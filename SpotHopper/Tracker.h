@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 
 @interface Tracker : NSObject
 
@@ -19,5 +20,9 @@
 + (void)logWarning:(id)message class:(Class)class trace:(NSString *)trace;
 + (void)logError:(id)message class:(Class)class trace:(NSString *)trace;
 + (void)logFatal:(id)message class:(Class)class trace:(NSString *)trace;
+
++ (void)trackLocationPropertiesForEvent:(NSString *)eventName properties:(NSDictionary *)properties;
+
++ (void)getPropertiesForLocation:(CLLocation *)location prefix:(NSString *)prefix withCompletionBlock:(void (^)(NSDictionary *locationProperties, NSError *error))completionBlock;
 
 @end
