@@ -196,10 +196,15 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 @property (strong, nonatomic) NSDate *lastRepositioningToDeviceLocationDate;
 @property (strong, nonatomic) CLLocation *lastSelectedLocation;
 
+@property (readonly, nonatomic) CGRect visibleMapFrame;
+@property (readonly, nonatomic) MKCoordinateRegion visibleMapRegion;
+@property (readonly, nonatomic) CLLocationCoordinate2D visibleMapCenterCoordinate;
+
+@property (strong, nonatomic) CLLocation *currentLocation;
+
 @end
 
 @implementation SHHomeMapViewController {
-    CLLocation *_currentLocation;
     BOOL _doNotMoveMap;
     BOOL _isShowingSearchView;
     BOOL _isOverlayAnimating;
@@ -1211,7 +1216,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         if (seconds > 1200 && self.nearbySpots.count) {
             SpotModel *nearestSpot = self.nearbySpots[0];
             CLLocation *nearestLocation = [[CLLocation alloc] initWithLatitude:nearestSpot.latitude.floatValue longitude:nearestSpot.longitude.floatValue];
-            CLLocationDistance meters = [_currentLocation distanceFromLocation:nearestLocation];
+            CLLocationDistance meters = [self.currentLocation distanceFromLocation:nearestLocation];
             if (meters < 150) {
                 DrinkListRequest *request = [self.drinkListRequest copy];
                 request.name = kDrinkListModelDefaultName;
@@ -1690,20 +1695,20 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     TellMeMyLocation *tellMeMyLocation = [[TellMeMyLocation alloc] init];
     [tellMeMyLocation findMe:kCLLocationAccuracyNearestTenMeters found:^(CLLocation *newLocation) {
-        _currentLocation = newLocation;
-        [self fetchNearbySpotsAtLocation:_currentLocation];
-        [self repositionMapOnCoordinate:_currentLocation.coordinate animated:animated];
+        self.currentLocation = newLocation;
+        [self fetchNearbySpotsAtLocation:self.currentLocation];
+        [self repositionMapOnCoordinate:self.currentLocation.coordinate animated:animated];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [self updateLocationName];
         });
     } failure:^(NSError *error) {
         DebugLog(@"tellMeMyLocation: %@", tellMeMyLocation);
-        if (!_currentLocation && self.lastSelectedLocation) {
-            _currentLocation = self.lastSelectedLocation;
+        if (!self.currentLocation && self.lastSelectedLocation) {
+            self.currentLocation = self.lastSelectedLocation;
         }
         
-        if (_currentLocation) {
-            [self repositionMapOnCoordinate:_currentLocation.coordinate animated:animated];
+        if (self.currentLocation) {
+            [self repositionMapOnCoordinate:self.currentLocation.coordinate animated:animated];
         }
         else {
             [self repositionMapOnCoordinate:kCLLocationCoordinate2DInvalid animated:animated];
@@ -2380,7 +2385,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }];
     
     if (self.lastSelectedLocation) {
-        _currentLocation = self.lastSelectedLocation;
+        self.currentLocation = self.lastSelectedLocation;
     }
     
     [self repositionOnCurrentDeviceLocation:FALSE];
@@ -2391,6 +2396,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark -
 
 - (void)processSpecialsWithSpots:(NSArray *)spotModels {
+    [Tracker trackDrinkSpecials:spotModels centerCoordinate:self.visibleMapCenterCoordinate currentLocation:self.currentLocation];
+
     if (!spotModels.count) {
         [self showHomeNavigation:TRUE withCompletionBlock:^{
             [self showAlert:@"Oops" message:@"There are no drink specials which match in this location. Please try another search area."];
@@ -2408,6 +2415,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)processSpotlistModel:(SpotListModel *)spotlistModel withRequest:(SpotListRequest *)request {
+    [Tracker trackSpotlist:spotlistModel request:request currentLocation:self.currentLocation];
+    
     if (!spotlistModel.spots.count) {
         [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
             [self showAlert:@"Oops" message:@"There are no spots which match in this location. Please try another search area."];
@@ -2428,6 +2437,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)processDrinklistModel:(DrinkListModel *)drinklistModel withRequest:(DrinkListRequest *)request forMode:(SHMode)mode {
+    [Tracker trackDrinklist:drinklistModel request:request currentLocation:self.currentLocation];
+    
     if (!drinklistModel.drinks.count) {
         [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
             [self showAlert:@"Oops" message:@"There are no drinks which match in this location. Please try another search area."];
@@ -2733,7 +2744,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     CLLocation *selectedLocation = [[CLLocation alloc] initWithLatitude:region.center.latitude longitude:region.center.longitude];
     
-    _currentLocation = selectedLocation;
+    self.currentLocation = selectedLocation;
     self.lastSelectedLocation = selectedLocation;
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;

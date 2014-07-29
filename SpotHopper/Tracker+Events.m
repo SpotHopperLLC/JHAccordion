@@ -8,8 +8,14 @@
 
 #import "Tracker+Events.h"
 
-#import "DrinkModel.h"
 #import "SpotModel.h"
+#import "DrinkModel.h"
+#import "SpotListModel.h"
+#import "DrinkListModel.h"
+#import "SpotListRequest.h"
+#import "DrinkListRequest.h"
+
+#import "TellMeMyLocation.h"
 
 @implementation Tracker (Events)
 
@@ -126,6 +132,82 @@
 
 + (void)trackUserSetNewLocation {
     [Tracker track:@"User sets new location"];
+}
+
++ (void)trackDrinkSpecials:(NSArray *)spots centerCoordinate:(CLLocationCoordinate2D)centerCoordinate currentLocation:(CLLocation *)currentLocation {
+    
+    CLLocation *location = [[CLLocation alloc] initWithLatitude:centerCoordinate.latitude longitude:centerCoordinate.longitude];
+    CLLocationDistance distance = [location distanceFromLocation:currentLocation];
+    
+    [[[CLGeocoder alloc] init] reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+        if (!error && placemarks.count) {
+            CLPlacemark *placemark = placemarks[0];
+            NSString *locationName = [TellMeMyLocation shortLocationNameFromPlacemark:placemark];
+            
+            NSDictionary *properties = @{
+                                         @"Spots count" : [NSNumber numberWithInteger:spots.count],
+                                         @"Center location name" : locationName.length ? locationName : @"Unknown",
+                                         @"Center location zip" : placemark.postalCode.length ? placemark.postalCode : @"Unknown",
+                                         @"Center latitude" : [NSNumber numberWithFloat:centerCoordinate.latitude],
+                                         @"Center longitude" : [NSNumber numberWithFloat:centerCoordinate.longitude],
+                                         @"Current location latitude" : [NSNumber numberWithFloat:currentLocation.coordinate.latitude],
+                                         @"Current location longitude" : [NSNumber numberWithFloat:currentLocation.coordinate.longitude],
+                                         @"Distance in meters" : [NSNumber numberWithFloat:distance]
+                                         };
+            
+            [Tracker track:@"Drink specials fetched" properties:properties];
+        }
+    }];
+}
+
++ (void)trackSpotlist:(SpotListModel *)spotlist request:(SpotListRequest *)request currentLocation:(CLLocation *)currentLocation {
+    CLLocation *location = [[CLLocation alloc] initWithLatitude:request.coordinate.latitude longitude:request.coordinate.longitude];
+    CLLocationDistance distance = [location distanceFromLocation:currentLocation];
+    
+    [[[CLGeocoder alloc] init] reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+        if (!error && placemarks.count) {
+            CLPlacemark *placemark = placemarks[0];
+            NSString *locationName = [TellMeMyLocation shortLocationNameFromPlacemark:placemark];
+            
+            NSDictionary *properties = @{
+                                         @"Spots count" : [NSNumber numberWithInteger:spotlist.spots.count],
+                                         @"Center location name" : locationName.length ? locationName : @"Unknown",
+                                         @"Center location zip" : placemark.postalCode.length ? placemark.postalCode : @"Unknown",
+                                         @"Center latitude" : [NSNumber numberWithFloat:request.coordinate.latitude],
+                                         @"Center longitude" : [NSNumber numberWithFloat:request.coordinate.longitude],
+                                         @"Current location latitude" : [NSNumber numberWithFloat:currentLocation.coordinate.latitude],
+                                         @"Current location longitude" : [NSNumber numberWithFloat:currentLocation.coordinate.longitude],
+                                         @"Distance in meters" : [NSNumber numberWithFloat:distance]
+                                         };
+            
+            [Tracker track:@"Spotlist fetched" properties:properties];
+        }
+    }];
+}
+
++ (void)trackDrinklist:(DrinkListModel *)drinklist request:(DrinkListRequest *)request currentLocation:(CLLocation *)currentLocation {
+    CLLocation *location = [[CLLocation alloc] initWithLatitude:request.coordinate.latitude longitude:request.coordinate.longitude];
+    CLLocationDistance distance = [location distanceFromLocation:currentLocation];
+    
+    [[[CLGeocoder alloc] init] reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+        if (!error && placemarks.count) {
+            CLPlacemark *placemark = placemarks[0];
+            NSString *locationName = [TellMeMyLocation shortLocationNameFromPlacemark:placemark];
+            
+            NSDictionary *properties = @{
+                                         @"Drinks count" : [NSNumber numberWithInteger:drinklist.drinks.count],
+                                         @"Center location name" : locationName.length ? locationName : @"Unknown",
+                                         @"Center location zip" : placemark.postalCode.length ? placemark.postalCode : @"Unknown",
+                                         @"Center latitude" : [NSNumber numberWithFloat:request.coordinate.latitude],
+                                         @"Center longitude" : [NSNumber numberWithFloat:request.coordinate.longitude],
+                                         @"Current location latitude" : [NSNumber numberWithFloat:currentLocation.coordinate.latitude],
+                                         @"Current location longitude" : [NSNumber numberWithFloat:currentLocation.coordinate.longitude],
+                                         @"Distance in meters" : [NSNumber numberWithFloat:distance]
+                                         };
+            
+            [Tracker track:@"Drinklist fetched" properties:properties];
+        }
+    }];
 }
 
 @end

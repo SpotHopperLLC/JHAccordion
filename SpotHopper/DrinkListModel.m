@@ -454,13 +454,10 @@
     NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
     params[kDrinkListModelParamRadius] = radiusParam;
     
-    DebugLog(@"params: %@", params);
-    
     return params;
 }
 
 + (void)createDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinkListModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
-    DebugLog(@"Creating drinklist: %@", request.name);
     
     NSDictionary *params = [self prepareSearchParametersWithRequest:request];
     
@@ -497,7 +494,6 @@
 }
 
 + (void)updateDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinkListModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
-    DebugLog(@"Updating drinklist: %@", request.name);
 
     NSDictionary *params = [self prepareSearchParametersWithRequest:request];
     

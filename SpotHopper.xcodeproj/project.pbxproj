@@ -7685,6 +7685,7 @@
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-DNS_BLOCK_ASSERTIONS=1",
+					"-DNDEBUG=1",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -7826,6 +7827,7 @@
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-DNS_BLOCK_ASSERTIONS=1",
+					"-DNDEBUG=1",
 				);
 				PRODUCT_NAME = SpotHopperStaging;
 				PROVISIONING_PROFILE = "57228577-D213-49EF-B6C9-6DAD958E4059";
@@ -7875,6 +7877,7 @@
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-DNS_BLOCK_ASSERTIONS=1",
+					"-DNDEBUG=1",
 				);
 				PRODUCT_NAME = SpotHopperDev;
 				PROVISIONING_PROFILE = "";
@@ -7924,6 +7927,7 @@
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-DNS_BLOCK_ASSERTIONS=1",
+					"-DNDEBUG=1",
 				);
 				PRODUCT_NAME = SH2;
 				PROVISIONING_PROFILE = "CB687FEA-A67F-4B94-A032-5E206A24B16A";

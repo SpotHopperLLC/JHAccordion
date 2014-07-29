@@ -8,7 +8,9 @@
 
 #import "Tracker.h"
 
-@class SHJSONAPIResource, DrinkModel, SpotModel;
+#import <CoreLocation/CoreLocation.h>
+
+@class SHJSONAPIResource, SpotModel, DrinkModel, SpotListModel, DrinkListModel, SpotListRequest, DrinkListRequest;
 
 @interface Tracker (Events)
 
@@ -57,5 +59,11 @@
 + (void)trackUserTappedLocationPickerButton;
 
 + (void)trackUserSetNewLocation;
+
++ (void)trackDrinkSpecials:(NSArray *)spots centerCoordinate:(CLLocationCoordinate2D)centerCoordinate currentLocation:(CLLocation *)currentLocation;
+
++ (void)trackSpotlist:(SpotListModel *)spotlist request:(SpotListRequest *)request currentLocation:(CLLocation *)currentLocation;
+
++ (void)trackDrinklist:(DrinkListModel *)drinklist request:(DrinkListRequest *)request currentLocation:(CLLocation *)currentLocation;
 
 @end
