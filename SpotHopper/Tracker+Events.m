@@ -242,16 +242,16 @@
             }
             
             if (SHModeBeer == mode) {
-                [self trackLocationPropertiesForEvent:@"Drinklist fetched (Beer)" properties:@{}];
+                [self track:@"Drinklist fetched (Beer)" properties:properties];
             }
             else if (SHModeCocktail == mode) {
-                [self trackLocationPropertiesForEvent:@"Drinklist fetched (Cocktail)" properties:@{}];
+                [self track:@"Drinklist fetched (Cocktail)" properties:properties];
             }
             else if (SHModeWine == mode) {
-                [self trackLocationPropertiesForEvent:@"Drinklist fetched (Wine)" properties:@{}];
+                [self track:@"Drinklist fetched (Wine)" properties:properties];
             }
             else  {
-                [self trackLocationPropertiesForEvent:@"Drinklist fetched" properties:@{}];
+                [self track:@"Drinklist fetched" properties:properties];
             }
         }];
     }];
