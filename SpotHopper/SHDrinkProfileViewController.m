@@ -441,7 +441,7 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
         
         if (isWine || isBeer) {
             beerAndWineInfo.font = [UIFont fontWithName:@"Lato-Light" size:14.0f];
-            beerAndWineInfo.text = [NSString stringWithFormat:@"%.3f ABV", [self.drink.abv floatValue]];
+            beerAndWineInfo.text = [NSString stringWithFormat:@"%@ ABV", self.drink.abvPercentString];
         }
         else {
             beerAndWineInfo.text = nil;
