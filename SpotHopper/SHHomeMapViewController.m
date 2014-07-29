@@ -573,13 +573,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)showSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
     NSAssert(self.navigationItem, @"Navigation Item is required");
     
-//#ifdef kIntegrateDeprecatedScreens
-//    SearchViewController *viewController = [[SearchViewController alloc] initWithNibName:@"SearchViewController" bundle:[NSBundle mainBundle]];
-//    viewController.delegate = self;
-//    [self.navigationController pushViewController:viewController animated:YES];
-//
-//#else
-    
     [self hideBottomViewWithCompletionBlock:nil];
     
     _isShowingSearchView = TRUE;
@@ -659,9 +652,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         LOG_FRAME(@"global search frame", self.globalSearchViewController.view.frame);
         DebugLog(@"constraints: %@", self.globalSearchViewController.view.constraints);
     });
-
-    
-//#endif
 }
 
 - (void)hideSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
@@ -2576,7 +2566,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didSelectSpotAtIndex:(NSUInteger)index {
     // Note: Do not focus on spot when spot is selected
 
-//#ifdef kIntegrateDeprecatedScreens
     SpotModel *spot = nil;
     
     if (self.spotListModel && index < self.spotListModel.spots.count) {
@@ -2593,21 +2582,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.selectedSpot = spot;
         [self performSegueWithIdentifier:HomeMapToSpotProfile sender:self];
     }
-//#else
-//    if (self.spotListModel && index < self.spotListModel.spots.count) {
-//        self.selectedSpot = self.spotListModel.spots[index];
-//        [self performSegueWithIdentifier:HomeMapToSpotProfile sender:self];
-//    }
-//    else if (self.drinkListModel && index < self.spotsForDrink.count) {
-//        self.selectedDrink = self.spotsForDrink[index];
-//        [self performSegueWithIdentifier:HomeMapToSpotProfile sender:self];
-//    }
-//    else if (self.specialsSpotModels && index < self.specialsSpotModels.count) {
-//        self.selectedSpot = self.specialsSpotModels[index];
-//        [self performSegueWithIdentifier:HomeMapToSpotProfile sender:self];
-//    }
-//#endif
-    
 }
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didRequestShareSpecialForSpotAtIndex:(NSUInteger)index {
@@ -2625,8 +2599,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didSelectDrinkAtIndex:(NSUInteger)index {
-
-#ifdef kIntegrateDeprecatedScreens
     if (self.drinkListModel.drinks.count && index < self.drinkListModel.drinks.count) {
         self.selectedDrink = self.drinkListModel.drinks[index];
         [self performSegueWithIdentifier:HomeMapToDrinkProfile sender:self];
@@ -2634,16 +2606,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     else {
         NSAssert(FALSE, @"Index should always be in bounds");
     }
-#else
-    if (self.drinkListModel.drinks.count && index < self.drinkListModel.drinks.count) {
-        self.selectedDrink = self.drinkListModel.drinks[index];
-        [self performSegueWithIdentifier:HomeMapToDrinkProfile sender:self];
-    }
-    else {
-        NSAssert(FALSE, @"Index should always be in bounds");
-    }
-#endif
-    
 }
 
 #pragma mark - SHMapFooterNavigationDelegate
