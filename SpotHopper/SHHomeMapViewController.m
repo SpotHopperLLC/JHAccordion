@@ -285,7 +285,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-
+    
     // update location name again once the map settles
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [self updateLocationName];
@@ -1155,15 +1155,20 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)restoreTitle {
-    if (self.spotListModel.spots.count) {
+    if (self.spotListModel.name.length) {
         self.navigationItem.title = self.spotListModel.name;
     }
-    else if (self.drinkListModel.drinks.count) {
+    else if (self.drinkListModel.name.length) {
         self.navigationItem.title = self.drinkListModel.name;
-        
     }
     else if (self.specialsSpotModels.count) {
         self.navigationItem.title = kTodaysSpecialsTitle;
+    }
+    else if (self.selectedSpot.name.length) {
+        self.navigationItem.title = self.selectedSpot.name;
+    }
+    else if (self.selectedDrink.name.length) {
+        self.navigationItem.title = self.selectedDrink.name;
     }
     else {
         self.navigationItem.title = kDefaultTitle;
