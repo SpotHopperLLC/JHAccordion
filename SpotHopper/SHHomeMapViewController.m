@@ -266,6 +266,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [Tracker trackViewedHome];
+    
     [self setNeedsStatusBarAppearanceUpdate];
     
     [self.view sendSubviewToBack:self.containerView];

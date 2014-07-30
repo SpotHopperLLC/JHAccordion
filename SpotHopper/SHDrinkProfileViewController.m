@@ -427,15 +427,7 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
         UILabel *drinkSpecific = (UILabel*)[cell viewWithTag:kTagDrinkTypeSpecificInfoLabel];
         drinkSpecific.font = [UIFont fontWithName:@"Lato-Light" size:14.0f];
         
-        NSString *message;
-        if (isWine) {
-            message = self.drink.varietal;
-        }
-        else if (isBeer) {
-            message = self.drink.style;
-        }
-        
-        drinkSpecific.text = message;
+        drinkSpecific.text = self.drink.drinkStyle;
         
         UILabel *beerAndWineInfo = (UILabel*)[cell viewWithTag:kTagDrinkBeerWineInfoLabel];
         

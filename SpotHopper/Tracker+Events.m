@@ -87,6 +87,10 @@
     [self trackLocationPropertiesForEvent:@"Exiting GlobalSearch" properties:@{@"Selected a result" : [NSNumber numberWithBool:selected]}];
 }
 
++ (void)trackViewedHome {
+    [self trackLocationPropertiesForEvent:@"Viewed Home" properties:@{}];
+}
+
 + (void)trackLeavingHomeToSpots {
     [self trackLocationPropertiesForEvent:@"Home to Spots" properties:@{}];
 }

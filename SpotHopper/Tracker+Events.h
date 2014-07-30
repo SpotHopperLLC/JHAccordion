@@ -30,6 +30,8 @@
 
 + (void)trackLeavingGlobalSearch:(BOOL)selected;
 
++ (void)trackViewedHome;
+
 + (void)trackLeavingHomeToSpots;
 
 + (void)trackLeavingHomeToSpecials;
