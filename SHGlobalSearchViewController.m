@@ -269,8 +269,6 @@
     self.page = @1;
     [self.results removeAllObjects];
     
-    [self dataDidFinishRefreshing];
-    
     if (self.searchText.length) {
         [self doSearch];
     }

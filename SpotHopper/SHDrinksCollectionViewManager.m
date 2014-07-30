@@ -236,8 +236,8 @@
     [SHStyleKit setLabel:rankingLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setLabel:matchLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:positionLabel textColor:SHStyleKitColorMyTextColor];
-    [SHStyleKit setButton:findSimilarButton normalTextColor:SHStyleKitColorMyTextColor highlightedTextColor:SHStyleKitColorMyWhiteColor];
-    [SHStyleKit setButton:reviewItButton normalTextColor:SHStyleKitColorMyTextColor highlightedTextColor:SHStyleKitColorMyWhiteColor];
+    [SHStyleKit setButton:findSimilarButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setButton:reviewItButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
     
     [nameLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
     [breweryLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
@@ -249,8 +249,8 @@
     [reviewItButton.titleLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
     
     CGSize buttonImageSize = CGSizeMake(30, 30);
-    [SHStyleKit setButton:findSimilarButton withDrawing:SHStyleKitDrawingSearchIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor size:buttonImageSize];
-    [SHStyleKit setButton:reviewItButton withDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor size:buttonImageSize];
+    [SHStyleKit setButton:findSimilarButton withDrawing:SHStyleKitDrawingSearchIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor size:buttonImageSize];
+    [SHStyleKit setButton:reviewItButton withDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor size:buttonImageSize];
     
     drinkImageView.image = nil;
     
@@ -274,13 +274,9 @@
     }
    
     nameLabel.text = drink.name;
-    
     breweryLabel.text = drink.spot.name;
-    
     styleLabel.text = drink.drinkStyle;
-    
     rankingLabel.text = drink.rating;
-    
     positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", (long)index+1, (long)self.drinkList.drinks.count];
     
     if (drink.matchPercent.length) {
@@ -293,19 +289,7 @@
     else {
         percentageLabel.hidden = TRUE;
         matchLabel.hidden = TRUE;
-        
-        UIImage *image = nil;
-        if (drink.isBeer) {
-            image = [SHStyleKit drawImage:SHStyleKitDrawingBeerIcon color:SHStyleKitColorMyTintColor size:CGSizeMake(60, 60)];
-        }
-        else if (drink.isCocktail) {
-            image = [SHStyleKit drawImage:SHStyleKitDrawingCocktailIcon color:SHStyleKitColorMyTintColor size:CGSizeMake(60, 60)];
-        }
-        else if (drink.isWine) {
-            image = [SHStyleKit drawImage:SHStyleKitDrawingWineIcon color:SHStyleKitColorMyTintColor size:CGSizeMake(60, 60)];
-        }
-        
-        matchImageView.image = image;
+        matchImageView.image = nil;
     }
     
     if (self.drinkList.drinks.count == 1) {

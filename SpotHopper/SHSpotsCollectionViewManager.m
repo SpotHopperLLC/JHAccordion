@@ -259,9 +259,9 @@
     [SHStyleKit setLabel:percentageLabel textColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setLabel:matchLabel textColor:SHStyleKitColorMyTintColor];
     
-    [SHStyleKit setButton:findSimilarButton normalTextColor:SHStyleKitColorMyTextColor highlightedTextColor:SHStyleKitColorMyWhiteColor];
-    [SHStyleKit setButton:reviewItButton normalTextColor:SHStyleKitColorMyTextColor highlightedTextColor:SHStyleKitColorMyWhiteColor];
-    [SHStyleKit setButton:menuButton normalTextColor:SHStyleKitColorMyTextColor highlightedTextColor:SHStyleKitColorMyWhiteColor];
+    [SHStyleKit setButton:findSimilarButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setButton:reviewItButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setButton:menuButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
     
     [nameLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
     [typeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
@@ -275,9 +275,9 @@
     [menuButton.titleLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
     
     CGSize buttonImageSize = CGSizeMake(30, 30);
-    [SHStyleKit setButton:findSimilarButton withDrawing:SHStyleKitDrawingSearchIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor size:buttonImageSize];
-    [SHStyleKit setButton:reviewItButton withDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor size:buttonImageSize];
-    [SHStyleKit setButton:menuButton withDrawing:SHStyleKitDrawingDrinkMenuIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor size:buttonImageSize];
+    [SHStyleKit setButton:findSimilarButton withDrawing:SHStyleKitDrawingSearchIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor size:buttonImageSize];
+    [SHStyleKit setButton:reviewItButton withDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor size:buttonImageSize];
+    [SHStyleKit setButton:menuButton withDrawing:SHStyleKitDrawingDrinkMenuIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor size:buttonImageSize];
     
     nameLabel.text = spot.name;
     nameLabel.textColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
@@ -302,8 +302,7 @@
     nextButton.hidden = index == self.spotList.spots.count - 1;
     
     if (self.spotList.spots.count == 1) {
-        UIImage *spotImage = [SHStyleKit drawImage:SHStyleKitDrawingSpotIcon color:SHStyleKitColorMyTintColor size:CGSizeMake(60, 60)];
-        matchImageView.image = spotImage;
+        matchImageView.image = nil;
         
         percentageLabel.hidden = TRUE;
         matchLabel.hidden = TRUE;

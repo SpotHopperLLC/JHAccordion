@@ -328,8 +328,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
         return 1;
     }
     else if (kSectionSliders == section) {
-        NSLog(@"# of templates:  %lu", (unsigned long)self.spot.sliderTemplates.count);
-        return self.spot.sliderTemplates.count;
+        return self.spot.averageReview.sliders.count;
     }
     
     return 0;
@@ -419,6 +418,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
             [slider setSelectedValue:(sliderModel.value.floatValue / 10.0f)];
         }
         else {
+            DebugLog(@"indexPath, %lu, %lu", (unsigned long)indexPath.section, (unsigned long)indexPath.row);
             NSAssert(FALSE, @"Index should never be out of range");
         }
     }
