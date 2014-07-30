@@ -1416,9 +1416,11 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [self showCollectionContainerView:TRUE withCompletionBlock:^{
         [self showStatus:@"Locating..." animated:TRUE withCompletionBlock:nil];
         [[drink fetchSpotsForDrinkListRequest:request] then:^(NSArray *spots) {
+            [self hideStatus:TRUE withCompletionBlock:nil];
             [self populateMapWithSpots:spots];
             self.spotsForDrink = spots;
         } fail:^(ErrorModel *errorModel) {
+            [self hideStatus:TRUE withCompletionBlock:nil];
             [self oops:errorModel caller:_cmd];
         } always:nil];
     }];
