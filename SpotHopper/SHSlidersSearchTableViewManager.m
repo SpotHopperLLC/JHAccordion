@@ -28,7 +28,9 @@
 #import "BaseAlcoholModel.h"
 
 #import "TellMeMyLocation.h"
+
 #import "Tracker.h"
+#import "Tracker+Events.h"
 
 #import "UIAlertView+Block.h"
 #import "SHStyleKit+Additions.h"
@@ -969,6 +971,8 @@
     SpotListModel *spotlist = [self spotlistAtIndexPath:indexPath];
     self.selectedSpotlist = spotlist;
     
+    [Tracker trackSpotsMoodSelected:spotlist.name];
+    
     [self updateSectionTitle:[NSString stringWithFormat:@"Step 1 - %@", spotlist.name] section:indexPath.section];
     
     void (^completeBlock)(BOOL) = ^void (BOOL didSetAdvancedSlider) {
@@ -983,32 +987,8 @@
                 [self.accordion openSections:@[[NSNumber numberWithInteger:kSection_Spots_Sliders]]];
             }
         }
-        else if (self.mode == SHModeBeer) {
-            if (didSetAdvancedSlider) {
-                [self.accordion openSections:@[[NSNumber numberWithInteger:kSection_Beer_Sliders],
-                                                                 [NSNumber numberWithInteger:kSection_Beer_AdvancedSliders]]];
-            }
-            else {
-                [self.accordion openSections:@[[NSNumber numberWithInteger:kSection_Beer_Sliders]]];
-            }
-        }
-        else if (self.mode == SHModeCocktail) {
-            if (didSetAdvancedSlider) {
-                [self.accordion openSections:@[[NSNumber numberWithInteger:kSection_Cocktail_Sliders],
-                                                                 [NSNumber numberWithInteger:kSection_Cocktail_AdvancedSliders]]];
-            }
-            else {
-                [self.accordion openSections:@[[NSNumber numberWithInteger:kSection_Cocktail_Sliders]]];
-            }
-        }
-        else if (self.mode == SHModeWine) {
-            if (didSetAdvancedSlider) {
-                [self.accordion openSections:@[[NSNumber numberWithInteger:kSection_Wine_Sliders],
-                                                                 [NSNumber numberWithInteger:kSection_Wine_AdvancedSliders]]];
-            }
-            else {
-                [self.accordion openSections:@[[NSNumber numberWithInteger:kSection_Wine_Sliders]]];
-            }
+        else {
+            NSAssert(FALSE, @"Condition should not be met");
         }
         
         [self notifyThatManagerIsFree];
@@ -1081,17 +1061,9 @@
     void (^completeBlock)(BOOL) = ^void (BOOL didSetAdvancedSlider) {
         [self.accordion closeSection:indexPath.section];
         
-        if (self.mode == SHModeSpots) {
+        if (self.mode == SHModeBeer) {
             if (didSetAdvancedSlider) {
-                [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Spots_Sliders],
-                                                                 [NSNumber numberWithInteger:kSection_Spots_AdvancedSliders]]];
-            }
-            else {
-                [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Spots_Sliders]]];
-            }
-        }
-        else if (self.mode == SHModeBeer) {
-            if (didSetAdvancedSlider) {
+                [Tracker trackBeerStyleSelected:drinklist.name];
                 [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Beer_Sliders],
                                                                  [NSNumber numberWithInteger:kSection_Beer_AdvancedSliders]]];
             }
@@ -1100,6 +1072,7 @@
             }
         }
         else if (self.mode == SHModeCocktail) {
+            [Tracker trackCocktailStyleSelected:drinklist.name];
             if (didSetAdvancedSlider) {
                 [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Cocktail_Sliders],
                                                                  [NSNumber numberWithInteger:kSection_Cocktail_AdvancedSliders]]];
@@ -1109,6 +1082,7 @@
             }
         }
         else if (self.mode == SHModeWine) {
+            [Tracker trackWineStyleSelected:drinklist.name];
             if (didSetAdvancedSlider) {
                 [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Wine_Sliders],
                                                                  [NSNumber numberWithInteger:kSection_Wine_AdvancedSliders]]];
@@ -1116,6 +1090,9 @@
             else {
                 [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Wine_Sliders]]];
             }
+        }
+        else {
+            NSAssert(FALSE, @"Condition should not be met");
         }
         
         [self notifyThatManagerIsFree];
@@ -1129,6 +1106,7 @@
         [[drinklist fetchDrinkList] then:^(DrinkListModel *drinklist) {
             [self updateSliders:drinklist.sliders withCompletionBlock:completeBlock];
         } fail:^(ErrorModel *errorModel) {
+            [self notifyThatManagerIsFree];
             [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
         } always:nil];
     }
@@ -1618,7 +1596,25 @@
     }
 }
 
-- (void)fetchSpotListResultsWithCompletionBlock:(void (^)(SpotListModel *spotListModel, SpotListRequest *request, ErrorModel *errorModel))completionBlock {
+- (BOOL)isCustomRequest {
+    if (SHModeSpots == self.mode) {
+        return [[NSNull null] isEqual:self.selectedSpotlist.ID];
+    }
+    else {
+        return [[NSNull null] isEqual:self.selectedDrinklist.ID];
+    }
+}
+
+- (NSString *)customListName {
+    if (SHModeSpots == self.mode) {
+        return kSpotListModelDefaultName;
+    }
+    else {
+        return kDrinkListModelDefaultName;
+    }
+}
+
+- (void)fetchSpotListResultsWithListName:(NSString *)listName withCompletionBlock:(void (^)(SpotListModel *spotListModel, SpotListRequest *request, ErrorModel *errorModel))completionBlock {
     NSMutableArray *allTheSliders = @[].mutableCopy;
     [allTheSliders addObjectsFromArray:self.sliders];
     [allTheSliders addObjectsFromArray:self.advancedSliders];
@@ -1655,11 +1651,13 @@
         request.spotTypeId = self.selectedSpotType.ID;
     }
     
-    if ([kCustomSlidersTitle isEqualToString:self.selectedSpotlist.name]) {
-        request.name = kSpotListModelDefaultName;
+    if (self.selectedSpotlist && ![[NSNull null] isEqual:self.selectedSpotlist.ID]) {
+        request.spotListId = self.selectedSpotlist.ID;
+        request.name = self.selectedSpotlist.name;
     }
     else {
-        request.name = self.selectedSpotlist.name.length ? self.selectedSpotlist.name : kSpotListModelDefaultName;
+        request.spotListId = nil;
+        request.name = listName.length > 0 ? listName : kSpotListModelDefaultName;
     }
     
     request.coordinate = coordinate;
@@ -1679,14 +1677,9 @@
         }
     } always:^{
     }];
-    
-    if (![[NSNull null] isEqual:self.selectedSpotlist.ID]) {
-        // save the changes to the spotlist if it is an existing spotlist
-    }
-    
 }
 
-- (void)fetchDrinkListResultsWithCompletionBlock:(void (^)(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel))completionBlock {
+- (void)fetchDrinkListResultsWithListName:(NSString *)listName withCompletionBlock:(void (^)(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel))completionBlock {
     NSMutableArray *allTheSliders = @[].mutableCopy;
     [allTheSliders addObjectsFromArray:self.sliders];
     [allTheSliders addObjectsFromArray:self.advancedSliders];
@@ -1722,13 +1715,11 @@
     DrinkListRequest *request = [[DrinkListRequest alloc] init];
     if (self.selectedDrinklist && ![[NSNull null] isEqual:self.selectedDrinklist.ID]) {
         request.drinkListId = self.selectedDrinklist.ID;
-    }
-    
-    if ([kCustomSlidersTitle isEqualToString:self.selectedDrinklist.name]) {
-        request.name = kDrinkListModelDefaultName;
+        request.name = self.selectedDrinklist.name;
     }
     else {
-        request.name = self.selectedDrinklist.name.length ? self.selectedDrinklist.name : kDrinkListModelDefaultName;
+        request.drinkListId = nil;
+        request.name = listName.length > 0 ? listName : kDrinkListModelDefaultName;
     }
     
     request.coordinate = coordinate;

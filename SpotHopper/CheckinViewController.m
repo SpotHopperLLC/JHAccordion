@@ -458,7 +458,7 @@
 - (void)startSearch {
     // Resets pages and clears results
     _page = @1;
-
+    
     [self doSearch];
 }
 

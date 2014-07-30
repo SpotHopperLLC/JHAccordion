@@ -14,10 +14,14 @@
 #import "DrinkTypeModel.h"
 #import "DrinkSubTypeModel.h"
 #import "SliderTemplateModel.h"
+#import "AverageReviewModel.h"
+#import "BaseAlcoholModel.h"
 
 #import "DrinkListRequest.h"
 
 #import <CoreLocation/CoreLocation.h>
+
+#define kPageSize @15
 
 #define kMinRadiusFloat 0.5f
 #define kMaxRadiusFloat 5.0f
@@ -196,6 +200,53 @@
 }
 
 #pragma mark - Revised Code for 2.0
+
++ (void)fetchDrinksWithText:(NSString *)text page:(NSNumber *)page success:(void(^)(NSArray *drinks))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    NSDictionary *params = @{
+                             kDrinkModelParamQuery : text,
+                             kDrinkModelParamPage : page,
+                             kDrinkModelParamsPageSize : kPageSize
+                             };
+    
+    [[ClientSessionManager sharedClient] GET:@"/api/drinks" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
+            NSArray *drinks = [jsonApi resourcesForKey:@"drinks"];
+            
+            if (successBlock) {
+                successBlock(drinks);
+            }
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            
+            if (failureBlock) {
+                failureBlock(errorModel);
+            }
+        }
+    }];
+}
+
++ (Promise*)fetchDrinksWithText:(NSString *)text page:(NSNumber *)page {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [self fetchDrinksWithText:text page:page success:^(NSArray *drinks) {
+        // Resolves promise
+        [deferred resolveWith:drinks];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
 
 - (void)fetchDrink:(void(^)(DrinkModel *drinkModel))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
     [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drinks/%ld", (long)[self.ID integerValue] ] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -545,6 +596,40 @@
 
 - (BOOL)isWine {
     return [kDrinkTypeNameWine isEqualToString:self.drinkType.name];
+}
+
+- (NSString *)rating {
+    if (self.isWine && ![@"Sparkling" isEqualToString:self.drinkSubtype.name]) {
+        if (self.drinkSubtype.name.length) {
+            return [NSString stringWithFormat:@"%@ - Rating %.0f/10", self.drinkSubtype.name, [self.averageReview.rating floatValue]];
+        }
+        else {
+            return [NSString stringWithFormat:@"Rating %.0f/10", [self.averageReview.rating floatValue]];
+        }
+    }
+    else {
+        return [NSString stringWithFormat:@"Rating %.0f/10", [self.averageReview.rating floatValue]];
+    }
+}
+
+- (NSString *)ratingShort {
+    return [NSString stringWithFormat:@"%.0f/10", [self.averageReview.rating floatValue]];
+}
+
+- (NSString *)drinkStyle {
+    if (self.isBeer) {
+        return self.style;
+    }
+    else if (self.isCocktail && self.baseAlochols.count) {
+        BaseAlcoholModel *baseAlcohol = self.baseAlochols[0];
+        return baseAlcohol.name;
+    }
+    else if (self.isWine && self.varietal) {
+        return self.varietal;
+    }
+    else {
+        return nil;
+    }
 }
 
 - (UIImage *)placeholderImage {

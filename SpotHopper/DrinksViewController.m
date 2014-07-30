@@ -178,7 +178,6 @@
     [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | curve animations:^{
         [_tblSpots setFrame:frame];
     } completion:^(BOOL finished) {
-        [self dataDidFinishRefreshing];
     }];
 }
 
@@ -360,7 +359,6 @@
 }
 
 - (void)doSearch {
-    
     [self showHUD:@"Searching"];
     
     /*

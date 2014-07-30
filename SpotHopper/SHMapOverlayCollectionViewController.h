@@ -33,6 +33,10 @@
 
 - (void)displayDrinklist:(DrinkListModel *)drinklist;
 
+- (void)displaySingleSpot:(SpotModel *)spot;
+
+- (void)displaySingleDrink:(DrinkModel *)drink;
+
 @end
 
 @protocol SHMapOverlayCollectionDelegate <NSObject>

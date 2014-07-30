@@ -18,4 +18,8 @@
     return [self.topViewController preferredStatusBarStyle];
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return [self.topViewController prefersStatusBarHidden];
+}
+
 @end

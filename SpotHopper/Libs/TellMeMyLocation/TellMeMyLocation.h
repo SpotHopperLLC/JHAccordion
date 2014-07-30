@@ -23,6 +23,9 @@ typedef void (^TellMeMyLocationCompletionHandler)();
 
 - (void)findMe:(CLLocationAccuracy)accuracy found:(FoundBlock)foundBlock failure:(FailureBlock)failureBlock;
 + (CLLocation *)currentDeviceLocation;
++ (CLLocation *)currentSelectedLocation;
++ (void)setCurrentSelectedLocation:(CLLocation *)selectedLocation;
++ (CLLocation *)currentLocation;
 
 + (NSString *)locationNameFromPlacemark:(CLPlacemark *)placemark;
 + (NSString *)shortLocationNameFromPlacemark:(CLPlacemark *)placemark;

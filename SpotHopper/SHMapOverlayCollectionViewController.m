@@ -14,13 +14,17 @@
 #import "SpotModel.h"
 #import "DrinkListModel.h"
 
+#import "SHNotifications.h"
+
 #import "UIAlertView+Block.h"
 
 typedef enum {
     SHOverlayCollectionViewModeNone = 0,
     SHOverlayCollectionViewModeSpotlists,
     SHOverlayCollectionViewModeSpecials,
-    SHOverlayCollectionViewModeDrinklists
+    SHOverlayCollectionViewModeDrinklists,
+    SHOverlayCollectionViewModeSpot,
+    SHOverlayCollectionViewModeDrink
 } SHOverlayCollectionViewMode;
 
 @interface SHMapOverlayCollectionViewController () <SHSpotsCollectionViewManagerDelegate, SHSpecialsCollectionViewManagerDelegate, SHDrinksCollectionViewManagerDelegate>
@@ -86,10 +90,32 @@ typedef enum {
     }
 }
 
+- (void)displaySingleSpot:(SpotModel *)spot {
+    self.mode = SHOverlayCollectionViewModeSpot;
+
+    self.collectionView.dataSource = self.spotsCollectionViewManager;
+    self.collectionView.delegate = self.spotsCollectionViewManager;
+    
+    SpotListModel *spotlist = [[SpotListModel alloc] init];
+    spotlist.spots = @[spot];
+    [self.spotsCollectionViewManager updateSpotList:spotlist];
+}
+
 - (void)displayDrink:(DrinkModel *)drink {
     if (self.mode == SHOverlayCollectionViewModeDrinklists) {
         [self.drinksCollectionViewManager changeDrink:drink];
     }
+}
+
+- (void)displaySingleDrink:(DrinkModel *)drink {
+    self.mode = SHOverlayCollectionViewModeDrink;
+    
+    self.collectionView.dataSource = self.drinksCollectionViewManager;
+    self.collectionView.delegate = self.drinksCollectionViewManager;
+
+    DrinkListModel *drinklist = [[DrinkListModel alloc] init];
+    drinklist.drinks = @[drink];
+    [self.drinksCollectionViewManager updateDrinkList:drinklist];
 }
 
 - (void)displaySpecialsForSpots:(NSArray *)spots {
@@ -112,139 +138,103 @@ typedef enum {
 #pragma mark - User Actions
 #pragma mark -
 
-- (IBAction)spotCellNameButtonTapped:(id)sender {
-    NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
-    
-    NSUInteger index = [self.spotsCollectionViewManager indexForViewInCollectionViewCell:sender];
-    if (index != NSNotFound) {
-        NSLog(@"index: %lu", (long)index);
-        //call the delegate to trigger transition
-        [self spotsCollectionViewManager:self.spotsCollectionViewManager didSelectSpotAtIndex:index];
-    }
-}
-
 - (IBAction)spotCellLeftButtonTapped:(id)sender {
-    NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
-    
-    NSUInteger index = [self.spotsCollectionViewManager indexForViewInCollectionViewCell:sender];
-    if (index != NSNotFound) {
-        NSLog(@"index: %lu", (long)index);
-    }
-    
     [self.spotsCollectionViewManager goPrevious];
 }
 
 - (IBAction)spotCellRightButtonTapped:(id)sender {
-    NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
-    
-    NSUInteger index = [self.spotsCollectionViewManager indexForViewInCollectionViewCell:sender];
-    if (index != NSNotFound) {
-        NSLog(@"Overlay - index: %lu", (long)index);
-    }
-    
     [self.spotsCollectionViewManager goNext];
 }
 
-- (IBAction)specialCellNameButtonTapped:(id)sender {
-    NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
-    
-    NSUInteger index = [self.specialsCollectionViewManager indexForViewInCollectionViewCell:sender];
-    if (index != NSNotFound) {
-        NSLog(@"index: %lu", (long)index);
-        [self spotsCollectionViewManager:self.spotsCollectionViewManager didSelectSpotAtIndex:index];
+- (IBAction)spotCellFindSimilarButtonTapped:(id)sender {
+    if (self.mode == SHOverlayCollectionViewModeSpot) {
+        NSUInteger index = [self.spotsCollectionViewManager indexForViewInCollectionViewCell:sender];
+        if (index != NSNotFound) {
+            SpotModel *spot = [self.spotsCollectionViewManager spotAtIndex:index];
+            [SHNotifications findSimilarToSpot:spot];
+        }
+    }
+}
+
+- (IBAction)spotCellReviewItButtonTapped:(id)sender {
+    if (self.mode == SHOverlayCollectionViewModeSpot) {
+        NSUInteger index = [self.spotsCollectionViewManager indexForViewInCollectionViewCell:sender];
+        if (index != NSNotFound) {
+            SpotModel *spot = [self.spotsCollectionViewManager spotAtIndex:index];
+            [SHNotifications reviewSpot:spot];
+        }
+    }
+}
+
+- (IBAction)spotCellMenuButtonTapped:(id)sender {
+    if (self.mode == SHOverlayCollectionViewModeSpot) {
+        NSUInteger index = [self.spotsCollectionViewManager indexForViewInCollectionViewCell:sender];
+        if (index != NSNotFound) {
+            SpotModel *spot = [self.spotsCollectionViewManager spotAtIndex:index];
+            [SHNotifications openMenuForSpot:spot];
+        }
     }
 }
 
 - (IBAction)specialCellLeftButtonTapped:(id)sender {
-    NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
-    
-    NSUInteger index = [self.specialsCollectionViewManager indexForViewInCollectionViewCell:sender];
-    if (index != NSNotFound) {
-        NSLog(@"index: %lu", (long)index);
-    }
-    
     [self.specialsCollectionViewManager goPrevious];
 }
 
 - (IBAction)specialCellRightButtonTapped:(id)sender {
-    NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
-    
-    NSUInteger index = [self.specialsCollectionViewManager indexForViewInCollectionViewCell:sender];
-    if (index != NSNotFound) {
-        NSLog(@"Overlay - index: %lu", (long)index);
-    }
-    
     [self.specialsCollectionViewManager goNext];
 }
 
 - (IBAction)specialCellLikeButtonTapped:(id)sender {
-    NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
-    
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"This feature is not fully implemented. Please continue development." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
     }];
-    
-    NSUInteger index = [self.specialsCollectionViewManager indexForViewInCollectionViewCell:sender];
-    if (index != NSNotFound) {
-        NSLog(@"index: %lu", (long)index);
-    }
 }
 
 - (IBAction)specialCellShareButtonTapped:(id)sender {
-    NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
-    
     if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didRequestShareSpecialForSpotAtIndex:)]) {
         NSUInteger index = [self.specialsCollectionViewManager indexForViewInCollectionViewCell:sender];
         [self.delegate mapOverlayCollectionViewController:self didRequestShareSpecialForSpotAtIndex:index];
     }
 }
 
-- (IBAction)drinkCellNameButtonTapped:(id)sender {
-    NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
-    
-    NSUInteger index = [self.drinksCollectionViewManager indexForViewInCollectionViewCell:sender];
-    if (index != NSNotFound) {
-        NSLog(@"index: %lu", (long)index);
-        [self drinksCollectionViewManager:self.drinksCollectionViewManager didSelectDrinkAtIndex:index];
-    }
-}
-
 - (IBAction)drinkCellLeftButtonTapped:(id)sender {
-    NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
-    
-    NSUInteger index = [self.drinksCollectionViewManager indexForViewInCollectionViewCell:sender];
-    if (index != NSNotFound) {
-        NSLog(@"index: %lu", (long)index);
-    }
-    
     [self.drinksCollectionViewManager goPrevious];
 }
 
 - (IBAction)drinkCellRightButtonTapped:(id)sender {
-    NSLog(@"%@ (%@)", NSStringFromSelector(_cmd), NSStringFromClass([sender class]));
-    
-    NSUInteger index = [self.drinksCollectionViewManager indexForViewInCollectionViewCell:sender];
-    if (index != NSNotFound) {
-        NSLog(@"Overlay - index: %lu", (long)index);
-    }
-    
     [self.drinksCollectionViewManager goNext];
+}
+
+- (IBAction)drinkCellFindSimilarButtonTapped:(id)sender {
+    if (self.mode == SHOverlayCollectionViewModeDrink) {
+        NSUInteger index = [self.drinksCollectionViewManager indexForViewInCollectionViewCell:sender];
+        if (index != NSNotFound) {
+            DrinkModel *drink = [self.drinksCollectionViewManager drinkAtIndex:index];
+            [SHNotifications findSimilarToDrink:drink];
+        }
+    }
+}
+
+- (IBAction)drinkCellReviewItButtonTapped:(id)sender {
+    if (self.mode == SHOverlayCollectionViewModeDrink) {
+        NSUInteger index = [self.drinksCollectionViewManager indexForViewInCollectionViewCell:sender];
+        if (index != NSNotFound) {
+            DrinkModel *drink = [self.drinksCollectionViewManager drinkAtIndex:index];
+            [SHNotifications reviewDrink:drink];
+        }
+    }
 }
 
 #pragma mark - SHSpotsCollectionViewManagerDelegate
 #pragma mark -
 
 - (void)spotsCollectionViewManager:(SHSpotsCollectionViewManager *)manager didChangeToSpotAtIndex:(NSUInteger)index {
-    NSLog(@"Overlay - didChangeToSpotAtIndex: %lu", (long)index);
-    
     if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didChangeToSpotAtIndex:)]) {
         [self.delegate mapOverlayCollectionViewController:self didChangeToSpotAtIndex:index];
     }
 }
 
 - (void)spotsCollectionViewManager:(SHSpotsCollectionViewManager *)manager didSelectSpotAtIndex:(NSUInteger)index {
-    NSLog(@"Overlay - didSelectSpotAtIndex: %lu", (long)index);
-
     if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didSelectSpotAtIndex:)]) {
         [self.delegate mapOverlayCollectionViewController:self didSelectSpotAtIndex:index];
     }
@@ -254,16 +244,12 @@ typedef enum {
 #pragma mark -
 
 - (void)specialsCollectionViewManager:(SHSpecialsCollectionViewManager *)manager didChangeToSpotAtIndex:(NSUInteger)index {
-    NSLog(@"Overlay - didChangeToSpotAtIndex: %lu", (long)index);
-    
     if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didChangeToSpotAtIndex:)]) {
         [self.delegate mapOverlayCollectionViewController:self didChangeToSpotAtIndex:index];
     }
 }
 
 - (void)specialsCollectionViewManager:(SHSpecialsCollectionViewManager *)manager didSelectSpotAtIndex:(NSUInteger)index {
-    NSLog(@"Overlay - didSelectSpotAtIndex: %lu", (long)index);
-    
     if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didSelectSpotAtIndex:)]) {
         [self.delegate mapOverlayCollectionViewController:self didSelectSpotAtIndex:index];
     }

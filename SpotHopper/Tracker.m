@@ -19,9 +19,12 @@
 
 #import "Tracker.h"
 
+#import "TellMeMyLocation.h"
 #import "Mixpanel.h"
 #import "RavenClient.h"
 #import "ErrorModel.h"
+
+#define kUnknown @"Unknown"
 
 @implementation Tracker
 
@@ -32,6 +35,9 @@
 }
 
 + (void)track:(NSString *)event properties:(NSDictionary *)properties {
+    DebugLog(@"Event: %@", event);
+    DebugLog(@"Properties: %@", properties);
+    
     if (kAnalyticsEnabled) {
         [[Mixpanel sharedInstance] track:event properties:properties];
     }
@@ -51,6 +57,55 @@
 
 + (void)logFatal:(id)message class:(Class)class trace:(NSString *)trace {
     [self logForLevel:@"FATAL" message:message class:class trace:trace];
+}
+
+#pragma mark - Helpers
+#pragma mark -
+
++ (void)trackLocationPropertiesForEvent:(NSString *)eventName properties:(NSDictionary *)properties {
+    [self getPropertiesForLocation:[TellMeMyLocation currentLocation] prefix:@"Current" withCompletionBlock:^(NSDictionary *locationProperties, NSError *error) {
+        NSMutableDictionary *updatedProperties = properties.mutableCopy;
+        if (locationProperties) {
+            [updatedProperties addEntriesFromDictionary:locationProperties];
+        }
+        
+        [Tracker track:eventName properties:updatedProperties];
+    }];
+}
+
++ (void)getPropertiesForLocation:(CLLocation *)location prefix:(NSString *)prefix withCompletionBlock:(void (^)(NSDictionary *locationProperties, NSError *error))completionBlock {
+    
+    if (!location && completionBlock) {
+        completionBlock(nil, nil);
+        return;
+    }
+    
+    [[[CLGeocoder alloc] init] reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+        if (error) {
+            [Tracker logError:error class:[Tracker class] trace:NSStringFromSelector(_cmd)];
+            if (completionBlock) {
+                completionBlock(nil, error);
+            }
+        }
+        else if (placemarks.count) {
+            CLPlacemark *placemark = placemarks[0];
+            NSString *locationName = [TellMeMyLocation shortLocationNameFromPlacemark:placemark];
+            
+            NSDictionary *properties = @{
+                                         [NSString stringWithFormat:@"%@ location name", prefix] : locationName.length ? locationName : kUnknown,
+                                         [NSString stringWithFormat:@"%@ location zip", prefix] : placemark.postalCode.length ? placemark.postalCode : kUnknown,
+                                         [NSString stringWithFormat:@"%@ latitude", prefix] : [NSNumber numberWithFloat:location.coordinate.latitude],
+                                         [NSString stringWithFormat:@"%@ longitude", prefix] : [NSNumber numberWithFloat:location.coordinate.longitude],
+                                         };
+            
+            if (completionBlock) {
+                completionBlock(properties, nil);
+            }
+        }
+        else if (completionBlock) {
+            completionBlock(nil, nil);
+        }
+    }];
 }
 
 #pragma mark - Private

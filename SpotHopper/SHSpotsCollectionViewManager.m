@@ -37,6 +37,9 @@
 #define kSpotCellRightButton 9
 #define kSpotCellPercentageLabel 10
 #define kSpotCellMatchLabel 11
+#define kSpotCellFindSimilarButton 12
+#define kSpotCellReviewItButton 13
+#define kSpotCellMenuButton 14
 
 #pragma mark - Class Extension
 #pragma mark -
@@ -103,6 +106,15 @@
     if (index != NSNotFound) {
         [self changeIndex:index];
     }
+}
+
+- (SpotModel *)spotAtIndex:(NSUInteger)index {
+    if (index < self.spotList.spots.count) {
+        SpotModel *spot = (SpotModel *)self.spotList.spots[index];
+        return spot;
+    }
+    
+    return nil;
 }
 
 - (NSUInteger)indexForViewInCollectionViewCell:(UIView *)view {
@@ -220,6 +232,11 @@
     UIImageView *matchImageView = [self imageViewInView:cell withTag:kSpotCellMatchPercentageImageView];
     UILabel *percentageLabel = [self labelInView:cell withTag:kSpotCellPercentageLabel];
     UILabel *matchLabel = [self labelInView:cell withTag:kSpotCellMatchLabel];
+    UIButton *previousButton = [self buttonInView:cell withTag:kSpotCellLeftButton];
+    UIButton *nextButton = [self buttonInView:cell withTag:kSpotCellRightButton];
+    UIButton *findSimilarButton = [self buttonInView:cell withTag:kSpotCellFindSimilarButton];
+    UIButton *reviewItButton = [self buttonInView:cell withTag:kSpotCellReviewItButton];
+    UIButton *menuButton = [self buttonInView:cell withTag:kSpotCellMenuButton];
     
     NSAssert(nameLabel, @"View must be defined");
     NSAssert(typeLabel, @"View must be defined");
@@ -229,6 +246,11 @@
     NSAssert(matchImageView, @"View must be defined");
     NSAssert(percentageLabel, @"View must be defined");
     NSAssert(matchLabel, @"View must be defined");
+    NSAssert(previousButton, @"View must be defined");
+    NSAssert(nextButton, @"View must be defined");
+    NSAssert(findSimilarButton, @"View must be defined");
+    NSAssert(reviewItButton, @"View must be defined");
+    NSAssert(menuButton, @"View must be defined");
     
     [SHStyleKit setLabel:typeLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setLabel:neighborhoodLabel textColor:SHStyleKitColorMyTextColor];
@@ -237,6 +259,10 @@
     [SHStyleKit setLabel:percentageLabel textColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setLabel:matchLabel textColor:SHStyleKitColorMyTintColor];
     
+    [SHStyleKit setButton:findSimilarButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setButton:reviewItButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setButton:menuButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
+    
     [nameLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
     [typeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [neighborhoodLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
@@ -244,6 +270,14 @@
     [positionLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [percentageLabel setFont:[UIFont fontWithName:@"Lato-Light" size:22.0f]];
     [matchLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
+    [findSimilarButton.titleLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
+    [reviewItButton.titleLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
+    [menuButton.titleLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
+    
+    CGSize buttonImageSize = CGSizeMake(30, 30);
+    [SHStyleKit setButton:findSimilarButton withDrawing:SHStyleKitDrawingSearchIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor size:buttonImageSize];
+    [SHStyleKit setButton:reviewItButton withDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor size:buttonImageSize];
+    [SHStyleKit setButton:menuButton withDrawing:SHStyleKitDrawingDrinkMenuIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor size:buttonImageSize];
     
     nameLabel.text = spot.name;
     nameLabel.textColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
@@ -261,16 +295,37 @@
     positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", (long)index+1, (long)self.spotList.spots.count];
     percentageLabel.text = [NSString stringWithFormat:@"%@", spot.matchPercent];
     
-    UIImage *bubbleImage = [SHStyleKit drawImage:SHStyleKitDrawingMapBubblePinFilledIcon color:SHStyleKitColorNone size:CGSizeMake(60, 60)];
-    matchImageView.image = bubbleImage;
-    
-    UIButton *previousButton = [self buttonInView:cell withTag:kSpotCellLeftButton];
     [SHStyleKit setButton:previousButton withDrawing:SHStyleKitDrawingArrowLeftIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
     previousButton.hidden = index == 0;
     
-    UIButton *nextButton = [self buttonInView:cell withTag:kSpotCellRightButton];
     [SHStyleKit setButton:nextButton withDrawing:SHStyleKitDrawingArrowRightIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
     nextButton.hidden = index == self.spotList.spots.count - 1;
+    
+    if (self.spotList.spots.count == 1) {
+        matchImageView.image = nil;
+        
+        percentageLabel.hidden = TRUE;
+        matchLabel.hidden = TRUE;
+        previousButton.hidden = TRUE;
+        nextButton.hidden = TRUE;
+        positionLabel.hidden = TRUE;
+        findSimilarButton.hidden = FALSE;
+        reviewItButton.hidden = FALSE;
+        menuButton.hidden = FALSE;
+    }
+    else {
+        UIImage *bubbleImage = [SHStyleKit drawImage:SHStyleKitDrawingMapBubblePinFilledIcon color:SHStyleKitColorNone size:CGSizeMake(60, 60)];
+        matchImageView.image = bubbleImage;
+
+        percentageLabel.hidden = FALSE;
+        matchLabel.hidden = FALSE;
+        previousButton.hidden = FALSE;
+        nextButton.hidden = FALSE;
+        positionLabel.hidden = FALSE;
+        findSimilarButton.hidden = TRUE;
+        reviewItButton.hidden = TRUE;
+        menuButton.hidden = TRUE;
+    }
 }
 
 #pragma mark - Private

@@ -10,7 +10,7 @@
 
 @interface NSArray (DailySpecials)
 
-- (NSString*)specialsForToday;
+@property (readonly, nonatomic) NSString *specialsForToday;
 
 // THIS SHOULD ONLY GET CALLED PUBLICLY WHEN TESTING, OKAY?
 - (NSString*)specialsForNow:(NSDate*)now;
