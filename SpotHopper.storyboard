@@ -1577,7 +1577,7 @@
                                                         <action selector="specialCellRightButtonTapped:" destination="w1s-o9-ykd" eventType="touchUpInside" id="HXt-3P-Gvv"/>
                                                     </connections>
                                                 </button>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="3" contentMode="scaleToFill" editable="NO" text="Bar special with a description and time for the given special." selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3wG-OF-dGy">
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="3" contentMode="scaleToFill" editable="NO" text="Bar special with a description and time for the given special." selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3wG-OF-dGy" customClass="SHTappableTextView">
                                                     <rect key="frame" x="98" y="35" width="177" height="79"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
