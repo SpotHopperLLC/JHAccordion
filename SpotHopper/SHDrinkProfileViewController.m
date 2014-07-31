@@ -49,6 +49,7 @@
 #define kTagDrinkBeerWineInfoLabel 7
 #define kTagDrinkRatingView 8
 #define kTagDrinkRatingLabel 9
+#define kTagDrinkScoreLabel 10
 
 #define kTagDrinkSpecialLabel 1
 #define kTagDrinkSpecialLabelDetails 2
@@ -448,6 +449,10 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
         rating.font = [UIFont fontWithName:@"Lato-Light" size:16.0f];
         rating.textColor = [SHStyleKit color:SHStyleKitColorMyWhiteColor];
         rating.text = self.drink.ratingShort;
+        
+        UILabel *score = (UILabel*)[cell viewWithTag:kTagDrinkScoreLabel];
+        score.font = [UIFont fontWithName:@"Lato-Light" size:14.0f];
+        score.textColor = [SHStyleKit color:SHStyleKitColorMyWhiteColor];
     }
     else if (kSectionSliders == indexPath.section) {
         cell = [tableView dequeueReusableCellWithIdentifier:DrinkVibeIdentifier forIndexPath:indexPath];

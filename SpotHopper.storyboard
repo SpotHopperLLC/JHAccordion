@@ -3016,20 +3016,46 @@
                                                     <rect key="frame" x="250" y="10" width="60" height="60"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
-                                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="9" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="9.7/10" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxM-xe-0r1">
-                                                            <rect key="frame" x="6" y="20" width="49" height="21"/>
+                                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OTQ-XB-f71" userLabel="Inner View">
+                                                            <rect key="frame" x="6" y="11" width="49" height="39"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
+                                                            <subviews>
+                                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="9" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9.7/10" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxM-xe-0r1">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="49" height="21"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="score" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wAi-3V-8YL">
+                                                                    <rect key="frame" x="0.0" y="21" width="49" height="17"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstItem="bxM-xe-0r1" firstAttribute="top" secondItem="OTQ-XB-f71" secondAttribute="top" id="0fy-Cr-fQL"/>
+                                                                <constraint firstAttribute="trailing" secondItem="wAi-3V-8YL" secondAttribute="trailing" id="1Uv-Dw-gJc"/>
+                                                                <constraint firstAttribute="bottom" secondItem="wAi-3V-8YL" secondAttribute="bottom" id="58C-Zj-3JN"/>
+                                                                <constraint firstItem="wAi-3V-8YL" firstAttribute="top" secondItem="bxM-xe-0r1" secondAttribute="bottom" id="BwW-se-AYj"/>
+                                                                <constraint firstItem="bxM-xe-0r1" firstAttribute="width" secondItem="wAi-3V-8YL" secondAttribute="width" id="D1d-W8-LGD"/>
+                                                                <constraint firstAttribute="trailing" secondItem="bxM-xe-0r1" secondAttribute="trailing" id="LcH-9C-el5"/>
+                                                                <constraint firstItem="wAi-3V-8YL" firstAttribute="leading" secondItem="OTQ-XB-f71" secondAttribute="leading" id="cgV-2L-d75"/>
+                                                                <constraint firstItem="bxM-xe-0r1" firstAttribute="leading" secondItem="OTQ-XB-f71" secondAttribute="leading" id="sqz-ZN-eGi"/>
+                                                            </constraints>
+                                                        </view>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="3oP-1E-IcR"/>
+                                                        <constraint firstAttribute="centerY" secondItem="OTQ-XB-f71" secondAttribute="centerY" constant="-0.5" id="8iY-MA-1uU"/>
                                                         <constraint firstAttribute="width" constant="60" id="Vk2-Oy-aSZ"/>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="60" id="cD3-LS-jUW"/>
                                                         <constraint firstAttribute="height" constant="60" id="eO2-eO-nOc"/>
+                                                        <constraint firstAttribute="centerX" secondItem="OTQ-XB-f71" secondAttribute="centerX" constant="-0.5" id="vZs-V4-f84"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
@@ -3217,7 +3243,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Ags-6p-98d"/>
-        <segue reference="m5e-QT-orl"/>
+        <segue reference="JUZ-1I-e8k"/>
+        <segue reference="bf7-dq-aod"/>
     </inferredMetricsTieBreakers>
 </document>
