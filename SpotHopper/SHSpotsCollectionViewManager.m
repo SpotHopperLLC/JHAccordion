@@ -286,7 +286,7 @@
     neighborhoodLabel.text = spot.city;
     
     CLLocation *spotLocation = [[CLLocation alloc] initWithLatitude:[spot.latitude floatValue] longitude:[spot.longitude floatValue]];
-    CLLocation *currentLocation = [TellMeMyLocation currentDeviceLocation];
+    CLLocation *currentLocation = [TellMeMyLocation currentLocation];
     CLLocationDistance meters = [currentLocation distanceFromLocation:spotLocation];
     
     CGFloat miles = meters * kMeterToMile;
