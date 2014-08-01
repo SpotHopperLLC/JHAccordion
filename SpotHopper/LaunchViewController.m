@@ -17,6 +17,7 @@
 
 #import "TellMeMyLocation.h"
 #import "Tracker.h"
+#import "Tracker+Events.h"
 
 @interface LaunchViewController ()
 
@@ -84,11 +85,12 @@
     CGRect frameCreateForm = _viewFormCreate.frame;
     frameCreateForm.origin.y = -frameCreateForm.size.height;
     [_viewFormCreate setFrame:frameCreateForm];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    [Tracker trackLoginViewed];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -99,6 +101,13 @@
     
     // Sets in settings that user has seen launch
     [[ClientSessionManager sharedClient] setHasSeenLaunch:YES];
+    
+    if ([UserModel isLoggedIn]) {
+        [Tracker trackerLeavingLoginViewLoggedIn];
+    }
+    else {
+        [Tracker trackerLeavingLoginViewNotLoggedIn];
+    }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
@@ -112,13 +121,12 @@
     return 210.0f;
 }
 
--(void)setViewMovedUp:(BOOL)movedUp keyboardFrame:(CGRect)keyboardFrame {
+- (void)setViewMovedUp:(BOOL)movedUp keyboardFrame:(CGRect)keyboardFrame {
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.3]; // if you want to slide up the view
     
     CGRect rect = _viewOptions.frame;
-    if (_keyboardUp == NO)
-    {
+    if (_keyboardUp == NO) {
         _keyboardUp = YES;
         // 1. move the view's origin up so that the text field that will be hidden come above the keyboard
         // 2. increase the size of the view so that the area behind the keyboard is covered up.
@@ -127,8 +135,7 @@
         
         [_imgLogo setAlpha:0.0f];
     }
-    else
-    {
+    else {
         _keyboardUp = NO;
         // revert back to the normal state.
         rect.origin.y += [self offsetForKeyboard];
@@ -235,14 +242,14 @@
 #pragma mark - Private - API
 
 - (void)doLoginFacebook {
-    if ([[FBSession activeSession] isOpen] == YES) {
+    if ([[FBSession activeSession] isOpen]) {
         
         NSDictionary *params = @{
                                  kUserModelParamFacebookAccessToken: [[[FBSession activeSession] accessTokenData] accessToken]
                                  };
-        [self doLoginOperation:params];
+        [Tracker trackLoggingInWithFacebook];
         
-        [Tracker track:@"Logging In" properties:@{@"Service" : @"Facebook"}];
+        [self doLoginOperation:params];
     } else {
         [self showAlert:@"Oops" message:@"Error while logging in with Facebook"];
     }
@@ -255,9 +262,9 @@
                                  kUserModelParamsTwitterAccessToken: oAuthToken,
                                  kUserModelParamsTwitterAccessTokenSecret: oAuthTokenSecret,
                                  };
+        [Tracker trackLoggingInWithTwitter];
+
         [self doLoginOperation:params];
-        
-        [Tracker track:@"Logging In" properties:@{@"Service" : @"Twitter"}];
     } else {
         [self showAlert:@"Oops" message:@"Error while logging in with Twitter"];
     }
@@ -280,14 +287,13 @@
                              kUserModelParamEmail : email,
                              kUserModelParamPassword : password
                              };
+
+    [Tracker trackLoggingInWithSpotHopper];
     
     [self doLoginOperation:params];
-    
-    [Tracker track:@"Logging In" properties:@{@"Service" : @"SpotHopper"}];
 }
 
 - (void)doLoginOperation:(NSDictionary*)params {
-    
     NSMutableDictionary *paramsWithLocation = params.mutableCopy;
     
     // Sets last location to user if there is one
@@ -299,20 +305,20 @@
     
     [self showHUD:@"Logging in"];
     [UserModel loginUser:paramsWithLocation success:^(UserModel *userModel, NSHTTPURLResponse *response) {
-        [Tracker track:@"Logged In" properties:@{@"Success" : @TRUE}];
+        [Tracker trackLoggedIn:TRUE];
 
         [self hideHUD];
         [self exitLaunch];
         
     } failure:^(ErrorModel *errorModel) {
-        [Tracker track:@"Logged In" properties:@{@"Success" : @FALSE}];
+        [Tracker trackLoggedIn:FALSE];
         [self hideHUD];
 
         [self showAlert:@"Oops" message:errorModel.humanValidations];
         [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
-    
 }
+
 - (void)exitLaunch {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -352,11 +358,11 @@
         [params setObject:[NSNumber numberWithFloat:location.coordinate.longitude] forKey:kUserModelParamLongitude];
     }
     
-    [Tracker track:@"Creating Account"];
+    [Tracker trackCreatingAccount];
     
     [self showHUD:@"Creating account"];
     [UserModel registerUser:params success:^(UserModel *userModel, NSHTTPURLResponse *response) {
-        [Tracker track:@"Created User" properties:@{@"Success" : @TRUE}];
+        [Tracker trackCreatedUser:TRUE];
         
         [UserModel loginUser:params success:^(UserModel *userModel, NSHTTPURLResponse *response) {
             [self hideHUD];
@@ -367,9 +373,8 @@
             [self showAlert:@"Oops" message:errorModel.humanValidations];
             [Tracker logError:errorModel.error class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
-        
     } failure:^(ErrorModel *errorModel) {
-        [Tracker track:@"Created User" properties:@{@"Success" : @FALSE}];
+        [Tracker trackCreatedUser:FALSE];
         
         [self hideHUD];
 
@@ -381,8 +386,7 @@
 #pragma mark - Private - Animations
 
 - (void)showLogin:(BOOL)show {
-    
-    if (show == YES) {
+    if (show) {
         _isShowingLogin = YES;
         
         [UIView animateWithDuration:0.35f animations:^{
@@ -414,10 +418,8 @@
                 } completion:^(BOOL finished) {
                     
                 }];
-                
             }];
         }];
-        
     } else {
         _isShowingLogin = NO;
         
@@ -447,18 +449,13 @@
                 } completion:^(BOOL finished) {
                     
                 }];
-                
             }];
-            
         }];
-        
     }
-    
 }
 
 - (void)showCreate:(BOOL)show {
-    
-    if (show == YES) {
+    if (show) {
         _isShowingCreate = YES;
         
         [UIView animateWithDuration:0.35f animations:^{
@@ -490,11 +487,10 @@
                 } completion:^(BOOL finished) {
                     
                 }];
-                
             }];
         }];
-        
-    } else {
+    }
+    else {
         _isShowingCreate = NO;
         
         [_viewFacebook setHidden:NO];
@@ -523,13 +519,9 @@
                 } completion:^(BOOL finished) {
                     
                 }];
-                
             }];
-            
         }];
-        
     }
-    
 }
 
 @end

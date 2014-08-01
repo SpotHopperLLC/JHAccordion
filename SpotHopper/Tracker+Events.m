@@ -261,4 +261,43 @@
     }];
 }
 
+#pragma mark - Logins
+#pragma mark -
+
++ (void)trackLoginViewed {
+    [Tracker track:@"Login Viewed"];
+}
+
++ (void)trackerLeavingLoginViewLoggedIn {
+    [Tracker track:@"Leaving Login View (Logged In)"];
+}
+
++ (void)trackerLeavingLoginViewNotLoggedIn {
+    [Tracker track:@"Leaving Login View (Not Logged In)"];
+}
+
++ (void)trackCreatingAccount {
+    [Tracker track:@"Creating Account"];
+}
+
++ (void)trackCreatedUser:(BOOL)success {
+    [Tracker track:@"Created User" properties:@{@"Success" : [NSNumber numberWithBool:success]}];
+}
+
++ (void)trackLoggingInWithFacebook {
+    [Tracker track:@"Logging In" properties:@{@"Service" : @"Facebook"}];
+}
+
++ (void)trackLoggingInWithTwitter {
+    [Tracker track:@"Logging In" properties:@{@"Service" : @"Twitter"}];
+}
+
++ (void)trackLoggingInWithSpotHopper {
+    [Tracker track:@"Logging In" properties:@{@"Service" : @"SpotHopper"}];
+}
+
++ (void)trackLoggedIn:(BOOL)success {
+    [Tracker track:@"Logged In" properties:@{@"Success" : [NSNumber numberWithBool:success]}];
+}
+
 @end
