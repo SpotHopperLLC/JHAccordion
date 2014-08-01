@@ -452,10 +452,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             [view pinToSuperviewEdges:JRTViewPinAllEdges inset:0.0f usingLayoutGuidesFrom:self];
         }];
     }
-
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        LOG_FRAME(@"global search frame", self.globalSearchViewController.view.frame);
-    });
 }
 
 - (void)toggleSideBar:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
@@ -649,11 +645,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             completionBlock();
         }
     }];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        LOG_FRAME(@"global search frame", self.globalSearchViewController.view.frame);
-        DebugLog(@"constraints: %@", self.globalSearchViewController.view.constraints);
-    });
 }
 
 - (void)hideSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
@@ -1052,18 +1043,12 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark -
 
 - (void)keyboardWillShow:(NSNotification *)notification {
-    LOG_FRAME(@"global search frame", self.globalSearchViewController.view.frame);
-    
 	CGFloat height = [self getKeyboardHeight:notification forBeginning:TRUE];
 	NSTimeInterval duration = [self getKeyboardDuration:notification];
     
     if (_isShowingSearchView) {
         [self.globalSearchViewController adjustForKeyboardHeight:height duration:duration];
     }
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        LOG_FRAME(@"global search frame", self.globalSearchViewController.view.frame);
-    });
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
@@ -1363,6 +1348,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     // ensure a drinklist is set to support interactions
     SpotListModel *spotlist = [[SpotListModel alloc] init];
+    spotlist.name = spot.name;
     spotlist.spots = @[spot];
     self.spotListModel = spotlist;
     
@@ -1398,6 +1384,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
     // ensure a drinklist is set to support interactions
     DrinkListModel *drinklist = [[DrinkListModel alloc] init];
+    drinklist.name = drink.name;
     drinklist.drinks = @[drink];
     self.drinkListModel = drinklist;
     
@@ -2061,7 +2048,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         request.coordinate = [self visibleMapCenterCoordinate];
         request.radius = [self searchRadius];
         
-        if (!request.isBasedOnSliders && [self.selectedDrink.ID isEqual:request.drinkId]) {
+        if (!self.drinkListModel.ID && self.selectedDrink) {
+            [self displaySingleDrink:self.selectedDrink];
+            
+            if (completionBlock) {
+                completionBlock();
+            }
+        }
+        else if (!request.isBasedOnSliders && [self.selectedDrink.ID isEqual:request.drinkId]) {
             DrinkListModel *drinklist = [[DrinkListModel alloc] init];
             drinklist.drinks = @[self.selectedDrink];
             
@@ -2093,7 +2087,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         request.coordinate = [self visibleMapCenterCoordinate];
         request.radius = [self searchRadius];
         
-        if (!request.isBasedOnSliders && [self.selectedSpot.ID isEqual:request.spotId]) {
+        if (!self.spotListModel.ID && self.selectedSpot) {
+            [self displaySingleSpot:self.selectedSpot];
+            
+            if (completionBlock) {
+                completionBlock();
+            }
+        }
+        else if (!request.isBasedOnSliders && [self.selectedSpot.ID isEqual:request.spotId]) {
             SpotListModel *spotlist = [[SpotListModel alloc] init];
             spotlist.spots = @[self.selectedSpot];
             
@@ -3091,11 +3092,15 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             
             SHMode mode = [self modeForDrink:drinkModel];
             
+            [Tracker track:@"Creating Drinklist"];
+            
             [[DrinkListModel fetchDrinkListWithRequest:request] then:^(DrinkListModel *drinklist) {
+                [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Created With Sliders" : @FALSE}];
                 [self hideHUD];
                 
                 [self processDrinklistModel:drinklist withRequest:request forMode:mode];
             } fail:^(ErrorModel *errorModel) {
+                [Tracker track:@"Created Drinklist" properties:@{@"Success" : @FALSE, @"Created With Sliders" : @FALSE}];
                 [self hideHUD];
 #ifndef NDEBUG
                 [self oops:errorModel caller:_cmd message:[NSString stringWithFormat:@"Error in %@", NSStringFromSelector(_cmd)]];
@@ -3134,10 +3139,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             request.spotId = spotModel.ID;
             request.spotTypeId = spotModel.spotType.ID;
             
+            [Tracker track:@"Creating Spotlist"];
+            
             [[SpotListModel fetchSpotListWithRequest:request] then:^(SpotListModel *spotlist) {
+                [Tracker track:@"Created Spotlist" properties:@{@"Success" : @TRUE, @"Created With Sliders" : @FALSE}];
                 [self hideHUD];
                 [self processSpotlistModel:spotlist withRequest:request];
             } fail:^(ErrorModel *errorModel) {
+                [Tracker track:@"Created Spotlist" properties:@{@"Success" : @FALSE, @"Created With Sliders" : @FALSE}];
                 [self hideHUD];
 #ifndef NDEBUG
                 [self oops:errorModel caller:_cmd message:[NSString stringWithFormat:@"Error in %@", NSStringFromSelector(_cmd)]];
