@@ -58,4 +58,3 @@ target "SpotHopperStaging2" do
     # Debugging UI
     pod 'Reveal-iOS-SDK'
 end
-

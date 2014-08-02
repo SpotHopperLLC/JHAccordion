@@ -829,15 +829,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)repositionStatusView {
-    //[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(repositionStatusView) object:nil];
-    
     CGFloat padding = 8.0f;
     CGFloat lengthFromBottom = 0.0f;
     
-//    if (!self.areYouHerePromptView.hidden) {
-//        lengthFromBottom = CGRectGetHeight(self.view.frame) - self.areYouHerePromptView.frame.origin.y + padding;
-//    }
-//    else
     if (!self.searchThisAreaView.hidden) {
         lengthFromBottom = CGRectGetHeight(self.view.frame) - self.searchThisAreaView.frame.origin.y + padding;
     }
@@ -850,8 +844,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     self.statusBottomConstraint.constant = lengthFromBottom;
     [self.view setNeedsLayout];
     [self.view layoutIfNeeded];
-    
-    //[self performSelector:@selector(repositionStatusView) withObject:nil afterDelay:2.0f];
 }
 
 - (void)showStatus:(NSString *)text animated:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
@@ -1414,7 +1406,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [self showCollectionContainerView:TRUE withCompletionBlock:^{
         [self showStatus:@"Locating..." animated:TRUE withCompletionBlock:nil];
         [[drink fetchSpotsForDrinkListRequest:request] then:^(NSArray *spots) {
-            [self hideStatus:TRUE withCompletionBlock:nil];
             [self populateMapWithSpots:spots];
             self.spotsForDrink = spots;
         } fail:^(ErrorModel *errorModel) {
