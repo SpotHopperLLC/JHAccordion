@@ -27,10 +27,15 @@
 #import "DrinkProfileViewController.h"
 #import "SpotProfileViewController.h"
 
+#import "SpotModel.h"
+#import "DrinkModel.h"
 #import "LiveSpecialModel.h"
+
+#import "SHNotifications.h"
 
 #import "AppDelegate.h"
 #import "ClientSessionManager.h"
+#import "JTSReachabilityResponder.h"
 
 #import "TellMeMyLocation.h"
 #import "SSTURLShortener.h"
@@ -178,32 +183,38 @@ typedef void(^AlertBlock)();
 #pragma mark - URL Scheme Support
 
 - (void)handleOpenedURL:(NSURL *)openedURL {
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    appDelegate.openedURL = nil;
+    
     NSString *fullURLString = openedURL.absoluteString;
     
-    if ([fullURLString rangeOfString:@"//spots/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
-        NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"//spots/"];
+    if ([fullURLString rangeOfString:@"/spots/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+        NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"/spots/"];
         if (modelId != NSNotFound) {
             SpotModel *spot = [[SpotModel alloc] init];
-            [spot setID:[NSNumber numberWithInteger:modelId]];
-            [self goToSpotProfile:spot];
-        }
-        else {
-            [self goToSpotListMenu];
+            spot.ID = [NSNumber numberWithInteger:modelId];
+            [[spot fetchSpot] then:^(SpotModel *fetchedSpot) {
+                [SHNotifications displaySpot:fetchedSpot];
+            } fail:^(ErrorModel *errorModel) {
+                [self oops:errorModel caller:_cmd message:@"Failure to fetch spot. Please try again."];
+            } always:nil];
         }
     }
-    else if ([fullURLString rangeOfString:@"//drinks/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
-        NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"//drinks/"];
+    else if ([fullURLString rangeOfString:@"/drinks/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+        NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"/drinks/"];
         if (modelId != NSNotFound) {
             DrinkModel *drink = [[DrinkModel alloc] init];
-            [drink setID:[NSNumber numberWithInteger:modelId]];
-            [self goToDrinkProfile:drink];
-        }
-        else {
-            [self goToDrinkListMenu];
+            drink.ID = [NSNumber numberWithInteger:modelId];
+            
+            [[drink fetchDrink] then:^(DrinkModel *fetchedDrink) {
+                [SHNotifications displayDrink:fetchedDrink];
+            } fail:^(ErrorModel *errorModel) {
+                [self oops:errorModel caller:_cmd message:@"Failure to fetch drink. Please try again."];
+            } always:nil];
         }
     }
-    else if ([fullURLString rangeOfString:@"//live_specials/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
-        NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"//live_specials/"];
+    else if ([fullURLString rangeOfString:@"/live_specials/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+        NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"/live_specials/"];
         if (modelId != NSNotFound) {
             LiveSpecialModel *liveSpecial =[[LiveSpecialModel alloc] init];
             [liveSpecial setID:[NSNumber numberWithInteger:modelId]];
@@ -230,11 +241,14 @@ typedef void(^AlertBlock)();
 - (void)oops:(ErrorModel *)errorModel caller:(SEL)caller message:(NSString *)message {
     [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(caller)];
     
-    if (errorModel.human.length && !message.length) {
-        [self showAlert:@"Oops" message:errorModel.human];
+    if (NotReachable == [[JTSReachabilityResponder sharedInstance] networkStatus]) {
+        [self showAlert:@"Oops" message:@"Sorry, the network is currently not accessible. Please try again later."];
     }
     else if (message.length) {
         [self showAlert:@"Oops" message:message];
+    }
+    else if (errorModel.human.length && !message.length) {
+        [self showAlert:@"Oops" message:errorModel.human];
     }
     else {
         [self showAlert:@"Oops" message:@"Something went wrong. Please try again."];

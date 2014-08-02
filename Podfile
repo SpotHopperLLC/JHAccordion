@@ -23,6 +23,7 @@ pod 'CRGradientNavigationBar', '~> 0.3.0'
 pod 'UIImage+BlurredFrame', '~> 0.0'
 pod 'BlocksKit', '~> 2.2.0'
 pod 'SVPulsingAnnotationView', '~> 0.3.0'
+pod 'JTSReachability', :git => 'http://github.com/brennanMKE/JTSReachability.git', :tag => '0.0.1'
 
 # Debugging
 pod 'Raven', '~> 0.2.0'

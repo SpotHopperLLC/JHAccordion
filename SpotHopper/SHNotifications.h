@@ -40,12 +40,17 @@ extern NSString * const SHReviewSpotNotificationKey;
 extern NSString * const SHOpenMenuForSpotNotificationName;
 extern NSString * const SHOpenMenuForSpotNotificationKey;
 
-extern NSString * const SHUserDidLogInNotificationKey;
-extern NSString * const SHUserDidLogOutNotificationKey;
+extern NSString * const SHUserDidLogInNotificationName;
+extern NSString * const SHUserDidLogOutNotificationName;
+
+extern NSString * const SHAppOpenedWithURLNotificationName;
+extern NSString * const SHAppOpenedWithURLNotificationKey;
 
 @interface SHNotifications : NSObject
 
 + (void)goToHomeMap;
+
++ (void)appOpenedWithURL:(NSURL *)url;
 
 + (void)fetchDrinklistWithRequest:(DrinkListRequest *)request;
 

@@ -93,6 +93,9 @@
 
 - (void)slideCell:(UITableViewCell *)cell aboveTableViewMidwayPoint:(UITableView *)tableView;
 
+// URL Scheme Support
+- (void)handleOpenedURL:(NSURL *)openedURL;
+
 // LiveSpecialViewController
 - (void)showLiveSpecialViewController:(LiveSpecialModel *)liveSpecial needToFetch:(BOOL)needToFetch;
 - (void)hideLiveSpecialViewController:(void(^)(void))completion;

@@ -41,6 +41,7 @@
 #import "MockData.h"
 
 #import "TellMeMyLocation.h"
+#import "SHNotifications.h"
 
 #import "Mixpanel.h"
 #import "GAI.h"
@@ -193,13 +194,28 @@
         return NO;
     }
     
-    if ([kAppURLScheme length] && [fullURLString hasPrefix:kAppURLScheme]) {
+    if ([self isURLSchemePrefixForURLString:fullURLString] || [fullURLString hasPrefix:kWebsiteUrl]) {
         self.openedURL = url;
+        [SHNotifications appOpenedWithURL:url];
         return YES;
     }
     else {
         return [FBSession.activeSession handleOpenURL:url];
     }
+}
+
+- (BOOL)isURLSchemePrefixForURLString:(NSString *)urlString {
+    NSArray *urlTypes = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"];
+    if (urlTypes.count) {
+        NSArray *urlSchemes = urlTypes[0][@"CFBundleURLSchemes"];
+        for (NSString *urlScheme in urlSchemes) {
+            if ([urlString hasPrefix:urlScheme]) {
+                return TRUE;
+            }
+        }
+    }
+    
+    return FALSE;
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {

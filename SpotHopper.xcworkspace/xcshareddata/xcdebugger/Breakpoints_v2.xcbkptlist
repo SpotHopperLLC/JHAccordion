@@ -27,7 +27,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.SymbolicBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             symbolName = "+[Tracker logError:class:trace:]"
@@ -51,6 +51,16 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             symbolName = "-[UINavigationController pushViewController:animated:]"
+            moduleName = "">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.SymbolicBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            symbolName = "- [RavenClient sendJSON:]"
             moduleName = "">
          </BreakpointContent>
       </BreakpointProxy>
