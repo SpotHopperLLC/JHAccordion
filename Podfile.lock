@@ -34,7 +34,7 @@ PODS:
   - BlocksKit/UIKit (2.2.3):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
-  - Bolts (1.1.0)
+  - Bolts (1.1.1)
   - CRGradientNavigationBar (0.3.2)
   - Facebook-iOS-SDK (3.16.2):
     - Bolts
@@ -44,6 +44,7 @@ PODS:
   - JHAutoCompleteTextField (0.1.0)
   - JHSidebar (0.1.1)
   - JSONAPI (0.2.0)
+  - JTSReachability (0.0.1)
   - MBProgressHUD (0.8)
   - Mixpanel (2.3.6)
   - Parse-iOS-SDK (1.2.19):
@@ -70,6 +71,7 @@ DEPENDENCIES:
   - JHAutoCompleteTextField (from `http://github.com/joshdholtz/JHAutoCompleteTextField.git`)
   - JHSidebar (from `https://github.com/joshdholtz/JHSidebar.git`)
   - JSONAPI (~> 0.2)
+  - JTSReachability (from `http://github.com/brennanMKE/JTSReachability.git`, tag `0.0.1`)
   - MBProgressHUD (~> 0.8.0)
   - Mixpanel (~> 2.3.0)
   - Parse-iOS-SDK (~> 1.2.19)
@@ -94,6 +96,9 @@ EXTERNAL SOURCES:
     :git: http://github.com/joshdholtz/JHAutoCompleteTextField.git
   JHSidebar:
     :git: https://github.com/joshdholtz/JHSidebar.git
+  JTSReachability:
+    :git: http://github.com/brennanMKE/JTSReachability.git
+    :tag: 0.0.1
   Promises:
     :git: http://github.com/joshdholtz/ios-promises.git
 
@@ -101,7 +106,7 @@ SPEC CHECKSUMS:
   AFNetworking: a4d0e9a64de9242986620dafd1b3cee3b413ac5c
   BitlyForiOS: c6eb9b297cb503757a616fc201b3362fb857e8b4
   BlocksKit: 07c8a80f04275efac6a5f8b973782489c083a182
-  Bolts: 91c2af8eae1d44e1dd75946a5b0ae04a43ea43e4
+  Bolts: 0ca796081c3e7c139bd86d6903c27f1b83036a5d
   CRGradientNavigationBar: e11429639a863683acc90887b9c86e75cb5d098c
   Facebook-iOS-SDK: 34eef640c2cc4c8618ba0f574ad2b290e07f1b4e
   GoogleAnalytics-iOS-SDK: a3206c68ee5f2a014ed67383d1f779072b653988
@@ -110,6 +115,7 @@ SPEC CHECKSUMS:
   JHAutoCompleteTextField: 1ca69c82441d9b5bf474e10d36585247030f7594
   JHSidebar: 2efb4d14cc8bb0032c75218fd3ef7db70154c07e
   JSONAPI: 9b8f1449bcdcbb00a3c1efc37effbb881093b4dd
+  JTSReachability: 9892b33f1677bd9361406d8c466868fcda892574
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
   Mixpanel: 9aba38257fc4d2777ab5db1afc55e22bdfd57a4a
   Parse-iOS-SDK: 5e1f7e649a02f1cc19e73cc95bd43d7778848314

@@ -145,7 +145,7 @@
     NSDictionary *params = @{
                              kSpotModelParamPage : @1,
                              kSpotModelParamQueryVisibleToUsers : @"true",
-                             kSpotModelParamsPageSize : @10,
+                             kSpotModelParamsPageSize : @20,
                              kSpotModelParamSources : kSpotModelParamSourcesSpotHopper,
                              kSpotModelParamQueryDayOfWeek : [NSNumber numberWithInteger:dayOfWeek],
                              kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:coordinate.latitude],

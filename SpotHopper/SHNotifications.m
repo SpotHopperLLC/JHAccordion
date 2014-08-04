@@ -37,13 +37,24 @@ NSString * const SHReviewSpotNotificationKey =  @"SHReviewSpotNotificationKey";
 NSString * const SHOpenMenuForSpotNotificationName = @"SHOpenMenuForSpotNotificationName";
 NSString * const SHOpenMenuForSpotNotificationKey = @"SHOpenMenuForSpotNotificationKey";
 
-NSString * const SHUserDidLogInNotificationKey = @"SHUserDidLogInNotificationKey";
-NSString * const SHUserDidLogOutNotificationKey = @"SHUserDidLogOutNotificationKey";
+NSString * const SHUserDidLogInNotificationName = @"SHUserDidLogInNotificationName";
+NSString * const SHUserDidLogOutNotificationName = @"SHUserDidLogOutNotificationName";
+
+NSString * const SHAppOpenedWithURLNotificationName = @"SHAppOpenedWithURLNotificationName";
+NSString * const SHAppOpenedWithURLNotificationKey = @"SHAppOpenedWithURLNotificationKey";
 
 @implementation SHNotifications
 
 + (void)goToHomeMap {
     [[NSNotificationCenter defaultCenter] postNotificationName:SHGoToHomeMapNotificationName object:nil];
+}
+
++ (void)appOpenedWithURL:(NSURL *)url {
+    NSDictionary *userInfo = @{ SHAppOpenedWithURLNotificationKey : url };
+    DebugLog(@"userInfo: %@", userInfo);
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHAppOpenedWithURLNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
 }
 
 + (void)fetchDrinklistWithRequest:(DrinkListRequest *)request {
@@ -110,13 +121,13 @@ NSString * const SHUserDidLogOutNotificationKey = @"SHUserDidLogOutNotificationK
 }
 
 + (void)userDidLoginIn {
-    [[NSNotificationCenter defaultCenter] postNotificationName:SHUserDidLogInNotificationKey
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHUserDidLogInNotificationName
                                                         object:nil
                                                       userInfo:nil];
 }
 
 + (void)userDidLoginOut {
-    [[NSNotificationCenter defaultCenter] postNotificationName:SHUserDidLogOutNotificationKey
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHUserDidLogOutNotificationName
                                                         object:nil
                                                       userInfo:nil];
 }

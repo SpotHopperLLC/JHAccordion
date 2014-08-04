@@ -1792,6 +1792,11 @@
 		26041B7C19849E7400E0C554 /* SHGlobalSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26041B7919849E7400E0C554 /* SHGlobalSearchViewController.m */; };
 		26041B7D19849E7400E0C554 /* SHGlobalSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26041B7919849E7400E0C554 /* SHGlobalSearchViewController.m */; };
 		26041B7E19849E7400E0C554 /* SHGlobalSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26041B7919849E7400E0C554 /* SHGlobalSearchViewController.m */; };
+		261E9CDA1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E9CD91989C2EF00BC9A9E /* SHTappableTextView.m */; };
+		261E9CDB1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E9CD91989C2EF00BC9A9E /* SHTappableTextView.m */; };
+		261E9CDC1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E9CD91989C2EF00BC9A9E /* SHTappableTextView.m */; };
+		261E9CDD1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E9CD91989C2EF00BC9A9E /* SHTappableTextView.m */; };
+		261E9CDE1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E9CD91989C2EF00BC9A9E /* SHTappableTextView.m */; };
 		262380201986F83500F0940A /* Tracker+Events.m in Sources */ = {isa = PBXBuildFile; fileRef = 2623801F1986F83500F0940A /* Tracker+Events.m */; };
 		262380211986F83500F0940A /* Tracker+Events.m in Sources */ = {isa = PBXBuildFile; fileRef = 2623801F1986F83500F0940A /* Tracker+Events.m */; };
 		262380221986F83500F0940A /* Tracker+Events.m in Sources */ = {isa = PBXBuildFile; fileRef = 2623801F1986F83500F0940A /* Tracker+Events.m */; };
@@ -1824,11 +1829,6 @@
 		2654B898192BB6B200A66BED /* SHSpotsCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B895192BB6B200A66BED /* SHSpotsCollectionViewManager.m */; };
 		2654B899192BB6B200A66BED /* SHSpotsCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B895192BB6B200A66BED /* SHSpotsCollectionViewManager.m */; };
 		2654B89A192BB6B200A66BED /* SHSpotsCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B895192BB6B200A66BED /* SHSpotsCollectionViewManager.m */; };
-		2654B8AB192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B89C192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m */; };
-		2654B8AC192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B89C192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m */; };
-		2654B8AD192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B89C192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m */; };
-		2654B8AE192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B89C192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m */; };
-		2654B8AF192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B89C192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m */; };
 		2654B8B0192BB6E000A66BED /* SHHomeMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B89E192BB6E000A66BED /* SHHomeMapViewController.m */; };
 		2654B8B1192BB6E000A66BED /* SHHomeMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B89E192BB6E000A66BED /* SHHomeMapViewController.m */; };
 		2654B8B2192BB6E000A66BED /* SHHomeMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B89E192BB6E000A66BED /* SHHomeMapViewController.m */; };
@@ -3076,6 +3076,8 @@
 		2602BD9C18E283C500C93BBF /* Common.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Common.storyboard; sourceTree = "<group>"; };
 		26041B7819849E7400E0C554 /* SHGlobalSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHGlobalSearchViewController.h; sourceTree = "<group>"; };
 		26041B7919849E7400E0C554 /* SHGlobalSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHGlobalSearchViewController.m; sourceTree = "<group>"; };
+		261E9CD81989C2EF00BC9A9E /* SHTappableTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHTappableTextView.h; sourceTree = "<group>"; };
+		261E9CD91989C2EF00BC9A9E /* SHTappableTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHTappableTextView.m; sourceTree = "<group>"; };
 		2623801E1986F83500F0940A /* Tracker+Events.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tracker+Events.h"; sourceTree = "<group>"; };
 		2623801F1986F83500F0940A /* Tracker+Events.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Tracker+Events.m"; sourceTree = "<group>"; };
 		262A65B0195893F800A4DACD /* MenuModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuModel.h; sourceTree = "<group>"; };
@@ -3088,8 +3090,6 @@
 		2654B88E192BB68C00A66BED /* SHStyleKit+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SHStyleKit+Additions.m"; path = "SpotHopper/SHStyleKit+Additions.m"; sourceTree = "<group>"; };
 		2654B894192BB6B200A66BED /* SHSpotsCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSpotsCollectionViewManager.h; path = SpotHopper/SHSpotsCollectionViewManager.h; sourceTree = "<group>"; };
 		2654B895192BB6B200A66BED /* SHSpotsCollectionViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSpotsCollectionViewManager.m; path = SpotHopper/SHSpotsCollectionViewManager.m; sourceTree = "<group>"; };
-		2654B89B192BB6E000A66BED /* SHAdjustSpotListSliderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHAdjustSpotListSliderViewController.h; path = SpotHopper/SHAdjustSpotListSliderViewController.h; sourceTree = "<group>"; };
-		2654B89C192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHAdjustSpotListSliderViewController.m; path = SpotHopper/SHAdjustSpotListSliderViewController.m; sourceTree = "<group>"; };
 		2654B89D192BB6E000A66BED /* SHHomeMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHHomeMapViewController.h; path = SpotHopper/SHHomeMapViewController.h; sourceTree = "<group>"; };
 		2654B89E192BB6E000A66BED /* SHHomeMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHHomeMapViewController.m; path = SpotHopper/SHHomeMapViewController.m; sourceTree = "<group>"; };
 		2654B89F192BB6E000A66BED /* SHHomeNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHHomeNavigationViewController.h; path = SpotHopper/SHHomeNavigationViewController.h; sourceTree = "<group>"; };
@@ -3326,6 +3326,8 @@
 				03121A3418BD774B00C9FFA3 /* SHViewTranlucentWhiteFooter.m */,
 				03CA72B6187C4D5800815284 /* SHSlider.h */,
 				03CA72B7187C4D5800815284 /* SHSlider.m */,
+				261E9CD81989C2EF00BC9A9E /* SHTappableTextView.h */,
+				261E9CD91989C2EF00BC9A9E /* SHTappableTextView.m */,
 				03F2D9421872091200C69576 /* FontTextField */,
 				03F2D93B187208AA00C69576 /* FontLabel */,
 				03F2D9021871DB3100C69576 /* FontButtons */,
@@ -4565,8 +4567,6 @@
 				2654B8AA192BB6E000A66BED /* SHSpotsMenuViewController.m */,
 				2668970F192F2A71004FAC2D /* SHSlidersSearchViewController.h */,
 				26689710192F2A71004FAC2D /* SHSlidersSearchViewController.m */,
-				2654B89B192BB6E000A66BED /* SHAdjustSpotListSliderViewController.h */,
-				2654B89C192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m */,
 				26733ED8196CA56A0058384A /* SHLocationPickerViewController.h */,
 				26733ED9196CA56A0058384A /* SHLocationPickerViewController.m */,
 				26041B7819849E7400E0C554 /* SHGlobalSearchViewController.h */,
@@ -6714,9 +6714,9 @@
 				262A65B2195893F800A4DACD /* MenuModel.m in Sources */,
 				039F548F18D340AE004B2B67 /* MenuItemModel.m in Sources */,
 				26D0A89E19704BCB00F64384 /* SHNotifications.m in Sources */,
+				261E9CDA1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */,
 				26BABDCC190F698800852D73 /* DrinksViewController.m in Sources */,
 				265CE70D1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */,
-				2654B8AB192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m in Sources */,
 				0372FF4D18E33B20009188B5 /* TonightsSpecialsViewController.m in Sources */,
 				038664CC186D376900985CEC /* NSDate+Globalize.m in Sources */,
 				038664EA186D37BC00985CEC /* RefreshView.m in Sources */,
@@ -6860,6 +6860,7 @@
 				03CABFB118E7716400FAC5F5 /* MenuItemSubtypeCell.m in Sources */,
 				03CABFB218E7716400FAC5F5 /* NSArray+HoursOfOperation.m in Sources */,
 				03CABFB318E7716400FAC5F5 /* SHJSONAPIResource.m in Sources */,
+				261E9CDE1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */,
 				2654B8D2192BB6E000A66BED /* SHSpotsMenuViewController.m in Sources */,
 				03CABFB418E7716400FAC5F5 /* DrinkMenuOfferingsViewController.m in Sources */,
 				03D7F56C18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */,
@@ -6897,7 +6898,6 @@
 				26D0A8A219704BCB00F64384 /* SHNotifications.m in Sources */,
 				26BABDCF190F698800852D73 /* DrinksViewController.m in Sources */,
 				265CE7101911899C008DAF5E /* PhotoAlbumViewController.m in Sources */,
-				2654B8AF192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m in Sources */,
 				03CABFD018E7716400FAC5F5 /* TonightsSpecialsViewController.m in Sources */,
 				03CABFD118E7716400FAC5F5 /* NSDate+Globalize.m in Sources */,
 				03CABFD218E7716400FAC5F5 /* RefreshView.m in Sources */,
@@ -7064,9 +7064,9 @@
 				039F549118D340AE004B2B67 /* MenuItemModel.m in Sources */,
 				262A65B4195893F800A4DACD /* MenuModel.m in Sources */,
 				26BABDCE190F698800852D73 /* DrinksViewController.m in Sources */,
+				261E9CDC1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */,
 				26D0A8A019704BCB00F64384 /* SHNotifications.m in Sources */,
 				265CE70F1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */,
-				2654B8AD192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m in Sources */,
 				0372FF5118E342D1009188B5 /* TonightsSpecialsViewController.m in Sources */,
 				03F4E77518CA33D00056EAA9 /* NSDate+Globalize.m in Sources */,
 				03F4E77618CA33D00056EAA9 /* RefreshView.m in Sources */,
@@ -7236,9 +7236,9 @@
 				039F549018D340AE004B2B67 /* MenuItemModel.m in Sources */,
 				262A65B3195893F800A4DACD /* MenuModel.m in Sources */,
 				26BABDCD190F698800852D73 /* DrinksViewController.m in Sources */,
+				261E9CDB1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */,
 				26D0A89F19704BCB00F64384 /* SHNotifications.m in Sources */,
 				265CE70E1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */,
-				2654B8AC192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m in Sources */,
 				0372FF5018E342D1009188B5 /* TonightsSpecialsViewController.m in Sources */,
 				03F4E8C318CA34260056EAA9 /* NSDate+Globalize.m in Sources */,
 				03F4E8C418CA34260056EAA9 /* RefreshView.m in Sources */,
@@ -7374,6 +7374,7 @@
 				267E04FB1922CC48004457B4 /* MenuItemSubtypeCell.m in Sources */,
 				267E04FC1922CC48004457B4 /* NSArray+HoursOfOperation.m in Sources */,
 				267E04FD1922CC48004457B4 /* SHJSONAPIResource.m in Sources */,
+				261E9CDD1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */,
 				2654B8D1192BB6E000A66BED /* SHSpotsMenuViewController.m in Sources */,
 				267E04FE1922CC48004457B4 /* DrinkMenuOfferingsViewController.m in Sources */,
 				267E04FF1922CC48004457B4 /* AccountSettingsViewController.m in Sources */,
@@ -7411,7 +7412,6 @@
 				26D0A8A119704BCB00F64384 /* SHNotifications.m in Sources */,
 				267E051E1922CC48004457B4 /* DrinksViewController.m in Sources */,
 				267E051F1922CC48004457B4 /* PhotoAlbumViewController.m in Sources */,
-				2654B8AE192BB6E000A66BED /* SHAdjustSpotListSliderViewController.m in Sources */,
 				267E05201922CC48004457B4 /* TonightsSpecialsViewController.m in Sources */,
 				267E05211922CC48004457B4 /* NSDate+Globalize.m in Sources */,
 				267E05221922CC48004457B4 /* RefreshView.m in Sources */,

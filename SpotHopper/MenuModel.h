@@ -18,6 +18,8 @@
 @property (strong, nonatomic) NSArray *items;
 @property (strong, nonatomic) NSDictionary *types;
 
+- (NSArray *)menuItemsForDrink:(DrinkModel *)drink;
+
 - (MenuItemModel *)menuItemForDrink:(DrinkModel *)drink;
 
 - (BOOL)isBeerOnTap:(MenuItemModel *)menuItem;
@@ -28,6 +30,6 @@
 
 - (BOOL)isWine:(MenuItemModel *)menuItem;
 
-- (NSArray *)pricesForMenuItem:(MenuItemModel *)menuItem;
+- (NSArray *)pricesForDrink:(DrinkModel *)drink;
 
 @end
