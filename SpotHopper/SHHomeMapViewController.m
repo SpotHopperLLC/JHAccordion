@@ -222,6 +222,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     NSAssert(self.navigationController.sidebarViewController, @"Sidebar controller must be defined");
     NSAssert(self.navigationController.sidebarViewController.rightViewController, @"Right VC on sidebar must be defined");
     
+    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
+        [self performSelector:@selector(tryRepositioningOnDeviceLocation) withObject:nil afterDelay:0.25f];
+    }
+    
     self.mySideBarViewController = (SHSidebarViewController *)self.navigationController.sidebarViewController.rightViewController;
     self.mySideBarViewController.delegate = self;
     
@@ -1671,6 +1675,18 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     locationPickerVC.delegate = self;
     [self.navigationController pushViewController:locationPickerVC animated:TRUE];
+}
+
+- (void)tryRepositioningOnDeviceLocation {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(tryRepositioningOnDeviceLocation) object:nil];
+    
+    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
+        [self repositionOnCurrentDeviceLocation:TRUE];
+    }
+    
+    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
+        [self performSelector:@selector(tryRepositioningOnDeviceLocation) withObject:nil afterDelay:0.25f];
+    }
 }
 
 - (void)repositionOnCurrentDeviceLocation:(BOOL)animated {
