@@ -2353,6 +2353,11 @@
 		267E06CA1922CC48004457B4 /* img_match_pin_view@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039ABBC218CE1DA500B84AE6 /* img_match_pin_view@2x.png */; };
 		267E06CB1922CC48004457B4 /* icon_my_spotlists.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF6018C6DC8500172F13 /* icon_my_spotlists.png */; };
 		267E06CC1922CC48004457B4 /* slider_background_max@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72BA187C4FB300815284 /* slider_background_max@2x.png */; };
+		268542E5199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */; };
+		268542E6199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */; };
+		268542E7199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */; };
+		268542E8199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */; };
+		268542E9199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */; };
 		2688CF1D194B3A0600C37DE3 /* SpotListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */; };
 		2688CF1E194B3A0600C37DE3 /* SpotListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */; };
 		2688CF1F194B3A0600C37DE3 /* SpotListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */; };
@@ -3122,6 +3127,8 @@
 		267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoBold.m; sourceTree = "<group>"; };
 		267E06D11922CC48004457B4 /* SH2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SH2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		267E06D31922CCA2004457B4 /* SpotHopperStaging2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperStaging2-Info.plist"; sourceTree = "<group>"; };
+		268542E3199050E4008DBFB2 /* SHHomeNavigationButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHHomeNavigationButton.h; sourceTree = "<group>"; };
+		268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHHomeNavigationButton.m; sourceTree = "<group>"; };
 		2688CF1B194B3A0600C37DE3 /* SpotListRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotListRequest.h; sourceTree = "<group>"; };
 		2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotListRequest.m; sourceTree = "<group>"; };
 		268C8CA0190089D00011E0F8 /* UserState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserState.h; sourceTree = "<group>"; };
@@ -3624,6 +3631,8 @@
 				03E882DE18C797BA00BD8FBB /* UIView+AddBorder.m */,
 				03E8833918C838F600BD8FBB /* CardLayout.h */,
 				03E8833A18C838F600BD8FBB /* CardLayout.m */,
+				268542E3199050E4008DBFB2 /* SHHomeNavigationButton.h */,
+				268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */,
 			);
 			name = Bases;
 			sourceTree = "<group>";
@@ -6818,6 +6827,7 @@
 				262380201986F83500F0940A /* Tracker+Events.m in Sources */,
 				039F548A18D33BA9004B2B67 /* DrinkMenuViewController.m in Sources */,
 				26C428CD192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m in Sources */,
+				268542E5199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */,
 				03D7F57018EADCF3007B9E78 /* SearchViewController.m in Sources */,
 				03F2D93E187208C200C69576 /* SHLabelLatoLight.m in Sources */,
 				2654B8BF192BB6E000A66BED /* SHMapFooterNavigationViewController.m in Sources */,
@@ -7016,6 +7026,7 @@
 				03CAC02918E7716400FAC5F5 /* SHViewTranlucentWhiteFooter.m in Sources */,
 				2640B013193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */,
 				2654B8B4192BB6E000A66BED /* SHHomeMapViewController.m in Sources */,
+				268542E9199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7168,6 +7179,7 @@
 				262380221986F83500F0940A /* Tracker+Events.m in Sources */,
 				26C428CF192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m in Sources */,
 				03D7F57418EADEF7007B9E78 /* SearchViewController.m in Sources */,
+				268542E7199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */,
 				03F4E7B018CA33D00056EAA9 /* SHLabelLatoLight.m in Sources */,
 				2654B8C1192BB6E000A66BED /* SHMapFooterNavigationViewController.m in Sources */,
 				03F4E7B118CA33D00056EAA9 /* SpotAnnotation.m in Sources */,
@@ -7340,6 +7352,7 @@
 				262380211986F83500F0940A /* Tracker+Events.m in Sources */,
 				26C428CE192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m in Sources */,
 				03D7F57218EADEF7007B9E78 /* SearchViewController.m in Sources */,
+				268542E6199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */,
 				03F4E8FE18CA34260056EAA9 /* SHLabelLatoLight.m in Sources */,
 				2654B8C0192BB6E000A66BED /* SHMapFooterNavigationViewController.m in Sources */,
 				03F4E8FF18CA34260056EAA9 /* SpotAnnotation.m in Sources */,
@@ -7530,6 +7543,7 @@
 				267E05811922CC48004457B4 /* SHViewTranlucentWhiteFooter.m in Sources */,
 				2640B012193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */,
 				2654B8B3192BB6E000A66BED /* SHHomeMapViewController.m in Sources */,
+				268542E8199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

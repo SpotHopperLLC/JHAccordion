@@ -53,7 +53,7 @@ static NSDate *_lastDeviceLocationRefresh;
         }
     }
 
-    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
+    if ([CLLocationManager locationServicesEnabled] && ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)) {
         if (!self.locationManager) {
             self.locationManager = [[CLLocationManager alloc] init];
             [self.locationManager setDelegate:self];

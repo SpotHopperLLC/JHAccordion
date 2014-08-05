@@ -68,6 +68,16 @@
 
 + (void)trackDrinklist:(DrinkListModel *)drinklist mode:(SHMode)mode request:(DrinkListRequest *)request currentLocation:(CLLocation *)currentLocation;
 
+#pragma mark - Navigation
+#pragma mark -
+
++ (void)trackHomeNavigationButtonTapped:(BOOL)insideBounds;
+
+#pragma mark - Location
+#pragma mark -
+
++ (void)trackLocationServicesAuthorizationStatus;
+
 #pragma mark - Logins
 #pragma mark -
 
