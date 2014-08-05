@@ -226,10 +226,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     [Tracker trackLocationServicesAuthorizationStatus];
     
-    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
-        [self performSelector:@selector(tryRepositioningOnDeviceLocation) withObject:nil afterDelay:0.25f];
-    }
-    
     self.mySideBarViewController = (SHSidebarViewController *)self.navigationController.sidebarViewController.rightViewController;
     self.mySideBarViewController.delegate = self;
     
@@ -308,8 +304,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }
     else if (_didLeaveForFirstLaunch) {
         _didLeaveForFirstLaunch = FALSE;
-        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(tryRepositioningOnDeviceLocation) object:nil];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.75f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [self repositionOnCurrentDeviceLocation:TRUE];
         });
     }
@@ -1693,22 +1688,11 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [self.navigationController pushViewController:locationPickerVC animated:TRUE];
 }
 
-- (void)tryRepositioningOnDeviceLocation {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(tryRepositioningOnDeviceLocation) object:nil];
-    
-    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
-        [self repositionOnCurrentDeviceLocation:TRUE];
-    }
-    
-    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
-        [self performSelector:@selector(tryRepositioningOnDeviceLocation) withObject:nil afterDelay:0.25f];
-    }
-}
-
 - (void)repositionOnCurrentDeviceLocation:(BOOL)animated {
     [self.locationMenuBarViewController updateLocationTitle:@"Locating..."];
     
     static TellMeMyLocation *tellMeMyLocation = nil;
+    
     if (!tellMeMyLocation) {
         tellMeMyLocation = [[TellMeMyLocation alloc] init];
     }
@@ -1716,6 +1700,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         // if the variables already defined it is already running
         return;
     }
+    
     [tellMeMyLocation findMe:kCLLocationAccuracyNearestTenMeters found:^(CLLocation *newLocation) {
         self.mapView.showsUserLocation = TRUE;
         self.currentLocation = newLocation;
