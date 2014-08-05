@@ -229,9 +229,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
         [self performSelector:@selector(tryRepositioningOnDeviceLocation) withObject:nil afterDelay:0.25f];
     }
-    else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
-        self.mapView.showsUserLocation = TRUE;
-    }
     
     self.mySideBarViewController = (SHSidebarViewController *)self.navigationController.sidebarViewController.rightViewController;
     self.mySideBarViewController.delegate = self;
@@ -311,6 +308,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }
     else if (_didLeaveForFirstLaunch) {
         _didLeaveForFirstLaunch = FALSE;
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(tryRepositioningOnDeviceLocation) object:nil];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.75f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [self repositionOnCurrentDeviceLocation:TRUE];
         });
@@ -1699,7 +1697,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(tryRepositioningOnDeviceLocation) object:nil];
     
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
-        self.mapView.showsUserLocation = TRUE;
         [self repositionOnCurrentDeviceLocation:TRUE];
     }
     
@@ -1720,6 +1717,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         return;
     }
     [tellMeMyLocation findMe:kCLLocationAccuracyNearestTenMeters found:^(CLLocation *newLocation) {
+        self.mapView.showsUserLocation = TRUE;
         self.currentLocation = newLocation;
         [self fetchNearbySpotsAtLocation:self.currentLocation];
         [self repositionMapOnCoordinate:self.currentLocation.coordinate animated:animated];
@@ -2366,9 +2364,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             // the pin may no longer be highlighted by the time the menu loads
             
             NSArray *menuItems = [menu menuItemsForDrink:self.selectedDrink];
-            DebugLog(@"menuItems: %@", menuItems);
-            
-//            MenuItemModel *menuItem = [menu menuItemForDrink:self.selectedDrink];
             NSArray *prices = nil;
             SpotCalloutIcon calloutIcon = SpotCalloutIconNone;
             
