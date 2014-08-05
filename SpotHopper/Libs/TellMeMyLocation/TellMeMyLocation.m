@@ -35,6 +35,7 @@ NSString * const kTellMeMyLocationChangedNotification = @"TellMeMyLocationChange
 
 @implementation TellMeMyLocation {
     CLAuthorizationStatus _authorizationStatus;
+    NSUInteger instance;
 }
 
 static CLLocation *_currentDeviceLocation;
@@ -44,6 +45,20 @@ static NSDate *_lastDeviceLocationRefresh;
 #pragma mark - Public Implemention
 
 - (void)findMe:(CLLocationAccuracy)accuracy found:(FoundBlock)foundBlock failure:(FailureBlock)failureBlock {
+    // HACK: below is a hack used to prevent findMe: from being called more than once which crashes the app due to NULL parent for the block references
+    instance++;
+    if (instance > 1) {
+        if (failureBlock) {
+            NSDictionary *userInfo = @{
+                                       NSLocalizedDescriptionKey : @"State Error",
+                                       NSLocalizedRecoverySuggestionErrorKey : @"Method should not be called more than once."
+                                       };
+            failureBlock([NSError errorWithDomain:kTellMeMyLocationDomain code:1 userInfo:userInfo]);
+        }
+        
+        return;
+    }
+    
     // finish immediately if the device location was refreshed recently
     if (_lastDeviceLocationRefresh && self.bestLocation && foundBlock) {
         NSTimeInterval diff = [[NSDate date] timeIntervalSinceDate:_lastDeviceLocationRefresh];
