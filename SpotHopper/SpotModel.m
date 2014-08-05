@@ -494,8 +494,6 @@
 }
 
 - (void)fetchMenu:(void (^)(MenuModel *menu))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
-    
     if (self.menu && successBlock) {
         successBlock(self.menu);
         return;
