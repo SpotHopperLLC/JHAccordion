@@ -594,41 +594,30 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </activityIndicatorView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gil-6U-86q" userLabel="Labels View">
-                                        <rect key="frame" x="53" y="0.0" width="139" height="65"/>
+                                        <rect key="frame" x="53" y="0.0" width="108" height="65"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Spot Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="139" translatesAutoresizingMaskIntoConstraints="NO" id="UbC-of-nnu" customClass="SHLabelLatoBold">
-                                                <rect key="frame" x="0.0" y="12" width="139" height="15"/>
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Spot Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="108" translatesAutoresizingMaskIntoConstraints="NO" id="UbC-of-nnu" customClass="SHLabelLatoBold">
+                                                <rect key="frame" x="0.0" y="12" width="108" height="15"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Drink 1" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="139" translatesAutoresizingMaskIntoConstraints="NO" id="Zc8-Nz-2g7" customClass="SHLabelLatoRegular">
-                                                <rect key="frame" x="0.0" y="30" width="139" height="12"/>
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Drink 1" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="108" translatesAutoresizingMaskIntoConstraints="NO" id="Zc8-Nz-2g7" customClass="SHLabelLatoRegular">
+                                                <rect key="frame" x="0.0" y="30" width="108" height="12"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Drink 2" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="139" translatesAutoresizingMaskIntoConstraints="NO" id="e3V-HS-MZK" customClass="SHLabelLatoRegular">
-                                                <rect key="frame" x="0.0" y="45" width="139" height="12"/>
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Drink 2" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="108" translatesAutoresizingMaskIntoConstraints="NO" id="e3V-HS-MZK" customClass="SHLabelLatoRegular">
+                                                <rect key="frame" x="0.0" y="45" width="108" height="12"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Amr-p6-Odc" userLabel="Callout Button">
-                                                <rect key="frame" x="-53" y="0.0" width="200" height="69"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <state key="normal">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="calloutButtonTapped:" destination="ZlA-ef-byj" eventType="touchUpInside" id="zbo-oB-N4g"/>
-                                                </connections>
-                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -645,18 +634,35 @@
                                             <constraint firstItem="UbC-of-nnu" firstAttribute="leading" secondItem="gil-6U-86q" secondAttribute="leading" id="zqa-gr-c4F"/>
                                         </constraints>
                                     </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Amr-p6-Odc" userLabel="Callout Button">
+                                        <rect key="frame" x="165" y="18" width="30" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="Ct9-m6-3hy"/>
+                                            <constraint firstAttribute="width" constant="30" id="jjc-Jx-9b7"/>
+                                        </constraints>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="calloutButtonTapped:" destination="ZlA-ef-byj" eventType="touchUpInside" id="zbo-oB-N4g"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="centerY" secondItem="BWb-kh-4Jj" secondAttribute="centerY" id="4pU-cy-3Lr"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="BV6-89-pBl"/>
                                     <constraint firstItem="BWb-kh-4Jj" firstAttribute="centerY" secondItem="M5E-fT-5dx" secondAttribute="centerY" constant="0.5" id="CgU-Eq-7i9"/>
+                                    <constraint firstAttribute="trailing" secondItem="Amr-p6-Odc" secondAttribute="trailing" constant="5" id="K5f-cW-cx8"/>
                                     <constraint firstItem="gil-6U-86q" firstAttribute="leading" secondItem="BWb-kh-4Jj" secondAttribute="trailing" constant="8" id="N6u-HR-Nrx"/>
                                     <constraint firstItem="BWb-kh-4Jj" firstAttribute="centerX" secondItem="M5E-fT-5dx" secondAttribute="centerX" constant="-0.5" id="Vgh-5z-4cH"/>
-                                    <constraint firstAttribute="trailing" secondItem="gil-6U-86q" secondAttribute="trailing" constant="8" id="X5g-aE-QH7"/>
                                     <constraint firstItem="BWb-kh-4Jj" firstAttribute="leading" secondItem="apI-6g-LM2" secondAttribute="leading" constant="5" id="YkP-4o-xvv"/>
                                     <constraint firstItem="gil-6U-86q" firstAttribute="top" secondItem="apI-6g-LM2" secondAttribute="top" id="YoA-Ky-QOa"/>
+                                    <constraint firstItem="Amr-p6-Odc" firstAttribute="leading" secondItem="gil-6U-86q" secondAttribute="trailing" constant="4" id="b5y-RV-Ptd"/>
                                     <constraint firstAttribute="bottom" secondItem="gil-6U-86q" secondAttribute="bottom" id="ci5-kY-qE2"/>
+                                    <constraint firstAttribute="centerY" secondItem="Amr-p6-Odc" secondAttribute="centerY" id="ncJ-Zr-4Wm"/>
                                 </constraints>
                             </view>
                         </subviews>

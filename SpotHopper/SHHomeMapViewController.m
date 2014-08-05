@@ -2356,17 +2356,28 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         
         [[pin.spot fetchMenu] then:^(MenuModel *menu) {
             // the pin may no longer be highlighted by the time the menu loads
-            MenuItemModel *menuItem = [menu menuItemForDrink:self.selectedDrink];
+            
+            NSArray *menuItems = [menu menuItemsForDrink:self.selectedDrink];
+            DebugLog(@"menuItems: %@", menuItems);
+            
+//            MenuItemModel *menuItem = [menu menuItemForDrink:self.selectedDrink];
             NSArray *prices = nil;
             SpotCalloutIcon calloutIcon = SpotCalloutIconNone;
             
-            if (menuItem) {
-                prices = [menu pricesForMenuItem:menuItem];
+            if (menuItems.count) {
+                prices = [menu pricesForDrink:self.selectedDrink];
                 
-                BOOL isBeerOnTap = [menu isBeerOnTap:menuItem];
-                BOOL isBeerInBottle = [menu isBeerInBottle:menuItem];
-                BOOL isCocktail = [menu isCocktail:menuItem];
-                BOOL isWine = [menu isWine:menuItem];
+                BOOL isBeerOnTap = FALSE;
+                BOOL isBeerInBottle = FALSE;
+                BOOL isCocktail = FALSE;
+                BOOL isWine = FALSE;
+                
+                for (MenuItemModel *menuItem in menuItems) {
+                    isBeerOnTap = [menu isBeerOnTap:menuItem];
+                    isBeerInBottle = [menu isBeerInBottle:menuItem];
+                    isCocktail = [menu isCocktail:menuItem];
+                    isWine = [menu isWine:menuItem];
+                }
                 
                 if (isBeerOnTap && isBeerInBottle) {
                     calloutIcon = SpotCalloutIconBeerOnTapAndInBottle;
