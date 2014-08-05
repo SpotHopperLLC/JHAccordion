@@ -211,6 +211,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     BOOL _isShowingSearchView;
     BOOL _isOverlayAnimating;
     BOOL _isValidLocation;
+    BOOL _didLeaveForFirstLaunch;
     NSInteger _repositioningMapCount;
 }
 
@@ -262,6 +263,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [self hideAreYouHerePrompt:FALSE withCompletionBlock:nil];
     
     [self observeNotifications];
+    
+    if ([[ClientSessionManager sharedClient] hasSeenLaunch]) {
+        [self repositionOnCurrentDeviceLocation:TRUE];
+    }
 
     // pre-cache the lists
     if ([UserModel isLoggedIn]) {
@@ -301,10 +306,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     });
     
     if (![[ClientSessionManager sharedClient] hasSeenLaunch]) {
+        _didLeaveForFirstLaunch = TRUE;
         [self goToLaunch:TRUE];
     }
-    else {
-        [self repositionOnCurrentDeviceLocation:TRUE];
+    else if (_didLeaveForFirstLaunch) {
+        _didLeaveForFirstLaunch = FALSE;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.75f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self repositionOnCurrentDeviceLocation:TRUE];
+        });
     }
 }
 
@@ -1687,7 +1696,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)tryRepositioningOnDeviceLocation {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(tryRepositioningOnDeviceLocation) object:nil];
     
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
