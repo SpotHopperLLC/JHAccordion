@@ -1243,7 +1243,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)showSpotsSearch {
     [Tracker trackLeavingHomeToSpots];
-    if (![self promptLoginNeeded:@"Cannot create a spotlist without logging in"]) {
+    if (![self promptLoginNeeded:@"You can only view specials without logging in since spot/drink searches are totally personalized"]) {
         [self.slidersSearchViewController prepareForMode:SHModeSpots];
         
         [self hideBottomViewWithCompletionBlock:^{
@@ -1254,7 +1254,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)showBeersSearch {
     [Tracker trackLeavingHomeToBeer];
-    if (![self promptLoginNeeded:@"Cannot create a drinklist without logging in"]) {
+    if (![self promptLoginNeeded:@"You can only view specials without logging in since spot/drink searches are totally personalized"]) {
         [self.slidersSearchViewController prepareForMode:SHModeBeer];
         
         [self hideBottomViewWithCompletionBlock:^{
@@ -1265,7 +1265,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)showCocktailsSearch {
     [Tracker trackLeavingHomeToCocktails];
-    if (![self promptLoginNeeded:@"Cannot create a spotlist without logging in"]) {
+    if (![self promptLoginNeeded:@"You can only view specials without logging in since spot/drink searches are totally personalized"]) {
         [self.slidersSearchViewController prepareForMode:SHModeCocktail];
 
         [self hideBottomViewWithCompletionBlock:^{
@@ -1276,7 +1276,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)showWineSearch {
     [Tracker trackLeavingHomeToWine];
-    if (![self promptLoginNeeded:@"Cannot create a spotlist without logging in"]) {
+    if (![self promptLoginNeeded:@"You can only view specials without logging in since spot/drink searches are totally personalized"]) {
         [self.slidersSearchViewController prepareForMode:SHModeWine];
         
         [self hideBottomViewWithCompletionBlock:^{
