@@ -261,6 +261,38 @@
     }];
 }
 
+#pragma mark - Navigation
+#pragma mark -
+
++ (void)trackHomeNavigationButtonTapped:(BOOL)insideBounds {
+    [Tracker track:@"Home Navigation Button Tapped" properties:@{ @"Inside Bounds" : [NSNumber numberWithBool:insideBounds]}];
+}
+
+#pragma mark - Location
+#pragma mark -
+
++ (void)trackLocationServicesAuthorizationStatus {
+    NSString *authorizationStatus = nil;
+    
+    switch ([CLLocationManager authorizationStatus]) {
+        case kCLAuthorizationStatusRestricted:
+            authorizationStatus = @"Restricted";
+            break;
+        case kCLAuthorizationStatusDenied:
+            authorizationStatus = @"Denied";
+            break;
+        case kCLAuthorizationStatusAuthorized:
+            authorizationStatus = @"Authorized";
+            break;
+
+        default:
+            authorizationStatus = @"Not Determined";
+            break;
+    }
+    
+    [Tracker track:@"Location Services" properties:@{ @"Authorization Status" : authorizationStatus }];
+}
+
 #pragma mark - Logins
 #pragma mark -
 

@@ -28,6 +28,7 @@
 #import "SearchViewController.h"
 #import "ShareViewController.h"
 
+#import "ClientSessionManager.h"
 #import "SHNotifications.h"
 
 #import "SpotAnnotationCallout.h"
@@ -222,8 +223,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     NSAssert(self.navigationController.sidebarViewController, @"Sidebar controller must be defined");
     NSAssert(self.navigationController.sidebarViewController.rightViewController, @"Right VC on sidebar must be defined");
     
+    [Tracker trackLocationServicesAuthorizationStatus];
+    
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
         [self performSelector:@selector(tryRepositioningOnDeviceLocation) withObject:nil afterDelay:0.25f];
+    }
+    else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
+        self.mapView.showsUserLocation = TRUE;
     }
     
     self.mySideBarViewController = (SHSidebarViewController *)self.navigationController.sidebarViewController.rightViewController;
@@ -249,10 +255,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     self.globalSearchViewController.delegate = self;
     
     self.title = @"New Search";
-    
-    [self repositionOnCurrentDeviceLocation:NO];
-    
-    self.mapView.showsUserLocation = TRUE;
     
     self.view.backgroundColor = [UIColor clearColor];
 
@@ -297,6 +299,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [self updateLocationName];
     });
+    
+    if (![[ClientSessionManager sharedClient] hasSeenLaunch]) {
+        [self goToLaunch:TRUE];
+    }
+    else {
+        [self repositionOnCurrentDeviceLocation:TRUE];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -1234,7 +1243,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)showSpotsSearch {
     [Tracker trackLeavingHomeToSpots];
-    if (![self promptLoginNeeded:@"Cannot create a spotlist without logging in"]) {
+    if (![self promptLoginNeeded:@"You can only view specials without logging in since spot/drink searches are totally personalized"]) {
         [self.slidersSearchViewController prepareForMode:SHModeSpots];
         
         [self hideBottomViewWithCompletionBlock:^{
@@ -1245,7 +1254,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)showBeersSearch {
     [Tracker trackLeavingHomeToBeer];
-    if (![self promptLoginNeeded:@"Cannot create a drinklist without logging in"]) {
+    if (![self promptLoginNeeded:@"You can only view specials without logging in since spot/drink searches are totally personalized"]) {
         [self.slidersSearchViewController prepareForMode:SHModeBeer];
         
         [self hideBottomViewWithCompletionBlock:^{
@@ -1256,7 +1265,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)showCocktailsSearch {
     [Tracker trackLeavingHomeToCocktails];
-    if (![self promptLoginNeeded:@"Cannot create a spotlist without logging in"]) {
+    if (![self promptLoginNeeded:@"You can only view specials without logging in since spot/drink searches are totally personalized"]) {
         [self.slidersSearchViewController prepareForMode:SHModeCocktail];
 
         [self hideBottomViewWithCompletionBlock:^{
@@ -1267,7 +1276,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)showWineSearch {
     [Tracker trackLeavingHomeToWine];
-    if (![self promptLoginNeeded:@"Cannot create a spotlist without logging in"]) {
+    if (![self promptLoginNeeded:@"You can only view specials without logging in since spot/drink searches are totally personalized"]) {
         [self.slidersSearchViewController prepareForMode:SHModeWine];
         
         [self hideBottomViewWithCompletionBlock:^{
@@ -1678,9 +1687,11 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)tryRepositioningOnDeviceLocation {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(tryRepositioningOnDeviceLocation) object:nil];
     
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
+        self.mapView.showsUserLocation = TRUE;
         [self repositionOnCurrentDeviceLocation:TRUE];
     }
     
@@ -1692,7 +1703,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)repositionOnCurrentDeviceLocation:(BOOL)animated {
     [self.locationMenuBarViewController updateLocationTitle:@"Locating..."];
     
-    TellMeMyLocation *tellMeMyLocation = [[TellMeMyLocation alloc] init];
+    static TellMeMyLocation *tellMeMyLocation = nil;
+    if (!tellMeMyLocation) {
+        tellMeMyLocation = [[TellMeMyLocation alloc] init];
+    }
+    else {
+        // if the variables already defined it is already running
+        return;
+    }
     [tellMeMyLocation findMe:kCLLocationAccuracyNearestTenMeters found:^(CLLocation *newLocation) {
         self.currentLocation = newLocation;
         [self fetchNearbySpotsAtLocation:self.currentLocation];
@@ -1700,6 +1718,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [self updateLocationName];
         });
+        
+        tellMeMyLocation = nil;
     } failure:^(NSError *error) {
         if (!self.currentLocation && self.lastSelectedLocation) {
             self.currentLocation = self.lastSelectedLocation;
@@ -1712,6 +1732,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         else {
             [self repositionMapOnCoordinate:kCLLocationCoordinate2DInvalid animated:animated];
         }
+        
+        tellMeMyLocation = nil;
     }];
 }
 

@@ -191,11 +191,13 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView == self.collectionView) {
-        NSIndexPath *indexPath = [self indexPathForCurrentItemInCollectionView:self.collectionView];
-        if (indexPath.item != _currentIndex) {
-            _currentIndex = indexPath.item;
-            [self reportedChangedIndex];
-        }
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            NSIndexPath *indexPath = [self indexPathForCurrentItemInCollectionView:self.collectionView];
+            if (indexPath.item != _currentIndex) {
+                _currentIndex = indexPath.item;
+                [self reportedChangedIndex];
+            }
+        });
     }
 }
 
