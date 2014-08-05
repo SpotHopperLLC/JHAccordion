@@ -190,7 +190,6 @@
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
     if (scrollView == self.collectionView) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             NSIndexPath *indexPath = [self indexPathForCurrentItemInCollectionView:self.collectionView];
