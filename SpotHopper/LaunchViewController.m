@@ -203,14 +203,16 @@
     
     [self showHUD:@"Connecting Facebook"];
     [appDelegate facebookAuth:YES success:^(FBSession *session) {
-        [self hideHUD];
         [self doLoginFacebook];
     } failure:^(FBSessionState state, NSError *error) {
-        [self hideHUD];
         [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:@"[Facebook Connect] - Failed to oauth, %@", [error localizedDescription]] level:kRavenLogLevelDebugInfo];
         [self showAlert:@"Oops" message:@"Looks like there was an error logging in with Facebook"];
         [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [self hideHUD];
+    });
 }
 
 - (void)doTwitter {
@@ -220,17 +222,17 @@
         
         [self showHUD:@"Connecting Twitter"];
         [appDelegate twitterAuth:account success:^(NSString *oAuthToken, NSString *oAuthTokenSecret, NSString *userID, NSString *screenName) {
-            [self hideHUD];
             [self doLoginTwitterWithToken:oAuthToken andSecret:oAuthTokenSecret];
         } failure:^(NSError *error) {
-            [self hideHUD];
             // TODO: Link to FAQ on how to fix - logout and log back in
             // Error - Error Domain=STTwitterOS Code=0 "Error processing your OAuth request: invalid signature or token" UserInfo=0x17827a040 {NSLocalizedDescription=Error processing your OAuth request: invalid signature or token}
             [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:@"[Twitter Connect] - Failed to reverse oauth, %@", [error localizedDescription]] level:kRavenLogLevelDebugInfo];
             [self showAlert:@"Oops" message:@"Looks like there was an error logging in with Twitter.\n\n Go to Settings app to logout and login without Twitter account, then try logging in with Twitter again here."];
         }];
-
         
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self hideHUD];
+        });
     } cancel:^{
         
     } noAccounts:^{

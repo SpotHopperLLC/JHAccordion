@@ -55,6 +55,7 @@
             switch (status) {
                 case NotReachable:
                     DebugLog(@"Not Reachable");
+                    [[_sharedClient operationQueue] cancelAllOperations];
                     break;
                 case ReachableViaWiFi:
                     DebugLog(@"WiFi Reachable");
@@ -106,7 +107,7 @@
         return nil;
     }
     
-    if (NotReachable == [[JTSReachabilityResponder sharedInstance] networkStatus]) {
+    if (![[JTSReachabilityResponder sharedInstance] isReachable]) {
         success(nil, kNotReachableErrorsDictionary);
         return nil;
     }
@@ -144,7 +145,7 @@
         return nil;
     }
     
-    if (NotReachable == [[JTSReachabilityResponder sharedInstance] networkStatus]) {
+    if (![[JTSReachabilityResponder sharedInstance] isReachable]) {
         success(nil, kNotReachableErrorsDictionary);
         return nil;
     }
@@ -184,7 +185,7 @@
         return nil;
     }
     
-    if (NotReachable == [[JTSReachabilityResponder sharedInstance] networkStatus]) {
+    if (![[JTSReachabilityResponder sharedInstance] isReachable]) {
         success(nil, kNotReachableErrorsDictionary);
         return nil;
     }
@@ -226,7 +227,7 @@
         return nil;
     }
     
-    if (NotReachable == [[JTSReachabilityResponder sharedInstance] networkStatus]) {
+    if (![[JTSReachabilityResponder sharedInstance] isReachable]) {
         success(nil, kNotReachableErrorsDictionary);
         return nil;
     }
@@ -264,7 +265,7 @@
         return nil;
     }
     
-    if (NotReachable == [[JTSReachabilityResponder sharedInstance] networkStatus]) {
+    if (![[JTSReachabilityResponder sharedInstance] isReachable]) {
         success(nil, kNotReachableErrorsDictionary);
         return nil;
     }
