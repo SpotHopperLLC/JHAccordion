@@ -241,7 +241,7 @@ typedef void(^AlertBlock)();
 - (void)oops:(ErrorModel *)errorModel caller:(SEL)caller message:(NSString *)message {
     [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(caller)];
     
-    if (NotReachable == [[JTSReachabilityResponder sharedInstance] networkStatus]) {
+    if (![[JTSReachabilityResponder sharedInstance] isReachable]) {
         [self showAlert:@"Oops" message:@"Sorry, the network is currently not accessible. Please try again later."];
     }
     else if (message.length) {

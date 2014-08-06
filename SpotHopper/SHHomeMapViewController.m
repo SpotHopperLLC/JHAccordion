@@ -204,6 +204,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 @property (strong, nonatomic) CLLocation *currentLocation;
 
+@property (strong, nonatomic) TellMeMyLocation *tellMeMyLocation;
+
 @end
 
 @implementation SHHomeMapViewController {
@@ -687,7 +689,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)showSlidersSearch:(BOOL)animated forMode:(SHMode)mode withCompletionBlock:(void (^)())completionBlock {
-    if (NotReachable == [[JTSReachabilityResponder sharedInstance] networkStatus]) {
+    if (![[JTSReachabilityResponder sharedInstance] isReachable]) {
         [self oops:nil caller:_cmd message:@"Sorry, the network is currently down."];
         
         if (completionBlock) {
@@ -1689,29 +1691,36 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)repositionOnCurrentDeviceLocation:(BOOL)animated {
-    [self.locationMenuBarViewController updateLocationTitle:@"Locating..."];
-    
-    static TellMeMyLocation *tellMeMyLocation = nil;
-    
-    if (!tellMeMyLocation) {
-        tellMeMyLocation = [[TellMeMyLocation alloc] init];
+    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted) {
+        [self showAlert:@"Location" message:@"Access to location services is restricted."];
+        return;
     }
-    else {
-        // if the variables already defined it is already running
+    else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
+        [self showAlert:@"Location" message:@"Access to location services is denied."];
         return;
     }
     
-    [tellMeMyLocation findMe:kCLLocationAccuracyNearestTenMeters found:^(CLLocation *newLocation) {
+    [self.locationMenuBarViewController updateLocationTitle:@"Locating..."];
+    
+    if (!self.tellMeMyLocation) {
+        self.tellMeMyLocation = [[TellMeMyLocation alloc] init];
+    }
+    
+    CLLocationAccuracy accuracy = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized ? kCLLocationAccuracyHundredMeters : kCLLocationAccuracyKilometer;
+    
+    [self.tellMeMyLocation findMe:accuracy found:^(CLLocation *newLocation) {
         self.mapView.showsUserLocation = TRUE;
         self.currentLocation = newLocation;
         [self fetchNearbySpotsAtLocation:self.currentLocation];
         [self repositionMapOnCoordinate:self.currentLocation.coordinate animated:animated];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [self updateLocationName];
+            self.tellMeMyLocation = nil;
         });
-        
-        tellMeMyLocation = nil;
     } failure:^(NSError *error) {
+        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+        [Tracker track:@"Location Services Error" properties:@{ @"Error" : error.description }];
+        
         if (!self.currentLocation && self.lastSelectedLocation) {
             self.currentLocation = self.lastSelectedLocation;
             [TellMeMyLocation setCurrentSelectedLocation:self.lastSelectedLocation];
@@ -1724,7 +1733,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             [self repositionMapOnCoordinate:kCLLocationCoordinate2DInvalid animated:animated];
         }
         
-        tellMeMyLocation = nil;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            self.tellMeMyLocation = nil;
+        });
     }];
 }
 
@@ -2209,7 +2220,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)updateLocationName {
-    if (NotReachable == [[JTSReachabilityResponder sharedInstance] networkStatus]) {
+    if (![[JTSReachabilityResponder sharedInstance] isReachable]) {
         [self.locationMenuBarViewController updateLocationTitle:@"Off the Grid"];
     }
     else if (!_isValidLocation) {
@@ -2680,7 +2691,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark -
 
 - (void)checkNetworkReachabilityWithCompletionBlock:(void (^)())completionBlock {
-    if (NotReachable == [[JTSReachabilityResponder sharedInstance] networkStatus]) {
+    if (![[JTSReachabilityResponder sharedInstance] isReachable]) {
         [self showAlert:@"Oops" message:@"Sorry, the network is not currently accessible."];
     }
     else if (completionBlock) {

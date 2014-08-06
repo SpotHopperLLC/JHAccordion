@@ -58,7 +58,7 @@
     self.searchTextField.leftView = leftView;
     self.searchTextField.leftViewMode = UITextFieldViewModeAlways;
     
-    self.mapView.showsUserLocation = YES;
+    self.mapView.showsUserLocation = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized;
     
     [self styleSelectThisLocation];
 }
