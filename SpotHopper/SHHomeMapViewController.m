@@ -146,6 +146,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 @property (strong, nonatomic) SHMapFooterNavigationViewController *mapFooterNavigationViewController;
 @property (strong, nonatomic) SHSlidersSearchViewController *slidersSearchViewController;
 @property (strong, nonatomic) SHGlobalSearchViewController *globalSearchViewController;
+@property (strong, nonatomic) SHLocationPickerViewController *locationPickerViewController;
 
 @property (weak, nonatomic) NSLayoutConstraint *sideBarRightEdgeConstraint;
 @property (weak, nonatomic) NSLayoutConstraint *blurredViewHeightConstraint;
@@ -980,6 +981,66 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }];
 }
 
+- (void)showLocationPicker:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    [self checkNetworkReachabilityWithCompletionBlock:^{
+        [self hideBottomViewWithCompletionBlock:nil];
+        
+        [self prepareBlurredScreen];
+        
+        SHLocationPickerViewController *vc = (SHLocationPickerViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"SHLocationPickerViewController"];
+        vc.delegate = self;
+        vc.view.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.view addSubview:vc.view];
+        [vc.view pinToSuperviewEdges:JRTViewPinAllEdges inset:0.0f];
+        self.locationPickerViewController = vc;
+
+        LOG_FRAME(@"location menu", self.locationMenuBarViewController.view.frame);
+        [vc setTopContentInset:self.locationMenuBarViewController.view.frame.origin.y + CGRectGetHeight(self.locationMenuBarViewController.view.frame)];
+        
+        self.blurredView.alpha = 0.0f;
+        vc.view.alpha = 0.0f;
+        vc.view.hidden = FALSE;
+        
+        [self.view insertSubview:vc.view belowSubview:self.locationMenuBarViewController.view];
+        [self.view insertSubview:self.blurredView belowSubview:vc.view];
+        
+        self.blurredViewHeightConstraint.constant = CGRectGetHeight(self.view.frame);
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
+        
+        UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+        [UIView animateWithDuration:(animated ? 0.25f : 0.0f) delay:0.0 options:options animations:^{
+            self.blurredView.alpha = 1.0f;
+            vc.view.alpha = 1.0f;
+        } completion:^(BOOL finished) {
+            if (completionBlock) {
+                completionBlock();
+            }
+        }];
+    }];
+}
+
+- (void)hideLocationPicker:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:(animated ? 0.25f : 0.0f) delay:0.0 options:options animations:^{
+        self.blurredView.alpha = 0.0f;
+        self.locationPickerViewController.view.alpha = 0.0f;
+    } completion:^(BOOL finished) {
+        self.blurredViewHeightConstraint.constant = 0;
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
+        
+        [self restoreNavigationIfNeeded];
+        
+        [self.locationPickerViewController.view removeFromSuperview];
+        self.locationPickerViewController = nil;
+        
+        if (completionBlock) {
+            completionBlock();
+        }
+    }];
+}
+
 #pragma mark - User Actions
 #pragma mark -
 
@@ -1680,14 +1741,18 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)pickLocation {
-    [Tracker trackUserTappedLocationPickerButton];
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
     
-    SHLocationPickerViewController *locationPickerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SHLocationPickerViewController"];
+    // TODO: change to start location search on screen
     
-    locationPickerVC.initialRegion = self.mapView.region;
-    
-    locationPickerVC.delegate = self;
-    [self.navigationController pushViewController:locationPickerVC animated:TRUE];
+//    [Tracker trackUserTappedLocationPickerButton];
+//    
+//    SHLocationPickerViewController *locationPickerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SHLocationPickerViewController"];
+//    
+//    locationPickerVC.initialRegion = self.mapView.region;
+//    
+//    locationPickerVC.delegate = self;
+//    [self.navigationController pushViewController:locationPickerVC animated:TRUE];
 }
 
 - (void)repositionOnCurrentDeviceLocation:(BOOL)animated {
@@ -2563,10 +2628,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark - SHLocationMenuBarDelegate
 #pragma mark -
 
-- (void)locationMenuBarViewControllerDidRequestLocationChange:(SHLocationMenuBarViewController *)vc {
-    [self pickLocation];
-}
-
 - (void)locationMenuBarViewController:(SHLocationMenuBarViewController *)vc didScopeToSpot:(SpotModel *)spot {
     [self scopeToSpot:spot];
 }
@@ -2580,6 +2641,21 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             [self hideHUD];
         }];
     }];
+}
+
+- (void)locationMenuBarViewControllerDidStartSearch:(SHLocationMenuBarViewController *)vc {
+    [self showLocationPicker:TRUE withCompletionBlock:nil];
+}
+
+- (void)locationMenuBarViewController:(SHLocationMenuBarViewController *)vc didSearchWithText:(NSString *)searchText {
+    // TODO: implement
+    // relay text to location picker view controller
+    
+    [self.locationPickerViewController searchWithText:searchText];
+}
+
+- (void)locationMenuBarViewControllerDidCancelSearch:(SHLocationMenuBarViewController *)vc {
+    [self hideLocationPicker:TRUE withCompletionBlock:nil];
 }
 
 #pragma mark - SHHomeNavigationDelegate
@@ -2792,36 +2868,77 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark - SHLocationPickerDelegate
 #pragma mark -
 
-- (void)locationPickerViewController:(SHLocationPickerViewController*)viewController didSelectRegion:(MKCoordinateRegion)region {
-    [Tracker trackUserSetNewLocation];
-    
-    _isValidLocation = TRUE;
-    
-    [self.navigationController popViewControllerAnimated:TRUE];
-    
+// TODO: remove
+
+//- (void)locationPickerViewController:(SHLocationPickerViewController*)viewController didSelectRegion:(MKCoordinateRegion)region {
+//    [Tracker trackUserSetNewLocation];
+//    
+//    _isValidLocation = TRUE;
+//    
+//    [self.navigationController popViewControllerAnimated:TRUE];
+//    
+//    self.repositioningMap = TRUE;
+//    
+//    CLLocation *selectedLocation = [[CLLocation alloc] initWithLatitude:region.center.latitude longitude:region.center.longitude];
+//    [TellMeMyLocation setCurrentSelectedLocation:selectedLocation];
+//    
+//    self.currentLocation = selectedLocation;
+//    self.lastSelectedLocation = selectedLocation;
+//    
+//    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+//    [UIView animateWithDuration:0.25 delay:0.0 options:options animations:^{
+//        [self.mapView setRegion:region animated:FALSE];
+//    } completion:^(BOOL finished) {
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//            self.repositioningMap = FALSE;
+//            [self updateLocationName];
+//            
+//            if ([self canSearchAgain]) {
+//                [self showHUD:@"Updating for New Location"];
+//                [self searchAgainWithCompletionBlock:^{
+//                    [self hideHUD];
+//                }];
+//            }
+//        });
+//    }];
+//}
+
+- (void)locationPickerViewController:(SHLocationPickerViewController *)viewController didSelectPlacemark:(CLPlacemark *)placemark {
     self.repositioningMap = TRUE;
     
-    CLLocation *selectedLocation = [[CLLocation alloc] initWithLatitude:region.center.latitude longitude:region.center.longitude];
-    [TellMeMyLocation setCurrentSelectedLocation:selectedLocation];
+    [TellMeMyLocation setCurrentSelectedLocation:placemark.location];
+    self.currentLocation = placemark.location;
+    self.lastSelectedLocation = placemark.location;
     
-    self.currentLocation = selectedLocation;
-    self.lastSelectedLocation = selectedLocation;
+    MKCoordinateRegion region;
     
-    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-    [UIView animateWithDuration:0.25 delay:0.0 options:options animations:^{
-        [self.mapView setRegion:region animated:FALSE];
-    } completion:^(BOOL finished) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            self.repositioningMap = FALSE;
-            [self updateLocationName];
-            
-            if ([self canSearchAgain]) {
-                [self showHUD:@"Updating for New Location"];
-                [self searchAgainWithCompletionBlock:^{
-                    [self hideHUD];
-                }];
-            }
-        });
+    if ([placemark.region isKindOfClass:[CLCircularRegion class]]) {
+        CLCircularRegion *circularRegion = (CLCircularRegion *)placemark.region;
+        region = MKCoordinateRegionMakeWithDistance(circularRegion.center, circularRegion.radius, circularRegion.radius);
+    }
+    else {
+        region = MKCoordinateRegionMakeWithDistance(placemark.location.coordinate, 2500, 2500);
+    }
+    
+    [self.locationMenuBarViewController dismissSearch:TRUE withCompletionBlock:nil];
+
+    [self hideLocationPicker:TRUE withCompletionBlock:^{
+        UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+        [UIView animateWithDuration:0.25 delay:0.0 options:options animations:^{
+            [self.mapView setRegion:region animated:FALSE];
+        } completion:^(BOOL finished) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                self.repositioningMap = FALSE;
+                [self updateLocationName];
+                
+                if ([self canSearchAgain]) {
+                    [self showHUD:@"Updating for New Location"];
+                    [self searchAgainWithCompletionBlock:^{
+                        [self hideHUD];
+                    }];
+                }
+            });
+        }];
     }];
 }
 

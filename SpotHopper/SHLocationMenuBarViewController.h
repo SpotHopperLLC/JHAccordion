@@ -24,16 +24,22 @@
 - (void)scopeToSpot:(SpotModel *)spot withCompletionBlock:(void (^)())completionBlock;
 - (void)descopeFromSpot:(SpotModel *)spot withCompletionBlock:(void (^)())completionBlock;
 
+- (void)dismissSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock;
+
 @end
 
 @protocol SHLocationMenuBarDelegate <NSObject>
 
 @optional
 
-- (void)locationMenuBarViewControllerDidRequestLocationChange:(SHLocationMenuBarViewController *)vc;
-
 - (void)locationMenuBarViewController:(SHLocationMenuBarViewController *)vc didScopeToSpot:(SpotModel *)spot;
 
 - (void)locationMenuBarViewControllerDidDescope:(SHLocationMenuBarViewController *)vc;
+
+- (void)locationMenuBarViewControllerDidStartSearch:(SHLocationMenuBarViewController *)vc;
+
+- (void)locationMenuBarViewController:(SHLocationMenuBarViewController *)vc didSearchWithText:(NSString *)searchText;
+
+- (void)locationMenuBarViewControllerDidCancelSearch:(SHLocationMenuBarViewController *)vc;
 
 @end

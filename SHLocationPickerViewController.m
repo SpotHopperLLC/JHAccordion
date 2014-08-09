@@ -19,18 +19,14 @@
 
 #define kMapPadding 10000.0f
 
-@interface SHLocationPickerViewController ()<UITextFieldDelegate, MKMapViewDelegate>
+#define kMetersPerMile 1609.344
 
-@property (weak, nonatomic) IBOutlet UITextField *searchTextField;
-@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@interface SHLocationPickerViewController () <UITableViewDelegate, UITableViewDataSource>
 
-@property (weak, nonatomic) IBOutlet UIView *topView;
-@property (weak, nonatomic) IBOutlet UIView *bottomView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (weak, nonatomic) IBOutlet UIView *selectThisLocationView;
-@property (weak, nonatomic) IBOutlet UIButton *selectThisLocationButton;
-
-@property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
+@property (strong, nonatomic) NSArray *placemarks;
+@property (strong, nonatomic) NSMutableArray *savedPlacemarks;
 
 @end
 
@@ -40,38 +36,18 @@
 #pragma mark -
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
+    [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
     
-    NSAssert(self.searchTextField, @"Outlet is required");
-    
-    self.title = @"Select a Location";
-    
-    self.tellMeMyLocation = [[TellMeMyLocation alloc] init];
-    
-    // set the left view in search text field
-    UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
-    UIImageView *leftImageView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 6, 16, 16)];
-    leftImageView.alpha = 0.5f;
-    [SHStyleKit setImageView:leftImageView withDrawing:SHStyleKitDrawingSearchIcon color:SHStyleKitColorMyTextColor];
-    [leftView addSubview:leftImageView];
-    
-    self.searchTextField.leftView = leftView;
-    self.searchTextField.leftViewMode = UITextFieldViewModeAlways;
-    
-    self.mapView.showsUserLocation = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized;
-    
-    [self styleSelectThisLocation];
+    NSAssert(self.tableView, @"Outlet is required");
+    NSAssert(self.tableView.delegate == self, @"Delegate must be self");
+    NSAssert(self.tableView.dataSource == self, @"DataSource must be self");
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    UIBarButtonItem *barButtonLeft = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonTapped:)];
-    [self.navigationItem setLeftBarButtonItem:barButtonLeft];
-    UIBarButtonItem *barButtonRight = [[UIBarButtonItem alloc] initWithTitle:@"Select" style:UIBarButtonItemStylePlain target:self action:@selector(selectButtonTapped:)];
-    [self.navigationItem setRightBarButtonItem:barButtonRight];
-    
-    [self.mapView setRegion:self.initialRegion animated:FALSE];
+    self.tableView.hidden = TRUE;
+    self.savedPlacemarks = [self savedPlacemarks].mutableCopy;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -86,131 +62,131 @@
     [super viewDidDisappear:animated];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle {
-    return UIStatusBarStyleLightContent;
-}
-
 #pragma mark - Tracking
 
 - (NSString *)screenName {
     return @"Location Picker";
 }
 
-#pragma mark - User Actions
+#pragma mark - Public
 #pragma mark -
 
-- (IBAction)cancelButtonTapped:(id)sender {
-    [self.navigationController popViewControllerAnimated:TRUE];
+- (void)setTopContentInset:(CGFloat)topContentInset {
+    UIEdgeInsets insets = self.tableView.contentInset;
+    insets.top = topContentInset;
+    self.tableView.contentInset = insets;
 }
 
-- (IBAction)selectButtonTapped:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(locationPickerViewController:didSelectRegion:)]) {
-        [self.delegate locationPickerViewController:self didSelectRegion:self.mapView.region];
+- (void)searchWithText:(NSString *)text {
+    if (text.length > 0) {
+        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+        [geocoder geocodeAddressString:text completionHandler:^(NSArray *placemarks, NSError *error) {
+            [self hideHUD];
+            if (error || placemarks.count == 0) {
+                [self showAlert:@"Oops" message:@"Could not find the location you are looking for"];
+            }
+            else {
+                self.placemarks = placemarks;
+                self.tableView.hidden = FALSE;
+                [self.tableView reloadData];
+            }
+        }];
     }
-}
-
-- (IBAction)compassButtonTapped:(id)sender {
-    [self.tellMeMyLocation findMe:kCLLocationAccuracyKilometer found:^(CLLocation *newLocation) {
-        [self repositionMapViewOnLocation:newLocation animated:FALSE];
-    } failure:^(NSError *error){
-        if ([error.domain isEqualToString:kTellMeMyLocationDomain]) {
-            [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
-        }
-    }];
 }
 
 #pragma mark - Private
 #pragma mark -
 
-- (void)styleSelectThisLocation {
-    UIColor *tintColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
-    self.selectThisLocationButton.titleLabel.font = [UIFont fontWithName:@"Lato-Bold" size:self.selectThisLocationButton.titleLabel.font.pointSize];
-    self.selectThisLocationButton.tintColor = tintColor;
-    [self.selectThisLocationButton setTitleColor:tintColor forState:UIControlStateNormal];
-    
-    self.selectThisLocationView.layer.cornerRadius = 5.0f;
-}
-
-- (void)repositionMapViewOnLocation:(CLLocation *)location animated:(BOOL)animated {
-    MKMapRect mapRect = MKMapRectNull;
-    MKMapPoint mapPoint = MKMapPointForCoordinate(location.coordinate);
-    
-    CGFloat padding = kMapPadding;
-    mapRect.origin.x = mapPoint.x - padding/2;
-    mapRect.origin.y = mapPoint.y - padding/2;
-    mapRect.size = MKMapSizeMake(MKMapRectGetWidth(mapRect) + padding, MKMapRectGetHeight(mapRect) + padding);
-    
-    [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f) animated:TRUE];
-}
-
-#pragma mark - UITextFieldDelegate
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
-    
-    if (textField.text.length > 0) {
-        
-        // Reverse geocodes search text
-        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-        
-        [self showHUD:@"Locating..."];
-        [geocoder geocodeAddressString:textField.text completionHandler:^(NSArray *placemarks, NSError *error) {
-            [self hideHUD];
-            if (error || placemarks.count == 0) {
-                [self showAlert:@"Oops" message:@"Could not find the location you are looking for"];
-            } else {
-                CLPlacemark *placemark = [placemarks objectAtIndex:0];
-                [self repositionMapViewOnLocation:placemark.location animated:FALSE];
-            }
-        }];
+- (NSString *)nameForPlacemark:(CLPlacemark *)placemark {
+    if (placemark.name.length && placemark.locality.length && placemark.administrativeArea.length) {
+        return [NSString stringWithFormat:@"%@, %@, %@", placemark.name, placemark.locality, placemark.administrativeArea];
     }
-    
-    return NO;
-}
-
-#pragma mark - MKMapViewDelegate
-
-- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
-    MKAnnotationView *annotationView = nil;
-
-    if ([annotation isKindOfClass:[MKUserLocation class]]) {
-        static NSString *identifier = @"CurrentLocation";
-        SVPulsingAnnotationView *pulsingView = (SVPulsingAnnotationView *)[self.mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
-        
-        if (!pulsingView) {
-            pulsingView = [[SVPulsingAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
-            pulsingView.annotationColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
-        }
-        
-        pulsingView.canShowCallout = YES;
-        
-        annotationView = pulsingView;
+    else if (placemark.subLocality.length && placemark.locality.length && placemark.administrativeArea.length) {
+        return [NSString stringWithFormat:@"%@, %@, %@", placemark.subLocality, placemark.locality, placemark.administrativeArea];
     }
-    
-    return annotationView;
-}
-
-- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
-    [self.searchTextField resignFirstResponder];
-    
-    CLLocation *boundaryLocation = [[CLLocation alloc] initWithLatitude:(mapView.region.center.latitude + mapView.region.span.latitudeDelta) longitude:mapView.region.center.longitude];
-    CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:mapView.region.center.latitude longitude:mapView.region.center.longitude];
-    CLLocationDistance distance = [centerLocation distanceFromLocation:boundaryLocation];
-
-    if (distance > 10000) {
-        self.navigationItem.title = @"Location";
+    else if (placemark.locality.length && placemark.administrativeArea.length) {
+        return [NSString stringWithFormat:@"%@, %@", placemark.locality, placemark.administrativeArea];
+    }
+    else if (placemark.name.length) {
+        return placemark.name;
     }
     else {
-        CLLocationCoordinate2D coordinate = self.mapView.centerCoordinate;
-        CLLocation *location = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
-        
-        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-        [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
-            if (placemarks.count) {
-                CLPlacemark *placemark = placemarks[0];
-                self.navigationItem.title = [TellMeMyLocation locationNameFromPlacemark:placemark];
-            }
-        }];
+        return nil;
+    }
+}
+
++ (void)setSavedPlacemarks:(NSArray *)placemarks {
+//    if (firstUseDate) {
+//        [[NSUserDefaults standardUserDefaults] setObject:firstUseDate forKey:kFirstUseDate];
+//    }
+//    else {
+//        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kFirstUseDate];
+//    }
+//    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (NSArray *)savedPlacemarks {
+//    NSDate *firstUseDate = [[NSUserDefaults standardUserDefaults] objectForKey:kFirstUseDate];
+//    return firstUseDate;
+    
+    return @[];
+}
+
+#pragma mark - UITableViewDataSource
+#pragma mark -
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 2;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == 0) {
+        return MAX(1, self.placemarks.count);
+    }
+    else {
+        // pre-seeded locations and most recent selections
+        // TODO: populated seeded and recent selections as placemarks?
+        return 0;
+    }
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *LocationCellIdentifier = @"LocationCell";
+    static NSString *NoMatchCellIdentifier = @"NoMatchCell";
+
+    UITableViewCell *cell = nil;
+    
+    if (indexPath.section == 0) {
+        if (self.placemarks.count) {
+            CLPlacemark *placemark = self.placemarks[indexPath.row];
+            cell = [tableView dequeueReusableCellWithIdentifier:LocationCellIdentifier forIndexPath:indexPath];
+            cell.textLabel.text = [self nameForPlacemark:placemark];
+        }
+        else {
+            cell = [tableView dequeueReusableCellWithIdentifier:NoMatchCellIdentifier forIndexPath:indexPath];
+        }
+    }
+    else {
+        cell = [tableView dequeueReusableCellWithIdentifier:LocationCellIdentifier forIndexPath:indexPath];
+        cell.textLabel.text = @"TBD";
+    }
+    
+    return cell;
+}
+
+#pragma mark - UITableViewDelegate
+#pragma mark -
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        // TODO: get selected placemark for first section
+        if ([self.delegate respondsToSelector:@selector(locationPickerViewController:didSelectPlacemark:)]) {
+            CLPlacemark *placemark = self.placemarks[indexPath.row];
+            [self.delegate locationPickerViewController:self didSelectPlacemark:placemark];
+        }
+    }
+    else {
+        // TODO: get placemark from seeded/previous selections
     }
 }
 

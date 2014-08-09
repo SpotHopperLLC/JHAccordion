@@ -19,10 +19,14 @@
 
 @property (nonatomic, weak) id<SHLocationPickerDelegate> delegate;
 
+- (void)setTopContentInset:(CGFloat)topContentInset;
+
+- (void)searchWithText:(NSString *)text;
+
 @end
 
 @protocol SHLocationPickerDelegate <NSObject>
 
-- (void)locationPickerViewController:(SHLocationPickerViewController*)viewController didSelectRegion:(MKCoordinateRegion)region;
+- (void)locationPickerViewController:(SHLocationPickerViewController *)viewController didSelectPlacemark:(CLPlacemark *)placemark;
 
 @end
