@@ -2367,6 +2367,11 @@
 		268C8CA3190089D00011E0F8 /* UserState.m in Sources */ = {isa = PBXBuildFile; fileRef = 268C8CA1190089D00011E0F8 /* UserState.m */; };
 		268C8CA4190089D00011E0F8 /* UserState.m in Sources */ = {isa = PBXBuildFile; fileRef = 268C8CA1190089D00011E0F8 /* UserState.m */; };
 		268C8CA5190089D00011E0F8 /* UserState.m in Sources */ = {isa = PBXBuildFile; fileRef = 268C8CA1190089D00011E0F8 /* UserState.m */; };
+		2690EB74199901220026DC52 /* SHPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 2690EB73199901220026DC52 /* SHPlacemark.m */; };
+		2690EB75199901220026DC52 /* SHPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 2690EB73199901220026DC52 /* SHPlacemark.m */; };
+		2690EB76199901220026DC52 /* SHPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 2690EB73199901220026DC52 /* SHPlacemark.m */; };
+		2690EB77199901220026DC52 /* SHPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 2690EB73199901220026DC52 /* SHPlacemark.m */; };
+		2690EB78199901220026DC52 /* SHPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 2690EB73199901220026DC52 /* SHPlacemark.m */; };
 		26A7E3661922CE8000FF7B88 /* SpotHopper.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26A7E3651922CE8000FF7B88 /* SpotHopper.storyboard */; };
 		26A7E3671922CE8000FF7B88 /* SpotHopper.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26A7E3651922CE8000FF7B88 /* SpotHopper.storyboard */; };
 		26A7E3681922CE8000FF7B88 /* SpotHopper.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26A7E3651922CE8000FF7B88 /* SpotHopper.storyboard */; };
@@ -3133,6 +3138,8 @@
 		2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotListRequest.m; sourceTree = "<group>"; };
 		268C8CA0190089D00011E0F8 /* UserState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserState.h; sourceTree = "<group>"; };
 		268C8CA1190089D00011E0F8 /* UserState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserState.m; sourceTree = "<group>"; };
+		2690EB72199901220026DC52 /* SHPlacemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHPlacemark.h; sourceTree = "<group>"; };
+		2690EB73199901220026DC52 /* SHPlacemark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHPlacemark.m; sourceTree = "<group>"; };
 		26A7E3651922CE8000FF7B88 /* SpotHopper.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SpotHopper.storyboard; sourceTree = "<group>"; };
 		26A7E3811922D20700FF7B88 /* SHStyleKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHStyleKit.h; path = SpotHopper/SHStyleKit.h; sourceTree = "<group>"; };
 		26A7E3821922D20700FF7B88 /* SHStyleKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHStyleKit.m; path = SpotHopper/SHStyleKit.m; sourceTree = "<group>"; };
@@ -3832,6 +3839,8 @@
 				2623801F1986F83500F0940A /* Tracker+Events.m */,
 				038664ED186D391E00985CEC /* UserModel.h */,
 				038664EE186D391E00985CEC /* UserModel.m */,
+				2690EB72199901220026DC52 /* SHPlacemark.h */,
+				2690EB73199901220026DC52 /* SHPlacemark.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -6698,6 +6707,7 @@
 				03AF8F6318E6013700DD9356 /* CheckinConfirmationViewController.m in Sources */,
 				039F54AC18D35C2E004B2B67 /* MenuItemCell.m in Sources */,
 				03F2D9371871E88000C69576 /* LaunchViewController.m in Sources */,
+				2690EB74199901220026DC52 /* SHPlacemark.m in Sources */,
 				03763FB718D9EBFC00A9A30B /* SHTableViewCell.m in Sources */,
 				03F2D94D18722CAC00C69576 /* SHNavigationBar.m in Sources */,
 				03F6BF6818C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.m in Sources */,
@@ -6865,6 +6875,7 @@
 			files = (
 				A688DB5B194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m in Sources */,
 				2654B8B9192BB6E000A66BED /* SHHomeNavigationViewController.m in Sources */,
+				2690EB78199901220026DC52 /* SHPlacemark.m in Sources */,
 				03CABFAF18E7716400FAC5F5 /* NSArray+DailySpecials.m in Sources */,
 				03CABFB018E7716400FAC5F5 /* UIImage+FixOrientation.m in Sources */,
 				03CABFB118E7716400FAC5F5 /* MenuItemSubtypeCell.m in Sources */,
@@ -7050,6 +7061,7 @@
 				03AF8F6518E6013E00DD9356 /* CheckinConfirmationViewController.m in Sources */,
 				039F54AE18D35C2E004B2B67 /* MenuItemCell.m in Sources */,
 				03F4E76318CA33D00056EAA9 /* LaunchViewController.m in Sources */,
+				2690EB76199901220026DC52 /* SHPlacemark.m in Sources */,
 				03763FB918D9ED7800A9A30B /* SHTableViewCell.m in Sources */,
 				03F4E76418CA33D00056EAA9 /* SHNavigationBar.m in Sources */,
 				03F4E76518CA33D00056EAA9 /* TTTAttributedLabel+QuickFonting.m in Sources */,
@@ -7223,6 +7235,7 @@
 				03AF8F6418E6013E00DD9356 /* CheckinConfirmationViewController.m in Sources */,
 				039F54AD18D35C2E004B2B67 /* MenuItemCell.m in Sources */,
 				03F4E8B118CA34260056EAA9 /* LaunchViewController.m in Sources */,
+				2690EB75199901220026DC52 /* SHPlacemark.m in Sources */,
 				03763FB818D9ED7800A9A30B /* SHTableViewCell.m in Sources */,
 				03F4E8B218CA34260056EAA9 /* SHNavigationBar.m in Sources */,
 				03F4E8B318CA34260056EAA9 /* TTTAttributedLabel+QuickFonting.m in Sources */,
@@ -7382,6 +7395,7 @@
 			files = (
 				A688DB5A194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m in Sources */,
 				2654B8B8192BB6E000A66BED /* SHHomeNavigationViewController.m in Sources */,
+				2690EB77199901220026DC52 /* SHPlacemark.m in Sources */,
 				267E04F91922CC48004457B4 /* NSArray+DailySpecials.m in Sources */,
 				267E04FA1922CC48004457B4 /* UIImage+FixOrientation.m in Sources */,
 				267E04FB1922CC48004457B4 /* MenuItemSubtypeCell.m in Sources */,

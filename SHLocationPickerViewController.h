@@ -11,6 +11,8 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 
+@class SHPlacemark;
+
 @protocol SHLocationPickerDelegate;
 
 @interface SHLocationPickerViewController : BaseViewController
@@ -27,6 +29,8 @@
 
 @protocol SHLocationPickerDelegate <NSObject>
 
-- (void)locationPickerViewController:(SHLocationPickerViewController *)viewController didSelectPlacemark:(CLPlacemark *)placemark;
+- (void)locationPickerViewController:(SHLocationPickerViewController *)viewController didSelectPlacemark:(SHPlacemark *)placemark;
+- (void)locationPickerViewControllerStartedSearching:(SHLocationPickerViewController *)viewController;
+- (void)locationPickerViewControllerStoppedSearching:(SHLocationPickerViewController *)viewController;
 
 @end

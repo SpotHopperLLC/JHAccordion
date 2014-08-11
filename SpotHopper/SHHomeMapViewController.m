@@ -62,6 +62,7 @@
 #import "MenuModel.h"
 #import "MenuItemModel.h"
 #import "PriceModel.h"
+#import "SHPlacemark.h"
 
 #import "UIImage+BlurredFrame.h"
 #import "UIImage+ImageEffects.h"
@@ -493,6 +494,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)showSideBar:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
     [self.mySideBarViewController viewWillAppear:animated];
     
+    if (!self.locationMenuBarViewController.isSearchViewHidden) {
+        [self.locationMenuBarViewController dismissSearch:animated withCompletionBlock:nil];
+    }
+    
     [self.navigationController.sidebarViewController toggleRightSidebar];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.45f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
@@ -589,6 +594,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)showSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
     NSAssert(self.navigationItem, @"Navigation Item is required");
+    
+    if (!self.locationMenuBarViewController.isSearchViewHidden) {
+        [self.locationMenuBarViewController dismissSearch:animated withCompletionBlock:nil];
+    }
 
     [self checkNetworkReachabilityWithCompletionBlock:^{
         [self hideBottomViewWithCompletionBlock:nil];
@@ -994,7 +1003,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [vc.view pinToSuperviewEdges:JRTViewPinAllEdges inset:0.0f];
         self.locationPickerViewController = vc;
 
-        LOG_FRAME(@"location menu", self.locationMenuBarViewController.view.frame);
         [vc setTopContentInset:self.locationMenuBarViewController.view.frame.origin.y + CGRectGetHeight(self.locationMenuBarViewController.view.frame)];
         
         self.blurredView.alpha = 0.0f;
@@ -2903,30 +2911,27 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 //    }];
 //}
 
-- (void)locationPickerViewController:(SHLocationPickerViewController *)viewController didSelectPlacemark:(CLPlacemark *)placemark {
+- (void)locationPickerViewController:(SHLocationPickerViewController *)viewController didSelectPlacemark:(SHPlacemark *)placemark {
     self.repositioningMap = TRUE;
     
     [TellMeMyLocation setCurrentSelectedLocation:placemark.location];
     self.currentLocation = placemark.location;
     self.lastSelectedLocation = placemark.location;
     
-    MKCoordinateRegion region;
-    
-    if ([placemark.region isKindOfClass:[CLCircularRegion class]]) {
-        CLCircularRegion *circularRegion = (CLCircularRegion *)placemark.region;
-        region = MKCoordinateRegionMakeWithDistance(circularRegion.center, circularRegion.radius, circularRegion.radius);
-    }
-    else {
-        region = MKCoordinateRegionMakeWithDistance(placemark.location.coordinate, 2500, 2500);
-    }
+    CLLocationDistance radius = MIN(7500, placemark.region.radius);
+    CLLocationDistance distance = radius*2;
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(placemark.region.center, distance, distance);
+    MKMapRect mapRect = [self mapRectForCoordinateRegion:region];
     
     [self.locationMenuBarViewController dismissSearch:TRUE withCompletionBlock:nil];
-
+    
     [self hideLocationPicker:TRUE withCompletionBlock:^{
         UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
         [UIView animateWithDuration:0.25 delay:0.0 options:options animations:^{
-            [self.mapView setRegion:region animated:FALSE];
+            //[self.mapView setRegion:region animated:FALSE];
+            [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(self.topEdgePadding, 45.0f, self.bottomEdgePadding, 45.0f) animated:TRUE];
         } completion:^(BOOL finished) {
+            [self updateLocationName];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                 self.repositioningMap = FALSE;
                 [self updateLocationName];
@@ -2940,6 +2945,28 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             });
         }];
     }];
+}
+
+- (MKMapRect)mapRectForCoordinateRegion:(MKCoordinateRegion)coordinateRegion {
+    CLLocationCoordinate2D topLeftCoordinate = CLLocationCoordinate2DMake(coordinateRegion.center.latitude + (coordinateRegion.span.latitudeDelta / 2.0), coordinateRegion.center.longitude - (coordinateRegion.span.longitudeDelta / 2.0));
+    
+    MKMapPoint topLeftMapPoint = MKMapPointForCoordinate(topLeftCoordinate);
+    
+    CLLocationCoordinate2D bottomRightCoordinate = CLLocationCoordinate2DMake(coordinateRegion.center.latitude - (coordinateRegion.span.latitudeDelta / 2.0), coordinateRegion.center.longitude + (coordinateRegion.span.longitudeDelta / 2.0));
+    
+    MKMapPoint bottomRightMapPoint = MKMapPointForCoordinate(bottomRightCoordinate);
+    
+    MKMapRect mapRect = MKMapRectMake(topLeftMapPoint.x, topLeftMapPoint.y, fabs(bottomRightMapPoint.x - topLeftMapPoint.x), fabs(bottomRightMapPoint.y - topLeftMapPoint.y));
+    
+    return mapRect;
+}
+
+- (void)locationPickerViewControllerStartedSearching:(SHLocationPickerViewController *)viewController {
+    [self.locationMenuBarViewController showSearchIsBusy];
+}
+
+- (void)locationPickerViewControllerStoppedSearching:(SHLocationPickerViewController *)viewController {
+    [self.locationMenuBarViewController showSearchIsFree];
 }
 
 #pragma mark - SearchViewControllerDelegate
@@ -3145,6 +3172,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     //[self flashSearchRadius];
     //[self flashMapBoxing];
+    
+    DebugLog(@"[regions addObject:@{@\"name\" : @\"%@\", @\"latitude\": [NSNumber numberWithDouble:%ff], @\"longitude\": [NSNumber numberWithDouble:%ff], @\"radius\": [NSNumber numberWithDouble:%ff], @\"weight\" : [NSNumber numberWithInteger:5]}];", self.locationMenuBarViewController.locationTitle, self.visibleMapCenterCoordinate.latitude, self.visibleMapCenterCoordinate.longitude, [self searchRadius]);
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [self updateLocationName];

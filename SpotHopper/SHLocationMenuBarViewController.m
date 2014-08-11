@@ -70,6 +70,14 @@
 #pragma mark - Public
 #pragma mark -
 
+- (NSString *)locationTitle {
+    return self.locationLabel.text;
+}
+
+- (BOOL)isSearchViewHidden {
+    return self.searchView.hidden;
+}
+
 - (void)updateLocationTitle:(NSString *)locationTitle {
     self.locationLabel.text = locationTitle;
 }
@@ -132,6 +140,19 @@
 
 - (void)dismissSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
     [self hideSearchView:animated withCompletionBlock:completionBlock];
+}
+
+- (void)showSearchIsBusy {
+    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicatorView.tintColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
+    self.searchTextField.rightView = activityIndicatorView;
+    self.searchTextField.rightViewMode = UITextFieldViewModeAlways;
+    [activityIndicatorView startAnimating];
+}
+
+- (void)showSearchIsFree {
+    self.searchTextField.rightView = nil;
+    self.searchTextField.rightViewMode = UITextFieldViewModeNever;
 }
 
 #pragma mark - User Actions
@@ -263,19 +284,6 @@
         self.searchTextField.text = nil;
         [self.view endEditing:TRUE];
     }];
-}
-
-- (void)showSearchIsBusy {
-    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    activityIndicatorView.tintColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
-    self.searchTextField.rightView = activityIndicatorView;
-    self.searchTextField.rightViewMode = UITextFieldViewModeAlways;
-    [activityIndicatorView startAnimating];
-}
-
-- (void)showSearchIsFree {
-    self.searchTextField.rightView = nil;
-    self.searchTextField.rightViewMode = UITextFieldViewModeNever;
 }
 
 #pragma mark - UITextFieldDelegate
