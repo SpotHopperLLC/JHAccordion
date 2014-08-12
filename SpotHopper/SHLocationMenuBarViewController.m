@@ -37,6 +37,8 @@
 @property (weak, nonatomic) SpotModel *scopedSpot;
 @property (weak, nonatomic) SpotModel *selectedSpot;
 
+@property (strong, nonatomic) NSString *currentSearchText;
+
 @end
 
 @implementation SHLocationMenuBarViewController {
@@ -140,6 +142,7 @@
 
 - (void)dismissSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
     [self hideSearchView:animated withCompletionBlock:completionBlock];
+    self.currentSearchText = nil;
 }
 
 - (void)showSearchIsBusy {
@@ -261,8 +264,10 @@
     } completion:^(BOOL finished) {
         self.locationView.hidden = TRUE;
         [self.searchTextField becomeFirstResponder];
-
-        //[self showSearchIsBusy];
+        
+        if (completionBlock) {
+            completionBlock();
+        }
     }];
 }
 
@@ -283,20 +288,39 @@
         self.searchView.hidden = TRUE;
         self.searchTextField.text = nil;
         [self.view endEditing:TRUE];
+        
+        if (completionBlock) {
+            completionBlock();
+        }
     }];
+}
+
+- (void)initiateSearch {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(initiateSearch) object:nil];
+    
+    if (self.searchTextField.text.length && ![self.searchTextField.text isEqualToString:self.currentSearchText]) {
+        self.currentSearchText = self.searchTextField.text;
+        if ([self.delegate respondsToSelector:@selector(locationMenuBarViewController:didSearchWithText:)]) {
+            [self.delegate locationMenuBarViewController:self didSearchWithText:self.currentSearchText];
+        }
+    }
 }
 
 #pragma mark - UITextFieldDelegate
 #pragma mark -
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if ([textField isEqual:self.searchTextField] && textField.text.length) {
-        if ([self.delegate respondsToSelector:@selector(locationMenuBarViewController:didSearchWithText:)]) {
-            [self.delegate locationMenuBarViewController:self didSearchWithText:textField.text];
-        }
-    }
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(initiateSearch) object:nil];
+    [self performSelector:@selector(initiateSearch) withObject:nil afterDelay:0.25f];
     
-//    [textField resignFirstResponder];
+    return TRUE;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if ([self.searchTextField isEqual:self.searchTextField]) {
+        [self performSelector:@selector(initiateSearch) withObject:nil afterDelay:0.25f];
+        [textField resignFirstResponder];
+    }
     
     return TRUE;
 }

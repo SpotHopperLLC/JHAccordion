@@ -596,7 +596,12 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     NSAssert(self.navigationItem, @"Navigation Item is required");
     
     if (!self.locationMenuBarViewController.isSearchViewHidden) {
-        [self.locationMenuBarViewController dismissSearch:animated withCompletionBlock:nil];
+        [self.locationMenuBarViewController dismissSearch:animated withCompletionBlock:^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [self showSearch:animated withCompletionBlock:completionBlock];
+            });
+        }];
+        return;
     }
 
     [self checkNetworkReachabilityWithCompletionBlock:^{
@@ -1104,6 +1109,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (IBAction)searchCancelButtonTapped:(id)sender {
     [Tracker trackLeavingGlobalSearch:FALSE];
 
+    [self.globalSearchViewController cancelSearch];
+    
     [self hideSearch:TRUE withCompletionBlock:^{
     }];
 }
@@ -1651,6 +1658,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     if (!spots.count) {
         [self showAlert:@"Oops" message:@"There were no spots found. Please try another neighorhood."];
+        [self hideStatus:TRUE withCompletionBlock:nil];
         return;
     }
     
@@ -1786,9 +1794,12 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.currentLocation = newLocation;
         [self fetchNearbySpotsAtLocation:self.currentLocation];
         [self repositionMapOnCoordinate:self.currentLocation.coordinate animated:animated];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            [self updateLocationName];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             self.tellMeMyLocation = nil;
+        });
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.75f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self updateLocationName];
         });
     } failure:^(NSError *error) {
         [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
@@ -1959,7 +1970,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     CGRect topFrame = [self topFrame];
     // 40 for height of the annotation view
     
-    CGFloat padding = CGRectGetHeight(topFrame) + ([self hasFourInchDisplay] ? self.topLayoutGuide.length : 0.0f) + 40.f;
+    CGFloat padding = CGRectGetHeight(topFrame) + (self.hasFourInchDisplay ? self.topLayoutGuide.length : 0.0f) + 40.f;
     
     return padding;
 }
@@ -1967,10 +1978,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (CGFloat)bottomEdgePadding {
     CGRect bottomFrame = [self bottomFrame];
     return CGRectGetHeight(bottomFrame) + 50.0f + self.bottomLayoutGuide.length;
-}
-
-- (BOOL)hasFourInchDisplay {
-    return ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone && [UIScreen mainScreen].bounds.size.height == 568.0);
 }
 
 - (CGRect)visibleMapFrame {
@@ -3025,6 +3032,35 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }];
 }
 
+- (void)globalSearchViewControllerStartedSearching:(SHGlobalSearchViewController *)vc {
+    UIView *customView = [[self.navigationItem leftBarButtonItem] customView];
+    
+    if (customView.tag == kTagSearchTextField) {
+        UITextField *searchTextField = (UITextField *)customView;
+        UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        activityIndicatorView.tintColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
+        
+        CGRect frame = activityIndicatorView.frame;
+        frame.size.width += 5.0f;
+        UIView *containerView = [[UIView alloc] initWithFrame:frame];
+        [containerView addSubview:activityIndicatorView];
+        
+        searchTextField.rightView = containerView;
+        searchTextField.rightViewMode = UITextFieldViewModeAlways;
+        [activityIndicatorView startAnimating];
+    }
+}
+
+- (void)globalSearchViewControllerStoppedSearching:(SHGlobalSearchViewController *)vc {
+    UIView *customView = [[self.navigationItem leftBarButtonItem] customView];
+    
+    if (customView.tag == kTagSearchTextField) {
+        UITextField *searchTextField = (UITextField *)customView;
+        searchTextField.rightView = nil;
+        searchTextField.rightViewMode = UITextFieldViewModeNever;
+    }
+}
+
 #pragma mark - UITextFieldDelegate
 #pragma mark -
 
@@ -3173,7 +3209,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     //[self flashSearchRadius];
     //[self flashMapBoxing];
     
-    DebugLog(@"[regions addObject:@{@\"name\" : @\"%@\", @\"latitude\": [NSNumber numberWithDouble:%ff], @\"longitude\": [NSNumber numberWithDouble:%ff], @\"radius\": [NSNumber numberWithDouble:%ff], @\"weight\" : [NSNumber numberWithInteger:5]}];", self.locationMenuBarViewController.locationTitle, self.visibleMapCenterCoordinate.latitude, self.visibleMapCenterCoordinate.longitude, [self searchRadius]);
+//    DebugLog(@"[regions addObject:@{@\"name\" : @\"%@\", @\"latitude\": [NSNumber numberWithDouble:%ff], @\"longitude\": [NSNumber numberWithDouble:%ff], @\"radius\": [NSNumber numberWithDouble:%ff], @\"weight\" : [NSNumber numberWithInteger:5]}];", self.locationMenuBarViewController.locationTitle, self.visibleMapCenterCoordinate.latitude, self.visibleMapCenterCoordinate.longitude, [self searchRadius]);
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [self updateLocationName];

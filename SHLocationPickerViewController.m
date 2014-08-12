@@ -83,6 +83,7 @@
 
 - (void)keyboardWillShow:(NSNotification *)notification {
 	CGFloat height = [self getKeyboardHeight:notification forBeginning:TRUE];
+    DebugLog(@"height: %f", height);
     UIEdgeInsets inset = self.tableView.contentInset;
     inset.bottom = height;
     self.tableView.contentInset = inset;
@@ -117,8 +118,9 @@
                 [self.delegate locationPickerViewControllerStoppedSearching:self];
             }
 
-            if (error || placemarks.count == 0) {
-                [self showAlert:@"Oops" message:@"Could not find the location you are looking for"];
+            if (error) {
+                self.placemarks = @[];
+                [self.tableView reloadData];
             }
             else {
                 // convert the placemarks and use the weighted region if one is available
@@ -132,10 +134,12 @@
                             SHPlacemark *copiedPlacemark = convertedPlacemark.copy;
                             copiedPlacemark.name = region.identifier;
                             copiedPlacemark.region = region;
-                            [convertedPlacemarks addObject:copiedPlacemark];
+                            if (copiedPlacemark.name.length) {
+                                [convertedPlacemarks addObject:copiedPlacemark];
+                            }
                         }
                     }
-                    else {
+                    else if (convertedPlacemark.name.length) {
                         [convertedPlacemarks addObject:convertedPlacemark];
                     }
                 }
@@ -321,7 +325,6 @@
     }
     else {
         // pre-seeded locations and most recent selections
-        // TODO: populated seeded and recent selections as placemarks?
         return self.savedPlacemarks.count;
     }
 }

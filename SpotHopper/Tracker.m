@@ -35,8 +35,8 @@
 }
 
 + (void)track:(NSString *)event properties:(NSDictionary *)properties {
-    DebugLog(@"Event: %@", event);
-    DebugLog(@"Properties: %@", properties);
+//    DebugLog(@"Event: %@", event);
+//    DebugLog(@"Properties: %@", properties);
     
     if (kAnalyticsEnabled) {
         [[Mixpanel sharedInstance] track:event properties:properties];

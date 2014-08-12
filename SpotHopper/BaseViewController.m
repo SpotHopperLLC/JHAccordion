@@ -1071,6 +1071,12 @@ typedef void(^AlertBlock)();
     return !isLoggedIn;
 }
 
+#pragma mark - Helper Methods
+
+- (BOOL)hasFourInchDisplay {
+    return ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone && [UIScreen mainScreen].bounds.size.height == 568.0);
+}
+
 #pragma mark - Private
 
 - (NSInteger)extractNumberFromString:(NSString *)string withPrefix:(NSString *)prefix {

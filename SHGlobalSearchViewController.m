@@ -29,15 +29,14 @@
 @property (copy, nonatomic) NSString *searchText;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (nonatomic, strong) NSTimer *searchTimer;
-
 @property (nonatomic, strong) NSNumber *page;
 @property (nonatomic, strong) NSMutableArray *results;
 
 @end
 
 @implementation SHGlobalSearchViewController {
-    BOOL _isSeachRunning;
+    NSUInteger _isSearchRunningCount;
+    CGFloat _keyboardHeight;
 }
 
 #pragma mark - View Lifecycle
@@ -58,10 +57,16 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
@@ -75,18 +80,35 @@
     return @"Search";
 }
 
+#pragma mark - Keyboard
+#pragma mark -
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+	_keyboardHeight = [self getKeyboardHeight:notification forBeginning:TRUE];
+    UIEdgeInsets inset = self.tableView.contentInset;
+    inset.bottom = _keyboardHeight;
+    self.tableView.contentInset = inset;
+    self.tableView.scrollIndicatorInsets = inset;
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+    _keyboardHeight = 0.0f;
+    UIEdgeInsets inset = self.tableView.contentInset;
+    inset.bottom = 0;
+    self.tableView.contentInset = inset;
+    self.tableView.scrollIndicatorInsets = inset;
+}
+
 #pragma mark - Public
 #pragma mark -
 
 - (void)scheduleSearchWithText:(NSString *)text {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
     self.searchText = text;
     
-    // Cancel and nil
-    [self.searchTimer invalidate];
-    self.searchTimer = nil;
-    
-    // Schedule timer
-    self.searchTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(startSearch) userInfo:nil repeats:NO];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(startSearch) object:nil];
+    [self performSelector:@selector(startSearch) withObject:nil afterDelay:0.5f];
 }
 
 - (void)clearSearch {
@@ -94,8 +116,16 @@
     [self dataDidFinishRefreshing];
 }
 
+- (void)cancelSearch {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(startSearch) object:nil];
+    
+    if ([self isSearchRunning]) {
+        [DrinkModel cancelGetDrinks];
+        [SpotModel cancelGetSpots];
+    }
+}
+
 - (void)adjustForKeyboardHeight:(CGFloat)height duration:(NSTimeInterval)duration {
-    LOG_FRAME(@"table view", self.tableView.frame);
     UIEdgeInsets contentInset = self.tableView.contentInset;
     UIEdgeInsets scrollIndicatorInsets = self.tableView.scrollIndicatorInsets;
     contentInset.bottom = height;
@@ -107,12 +137,26 @@
         self.tableView.scrollIndicatorInsets = scrollIndicatorInsets;
     } completion:^(BOOL finished) {
     }];
+}
+
+#pragma mark - Private
+#pragma mark -
+
+- (void)setIsSearchRunning:(BOOL)isSearchRunning {
+    _isSearchRunningCount += isSearchRunning ? 1 : -1;
+}
+
+- (BOOL)isSearchRunning {
+    return _isSearchRunningCount > 0;
+}
+
+- (void)dataDidFinishRefreshing {
+    [super dataDidFinishRefreshing];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        DebugLog(@"bottom: %f", self.tableView.contentInset.bottom);
-        DebugLog(@"top: %f", self.tableView.frame.origin.y);
-        DebugLog(@"height: %f", CGRectGetHeight(self.tableView.frame));
-    });
+    UIEdgeInsets inset = self.tableView.contentInset;
+    inset.bottom = _keyboardHeight;
+    self.tableView.contentInset = inset;
+    self.tableView.scrollIndicatorInsets = inset;
 }
 
 #pragma mark - UITableViewDataSource
@@ -147,7 +191,6 @@
         
         if ([result isKindOfClass:[DrinkModel class]]) {
             DrinkModel *drink = (DrinkModel *)result;
-            DebugLog(@"drink: %@", drink);
             
             NSString *title = drink.name;
             NSString *subtitle = drink.spot.name;
@@ -188,7 +231,6 @@
             
         } else if ([result isKindOfClass:[SpotModel class]]) {
             SpotModel *spot = (SpotModel *)result;
-            DebugLog(@"spot: %@", spot);
             
             iconImageView.image = [UIImage imageNamed:@"icon_search_spot"];
             mainTitleLabel.text = spot.name;
@@ -219,7 +261,6 @@
             
             if ([result isKindOfClass:[SpotModel class]]) {
                 SpotModel *spot = (SpotModel *)result;
-                DebugLog(@"spot: %@", spot);
                 
                 if ([self.delegate respondsToSelector:@selector(globalSearchViewController:didSelectSpot:)]) {
                     [self.delegate globalSearchViewController:self didSelectSpot:spot];
@@ -227,7 +268,6 @@
             }
             else if ([result isKindOfClass:[DrinkModel class]]) {
                 DrinkModel *drink = (DrinkModel *)result;
-                DebugLog(@"drink: %@", drink);
                 
                 if ([self.delegate respondsToSelector:@selector(globalSearchViewController:didSelectDrink:)]) {
                     [self.delegate globalSearchViewController:self didSelectDrink:drink];
@@ -258,11 +298,13 @@
 #pragma mark -
 
 - (void)startSearch {
-    if (_isSeachRunning) {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(startSearch) object:nil];
+    
+    if ([self isSearchRunning]) {
+        DebugLog(@"Canceling searches...");
         [DrinkModel cancelGetDrinks];
         [SpotModel cancelGetSpots];
         [Tracker trackGlobalSearchRequestCancelled];
-        _isSeachRunning = FALSE;
     }
     
     // Resets pages and clears results
@@ -278,10 +320,16 @@
 }
 
 - (void)doSearch {
-    [self hideHUD];
-    [self showHUD:@"Searching"];
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
     
-    _isSeachRunning = TRUE;
+    [self setIsSearchRunning:TRUE];
+    
+    DebugLog(@"_isSearchRunningCount: %lu", (unsigned long)_isSearchRunningCount);
+    
+    DebugLog(@"started");
+    if ([self.delegate respondsToSelector:@selector(globalSearchViewControllerStartedSearching:)]) {
+        [self.delegate globalSearchViewControllerStartedSearching:self];
+    }
     
     Promise *spotsPromise = [[SpotModel fetchSpotsWithText:self.searchText page:self.page] then:^(NSArray *spots) {
         DebugLog(@"spots: %@", spots);
@@ -296,8 +344,14 @@
     [Tracker trackGlobalSearchRequestStarted];
     
     [When when:@[spotsPromise, drinksPromise] then:nil fail:nil always:^{
-        _isSeachRunning = FALSE;
-        [self hideHUD];
+        [self setIsSearchRunning:FALSE];
+        
+        if (![self isSearchRunning]) {
+            DebugLog(@"stopped");
+            if ([self.delegate respondsToSelector:@selector(globalSearchViewControllerStoppedSearching:)]) {
+                [self.delegate globalSearchViewControllerStoppedSearching:self];
+            }
+        }
         
         [Tracker trackGlobalSearchRequestCompleted];
         [Tracker trackGlobalSearchHappened:self.searchText];
@@ -307,8 +361,6 @@
             NSNumber *revObj2 = [obj2 valueForKey:@"relevance"];
             return [revObj2 compare:revObj1];
         }];
-        
-        DebugLog(@"results: %@", self.results);
         
         [self dataDidFinishRefreshing];
     }];

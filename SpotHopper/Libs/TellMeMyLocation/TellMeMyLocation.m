@@ -265,6 +265,13 @@ static NSDate *_lastDeviceLocationRefresh;
 #pragma mark - Private Implemention
 
 - (void)stopUpdatingLocationAfterTimeout:(CLLocationManager *)manager {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopUpdatingLocationAfterTimeout:) object:nil];
+    
+    if (!self.bestLocation) {
+        [self performSelector:@selector(stopUpdatingLocationAfterTimeout:) withObject:manager afterDelay:1.0f];
+        return;
+    }
+    
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
         if (manager) {
             [manager stopUpdatingLocation];
@@ -276,7 +283,6 @@ static NSDate *_lastDeviceLocationRefresh;
 }
 
 - (void)finishWithBestLocation:(CLLocation *)location error:(NSError *)error {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopUpdatingLocationAfterTimeout:) object:nil];
     _currentDeviceLocation = location;
     _lastDeviceLocationRefresh = [NSDate date];
     // the following line crashes with bad memory access for no apparent reason
@@ -303,6 +309,10 @@ static NSDate *_lastDeviceLocationRefresh;
 }
 
 - (void)fail:(NSError *)error {
+    if (!error) {
+        error = [NSError errorWithDomain:@"Error while using location services" code:1 userInfo:@{}];
+    }
+    
     if ([self.delegate respondsToSelector:@selector(tellMeMyLocation:didFailWithError:)]) {
         [self.delegate tellMeMyLocation:self didFailWithError:error];
     }

@@ -19,6 +19,8 @@
 
 #import "DrinkListRequest.h"
 
+#import "Tracker.h"
+
 #import <CoreLocation/CoreLocation.h>
 
 #define kPageSize @15
@@ -205,12 +207,16 @@
     NSDictionary *params = @{
                              kDrinkModelParamQuery : text,
                              kDrinkModelParamPage : page,
-                             kDrinkModelParamsPageSize : kPageSize
+                             kDrinkModelParamsPageSize : @5
                              };
+    
+    NSDate *startDate = [NSDate date];
     
     [[ClientSessionManager sharedClient] GET:@"/api/drinks" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:startDate];
         
         if (operation.isCancelled || operation.response.statusCode == 204) {
             if (successBlock) {
@@ -219,6 +225,9 @@
         }
         else if (operation.response.statusCode == 200) {
             NSArray *drinks = [jsonApi resourcesForKey:@"drinks"];
+            
+            // only track a successful search
+            [Tracker track:@"Spot Search Duration" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
             
             if (successBlock) {
                 successBlock(drinks);
