@@ -227,7 +227,7 @@
             NSArray *drinks = [jsonApi resourcesForKey:@"drinks"];
             
             // only track a successful search
-            [Tracker track:@"Spot Search Duration" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
+            [Tracker track:@"Drink Search Duration" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
             
             if (successBlock) {
                 successBlock(drinks);
