@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 SpotHopper. All rights reserved.
 //
 
-#define kLocationUpdateTimeout              2.0
+#define kLocationUpdateTimeout              10.0
 #define kTimeBetweenLocationRefreshes       30
 #define kSimulatorLatitude                  43.060179
 #define kSimulatorLongitude                 -87.885228
