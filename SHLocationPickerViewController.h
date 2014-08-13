@@ -11,6 +11,8 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 
+@class SHPlacemark;
+
 @protocol SHLocationPickerDelegate;
 
 @interface SHLocationPickerViewController : BaseViewController
@@ -19,10 +21,16 @@
 
 @property (nonatomic, weak) id<SHLocationPickerDelegate> delegate;
 
+- (void)setTopContentInset:(CGFloat)topContentInset;
+
+- (void)searchWithText:(NSString *)text;
+
 @end
 
 @protocol SHLocationPickerDelegate <NSObject>
 
-- (void)locationPickerViewController:(SHLocationPickerViewController*)viewController didSelectRegion:(MKCoordinateRegion)region;
+- (void)locationPickerViewController:(SHLocationPickerViewController *)viewController didSelectPlacemark:(SHPlacemark *)placemark;
+- (void)locationPickerViewControllerStartedSearching:(SHLocationPickerViewController *)viewController;
+- (void)locationPickerViewControllerStoppedSearching:(SHLocationPickerViewController *)viewController;
 
 @end

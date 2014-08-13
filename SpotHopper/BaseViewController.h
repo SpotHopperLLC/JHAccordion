@@ -31,6 +31,8 @@
 @property (nonatomic, strong) ShareViewController *shareViewController;
 @property (nonatomic, readonly) NSString *screenName; // override
 
+@property (readonly) BOOL hasFourInchDisplay;
+
 - (void)viewDidLoad:(NSArray*)options;
 
 - (void)showHUDCompleted:(NSString*)text;
@@ -92,6 +94,9 @@
 - (FooterViewController*)footerViewController;
 
 - (void)slideCell:(UITableViewCell *)cell aboveTableViewMidwayPoint:(UITableView *)tableView;
+
+// URL Scheme Support
+- (void)handleOpenedURL:(NSURL *)openedURL;
 
 // LiveSpecialViewController
 - (void)showLiveSpecialViewController:(LiveSpecialModel *)liveSpecial needToFetch:(BOOL)needToFetch;

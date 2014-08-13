@@ -16,6 +16,10 @@
 
 @property (weak, nonatomic) id<SHLocationMenuBarDelegate> delegate;
 
+@property (readonly, nonatomic) BOOL isSearchViewHidden;
+
+@property (readonly, nonatomic) NSString *locationTitle;
+
 - (void)updateLocationTitle:(NSString *)locationTitle;
 
 - (void)selectSpot:(SpotModel *)spot withCompletionBlock:(void (^)())completionBlock;
@@ -24,16 +28,25 @@
 - (void)scopeToSpot:(SpotModel *)spot withCompletionBlock:(void (^)())completionBlock;
 - (void)descopeFromSpot:(SpotModel *)spot withCompletionBlock:(void (^)())completionBlock;
 
+- (void)dismissSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock;
+
+- (void)showSearchIsBusy;
+- (void)showSearchIsFree;
+
 @end
 
 @protocol SHLocationMenuBarDelegate <NSObject>
 
 @optional
 
-- (void)locationMenuBarViewControllerDidRequestLocationChange:(SHLocationMenuBarViewController *)vc;
-
 - (void)locationMenuBarViewController:(SHLocationMenuBarViewController *)vc didScopeToSpot:(SpotModel *)spot;
 
 - (void)locationMenuBarViewControllerDidDescope:(SHLocationMenuBarViewController *)vc;
+
+- (void)locationMenuBarViewControllerDidStartSearch:(SHLocationMenuBarViewController *)vc;
+
+- (void)locationMenuBarViewController:(SHLocationMenuBarViewController *)vc didSearchWithText:(NSString *)searchText;
+
+- (void)locationMenuBarViewControllerDidCancelSearch:(SHLocationMenuBarViewController *)vc;
 
 @end

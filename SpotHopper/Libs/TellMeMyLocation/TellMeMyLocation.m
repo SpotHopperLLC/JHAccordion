@@ -33,9 +33,7 @@ NSString * const kTellMeMyLocationChangedNotification = @"TellMeMyLocationChange
 
 @end
 
-@implementation TellMeMyLocation {
-    CLAuthorizationStatus _authorizationStatus;
-}
+@implementation TellMeMyLocation
 
 static CLLocation *_currentDeviceLocation;
 static CLLocation *_currentSelectedLocation;
@@ -43,46 +41,43 @@ static NSDate *_lastDeviceLocationRefresh;
 
 #pragma mark - Public Implemention
 
-- (void)findMe:(CLLocationAccuracy)accuracy found:(FoundBlock)foundBlock failure:(FailureBlock)failureBlock {
+- (void)findMe:(CLLocationAccuracy)accuracy {
     // finish immediately if the device location was refreshed recently
-    if (_lastDeviceLocationRefresh && self.bestLocation && foundBlock) {
+    if (_lastDeviceLocationRefresh && self.bestLocation) {
         NSTimeInterval diff = [[NSDate date] timeIntervalSinceDate:_lastDeviceLocationRefresh];
         if (diff <= kTimeBetweenLocationRefreshes) {
-            foundBlock(self.bestLocation);
+            [self found:self.bestLocation];
             return;
         }
     }
-
-    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
+    
+    if ([CLLocationManager locationServicesEnabled] && ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)) {
         if (!self.locationManager) {
             self.locationManager = [[CLLocationManager alloc] init];
             [self.locationManager setDelegate:self];
         }
-        
-        self.foundBlock = foundBlock;
-        self.failureBlock = failureBlock;
         
         [self.locationManager setDesiredAccuracy:accuracy];
         [self.locationManager startUpdatingLocation];
         [self performSelector:@selector(stopUpdatingLocationAfterTimeout:) withObject:self.locationManager afterDelay:kLocationUpdateTimeout];
     }
     else if (![CLLocationManager locationServicesEnabled]) {
-        if (failureBlock) {
-            NSDictionary *userInfo = @{
-                                       NSLocalizedDescriptionKey : @"App Permission Denied",
-                                       NSLocalizedRecoverySuggestionErrorKey : @"To re-enable, please go to Settings and turn on Location Service for this app."
-                                       };
-            failureBlock([NSError errorWithDomain:kTellMeMyLocationDomain code:1 userInfo:userInfo]);
-        }
+        NSDictionary *userInfo = @{
+                                   NSLocalizedDescriptionKey : @"App Permission Denied",
+                                   NSLocalizedRecoverySuggestionErrorKey : @"To re-enable, please go to Settings and turn on Location Service for this app."
+                                   };
+        NSError *error = [NSError errorWithDomain:kTellMeMyLocationDomain code:1 userInfo:userInfo];
+        
+        [self fail:error];
     }
     else if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
-        if (failureBlock) {
-            NSDictionary *userInfo = @{
-                                       NSLocalizedDescriptionKey : @"Permission Denied",
-                                       NSLocalizedRecoverySuggestionErrorKey : @"To re-enable, please go to Settings and turn on Location Services"
-                                       };
-            failureBlock([NSError errorWithDomain:kTellMeMyLocationDomain code:1 userInfo:userInfo]);
-        }
+        NSDictionary *userInfo = @{
+                                   NSLocalizedDescriptionKey : @"Permission Denied",
+                                   NSLocalizedRecoverySuggestionErrorKey : @"To re-enable, please go to Settings and turn on Location Services"
+                                   };
+        NSError *error = [NSError errorWithDomain:kTellMeMyLocationDomain code:1 userInfo:userInfo];
+        
+        [self fail:error];
     }
     else {
         // fall through with an invalid location
@@ -90,6 +85,17 @@ static NSDate *_lastDeviceLocationRefresh;
         CLLocation * location = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
         [self found:location];
     }
+}
+
+- (void)findMe:(CLLocationAccuracy)accuracy found:(FoundBlock)foundBlock failure:(FailureBlock)failureBlock {
+    if (foundBlock) {
+        self.foundBlock = foundBlock;
+    }
+    if (failureBlock) {
+        self.failureBlock = failureBlock;
+    }
+    
+    [self findMe:accuracy];
 }
 
 + (CLLocation *)currentDeviceLocation {
@@ -259,6 +265,13 @@ static NSDate *_lastDeviceLocationRefresh;
 #pragma mark - Private Implemention
 
 - (void)stopUpdatingLocationAfterTimeout:(CLLocationManager *)manager {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopUpdatingLocationAfterTimeout:) object:nil];
+    
+    if (!self.bestLocation) {
+        [self performSelector:@selector(stopUpdatingLocationAfterTimeout:) withObject:manager afterDelay:1.0f];
+        return;
+    }
+    
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
         if (manager) {
             [manager stopUpdatingLocation];
@@ -270,7 +283,6 @@ static NSDate *_lastDeviceLocationRefresh;
 }
 
 - (void)finishWithBestLocation:(CLLocation *)location error:(NSError *)error {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopUpdatingLocationAfterTimeout:) object:nil];
     _currentDeviceLocation = location;
     _lastDeviceLocationRefresh = [NSDate date];
     // the following line crashes with bad memory access for no apparent reason
@@ -284,6 +296,10 @@ static NSDate *_lastDeviceLocationRefresh;
 }
 
 - (void)found:(CLLocation *)location {
+    if ([self.delegate respondsToSelector:@selector(tellMeMyLocation:didFindLocation:)]) {
+        [self.delegate tellMeMyLocation:self didFindLocation:location];
+    }
+    
     if (self.foundBlock) {
         self.foundBlock(location);
     }
@@ -293,6 +309,14 @@ static NSDate *_lastDeviceLocationRefresh;
 }
 
 - (void)fail:(NSError *)error {
+    if (!error) {
+        error = [NSError errorWithDomain:@"Error while using location services" code:1 userInfo:@{}];
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(tellMeMyLocation:didFailWithError:)]) {
+        [self.delegate tellMeMyLocation:self didFailWithError:error];
+    }
+
     if (self.failureBlock) {
         self.failureBlock(error);
     }

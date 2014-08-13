@@ -17,6 +17,8 @@
 #import "MenuModel.h"
 #import "SpotTypeModel.h"
 
+#import "Tracker.h"
+
 #define kPageSize @25
 
 @interface SpotModelCache : NSCache
@@ -145,7 +147,7 @@
     NSDictionary *params = @{
                              kSpotModelParamPage : @1,
                              kSpotModelParamQueryVisibleToUsers : @"true",
-                             kSpotModelParamsPageSize : @10,
+                             kSpotModelParamsPageSize : @20,
                              kSpotModelParamSources : kSpotModelParamSourcesSpotHopper,
                              kSpotModelParamQueryDayOfWeek : [NSNumber numberWithInteger:dayOfWeek],
                              kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:coordinate.latitude],
@@ -355,13 +357,17 @@
                                     kSpotModelParamQuery : text,
                                     kSpotModelParamQueryVisibleToUsers : @"true",
                                     kSpotModelParamPage : page,
-                                    kSpotModelParamsPageSize : kPageSize,
+                                    kSpotModelParamsPageSize : @5,
                                     kSpotModelParamSources : kSpotModelParamSourcesSpotHopper
                                     }.mutableCopy;
+    
+    NSDate *startDate = [NSDate date];
     
     [[ClientSessionManager sharedClient] GET:@"/api/spots" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:startDate];
         
         if (operation.isCancelled || operation.response.statusCode == 204) {
             if (successBlock) {
@@ -370,6 +376,9 @@
         }
         else if (operation.response.statusCode == 200) {
             NSArray *spots = [jsonApi resourcesForKey:@"spots"];
+            
+            // only track a successful search
+            [Tracker track:@"Spot Search Duration" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
             
             if (successBlock) {
                 successBlock(spots);
@@ -494,8 +503,6 @@
 }
 
 - (void)fetchMenu:(void (^)(MenuModel *menu))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
-    
     if (self.menu && successBlock) {
         successBlock(self.menu);
         return;

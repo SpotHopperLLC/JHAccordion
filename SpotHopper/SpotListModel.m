@@ -306,7 +306,7 @@
             [_sh_Cache removeAllObjects];
         }];
         
-        [[NSNotificationCenter defaultCenter] addObserverForName:SHUserDidLogOutNotificationKey object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * __unused notification) {
+        [[NSNotificationCenter defaultCenter] addObserverForName:SHUserDidLogOutNotificationName object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * __unused notification) {
             [_sh_Cache removeAllObjects];
         }];
     });

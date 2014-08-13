@@ -13,11 +13,17 @@
 #define kHasSeenSpotlists @"HasSeenSpotlists"
 #define kHasSeenDrinklists @"HasSeenDrinklists"
 
+#define kReachabilityKey @"ReachabilityKey"
+
+#define kNotReachableErrorsDictionary @{ @"errors" : @[ @{ @"human" : @"Network connection is down." } ] }
+
 #import "ClientSessionManager.h"
 
 #import "UserModel.h"
 #import "Tracker.h"
 #import "SHNotifications.h"
+
+#import "JTSReachabilityResponder.h"
 
 #import <FacebookSDK/Facebook.h>
 #import <Parse/Parse.h>
@@ -42,13 +48,34 @@
         _sharedClient = [[ClientSessionManager alloc] initWithBaseURL:baseURL];
         [_sharedClient setRequestSerializer:[AFJSONRequestSerializer serializer]];
         [_sharedClient setResponseSerializer:[AFJSONResponseSerializer serializer]];
+        
+        JTSReachabilityResponder *responder = [JTSReachabilityResponder sharedInstance];
+        [responder addHandler:^(JTSNetworkStatus status) {
+            
+            switch (status) {
+                case NotReachable:
+                    DebugLog(@"Not Reachable");
+                    [[_sharedClient operationQueue] cancelAllOperations];
+                    break;
+                case ReachableViaWiFi:
+                    DebugLog(@"WiFi Reachable");
+                    break;
+                case ReachableViaWWAN:
+                    DebugLog(@"WWAN Reachable");
+                    break;
+                    
+                default:
+                    NSAssert(FALSE, @"Condition is not defined");
+                    break;
+            }
+            
+        } forKey:kReachabilityKey];
     });
     
     return _sharedClient;
 }
 
 - (void)cancelAllHTTPOperationsWithMethod:(NSString*)method path:(NSString*)path parameters:(NSDictionary*)parameters ignoreParams:(BOOL)ignoreParams {
-    
     NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:(method ?: @"GET") URLString:[[NSURL URLWithString:path relativeToURL:self.baseURL] absoluteString] parameters:parameters];
     NSString *URLStringToMatched = [[request URL] absoluteString];
     
@@ -75,7 +102,16 @@
     }
 }
 
-- (AFHTTPRequestOperation *)GET:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success {
+- (AFHTTPRequestOperation *)GET:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id responseObject))success {
+    if (!success) {
+        return nil;
+    }
+    
+    if (![[JTSReachabilityResponder sharedInstance] isReachable]) {
+        success(nil, kNotReachableErrorsDictionary);
+        return nil;
+    }
+    
     __weak NSDate *now = [NSDate date];
     return [super GET:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
@@ -104,7 +140,16 @@
     }];
 }
 
-- (AFHTTPRequestOperation *)POST:(NSString *)URLString parameters:(NSDictionary *)parameters constructingBodyWithBlock:(void (^)(id<AFMultipartFormData>))block success:(void (^)(AFHTTPRequestOperation *, id))success {
+- (AFHTTPRequestOperation *)POST:(NSString *)URLString parameters:(NSDictionary *)parameters constructingBodyWithBlock:(void (^)(id<AFMultipartFormData>))block success:(void (^)(AFHTTPRequestOperation *, id responseObject))success {
+    if (!success) {
+        return nil;
+    }
+    
+    if (![[JTSReachabilityResponder sharedInstance] isReachable]) {
+        success(nil, kNotReachableErrorsDictionary);
+        return nil;
+    }
+    
     __weak NSDate *now = [NSDate date];
     return [super POST:URLString parameters:parameters constructingBodyWithBlock:block success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
@@ -135,7 +180,16 @@
     }];
 }
 
-- (AFHTTPRequestOperation *)POST:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success {
+- (AFHTTPRequestOperation *)POST:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id responseObject))success {
+    if (!success) {
+        return nil;
+    }
+    
+    if (![[JTSReachabilityResponder sharedInstance] isReachable]) {
+        success(nil, kNotReachableErrorsDictionary);
+        return nil;
+    }
+    
     __weak NSDate *now = [NSDate date];
     return [super POST:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
@@ -168,7 +222,16 @@
     }];
 }
 
-- (AFHTTPRequestOperation *)PUT:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success {
+- (AFHTTPRequestOperation *)PUT:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id responseObject))success {
+    if (!success) {
+        return nil;
+    }
+    
+    if (![[JTSReachabilityResponder sharedInstance] isReachable]) {
+        success(nil, kNotReachableErrorsDictionary);
+        return nil;
+    }
+    
     __weak NSDate *now = [NSDate date];
     return [super PUT:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
@@ -197,7 +260,16 @@
     }];
 }
 
-- (AFHTTPRequestOperation *)DELETE:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success {
+- (AFHTTPRequestOperation *)DELETE:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id responseObject))success {
+    if (!success) {
+        return nil;
+    }
+    
+    if (![[JTSReachabilityResponder sharedInstance] isReachable]) {
+        success(nil, kNotReachableErrorsDictionary);
+        return nil;
+    }
+    
     __weak NSDate *now = [NSDate date];
     return [super DELETE:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {

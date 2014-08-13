@@ -68,4 +68,35 @@
 
 + (void)trackDrinklist:(DrinkListModel *)drinklist mode:(SHMode)mode request:(DrinkListRequest *)request currentLocation:(CLLocation *)currentLocation;
 
+#pragma mark - Navigation
+#pragma mark -
+
++ (void)trackHomeNavigationButtonTapped:(BOOL)insideBounds;
+
+#pragma mark - Location
+#pragma mark -
+
++ (void)trackLocationServicesAuthorizationStatus;
+
+#pragma mark - Logins
+#pragma mark -
+
++ (void)trackLoginViewed;
+
++ (void)trackerLeavingLoginViewLoggedIn;
+
++ (void)trackerLeavingLoginViewNotLoggedIn;
+
++ (void)trackCreatingAccount;
+
++ (void)trackCreatedUser:(BOOL)success;
+
++ (void)trackLoggingInWithFacebook;
+
++ (void)trackLoggingInWithTwitter;
+
++ (void)trackLoggingInWithSpotHopper;
+
++ (void)trackLoggedIn:(BOOL)success;
+
 @end

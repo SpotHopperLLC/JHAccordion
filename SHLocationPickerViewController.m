@@ -15,22 +15,22 @@
 #import "ErrorModel.h"
 #import "Tracker.h"
 
+#import "SHPlacemark.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 #define kMapPadding 10000.0f
 
-@interface SHLocationPickerViewController ()<UITextFieldDelegate, MKMapViewDelegate>
+#define kMetersPerMile 1609.344
 
-@property (weak, nonatomic) IBOutlet UITextField *searchTextField;
-@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@interface SHLocationPickerViewController () <UITableViewDelegate, UITableViewDataSource>
 
-@property (weak, nonatomic) IBOutlet UIView *topView;
-@property (weak, nonatomic) IBOutlet UIView *bottomView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (weak, nonatomic) IBOutlet UIView *selectThisLocationView;
-@property (weak, nonatomic) IBOutlet UIButton *selectThisLocationButton;
+@property (strong, nonatomic) NSArray *placemarks;
+@property (strong, nonatomic) NSArray *savedPlacemarks;
 
-@property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
+@property (strong, nonatomic) NSArray *subRegions;
 
 @end
 
@@ -40,38 +40,21 @@
 #pragma mark -
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
+    [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
     
-    NSAssert(self.searchTextField, @"Outlet is required");
-    
-    self.title = @"Select a Location";
-    
-    self.tellMeMyLocation = [[TellMeMyLocation alloc] init];
-    
-    // set the left view in search text field
-    UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
-    UIImageView *leftImageView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 6, 16, 16)];
-    leftImageView.alpha = 0.5f;
-    [SHStyleKit setImageView:leftImageView withDrawing:SHStyleKitDrawingSearchIcon color:SHStyleKitColorMyTextColor];
-    [leftView addSubview:leftImageView];
-    
-    self.searchTextField.leftView = leftView;
-    self.searchTextField.leftViewMode = UITextFieldViewModeAlways;
-    
-    self.mapView.showsUserLocation = YES;
-    
-    [self styleSelectThisLocation];
+    NSAssert(self.tableView, @"Outlet is required");
+    NSAssert(self.tableView.delegate == self, @"Delegate must be self");
+    NSAssert(self.tableView.dataSource == self, @"DataSource must be self");
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    UIBarButtonItem *barButtonLeft = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonTapped:)];
-    [self.navigationItem setLeftBarButtonItem:barButtonLeft];
-    UIBarButtonItem *barButtonRight = [[UIBarButtonItem alloc] initWithTitle:@"Select" style:UIBarButtonItemStylePlain target:self action:@selector(selectButtonTapped:)];
-    [self.navigationItem setRightBarButtonItem:barButtonRight];
+    self.placemarks = nil;
+    self.savedPlacemarks = [self loadSavedPlacemarks].mutableCopy;
     
-    [self.mapView setRegion:self.initialRegion animated:FALSE];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -80,14 +63,13 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle {
-    return UIStatusBarStyleLightContent;
 }
 
 #pragma mark - Tracking
@@ -96,121 +78,319 @@
     return @"Location Picker";
 }
 
-#pragma mark - User Actions
+#pragma mark - Keyboard
 #pragma mark -
 
-- (IBAction)cancelButtonTapped:(id)sender {
-    [self.navigationController popViewControllerAnimated:TRUE];
+- (void)keyboardWillShow:(NSNotification *)notification {
+	CGFloat height = [self getKeyboardHeight:notification forBeginning:TRUE];
+    DebugLog(@"height: %f", height);
+    UIEdgeInsets inset = self.tableView.contentInset;
+    inset.bottom = height;
+    self.tableView.contentInset = inset;
+    self.tableView.scrollIndicatorInsets = inset;
 }
 
-- (IBAction)selectButtonTapped:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(locationPickerViewController:didSelectRegion:)]) {
-        [self.delegate locationPickerViewController:self didSelectRegion:self.mapView.region];
-    }
+- (void)keyboardWillHide:(NSNotification *)notification {
+    UIEdgeInsets inset = self.tableView.contentInset;
+    inset.bottom = 0;
+    self.tableView.contentInset = inset;
+    self.tableView.scrollIndicatorInsets = inset;
 }
 
-- (IBAction)compassButtonTapped:(id)sender {
-    [self.tellMeMyLocation findMe:kCLLocationAccuracyKilometer found:^(CLLocation *newLocation) {
-        [self repositionMapViewOnLocation:newLocation animated:FALSE];
-    } failure:^(NSError *error){
-        if ([error.domain isEqualToString:kTellMeMyLocationDomain]) {
-            [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
+#pragma mark - Public
+#pragma mark -
+
+- (void)setTopContentInset:(CGFloat)topContentInset {
+    UIEdgeInsets insets = self.tableView.contentInset;
+    insets.top = topContentInset;
+    self.tableView.contentInset = insets;
+    self.tableView.scrollIndicatorInsets = insets;
+}
+
+- (void)searchWithText:(NSString *)text {
+    if (text.length > 0) {
+        if ([self.delegate respondsToSelector:@selector(locationPickerViewControllerStartedSearching:)]) {
+            [self.delegate locationPickerViewControllerStartedSearching:self];
         }
-    }];
+        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+        [geocoder geocodeAddressString:text completionHandler:^(NSArray *placemarks, NSError *error) {
+            if ([self.delegate respondsToSelector:@selector(locationPickerViewControllerStoppedSearching:)]) {
+                [self.delegate locationPickerViewControllerStoppedSearching:self];
+            }
+
+            if (error) {
+                self.placemarks = @[];
+                [self.tableView reloadData];
+            }
+            else {
+                // convert the placemarks and use the weighted region if one is available
+                NSMutableArray *convertedPlacemarks = @[].mutableCopy;
+                
+                for (CLPlacemark *placemark in placemarks) {
+                    NSArray *regions = [self findRegionsInRegion:(CLCircularRegion *)placemark.region];
+                    SHPlacemark *convertedPlacemark = [SHPlacemark placemarkFromOtherPlacemark:placemark];
+                    if (regions.count) {
+                        for (CLCircularRegion *region in regions) {
+                            SHPlacemark *copiedPlacemark = convertedPlacemark.copy;
+                            copiedPlacemark.name = region.identifier;
+                            copiedPlacemark.region = region;
+                            if (copiedPlacemark.name.length) {
+                                [convertedPlacemarks addObject:copiedPlacemark];
+                            }
+                        }
+                    }
+                    else if (convertedPlacemark.name.length) {
+                        [convertedPlacemarks addObject:convertedPlacemark];
+                    }
+                }
+                
+                self.placemarks = convertedPlacemarks;
+                [self.tableView reloadData];
+            }
+        }];
+    }
 }
 
 #pragma mark - Private
 #pragma mark -
 
-- (void)styleSelectThisLocation {
-    UIColor *tintColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
-    self.selectThisLocationButton.titleLabel.font = [UIFont fontWithName:@"Lato-Bold" size:self.selectThisLocationButton.titleLabel.font.pointSize];
-    self.selectThisLocationButton.tintColor = tintColor;
-    [self.selectThisLocationButton setTitleColor:tintColor forState:UIControlStateNormal];
-    
-    self.selectThisLocationView.layer.cornerRadius = 5.0f;
-}
+#define kLocationPickerPlacemarks @"LocationPickerPlacemarks"
 
-- (void)repositionMapViewOnLocation:(CLLocation *)location animated:(BOOL)animated {
-    MKMapRect mapRect = MKMapRectNull;
-    MKMapPoint mapPoint = MKMapPointForCoordinate(location.coordinate);
-    
-    CGFloat padding = kMapPadding;
-    mapRect.origin.x = mapPoint.x - padding/2;
-    mapRect.origin.y = mapPoint.y - padding/2;
-    mapRect.size = MKMapSizeMake(MKMapRectGetWidth(mapRect) + padding, MKMapRectGetHeight(mapRect) + padding);
-    
-    [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f) animated:TRUE];
-}
-
-#pragma mark - UITextFieldDelegate
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
-    
-    if (textField.text.length > 0) {
-        
-        // Reverse geocodes search text
-        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-        
-        [self showHUD:@"Locating..."];
-        [geocoder geocodeAddressString:textField.text completionHandler:^(NSArray *placemarks, NSError *error) {
-            [self hideHUD];
-            if (error || placemarks.count == 0) {
-                [self showAlert:@"Oops" message:@"Could not find the location you are looking for"];
-            } else {
-                CLPlacemark *placemark = [placemarks objectAtIndex:0];
-                [self repositionMapViewOnLocation:placemark.location animated:FALSE];
-            }
-        }];
+- (NSString *)nameForPlacemark:(CLPlacemark *)placemark {
+    if (placemark.name.length && placemark.locality.length && placemark.administrativeArea.length) {
+        return [NSString stringWithFormat:@"%@, %@, %@", placemark.name, placemark.locality, placemark.administrativeArea];
     }
-    
-    return NO;
-}
-
-#pragma mark - MKMapViewDelegate
-
-- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
-    MKAnnotationView *annotationView = nil;
-
-    if ([annotation isKindOfClass:[MKUserLocation class]]) {
-        static NSString *identifier = @"CurrentLocation";
-        SVPulsingAnnotationView *pulsingView = (SVPulsingAnnotationView *)[self.mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
-        
-        if (!pulsingView) {
-            pulsingView = [[SVPulsingAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
-            pulsingView.annotationColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
-        }
-        
-        pulsingView.canShowCallout = YES;
-        
-        annotationView = pulsingView;
+    else if (placemark.subLocality.length && placemark.locality.length && placemark.administrativeArea.length) {
+        return [NSString stringWithFormat:@"%@, %@, %@", placemark.subLocality, placemark.locality, placemark.administrativeArea];
     }
-    
-    return annotationView;
-}
-
-- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
-    [self.searchTextField resignFirstResponder];
-    
-    CLLocation *boundaryLocation = [[CLLocation alloc] initWithLatitude:(mapView.region.center.latitude + mapView.region.span.latitudeDelta) longitude:mapView.region.center.longitude];
-    CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:mapView.region.center.latitude longitude:mapView.region.center.longitude];
-    CLLocationDistance distance = [centerLocation distanceFromLocation:boundaryLocation];
-
-    if (distance > 10000) {
-        self.navigationItem.title = @"Location";
+    else if (placemark.locality.length && placemark.administrativeArea.length) {
+        return [NSString stringWithFormat:@"%@, %@", placemark.locality, placemark.administrativeArea];
+    }
+    else if (placemark.name.length) {
+        return placemark.name;
     }
     else {
-        CLLocationCoordinate2D coordinate = self.mapView.centerCoordinate;
-        CLLocation *location = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
+        return nil;
+    }
+}
+
+- (void)storeSavedPlacemarks:(NSArray *)placemarks {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if (placemarks.count) {
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:placemarks];
+        [userDefaults setObject:data forKey:kLocationPickerPlacemarks];
+    }
+    else {
+        [userDefaults removeObjectForKey:kLocationPickerPlacemarks];
+    }
+    
+    [userDefaults synchronize];
+}
+
+- (NSArray *)loadSavedPlacemarks {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSData *data = [userDefaults objectForKey:kLocationPickerPlacemarks];
+    NSArray *placemarks = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    
+    if (!placemarks.count) {
+        // pre-seed NYC and MKE
+        placemarks = [self seedPlacemarks];
+    }
+    
+    NSArray *sorted = [SHPlacemark sortedPlacemarks:placemarks];
+    
+    return sorted;
+}
+
+- (void)addSavedPlacemark:(SHPlacemark *)placemark {
+    NSAssert(self.savedPlacemarks, @"Saved Placemars must be defined");
+    
+    NSMutableArray *savedPlacemarks = self.savedPlacemarks.mutableCopy;
+    
+    if ([savedPlacemarks containsObject:placemark]) {
+        NSUInteger index = [savedPlacemarks indexOfObject:placemark];
+        placemark.lastUsedDate = [NSDate date];
+        [savedPlacemarks replaceObjectAtIndex:index withObject:placemark];
+    }
+    else {
+        [savedPlacemarks addObject:placemark];
+    }
+    
+    NSArray *sorted = [SHPlacemark sortedPlacemarks:savedPlacemarks];
+    
+    NSUInteger max = 15;
+    if (sorted.count > max) {
+         sorted = [sorted subarrayWithRange:NSMakeRange(0, max)];
+    }
+    
+    [self storeSavedPlacemarks:sorted];
+}
+
+- (NSArray *)seedPlacemarks {
+    SHPlacemark *nycPlacemark = [[SHPlacemark alloc] init];
+    nycPlacemark.name = @"New York, NY";
+    nycPlacemark.region = [[CLCircularRegion alloc] initWithCenter:CLLocationCoordinate2DMake(40.723779f, -73.991289f) radius:12839.244641 identifier:@"NYC"];
+    nycPlacemark.lastUsedDate = [NSDate date];
+    
+    SHPlacemark *mkePlacemark = [[SHPlacemark alloc] init];
+    mkePlacemark.name = @"Milwaukee, WI";
+    mkePlacemark.region = [[CLCircularRegion alloc] initWithCenter:CLLocationCoordinate2DMake(43.038902f, -87.906474f) radius:18466.410595 identifier:@"MKE"];
+    mkePlacemark.lastUsedDate = [NSDate date];
+    
+    return @[nycPlacemark, mkePlacemark];
+}
+
+- (NSArray *)loadSubRegions {
+    NSMutableArray *regions = @[].mutableCopy;
+    
+    // Chicago
+    [regions addObject:@{@"name" : @"The Loop, Chicago, IL", @"latitude": [NSNumber numberWithDouble:41.875721f], @"longitude": [NSNumber numberWithDouble:-87.626308f], @"radius": [NSNumber numberWithDouble:1007.979220f], @"weight" : [NSNumber numberWithInteger:5]}];
+    [regions addObject:@{@"name" : @"South Loop, Chicago, IL", @"latitude": [NSNumber numberWithDouble:41.857952f], @"longitude": [NSNumber numberWithDouble:-87.623562f], @"radius": [NSNumber numberWithDouble:1008.256287f], @"weight" : [NSNumber numberWithInteger:5]}];
+    [regions addObject:@{@"name" : @"West Loop, Chicago, IL", @"latitude": [NSNumber numberWithDouble:41.880178f], @"longitude": [NSNumber numberWithDouble:-87.637326f], @"radius": [NSNumber numberWithDouble:929.372164f], @"weight" : [NSNumber numberWithInteger:5]}];
+    [regions addObject:@{@"name" : @"River North, Chicago, IL", @"latitude": [NSNumber numberWithDouble:41.894487f], @"longitude": [NSNumber numberWithDouble:-87.623871f], @"radius": [NSNumber numberWithDouble:1007.686503f], @"weight" : [NSNumber numberWithInteger:5]}];
+    
+    // Milwaukee
+    [regions addObject:@{@"name" : @"Downtown, Milwaukee, WI", @"latitude": [NSNumber numberWithDouble:43.040123f], @"longitude": [NSNumber numberWithDouble:-87.905526f], @"radius": [NSNumber numberWithDouble:989.609747f], @"weight" : [NSNumber numberWithInteger:5]}];
+    [regions addObject:@{@"name" : @"East Side, Milwaukee, WI", @"latitude": [NSNumber numberWithDouble:43.061268f], @"longitude": [NSNumber numberWithDouble:-87.886075f], @"radius": [NSNumber numberWithDouble:494.635767f], @"weight" : [NSNumber numberWithInteger:5]}];
+    [regions addObject:@{@"name" : @"Shorewood, Milwaukee, WI", @"latitude": [NSNumber numberWithDouble:43.086669f], @"longitude": [NSNumber numberWithDouble:-87.885982f], @"radius": [NSNumber numberWithDouble:459.613738f], @"weight" : [NSNumber numberWithInteger:5]}];
+    [regions addObject:@{@"name" : @"Riverwest, Milwaukee, WI", @"latitude": [NSNumber numberWithDouble:43.068234f], @"longitude": [NSNumber numberWithDouble:-87.901862f], @"radius": [NSNumber numberWithDouble:459.750550f], @"weight" : [NSNumber numberWithInteger:5]}];
+    [regions addObject:@{@"name" : @"Bay View, Milwaukee, WI", @"latitude": [NSNumber numberWithDouble:42.999030f], @"longitude": [NSNumber numberWithDouble:-87.898900f], @"radius": [NSNumber numberWithDouble:920.528064f], @"weight" : [NSNumber numberWithInteger:5]}];
+    [regions addObject:@{@"name" : @"Walker's Point, Milwaukee, WI", @"latitude": [NSNumber numberWithDouble:43.026456f], @"longitude": [NSNumber numberWithDouble:-87.913727f], @"radius": [NSNumber numberWithDouble:920.121502f], @"weight" : [NSNumber numberWithInteger:5]}];
+    
+    // Minneapolis
+    [regions addObject:@{@"name" : @"Minneapolis, MN", @"latitude": [NSNumber numberWithDouble:44.977605f], @"longitude": [NSNumber numberWithDouble:-93.265293f], @"radius": [NSNumber numberWithDouble:1265.132380f], @"weight" : [NSNumber numberWithInteger:5]}];
+    
+    // Gainesville
+    [regions addObject:@{@"name" : @"Gainesville, FL", @"latitude": [NSNumber numberWithDouble:29.651427f], @"longitude": [NSNumber numberWithDouble:-82.325733f], @"radius": [NSNumber numberWithDouble:621.729872f], @"weight" : [NSNumber numberWithInteger:5]}];
+    
+    // San Diego
+    [regions addObject:@{@"name" : @"San Diego, CA", @"latitude": [NSNumber numberWithDouble:32.717821f], @"longitude": [NSNumber numberWithDouble:-117.156564f], @"radius": [NSNumber numberWithDouble:2274.388419f], @"weight" : [NSNumber numberWithInteger:5]}];
+    
+    // Denver
+    [regions addObject:@{@"name" : @"Downtown, Denver, CO", @"latitude": [NSNumber numberWithDouble:39.743472f], @"longitude": [NSNumber numberWithDouble:-104.987865f], @"radius": [NSNumber numberWithDouble:2262.046594f], @"weight" : [NSNumber numberWithInteger:5]}];
+    
+    // New York
+    [regions addObject:@{@"name" : @"Manhattan, New York, NY", @"latitude": [NSNumber numberWithDouble:40.761784f], @"longitude": [NSNumber numberWithDouble:-73.980931f], @"radius": [NSNumber numberWithDouble:1025.156963f], @"weight" : [NSNumber numberWithInteger:5]}];
+    [regions addObject:@{@"name" : @"Queens, New York, NY", @"latitude": [NSNumber numberWithDouble:40.731768f], @"longitude": [NSNumber numberWithDouble:-73.799172f], @"radius": [NSNumber numberWithDouble:1025.614422f], @"weight" : [NSNumber numberWithInteger:7]}];
+    [regions addObject:@{@"name" : @"Long Beach, New York, NY", @"latitude": [NSNumber numberWithDouble:40.607669f], @"longitude": [NSNumber numberWithDouble:-73.655765f], @"radius": [NSNumber numberWithDouble:4110.030619f], @"weight" : [NSNumber numberWithInteger:8]}];
+    [regions addObject:@{@"name" : @"The Bronx, New York, NY", @"latitude": [NSNumber numberWithDouble:40.826368f], @"longitude": [NSNumber numberWithDouble:-73.911144f], @"radius": [NSNumber numberWithDouble:1024.171701f], @"weight" : [NSNumber numberWithInteger:7]}];
+    [regions addObject:@{@"name" : @"Brooklyn, New York, NY", @"latitude": [NSNumber numberWithDouble:40.641567f], @"longitude": [NSNumber numberWithDouble:-73.939783f], @"radius": [NSNumber numberWithDouble:4107.969373f], @"weight" : [NSNumber numberWithInteger:5]}];
+    
+    // San Francisco
+    [regions addObject:@{@"name" : @"SOMA, San Francisco, CA", @"latitude": [NSNumber numberWithDouble:37.783899f], @"longitude": [NSNumber numberWithDouble:-122.399481f], @"radius": [NSNumber numberWithDouble:1069.133073f], @"weight" : [NSNumber numberWithInteger:8]}];
+    [regions addObject:@{@"name" : @"NOPA, San Francisco, CA", @"latitude": [NSNumber numberWithDouble:37.772349f], @"longitude": [NSNumber numberWithDouble:-122.447911f], @"radius": [NSNumber numberWithDouble:1069.298025f], @"weight" : [NSNumber numberWithInteger:7]}];
+    [regions addObject:@{@"name" : @"Fischerman's Wharf, San Francisco, CA", @"latitude": [NSNumber numberWithDouble:37.808111f], @"longitude": [NSNumber numberWithDouble:-122.415446f], @"radius": [NSNumber numberWithDouble:534.393125f], @"weight" : [NSNumber numberWithInteger:7]}];
+    [regions addObject:@{@"name" : @"Castro, San Francisco, CA", @"latitude": [NSNumber numberWithDouble:37.759695f], @"longitude": [NSNumber numberWithDouble:-122.434809f], @"radius": [NSNumber numberWithDouble:267.369347f], @"weight" : [NSNumber numberWithInteger:8]}];
+    
+    return regions;
+}
+
+- (NSArray *)findRegionsInRegion:(CLCircularRegion *)region {
+    if (!self.subRegions.count) {
+        self.subRegions = [self loadSubRegions];
+    }
+    
+    NSMutableArray *regions = @[].mutableCopy;
+    
+    for (NSDictionary *subRegion in self.subRegions) {
+        CLLocationDegrees latitude = [subRegion[@"latitude"] floatValue];
+        CLLocationDegrees longitude = [subRegion[@"longitude"] floatValue];
+        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+        if ([region containsCoordinate:coordinate]) {
+            NSString *name = subRegion[@"name"];
+            CLLocationDistance radius = [subRegion[@"radius"] doubleValue];
+            CLCircularRegion *region = [[CLCircularRegion alloc] initWithCenter:coordinate radius:radius identifier:name];
+            [regions addObject:region];
+        }
+    }
+    
+    return regions;
+}
+
+#pragma mark - UITableViewDataSource
+#pragma mark -
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 2;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == 0) {
+        if (!self.placemarks) {
+            return 0;
+        }
+        else {
+            return MAX(1, self.placemarks.count);
+        }
+    }
+    else {
+        // pre-seeded locations and most recent selections
+        return self.savedPlacemarks.count;
+    }
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *LocationCellIdentifier = @"LocationCell";
+    static NSString *NoMatchCellIdentifier = @"NoMatchCell";
+
+    UITableViewCell *cell = nil;
+    
+    if (indexPath.section == 0) {
+        if (self.placemarks.count) {
+            SHPlacemark *placemark = self.placemarks[indexPath.row];
+            cell = [tableView dequeueReusableCellWithIdentifier:LocationCellIdentifier forIndexPath:indexPath];
+            cell.textLabel.text = placemark.name;
+            cell.textLabel.textColor = [SHStyleKit color:SHStyleKitColorMyTextColor];
+        }
+        else {
+            cell = [tableView dequeueReusableCellWithIdentifier:NoMatchCellIdentifier forIndexPath:indexPath];
+        }
+    }
+    else {
+        cell = [tableView dequeueReusableCellWithIdentifier:LocationCellIdentifier forIndexPath:indexPath];
+        if (indexPath.row < self.savedPlacemarks.count) {
+            SHPlacemark *placemark = self.savedPlacemarks[indexPath.row];
+            cell.textLabel.text = placemark.name;
+            cell.textLabel.textColor = [SHStyleKit color:SHStyleKitColorMyTextColor];
+        }
+        else {
+            cell.textLabel.text = nil;
+        }
+    }
+    
+    return cell;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (section == 1) {
+        return @"Saved Locations";
+    }
+    
+    return nil;
+}
+
+#pragma mark - UITableViewDelegate
+#pragma mark -
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    SHPlacemark *placemark = nil;
+    if (indexPath.section == 0 && indexPath.row < self.placemarks.count) {
+        placemark = self.placemarks[indexPath.row];
+    }
+    else if (indexPath.section == 1 && indexPath.row < self.savedPlacemarks.count) {
+        placemark = self.savedPlacemarks[indexPath.row];
+    }
+    
+    if (placemark) {
         
-        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-        [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
-            if (placemarks.count) {
-                CLPlacemark *placemark = placemarks[0];
-                self.navigationItem.title = [TellMeMyLocation locationNameFromPlacemark:placemark];
-            }
-        }];
+        
+        DebugLog(@"[coordinates addObject:@{@\"name\" : @\"%@\", @\"latitude\": [NSNumber numberWithDouble:%ff], @\"longitude\": [NSNumber numberWithDouble:%ff], @\"weight\" : [NSNumber numberWithInteger:5]}];", placemark.name, placemark.region.center.latitude, placemark.region.center.longitude);
+        
+        
+        [self addSavedPlacemark:placemark];
+        if ([self.delegate respondsToSelector:@selector(locationPickerViewController:didSelectPlacemark:)]) {
+            [self.delegate locationPickerViewController:self didSelectPlacemark:placemark];
+        }
     }
 }
 

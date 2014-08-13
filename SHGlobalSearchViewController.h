@@ -20,6 +20,8 @@
 
 - (void)clearSearch;
 
+- (void)cancelSearch;
+
 - (void)adjustForKeyboardHeight:(CGFloat)height duration:(NSTimeInterval)duration;
 
 @end
@@ -30,5 +32,8 @@
 
 - (void)globalSearchViewController:(SHGlobalSearchViewController *)vc didSelectSpot:(SpotModel *)spot;
 - (void)globalSearchViewController:(SHGlobalSearchViewController *)vc didSelectDrink:(DrinkModel *)drink;
+
+- (void)globalSearchViewControllerStartedSearching:(SHGlobalSearchViewController *)vc;
+- (void)globalSearchViewControllerStoppedSearching:(SHGlobalSearchViewController *)vc;
 
 @end

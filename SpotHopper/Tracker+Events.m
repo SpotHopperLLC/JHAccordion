@@ -261,4 +261,75 @@
     }];
 }
 
+#pragma mark - Navigation
+#pragma mark -
+
++ (void)trackHomeNavigationButtonTapped:(BOOL)insideBounds {
+    [Tracker track:@"Home Navigation Button Tapped" properties:@{ @"Inside Bounds" : [NSNumber numberWithBool:insideBounds]}];
+}
+
+#pragma mark - Location
+#pragma mark -
+
++ (void)trackLocationServicesAuthorizationStatus {
+    NSString *authorizationStatus = nil;
+    
+    switch ([CLLocationManager authorizationStatus]) {
+        case kCLAuthorizationStatusRestricted:
+            authorizationStatus = @"Restricted";
+            break;
+        case kCLAuthorizationStatusDenied:
+            authorizationStatus = @"Denied";
+            break;
+        case kCLAuthorizationStatusAuthorized:
+            authorizationStatus = @"Authorized";
+            break;
+
+        default:
+            authorizationStatus = @"Not Determined";
+            break;
+    }
+    
+    [Tracker track:@"Location Services" properties:@{ @"Authorization Status" : authorizationStatus }];
+}
+
+#pragma mark - Logins
+#pragma mark -
+
++ (void)trackLoginViewed {
+    [Tracker track:@"Login Viewed"];
+}
+
++ (void)trackerLeavingLoginViewLoggedIn {
+    [Tracker track:@"Leaving Login View (Logged In)"];
+}
+
++ (void)trackerLeavingLoginViewNotLoggedIn {
+    [Tracker track:@"Leaving Login View (Not Logged In)"];
+}
+
++ (void)trackCreatingAccount {
+    [Tracker track:@"Creating Account"];
+}
+
++ (void)trackCreatedUser:(BOOL)success {
+    [Tracker track:@"Created User" properties:@{@"Success" : [NSNumber numberWithBool:success]}];
+}
+
++ (void)trackLoggingInWithFacebook {
+    [Tracker track:@"Logging In" properties:@{@"Service" : @"Facebook"}];
+}
+
++ (void)trackLoggingInWithTwitter {
+    [Tracker track:@"Logging In" properties:@{@"Service" : @"Twitter"}];
+}
+
++ (void)trackLoggingInWithSpotHopper {
+    [Tracker track:@"Logging In" properties:@{@"Service" : @"SpotHopper"}];
+}
+
++ (void)trackLoggedIn:(BOOL)success {
+    [Tracker track:@"Logged In" properties:@{@"Success" : [NSNumber numberWithBool:success]}];
+}
+
 @end

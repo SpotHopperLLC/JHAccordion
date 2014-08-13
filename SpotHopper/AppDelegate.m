@@ -41,6 +41,10 @@
 #import "MockData.h"
 
 #import "TellMeMyLocation.h"
+#import "SHNotifications.h"
+
+#import "BFURL.h"
+#import "BFAppLink.h"
 
 #import "Mixpanel.h"
 #import "GAI.h"
@@ -83,7 +87,7 @@
 
     [self applyAppearance];
     
-    [Tracker logInfo:@"App Delegate launching" class:[self class] trace:NSStringFromSelector(_cmd)];
+    //[Tracker logInfo:@"App Delegate launching" class:[self class] trace:NSStringFromSelector(_cmd)];
     
     [iRate sharedInstance].delegate = self;
     
@@ -178,23 +182,22 @@
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    BFURL *parsedUrl = [BFURL URLWithURL:url];
     
-    NSString *fullURLString = [url absoluteString];
-    
-    if (!fullURLString.length) {
-        // The URL's absoluteString is nil. There's nothing more to do.
-        return NO;
-    }
-    
+    NSString *fullURLString = parsedUrl.targetURL.absoluteString;
     NSInteger maximumExpectedLength = 2048;
     
-    if ([fullURLString length] > maximumExpectedLength) {
+    if (!fullURLString.length || fullURLString.length > maximumExpectedLength) {
         // The URL is longer than we expect. Stop servicing it.
         return NO;
     }
     
-    if ([kAppURLScheme length] && [fullURLString hasPrefix:kAppURLScheme]) {
-        self.openedURL = url;
+    if ([self isURLSchemePrefixForURLString:fullURLString] || [fullURLString hasPrefix:kWebsiteUrl]) {
+        self.openedURL = parsedUrl.targetURL;
+        if (parsedUrl.appLinkReferer.sourceURL) {
+            self.sourceURL = parsedUrl.appLinkReferer.sourceURL;
+        }
+        [SHNotifications appOpenedWithURL:url];
         return YES;
     }
     else {
@@ -234,9 +237,11 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    [self refreshDeviceLocationWithCompletionBlock:^{
-        // do nothing
-    }];
+    if ([[ClientSessionManager sharedClient] hasSeenLaunch]) {
+        [self refreshDeviceLocationWithCompletionBlock:^{
+            // do nothing
+        }];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -249,6 +254,20 @@
 }
 
 #pragma mark - Private
+
+- (BOOL)isURLSchemePrefixForURLString:(NSString *)urlString {
+    NSArray *urlTypes = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"];
+    for (NSDictionary *urlType in urlTypes) {
+        NSArray *urlSchemes = urlType[@"CFBundleURLSchemes"];
+        for (NSString *urlScheme in urlSchemes) {
+            if (![urlScheme hasPrefix:@"fb"] && [urlString hasPrefix:urlScheme]) {
+                return TRUE;
+            }
+        }
+    }
+    
+    return FALSE;
+}
 
 - (void)prepareResources {
     // Initializes resource linkng for JSONAPI

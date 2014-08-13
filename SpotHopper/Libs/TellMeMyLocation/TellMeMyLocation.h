@@ -19,8 +19,13 @@ typedef void(^FailureBlock)(NSError *error);
 
 typedef void (^TellMeMyLocationCompletionHandler)();
 
+@protocol TellMeMyLocationDelegate;
+
 @interface TellMeMyLocation : NSObject
 
+@property (weak, nonatomic) id <TellMeMyLocationDelegate> delegate;
+
+- (void)findMe:(CLLocationAccuracy)accuracy;
 - (void)findMe:(CLLocationAccuracy)accuracy found:(FoundBlock)foundBlock failure:(FailureBlock)failureBlock;
 + (CLLocation *)currentDeviceLocation;
 + (CLLocation *)currentSelectedLocation;
@@ -37,5 +42,14 @@ typedef void (^TellMeMyLocationCompletionHandler)();
 + (NSDate*)lastLocationDate;
 + (NSString*)lastLocationName;
 + (NSString*)lastLocationNameShort;
+
+@end
+
+@protocol TellMeMyLocationDelegate <NSObject>
+
+@optional
+
+- (void)tellMeMyLocation:(TellMeMyLocation *)tmml didFindLocation:(CLLocation *)newLocation;
+- (void)tellMeMyLocation:(TellMeMyLocation *)tmml didFailWithError:(NSError *)error;
 
 @end

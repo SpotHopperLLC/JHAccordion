@@ -15,23 +15,29 @@
 
 #define kAnimationDuration 0.35f
 
-@interface SHLocationMenuBarViewController ()
+@interface SHLocationMenuBarViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *locationView;
 @property (weak, nonatomic) IBOutlet UILabel *nearLabel;
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *locationArrowImageView;
-@property (weak, nonatomic) IBOutlet UIButton *pickLocationButton;
 
 @property (weak, nonatomic) IBOutlet UIView *filterView;
 @property (weak, nonatomic) IBOutlet UILabel *filterLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *filterArrowImageView;
 @property (weak, nonatomic) IBOutlet UIButton *filterButton;
 
+@property (weak, nonatomic) IBOutlet UIView *searchView;
+@property (weak, nonatomic) IBOutlet UIView *searchTextView;
+@property (weak, nonatomic) IBOutlet UITextField *searchTextField;
+@property (weak, nonatomic) IBOutlet UIButton *searchCancelButton;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leadingConstraint;
 
 @property (weak, nonatomic) SpotModel *scopedSpot;
 @property (weak, nonatomic) SpotModel *selectedSpot;
+
+@property (strong, nonatomic) NSString *currentSearchText;
 
 @end
 
@@ -54,11 +60,25 @@
     self.locationArrowImageView.image = arrowImage;
     self.filterArrowImageView.image = arrowImage;
     
+    self.searchTextView.layer.cornerRadius = 5.0f;
+    self.searchTextView.layer.borderColor = [[[SHStyleKit color:SHStyleKitColorMyTextColor] colorWithAlphaComponent:0.25f] CGColor];
+    self.searchTextView.layer.borderWidth = 1.0f;
+    
+    [SHStyleKit setButton:self.searchCancelButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
+    
     [self updateLocationTitle:@"Locating..."];
 }
 
 #pragma mark - Public
 #pragma mark -
+
+- (NSString *)locationTitle {
+    return self.locationLabel.text;
+}
+
+- (BOOL)isSearchViewHidden {
+    return self.searchView.hidden;
+}
 
 - (void)updateLocationTitle:(NSString *)locationTitle {
     self.locationLabel.text = locationTitle;
@@ -120,13 +140,29 @@
     }
 }
 
+- (void)dismissSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    [self hideSearchView:animated withCompletionBlock:completionBlock];
+    self.currentSearchText = nil;
+}
+
+- (void)showSearchIsBusy {
+    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicatorView.tintColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
+    self.searchTextField.rightView = activityIndicatorView;
+    self.searchTextField.rightViewMode = UITextFieldViewModeAlways;
+    [activityIndicatorView startAnimating];
+}
+
+- (void)showSearchIsFree {
+    self.searchTextField.rightView = nil;
+    self.searchTextField.rightViewMode = UITextFieldViewModeNever;
+}
+
 #pragma mark - User Actions
 #pragma mark -
 
 - (IBAction)locationButtonTapped:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(locationMenuBarViewControllerDidRequestLocationChange:)]) {
-        [self.delegate locationMenuBarViewControllerDidRequestLocationChange:self];
-    }
+    [self showSearchView:TRUE withCompletionBlock:nil];
 }
 
 - (IBAction)filterButtonTapped:(id)sender {
@@ -149,6 +185,10 @@
             }
         }];
     }
+}
+
+- (IBAction)searchCancelButtonTapped:(id)sender {
+    [self hideSearchView:TRUE withCompletionBlock:nil];
 }
 
 #pragma mark - Private
@@ -206,6 +246,83 @@
             completionBlock();
         }
     }];
+}
+
+- (void)showSearchView:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    self.searchView.alpha = 0.0f;
+    self.searchView.hidden = FALSE;
+    
+    if ([self.delegate respondsToSelector:@selector(locationMenuBarViewControllerDidStartSearch:)]) {
+        [self.delegate locationMenuBarViewControllerDidStartSearch:self];
+    }
+    
+    CGFloat duration = animated ? 0.25f : 0.0f;
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0f options:options animations:^{
+        self.searchView.alpha = 1.0f;
+        self.locationView.alpha = 0.0f;
+    } completion:^(BOOL finished) {
+        self.locationView.hidden = TRUE;
+        [self.searchTextField becomeFirstResponder];
+        
+        if (completionBlock) {
+            completionBlock();
+        }
+    }];
+}
+
+- (void)hideSearchView:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    self.locationView.alpha = 0.0f;
+    self.locationView.hidden = FALSE;
+    
+    if ([self.delegate respondsToSelector:@selector(locationMenuBarViewControllerDidCancelSearch:)]) {
+        [self.delegate locationMenuBarViewControllerDidCancelSearch:self];
+    }
+    
+    CGFloat duration = animated ? 0.25f : 0.0f;
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0f options:options animations:^{
+        self.locationView.alpha = 1.0f;
+        self.searchView.alpha = 0.0f;
+    } completion:^(BOOL finished) {
+        self.searchView.hidden = TRUE;
+        self.searchTextField.text = nil;
+        [self.view endEditing:TRUE];
+        
+        if (completionBlock) {
+            completionBlock();
+        }
+    }];
+}
+
+- (void)initiateSearch {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(initiateSearch) object:nil];
+    
+    if (self.searchTextField.text.length && ![self.searchTextField.text isEqualToString:self.currentSearchText]) {
+        self.currentSearchText = self.searchTextField.text;
+        if ([self.delegate respondsToSelector:@selector(locationMenuBarViewController:didSearchWithText:)]) {
+            [self.delegate locationMenuBarViewController:self didSearchWithText:self.currentSearchText];
+        }
+    }
+}
+
+#pragma mark - UITextFieldDelegate
+#pragma mark -
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(initiateSearch) object:nil];
+    [self performSelector:@selector(initiateSearch) withObject:nil afterDelay:0.25f];
+    
+    return TRUE;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if ([self.searchTextField isEqual:self.searchTextField]) {
+        [self performSelector:@selector(initiateSearch) withObject:nil afterDelay:0.25f];
+        [textField resignFirstResponder];
+    }
+    
+    return TRUE;
 }
 
 @end

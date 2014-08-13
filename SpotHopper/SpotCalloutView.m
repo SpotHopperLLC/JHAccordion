@@ -44,6 +44,7 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SpotHopper" bundle:nil];
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:SpotCalloutViewIdentifier];
     SpotCalloutView *calloutView = (SpotCalloutView *)vc.view;
+    
     calloutView.translatesAutoresizingMaskIntoConstraints = YES;
     
     return calloutView;
@@ -81,6 +82,12 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
 - (void)setIcon:(SpotCalloutIcon)icon spotNameText:(NSString *)spotNameText drink1Text:(NSString *)drink1Text drink2Text:(NSString *)drink2Text {
     CGSize iconSize = CGSizeMake(40.0f, 40.f);
     
+    [SHStyleKit setButton:self.calloutButton
+              withDrawing:SHStyleKitDrawingNavigationArrowRightIcon
+              normalColor:SHStyleKitColorMyTintColor
+         highlightedColor:SHStyleKitColorMyTextColor
+                     size:CGSizeMake(30.0f, 30.0f)];
+    
     if (icon == SpotCalloutIconLoading) {
         [self.activityIndicator startAnimating];
     }
@@ -90,13 +97,13 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
     
     switch (icon) {
         case SpotCalloutIconBeerOnTap:
-            self.iconImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingBeerIcon color:SHStyleKitColorMyTintColor size:iconSize];
+            self.iconImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingTapIcon color:SHStyleKitColorMyTintColor size:iconSize];
             break;
         case SpotCalloutIconBeerInBottle:
-            self.iconImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingBeerIcon color:SHStyleKitColorMyTintColor size:iconSize];
+            self.iconImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingBottleIcon color:SHStyleKitColorMyTintColor size:iconSize];
             break;
         case SpotCalloutIconBeerOnTapAndInBottle:
-            self.iconImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingBeerIcon color:SHStyleKitColorMyTintColor size:iconSize];
+            self.iconImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingBottleAndTapIcon color:SHStyleKitColorMyTintColor size:iconSize];
             break;
         case SpotCalloutIconCocktail:
             self.iconImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingCocktailIcon color:SHStyleKitColorMyTintColor size:iconSize];

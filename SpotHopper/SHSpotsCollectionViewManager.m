@@ -189,11 +189,13 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView == self.collectionView) {
-        NSIndexPath *indexPath = [self indexPathForCurrentItemInCollectionView:self.collectionView];
-        if (indexPath.item != _currentIndex) {
-            _currentIndex = indexPath.item;
-            [self reportedChangedIndex];
-        }
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            NSIndexPath *indexPath = [self indexPathForCurrentItemInCollectionView:self.collectionView];
+            if (indexPath.item != _currentIndex) {
+                _currentIndex = indexPath.item;
+                [self reportedChangedIndex];
+            }
+        });
     }
 }
 
@@ -286,7 +288,7 @@
     neighborhoodLabel.text = spot.city;
     
     CLLocation *spotLocation = [[CLLocation alloc] initWithLatitude:[spot.latitude floatValue] longitude:[spot.longitude floatValue]];
-    CLLocation *currentLocation = [TellMeMyLocation currentDeviceLocation];
+    CLLocation *currentLocation = [TellMeMyLocation currentLocation];
     CLLocationDistance meters = [currentLocation distanceFromLocation:spotLocation];
     
     CGFloat miles = meters * kMeterToMile;
@@ -294,12 +296,6 @@
     distanceLabel.text = [NSString stringWithFormat:@"%0.1f miles away", miles];
     positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", (long)index+1, (long)self.spotList.spots.count];
     percentageLabel.text = [NSString stringWithFormat:@"%@", spot.matchPercent];
-    
-    [SHStyleKit setButton:previousButton withDrawing:SHStyleKitDrawingArrowLeftIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
-    previousButton.hidden = index == 0;
-    
-    [SHStyleKit setButton:nextButton withDrawing:SHStyleKitDrawingArrowRightIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
-    nextButton.hidden = index == self.spotList.spots.count - 1;
     
     if (self.spotList.spots.count == 1) {
         matchImageView.image = nil;
@@ -319,12 +315,16 @@
 
         percentageLabel.hidden = FALSE;
         matchLabel.hidden = FALSE;
-        previousButton.hidden = FALSE;
-        nextButton.hidden = FALSE;
         positionLabel.hidden = FALSE;
         findSimilarButton.hidden = TRUE;
         reviewItButton.hidden = TRUE;
         menuButton.hidden = TRUE;
+        
+        [SHStyleKit setButton:previousButton withDrawing:SHStyleKitDrawingArrowLeftIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+        previousButton.hidden = index == 0;
+        
+        [SHStyleKit setButton:nextButton withDrawing:SHStyleKitDrawingArrowRightIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+        nextButton.hidden = index == self.spotList.spots.count - 1;
     }
 }
 
