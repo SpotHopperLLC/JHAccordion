@@ -36,13 +36,13 @@ PODS:
     - BlocksKit/DynamicDelegate
   - Bolts (1.1.1)
   - CRGradientNavigationBar (0.3.2)
-  - Facebook-iOS-SDK (3.16.2):
+  - Facebook-iOS-SDK (3.17.0):
     - Bolts
-  - GoogleAnalytics-iOS-SDK (3.0.8)
+  - GoogleAnalytics-iOS-SDK (3.0.9)
   - iRate (1.8.3)
   - JHAccordion (0.1.0)
   - JHAutoCompleteTextField (0.1.0)
-  - JHSidebar (0.1.1)
+  - JHSidebar (0.1.2)
   - JSONAPI (0.2.0)
   - JTSReachability (0.0.1)
   - MBProgressHUD (0.8)
@@ -108,12 +108,12 @@ SPEC CHECKSUMS:
   BlocksKit: 07c8a80f04275efac6a5f8b973782489c083a182
   Bolts: 0ca796081c3e7c139bd86d6903c27f1b83036a5d
   CRGradientNavigationBar: e11429639a863683acc90887b9c86e75cb5d098c
-  Facebook-iOS-SDK: 34eef640c2cc4c8618ba0f574ad2b290e07f1b4e
-  GoogleAnalytics-iOS-SDK: a3206c68ee5f2a014ed67383d1f779072b653988
+  Facebook-iOS-SDK: f20274d809f112ba540842e2b6cbe50128d51b7b
+  GoogleAnalytics-iOS-SDK: d9e198b1f955259a72886769be7377cdfcdb2250
   iRate: a42e2ae364634fd1eb07af3cb6985905ced01fa8
   JHAccordion: 4f0337990465b25f8de5ed304609fa9362281db0
   JHAutoCompleteTextField: 1ca69c82441d9b5bf474e10d36585247030f7594
-  JHSidebar: 2efb4d14cc8bb0032c75218fd3ef7db70154c07e
+  JHSidebar: 8305caa8641e862994378ee3d61370c79e6b5a07
   JSONAPI: 9b8f1449bcdcbb00a3c1efc37effbb881093b4dd
   JTSReachability: 9892b33f1677bd9361406d8c466868fcda892574
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
