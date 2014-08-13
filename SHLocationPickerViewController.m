@@ -83,7 +83,6 @@
 
 - (void)keyboardWillShow:(NSNotification *)notification {
 	CGFloat height = [self getKeyboardHeight:notification forBeginning:TRUE];
-    DebugLog(@"height: %f", height);
     UIEdgeInsets inset = self.tableView.contentInset;
     inset.bottom = height;
     self.tableView.contentInset = inset;
@@ -382,11 +381,6 @@
     }
     
     if (placemark) {
-        
-        
-        DebugLog(@"[coordinates addObject:@{@\"name\" : @\"%@\", @\"latitude\": [NSNumber numberWithDouble:%ff], @\"longitude\": [NSNumber numberWithDouble:%ff], @\"weight\" : [NSNumber numberWithInteger:5]}];", placemark.name, placemark.region.center.latitude, placemark.region.center.longitude);
-        
-        
         [self addSavedPlacemark:placemark];
         if ([self.delegate respondsToSelector:@selector(locationPickerViewController:didSelectPlacemark:)]) {
             [self.delegate locationPickerViewController:self didSelectPlacemark:placemark];
