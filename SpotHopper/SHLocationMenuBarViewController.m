@@ -140,9 +140,32 @@
     }
 }
 
-- (void)dismissSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+- (void)hideSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
     [self hideSearchView:animated withCompletionBlock:completionBlock];
     self.currentSearchText = nil;
+}
+
+- (void)showSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    self.searchView.alpha = 0.0f;
+    self.searchView.hidden = FALSE;
+    
+    if ([self.delegate respondsToSelector:@selector(locationMenuBarViewControllerDidStartSearch:)]) {
+        [self.delegate locationMenuBarViewControllerDidStartSearch:self];
+    }
+    
+    CGFloat duration = animated ? 0.25f : 0.0f;
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0f options:options animations:^{
+        self.searchView.alpha = 1.0f;
+        self.locationView.alpha = 0.0f;
+    } completion:^(BOOL finished) {
+        self.locationView.hidden = TRUE;
+        [self.searchTextField becomeFirstResponder];
+        
+        if (completionBlock) {
+            completionBlock();
+        }
+    }];
 }
 
 - (void)showSearchIsBusy {
@@ -162,7 +185,7 @@
 #pragma mark -
 
 - (IBAction)locationButtonTapped:(id)sender {
-    [self showSearchView:TRUE withCompletionBlock:nil];
+    [self showSearch:TRUE withCompletionBlock:nil];
 }
 
 - (IBAction)filterButtonTapped:(id)sender {
@@ -242,29 +265,6 @@
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
-        if (completionBlock) {
-            completionBlock();
-        }
-    }];
-}
-
-- (void)showSearchView:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    self.searchView.alpha = 0.0f;
-    self.searchView.hidden = FALSE;
-    
-    if ([self.delegate respondsToSelector:@selector(locationMenuBarViewControllerDidStartSearch:)]) {
-        [self.delegate locationMenuBarViewControllerDidStartSearch:self];
-    }
-    
-    CGFloat duration = animated ? 0.25f : 0.0f;
-    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-    [UIView animateWithDuration:duration delay:0.0f options:options animations:^{
-        self.searchView.alpha = 1.0f;
-        self.locationView.alpha = 0.0f;
-    } completion:^(BOOL finished) {
-        self.locationView.hidden = TRUE;
-        [self.searchTextField becomeFirstResponder];
-        
         if (completionBlock) {
             completionBlock();
         }

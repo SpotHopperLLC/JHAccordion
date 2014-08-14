@@ -28,7 +28,8 @@
 - (void)scopeToSpot:(SpotModel *)spot withCompletionBlock:(void (^)())completionBlock;
 - (void)descopeFromSpot:(SpotModel *)spot withCompletionBlock:(void (^)())completionBlock;
 
-- (void)dismissSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock;
+- (void)showSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock;
+- (void)hideSearch:(BOOL)animated withCompletionBlock:(void (^)())completionBlock;
 
 - (void)showSearchIsBusy;
 - (void)showSearchIsFree;
