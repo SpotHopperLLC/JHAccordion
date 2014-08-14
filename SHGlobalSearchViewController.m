@@ -16,13 +16,17 @@
 #import "Tracker.h"
 #import "Tracker+Events.h"
 
+#import "TTTAttributedLabel.h"
+#import "TTTAttributedLabel+QuickFonting.h"
+
 #import "NSNumber+Helpers.h"
 
 #define kTagImageViewIcon 1
 #define kTagNameLabel 2
-#define kTagNotWhatLookingForLabel 3
-#define kTagMainTitleLabel 4
-#define kTagSubtitleLabel 5
+#define kTagMainTitleLabel 3
+#define kTagSubtitleLabel 4
+
+#define kTagNotWhatLookingForLabel 1
 
 @interface SHGlobalSearchViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
@@ -52,7 +56,7 @@
     // Register pull to refresh
     [self registerRefreshTableView:self.tableView withReloadType:kPullRefreshTypeBoth];
     
-    self.results = @[].mutableCopy;
+    self.results = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -113,11 +117,15 @@
 
 - (void)clearSearch {
     [self.results removeAllObjects];
+    self.results = nil;
+    [self.tableView reloadData];
     [self dataDidFinishRefreshing];
 }
 
 - (void)cancelSearch {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(startSearch) object:nil];
+    
+    self.results = nil;
     
     if ([self isSearchRunning]) {
         [DrinkModel cancelGetDrinks];
@@ -159,87 +167,149 @@
     self.tableView.scrollIndicatorInsets = inset;
 }
 
+- (NSInteger)totalRows {
+    if (self.results) {
+        return (self.results.count * 2) + 1;
+    }
+    else {
+        return 0;
+    }
+}
+
+- (NSInteger)resourceIndexForRowIndex:(NSInteger)rowIndex {
+    NSInteger totalRows = [self totalRows];
+    NSInteger rowNumber = rowIndex + 1;
+    BOOL isLastRow = rowNumber == totalRows;
+    
+    if (isLastRow) {
+        return NSNotFound;
+    }
+    
+    // See spreadsheet in Google Drive named Find Similar Offsets
+    // if(ISEVEN(rowIndex), rowIndex/2), (rowIndex - 1)/2
+    NSInteger resourceIndex = rowIndex % 2 == 0 ? rowIndex/2 : (rowIndex - 1)/2;
+    
+    return resourceIndex;
+}
+
 #pragma mark - UITableViewDataSource
 #pragma mark -
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.results.count;
+    // For each result there will be an option for "Find Similar" plus a final row for "Don't see it? Add it to our database!"
+    
+    // results * 2 + 1
+    // odd rows will be results (except for last row)
+    // even rows will be Find Similar to result row ((row+1) / 2) // adjust for zero based index
+    // for row 5 which is really 6 the index will be (6/2)-1.
+    
+    return [self totalRows];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell" forIndexPath:indexPath];
+    NSInteger totalRows = [self totalRows];
+    NSInteger rowNumber = indexPath.row + 1;
+    BOOL isLastRow = rowNumber == totalRows;
+    BOOL isFindSimilarRow = rowNumber % 2 == 0 && !isLastRow;
     
-    UIView *backgroundView = [[UIView alloc] init];
-    backgroundView.backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintColorTransparent];
-    cell.selectedBackgroundView = backgroundView;
+    NSInteger resourceIndex = [self resourceIndexForRowIndex:indexPath.row];
     
-    if (indexPath.row < self.results.count) {
-        JSONAPIResource *result = [self.results objectAtIndex:indexPath.row];
+    UITableViewCell *cell = nil;
+    
+    if (indexPath.row < totalRows) {
         
-        UIImageView *iconImageView = (UIImageView *)[cell viewWithTag:kTagImageViewIcon];
-        UILabel *nameLabel = (UILabel *)[cell viewWithTag:kTagNameLabel];
-        UILabel *notWhatLookingForLabel = (UILabel *)[cell viewWithTag:kTagNotWhatLookingForLabel];
-        UILabel *mainTitleLabel = (UILabel *)[cell viewWithTag:kTagMainTitleLabel];
-        UILabel *subtitleLabel = (UILabel *)[cell viewWithTag:kTagSubtitleLabel];
+        if (isLastRow) {
+            cell = [tableView dequeueReusableCellWithIdentifier:@"NotFoundCell" forIndexPath:indexPath];
+        }
+        else {
+            cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell" forIndexPath:indexPath];
+        }
         
-        // reset
-        iconImageView.image = nil;
-        nameLabel.hidden = TRUE;
-        notWhatLookingForLabel.hidden = TRUE;
-        mainTitleLabel.hidden = TRUE;
-        subtitleLabel.hidden = TRUE;
+        UIView *backgroundView = [[UIView alloc] init];
+        backgroundView.backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintColorTransparent];
+        cell.selectedBackgroundView = backgroundView;
         
-        if ([result isKindOfClass:[DrinkModel class]]) {
-            DrinkModel *drink = (DrinkModel *)result;
+        if (!isLastRow) {
+            NSAssert(resourceIndex < self.results.count, @"Index is out of range");
             
-            NSString *title = drink.name;
-            NSString *subtitle = drink.spot.name;
+            JSONAPIResource *result = [self.results objectAtIndex:resourceIndex];
             
-            // Sets image to drink type
-            if (drink.isBeer) {
-                iconImageView.image = [UIImage imageNamed:@"icon_search_beer"];
-            }
-            else if (drink.isCocktail) {
-                iconImageView.image = [UIImage imageNamed:@"icon_search_cocktails"];
-            }
-            else if (drink.isWine) {
-                iconImageView.image = [UIImage imageNamed:@"icon_search_wine"];
-            }
+            UIImageView *iconImageView = (UIImageView *)[cell viewWithTag:kTagImageViewIcon];
+            TTTAttributedLabel *nameLabel = (TTTAttributedLabel *)[cell viewWithTag:kTagNameLabel];
+            TTTAttributedLabel *mainTitleLabel = (TTTAttributedLabel *)[cell viewWithTag:kTagMainTitleLabel];
+            TTTAttributedLabel *subtitleLabel = (TTTAttributedLabel *)[cell viewWithTag:kTagSubtitleLabel];
             
-            // Shows two lines if there is a spot name (brewery or winery)
-            if (!subtitle.length) {
-                nameLabel.text = title;
-                nameLabel.hidden = FALSE;
-            }
-            else {
-                if (drink.isWine && drink.vintage && ![drink isKindOfClass:[NSNull class]]) {
-                    mainTitleLabel.text = [NSString stringWithFormat:@"%@ (%@)", title, drink.vintage];
+            nameLabel.font = [UIFont fontWithName:@"Lato-Light" size:nameLabel.font.pointSize];
+            mainTitleLabel.font = [UIFont fontWithName:@"Lato-Light" size:nameLabel.font.pointSize];
+            subtitleLabel.font = [UIFont fontWithName:@"Lato-Light" size:nameLabel.font.pointSize];
+            
+            nameLabel.textColor = [SHStyleKit color:SHStyleKitColorMyTextColor];
+            mainTitleLabel.textColor = [SHStyleKit color:SHStyleKitColorMyTextColor];
+            subtitleLabel.textColor = [SHStyleKit color:SHStyleKitColorMyTextColor];
+            
+            // reset
+            iconImageView.image = nil;
+            nameLabel.hidden = TRUE;
+            mainTitleLabel.hidden = TRUE;
+            subtitleLabel.hidden = TRUE;
+            
+            if ([result isKindOfClass:[DrinkModel class]]) {
+                DrinkModel *drink = (DrinkModel *)result;
+                
+                NSString *title = isFindSimilarRow ? [NSString stringWithFormat:@"Find Similar to %@", drink.name] : drink.name;
+                NSString *subtitle = drink.spot.name;
+                
+                // Sets image to drink type
+                if (drink.isBeer) {
+                    iconImageView.image = [UIImage imageNamed:@"icon_search_beer"];
+                }
+                else if (drink.isCocktail) {
+                    iconImageView.image = [UIImage imageNamed:@"icon_search_cocktails"];
+                }
+                else if (drink.isWine) {
+                    iconImageView.image = [UIImage imageNamed:@"icon_search_wine"];
+                }
+                
+                // Shows two lines if there is a spot name (brewery or winery)
+                if (!subtitle.length) {
+                    [nameLabel setText:title withFont:[UIFont fontWithName:@"Lato-Bold" size:nameLabel.font.pointSize] onString:drink.name];
+                    nameLabel.hidden = FALSE;
                 }
                 else {
-                    mainTitleLabel.text = title;
+                    if (drink.isWine && drink.vintage && ![drink isKindOfClass:[NSNull class]]) {
+                        NSString *wineText = [NSString stringWithFormat:@"%@ (%@)", title, drink.vintage];
+                        [mainTitleLabel setText:wineText withFont:[UIFont fontWithName:@"Lato-Bold" size:nameLabel.font.pointSize] onString:drink.name];
+                    }
+                    else {
+                        [mainTitleLabel setText:title withFont:[UIFont fontWithName:@"Lato-Bold" size:nameLabel.font.pointSize] onString:drink.name];
+                    }
+                    if (!title.length && subtitle.length) {
+                        mainTitleLabel.text = subtitle;
+                    }
+                    else {
+                        subtitleLabel.text = subtitle;
+                    }
+                    
+                    mainTitleLabel.hidden = FALSE;
+                    subtitleLabel.hidden = FALSE;
                 }
-                if (!title.length && subtitle.length) {
-                    mainTitleLabel.text = subtitle;
-                }
-                else {
-                    subtitleLabel.text = subtitle;
-                }
-
+                
+            } else if ([result isKindOfClass:[SpotModel class]]) {
+                SpotModel *spot = (SpotModel *)result;
+                
+                iconImageView.image = [UIImage imageNamed:@"icon_search_spot"];
+                
+                NSString *title = isFindSimilarRow ? [NSString stringWithFormat:@"Find Similar to %@", spot.name] : spot.name;
+                [mainTitleLabel setText:title withFont:[UIFont fontWithName:@"Lato-Bold" size:nameLabel.font.pointSize] onString:spot.name];
+                subtitleLabel.text =spot.addressCityState;
+                
                 mainTitleLabel.hidden = FALSE;
                 subtitleLabel.hidden = FALSE;
             }
-            
-        } else if ([result isKindOfClass:[SpotModel class]]) {
-            SpotModel *spot = (SpotModel *)result;
-            
-            iconImageView.image = [UIImage imageNamed:@"icon_search_spot"];
-            mainTitleLabel.text = spot.name;
-            subtitleLabel.text =spot.addressCityState;
-            
-            mainTitleLabel.hidden = FALSE;
-            subtitleLabel.hidden = FALSE;
         }
     }
+    
+    NSAssert(cell, @"Cell must be defined");
     
     return cell;
 }
@@ -252,8 +322,21 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row < self.results.count) {
-        SHJSONAPIResource *result = [self.results objectAtIndex:indexPath.row];
+    NSInteger resourceIndex = [self resourceIndexForRowIndex:indexPath.row];
+    
+    if (resourceIndex == NSNotFound) {
+        // go to Add Review screen
+        if ([self.delegate respondsToSelector:@selector(globalSearchViewControllerDidRequestReview:)]) {
+            [self.delegate globalSearchViewControllerDidRequestReview:self];
+        }
+    }
+    else if (resourceIndex < self.results.count) {
+        SHJSONAPIResource *result = [self.results objectAtIndex:resourceIndex];
+        
+        NSInteger totalRows = [self totalRows];
+        NSInteger rowNumber = indexPath.row + 1;
+        BOOL isLastRow = rowNumber == totalRows;
+        BOOL isFindSimilarRow = rowNumber % 2 == 0 && !isLastRow;
         
         [Tracker trackGlobalSearchResultTapped:result searchText:self.searchText];
         
@@ -262,15 +345,31 @@
             if ([result isKindOfClass:[SpotModel class]]) {
                 SpotModel *spot = (SpotModel *)result;
                 
-                if ([self.delegate respondsToSelector:@selector(globalSearchViewController:didSelectSpot:)]) {
-                    [self.delegate globalSearchViewController:self didSelectSpot:spot];
+                if (isFindSimilarRow) {
+                    // find similar spots
+                    if ([self.delegate respondsToSelector:@selector(globalSearchViewController:didSelectSimilarToSpot:)]) {
+                        [self.delegate globalSearchViewController:self didSelectSimilarToSpot:spot];
+                    }
+                }
+                else {
+                    if ([self.delegate respondsToSelector:@selector(globalSearchViewController:didSelectSpot:)]) {
+                        [self.delegate globalSearchViewController:self didSelectSpot:spot];
+                    }
                 }
             }
             else if ([result isKindOfClass:[DrinkModel class]]) {
                 DrinkModel *drink = (DrinkModel *)result;
                 
-                if ([self.delegate respondsToSelector:@selector(globalSearchViewController:didSelectDrink:)]) {
-                    [self.delegate globalSearchViewController:self didSelectDrink:drink];
+                if (isFindSimilarRow) {
+                    // find similar drinks
+                    if ([self.delegate respondsToSelector:@selector(globalSearchViewController:didSelectSimilarToDrink:)]) {
+                        [self.delegate globalSearchViewController:self didSelectSimilarToDrink:drink];
+                    }
+                }
+                else {
+                    if ([self.delegate respondsToSelector:@selector(globalSearchViewController:didSelectDrink:)]) {
+                        [self.delegate globalSearchViewController:self didSelectDrink:drink];
+                    }
                 }
             }
             
@@ -323,6 +422,8 @@
     DebugLog(@"%@", NSStringFromSelector(_cmd));
     
     [self setIsSearchRunning:TRUE];
+    
+    self.results = @[].mutableCopy;
     
     DebugLog(@"_isSearchRunningCount: %lu", (unsigned long)_isSearchRunningCount);
     

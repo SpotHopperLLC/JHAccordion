@@ -1296,27 +1296,34 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         if (self.lastAreYouHerePrompt) {
             seconds = [[NSDate date] timeIntervalSinceDate:self.lastAreYouHerePrompt];
         }
-        
+
         // 20 minutes between prompts (does not account for last spot user selected)
-        if (seconds > 1200 && self.nearbySpots.count) {
-            SpotModel *nearestSpot = self.nearbySpots[0];
-            CLLocation *nearestLocation = [[CLLocation alloc] initWithLatitude:nearestSpot.latitude.floatValue longitude:nearestSpot.longitude.floatValue];
-            CLLocationDistance meters = [self.currentLocation distanceFromLocation:nearestLocation];
-            if (meters < 150) {
-                DrinkListRequest *request = [self.drinkListRequest copy];
-                request.name = kDrinkListModelDefaultName;
-                request.drinkListId = nil;
-                request.spotId = nearestSpot.ID;
-                request.coordinate = [self visibleMapCenterCoordinate];
-                request.radius = [self searchRadius];
-                
-                [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
-                    if (!self.isScopedToSpot && drinkListModel.drinks.count) {
-                        [self showAreYouHerePromptForSpot:nearestSpot animated:TRUE withCompletionBlock:nil];
-                        self.lastAreYouHerePrompt = [NSDate date];
+        if (seconds > 1200) {
+            [self refreshCurrentLocationForAccuracy:kCLLocationAccuracyNearestTenMeters withCompletionBlock:^(NSError *error) {
+                [self fetchNearbySpotsAtLocation:self.currentLocation withCompletionBlock:^(NSArray *spots) {
+                    DebugLog(@"found %lu nearby spots", (unsigned long)spots.count);
+                    self.nearbySpots = spots;
+                    
+                    SpotModel *nearestSpot = self.nearbySpots[0];
+                    CLLocation *nearestLocation = [[CLLocation alloc] initWithLatitude:nearestSpot.latitude.floatValue longitude:nearestSpot.longitude.floatValue];
+                    CLLocationDistance meters = [self.currentLocation distanceFromLocation:nearestLocation];
+                    if (meters < 150) {
+                        DrinkListRequest *request = [self.drinkListRequest copy];
+                        request.name = kDrinkListModelDefaultName;
+                        request.drinkListId = nil;
+                        request.spotId = nearestSpot.ID;
+                        request.coordinate = [self visibleMapCenterCoordinate];
+                        request.radius = [self searchRadius];
+                        
+                        [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
+                            if (!self.isScopedToSpot && drinkListModel.drinks.count) {
+                                [self showAreYouHerePromptForSpot:nearestSpot animated:TRUE withCompletionBlock:nil];
+                                self.lastAreYouHerePrompt = [NSDate date];
+                            }
+                        } failure:nil];
                     }
-                } failure:nil];
-            }
+                }];
+            }];
         }
     }
 }
@@ -1597,10 +1604,12 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     self.searchThisAreaView.layer.cornerRadius = 5.0f;
 }
 
-- (void)fetchNearbySpotsAtLocation:(CLLocation *)location {
+- (void)fetchNearbySpotsAtLocation:(CLLocation *)location withCompletionBlock:(void (^)(NSArray *spots))completionBlock {
     if (location && CLLocationCoordinate2DIsValid(location.coordinate)) {
         [[SpotModel fetchSpotsNearLocation:location] then:^(NSArray *spots) {
-            self.nearbySpots = spots;
+            if (completionBlock) {
+                completionBlock(spots);
+            }
         } fail:nil always:^{
         }];
     }
@@ -1783,38 +1792,55 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     [self.locationMenuBarViewController updateLocationTitle:@"Locating..."];
     
+    CLLocationAccuracy accuracy = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized ? kCLLocationAccuracyHundredMeters : kCLLocationAccuracyKilometer;
+
+    [self refreshCurrentLocationForAccuracy:accuracy withCompletionBlock:^(NSError *error) {
+        if (!error) {
+            self.mapView.showsUserLocation = TRUE;
+            [self repositionMapOnCoordinate:self.currentLocation.coordinate animated:animated];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.75f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [self updateLocationName];
+            });
+        }
+        else {
+            
+            if (!self.currentLocation && self.lastSelectedLocation) {
+                self.currentLocation = self.lastSelectedLocation;
+                [TellMeMyLocation setCurrentSelectedLocation:self.lastSelectedLocation];
+            }
+            
+            if (self.currentLocation) {
+                [self repositionMapOnCoordinate:self.currentLocation.coordinate animated:animated];
+            }
+            else {
+                [self repositionMapOnCoordinate:kCLLocationCoordinate2DInvalid animated:animated];
+            }
+        }
+    }];
+}
+
+- (void)refreshCurrentLocationForAccuracy:(CLLocationAccuracy)accuracy withCompletionBlock:(void (^)(NSError *error))completionBlock {
     if (!self.tellMeMyLocation) {
         self.tellMeMyLocation = [[TellMeMyLocation alloc] init];
     }
     
-    CLLocationAccuracy accuracy = [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized ? kCLLocationAccuracyHundredMeters : kCLLocationAccuracyKilometer;
-    
     [self.tellMeMyLocation findMe:accuracy found:^(CLLocation *newLocation) {
-        self.mapView.showsUserLocation = TRUE;
         self.currentLocation = newLocation;
-        [self fetchNearbySpotsAtLocation:self.currentLocation];
-        [self repositionMapOnCoordinate:self.currentLocation.coordinate animated:animated];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            self.tellMeMyLocation = nil;
-        });
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.75f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            [self updateLocationName];
+        if (completionBlock) {
+            completionBlock(nil);
+        }
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            self.tellMeMyLocation = nil;
         });
     } failure:^(NSError *error) {
         [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
         [Tracker track:@"Location Services Error" properties:@{ @"Error" : error.description }];
         
-        if (!self.currentLocation && self.lastSelectedLocation) {
-            self.currentLocation = self.lastSelectedLocation;
-            [TellMeMyLocation setCurrentSelectedLocation:self.lastSelectedLocation];
-        }
-        
-        if (self.currentLocation) {
-            [self repositionMapOnCoordinate:self.currentLocation.coordinate animated:animated];
-        }
-        else {
-            [self repositionMapOnCoordinate:kCLLocationCoordinate2DInvalid animated:animated];
+        if (completionBlock) {
+            completionBlock(error);
         }
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
@@ -2530,6 +2556,87 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [self restoreTitle];
 }
 
+- (void)findSimilarToDrink:(DrinkModel *)drink {
+    [self.navigationController popToViewController:self animated:TRUE];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [self showHUD:@"Finding Similar Drinks"];
+        
+        NSString *name = [NSString stringWithFormat:@"Similar to %@", drink.name];
+        
+        // fetch the full details for a spot to get the sliders
+        [[drink fetchDrink] then:^(DrinkModel *drinkModel) {
+            
+            DrinkListRequest *request = [[DrinkListRequest alloc] init];
+            request.name = name;
+            request.coordinate = [self visibleMapCenterCoordinate];
+            request.radius = [self searchRadius];
+            request.sliders = drinkModel.averageReview.sliders;
+            request.drinkId = drinkModel.ID;
+            request.drinkTypeId = drinkModel.drinkType.ID;
+            request.drinkSubTypeId = drinkModel.drinkSubtype.ID;
+            
+            if (self.isScopedToSpot) {
+                request.spotId = self.scopedSpot.ID;
+            }
+            
+            SHMode mode = [self modeForDrink:drinkModel];
+            
+            [Tracker track:@"Creating Drinklist"];
+            
+            [[DrinkListModel fetchDrinkListWithRequest:request] then:^(DrinkListModel *drinklist) {
+                [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Created With Sliders" : @FALSE}];
+                [self hideHUD];
+                
+                [self processDrinklistModel:drinklist withRequest:request forMode:mode];
+            } fail:^(ErrorModel *errorModel) {
+                [Tracker track:@"Created Drinklist" properties:@{@"Success" : @FALSE, @"Created With Sliders" : @FALSE}];
+                [self hideHUD];
+                [self oops:errorModel caller:_cmd message:@"Sorry, unable to fetch similar drinks. Please try again."];
+            } always:nil];
+            
+        } fail:^(ErrorModel *errorModel) {
+            [self hideHUD];
+            [self oops:errorModel caller:_cmd message:@"Sorry, unable to fetch similar drinks. Please try again."];
+        } always:nil];
+    });
+}
+
+- (void)findSimilarToSpot:(SpotModel *)spot {
+    [self.navigationController popToViewController:self animated:TRUE];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [self showHUD:@"Finding Similar Spots"];
+        
+        // fetch the full details for a spot to get the sliders
+        [[spot fetchSpot] then:^(SpotModel *spotModel) {
+            SpotListRequest *request = [[SpotListRequest alloc] init];
+            request.name = [NSString stringWithFormat:@"Similar to %@", spotModel.name];
+            request.coordinate = [self visibleMapCenterCoordinate];
+            request.radius = [self searchRadius];
+            request.sliders = spotModel.averageReview.sliders;
+            request.spotId = spotModel.ID;
+            request.spotTypeId = spotModel.spotType.ID;
+            
+            [Tracker track:@"Creating Spotlist"];
+            
+            [[SpotListModel fetchSpotListWithRequest:request] then:^(SpotListModel *spotlist) {
+                [Tracker track:@"Created Spotlist" properties:@{@"Success" : @TRUE, @"Created With Sliders" : @FALSE}];
+                [self hideHUD];
+                [self processSpotlistModel:spotlist withRequest:request];
+            } fail:^(ErrorModel *errorModel) {
+                [Tracker track:@"Created Spotlist" properties:@{@"Success" : @FALSE, @"Created With Sliders" : @FALSE}];
+                [self hideHUD];
+                [self oops:errorModel caller:_cmd message:@"Sorry, unable to fetch similar spots. Please try again."];
+            } always:nil];
+            
+        } fail:^(ErrorModel *errorModel) {
+            [self hideHUD];
+            [self oops:errorModel caller:_cmd message:@"Sorry, unable to fetch similar spots. Please try again."];
+        } always:nil];
+    });
+}
+
 #pragma mark - Processing Search Results
 #pragma mark -
 
@@ -3032,6 +3139,30 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }];
 }
 
+- (void)globalSearchViewController:(SHGlobalSearchViewController *)vc didSelectSimilarToSpot:(SpotModel *)spot {
+    [Tracker trackLeavingGlobalSearch:TRUE];
+    
+    [self hideSearch:TRUE withCompletionBlock:^{
+        [self findSimilarToSpot:spot];
+    }];
+}
+
+- (void)globalSearchViewController:(SHGlobalSearchViewController *)vc didSelectSimilarToDrink:(DrinkModel *)drink {
+    [Tracker trackLeavingGlobalSearch:TRUE];
+    
+    [self hideSearch:TRUE withCompletionBlock:^{
+        [self findSimilarToDrink:drink];
+    }];
+}
+
+- (void)globalSearchViewControllerDidRequestReview:(SHGlobalSearchViewController *)vc {
+    [Tracker trackLeavingGlobalSearch:TRUE];
+    
+    [self hideSearch:TRUE withCompletionBlock:^{
+        [self goToReviewMenu];
+    }];
+}
+
 - (void)globalSearchViewControllerStartedSearching:(SHGlobalSearchViewController *)vc {
     UIView *customView = [[self.navigationItem leftBarButtonItem] customView];
     
@@ -3334,50 +3465,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)handleFindSimilarToDrinkNotification:(NSNotification *)notification {
     DrinkModel *drink = notification.userInfo[SHFindSimilarToDrinkNotificationKey];
-    
-    [self.navigationController popToViewController:self animated:TRUE];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        [self showHUD:@"Finding Similar Drinks"];
-        
-        NSString *name = [NSString stringWithFormat:@"Similar to %@", drink.name];
-        
-        // fetch the full details for a spot to get the sliders
-        [[drink fetchDrink] then:^(DrinkModel *drinkModel) {
-            
-            DrinkListRequest *request = [[DrinkListRequest alloc] init];
-            request.name = name;
-            request.coordinate = [self visibleMapCenterCoordinate];
-            request.radius = [self searchRadius];
-            request.sliders = drinkModel.averageReview.sliders;
-            request.drinkId = drinkModel.ID;
-            request.drinkTypeId = drinkModel.drinkType.ID;
-            request.drinkSubTypeId = drinkModel.drinkSubtype.ID;
-            
-            if (self.isScopedToSpot) {
-                request.spotId = self.scopedSpot.ID;
-            }
-            
-            SHMode mode = [self modeForDrink:drinkModel];
-            
-            [Tracker track:@"Creating Drinklist"];
-            
-            [[DrinkListModel fetchDrinkListWithRequest:request] then:^(DrinkListModel *drinklist) {
-                [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Created With Sliders" : @FALSE}];
-                [self hideHUD];
-                
-                [self processDrinklistModel:drinklist withRequest:request forMode:mode];
-            } fail:^(ErrorModel *errorModel) {
-                [Tracker track:@"Created Drinklist" properties:@{@"Success" : @FALSE, @"Created With Sliders" : @FALSE}];
-                [self hideHUD];
-                [self oops:errorModel caller:_cmd message:@"Sorry, unable to fetch similar drinks. Please try again."];
-            } always:nil];
-            
-        } fail:^(ErrorModel *errorModel) {
-            [self hideHUD];
-            [self oops:errorModel caller:_cmd message:@"Sorry, unable to fetch similar drinks. Please try again."];
-        } always:nil];
-    });
+    [self findSimilarToDrink:drink];
 }
 
 - (void)handleReviewDrinkNotification:(NSNotification *)notification {
@@ -3387,39 +3475,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)handleFindSimilarToSpotNotification:(NSNotification *)notification {
     SpotModel *spot = notification.userInfo[SHFindSimilarToSpotNotificationKey];
-    
-    [self.navigationController popToViewController:self animated:TRUE];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        [self showHUD:@"Finding Similar Spots"];
-        
-        // fetch the full details for a spot to get the sliders
-        [[spot fetchSpot] then:^(SpotModel *spotModel) {
-            SpotListRequest *request = [[SpotListRequest alloc] init];
-            request.name = [NSString stringWithFormat:@"Similar to %@", spotModel.name];
-            request.coordinate = [self visibleMapCenterCoordinate];
-            request.radius = [self searchRadius];
-            request.sliders = spotModel.averageReview.sliders;
-            request.spotId = spotModel.ID;
-            request.spotTypeId = spotModel.spotType.ID;
-            
-            [Tracker track:@"Creating Spotlist"];
-            
-            [[SpotListModel fetchSpotListWithRequest:request] then:^(SpotListModel *spotlist) {
-                [Tracker track:@"Created Spotlist" properties:@{@"Success" : @TRUE, @"Created With Sliders" : @FALSE}];
-                [self hideHUD];
-                [self processSpotlistModel:spotlist withRequest:request];
-            } fail:^(ErrorModel *errorModel) {
-                [Tracker track:@"Created Spotlist" properties:@{@"Success" : @FALSE, @"Created With Sliders" : @FALSE}];
-                [self hideHUD];
-                [self oops:errorModel caller:_cmd message:@"Sorry, unable to fetch similar spots. Please try again."];
-            } always:nil];
-            
-        } fail:^(ErrorModel *errorModel) {
-            [self hideHUD];
-                [self oops:errorModel caller:_cmd message:@"Sorry, unable to fetch similar spots. Please try again."];
-        } always:nil];
-    });
+    [self findSimilarToSpot:spot];
 }
 
 - (void)handleReviewSpotNotification:(NSNotification *)notification {
