@@ -233,7 +233,7 @@
     
     SHPlacemark *mkePlacemark = [[SHPlacemark alloc] init];
     mkePlacemark.name = @"Milwaukee, WI";
-    mkePlacemark.region = [[CLCircularRegion alloc] initWithCenter:CLLocationCoordinate2DMake(43.038902f, -87.906474f) radius:18466.410595 identifier:@"MKE"];
+    mkePlacemark.region = [[CLCircularRegion alloc] initWithCenter:CLLocationCoordinate2DMake(43.041706f, -87.906063f) radius:941.180899f identifier:@"MKE"];
     mkePlacemark.lastUsedDate = [NSDate date];
     
     return @[nycPlacemark, mkePlacemark];
