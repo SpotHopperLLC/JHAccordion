@@ -14,6 +14,7 @@ NSString * const SHStyleKitColorNameMyTextColor = @"myTextColor";
 NSString * const SHStyleKitColorNameMyWhiteColor = @"myWhiteColor";
 NSString * const SHStyleKitColorNameMyWhiteColorTransparent = @"myWhiteColorTransparent";
 NSString * const SHStyleKitColorNameMyBlackColor = @"myBlackColor";
+NSString * const SHStyleKitColorNameMyPencilColor = @"myPencilColor";
 NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
 
 @interface SHStyleKitCache : NSCache
@@ -38,6 +39,8 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
             return SHStyleKit.myWhiteColorTransparent;
         case SHStyleKitColorMyBlackColor:
             return SHStyleKit.myBlackColor;
+        case SHStyleKitColorMyPencilColor:
+            return SHStyleKit.myPencilColor;
         case SHStyleKitColorMyClearColor:
             return SHStyleKit.myClearColor;
         default:
@@ -145,16 +148,19 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
     switch (drawing) {
         case SHStyleKitDrawingNavigationArrowUpIcon:
         case SHStyleKitDrawingArrowUpIcon:
+        case SHStyleKitDrawingPencilArrowUp:
             rotation = 90;
             break;
 
         case SHStyleKitDrawingNavigationArrowLeftIcon:
         case SHStyleKitDrawingArrowLeftIcon:
+        SHStyleKitDrawingPencilArrowLeft:
             rotation = 180;
             break;
             
         case SHStyleKitDrawingNavigationArrowDownIcon:
         case SHStyleKitDrawingArrowDownIcon:
+        SHStyleKitDrawingPencilArrowDown:
             rotation = 270;
             break;
     
@@ -343,12 +349,19 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
             [SHStyleKit drawBottomBarBlackShadowBackground];
             break;
             
+        case SHStyleKitDrawingPencilArrowRight:
+        case SHStyleKitDrawingPencilArrowLeft:
+        case SHStyleKitDrawingPencilArrowUp:
+        case SHStyleKitDrawingPencilArrowDown:
+            [SHStyleKit drawPencilArrowWithScaleX:scaleX scaleY:scaleY rotation:rotation];
+            break;
+            
         default:
             break;
     }
     
     // draw the outline to debug image creation
-    //[SHStyleKit drawOutlineIconWithScaleX:scaleX scaleY:scaleY strokeColorName:SHStyleKitColorNameMyTintColor];
+     //[SHStyleKit drawOutlineIconWithScaleX:scaleX scaleY:scaleY strokeColorName:SHStyleKitColorNameMyTintColor];
     
     image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();

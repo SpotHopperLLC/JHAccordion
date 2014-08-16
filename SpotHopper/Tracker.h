@@ -15,6 +15,10 @@
 + (void)track:(NSString *)event;
 + (void)track:(NSString *)event properties:(NSDictionary *)properties;
 
++ (void)trackUserWithProperties:(NSDictionary *)properties;
++ (void)trackUserWithProperties:(NSDictionary *)properties updateLocation:(BOOL)updateLocation;
++ (void)trackUserAction:(NSString *)actionName;
+
 // Sentry
 + (void)logInfo:(id)message class:(Class)class trace:(NSString *)trace;
 + (void)logWarning:(id)message class:(Class)class trace:(NSString *)trace;
@@ -23,6 +27,6 @@
 
 + (void)trackLocationPropertiesForEvent:(NSString *)eventName properties:(NSDictionary *)properties;
 
-+ (void)getPropertiesForLocation:(CLLocation *)location prefix:(NSString *)prefix withCompletionBlock:(void (^)(NSDictionary *locationProperties, NSError *error))completionBlock;
++ (void)fetchLocationPropertiesWithCompletionBlock:(void (^)(NSDictionary *locationProperties, NSError *error))completionBlock;
 
 @end

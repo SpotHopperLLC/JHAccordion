@@ -14,6 +14,8 @@
 
 @interface Tracker (Events)
 
++ (void)trackFirstUse;
+
 + (void)trackDrinkProfileScreenViewed:(DrinkModel *)drink;
 
 + (void)trackSpotProfileScreenViewed:(SpotModel *)spot;
@@ -32,25 +34,37 @@
 
 + (void)trackViewedHome;
 
-+ (void)trackLeavingHomeToSpots;
++ (void)trackLeavingHomeToSpots:(BOOL)isSecondary actionButtonTapCount:(NSInteger)actionButtonTapCount;
 
-+ (void)trackLeavingHomeToSpecials;
++ (void)trackLeavingHomeToSpecials:(BOOL)isSecondary actionButtonTapCount:(NSInteger)actionButtonTapCount;
 
-+ (void)trackLeavingHomeToBeer;
++ (void)trackLeavingHomeToBeer:(BOOL)isSecondary actionButtonTapCount:(NSInteger)actionButtonTapCount;
 
-+ (void)trackLeavingHomeToCocktails;
++ (void)trackLeavingHomeToCocktails:(BOOL)isSecondary actionButtonTapCount:(NSInteger)actionButtonTapCount;
 
-+ (void)trackLeavingHomeToWine;
++ (void)trackLeavingHomeToWine:(BOOL)isSecondary actionButtonTapCount:(NSInteger)actionButtonTapCount;
 
-+ (void)trackSpotsMoodSelected:(NSString *)moodName;
++ (void)trackDrinkStylesDidLoad:(SHMode)mode numberOfStyles:(NSInteger)numberOfStyles duration:(NSTimeInterval)duration;
 
-+ (void)trackBeerStyleSelected:(NSString *)styleName;
++ (void)trackSpotMoodsDidLoad:(SHMode)mode numberOfMoods:(NSInteger)numberOfMoods duration:(NSTimeInterval)duration;
 
-+ (void)trackCocktailStyleSelected:(NSString *)styleName;
++ (void)trackSpotsMoodSelected:(NSString *)moodName moodsCount:(NSUInteger)moodsCount position:(NSUInteger)position;
 
-+ (void)trackWineStyleSelected:(NSString *)styleName;
++ (void)trackBeerStyleSelected:(DrinkListModel *)style stylesCount:(NSUInteger)stylesCount position:(NSUInteger)position;
+
++ (void)trackCocktailStyleSelected:(DrinkListModel *)style stylesCount:(NSUInteger)stylesCount position:(NSUInteger)position;
+
++ (void)trackWineStyleSelected:(DrinkListModel *)style stylesCount:(NSUInteger)stylesCount position:(NSUInteger)position;
 
 + (void)trackSliderSearchButtonTapped:(SHMode)mode;
+
++ (void)trackCreatingDrinkList;
+
++ (void)trackCreatedDrinkList:(BOOL)success drinkTypeID:(NSNumber *)drinkTypeID drinkSubTypeID:(NSNumber *)drinkSubTypeID duration:(NSTimeInterval)duration createdWithSliders:(BOOL)createdWithSliders;
+
++ (void)trackCreatingSpotList;
+
++ (void)trackCreatedSpotList:(BOOL)success spotId:(NSNumber *)spotID spotTypeID:(NSNumber *)spotTypeID duration:(NSTimeInterval)duration createdWithSliders:(BOOL)createdWithSliders;
 
 + (void)trackSpotlistViewed;
 
@@ -62,21 +76,16 @@
 
 + (void)trackUserSetNewLocation;
 
-+ (void)trackDrinkSpecials:(NSArray *)spots centerCoordinate:(CLLocationCoordinate2D)centerCoordinate currentLocation:(CLLocation *)currentLocation;
++ (void)trackDrinkSpecials:(NSArray *)spots;
 
-+ (void)trackSpotlist:(SpotListModel *)spotlist request:(SpotListRequest *)request currentLocation:(CLLocation *)currentLocation;
++ (void)trackSpotlist:(SpotListModel *)spotlist request:(SpotListRequest *)request;
 
-+ (void)trackDrinklist:(DrinkListModel *)drinklist mode:(SHMode)mode request:(DrinkListRequest *)request currentLocation:(CLLocation *)currentLocation;
++ (void)trackDrinklist:(DrinkListModel *)drinklist mode:(SHMode)mode request:(DrinkListRequest *)request;
 
 #pragma mark - Navigation
 #pragma mark -
 
 + (void)trackHomeNavigationButtonTapped:(BOOL)insideBounds;
-
-#pragma mark - Location
-#pragma mark -
-
-+ (void)trackLocationServicesAuthorizationStatus;
 
 #pragma mark - Logins
 #pragma mark -

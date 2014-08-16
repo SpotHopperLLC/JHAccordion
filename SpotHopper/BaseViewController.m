@@ -12,6 +12,8 @@
 #import "GAIFields.h"
 #import "GAIDictionaryBuilder.h"
 
+#import "SHAppConfiguration.h"
+
 #import "MBProgressHUD.h"
 
 #import "UIViewController+Navigator.h"
@@ -125,7 +127,7 @@ typedef void(^AlertBlock)();
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-    if (kAnalyticsEnabled) {
+    if ([SHAppConfiguration isTrackingEnabled]) {
         // tracking with Google Analytics (override screenName)
         id tracker = [[GAI sharedInstance] defaultTracker];
         [tracker set:kGAIScreenName value:self.screenName];

@@ -17,7 +17,13 @@
 
 #import "TellMeMyLocation.h"
 
+#import "Mixpanel.h"
+
 @implementation Tracker (Events)
+
++ (void)trackFirstUse {
+    [self track:@"First Use"];
+}
 
 + (void)trackDrinkProfileScreenViewed:(DrinkModel *)drink {
     NSString *eventName = @"View Drink";
@@ -91,40 +97,97 @@
     [self trackLocationPropertiesForEvent:@"Viewed Home" properties:@{}];
 }
 
-+ (void)trackLeavingHomeToSpots {
-    [self trackLocationPropertiesForEvent:@"Home to Spots" properties:@{}];
++ (void)trackLeavingHomeToSpots:(BOOL)isSecondary actionButtonTapCount:(NSInteger)actionButtonTapCount {
+    [self trackLocationPropertiesForEvent:@"Home to Spots" properties:@{@"Number of clicks this session" : [NSNumber numberWithInteger:actionButtonTapCount], @"Is secondary search"  : [NSNumber numberWithBool:isSecondary]}];
 }
 
-+ (void)trackLeavingHomeToSpecials {
-    [self trackLocationPropertiesForEvent:@"Home to Specials" properties:@{}];
++ (void)trackLeavingHomeToSpecials:(BOOL)isSecondary actionButtonTapCount:(NSInteger)actionButtonTapCount {
+    [self trackLocationPropertiesForEvent:@"Home to Specials" properties:@{@"Number of clicks this session" : [NSNumber numberWithInteger:actionButtonTapCount], @"Is secondary search"  : [NSNumber numberWithBool:isSecondary]}];
 }
 
-+ (void)trackLeavingHomeToBeer {
-    [self trackLocationPropertiesForEvent:@"Home to Beer" properties:@{}];
++ (void)trackLeavingHomeToBeer:(BOOL)isSecondary actionButtonTapCount:(NSInteger)actionButtonTapCount {
+    [self trackLocationPropertiesForEvent:@"Home to Beer" properties:@{@"Number of clicks this session" : [NSNumber numberWithInteger:actionButtonTapCount], @"Is secondary search"  : [NSNumber numberWithBool:isSecondary]}];
 }
 
-+ (void)trackLeavingHomeToCocktails {
-    [self trackLocationPropertiesForEvent:@"Home to Cocktails" properties:@{}];
++ (void)trackLeavingHomeToCocktails:(BOOL)isSecondary actionButtonTapCount:(NSInteger)actionButtonTapCount {
+    [self trackLocationPropertiesForEvent:@"Home to Cocktails" properties:@{@"Number of clicks this session" : [NSNumber numberWithInteger:actionButtonTapCount], @"Is secondary search"  : [NSNumber numberWithBool:isSecondary]}];
 }
 
-+ (void)trackLeavingHomeToWine {
-    [self trackLocationPropertiesForEvent:@"Home to Wine" properties:@{}];
++ (void)trackLeavingHomeToWine:(BOOL)isSecondary actionButtonTapCount:(NSInteger)actionButtonTapCount {
+    [self trackLocationPropertiesForEvent:@"Home to Wine" properties:@{@"Number of clicks this session" : [NSNumber numberWithInteger:actionButtonTapCount], @"Is secondary search"  : [NSNumber numberWithBool:isSecondary]}];
+}
+
++ (void)trackDrinkStylesDidLoad:(SHMode)mode numberOfStyles:(NSInteger)numberOfStyles duration:(NSTimeInterval)duration {
+    NSString *eventName = nil;
+    
+    switch (mode) {
+        case SHModeBeer:
+            eventName = @"Beer styles loaded";
+            break;
+        case SHModeCocktail:
+            eventName = @"Cocktail styles loaded";
+            break;
+        case SHModeWine:
+            eventName = @"Wine styles loaded";
+            break;
+            
+        default:
+            NSAssert(FALSE, @"Mode should always be a drink mode");
+            break;
+    }
+    
+    NSDictionary *properties = @{
+                                 @"Number of styles" : [NSNumber numberWithInteger:numberOfStyles],
+                                 @"Duration" : [NSNumber numberWithDouble:duration]
+                                };
+    
+    [self trackLocationPropertiesForEvent:eventName properties:properties];
+}
+
++ (void)trackSpotMoodsDidLoad:(SHMode)mode numberOfMoods:(NSInteger)numberOfMoods duration:(NSTimeInterval)duration {
+    NSDictionary *properties = @{
+                                 @"Number of moods" : [NSNumber numberWithInteger:numberOfMoods],
+                                 @"Duration" : [NSNumber numberWithDouble:duration]
+                               };
+    
+    [self trackLocationPropertiesForEvent:@"Spot Moods Loaded" properties:properties];
+}
+
++ (void)trackSpotsMoodSelected:(NSString *)moodName moodsCount:(NSUInteger)moodsCount position:(NSUInteger)position {
+    NSDictionary *properties = @{ @"Mood Name" : moodName.length ? moodName : @"", @"Moods Count" : [NSNumber numberWithInteger:moodsCount], @"Position" : [NSNumber numberWithInteger:position] };
+    
+    [self trackLocationPropertiesForEvent:@"Moods Selected" properties:properties];
 }
 
 + (void)trackSpotsMoodSelected:(NSString *)moodName {
     [self trackLocationPropertiesForEvent:@"Spots Mood Selected" properties:@{@"Mood name" : moodName.length ? moodName : [NSNull null]}];
 }
 
-+ (void)trackBeerStyleSelected:(NSString *)styleName {
-    [self trackLocationPropertiesForEvent:@"Beer Style Selected" properties:@{@"Style name" : styleName.length ? styleName : [NSNull null]}];
++ (void)trackBeerStyleSelected:(DrinkListModel *)style stylesCount:(NSUInteger)stylesCount position:(NSUInteger)position {
+    [self trackLocationPropertiesForEvent:@"Beer Style Selected" properties:@{
+                                                                              @"Style name" : style.name.length ? style.name : [NSNull null],
+                                                                              @"Style id" : style.ID ? style.ID : [NSNull null],
+                                                                              @"Number of styles" : [NSNumber numberWithInteger:stylesCount],
+                                                                              @"Position in styles list" : [NSNumber numberWithInteger:position]
+                                                                              }];
 }
 
-+ (void)trackCocktailStyleSelected:(NSString *)styleName {
-    [self trackLocationPropertiesForEvent:@"Cocktail Style Selected" properties:@{@"Style name" : styleName.length ? styleName : [NSNull null]}];
++ (void)trackCocktailStyleSelected:(DrinkListModel *)style stylesCount:(NSUInteger)stylesCount position:(NSUInteger)position {
+    [self trackLocationPropertiesForEvent:@"Cocktail Style Selected" properties:@{
+                                                                              @"Style name" : style.name.length ? style.name : [NSNull null],
+                                                                              @"Style id" : style.ID ? style.ID : [NSNull null],
+                                                                              @"Number of styles" : [NSNumber numberWithInteger:stylesCount],
+                                                                              @"Position in styles list" : [NSNumber numberWithInteger:position]
+                                                                              }];
 }
 
-+ (void)trackWineStyleSelected:(NSString *)styleName {
-    [self trackLocationPropertiesForEvent:@"Wine Style Selected" properties:@{@"Style name" : styleName.length ? styleName : [NSNull null]}];
++ (void)trackWineStyleSelected:(DrinkListModel *)style stylesCount:(NSUInteger)stylesCount position:(NSUInteger)position {
+    [self trackLocationPropertiesForEvent:@"Wine Style Selected" properties:@{
+                                                                              @"Style name" : style.name.length ? style.name : [NSNull null],
+                                                                              @"Style id" : style.ID ? style.ID : [NSNull null],
+                                                                              @"Number of styles" : [NSNumber numberWithInteger:stylesCount],
+                                                                              @"Position in styles list" : [NSNumber numberWithInteger:position]
+                                                                              }];
 }
 
 + (void)trackSliderSearchButtonTapped:(SHMode)mode {
@@ -143,6 +206,22 @@
     else  {
         [Tracker track:@"Slider Search Button Tapped"];
     }
+}
+
++ (void)trackCreatingDrinkList {
+    [self trackLocationPropertiesForEvent:@"Creating DrinkList" properties:@{}];
+}
+
++ (void)trackCreatedDrinkList:(BOOL)success drinkTypeID:(NSNumber *)drinkTypeID drinkSubTypeID:(NSNumber *)drinkSubTypeID duration:(NSTimeInterval)duration createdWithSliders:(BOOL)createdWithSliders {
+    [self trackLocationPropertiesForEvent:@"Created Drinklist" properties:@{@"Success" : [NSNumber numberWithBool:success], @"Drink Type ID" : drinkTypeID ?: @0, @"Drink Sub Type ID" : drinkSubTypeID ?: @0, @"Duration" : [NSNumber numberWithDouble:duration], @"Created With Sliders" : [NSNumber numberWithBool:createdWithSliders] }];
+}
+
++ (void)trackCreatingSpotList {
+    [self trackLocationPropertiesForEvent:@"Creating SpotList" properties:@{}];
+}
+
++ (void)trackCreatedSpotList:(BOOL)success spotId:(NSNumber *)spotID spotTypeID:(NSNumber *)spotTypeID duration:(NSTimeInterval)duration createdWithSliders:(BOOL)createdWithSliders {
+    [self trackLocationPropertiesForEvent:@"Created SpotList" properties:@{@"Success" : [NSNumber numberWithBool:success], @"Spot ID" : spotID ?: @0, @"Spot Type ID" : spotTypeID ?: @0, @"Duration" : [NSNumber numberWithDouble:duration], @"Created With Sliders" : [NSNumber numberWithBool:createdWithSliders] }];
 }
 
 + (void)trackSpotlistViewed {
@@ -176,89 +255,44 @@
     [self trackLocationPropertiesForEvent:@"User sets new location" properties:@{}];
 }
 
-+ (void)trackDrinkSpecials:(NSArray *)spots centerCoordinate:(CLLocationCoordinate2D)centerCoordinate currentLocation:(CLLocation *)currentLocation {
-    CLLocation *location = [[CLLocation alloc] initWithLatitude:centerCoordinate.latitude longitude:centerCoordinate.longitude];
-    CLLocationDistance distance = [location distanceFromLocation:currentLocation];
-    
++ (void)trackDrinkSpecials:(NSArray *)spots {
     NSMutableDictionary *properties = @{
-                                        @"Spots count" : [NSNumber numberWithInteger:spots.count],
-                                        @"Distance in meters" : [NSNumber numberWithFloat:distance]
+                                        @"Spots count" : [NSNumber numberWithInteger:spots.count]
                                         }.mutableCopy;
     
-    [self getPropertiesForLocation:location prefix:@"Center" withCompletionBlock:^(NSDictionary *centerProperties, NSError *error) {
-        if (centerProperties) {
-            [properties addEntriesFromDictionary:centerProperties];
-            [self getPropertiesForLocation:location prefix:@"Current" withCompletionBlock:^(NSDictionary *currentProperties, NSError *error) {
-                if (currentProperties) {
-                    [properties addEntriesFromDictionary:currentProperties];
-                }
-                
-                [Tracker track:@"Drink specials fetched" properties:properties];
-            }];
-        }
-    }];
+    [self trackLocationPropertiesForEvent:@"Drink specials fetched" properties:properties];
 }
 
-+ (void)trackSpotlist:(SpotListModel *)spotlist request:(SpotListRequest *)request currentLocation:(CLLocation *)currentLocation {
-    CLLocation *location = [[CLLocation alloc] initWithLatitude:request.coordinate.latitude longitude:request.coordinate.longitude];
-    CLLocationDistance distance = [location distanceFromLocation:currentLocation];
-    
++ (void)trackSpotlist:(SpotListModel *)spotlist request:(SpotListRequest *)request {
     NSMutableDictionary *properties = @{
                                         @"Spotlist name" : spotlist.name.length ? spotlist.name : @"Unknown",
                                         @"Spotlist ID" : spotlist.ID ? spotlist.ID : [NSNull null],
-                                        @"Spots count" : [NSNumber numberWithInteger:spotlist.spots.count],
-                                        @"Distance in meters" : [NSNumber numberWithFloat:distance]
+                                        @"Spots count" : [NSNumber numberWithInteger:spotlist.spots.count]
                                         }.mutableCopy;
     
-    [self getPropertiesForLocation:location prefix:@"Center" withCompletionBlock:^(NSDictionary *centerProperties, NSError *error) {
-        if (centerProperties) {
-            [properties addEntriesFromDictionary:centerProperties];
-        }
-        [self getPropertiesForLocation:location prefix:@"Current" withCompletionBlock:^(NSDictionary *currentProperties, NSError *error) {
-            if (currentProperties) {
-                [properties addEntriesFromDictionary:currentProperties];
-            }
-            
-            [Tracker track:@"Spotlist fetched" properties:properties];
-        }];
-    }];
+    [self trackLocationPropertiesForEvent:@"Spotlist fetched" properties:properties];
 }
 
-+ (void)trackDrinklist:(DrinkListModel *)drinklist mode:(SHMode)mode request:(DrinkListRequest *)request currentLocation:(CLLocation *)currentLocation {
-    CLLocation *location = [[CLLocation alloc] initWithLatitude:request.coordinate.latitude longitude:request.coordinate.longitude];
-    CLLocationDistance distance = [location distanceFromLocation:currentLocation];
-    
++ (void)trackDrinklist:(DrinkListModel *)drinklist mode:(SHMode)mode request:(DrinkListRequest *)request {
     NSMutableDictionary *properties = @{
                                         @"Drinklist name" : drinklist.name.length ? drinklist.name : @"Unknown",
                                         @"Drinklist ID" : drinklist.ID ? drinklist.ID : [NSNull null],
                                         @"Spot ID" : request.spotId ? request.spotId : [NSNull null],
-                                        @"Drinks count" : [NSNumber numberWithInteger:drinklist.drinks.count],
-                                        @"Distance in meters" : [NSNumber numberWithFloat:distance]
+                                        @"Drinks count" : [NSNumber numberWithInteger:drinklist.drinks.count]
                                         }.mutableCopy;
     
-    [self getPropertiesForLocation:location prefix:@"Center" withCompletionBlock:^(NSDictionary *centerProperties, NSError *error) {
-        if (centerProperties) {
-            [properties addEntriesFromDictionary:centerProperties];
-        }
-        [self getPropertiesForLocation:location prefix:@"Current" withCompletionBlock:^(NSDictionary *currentProperties, NSError *error) {
-            if (currentProperties) {
-                [properties addEntriesFromDictionary:currentProperties];
-            }
-            
-            if (SHModeBeer == mode) {
-                [self track:@"Drinklist fetched (Beer)" properties:properties];
-            }
-            else if (SHModeCocktail == mode) {
-                [self track:@"Drinklist fetched (Cocktail)" properties:properties];
-            }
-            else if (SHModeWine == mode) {
-                [self track:@"Drinklist fetched (Wine)" properties:properties];
-            }
-            else  {
-                [self track:@"Drinklist fetched" properties:properties];
-            }
-        }];
-    }];
+    if (SHModeBeer == mode) {
+        [self trackLocationPropertiesForEvent:@"Drinklist fetched (Beer)" properties:properties];
+    }
+    else if (SHModeCocktail == mode) {
+        [self trackLocationPropertiesForEvent:@"Drinklist fetched (Cocktail)" properties:properties];
+    }
+    else if (SHModeWine == mode) {
+        [self trackLocationPropertiesForEvent:@"Drinklist fetched (Wine)" properties:properties];
+    }
+    else  {
+        [self trackLocationPropertiesForEvent:@"Drinklist fetched" properties:properties];
+    }
 }
 
 #pragma mark - Navigation
@@ -266,31 +300,6 @@
 
 + (void)trackHomeNavigationButtonTapped:(BOOL)insideBounds {
     [Tracker track:@"Home Navigation Button Tapped" properties:@{ @"Inside Bounds" : [NSNumber numberWithBool:insideBounds]}];
-}
-
-#pragma mark - Location
-#pragma mark -
-
-+ (void)trackLocationServicesAuthorizationStatus {
-    NSString *authorizationStatus = nil;
-    
-    switch ([CLLocationManager authorizationStatus]) {
-        case kCLAuthorizationStatusRestricted:
-            authorizationStatus = @"Restricted";
-            break;
-        case kCLAuthorizationStatusDenied:
-            authorizationStatus = @"Denied";
-            break;
-        case kCLAuthorizationStatusAuthorized:
-            authorizationStatus = @"Authorized";
-            break;
-
-        default:
-            authorizationStatus = @"Not Determined";
-            break;
-    }
-    
-    [Tracker track:@"Location Services" properties:@{ @"Authorization Status" : authorizationStatus }];
 }
 
 #pragma mark - Logins

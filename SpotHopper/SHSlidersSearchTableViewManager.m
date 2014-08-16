@@ -31,6 +31,7 @@
 
 #import "Tracker.h"
 #import "Tracker+Events.h"
+#import "Tracker+People.h"
 
 #import "UIAlertView+Block.h"
 #import "SHStyleKit+Additions.h"
@@ -207,7 +208,11 @@
         [self notifyThatManagerIsBusy:@"Loading Moods"];
     }
     
+    NSDate *startDate = [NSDate date];
     [self fetchMySpotlistsWithCompletionBlock:^(NSArray *spotlists) {
+        NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:startDate];
+        [Tracker trackSpotMoodsDidLoad:SHModeSpots numberOfMoods:spotlists.count duration:duration];
+        
         self.spotlists = spotlists;
         [self fetchSliderTemplatesWithCompletionBlock:^(NSArray *sliderTemplates) {
             [self filterSlidersTemplatesForSpots:sliderTemplates withCompletionBlock:^(NSArray *sliders, NSArray *advancedSliders) {
@@ -247,7 +252,11 @@
     
     [self fetchBaseAlcohols:^(NSArray *baseAlcohols) {
         self.baseAlcohols = baseAlcohols;
+        NSDate *startDate = [NSDate date];
         [self fetchMyDrinklistsWithCompletionBlock:^(NSArray *drinklists) {
+            NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:startDate];
+            [Tracker trackDrinkStylesDidLoad:self.mode numberOfStyles:drinklists.count duration:duration];
+            
             NSArray *filteredDrinklists = [self filteredDrinklists:drinklists drinkType:self.selectedDrinkType drinkSubType:self.selectedDrinkSubType];
             self.drinklists = filteredDrinklists;
             [self fetchSliderTemplatesWithCompletionBlock:^(NSArray *sliderTemplates) {
@@ -971,7 +980,7 @@
     SpotListModel *spotlist = [self spotlistAtIndexPath:indexPath];
     self.selectedSpotlist = spotlist;
     
-    [Tracker trackSpotsMoodSelected:spotlist.name];
+    [Tracker trackSpotsMoodSelected:spotlist.name moodsCount:self.spotlists.count position:indexPath.row];
     
     [self updateSectionTitle:[NSString stringWithFormat:@"Step 1 - %@", spotlist.name] section:indexPath.section];
     
@@ -1063,7 +1072,8 @@
         
         if (self.mode == SHModeBeer) {
             if (didSetAdvancedSlider) {
-                [Tracker trackBeerStyleSelected:drinklist.name];
+                
+                [Tracker trackBeerStyleSelected:drinklist stylesCount:self.drinklists.count position:indexPath.row];
                 [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Beer_Sliders],
                                                                  [NSNumber numberWithInteger:kSection_Beer_AdvancedSliders]]];
             }
@@ -1072,7 +1082,7 @@
             }
         }
         else if (self.mode == SHModeCocktail) {
-            [Tracker trackCocktailStyleSelected:drinklist.name];
+            [Tracker trackCocktailStyleSelected:drinklist stylesCount:self.drinklists.count position:indexPath.row];
             if (didSetAdvancedSlider) {
                 [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Cocktail_Sliders],
                                                                  [NSNumber numberWithInteger:kSection_Cocktail_AdvancedSliders]]];
@@ -1082,7 +1092,7 @@
             }
         }
         else if (self.mode == SHModeWine) {
-            [Tracker trackWineStyleSelected:drinklist.name];
+            [Tracker trackWineStyleSelected:drinklist stylesCount:self.drinklists.count position:indexPath.row];
             if (didSetAdvancedSlider) {
                 [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Wine_Sliders],
                                                                  [NSNumber numberWithInteger:kSection_Wine_AdvancedSliders]]];
@@ -1641,7 +1651,7 @@
         longitude = [NSNumber numberWithFloat:coordinate.longitude];
     }
     
-    [Tracker track:@"Creating Spotlist"];
+    [Tracker trackCreatingSpotList];
     
     SpotListRequest *request = [[SpotListRequest alloc] init];
     if (self.selectedSpotlist && ![[NSNull null] isEqual:self.selectedSpotlist.ID]) {
@@ -1664,9 +1674,10 @@
     request.radius = radius;
     request.sliders = allTheSliders;
     
+    NSDate *startDate = [NSDate date];
     [[SpotListModel fetchSpotListWithRequest:request] then:^(SpotListModel *spotListModel) {
-        // TODO: add tracking for spotId and spotTypeId when those values are added to this search filter
-        [Tracker track:@"Created Spotlist" properties:@{@"Success" : @TRUE, @"Created With Sliders" : @TRUE}];
+        NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:startDate];
+        [Tracker trackCreatedSpotList:TRUE spotId:request.spotId spotTypeID:request.spotTypeId duration:duration createdWithSliders:TRUE];
         
         if (completionBlock) {
             completionBlock(spotListModel, request, nil);
@@ -1705,8 +1716,8 @@
         latitude = [NSNumber numberWithFloat:coordinate.latitude];
         longitude = [NSNumber numberWithFloat:coordinate.longitude];
     }
-    
-    [Tracker track:@"Creating Drinklist"];
+
+    [Tracker trackCreatingDrinkList];
     
     NSNumber *drinkTypeID = self.selectedDrinkType.ID;
     NSNumber *drinkSubTypeID = self.selectedDrinkSubType.ID;
@@ -1734,8 +1745,11 @@
         request.spotId = spot.ID;
     }
 
+    NSDate *startDate = [NSDate date];
     [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
-        [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Drink Type ID" : drinkTypeID ?: @0, @"Drink Sub Type ID" : drinkSubTypeID ?: @0, @"Created With Sliders" : @TRUE}];
+        NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:startDate];
+        [Tracker trackCreatedDrinkList:TRUE drinkTypeID:drinkTypeID drinkSubTypeID:drinkSubTypeID duration:duration createdWithSliders:TRUE];
+        [Tracker trackUserAction:@"User Created Drinklist"];
         
         // now fetch the spots for the first drink so it is ready then request the rest cache all of the results for fast access
         
@@ -1758,7 +1772,8 @@
             }
         }
     } failure:^(ErrorModel *errorModel) {
-        [Tracker track:@"Created Drinklist" properties:@{@"Success" : @FALSE}];
+        [Tracker trackCreatedDrinkList:FALSE drinkTypeID:nil drinkSubTypeID:nil duration:0 createdWithSliders:FALSE];
+        
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
         if (completionBlock) {
             completionBlock(nil, nil, errorModel);
