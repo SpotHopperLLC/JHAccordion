@@ -76,5 +76,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>MixPanelToken</key>
+	<string>003978c7399ef9503dd3edbc92ca50d0</string>
+	<key>TrackingEnabled</key>
+	<true/>
 </dict>
 </plist>

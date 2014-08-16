@@ -43,6 +43,7 @@
 #import "JTSReachabilityResponder.h"
 #import "Tracker.h"
 #import "Tracker+Events.h"
+#import "Tracker+People.h"
 
 #import "UserModel.h"
 #import "SpotModel.h"
@@ -77,6 +78,8 @@
 
 #define kDefaultTitle @"What do you feel like?"
 #define kTodaysSpecialsTitle @"Today's Specials"
+
+#define kLoginPromptText @"You can only view specials without logging in since spot/drink searches are totally personalized"
 
 #define kTagSearchTextField 501
 
@@ -218,6 +221,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     BOOL _isValidLocation;
     BOOL _didLeaveForFirstLaunch;
     NSInteger _repositioningMapCount;
+    NSInteger _actionButtonTapCount;
 }
 
 #pragma mark - View Lifecyle
@@ -228,8 +232,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     NSAssert(self.navigationController.sidebarViewController, @"Sidebar controller must be defined");
     NSAssert(self.navigationController.sidebarViewController.rightViewController, @"Right VC on sidebar must be defined");
-    
-    [Tracker trackLocationServicesAuthorizationStatus];
     
     self.mySideBarViewController = (SHSidebarViewController *)self.navigationController.sidebarViewController.rightViewController;
     self.mySideBarViewController.delegate = self;
@@ -256,6 +258,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     self.title = @"New Search";
     
     self.view.backgroundColor = [UIColor clearColor];
+    
+    _actionButtonTapCount = 0;
 
     [self hideStatus:FALSE withCompletionBlock:nil];
     [self hideAreYouHerePrompt:FALSE withCompletionBlock:nil];
@@ -277,6 +281,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [super viewWillAppear:animated];
     
     [Tracker trackViewedHome];
+    [Tracker trackUserViewedHome];
+    [Tracker trackUserWithProperties:@{} updateLocation:TRUE];
     
     [self setNeedsStatusBarAppearanceUpdate];
     
@@ -1330,47 +1336,55 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)showSpotsSearch {
-    [Tracker trackLeavingHomeToSpots];
-    if (![self promptLoginNeeded:@"You can only view specials without logging in since spot/drink searches are totally personalized"]) {
-        [self.slidersSearchViewController prepareForMode:SHModeSpots];
-        
-        [self hideBottomViewWithCompletionBlock:^{
-            [self showSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:nil];
-        }];
-    }
+    [Tracker trackUserAction:@"User Searched Spots"];
+    [self.slidersSearchViewController prepareForMode:SHModeSpots];
+    
+    _actionButtonTapCount++;
+    BOOL isSecondary = !self.homeNavigationViewController.view.hidden;
+    [Tracker trackLeavingHomeToSpots:isSecondary actionButtonTapCount:_actionButtonTapCount];
+    
+    [self hideBottomViewWithCompletionBlock:^{
+        [self showSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:nil];
+    }];
 }
 
 - (void)showBeersSearch {
-    [Tracker trackLeavingHomeToBeer];
-    if (![self promptLoginNeeded:@"You can only view specials without logging in since spot/drink searches are totally personalized"]) {
-        [self.slidersSearchViewController prepareForMode:SHModeBeer];
-        
-        [self hideBottomViewWithCompletionBlock:^{
-            [self showSlidersSearch:TRUE forMode:SHModeBeer withCompletionBlock:nil];
-        }];
-    }
+    [Tracker trackUserAction:@"User Searched Beers"];
+    [self.slidersSearchViewController prepareForMode:SHModeBeer];
+    
+    _actionButtonTapCount++;
+    BOOL isSecondary = !self.homeNavigationViewController.view.hidden;
+    [Tracker trackLeavingHomeToBeer:isSecondary actionButtonTapCount:_actionButtonTapCount];
+    
+    [self hideBottomViewWithCompletionBlock:^{
+        [self showSlidersSearch:TRUE forMode:SHModeBeer withCompletionBlock:nil];
+    }];
 }
 
 - (void)showCocktailsSearch {
-    [Tracker trackLeavingHomeToCocktails];
-    if (![self promptLoginNeeded:@"You can only view specials without logging in since spot/drink searches are totally personalized"]) {
-        [self.slidersSearchViewController prepareForMode:SHModeCocktail];
-
-        [self hideBottomViewWithCompletionBlock:^{
-            [self showSlidersSearch:TRUE forMode:SHModeCocktail withCompletionBlock:nil];
-        }];
-    }
+    [Tracker trackUserAction:@"User Searched Cocktails"];
+    [self.slidersSearchViewController prepareForMode:SHModeCocktail];
+    
+    _actionButtonTapCount++;
+    BOOL isSecondary = !self.homeNavigationViewController.view.hidden;
+    [Tracker trackLeavingHomeToCocktails:isSecondary actionButtonTapCount:_actionButtonTapCount];
+    
+    [self hideBottomViewWithCompletionBlock:^{
+        [self showSlidersSearch:TRUE forMode:SHModeCocktail withCompletionBlock:nil];
+    }];
 }
 
 - (void)showWineSearch {
-    [Tracker trackLeavingHomeToWine];
-    if (![self promptLoginNeeded:@"You can only view specials without logging in since spot/drink searches are totally personalized"]) {
-        [self.slidersSearchViewController prepareForMode:SHModeWine];
-        
-        [self hideBottomViewWithCompletionBlock:^{
-            [self showSlidersSearch:TRUE forMode:SHModeWine withCompletionBlock:nil];
-        }];
-    }
+    [Tracker trackUserAction:@"User Searched Wine"];
+    [self.slidersSearchViewController prepareForMode:SHModeWine];
+    
+    _actionButtonTapCount++;
+    BOOL isSecondary = !self.homeNavigationViewController.view.hidden;
+    [Tracker trackLeavingHomeToWine:isSecondary actionButtonTapCount:_actionButtonTapCount];
+    
+    [self hideBottomViewWithCompletionBlock:^{
+        [self showSlidersSearch:TRUE forMode:SHModeWine withCompletionBlock:nil];
+    }];
 }
 
 - (void)displaySpecialsForSpots:(NSArray *)spots {
@@ -1779,10 +1793,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         if (!error) {
             self.mapView.showsUserLocation = TRUE;
             [self repositionMapOnCoordinate:self.currentLocation.coordinate animated:animated];
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.75f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                [self updateLocationName];
-            });
         }
         else {
             if (!self.currentLocation && self.lastSelectedLocation) {
@@ -1797,6 +1807,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                 [self repositionMapOnCoordinate:kCLLocationCoordinate2DInvalid animated:animated];
             }
         }
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.45f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self updateLocationName];
+        });
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self updateLocationName];
+        });
     }];
 }
 
@@ -2534,6 +2551,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     [self repositionOnCurrentDeviceLocation:FALSE];
     [self restoreTitle];
+    
+    _actionButtonTapCount = 0;
 }
 
 - (void)findSimilarToDrink:(DrinkModel *)drink {
@@ -2623,32 +2642,43 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }
     
     self.intendedMode = mode;
+
+    CLLocation *mapCenterLocation = [[CLLocation alloc] initWithLatitude:self.mapView.centerCoordinate.latitude longitude:self.mapView.centerCoordinate.longitude];
+    [TellMeMyLocation setMapCenterLocation:mapCenterLocation];
     
     [self checkNetworkReachabilityWithCompletionBlock:^{
         [self checkLocationWithCompletionBlock:^{
-            switch (mode) {
-                case SHModeSpots:
-                    [self showSpotsSearch];
-                    break;
-                case SHModeSpecials: {
-                    [self showHUD:@"Finding Today's Specials"];
-                    [self fetchSpecialsWithCompletionBlock:^{
-                        [self hideHUD];
-                    }];
+            
+            if (SHModeSpecials == mode) {
+                [self showHUD:@"Finding Today's Specials"];
+                [Tracker trackUserAction:@"User Searched Specials"];
+                [self fetchSpecialsWithCompletionBlock:^{
+                    [self hideHUD];
+                }];
+            }
+            else {
+                if (![self promptLoginNeeded:kLoginPromptText]) {
+                    switch (mode) {
+                        case SHModeSpots:
+                            [self showSpotsSearch];
+                            break;
+                        case SHModeSpecials: {
+                        }
+                            break;
+                        case SHModeBeer:
+                            [self showBeersSearch];
+                            break;
+                        case SHModeCocktail:
+                            [self showCocktailsSearch];
+                            break;
+                        case SHModeWine:
+                            [self showWineSearch];
+                            break;
+                            
+                        default:
+                            break;
+                    }
                 }
-                    break;
-                case SHModeBeer:
-                    [self showBeersSearch];
-                    break;
-                case SHModeCocktail:
-                    [self showCocktailsSearch];
-                    break;
-                case SHModeWine:
-                    [self showWineSearch];
-                    break;
-                    
-                default:
-                    break;
             }
             self.intendedMode = SHModeNone;
         }];
@@ -2659,7 +2689,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark -
 
 - (void)processSpecialsWithSpots:(NSArray *)spotModels {
-    [Tracker trackDrinkSpecials:spotModels centerCoordinate:self.visibleMapCenterCoordinate currentLocation:self.currentLocation];
+    [Tracker trackDrinkSpecials:spotModels];
 
     if (!spotModels.count) {
         [self showHomeNavigation:TRUE withCompletionBlock:^{
@@ -2678,7 +2708,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)processSpotlistModel:(SpotListModel *)spotlistModel withRequest:(SpotListRequest *)request {
-    [Tracker trackSpotlist:spotlistModel request:request currentLocation:self.currentLocation];
+    [Tracker trackSpotlist:spotlistModel request:request];
     
     if (!spotlistModel.spots.count) {
         [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
@@ -2700,7 +2730,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)processDrinklistModel:(DrinkListModel *)drinklistModel withRequest:(DrinkListRequest *)request forMode:(SHMode)mode {
-    [Tracker trackDrinklist:drinklistModel mode:mode request:request currentLocation:self.currentLocation];
+    [Tracker trackDrinklist:drinklistModel mode:mode request:request];
     
     if (!drinklistModel.drinks.count) {
         [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
@@ -3095,7 +3125,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [Tracker trackLeavingGlobalSearch:TRUE];
     
     [self hideSearch:TRUE withCompletionBlock:^{
-        [self goToReviewMenu];
+        [self goToNewReview];
     }];
 }
 
@@ -3276,6 +3306,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     //[self flashSearchRadius];
     //[self flashMapBoxing];
     
+    CLLocation *mapCenterLocation = [[CLLocation alloc] initWithLatitude:self.mapView.centerCoordinate.latitude longitude:self.mapView.centerCoordinate.longitude];
+    [TellMeMyLocation setMapCenterLocation:mapCenterLocation];
+    
     DebugLog(@"[regions addObject:@{@\"name\" : @\"%@\", @\"latitude\": [NSNumber numberWithDouble:%ff], @\"longitude\": [NSNumber numberWithDouble:%ff], @\"radius\": [NSNumber numberWithDouble:%ff], @\"weight\" : [NSNumber numberWithInteger:5]}];", self.locationMenuBarViewController.locationTitle, self.visibleMapCenterCoordinate.latitude, self.visibleMapCenterCoordinate.longitude, [self searchRadius]);
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
@@ -3299,6 +3332,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark -
 
 - (void)handleAppOpenedWithURLNotification:(NSNotification *)notification {
+    [self resetView];
     NSURL *url = notification.userInfo[SHAppOpenedWithURLNotificationKey];
     [self handleOpenedURL:url];
 }

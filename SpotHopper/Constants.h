@@ -28,8 +28,6 @@
 
     #define kRefreshLocationTime 60.0f
 
-    #define kAnalyticsEnabled   FALSE
-
 #elif defined(DEV)
 
     #define kDebug YES
@@ -46,8 +44,6 @@
     #define kParseClientKey @""
 
     #define kRefreshLocationTime 60.0f
-
-    #define kAnalyticsEnabled   FALSE
 
 #elif defined(STAGING)
 
@@ -66,8 +62,6 @@
 
     #define kRefreshLocationTime 3600.0f
 
-    #define kAnalyticsEnabled   FALSE
-
 #elif defined(STAGING2)
 
     #define kDebug NO
@@ -84,8 +78,6 @@
     #define kParseClientKey @"BHl8KE9ZmZgmeDFnV9H886qKB9Y7EaWzZLPdOs4J"
 
     #define kRefreshLocationTime 3600.0f
-
-    #define kAnalyticsEnabled   FALSE
 
     #define kIntegrateDeprecatedScreens TRUE
 
@@ -107,8 +99,6 @@
     #define kAppURLScheme  @"spothopperapp"
 
     #define kRefreshLocationTime 3600.0f
-
-    #define kAnalyticsEnabled   TRUE
 
     #define kIntegrateDeprecatedScreens TRUE
 

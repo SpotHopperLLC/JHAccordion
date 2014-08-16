@@ -12,6 +12,7 @@
 #import "UIActionSheet+Block.h"
 
 #import "SHNavigationBar.h"
+#import "SHAppConfiguration.h"
 
 #import "ClientSessionManager.h"
 #import "AverageReviewModel.h"
@@ -50,6 +51,8 @@
 #import "GAI.h"
 #import "iRate.h"
 #import "Tracker.h"
+#import "Tracker+Events.h"
+#import "Tracker+People.h"
 #import "UserState.h"
 
 #import "SHStyleKit.h"
@@ -125,9 +128,13 @@
         NSLog(@"We DON'T have an active FB session");
         [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
+    
+    if ([SHAppConfiguration isTrackingEnabled]) {
+        NSString *token = [SHAppConfiguration mixpanelToken];
+        [Mixpanel sharedInstanceWithToken:token];
+        [Tracker trackUserWithProperties:@{ @"Last Launch Date" : [NSDate date] }];
+        [Tracker trackUserAction:@"App Launch"];
 
-    if (kAnalyticsEnabled) {
-        [Mixpanel sharedInstanceWithToken:kMixPanelToken];
 //        Examples:
 //        Mixpanel *mixpanel = [Mixpanel sharedInstance];
 //        [mixpanel track:@"Plan Selected" properties:@{@"Gender": @"Female", @"Plan": @"Premium"}];
@@ -150,8 +157,9 @@
     NSDate *firstUseDate = [UserState firstUseDate];
     if (!firstUseDate) {
         [UserState setFirstUseDate:[NSDate date]];
-        if (kAnalyticsEnabled) {
-            [[Mixpanel sharedInstance] track:@"First Use"];
+        if ([SHAppConfiguration isTrackingEnabled]) {
+            [Tracker trackFirstUse];
+            [Tracker trackUserFirstUse];
         }
     }
 

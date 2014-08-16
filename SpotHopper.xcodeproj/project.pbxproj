@@ -2433,6 +2433,10 @@
 		26D0A8A019704BCB00F64384 /* SHNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 26D0A89D19704BCB00F64384 /* SHNotifications.m */; };
 		26D0A8A119704BCB00F64384 /* SHNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 26D0A89D19704BCB00F64384 /* SHNotifications.m */; };
 		26D0A8A219704BCB00F64384 /* SHNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 26D0A89D19704BCB00F64384 /* SHNotifications.m */; };
+		26D6F666199DB587001CA54D /* SHAppConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 26D6F665199DB587001CA54D /* SHAppConfiguration.m */; };
+		26D6F667199DB588001CA54D /* SHAppConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 26D6F665199DB587001CA54D /* SHAppConfiguration.m */; };
+		26D6F66A199E6EED001CA54D /* Tracker+People.m in Sources */ = {isa = PBXBuildFile; fileRef = 26D6F669199E6EED001CA54D /* Tracker+People.m */; };
+		26D6F66B199E6EED001CA54D /* Tracker+People.m in Sources */ = {isa = PBXBuildFile; fileRef = 26D6F669199E6EED001CA54D /* Tracker+People.m */; };
 		26E6A0B0192317C200BCA5C6 /* MyriadPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 26E6A0AF192317B700BCA5C6 /* MyriadPro-Bold.ttf */; };
 		26E6A0B1192317C200BCA5C6 /* MyriadPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 26E6A0AF192317B700BCA5C6 /* MyriadPro-Bold.ttf */; };
 		26E6A0B2192317C300BCA5C6 /* MyriadPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 26E6A0AF192317B700BCA5C6 /* MyriadPro-Bold.ttf */; };
@@ -3163,6 +3167,10 @@
 		26C428DB192D625A00B67F10 /* SHBaseNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHBaseNavigationController.m; path = SpotHopper/SHBaseNavigationController.m; sourceTree = "<group>"; };
 		26D0A89C19704BCB00F64384 /* SHNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHNotifications.h; path = SpotHopper/SHNotifications.h; sourceTree = "<group>"; };
 		26D0A89D19704BCB00F64384 /* SHNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHNotifications.m; path = SpotHopper/SHNotifications.m; sourceTree = "<group>"; };
+		26D6F664199DB587001CA54D /* SHAppConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAppConfiguration.h; sourceTree = "<group>"; };
+		26D6F665199DB587001CA54D /* SHAppConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHAppConfiguration.m; sourceTree = "<group>"; };
+		26D6F668199E6EED001CA54D /* Tracker+People.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tracker+People.h"; sourceTree = "<group>"; };
+		26D6F669199E6EED001CA54D /* Tracker+People.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Tracker+People.m"; sourceTree = "<group>"; };
 		26E6A0AF192317B700BCA5C6 /* MyriadPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MyriadPro-Bold.ttf"; path = "MyriadPro/MyriadPro-Bold.ttf"; sourceTree = "<group>"; };
 		26EB38AD18FC7E1100E84A3B /* NSNull+Debugging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNull+Debugging.h"; sourceTree = "<group>"; };
 		26EB38AE18FC7E1100E84A3B /* NSNull+Debugging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNull+Debugging.m"; sourceTree = "<group>"; };
@@ -3837,6 +3845,8 @@
 				26ED5CB518FDDE56006901ED /* Tracker.m */,
 				2623801E1986F83500F0940A /* Tracker+Events.h */,
 				2623801F1986F83500F0940A /* Tracker+Events.m */,
+				26D6F668199E6EED001CA54D /* Tracker+People.h */,
+				26D6F669199E6EED001CA54D /* Tracker+People.m */,
 				038664ED186D391E00985CEC /* UserModel.h */,
 				038664EE186D391E00985CEC /* UserModel.m */,
 				2690EB72199901220026DC52 /* SHPlacemark.h */,
@@ -4548,6 +4558,8 @@
 				26A7E3641922CE5A00FF7B88 /* View Controllers */,
 				A62B333A193D084400CE4BF0 /* Views */,
 				26C816C71926EC2D00E237F2 /* Managers */,
+				26D6F664199DB587001CA54D /* SHAppConfiguration.h */,
+				26D6F665199DB587001CA54D /* SHAppConfiguration.m */,
 			);
 			name = "Redesign 2.0";
 			path = ..;
@@ -6904,12 +6916,14 @@
 				26ED9F8D18EA3A2B00C60954 /* SHLabelLatoBold.m in Sources */,
 				03CABFC218E7716400FAC5F5 /* DrinkModel.m in Sources */,
 				03CABFC318E7716400FAC5F5 /* UIImage+RoundedCorner.m in Sources */,
+				26D6F66B199E6EED001CA54D /* Tracker+People.m in Sources */,
 				03CABFC418E7716400FAC5F5 /* ReviewSliderCell.m in Sources */,
 				03CABFC518E7716400FAC5F5 /* SliderTemplateModel.m in Sources */,
 				03CABFC618E7716400FAC5F5 /* AutoCompleteCell.m in Sources */,
 				03CABFC718E7716400FAC5F5 /* MenuTypeModel.m in Sources */,
 				03CABFC818E7716400FAC5F5 /* NSNumber+Currency.m in Sources */,
 				03CABFC918E7716400FAC5F5 /* SpotListModel.m in Sources */,
+				26D6F667199DB588001CA54D /* SHAppConfiguration.m in Sources */,
 				03CABFCA18E7716400FAC5F5 /* ReviewViewController.m in Sources */,
 				03CABFCB18E7716400FAC5F5 /* SHButtonLatoLight.m in Sources */,
 				03CABFCC18E7716400FAC5F5 /* AdjustSliderSectionHeaderView.m in Sources */,
@@ -7424,12 +7438,14 @@
 				267E050F1922CC48004457B4 /* SHLabelLatoBold.m in Sources */,
 				267E05101922CC48004457B4 /* DrinkModel.m in Sources */,
 				267E05111922CC48004457B4 /* UIImage+RoundedCorner.m in Sources */,
+				26D6F66A199E6EED001CA54D /* Tracker+People.m in Sources */,
 				267E05121922CC48004457B4 /* ReviewSliderCell.m in Sources */,
 				267E05131922CC48004457B4 /* SliderTemplateModel.m in Sources */,
 				267E05141922CC48004457B4 /* AutoCompleteCell.m in Sources */,
 				267E05151922CC48004457B4 /* MenuTypeModel.m in Sources */,
 				267E05161922CC48004457B4 /* NSNumber+Currency.m in Sources */,
 				267E05171922CC48004457B4 /* SpotListModel.m in Sources */,
+				26D6F666199DB587001CA54D /* SHAppConfiguration.m in Sources */,
 				267E05181922CC48004457B4 /* ReviewViewController.m in Sources */,
 				267E05191922CC48004457B4 /* SHButtonLatoLight.m in Sources */,
 				267E051A1922CC48004457B4 /* AdjustSliderSectionHeaderView.m in Sources */,

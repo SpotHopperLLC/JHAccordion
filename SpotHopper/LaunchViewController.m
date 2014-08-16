@@ -15,9 +15,13 @@
 #import "ErrorModel.h"
 #import "UserModel.h"
 
+#import "SHAppConfiguration.h"
 #import "TellMeMyLocation.h"
+#import "Mixpanel.h"
 #import "Tracker.h"
 #import "Tracker+Events.h"
+
+#import "SHStyleKit+Additions.h"
 
 @interface LaunchViewController ()
 
@@ -28,7 +32,7 @@
 @property (weak, nonatomic) IBOutlet UIView *viewTwitter;
 @property (weak, nonatomic) IBOutlet UIView *viewLogin;
 @property (weak, nonatomic) IBOutlet UIView *viewCreate;
-@property (weak, nonatomic) IBOutlet UIButton *btnSkip;
+@property (weak, nonatomic) IBOutlet UIView *viewBottom;
 
 @property (weak, nonatomic) IBOutlet UIView *viewFormLogin;
 @property (weak, nonatomic) IBOutlet UITextField *txtLoginEmail;
@@ -40,6 +44,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtCreatePassword;
 @property (weak, nonatomic) IBOutlet UITextField *txtCreatePasswordConfirm;
 @property (weak, nonatomic) IBOutlet UIImageView *imgCreateArrow;
+
+@property (weak, nonatomic) IBOutlet UIImageView *imgBottomArrow;
 
 @property (nonatomic, assign) BOOL keyboardUp;
 
@@ -88,6 +94,8 @@
     CGRect frameCreateForm = _viewFormCreate.frame;
     frameCreateForm.origin.y = -frameCreateForm.size.height;
     [_viewFormCreate setFrame:frameCreateForm];
+    
+    [SHStyleKit setImageView:self.imgBottomArrow withDrawing:SHStyleKitDrawingPencilArrowUp color:SHStyleKitColorMyClearColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -312,9 +320,13 @@
     [UserModel loginUser:paramsWithLocation success:^(UserModel *userModel, NSHTTPURLResponse *response) {
         [Tracker trackLoggedIn:TRUE];
 
+        if ([SHAppConfiguration isTrackingEnabled]) {
+            [[Mixpanel sharedInstance] identify:[NSString stringWithFormat:@"%@", userModel.ID]];
+            [[[Mixpanel sharedInstance] people] set:@{ @"Last Login" : [NSDate date] }];
+        }
+        
         [self hideHUD];
         [self exitLaunch];
-        
     } failure:^(ErrorModel *errorModel) {
         [Tracker trackLoggedIn:FALSE];
         [self hideHUD];
@@ -398,12 +410,12 @@
             [_viewFacebook setAlpha:0.0f];
             [_viewTwitter setAlpha:0.0f];
             [_viewCreate setAlpha:0.0f];
-            [_btnSkip setAlpha:0.0f];
+            [_viewBottom setAlpha:0.0f];
         } completion:^(BOOL finished) {
             [_viewFacebook setHidden:YES];
             [_viewTwitter setHidden:YES];
             [_viewCreate setHidden:YES];
-            [_btnSkip setHidden:YES];
+            [_viewBottom setHidden:YES];
             
             // Login button
             CGRect loginFrame = _viewLogin.frame;
@@ -431,7 +443,7 @@
         [_viewFacebook setHidden:NO];
         [_viewTwitter setHidden:NO];
         [_viewCreate setHidden:NO];
-        [_btnSkip setHidden:NO];
+        [_viewBottom setHidden:NO];
         
         // Login frame
         CGRect frameLoginForm = _viewFormLogin.frame;
@@ -450,7 +462,7 @@
                     [_viewFacebook setAlpha:1.0f];
                     [_viewTwitter setAlpha:1.0f];
                     [_viewCreate setAlpha:1.0f];
-                    [_btnSkip setAlpha:1.0f];
+                    [_viewBottom setAlpha:1.0f];
                 } completion:^(BOOL finished) {
                     
                 }];
@@ -467,12 +479,12 @@
             [_viewFacebook setAlpha:0.0f];
             [_viewTwitter setAlpha:0.0f];
             [_viewLogin setAlpha:0.0f];
-            [_btnSkip setAlpha:0.0f];
+            [_viewBottom setAlpha:0.0f];
         } completion:^(BOOL finished) {
             [_viewFacebook setHidden:YES];
             [_viewTwitter setHidden:YES];
             [_viewLogin setHidden:YES];
-            [_btnSkip setHidden:YES];
+            [_viewBottom setHidden:YES];
             
             // Create button
             CGRect createFrame = _viewCreate.frame;
@@ -501,7 +513,7 @@
         [_viewFacebook setHidden:NO];
         [_viewTwitter setHidden:NO];
         [_viewLogin setHidden:NO];
-        [_btnSkip setHidden:NO];
+        [_viewBottom setHidden:NO];
         
         // Create frame
         CGRect frameCreateForm = _viewFormCreate.frame;
@@ -520,7 +532,7 @@
                     [_viewFacebook setAlpha:1.0f];
                     [_viewTwitter setAlpha:1.0f];
                     [_viewLogin setAlpha:1.0f];
-                    [_btnSkip setAlpha:1.0f];
+                    [_viewBottom setAlpha:1.0f];
                 } completion:^(BOOL finished) {
                     
                 }];

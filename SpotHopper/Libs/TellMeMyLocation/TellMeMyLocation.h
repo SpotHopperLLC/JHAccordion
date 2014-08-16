@@ -31,6 +31,8 @@ typedef void (^TellMeMyLocationCompletionHandler)();
 + (CLLocation *)currentSelectedLocation;
 + (void)setCurrentSelectedLocation:(CLLocation *)selectedLocation;
 + (CLLocation *)currentLocation;
++ (CLLocation *)mapCenterLocation;
++ (void)setMapCenterLocation:(CLLocation *)mapCenterLocation;
 
 + (NSString *)locationNameFromPlacemark:(CLPlacemark *)placemark;
 + (NSString *)shortLocationNameFromPlacemark:(CLPlacemark *)placemark;

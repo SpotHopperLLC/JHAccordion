@@ -126,6 +126,7 @@
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(startSearch) object:nil];
     
     self.results = nil;
+    [self.tableView reloadData];
     
     if ([self isSearchRunning]) {
         [DrinkModel cancelGetDrinks];
@@ -309,7 +310,13 @@
         }
     }
     
-    NSAssert(cell, @"Cell must be defined");
+    DebugLog(@"count: %lu", (unsigned long)self.results.count);
+    LOG_INDEXPATH(@"indexPath", indexPath);
+    
+    if (!cell) {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell" forIndexPath:indexPath];
+    }
+    //NSAssert(cell, @"Cell must be defined");
     
     return cell;
 }
@@ -409,6 +416,7 @@
     // Resets pages and clears results
     self.page = @1;
     [self.results removeAllObjects];
+    [self.tableView reloadData];
     
     if (self.searchText.length) {
         [self doSearch];
