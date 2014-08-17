@@ -11,6 +11,7 @@
 #import "DrinkModel.h"
 #import "SpotModel.h"
 #import "ErrorModel.h"
+
 #import "SHStyleKit+Additions.h"
 
 #import "Tracker.h"
@@ -35,6 +36,9 @@
 
 @property (nonatomic, strong) NSNumber *page;
 @property (nonatomic, strong) NSMutableArray *results;
+
+@property (readonly, nonatomic) NSInteger totalRows;
+@property (readonly, nonatomic) BOOL isSearchRunning;
 
 @end
 
@@ -128,7 +132,7 @@
     self.results = nil;
     [self.tableView reloadData];
     
-    if ([self isSearchRunning]) {
+    if (self.isSearchRunning) {
         [DrinkModel cancelGetDrinks];
         [SpotModel cancelGetSpots];
     }
@@ -169,7 +173,7 @@
 }
 
 - (NSInteger)totalRows {
-    if (self.results) {
+    if (self.results != nil) {
         return (self.results.count * 2) + 1;
     }
     else {
@@ -178,7 +182,7 @@
 }
 
 - (NSInteger)resourceIndexForRowIndex:(NSInteger)rowIndex {
-    NSInteger totalRows = [self totalRows];
+    NSInteger totalRows = self.totalRows;
     NSInteger rowNumber = rowIndex + 1;
     BOOL isLastRow = rowNumber == totalRows;
     
@@ -204,11 +208,11 @@
     // even rows will be Find Similar to result row ((row+1) / 2) // adjust for zero based index
     // for row 5 which is really 6 the index will be (6/2)-1.
     
-    return [self totalRows];
+    return self.totalRows;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSInteger totalRows = [self totalRows];
+    NSInteger totalRows = self.totalRows;
     NSInteger rowNumber = indexPath.row + 1;
     BOOL isLastRow = rowNumber == totalRows;
     BOOL isFindSimilarRow = rowNumber % 2 == 0 && !isLastRow;
@@ -218,7 +222,6 @@
     UITableViewCell *cell = nil;
     
     if (indexPath.row < totalRows) {
-        
         if (isLastRow) {
             cell = [tableView dequeueReusableCellWithIdentifier:@"NotFoundCell" forIndexPath:indexPath];
         }
@@ -262,13 +265,16 @@
                 
                 // Sets image to drink type
                 if (drink.isBeer) {
-                    iconImageView.image = [UIImage imageNamed:@"icon_search_beer"];
+                    SHStyleKitDrawing drawing = isFindSimilarRow ? SHStyleKitDrawingSimilarBeerIcon : SHStyleKitDrawingBeerIcon;
+                    [SHStyleKit setImageView:iconImageView withDrawing:drawing color:SHStyleKitColorMyTintColor];
                 }
                 else if (drink.isCocktail) {
-                    iconImageView.image = [UIImage imageNamed:@"icon_search_cocktails"];
+                    SHStyleKitDrawing drawing = isFindSimilarRow ? SHStyleKitDrawingSimilarCocktailIcon : SHStyleKitDrawingCocktailIcon;
+                    [SHStyleKit setImageView:iconImageView withDrawing:drawing color:SHStyleKitColorMyTintColor];
                 }
                 else if (drink.isWine) {
-                    iconImageView.image = [UIImage imageNamed:@"icon_search_wine"];
+                    SHStyleKitDrawing drawing = isFindSimilarRow ? SHStyleKitDrawingSimilarWineIcon : SHStyleKitDrawingWineIcon;
+                    [SHStyleKit setImageView:iconImageView withDrawing:drawing color:SHStyleKitColorMyTintColor];
                 }
                 
                 // Shows two lines if there is a spot name (brewery or winery)
@@ -295,10 +301,12 @@
                     subtitleLabel.hidden = FALSE;
                 }
                 
-            } else if ([result isKindOfClass:[SpotModel class]]) {
+            }
+            else if ([result isKindOfClass:[SpotModel class]]) {
                 SpotModel *spot = (SpotModel *)result;
                 
-                iconImageView.image = [UIImage imageNamed:@"icon_search_spot"];
+                SHStyleKitDrawing drawing = isFindSimilarRow ? SHStyleKitDrawingSimilarSpotIcon : SHStyleKitDrawingSpotIcon;
+                [SHStyleKit setImageView:iconImageView withDrawing:drawing color:SHStyleKitColorMyTintColor];
                 
                 NSString *title = isFindSimilarRow ? [NSString stringWithFormat:@"Find Similar to %@", spot.name] : spot.name;
                 [mainTitleLabel setText:title withFont:[UIFont fontWithName:@"Lato-Bold" size:nameLabel.font.pointSize] onString:spot.name];
@@ -310,13 +318,7 @@
         }
     }
     
-    DebugLog(@"count: %lu", (unsigned long)self.results.count);
-    LOG_INDEXPATH(@"indexPath", indexPath);
-    
-    if (!cell) {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell" forIndexPath:indexPath];
-    }
-    //NSAssert(cell, @"Cell must be defined");
+    NSAssert(cell, @"Cell must be defined");
     
     return cell;
 }
@@ -340,7 +342,7 @@
     else if (resourceIndex < self.results.count) {
         SHJSONAPIResource *result = [self.results objectAtIndex:resourceIndex];
         
-        NSInteger totalRows = [self totalRows];
+        NSInteger totalRows = self.totalRows;
         NSInteger rowNumber = indexPath.row + 1;
         BOOL isLastRow = rowNumber == totalRows;
         BOOL isFindSimilarRow = rowNumber % 2 == 0 && !isLastRow;
@@ -406,7 +408,7 @@
 - (void)startSearch {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(startSearch) object:nil];
     
-    if ([self isSearchRunning]) {
+    if (self.isSearchRunning) {
         DebugLog(@"Canceling searches...");
         [DrinkModel cancelGetDrinks];
         [SpotModel cancelGetSpots];
@@ -415,8 +417,6 @@
     
     // Resets pages and clears results
     self.page = @1;
-    [self.results removeAllObjects];
-    [self.tableView reloadData];
     
     if (self.searchText.length) {
         [self doSearch];
@@ -431,23 +431,19 @@
     
     [self setIsSearchRunning:TRUE];
     
-    self.results = @[].mutableCopy;
+    __block NSArray *matchedSpots = nil;
+    __block NSArray *matchedDrinks = nil;
     
-    DebugLog(@"_isSearchRunningCount: %lu", (unsigned long)_isSearchRunningCount);
-    
-    DebugLog(@"started");
     if ([self.delegate respondsToSelector:@selector(globalSearchViewControllerStartedSearching:)]) {
         [self.delegate globalSearchViewControllerStartedSearching:self];
     }
     
     Promise *spotsPromise = [[SpotModel fetchSpotsWithText:self.searchText page:self.page] then:^(NSArray *spots) {
-        DebugLog(@"spots: %@", spots);
-        [self.results addObjectsFromArray:spots];
+        matchedSpots = spots;
     } fail:nil always:nil];
     
     Promise *drinksPromise = [[DrinkModel fetchDrinksWithText:self.searchText page:self.page] then:^(NSArray *drinks) {
-        DebugLog(@"drinks: %@", drinks);
-        [self.results addObjectsFromArray:drinks];
+        matchedDrinks = drinks;
     } fail:nil always:nil];
     
     [Tracker trackGlobalSearchRequestStarted];
@@ -455,8 +451,7 @@
     [When when:@[spotsPromise, drinksPromise] then:nil fail:nil always:^{
         [self setIsSearchRunning:FALSE];
         
-        if (![self isSearchRunning]) {
-            DebugLog(@"stopped");
+        if (!self.isSearchRunning) {
             if ([self.delegate respondsToSelector:@selector(globalSearchViewControllerStoppedSearching:)]) {
                 [self.delegate globalSearchViewControllerStoppedSearching:self];
             }
@@ -464,12 +459,18 @@
         
         [Tracker trackGlobalSearchRequestCompleted];
         [Tracker trackGlobalSearchHappened:self.searchText];
-        
+
+        self.results = @[].mutableCopy;
+        [self.results addObjectsFromArray:matchedSpots];
+        [self.results addObjectsFromArray:matchedDrinks];
+
         [self.results sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             NSNumber *revObj1 = [obj1 valueForKey:@"relevance"];
             NSNumber *revObj2 = [obj2 valueForKey:@"relevance"];
             return [revObj2 compare:revObj1];
         }];
+        
+        self.tableView.contentOffset = CGPointMake(0, 0);
         
         [self dataDidFinishRefreshing];
     }];
