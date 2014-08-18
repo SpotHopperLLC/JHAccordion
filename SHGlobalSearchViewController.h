@@ -16,6 +16,8 @@
 
 @property (weak, nonatomic) id <SHGlobalSearchViewControllerDelegate> delegate;
 
+@property (readonly, nonatomic) NSString *searchTerm;
+
 - (void)scheduleSearchWithText:(NSString *)text;
 
 - (void)clearSearch;

@@ -255,9 +255,11 @@
         NSDate *startDate = [NSDate date];
         [self fetchMyDrinklistsWithCompletionBlock:^(NSArray *drinklists) {
             NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:startDate];
-            [Tracker trackDrinkStylesDidLoad:self.mode numberOfStyles:drinklists.count duration:duration];
             
             NSArray *filteredDrinklists = [self filteredDrinklists:drinklists drinkType:self.selectedDrinkType drinkSubType:self.selectedDrinkSubType];
+            
+            [Tracker trackDrinkStylesDidLoad:self.mode numberOfStyles:filteredDrinklists.count duration:duration];
+
             self.drinklists = filteredDrinklists;
             [self fetchSliderTemplatesWithCompletionBlock:^(NSArray *sliderTemplates) {
                 DrinkSubTypeModel *selectedDrinkSubType = [self selectedDrinkSubType:self.selectedDrinkType];
