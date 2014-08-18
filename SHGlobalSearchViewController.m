@@ -40,6 +40,8 @@
 @property (readonly, nonatomic) NSInteger totalRows;
 @property (readonly, nonatomic) BOOL isSearchRunning;
 
+@property (readwrite, strong, nonatomic) NSString *searchTerm;
+
 @end
 
 @implementation SHGlobalSearchViewController {
@@ -81,6 +83,13 @@
     return UIStatusBarStyleLightContent;
 }
 
+#pragma mark - Public
+#pragma mark -
+
+- (NSString *)searchTerm {
+    return _searchTerm;
+}
+
 #pragma mark - Tracking
 #pragma mark -
 
@@ -111,8 +120,6 @@
 #pragma mark -
 
 - (void)scheduleSearchWithText:(NSString *)text {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
-    
     self.searchText = text;
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(startSearch) object:nil];
@@ -120,6 +127,7 @@
 }
 
 - (void)clearSearch {
+    self.searchTerm = nil;
     [self.results removeAllObjects];
     self.results = nil;
     [self.tableView reloadData];
@@ -129,8 +137,7 @@
 - (void)cancelSearch {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(startSearch) object:nil];
     
-    self.results = nil;
-    [self.tableView reloadData];
+    [self clearSearch];
     
     if (self.isSearchRunning) {
         [DrinkModel cancelGetDrinks];
@@ -354,6 +361,8 @@
             if ([result isKindOfClass:[SpotModel class]]) {
                 SpotModel *spot = (SpotModel *)result;
                 
+                self.searchTerm = spot.name;
+                
                 if (isFindSimilarRow) {
                     // find similar spots
                     if ([self.delegate respondsToSelector:@selector(globalSearchViewController:didSelectSimilarToSpot:)]) {
@@ -368,6 +377,8 @@
             }
             else if ([result isKindOfClass:[DrinkModel class]]) {
                 DrinkModel *drink = (DrinkModel *)result;
+                
+                self.searchTerm = drink.name;
                 
                 if (isFindSimilarRow) {
                     // find similar drinks
@@ -409,7 +420,6 @@
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(startSearch) object:nil];
     
     if (self.isSearchRunning) {
-        DebugLog(@"Canceling searches...");
         [DrinkModel cancelGetDrinks];
         [SpotModel cancelGetSpots];
         [Tracker trackGlobalSearchRequestCancelled];
@@ -427,8 +437,6 @@
 }
 
 - (void)doSearch {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
-    
     [self setIsSearchRunning:TRUE];
     
     __block NSArray *matchedSpots = nil;

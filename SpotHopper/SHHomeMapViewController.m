@@ -636,46 +636,55 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         cancelButton.frame = cancelButtonFrame;
         // (20 * 2) for leading/trailing minus width of cancel button
         CGFloat textFieldWidth = CGRectGetWidth(self.view.frame) - 40.0f - CGRectGetWidth(cancelButton.frame);
-        
-        CGRect searchFrame = CGRectMake(16.0f, 7.0f, 30.0f, 30.0f);
-        UITextField *searchTextField = [[UITextField alloc] initWithFrame:searchFrame];
-        searchTextField.tag = kTagSearchTextField;
-        searchTextField.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.1f];
-        [SHStyleKit setTextField:searchTextField textColor:SHStyleKitColorMyWhiteColor];
-        searchTextField.alpha = 0.1f;
-        searchTextField.font = [UIFont fontWithName:@"Lato-Light" size:14.0f];
-        searchTextField.tintColor = [[SHStyleKit myWhiteColor] colorWithAlphaComponent:0.75f];
-        searchTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
-        searchTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-        searchTextField.returnKeyType = UIReturnKeySearch;
-        searchTextField.delegate = self;
-        
-        [searchTextField addTarget:self action:@selector(searchTextFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
-        
-        // set the left view
-        UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
-        UIImageView *leftImageView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 6, 16, 16)];
-        leftImageView.alpha = 0.5f;
-        [SHStyleKit setImageView:leftImageView withDrawing:SHStyleKitDrawingSearchIcon color:SHStyleKitColorMyWhiteColor];
-        [leftView addSubview:leftImageView];
-        
-        searchTextField.leftView = leftView;
-        searchTextField.leftViewMode = UITextFieldViewModeAlways;
-        searchTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        searchTextField.layer.cornerRadius = 5.0f;
-        searchTextField.clipsToBounds = TRUE;
-        
-        self.navigationItem.title = nil;
-        
         UIBarButtonItem *searchCancelBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
-        UIBarButtonItem *searchTextFieldBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchTextField];
+        
+        UITextField *searchTextField = nil;
+        UIBarButtonItem *searchTextFieldBarButtonItem = nil;
+        
+        if (!self.globalSearchViewController.searchTerm.length) {
+            CGRect searchFrame = CGRectMake(16.0f, 7.0f, 30.0f, 30.0f);
+            searchTextField = [[UITextField alloc] initWithFrame:searchFrame];
+            searchTextField.tag = kTagSearchTextField;
+            searchTextField.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.1f];
+            [SHStyleKit setTextField:searchTextField textColor:SHStyleKitColorMyWhiteColor];
+            searchTextField.alpha = 0.1f;
+            searchTextField.font = [UIFont fontWithName:@"Lato-Bold" size:14.0f];
+            searchTextField.tintColor = [[SHStyleKit myWhiteColor] colorWithAlphaComponent:0.75f];
+            searchTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+            searchTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+            searchTextField.returnKeyType = UIReturnKeySearch;
+            searchTextField.delegate = self;
+            
+            [searchTextField addTarget:self action:@selector(searchTextFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
+            
+            // set the left view
+            UIView *leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
+            UIImageView *leftImageView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 6, 16, 16)];
+            leftImageView.alpha = 0.5f;
+            [SHStyleKit setImageView:leftImageView withDrawing:SHStyleKitDrawingSearchIcon color:SHStyleKitColorMyWhiteColor];
+            [leftView addSubview:leftImageView];
+            
+            searchTextField.leftView = leftView;
+            searchTextField.leftViewMode = UITextFieldViewModeAlways;
+            searchTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+            searchTextField.layer.cornerRadius = 5.0f;
+            searchTextField.clipsToBounds = TRUE;
+            
+            searchTextFieldBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchTextField];
+        }
+
+        [self updateNavigationItemTitle:nil];
         
         UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
         [UIView animateWithDuration:(animated ? 0.25f : 0.0f) delay:0.0 options:options animations:^{
-            [self.navigationItem setLeftBarButtonItem:searchTextFieldBarButtonItem animated:animated];
+            if (searchTextFieldBarButtonItem) {
+                [self.navigationItem setLeftBarButtonItem:searchTextFieldBarButtonItem animated:animated];
+            }
             [self.navigationItem setRightBarButtonItem:searchCancelBarButtonItem animated:animated];
-            searchTextField.alpha = 1.0f;
-            searchTextField.frame = CGRectMake(0, 0, textFieldWidth, 30);
+            if (searchTextField) {
+                searchTextField.alpha = 1.0f;
+                searchTextField.frame = CGRectMake(0, 0, textFieldWidth, 30);
+            }
             
             self.blurredView.alpha = 1.0f;
             self.globalSearchViewController.view.alpha = 1.0f;
@@ -701,8 +710,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.blurredViewHeightConstraint.constant = 0;
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
-        
-        [self.globalSearchViewController clearSearch];
         
         self.globalSearchViewController.view.hidden = TRUE;
         [self restoreNormalNavigationItems:animated withCompletionBlock:completionBlock];
@@ -766,7 +773,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         
         [self.navigationItem setLeftBarButtonItem:searchSlidersCancelBarButtonItem animated:animated];
         [self.navigationItem setRightBarButtonItem:nil animated:animated];
-        self.navigationItem.title = title.length ? title : kDefaultTitle;
+        [self updateNavigationItemTitle:title.length ? title : kDefaultTitle];
     } completion:^(BOOL finished) {
         [self refreshBlurredView];
         [self.slidersSearchViewController viewDidAppear:animated];
@@ -1252,25 +1259,39 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     return (self.drinkListModel.drinks.count || self.specialsSpotModels.count || self.spotListModel.spots.count);
 }
 
-- (void)restoreTitle {
+- (void)updateNavigationItemTitle {
+    NSString *title = nil;
+    
     if (self.spotListModel.name.length) {
-        self.navigationItem.title = self.spotListModel.name;
+        title = self.spotListModel.name;
     }
     else if (self.drinkListModel.name.length) {
-        self.navigationItem.title = self.drinkListModel.name;
+        title = self.drinkListModel.name;
     }
     else if (self.specialsSpotModels.count) {
-        self.navigationItem.title = kTodaysSpecialsTitle;
+        title = kTodaysSpecialsTitle;
     }
     else if (self.selectedSpot.name.length) {
-        self.navigationItem.title = self.selectedSpot.name;
+        title = self.selectedSpot.name;
     }
     else if (self.selectedDrink.name.length) {
-        self.navigationItem.title = self.selectedDrink.name;
+        title = self.selectedDrink.name;
     }
     else {
-        self.navigationItem.title = kDefaultTitle;
+        title = kDefaultTitle;
     }
+    
+    [self updateNavigationItemTitle:title];
+}
+
+- (void)updateNavigationItemTitle:(NSString *)title {
+    if (self.globalSearchViewController.searchTerm.length) {
+        // leave the text field as the navigation bar title
+        self.navigationItem.title = nil;
+        return;
+    }
+    
+    self.navigationItem.title = title;
 }
 
 - (void)restoreNavigationIfNeeded {
@@ -1388,7 +1409,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)displaySpecialsForSpots:(NSArray *)spots {
-    self.navigationItem.title = kTodaysSpecialsTitle;
+    [self updateNavigationItemTitle:kTodaysSpecialsTitle];
     
     self.currentIndex = 0;
 
@@ -1405,7 +1426,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)displaySpotlist:(SpotListModel *)spotlistModel {
-    self.navigationItem.title = spotlistModel.name;
+    [self updateNavigationItemTitle:spotlistModel.name];
     
     [Tracker trackSpotlistViewed];
     
@@ -1424,7 +1445,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)displayDrinklist:(DrinkListModel *)drinklistModel forMode:(SHMode)mode {
-    self.navigationItem.title = drinklistModel.name;
+    [self updateNavigationItemTitle:drinklistModel.name];
     
     [Tracker trackDrinklistViewed:mode];
     
@@ -1458,7 +1479,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [self resetSearch];
     [self.mapView removeAnnotations:self.mapView.annotations];
     self.selectedSpot = spot;
-    self.navigationItem.title = spot.name;
+    [self updateNavigationItemTitle:spot.name];
     
     self.mode = SHModeSpots;
     
@@ -1486,7 +1507,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [self resetSearch];
     [self.mapView removeAnnotations:self.mapView.annotations];
     self.selectedDrink = drink;
-    self.navigationItem.title = drink.name;
+    [self updateNavigationItemTitle:drink.name];
     
     if (drink.isBeer) {
         self.mode = SHModeBeer;
@@ -2060,11 +2081,17 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)restoreNormalNavigationItems:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [searchButton addTarget:self action:@selector(searchButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    searchButton.frame = CGRectMake(0, 0, 30, 30);
-    [SHStyleKit setButton:searchButton withDrawing:SHStyleKitDrawingSearchIcon normalColor:SHStyleKitColorMyWhiteColor highlightedColor:SHStyleKitColorMyTextColor];
-    UIBarButtonItem *searchBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchButton];
+    BOOL isSearchTextFieldEmpty = self.globalSearchViewController.searchTerm.length == 0;
+
+    UIBarButtonItem *searchBarButtonItem = nil;
+    
+    if (isSearchTextFieldEmpty) {
+        UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [searchButton addTarget:self action:@selector(searchButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        searchButton.frame = CGRectMake(0, 0, 30, 30);
+        [SHStyleKit setButton:searchButton withDrawing:SHStyleKitDrawingSearchIcon normalColor:SHStyleKitColorMyWhiteColor highlightedColor:SHStyleKitColorMyTextColor];
+        searchBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:searchButton];
+    }
     
     UIButton *sideBarButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [sideBarButton addTarget:self action:@selector(sideBarButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -2072,7 +2099,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [SHStyleKit setButton:sideBarButton withDrawing:SHStyleKitDrawingSpotSideBarIcon normalColor:SHStyleKitColorMyWhiteColor highlightedColor:SHStyleKitColorMyTextColor];
     UIBarButtonItem *sideBarBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:sideBarButton];
     
-    [self restoreTitle];
+    [self updateNavigationItemTitle];
     
     [CATransaction begin];
     [CATransaction setAnimationDuration:(animated ? 0.25f : 0.0f)];
@@ -2082,7 +2109,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         }
     }];
     [self.view endEditing:YES];
-    [self.navigationItem setLeftBarButtonItem:searchBarButtonItem animated:animated];
+    if (isSearchTextFieldEmpty) {
+        [self.navigationItem setLeftBarButtonItem:searchBarButtonItem animated:animated];
+    }
     [self.navigationItem setRightBarButtonItem:sideBarBarButtonItem animated:animated];
     [CATransaction commit];
 }
@@ -2550,7 +2579,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }
     
     [self repositionOnCurrentDeviceLocation:FALSE];
-    [self restoreTitle];
+    [self updateNavigationItemTitle];
     
     _actionButtonTapCount = 0;
 }
@@ -3091,6 +3120,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)globalSearchViewController:(SHGlobalSearchViewController *)vc didSelectSpot:(SpotModel *)spot {
     [Tracker trackLeavingGlobalSearch:TRUE];
+    
+    UIView *customView = [[self.navigationItem leftBarButtonItem] customView];
+    if (customView.tag == kTagSearchTextField) {
+        UITextField *searchTextField = (UITextField *)customView;
+        searchTextField.text = spot.name;
+        [searchTextField resignFirstResponder];
+    }
 
     [self hideSearch:TRUE withCompletionBlock:^{
         [self displaySingleSpot:spot];
@@ -3099,7 +3135,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)globalSearchViewController:(SHGlobalSearchViewController *)vc didSelectDrink:(DrinkModel *)drink {
     [Tracker trackLeavingGlobalSearch:TRUE];
-
+    
+    UIView *customView = [[self.navigationItem leftBarButtonItem] customView];
+    if (customView.tag == kTagSearchTextField) {
+        UITextField *searchTextField = (UITextField *)customView;
+        searchTextField.text = drink.name;
+        [searchTextField resignFirstResponder];
+    }
+    
     [self hideSearch:TRUE withCompletionBlock:^{
         [self displaySingleDrink:drink];
     }];
@@ -3107,6 +3150,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)globalSearchViewController:(SHGlobalSearchViewController *)vc didSelectSimilarToSpot:(SpotModel *)spot {
     [Tracker trackLeavingGlobalSearch:TRUE];
+    
+    UIView *customView = [[self.navigationItem leftBarButtonItem] customView];
+    if (customView.tag == kTagSearchTextField) {
+        UITextField *searchTextField = (UITextField *)customView;
+        searchTextField.text = spot.name;
+        [searchTextField resignFirstResponder];
+    }
     
     [self hideSearch:TRUE withCompletionBlock:^{
         [self findSimilarToSpot:spot];
@@ -3116,6 +3166,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)globalSearchViewController:(SHGlobalSearchViewController *)vc didSelectSimilarToDrink:(DrinkModel *)drink {
     [Tracker trackLeavingGlobalSearch:TRUE];
     
+    UIView *customView = [[self.navigationItem leftBarButtonItem] customView];
+    if (customView.tag == kTagSearchTextField) {
+        UITextField *searchTextField = (UITextField *)customView;
+        searchTextField.text = drink.name;
+        [searchTextField resignFirstResponder];
+    }
+    
     [self hideSearch:TRUE withCompletionBlock:^{
         [self findSimilarToDrink:drink];
     }];
@@ -3123,7 +3180,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)globalSearchViewControllerDidRequestReview:(SHGlobalSearchViewController *)vc {
     [Tracker trackLeavingGlobalSearch:TRUE];
-    
+
     [self hideSearch:TRUE withCompletionBlock:^{
         [self goToNewReview];
     }];
@@ -3160,6 +3217,16 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 #pragma mark - UITextFieldDelegate
 #pragma mark -
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    if (textField.tag == kTagSearchTextField) {
+        if (!_isShowingSearchView) {
+            [self showSearch:TRUE withCompletionBlock:nil];
+        }
+    }
+    
+    return TRUE;
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField.tag == kTagSearchTextField) {
