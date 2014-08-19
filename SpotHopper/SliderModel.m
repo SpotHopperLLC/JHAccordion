@@ -8,19 +8,46 @@
 
 #import "SliderModel.h"
 
+#import "SliderTemplateModel.h"
+
 @implementation SliderModel
 
-- (NSNumber *)value {
-    if (_value != nil) return _value;
-    _value = [self objectForKey:@"value"];
-    return _value;
-//    return [self objectForKey:@"value"];
+#pragma mark -
+
+- (NSDictionary *)mapKeysToProperties {
+    // Maps values in JSON key 'value' to 'value' property
+    return @{
+             @"value" : @"value",
+             @"links.slider_template" : @"sliderTemplate"
+             };
+    
 }
 
-- (SliderTemplateModel *)sliderTemplate {
-    if (_sliderTemplate != nil) return _sliderTemplate;
-    _sliderTemplate = [self linkedResourceForKey:@"slider_template"];
-    return _sliderTemplate;
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@ (%@) [%@]", self.ID, self.value, self.sliderTemplate, NSStringFromClass([self class])];
+}
+
+- (id)debugQuickLookObject {
+    return self.value;
+}
+
+#pragma mark - Getters
+
+- (NSString *)name {
+    return self.sliderTemplate.name;
+}
+
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone {
+	SliderModel *copy = [super copyWithZone:zone];
+    
+    copy.value = self.value;
+    copy.sliderTemplate = self.sliderTemplate;
+        
+    return copy;
 }
 
 @end

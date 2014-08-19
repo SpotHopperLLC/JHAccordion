@@ -19,6 +19,7 @@
 #import "SpotTypeModel.h"
 #import "DrinkModel.h"
 #import "DrinkTypeModel.h"
+#import "SpotListModel.h"
 
 @implementation UserModel
 
@@ -40,7 +41,15 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+            
+            // Resolves promise
+            [deferred resolve];
+        }
+        else if (operation.response.statusCode == 200) {
             UserModel *userModel = [jsonApi resourceForKey:@"users"];
             successBlock(userModel, operation.response);
             
@@ -70,7 +79,15 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+            
+            // Resolves promise
+            [deferred resolve];
+        }
+        else if (operation.response.statusCode == 200) {
             UserModel *userModel = [jsonApi resourceForKey:@"users"];
             [[ClientSessionManager sharedClient] login:operation.response user:userModel];
             successBlock(userModel, operation.response);
@@ -98,7 +115,15 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+            
+            // Resolves promise
+            [deferred resolve];
+        }
+        else if (operation.response.statusCode == 200) {
             UserModel *userModel = [jsonApi resourceForKey:@"users"];
             successBlock(userModel, operation.response);
             
@@ -125,7 +150,15 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+            
+            // Resolves promise
+            [deferred resolve];
+        }
+        else if (operation.response.statusCode == 200) {
             UserModel *userModel = [jsonApi resourceForKey:@"users"];
             successBlock(userModel, operation.response);
             
@@ -152,7 +185,15 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+            
+            // Resolves promise
+            [deferred resolve];
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"reviews"];
             successBlock(models, jsonApi);
             
@@ -194,11 +235,16 @@
         
         [SliderTemplateModel getSliderTemplates:params success:^(NSArray *sliderTemplates, JSONAPI *jsonApiDontNeed) {
             
-            if (operation.response.statusCode == 200) {
+            if (operation.isCancelled || operation.response.statusCode == 204) {
+                if (successBlock) {
+                    successBlock(nil, nil);
+                }
                 
-                
+                // Resolves promise
+                [deferred resolve];
+            }
+            else if (operation.response.statusCode == 200) {
                 if (model != nil) {
-                    
                     NSMutableDictionary *sliderTemplateToSliderMap = [NSMutableDictionary dictionary];
                     for (SliderModel *slider in model.sliders) {
                         [sliderTemplateToSliderMap setObject:slider forKey:slider.sliderTemplate.ID];
@@ -243,7 +289,7 @@
     return deferred.promise;
 }
 
-- (Promise *)getSpotLists:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+- (Promise *)getSpotLists:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
@@ -253,7 +299,15 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+            
+            // Resolves promise
+            [deferred resolve];
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"spot_lists"];
             successBlock(models, jsonApi);
             
@@ -272,7 +326,7 @@
     
 }
 
-- (Promise *)getDrinkLists:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+- (Promise *)getDrinkLists:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
@@ -282,7 +336,15 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+            
+            // Resolves promise
+            [deferred resolve];
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"drink_lists"];
             successBlock(models, jsonApi);
             
@@ -310,7 +372,15 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+            
+            // Resolves promise
+            [deferred resolve];
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"checkins"];
             successBlock(models, jsonApi);
             
@@ -326,6 +396,17 @@
     }];
     
     return deferred.promise;
+}
+
+#pragma mark - Revised Code for 2.0
+
++ (BOOL)isLoggedIn {
+    return [ClientSessionManager sharedClient].isLoggedIn == YES;
+}
+
++ (UserModel *)currentUser {
+    UserModel *user = [ClientSessionManager sharedClient].currentUser;
+    return user;
 }
 
 #pragma mark - Getters
@@ -361,6 +442,8 @@
 - (NSString *)gender {
     return [self objectForKey:@"gender"];
 }
+
+#pragma mark - Debugging
 
 - (NSString *)description {
     return [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:@{

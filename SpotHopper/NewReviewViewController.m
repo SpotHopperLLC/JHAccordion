@@ -195,6 +195,10 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
 #pragma mark - Tracking
 
 - (NSString *)screenName {

@@ -74,7 +74,7 @@
     [self setTitle:@"Review It!"];
     
     // Shows sidebar button in nav
-    [self showSidebarButton:YES animated:YES];
+//    [self showSidebarButton:YES animated:YES];
     
     // Configures accordion
     _accordion = [[JHAccordion alloc] initWithTableView:_tblReviews];
@@ -105,6 +105,10 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     [_btnSubmit setHidden:TRUE];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)didReceiveMemoryWarning {

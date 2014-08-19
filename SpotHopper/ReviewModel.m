@@ -13,11 +13,30 @@
 #import "ErrorModel.h"
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
+#import "UserModel.h"
 #import "SpotModel.h"
 
 #import <JSONAPI/JSONAPI.h>
 
 @implementation ReviewModel
+
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@/%@ [%@]", self.ID, self.user.name, self.spot.name, NSStringFromClass([self class])];
+}
+
+#pragma mark -
+
+- (NSDictionary *)mapKeysToProperties {
+    // Maps values in JSON key 'created_at' to 'Date:createdAt' property
+    // Maps values in JSON key 'updated_at' to 'Date:updatedAt' property
+    return @{
+             @"created_at" : @"Date:createdAt",
+             @"updated_at" : @"Date:updatedAt"
+             };
+    
+}
 
 #pragma mark - API
 
@@ -30,7 +49,15 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+            
+            // Resolves promise
+            [deferred resolve];
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"reviews"];
             successBlock(models, jsonApi);
             
@@ -48,7 +75,7 @@
     return deferred.promise;
 }
 
-- (Promise *)postReviews:(void (^)(ReviewModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+- (Promise *)postReviews:(void (^)(ReviewModel *, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
@@ -69,7 +96,15 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+            
+            // Resolves promise
+            [deferred resolve];
+        }
+        else if (operation.response.statusCode == 200) {
             ReviewModel *model = [jsonApi resourceForKey:@"reviews"];
             successBlock(model, jsonApi);
             
@@ -107,7 +142,15 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+            
+            // Resolves promise
+            [deferred resolve];
+        }
+        else if (operation.response.statusCode == 200) {
             ReviewModel *model = [jsonApi resourceForKey:@"reviews"];
             successBlock(model, jsonApi);
             
@@ -182,14 +225,6 @@
     return [_sliders sortedArrayUsingComparator:^NSComparisonResult(SliderModel *obj1, SliderModel *obj2) {
         return [obj1.sliderTemplate.ID compare:obj2.sliderTemplate.ID];
     }];
-}
-
-- (NSDate *)createdAt {
-    return [self formatDateTimestamp:[self objectForKey:@"created_at"]];
-}
-
-- (NSDate *)updatedAt {
-    return [self formatDateTimestamp:[self objectForKey:@"updated_at"]];
 }
 
 #pragma mark - SliderModel for rating

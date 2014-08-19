@@ -16,3 +16,10 @@ profile
 
 # CocoaPods stuffs
 Pods/
+
+# Merges
+*.orig
+
+# vim
+*.swp
+

@@ -15,6 +15,6 @@
 @property (nonatomic, strong) NSNumber *cents;
 @property (nonatomic, strong) SizeModel *size;
 
-- (NSString*)priceAndSize;
+@property (nonatomic, readonly) NSString *priceAndSize;
 
 @end

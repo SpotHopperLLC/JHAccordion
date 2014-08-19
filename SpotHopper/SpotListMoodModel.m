@@ -13,6 +13,14 @@
 
 @implementation SpotListMoodModel
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@ [%@]", self.ID, self.href, NSStringFromClass([self class])];
+}
+
+#pragma mark -
+
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'name' to 'rating' name
     // Maps linked resource in JSON key 'sliders' to 'sliders' property
@@ -24,7 +32,7 @@
 
 #pragma mark - API
 
-+ (Promise *)getSpotListMoods:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
++ (Promise *)getSpotListMoods:(NSDictionary *)params success:(void (^)(NSArray *moods, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
@@ -34,7 +42,15 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+            
+            // Resolves promise
+            [deferred resolve];
+        }
+        else if (operation.response.statusCode == 200) {
             NSArray *models = [jsonApi resourcesForKey:@"spot_list_moods"];
             successBlock(models, jsonApi);
             

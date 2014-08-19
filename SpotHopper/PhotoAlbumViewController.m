@@ -39,6 +39,13 @@
     [_collectionView reloadData];
 }
 
+#pragma mark - Public
+#pragma mark -
+
+- (void)setSelectedIndex:(NSUInteger)selectedIndex {
+    _selectedIndex = selectedIndex;
+}
+
 #pragma mark - UICollectionViewDataSource
 #pragma mark -
 
@@ -55,7 +62,7 @@
         NSCAssert(imageView, @"Image View is required");
         [NetworkHelper loadThumbnailImage:imageModel imageView:imageView placeholderImage:self.placeholderImage];
         
-        cell.backgroundColor = _index == indexPath.item ? [UIColor whiteColor] : [UIColor blackColor];
+        cell.backgroundColor = self.selectedIndex == indexPath.item ? [UIColor whiteColor] : [UIColor blackColor];
     
         return cell;
     }
@@ -63,19 +70,31 @@
     return nil;
 }
 
+#pragma mark - Navigation
+#pragma mark -
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.destinationViewController isKindOfClass:[PhotoViewerViewController class]]) {
+        PhotoViewerViewController *photoViewerViewController = segue.destinationViewController;
+        photoViewerViewController.images = self.images;
+        NSIndexPath *index = [[self.collectionView indexPathsForSelectedItems]lastObject];
+        photoViewerViewController.selectedIndex = index.item;
+    }
+}
+
 #pragma mark - UICollectionViewDelegate
 #pragma mark -
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    self.selectedIndex = indexPath.item;
     [self goToPhotoViewer:_images atIndex:indexPath.item fromPhotoAlbum:self];
-    _index = indexPath.item;
 }
 
 #pragma mark - PhotoViewerDelegate
 #pragma mark -
 
 - (void)photoViewer:(PhotoViewerViewController *)photoViewer didChangeIndex:(NSUInteger)index {
-    _index = index;
+    self.selectedIndex = index;
 }
 
 @end

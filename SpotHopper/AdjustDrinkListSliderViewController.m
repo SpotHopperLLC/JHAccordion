@@ -28,6 +28,7 @@
 #import "BaseAlcoholModel.h"
 #import "ErrorModel.h"
 #import "DrinkModel.h"
+#import "DrinkListRequest.h"
 #import "DrinkListModel.h"
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
@@ -387,7 +388,7 @@
     [self doCreateDrinklist];
 }
 
-#pragma mark - Public
+ #pragma mark - Public
 
 - (void)resetForm {
     [_tblSliders scrollRectToVisible:CGRectMake(0, 0, CGRectGetWidth(_tblSliders.frame), 1) animated:NO];
@@ -439,7 +440,7 @@
 
 - (void)fetchFormData {
     
-    // Gets drink form data
+    // Gets drink form data (Beer, Wine and Cocktail
     Promise *promiseFormData = [DrinkModel getDrinks:@{kDrinkModelParamsPageSize:@0} success:^(NSArray *spotModels, JSONAPI *jsonApi) {
         NSDictionary *forms = [jsonApi objectForKey:@"form"];
         if (forms != nil) {
@@ -487,15 +488,17 @@
 
 - (void)filterSliderTemplates {
     
-    NSMutableArray *slidersFiltered = [NSMutableArray array];
+    NSMutableArray *slidersFiltered = [@[] mutableCopy];
     if (_selectedDrinkType == nil) {
         _sliderTemplates = nil;
     } else {
-        NSNumber *selectedDrinkTypeId = [_selectedDrinkType objectForKey:@"id"];
-        NSNumber *selectedWineTypeId = [_selectedWineSubtype objectForKey:@"id"];
+        NSNumber *selectedDrinkTypeId = _selectedDrinkType[@"id"];
+        NSNumber *selectedWineTypeId = _selectedWineSubtype[@"id"];
         
-        // Filters by spot idea
+        // Filters by spot id
         for (SliderTemplateModel *sliderTemplate in _allSliderTemplates) {
+            
+            NSLog(@"drinkTypes: %@", sliderTemplate.drinkTypes);
             
             NSArray *drinkTypeIds = [sliderTemplate.drinkTypes valueForKey:@"ID"];
             NSArray *drinkSubtypeIds = [sliderTemplate.drinkSubtypes valueForKey:@"ID"];
@@ -508,12 +511,9 @@
             else if (_selectedWineSubtype != nil && [drinkTypeIds containsObject:selectedDrinkTypeId] && [drinkSubtypeIds containsObject:selectedWineTypeId]) {
                 [slidersFiltered addObject:sliderTemplate];
             }
-            
         }
-        
     }
     _sliderTemplates = slidersFiltered;
-    
     
     // Creating sliders
     [_sliders removeAllObjects];
@@ -540,7 +540,6 @@
     
     // Reloading table
     [_tblSliders reloadData];
-    
 }
 
 - (void)fetchSliderTemplates {
@@ -578,28 +577,24 @@
         }
     }
     
-    NSNumber *latitude = nil, *longitude = nil;
-    if (_location != nil) {
-        latitude = [NSNumber numberWithFloat:_location.coordinate.latitude];
-        longitude = [NSNumber numberWithFloat:_location.coordinate.longitude];
-    }
-    
     [Tracker track:@"Creating Drinklist"];
     
     NSNumber *drinkTypeID = [_selectedDrinkType objectForKey:@"id"];
     NSNumber *drinkSubTypeID = [_selectedWineSubtype objectForKey:@"id"];
     
-    [self showHUD:@"Creating drinklist"];
-    [DrinkListModel postDrinkList:kDrinkListModelDefaultName
-                         latitude:latitude
-                        longitude:longitude sliders:allTheSliders
-                          drinkId:nil
-                      drinkTypeId:drinkTypeID
-                   drinkSubtypeId:drinkSubTypeID
-                    baseAlcoholId:_selectedBaseAlcohol.ID
-                           spotId:_spot.ID
-                     successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
-                         [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Drink Type ID" : drinkTypeID ?: @0, @"Drink Sub Type ID" : drinkSubTypeID ?: @0, @"Created With Sliders" : @TRUE}];
+    [self showHUD:@"Creating Drinklist"];
+    
+    DrinkListRequest *request = [[DrinkListRequest alloc] init];
+    request.name = kDrinkListModelDefaultName;
+    request.coordinate = _location.coordinate;
+    request.sliders = allTheSliders;
+    request.drinkTypeId = drinkTypeID;
+    request.drinkSubTypeId = drinkSubTypeID;
+    request.baseAlcoholId = _selectedBaseAlcohol.ID;
+    request.spotId = _spot.ID;
+    
+    [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
+        [Tracker track:@"Created Drinklist" properties:@{@"Success" : @TRUE, @"Drink Type ID" : drinkTypeID ?: @0, @"Drink Sub Type ID" : drinkSubTypeID ?: @0, @"Created With Sliders" : @TRUE}];
         [self hideHUD];
         [self showHUDCompleted:@"Drinklist created!" block:^{
             

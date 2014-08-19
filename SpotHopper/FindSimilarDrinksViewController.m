@@ -241,9 +241,6 @@
 }
 
 - (void)doSearch {
-    
-    [self showHUD:@"Searching"];
-    
     /*
      * Searches drinks
      */
@@ -253,6 +250,7 @@
                                    kDrinkModelParamsPageSize : kPageSize
                                    };
     
+    [self showHUD:@"Searching"];
     [DrinkModel getDrinks:paramsDrinks success:^(NSArray *drinkModels, JSONAPI *jsonApi) {
         [self hideHUD];
         

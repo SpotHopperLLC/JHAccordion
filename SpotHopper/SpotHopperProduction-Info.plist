@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.1</string>
+	<string>2.0.3</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -28,13 +28,15 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb504677422978889</string>
+				<string>spothopper</string>
 				<string>spothopperapp</string>
-				<string>spothopperapp101</string>
+				<string>spothopperv2</string>
+				<string>spothopperappv2</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.1.1</string>
+	<string>2.0.3</string>
 	<key>FacebookAppID</key>
 	<string>504677422978889</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -46,9 +48,10 @@
 		<string>Lato-Regular.ttf</string>
 		<string>Lato-LightItalic.ttf</string>
 		<string>avantgardef-book-webfont.ttf</string>
+		<string>MyriadPro-Bold.ttf</string>
 	</array>
 	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
+	<string>SpotHopper</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -56,7 +59,7 @@
 	<key>UIStatusBarHidden</key>
 	<false/>
 	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleBlackTranslucent</string>
+	<string>UIStatusBarStyleDefault</string>
 	<key>UIStatusBarTintParameters</key>
 	<dict>
 		<key>UINavigationBar</key>
@@ -72,6 +75,10 @@
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<true/>
+	<key>MixPanelToken</key>
+	<string>003978c7399ef9503dd3edbc92ca50d0</string>
+	<key>TrackingEnabled</key>
 	<true/>
 </dict>
 </plist>

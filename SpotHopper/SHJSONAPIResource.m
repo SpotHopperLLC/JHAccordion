@@ -32,6 +32,12 @@
     return nil;
 }
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.href];
+}
+
 #pragma mark - Format helpers
 
 - (NSDate *)formatBirthday:(NSString *)string {
@@ -83,8 +89,7 @@
 
 #pragma mark - NSCoding
 
-- (NSArray *)propertyKeys
-{
+- (NSArray *)propertyKeys {
     NSMutableArray *array = [NSMutableArray array];
     Class class = [self class];
     while (class != [NSObject class])
@@ -132,12 +137,9 @@
     return array;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    if ((self = [self init]))
-    {
-        for (NSString *key in [self propertyKeys])
-        {
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    if ((self = [self init])) {
+        for (NSString *key in [self propertyKeys]) {
             id value = [aDecoder decodeObjectForKey:key];
             [self setValue:value forKey:key];
         }
@@ -145,13 +147,42 @@
     return self;
 }
 
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    for (NSString *key in [self propertyKeys])
-    {
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    for (NSString *key in [self propertyKeys]) {
         id value = [self valueForKey:key];
         [aCoder encodeObject:value forKey:key];
     }
+}
+
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone {
+	SHJSONAPIResource *copy = [super copyWithZone:zone];
+    
+    copy.ID = self.ID;
+    
+    return copy;
+}
+
+#pragma mark - Equality
+
+- (BOOL)isEqual:(id)object {
+    if ([object isKindOfClass:[SHJSONAPIResource class]]) {
+        return [self isEqualToJSONAPIResource:(SHJSONAPIResource *)object];
+    }
+    return FALSE;
+}
+
+- (BOOL)isEqualToJSONAPIResource:(SHJSONAPIResource *)other {
+    return self.ID && other.ID && [self.ID isEqual:other.ID];
+}
+
+- (NSUInteger)hash {
+    if ([self.ID respondsToSelector:@selector(hash)]) {
+        return [self.ID hash];
+    }
+    
+    return [super hash];
 }
 
 @end

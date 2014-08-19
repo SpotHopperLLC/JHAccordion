@@ -72,7 +72,7 @@
     [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
     
     // Shows sidebar button in nav
-    [self showSidebarButton:YES animated:YES];
+//    [self showSidebarButton:YES animated:YES];
     
     // Configures table
     [_tblMenu registerNib:[UINib nibWithNibName:@"SearchCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"SearchCell"];
@@ -124,8 +124,8 @@
     [super viewWillDisappear:animated];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 #pragma mark - Tracking
@@ -415,6 +415,7 @@
     } fail:^(id error) {
         
     } always:^{
+        [self hideHUD];
         
         [_results sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             NSNumber *revObj1 = [obj1 valueForKey:@"relevance"];
@@ -423,7 +424,6 @@
         }];
         
         [self dataDidFinishRefreshing];
-        [self hideHUD];
     }];
 }
 
@@ -478,6 +478,5 @@
     }
     return nil;
 }
-
 
 @end

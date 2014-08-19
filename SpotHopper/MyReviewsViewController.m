@@ -66,7 +66,7 @@
     [self setTitle:@"My Reviews"];
     
     // Shows sidebar button in nav
-    [self showSidebarButton:YES animated:YES];
+//    [self showSidebarButton:YES animated:YES];
     
     // Configures accordion
     _accordion = [[JHAccordion alloc] initWithTableView:_tblReviews];
@@ -111,9 +111,8 @@
     }];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 #pragma mark - Tracking

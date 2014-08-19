@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="3f5-6R-ILz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="3f5-6R-ILz">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -289,21 +289,24 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" id="fAx-FE-ILd" customClass="SHButtonLatoLightRightImage">
-                                        <rect key="frame" x="135" y="200" width="50" height="36"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                        <state key="normal" title="Skip" image="img_arrow_east.png">
-                                            <color key="titleColor" red="0.86274509803921573" green="0.41568627450980389" blue="0.18823529411764706" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <state key="highlighted">
-                                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="onClickSkip:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="h6s-nU-ZIM"/>
-                                        </connections>
-                                    </button>
+                                    <view contentMode="scaleToFill" id="uDz-OQ-FMg" userLabel="View - Bottom Arrow">
+                                        <rect key="frame" x="0.0" y="188" width="320" height="56"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="qjs-o4-tgi" userLabel="Arrow Image View">
+                                                <rect key="frame" x="36" y="4" width="48" height="48"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log in so we can personalize the app to your tastes" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lTc-ak-EEH">
+                                                <rect key="frame" x="92" y="4" width="180" height="48"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" name="Noteworthy-Light" family="Noteworthy" pointSize="15"/>
+                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="0.75" colorSpace="calibratedWhite"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
@@ -311,7 +314,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <outlet property="btnSkip" destination="fAx-FE-ILd" id="u4f-Nk-3WQ"/>
+                        <outlet property="imgBottomArrow" destination="qjs-o4-tgi" id="8hg-ah-XBn"/>
                         <outlet property="imgCreateArrow" destination="c7b-BH-tzU" id="edo-3p-VWN"/>
                         <outlet property="imgLoginArrow" destination="rWW-UR-l9z" id="kSz-YQ-1sj"/>
                         <outlet property="imgLogo" destination="FJA-px-cB7" id="mVJ-F6-o3E"/>
@@ -320,6 +323,7 @@
                         <outlet property="txtCreatePasswordConfirm" destination="Ljx-DK-j4E" id="mAK-PK-zUc"/>
                         <outlet property="txtLoginEmail" destination="vfN-yF-2Qp" id="rwF-dg-J5e"/>
                         <outlet property="txtLoginPassword" destination="OS1-WQ-CdD" id="53A-7k-ite"/>
+                        <outlet property="viewBottom" destination="uDz-OQ-FMg" id="lmM-G9-OGr"/>
                         <outlet property="viewCreate" destination="8XR-sa-D0D" id="dzn-U0-BMo"/>
                         <outlet property="viewFacebook" destination="lxb-7E-50q" id="UQk-X0-2GZ"/>
                         <outlet property="viewFormCreate" destination="zdH-f0-Aso" id="NWF-MG-fk3"/>
@@ -1021,9 +1025,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="btn_sidebar_icon_reviews.png" width="42" height="26"/>
         <image name="btn_sidebar_icon_specials.png" width="42" height="36"/>
         <image name="btn_sidebar_icon_spots.png" width="42" height="34"/>
-        <image name="btn_sidebar_icon_star.png" width="42" height="27"/>
+        <image name="btn_sidebar_icon_star.png" width="42" height="28"/>
         <image name="homemenu-blurred" width="320" height="480"/>
-        <image name="img_arrow_east.png" width="10" height="15"/>
         <image name="img_expand_east.png" width="27" height="27"/>
         <image name="img_launch_field_divider.png" width="317" height="3"/>
         <image name="logo_spothopper.png" width="317" height="166"/>

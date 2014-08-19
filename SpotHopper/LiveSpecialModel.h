@@ -22,6 +22,6 @@
 @property (nonatomic, strong) NSString *startDateStr;
 @property (nonatomic, strong) NSString *endDateStr;
 
-- (Promise *)getLiveSpecial:(NSDictionary *)params success:(void (^)(LiveSpecialModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
+- (Promise *)getLiveSpecial:(NSDictionary *)params success:(void (^)(LiveSpecialModel *, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
 
 @end

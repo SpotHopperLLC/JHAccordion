@@ -117,10 +117,13 @@
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
     if ([annotation isKindOfClass:[MatchPercentAnnotation class]] == YES) {
-        MatchPercentAnnotation *matchAnnotation = (MatchPercentAnnotation*) annotation;
-        
-        MatchPercentAnnotationView *pin = [[MatchPercentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"current"];
-        [pin setSpot:matchAnnotation.spot];
+        static NSString *MatchPercentAnnotationIdentifier = @"MatchPercentAnnotationView";
+        MatchPercentAnnotation *matchPercentAnnotation = (MatchPercentAnnotation *)annotation;
+        MatchPercentAnnotationView *pin = (MatchPercentAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:MatchPercentAnnotationIdentifier];
+        if (!pin) {
+            pin = [[MatchPercentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:MatchPercentAnnotationIdentifier calloutView:nil];
+        }
+        [pin setSpot:matchPercentAnnotation.spot];
         [pin setNeedsDisplay];
         
         return pin;
@@ -226,13 +229,8 @@
         return;
     }
     
-    NSDictionary *params = @{
-                             kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:_location.coordinate.latitude],
-                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:_location.coordinate.longitude]
-                             };
-    
     [self showHUD:@"Finding spots"];
-    [_drink getSpots:params success:^(NSArray *spotModels, JSONAPI *jsonApi) {
+    [_drink fetchSpotsForLocation:_location success:^(NSArray *spotModels) {
         [self hideHUD];
         
         [_spots addObjectsFromArray:spotModels];
@@ -243,7 +241,6 @@
         [self showAlert:@"Oops" message:errorModel.human];
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
-    
 }
 
 @end

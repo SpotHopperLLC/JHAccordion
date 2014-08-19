@@ -11,6 +11,7 @@
 #define kSpotModelParamQuery @"query"
 #define kSpotModelParamQueryLatitude @"lat"
 #define kSpotModelParamQueryLongitude @"lng"
+#define kSpotModelParamQueryRadius @"radius"
 #define kSpotModelParamQuerySpotTypeId @"spot_type_id"
 #define kSpotModelParamQueryDayOfWeek @"day_of_week"
 #define kSpotModelParamQueryVisibleToUsers @"visible_to_users"
@@ -25,7 +26,6 @@
 #define kSpotModelParamLongitude @"longitude"
 #define kSpotModelParamFoursquareId @"foursquare_id"
 
-
 #define kSpotModelParamSources @"sources"
 #define kSpotModelParamSourcesSpotHopper @"spothopper"
 #define kSpotModelParamSourcesFoursquare @"foursquare"
@@ -38,8 +38,9 @@
 #import "NSArray+HoursOfOperation.h"
 
 #import <JSONAPI/JSONAPI.h>
+#import <CoreLocation/CoreLocation.h>
 
-@class ErrorModel, AverageReviewModel, SpotTypeModel, LiveSpecialModel;
+@class ErrorModel, AverageReviewModel, SpotTypeModel, LiveSpecialModel, MenuModel, CLLocation;
 
 @interface SpotModel : SHJSONAPIResource
 
@@ -63,23 +64,49 @@
 @property (nonatomic, strong) NSArray *liveSpecials;
 @property (nonatomic, strong) NSNumber *relevance;
 
-- (NSString*)addressCityState;
-- (NSString*)fullAddress;
-- (NSString*)cityState;
-- (NSString*)matchPercent;
-- (UIImage*)placeholderImage;
+@property (nonatomic, strong) MenuModel *menu;
+
+- (NSString *)addressCityState;
+- (NSString *)fullAddress;
+- (NSString *)cityState;
+- (NSString *)matchPercent;
+- (UIImage *)placeholderImage;
 - (LiveSpecialModel*)currentLiveSpecial;
 
 + (void)cancelGetSpots;
 
-+ (Promise*)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
++ (Promise *)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
-+ (Promise*)getSpotsWithSpecials:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
++ (Promise *)getSpotsWithSpecialsTodayForCoordinate:(CLLocationCoordinate2D)coordinate success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
-+ (Promise*)postSpot:(NSDictionary*)params success:(void(^)(SpotModel *spotModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
++ (Promise *)getSpotsWithSpecials:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
-- (Promise*)getSpot:(NSDictionary*)params success:(void(^)(SpotModel *spotModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
++ (Promise *)postSpot:(NSDictionary*)params success:(void(^)(SpotModel *spotModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
-- (Promise *)getMenuItems:(NSDictionary *)params success:(void (^)(NSArray *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock;
+- (Promise *)getSpot:(NSDictionary*)params success:(void(^)(SpotModel *spotModel, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
+- (Promise *)getMenuItems:(NSDictionary *)params success:(void (^)(NSArray *menuItems, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock __deprecated;
+
+#pragma mark - Revised Code for 2.0
+
++ (void)fetchSpotsNearLocation:(CLLocation *)location success:(void (^)(NSArray *spots))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise *)fetchSpotsNearLocation:(CLLocation *)location;
+
++ (void)fetchSpotsWithText:(NSString *)text page:(NSNumber *)page success:(void(^)(NSArray *spots))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise *)fetchSpotsWithText:(NSString *)text page:(NSNumber *)page;
+
+- (void)fetchSpot:(void (^)(SpotModel *spotModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
+
+- (Promise *)fetchSpot;
+
++ (void)fetchSpotTypes:(void (^)(NSArray *spotTypes))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise *)fetchSpotTypes;
+
+- (void)fetchMenu:(void (^)(MenuModel *menu))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
+
+- (Promise *)fetchMenu;
 
 @end

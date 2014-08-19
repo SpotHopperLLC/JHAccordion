@@ -28,8 +28,6 @@
 
     #define kRefreshLocationTime 60.0f
 
-    #define kAnalyticsEnabled   FALSE
-
 #elif defined(DEV)
 
     #define kDebug YES
@@ -46,8 +44,6 @@
     #define kParseClientKey @""
 
     #define kRefreshLocationTime 60.0f
-
-    #define kAnalyticsEnabled   FALSE
 
 #elif defined(STAGING)
 
@@ -66,7 +62,26 @@
 
     #define kRefreshLocationTime 10.0f
 
-    #define kAnalyticsEnabled   TRUE
+#elif defined(STAGING2)
+
+    #define kDebug NO
+
+    #define kTwitterConsumerKey @"enlXFrFlBlOPkaBoOJunQ"
+    #define kTwitterConsumerSecret @"UHRcQ8WXs13Iug7VpliivDxwQuGtoMg5KsaoIF3jWbM"
+
+    #define kAppURLScheme  @"spothopperappstaging"
+
+    #define kBaseUrl @"http://spothopper-staging.herokuapp.com"
+    #define kWebsiteUrl @"http://spothopper-staging.herokuapp.com"
+
+    #define kParseApplicationID @"lu4u2Bg5pBqLg9qZEWJB5W7fjSAVQPiH39Hr29kV"
+    #define kParseClientKey @"BHl8KE9ZmZgmeDFnV9H886qKB9Y7EaWzZLPdOs4J"
+
+    #define kRefreshLocationTime 3600.0f
+
+    #define kIntegrateDeprecatedScreens TRUE
+
+    #define kDisableSideBarDelegateInBase TRUE
 
 #elif defined(PRODUCTION)
 
@@ -85,13 +100,16 @@
 
     #define kRefreshLocationTime 300.0f
 
-    #define kAnalyticsEnabled   TRUE
+    #define kIntegrateDeprecatedScreens TRUE
+
+    #define kDisableSideBarDelegateInBase TRUE
 
 #endif
 
 // Mixpanel - https://mixpanel.com/help/reference/ios
 
-#define kMixPanelToken @"b7cdce62dcc827c0955766058d7696c4"
+// updated for 2.0
+#define kMixPanelToken @"003978c7399ef9503dd3edbc92ca50d0"
 
 // Google Analytics - https://developers.google.com/analytics/devguides/collection/ios/v3/
 #define kGoogleAnalyticsTrackingId @"UA-49583937-2"
@@ -134,6 +152,9 @@
 
 #define kStateList @[@"AL",@"AK",@"AZ",@"AR",@"CA",@"CO",@"CT",@"DE",@"FL",@"GA",@"HI",@"ID",@"IL",@"IN",@"IA",@"KS",@"KY",@"LA",@"ME",@"MD",@"MA",@"MI",@"MN",@"MS",@"MO",@"MT",@"NE",@"NV",@"NH",@"NJ",@"NM",@"NY",@"NC",@"ND",@"OH",@"OK",@"OR",@"PA",@"RI",@"SC",@"SD",@"TN",@"TX",@"UT",@"VT",@"VA",@"WA",@"WV",@"WI",@"WY"]
 
+#define kNationalMapCenterLatitude 38.8729021
+#define kNationalMapCenterLongitude -96.1645192
+
 // Service configurations
 #define kSentryDSN @"https://6e7d0ff70d3e4f05a2ae8c53f70c55b1:8bdf476db4344ddaad89108cbd871562@app.getsentry.com/17343"
 
@@ -144,5 +165,14 @@
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
+
+typedef enum {
+    SHModeNone = 0,
+    SHModeSpots,
+    SHModeSpecials,
+    SHModeBeer,
+    SHModeCocktail,
+    SHModeWine
+} SHMode;
 
 #endif

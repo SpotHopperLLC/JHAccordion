@@ -19,11 +19,39 @@ typedef void(^FailureBlock)(NSError *error);
 
 typedef void (^TellMeMyLocationCompletionHandler)();
 
+@protocol TellMeMyLocationDelegate;
+
 @interface TellMeMyLocation : NSObject
 
+@property (weak, nonatomic) id <TellMeMyLocationDelegate> delegate;
+
+- (void)findMe:(CLLocationAccuracy)accuracy;
 - (void)findMe:(CLLocationAccuracy)accuracy found:(FoundBlock)foundBlock failure:(FailureBlock)failureBlock;
-+ (BOOL)needsLocationServicesPermissions;
+
++ (CLLocation *)currentLocation;
++ (NSString *)currentLocationName;
++ (NSString *)currentLocationZip;
+
+// Current Device Location
++ (void)setCurrentDeviceLocation:(CLLocation *)deviceLocation;
 + (CLLocation *)currentDeviceLocation;
++ (NSString *)currentDeviceLocationName;
++ (NSString *)currentDeviceLocationZip;
+
+// Current Selected Location
++ (void)setCurrentSelectedLocation:(CLLocation *)selectedLocation;
++ (CLLocation *)currentSelectedLocation;
++ (NSString *)currentSelectedLocationName;
++ (NSString *)currentSelectedLocationZip;
+
+// Map Center Location
++ (void)setMapCenterLocation:(CLLocation *)mapCenterLocation;
++ (CLLocation *)mapCenterLocation;
++ (NSString *)mapCenterLocationName;
++ (NSString *)mapCenterLocationZip;
+
++ (NSString *)locationNameFromPlacemark:(CLPlacemark *)placemark;
++ (NSString *)shortLocationNameFromPlacemark:(CLPlacemark *)placemark;
 
 + (void)setLastLocation:(CLLocation*)location completionHandler:(TellMeMyLocationCompletionHandler)completionHandler;
 + (void)setLastLocationName:(NSString*)name;
@@ -32,5 +60,14 @@ typedef void (^TellMeMyLocationCompletionHandler)();
 + (NSDate*)lastLocationDate;
 + (NSString*)lastLocationName;
 + (NSString*)lastLocationNameShort;
+
+@end
+
+@protocol TellMeMyLocationDelegate <NSObject>
+
+@optional
+
+- (void)tellMeMyLocation:(TellMeMyLocation *)tmml didFindLocation:(CLLocation *)newLocation;
+- (void)tellMeMyLocation:(TellMeMyLocation *)tmml didFailWithError:(NSError *)error;
 
 @end

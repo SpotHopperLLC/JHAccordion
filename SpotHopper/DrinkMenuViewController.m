@@ -17,9 +17,10 @@
 #import "ErrorModel.h"
 #import "DrinkModel.h"
 #import "DrinkTypeModel.h"
-#import "DrinkSubtypeModel.h"
+#import "DrinkSubTypeModel.h"
 #import "MenuItemModel.h"
 #import "MenuTypeModel.h"
+#import "MenuModel.h"
 #import "Tracker.h"
 
 #import "JHAccordion.h"
@@ -65,7 +66,7 @@
     [self setTitle:@"Full Drink Menu"];
     
     // Shows sidebar button in nav
-    [self showSidebarButton:YES animated:YES];
+//    [self showSidebarButton:YES animated:YES];
     
     // Configures accordion
     _accordion = [[JHAccordion alloc] initWithTableView:_tblMenu];
@@ -102,6 +103,10 @@
         [footerViewController showHome:YES];
         [footerViewController setRightButton:@"Info" image:[UIImage imageNamed:@"btn_context_info"]];
     }];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 - (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {
@@ -227,16 +232,15 @@
 #pragma mark - Private
 
 - (void)fetchMenuItems {
-    
     [self showHUD:@"Loading menu"];
     
-    // Gets menu items
-    Promise *promiseMenuItems = [_spot getMenuItems:@{ kMenuItemParamsInStock : @"true" } success:^(NSArray *menuItemModels, JSONAPI *jsonApi) {
-        _menuItems = menuItemModels;
-        _menuTypes = [[jsonApi linked] objectForKey:@"menu_types"];
-    } failure:^(ErrorModel *errorModel) {
+    Promise *promiseMenuItems = [_spot fetchMenu];
+    [promiseMenuItems then:^(MenuModel *menu) {
+        _menuItems = menu.items;
+        _menuTypes = menu.types;
+    } fail:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
-    }];
+    } always:nil];
     
     // Gets drink form data
     Promise *promiseDrinkForm = [DrinkModel getDrinks:@{kDrinkModelParamsPageSize:@0} success:^(NSArray *drinkModels, JSONAPI *jsonApi) {

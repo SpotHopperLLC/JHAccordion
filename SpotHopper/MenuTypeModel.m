@@ -10,6 +10,14 @@
 
 @implementation MenuTypeModel
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.href];
+}
+
+#pragma mark -
+
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'name' to 'name' property
     // Maps linked resource in JSON key 'drink_type' to 'drinkType' property
