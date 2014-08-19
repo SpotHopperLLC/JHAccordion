@@ -108,6 +108,10 @@ static NSDate *_lastDeviceLocationRefresh;
     [self findMe:accuracy];
 }
 
++ (BOOL)needsLocationServicesPermissions {
+    return ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined);
+}
+
 + (CLLocation *)currentLocation {
     if (_currentDeviceLocation && CLLocationCoordinate2DIsValid(_currentDeviceLocation.coordinate)) {
         return _currentDeviceLocation;
@@ -152,10 +156,6 @@ static NSDate *_lastDeviceLocationRefresh;
             _currentDeviceLocationZip = placemark.postalCode;
         }
     }];
-}
-
-+ (BOOL)needsLocationServicesPermissions {
-    return ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus]==kCLAuthorizationStatusNotDetermined);
 }
 
 + (CLLocation *)currentDeviceLocation {

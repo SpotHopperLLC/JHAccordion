@@ -28,6 +28,8 @@ typedef void (^TellMeMyLocationCompletionHandler)();
 - (void)findMe:(CLLocationAccuracy)accuracy;
 - (void)findMe:(CLLocationAccuracy)accuracy found:(FoundBlock)foundBlock failure:(FailureBlock)failureBlock;
 
++ (BOOL)needsLocationServicesPermissions;
+
 + (CLLocation *)currentLocation;
 + (NSString *)currentLocationName;
 + (NSString *)currentLocationZip;
