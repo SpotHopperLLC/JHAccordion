@@ -1130,6 +1130,12 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [Tracker trackLeavingGlobalSearch:FALSE];
 
     [self.globalSearchViewController cancelSearch];
+
+    UIView *customView = [[self.navigationItem leftBarButtonItem] customView];
+    if (customView.tag == kTagSearchTextField) {
+        UITextField *searchTextField = (UITextField *)customView;
+        [searchTextField resignFirstResponder];
+    }
     
     [self hideSearch:TRUE withCompletionBlock:^{
     }];
