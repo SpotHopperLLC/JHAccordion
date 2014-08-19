@@ -128,6 +128,7 @@
 
 - (void)clearSearch {
     self.searchTerm = nil;
+    self.shouldKeepTitle = FALSE;
     [self.results removeAllObjects];
     self.results = nil;
     [self.tableView reloadData];
