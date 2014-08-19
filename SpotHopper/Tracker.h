@@ -27,6 +27,4 @@
 
 + (void)trackLocationPropertiesForEvent:(NSString *)eventName properties:(NSDictionary *)properties;
 
-+ (void)fetchLocationPropertiesWithCompletionBlock:(void (^)(NSDictionary *locationProperties, NSError *error))completionBlock;
-
 @end

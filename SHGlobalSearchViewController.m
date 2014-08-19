@@ -362,6 +362,7 @@
                 SpotModel *spot = (SpotModel *)result;
                 
                 self.searchTerm = spot.name;
+                self.shouldKeepTitle = TRUE;
                 
                 if (isFindSimilarRow) {
                     // find similar spots
@@ -379,6 +380,7 @@
                 DrinkModel *drink = (DrinkModel *)result;
                 
                 self.searchTerm = drink.name;
+                self.shouldKeepTitle = TRUE;
                 
                 if (isFindSimilarRow) {
                     // find similar drinks

@@ -94,7 +94,7 @@
 }
 
 + (void)trackViewedHome {
-    [self trackLocationPropertiesForEvent:@"Viewed Home" properties:@{}];
+    [self track:@"Viewed Home"];
 }
 
 + (void)trackLeavingHomeToSpots:(BOOL)isSecondary actionButtonTapCount:(NSInteger)actionButtonTapCount {
