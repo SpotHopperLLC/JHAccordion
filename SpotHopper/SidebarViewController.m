@@ -183,7 +183,7 @@
 
 - (void)giveProps {
     // Show alert with textfield to enter code for props
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Who told you about SpotHopper?" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Who told you about SpotHopper?" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
     [alertView setAlertViewStyle:UIAlertViewStylePlainTextInput];
     [[alertView textFieldAtIndex:0] setPlaceholder:@"Enter Code"];
     [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {

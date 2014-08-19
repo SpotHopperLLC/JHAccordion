@@ -8,7 +8,18 @@
 
 #import "AverageReviewModel.h"
 
+#import "SliderModel.h"
+#import "SliderTemplateModel.h"
+
 @implementation AverageReviewModel
+
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.href];
+}
+
+#pragma mark -
 
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'rating' to 'rating' property
@@ -22,6 +33,14 @@
              @"links.spot" : @"spot",
              };
     
+}
+
+- (void)setSliders:(NSArray *)sliders {
+    NSArray *orderedSliders = [sliders sortedArrayUsingComparator:^NSComparisonResult(SliderModel *obj1, SliderModel *obj2) {
+        return [obj1.sliderTemplate.order compare:obj2.sliderTemplate.order];
+    }];
+
+    _sliders = orderedSliders;
 }
 
 @end

@@ -4,7 +4,7 @@ platform :ios, '7.0'
 
 # Networking
 pod 'AFNetworking', '~> 2.0.0'
-pod 'JSONAPI', :git => 'http://github.com/joshdholtz/jsonapi-ios.git'
+pod 'JSONAPI', '~> 0.2'
 pod 'BitlyForiOS', :git => 'https://github.com/brennanMKE/BitlyForiOS.git', :tag => '0.0.3'
 
 # Helpers
@@ -12,12 +12,18 @@ pod 'Promises', :git => 'http://github.com/joshdholtz/ios-promises.git'
 pod 'iRate', '~> 1.8.0'
 
 # UI
-#pod 'JHAccordion', :git => 'https://github.com/joshdholtz/JHAccordion.git'
+pod 'JHAccordion', :git => 'https://github.com/brennanMKE/JHAccordion.git', :tag => 'current'
+pod 'UIView-Autolayout', '~> 0.2.0'
 pod 'JHAutoCompleteTextField', :git => 'http://github.com/joshdholtz/JHAutoCompleteTextField.git'
 pod 'JHSidebar', :git => 'https://github.com/joshdholtz/JHSidebar.git'
-pod 'TTTAttributedLabel', '~> 1.9.0'
-pod 'PhotoZoom', :git => 'https://github.com/brennanMKE/PhotoZoom.git', :tag => '0.0.2'
+pod 'TTTAttributedLabel', '~> 1.10'
+pod 'PhotoZoom', '~> 0.0'
 pod 'MBProgressHUD', '~> 0.8.0'
+pod 'CRGradientNavigationBar', '~> 0.3.0'
+pod 'UIImage+BlurredFrame', '~> 0.0'
+pod 'BlocksKit', '~> 2.2.0'
+pod 'SVPulsingAnnotationView', '~> 0.3.0'
+pod 'JTSReachability', :git => 'http://github.com/brennanMKE/JTSReachability.git', :tag => '0.0.1'
 
 # Debugging
 pod 'Raven', '~> 0.2.0'
@@ -44,6 +50,11 @@ target "SpotHopperDev" do
 end
 
 target "SpotHopperStaging" do
+    # Debugging UI
+    pod 'Reveal-iOS-SDK'
+end
+
+target "SpotHopperStaging2" do
     # Debugging UI
     pod 'Reveal-iOS-SDK'
 end

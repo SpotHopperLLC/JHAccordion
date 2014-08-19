@@ -54,6 +54,8 @@
 
 @implementation CheckinViewController
 
+#pragma mark - View Lifecyle
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -139,6 +141,10 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [super viewWillDisappear:animated];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 #pragma mark - Tracking
@@ -269,10 +275,13 @@
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
     if ([annotation isKindOfClass:[MatchPercentAnnotation class]] == YES) {
-        MatchPercentAnnotation *matchAnnotation = (MatchPercentAnnotation*) annotation;
-        
-        MatchPercentAnnotationView *pin = [[MatchPercentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"current"];
-        [pin setSpot:matchAnnotation.spot];
+        static NSString *MatchPercentAnnotationIdentifier = @"MatchPercentAnnotationView";
+        MatchPercentAnnotation *matchPercentAnnotation = (MatchPercentAnnotation *)annotation;
+        MatchPercentAnnotationView *pin = (MatchPercentAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:MatchPercentAnnotationIdentifier];
+        if (!pin) {
+            pin = [[MatchPercentAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:MatchPercentAnnotationIdentifier calloutView:nil];
+        }
+        [pin setSpot:matchPercentAnnotation.spot];
         [pin setNeedsDisplay];
         
         return pin;
@@ -449,7 +458,7 @@
 - (void)startSearch {
     // Resets pages and clears results
     _page = @1;
-
+    
     [self doSearch];
 }
 

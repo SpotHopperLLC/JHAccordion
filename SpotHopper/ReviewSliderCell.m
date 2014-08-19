@@ -87,6 +87,8 @@
     }
 }
 
+#pragma mark -
+
 - (NSString *)notNilString:(NSString *)string {
     if ([string isKindOfClass:[NSString class]] && string.length) {
         return string;

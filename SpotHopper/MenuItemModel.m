@@ -8,7 +8,19 @@
 
 #import "MenuItemModel.h"
 
+#import "MenuTypeModel.h"
+
 @implementation MenuItemModel
+
+#pragma mark - Debugging
+#pragma mark -
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@ (%@)", self.ID, self.name, self.menuType.name];
+}
+
+#pragma mark - Mapping
+#pragma mark -
 
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'name' to 'name' property
@@ -26,7 +38,7 @@
              @"links.drink" : @"drink",
              @"links.spot" : @"spot",
              @"links.menu_type" : @"menuType",
-             @"links.prices" : @"prices",
+             @"links.prices" : @"prices"
              };
 }
 

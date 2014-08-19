@@ -28,12 +28,17 @@
 #import "ImageModel.h"
 #import "SpotModel.h"
 #import "DrinkTypeModel.h"
-#import "DrinkSubtypeModel.h"
+#import "DrinkSubTypeModel.h"
 #import "DrinkListModel.h"
+#import "DrinkListRequest.h"
 #import "Tracker.h"
+
+#import "SHStyleKit+Additions.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import "JHAccordion.h"
+
+#import "SHNotifications.h"
 
 #import <MapKit/MapKit.h>
 
@@ -111,7 +116,7 @@
     _initialHeaderContentFrame = _headerContent.frame;
     [_tblSliders setTableHeaderView:_headerContent];
     
-    // COnfigure table
+    // Configure table
     [_tblSliders registerNib:[UINib nibWithNibName:@"ReviewSliderCellView" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"ReviewSliderCell"];
     
     // Custom collection view layout
@@ -132,7 +137,7 @@
         _location = newLocation;
         [self fetchSpots];
     } failure:^(NSError *error) {
-        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+        // do nothing
     }];
     
     [self updateView];
@@ -417,7 +422,15 @@
 }
 
 - (IBAction)onClickFindIt:(id)sender {
+#ifdef kIntegrateDeprecatedScreens
+    
+    [SHNotifications displayDrink:_drink];
+    
+#else
+    
     [self goToFindDrinksAt:_drink];
+    
+#endif
 }
 
 #pragma mark - Private Expand
@@ -564,25 +577,12 @@
 }
 
 - (void)fetchSpots {
-    
-    if (_location == nil) {
-        return;
-    }
-    
-    NSDictionary *params = @{
-                             kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:_location.coordinate.latitude],
-                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:_location.coordinate.longitude]
-                             };
-    
-    [_drink getSpots:params success:^(NSArray *spotModels, JSONAPI *jsonApi) {
-        
+    [_drink fetchSpotsForLocation:_location success:^(NSArray *spotModels) {
         _spots = spotModels;
         [self updateViewMap];
-        
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
-    
 }
 
 #pragma mark -
@@ -668,6 +668,15 @@
         
     }
     
+#ifdef kIntegrateDeprecatedScreens
+    
+    UIImage *topBarBackgroundImage = [SHStyleKit drawImage:SHStyleKitDrawingTopBarBackground color:SHStyleKitColorMyWhiteColor size:CGSizeMake(320, 64)];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName: [SHStyleKit color:SHStyleKitColorMyTextColor]}];
+    [self.navigationController.navigationBar setBackgroundImage:topBarBackgroundImage forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    
+#endif
+    
 }
 
 - (void)initSliders {
@@ -727,36 +736,42 @@
 }
 
 - (void)doFindSimilar {
+#ifdef kIntegrateDeprecatedScreens
     
+    [SHNotifications findSimilarToDrink:_drink];
+    
+#else
     if (_location == nil) {
         [self showAlert:@"Oops" message:@"Please choose a location"];
         return;
     }
     
-    [self showHUD:@"Finding similar"];
     NSString *name = [NSString stringWithFormat:@"Similar to %@", _drink.name];
-    [DrinkListModel postDrinkList:name
-                         latitude:[NSNumber numberWithFloat:_location.coordinate.latitude]
-                        longitude:[NSNumber numberWithFloat:_location.coordinate.longitude]
-                          sliders:_averageReview.sliders
-                          drinkId:_drink.ID
-                      drinkTypeId:_drink.drinkType.ID
-                   drinkSubtypeId:_drink.drinkSubtype.ID
-                    baseAlcoholId:nil
-                           spotId:nil
-                     successBlock:^(DrinkListModel *drinkListModel, JSONAPI *jsonApi) {
+    
+    DrinkListRequest *request = [[DrinkListRequest alloc] init];
+    request.name = name;
+    request.coordinate = _location.coordinate;
+    request.sliders = _averageReview.sliders;
+    request.drinkId = _drink.ID;
+    request.drinkTypeId = _drink.drinkType.ID;
+    request.drinkSubTypeId = _drink.drinkSubtype.ID;
+
+    [self showHUD:@"Finding similar"];
+    [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
         [self hideHUD];
         
         DrinkListViewController *viewController = [self.drinksStoryboard instantiateViewControllerWithIdentifier:@"DrinkListViewController"];
         [viewController setDrinkList:drinkListModel];
         
         [self.navigationController pushViewController:viewController animated:YES];
-        
     } failure:^(ErrorModel *errorModel) {
         [self hideHUD];
         [self showAlert:@"Oops" message:errorModel.human];
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
+    
+#endif
+    
 }
 
 - (NSIndexPath *)indexPathForCurrentImage {

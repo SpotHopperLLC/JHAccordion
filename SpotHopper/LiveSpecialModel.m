@@ -13,6 +13,14 @@
 
 @implementation LiveSpecialModel
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@ [%@]", self.ID, self.href, NSStringFromClass([self class])];
+}
+
+#pragma mark -
+
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'text' to 'text' property
     // Maps values in JSON key 'start_date' to 'startDateStr' property
@@ -36,7 +44,7 @@
 
 #pragma mark - API
 
-- (Promise *)getLiveSpecial:(NSDictionary *)params success:(void (^)(LiveSpecialModel *, JSONAPI *))successBlock failure:(void (^)(ErrorModel *))failureBlock {
+- (Promise *)getLiveSpecial:(NSDictionary *)params success:(void (^)(LiveSpecialModel *, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
@@ -46,7 +54,15 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+            
+            // Resolves promise
+            [deferred resolve];
+        }
+        else if (operation.response.statusCode == 200) {
             LiveSpecialModel *model = [jsonApi resourceForKey:@"live_specials"];
             successBlock(model, jsonApi);
             

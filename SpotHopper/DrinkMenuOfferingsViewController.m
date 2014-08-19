@@ -17,7 +17,7 @@
 #import "ErrorModel.h"
 #import "DrinkModel.h"
 #import "DrinkTypeModel.h"
-#import "DrinkSubtypeModel.h"
+#import "DrinkSubTypeModel.h"
 #import "MenuItemModel.h"
 #import "SpotModel.h"
 
@@ -48,7 +48,7 @@
     [self setTitle:@"Full Drink Menu"];
     
     // Shows sidebar button in nav
-    [self showSidebarButton:YES animated:YES];
+//    [self showSidebarButton:YES animated:YES];
     
     // Configures table
     [_tblMenu setTableFooterView:[[UIView alloc] init]];
@@ -77,6 +77,10 @@
         [footerViewController showHome:YES];
         [footerViewController setRightButton:@"Info" image:[UIImage imageNamed:@"btn_context_info"]];
     }];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 - (BOOL)footerViewController:(FooterViewController *)footerViewController clickedButton:(FooterViewButtonType)footerViewButtonType {

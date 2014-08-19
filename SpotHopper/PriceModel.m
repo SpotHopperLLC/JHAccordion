@@ -14,6 +14,14 @@
 
 @implementation PriceModel
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@ [%@]", self.ID, self.priceAndSize, NSStringFromClass([self class])];
+}
+
+#pragma mark -
+
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'cents' to 'cents' property
     // Maps values in JSON key 'size' to 'size' property
@@ -24,14 +32,17 @@
 }
 
 - (NSString *)priceAndSize {
-    if (_cents == nil && _size == nil) return @"";
+    if (_cents.floatValue == 0.0f && !_size.name.length) {
+        return nil;
+    }
     
     NSString *price = [NSNumber numberWithFloat:(_cents.floatValue / 100.0f)].currencyFormat;
-    if (_cents != nil && _size != nil) {
+    if (_cents.floatValue != 0.0f && _size.name.length) {
         return [NSString stringWithFormat:@"%@ / %@", price, _size.name];
     } else if (_cents != nil) {
         return price;
-    } else if (_size != nil) {
+    }
+    else if (_size.name.length) {
         return _size.name;
     }
     

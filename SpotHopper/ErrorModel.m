@@ -10,9 +10,21 @@
 
 @implementation ErrorModel
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.human];
+}
+
+#pragma mark - Getters
+
 - (NSString *)human {
-    NSString *human = [self objectForKey:@"human"];
-    return (human.length > 0 ? human : @"An unknown error occured");
+    if (!_human) {
+        NSString *human = [self objectForKey:@"human"];
+        _human = (human.length > 0 ? human : @"An unknown error occured");
+    }
+    
+    return _human;
 }
 
 - (NSString*)humanValidations {
@@ -38,11 +50,19 @@
 }
 
 - (NSString *)error {
-    return [self objectForKey:@"error"];
+    if (_error) {
+        _error = [self objectForKey:@"error"];
+    }
+    
+    return _error;
 }
 
 - (NSDictionary *)validations {
-    return [self objectForKey:@"validations"];
+    if (!_validations) {
+        _validations = [self objectForKey:@"validations"];
+    }
+    
+    return _validations;
 }
 
 @end

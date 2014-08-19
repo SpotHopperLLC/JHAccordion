@@ -14,25 +14,17 @@
 
 @implementation SpotImageCollectViewCell
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
-
 - (void)setImage:(ImageModel *)imageModel withPlaceholder:(UIImage*)placeholderImage {
-    [_btnFoursquare setHidden:( imageModel.foursquareId.length == 0 )];
+    [self.btnFoursquare setHidden:(!imageModel.foursquareId.length)];
     
     if (imageModel == nil) {
-        [_imgSpot setImage:placeholderImage];
-    } else {
+        [self.imgSpot setImage:placeholderImage];
+    }
+    else {
         [NetworkHelper loadImage:imageModel placeholderImage:placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
-            _imgSpot.image = thumbImage;
+            self.imgSpot.image = thumbImage;
         } withFullImageBlock:^(UIImage *fullImage) {
-            _imgSpot.image = fullImage;
+            self.imgSpot.image = fullImage;
         } withErrorBlock:^(NSError *error) {
             // do nothing
         }];

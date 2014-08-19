@@ -33,15 +33,17 @@
 @class AverageReviewModel;
 @class ErrorModel;
 @class DrinkTypeModel;
-@class DrinkSubtypeModel;
+@class DrinkSubTypeModel;
 @class SpotModel;
+@class DrinkListRequest;
+@class CLLocation;
 
 @interface DrinkModel : SHJSONAPIResource
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *imageUrl;
 @property (nonatomic, strong) DrinkTypeModel *drinkType;
-@property (nonatomic, strong) DrinkSubtypeModel *drinkSubtype;
+@property (nonatomic, strong) DrinkSubTypeModel *drinkSubtype;
 @property (nonatomic, strong) NSString *descriptionOfDrink;
 @property (nonatomic, strong) NSString *recipeOfDrink;
 @property (nonatomic, strong) NSNumber *abv;
@@ -58,6 +60,15 @@
 @property (nonatomic, strong) NSArray *images;
 @property (nonatomic, strong) NSNumber *relevance;
 
+@property (nonatomic, readonly) BOOL isBeer;
+@property (nonatomic, readonly) BOOL isCocktail;
+@property (nonatomic, readonly) BOOL isWine;
+
+@property (nonatomic, readonly) NSString *rating;
+@property (nonatomic, readonly) NSString *ratingShort;
+@property (nonatomic, readonly) NSString *drinkStyle;
+@property (nonatomic, readonly) UIImage *placeholderImage;
+
 - (NSString *)matchPercent;
 
 + (void)cancelGetDrinks;
@@ -68,15 +79,32 @@
 
 - (Promise*)getDrink:(NSDictionary*)params success:(void(^)(DrinkModel *drinkModel, JSONAPI *jsonAPI))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
-- (Promise*)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+- (Promise*)getSpots:(NSDictionary*)params success:(void(^)(NSArray *spotModels, JSONAPI *jsonApi))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock __attribute__ ((deprecated));
+
+#pragma mark - Revised Code for 2.0
+
++ (void)fetchDrinksWithText:(NSString *)text page:(NSNumber *)page success:(void(^)(NSArray *drinks))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise*)fetchDrinksWithText:(NSString *)text page:(NSNumber *)page;
+
+- (void)fetchDrink:(void(^)(DrinkModel *drinkModel))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
+- (Promise*)fetchDrink;
+
+- (void)fetchSpotsForDrinkListRequest:(DrinkListRequest *)request success:(void(^)(NSArray *spotModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
+- (Promise*)fetchSpotsForDrinkListRequest:(DrinkListRequest *)request;
+
+- (void)fetchSpotsForLocation:(CLLocation *)location success:(void(^)(NSArray *spotModels))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
+- (Promise*)fetchSpotsForLocation:(CLLocation *)location;
+
++ (void)fetchDrinkTypes:(void (^)(NSArray *drinkTypes))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise *)fetchDrinkTypes;
+
+#pragma mark -
 
 - (NSString*)abvPercentString;
-
-#pragma mark - Helpers
-
-- (BOOL)isBeer;
-- (BOOL)isCocktail;
-- (BOOL)isWine;
-- (UIImage *)placeholderImage;
 
 @end

@@ -12,12 +12,12 @@
 #import "AgeVerificationViewController.h"
 #import "TutorialViewController.h"
 #import "LaunchViewController.h"
+#import "AccountSettingsViewController.h"
 
 #import "DrinksViewController.h"
 #import "DrinksNearbyViewController.h"
 #import "DrinkListMenuViewController.h"
 #import "DrinkListViewController.h"
-#import "DrinkProfileViewController.h"
 #import "FindSimilarDrinksViewController.h"
 #import "FindDrinksAtViewController.h"
 
@@ -29,7 +29,6 @@
 #import "SearchNewReviewViewController.h"
 #import "SpotListsMenuViewController.h"
 #import "SpotListViewController.h"
-#import "SpotProfileViewController.h"
 
 #import "DrinkMenuViewController.h"
 #import "DrinkMenuOfferingsViewController.h"
@@ -39,6 +38,9 @@
 #import "CheckinViewController.h"
 #import "PhotoAlbumViewController.h"
 #import "PhotoViewerViewController.h"
+
+#import "SHDrinkProfileViewController.h"
+#import "SHSpotProfileViewController.h"
 
 #import "Tracker.h"
 #import "TellMeMyLocation.h"
@@ -62,6 +64,11 @@
 - (void)goToLaunch:(BOOL)animated {
     LaunchViewController *viewController = [[self mainStoryboard] instantiateViewControllerWithIdentifier:@"LaunchViewController"];
     [self presentViewController:viewController animated:animated completion:nil];
+}
+
+- (void)goToAccountSettings:(BOOL)animated {
+    AccountSettingsViewController *viewController = [[self userStoryboard] instantiateViewControllerWithIdentifier:@"AccountSettingsViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - Drinks
@@ -108,9 +115,19 @@
 
 - (void)goToDrinkProfile:(DrinkModel*)drink {
     [Tracker track:@"View Drink Profile" properties:@{@"Name" : drink.name, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    DrinkProfileViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkProfileViewController"];
+    
+    SHDrinkProfileViewController *viewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHDrinkProfileVC"];
     [viewController setDrink:drink];
-    [self.navigationController pushViewController:viewController animated:YES];
+    
+    if (self.navigationController.viewControllers.count && [self isEqual:self.navigationController.viewControllers[0]]) {
+        [self.navigationController pushViewController:viewController animated:TRUE];
+    }
+    else {
+        NSMutableArray *viewControllers = self.navigationController.viewControllers.mutableCopy;
+        [viewControllers removeLastObject];
+        [viewControllers addObject:viewController];
+        [self.navigationController setViewControllers:viewControllers animated:YES];
+    }
 }
 
 #pragma mark - Reviews
@@ -208,9 +225,19 @@
 
 - (void)goToSpotProfile:(SpotModel *)spot {
     [Tracker track:@"View Spot Profile" properties:@{@"Name" : spot.name, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    SpotProfileViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
-    [viewController setSpot:spot];
-    [self.navigationController pushViewController:viewController animated:YES];
+    
+    SHSpotProfileViewController *vc = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHSpotProfileVC"];
+    [vc setSpot:spot];
+    
+    if (self.navigationController.viewControllers.count && [self isEqual:self.navigationController.viewControllers[0]]) {
+        [self.navigationController pushViewController:vc animated:TRUE];
+    }
+    else {
+        NSMutableArray *viewControllers = self.navigationController.viewControllers.mutableCopy;
+        [viewControllers removeLastObject];
+        [viewControllers addObject:vc];
+        [self.navigationController setViewControllers:viewControllers animated:YES];
+    }
 }
 
 #pragma mark - Menu
@@ -249,15 +276,8 @@
 
 - (void)goToCheckIn:(CheckInModel*)checkIn {
     [Tracker track:@"View Check In" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    SpotProfileViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
-    [viewController setCheckIn:checkIn];
-    [viewController setSpot:checkIn.spot];
-    [viewController setIsCheckin:YES];
     
-    NSMutableArray *viewControllers = self.navigationController.viewControllers.mutableCopy;
-    [viewControllers removeLastObject];
-    [viewControllers addObject:viewController];
-    [self.navigationController setViewControllers:viewControllers animated:YES];
+    [self goToSpotProfile:checkIn.spot];
 }
 
 #pragma mark - Commons
@@ -282,7 +302,7 @@
     UIStoryboard *commonStoryboard = [UIStoryboard storyboardWithName:@"Common" bundle:nil];
     PhotoAlbumViewController *viewController = [commonStoryboard instantiateViewControllerWithIdentifier:@"PhotoAlbumViewController"];
     viewController.images = images;
-    viewController.index = index;
+    viewController.selectedIndex = index;
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -291,7 +311,7 @@
     UIStoryboard *commonStoryboard = [UIStoryboard storyboardWithName:@"Common" bundle:nil];
     PhotoViewerViewController *viewController = [commonStoryboard instantiateViewControllerWithIdentifier:@"PhotoViewerViewController"];
     viewController.images = images;
-    viewController.index = index;
+    viewController.selectedIndex = index;
     if (photoAlbum) {
         viewController.delegate = photoAlbum;
     }
@@ -376,6 +396,15 @@
     NSString *name = [self.storyboard valueForKey:@"name"];
     if ([name isEqualToString:@"User"] == NO) {
         return [UIStoryboard storyboardWithName:@"User" bundle:[NSBundle mainBundle]];
+    }
+    
+    return self.storyboard;
+}
+
+- (UIStoryboard*)spotHopperStoryboard {
+    NSString *name = [self.storyboard valueForKey:@"name"];
+    if ([name isEqualToString:@"SpotHopper"] == NO) {
+        return [UIStoryboard storyboardWithName:@"SpotHopper" bundle:[NSBundle mainBundle]];
     }
     
     return self.storyboard;

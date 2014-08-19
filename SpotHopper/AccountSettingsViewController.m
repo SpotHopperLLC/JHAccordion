@@ -25,6 +25,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtBirthday;
 @property (weak, nonatomic) IBOutlet UITextField *txtSex;
 
+@property (weak, nonatomic) IBOutlet UILabel *lblVersion;
+
 @property (nonatomic, strong) UIDatePicker *pickerBirthday;
 @property (nonatomic, strong) UIPickerView *pickerSex;
 
@@ -73,6 +75,10 @@
     [_txtSex setInputView:_pickerSex];
     [_txtSex setInputAccessoryView:[self keyboardToolBar:@selector(onClickChooseSex:)]];
     
+    NSString *versionString = [NSString stringWithFormat:@"v%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
+    
+    _lblVersion.text = versionString;
+    
     [self fetchUser];
 }
 
@@ -81,9 +87,8 @@
     [self.navigationController setNavigationBarHidden:NO animated:animated];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 #pragma mark - Tracking

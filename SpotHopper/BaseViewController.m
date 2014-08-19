@@ -12,6 +12,8 @@
 #import "GAIFields.h"
 #import "GAIDictionaryBuilder.h"
 
+#import "SHAppConfiguration.h"
+
 #import "MBProgressHUD.h"
 
 #import "UIViewController+Navigator.h"
@@ -27,17 +29,27 @@
 #import "DrinkProfileViewController.h"
 #import "SpotProfileViewController.h"
 
+#import "SpotModel.h"
+#import "DrinkModel.h"
 #import "LiveSpecialModel.h"
+
+#import "SHNotifications.h"
 
 #import "AppDelegate.h"
 #import "ClientSessionManager.h"
+#import "JTSReachabilityResponder.h"
 
 #import "TellMeMyLocation.h"
 #import "SSTURLShortener.h"
 #import "UIAlertView+Block.h"
 
+#import "Tracker.h"
+#import "ErrorModel.h"
+
 #import <JHSidebar/JHSidebarViewController.h>
 #import <FacebookSDK/FacebookSDK.h>
+
+#define kTagHUD 1025
 
 typedef void(^AlertBlock)();
 
@@ -78,7 +90,6 @@ typedef void(^AlertBlock)();
     }
     
     if (![options containsObject:kDidLoadOptionsNoBackground]) {
-        
         _backgroundImage = [[UIImageView alloc] initWithFrame:self.view.frame];
         [_backgroundImage setImage:[UIImage imageNamed:( [options containsObject:kDidLoadOptionsFocusedBackground] ? @"app_background" : @"app_background_blurred" )]];
         [_backgroundImage setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
@@ -116,15 +127,17 @@ typedef void(^AlertBlock)();
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-    if (kAnalyticsEnabled) {
+    if ([SHAppConfiguration isTrackingEnabled]) {
         // tracking with Google Analytics (override screenName)
         id tracker = [[GAI sharedInstance] defaultTracker];
         [tracker set:kGAIScreenName value:self.screenName];
         [tracker send:[[GAIDictionaryBuilder createAppView] build]];
     }
     
+#ifndef kDisableSideBarDelegateInBase
     SidebarViewController *sidebar = (SidebarViewController*)self.navigationController.sidebarViewController.rightViewController;
     [sidebar setDelegate:self];
+#endif
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -172,32 +185,38 @@ typedef void(^AlertBlock)();
 #pragma mark - URL Scheme Support
 
 - (void)handleOpenedURL:(NSURL *)openedURL {
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    appDelegate.openedURL = nil;
+    
     NSString *fullURLString = openedURL.absoluteString;
     
-    if ([fullURLString rangeOfString:@"//spots/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
-        NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"//spots/"];
+    if ([fullURLString rangeOfString:@"/spots/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+        NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"/spots/"];
         if (modelId != NSNotFound) {
             SpotModel *spot = [[SpotModel alloc] init];
-            [spot setID:[NSNumber numberWithInteger:modelId]];
-            [self goToSpotProfile:spot];
-        }
-        else {
-            [self goToSpotListMenu];
+            spot.ID = [NSNumber numberWithInteger:modelId];
+            [[spot fetchSpot] then:^(SpotModel *fetchedSpot) {
+                [SHNotifications displaySpot:fetchedSpot];
+            } fail:^(ErrorModel *errorModel) {
+                [self oops:errorModel caller:_cmd message:@"Failure to fetch spot. Please try again."];
+            } always:nil];
         }
     }
-    else if ([fullURLString rangeOfString:@"//drinks/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
-        NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"//drinks/"];
+    else if ([fullURLString rangeOfString:@"/drinks/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+        NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"/drinks/"];
         if (modelId != NSNotFound) {
             DrinkModel *drink = [[DrinkModel alloc] init];
-            [drink setID:[NSNumber numberWithInteger:modelId]];
-            [self goToDrinkProfile:drink];
-        }
-        else {
-            [self goToDrinkListMenu];
+            drink.ID = [NSNumber numberWithInteger:modelId];
+            
+            [[drink fetchDrink] then:^(DrinkModel *fetchedDrink) {
+                [SHNotifications displayDrink:fetchedDrink];
+            } fail:^(ErrorModel *errorModel) {
+                [self oops:errorModel caller:_cmd message:@"Failure to fetch drink. Please try again."];
+            } always:nil];
         }
     }
-    else if ([fullURLString rangeOfString:@"//live_specials/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
-        NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"//live_specials/"];
+    else if ([fullURLString rangeOfString:@"/live_specials/" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+        NSInteger modelId = [self extractNumberFromString:fullURLString withPrefix:@"/live_specials/"];
         if (modelId != NSNotFound) {
             LiveSpecialModel *liveSpecial =[[LiveSpecialModel alloc] init];
             [liveSpecial setID:[NSNumber numberWithInteger:modelId]];
@@ -213,6 +232,29 @@ typedef void(^AlertBlock)();
 
 - (NSString *)screenName {
     return self.title;
+}
+
+#pragma mark - Errors
+
+- (void)oops:(ErrorModel *)errorModel caller:(SEL)caller {
+    [self oops:errorModel caller:caller message:nil];
+}
+
+- (void)oops:(ErrorModel *)errorModel caller:(SEL)caller message:(NSString *)message {
+    [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(caller)];
+    
+    if (![[JTSReachabilityResponder sharedInstance] isReachable]) {
+        [self showAlert:@"Oops" message:@"Sorry, the network is currently not accessible. Please try again later."];
+    }
+    else if (message.length) {
+        [self showAlert:@"Oops" message:message];
+    }
+    else if (errorModel.human.length && !message.length) {
+        [self showAlert:@"Oops" message:errorModel.human];
+    }
+    else {
+        [self showAlert:@"Oops" message:@"Something went wrong. Please try again."];
+    }
 }
 
 #pragma mark - SidebarViewControllerDelegate
@@ -267,17 +309,15 @@ typedef void(^AlertBlock)();
 }
 
 - (void)showHUD:(NSString *)text time:(NSInteger)time image:(NSString*)image block:(dispatch_block_t)block {
-    [_HUD hide:YES];
-    [_HUD removeFromSuperview];
-    _HUD = nil;
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[[[UIApplication sharedApplication] delegate] window] animated:YES];
+    hud.tag = kTagHUD;
+    hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:image]];
+    [hud setLabelText:text];
+	hud.mode = MBProgressHUDModeCustomView;
+    [hud setDimBackground:YES];
+    [hud removeFromSuperViewOnHide];
     
-    _HUD = [MBProgressHUD showHUDAddedTo:[[[UIApplication sharedApplication] delegate] window] animated:YES];
-    _HUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:image]];
-    [_HUD setLabelText:text];
-	_HUD.mode = MBProgressHUDModeCustomView;
-    [_HUD setDimBackground:YES];
-    
-	[_HUD hide:YES afterDelay:time];
+	[hud hide:YES afterDelay:time];
     
     if (block != nil) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, time * NSEC_PER_SEC), dispatch_get_main_queue(), block);
@@ -289,19 +329,16 @@ typedef void(^AlertBlock)();
 }
 
 - (void)showHUD:(NSString*)label {
-    [_HUD hide:YES];
-    [_HUD removeFromSuperview];
-    _HUD = nil;
-    
-    _HUD = [MBProgressHUD showHUDAddedTo:[[[UIApplication sharedApplication] delegate] window] animated:YES];
-    [_HUD setMode:MBProgressHUDModeIndeterminate];
-    [_HUD setDimBackground:YES];
-    [_HUD setLabelText:label];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[[[UIApplication sharedApplication] delegate] window] animated:YES];
+    hud.tag = kTagHUD;
+    [hud setMode:MBProgressHUDModeIndeterminate];
+    [hud setDimBackground:YES];
+    [hud setLabelText:label];
+    [hud removeFromSuperViewOnHide];
 }
 
 - (void)hideHUD {
-    [_HUD hide:YES];
-    _HUD = nil;
+    [MBProgressHUD hideHUDForView:[[[UIApplication sharedApplication] delegate] window] animated:YES];
 }
 
 - (UIAlertView *)showAlert:(NSString *)title message:(NSString *)message {
@@ -408,6 +445,62 @@ typedef void(^AlertBlock)();
     self.view.frame = rect;
     
     [UIView commitAnimations];
+}
+
+- (NSTimeInterval)getKeyboardDuration:(NSNotification *)notification {
+	NSDictionary *info = [notification userInfo];
+	
+	NSTimeInterval duration;
+	
+	NSValue *durationValue = [info objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+	[durationValue getValue:&duration];
+	
+	return duration;
+}
+
+- (CGFloat)getKeyboardHeight:(NSNotification *)notification forBeginning:(BOOL)forBeginning {
+	NSDictionary *info = [notification userInfo];
+	
+	CGFloat keyboardHeight;
+    
+    NSValue *boundsValue = nil;
+    if (forBeginning) {
+        boundsValue = [info valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    }
+    else {
+        boundsValue = [info valueForKey:UIKeyboardFrameEndUserInfoKey];
+    }
+    
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    if (UIDeviceOrientationIsLandscape(orientation)) {
+        keyboardHeight = [boundsValue CGRectValue].size.width;
+    }
+    else {
+        keyboardHeight = [boundsValue CGRectValue].size.height;
+    }
+    
+	return keyboardHeight;
+}
+
+- (UIViewAnimationOptions)getKeyboardAnimationCurve:(NSNotification *)notification {
+	UIViewAnimationCurve curve = [[notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    
+    switch (curve) {
+        case UIViewAnimationCurveEaseInOut:
+            return UIViewAnimationOptionCurveEaseInOut;
+            break;
+        case UIViewAnimationCurveEaseIn:
+            return UIViewAnimationOptionCurveEaseIn;
+            break;
+        case UIViewAnimationCurveEaseOut:
+            return UIViewAnimationOptionCurveEaseOut;
+            break;
+        case UIViewAnimationCurveLinear:
+            return UIViewAnimationOptionCurveLinear;
+            break;
+    }
+    
+    return kNilOptions;
 }
 
 #pragma mark - Text
@@ -530,6 +623,50 @@ typedef void(^AlertBlock)();
     return image;
 }
 
+- (UIImage *)resizeImage:(UIImage *)image toMaximumSize:(CGSize)maxSize {
+    CGFloat widthRatio = maxSize.width / image.size.width;
+    CGFloat heightRatio = maxSize.height / image.size.height;
+    CGFloat scaleRatio = widthRatio < heightRatio ? widthRatio : heightRatio;
+    CGSize newSize = CGSizeMake(image.size.width * scaleRatio, image.size.height * scaleRatio);
+    
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, image.scale);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *resizedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return resizedImage;
+}
+
+- (UIImage *)screenshotOfView:(UIView *)view excludingViews:(NSArray *)excludedViews {
+    if (!floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+        NSCAssert(FALSE, @"iOS 7 or later is required.");
+    }
+    
+    // hide all excluded views before capturing screen and keep initial value
+    NSMutableArray *hiddenValues = [@[] mutableCopy];
+    for (NSUInteger index=0;index<excludedViews.count;index++) {
+        [hiddenValues addObject:[NSNumber numberWithBool:((UIView *)excludedViews[index]).hidden]];
+        ((UIView *)excludedViews[index]).hidden = TRUE;
+    }
+    
+    UIImage *image = nil;
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, 0.0);
+    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:excludedViews.count > 0];
+    
+    image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    // reset hidden values
+    for (NSUInteger index=0;index<excludedViews.count;index++) {
+        ((UIView *)excludedViews[index]).hidden = [[hiddenValues objectAtIndex:index] boolValue];
+    }
+    
+    // clean up
+    hiddenValues = nil;
+    
+    return image;
+}
+
 #pragma mark - Sharing
 
 - (void)shortenLink:(NSString *)link withCompletionBlock:(void (^)(NSString *shortedLink, NSError *error))completionBlock {
@@ -629,6 +766,40 @@ typedef void(^AlertBlock)();
 
 - (void)onClickShowSidebar:(id)sender {
     [self.navigationController.sidebarViewController showRightSidebar:YES];
+}
+
+#pragma mark - Embedding View Controllers
+
+- (void)fillSubview:(UIView *)subview inSuperView:(UIView *)superview {
+    NSDictionary *views = NSDictionaryOfVariableBindings(subview);
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[subview]|" options:0 metrics:nil views:views]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[subview]|" options:0 metrics:nil views:views]];
+}
+
+- (void)embedViewController:(UIViewController *)vc intoView:(UIView *)superview placementBlock:(void (^)(UIView *view))placementBlock {
+    NSAssert(vc, @"VC must be define");
+    NSAssert(superview, @"Superview must be defined");
+    
+    vc.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addChildViewController:vc];
+    [superview addSubview:vc.view];
+    
+    if (placementBlock) {
+        placementBlock(vc.view);
+    }
+    else {
+        [self fillSubview:vc.view inSuperView:superview];
+    }
+    
+    [vc didMoveToParentViewController:self];
+}
+
+- (void)removeEmbeddedViewController:(UIViewController *)vc {
+    if (vc) {
+        [vc willMoveToParentViewController:self];
+        [vc.view removeFromSuperview];
+        [vc removeFromParentViewController];
+    }
 }
 
 #pragma mark - Sidebar
@@ -900,6 +1071,12 @@ typedef void(^AlertBlock)();
     }
     
     return !isLoggedIn;
+}
+
+#pragma mark - Helper Methods
+
+- (BOOL)hasFourInchDisplay {
+    return ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone && [UIScreen mainScreen].bounds.size.height == 568.0);
 }
 
 #pragma mark - Private

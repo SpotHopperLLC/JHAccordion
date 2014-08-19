@@ -12,6 +12,7 @@
 #import "UIActionSheet+Block.h"
 
 #import "SHNavigationBar.h"
+#import "SHAppConfiguration.h"
 
 #import "ClientSessionManager.h"
 #import "AverageReviewModel.h"
@@ -19,7 +20,7 @@
 #import "CheckInModel.h"
 #import "DrinkModel.h"
 #import "DrinkTypeModel.h"
-#import "DrinkSubtypeModel.h"
+#import "DrinkSubTypeModel.h"
 #import "DrinkListModel.h"
 #import "ErrorModel.h"
 #import "ImageModel.h"
@@ -41,12 +42,20 @@
 #import "MockData.h"
 
 #import "TellMeMyLocation.h"
+#import "SHNotifications.h"
+
+#import "BFURL.h"
+#import "BFAppLink.h"
 
 #import "Mixpanel.h"
 #import "GAI.h"
 #import "iRate.h"
 #import "Tracker.h"
+#import "Tracker+Events.h"
+#import "Tracker+People.h"
 #import "UserState.h"
+
+#import "SHStyleKit.h"
 
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
 #import <JSONAPI/JSONAPI.h>
@@ -78,8 +87,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 //    [[ClientSessionManager sharedClient] setHasSeenLaunch:NO];
+
+    [self applyAppearance];
     
-    [Tracker logError:@"App Delegate launching" class:[self class] trace:NSStringFromSelector(_cmd)];
+    //[Tracker logInfo:@"App Delegate launching" class:[self class] trace:NSStringFromSelector(_cmd)];
     
     [iRate sharedInstance].delegate = self;
     
@@ -117,9 +128,13 @@
         NSLog(@"We DON'T have an active FB session");
         [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
+    
+    if ([SHAppConfiguration isTrackingEnabled]) {
+        NSString *token = [SHAppConfiguration mixpanelToken];
+        [Mixpanel sharedInstanceWithToken:token];
+        [Tracker trackUserWithProperties:@{ @"Last Launch Date" : [NSDate date] }];
+        [Tracker trackUserAction:@"App Launch"];
 
-    if (kAnalyticsEnabled) {
-        [Mixpanel sharedInstanceWithToken:kMixPanelToken];
 //        Examples:
 //        Mixpanel *mixpanel = [Mixpanel sharedInstance];
 //        [mixpanel track:@"Plan Selected" properties:@{@"Gender": @"Female", @"Plan": @"Premium"}];
@@ -142,8 +157,9 @@
     NSDate *firstUseDate = [UserState firstUseDate];
     if (!firstUseDate) {
         [UserState setFirstUseDate:[NSDate date]];
-        if (kAnalyticsEnabled) {
-            [[Mixpanel sharedInstance] track:@"First Use"];
+        if ([SHAppConfiguration isTrackingEnabled]) {
+            [Tracker trackFirstUse];
+            [Tracker trackUserFirstUse];
         }
     }
 
@@ -174,23 +190,22 @@
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    BFURL *parsedUrl = [BFURL URLWithURL:url];
     
-    NSString *fullURLString = [url absoluteString];
-    
-    if (!fullURLString.length) {
-        // The URL's absoluteString is nil. There's nothing more to do.
-        return NO;
-    }
-    
+    NSString *fullURLString = parsedUrl.targetURL.absoluteString;
     NSInteger maximumExpectedLength = 2048;
     
-    if ([fullURLString length] > maximumExpectedLength) {
+    if (!fullURLString.length || fullURLString.length > maximumExpectedLength) {
         // The URL is longer than we expect. Stop servicing it.
         return NO;
     }
     
-    if ([kAppURLScheme length] && [fullURLString hasPrefix:kAppURLScheme]) {
-        self.openedURL = url;
+    if ([self isURLSchemePrefixForURLString:fullURLString] || [fullURLString hasPrefix:kWebsiteUrl]) {
+        self.openedURL = parsedUrl.targetURL;
+        if (parsedUrl.appLinkReferer.sourceURL) {
+            self.sourceURL = parsedUrl.appLinkReferer.sourceURL;
+        }
+        [SHNotifications appOpenedWithURL:url];
         return YES;
     }
     else {
@@ -230,9 +245,11 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    [self refreshDeviceLocationWithCompletionBlock:^{
-        // do nothing
-    }];
+    if ([[ClientSessionManager sharedClient] hasSeenLaunch]) {
+        [self refreshDeviceLocationWithCompletionBlock:^{
+            // do nothing
+        }];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -245,6 +262,20 @@
 }
 
 #pragma mark - Private
+
+- (BOOL)isURLSchemePrefixForURLString:(NSString *)urlString {
+    NSArray *urlTypes = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"];
+    for (NSDictionary *urlType in urlTypes) {
+        NSArray *urlSchemes = urlType[@"CFBundleURLSchemes"];
+        for (NSString *urlScheme in urlSchemes) {
+            if (![urlScheme hasPrefix:@"fb"] && [urlString hasPrefix:urlScheme]) {
+                return TRUE;
+            }
+        }
+    }
+    
+    return FALSE;
+}
 
 - (void)prepareResources {
     // Initializes resource linkng for JSONAPI
@@ -276,7 +307,7 @@
     [JSONAPIResourceModeler useResource:[CheckInModel class] toLinkedType:@"checkins"];
     [JSONAPIResourceModeler useResource:[DrinkModel class] toLinkedType:@"drinks"];
     [JSONAPIResourceModeler useResource:[DrinkTypeModel class] toLinkedType:@"drink_types"];
-    [JSONAPIResourceModeler useResource:[DrinkSubtypeModel class] toLinkedType:@"drink_subtypes"];
+    [JSONAPIResourceModeler useResource:[DrinkSubTypeModel class] toLinkedType:@"drink_subtypes"];
     [JSONAPIResourceModeler useResource:[DrinkListModel class] toLinkedType:@"drink_lists"];
     [JSONAPIResourceModeler useResource:[ErrorModel class] toLinkedType:@"errors"];
     [JSONAPIResourceModeler useResource:[ImageModel class] toLinkedType:@"images"];
@@ -293,6 +324,38 @@
     [JSONAPIResourceModeler useResource:[SpotListModel class] toLinkedType:@"spot_lists"];
     [JSONAPIResourceModeler useResource:[SpotListMoodModel class] toLinkedType:@"spot_list_moods"];
     [JSONAPIResourceModeler useResource:[UserModel class] toLinkedType:@"users"];
+    
+    NSDateFormatter *dateFormatterSeconds = [[NSDateFormatter alloc] init];
+    [dateFormatterSeconds setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+    [dateFormatterSeconds setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
+    
+    NSDateFormatter *dateFormatterMilliseconds = [[NSDateFormatter alloc] init];
+    [dateFormatterMilliseconds setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+    [dateFormatterMilliseconds setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];
+
+    // Register formatting
+    [JSONAPIResourceFormatter registerFormat:@"Date" withBlock:^id(id jsonValue) {
+        NSDate *date = nil;
+        NSError *error = nil;
+        
+        if ([jsonValue isKindOfClass:[NSString class]]) {
+            NSString *dateString = (NSString *)jsonValue;
+            if (dateString.length) {
+                if (![dateFormatterSeconds getObjectValue:&date forString:jsonValue range:nil error:&error]) {
+                    // if it fails with seconds try milliseconds
+                    if (![dateFormatterMilliseconds getObjectValue:&date forString:jsonValue range:nil error:&error]) {
+                        DebugLog(@"Date '%@' could not be parsed: %@", jsonValue, error);
+                    }
+                }
+            }
+        }
+        
+        return date;
+    }];
+}
+
+- (void)applyAppearance {
+    // do nothing
 }
 
 #pragma mark - Location

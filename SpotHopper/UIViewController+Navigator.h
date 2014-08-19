@@ -31,6 +31,7 @@
 - (void)goToAgeVerification:(BOOL)animated;
 - (void)goToTutorial:(BOOL)animated;
 - (void)goToLaunch:(BOOL)animated;
+- (void)goToAccountSettings:(BOOL)animated;
 
 // Drinks
 - (void)goToDrinks;
@@ -88,5 +89,8 @@
 - (UIStoryboard*)checkinStoryboard;
 - (UIStoryboard*)shareStoryboard;
 - (UIStoryboard*)userStoryboard;
+
+// Redesign 2.0
+- (UIStoryboard*)spotHopperStoryboard;
 
 @end

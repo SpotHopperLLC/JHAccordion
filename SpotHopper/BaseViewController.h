@@ -22,15 +22,16 @@
 
 #import "TTTAttributedLabel+QuickFonting.h"
 
-@class LiveSpecialModel, SpotModel;
+@class LiveSpecialModel, SpotModel, ErrorModel;
 @class LiveSpecialViewController;
 
 @interface BaseViewController : JHPullRefreshViewController<FooterViewControllerDelegate, ShareViewControllerDelegate>
 
-@property (nonatomic, strong) MBProgressHUD *HUD;
 @property (nonatomic, strong) LiveSpecialViewController *liveSpecialViewController;
 @property (nonatomic, strong) ShareViewController *shareViewController;
 @property (nonatomic, readonly) NSString *screenName; // override
+
+@property (readonly) BOOL hasFourInchDisplay;
 
 - (void)viewDidLoad:(NSArray*)options;
 
@@ -43,6 +44,9 @@
 - (void)showHUD:(NSString*)label;
 - (void)hideHUD;
 
+- (void)oops:(ErrorModel *)errorModel caller:(SEL)caller;
+- (void)oops:(ErrorModel *)errorModel caller:(SEL)caller message:(NSString *)message;
+
 - (UIAlertView*)showAlert:(NSString*)title message:(NSString*)message;
 - (UIAlertView *)showAlert:(NSString *)title message:(NSString *)message block:(void(^)())alertBlock;
 
@@ -52,6 +56,9 @@
 -(void)keyboardWillShow:(NSNotification*)notification;
 -(void)keyboardWillHide:(NSNotification*)notification;
 -(void)setViewMovedUp:(BOOL)movedUp keyboardFrame:(CGRect)keyboardFrame;
+- (NSTimeInterval)getKeyboardDuration:(NSNotification *)notification;
+- (CGFloat)getKeyboardHeight:(NSNotification *)notification forBeginning:(BOOL)forBeginning;
+- (UIViewAnimationOptions)getKeyboardAnimationCurve:(NSNotification *)notification;
 
 - (CGFloat)heightForAttributedString:(NSAttributedString *)text maxWidth:(CGFloat)maxWidth;
 - (CGFloat)heightForString:(NSString *)text font:(UIFont *)font maxWidth:(CGFloat)maxWidth;
@@ -62,6 +69,8 @@
 - (void)changeLabelToLatoLight:(UIView *)view withBoldText:(NSString *)boldText;
 
 - (UIImage *)whiteScreenImageForFrame:(CGRect)frame;
+- (UIImage *)resizeImage:(UIImage *)image toMaximumSize:(CGSize)maxSize;
+- (UIImage *)screenshotOfView:(UIView *)view excludingViews:(NSArray *)excludedViews;
 
 - (void)shortenLink:(NSString *)link withCompletionBlock:(void (^)(NSString *shortedLink, NSError *error))completionBlock;
 
@@ -74,6 +83,10 @@
 - (void)onClickBack:(id)sender;
 - (void)onClickShowSidebar:(id)sender;
 
+- (void)fillSubview:(UIView *)subview inSuperView:(UIView *)superview;
+- (void)embedViewController:(UIViewController *)vc intoView:(UIView *)superview placementBlock:(void (^)(UIView *view))placementBlock;
+- (void)removeEmbeddedViewController:(UIViewController *)vc;
+
 - (void)showSidebarButton:(BOOL)show animated:(BOOL)animated;
 - (void)showSidebarButton:(BOOL)show animated:(BOOL)animated navigationItem:(UINavigationItem*)navigationItem;
 
@@ -81,6 +94,9 @@
 - (FooterViewController*)footerViewController;
 
 - (void)slideCell:(UITableViewCell *)cell aboveTableViewMidwayPoint:(UITableView *)tableView;
+
+// URL Scheme Support
+- (void)handleOpenedURL:(NSURL *)openedURL;
 
 // LiveSpecialViewController
 - (void)showLiveSpecialViewController:(LiveSpecialModel *)liveSpecial needToFetch:(BOOL)needToFetch;

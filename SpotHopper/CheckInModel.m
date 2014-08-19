@@ -13,6 +13,14 @@
 
 @implementation CheckInModel
 
+#pragma mark - Debugging
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ - %@ [%@]", self.ID, self.href, NSStringFromClass([self class])];
+}
+
+#pragma mark -
+
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'text' to 'text' property
     // Maps values in JSON key 'created_at' to 'createdAtStr' property
@@ -41,7 +49,15 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+            
+            // Resolves promise
+            [deferred resolve];
+        }
+        else if (operation.response.statusCode == 200) {
             CheckInModel *model = [jsonApi resourceForKey:@"checkins"];
             successBlock(model, jsonApi);
             
@@ -68,7 +84,15 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+            
+            // Resolves promise
+            [deferred resolve];
+        }
+        else if (operation.response.statusCode == 200) {
             CheckInModel *model = [jsonApi resourceForKey:@"checkins"];
             successBlock(model, jsonApi);
             
@@ -95,7 +119,15 @@
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        if (operation.response.statusCode == 200) {
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil, nil);
+            }
+            
+            // Resolves promise
+            [deferred resolve];
+        }
+        else if (operation.response.statusCode == 200) {
             CheckInModel *model = [jsonApi resourceForKey:@"checkins"];
             successBlock(model, jsonApi);
             

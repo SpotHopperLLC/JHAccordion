@@ -39,8 +39,12 @@
 #import "CheckInModel.h"
 #import "Tracker.h"
 
+#import "SHStyleKit+Additions.h"
+
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import "JHAccordion.h"
+
+#import "SHNotifications.h"
 
 #import <MapKit/MapKit.h>
 
@@ -641,6 +645,17 @@
     }
     
     [NetworkHelper preloadImageModels:_spot.images];
+    
+#ifdef kIntegrateDeprecatedScreens
+    
+    UIImage *topBarBackgroundImage = [SHStyleKit drawImage:SHStyleKitDrawingTopBarBackground color:SHStyleKitColorMyWhiteColor size:CGSizeMake(320, 64)];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName: [SHStyleKit color:SHStyleKitColorMyTextColor]}];
+    [self.navigationController.navigationBar setBackgroundImage:topBarBackgroundImage forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+//    self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
+
+#endif
+
 }
 
 - (void)updateViewSpecials:(BOOL)animate {
@@ -660,6 +675,12 @@
 }
 
 - (void)doFindSimilar {
+#ifdef kIntegrateDeprecatedScreens
+
+    [SHNotifications findSimilarToSpot:_spot];
+    
+#else
+    
     [self showHUD:@"Finding similar"];
     
     NSString *name = [NSString stringWithFormat:@"Similar to %@", _spot.name];
@@ -676,6 +697,8 @@
         [self showAlert:@"Oops" message:errorModel.human];
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
+    
+#endif
 }
 
 - (NSIndexPath *)indexPathForCurrentImage {

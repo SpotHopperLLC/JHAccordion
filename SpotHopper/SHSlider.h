@@ -8,15 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+#import "SliderModel.h"
+
 @protocol SHSliderDelegate;
 
-@interface SHSlider : UIControl
+@interface SHSlider : UISlider
 
 @property (weak, nonatomic) IBOutlet id<SHSliderDelegate>delegate;
 
 @property (nonatomic, assign) CGFloat selectedValue;
-@property (nonatomic, assign) BOOL vibeFeel;
-@property (nonatomic, assign) BOOL userMoved;
+@property (nonatomic, assign, getter = isVibeFeel) BOOL vibeFeel;
+@property (nonatomic, assign, getter = isUserMoved) BOOL userMoved;
+
+@property (nonatomic, weak) SliderModel *sliderModel;
 
 - (void)setSelectedValue:(CGFloat)selectedValue animated:(BOOL)animated;
 
@@ -33,4 +37,3 @@
 - (void)slider:(SHSlider *)slider valueDidFinishChanging:(CGFloat)value;
 
 @end
-
