@@ -1,12 +1,15 @@
-spothopper-ios
+SpotHopper-iOS
 ==============
+
+https://github.com/SpotHopperLLC/SpotHopper-iOS
 
 ## Setup
 
-1. `gem install cocoapods`
-2. Clone repository - `git clone git@github.com:RokkinCat/spothopper-ios.git`
-2. `cd spothopper-ios`
-3. CocoaPods
-  1. Install CocoaPods gem - `gem install cocoapods`
-  2. Install all pods - `pod install`
-4. Open `SpotHopper.xcworkspace`
+1. Clone repository 
+   * `git clone git@github.com:SpotHopperLLC/SpotHopper-iOS.git`
+2. Install CocoaPods as a Ruby Gem
+   * `gem install cocoapods`
+3. Use new `pod` command to install Pods
+   * `pod install`
+4. Open Workspace
+   * `SpotHopper.xcworkspace`
