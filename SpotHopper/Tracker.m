@@ -107,10 +107,8 @@
                                                   }];
     
     if (updateLocation) {
-        [self fetchLocationPropertiesWithCompletionBlock:^(NSDictionary *locationProperties, NSError *error) {
-            [updatedProperties addEntriesFromDictionary:locationProperties];
-            [mixpanel.people set:updatedProperties];
-        }];
+        [updatedProperties addEntriesFromDictionary:[self locationProperties]];
+        [mixpanel.people set:updatedProperties];
     }
     else {
         [mixpanel.people set:updatedProperties];
@@ -146,16 +144,19 @@
 #pragma mark -
 
 + (void)trackLocationPropertiesForEvent:(NSString *)eventName properties:(NSDictionary *)properties {
-    [self fetchLocationPropertiesWithCompletionBlock:^(NSDictionary *locationProperties, NSError *error) {
-        NSMutableDictionary *updatedProperties = properties.mutableCopy;
-        [updatedProperties addEntriesFromDictionary:locationProperties];
-        [Tracker track:eventName properties:updatedProperties];
-    }];
+    NSMutableDictionary *updatedProperties = properties.mutableCopy;
+    [updatedProperties addEntriesFromDictionary:[self locationProperties]];
+    [Tracker track:eventName properties:updatedProperties];
 }
 
-+ (void)fetchLocationPropertiesWithCompletionBlock:(void (^)(NSDictionary *locationProperties, NSError *error))completionBlock {
-    CLLocation *mapCenterLocation = [TellMeMyLocation mapCenterLocation];
++ (NSDictionary *)locationProperties {
     CLLocation *currentLocation = [TellMeMyLocation currentLocation];
+    CLLocation *mapCenterLocation = [TellMeMyLocation mapCenterLocation];
+    NSString *currentLocationName = [TellMeMyLocation currentLocationName];
+    NSString *mapCenterLocationName = [TellMeMyLocation mapCenterLocationName];
+    NSString *currentLocationZip = [TellMeMyLocation currentLocationZip];
+    NSString *mapCenterLocationZip = [TellMeMyLocation mapCenterLocationZip];
+
     CLLocationDistance distance = [mapCenterLocation distanceFromLocation:currentLocation];
     
     NSString *authorizationStatus = nil;
@@ -176,66 +177,23 @@
             break;
     }
     
-    [self fetchPropertiesForLocation:[TellMeMyLocation currentLocation] prefix:@"Current" withCompletionBlock:^(NSDictionary *currentLocationProperties, NSError *error) {
-        if (error) {
-            [self logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
-        }
-        [self fetchPropertiesForLocation:[TellMeMyLocation mapCenterLocation] prefix:@"Center" withCompletionBlock:^(NSDictionary *mapCenterLocationProperties, NSError *error) {
-            if (error) {
-                [self logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
-            }
-
-            NSMutableDictionary *locationProperties = @{}.mutableCopy;
-            if (currentLocationProperties) {
-                [locationProperties addEntriesFromDictionary:currentLocationProperties];
-            }
-            
-            if (mapCenterLocationProperties) {
-                [locationProperties addEntriesFromDictionary:mapCenterLocationProperties];
-            }
-            
-            locationProperties[@"Distance in meters"] = [NSNumber numberWithFloat:distance];
-            locationProperties[@"Location Services"] = authorizationStatus;
-            
-            if (completionBlock) {
-                completionBlock(locationProperties, nil);
-            }
-        }];
-    }];
-}
-
-+ (void)fetchPropertiesForLocation:(CLLocation *)location prefix:(NSString *)prefix withCompletionBlock:(void (^)(NSDictionary *locationProperties, NSError *error))completionBlock {
-    if (!location && completionBlock) {
-        completionBlock(nil, nil);
-        return;
-    }
+    NSMutableDictionary *locationProperties = @{}.mutableCopy;
+    locationProperties[@"Distance in meters"] = [NSNumber numberWithFloat:distance];
+    locationProperties[@"Location Services"] = authorizationStatus;
     
-    [[[CLGeocoder alloc] init] reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
-        if (error) {
-            [Tracker logError:error class:[Tracker class] trace:NSStringFromSelector(_cmd)];
-            if (completionBlock) {
-                completionBlock(nil, error);
-            }
-        }
-        else if (placemarks.count) {
-            CLPlacemark *placemark = placemarks[0];
-            NSString *locationName = [TellMeMyLocation shortLocationNameFromPlacemark:placemark];
-            
-            NSDictionary *properties = @{
-                                         [NSString stringWithFormat:@"%@ location name", prefix] : locationName.length ? locationName : kUnknown,
-                                         [NSString stringWithFormat:@"%@ location zip", prefix] : placemark.postalCode.length ? placemark.postalCode : kUnknown,
-                                         [NSString stringWithFormat:@"%@ latitude", prefix] : [NSNumber numberWithFloat:location.coordinate.latitude],
-                                         [NSString stringWithFormat:@"%@ longitude", prefix] : [NSNumber numberWithFloat:location.coordinate.longitude]
-                                       };
-            
-            if (completionBlock) {
-                completionBlock(properties, nil);
-            }
-        }
-        else if (completionBlock) {
-            completionBlock(nil, nil);
-        }
-    }];
+    locationProperties[@"Current location name"] = currentLocationName.length ? currentLocationName : kUnknown;
+    locationProperties[@"Current location zip"] = currentLocationZip.length ? currentLocationZip : kUnknown;
+    locationProperties[@"Current latitude"] = [NSNumber numberWithFloat:currentLocation.coordinate.latitude];
+    locationProperties[@"Current longitude"] = [NSNumber numberWithFloat:currentLocation.coordinate.longitude];
+    
+    locationProperties[@"Center location name"] = mapCenterLocationName.length ? mapCenterLocationName : kUnknown;
+    locationProperties[@"Center location zip"] = mapCenterLocationZip.length ? mapCenterLocationZip : kUnknown;
+    locationProperties[@"Center latitude"] = [NSNumber numberWithFloat:mapCenterLocation.coordinate.latitude];
+    locationProperties[@"Center longitude"] = [NSNumber numberWithFloat:mapCenterLocation.coordinate.longitude];
+    
+    DebugLog(@"locationProperties: %@", locationProperties);
+    
+    return locationProperties;
 }
 
 #pragma mark - Private

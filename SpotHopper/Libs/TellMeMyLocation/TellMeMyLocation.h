@@ -27,12 +27,28 @@ typedef void (^TellMeMyLocationCompletionHandler)();
 
 - (void)findMe:(CLLocationAccuracy)accuracy;
 - (void)findMe:(CLLocationAccuracy)accuracy found:(FoundBlock)foundBlock failure:(FailureBlock)failureBlock;
-+ (CLLocation *)currentDeviceLocation;
-+ (CLLocation *)currentSelectedLocation;
-+ (void)setCurrentSelectedLocation:(CLLocation *)selectedLocation;
+
 + (CLLocation *)currentLocation;
-+ (CLLocation *)mapCenterLocation;
++ (NSString *)currentLocationName;
++ (NSString *)currentLocationZip;
+
+// Current Device Location
++ (void)setCurrentDeviceLocation:(CLLocation *)deviceLocation;
++ (CLLocation *)currentDeviceLocation;
++ (NSString *)currentDeviceLocationName;
++ (NSString *)currentDeviceLocationZip;
+
+// Current Selected Location
++ (void)setCurrentSelectedLocation:(CLLocation *)selectedLocation;
++ (CLLocation *)currentSelectedLocation;
++ (NSString *)currentSelectedLocationName;
++ (NSString *)currentSelectedLocationZip;
+
+// Map Center Location
 + (void)setMapCenterLocation:(CLLocation *)mapCenterLocation;
++ (CLLocation *)mapCenterLocation;
++ (NSString *)mapCenterLocationName;
++ (NSString *)mapCenterLocationZip;
 
 + (NSString *)locationNameFromPlacemark:(CLPlacemark *)placemark;
 + (NSString *)shortLocationNameFromPlacemark:(CLPlacemark *)placemark;

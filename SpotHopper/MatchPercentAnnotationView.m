@@ -152,10 +152,16 @@
             self.percentLabel.hidden = FALSE;
             self.highlightedPercentLabel.hidden = FALSE;
             
-            NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:kFontSize] };
-            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:self.spot.matchPercent attributes:attributes];
-            self.percentLabel.attributedText = attributedString;
-            self.highlightedPercentLabel.attributedText = attributedString;
+            if (self.spot.matchPercent.length) {
+                NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:kFontSize] };
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:self.spot.matchPercent attributes:attributes];
+                self.percentLabel.attributedText = attributedString;
+                self.highlightedPercentLabel.attributedText = attributedString;
+            }
+            else {
+                self.percentLabel.attributedText = nil;
+                self.highlightedPercentLabel.attributedText = nil;
+            }
         }
         else {
             self.innerImageView.hidden = TRUE;

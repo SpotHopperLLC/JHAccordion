@@ -38,6 +38,15 @@ NSString * const kTellMeMyLocationChangedNotification = @"TellMeMyLocationChange
 static CLLocation *_currentDeviceLocation;
 static CLLocation *_currentSelectedLocation;
 static CLLocation *_currentMapCenterLocation;
+
+static NSString *_currentDeviceLocationName;
+static NSString *_currentSelectedLocationName;
+static NSString *_currentMapCenterLocationName;
+
+static NSString *_currentDeviceLocationZip;
+static NSString *_currentSelectedLocationZip;
+static NSString *_currentMapCenterLocationZip;
+
 static NSDate *_lastDeviceLocationRefresh;
 
 #pragma mark - Public Implemention
@@ -99,26 +108,6 @@ static NSDate *_lastDeviceLocationRefresh;
     [self findMe:accuracy];
 }
 
-+ (CLLocation *)currentDeviceLocation {
-    return _currentDeviceLocation;
-}
-
-+ (CLLocation *)currentSelectedLocation {
-    return _currentSelectedLocation;
-}
-
-+ (void)setCurrentSelectedLocation:(CLLocation *)selectedLocation {
-    _currentSelectedLocation = selectedLocation;
-}
-
-+ (CLLocation *)mapCenterLocation {
-    return _currentMapCenterLocation;
-}
-
-+ (void)setMapCenterLocation:(CLLocation *)mapCenterLocation {
-    _currentMapCenterLocation = mapCenterLocation;
-}
-
 + (CLLocation *)currentLocation {
     if (_currentDeviceLocation && CLLocationCoordinate2DIsValid(_currentDeviceLocation.coordinate)) {
         return _currentDeviceLocation;
@@ -128,6 +117,113 @@ static NSDate *_lastDeviceLocationRefresh;
     }
     
     return nil;
+}
+
++ (NSString *)currentLocationName {
+    if (_currentDeviceLocation && _currentDeviceLocationName.length) {
+        return _currentDeviceLocationName;
+    }
+    else if (_currentDeviceLocation && _currentDeviceLocationName.length) {
+        return _currentDeviceLocationName;
+    }
+    
+    return nil;
+}
+
++ (NSString *)currentLocationZip {
+    if (_currentDeviceLocation && _currentDeviceLocationZip.length) {
+        return _currentDeviceLocationZip;
+    }
+    else if (_currentDeviceLocation && _currentSelectedLocationZip.length) {
+        return _currentSelectedLocationZip;
+    }
+    
+    return nil;
+}
+
++ (void)setCurrentDeviceLocation:(CLLocation *)deviceLocation {
+    _currentDeviceLocation = deviceLocation;
+    _lastDeviceLocationRefresh = [NSDate date];
+
+    [[[CLGeocoder alloc] init] reverseGeocodeLocation:deviceLocation completionHandler:^(NSArray *placemarks, NSError *error) {
+        if (!error && placemarks.count) {
+            CLPlacemark *placemark = placemarks[0];
+            _currentDeviceLocationName = [TellMeMyLocation shortLocationNameFromPlacemark:placemark];
+            _currentDeviceLocationZip = placemark.postalCode;
+        }
+    }];
+}
+
++ (CLLocation *)currentDeviceLocation {
+    return _currentDeviceLocation;
+}
+
++ (NSString *)currentDeviceLocationName {
+    if (_currentDeviceLocation && _currentDeviceLocationName.length) {
+        return _currentDeviceLocationName;
+    }
+    
+    return nil;
+}
+
++ (NSString *)currentDeviceLocationZip {
+    return _currentDeviceLocationZip;
+}
+
++ (void)setCurrentSelectedLocation:(CLLocation *)selectedLocation {
+    _currentSelectedLocation = selectedLocation;
+    
+    [[[CLGeocoder alloc] init] reverseGeocodeLocation:selectedLocation completionHandler:^(NSArray *placemarks, NSError *error) {
+        if (!error && placemarks.count) {
+            CLPlacemark *placemark = placemarks[0];
+            _currentSelectedLocationName = [TellMeMyLocation shortLocationNameFromPlacemark:placemark];
+            _currentSelectedLocationZip = placemark.postalCode;
+        }
+    }];
+}
+
++ (CLLocation *)currentSelectedLocation {
+    return _currentSelectedLocation;
+}
+
++ (NSString *)currentSelectedLocationName {
+    if (_currentSelectedLocation && _currentSelectedLocationName.length) {
+        return _currentSelectedLocationName;
+    }
+    
+    return nil;
+}
+
++ (NSString *)currentSelectedLocationZip {
+    return _currentSelectedLocationZip;
+}
+
++ (CLLocation *)mapCenterLocation {
+    return _currentMapCenterLocation;
+}
+
++ (void)setMapCenterLocation:(CLLocation *)mapCenterLocation {
+    _currentMapCenterLocation = mapCenterLocation;
+    
+    [[[CLGeocoder alloc] init] reverseGeocodeLocation:mapCenterLocation completionHandler:^(NSArray *placemarks, NSError *error) {
+        if (!error && placemarks.count) {
+            CLPlacemark *placemark = placemarks[0];
+            _currentMapCenterLocationName = [TellMeMyLocation shortLocationNameFromPlacemark:placemark];
+            _currentMapCenterLocationZip = placemark.postalCode;
+        }
+    }];
+}
+
++ (NSString *)mapCenterLocationName {
+    if (_currentMapCenterLocation && _currentMapCenterLocationName.length) {
+        return _currentMapCenterLocationName;
+    }
+    
+    return nil;
+}
+
++ (NSString *)mapCenterLocationZip {
+    return _currentMapCenterLocationZip;
 }
 
 + (void)setLastLocation:(CLLocation*)location completionHandler:(TellMeMyLocationCompletionHandler)completionHandler {
@@ -292,9 +388,9 @@ static NSDate *_lastDeviceLocationRefresh;
 }
 
 - (void)finishWithBestLocation:(CLLocation *)location error:(NSError *)error {
-    _currentDeviceLocation = location;
-    _lastDeviceLocationRefresh = [NSDate date];
-    // the following line crashes with bad memory access for no apparent reason
+    if (!error) {
+        [TellMeMyLocation setCurrentDeviceLocation:location];
+    }
     
     if ((error || !location) && self.failureBlock) {
         [self fail:error];

@@ -246,8 +246,10 @@
     nameLabel.text = spot.name;
     NSString *special = [spot.dailySpecials specialsForToday];
     NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:14.0], NSForegroundColorAttributeName : [SHStyleKit myTextColor] };
-    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:special attributes:attributes];
-    specialTextView.attributedText = attributedString;
+    if (special.length) {
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:special attributes:attributes];
+        specialTextView.attributedText = attributedString;
+    }
     [specialTextView setContentOffset:CGPointMake(0, 0)];
     [specialTextView flashScrollIndicators];
     
