@@ -81,6 +81,27 @@
     return [self timeStringForDate:self.endTime];
 }
 
+#pragma mark - Public
+
++ (SpecialModel *)specialForToday:(NSArray *)specials {
+    NSDate *today = [NSDate date];
+    
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendarUnit units = NSWeekdayCalendarUnit;
+    NSDateComponents *components = [calendar components:units fromDate:today];
+    
+    NSInteger weekday = components.weekday;
+    
+    for (SpecialModel *special in specials) {
+        if (weekday == special.weekday) {
+            return special;
+        }
+    }
+    
+    // no match
+    return nil;
+}
+
 #pragma mark - Private
 
 - (NSString *)timeStringForDate:(NSDate *)date {
@@ -208,7 +229,6 @@
 
 // Create special
 + (void)createSpecial:(SpecialModel *)special success:(void(^)(SpecialModel *special))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
-    
     NSString *startTime = special.startTimeString;
     NSString *endTime = special.endTimeString;
     
@@ -257,11 +277,11 @@
 
 // Update Special
 + (void)updateSpecial:(SpecialModel *)special success:(void(^)(SpecialModel *special))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
-    
     NSString *startTime = special.startTimeString;
     NSString *endTime = special.endTimeString;
     
     NSDictionary *params = @{
+                             @"id" : [NSNumber numberWithInteger:(NSUInteger)special.ID],
                              @"text" : special.text.length ? special.text : [NSNull null],
                              @"weekday" : [NSNumber numberWithInteger:special.weekday],
                              @"like_count" : [NSNumber numberWithInteger:special.likeCount],

@@ -27,6 +27,10 @@
 @property (readonly, nonatomic) NSString *startTimeString;
 @property (readonly, nonatomic) NSString *endTimeString;
 
++ (SpecialModel *)specialForToday:(NSArray *)specials;
+
+////// Service Layer //////
+
 + (void)fetchSpecialsForSpot:(SpotModel *)spot success:(void(^)(NSArray *specials))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 + (Promise *)fetchSpecialsForSpot:(SpotModel *)spot;
 
