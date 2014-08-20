@@ -148,6 +148,7 @@ static NSDate *_lastDeviceLocationRefresh;
 + (void)setCurrentDeviceLocation:(CLLocation *)deviceLocation {
     _currentDeviceLocation = deviceLocation;
     _lastDeviceLocationRefresh = [NSDate date];
+    
 
     [[[CLGeocoder alloc] init] reverseGeocodeLocation:deviceLocation completionHandler:^(NSArray *placemarks, NSError *error) {
         if (!error && placemarks.count) {
@@ -285,6 +286,10 @@ static NSDate *_lastDeviceLocationRefresh;
         return @"Middle of Nowhere";
     }
     
+    if ([self isAtTheCastle:placemark.location]) {
+        return @"Stefan's Castle";
+    }
+    
     if (placemark.subLocality.length && placemark.locality.length && placemark.administrativeArea.length) {
         NSString *locationName = [NSString stringWithFormat:@"%@, %@, %@", placemark.subLocality, placemark.locality, placemark.administrativeArea];
         
@@ -306,6 +311,10 @@ static NSDate *_lastDeviceLocationRefresh;
 + (NSString *)shortLocationNameFromPlacemark:(CLPlacemark *)placemark {
     if (!placemark) {
         return @"Middle of Nowhere";
+    }
+    
+    if ([self isAtTheCastle:placemark.location]) {
+        return @"Stefan's Castle";
     }
     
     if (placemark.locality.length && placemark.administrativeArea.length) {
@@ -369,6 +378,14 @@ static NSDate *_lastDeviceLocationRefresh;
     else {
         return @"Undefined";
     }
+}
+
++ (BOOL)isAtTheCastle:(CLLocation *)location {
+    CLLocation *castleLocation = [[CLLocation alloc] initWithLatitude:43.0838262 longitude:-87.8743507];
+    CLLocationDistance distance = [castleLocation distanceFromLocation:location];
+
+    // distance in meters
+    return distance < 25;
 }
 
 #pragma mark - Private Implemention

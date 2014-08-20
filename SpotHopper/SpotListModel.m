@@ -589,11 +589,15 @@
         if (operation.response.statusCode == 200 || operation.response.statusCode == 204) {
             [SpotListModel refreshSpotlistCache];
             
-            successBlock(TRUE);
+            if (successBlock) {
+                successBlock(TRUE);
+            }
         }
         else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
-            failureBlock(errorModel);
+            if (failureBlock) {
+                failureBlock(errorModel);
+            }
         }
     }];
 }

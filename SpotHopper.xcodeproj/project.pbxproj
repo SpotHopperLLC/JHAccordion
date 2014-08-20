@@ -2358,6 +2358,10 @@
 		268542E7199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */; };
 		268542E8199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */; };
 		268542E9199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */; };
+		2686683419A3EE0F00284A74 /* SpecialModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2686683319A3EE0F00284A74 /* SpecialModel.m */; };
+		2686683519A3EE0F00284A74 /* SpecialModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2686683319A3EE0F00284A74 /* SpecialModel.m */; };
+		2686683819A3F91500284A74 /* SHModelFormatters.m in Sources */ = {isa = PBXBuildFile; fileRef = 2686683719A3F91500284A74 /* SHModelFormatters.m */; };
+		2686683919A3F91500284A74 /* SHModelFormatters.m in Sources */ = {isa = PBXBuildFile; fileRef = 2686683719A3F91500284A74 /* SHModelFormatters.m */; };
 		2688CF1D194B3A0600C37DE3 /* SpotListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */; };
 		2688CF1E194B3A0600C37DE3 /* SpotListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */; };
 		2688CF1F194B3A0600C37DE3 /* SpotListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */; };
@@ -3138,6 +3142,10 @@
 		267E06D31922CCA2004457B4 /* SpotHopperStaging2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperStaging2-Info.plist"; sourceTree = "<group>"; };
 		268542E3199050E4008DBFB2 /* SHHomeNavigationButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHHomeNavigationButton.h; sourceTree = "<group>"; };
 		268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHHomeNavigationButton.m; sourceTree = "<group>"; };
+		2686683219A3EE0F00284A74 /* SpecialModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialModel.h; sourceTree = "<group>"; };
+		2686683319A3EE0F00284A74 /* SpecialModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpecialModel.m; sourceTree = "<group>"; };
+		2686683619A3F91500284A74 /* SHModelFormatters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHModelFormatters.h; sourceTree = "<group>"; };
+		2686683719A3F91500284A74 /* SHModelFormatters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHModelFormatters.m; sourceTree = "<group>"; };
 		2688CF1B194B3A0600C37DE3 /* SpotListRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotListRequest.h; sourceTree = "<group>"; };
 		2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotListRequest.m; sourceTree = "<group>"; };
 		268C8CA0190089D00011E0F8 /* UserState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserState.h; sourceTree = "<group>"; };
@@ -3851,6 +3859,8 @@
 				038664EE186D391E00985CEC /* UserModel.m */,
 				2690EB72199901220026DC52 /* SHPlacemark.h */,
 				2690EB73199901220026DC52 /* SHPlacemark.m */,
+				2686683219A3EE0F00284A74 /* SpecialModel.h */,
+				2686683319A3EE0F00284A74 /* SpecialModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -4042,6 +4052,8 @@
 				039B7021188759B100C590F8 /* NSArray+HoursOfOperation.m */,
 				26EB38AD18FC7E1100E84A3B /* NSNull+Debugging.h */,
 				26EB38AE18FC7E1100E84A3B /* NSNull+Debugging.m */,
+				2686683619A3F91500284A74 /* SHModelFormatters.h */,
+				2686683719A3F91500284A74 /* SHModelFormatters.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -7046,8 +7058,10 @@
 				26C428E0192D625A00B67F10 /* SHBaseNavigationController.m in Sources */,
 				03CAC02518E7716400FAC5F5 /* FooterViewController.m in Sources */,
 				03CAC02618E7716400FAC5F5 /* SHLabelLatoRegular.m in Sources */,
+				2686683919A3F91500284A74 /* SHModelFormatters.m in Sources */,
 				03CAC02818E7716400FAC5F5 /* ReviewCell.m in Sources */,
 				2654B8C8192BB6E000A66BED /* SHMapOverlayCollectionViewController.m in Sources */,
+				2686683519A3EE0F00284A74 /* SpecialModel.m in Sources */,
 				03CAC02918E7716400FAC5F5 /* SHViewTranlucentWhiteFooter.m in Sources */,
 				2640B013193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */,
 				2654B8B4192BB6E000A66BED /* SHHomeMapViewController.m in Sources */,
@@ -7568,8 +7582,10 @@
 				26C428DF192D625A00B67F10 /* SHBaseNavigationController.m in Sources */,
 				267E057E1922CC48004457B4 /* FooterViewController.m in Sources */,
 				267E057F1922CC48004457B4 /* SHLabelLatoRegular.m in Sources */,
+				2686683819A3F91500284A74 /* SHModelFormatters.m in Sources */,
 				267E05801922CC48004457B4 /* ReviewCell.m in Sources */,
 				2654B8C7192BB6E000A66BED /* SHMapOverlayCollectionViewController.m in Sources */,
+				2686683419A3EE0F00284A74 /* SpecialModel.m in Sources */,
 				267E05811922CC48004457B4 /* SHViewTranlucentWhiteFooter.m in Sources */,
 				2640B012193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */,
 				2654B8B3192BB6E000A66BED /* SHHomeMapViewController.m in Sources */,

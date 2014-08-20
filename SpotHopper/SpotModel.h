@@ -62,6 +62,7 @@
 @property (nonatomic, strong) NSArray *images;
 @property (nonatomic, strong) NSArray *dailySpecials;
 @property (nonatomic, strong) NSArray *liveSpecials;
+@property (nonatomic, strong) NSArray *specials;
 @property (nonatomic, strong) NSNumber *relevance;
 
 @property (nonatomic, strong) MenuModel *menu;

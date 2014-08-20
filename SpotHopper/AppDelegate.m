@@ -15,6 +15,8 @@
 #import "SHAppConfiguration.h"
 
 #import "ClientSessionManager.h"
+
+#import "SHModelFormatters.h"
 #import "AverageReviewModel.h"
 #import "BaseAlcoholModel.h"
 #import "CheckInModel.h"
@@ -36,6 +38,7 @@
 #import "SpotTypeModel.h"
 #import "SpotListModel.h"
 #import "SpotListMoodModel.h"
+#import "SpecialModel.h"
 #import "UserModel.h"
 #import "UserState.h"
 
@@ -278,7 +281,7 @@
 }
 
 - (void)prepareResources {
-    // Initializes resource linkng for JSONAPI
+    // Initializes resource linking for JSONAPI
     [JSONAPIResourceLinker link:@"average_review" toLinkedType:@"average_reviews"];
     [JSONAPIResourceLinker link:@"base_alcohol" toLinkedType:@"base_alcohols"];
     [JSONAPIResourceLinker link:@"checkin" toLinkedType:@"checkins"];
@@ -299,6 +302,7 @@
     [JSONAPIResourceLinker link:@"spot_type" toLinkedType:@"spot_types"];
     [JSONAPIResourceLinker link:@"spot_list" toLinkedType:@"spot_lists"];
     [JSONAPIResourceLinker link:@"spot_list_mood" toLinkedType:@"spot_list_moods"];
+    [JSONAPIResourceLinker link:@"daily_special" toLinkedType:@"daily_specials"];
     [JSONAPIResourceLinker link:@"user" toLinkedType:@"users"];
     
     // Initializes model linking for JSONAPI
@@ -323,35 +327,12 @@
     [JSONAPIResourceModeler useResource:[SpotTypeModel class] toLinkedType:@"spot_types"];
     [JSONAPIResourceModeler useResource:[SpotListModel class] toLinkedType:@"spot_lists"];
     [JSONAPIResourceModeler useResource:[SpotListMoodModel class] toLinkedType:@"spot_list_moods"];
+    [JSONAPIResourceModeler useResource:[SpotListModel class] toLinkedType:@"spot_lists"];
+    [JSONAPIResourceModeler useResource:[SpecialModel class] toLinkedType:@"daily_specials"];
+    [JSONAPIResourceModeler useResource:[SpecialModel class] toLinkedType:@"specials"];
     [JSONAPIResourceModeler useResource:[UserModel class] toLinkedType:@"users"];
     
-    NSDateFormatter *dateFormatterSeconds = [[NSDateFormatter alloc] init];
-    [dateFormatterSeconds setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
-    [dateFormatterSeconds setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
-    
-    NSDateFormatter *dateFormatterMilliseconds = [[NSDateFormatter alloc] init];
-    [dateFormatterMilliseconds setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
-    [dateFormatterMilliseconds setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];
-
-    // Register formatting
-    [JSONAPIResourceFormatter registerFormat:@"Date" withBlock:^id(id jsonValue) {
-        NSDate *date = nil;
-        NSError *error = nil;
-        
-        if ([jsonValue isKindOfClass:[NSString class]]) {
-            NSString *dateString = (NSString *)jsonValue;
-            if (dateString.length) {
-                if (![dateFormatterSeconds getObjectValue:&date forString:jsonValue range:nil error:&error]) {
-                    // if it fails with seconds try milliseconds
-                    if (![dateFormatterMilliseconds getObjectValue:&date forString:jsonValue range:nil error:&error]) {
-                        DebugLog(@"Date '%@' could not be parsed: %@", jsonValue, error);
-                    }
-                }
-            }
-        }
-        
-        return date;
-    }];
+    [SHModelFormatters registerFormatters];
 }
 
 - (void)applyAppearance {

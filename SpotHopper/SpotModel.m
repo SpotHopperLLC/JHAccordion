@@ -16,6 +16,7 @@
 #import "MenuTypeModel.h"
 #import "MenuModel.h"
 #import "SpotTypeModel.h"
+#import "SpecialModel.h"
 
 #import "Tracker.h"
 
@@ -55,6 +56,7 @@
     // Maps linked resource in JSON key 'images' to 'images' property
     // Maps linked resource in JSON key 'live_specials' to 'liveSpecials' property
     // Maps linked resource in JSON key 'average_review' to 'averageReview' property
+    // Maps linked resource in JSON key 'specials' to 'specials' property
     return @{
              @"name" : @"name",
              @"image_url" : @"imageUrl",
@@ -70,12 +72,12 @@
              @"match" : @"match",
              @"relevance" : @"relevance",
              @"daily_specials" : @"dailySpecials",
-             
              @"links.slider_templates" : @"sliderTemplates",
              @"links.spot_type" : @"spotType",
              @"links.images" : @"images",
              @"links.live_specials" : @"liveSpecials",
              @"links.average_review" : @"averageReview",
+             @"links.specials" : @"specials"
              };
 }
 
@@ -246,6 +248,7 @@
         }
         else if (operation.response.statusCode == 200) {
             SpotModel *model = [jsonApi resourceForKey:@"spots"];
+            
             successBlock(model, jsonApi);
             
             // Resolves promise
