@@ -19,8 +19,8 @@ typedef enum {
     SHWeekdaySaturday = 6
 } SHWeekday;
 
-@interface SHModelFormatters : NSObject
+@interface SHModelResourceManager : NSObject
 
-+ (void)registerFormatters;
++ (void)prepareResources;
 
 @end

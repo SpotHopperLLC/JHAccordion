@@ -8,6 +8,7 @@
 
 #import "SHSpecialsCollectionViewManager.h"
 
+#import "SpecialModel.h"
 #import "SpotModel.h"
 
 #import "SHStyleKit+Additions.h"
@@ -99,15 +100,25 @@
     }
 }
 
-- (NSUInteger)indexForViewInCollectionViewCell:(UIView *)view {
-    NSUInteger index = NSNotFound;
-    
+- (UICollectionViewCell *)cellForViewInCollectionViewCell:(UIView *)view {
     while (![view isKindOfClass:[UICollectionViewCell class]] && view.superview) {
         view = view.superview;
     }
     
     if ([view isKindOfClass:[UICollectionViewCell class]]) {
         UICollectionViewCell *cell = (UICollectionViewCell *)view;
+        return cell;
+    }
+    
+    return nil;
+    
+}
+
+- (NSUInteger)indexForViewInCollectionViewCell:(UIView *)view {
+    NSUInteger index = NSNotFound;
+    UICollectionViewCell *cell = [self cellForViewInCollectionViewCell:view];
+    
+    if (cell) {
         NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
         if (indexPath) {
             index = indexPath.item;
@@ -115,6 +126,28 @@
     }
     
     return index;
+}
+
+- (void)updateCellAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.item < self.spots.count) {
+        UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
+        SpotModel *spot = (SpotModel *)self.spots[indexPath.item];
+        SpecialModel *special = [spot specialForToday];
+        
+        UIButton *likeButton = [self buttonInView:cell withTag:kSpecialCellLikeButton];
+        likeButton.highlighted = special.userLikesSpecial;
+        
+        UILabel *likeLabel = [self labelInView:cell withTag:kSpecialCellLikeLabel];
+        likeLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)special.likeCount];
+    }
+}
+
+- (SpotModel *)spotAtIndex:(NSUInteger)index {
+    if (index < self.spots.count) {
+        return self.spots[index];
+    }
+    
+    return nil;
 }
 
 - (BOOL)hasPrevious {
@@ -244,16 +277,22 @@
     [positionLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     
     nameLabel.text = spot.name;
-    NSString *special = [spot.dailySpecials specialsForToday];
-    NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:14.0], NSForegroundColorAttributeName : [SHStyleKit myTextColor] };
-    if (special.length) {
-        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:special attributes:attributes];
-        specialTextView.attributedText = attributedString;
-    }
-    [specialTextView setContentOffset:CGPointMake(0, 0)];
-    [specialTextView flashScrollIndicators];
     
-    likeLabel.text = @"0";
+    SpecialModel *special = [spot specialForToday];
+    
+    if (special.text.length) {
+        NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:14.0], NSForegroundColorAttributeName : [SHStyleKit myTextColor] };
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:special.text attributes:attributes];
+        specialTextView.attributedText = attributedString;
+        [specialTextView setContentOffset:CGPointMake(0, 0)];
+        [specialTextView flashScrollIndicators];
+    }
+    else {
+        specialTextView.text = @"No Special Found (BETA)";
+    }
+    
+    likeButton.highlighted = special.userLikesSpecial;
+    likeLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)special.likeCount];
     
     positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", (long)index+1, (long)self.spots.count];
     

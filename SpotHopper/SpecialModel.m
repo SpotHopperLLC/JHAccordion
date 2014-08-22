@@ -33,8 +33,8 @@
              @"text" : @"text",
              @"weekday" : @"Weekday:weekday",
              @"like_count" : @"likeCount",
-             @"start_time" : @"Time:startTime",
-             @"end_time" : @"Time:endTime",
+             @"start_time" : @"startTimeString",
+             @"duration_minutes" : @"TimeInterval:duration",
              @"links.spot" : @"spot"
             };
 }
@@ -73,12 +73,66 @@
     return weekday;
 }
 
-- (NSString *)startTimeString {
-    return [self timeStringForDate:self.startTime];
+- (NSDate *)startTime {
+    NSDate *date = nil;
+    
+    if (self.startTimeString.length == 8) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"HH:mm:ss"];
+        date = [dateFormatter dateFromString:self.startTimeString];
+    }
+    
+    return date;
 }
 
-- (NSString *)endTimeString {
-    return [self timeStringForDate:self.endTime];
+- (NSDate *)endTime {
+    NSDate *endTime = [self.startTime dateByAddingTimeInterval:self.duration];
+    
+    return endTime;
+}
+
+- (NSUInteger)durationInMinutes {
+    return self.duration / 60;
+}
+
+- (NSDate *)startTimeForToday {
+    return [self startTimeForDate:[NSDate date]];
+}
+
+- (NSDate *)endTimeForToday {
+    return [self endTimeForDate:[NSDate date]];
+}
+
+- (NSDate *)startTimeForDate:(NSDate *)date {
+    return [self adjustedDateForDate:date fromTimeString:self.startTimeString];
+}
+
+- (NSDate *)endTimeForDate:(NSDate *)date {
+    NSDate *adjustedDate =  [self startTimeForDate:date];
+    adjustedDate = [adjustedDate dateByAddingTimeInterval:self.duration];
+    
+    return adjustedDate;
+}
+
+- (NSDate *)adjustedDateForDate:(NSDate *)date fromTimeString:(NSString *)timeString {
+    NSDate *adjustedDate = nil;
+    
+    if (timeString.length) {
+        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSCalendarUnit units = NSMonthCalendarUnit|NSDayCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit|NSTimeZoneCalendarUnit;
+        NSDateComponents *components = [calendar components:units fromDate:date];
+        
+        NSArray *parts = [timeString componentsSeparatedByString:@":"];
+        if (parts.count == 3) {
+            [components setHour:[parts[0] integerValue]];
+            [components setMinute:[parts[1] integerValue]];
+            [components setSecond:[parts[2] integerValue]];
+        }
+        
+        date = [calendar dateFromComponents:components];
+    }
+    
+    return adjustedDate;
 }
 
 #pragma mark - Public
@@ -120,9 +174,6 @@
     NSDate *startDate = [NSDate date];
     NSString *path = [NSString stringWithFormat:@"/api/spots/%ld/daily_specials", (long)[spot.ID integerValue]];
     
-    DebugLog(@"params: %@", params);
-    DebugLog(@"path: %@", path);
-    
     [[ClientSessionManager sharedClient] GET:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
@@ -136,6 +187,13 @@
         }
         else if (operation.response.statusCode == 200) {
             NSArray *specials = [jsonApi resourcesForKey:@"daily_specials"];
+
+            // TODO: temporarily add duration
+            for (SpecialModel *special in specials) {
+                if (special.duration == 0) {
+                    special.duration = 120*60;
+                }
+            }
             
             // only track a successful search
             [Tracker track:@"Fetch Specials" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
@@ -174,9 +232,6 @@
     NSDate *startDate = [NSDate date];
     NSString *path = [NSString stringWithFormat:@"/api/daily_specials/%ld", (long)[special.ID integerValue]];
     
-    DebugLog(@"params: %@", params);
-    DebugLog(@"path: %@", path);
-    
     [[ClientSessionManager sharedClient] GET:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
@@ -197,6 +252,9 @@
             SpecialModel *special = nil;
             if (specials.count) {
                 special = (SpecialModel *)specials[0];
+                if (special.duration == 0) {
+                    special.duration = 120*60;
+                }
             }
             
             if (successBlock) {
@@ -230,15 +288,14 @@
 // Create special
 + (void)createSpecial:(SpecialModel *)special success:(void(^)(SpecialModel *special))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
     NSString *startTime = special.startTimeString;
-    NSString *endTime = special.endTimeString;
     
     NSDictionary *params = @{
                              @"text" : special.text.length ? special.text : [NSNull null],
                              @"weekday" : [NSNumber numberWithInteger:special.weekday],
                              @"like_count" : [NSNumber numberWithInteger:special.likeCount],
                              @"start_time" : startTime.length ? startTime : [NSNull null],
-                             @"end_time" : endTime.length ? endTime : [NSNull null],
-                             @"spot_id" : special.spot ? [NSNumber numberWithInteger:(NSInteger)special.spot.ID] : [NSNull null],
+                             @"duration_minutes" : [NSNumber numberWithInteger:special.durationInMinutes],
+                             @"spot_id" : special.spot ? [NSNumber numberWithInteger:(NSInteger)special.spot.ID] : [NSNull null]
                              };
     
     NSDate *startDate = [NSDate date];
@@ -278,7 +335,6 @@
 // Update Special
 + (void)updateSpecial:(SpecialModel *)special success:(void(^)(SpecialModel *special))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
     NSString *startTime = special.startTimeString;
-    NSString *endTime = special.endTimeString;
     
     NSDictionary *params = @{
                              @"id" : [NSNumber numberWithInteger:(NSUInteger)special.ID],
@@ -286,8 +342,8 @@
                              @"weekday" : [NSNumber numberWithInteger:special.weekday],
                              @"like_count" : [NSNumber numberWithInteger:special.likeCount],
                              @"start_time" : startTime.length ? startTime : [NSNull null],
-                             @"end_time" : endTime.length ? endTime : [NSNull null],
-                             @"spot_id" : special.spot ? [NSNumber numberWithInteger:(NSInteger)special.spot.ID] : [NSNull null],
+                             @"duration_minutes" : [NSNumber numberWithInteger:special.durationInMinutes],
+                             @"spot_id" : special.spot ? [NSNumber numberWithInteger:(NSInteger)special.spot.ID] : [NSNull null]
                              };
     
     NSDate *startDate = [NSDate date];

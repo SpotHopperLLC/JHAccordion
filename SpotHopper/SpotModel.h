@@ -40,7 +40,7 @@
 #import <JSONAPI/JSONAPI.h>
 #import <CoreLocation/CoreLocation.h>
 
-@class ErrorModel, AverageReviewModel, SpotTypeModel, LiveSpecialModel, MenuModel, CLLocation;
+@class ErrorModel, AverageReviewModel, SpotTypeModel, LiveSpecialModel, MenuModel, SpecialModel, CLLocation;
 
 @interface SpotModel : SHJSONAPIResource
 
@@ -72,6 +72,7 @@
 - (NSString *)cityState;
 - (NSString *)matchPercent;
 - (UIImage *)placeholderImage;
+- (SpecialModel *)specialForToday;
 - (LiveSpecialModel*)currentLiveSpecial;
 
 + (void)cancelGetSpots;

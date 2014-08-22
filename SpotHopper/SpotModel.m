@@ -17,6 +17,8 @@
 #import "MenuModel.h"
 #import "SpotTypeModel.h"
 #import "SpecialModel.h"
+#import "LikeModel.h"
+#import "UserModel.h"
 
 #import "Tracker.h"
 
@@ -177,8 +179,21 @@
             [deferred resolve];
         }
         else if (operation.response.statusCode == 200) {
-            NSArray *models = [jsonApi resourcesForKey:@"spots"];
-            successBlock(models, jsonApi);
+            NSArray *spots = [jsonApi resourcesForKey:@"spots"];
+            
+            [[LikeModel fetchLikesForUser:[UserModel currentUser]] then:^(NSArray *likes) {
+                for (SpotModel *spot in spots) {
+                    SpecialModel *special = spot.specialForToday;
+                    
+                    [[LikeModel likeForSpecial:special] then:^(LikeModel *like) {
+                        special.userLikesSpecial = like != nil;
+                    } fail:nil always:nil];
+                }
+                
+                if (successBlock) {
+                    successBlock(spots, jsonApi);
+                }
+            } fail:nil always:nil];
             
             // Resolves promise
             [deferred resolve];
@@ -642,6 +657,23 @@
 
 - (NSNumber *)relevance {
     return _relevance ?: @0;
+}
+
+- (SpecialModel *)specialForToday {
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [gregorian components:NSWeekdayCalendarUnit fromDate:[NSDate date]];
+    
+    NSInteger weekday = components.weekday - 1;
+    DebugLog(@"weekday: %li", (long)weekday);
+    
+    for (SpecialModel *special in self.specials) {
+        DebugLog(@"special weekday: %li", (long)special.weekday);
+        if (special.weekday == weekday) {
+            return special;
+        }
+    }
+    
+    return nil;
 }
 
 - (LiveSpecialModel*)currentLiveSpecial {

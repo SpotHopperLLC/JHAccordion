@@ -10,7 +10,7 @@
 
 #import <JSONAPI/JSONAPI.h>
 
-#import "SHModelFormatters.h"
+#import "SHModelResourceManager.h"
 
 @class SpotModel, ErrorModel;
 
@@ -19,13 +19,22 @@
 @property (copy, nonatomic) NSString *text;
 @property (assign, nonatomic) SHWeekday weekday;
 @property (assign, nonatomic) NSInteger likeCount;
-@property (strong, nonatomic) NSDate *startTime;
-@property (strong, nonatomic) NSDate *endTime;
+@property (copy, nonatomic) NSString *startTimeString;
+@property (assign, nonatomic) NSTimeInterval duration; // seconds
 @property (strong, nonatomic) SpotModel *spot;
 
+@property (assign, nonatomic) BOOL userLikesSpecial;
+
+@property (readonly, nonatomic) NSDate *startTime;
+@property (readonly, nonatomic) NSDate *endTime;
 @property (readonly, nonatomic) NSString *weekdayString;
-@property (readonly, nonatomic) NSString *startTimeString;
-@property (readonly, nonatomic) NSString *endTimeString;
+@property (readonly, nonatomic) NSUInteger durationInMinutes;
+
+@property (readonly, nonatomic) NSDate *startTimeForToday;
+@property (readonly, nonatomic) NSDate *endTimeForToday;
+
+- (NSDate *)startTimeForDate:(NSDate *)date;
+- (NSDate *)endTimeForDate:(NSDate *)date;
 
 + (SpecialModel *)specialForToday:(NSArray *)specials;
 

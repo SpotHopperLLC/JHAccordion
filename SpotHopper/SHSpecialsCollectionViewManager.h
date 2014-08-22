@@ -22,7 +22,13 @@
 
 - (void)changeSpot:(SpotModel *)spot;
 
+- (UICollectionViewCell *)cellForViewInCollectionViewCell:(UIView *)view;
+
 - (NSUInteger)indexForViewInCollectionViewCell:(UIView *)view;
+
+- (void)updateCellAtIndexPath:(NSIndexPath *)indexPath;
+
+- (SpotModel *)spotAtIndex:(NSUInteger)index;
 
 - (BOOL)hasPrevious;
 

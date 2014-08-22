@@ -16,30 +16,8 @@
 
 #import "ClientSessionManager.h"
 
-#import "SHModelFormatters.h"
-#import "AverageReviewModel.h"
-#import "BaseAlcoholModel.h"
-#import "CheckInModel.h"
-#import "DrinkModel.h"
-#import "DrinkTypeModel.h"
-#import "DrinkSubTypeModel.h"
-#import "DrinkListModel.h"
-#import "ErrorModel.h"
-#import "ImageModel.h"
-#import "LiveSpecialModel.h"
-#import "MenuItemModel.h"
-#import "MenuTypeModel.h"
-#import "PriceModel.h"
-#import "ReviewModel.h"
-#import "SizeModel.h"
-#import "SliderModel.h"
-#import "SliderTemplateModel.h"
-#import "SpotModel.h"
-#import "SpotTypeModel.h"
-#import "SpotListModel.h"
-#import "SpotListMoodModel.h"
-#import "SpecialModel.h"
-#import "UserModel.h"
+#import "SHModelResourceManager.h"
+
 #import "UserState.h"
 
 #import "MockData.h"
@@ -91,10 +69,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 //    [[ClientSessionManager sharedClient] setHasSeenLaunch:NO];
 
-    [self applyAppearance];
-    
-    //[Tracker logInfo:@"App Delegate launching" class:[self class] trace:NSStringFromSelector(_cmd)];
-    
     [iRate sharedInstance].delegate = self;
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
@@ -113,7 +87,7 @@
     [RavenClient clientWithDSN:kSentryDSN];
     [[RavenClient sharedClient] setupExceptionHandler];
     
-    [self prepareResources];
+    [SHModelResourceManager prepareResources];
     
     // Navigation bar styling
     [[UINavigationBar appearance] setTintColor:kColorOrange];
@@ -278,65 +252,6 @@
     }
     
     return FALSE;
-}
-
-- (void)prepareResources {
-    // Initializes resource linking for JSONAPI
-    [JSONAPIResourceLinker link:@"average_review" toLinkedType:@"average_reviews"];
-    [JSONAPIResourceLinker link:@"base_alcohol" toLinkedType:@"base_alcohols"];
-    [JSONAPIResourceLinker link:@"checkin" toLinkedType:@"checkins"];
-    [JSONAPIResourceLinker link:@"drink" toLinkedType:@"drinks"];
-    [JSONAPIResourceLinker link:@"drink_type" toLinkedType:@"drink_types"];
-    [JSONAPIResourceLinker link:@"drink_subtype" toLinkedType:@"drink_subtypes"];
-    [JSONAPIResourceLinker link:@"drink_list" toLinkedType:@"drink_lists"];
-    [JSONAPIResourceLinker link:@"image" toLinkedType:@"images"];
-    [JSONAPIResourceLinker link:@"live_special" toLinkedType:@"live_specials"];
-    [JSONAPIResourceLinker link:@"menu_item" toLinkedType:@"menu_items"];
-    [JSONAPIResourceLinker link:@"menu_type" toLinkedType:@"menu_types"];
-    [JSONAPIResourceLinker link:@"price" toLinkedType:@"prices"];
-    [JSONAPIResourceLinker link:@"review" toLinkedType:@"reviews"];
-    [JSONAPIResourceLinker link:@"size" toLinkedType:@"sizes"];
-    [JSONAPIResourceLinker link:@"slider" toLinkedType:@"sliders"];
-    [JSONAPIResourceLinker link:@"slider_template" toLinkedType:@"slider_templates"];
-    [JSONAPIResourceLinker link:@"spot" toLinkedType:@"spots"];
-    [JSONAPIResourceLinker link:@"spot_type" toLinkedType:@"spot_types"];
-    [JSONAPIResourceLinker link:@"spot_list" toLinkedType:@"spot_lists"];
-    [JSONAPIResourceLinker link:@"spot_list_mood" toLinkedType:@"spot_list_moods"];
-    [JSONAPIResourceLinker link:@"daily_special" toLinkedType:@"daily_specials"];
-    [JSONAPIResourceLinker link:@"user" toLinkedType:@"users"];
-    
-    // Initializes model linking for JSONAPI
-    [JSONAPIResourceModeler useResource:[AverageReviewModel class] toLinkedType:@"average_reviews"];
-    [JSONAPIResourceModeler useResource:[BaseAlcoholModel class] toLinkedType:@"base_alcohols"];
-    [JSONAPIResourceModeler useResource:[CheckInModel class] toLinkedType:@"checkins"];
-    [JSONAPIResourceModeler useResource:[DrinkModel class] toLinkedType:@"drinks"];
-    [JSONAPIResourceModeler useResource:[DrinkTypeModel class] toLinkedType:@"drink_types"];
-    [JSONAPIResourceModeler useResource:[DrinkSubTypeModel class] toLinkedType:@"drink_subtypes"];
-    [JSONAPIResourceModeler useResource:[DrinkListModel class] toLinkedType:@"drink_lists"];
-    [JSONAPIResourceModeler useResource:[ErrorModel class] toLinkedType:@"errors"];
-    [JSONAPIResourceModeler useResource:[ImageModel class] toLinkedType:@"images"];
-    [JSONAPIResourceModeler useResource:[LiveSpecialModel class] toLinkedType:@"live_specials"];
-    [JSONAPIResourceModeler useResource:[MenuItemModel class] toLinkedType:@"menu_items"];
-    [JSONAPIResourceModeler useResource:[MenuTypeModel class] toLinkedType:@"menu_types"];
-    [JSONAPIResourceModeler useResource:[PriceModel class] toLinkedType:@"prices"];
-    [JSONAPIResourceModeler useResource:[ReviewModel class] toLinkedType:@"reviews"];
-    [JSONAPIResourceModeler useResource:[SizeModel class] toLinkedType:@"sizes"];
-    [JSONAPIResourceModeler useResource:[SliderModel class] toLinkedType:@"sliders"];
-    [JSONAPIResourceModeler useResource:[SliderTemplateModel class] toLinkedType:@"slider_templates"];
-    [JSONAPIResourceModeler useResource:[SpotModel class] toLinkedType:@"spots"];
-    [JSONAPIResourceModeler useResource:[SpotTypeModel class] toLinkedType:@"spot_types"];
-    [JSONAPIResourceModeler useResource:[SpotListModel class] toLinkedType:@"spot_lists"];
-    [JSONAPIResourceModeler useResource:[SpotListMoodModel class] toLinkedType:@"spot_list_moods"];
-    [JSONAPIResourceModeler useResource:[SpotListModel class] toLinkedType:@"spot_lists"];
-    [JSONAPIResourceModeler useResource:[SpecialModel class] toLinkedType:@"daily_specials"];
-    [JSONAPIResourceModeler useResource:[SpecialModel class] toLinkedType:@"specials"];
-    [JSONAPIResourceModeler useResource:[UserModel class] toLinkedType:@"users"];
-    
-    [SHModelFormatters registerFormatters];
-}
-
-- (void)applyAppearance {
-    // do nothing
 }
 
 #pragma mark - Location
