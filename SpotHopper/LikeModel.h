@@ -12,19 +12,9 @@
 
 @interface LikeModel : SHJSONAPIResource
 
-//"id" : 10,
-//"links" : {
-//    "daily_special" : 1063,
-//    "drink" : null,
-//    "spot" : null,
-//    "user" : 382
-//},
-//"updated_at" : null
-
 @property (strong, nonatomic) SpecialModel *special;
 @property (strong, nonatomic) DrinkModel *drink;
 @property (strong, nonatomic) SpotModel *spot;
-@property (strong, nonatomic) UserModel *user;
 
 + (void)fetchLikesForUser:(UserModel *)user success:(void(^)(NSArray *likes))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 

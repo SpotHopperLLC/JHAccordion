@@ -91,6 +91,10 @@
 
 #pragma mark - Revised Code for 2.0
 
++ (void)fetchSpotsWithSpecialsTodayForCoordinate:(CLLocationCoordinate2D)coordinate success:(void(^)(NSArray *spots))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise *)fetchSpotsWithSpecialsTodayForCoordinate:(CLLocationCoordinate2D)coordinate;
+
 + (void)fetchSpotsNearLocation:(CLLocation *)location success:(void (^)(NSArray *spots))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
 
 + (Promise *)fetchSpotsNearLocation:(CLLocation *)location;

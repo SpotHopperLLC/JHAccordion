@@ -20,30 +20,6 @@
 
 #import "SHNotifications.h"
 
-/*
-
- @GET
- @Path("/users/{id}/likes")
- LikeResponse getUserLikes(@PathParam("id") long theUserId) throws IOException;
- 
- @POST
- @Path("/likes")
- LikeResponse addLike(Like theLike) throws IOException;
- 
- @GET
- @Path("/likes/{id}")
- LikeResponse getLike(@PathParam("id") long theId) throws IOException;
- 
- @PUT
- @Path("/likes/{id}")
- LikeResponse updateLike(@PathParam("id") long theId, Like theLike) throws IOException;
- 
- @DELETE
- @Path("/likes/{id}")
- void deleteLike(@PathParam("id") long theId) throws IOException;
- 
- */
-
 @interface LikeModelCache : NSCache
 
 - (NSArray *)cachedLikes;
@@ -52,30 +28,6 @@
 @end
 
 @implementation LikeModel
-
-/*
-{ "likes" : [ { "created_at" : "2014-08-20T22:04:47.908089000+00:00",
-    "id" : 10,
-    "links" : { 
-        "daily_special" : 1063,
-        "drink" : null,
-        "spot" : null,
-        "user" : 382
-    },
-    "updated_at" : null
-} ],
-    "linked" : { "daily_specials" : [ { "end_time" : "19:00:00",
-        "id" : 1063,
-        "like_count" : 0,
-        "start_time" : "17:00:00",
-        "text" : "4-8pm all $5-6 wines cost $4, all tap beers reduced $1, kettle one $3, Jack Daniels $3, Bombay Gin $3, Captain Morgan $3, Bacardi $3, Korbel $3, Jim bean $3, $5 Martinies",
-        "weekday" : 3
-    } ],
-        "drinks" : [  ],
-        "spots" : [  ]
-    }
-}
- */
 
 #pragma mark - Debugging
 

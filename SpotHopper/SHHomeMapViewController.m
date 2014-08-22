@@ -1666,8 +1666,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)fetchSpecialsWithCompletionBlock:(void (^)())completionBlock {
     [self hideBottomViewWithCompletionBlock:^{
-        [SpotModel getSpotsWithSpecialsTodayForCoordinate:[self visibleMapCenterCoordinate] success:^(NSArray *spotModels, JSONAPI *jsonApi) {
-            [self processSpecialsWithSpots:spotModels];
+        [SpotModel fetchSpotsWithSpecialsTodayForCoordinate:[self visibleMapCenterCoordinate] success:^(NSArray *spots) {
+            [self processSpecialsWithSpots:spots];
             
             if (completionBlock) {
                 completionBlock();

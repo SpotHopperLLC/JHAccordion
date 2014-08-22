@@ -181,19 +181,9 @@
         else if (operation.response.statusCode == 200) {
             NSArray *spots = [jsonApi resourcesForKey:@"spots"];
             
-            [[LikeModel fetchLikesForUser:[UserModel currentUser]] then:^(NSArray *likes) {
-                for (SpotModel *spot in spots) {
-                    SpecialModel *special = spot.specialForToday;
-                    
-                    [[LikeModel likeForSpecial:special] then:^(LikeModel *like) {
-                        special.userLikesSpecial = like != nil;
-                    } fail:nil always:nil];
-                }
-                
-                if (successBlock) {
-                    successBlock(spots, jsonApi);
-                }
-            } fail:nil always:nil];
+            if (successBlock) {
+                successBlock(spots, jsonApi);
+            }
             
             // Resolves promise
             [deferred resolve];
@@ -316,6 +306,92 @@
 }
 
 #pragma mark - Revised Code for 2.0
+
++ (void)fetchSpotsWithSpecialsTodayForCoordinate:(CLLocationCoordinate2D)coordinate success:(void(^)(NSArray *spots))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    
+    // adjust time back 4 hours to help
+    NSTimeInterval fourHoursAgo = 60 * 60 * 4 * -1;
+    NSDate *now = [[NSDate date] dateByAddingTimeInterval:fourHoursAgo];
+    
+    // Day of week
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [gregorian components:NSWeekdayCalendarUnit fromDate:now];
+    
+    // Get open and close time
+    NSInteger weekday = components.weekday - 1;
+    
+    /*
+     * Searches spots for specials
+     */
+    NSDictionary *params = @{
+                             kSpotModelParamPage : @1,
+                             kSpotModelParamQueryVisibleToUsers : @"true",
+                             kSpotModelParamsPageSize : @20,
+                             kSpotModelParamSources : kSpotModelParamSourcesSpotHopper,
+                             kSpotModelParamQueryDayOfWeek : [NSNumber numberWithInteger:weekday],
+                             kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:coordinate.latitude],
+                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:coordinate.longitude]
+                             };
+    
+    
+    [[ClientSessionManager sharedClient] GET:@"/api/spots/specials" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
+            NSArray *spots = [jsonApi resourcesForKey:@"spots"];
+            
+            [[LikeModel fetchLikesForUser:[UserModel currentUser]] then:^(NSArray *likes) {
+                for (SpotModel *spot in spots) {
+                    SpecialModel *special = spot.specialForToday;
+                    
+                    [[LikeModel likeForSpecial:special] then:^(LikeModel *like) {
+                        special.userLikesSpecial = like != nil;
+                    } fail:nil always:nil];
+                }
+                
+                // sort by likes count
+                NSArray *sortedSpots = [spots sortedArrayUsingComparator:^NSComparisonResult(SpotModel *spot1, SpotModel *spot2) {
+                    SpecialModel *special1 = spot1.specialForToday;
+                    SpecialModel *special2 = spot2.specialForToday;
+                    
+                    NSNumber *count1 = [NSNumber numberWithInteger:special1.likeCount];
+                    NSNumber *count2 = [NSNumber numberWithInteger:special2.likeCount];
+                    
+                    return [count2 compare:count1];
+                }];
+                
+                if (successBlock) {
+                    successBlock(sortedSpots);
+                }
+            } fail:nil always:nil];
+        }
+        else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+        }
+    }];
+}
+
++ (Promise *)fetchSpotsWithSpecialsTodayForCoordinate:(CLLocationCoordinate2D)coordinate {
+    Deferred *deferred = [Deferred deferred];
+    
+    [self fetchSpotsWithSpecialsTodayForCoordinate:coordinate success:^(NSArray *spots) {
+        // Resolves promise
+        [deferred resolveWith:spots];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
 
 + (void)fetchSpotsNearLocation:(CLLocation *)location success:(void (^)(NSArray *spots))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     NSMutableDictionary *params = @{
