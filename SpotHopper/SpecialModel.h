@@ -27,6 +27,7 @@
 
 @property (readonly, nonatomic) NSDate *startTime;
 @property (readonly, nonatomic) NSDate *endTime;
+@property (readonly, nonatomic) NSString *timeString;
 @property (readonly, nonatomic) NSString *weekdayString;
 @property (readonly, nonatomic) NSUInteger durationInMinutes;
 

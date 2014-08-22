@@ -30,7 +30,7 @@
 #define kSpecialCellLeftButton 8
 #define kSpecialCellRightButton 9
 #define kSpecialCellPositionLabel 10
-#define kSpecialCellMatchLabel 11
+#define kSpecialCellTimeLabel 11
 
 #pragma mark - Class Extension
 #pragma mark -
@@ -223,6 +223,8 @@
 #pragma mark -
 
 - (void)renderCell:(UICollectionViewCell *)cell withSpot:(SpotModel *)spot atIndex:(NSUInteger)index {
+    SpecialModel *special = [spot specialForToday];
+
     UIImageView *spotImageView = (UIImageView *)[cell viewWithTag:kSpecialCellSpotImageView];
     
     spotImageView.image = nil;
@@ -247,6 +249,7 @@
     }
     
     UILabel *nameLabel = [self labelInView:cell withTag:kSpecialCellSpotNameLabel];
+    UILabel *timeLabel = [self labelInView:cell withTag:kSpecialCellTimeLabel];
     UITextView *specialTextView = [self textViewInView:cell withTag:kSpecialCellSpecialTextView];
     UIButton *likeButton = [self buttonInView:cell withTag:kSpecialCellLikeButton];
     UILabel *likeLabel = [self labelInView:cell withTag:kSpecialCellLikeLabel];
@@ -255,6 +258,7 @@
     UILabel *positionLabel = [self labelInView:cell withTag:kSpecialCellPositionLabel];
     
     NSAssert(nameLabel, @"View must be defined");
+    NSAssert(timeLabel, @"View must be defined");
     NSAssert(specialTextView, @"View must be defined");
     NSAssert(likeButton, @"View must be defined");
     NSAssert(likeLabel, @"View must be defined");
@@ -263,6 +267,7 @@
     NSAssert(positionLabel, @"View must be defined");
     
     [SHStyleKit setLabel:nameLabel textColor:SHStyleKitColorMyTintColor];
+    [SHStyleKit setLabel:timeLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setButton:likeButton withDrawing:SHStyleKitDrawingThumbsUpIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setButton:shareButton withDrawing:SHStyleKitDrawingShareIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setLabel:likeLabel textColor:SHStyleKitColorMyTintColor];
@@ -270,6 +275,7 @@
     [SHStyleKit setLabel:positionLabel textColor:SHStyleKitColorMyTextColor];
     
     [nameLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
+    [timeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
     specialTextView.contentOffset = CGPointMake(0.0f, 0.0f);
     [specialTextView setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [likeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
@@ -277,8 +283,7 @@
     [positionLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     
     nameLabel.text = spot.name;
-    
-    SpecialModel *special = [spot specialForToday];
+    timeLabel.text = special.timeString;
     
     if (special.text.length) {
         NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:14.0], NSForegroundColorAttributeName : [SHStyleKit myTextColor] };

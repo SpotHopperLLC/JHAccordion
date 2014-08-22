@@ -351,11 +351,16 @@
                 for (SpotModel *spot in spots) {
                     SpecialModel *special = spot.specialForToday;
                     
+                    // TODO: temporarily set duration before the data is ready
+                    if (special.duration == 0) {
+                        special.duration = 120*60;
+                    }
+
                     [[LikeModel likeForSpecial:special] then:^(LikeModel *like) {
                         special.userLikesSpecial = like != nil;
                     } fail:nil always:nil];
                 }
-                
+
                 // sort by likes count
                 NSArray *sortedSpots = [spots sortedArrayUsingComparator:^NSComparisonResult(SpotModel *spot1, SpotModel *spot2) {
                     SpecialModel *special1 = spot1.specialForToday;
@@ -740,10 +745,8 @@
     NSDateComponents *components = [gregorian components:NSWeekdayCalendarUnit fromDate:[NSDate date]];
     
     NSInteger weekday = components.weekday - 1;
-    DebugLog(@"weekday: %li", (long)weekday);
     
     for (SpecialModel *special in self.specials) {
-        DebugLog(@"special weekday: %li", (long)special.weekday);
         if (special.weekday == weekday) {
             return special;
         }

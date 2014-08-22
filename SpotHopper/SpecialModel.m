@@ -91,6 +91,13 @@
     return endTime;
 }
 
+- (NSString *)timeString {
+    NSString *start = [self shortTimeStringForDate:self.startTime];
+    NSString *end = [self shortTimeStringForDate:self.endTime];
+    
+    return [NSString stringWithFormat:@"%@ - %@", start, end];
+}
+
 - (NSUInteger)durationInMinutes {
     return self.duration / 60;
 }
@@ -164,6 +171,20 @@
     NSDateComponents *components = [calendar components:units fromDate:date];
     
     return [NSString stringWithFormat:@"%02li:%02li:%02li", (long)components.hour, (long)components.minute, (long)components.second];
+}
+
+- (NSString *)shortTimeStringForDate:(NSDate *)date {
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendarUnit units = NSHourCalendarUnit|NSMinuteCalendarUnit;
+    NSDateComponents *components = [calendar components:units fromDate:date];
+    
+    if (components.minute == 0) {
+        NSString *ampm = components.hour < 12 ? @"AM" : @"PM";
+        return [NSString stringWithFormat:@"%li%@", (long)components.hour - 12, ampm];
+    }
+    else {
+        return [NSString stringWithFormat:@"%li:%02li", (long)components.hour, (long)components.minute];
+    }
 }
 
 ////// Service Layer //////
