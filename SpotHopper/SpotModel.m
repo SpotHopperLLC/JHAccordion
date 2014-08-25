@@ -309,16 +309,20 @@
 
 + (void)fetchSpotsWithSpecialsTodayForCoordinate:(CLLocationCoordinate2D)coordinate success:(void(^)(NSArray *spots))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
     
-    // adjust time back 4 hours to help
+    // adjust time back 4 hours to help handle the midnight boundary
     NSTimeInterval fourHoursAgo = 60 * 60 * 4 * -1;
-    NSDate *now = [[NSDate date] dateByAddingTimeInterval:fourHoursAgo];
+    NSDate *offsetTime = [[NSDate date] dateByAddingTimeInterval:fourHoursAgo];
     
     // Day of week
-    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateComponents *components = [gregorian components:NSWeekdayCalendarUnit fromDate:now];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendarUnit units = NSHourCalendarUnit|NSMinuteCalendarUnit|NSWeekdayCalendarUnit;
+    NSDateComponents *components = [calendar components:units fromDate:offsetTime];
     
     // Get open and close time
     NSInteger weekday = components.weekday - 1;
+
+    components = [calendar components:units fromDate:[NSDate date]];
+    NSString *cutOffTime = [NSString stringWithFormat:@"%02li:%02li", (long)components.hour, (long)components.minute];
     
     /*
      * Searches spots for specials
@@ -330,9 +334,9 @@
                              kSpotModelParamSources : kSpotModelParamSourcesSpotHopper,
                              kSpotModelParamQueryDayOfWeek : [NSNumber numberWithInteger:weekday],
                              kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:coordinate.latitude],
-                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:coordinate.longitude]
+                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:coordinate.longitude],
+                             @"cut_off_time" : cutOffTime
                              };
-    
     
     [[ClientSessionManager sharedClient] GET:@"/api/spots/specials" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -347,7 +351,7 @@
         else if (operation.response.statusCode == 200) {
             NSArray *spots = [jsonApi resourcesForKey:@"spots"];
             
-            [[LikeModel fetchLikesForUser:[UserModel currentUser]] then:^(NSArray *likes) {
+            void (^finish)(NSArray *) = ^void (NSArray *likes) {
                 for (SpotModel *spot in spots) {
                     SpecialModel *special = spot.specialForToday;
                     
@@ -355,12 +359,12 @@
                     if (special.duration == 0) {
                         special.duration = 120*60;
                     }
-
+                    
                     [[LikeModel likeForSpecial:special] then:^(LikeModel *like) {
                         special.userLikesSpecial = like != nil;
                     } fail:nil always:nil];
                 }
-
+                
                 // sort by likes count
                 NSArray *sortedSpots = [spots sortedArrayUsingComparator:^NSComparisonResult(SpotModel *spot1, SpotModel *spot2) {
                     SpecialModel *special1 = spot1.specialForToday;
@@ -375,7 +379,13 @@
                 if (successBlock) {
                     successBlock(sortedSpots);
                 }
-            } fail:nil always:nil];
+            };
+
+            [[LikeModel fetchLikesForUser:[UserModel currentUser]] then:^(NSArray *likes) {
+                finish(likes);
+            } fail:^(id error) {
+                finish(nil);
+            } always:nil];
         }
         else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];

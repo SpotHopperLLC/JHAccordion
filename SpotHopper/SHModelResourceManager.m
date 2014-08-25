@@ -143,23 +143,19 @@
             NSString *timeString = (NSString *)jsonValue;
             if (timeString.length) {
                 
-                // sample: 19:00:00
+                // sample: 19:00 (seconds is ignored)
                 date = [NSDate date];
-                DebugLog(@"date: %@", date);
                 NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
                 NSCalendarUnit units = NSMonthCalendarUnit|NSDayCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit|NSTimeZoneCalendarUnit;
                 NSDateComponents *components = [calendar components:units fromDate:date];
                 
                 NSArray *parts = [timeString componentsSeparatedByString:@":"];
-                if (parts.count == 3) {
+                if (parts.count >= 2) {
                     [components setHour:[parts[0] integerValue]];
                     [components setMinute:[parts[1] integerValue]];
-                    [components setSecond:[parts[2] integerValue]];
-                    DebugLog(@"components: %@", components);
                 }
                 
                 date = [calendar dateFromComponents:components];
-                DebugLog(@"date: %@", date);
             }
         }
         

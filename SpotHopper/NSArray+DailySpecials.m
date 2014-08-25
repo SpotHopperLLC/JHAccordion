@@ -18,6 +18,7 @@
 }
 
 - (NSString*)specialsForNow:(NSDate*)now {
+    NSAssert(now, @"Date must be defined");
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *comps = [gregorian components:NSWeekdayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit|NSDayCalendarUnit|NSTimeZoneCalendarUnit fromDate:now];
     

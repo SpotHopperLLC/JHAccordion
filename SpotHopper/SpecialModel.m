@@ -76,10 +76,11 @@
 - (NSDate *)startTime {
     NSDate *date = nil;
     
-    if (self.startTimeString.length == 8) {
+    if (self.startTimeString.length >= 5) {
+        NSString *hourAndMinutes = [self.startTimeString substringWithRange:NSMakeRange(0, 5)];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"HH:mm:ss"];
-        date = [dateFormatter dateFromString:self.startTimeString];
+        [dateFormatter setDateFormat:@"HH:mm"];
+        date = [dateFormatter dateFromString:hourAndMinutes];
     }
     
     return date;
@@ -124,16 +125,17 @@
 - (NSDate *)adjustedDateForDate:(NSDate *)date fromTimeString:(NSString *)timeString {
     NSDate *adjustedDate = nil;
     
+    NSAssert(date, @"Date must be defined");
+    
     if (timeString.length) {
         NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         NSCalendarUnit units = NSMonthCalendarUnit|NSDayCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit|NSTimeZoneCalendarUnit;
         NSDateComponents *components = [calendar components:units fromDate:date];
         
         NSArray *parts = [timeString componentsSeparatedByString:@":"];
-        if (parts.count == 3) {
+        if (parts.count >= 2) {
             [components setHour:[parts[0] integerValue]];
             [components setMinute:[parts[1] integerValue]];
-            [components setSecond:[parts[2] integerValue]];
         }
         
         date = [calendar dateFromComponents:components];
@@ -166,6 +168,7 @@
 #pragma mark - Private
 
 - (NSString *)timeStringForDate:(NSDate *)date {
+    NSAssert(date, @"Date must be defined");
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSCalendarUnit units = NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit;
     NSDateComponents *components = [calendar components:units fromDate:date];
@@ -174,6 +177,7 @@
 }
 
 - (NSString *)shortTimeStringForDate:(NSDate *)date {
+    NSAssert(date, @"Date must be defined");
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSCalendarUnit units = NSHourCalendarUnit|NSMinuteCalendarUnit;
     NSDateComponents *components = [calendar components:units fromDate:date];

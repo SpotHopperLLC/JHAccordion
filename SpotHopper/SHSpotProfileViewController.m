@@ -14,6 +14,7 @@
 #import "SliderTemplateModel.h"
 #import "AverageReviewModel.h"
 #import "SliderModel.h"
+#import "SpecialModel.h"
 
 #import "SHSlider.h"
 
@@ -151,6 +152,26 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
+    
+    [SpecialModel fetchSpecialsForSpot:self.spot success:^(NSArray *specials) {
+        DebugLog(@"Specials: %@", specials);
+        
+        for (SpecialModel *special in specials) {
+            [SpecialModel fetchSpecial:special success:^(SpecialModel *special) {
+                DebugLog(@"special: %@", special);
+                DebugLog(@"start: %@", special.startTime);
+                DebugLog(@"end: %@", special.endTime);
+                NSTimeInterval duration = [special.startTime timeIntervalSinceDate:special.endTime];
+                DebugLog(@"duration: %li", (long)duration);
+                DebugLog(@"day: %@", special.weekdayString);
+            } failure:^(ErrorModel *errorModel) {
+                DebugLog(@"Error: %@", errorModel);
+            }];
+        }
+        
+    } failure:^(ErrorModel *errorModel) {
+        DebugLog(@"Error: %@", errorModel);
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -284,6 +305,9 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
         // Gets open and close dates
         NSDate *dateOpen = hoursForToday.firstObject;
         NSDate *dateClose = hoursForToday.lastObject;
+        
+        NSAssert(dateOpen, @"Date must be defined");
+        NSAssert(dateClose, @"Date must be defined");
         
         // Sets the stuff
         NSDate *now = [NSDate date];

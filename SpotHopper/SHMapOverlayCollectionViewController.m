@@ -199,7 +199,7 @@ typedef enum {
         [[LikeModel unlikeSpecial:special] then:^(NSNumber *number) {
             BOOL success = [number boolValue];
             
-            special.userLikesSpecial = success;
+            special.userLikesSpecial = FALSE;
             special.likeCount--;
             
             NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];

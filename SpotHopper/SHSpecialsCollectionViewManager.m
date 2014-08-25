@@ -26,7 +26,6 @@
 #define kSpecialCellLikeButton 4
 #define kSpecialCellLikeLabel 5
 #define kSpecialCellShareButton 6
-#define kSpecialCellShareLabel 7
 #define kSpecialCellLeftButton 8
 #define kSpecialCellRightButton 9
 #define kSpecialCellPositionLabel 10
@@ -254,7 +253,6 @@
     UIButton *likeButton = [self buttonInView:cell withTag:kSpecialCellLikeButton];
     UILabel *likeLabel = [self labelInView:cell withTag:kSpecialCellLikeLabel];
     UIButton *shareButton = [self buttonInView:cell withTag:kSpecialCellShareButton];
-    UILabel *shareLabel = [self labelInView:cell withTag:kSpecialCellShareLabel];
     UILabel *positionLabel = [self labelInView:cell withTag:kSpecialCellPositionLabel];
     
     NSAssert(nameLabel, @"View must be defined");
@@ -263,15 +261,13 @@
     NSAssert(likeButton, @"View must be defined");
     NSAssert(likeLabel, @"View must be defined");
     NSAssert(shareButton, @"View must be defined");
-    NSAssert(shareLabel, @"View must be defined");
     NSAssert(positionLabel, @"View must be defined");
     
     [SHStyleKit setLabel:nameLabel textColor:SHStyleKitColorMyTintColor];
-    [SHStyleKit setLabel:timeLabel textColor:SHStyleKitColorMyTintColor];
+    [SHStyleKit setLabel:timeLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setButton:likeButton withDrawing:SHStyleKitDrawingThumbsUpIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setButton:shareButton withDrawing:SHStyleKitDrawingShareIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setLabel:likeLabel textColor:SHStyleKitColorMyTintColor];
-    [SHStyleKit setLabel:shareLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:positionLabel textColor:SHStyleKitColorMyTextColor];
     
     [nameLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
@@ -279,25 +275,36 @@
     specialTextView.contentOffset = CGPointMake(0.0f, 0.0f);
     [specialTextView setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [likeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
-    [shareLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
     [positionLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     
     nameLabel.text = spot.name;
-    timeLabel.text = special.timeString;
     
-    if (special.text.length) {
+    if (special) {
+        timeLabel.text = special.timeString;
+        
         NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:14.0], NSForegroundColorAttributeName : [SHStyleKit myTextColor] };
-        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:special.text attributes:attributes];
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:special.text.length ? special.text : @"No Special" attributes:attributes];
         specialTextView.attributedText = attributedString;
         [specialTextView setContentOffset:CGPointMake(0, 0)];
         [specialTextView flashScrollIndicators];
+        
+        likeButton.highlighted = special.userLikesSpecial;
+        likeLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)special.likeCount];
+        likeButton.hidden = FALSE;
+        likeLabel.hidden = FALSE;
     }
     else {
-        specialTextView.text = @"No Special Found (BETA)";
+        timeLabel.text = nil;
+        
+        NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:14.0], NSForegroundColorAttributeName : [SHStyleKit myTextColor] };
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:@"No Special" attributes:attributes];
+        specialTextView.attributedText = attributedString;
+        [specialTextView setContentOffset:CGPointMake(0, 0)];
+        [specialTextView flashScrollIndicators];
+
+        likeButton.hidden = TRUE;
+        likeLabel.hidden = TRUE;
     }
-    
-    likeButton.highlighted = special.userLikesSpecial;
-    likeLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)special.likeCount];
     
     positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", (long)index+1, (long)self.spots.count];
     

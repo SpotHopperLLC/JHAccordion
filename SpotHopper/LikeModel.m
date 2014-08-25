@@ -194,13 +194,9 @@
 }
 
 + (void)unlikeSpecial:(SpecialModel *)special success:(void(^)(BOOL success))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
-    NSNumber *specialId = [NSNumber numberWithInteger:[special.ID integerValue]];
-    
-    NSDictionary *params = @{
-                             @"daily_special_id" : specialId
-                             };
+    NSDictionary *params = @{};
     NSDate *startDate = [NSDate date];
-    NSString *path = [NSString stringWithFormat:@"/api/likes"];
+    NSString *path = [NSString stringWithFormat:@"/api/daily_specials/%li/likes/mine", (long)[special.ID integerValue]];
     
     DebugLog(@"params: %@", params);
     DebugLog(@"path: %@", path);
@@ -217,19 +213,16 @@
         
         DebugLog(@"status code: %lu", (unsigned long)operation.response.statusCode);
         
+        // deletes set the status code to 204
         if (operation.isCancelled || operation.response.statusCode == 204) {
-            if (successBlock) {
-                successBlock(FALSE);
-            }
-        }
-        else if (operation.response.statusCode == 200) {
             // only track a successful search
             [Tracker track:@"Post Like Special" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
-            
+
             if (successBlock) {
                 successBlock(TRUE);
             }
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             
             if (failureBlock) {

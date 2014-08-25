@@ -130,10 +130,14 @@
         }
         
         id response = nil;
-        if (operation.responseData != nil) {
+        if (operation.responseData) {
             response = [NSJSONSerialization JSONObjectWithData: operation.responseData
                                                        options: NSJSONReadingMutableContainers
                                                          error: nil];
+        }
+        
+        if (!response) {
+            response = [self responseForOperation:operation];
         }
         success(operation, response);
         [self handleError:operation withResponseObject:response timeStarted:now];
@@ -170,10 +174,14 @@
         }
         
         id response = nil;
-        if (operation.responseData != nil) {
+        if (operation.responseData) {
             response = [NSJSONSerialization JSONObjectWithData: operation.responseData
                                                        options: NSJSONReadingMutableContainers
                                                          error: nil];
+        }
+        
+        if (!response) {
+            response = [self responseForOperation:operation];
         }
         success(operation, response);
         [self handleError:operation withResponseObject:response timeStarted:now];
@@ -212,10 +220,14 @@
         }
         
         id response = nil;
-        if (operation.responseData != nil) {
+        if (operation.responseData) {
             response = [NSJSONSerialization JSONObjectWithData: operation.responseData
                                                        options: NSJSONReadingMutableContainers
                                                          error: nil];
+        }
+        
+        if (!response) {
+            response = [self responseForOperation:operation];
         }
         success(operation, response);
         [self handleError:operation withResponseObject:response timeStarted:now];
@@ -250,10 +262,14 @@
         }
         
         id response = nil;
-        if (operation.responseData != nil) {
+        if (operation.responseData) {
             response = [NSJSONSerialization JSONObjectWithData: operation.responseData
                                                        options: NSJSONReadingMutableContainers
                                                          error: nil];
+        }
+        
+        if (!response) {
+            response = [self responseForOperation:operation];
         }
         success(operation, response);
         [self handleError:operation withResponseObject:response timeStarted:now];
@@ -288,17 +304,34 @@
         }
         
         id response = nil;
-        if (operation.responseData != nil) {
+        if (operation.responseData) {
             response = [NSJSONSerialization JSONObjectWithData: operation.responseData
                                                        options: NSJSONReadingMutableContainers
                                                          error: nil];
+        }
+        
+        if (!response) {
+            response = [self responseForOperation:operation];
         }
         success(operation, response);
         [self handleError:operation withResponseObject:response timeStarted:now];
     }];
 }
 
-#pragma mark - Handle error response 
+#pragma mark - Handle error response
+
+- (id)responseForOperation:(AFHTTPRequestOperation *)operation {
+    NSString *error = [NSString stringWithFormat:@"status %li", (long)operation.response.statusCode];
+    NSString *human = [NSHTTPURLResponse localizedStringForStatusCode:operation.response.statusCode];
+    
+    NSDictionary *response = @{ @"errors" : @[@{
+                                                  @"error" : error,
+                                                  @"human" : human,
+                                                  @"validations" : [NSNull null]
+                                            }]};
+    
+    return response;
+}
 
 - (void)handleError:(AFHTTPRequestOperation*)operation withResponseObject:(id)responseObject timeStarted:(NSDate*)date {
     

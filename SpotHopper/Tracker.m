@@ -72,6 +72,7 @@
     
     id birthYear = [NSNull null];
     if (user.birthday) {
+        NSAssert(user.birthday, @"Date must be defined");
         NSUInteger componentFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
         NSDateComponents *components = [[NSCalendar currentCalendar] components:componentFlags fromDate:user.birthday];
         birthYear = [NSNumber numberWithInteger:[components year]];

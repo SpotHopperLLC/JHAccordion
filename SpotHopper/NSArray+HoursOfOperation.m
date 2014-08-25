@@ -18,6 +18,7 @@
 }
 
 - (NSArray*)datesForNow:(NSDate*)now {
+    NSAssert(now, @"Date must be defined");
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *comps = [gregorian components:NSWeekdayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit|NSDayCalendarUnit|NSTimeZoneCalendarUnit fromDate:now];
 
@@ -107,6 +108,7 @@
     if ([dateFormatter getObjectValue:&date forString:time range:nil error:&error]) {
         
         // Sets the open and close time to an actual date so we can compare
+        NSAssert(date, @"Date must be defined");
         NSCalendar *calendar = [NSCalendar currentCalendar];
         NSDateComponents *components = [gregorian components:NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:date];
         [components setSecond:0];
