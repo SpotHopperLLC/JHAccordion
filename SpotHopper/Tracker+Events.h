@@ -132,7 +132,7 @@
 
 + (void)trackGoodSpotsResultsWithName:(NSString *)name match:(NSNumber *)match;
 
-+ (void)trackGoodSpecialsResults;
++ (void)trackGoodSpecialsResultsWithLikes:(NSUInteger)likesCount;
 
 #pragma mark - Home Map Actions
 #pragma mark -

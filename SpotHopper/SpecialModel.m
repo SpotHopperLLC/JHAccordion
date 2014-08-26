@@ -182,12 +182,14 @@
     NSCalendarUnit units = NSHourCalendarUnit|NSMinuteCalendarUnit;
     NSDateComponents *components = [calendar components:units fromDate:date];
     
+    NSUInteger adjustedHour = components.hour > 12 ? components.hour - 12 : components.hour;
+    
     if (components.minute == 0) {
         NSString *ampm = components.hour < 12 ? @"AM" : @"PM";
-        return [NSString stringWithFormat:@"%li%@", (long)components.hour - 12, ampm];
+        return [NSString stringWithFormat:@"%li%@", (long)adjustedHour, ampm];
     }
     else {
-        return [NSString stringWithFormat:@"%li:%02li", (long)components.hour, (long)components.minute];
+        return [NSString stringWithFormat:@"%li:%02li", (long)adjustedHour, (long)components.minute];
     }
 }
 

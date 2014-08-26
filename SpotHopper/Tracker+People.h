@@ -9,6 +9,8 @@
 #import "Tracker.h"
 
 #import "UserModel.h"
+#import "SpotModel.h"
+#import "SpecialModel.h"
 
 @interface Tracker (People)
 
@@ -63,5 +65,12 @@
 + (void)trackUserSearchedSpots;
 
 + (void)trackUserSearchedSpecials;
+
+#pragma mark - Likes
+#pragma mark -
+
++ (void)trackUserLikedSpecial:(SpecialModel *)special;
+
++ (void)trackUserUnlikedSpecial:(SpecialModel *)special;
 
 @end

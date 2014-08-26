@@ -47,6 +47,7 @@
 
 #import "UserModel.h"
 #import "SpotModel.h"
+#import "SpecialModel.h"
 #import "SpotTypeModel.h"
 #import "DrinkModel.h"
 #import "DrinkTypeModel.h"
@@ -2765,7 +2766,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.specialsSpotModels = spotModels;
         
         if (self.specialsSpotModels.count >= 5) {
-            [Tracker trackGoodSpecialsResults];
+            SpotModel *spot = self.specialsSpotModels[0];
+            SpecialModel *special = [spot specialForToday];
+            [Tracker trackGoodSpecialsResultsWithLikes:special.likeCount];
             [Tracker trackUserGoodSpecialsResults];
         }
         

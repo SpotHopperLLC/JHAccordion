@@ -1660,7 +1660,7 @@
                                                         <constraint firstAttribute="height" constant="80" id="pY9-Ob-beW"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Spot for Special" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="130" translatesAutoresizingMaskIntoConstraints="NO" id="IZ8-kw-QNQ">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Spot for Special" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IZ8-kw-QNQ">
                                                     <rect key="frame" x="98" y="10" width="130" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1668,7 +1668,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="10PM - 12PM" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.84999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="vgd-Ib-EIP" userLabel="Time Label - time" customClass="SHLabelLatoRegular">
-                                                    <rect key="frame" x="235" y="11" width="78" height="15"/>
+                                                    <rect key="frame" x="235" y="10" width="78" height="15"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="78" id="qx2-Zu-fPn"/>
@@ -1689,7 +1689,7 @@
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
                                                 <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xbH-0x-Cnm" userLabel="Like Button">
-                                                    <rect key="frame" x="283" y="34" width="30" height="30"/>
+                                                    <rect key="frame" x="283" y="33" width="30" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="a4U-fs-hCH"/>
@@ -1703,14 +1703,14 @@
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0B1-n8-2vt" userLabel="Like Label - 999">
-                                                    <rect key="frame" x="286" y="68" width="24" height="17"/>
+                                                    <rect key="frame" x="286" y="67" width="24" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Zc-TV-V3N" userLabel="Share Button">
-                                                    <rect key="frame" x="283" y="93" width="30" height="30"/>
+                                                    <rect key="frame" x="283" y="92" width="30" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="Qj3-ci-gXp"/>
@@ -1762,7 +1762,7 @@
                                         </view>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstItem="IZ8-kw-QNQ" firstAttribute="top" secondItem="vgd-Ib-EIP" secondAttribute="top" constant="-1" id="2Ez-Ge-zec"/>
+                                            <constraint firstItem="IZ8-kw-QNQ" firstAttribute="top" secondItem="vgd-Ib-EIP" secondAttribute="top" id="2Ez-Ge-zec"/>
                                             <constraint firstItem="xbH-0x-Cnm" firstAttribute="leading" secondItem="3wG-OF-dGy" secondAttribute="trailing" constant="8" id="2J0-GR-XIU"/>
                                             <constraint firstItem="0B1-n8-2vt" firstAttribute="top" secondItem="xbH-0x-Cnm" secondAttribute="bottom" constant="4" id="2z9-md-FRS"/>
                                             <constraint firstItem="0B1-n8-2vt" firstAttribute="centerX" secondItem="0Zc-TV-V3N" secondAttribute="centerX" id="3Fx-dU-cgg"/>

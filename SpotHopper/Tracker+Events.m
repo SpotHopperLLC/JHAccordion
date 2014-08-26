@@ -402,31 +402,31 @@
     [self track:@"Good Spots Results" properties:@{@"name" : name.length ? name : @"NULL", @"percentage" : match ? match : @"NULL"}];
 }
 
-+ (void)trackGoodSpecialsResults {
-    [self track:@"Good Specials Results"];
++ (void)trackGoodSpecialsResultsWithLikes:(NSUInteger)likesCount {
+    [self track:@"Good Specials Results" properties:@{@"Likes" : [NSNumber numberWithInteger:likesCount]}];
 }
 
 #pragma mark - Home Map Actions
 #pragma mark -
 
 + (void)trackSpotsButtonTapped {
-    [self track:@"Spots button Tapped"];
+    [self track:@"Spots Button Tapped"];
 }
 
 + (void)trackSpecialsButtonTapped {
-    [self track:@"Specials button Tapped"];
+    [self track:@"Specials Button Tapped"];
 }
 
 + (void)trackBeerButtonTapped {
-    [self track:@"Beer button Tapped"];
+    [self track:@"Beer Button Tapped"];
 }
 
 + (void)trackCocktailButtonTapped {
-    [self track:@"Cocktail button Tapped"];
+    [self track:@"Cocktail Button Tapped"];
 }
 
 + (void)trackWineButtonTapped {
-    [self track:@"Wine button Tapped"];
+    [self track:@"Wine Button Tapped"];
 }
 
 #pragma mark - List View

@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.0.3</string>
+	<string>2.1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -36,10 +36,14 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2.0.3</string>
+	<string>2.1.0</string>
 	<key>FacebookAppID</key>
 	<string>504677422978889</string>
 	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>MixPanelToken</key>
+	<string>003978c7399ef9503dd3edbc92ca50d0</string>
+	<key>TrackingEnabled</key>
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
@@ -75,10 +79,6 @@
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<true/>
-	<key>MixPanelToken</key>
-	<string>003978c7399ef9503dd3edbc92ca50d0</string>
-	<key>TrackingEnabled</key>
 	<true/>
 </dict>
 </plist>

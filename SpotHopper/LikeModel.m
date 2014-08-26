@@ -17,6 +17,8 @@
 #import "ErrorModel.h"
 
 #import "Tracker.h"
+#import "Tracker+Events.h"
+#import "Tracker+People.h"
 
 #import "SHNotifications.h"
 
@@ -83,8 +85,6 @@
     NSDate *startDate = [NSDate date];
     NSString *path = [NSString stringWithFormat:@"/api/users/%ld/likes", (long)[user.ID integerValue]];
     
-    DebugLog(@"path: %@", path);
-    
     [[ClientSessionManager sharedClient] GET:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
@@ -141,17 +141,14 @@
     NSDate *startDate = [NSDate date];
     NSString *path = [NSString stringWithFormat:@"/api/likes"];
 
-    DebugLog(@"path: %@", path);
-    
     [[ClientSessionManager sharedClient] POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        DebugLog(@"status code: %li", (long)operation.response.statusCode);
-        
         NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:startDate];
         
         if (operation.isCancelled || operation.response.statusCode == 204) {
+            [Tracker trackUserLikedSpecial:special];
             if (successBlock) {
                 successBlock(nil);
             }
@@ -196,10 +193,7 @@
 + (void)unlikeSpecial:(SpecialModel *)special success:(void(^)(BOOL success))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
     NSDictionary *params = @{};
     NSDate *startDate = [NSDate date];
-    NSString *path = [NSString stringWithFormat:@"/api/daily_specials/%li/likes/mine", (long)[special.ID integerValue]];
-    
-    DebugLog(@"params: %@", params);
-    DebugLog(@"path: %@", path);
+    NSString *path = [NSString stringWithFormat:@"/api/daily_specials/%li/likes", (long)[special.ID integerValue]];
     
     [[ClientSessionManager sharedClient] DELETE:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Parses response with JSONAPI
@@ -211,12 +205,11 @@
             [self removeLike:like];
         } fail:nil always:nil];
         
-        DebugLog(@"status code: %lu", (unsigned long)operation.response.statusCode);
-        
         // deletes set the status code to 204
         if (operation.isCancelled || operation.response.statusCode == 204) {
             // only track a successful search
-            [Tracker track:@"Post Like Special" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
+            [Tracker trackUserUnlikedSpecial:special];
+            [Tracker track:@"Delete Like Special" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
 
             if (successBlock) {
                 successBlock(TRUE);

@@ -106,4 +106,21 @@
     [self trackUserAction:@"User Searched Specials"];
 }
 
+#pragma mark - Likes
+#pragma mark -
+
++ (void)trackUserLikedSpecial:(SpecialModel *)special {
+    [Tracker trackUserAction:@"User Liked Special"];
+    
+    NSString *weekday = special.weekdayString.length ? special.weekdayString : @"NULL";
+    [Tracker trackLocationPropertiesForEvent:@"Liked Special" properties:@{@"Name" : special.spot.name.length ? special.spot.name : @"NULL", @"Weekday" : weekday}];
+}
+
++ (void)trackUserUnlikedSpecial:(SpecialModel *)special {
+    [Tracker trackUserAction:@"User Unliked Special"];
+    
+    NSString *weekday = special.weekdayString.length ? special.weekdayString : @"NULL";
+    [Tracker trackLocationPropertiesForEvent:@"Unliked Special" properties:@{@"Name" : special.spot.name.length ? special.spot.name : @"NULL", @"Weekday" : weekday}];
+}
+
 @end
