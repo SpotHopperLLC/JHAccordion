@@ -16,7 +16,6 @@
     CGRect bounds = self.bounds;
     
     if (CGRectContainsPoint(bounds, point)) {
-        [Tracker trackHomeNavigationButtonTapped:TRUE];
         return self;
     }
     
@@ -24,7 +23,6 @@
     bounds.size.height += 25;
     
     if (CGRectContainsPoint(bounds, point)) {
-        [Tracker trackHomeNavigationButtonTapped:FALSE];
         return self;
     }
     

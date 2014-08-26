@@ -21,6 +21,10 @@
 
 @implementation Tracker (Events)
 
++ (void)trackAppLaunching {
+    [self track:@"App Launching"];
+}
+
 + (void)trackFirstUse {
     [self track:@"First Use"];
 }
@@ -53,17 +57,31 @@
                                                                     }];
 }
 
++ (void)trackGlobalSearchStarted {
+    [self track:@"GlobalSearch started"];
+}
+
++ (void)trackGlobalSearchCancelled {
+    [self track:@"GlobalSearch cancelled"];
+}
+
 + (void)trackGlobalSearchResultTapped:(SHJSONAPIResource *)model searchText:(NSString *)searchText {
-    NSString *selectedType = @"Undefined";
+    NSString *selectedType = @"NULL";
+    NSString *name = @"NULL";
     if ([model isKindOfClass:[SpotModel class]]) {
+        SpotModel *spot = (SpotModel *)model;
         selectedType = @"Spot";
+        name = spot.name;
     }
     else if ([model isKindOfClass:[DrinkModel class]]) {
+        DrinkModel *drink = (DrinkModel *)model;
         selectedType = @"Drink";
+        name = drink.name;
     }
     
     [self trackLocationPropertiesForEvent:@"GlobalSearch result selected" properties:@{
                                                                                        @"Selected type" : selectedType,
+                                                                                       @"Name" : name.length ? name : [NSNull null],
                                                                                        @"Last query" : searchText.length ? searchText : [NSNull null]
                                                                                        }];
 }
@@ -243,8 +261,15 @@
     }
 }
 
-+ (void)trackAreYouHere:(BOOL)yesOrNo {
-    [self trackLocationPropertiesForEvent:@"Are you at this bar?" properties:@{@"yesOrNo" : [NSNumber numberWithBool:yesOrNo]}];
++ (void)trackAreYouHere:(BOOL)yesOrNo spot:(SpotModel *)spot {
+    [self trackLocationPropertiesForEvent:@"Are you at this bar?" properties:@{@"yesOrNo" : [NSNumber numberWithBool:yesOrNo], @"Name" : spot.name.length ? spot.name : @"NULL"}];
+}
+
++ (void)trackDeepLinkWithTargetURL:(NSURL *)targetURL sourceURL:(NSURL *)sourceURL sourceApplication:(NSString *)sourceApplication {
+    NSString *targetPath = targetURL.path.length ? targetURL.path : @"NULL";
+    NSString *source = sourceURL.host.length ? sourceURL.host : sourceURL.scheme.length ? sourceURL.scheme : @"NULL";
+    
+    [self track:@"Deep Link" properties:@{@"Target Path" : targetPath, @"Source" : source, @"Source Application" : sourceApplication }];
 }
 
 + (void)trackUserTappedLocationPickerButton {
@@ -295,13 +320,6 @@
     }
 }
 
-#pragma mark - Navigation
-#pragma mark -
-
-+ (void)trackHomeNavigationButtonTapped:(BOOL)insideBounds {
-    [Tracker track:@"Home Navigation Button Tapped" properties:@{ @"Inside Bounds" : [NSNumber numberWithBool:insideBounds]}];
-}
-
 #pragma mark - Logins
 #pragma mark -
 
@@ -339,6 +357,87 @@
 
 + (void)trackLoggedIn:(BOOL)success {
     [Tracker track:@"Logged In" properties:@{@"Success" : [NSNumber numberWithBool:success]}];
+    
+    [[[Mixpanel sharedInstance] people] set:@{ @"Last Login" : [NSDate date] }];
+    
+    
+}
+
+#pragma mark - Search Results
+#pragma mark -
+
++ (void)trackNoBeerResults {
+    [self track:@"No Beer Results"];
+}
+
++ (void)trackNoCocktailResults {
+    [self track:@"No Cocktail Results"];
+}
+
++ (void)trackNoWineResults {
+    [self track:@"No Wine Results"];
+}
+
++ (void)trackNoSpotResults {
+    [self track:@"No Spot Results"];
+}
+
++ (void)trackNoSpecialsResults {
+    [self track:@"No Specials Results"];
+}
+
++ (void)trackGoodBeerResultsWithName:(NSString *)name match:(NSNumber *)match {
+    [self track:@"Good Beer Results" properties:@{@"name" : name.length ? name : @"NULL", @"percentage" : match ? match : @"NULL"}];
+}
+
++ (void)trackGoodCocktailResultsWithName:(NSString *)name match:(NSNumber *)match {
+    [self track:@"Good Cocktail Results" properties:@{@"name" : name.length ? name : @"NULL", @"percentage" : match ? match : @"NULL"}];
+}
+
++ (void)trackGoodWineResultsWithName:(NSString *)name match:(NSNumber *)match {
+    [self track:@"Good Wine Results" properties:@{@"name" : name.length ? name : @"NULL", @"percentage" : match ? match : @"NULL"}];
+}
+
++ (void)trackGoodSpotsResultsWithName:(NSString *)name match:(NSNumber *)match {
+    [self track:@"Good Spots Results" properties:@{@"name" : name.length ? name : @"NULL", @"percentage" : match ? match : @"NULL"}];
+}
+
++ (void)trackGoodSpecialsResults {
+    [self track:@"Good Specials Results"];
+}
+
+#pragma mark - Home Map Actions
+#pragma mark -
+
++ (void)trackSpotsButtonTapped {
+    [self track:@"Spots button Tapped"];
+}
+
++ (void)trackSpecialsButtonTapped {
+    [self track:@"Specials button Tapped"];
+}
+
++ (void)trackBeerButtonTapped {
+    [self track:@"Beer button Tapped"];
+}
+
++ (void)trackCocktailButtonTapped {
+    [self track:@"Cocktail button Tapped"];
+}
+
++ (void)trackWineButtonTapped {
+    [self track:@"Wine button Tapped"];
+}
+
+#pragma mark - List View
+#pragma mark -
+
++ (void)trackListViewDidDisplaySpot:(SpotModel *)spot {
+    [self track:@"List View Displayed Spot" properties:@{ @"Name" : spot.name.length ? spot.name : @"NULL" }];
+}
+
++ (void)trackListViewDidDisplayDrink:(DrinkModel *)drink {
+    [self track:@"List View Displayed Drink" properties:@{ @"Name" : drink.name.length ? drink.name : @"NULL" }];
 }
 
 @end

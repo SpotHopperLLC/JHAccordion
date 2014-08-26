@@ -19,6 +19,8 @@
 #import "SpecialModel.h"
 
 #import "Tracker.h"
+#import "Tracker+Events.h"
+#import "Tracker+People.h"
 
 #import "SHNotifications.h"
 
@@ -197,8 +199,6 @@ typedef enum {
     
     if (special.userLikesSpecial) {
         [[LikeModel unlikeSpecial:special] then:^(NSNumber *number) {
-            BOOL success = [number boolValue];
-            
             special.userLikesSpecial = FALSE;
             special.likeCount--;
             

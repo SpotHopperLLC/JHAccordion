@@ -14,7 +14,10 @@
 #import "SHStyleKit+Additions.h"
 #import "UIImageView+AFNetworking.h"
 #import "NetworkHelper.h"
+
 #import "Tracker.h"
+#import "Tracker+Events.h"
+#import "Tracker+People.h"
 
 #import "NSArray+DailySpecials.h"
 
@@ -77,6 +80,7 @@
             [self.collectionView reloadData];
             _currentIndex = 0;
             _isUpdatingData = FALSE;
+            [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:_currentIndex]];
         }
     }
 }
@@ -321,6 +325,8 @@
 #pragma mark -
 
 - (void)reportedChangedIndex {
+    [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:_currentIndex]];
+    
     if ([self.delegate respondsToSelector:@selector(specialsCollectionViewManager:didChangeToSpotAtIndex:)]) {
         [self.delegate specialsCollectionViewManager:self didChangeToSpotAtIndex:_currentIndex];
     }

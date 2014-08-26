@@ -14,11 +14,17 @@
 
 @interface Tracker (Events)
 
++ (void)trackAppLaunching;
+
 + (void)trackFirstUse;
 
 + (void)trackDrinkProfileScreenViewed:(DrinkModel *)drink;
 
 + (void)trackSpotProfileScreenViewed:(SpotModel *)spot;
+
++ (void)trackGlobalSearchStarted;
+
++ (void)trackGlobalSearchCancelled;
 
 + (void)trackGlobalSearchResultTapped:(SHJSONAPIResource *)model searchText:(NSString *)searchText;
 
@@ -70,7 +76,9 @@
 
 + (void)trackDrinklistViewed:(SHMode)mode;
 
-+ (void)trackAreYouHere:(BOOL)yesOrNo;
++ (void)trackAreYouHere:(BOOL)yesOrNo spot:(SpotModel *)spot;
+
++ (void)trackDeepLinkWithTargetURL:(NSURL *)targetURL sourceURL:(NSURL *)sourceURL sourceApplication:(NSString *)sourceApplication;
 
 + (void)trackUserTappedLocationPickerButton;
 
@@ -81,11 +89,6 @@
 + (void)trackSpotlist:(SpotListModel *)spotlist request:(SpotListRequest *)request;
 
 + (void)trackDrinklist:(DrinkListModel *)drinklist mode:(SHMode)mode request:(DrinkListRequest *)request;
-
-#pragma mark - Navigation
-#pragma mark -
-
-+ (void)trackHomeNavigationButtonTapped:(BOOL)insideBounds;
 
 #pragma mark - Logins
 #pragma mark -
@@ -107,5 +110,48 @@
 + (void)trackLoggingInWithSpotHopper;
 
 + (void)trackLoggedIn:(BOOL)success;
+
+#pragma mark - Search Results
+#pragma mark -
+
++ (void)trackNoBeerResults;
+
++ (void)trackNoCocktailResults;
+
++ (void)trackNoWineResults;
+
++ (void)trackNoSpotResults;
+
++ (void)trackNoSpecialsResults;
+
++ (void)trackGoodBeerResultsWithName:(NSString *)name match:(NSNumber *)match;
+
++ (void)trackGoodCocktailResultsWithName:(NSString *)name match:(NSNumber *)match;
+
++ (void)trackGoodWineResultsWithName:(NSString *)name match:(NSNumber *)match;
+
++ (void)trackGoodSpotsResultsWithName:(NSString *)name match:(NSNumber *)match;
+
++ (void)trackGoodSpecialsResults;
+
+#pragma mark - Home Map Actions
+#pragma mark -
+
++ (void)trackSpotsButtonTapped;
+
++ (void)trackSpecialsButtonTapped;
+
++ (void)trackBeerButtonTapped;
+
++ (void)trackCocktailButtonTapped;
+
++ (void)trackWineButtonTapped;
+
+#pragma mark - List View
+#pragma mark -
+
++ (void)trackListViewDidDisplaySpot:(SpotModel *)spot;
+
++ (void)trackListViewDidDisplayDrink:(DrinkModel *)drink;
 
 @end

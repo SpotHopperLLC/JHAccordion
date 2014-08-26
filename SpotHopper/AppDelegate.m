@@ -109,14 +109,10 @@
     if ([SHAppConfiguration isTrackingEnabled]) {
         NSString *token = [SHAppConfiguration mixpanelToken];
         [Mixpanel sharedInstanceWithToken:token];
+        [Tracker trackAppLaunching];
+        [Tracker identifyUser];
         [Tracker trackUserWithProperties:@{ @"Last Launch Date" : [NSDate date] }];
         [Tracker trackUserAction:@"App Launch"];
-
-//        Examples:
-//        Mixpanel *mixpanel = [Mixpanel sharedInstance];
-//        [mixpanel track:@"Plan Selected" properties:@{@"Gender": @"Female", @"Plan": @"Premium"}];
-//        [mixpanel identify:@"13793"]; // once the user is logged in set their identity
-        [[Mixpanel sharedInstance] track:@"App Launching" properties:@{@"currentTime" : [NSDate date]}];
         
         // Optional: automatically send uncaught exceptions to Google Analytics.
         [GAI sharedInstance].trackUncaughtExceptions = YES;
@@ -182,6 +178,11 @@
         if (parsedUrl.appLinkReferer.sourceURL) {
             self.sourceURL = parsedUrl.appLinkReferer.sourceURL;
         }
+        
+        NSURL *targetURL = parsedUrl.targetURL;
+        NSURL *sourceURL = parsedUrl.appLinkReferer.sourceURL;
+        [Tracker trackDeepLinkWithTargetURL:targetURL sourceURL:sourceURL sourceApplication:sourceApplication];
+        
         [SHNotifications appOpenedWithURL:url];
         return YES;
     }

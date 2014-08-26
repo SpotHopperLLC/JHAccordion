@@ -619,6 +619,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         }];
         return;
     }
+    
+    [Tracker trackGlobalSearchStarted];
 
     [self checkNetworkReachabilityWithCompletionBlock:^{
         [self hideBottomViewWithCompletionBlock:nil];
@@ -1102,18 +1104,20 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (IBAction)areYouHereYesButtonTapped:(id)sender {
-    [Tracker trackAreYouHere:YES];
-    
     [self hideAreYouHerePrompt:TRUE withCompletionBlock:nil];
     
     if (self.nearbySpots.count) {
         SpotModel *spot = self.nearbySpots[0];
+        [Tracker trackAreYouHere:YES spot:spot];
         [self scopeToSpot:spot];
     }
 }
 
 - (IBAction)areYouHereNoButtonTapped:(id)sender {
-    [Tracker trackAreYouHere:NO];
+    if (self.nearbySpots.count) {
+        SpotModel *spot = self.nearbySpots[0];
+        [Tracker trackAreYouHere:NO spot:spot];
+    }
     
     [self hideAreYouHerePrompt:TRUE withCompletionBlock:nil];
 }
@@ -1127,6 +1131,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (IBAction)searchCancelButtonTapped:(id)sender {
+    [Tracker trackGlobalSearchCancelled];
     [Tracker trackLeavingGlobalSearch:FALSE];
 
     [self.globalSearchViewController cancelSearch];
@@ -1369,7 +1374,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)showSpotsSearch {
-    [Tracker trackUserAction:@"User Searched Spots"];
+    [Tracker trackUserSearchedSpots];
     [self.slidersSearchViewController prepareForMode:SHModeSpots];
     
     _actionButtonTapCount++;
@@ -1383,7 +1388,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)showBeersSearch {
-    [Tracker trackUserAction:@"User Searched Beers"];
+    [Tracker trackUserSearchedBeers];
     [self.slidersSearchViewController prepareForMode:SHModeBeer];
     
     _actionButtonTapCount++;
@@ -1396,7 +1401,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)showCocktailsSearch {
-    [Tracker trackUserAction:@"User Searched Cocktails"];
+    [Tracker trackUserSearchedCocktails];
     [self.slidersSearchViewController prepareForMode:SHModeCocktail];
     
     _actionButtonTapCount++;
@@ -1409,7 +1414,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)showWineSearch {
-    [Tracker trackUserAction:@"User Searched Wine"];
+    [Tracker trackUserSearchedWine];
     [self.slidersSearchViewController prepareForMode:SHModeWine];
     
     _actionButtonTapCount++;
@@ -1422,6 +1427,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)displaySpecialsForSpots:(NSArray *)spots {
+    [Tracker trackUserSearchedSpecials];
     [self updateNavigationItemTitle:kTodaysSpecialsTitle];
     
     self.currentIndex = 0;
@@ -2694,6 +2700,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             self.globalSearchViewController.shouldKeepTitle = FALSE;
 
             if (SHModeSpecials == mode) {
+                [Tracker trackSpecialsButtonTapped];
                 [self showHUD:@"Finding Today's Specials"];
                 [Tracker trackUserAction:@"User Searched Specials"];
                 [self fetchSpecialsWithCompletionBlock:^{
@@ -2705,18 +2712,19 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                 if (![self promptLoginNeeded:kLoginPromptText]) {
                     switch (mode) {
                         case SHModeSpots:
+                            [Tracker trackSpotsButtonTapped];
                             [self showSpotsSearch];
                             break;
-                        case SHModeSpecials: {
-                        }
-                            break;
                         case SHModeBeer:
+                            [Tracker trackBeerButtonTapped];
                             [self showBeersSearch];
                             break;
                         case SHModeCocktail:
+                            [Tracker trackCocktailButtonTapped];
                             [self showCocktailsSearch];
                             break;
                         case SHModeWine:
+                            [Tracker trackWineButtonTapped];
                             [self showWineSearch];
                             break;
                             
@@ -2742,6 +2750,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [Tracker trackDrinkSpecials:spotModels];
 
     if (!spotModels.count) {
+        [Tracker trackNoSpecialsResults];
+        [Tracker trackUserNoSpecialsResults];
+        
         [self showHomeNavigation:TRUE withCompletionBlock:^{
             [self showAlert:@"Oops" message:@"There are no drink specials which match in this location. Please try another search area."];
             [self restoreNavigationIfNeeded];
@@ -2753,12 +2764,20 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.mode = SHModeSpecials;
         self.specialsSpotModels = spotModels;
         
+        if (self.specialsSpotModels.count >= 5) {
+            [Tracker trackGoodSpecialsResults];
+            [Tracker trackUserGoodSpecialsResults];
+        }
+        
         [self displaySpecialsForSpots:spotModels];
     }
 }
 
 - (void)processSpotlistModel:(SpotListModel *)spotlistModel withRequest:(SpotListRequest *)request {
     [Tracker trackSpotlist:spotlistModel request:request];
+    
+    [Tracker trackNoSpotResults];
+    [Tracker trackUserNoSpotResults];
     
     if (!spotlistModel.spots.count) {
         [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
@@ -2772,6 +2791,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.spotListRequest = request;
         self.mode = SHModeSpots;
         self.spotListModel = spotlistModel;
+        
+        if (self.spotListModel.spots.count) {
+            SpotModel *spot = self.spotListModel.spots[0];
+            if (spot.match.floatValue >= 0.85f) {
+                [Tracker trackGoodSpotsResultsWithName:spot.name match:spot.match];
+                [Tracker trackUserGoodSpotsResults];
+            }
+        }
 
         [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
             [self displaySpotlist:spotlistModel];
@@ -2783,6 +2810,24 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [Tracker trackDrinklist:drinklistModel mode:mode request:request];
     
     if (!drinklistModel.drinks.count) {
+        switch (mode) {
+            case SHModeBeer:
+                [Tracker trackNoBeerResults];
+                [Tracker trackUserNoBeerResults];
+                break;
+            case SHModeCocktail:
+                [Tracker trackNoCocktailResults];
+                [Tracker trackUserNoCocktailResults];
+                break;
+            case SHModeWine:
+                [Tracker trackNoWineResults];
+                [Tracker trackUserNoWineResults];
+                break;
+                
+            default:
+                break;
+        }
+        
         [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
             [self showAlert:@"Oops" message:@"There are no drinks which match in this location. Please try another search area."];
             [self restoreNavigationIfNeeded];
@@ -2793,6 +2838,29 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.drinkListRequest = request;
         self.mode = mode;
         self.drinkListModel = drinklistModel;
+        
+        if (self.drinkListModel.drinks.count) {
+            DrinkModel *drink = self.drinkListModel.drinks[0];
+            if (drink.match.floatValue >= 0.85f) {
+                switch (mode) {
+                    case SHModeBeer:
+                        [Tracker trackGoodBeerResultsWithName:drink.name match:drink.match];
+                        [Tracker trackUserGoodBeerResults];
+                        break;
+                    case SHModeCocktail:
+                        [Tracker trackGoodCocktailResultsWithName:drink.name match:drink.match];
+                        [Tracker trackUserGoodCocktailResults];
+                        break;
+                    case SHModeWine:
+                        [Tracker trackGoodWineResultsWithName:drink.name match:drink.match];
+                        [Tracker trackUserGoodWineResults];
+                        break;
+                        
+                    default:
+                        break;
+                }
+            }
+        }
         
         [self hideSlidersSearch:TRUE forMode:mode withCompletionBlock:^{
             [self displayDrinklist:drinklistModel forMode:mode];

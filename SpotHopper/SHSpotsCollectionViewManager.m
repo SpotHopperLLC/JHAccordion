@@ -18,7 +18,10 @@
 #import "NetworkHelper.h"
 
 #import "TellMeMyLocation.h"
+
 #import "Tracker.h"
+#import "Tracker+Events.h"
+#import "Tracker+People.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -87,6 +90,7 @@
             [self.collectionView setContentOffset:CGPointMake(0, 0)];
             _currentIndex = 0;
             _isUpdatingData = FALSE;
+            [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:_currentIndex]];
         }
     }
 }
@@ -332,6 +336,8 @@
 #pragma mark -
 
 - (void)reportedChangedIndex {
+    [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:_currentIndex]];
+
     if ([self.delegate respondsToSelector:@selector(spotsCollectionViewManager:didChangeToSpotAtIndex:)]) {
         [self.delegate spotsCollectionViewManager:self didChangeToSpotAtIndex:_currentIndex];
     }
