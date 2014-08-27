@@ -107,6 +107,7 @@
     [updatedProperties addEntriesFromDictionary:@{
                                                   @"name" : user.name.length ? user.name : @"NULL",
                                                   @"role" : user.role.length ? user.role : @"NULL",
+                                                  @"email" : user.email.length ? user.email : @"NULL",
                                                   @"facebookId" : user.facebookId.length ? user.facebookId : @"NULL",
                                                   @"twitterId" : user.twitterId.length ? user.twitterId : @"NULL",
                                                   @"gender" : user.gender.length ? user.gender : @"NULL",

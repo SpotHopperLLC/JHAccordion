@@ -215,13 +215,6 @@
         else if (operation.response.statusCode == 200) {
             NSArray *specials = [jsonApi resourcesForKey:@"daily_specials"];
 
-            // TODO: temporarily add duration
-            for (SpecialModel *special in specials) {
-                if (special.duration == 0) {
-                    special.duration = 120*60;
-                }
-            }
-            
             // only track a successful search
             [Tracker track:@"Fetch Specials" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
             
@@ -397,7 +390,8 @@
             if (successBlock) {
                 successBlock(special);
             }
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             
             if (failureBlock) {

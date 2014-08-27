@@ -11,8 +11,6 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
-#import <Raven/RavenClient.h>
-
 @implementation SHJSONAPIResource
 
 - (id)initWithDictionary:(NSDictionary *)dict withLinked:(NSDictionary *)linked {
@@ -49,7 +47,6 @@
         
         NSError *error = nil;
         if (![dateFormatter getObjectValue:&date forString:string range:nil error:&error]) {
-//            [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:@"Birthday '%@' could not be parsed: %@", string, error] level:kRavenLogLevelDebugError];
         }
     }
     return date;

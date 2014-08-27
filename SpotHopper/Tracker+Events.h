@@ -22,13 +22,14 @@
 
 + (void)trackSpotProfileScreenViewed:(SpotModel *)spot;
 
+#pragma mark - Global Search
+#pragma mark -
+
 + (void)trackGlobalSearchStarted;
 
 + (void)trackGlobalSearchCancelled;
 
 + (void)trackGlobalSearchResultTapped:(SHJSONAPIResource *)model searchText:(NSString *)searchText;
-
-+ (void)trackGlobalSearchRequestCompleted;
 
 + (void)trackGlobalSearchRequestCancelled;
 
@@ -37,6 +38,8 @@
 + (void)trackGlobalSearchHappened:(NSString *)searchText;
 
 + (void)trackLeavingGlobalSearch:(BOOL)selected;
+
+#pragma mark -
 
 + (void)trackViewedHome;
 

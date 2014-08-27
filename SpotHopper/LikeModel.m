@@ -107,7 +107,8 @@
             if (successBlock) {
                 successBlock(likes);
             }
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             
             if (failureBlock) {
@@ -165,7 +166,8 @@
             if (successBlock) {
                 successBlock(like);
             }
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             
             if (failureBlock) {

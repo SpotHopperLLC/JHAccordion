@@ -37,7 +37,7 @@ pod 'Parse-iOS-SDK', '~> 1.2.19'
 
 # Analytics
 pod 'Mixpanel', '~> 2.3.0'
-pod 'GoogleAnalytics-iOS-SDK', '~> 3.0.0'
+# pod 'GoogleAnalytics-iOS-SDK', '~> 3.0.0'
 
 target "SpotHopperLocal" do
     # Debugging UI

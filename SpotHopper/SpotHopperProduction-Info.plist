@@ -41,10 +41,6 @@
 	<string>504677422978889</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>MixPanelToken</key>
-	<string>003978c7399ef9503dd3edbc92ca50d0</string>
-	<key>TrackingEnabled</key>
-	<true/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Lato-Light.ttf</string>
@@ -78,6 +74,19 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>SpotHopperSettings</key>
+	<dict>
+		<key>MixpanelToken</key>
+		<string>003978c7399ef9503dd3edbc92ca50d0</string>
+		<key>TrackingEnabled</key>
+		<true/>
+		<key>BitlyUsername</key>
+		<string>spothopper</string>
+		<key>BitlyAPIKey</key>
+		<string>R_11cbfeb881bd416fa9328fc8d239f0f8</string>
+		<key>BitlyShortURL</key>
+		<string>http://go.spotapps.co</string>
+	</dict>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 </dict>

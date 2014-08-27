@@ -135,6 +135,22 @@
         return date;
     }];
     
+    // ShortDate
+    [JSONAPIResourceFormatter registerFormat:@"ShortDate" withBlock:^id(id jsonValue) {
+        NSString *string = (NSString *)jsonValue;
+            NSDate *date = nil;
+            if (string.length > 0) {
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+                [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+                
+                NSError *error = nil;
+                if (![dateFormatter getObjectValue:&date forString:string range:nil error:&error]) {
+                }
+            }
+            return date;
+    }];
+    
     // Time
     [JSONAPIResourceFormatter registerFormat:@"Time" withBlock:^id(id jsonValue) {
         NSDate *date = nil;

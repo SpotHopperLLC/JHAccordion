@@ -355,11 +355,6 @@
                 for (SpotModel *spot in spots) {
                     SpecialModel *special = spot.specialForToday;
                     
-                    // TODO: temporarily set duration before the data is ready
-                    if (special.duration == 0) {
-                        special.duration = 120*60;
-                    }
-                    
                     [[LikeModel likeForSpecial:special] then:^(LikeModel *like) {
                         special.userLikesSpecial = like != nil;
                     } fail:nil always:nil];
@@ -751,8 +746,12 @@
 }
 
 - (SpecialModel *)specialForToday {
+    // offset time by 4 hours so that 2am on Wednesday still looks at Tuesday
+    NSTimeInterval fourHoursAgo = 60 * 60 * 4 * -1;
+    NSDate *offsetTime = [[NSDate date] dateByAddingTimeInterval:fourHoursAgo];
+    
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateComponents *components = [gregorian components:NSWeekdayCalendarUnit fromDate:[NSDate date]];
+    NSDateComponents *components = [gregorian components:NSWeekdayCalendarUnit fromDate:offsetTime];
     
     NSInteger weekday = components.weekday - 1;
     
@@ -771,8 +770,8 @@
     NSDate *now = [NSDate date];
     for (LiveSpecialModel *liveSpecial in [self liveSpecials]) {
         
-        NSLog(@"LS Start date - %@", [liveSpecial startDate]);
-        NSLog(@"LS End date - %@", [liveSpecial endDate]);
+        //NSLog(@"LS Start date - %@", [liveSpecial startDate]);
+        //NSLog(@"LS End date - %@", [liveSpecial endDate]);
         
         // Checks if currents special start BEFORE now and ends AFTER now
         if ( [liveSpecial.startDate timeIntervalSinceDate:now] < 0

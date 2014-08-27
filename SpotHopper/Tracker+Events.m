@@ -57,6 +57,9 @@
                                                                     }];
 }
 
+#pragma mark - Global Search
+#pragma mark -
+
 + (void)trackGlobalSearchStarted {
     [self track:@"GlobalSearch started"];
 }
@@ -86,10 +89,6 @@
                                                                                        }];
 }
 
-+ (void)trackGlobalSearchRequestCompleted {
-    [self trackLocationPropertiesForEvent:@"GlobalSearch request completed" properties:@{}];
-}
-
 + (void)trackGlobalSearchRequestCancelled {
     [self trackLocationPropertiesForEvent:@"GlobalSearch request cancelled" properties:@{}];
 }
@@ -99,17 +98,14 @@
 }
 
 + (void)trackGlobalSearchHappened:(NSString *)searchText {
-    if (!searchText.length) {
-        [self trackLocationPropertiesForEvent:@"Search with Query" properties:@{}];
-    }
-    else {
-        [self trackLocationPropertiesForEvent:@"Search without Query" properties:@{}];
-    }
+    [self trackLocationPropertiesForEvent:@"Search with Query" properties:@{@"Search Text" : searchText.length ? searchText : @"NULL"}];
 }
 
 + (void)trackLeavingGlobalSearch:(BOOL)selected {
     [self trackLocationPropertiesForEvent:@"Exiting GlobalSearch" properties:@{@"Selected a result" : [NSNumber numberWithBool:selected]}];
 }
+
+#pragma mark -
 
 + (void)trackViewedHome {
     [self track:@"Viewed Home"];
@@ -268,8 +264,9 @@
 + (void)trackDeepLinkWithTargetURL:(NSURL *)targetURL sourceURL:(NSURL *)sourceURL sourceApplication:(NSString *)sourceApplication {
     NSString *targetPath = targetURL.path.length ? targetURL.path : @"NULL";
     NSString *source = sourceURL.host.length ? sourceURL.host : sourceURL.scheme.length ? sourceURL.scheme : @"NULL";
-    
-    [self track:@"Deep Link" properties:@{@"Target Path" : targetPath, @"Source" : source, @"Source Application" : sourceApplication }];
+
+    [self trackUserAction:@"User Deep Link"];
+    [self trackLocationPropertiesForEvent:@"Deep Link" properties:@{@"Target Path" : targetPath, @"Source" : source, @"Source Application" : sourceApplication }];
 }
 
 + (void)trackUserTappedLocationPickerButton {
@@ -387,19 +384,23 @@
 }
 
 + (void)trackGoodBeerResultsWithName:(NSString *)name match:(NSNumber *)match {
-    [self track:@"Good Beer Results" properties:@{@"name" : name.length ? name : @"NULL", @"percentage" : match ? match : @"NULL"}];
+    NSUInteger percentage = (NSUInteger)([match floatValue] * 100);
+    [self track:@"Good Beer Results" properties:@{@"name" : name.length ? name : @"NULL", @"percentage" : [NSNumber numberWithInteger:percentage]}];
 }
 
 + (void)trackGoodCocktailResultsWithName:(NSString *)name match:(NSNumber *)match {
-    [self track:@"Good Cocktail Results" properties:@{@"name" : name.length ? name : @"NULL", @"percentage" : match ? match : @"NULL"}];
+    NSUInteger percentage = (NSUInteger)([match floatValue] * 100);
+    [self track:@"Good Cocktail Results" properties:@{@"name" : name.length ? name : @"NULL", @"percentage" : [NSNumber numberWithInteger:percentage]}];
 }
 
 + (void)trackGoodWineResultsWithName:(NSString *)name match:(NSNumber *)match {
-    [self track:@"Good Wine Results" properties:@{@"name" : name.length ? name : @"NULL", @"percentage" : match ? match : @"NULL"}];
+    NSUInteger percentage = (NSUInteger)([match floatValue] * 100);
+    [self track:@"Good Wine Results" properties:@{@"name" : name.length ? name : @"NULL", @"percentage" : [NSNumber numberWithInteger:percentage]}];
 }
 
 + (void)trackGoodSpotsResultsWithName:(NSString *)name match:(NSNumber *)match {
-    [self track:@"Good Spots Results" properties:@{@"name" : name.length ? name : @"NULL", @"percentage" : match ? match : @"NULL"}];
+    NSUInteger percentage = (NSUInteger)([match floatValue] * 100);
+    [self track:@"Good Spots Results" properties:@{@"name" : name.length ? name : @"NULL", @"percentage" : [NSNumber numberWithInteger:percentage]}];
 }
 
 + (void)trackGoodSpecialsResultsWithLikes:(NSUInteger)likesCount {

@@ -102,7 +102,8 @@
             
             // Resolves promise
             [deferred resolve];
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             failureBlock(errorModel);
             
@@ -176,7 +177,8 @@
             
             // Resolves promise
             [deferred resolve];
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             failureBlock(errorModel);
             
@@ -212,7 +214,8 @@
             
             // Resolves promise
             [deferred resolve];
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             failureBlock(errorModel);
             
@@ -273,7 +276,8 @@
             
             // Resolves promise
             [deferred resolve];
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             failureBlock(errorModel);
             
@@ -302,7 +306,8 @@
             
             // Resolves promise
             [deferred resolve];
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             failureBlock(errorModel);
             
@@ -398,7 +403,8 @@
             if (successBlock) {
                 successBlock(reversedArray);
             }
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             if (failureBlock) {
                 failureBlock(errorModel);
@@ -484,7 +490,8 @@
             if (successBlock) {
                 successBlock(model);
             }
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             if (failureBlock) {
                 failureBlock(errorModel);
@@ -520,7 +527,8 @@
             if (successBlock) {
                 successBlock(model);
             }
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             if (failureBlock) {
                 failureBlock(errorModel);
@@ -547,7 +555,8 @@
             if (successBlock) {
                 successBlock(model);
             }
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             if (failureBlock) {
                 failureBlock(errorModel);
@@ -600,7 +609,8 @@
             if (successBlock) {
                 successBlock(model);
             }
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             if (failureBlock) {
                 failureBlock(errorModel);

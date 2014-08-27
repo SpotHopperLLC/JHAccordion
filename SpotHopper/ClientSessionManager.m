@@ -405,7 +405,7 @@
     
 }
 
-#pragma mark - Login helpers
+#pragma mark - Login Helpers
 
 - (void)login:(NSHTTPURLResponse*)response user:(UserModel*)user {
     NSLog(@"All response cookies - %@", [response allHeaderFields]);
@@ -448,6 +448,44 @@
     [self setCurrentUser:nil];
     
     [SHNotifications userDidLoginOut];
+}
+
+#pragma mark - Facebook Helpers
+#pragma mark -
+
+// TODO: set fetching facebook friends
+- (void)findFacebookFriendsWithCompletionBlock:(void (^)(NSArray *friendUsers, NSError *error))completionBlock {
+    // Issue a Facebook Graph API request to get your user's friend list
+    [FBRequestConnection startForMyFriendsWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        if (error) {
+            if (completionBlock) {
+                completionBlock(nil, error);
+            }
+        }
+        else {
+            // result will contain an array with your user's friends in the "data" key
+            NSArray *friendObjects = [result objectForKey:@"data"];
+            NSMutableArray *friendIds = [NSMutableArray arrayWithCapacity:friendObjects.count];
+            // Create a list of friends' Facebook IDs
+            for (NSDictionary *friendObject in friendObjects) {
+                [friendIds addObject:friendObject[@"id"]];
+            }
+            
+            // Construct a PFUser query that will find friends whose facebook ids
+            // are contained in the current user's friend list.
+            PFQuery *friendQuery = [PFUser query];
+            [friendQuery whereKey:@"facebookId" containedIn:friendIds];
+            
+            // findObjects will return a list of PFUsers that are friends
+            // with the current user
+            NSArray *friendUsers = [friendQuery findObjects];
+            DebugLog(@"friendUsers: %@", friendUsers);
+            
+            if (completionBlock) {
+                completionBlock(friendUsers, nil);
+            }
+        }
+    }];
 }
 
 #pragma mark - Settings
@@ -499,7 +537,8 @@
         [archiver finishEncoding];
         
         [data writeToFile:path atomically:YES];
-    } else {
+    }
+    else {
         NSFileManager *fileMgr = [[NSFileManager alloc] init];
         [fileMgr removeItemAtPath:path error:nil];
     }

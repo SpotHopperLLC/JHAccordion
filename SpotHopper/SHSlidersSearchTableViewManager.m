@@ -1073,9 +1073,8 @@
         [self.accordion closeSection:indexPath.section];
         
         if (self.mode == SHModeBeer) {
+            [Tracker trackBeerStyleSelected:drinklist stylesCount:self.drinklists.count position:indexPath.row];
             if (didSetAdvancedSlider) {
-                
-                [Tracker trackBeerStyleSelected:drinklist stylesCount:self.drinklists.count position:indexPath.row];
                 [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Beer_Sliders],
                                                                  [NSNumber numberWithInteger:kSection_Beer_AdvancedSliders]]];
             }

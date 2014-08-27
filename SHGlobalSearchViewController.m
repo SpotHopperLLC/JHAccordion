@@ -468,7 +468,6 @@
             }
         }
         
-        [Tracker trackGlobalSearchRequestCompleted];
         [Tracker trackGlobalSearchHappened:self.searchText];
 
         self.results = @[].mutableCopy;

@@ -106,18 +106,6 @@
 
 #endif
 
-// Mixpanel - https://mixpanel.com/help/reference/ios
-
-// updated for 2.0
-#define kMixPanelToken @"003978c7399ef9503dd3edbc92ca50d0"
-
-// Google Analytics - https://developers.google.com/analytics/devguides/collection/ios/v3/
-#define kGoogleAnalyticsTrackingId @"UA-49583937-2"
-
-#define kBitlyUsername @"spothopper"
-#define kBitlyAPIKey @"R_11cbfeb881bd416fa9328fc8d239f0f8"
-#define kBitlyShortURL @"http://go.spotapps.co"
-
 #define kSpotHopperIconURL @"http://static.spotapps.co/spothopper-icon.png"
 #define kSpotHopperTagline @"SpotHopper is a local search engine, built to answer \"where should I go?\" and \"what drink will I love?\""
 

@@ -33,21 +33,7 @@
              };
 }
 
-// TODO: test that values are being mapped
-
 #pragma mark - Getters
-
-//- (NSString *)name {
-//    return [self objectForKey:@"name"];
-//}
-//
-//- (NSDate *)createdAt {
-//    return [self formatDateTimestamp:[self objectForKey:@"created_at"]];
-//}
-//
-//- (NSDate *)updatedAt {
-//    return [self formatDateTimestamp:[self objectForKey:@"updated_at"]];
-//}
 
 #pragma mark - DrinkSubTypeModel
 

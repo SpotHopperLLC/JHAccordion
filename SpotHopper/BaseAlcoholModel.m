@@ -61,7 +61,8 @@
             
             // Resolves promise
             [deferred resolve];
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             failureBlock(errorModel);
             
@@ -125,7 +126,8 @@
             if (successBlock) {
                 successBlock(sorted);
             }
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             if (failureBlock) {
                 failureBlock(errorModel);

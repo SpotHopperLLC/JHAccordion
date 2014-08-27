@@ -68,7 +68,8 @@
             
             // Resolves promise
             [deferred resolve];
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             failureBlock(errorModel);
             

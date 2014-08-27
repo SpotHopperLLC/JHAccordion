@@ -14,4 +14,10 @@
 
 + (NSString *)mixpanelToken;
 
++ (NSString *)bitlyUsername;
+
++ (NSString *)bitlyAPIKey;
+
++ (NSString *)bitlyShortURL;
+
 @end

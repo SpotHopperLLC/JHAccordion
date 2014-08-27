@@ -2940,9 +2940,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)locationMenuBarViewController:(SHLocationMenuBarViewController *)vc didSearchWithText:(NSString *)searchText {
-    // TODO: implement
     // relay text to location picker view controller
-    
     [self.locationPickerViewController searchWithText:searchText];
 }
 

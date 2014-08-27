@@ -29,7 +29,6 @@
 #import "BFAppLink.h"
 
 #import "Mixpanel.h"
-#import "GAI.h"
 #import "iRate.h"
 #import "Tracker.h"
 #import "Tracker+Events.h"
@@ -113,18 +112,6 @@
         [Tracker identifyUser];
         [Tracker trackUserWithProperties:@{ @"Last Launch Date" : [NSDate date] }];
         [Tracker trackUserAction:@"App Launch"];
-        
-        // Optional: automatically send uncaught exceptions to Google Analytics.
-        [GAI sharedInstance].trackUncaughtExceptions = YES;
-        
-        // Optional: set Google Analytics dispatch interval to e.g. 20 seconds.
-        [GAI sharedInstance].dispatchInterval = 20;
-        
-        // Optional: set Logger to VERBOSE for debug information.
-        [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelWarning];
-        
-        // Initialize tracker. Replace with your tracking ID.
-        [[GAI sharedInstance] trackerWithTrackingId:kGoogleAnalyticsTrackingId];
     }
     
     NSDate *firstUseDate = [UserState firstUseDate];
@@ -354,7 +341,8 @@
             }
             
         }];
-    } else {
+    }
+    else {
         [FBSession openActiveSessionWithPublishPermissions:@[@"publish_actions"] defaultAudience:FBSessionDefaultAudienceFriends allowLoginUI:NO completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
             switch (state) {
                 case FBSessionStateOpen:
@@ -407,17 +395,20 @@
                     [UIActionSheet showInView:view withTitle:@"Select account:" cancelButtonTitle:nil destructiveButtonTitle:@"Cancel" otherButtonTitles:twitterAccountsArray tapBlock:^(UIActionSheet *actionSheet, NSInteger buttonIndex) {
                         if (buttonIndex == 0) {
                             cancelHandler();
-                        } else {
+                        }
+                        else {
                             successHandler([arrayOfAccounts objectAtIndex:buttonIndex - 1]);
                         }
                     }];
                     
                 });
                 
-            } else {
+            }
+            else {
                 noAccounts();
             }
-        } else {
+        }
+        else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 permissionDeniedHandler();
             });
