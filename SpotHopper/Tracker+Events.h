@@ -157,4 +157,13 @@
 
 + (void)trackListViewDidDisplayDrink:(DrinkModel *)drink;
 
+#pragma mark - Location
+#pragma mark -
+
++ (void)trackUpdatedWithLocation:(CLLocation *)location;
+
++ (void)trackFoundLocation:(CLLocation *)location duration:(NSTimeInterval)duration;
+
++ (void)trackTimingOutBeforeLocationFound;
+
 @end

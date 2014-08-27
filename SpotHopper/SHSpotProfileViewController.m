@@ -45,6 +45,7 @@
 
 #define kTagSpotSpecialLabel 1
 #define kTagSpotSpecialDetailsLabel 2
+#define kTagSpotSpecialHoursLabel 3
 
 #define kTagLeftVibeLabel 1
 #define kTagRightVibeLabel 2
@@ -418,11 +419,15 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
         
         UILabel *titleLabel = (UILabel *)[cell viewWithTag:kTagSpotSpecialLabel];
         UILabel *detailsLabel = (UILabel *)[cell viewWithTag:kTagSpotSpecialDetailsLabel];
+        UILabel *hoursLabel = (UILabel *)[cell viewWithTag:kTagSpotSpecialHoursLabel];
 
         titleLabel.font = [self specialTitleFont];
         detailsLabel.font = [self specialDetailFont];
+        hoursLabel.font = [self specialDetailFont];
         
-        detailsLabel.text = [self specialsForToday];
+        SpecialModel *special = self.spot.specialForToday;
+        detailsLabel.text = special.text.length ? special.text : @"No Special";
+        hoursLabel.text = special.timeString;
     }
     else if (kSectionSliders == indexPath.section) {
         static NSString *SpotVibeIdentifier = @"SpotVibeCell";

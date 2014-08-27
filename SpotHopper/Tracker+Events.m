@@ -441,4 +441,32 @@
     [self track:@"List View Displayed Drink" properties:@{ @"Name" : drink.name.length ? drink.name : @"NULL" }];
 }
 
+#pragma mark - Location
+#pragma mark -
+
++ (void)trackUpdatedWithLocation:(CLLocation *)location {
+    NSDictionary *properties = @{
+                                 @"Location Latitude" : [NSNumber numberWithDouble:location.coordinate.latitude],
+                                 @"Location Longitude" : [NSNumber numberWithDouble:location.coordinate.longitude],
+                                 @"Location Accuracy" : [NSNumber numberWithDouble:location.horizontalAccuracy]
+                                 };
+
+    [self trackLocationPropertiesForEvent:@"Updated with Location" properties:properties];
+}
+
++ (void)trackFoundLocation:(CLLocation *)location duration:(NSTimeInterval)duration {
+    NSDictionary *properties = @{
+                                 @"Location Latitude" : [NSNumber numberWithDouble:location.coordinate.latitude],
+                                 @"Location Longitude" : [NSNumber numberWithDouble:location.coordinate.longitude],
+                                 @"Location Accuracy" : [NSNumber numberWithDouble:location.horizontalAccuracy],
+                                 @"Location Duration" : [NSString stringWithFormat:@"%.2f", duration]
+                                 };
+    
+    [self trackLocationPropertiesForEvent:@"Found Location" properties:properties];
+}
+
++ (void)trackTimingOutBeforeLocationFound {
+    [self trackLocationPropertiesForEvent:@"Timeout Before Location Found" properties:@{}];
+}
+
 @end

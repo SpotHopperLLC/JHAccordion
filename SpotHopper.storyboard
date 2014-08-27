@@ -2500,8 +2500,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="83"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Specials/Happy Hour" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9H1-IE-4pi">
-                                                    <rect key="frame" x="20" y="8" width="280" height="21"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Specials/Happy Hour" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9H1-IE-4pi">
+                                                    <rect key="frame" x="20" y="8" width="164" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -2514,14 +2514,23 @@
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="5PM - 7PM" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6TY-OC-rMA">
+                                                    <rect key="frame" x="226" y="8" width="74" height="17"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="6TY-OC-rMA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9H1-IE-4pi" secondAttribute="trailing" constant="8" id="2fS-rK-flm"/>
                                                 <constraint firstItem="9H1-IE-4pi" firstAttribute="top" secondItem="q4l-Xu-lcZ" secondAttribute="top" constant="8" id="GiC-ZX-awE"/>
                                                 <constraint firstItem="9H1-IE-4pi" firstAttribute="leading" secondItem="q4l-Xu-lcZ" secondAttribute="leading" constant="20" symbolic="YES" id="V3b-kJ-Ubk"/>
                                                 <constraint firstItem="QWp-Fg-ewm" firstAttribute="leading" secondItem="q4l-Xu-lcZ" secondAttribute="leading" constant="20" id="Vnq-dH-HCb"/>
-                                                <constraint firstAttribute="trailing" secondItem="9H1-IE-4pi" secondAttribute="trailing" constant="20" symbolic="YES" id="bCa-fb-qem"/>
+                                                <constraint firstAttribute="trailing" secondItem="6TY-OC-rMA" secondAttribute="trailing" constant="20" id="bSz-eZ-Gmj"/>
                                                 <constraint firstAttribute="trailing" secondItem="QWp-Fg-ewm" secondAttribute="trailing" constant="20" symbolic="YES" id="nPj-km-ZcD"/>
                                                 <constraint firstItem="QWp-Fg-ewm" firstAttribute="top" secondItem="9H1-IE-4pi" secondAttribute="bottom" constant="5" id="u96-zN-3Ku"/>
+                                                <constraint firstItem="6TY-OC-rMA" firstAttribute="top" secondItem="q4l-Xu-lcZ" secondAttribute="top" constant="8" id="ubo-gm-YxY"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -3429,7 +3438,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="JUZ-1I-e8k"/>
-        <segue reference="bf7-dq-aod"/>
+        <segue reference="m5e-QT-orl"/>
+        <segue reference="Ags-6p-98d"/>
     </inferredMetricsTieBreakers>
 </document>
