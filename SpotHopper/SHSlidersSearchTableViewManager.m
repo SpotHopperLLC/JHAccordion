@@ -1793,6 +1793,12 @@
 - (void)slider:(SHSlider *)slider valueDidFinishChanging:(CGFloat)value {
     NSAssert(self.delegate, @"Delegate is required");
     
+    NSString *sliderType = [self isSelectingSpotlist] ? @"Spotlist" : @"Drinklist";
+    
+    if (slider.sliderModel) {
+        [Tracker track:@"Slider Value Changed" properties:@{@"Type" : sliderType, @"Name" : slider.sliderModel.sliderTemplate.name, @"Value" : slider.sliderModel.value}];
+    }
+    
     if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerDidChangeSlider:)]) {
         [self.delegate slidersSearchTableViewManagerDidChangeSlider:self];
     }

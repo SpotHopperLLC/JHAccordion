@@ -153,26 +153,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
-    
-    [SpecialModel fetchSpecialsForSpot:self.spot success:^(NSArray *specials) {
-        DebugLog(@"Specials: %@", specials);
-        
-        for (SpecialModel *special in specials) {
-            [SpecialModel fetchSpecial:special success:^(SpecialModel *special) {
-                DebugLog(@"special: %@", special);
-                DebugLog(@"start: %@", special.startTime);
-                DebugLog(@"end: %@", special.endTime);
-                NSTimeInterval duration = [special.startTime timeIntervalSinceDate:special.endTime];
-                DebugLog(@"duration: %li", (long)duration);
-                DebugLog(@"day: %@", special.weekdayString);
-            } failure:^(ErrorModel *errorModel) {
-                DebugLog(@"Error: %@", errorModel);
-            }];
-        }
-        
-    } failure:^(ErrorModel *errorModel) {
-        DebugLog(@"Error: %@", errorModel);
-    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -216,7 +196,9 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 #pragma mark -
 
 - (NSString *)specialsForToday {
-    return self.spot.dailySpecials.specialsForToday;
+    SpecialModel *special = self.spot.specialForToday;
+    
+    return special.text;
 }
 
 - (UIFont *)specialTitleFont {
