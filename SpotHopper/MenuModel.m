@@ -47,8 +47,6 @@
 }
 
 - (BOOL)isBeerOnTap:(MenuItemModel *)menuItem {
-    // TODO: verify this logic since an item may appear more than once on the menu as bottle or draft
-    
     if ([menuItem.drink isBeer]) {
         for (MenuItemModel *aMenuItem in self.items) {
             if ([aMenuItem.drink isEqual:menuItem.drink]) {
@@ -63,8 +61,6 @@
 }
 
 - (BOOL)isBeerInBottle:(MenuItemModel *)menuItem {
-    // TODO: verify this logic since an item may appear more than once on the menu as bottle or draft
-    
     if ([menuItem.drink isBeer]) {
         for (MenuItemModel *aMenuItem in self.items) {
             if ([aMenuItem.drink isEqual:menuItem.drink]) {

@@ -8,10 +8,6 @@
 
 #import "BaseViewController.h"
 
-#import "GAI.h"
-#import "GAIFields.h"
-#import "GAIDictionaryBuilder.h"
-
 #import "SHAppConfiguration.h"
 
 #import "MBProgressHUD.h"
@@ -127,13 +123,6 @@ typedef void(^AlertBlock)();
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-    if ([SHAppConfiguration isTrackingEnabled]) {
-        // tracking with Google Analytics (override screenName)
-        id tracker = [[GAI sharedInstance] defaultTracker];
-        [tracker set:kGAIScreenName value:self.screenName];
-        [tracker send:[[GAIDictionaryBuilder createAppView] build]];
-    }
-    
 #ifndef kDisableSideBarDelegateInBase
     SidebarViewController *sidebar = (SidebarViewController*)self.navigationController.sidebarViewController.rightViewController;
     [sidebar setDelegate:self];
@@ -672,7 +661,7 @@ typedef void(^AlertBlock)();
 - (void)shortenLink:(NSString *)link withCompletionBlock:(void (^)(NSString *shortedLink, NSError *error))completionBlock {
     // go.spotapps.co -> www.spothopperapp.com
     
-    [SSTURLShortener shortenURL:[NSURL URLWithString:link] username:kBitlyUsername apiKey:kBitlyAPIKey withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
+    [SSTURLShortener shortenURL:[NSURL URLWithString:link] username:[SHAppConfiguration bitlyUsername] apiKey:[SHAppConfiguration bitlyAPIKey] withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
         if (completionBlock) {
             completionBlock(shortenedURL.absoluteString, error);
         }
@@ -823,7 +812,8 @@ typedef void(^AlertBlock)();
     
     if (show == YES) {
         [navigationItem setRightBarButtonItem:_rightSidebarButtonItem animated:animated];
-    } else {
+    }
+    else {
         [navigationItem setRightBarButtonItem:nil animated:animated];
     }
     

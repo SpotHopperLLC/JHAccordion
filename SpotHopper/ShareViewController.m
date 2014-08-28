@@ -11,10 +11,7 @@
 
 #import "ShareViewController.h"
 
-#import "GAI.h"
-#import "GAIFields.h"
-#import "GAIDictionaryBuilder.h"
-
+#import "SHAppConfiguration.h"
 #import "NSArray+DailySpecials.h"
 
 #import "AppDelegate.h"
@@ -78,12 +75,8 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [_txtShare becomeFirstResponder];
     
-    // tracking with Google Analytics (override screenName)
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker set:kGAIScreenName value:self.screenName];
-    [tracker send:[[GAIDictionaryBuilder createAppView] build]];
+    [_txtShare becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -372,7 +365,7 @@
 - (void)shortenLink:(NSString *)link withCompletionBlock:(void (^)(NSString *shortedLink, NSError *error))completionBlock {
     // go.spotapps.co -> www.spothopperapp.com
     
-    [SSTURLShortener shortenURL:[NSURL URLWithString:link] username:kBitlyUsername apiKey:kBitlyAPIKey withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
+    [SSTURLShortener shortenURL:[NSURL URLWithString:link] username:[SHAppConfiguration bitlyUsername] apiKey:[SHAppConfiguration bitlyAPIKey] withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
         if (completionBlock) {
             if (error) {
                 completionBlock(nil, error);
@@ -394,7 +387,7 @@
     [self shortenLink:linkToShare withCompletionBlock:^(NSString *shortedLink, NSError *error) {
         
         if (!shortedLink) {
-            shortedLink = kBitlyShortURL;
+            shortedLink = [SHAppConfiguration bitlyShortURL];
         }
         
         NSDictionary *params = @{ @"message" : _txtShare.text, @"link" : shortedLink, @"icon" : kSpotHopperIconURL, @"description" : kSpotHopperTagline };
@@ -434,7 +427,7 @@
     [self shortenLink:linkToShare withCompletionBlock:^(NSString *shortedLink, NSError *error) {
         
         if (!shortedLink) {
-            shortedLink = kBitlyShortURL;
+            shortedLink = [SHAppConfiguration bitlyShortURL];
         }
         
         NSUInteger maxLength = 140 - (shortedLink.length + 4); // padding for 3 periods and 1 space
@@ -470,7 +463,6 @@
         
     }];
     
-    
     if (_checkIn) {
         [Tracker track:@"Sharing Checkin" properties:@{@"Twitter" : @TRUE, @"Facebook" : @FALSE, @"SMS" : @FALSE}];
     }
@@ -487,7 +479,7 @@
     NSString *linkToShare = [self linkToShareForSource:@"SMS"];
     [self shortenLink:linkToShare withCompletionBlock:^(NSString *shortedLink, NSError *error) {
         if (!shortedLink) {
-            shortedLink = kBitlyShortURL;
+            shortedLink = [SHAppConfiguration bitlyShortURL];
         }
         
         NSString *message = [NSString stringWithFormat:@"%@ - %@", _txtShare.text, shortedLink];
@@ -497,7 +489,6 @@
         picker.body = message;
         
         [self presentViewController:picker animated:YES completion:nil];
-        
     }];
     
     if (_checkIn) {

@@ -63,7 +63,8 @@
             
             // Resolves promise
             [deferred resolve];
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             failureBlock(errorModel);
             
@@ -110,7 +111,8 @@
             
             // Resolves promise
             [deferred resolve];
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             failureBlock(errorModel);
             
@@ -156,7 +158,8 @@
             
             // Resolves promise
             [deferred resolve];
-        } else {
+        }
+        else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             failureBlock(errorModel);
             
@@ -254,7 +257,8 @@
         // Sets rating
         if ([self rating] != nil) {
             [_ratingSliderModel setValue:[self rating]];
-        } else {
+        }
+        else {
             [_ratingSliderModel setValue:@5];
         }
     }

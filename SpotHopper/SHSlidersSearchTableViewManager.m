@@ -1073,9 +1073,8 @@
         [self.accordion closeSection:indexPath.section];
         
         if (self.mode == SHModeBeer) {
+            [Tracker trackBeerStyleSelected:drinklist stylesCount:self.drinklists.count position:indexPath.row];
             if (didSetAdvancedSlider) {
-                
-                [Tracker trackBeerStyleSelected:drinklist stylesCount:self.drinklists.count position:indexPath.row];
                 [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Beer_Sliders],
                                                                  [NSNumber numberWithInteger:kSection_Beer_AdvancedSliders]]];
             }
@@ -1793,6 +1792,12 @@
 // one the user completes the gesture this callback is fired
 - (void)slider:(SHSlider *)slider valueDidFinishChanging:(CGFloat)value {
     NSAssert(self.delegate, @"Delegate is required");
+    
+    NSString *sliderType = [self isSelectingSpotlist] ? @"Spotlist" : @"Drinklist";
+    
+    if (slider.sliderModel) {
+        [Tracker track:@"Slider Value Changed" properties:@{@"Type" : sliderType, @"Name" : slider.sliderModel.sliderTemplate.name, @"Value" : slider.sliderModel.value}];
+    }
     
     if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerDidChangeSlider:)]) {
         [self.delegate slidersSearchTableViewManagerDidChangeSlider:self];

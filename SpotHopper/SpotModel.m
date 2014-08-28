@@ -16,6 +16,9 @@
 #import "MenuTypeModel.h"
 #import "MenuModel.h"
 #import "SpotTypeModel.h"
+#import "SpecialModel.h"
+#import "LikeModel.h"
+#import "UserModel.h"
 
 #import "Tracker.h"
 
@@ -55,6 +58,7 @@
     // Maps linked resource in JSON key 'images' to 'images' property
     // Maps linked resource in JSON key 'live_specials' to 'liveSpecials' property
     // Maps linked resource in JSON key 'average_review' to 'averageReview' property
+    // Maps linked resource in JSON key 'specials' to 'specials' property
     return @{
              @"name" : @"name",
              @"image_url" : @"imageUrl",
@@ -70,12 +74,12 @@
              @"match" : @"match",
              @"relevance" : @"relevance",
              @"daily_specials" : @"dailySpecials",
-             
              @"links.slider_templates" : @"sliderTemplates",
              @"links.spot_type" : @"spotType",
              @"links.images" : @"images",
              @"links.live_specials" : @"liveSpecials",
              @"links.average_review" : @"averageReview",
+             @"links.specials" : @"specials"
              };
 }
 
@@ -175,8 +179,11 @@
             [deferred resolve];
         }
         else if (operation.response.statusCode == 200) {
-            NSArray *models = [jsonApi resourcesForKey:@"spots"];
-            successBlock(models, jsonApi);
+            NSArray *spots = [jsonApi resourcesForKey:@"spots"];
+            
+            if (successBlock) {
+                successBlock(spots, jsonApi);
+            }
             
             // Resolves promise
             [deferred resolve];
@@ -246,6 +253,7 @@
         }
         else if (operation.response.statusCode == 200) {
             SpotModel *model = [jsonApi resourceForKey:@"spots"];
+            
             successBlock(model, jsonApi);
             
             // Resolves promise
@@ -298,6 +306,102 @@
 }
 
 #pragma mark - Revised Code for 2.0
+
++ (void)fetchSpotsWithSpecialsTodayForCoordinate:(CLLocationCoordinate2D)coordinate success:(void(^)(NSArray *spots))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    
+    // adjust time back 4 hours to help handle the midnight boundary
+    NSTimeInterval fourHoursAgo = 60 * 60 * 4 * -1;
+    NSDate *offsetTime = [[NSDate date] dateByAddingTimeInterval:fourHoursAgo];
+    
+    // Day of week
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendarUnit units = NSHourCalendarUnit|NSMinuteCalendarUnit|NSWeekdayCalendarUnit;
+    NSDateComponents *components = [calendar components:units fromDate:offsetTime];
+    
+    // Get open and close time
+    NSInteger weekday = components.weekday - 1;
+
+    components = [calendar components:units fromDate:[NSDate date]];
+    NSString *cutOffTime = [NSString stringWithFormat:@"%02li:%02li", (long)components.hour, (long)components.minute];
+    
+    /*
+     * Searches spots for specials
+     */
+    NSDictionary *params = @{
+                             kSpotModelParamPage : @1,
+                             kSpotModelParamQueryVisibleToUsers : @"true",
+                             kSpotModelParamsPageSize : @20,
+                             kSpotModelParamSources : kSpotModelParamSourcesSpotHopper,
+                             kSpotModelParamQueryDayOfWeek : [NSNumber numberWithInteger:weekday],
+                             kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:coordinate.latitude],
+                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:coordinate.longitude],
+                             @"cut_off_time" : cutOffTime
+                             };
+    
+    [[ClientSessionManager sharedClient] GET:@"/api/spots/specials" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
+            NSArray *spots = [jsonApi resourcesForKey:@"spots"];
+            
+            void (^finish)(NSArray *) = ^void (NSArray *likes) {
+                for (SpotModel *spot in spots) {
+                    SpecialModel *special = spot.specialForToday;
+                    
+                    [[LikeModel likeForSpecial:special] then:^(LikeModel *like) {
+                        special.userLikesSpecial = like != nil;
+                    } fail:nil always:nil];
+                }
+                
+                // sort by likes count
+                NSArray *sortedSpots = [spots sortedArrayUsingComparator:^NSComparisonResult(SpotModel *spot1, SpotModel *spot2) {
+                    SpecialModel *special1 = spot1.specialForToday;
+                    SpecialModel *special2 = spot2.specialForToday;
+                    
+                    NSNumber *count1 = [NSNumber numberWithInteger:special1.likeCount];
+                    NSNumber *count2 = [NSNumber numberWithInteger:special2.likeCount];
+                    
+                    return [count2 compare:count1];
+                }];
+                
+                if (successBlock) {
+                    successBlock(sortedSpots);
+                }
+            };
+
+            [[LikeModel fetchLikesForUser:[UserModel currentUser]] then:^(NSArray *likes) {
+                finish(likes);
+            } fail:^(id error) {
+                finish(nil);
+            } always:nil];
+        }
+        else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+        }
+    }];
+}
+
++ (Promise *)fetchSpotsWithSpecialsTodayForCoordinate:(CLLocationCoordinate2D)coordinate {
+    Deferred *deferred = [Deferred deferred];
+    
+    [self fetchSpotsWithSpecialsTodayForCoordinate:coordinate success:^(NSArray *spots) {
+        // Resolves promise
+        [deferred resolveWith:spots];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
 
 + (void)fetchSpotsNearLocation:(CLLocation *)location success:(void (^)(NSArray *spots))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     NSMutableDictionary *params = @{
@@ -641,14 +745,33 @@
     return _relevance ?: @0;
 }
 
+- (SpecialModel *)specialForToday {
+    // offset time by 4 hours so that 2am on Wednesday still looks at Tuesday
+    NSTimeInterval fourHoursAgo = 60 * 60 * 4 * -1;
+    NSDate *offsetTime = [[NSDate date] dateByAddingTimeInterval:fourHoursAgo];
+    
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [gregorian components:NSWeekdayCalendarUnit fromDate:offsetTime];
+    
+    NSInteger weekday = components.weekday - 1;
+    
+    for (SpecialModel *special in self.specials) {
+        if (special.weekday == weekday) {
+            return special;
+        }
+    }
+    
+    return nil;
+}
+
 - (LiveSpecialModel*)currentLiveSpecial {
     LiveSpecialModel *currentLiveSpecial = nil;
     
     NSDate *now = [NSDate date];
     for (LiveSpecialModel *liveSpecial in [self liveSpecials]) {
         
-        NSLog(@"LS Start date - %@", [liveSpecial startDate]);
-        NSLog(@"LS End date - %@", [liveSpecial endDate]);
+        //NSLog(@"LS Start date - %@", [liveSpecial startDate]);
+        //NSLog(@"LS End date - %@", [liveSpecial endDate]);
         
         // Checks if currents special start BEFORE now and ends AFTER now
         if ( [liveSpecial.startDate timeIntervalSinceDate:now] < 0

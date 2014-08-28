@@ -39,14 +39,14 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MM/dd/yy"];
     
-    return [dateFormatter stringFromDate: self];
+    return [dateFormatter stringFromDate:self];
 }
 
 - (NSString *)stringAsShortDateShortTime {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MM/dd/yyyy hh:mm:ss a"];
     
-    return [dateFormatter stringFromDate: self];
+    return [dateFormatter stringFromDate:self];
 }
 
 @end

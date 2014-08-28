@@ -8,12 +8,16 @@
 
 #import "SHSpecialsCollectionViewManager.h"
 
+#import "SpecialModel.h"
 #import "SpotModel.h"
 
 #import "SHStyleKit+Additions.h"
 #import "UIImageView+AFNetworking.h"
 #import "NetworkHelper.h"
+
 #import "Tracker.h"
+#import "Tracker+Events.h"
+#import "Tracker+People.h"
 
 #import "NSArray+DailySpecials.h"
 
@@ -25,11 +29,10 @@
 #define kSpecialCellLikeButton 4
 #define kSpecialCellLikeLabel 5
 #define kSpecialCellShareButton 6
-#define kSpecialCellShareLabel 7
 #define kSpecialCellLeftButton 8
 #define kSpecialCellRightButton 9
 #define kSpecialCellPositionLabel 10
-#define kSpecialCellMatchLabel 11
+#define kSpecialCellTimeLabel 11
 
 #pragma mark - Class Extension
 #pragma mark -
@@ -77,6 +80,7 @@
             [self.collectionView reloadData];
             _currentIndex = 0;
             _isUpdatingData = FALSE;
+            [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:_currentIndex]];
         }
     }
 }
@@ -99,15 +103,25 @@
     }
 }
 
-- (NSUInteger)indexForViewInCollectionViewCell:(UIView *)view {
-    NSUInteger index = NSNotFound;
-    
+- (UICollectionViewCell *)cellForViewInCollectionViewCell:(UIView *)view {
     while (![view isKindOfClass:[UICollectionViewCell class]] && view.superview) {
         view = view.superview;
     }
     
     if ([view isKindOfClass:[UICollectionViewCell class]]) {
         UICollectionViewCell *cell = (UICollectionViewCell *)view;
+        return cell;
+    }
+    
+    return nil;
+    
+}
+
+- (NSUInteger)indexForViewInCollectionViewCell:(UIView *)view {
+    NSUInteger index = NSNotFound;
+    UICollectionViewCell *cell = [self cellForViewInCollectionViewCell:view];
+    
+    if (cell) {
         NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
         if (indexPath) {
             index = indexPath.item;
@@ -115,6 +129,28 @@
     }
     
     return index;
+}
+
+- (void)updateCellAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.item < self.spots.count) {
+        UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
+        SpotModel *spot = (SpotModel *)self.spots[indexPath.item];
+        SpecialModel *special = [spot specialForToday];
+        
+        UIButton *likeButton = [self buttonInView:cell withTag:kSpecialCellLikeButton];
+        likeButton.highlighted = special.userLikesSpecial;
+        
+        UILabel *likeLabel = [self labelInView:cell withTag:kSpecialCellLikeLabel];
+        likeLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)special.likeCount];
+    }
+}
+
+- (SpotModel *)spotAtIndex:(NSUInteger)index {
+    if (index < self.spots.count) {
+        return self.spots[index];
+    }
+    
+    return nil;
 }
 
 - (BOOL)hasPrevious {
@@ -190,6 +226,8 @@
 #pragma mark -
 
 - (void)renderCell:(UICollectionViewCell *)cell withSpot:(SpotModel *)spot atIndex:(NSUInteger)index {
+    SpecialModel *special = [spot specialForToday];
+
     UIImageView *spotImageView = (UIImageView *)[cell viewWithTag:kSpecialCellSpotImageView];
     
     spotImageView.image = nil;
@@ -214,46 +252,63 @@
     }
     
     UILabel *nameLabel = [self labelInView:cell withTag:kSpecialCellSpotNameLabel];
+    UILabel *timeLabel = [self labelInView:cell withTag:kSpecialCellTimeLabel];
     UITextView *specialTextView = [self textViewInView:cell withTag:kSpecialCellSpecialTextView];
     UIButton *likeButton = [self buttonInView:cell withTag:kSpecialCellLikeButton];
     UILabel *likeLabel = [self labelInView:cell withTag:kSpecialCellLikeLabel];
     UIButton *shareButton = [self buttonInView:cell withTag:kSpecialCellShareButton];
-    UILabel *shareLabel = [self labelInView:cell withTag:kSpecialCellShareLabel];
     UILabel *positionLabel = [self labelInView:cell withTag:kSpecialCellPositionLabel];
     
     NSAssert(nameLabel, @"View must be defined");
+    NSAssert(timeLabel, @"View must be defined");
     NSAssert(specialTextView, @"View must be defined");
     NSAssert(likeButton, @"View must be defined");
     NSAssert(likeLabel, @"View must be defined");
     NSAssert(shareButton, @"View must be defined");
-    NSAssert(shareLabel, @"View must be defined");
     NSAssert(positionLabel, @"View must be defined");
     
     [SHStyleKit setLabel:nameLabel textColor:SHStyleKitColorMyTintColor];
+    [SHStyleKit setLabel:timeLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setButton:likeButton withDrawing:SHStyleKitDrawingThumbsUpIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setButton:shareButton withDrawing:SHStyleKitDrawingShareIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setLabel:likeLabel textColor:SHStyleKitColorMyTintColor];
-    [SHStyleKit setLabel:shareLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:positionLabel textColor:SHStyleKitColorMyTextColor];
     
     [nameLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
+    [timeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
     specialTextView.contentOffset = CGPointMake(0.0f, 0.0f);
     [specialTextView setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [likeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
-    [shareLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
     [positionLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     
     nameLabel.text = spot.name;
-    NSString *special = [spot.dailySpecials specialsForToday];
-    NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:14.0], NSForegroundColorAttributeName : [SHStyleKit myTextColor] };
-    if (special.length) {
-        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:special attributes:attributes];
-        specialTextView.attributedText = attributedString;
-    }
-    [specialTextView setContentOffset:CGPointMake(0, 0)];
-    [specialTextView flashScrollIndicators];
     
-    likeLabel.text = @"0";
+    if (special) {
+        timeLabel.text = special.timeString;
+        
+        NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:14.0], NSForegroundColorAttributeName : [SHStyleKit myTextColor] };
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:special.text.length ? special.text : @"No Special" attributes:attributes];
+        specialTextView.attributedText = attributedString;
+        [specialTextView setContentOffset:CGPointMake(0, 0)];
+        [specialTextView flashScrollIndicators];
+        
+        likeButton.highlighted = special.userLikesSpecial;
+        likeLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)special.likeCount];
+        likeButton.hidden = FALSE;
+        likeLabel.hidden = FALSE;
+    }
+    else {
+        timeLabel.text = nil;
+        
+        NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:14.0], NSForegroundColorAttributeName : [SHStyleKit myTextColor] };
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:@"No Special" attributes:attributes];
+        specialTextView.attributedText = attributedString;
+        [specialTextView setContentOffset:CGPointMake(0, 0)];
+        [specialTextView flashScrollIndicators];
+
+        likeButton.hidden = TRUE;
+        likeLabel.hidden = TRUE;
+    }
     
     positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", (long)index+1, (long)self.spots.count];
     
@@ -270,6 +325,8 @@
 #pragma mark -
 
 - (void)reportedChangedIndex {
+    [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:_currentIndex]];
+    
     if ([self.delegate respondsToSelector:@selector(specialsCollectionViewManager:didChangeToSpotAtIndex:)]) {
         [self.delegate specialsCollectionViewManager:self didChangeToSpotAtIndex:_currentIndex];
     }

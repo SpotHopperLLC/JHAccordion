@@ -40,7 +40,7 @@
 #import <JSONAPI/JSONAPI.h>
 #import <CoreLocation/CoreLocation.h>
 
-@class ErrorModel, AverageReviewModel, SpotTypeModel, LiveSpecialModel, MenuModel, CLLocation;
+@class ErrorModel, AverageReviewModel, SpotTypeModel, LiveSpecialModel, MenuModel, SpecialModel, CLLocation;
 
 @interface SpotModel : SHJSONAPIResource
 
@@ -62,6 +62,7 @@
 @property (nonatomic, strong) NSArray *images;
 @property (nonatomic, strong) NSArray *dailySpecials;
 @property (nonatomic, strong) NSArray *liveSpecials;
+@property (nonatomic, strong) NSArray *specials;
 @property (nonatomic, strong) NSNumber *relevance;
 
 @property (nonatomic, strong) MenuModel *menu;
@@ -71,6 +72,7 @@
 - (NSString *)cityState;
 - (NSString *)matchPercent;
 - (UIImage *)placeholderImage;
+- (SpecialModel *)specialForToday;
 - (LiveSpecialModel*)currentLiveSpecial;
 
 + (void)cancelGetSpots;
@@ -88,6 +90,10 @@
 - (Promise *)getMenuItems:(NSDictionary *)params success:(void (^)(NSArray *menuItems, JSONAPI *jsonApi))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock __deprecated;
 
 #pragma mark - Revised Code for 2.0
+
++ (void)fetchSpotsWithSpecialsTodayForCoordinate:(CLLocationCoordinate2D)coordinate success:(void(^)(NSArray *spots))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise *)fetchSpotsWithSpecialsTodayForCoordinate:(CLLocationCoordinate2D)coordinate;
 
 + (void)fetchSpotsNearLocation:(CLLocation *)location success:(void (^)(NSArray *spots))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
 

@@ -11,11 +11,23 @@
 @implementation SHAppConfiguration
 
 + (BOOL)isTrackingEnabled {
-    return [[[NSBundle mainBundle] infoDictionary][@"TrackingEnabled"] boolValue];
+    return [[[NSBundle mainBundle] infoDictionary][@"SpotHopperSettings"][@"TrackingEnabled"] boolValue];
 }
 
 + (NSString *)mixpanelToken {
-    return [[NSBundle mainBundle] infoDictionary][@"MixPanelToken"];
+    return [[NSBundle mainBundle] infoDictionary][@"SpotHopperSettings"][@"MixpanelToken"];
+}
+
++ (NSString *)bitlyUsername {
+    return [[NSBundle mainBundle] infoDictionary][@"SpotHopperSettings"][@"BitlyUsername"];
+}
+
++ (NSString *)bitlyAPIKey {
+    return [[NSBundle mainBundle] infoDictionary][@"SpotHopperSettings"][@"BitlyAPIKey"];
+}
+
++ (NSString *)bitlyShortURL {
+    return [[NSBundle mainBundle] infoDictionary][@"SpotHopperSettings"][@"BitlyShortURL"];
 }
 
 @end

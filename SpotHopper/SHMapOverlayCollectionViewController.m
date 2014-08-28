@@ -8,11 +8,19 @@
 
 #import "SHMapOverlayCollectionViewController.h"
 
+#import <UIKit/UIKit.h>
+
 #import "SHStyleKit+Additions.h"
 
 #import "SpotListModel.h"
 #import "SpotModel.h"
 #import "DrinkListModel.h"
+#import "LikeModel.h"
+#import "SpecialModel.h"
+
+#import "Tracker.h"
+#import "Tracker+Events.h"
+#import "Tracker+People.h"
 
 #import "SHNotifications.h"
 
@@ -185,9 +193,32 @@ typedef enum {
 }
 
 - (IBAction)specialCellLikeButtonTapped:(id)sender {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"This feature is not fully implemented. Please continue development." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
-    }];
+    NSUInteger index = [self.specialsCollectionViewManager indexForViewInCollectionViewCell:sender];
+    SpotModel *spot = [self.specialsCollectionViewManager spotAtIndex:index];
+    SpecialModel *special = [spot specialForToday];
+    
+    if (special.userLikesSpecial) {
+        [[LikeModel unlikeSpecial:special] then:^(NSNumber *number) {
+            special.userLikesSpecial = FALSE;
+            special.likeCount--;
+            
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+            [self.specialsCollectionViewManager updateCellAtIndexPath:indexPath];
+        } fail:^(ErrorModel *errorModel) {
+            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+        } always:nil];
+    }
+    else {
+        [LikeModel likeSpecial:special success:^(LikeModel *like) {
+            special.userLikesSpecial = TRUE;
+            special.likeCount++;
+            
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+            [self.specialsCollectionViewManager updateCellAtIndexPath:indexPath];
+        } failure:^(ErrorModel *errorModel) {
+            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+        }];
+    }
 }
 
 - (IBAction)specialCellShareButtonTapped:(id)sender {

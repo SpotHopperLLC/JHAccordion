@@ -409,38 +409,24 @@
     return user;
 }
 
-#pragma mark - Getters
+#pragma mark - Mapping
 
-- (NSString *)email {
-    return [self objectForKey:@"email"];
-}
-
-- (NSString *)role {
-    return [self objectForKey:@"role"];
-}
-
-- (NSString *)name {
-    return [self objectForKey:@"name"];
-}
-
-- (NSString *)facebookId {
-    return [self objectForKey:@"facebook_id"];
-}
-
-- (NSString *)twitterId {
-    return [self objectForKey:@"twitter_id"];
-}
-
-- (NSDate *)birthday {
-    return [self formatBirthday:[self objectForKey:@"birthday"]];
-}
-
-- (NSDictionary *)settings {
-    return [self objectForKey:@"settings"];
-}
-
-- (NSString *)gender {
-    return [self objectForKey:@"gender"];
+- (NSDictionary *)mapKeysToProperties {
+    return @{
+             @"email" : @"email",
+             @"role" : @"role",
+             @"name" : @"name",
+             @"facebook_id" : @"facebookId",
+             @"twitter_id" : @"twitterId",
+             @"birthday" : @"ShortDate:birthday",
+             @"settings" : @"settings",
+             @"gender" : @"gender",
+             @"latitude" : @"latitude",
+             @"longitude" : @"longitude",
+             @"foursquare_id" : @"foursquareId",
+             @"match" : @"match",
+             @"relevance" : @"relevance"
+             };
 }
 
 #pragma mark - Debugging

@@ -21,7 +21,10 @@
 #import "NetworkHelper.h"
 
 #import "TellMeMyLocation.h"
+
 #import "Tracker.h"
+#import "Tracker+Events.h"
+#import "Tracker+People.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -89,6 +92,7 @@
             [self.collectionView reloadData];
             _currentIndex = 0;
             _isUpdatingData = FALSE;
+            [Tracker trackListViewDidDisplayDrink:[self drinkAtIndex:_currentIndex]];
         }
     }
 }
@@ -318,6 +322,8 @@
 #pragma mark -
 
 - (void)reportedChangedIndex {
+    [Tracker trackListViewDidDisplayDrink:[self drinkAtIndex:_currentIndex]];
+    
     if ([self.delegate respondsToSelector:@selector(drinksCollectionViewManager:didChangeToDrinkAtIndex:)]) {
         [self.delegate drinksCollectionViewManager:self didChangeToDrinkAtIndex:_currentIndex];
     }

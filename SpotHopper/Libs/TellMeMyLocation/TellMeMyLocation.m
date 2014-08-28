@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 SpotHopper. All rights reserved.
 //
 
-#define kLocationUpdateTimeout              10.0
+#define kLocationUpdateTimeout              5.0
 #define kTimeBetweenLocationRefreshes       30
 #define kSimulatorLatitude                  43.060179
 #define kSimulatorLongitude                 -87.885228
@@ -21,6 +21,10 @@
 
 #import <CoreLocation/CoreLocation.h>
 
+#import "Tracker.h"
+#import "Tracker+Events.h"
+#import "Tracker+People.h"
+
 NSString * const kTellMeMyLocationChangedNotification = @"TellMeMyLocationChangedNotification";
 
 @interface TellMeMyLocation() <CLLocationManagerDelegate>
@@ -30,6 +34,8 @@ NSString * const kTellMeMyLocationChangedNotification = @"TellMeMyLocationChange
 @property (nonatomic, copy) FailureBlock failureBlock;
 
 @property (nonatomic, strong) CLLocation *bestLocation;
+
+@property (nonatomic, strong) NSDate *startDate;
 
 @end
 
@@ -47,19 +53,10 @@ static NSString *_currentDeviceLocationZip;
 static NSString *_currentSelectedLocationZip;
 static NSString *_currentMapCenterLocationZip;
 
-static NSDate *_lastDeviceLocationRefresh;
-
 #pragma mark - Public Implemention
 
 - (void)findMe:(CLLocationAccuracy)accuracy {
-    // finish immediately if the device location was refreshed recently
-    if (_lastDeviceLocationRefresh && self.bestLocation) {
-        NSTimeInterval diff = [[NSDate date] timeIntervalSinceDate:_lastDeviceLocationRefresh];
-        if (diff <= kTimeBetweenLocationRefreshes) {
-            [self found:self.bestLocation];
-            return;
-        }
-    }
+    self.startDate = [NSDate date];
     
     if ([CLLocationManager locationServicesEnabled] && ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)) {
         if (!self.locationManager) {
@@ -147,7 +144,7 @@ static NSDate *_lastDeviceLocationRefresh;
 
 + (void)setCurrentDeviceLocation:(CLLocation *)deviceLocation {
     _currentDeviceLocation = deviceLocation;
-    _lastDeviceLocationRefresh = [NSDate date];
+    
 
     [[[CLGeocoder alloc] init] reverseGeocodeLocation:deviceLocation completionHandler:^(NSArray *placemarks, NSError *error) {
         if (!error && placemarks.count) {
@@ -285,6 +282,10 @@ static NSDate *_lastDeviceLocationRefresh;
         return @"Middle of Nowhere";
     }
     
+    if ([self isAtTheCastle:placemark.location]) {
+        return @"Stefan's Castle";
+    }
+    
     if (placemark.subLocality.length && placemark.locality.length && placemark.administrativeArea.length) {
         NSString *locationName = [NSString stringWithFormat:@"%@, %@, %@", placemark.subLocality, placemark.locality, placemark.administrativeArea];
         
@@ -306,6 +307,10 @@ static NSDate *_lastDeviceLocationRefresh;
 + (NSString *)shortLocationNameFromPlacemark:(CLPlacemark *)placemark {
     if (!placemark) {
         return @"Middle of Nowhere";
+    }
+    
+    if ([self isAtTheCastle:placemark.location]) {
+        return @"Stefan's Castle";
     }
     
     if (placemark.locality.length && placemark.administrativeArea.length) {
@@ -371,12 +376,21 @@ static NSDate *_lastDeviceLocationRefresh;
     }
 }
 
++ (BOOL)isAtTheCastle:(CLLocation *)location {
+    CLLocation *castleLocation = [[CLLocation alloc] initWithLatitude:43.0838262 longitude:-87.8743507];
+    CLLocationDistance distance = [castleLocation distanceFromLocation:location];
+
+    // distance in meters
+    return distance < 25;
+}
+
 #pragma mark - Private Implemention
 
 - (void)stopUpdatingLocationAfterTimeout:(CLLocationManager *)manager {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopUpdatingLocationAfterTimeout:) object:nil];
     
     if (!self.bestLocation) {
+        [Tracker trackTimingOutBeforeLocationFound];
         [self performSelector:@selector(stopUpdatingLocationAfterTimeout:) withObject:manager afterDelay:1.0f];
         return;
     }
@@ -405,6 +419,10 @@ static NSDate *_lastDeviceLocationRefresh;
 }
 
 - (void)found:(CLLocation *)location {
+    NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:self.startDate];
+    
+    [Tracker trackFoundLocation:self.bestLocation duration:duration];
+    
     if ([self.delegate respondsToSelector:@selector(tellMeMyLocation:didFindLocation:)]) {
         [self.delegate tellMeMyLocation:self didFindLocation:location];
     }
@@ -453,10 +471,12 @@ static NSDate *_lastDeviceLocationRefresh;
     if (self.bestLocation == nil) {
         self.bestLocation = latestLocation;
     }
-
+    
     if (latestLocation.horizontalAccuracy < self.bestLocation.horizontalAccuracy) {
         self.bestLocation = latestLocation;
     }
+
+    [Tracker trackUpdatedWithLocation:self.bestLocation];
 
     if (self.bestLocation.horizontalAccuracy <= manager.desiredAccuracy) {
         [manager stopUpdatingLocation];

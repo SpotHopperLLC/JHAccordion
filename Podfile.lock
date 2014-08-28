@@ -34,11 +34,10 @@ PODS:
   - BlocksKit/UIKit (2.2.3):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
-  - Bolts (1.1.1)
+  - Bolts (1.1.2)
   - CRGradientNavigationBar (0.3.2)
   - Facebook-iOS-SDK (3.17.0):
     - Bolts
-  - GoogleAnalytics-iOS-SDK (3.0.9)
   - iRate (1.8.3)
   - JHAccordion (0.1.0)
   - JHAutoCompleteTextField (0.1.0)
@@ -65,7 +64,6 @@ DEPENDENCIES:
   - BlocksKit (~> 2.2.0)
   - CRGradientNavigationBar (~> 0.3.0)
   - Facebook-iOS-SDK (~> 3.0)
-  - GoogleAnalytics-iOS-SDK (~> 3.0.0)
   - iRate (~> 1.8.0)
   - JHAccordion (from `https://github.com/brennanMKE/JHAccordion.git`, tag `current`)
   - JHAutoCompleteTextField (from `http://github.com/joshdholtz/JHAutoCompleteTextField.git`)
@@ -106,10 +104,9 @@ SPEC CHECKSUMS:
   AFNetworking: a4d0e9a64de9242986620dafd1b3cee3b413ac5c
   BitlyForiOS: c6eb9b297cb503757a616fc201b3362fb857e8b4
   BlocksKit: 07c8a80f04275efac6a5f8b973782489c083a182
-  Bolts: 0ca796081c3e7c139bd86d6903c27f1b83036a5d
+  Bolts: 2635e8698a630774689441047f3465d78c48d485
   CRGradientNavigationBar: e11429639a863683acc90887b9c86e75cb5d098c
   Facebook-iOS-SDK: f20274d809f112ba540842e2b6cbe50128d51b7b
-  GoogleAnalytics-iOS-SDK: d9e198b1f955259a72886769be7377cdfcdb2250
   iRate: a42e2ae364634fd1eb07af3cb6985905ced01fa8
   JHAccordion: 4f0337990465b25f8de5ed304609fa9362281db0
   JHAutoCompleteTextField: 1ca69c82441d9b5bf474e10d36585247030f7594

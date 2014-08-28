@@ -21,6 +21,10 @@
 
 @implementation Tracker (Events)
 
++ (void)trackAppLaunching {
+    [self track:@"App Launching"];
+}
+
 + (void)trackFirstUse {
     [self track:@"First Use"];
 }
@@ -53,23 +57,36 @@
                                                                     }];
 }
 
+#pragma mark - Global Search
+#pragma mark -
+
++ (void)trackGlobalSearchStarted {
+    [self track:@"GlobalSearch started"];
+}
+
++ (void)trackGlobalSearchCancelled {
+    [self track:@"GlobalSearch cancelled"];
+}
+
 + (void)trackGlobalSearchResultTapped:(SHJSONAPIResource *)model searchText:(NSString *)searchText {
-    NSString *selectedType = @"Undefined";
+    NSString *selectedType = @"NULL";
+    NSString *name = @"NULL";
     if ([model isKindOfClass:[SpotModel class]]) {
+        SpotModel *spot = (SpotModel *)model;
         selectedType = @"Spot";
+        name = spot.name;
     }
     else if ([model isKindOfClass:[DrinkModel class]]) {
+        DrinkModel *drink = (DrinkModel *)model;
         selectedType = @"Drink";
+        name = drink.name;
     }
     
     [self trackLocationPropertiesForEvent:@"GlobalSearch result selected" properties:@{
                                                                                        @"Selected type" : selectedType,
+                                                                                       @"Name" : name.length ? name : [NSNull null],
                                                                                        @"Last query" : searchText.length ? searchText : [NSNull null]
                                                                                        }];
-}
-
-+ (void)trackGlobalSearchRequestCompleted {
-    [self trackLocationPropertiesForEvent:@"GlobalSearch request completed" properties:@{}];
 }
 
 + (void)trackGlobalSearchRequestCancelled {
@@ -81,17 +98,14 @@
 }
 
 + (void)trackGlobalSearchHappened:(NSString *)searchText {
-    if (!searchText.length) {
-        [self trackLocationPropertiesForEvent:@"Search with Query" properties:@{}];
-    }
-    else {
-        [self trackLocationPropertiesForEvent:@"Search without Query" properties:@{}];
-    }
+    [self trackLocationPropertiesForEvent:@"Search with Query" properties:@{@"Search Text" : searchText.length ? searchText : @"NULL"}];
 }
 
 + (void)trackLeavingGlobalSearch:(BOOL)selected {
     [self trackLocationPropertiesForEvent:@"Exiting GlobalSearch" properties:@{@"Selected a result" : [NSNumber numberWithBool:selected]}];
 }
+
+#pragma mark -
 
 + (void)trackViewedHome {
     [self track:@"Viewed Home"];
@@ -243,8 +257,16 @@
     }
 }
 
-+ (void)trackAreYouHere:(BOOL)yesOrNo {
-    [self trackLocationPropertiesForEvent:@"Are you at this bar?" properties:@{@"yesOrNo" : [NSNumber numberWithBool:yesOrNo]}];
++ (void)trackAreYouHere:(BOOL)yesOrNo spot:(SpotModel *)spot {
+    [self trackLocationPropertiesForEvent:@"Are you at this bar?" properties:@{@"yesOrNo" : [NSNumber numberWithBool:yesOrNo], @"Name" : spot.name.length ? spot.name : @"NULL"}];
+}
+
++ (void)trackDeepLinkWithTargetURL:(NSURL *)targetURL sourceURL:(NSURL *)sourceURL sourceApplication:(NSString *)sourceApplication {
+    NSString *targetPath = targetURL.path.length ? targetURL.path : @"NULL";
+    NSString *source = sourceURL.host.length ? sourceURL.host : sourceURL.scheme.length ? sourceURL.scheme : @"NULL";
+
+    [self trackUserAction:@"User Deep Link"];
+    [self trackLocationPropertiesForEvent:@"Deep Link" properties:@{@"Target Path" : targetPath, @"Source" : source, @"Source Application" : sourceApplication }];
 }
 
 + (void)trackUserTappedLocationPickerButton {
@@ -295,13 +317,6 @@
     }
 }
 
-#pragma mark - Navigation
-#pragma mark -
-
-+ (void)trackHomeNavigationButtonTapped:(BOOL)insideBounds {
-    [Tracker track:@"Home Navigation Button Tapped" properties:@{ @"Inside Bounds" : [NSNumber numberWithBool:insideBounds]}];
-}
-
 #pragma mark - Logins
 #pragma mark -
 
@@ -339,6 +354,119 @@
 
 + (void)trackLoggedIn:(BOOL)success {
     [Tracker track:@"Logged In" properties:@{@"Success" : [NSNumber numberWithBool:success]}];
+    
+    [[[Mixpanel sharedInstance] people] set:@{ @"Last Login" : [NSDate date] }];
+    
+    
+}
+
+#pragma mark - Search Results
+#pragma mark -
+
++ (void)trackNoBeerResults {
+    [self track:@"No Beer Results"];
+}
+
++ (void)trackNoCocktailResults {
+    [self track:@"No Cocktail Results"];
+}
+
++ (void)trackNoWineResults {
+    [self track:@"No Wine Results"];
+}
+
++ (void)trackNoSpotResults {
+    [self track:@"No Spot Results"];
+}
+
++ (void)trackNoSpecialsResults {
+    [self track:@"No Specials Results"];
+}
+
++ (void)trackGoodBeerResultsWithName:(NSString *)name match:(NSNumber *)match {
+    NSUInteger percentage = (NSUInteger)([match floatValue] * 100);
+    [self track:@"Good Beer Results" properties:@{@"name" : name.length ? name : @"NULL", @"percentage" : [NSNumber numberWithInteger:percentage]}];
+}
+
++ (void)trackGoodCocktailResultsWithName:(NSString *)name match:(NSNumber *)match {
+    NSUInteger percentage = (NSUInteger)([match floatValue] * 100);
+    [self track:@"Good Cocktail Results" properties:@{@"name" : name.length ? name : @"NULL", @"percentage" : [NSNumber numberWithInteger:percentage]}];
+}
+
++ (void)trackGoodWineResultsWithName:(NSString *)name match:(NSNumber *)match {
+    NSUInteger percentage = (NSUInteger)([match floatValue] * 100);
+    [self track:@"Good Wine Results" properties:@{@"name" : name.length ? name : @"NULL", @"percentage" : [NSNumber numberWithInteger:percentage]}];
+}
+
++ (void)trackGoodSpotsResultsWithName:(NSString *)name match:(NSNumber *)match {
+    NSUInteger percentage = (NSUInteger)([match floatValue] * 100);
+    [self track:@"Good Spots Results" properties:@{@"name" : name.length ? name : @"NULL", @"percentage" : [NSNumber numberWithInteger:percentage]}];
+}
+
++ (void)trackGoodSpecialsResultsWithLikes:(NSUInteger)likesCount {
+    [self track:@"Good Specials Results" properties:@{@"Likes" : [NSNumber numberWithInteger:likesCount]}];
+}
+
+#pragma mark - Home Map Actions
+#pragma mark -
+
++ (void)trackSpotsButtonTapped {
+    [self track:@"Spots Button Tapped"];
+}
+
++ (void)trackSpecialsButtonTapped {
+    [self track:@"Specials Button Tapped"];
+}
+
++ (void)trackBeerButtonTapped {
+    [self track:@"Beer Button Tapped"];
+}
+
++ (void)trackCocktailButtonTapped {
+    [self track:@"Cocktail Button Tapped"];
+}
+
++ (void)trackWineButtonTapped {
+    [self track:@"Wine Button Tapped"];
+}
+
+#pragma mark - List View
+#pragma mark -
+
++ (void)trackListViewDidDisplaySpot:(SpotModel *)spot {
+    [self track:@"List View Displayed Spot" properties:@{ @"Name" : spot.name.length ? spot.name : @"NULL" }];
+}
+
++ (void)trackListViewDidDisplayDrink:(DrinkModel *)drink {
+    [self track:@"List View Displayed Drink" properties:@{ @"Name" : drink.name.length ? drink.name : @"NULL" }];
+}
+
+#pragma mark - Location
+#pragma mark -
+
++ (void)trackUpdatedWithLocation:(CLLocation *)location {
+    NSDictionary *properties = @{
+                                 @"Location Latitude" : [NSNumber numberWithDouble:location.coordinate.latitude],
+                                 @"Location Longitude" : [NSNumber numberWithDouble:location.coordinate.longitude],
+                                 @"Location Accuracy" : [NSNumber numberWithDouble:location.horizontalAccuracy]
+                                 };
+
+    [self trackLocationPropertiesForEvent:@"Updated with Location" properties:properties];
+}
+
++ (void)trackFoundLocation:(CLLocation *)location duration:(NSTimeInterval)duration {
+    NSDictionary *properties = @{
+                                 @"Location Latitude" : [NSNumber numberWithDouble:location.coordinate.latitude],
+                                 @"Location Longitude" : [NSNumber numberWithDouble:location.coordinate.longitude],
+                                 @"Location Accuracy" : [NSNumber numberWithDouble:location.horizontalAccuracy],
+                                 @"Location Duration" : [NSString stringWithFormat:@"%.2f", duration]
+                                 };
+    
+    [self trackLocationPropertiesForEvent:@"Found Location" properties:properties];
+}
+
++ (void)trackTimingOutBeforeLocationFound {
+    [self trackLocationPropertiesForEvent:@"Timeout Before Location Found" properties:@{}];
 }
 
 @end

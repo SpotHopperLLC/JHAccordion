@@ -14,6 +14,7 @@
 #import "SliderTemplateModel.h"
 #import "AverageReviewModel.h"
 #import "SliderModel.h"
+#import "SpecialModel.h"
 
 #import "SHSlider.h"
 
@@ -44,6 +45,7 @@
 
 #define kTagSpotSpecialLabel 1
 #define kTagSpotSpecialDetailsLabel 2
+#define kTagSpotSpecialHoursLabel 3
 
 #define kTagLeftVibeLabel 1
 #define kTagRightVibeLabel 2
@@ -194,7 +196,9 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 #pragma mark -
 
 - (NSString *)specialsForToday {
-    return self.spot.dailySpecials.specialsForToday;
+    SpecialModel *special = self.spot.specialForToday;
+    
+    return special.text;
 }
 
 - (UIFont *)specialTitleFont {
@@ -284,6 +288,9 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
         // Gets open and close dates
         NSDate *dateOpen = hoursForToday.firstObject;
         NSDate *dateClose = hoursForToday.lastObject;
+        
+        NSAssert(dateOpen, @"Date must be defined");
+        NSAssert(dateClose, @"Date must be defined");
         
         // Sets the stuff
         NSDate *now = [NSDate date];
@@ -394,11 +401,15 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
         
         UILabel *titleLabel = (UILabel *)[cell viewWithTag:kTagSpotSpecialLabel];
         UILabel *detailsLabel = (UILabel *)[cell viewWithTag:kTagSpotSpecialDetailsLabel];
+        UILabel *hoursLabel = (UILabel *)[cell viewWithTag:kTagSpotSpecialHoursLabel];
 
         titleLabel.font = [self specialTitleFont];
         detailsLabel.font = [self specialDetailFont];
+        hoursLabel.font = [self specialDetailFont];
         
-        detailsLabel.text = [self specialsForToday];
+        SpecialModel *special = self.spot.specialForToday;
+        detailsLabel.text = special.text.length ? special.text : @"No Special";
+        hoursLabel.text = special.timeString;
     }
     else if (kSectionSliders == indexPath.section) {
         static NSString *SpotVibeIdentifier = @"SpotVibeCell";

@@ -67,7 +67,6 @@
     return self;
 }
 
-//TODO: The search button on the top takes the user to the information page for the spot/drink they are searching for (autofill), but autoscrolls down to the vibe/flavor profile
 - (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
     

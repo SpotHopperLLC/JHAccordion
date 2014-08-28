@@ -15,28 +15,9 @@
 #import "SHAppConfiguration.h"
 
 #import "ClientSessionManager.h"
-#import "AverageReviewModel.h"
-#import "BaseAlcoholModel.h"
-#import "CheckInModel.h"
-#import "DrinkModel.h"
-#import "DrinkTypeModel.h"
-#import "DrinkSubTypeModel.h"
-#import "DrinkListModel.h"
-#import "ErrorModel.h"
-#import "ImageModel.h"
-#import "LiveSpecialModel.h"
-#import "MenuItemModel.h"
-#import "MenuTypeModel.h"
-#import "PriceModel.h"
-#import "ReviewModel.h"
-#import "SizeModel.h"
-#import "SliderModel.h"
-#import "SliderTemplateModel.h"
-#import "SpotModel.h"
-#import "SpotTypeModel.h"
-#import "SpotListModel.h"
-#import "SpotListMoodModel.h"
-#import "UserModel.h"
+
+#import "SHModelResourceManager.h"
+
 #import "UserState.h"
 
 #import "MockData.h"
@@ -48,7 +29,6 @@
 #import "BFAppLink.h"
 
 #import "Mixpanel.h"
-#import "GAI.h"
 #import "iRate.h"
 #import "Tracker.h"
 #import "Tracker+Events.h"
@@ -88,10 +68,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 //    [[ClientSessionManager sharedClient] setHasSeenLaunch:NO];
 
-    [self applyAppearance];
-    
-    //[Tracker logInfo:@"App Delegate launching" class:[self class] trace:NSStringFromSelector(_cmd)];
-    
     [iRate sharedInstance].delegate = self;
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
@@ -110,7 +86,7 @@
     [RavenClient clientWithDSN:kSentryDSN];
     [[RavenClient sharedClient] setupExceptionHandler];
     
-    [self prepareResources];
+    [SHModelResourceManager prepareResources];
     
     // Navigation bar styling
     [[UINavigationBar appearance] setTintColor:kColorOrange];
@@ -132,26 +108,10 @@
     if ([SHAppConfiguration isTrackingEnabled]) {
         NSString *token = [SHAppConfiguration mixpanelToken];
         [Mixpanel sharedInstanceWithToken:token];
+        [Tracker trackAppLaunching];
+        [Tracker identifyUser];
         [Tracker trackUserWithProperties:@{ @"Last Launch Date" : [NSDate date] }];
         [Tracker trackUserAction:@"App Launch"];
-
-//        Examples:
-//        Mixpanel *mixpanel = [Mixpanel sharedInstance];
-//        [mixpanel track:@"Plan Selected" properties:@{@"Gender": @"Female", @"Plan": @"Premium"}];
-//        [mixpanel identify:@"13793"]; // once the user is logged in set their identity
-        [[Mixpanel sharedInstance] track:@"App Launching" properties:@{@"currentTime" : [NSDate date]}];
-        
-        // Optional: automatically send uncaught exceptions to Google Analytics.
-        [GAI sharedInstance].trackUncaughtExceptions = YES;
-        
-        // Optional: set Google Analytics dispatch interval to e.g. 20 seconds.
-        [GAI sharedInstance].dispatchInterval = 20;
-        
-        // Optional: set Logger to VERBOSE for debug information.
-        [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelWarning];
-        
-        // Initialize tracker. Replace with your tracking ID.
-        [[GAI sharedInstance] trackerWithTrackingId:kGoogleAnalyticsTrackingId];
     }
     
     NSDate *firstUseDate = [UserState firstUseDate];
@@ -205,6 +165,11 @@
         if (parsedUrl.appLinkReferer.sourceURL) {
             self.sourceURL = parsedUrl.appLinkReferer.sourceURL;
         }
+        
+        NSURL *targetURL = parsedUrl.targetURL;
+        NSURL *sourceURL = parsedUrl.appLinkReferer.sourceURL;
+        [Tracker trackDeepLinkWithTargetURL:targetURL sourceURL:sourceURL sourceApplication:sourceApplication];
+        
         [SHNotifications appOpenedWithURL:url];
         return YES;
     }
@@ -275,87 +240,6 @@
     }
     
     return FALSE;
-}
-
-- (void)prepareResources {
-    // Initializes resource linkng for JSONAPI
-    [JSONAPIResourceLinker link:@"average_review" toLinkedType:@"average_reviews"];
-    [JSONAPIResourceLinker link:@"base_alcohol" toLinkedType:@"base_alcohols"];
-    [JSONAPIResourceLinker link:@"checkin" toLinkedType:@"checkins"];
-    [JSONAPIResourceLinker link:@"drink" toLinkedType:@"drinks"];
-    [JSONAPIResourceLinker link:@"drink_type" toLinkedType:@"drink_types"];
-    [JSONAPIResourceLinker link:@"drink_subtype" toLinkedType:@"drink_subtypes"];
-    [JSONAPIResourceLinker link:@"drink_list" toLinkedType:@"drink_lists"];
-    [JSONAPIResourceLinker link:@"image" toLinkedType:@"images"];
-    [JSONAPIResourceLinker link:@"live_special" toLinkedType:@"live_specials"];
-    [JSONAPIResourceLinker link:@"menu_item" toLinkedType:@"menu_items"];
-    [JSONAPIResourceLinker link:@"menu_type" toLinkedType:@"menu_types"];
-    [JSONAPIResourceLinker link:@"price" toLinkedType:@"prices"];
-    [JSONAPIResourceLinker link:@"review" toLinkedType:@"reviews"];
-    [JSONAPIResourceLinker link:@"size" toLinkedType:@"sizes"];
-    [JSONAPIResourceLinker link:@"slider" toLinkedType:@"sliders"];
-    [JSONAPIResourceLinker link:@"slider_template" toLinkedType:@"slider_templates"];
-    [JSONAPIResourceLinker link:@"spot" toLinkedType:@"spots"];
-    [JSONAPIResourceLinker link:@"spot_type" toLinkedType:@"spot_types"];
-    [JSONAPIResourceLinker link:@"spot_list" toLinkedType:@"spot_lists"];
-    [JSONAPIResourceLinker link:@"spot_list_mood" toLinkedType:@"spot_list_moods"];
-    [JSONAPIResourceLinker link:@"user" toLinkedType:@"users"];
-    
-    // Initializes model linking for JSONAPI
-    [JSONAPIResourceModeler useResource:[AverageReviewModel class] toLinkedType:@"average_reviews"];
-    [JSONAPIResourceModeler useResource:[BaseAlcoholModel class] toLinkedType:@"base_alcohols"];
-    [JSONAPIResourceModeler useResource:[CheckInModel class] toLinkedType:@"checkins"];
-    [JSONAPIResourceModeler useResource:[DrinkModel class] toLinkedType:@"drinks"];
-    [JSONAPIResourceModeler useResource:[DrinkTypeModel class] toLinkedType:@"drink_types"];
-    [JSONAPIResourceModeler useResource:[DrinkSubTypeModel class] toLinkedType:@"drink_subtypes"];
-    [JSONAPIResourceModeler useResource:[DrinkListModel class] toLinkedType:@"drink_lists"];
-    [JSONAPIResourceModeler useResource:[ErrorModel class] toLinkedType:@"errors"];
-    [JSONAPIResourceModeler useResource:[ImageModel class] toLinkedType:@"images"];
-    [JSONAPIResourceModeler useResource:[LiveSpecialModel class] toLinkedType:@"live_specials"];
-    [JSONAPIResourceModeler useResource:[MenuItemModel class] toLinkedType:@"menu_items"];
-    [JSONAPIResourceModeler useResource:[MenuTypeModel class] toLinkedType:@"menu_types"];
-    [JSONAPIResourceModeler useResource:[PriceModel class] toLinkedType:@"prices"];
-    [JSONAPIResourceModeler useResource:[ReviewModel class] toLinkedType:@"reviews"];
-    [JSONAPIResourceModeler useResource:[SizeModel class] toLinkedType:@"sizes"];
-    [JSONAPIResourceModeler useResource:[SliderModel class] toLinkedType:@"sliders"];
-    [JSONAPIResourceModeler useResource:[SliderTemplateModel class] toLinkedType:@"slider_templates"];
-    [JSONAPIResourceModeler useResource:[SpotModel class] toLinkedType:@"spots"];
-    [JSONAPIResourceModeler useResource:[SpotTypeModel class] toLinkedType:@"spot_types"];
-    [JSONAPIResourceModeler useResource:[SpotListModel class] toLinkedType:@"spot_lists"];
-    [JSONAPIResourceModeler useResource:[SpotListMoodModel class] toLinkedType:@"spot_list_moods"];
-    [JSONAPIResourceModeler useResource:[UserModel class] toLinkedType:@"users"];
-    
-    NSDateFormatter *dateFormatterSeconds = [[NSDateFormatter alloc] init];
-    [dateFormatterSeconds setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
-    [dateFormatterSeconds setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
-    
-    NSDateFormatter *dateFormatterMilliseconds = [[NSDateFormatter alloc] init];
-    [dateFormatterMilliseconds setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
-    [dateFormatterMilliseconds setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];
-
-    // Register formatting
-    [JSONAPIResourceFormatter registerFormat:@"Date" withBlock:^id(id jsonValue) {
-        NSDate *date = nil;
-        NSError *error = nil;
-        
-        if ([jsonValue isKindOfClass:[NSString class]]) {
-            NSString *dateString = (NSString *)jsonValue;
-            if (dateString.length) {
-                if (![dateFormatterSeconds getObjectValue:&date forString:jsonValue range:nil error:&error]) {
-                    // if it fails with seconds try milliseconds
-                    if (![dateFormatterMilliseconds getObjectValue:&date forString:jsonValue range:nil error:&error]) {
-                        DebugLog(@"Date '%@' could not be parsed: %@", jsonValue, error);
-                    }
-                }
-            }
-        }
-        
-        return date;
-    }];
-}
-
-- (void)applyAppearance {
-    // do nothing
 }
 
 #pragma mark - Location
@@ -457,7 +341,8 @@
             }
             
         }];
-    } else {
+    }
+    else {
         [FBSession openActiveSessionWithPublishPermissions:@[@"publish_actions"] defaultAudience:FBSessionDefaultAudienceFriends allowLoginUI:NO completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
             switch (state) {
                 case FBSessionStateOpen:
@@ -510,17 +395,20 @@
                     [UIActionSheet showInView:view withTitle:@"Select account:" cancelButtonTitle:nil destructiveButtonTitle:@"Cancel" otherButtonTitles:twitterAccountsArray tapBlock:^(UIActionSheet *actionSheet, NSInteger buttonIndex) {
                         if (buttonIndex == 0) {
                             cancelHandler();
-                        } else {
+                        }
+                        else {
                             successHandler([arrayOfAccounts objectAtIndex:buttonIndex - 1]);
                         }
                     }];
                     
                 });
                 
-            } else {
+            }
+            else {
                 noAccounts();
             }
-        } else {
+        }
+        else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 permissionDeniedHandler();
             });

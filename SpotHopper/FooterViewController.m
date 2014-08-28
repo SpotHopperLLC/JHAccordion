@@ -10,10 +10,6 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "GAI.h"
-#import "GAIFields.h"
-#import "GAIDictionaryBuilder.h"
-
 #import "SHNotifications.h"
 
 @interface FooterViewController ()
@@ -66,11 +62,6 @@
     
     NSCAssert(CGColorGetAlpha(self.view.backgroundColor.CGColor) == 0.0, @"Base view alpha should be 0.0");
     NSCAssert(CGColorGetAlpha(self.viewBackground.backgroundColor.CGColor) == 0.8f, @"Background view alpha should be 0.8");
-    
-    // tracking with Google Analytics (override screenName)
-    id tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker set:kGAIScreenName value:self.screenName];
-    [tracker send:[[GAIDictionaryBuilder createAppView] build]];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -20,6 +20,7 @@
 #import "Mixpanel.h"
 #import "Tracker.h"
 #import "Tracker+Events.h"
+#import "Tracker+People.h"
 
 #import "SHStyleKit+Additions.h"
 
@@ -115,9 +116,11 @@
     
     if ([UserModel isLoggedIn]) {
         [Tracker trackerLeavingLoginViewLoggedIn];
+        [Tracker trackUserLeavingLoginLoggedIn];
     }
     else {
         [Tracker trackerLeavingLoginViewNotLoggedIn];
+        [Tracker trackUserLeavingLoginNotLoggedIn];
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
@@ -318,11 +321,10 @@
     
     [self showHUD:@"Logging in"];
     [UserModel loginUser:paramsWithLocation success:^(UserModel *userModel, NSHTTPURLResponse *response) {
-        [Tracker trackLoggedIn:TRUE];
-
         if ([SHAppConfiguration isTrackingEnabled]) {
-            [[Mixpanel sharedInstance] identify:[NSString stringWithFormat:@"%@", userModel.ID]];
-            [[[Mixpanel sharedInstance] people] set:@{ @"Last Login" : [NSDate date] }];
+            [Tracker identifyUser];
+            [Tracker trackLoggedIn:TRUE];
+            [Tracker trackLastLogin];
         }
         
         [self hideHUD];

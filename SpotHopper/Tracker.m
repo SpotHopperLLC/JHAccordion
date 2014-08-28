@@ -34,6 +34,7 @@
 
 + (void)track:(NSString *)event {
     if ([SHAppConfiguration isTrackingEnabled]) {
+        DebugLog(@"event: %@", event);
         [[Mixpanel sharedInstance] track:event];
     }
 }
@@ -43,8 +44,8 @@
 }
 
 + (void)track:(NSString *)event properties:(NSDictionary *)properties andTrackUserAction:(BOOL)trackUserAction {
-//    DebugLog(@"Event: %@", event);
-//    DebugLog(@"Properties: %@", properties);
+    DebugLog(@"Event: %@", event);
+    DebugLog(@"Properties: %@", properties);
     
     if ([SHAppConfiguration isTrackingEnabled]) {
         [[Mixpanel sharedInstance] track:event properties:properties];
@@ -52,6 +53,17 @@
         if (trackUserAction) {
             [self trackUserAction:event];
         }
+    }
+}
+
++ (void)identifyUser {
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    [mixpanel identify:mixpanel.distinctId];
+    
+    if ([SHAppConfiguration isTrackingEnabled] && [UserModel isLoggedIn]) {
+        UserModel *user = [[ClientSessionManager sharedClient] currentUser];
+        NSString *userId = [NSString stringWithFormat:@"%@", user.ID];
+        [mixpanel createAlias:userId forDistinctID:mixpanel.distinctId];
     }
 }
 
@@ -65,13 +77,10 @@
     }
     
     UserModel *user = [[ClientSessionManager sharedClient] currentUser];
-    Mixpanel *mixpanel = [Mixpanel sharedInstance];
-    NSString *userId = [NSString stringWithFormat:@"%@", user.ID];
-    [mixpanel createAlias:userId forDistinctID:[mixpanel distinctId]];
-    [mixpanel identify:[mixpanel distinctId]];
     
-    id birthYear = [NSNull null];
+    id birthYear = @"NULL";
     if (user.birthday) {
+        NSAssert(user.birthday, @"Date must be defined");
         NSUInteger componentFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
         NSDateComponents *components = [[NSCalendar currentCalendar] components:componentFlags fromDate:user.birthday];
         birthYear = [NSNumber numberWithInteger:[components year]];
@@ -97,14 +106,17 @@
     }
     
     [updatedProperties addEntriesFromDictionary:@{
-                                                  @"name" : user.name.length ? user.name : @"",
-                                                  @"role" : user.role.length ? user.role : @"",
-                                                  @"facebookId" : user.facebookId.length ? user.facebookId : @"",
-                                                  @"twitterId" : user.twitterId.length ? user.twitterId : @"",
-                                                  @"gender" : user.gender.length ? user.gender : @"",
+                                                  @"name" : user.name.length ? user.name : @"NULL",
+                                                  @"role" : user.role.length ? user.role : @"NULL",
+                                                  @"email" : user.email.length ? user.email : @"NULL",
+                                                  @"facebookId" : user.facebookId.length ? user.facebookId : @"NULL",
+                                                  @"twitterId" : user.twitterId.length ? user.twitterId : @"NULL",
+                                                  @"gender" : user.gender.length ? user.gender : @"NULL",
                                                   @"birthYear" : birthYear,
                                                   @"locationServices" : authorizationStatus
                                                   }];
+    
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
     if (updateLocation) {
         [updatedProperties addEntriesFromDictionary:[self locationProperties]];

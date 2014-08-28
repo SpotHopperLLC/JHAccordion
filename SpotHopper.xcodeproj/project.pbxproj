@@ -1807,6 +1807,8 @@
 		262A65B4195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
 		262A65B5195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
 		262A65B6195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
+		2633CCF019A53E7600764036 /* LikeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2633CCEF19A53E7600764036 /* LikeModel.m */; };
+		2633CCF119A53E7700764036 /* LikeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2633CCEF19A53E7600764036 /* LikeModel.m */; };
 		2636AB3E18F8A82100591722 /* table_footer_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9418E2654900C93BBF /* table_footer_background.png */; };
 		2636AB3F18F8A82400591722 /* table_footer_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9518E2654900C93BBF /* table_footer_background@2x.png */; };
 		2640B00F193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */; };
@@ -2358,6 +2360,10 @@
 		268542E7199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */; };
 		268542E8199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */; };
 		268542E9199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */; };
+		2686683419A3EE0F00284A74 /* SpecialModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2686683319A3EE0F00284A74 /* SpecialModel.m */; };
+		2686683519A3EE0F00284A74 /* SpecialModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2686683319A3EE0F00284A74 /* SpecialModel.m */; };
+		2686683819A3F91500284A74 /* SHModelResourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2686683719A3F91500284A74 /* SHModelResourceManager.m */; };
+		2686683919A3F91500284A74 /* SHModelResourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2686683719A3F91500284A74 /* SHModelResourceManager.m */; };
 		2688CF1D194B3A0600C37DE3 /* SpotListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */; };
 		2688CF1E194B3A0600C37DE3 /* SpotListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */; };
 		2688CF1F194B3A0600C37DE3 /* SpotListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */; };
@@ -3096,6 +3102,8 @@
 		2623801F1986F83500F0940A /* Tracker+Events.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Tracker+Events.m"; sourceTree = "<group>"; };
 		262A65B0195893F800A4DACD /* MenuModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuModel.h; sourceTree = "<group>"; };
 		262A65B1195893F800A4DACD /* MenuModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuModel.m; sourceTree = "<group>"; };
+		2633CCEE19A53E7600764036 /* LikeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LikeModel.h; sourceTree = "<group>"; };
+		2633CCEF19A53E7600764036 /* LikeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LikeModel.m; sourceTree = "<group>"; };
 		2640B00D193E6C2D00978725 /* SHDrinksCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHDrinksCollectionViewManager.h; path = SpotHopper/SHDrinksCollectionViewManager.h; sourceTree = "<group>"; };
 		2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHDrinksCollectionViewManager.m; path = SpotHopper/SHDrinksCollectionViewManager.m; sourceTree = "<group>"; };
 		2645E30C195B37660021D2BC /* SpotCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotCalloutView.h; sourceTree = "<group>"; };
@@ -3138,6 +3146,10 @@
 		267E06D31922CCA2004457B4 /* SpotHopperStaging2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperStaging2-Info.plist"; sourceTree = "<group>"; };
 		268542E3199050E4008DBFB2 /* SHHomeNavigationButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHHomeNavigationButton.h; sourceTree = "<group>"; };
 		268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHHomeNavigationButton.m; sourceTree = "<group>"; };
+		2686683219A3EE0F00284A74 /* SpecialModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialModel.h; sourceTree = "<group>"; };
+		2686683319A3EE0F00284A74 /* SpecialModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpecialModel.m; sourceTree = "<group>"; };
+		2686683619A3F91500284A74 /* SHModelResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHModelResourceManager.h; sourceTree = "<group>"; };
+		2686683719A3F91500284A74 /* SHModelResourceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHModelResourceManager.m; sourceTree = "<group>"; };
 		2688CF1B194B3A0600C37DE3 /* SpotListRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotListRequest.h; sourceTree = "<group>"; };
 		2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotListRequest.m; sourceTree = "<group>"; };
 		268C8CA0190089D00011E0F8 /* UserState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserState.h; sourceTree = "<group>"; };
@@ -3851,6 +3863,10 @@
 				038664EE186D391E00985CEC /* UserModel.m */,
 				2690EB72199901220026DC52 /* SHPlacemark.h */,
 				2690EB73199901220026DC52 /* SHPlacemark.m */,
+				2686683219A3EE0F00284A74 /* SpecialModel.h */,
+				2686683319A3EE0F00284A74 /* SpecialModel.m */,
+				2633CCEE19A53E7600764036 /* LikeModel.h */,
+				2633CCEF19A53E7600764036 /* LikeModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -4042,6 +4058,8 @@
 				039B7021188759B100C590F8 /* NSArray+HoursOfOperation.m */,
 				26EB38AD18FC7E1100E84A3B /* NSNull+Debugging.h */,
 				26EB38AE18FC7E1100E84A3B /* NSNull+Debugging.m */,
+				2686683619A3F91500284A74 /* SHModelResourceManager.h */,
+				2686683719A3F91500284A74 /* SHModelResourceManager.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -6919,6 +6937,7 @@
 				26D6F66B199E6EED001CA54D /* Tracker+People.m in Sources */,
 				03CABFC418E7716400FAC5F5 /* ReviewSliderCell.m in Sources */,
 				03CABFC518E7716400FAC5F5 /* SliderTemplateModel.m in Sources */,
+				2633CCF119A53E7700764036 /* LikeModel.m in Sources */,
 				03CABFC618E7716400FAC5F5 /* AutoCompleteCell.m in Sources */,
 				03CABFC718E7716400FAC5F5 /* MenuTypeModel.m in Sources */,
 				03CABFC818E7716400FAC5F5 /* NSNumber+Currency.m in Sources */,
@@ -7046,8 +7065,10 @@
 				26C428E0192D625A00B67F10 /* SHBaseNavigationController.m in Sources */,
 				03CAC02518E7716400FAC5F5 /* FooterViewController.m in Sources */,
 				03CAC02618E7716400FAC5F5 /* SHLabelLatoRegular.m in Sources */,
+				2686683919A3F91500284A74 /* SHModelResourceManager.m in Sources */,
 				03CAC02818E7716400FAC5F5 /* ReviewCell.m in Sources */,
 				2654B8C8192BB6E000A66BED /* SHMapOverlayCollectionViewController.m in Sources */,
+				2686683519A3EE0F00284A74 /* SpecialModel.m in Sources */,
 				03CAC02918E7716400FAC5F5 /* SHViewTranlucentWhiteFooter.m in Sources */,
 				2640B013193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */,
 				2654B8B4192BB6E000A66BED /* SHHomeMapViewController.m in Sources */,
@@ -7441,6 +7462,7 @@
 				26D6F66A199E6EED001CA54D /* Tracker+People.m in Sources */,
 				267E05121922CC48004457B4 /* ReviewSliderCell.m in Sources */,
 				267E05131922CC48004457B4 /* SliderTemplateModel.m in Sources */,
+				2633CCF019A53E7600764036 /* LikeModel.m in Sources */,
 				267E05141922CC48004457B4 /* AutoCompleteCell.m in Sources */,
 				267E05151922CC48004457B4 /* MenuTypeModel.m in Sources */,
 				267E05161922CC48004457B4 /* NSNumber+Currency.m in Sources */,
@@ -7568,8 +7590,10 @@
 				26C428DF192D625A00B67F10 /* SHBaseNavigationController.m in Sources */,
 				267E057E1922CC48004457B4 /* FooterViewController.m in Sources */,
 				267E057F1922CC48004457B4 /* SHLabelLatoRegular.m in Sources */,
+				2686683819A3F91500284A74 /* SHModelResourceManager.m in Sources */,
 				267E05801922CC48004457B4 /* ReviewCell.m in Sources */,
 				2654B8C7192BB6E000A66BED /* SHMapOverlayCollectionViewController.m in Sources */,
+				2686683419A3EE0F00284A74 /* SpecialModel.m in Sources */,
 				267E05811922CC48004457B4 /* SHViewTranlucentWhiteFooter.m in Sources */,
 				2640B012193E6C2D00978725 /* SHDrinksCollectionViewManager.m in Sources */,
 				2654B8B3192BB6E000A66BED /* SHHomeMapViewController.m in Sources */,

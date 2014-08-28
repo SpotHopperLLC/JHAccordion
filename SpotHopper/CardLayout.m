@@ -55,7 +55,8 @@
                 CGFloat zoom = 1 + ZOOM_FACTOR * (1 - ABS(normalizedDistance));
                 attributes.transform3D = CATransform3DMakeScale(zoom, zoom, 1.0);
                 attributes.alpha = MAX(0.5f, 1.0f - ABS(normalizedDistance));
-            } else {
+            }
+            else {
                 attributes.alpha = 0.5f;
             }
         }

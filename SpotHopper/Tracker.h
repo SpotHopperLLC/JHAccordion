@@ -15,6 +15,8 @@
 + (void)track:(NSString *)event;
 + (void)track:(NSString *)event properties:(NSDictionary *)properties;
 
++ (void)identifyUser;
+
 + (void)trackUserWithProperties:(NSDictionary *)properties;
 + (void)trackUserWithProperties:(NSDictionary *)properties updateLocation:(BOOL)updateLocation;
 + (void)trackUserAction:(NSString *)actionName;
