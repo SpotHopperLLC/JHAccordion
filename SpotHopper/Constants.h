@@ -26,8 +26,6 @@
     #define kParseApplicationID @""
     #define kParseClientKey @""
 
-    #define kRefreshLocationTime 60.0f
-
 #elif defined(DEV)
 
     #define kDebug YES
@@ -42,8 +40,6 @@
 
     #define kParseApplicationID @""
     #define kParseClientKey @""
-
-    #define kRefreshLocationTime 60.0f
 
 #elif defined(STAGING)
 
@@ -60,7 +56,7 @@
     #define kParseApplicationID @"lu4u2Bg5pBqLg9qZEWJB5W7fjSAVQPiH39Hr29kV"
     #define kParseClientKey @"BHl8KE9ZmZgmeDFnV9H886qKB9Y7EaWzZLPdOs4J"
 
-    #define kRefreshLocationTime 10.0f
+    #define kDisableSideBarDelegateInBase TRUE
 
 #elif defined(STAGING2)
 
@@ -77,11 +73,7 @@
     #define kParseApplicationID @"lu4u2Bg5pBqLg9qZEWJB5W7fjSAVQPiH39Hr29kV"
     #define kParseClientKey @"BHl8KE9ZmZgmeDFnV9H886qKB9Y7EaWzZLPdOs4J"
 
-    #define kRefreshLocationTime 3600.0f
-
     #define kIntegrateDeprecatedScreens TRUE
-
-    #define kDisableSideBarDelegateInBase TRUE
 
 #elif defined(PRODUCTION)
 
@@ -90,15 +82,13 @@
     #define kTwitterConsumerKey @"FeB6rg5yUFu7aL9InVmxQ"
     #define kTwitterConsumerSecret @"diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI"
 
+    #define kAppURLScheme  @"spothopperapp"
+
     #define kBaseUrl @"https://api.spotapps.co"
     #define kWebsiteUrl @"http://www.spothopperapp.com"
 
     #define kParseApplicationID @"8gsK1txoPG66EvpzxhHPFJeeNjWTwe1SF5j1jIKN"
     #define kParseClientKey @"z86QKJFiLmSxWAekThVpTo8yLpp29nekhTiUgV2i"
-
-    #define kAppURLScheme  @"spothopperapp"
-
-    #define kRefreshLocationTime 300.0f
 
     #define kIntegrateDeprecatedScreens TRUE
 

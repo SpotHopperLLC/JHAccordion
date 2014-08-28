@@ -8,13 +8,13 @@
 
 #import "SHNavigationController.h"
 
-#import "SidebarViewController.h"
+//#import "SidebarViewController.h"
 
 #import "SHLabelLatoLight.h"
 
 #import <JHSidebar/JHSidebarViewController.h>
 
-@interface SHNavigationController ()<JHSidebarDelegate>
+@interface SHNavigationController () <JHSidebarDelegate>
 
 @end
 
@@ -92,8 +92,9 @@
 
 - (void)sidebar:(JHSidebarSide)side stateChanged:(JHSidebarState)state {
     if (JHSidebarRight == side) {
-        SidebarViewController *sidebarViewController = (SidebarViewController*) self.sidebarViewController.rightViewController;
-        [sidebarViewController sidebar:side stateChanged:state];
+        // TODO: reimplement
+//        SidebarViewController *sidebarViewController = (SidebarViewController*) self.sidebarViewController.rightViewController;
+//        [sidebarViewController sidebar:side stateChanged:state];
     }
 }
 

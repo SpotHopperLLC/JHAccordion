@@ -25,7 +25,7 @@
 #import "SHDrinkProfileViewController.h"
 #import "SHLocationPickerViewController.h"
 #import "SHGlobalSearchViewController.h"
-#import "SearchViewController.h"
+//#import "SearchViewController.h"
 #import "ShareViewController.h"
 
 #import "ClientSessionManager.h"
@@ -124,9 +124,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     SHSpotsCollectionViewManagerDelegate,
     SHSlidersSearchDelegate,
     SHLocationPickerDelegate,
-    SearchViewControllerDelegate,
     SpotCalloutViewDelegate,
-    ShareViewControllerDelegate,
     SHGlobalSearchViewControllerDelegate,
     UITextFieldDelegate,
     MKMapViewDelegate>
@@ -2416,7 +2414,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)shareSpecialForSpot:(SpotModel *)spot {
-    [self showShareViewControllerWithSpot:spot shareType:ShareViewControllerShareSpecial];
+    // TODO: replace with new sharing option
+    //[self showShareViewControllerWithSpot:spot shareType:ShareViewControllerShareSpecial];
 }
 
 - (void)addShadowToView:(UIView *)view {
@@ -3172,15 +3171,15 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark - SearchViewControllerDelegate
 #pragma mark -
 
-- (void)searchViewController:(SearchViewController*)viewController selectedDrink:(DrinkModel*)drink {
-    self.selectedDrink = drink;
-    [self performSegueWithIdentifier:HomeMapToDrinkProfile sender:self];
-}
-
-- (void)searchViewController:(SearchViewController*)viewController selectedSpot:(SpotModel*)spot {
-    self.selectedSpot = spot;
-    [self performSegueWithIdentifier:HomeMapToSpotProfile sender:self];
-}
+//- (void)searchViewController:(SearchViewController*)viewController selectedDrink:(DrinkModel*)drink {
+//    self.selectedDrink = drink;
+//    [self performSegueWithIdentifier:HomeMapToDrinkProfile sender:self];
+//}
+//
+//- (void)searchViewController:(SearchViewController*)viewController selectedSpot:(SpotModel*)spot {
+//    self.selectedSpot = spot;
+//    [self performSegueWithIdentifier:HomeMapToSpotProfile sender:self];
+//}
 
 #pragma mark - SpotCalloutViewDelegate
 #pragma mark -
@@ -3193,17 +3192,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             [self performSegueWithIdentifier:HomeMapToSpotProfile sender:self];
         }
     }
-}
-
-#pragma mark - ShareViewControllerDelegate
-#pragma mark -
-
-- (void)shareViewControllerClickedClose:(ShareViewController*)viewController {
-    [self hideShareViewController:nil];
-}
-
-- (void)shareViewControllerDidFinish:(ShareViewController*)viewController {
-    [self hideShareViewController:nil];
 }
 
 #pragma mark - SHGlobalSearchViewControllerDelegate

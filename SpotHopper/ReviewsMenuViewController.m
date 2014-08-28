@@ -105,6 +105,7 @@
     }];
     
     // Locations
+    // TODO: change this button to not need a delegate
     [_btnLocation setDelegate:self];
     [_btnLocation updateWithLastLocation];
     
@@ -249,11 +250,13 @@
         JSONAPIResource *result = [_results objectAtIndex:indexPath.row];
         if ([result isKindOfClass:[DrinkModel class]] == YES) {
             DrinkModel *drink = (DrinkModel*)result;
-            [self goToDrinkProfile:drink];
+            // TODO: reimplement
+            //[self goToDrinkProfile:drink];
 
         } else if ([result isKindOfClass:[SpotModel class]] == YES) {
             SpotModel *spot = (SpotModel*)result;
-            [self goToSpotProfile:spot];
+            // TODO: reimplement
+            //[self goToSpotProfile:spot];
         }
     } else if (indexPath.section == 3) {
         if (indexPath.row == 0) {

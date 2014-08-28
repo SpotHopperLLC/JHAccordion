@@ -308,7 +308,8 @@
             }
             // Go to spot profile
             else {
-                [self goToSpotProfile:spot];
+                // TODO: reimplement
+                //[self goToSpotProfile:spot];
             }
         }
     } else if (indexPath.section == 1) {

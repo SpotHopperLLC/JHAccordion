@@ -421,8 +421,6 @@
              @"birthday" : @"ShortDate:birthday",
              @"settings" : @"settings",
              @"gender" : @"gender",
-             @"latitude" : @"latitude",
-             @"longitude" : @"longitude",
              @"foursquare_id" : @"foursquareId",
              @"match" : @"match",
              @"relevance" : @"relevance"

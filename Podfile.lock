@@ -19,19 +19,19 @@ PODS:
     - AFNetworking/NSURLConnection
   - BitlyForiOS (0.0.3):
     - AFNetworking (~> 2.0)
-  - BlocksKit (2.2.3):
+  - BlocksKit (2.2.5):
     - BlocksKit/All
-  - BlocksKit/All (2.2.3):
+  - BlocksKit/All (2.2.5):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
     - BlocksKit/MessageUI
     - BlocksKit/UIKit
-  - BlocksKit/Core (2.2.3)
-  - BlocksKit/DynamicDelegate (2.2.3)
-  - BlocksKit/MessageUI (2.2.3):
+  - BlocksKit/Core (2.2.5)
+  - BlocksKit/DynamicDelegate (2.2.5)
+  - BlocksKit/MessageUI (2.2.5):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
-  - BlocksKit/UIKit (2.2.3):
+  - BlocksKit/UIKit (2.2.5):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
   - Bolts (1.1.2)
@@ -103,7 +103,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: a4d0e9a64de9242986620dafd1b3cee3b413ac5c
   BitlyForiOS: c6eb9b297cb503757a616fc201b3362fb857e8b4
-  BlocksKit: 07c8a80f04275efac6a5f8b973782489c083a182
+  BlocksKit: 4439e7f30a9f90743462ca63545a15c1f4304cef
   Bolts: 2635e8698a630774689441047f3465d78c48d485
   CRGradientNavigationBar: e11429639a863683acc90887b9c86e75cb5d098c
   Facebook-iOS-SDK: f20274d809f112ba540842e2b6cbe50128d51b7b

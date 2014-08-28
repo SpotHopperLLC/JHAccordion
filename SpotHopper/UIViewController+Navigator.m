@@ -8,18 +8,18 @@
 
 #import "UIViewController+Navigator.h"
 
-#import "FindSimilarViewController.h"
-#import "AgeVerificationViewController.h"
-#import "TutorialViewController.h"
+//#import "FindSimilarViewController.h"
+//#import "FindSimilarDrinksViewController.h"
+//#import "AgeVerificationViewController.h"
+//#import "TutorialViewController.h"
 #import "LaunchViewController.h"
 #import "AccountSettingsViewController.h"
 
-#import "DrinksViewController.h"
-#import "DrinksNearbyViewController.h"
-#import "DrinkListMenuViewController.h"
-#import "DrinkListViewController.h"
-#import "FindSimilarDrinksViewController.h"
-#import "FindDrinksAtViewController.h"
+//#import "DrinksViewController.h"
+//#import "DrinksNearbyViewController.h"
+//#import "DrinkListMenuViewController.h"
+//#import "DrinkListViewController.h"
+//#import "FindDrinksAtViewController.h"
 
 #import "MyReviewsViewController.h"
 #import "NewReviewViewController.h"
@@ -27,13 +27,13 @@
 #import "ReviewViewController.h"
 #import "ReviewsMenuViewController.h"
 #import "SearchNewReviewViewController.h"
-#import "SpotListsMenuViewController.h"
-#import "SpotListViewController.h"
+//#import "SpotListsMenuViewController.h"
+//#import "SpotListViewController.h"
 
 #import "DrinkMenuViewController.h"
 #import "DrinkMenuOfferingsViewController.h"
 
-#import "TonightsSpecialsViewController.h"
+//#import "TonightsSpecialsViewController.h"
 
 #import "CheckinViewController.h"
 #import "PhotoAlbumViewController.h"
@@ -51,15 +51,15 @@
 
 #pragma mark - Main
 
-- (void)goToAgeVerification:(BOOL)animated {
-    AgeVerificationViewController *viewController = [[self mainStoryboard] instantiateViewControllerWithIdentifier:@"AgeVerificationViewController"];
-    [self presentViewController:viewController animated:animated completion:nil];
-}
+//- (void)goToAgeVerification:(BOOL)animated {
+//    AgeVerificationViewController *viewController = [[self mainStoryboard] instantiateViewControllerWithIdentifier:@"AgeVerificationViewController"];
+//    [self presentViewController:viewController animated:animated completion:nil];
+//}
 
-- (void)goToTutorial:(BOOL)animated {
-    TutorialViewController *viewController = [[self mainStoryboard] instantiateViewControllerWithIdentifier:@"TutorialViewController"];
-    [self presentViewController:viewController animated:animated completion:nil];
-}
+//- (void)goToTutorial:(BOOL)animated {
+//    TutorialViewController *viewController = [[self mainStoryboard] instantiateViewControllerWithIdentifier:@"TutorialViewController"];
+//    [self presentViewController:viewController animated:animated completion:nil];
+//}
 
 - (void)goToLaunch:(BOOL)animated {
     LaunchViewController *viewController = [[self mainStoryboard] instantiateViewControllerWithIdentifier:@"LaunchViewController"];
@@ -73,45 +73,45 @@
 
 #pragma mark - Drinks
 
-- (void)goToDrinks {
-    [Tracker track:@"View Drinks" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    DrinksViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinksViewController"];
-    [self.navigationController pushViewController:viewController animated:YES];
-}
+//- (void)goToDrinks {
+//    [Tracker track:@"View Drinks" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+//    DrinksViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinksViewController"];
+//    [self.navigationController pushViewController:viewController animated:YES];
+//}
 
-- (void)goToDrinksNearBy {
-    [Tracker track:@"View Drinks Nearby" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    DrinksNearbyViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinksNearbyViewController"];
-    [self.navigationController pushViewController:viewController animated:YES];
-}
+//- (void)goToDrinksNearBy {
+//    [Tracker track:@"View Drinks Nearby" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+//    DrinksNearbyViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinksNearbyViewController"];
+//    [self.navigationController pushViewController:viewController animated:YES];
+//}
 
-- (void)goToDrinkListMenu {
-    [Tracker track:@"View Drink List Menu" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    [self goToDrinkListMenuAtSpot:nil];
-}
+//- (void)goToDrinkListMenu {
+//    [Tracker track:@"View Drink List Menu" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+//    [self goToDrinkListMenuAtSpot:nil];
+//}
 
-- (void)goToDrinkListMenuAtSpot:(SpotModel*)spot {
-    [Tracker track:@"View Drinklist Menu at Spot" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    DrinkListMenuViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkListMenuViewController"];
-    [viewController setSpot:spot];
-    [self.navigationController pushViewController:viewController animated:YES];
-}
+//- (void)goToDrinkListMenuAtSpot:(SpotModel*)spot {
+//    [Tracker track:@"View Drinklist Menu at Spot" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+//    DrinkListMenuViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkListMenuViewController"];
+//    [viewController setSpot:spot];
+//    [self.navigationController pushViewController:viewController animated:YES];
+//}
 
-- (void)goToDrinkList:(DrinkListModel*)drinkList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders atSpot:(SpotModel*)spot {
-    [Tracker track:@"View Drinklist" properties:@{@"Name" : drinkList.name,@"Created with Sliders" : createdWithAdjustSliders ? @YES : @NO, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    DrinkListViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkListViewController"];
-    [viewController setDrinkList:drinkList];
-    [viewController setCreatedWithAdjustSliders:createdWithAdjustSliders];
-    [viewController setSpotAt:spot];
-    [self.navigationController pushViewController:viewController animated:YES];
-}
+//- (void)goToDrinkList:(DrinkListModel*)drinkList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders atSpot:(SpotModel*)spot {
+//    [Tracker track:@"View Drinklist" properties:@{@"Name" : drinkList.name,@"Created with Sliders" : createdWithAdjustSliders ? @YES : @NO, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
+//    DrinkListViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkListViewController"];
+//    [viewController setDrinkList:drinkList];
+//    [viewController setCreatedWithAdjustSliders:createdWithAdjustSliders];
+//    [viewController setSpotAt:spot];
+//    [self.navigationController pushViewController:viewController animated:YES];
+//}
 
-- (void)goToFindDrinksAt:(DrinkModel*)drink {
-    [Tracker track:@"View Find Drinks At" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    FindDrinksAtViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"FindDrinksAtViewController"];
-    [viewController setDrink:drink];
-    [self.navigationController pushViewController:viewController animated:YES];
-}
+//- (void)goToFindDrinksAt:(DrinkModel*)drink {
+//    [Tracker track:@"View Find Drinks At" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+//    FindDrinksAtViewController *viewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"FindDrinksAtViewController"];
+//    [viewController setDrink:drink];
+//    [self.navigationController pushViewController:viewController animated:YES];
+//}
 
 - (void)goToDrinkProfile:(DrinkModel*)drink {
     [Tracker track:@"View Drink Profile" properties:@{@"Name" : drink.name, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
@@ -209,19 +209,19 @@
 
 #pragma mark - Spots
 
-- (void)goToSpotListMenu {
-    [Tracker track:@"View Spotlist Menu" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    SpotListsMenuViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotListsMenuViewController"];
-    [self.navigationController pushViewController:viewController animated:YES];
-}
+//- (void)goToSpotListMenu {
+//    [Tracker track:@"View Spotlist Menu" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+//    SpotListsMenuViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotListsMenuViewController"];
+//    [self.navigationController pushViewController:viewController animated:YES];
+//}
 
-- (void)goToSpotList:(SpotListModel*)spotList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders {
-    [Tracker track:@"View Spotlist" properties:@{@"Name" : spotList.name, @"Created with Sliders" : createdWithAdjustSliders ? @YES : @NO, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    SpotListViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotListViewController"];
-    [viewController setSpotList:spotList];
-    [viewController setCreatedWithAdjustSliders:createdWithAdjustSliders];
-    [self.navigationController pushViewController:viewController animated:YES];
-}
+//- (void)goToSpotList:(SpotListModel*)spotList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders {
+//    [Tracker track:@"View Spotlist" properties:@{@"Name" : spotList.name, @"Created with Sliders" : createdWithAdjustSliders ? @YES : @NO, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
+//    SpotListViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotListViewController"];
+//    [viewController setSpotList:spotList];
+//    [viewController setCreatedWithAdjustSliders:createdWithAdjustSliders];
+//    [self.navigationController pushViewController:viewController animated:YES];
+//}
 
 - (void)goToSpotProfile:(SpotModel *)spot {
     [Tracker track:@"View Spot Profile" properties:@{@"Name" : spot.name, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
@@ -260,11 +260,11 @@
 
 #pragma mark - Specials
 
-- (void)goToTonightsSpecials {
-    [Tracker track:@"View Tonight Specials" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    TonightsSpecialsViewController *viewController = [[self specialsStoryboard] instantiateViewControllerWithIdentifier:@"TonightsSpecialsViewController"];
-    [self.navigationController pushViewController:viewController animated:YES];
-}
+//- (void)goToTonightsSpecials {
+//    [Tracker track:@"View Tonight Specials" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+//    TonightsSpecialsViewController *viewController = [[self specialsStoryboard] instantiateViewControllerWithIdentifier:@"TonightsSpecialsViewController"];
+//    [self.navigationController pushViewController:viewController animated:YES];
+//}
 
 #pragma mark - Checkin
 
@@ -282,20 +282,20 @@
 
 #pragma mark - Commons
 
-- (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate {
-    [Tracker track:@"View Similar Spots" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    FindSimilarViewController *viewController = [[FindSimilarViewController alloc] initWithNibName:@"FindSimilarViewController" bundle:[NSBundle mainBundle]];
-    [viewController setSearchDrinks:NO];
-    [viewController setDelegate:delegate];
-    [self.navigationController pushViewController:viewController animated:YES];
-}
+//- (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate {
+//    [Tracker track:@"View Similar Spots" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+//    FindSimilarViewController *viewController = [[FindSimilarViewController alloc] initWithNibName:@"FindSimilarViewController" bundle:[NSBundle mainBundle]];
+//    [viewController setSearchDrinks:NO];
+//    [viewController setDelegate:delegate];
+//    [self.navigationController pushViewController:viewController animated:YES];
+//}
 
-- (void)goToFindSimilarDrinks:(id<FindSimilarDrinksViewControllerDelegate>)delegate {
-    [Tracker track:@"View Similar Drinks" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    FindSimilarDrinksViewController *viewController = [[FindSimilarDrinksViewController alloc] initWithNibName:@"FindSimilarDrinksViewController" bundle:[NSBundle mainBundle]];
-    [viewController setDelegate:delegate];
-    [self.navigationController pushViewController:viewController animated:YES];
-}
+//- (void)goToFindSimilarDrinks:(id<FindSimilarDrinksViewControllerDelegate>)delegate {
+//    [Tracker track:@"View Similar Drinks" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+//    FindSimilarDrinksViewController *viewController = [[FindSimilarDrinksViewController alloc] initWithNibName:@"FindSimilarDrinksViewController" bundle:[NSBundle mainBundle]];
+//    [viewController setDelegate:delegate];
+//    [self.navigationController pushViewController:viewController animated:YES];
+//}
 
 - (void)goToPhotoAlbum:(NSArray *)images atIndex:(NSUInteger)index {
     [Tracker track:@"View Photo Album" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];

@@ -133,7 +133,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     MenuItemModel *menuItem = [_menuItems objectAtIndex:indexPath.row];
-    [self goToDrinkProfile:menuItem.drink];
+    // TODO: reimplement
+    //[self goToDrinkProfile:menuItem.drink];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     

@@ -125,24 +125,19 @@
 
     if ([ClientSessionManager sharedClient].isLoggedIn) {
         [self refreshDeviceLocationWithCompletionBlock:^{
-            NSDate *date = [TellMeMyLocation lastLocationDate];
-            if (date != nil && abs([date timeIntervalSinceNow]) > kRefreshLocationTime) {
-                [TellMeMyLocation setLastLocation:[TellMeMyLocation currentDeviceLocation] completionHandler:^{
-
-                    CLLocation *location = [TellMeMyLocation lastLocation];
-                    if (location) {
-                        UserModel *user = [[ClientSessionManager sharedClient] currentUser];
-                        [user putUser:@{ kUserModelParamLatitude : [NSNumber numberWithFloat:location.coordinate.latitude],
-                                         kUserModelParamLongitude : [NSNumber numberWithFloat:location.coordinate.longitude]
-                                         } success:^(UserModel *userModel, NSHTTPURLResponse *response) {
-                            
-                        } failure:^(ErrorModel *errorModel) {
-                            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
-                        }];
-                    }
-                    
-                }];
-            }
+            [TellMeMyLocation setLastLocation:[TellMeMyLocation currentDeviceLocation] completionHandler:^{
+                CLLocation *location = [TellMeMyLocation lastLocation];
+                if (location) {
+                    UserModel *user = [[ClientSessionManager sharedClient] currentUser];
+                    [user putUser:@{ kUserModelParamLatitude : [NSNumber numberWithFloat:location.coordinate.latitude],
+                                     kUserModelParamLongitude : [NSNumber numberWithFloat:location.coordinate.longitude]
+                                     } success:^(UserModel *userModel, NSHTTPURLResponse *response) {
+                                         
+                                     } failure:^(ErrorModel *errorModel) {
+                                         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+                                     }];
+                }
+            }];
         }];
     }
     
@@ -249,25 +244,19 @@
         _tellMeMyLocation = [[TellMeMyLocation alloc] init];
     }
     
-    // Only check location if within time limit
-    NSDate *date = [TellMeMyLocation lastLocationDate];
-    if (date != nil && abs([date timeIntervalSinceNow]) > kRefreshLocationTime) {
-    
-        // Gets current location
-        [_tellMeMyLocation findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
-            
-            // Saves current location
-            [TellMeMyLocation setLastLocation:newLocation completionHandler:^{
-                if (completionBlock) {
-                    completionBlock();
-                }
-            }];
-
-        } failure:^(NSError *error) {
-            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+    // Gets current location
+    [_tellMeMyLocation findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
+        
+        // Saves current location
+        [TellMeMyLocation setLastLocation:newLocation completionHandler:^{
+            if (completionBlock) {
+                completionBlock();
+            }
         }];
         
-    }
+    } failure:^(NSError *error) {
+        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+    }];
 }
 
 #pragma mark - iRateDelegate
