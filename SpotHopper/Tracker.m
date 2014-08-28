@@ -57,12 +57,13 @@
 }
 
 + (void)identifyUser {
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    [mixpanel identify:mixpanel.distinctId];
+    
     if ([SHAppConfiguration isTrackingEnabled] && [UserModel isLoggedIn]) {
         UserModel *user = [[ClientSessionManager sharedClient] currentUser];
-        Mixpanel *mixpanel = [Mixpanel sharedInstance];
         NSString *userId = [NSString stringWithFormat:@"%@", user.ID];
         [mixpanel createAlias:userId forDistinctID:mixpanel.distinctId];
-        [mixpanel identify:mixpanel.distinctId];
     }
 }
 
