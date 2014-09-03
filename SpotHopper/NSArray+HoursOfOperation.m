@@ -36,8 +36,7 @@
     NSString *timeCloseYesterday = [self closeForDayOfWeek:dayOfWeekYesterday];
     NSString *timeOpen = [self openForDayOfWeek:dayOfWeek];
     NSString *timeClose = [self closeForDayOfWeek:dayOfWeek];
-    
-    
+
     // Converts yesterdays hours to NSDate objects
     NSDate *dateOpenYesterday = nil, *dateCloseYesterday = nil;
     if (timeOpenYesterday.length > 0 && timeCloseYesterday.length > 0) {

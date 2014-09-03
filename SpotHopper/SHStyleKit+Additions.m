@@ -235,6 +235,23 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
         case SHStyleKitDrawingSearchIcon:
             [SHStyleKit drawSearchIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
             break;
+        case SHStyleKitDrawingStarIcon:
+            if (color == SHStyleKitColorMyTintColor) {
+                [SHStyleKit drawStarIconWithScaleX:scaleX scaleY:scaleY
+                                   strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]
+                                     fillColorName:[SHStyleKit colorName:SHStyleKitColorMyTintColor]];
+            }
+            else if (color == SHStyleKitColorMyTextColor) {
+                [SHStyleKit drawStarIconWithScaleX:scaleX scaleY:scaleY
+                                   strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]
+                                     fillColorName:[SHStyleKit colorName:SHStyleKitColorMyTextColor]];
+            }
+            else if (color == SHStyleKitColorMyWhiteColor) {
+                [SHStyleKit drawStarIconWithScaleX:scaleX scaleY:scaleY
+                                   strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyTintColor]
+                                     fillColorName:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]];
+            }
+            break;
         case SHStyleKitDrawingMapBubblePinFilledIcon:
             [SHStyleKit drawMapBubblePinFilledIconWithScaleX:scaleX scaleY:scaleY];
             break;
@@ -250,7 +267,6 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
         case SHStyleKitDrawingDrinksIcon:
             [SHStyleKit drawDrinksIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
             break;
-            
         case SHStyleKitDrawingShareIcon:
             if (color == SHStyleKitColorMyTintColor) {
                 [SHStyleKit drawShareIconWithScaleX:scaleX

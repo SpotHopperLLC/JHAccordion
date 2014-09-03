@@ -231,14 +231,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
     
-    NSAssert(self.navigationController.sidebarViewController, @"Sidebar controller must be defined");
-    NSAssert(self.navigationController.sidebarViewController.rightViewController, @"Right VC on sidebar must be defined");
+    //NSAssert(self.navigationController.sidebarViewController, @"Sidebar controller must be defined");
+    //NSAssert(self.navigationController.sidebarViewController.rightViewController, @"Right VC on sidebar must be defined");
     
     self.mySideBarViewController = (SHSidebarViewController *)self.navigationController.sidebarViewController.rightViewController;
     self.mySideBarViewController.delegate = self;
     
-    NSAssert(self.mySideBarViewController.delegate == self, @"My sidebar delegate must be self");
-    NSAssert([self.mySideBarViewController.delegate isKindOfClass:[SHHomeMapViewController class]], @"My sidebar delegate must be this class");
+    //NSAssert(self.mySideBarViewController.delegate == self, @"My sidebar delegate must be self");
+    //NSAssert([self.mySideBarViewController.delegate isKindOfClass:[SHHomeMapViewController class]], @"My sidebar delegate must be this class");
     
     self.locationMenuBarViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHLocationMenuBarViewController"];
     self.locationMenuBarViewController.delegate = self;

@@ -27,6 +27,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>spothopperapplocal</string>
 				<string>fb257516844415659</string>
 			</array>
 		</dict>
@@ -37,8 +38,37 @@
 	<string>257516844415659</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSMainNibFile</key>
-	<string>SpotHopper</string>
+	<key>SpotHopperSettings</key>
+	<dict>
+		<key>AppURLScheme</key>
+		<string>spothopperapplocal</string>
+		<key>BaseUrl</key>
+		<string>http://192.168.1.2:9292</string>
+		<key>BitlyAPIKey</key>
+		<string>R_11cbfeb881bd416fa9328fc8d239f0f8</string>
+		<key>BitlyShortURL</key>
+		<string>http://go.spotapps.co</string>
+		<key>BitlyUsername</key>
+		<string>spothopper</string>
+		<key>Debug</key>
+		<false/>
+		<key>MixpanelToken</key>
+		<string>3ac20701be2cc0a75809e4b6f7886039</string>
+		<key>ParseApplicationID</key>
+		<string></string>
+		<key>ParseClientKey</key>
+		<string></string>
+		<key>RefreshLocationTime</key>
+		<real>3600</real>
+		<key>TrackingEnabled</key>
+		<true/>
+		<key>TwitterConsumerKey</key>
+		<string>FeB6rg5yUFu7aL9InVmxQ</string>
+		<key>TwitterConsumerSecret</key>
+		<string>diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI</string>
+		<key>WebsiteUrl</key>
+		<string>http://192.168.1.2:9292</string>
+	</dict>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Lato-Light.ttf</string>
@@ -48,6 +78,8 @@
 		<string>avantgardef-book-webfont.ttf</string>
 		<string>MyriadPro-Bold.ttf</string>
 	</array>
+	<key>UIMainStoryboardFile</key>
+	<string>SpotHopper</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

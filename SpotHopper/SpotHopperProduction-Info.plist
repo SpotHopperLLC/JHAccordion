@@ -27,20 +27,14 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb504677422978889</string>
 				<string>spothopper</string>
 				<string>spothopperapp</string>
-				<string>spothopperv2</string>
-				<string>spothopperappv2</string>
+				<string>fb504677422978889</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>2.1.1</string>
-	<key>FacebookAppID</key>
-	<string>504677422978889</string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
 	<key>SpotHopperSettings</key>
 	<dict>
 		<key>Debug</key>
@@ -60,7 +54,7 @@
 		<key>TwitterConsumerSecret</key>
 		<string>diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI</string>
 		<key>AppURLScheme</key>
-		<string>spothopperapp</string>
+		<string>spothopper</string>
 		<key>BaseUrl</key>
 		<string>https://api.spotapps.co</string>
 		<key>WebsiteUrl</key>
@@ -70,6 +64,10 @@
 		<key>ParseClientKey</key>
 		<string>z86QKJFiLmSxWAekThVpTo8yLpp29nekhTiUgV2i</string>
 	</dict>
+	<key>FacebookAppID</key>
+	<string>504677422978889</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Lato-Light.ttf</string>

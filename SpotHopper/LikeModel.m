@@ -102,7 +102,7 @@
             [[self sh_sharedCache] cacheLikes:likes];
             
             // only track a successful search
-            [Tracker track:@"Fetch User Likes" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
+            [Tracker track:@"Fetch User Likes" properties:@{ @"Duration" : [NSNumber numberWithFloat:duration] }];
             
             if (successBlock) {
                 successBlock(likes);
@@ -156,7 +156,7 @@
         }
         else if (operation.response.statusCode == 200) {
             // only track a successful search
-            [Tracker track:@"Post Like Special" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
+            [Tracker track:@"Post Like Special" properties:@{ @"Duration" : [NSNumber numberWithFloat:duration] }];
             
             NSArray *likes = [jsonApi resourcesForKey:@"likes"];
             LikeModel *like = likes.count ? likes[0] : nil;
@@ -211,7 +211,7 @@
         if (operation.isCancelled || operation.response.statusCode == 204) {
             // only track a successful search
             [Tracker trackUserUnlikedSpecial:special];
-            [Tracker track:@"Delete Like Special" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
+            [Tracker track:@"Delete Like Special" properties:@{ @"Duration" : [NSNumber numberWithFloat:duration] }];
 
             if (successBlock) {
                 successBlock(TRUE);

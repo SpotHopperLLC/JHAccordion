@@ -4,12 +4,12 @@ platform :ios, '7.0'
 
 # Networking
 pod 'AFNetworking', '~> 2.0.0'
-pod 'JSONAPI', '~> 0.2'
+# pod 'JSONAPI', '~> 0.2'
+pod 'JSONAPI', :git => 'https://github.com/SpotHopperLLC/jsonapi-ios.git', :tag => 'SpotHopper-v2'
 pod 'BitlyForiOS', :git => 'https://github.com/brennanMKE/BitlyForiOS.git', :tag => '0.0.3'
 
 # Helpers
 pod 'Promises', :git => 'http://github.com/joshdholtz/ios-promises.git'
-pod 'iRate', '~> 1.8.0'
 
 # UI
 pod 'JHAccordion', :git => 'https://github.com/brennanMKE/JHAccordion.git', :tag => 'current'
@@ -19,11 +19,10 @@ pod 'JHSidebar', :git => 'https://github.com/joshdholtz/JHSidebar.git'
 pod 'TTTAttributedLabel', '~> 1.10'
 pod 'PhotoZoom', '~> 0.0'
 pod 'MBProgressHUD', '~> 0.8.0'
-pod 'CRGradientNavigationBar', '~> 0.3.0'
 pod 'UIImage+BlurredFrame', '~> 0.0'
 pod 'BlocksKit', '~> 2.2.0'
 pod 'SVPulsingAnnotationView', '~> 0.3.0'
-pod 'JTSReachability', :git => 'http://github.com/brennanMKE/JTSReachability.git', :tag => '0.0.1'
+pod 'JTSReachability', :git => 'http://github.com/brennanMKE/JTSReachability.git', :tag => '1.1.0'
 
 # Debugging
 pod 'Raven', '~> 0.2.0'

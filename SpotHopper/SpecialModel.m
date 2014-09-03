@@ -19,7 +19,7 @@
 #pragma mark - Debugging
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ - %@ [%@]", self.ID, self.text, NSStringFromClass([self class])];
+    return [NSString stringWithFormat:@"%@ - %@ - %@ [%@]", self.ID, self.text, self.weekdayString, NSStringFromClass([self class])];
 }
 
 - (id)debugQuickLookObject {
@@ -216,7 +216,7 @@
             NSArray *specials = [jsonApi resourcesForKey:@"daily_specials"];
 
             // only track a successful search
-            [Tracker track:@"Fetch Specials" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
+            [Tracker track:@"Fetch Specials" properties:@{ @"Duration" : [NSNumber numberWithFloat:duration] }];
             
             if (successBlock) {
                 successBlock(specials);
@@ -267,7 +267,7 @@
             NSArray *specials = [jsonApi resourcesForKey:@"daily_specials"];
             
             // only track a successful search
-            [Tracker track:@"Fetch Special" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
+            [Tracker track:@"Fetch Special" properties:@{ @"Duration" : [NSNumber numberWithFloat:duration] }];
             
             SpecialModel *special = nil;
             if (specials.count) {
@@ -337,7 +337,7 @@
             SpecialModel *special = nil;
             
             // only track a successful search
-            [Tracker track:@"Create Special" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
+            [Tracker track:@"Create Special" properties:@{ @"Duration" : [NSNumber numberWithFloat:duration] }];
             
             if (successBlock) {
                 successBlock(special);
@@ -385,7 +385,7 @@
             SpecialModel *special = nil;
             
             // only track a successful search
-            [Tracker track:@"Update Special" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
+            [Tracker track:@"Update Special" properties:@{ @"Duration" : [NSNumber numberWithFloat:duration] }];
             
             if (successBlock) {
                 successBlock(special);
@@ -440,7 +440,7 @@
         
         if (operation.isCancelled || operation.response.statusCode == 204) {
             // only track a successful search
-            [Tracker track:@"Delete Special" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
+            [Tracker track:@"Delete Special" properties:@{ @"Duration" : [NSNumber numberWithFloat:duration] }];
             
             if (successBlock) {
                 successBlock(TRUE);

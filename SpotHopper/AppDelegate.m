@@ -29,7 +29,6 @@
 #import "BFAppLink.h"
 
 #import "Mixpanel.h"
-#import "iRate.h"
 #import "Tracker.h"
 #import "Tracker+Events.h"
 #import "Tracker+People.h"
@@ -43,7 +42,7 @@
 #import <Raven/RavenClient.h>
 #import <STTwitter/STTwitter.h>
 
-@interface AppDelegate() <iRateDelegate>
+@interface AppDelegate()
 
 @property (nonatomic, strong) Mockery *mockery;
 
@@ -53,34 +52,21 @@
     TellMeMyLocation *_tellMeMyLocation;
 }
 
-+ (void)initialize {
-    //configure iRate
-    [iRate sharedInstance].daysUntilPrompt = 5;
-    [iRate sharedInstance].usesUntilPrompt = 15;
-    [iRate sharedInstance].onlyPromptIfLatestVersion = YES;
-    
-#ifdef PRODUCTION
-    // enable preview mode in non-production targets
-    [iRate sharedInstance].previewMode = NO;
-#endif
-}
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 //    [[ClientSessionManager sharedClient] setHasSeenLaunch:NO];
 
-    [iRate sharedInstance].delegate = self;
-    
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
-    if (kParseApplicationID.length) {
+    if ([SHAppConfiguration parseApplicationID].length) {
         // Initialize Parse
-        [Parse setApplicationId:kParseApplicationID
-                      clientKey:kParseClientKey];
+        [Parse setApplicationId:[SHAppConfiguration parseApplicationID]
+                      clientKey:[SHAppConfiguration parseClientKey]];
         [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
-        [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge|
-         UIRemoteNotificationTypeAlert|
-         UIRemoteNotificationTypeSound];
     }
+    
+    // Prompts user for permission to send notifications
+    UIRemoteNotificationType types = UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound;
+    [application registerForRemoteNotificationTypes:types];
     
     // Initializes Raven (Sentry) for error reporting/logging
     [RavenClient clientWithDSN:kSentryDSN];
@@ -88,11 +74,35 @@
     
     [SHModelResourceManager prepareResources];
     
+    NSLog(@"Linker: %@", [JSONAPIResourceLinker defaultInstance]);
+    NSLog(@"Modeler: %@", [JSONAPIResourceModeler defaultInstance]);
+    
+#ifndef NDEBUG
+    
+    NSString *drinksType = [[JSONAPIResourceLinker defaultInstance] linkedType:@"drinks"];
+    Class drinksClass = [[JSONAPIResourceModeler defaultInstance] resourceForLinkedType:drinksType];
+    NSLog(@"Drinks Class: %@", NSStringFromClass(drinksClass));
+    
+    NSString *spotsType = [[JSONAPIResourceLinker defaultInstance] linkedType:@"spots"];
+    Class spotsClass = [[JSONAPIResourceModeler defaultInstance] resourceForLinkedType:spotsType];
+    NSLog(@"Spots Class: %@", NSStringFromClass(spotsClass));
+    
+    NSLog(@"Linker: %@", [JSONAPIResourceLinker defaultInstance]);
+    NSLog(@"Modeler: %@", [JSONAPIResourceModeler defaultInstance]);
+    
+    JSONAPIResourceLinker *linker = [JSONAPIResourceLinker defaultInstance];
+    JSONAPIResourceModeler *modeler = [JSONAPIResourceModeler defaultInstance];
+    
+    NSAssert([linker isEqual:[JSONAPIResourceLinker defaultInstance]], @"Linker must equal default instance");
+    NSAssert([modeler isEqual:[JSONAPIResourceModeler defaultInstance]], @"Modeler must equal default instance");
+    
+#endif
+    
     // Navigation bar styling
     [[UINavigationBar appearance] setTintColor:kColorOrange];
     
     // Sets networking debug logs if debug is set
-    [[ClientSessionManager sharedClient] setDebug:kDebug];
+    [[ClientSessionManager sharedClient] setDebug:[SHAppConfiguration isDebuggingEnabled]];
     
     // Initializes cookie for network calls
     [[ClientSessionManager sharedClient] isLoggedIn];
@@ -155,7 +165,7 @@
         return NO;
     }
     
-    if ([self isURLSchemePrefixForURLString:fullURLString] || [fullURLString hasPrefix:kWebsiteUrl]) {
+    if ([self isURLSchemePrefixForURLString:fullURLString] || [fullURLString hasPrefix:[SHAppConfiguration websiteUrl]]) {
         self.openedURL = parsedUrl.targetURL;
         if (parsedUrl.appLinkReferer.sourceURL) {
             self.sourceURL = parsedUrl.appLinkReferer.sourceURL;
@@ -175,11 +185,16 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     // Store the deviceToken in the current Installation and save it to Parse.
-    if (kParseApplicationID.length) {
+    if ([SHAppConfiguration parseApplicationID].length) {
         PFInstallation *currentInstallation = [PFInstallation currentInstallation];
         [currentInstallation setDeviceTokenFromData:deviceToken];
         [currentInstallation saveInBackground];
     }
+
+    // prepare Mixpanel to send notifications to this device
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    [mixpanel identify:mixpanel.distinctId];
+    [mixpanel.people addPushDeviceToken:deviceToken];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
@@ -257,43 +272,6 @@
     } failure:^(NSError *error) {
         [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
-}
-
-#pragma mark - iRateDelegate
-
-- (BOOL)iRateShouldPromptForRating {
-    // if the user is logged in and has either 3 spotlists or 3 drinklists
-    // which makes them very likely a happy user of the app
-    // prompt the user only on the home screen
-    
-    NSNumber *spotlistCount = [UserState spotlistCount];
-    NSNumber *drinklistCount = [UserState drinklistCount];
-    
-    return spotlistCount.unsignedIntegerValue > 3 || drinklistCount.unsignedIntegerValue > 3;
-}
-
-- (void)iRateDidDetectAppUpdate {
-    [Tracker track:@"iRate Detected Update"];
-}
-
-- (void)iRateDidPromptForRating {
-    [Tracker track:@"iRate did Prompt to Rate"];
-}
-
-- (void)iRateUserDidAttemptToRateApp {
-    [Tracker track:@"iRate Attempted to Rate"];
-}
-
-- (void)iRateUserDidDeclineToRateApp {
-    [Tracker track:@"iRate Declined to Rate"];
-}
-
-- (void)iRateUserDidRequestReminderToRateApp {
-    [Tracker track:@"iRate Requested Reminder"];
-}
-
-- (void)iRateDidOpenAppStore {
-    [Tracker track:@"iRate Opened App Store"];
 }
 
 #pragma mark - Facebook Connect
@@ -407,8 +385,8 @@
 
 - (void)twitterAuth:(ACAccount*)account success:(void(^)(NSString *oAuthToken, NSString *oAuthTokenSecret, NSString *userID, NSString *screenName))successHandler failure:(void(^)(NSError *error))failureHandler {
     STTwitterAPI *twitter = [STTwitterAPI twitterAPIWithOAuthConsumerName:nil
-                                                              consumerKey:kTwitterConsumerKey
-                                                           consumerSecret:kTwitterConsumerSecret];
+                                                              consumerKey:[SHAppConfiguration twitterConsumerKey]
+                                                           consumerSecret:[SHAppConfiguration twitterConsumerSecret]];
     
     [twitter postReverseOAuthTokenRequest:^(NSString *authenticationHeader) {
         

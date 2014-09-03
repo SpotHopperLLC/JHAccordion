@@ -47,6 +47,7 @@ typedef enum {
     SHStyleKitDrawingDrinkMenuIcon,
     SHStyleKitDrawingReviewsIcon,
     SHStyleKitDrawingSearchIcon,
+    SHStyleKitDrawingStarIcon,
     SHStyleKitDrawingMapBubblePinFilledIcon,
     SHStyleKitDrawingMapBubblePinEmptyIcon,
     SHStyleKitDrawingSpotSideBarIcon,

@@ -22,6 +22,7 @@
 #import "UserModel.h"
 #import "Tracker.h"
 #import "SHNotifications.h"
+#import "SHAppConfiguration.h"
 
 #import "JTSReachabilityResponder.h"
 
@@ -44,7 +45,7 @@
     static ClientSessionManager *_sharedClient = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        NSURL *baseURL = [NSURL URLWithString:kBaseUrl];
+        NSURL *baseURL = [NSURL URLWithString:[SHAppConfiguration baseUrl]];
         _sharedClient = [[ClientSessionManager alloc] initWithBaseURL:baseURL];
         [_sharedClient setRequestSerializer:[AFJSONRequestSerializer serializer]];
         [_sharedClient setResponseSerializer:[AFJSONResponseSerializer serializer]];
@@ -112,14 +113,15 @@
         return nil;
     }
     
-    __weak NSDate *now = [NSDate date];
+    NSDate *now = [NSDate date];
     return [super GET:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
             NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, (long)operation.response.statusCode, operation.responseString);
             NSLog(@"%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
         }
         
-        [self logResponse:operation.response];
+        NSAssert(now, @"Date value is required");
+        [self logResponse:operation.response startDate:now];
         
         success(operation, responseObject);
         [self handleError:operation withResponseObject:responseObject timeStarted:now];
@@ -154,7 +156,7 @@
         return nil;
     }
     
-    __weak NSDate *now = [NSDate date];
+    NSDate *now = [NSDate date];
     return [super POST:URLString parameters:parameters constructingBodyWithBlock:block success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
             NSLog(@"Request Headers\n\t%@", operation.request.allHTTPHeaderFields);
@@ -162,7 +164,7 @@
             NSLog(@"Response\n\t%@ %ld - %@", operation.request.URL.standardizedURL, (long)operation.response.statusCode, operation.responseString);
         }
         
-        [self logResponse:operation.response];
+        [self logResponse:operation.response startDate:now];
         
         success(operation, responseObject);
         [self handleError:operation withResponseObject:responseObject timeStarted:now];
@@ -198,7 +200,7 @@
         return nil;
     }
     
-    __weak NSDate *now = [NSDate date];
+    NSDate *now = [NSDate date];
     return [super POST:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
             NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, (long)operation.response.statusCode, operation.responseString);
@@ -206,7 +208,7 @@
             NSLog(@"%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
         }
         
-        [self logResponse:operation.response];
+        [self logResponse:operation.response startDate:now];
         
         success(operation, responseObject);
         [self handleError:operation withResponseObject:responseObject timeStarted:now];
@@ -244,14 +246,14 @@
         return nil;
     }
     
-    __weak NSDate *now = [NSDate date];
+    NSDate *now = [NSDate date];
     return [super PUT:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
             NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, (long)operation.response.statusCode, operation.responseString);
             NSLog(@"%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
         }
         
-        [self logResponse:operation.response];
+        [self logResponse:operation.response startDate:now];
         
         success(operation, responseObject);
         [self handleError:operation withResponseObject:responseObject timeStarted:now];
@@ -286,14 +288,14 @@
         return nil;
     }
     
-    __weak NSDate *now = [NSDate date];
+    NSDate *now = [NSDate date];
     return [super DELETE:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
             NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, (long)operation.response.statusCode, operation.responseString);
             NSLog(@"%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
         }
         
-        [self logResponse:operation.response];
+        [self logResponse:operation.response startDate:now];
         
         success(operation, responseObject);
         [self handleError:operation withResponseObject:responseObject timeStarted:now];
@@ -353,7 +355,29 @@
 
 #pragma mark - Logging
 
-- (void)logResponse:(NSHTTPURLResponse *)response {
+- (void)logResponse:(NSHTTPURLResponse *)response startDate:(NSDate *)startDate {
+    NSAssert(startDate, @"Start Date is required");
+    NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:startDate];
+    DebugLog(@"duration: %f", duration);
+    JTSNetworkStatus networkStatus = [[JTSReachabilityResponder sharedInstance] networkStatus];
+    
+    NSString *network = @"Unknown";
+    
+    switch (networkStatus) {
+        case NotReachable:
+            network = @"Unreachable";
+            break;
+        case ReachableViaWiFi:
+            network = @"WiFi";
+            break;
+        case ReachableViaWWAN:
+            network = @"WWAN";
+            break;
+            
+        default:
+            break;
+    }
+    
     if (response.allHeaderFields[@"Content-Length"] != nil) {
         NSString *contentLength = response.allHeaderFields[@"Content-Length"];
         if (_debug) {
@@ -363,7 +387,10 @@
         
         [Tracker track:@"API Content Length" properties:@{
                                                           @"Content-Length" : [NSNumber numberWithInteger:[contentLength integerValue]],
-                                                          @"Path" : response.URL.path.length ? response.URL.path : @"Unknown"}];
+                                                          @"Path" : response.URL.path.length ? response.URL.path : @"Unknown",
+                                                          @"Duration" : [NSNumber numberWithFloat:duration] ? : @0,
+                                                          @"Network" : network
+                                                          }];
     }
 }
 
@@ -416,7 +443,7 @@
     [self.requestSerializer setValue:cookie forHTTPHeaderField:@"Cookie"];
     [self setCurrentUser:user];
     
-    if (kParseApplicationID.length) {
+    if ([SHAppConfiguration parseApplicationID].length) {
         PFInstallation *currentInstallation = [PFInstallation currentInstallation];
         [currentInstallation addUniqueObject:[NSString stringWithFormat:@"user-%@", self.currentUser.ID] forKey:@"channels"];
         [currentInstallation saveInBackground];
@@ -428,7 +455,7 @@
 - (void)logout {
     [[FBSession activeSession] closeAndClearTokenInformation];
     
-    if (kParseApplicationID.length) {
+    if ([SHAppConfiguration parseApplicationID].length) {
         PFInstallation *currentInstallation = [PFInstallation currentInstallation];
         if (currentInstallation.channels != nil) {
             [currentInstallation removeObjectsInArray:currentInstallation.channels forKey:@"channels"];

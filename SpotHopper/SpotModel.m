@@ -145,6 +145,9 @@
     // Get open and close time
     NSInteger dayOfWeek = [comps weekday] - 1;
     
+    // TODO: add radius
+    CGFloat miles = 500.0f;
+    
     /*
      * Searches spots for specials
      */
@@ -155,7 +158,8 @@
                              kSpotModelParamSources : kSpotModelParamSourcesSpotHopper,
                              kSpotModelParamQueryDayOfWeek : [NSNumber numberWithInteger:dayOfWeek],
                              kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:coordinate.latitude],
-                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:coordinate.longitude]
+                             kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:coordinate.longitude],
+                             kSpotModelParamQueryRadius : [NSNumber numberWithFloat:miles]
                              };
     
     return [SpotModel getSpotsWithSpecials:params success:successBlock failure:failureBlock];
@@ -482,7 +486,7 @@
             NSArray *spots = [jsonApi resourcesForKey:@"spots"];
             
             // only track a successful search
-            [Tracker track:@"Spot Search Duration" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
+            [Tracker track:@"Spot Search Duration" properties:@{ @"Duration" : [NSNumber numberWithFloat:duration] }];
             
             if (successBlock) {
                 successBlock(spots);
