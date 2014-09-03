@@ -1622,7 +1622,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)styleAreYouHerePrompt {
-    UIColor *backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintColorTransparent];
+    UIColor *backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintTransparentColor];
     UIColor *borderColor = [SHStyleKit color:SHStyleKitColorMyWhiteColor];
     UIColor *labelTextColor = [SHStyleKit color:SHStyleKitColorMyWhiteColor];
     UIColor *buttonTextColor = [SHStyleKit color:SHStyleKitColorMyTintColor];

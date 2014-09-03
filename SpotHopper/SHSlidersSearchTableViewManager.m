@@ -120,8 +120,6 @@
 @property (weak, nonatomic) DrinkSubTypeModel *selectedDrinkSubType;
 @property (weak, nonatomic) BaseAlcoholModel *selectedBaseAlcohol;
 
-@property (strong, nonatomic) NSMutableArray *starredSliderRows;
-
 @property (assign) SHMode mode;
 
 @end
@@ -132,15 +130,13 @@
     BOOL _isPreparingForMode;
 }
 
-#pragma mark - Public Methods
+#pragma mark - Public
 #pragma mark -
 
 - (void)prepare {
     // prepare accordion
     self.accordion = [[JHAccordion alloc] initWithTableView:self.tableView];
     self.accordion.delegate = self;
-    
-    self.starredSliderRows = @[].mutableCopy;
     
     // prefetch data which is cached
     [self fetchMySpotlistsWithCompletionBlock:nil];
@@ -213,8 +209,6 @@
         [self notifyThatManagerIsBusy:@"Loading Moods"];
     }
     
-    [self.starredSliderRows removeAllObjects];
-    
     NSDate *startDate = [NSDate date];
     [self fetchMySpotlistsWithCompletionBlock:^(NSArray *spotlists) {
         NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:startDate];
@@ -254,8 +248,6 @@
     if (!isDataCached) {
         [self notifyThatManagerIsBusy:@"Loading Flavor Profiles"];
     }
-    
-    [self.starredSliderRows removeAllObjects];
     
     NSAssert(self.drinkTypes, @"Drink types should already be set");
     
@@ -322,6 +314,15 @@
     return !self.drinkTypeName.length;
 }
 
+#pragma mark - Private
+#pragma mark -
+
+- (void)showStatusText:(NSString *)text {
+    if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerHasStatus:text:)]) {
+        [self.delegate slidersSearchTableViewManagerHasStatus:self text:text];
+    }
+}
+
 #pragma mark - Location
 #pragma mark -
 
@@ -365,21 +366,47 @@
     
     DebugLog(@"selected: %@", button.selected ? @"Y" : @"N");
     
-    // TODO: determine which sliders it is and how many stars are already on
-    
     NSIndexPath *indexPath = [self indexPathForView:button inTableView:self.tableView];
+    SliderModel *sliderModel = [self sliderModelAtIndexPath:indexPath];
     
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     SHSlider *slider = [self sliderInView:cell withTag:kSliderCellSlider];
     
-    if (slider.userMoved) {
-        if (!button.selected && self.starredSliderRows.count < 3 && ![self.starredSliderRows containsObject:indexPath]) {
-            button.selected = TRUE;
-            [self.starredSliderRows addObject:indexPath];
+    NSUInteger count = 0;
+    for (SliderModel *slider in self.sliders) {
+        if (slider.starred) {
+            count++;
         }
-        else if (button.selected && [self.starredSliderRows containsObject:indexPath]) {
+    }
+    
+    for (SliderModel *slider in self.advancedSliders) {
+        if (slider.starred) {
+            count++;
+        }
+    }
+    
+    if (slider.userMoved) {
+        if (!button.selected && count < 3) {
+            button.selected = TRUE;
+            sliderModel.starred = TRUE;
+            count++;
+            
+            if (count < 3) {
+                [self showStatusText:@"Starred as more important"];
+            }
+            else if (count == 3) {
+                [self showStatusText:@"3rd slider starred (max 3)"];
+            }
+        }
+        else if (!button.selected && count == 3) {
+            [self showStatusText:@"You can only star 3 sliders"];
+        }
+        else if (button.selected) {
             button.selected = FALSE;
-            [self.starredSliderRows removeObject:indexPath];
+            sliderModel.starred = FALSE;
+            count--;
+            
+            [self showStatusText:@"Un-Starred as less important"];
         }
     }
 }
@@ -919,7 +946,7 @@
     titleLabel.text = title;
     
     UIView *backgroundView = [[UIView alloc] init];
-    backgroundView.backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintColorTransparent];
+    backgroundView.backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintTransparentColor];
     cell.selectedBackgroundView = backgroundView;
     
     [SHStyleKit setButton:deleteButton withDrawing:SHStyleKitDrawingDeleteIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyTextColor size:CGSizeMake(30, 30)];
@@ -990,7 +1017,7 @@
     titleLabel.text = title;
     
     UIView *backgroundView = [[UIView alloc] init];
-    backgroundView.backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintColorTransparent];
+    backgroundView.backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintTransparentColor];
     cell.selectedBackgroundView = backgroundView;
     
     return cell;
@@ -1000,6 +1027,9 @@
     static NSString *SliderCellIdentifier = @"SliderCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SliderCellIdentifier forIndexPath:indexPath];
+    SliderModel *sliderModel = [self sliderModelAtIndexPath:indexPath];
+    
+    DebugLog(@"sliderModel: %@", sliderModel);
     
     SHSlider *slider = [self sliderInView:cell withTag:kSliderCellSlider];
     UILabel *minLabel = [self labelInView:cell withTag:kSliderCellLeftLabel];
@@ -1009,12 +1039,13 @@
     [SHStyleKit setLabel:minLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setLabel:maxLabel textColor:SHStyleKitColorMyTextColor];
     
-    CGSize imageSize = CGSizeMake(30, 30);
-    [starButton setImage:[SHStyleKit drawImage:SHStyleKitDrawingStarIcon color:SHStyleKitColorMyTextColor size:imageSize] forState:UIControlStateNormal];
-    [starButton setImage:[SHStyleKit drawImage:SHStyleKitDrawingStarIcon color:SHStyleKitColorMyTintColor size:imageSize] forState:UIControlStateSelected];
-    starButton.selected = [self.starredSliderRows containsObject:indexPath];
-    
-    SliderModel *sliderModel = [self sliderModelAtIndexPath:indexPath];
+    CGFloat widthAndHeight = 24.0f;
+    CGFloat inset = 44.0f - widthAndHeight;
+    CGSize imageSize = CGSizeMake(widthAndHeight, widthAndHeight);
+    [starButton setImage:[SHStyleKit drawImage:SHStyleKitDrawingStarIcon color:SHStyleKitColorMyTextTransparentColor size:imageSize] forState:UIControlStateNormal];
+    [starButton setImage:[SHStyleKit drawImage:SHStyleKitDrawingStarIcon color:SHStyleKitColorMyTintTransparentColor size:imageSize] forState:UIControlStateSelected];
+    [starButton setImageEdgeInsets:UIEdgeInsetsMake(0.0f, inset, inset, 0.0f)];
+    starButton.selected = sliderModel.starred;
     
     NSAssert(sliderModel, @"slider Model is required");
     NSAssert(slider, @"Slider View is required");
@@ -1036,6 +1067,8 @@
         }
     }
     
+    starButton.hidden = !slider.userMoved;
+    
     return cell;
 }
 
@@ -1045,8 +1078,6 @@
 - (void)userDidSelectSpotlistAtIndexPath:(NSIndexPath *)indexPath {
     SpotListModel *spotlist = [self spotlistAtIndexPath:indexPath];
     self.selectedSpotlist = spotlist;
-    
-    [self.starredSliderRows removeAllObjects];
     
     [Tracker trackSpotsMoodSelected:spotlist.name moodsCount:self.spotlists.count position:indexPath.row];
     
@@ -1128,8 +1159,6 @@
 - (void)userDidSelectDrinklistAtIndexPath:(NSIndexPath *)indexPath {
     DrinkListModel *drinklist = [self drinklistAtIndexPath:indexPath];
     self.selectedDrinklist = drinklist;
-    
-    [self.starredSliderRows removeAllObjects];
     
     if (self.mode == SHModeBeer) {
         [self updateSectionTitle:[NSString stringWithFormat:@"Step 1 - %@", drinklist.name] section:indexPath.section];
@@ -1328,10 +1357,11 @@
         NSAssert(searchSlider.sliderTemplate, @"Slider Template must be defined");
         
         searchSlider.value = nil;
-        for (SliderModel *spotlistSlider in sliders) {
-            NSAssert(spotlistSlider.sliderTemplate, @"Slider Templates must be defined");
-            if ([searchSlider.sliderTemplate isEqual:spotlistSlider.sliderTemplate]) {
-                searchSlider.value = spotlistSlider.value;
+        for (SliderModel *loadedSlider in sliders) {
+            NSAssert(loadedSlider.sliderTemplate, @"Slider Templates must be defined");
+            if ([searchSlider.sliderTemplate isEqual:loadedSlider.sliderTemplate]) {
+                searchSlider.value = loadedSlider.value;
+                searchSlider.starred = loadedSlider.starred;
                 if (searchSlider.sliderTemplate.isAdvanced) {
                     didSetAdvancedSlider = TRUE;
                 }
@@ -1861,6 +1891,13 @@
 // one the user completes the gesture this callback is fired
 - (void)slider:(SHSlider *)slider valueDidFinishChanging:(CGFloat)value {
     NSAssert(self.delegate, @"Delegate is required");
+    
+    NSIndexPath *indexPath = [self indexPathForView:slider inTableView:self.tableView];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    UIButton *starButton = [self buttonInView:cell withTag:kSliderCellStarButton];
+    if (starButton) {
+        starButton.hidden = !slider.userMoved;
+    }
     
     NSString *sliderType = [self isSelectingSpotlist] ? @"Spotlist" : @"Drinklist";
     

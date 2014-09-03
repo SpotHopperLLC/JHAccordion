@@ -24,8 +24,8 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-#define kMinRadiusFloat 0.5f
-#define kMaxRadiusFloat 5.0f
+#define kMinRadiusFloat 0.1f
+#define kMaxRadiusFloat 10.0f
 #define kMetersPerMile 1609.344
 
 @interface DrinkListCache : NSCache
@@ -373,12 +373,6 @@
         else if (operation.response.statusCode == 200) {
             NSArray *drinklists = [jsonApi resourcesForKey:@"drink_lists"];
 
-//#ifndef NDEBUG
-//            for (DrinkListModel *drinklist __unused in drinklists) {
-//                NSAssert(drinklist.drinkType, @"Drink type must be defined");
-//            }
-//#endif
-            
             NSMutableArray *filteredDrinklists = @[].mutableCopy;
             for (DrinkListModel *drinklist in drinklists) {
                 // delete spotlists with default names (temporary measure)
@@ -434,6 +428,7 @@
             [jsonSliders addObject:@{
                                      @"slider_template_id" : slider.sliderTemplate.ID,
                                      @"value" : slider.value,
+                                     @"starred" : [NSNumber numberWithBool:slider.starred]
                                      }];
         }
     }
@@ -593,7 +588,7 @@
     return deferred.promise;
 }
 
-- (void)fetchDrinkList:(void (^)(DrinkListModel *spotlist))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+- (void)fetchDrinkList:(void (^)(DrinkListModel *drinklist))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     AFHTTPRequestOperation *operation = [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drink_lists/%ld", (long)[self.ID integerValue]] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI
@@ -690,20 +685,20 @@ NSString * const DrinklistsKey = @"Drinklists";
     return [self objectForKey:DrinklistsKey];
 }
 
-- (void)cacheDrinklists:(NSArray *)spotlists {
-    if (spotlists.count) {
-        [self setObject:spotlists forKey:DrinklistsKey];
+- (void)cacheDrinklists:(NSArray *)drinklists {
+    if (drinklists.count) {
+        [self setObject:drinklists forKey:DrinklistsKey];
         
         // automatically expire the cache after 30 seconds to ensure it does not get stale
-        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(expireSpotlistsCache) object:nil];
-        [self performSelector:@selector(expireSpotlistsCache) withObject:self afterDelay:30];
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(expireDrinklistsCache) object:nil];
+        [self performSelector:@selector(expireDrinklistsCache) withObject:self afterDelay:30];
     }
     else {
         [self removeObjectForKey:DrinklistsKey];
     }
 }
 
-- (void)expireSpotlistsCache {
+- (void)expireDrinklistsCache {
     [self cacheDrinklists:nil];
 }
 

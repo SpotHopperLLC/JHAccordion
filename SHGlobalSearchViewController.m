@@ -238,7 +238,7 @@
         }
         
         UIView *backgroundView = [[UIView alloc] init];
-        backgroundView.backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintColorTransparent];
+        backgroundView.backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintTransparentColor];
         cell.selectedBackgroundView = backgroundView;
         
         if (!isLastRow) {

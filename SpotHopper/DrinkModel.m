@@ -25,8 +25,8 @@
 
 #define kPageSize @15
 
-#define kMinRadiusFloat 0.5f
-#define kMaxRadiusFloat 5.0f
+#define kMinRadiusFloat 0.1f
+#define kMaxRadiusFloat 10.0f
 #define kMetersPerMile 1609.344
 
 @interface DrinkModelCache : NSCache
