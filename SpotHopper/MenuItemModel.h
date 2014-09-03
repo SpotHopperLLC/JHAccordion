@@ -23,4 +23,7 @@
 @property (nonatomic, strong) MenuTypeModel *menuType;
 @property (nonatomic, strong) NSArray *prices;
 
+
+- (id)copyWithZone: (NSZone*)zone;
+
 @end

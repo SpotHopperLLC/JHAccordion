@@ -106,6 +106,18 @@
 
 #endif
 
+// Disables log messages when debugging is turned off
+#ifndef NDEBUG
+
+#define DebugLog(message, ...) NSLog(@"%s: " message, __PRETTY_FUNCTION__, ##__VA_ARGS__)
+
+#else
+
+#define DebugLog(message, ...)
+
+#endif
+
+
 #define kSpotHopperIconURL @"http://static.spotapps.co/spothopper-icon.png"
 #define kSpotHopperTagline @"SpotHopper is a local search engine, built to answer \"where should I go?\" and \"what drink will I love?\""
 

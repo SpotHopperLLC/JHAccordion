@@ -42,4 +42,14 @@
              };
 }
 
+- (id)copyWithZone: (NSZone*)zone {
+    MenuItemModel *copy = [[MenuItemModel allocWithZone:zone]init];
+    copy.ID = self.ID;
+    copy.name = [NSString stringWithString:self.name];
+    copy.drink = self.drink;
+    copy.prices = [self.prices copy];
+    
+    return copy;
+}
+
 @end
