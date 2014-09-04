@@ -22,8 +22,9 @@
     // Maps values in JSON key 'name' to 'name' property
     return @{
              @"name" : @"name",
-             @"links.menu_types": @"menu_types"
+             @"links.menu_types": @"menuTypes"
              };
 }
 
 @end
+ 

@@ -2781,7 +2781,7 @@
 		039F542D18D28627004B2B67 /* btn_get_drinks_here.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_get_drinks_here.png; sourceTree = "<group>"; };
 		039F542E18D28627004B2B67 /* btn_get_drinks_here@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_get_drinks_here@2x.png"; sourceTree = "<group>"; };
 		039F543B18D28F5E004B2B67 /* DrinkListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkListModel.h; sourceTree = "<group>"; };
-		039F543C18D28F5E004B2B67 /* DrinkListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DrinkListModel.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		039F543C18D28F5E004B2B67 /* DrinkListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DrinkListModel.m; sourceTree = "<group>"; };
 		039F544318D29B02004B2B67 /* FindSimilarDrinksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindSimilarDrinksViewController.h; sourceTree = "<group>"; };
 		039F544418D29B02004B2B67 /* FindSimilarDrinksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindSimilarDrinksViewController.m; sourceTree = "<group>"; };
 		039F544518D29B02004B2B67 /* FindSimilarDrinksViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindSimilarDrinksViewController.xib; sourceTree = "<group>"; };
