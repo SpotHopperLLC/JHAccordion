@@ -30,6 +30,6 @@ Pod::Spec.new do |s|
 
   s.source_files = 'SpotHopper/Constants.h', 'SpotHopper/**/DrinkListRequest.{h,m}', 'SpotHopper/**/SpotListRequest.{h,m}', 
       'SpotHopper/**/NSArray+HoursOfOperation.{h,m}', 'SpotHopper/**/NSNumber+Currency.{h,m}', 'SpotHopper/**/SHStyleKit.{h,m}','SpotHopper/**/SHJSONAPIResource.{h,m}', 'SpotHopper/**/NetworkHelper.{h,m}','SpotHopper/**/Tracker.{h,m}','SpotHopper/**/Tracker+Events.{h,m}','SpotHopper/**/Tracker+People.{h,m}','SpotHopper/**/*Model.{h,m}','SpotHopper/**/JTSReachabilityResponder.{h,m}','SpotHopper/**/TellMeMyLocation.{h,m}',
-      'SpotHopper/**/ClientSessionManager.{h,m}','SHAppConfiguration.{h,m}', 'SpotHopper/**/SHNotifications.{h,m}'
+      'SpotHopper/**/ClientSessionManager.{h,m}','SHAppConfiguration.{h,m}', 'SpotHopper/**/SHNotifications.{h,m}','SpotHopper/**/SHModelResourceManager.{h,m}' 
 
 end
