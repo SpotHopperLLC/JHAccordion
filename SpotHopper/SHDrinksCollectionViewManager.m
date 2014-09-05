@@ -92,7 +92,7 @@
             [self.collectionView reloadData];
             _currentIndex = 0;
             _isUpdatingData = FALSE;
-            [Tracker trackListViewDidDisplayDrink:[self drinkAtIndex:_currentIndex]];
+            [Tracker trackListViewDidDisplayDrink:[self drinkAtIndex:_currentIndex] position:_currentIndex+1];
         }
     }
 }
@@ -322,7 +322,7 @@
 #pragma mark -
 
 - (void)reportedChangedIndex {
-    [Tracker trackListViewDidDisplayDrink:[self drinkAtIndex:_currentIndex]];
+    [Tracker trackListViewDidDisplayDrink:[self drinkAtIndex:_currentIndex] position:_currentIndex+1];
     
     if ([self.delegate respondsToSelector:@selector(drinksCollectionViewManager:didChangeToDrinkAtIndex:)]) {
         [self.delegate drinksCollectionViewManager:self didChangeToDrinkAtIndex:_currentIndex];

@@ -123,4 +123,23 @@
     [Tracker trackLocationPropertiesForEvent:@"Unliked Special" properties:@{@"Name" : special.spot.name.length ? special.spot.name : @"NULL", @"Weekday" : weekday}];
 }
 
+#pragma mark - Starred Sliders
+#pragma mark -
+
++ (void)trackStarredSlider:(NSString *)type sliderName:(NSString *)sliderName {
+    [Tracker trackLocationPropertiesForEvent:@"Starred Slider" properties:@{
+                                                                            @"Type" : type.length ? type : @"NULL",
+                                                                            @"Slider Name" : sliderName.length ? sliderName : @"NULL"
+                                                                            }];
+    [Tracker trackUserAction:@"Starred Slider"];
+}
+
++ (void)trackUnstarredSlider:(NSString *)type sliderName:(NSString *)sliderName {
+    [Tracker trackLocationPropertiesForEvent:@"Unstarred Slider" properties:@{
+                                                                              @"Type" : type.length ? type : @"NULL",
+                                                                              @"Slider Name" : sliderName.length ? sliderName : @"NULL"
+                                                                              }];
+    [Tracker trackUserAction:@"Unstarred Slider"];
+}
+
 @end

@@ -12,7 +12,7 @@
 #import "ErrorModel.h"
 #import "Tracker.h"
 
-#import "LocationChooserViewController.h"
+//#import "LocationChooserViewController.h"
 
 @interface SHButtonLatoLightLocation() <LocationChooserViewControllerDelegate>
 

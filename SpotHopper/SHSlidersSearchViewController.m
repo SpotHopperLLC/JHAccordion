@@ -29,6 +29,9 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *searchButton;
 
+@property (weak, nonatomic) IBOutlet UIView *toastView;
+@property (weak, nonatomic) IBOutlet UILabel *toastLabel;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchButtonBottomConstraint;
 
 @property (strong, nonatomic) IBOutlet SHSlidersSearchTableViewManager *slidersSearchTableViewManager;
@@ -46,6 +49,9 @@
     [self.slidersSearchTableViewManager prepare];
     
     self.searchButton.titleLabel.font = [UIFont fontWithName:@"Lato-Light" size:26.0f];
+    self.toastLabel.font = [UIFont fontWithName:@"Lato-Light" size:18.0f];
+    
+    self.toastView.layer.cornerRadius = 15.0f;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -57,6 +63,7 @@
     self.tableView.contentOffset = CGPointMake(0, self.tableView.contentInset.top * -1);
     
     [self hideSearchButton:FALSE withCompletionBlock:nil];
+    [self hideToastView:FALSE withCompletionBlock:nil];
 }
 
 #pragma mark - User Actions
@@ -121,6 +128,7 @@
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"Skip" otherButtonTitles:@"Save", nil];
         [alertView setAlertViewStyle:UIAlertViewStylePlainTextInput];
         [[alertView textFieldAtIndex:0] setPlaceholder:defaultListName];
+        [[alertView textFieldAtIndex:0] setAutocapitalizationType:UITextAutocapitalizationTypeWords];
         [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
             NSString *listName = nil;
             if (buttonIndex == 1) {
@@ -191,6 +199,44 @@
     }];
 }
 
+- (void)hideToastView {
+    [self hideToastView:TRUE withCompletionBlock:nil];
+}
+
+- (void)hideToastView:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    CGFloat duration = animated ? 0.45f : 0.0f;
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0f options:options animations:^{
+        self.toastView.alpha = 0.0f;
+    } completion:^(BOOL finished) {
+    }];
+    
+    if (completionBlock) {
+        completionBlock();
+    }
+}
+
+- (void)showToastViewWithText:(NSString *)text animated:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideToastView) object:nil];
+
+    self.toastLabel.text = text;
+
+    CGFloat duration = animated ? 0.25f : 0.0f;
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0f options:options animations:^{
+        self.toastView.alpha = 1.0f;
+    } completion:^(BOOL finished) {
+    }];
+    
+    if (completionBlock) {
+        completionBlock();
+    }
+    
+    [self performSelector:@selector(hideToastView) withObject:nil afterDelay:3.0f];
+}
+
 - (CLLocationCoordinate2D)searchCenterCoordinate {
     if ([self.delegate respondsToSelector:@selector(searchCoordinateForSlidersSearchViewController:)]) {
         CLLocationCoordinate2D coordinate = [self.delegate searchCoordinateForSlidersSearchViewController:self];
@@ -256,6 +302,10 @@
 
 - (void)slidersSearchTableViewManagerIsFree:(SHSlidersSearchTableViewManager *)manager {
     [self hideHUD];
+}
+
+- (void)slidersSearchTableViewManagerHasStatus:(SHSlidersSearchTableViewManager *)manager text:(NSString *)text {
+    [self showToastViewWithText:text animated:TRUE withCompletionBlock:nil];
 }
 
 - (CLLocationCoordinate2D)searchCoordinateForSlidersSearchTableViewManager:(SHSlidersSearchTableViewManager *)manager {

@@ -197,6 +197,10 @@ typedef enum {
     SpotModel *spot = [self.specialsCollectionViewManager spotAtIndex:index];
     SpecialModel *special = [spot specialForToday];
     
+    if (!special.spot) {
+        special.spot = spot;
+    }
+    
     if (special.userLikesSpecial) {
         [[LikeModel unlikeSpecial:special] then:^(NSNumber *number) {
             special.userLikesSpecial = FALSE;

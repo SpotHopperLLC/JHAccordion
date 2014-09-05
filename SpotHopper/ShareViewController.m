@@ -24,6 +24,7 @@
 
 #import "MBProgressHUD.h"
 
+#import "SHAppConfiguration.h"
 #import "SSTURLShortener.h"
 
 #import <Promises/Promise.h>
@@ -302,7 +303,7 @@
     // (otherwise leave userId as NSNotFound so it is not used, defensive programming)
     
     if (_checkIn) {
-        return [NSString stringWithFormat:@"%@/checkins/%@?source=%@", kWebsiteUrl, _checkIn.ID, source];
+        return [NSString stringWithFormat:@"%@/checkins/%@?source=%@", [SHAppConfiguration websiteUrl], _checkIn.ID, source];
     }
     else {
         NSString *type = _shareType == ShareViewControllerShareCheckin ? @"checkin" : @"special";
@@ -326,10 +327,10 @@
         
         UserModel *user = [[ClientSessionManager sharedClient] currentUser];
         if (user != nil) {
-            return [NSString stringWithFormat:@"%@/?source=%@&user=%li&type=%@%@", kWebsiteUrl, source, (long)[user.ID integerValue], type, spotOrSpecialParams];
+            return [NSString stringWithFormat:@"%@/?source=%@&user=%li&type=%@%@", [SHAppConfiguration websiteUrl], source, (long)[user.ID integerValue], type, spotOrSpecialParams];
         }
         else {
-            return [NSString stringWithFormat:@"%@/?source=%@&type=%@%@", kWebsiteUrl, source, type, spotOrSpecialParams];
+            return [NSString stringWithFormat:@"%@/?source=%@&type=%@%@", [SHAppConfiguration websiteUrl], source, type, spotOrSpecialParams];
         }
     }
 }

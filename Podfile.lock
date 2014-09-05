@@ -19,34 +19,33 @@ PODS:
     - AFNetworking/NSURLConnection
   - BitlyForiOS (0.0.3):
     - AFNetworking (~> 2.0)
-  - BlocksKit (2.2.3):
+  - BlocksKit (2.2.5):
     - BlocksKit/All
-  - BlocksKit/All (2.2.3):
+  - BlocksKit/All (2.2.5):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
     - BlocksKit/MessageUI
     - BlocksKit/UIKit
-  - BlocksKit/Core (2.2.3)
-  - BlocksKit/DynamicDelegate (2.2.3)
-  - BlocksKit/MessageUI (2.2.3):
+  - BlocksKit/Core (2.2.5)
+  - BlocksKit/DynamicDelegate (2.2.5)
+  - BlocksKit/MessageUI (2.2.5):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
-  - BlocksKit/UIKit (2.2.3):
+  - BlocksKit/UIKit (2.2.5):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
   - Bolts (1.1.2)
-  - CRGradientNavigationBar (0.3.2)
   - Facebook-iOS-SDK (3.17.0):
     - Bolts
-  - iRate (1.8.3)
   - JHAccordion (0.1.0)
   - JHAutoCompleteTextField (0.1.0)
   - JHSidebar (0.1.2)
   - JSONAPI (0.2.0)
-  - JTSReachability (0.0.1)
+  - JTSReachability (1.1.0)
   - MBProgressHUD (0.8)
   - Mixpanel (2.3.6)
-  - Parse-iOS-SDK (1.2.19):
+  - Parse-iOS-SDK (1.2.21):
+    - Bolts
     - Facebook-iOS-SDK (~> 3.7)
   - PhotoZoom (0.0.2)
   - Promises (0.1.2)
@@ -62,14 +61,12 @@ DEPENDENCIES:
   - AFNetworking (~> 2.0.0)
   - BitlyForiOS (from `https://github.com/brennanMKE/BitlyForiOS.git`, tag `0.0.3`)
   - BlocksKit (~> 2.2.0)
-  - CRGradientNavigationBar (~> 0.3.0)
   - Facebook-iOS-SDK (~> 3.0)
-  - iRate (~> 1.8.0)
-  - JHAccordion (from `https://github.com/brennanMKE/JHAccordion.git`, tag `current`)
+  - JHAccordion (from `https://github.com/SpotHopperLLC/JHAccordion.git`, tag `SpotHopper-v2`)
   - JHAutoCompleteTextField (from `http://github.com/joshdholtz/JHAutoCompleteTextField.git`)
   - JHSidebar (from `https://github.com/joshdholtz/JHSidebar.git`)
-  - JSONAPI (~> 0.2)
-  - JTSReachability (from `http://github.com/brennanMKE/JTSReachability.git`, tag `0.0.1`)
+  - JSONAPI (from `https://github.com/SpotHopperLLC/jsonapi-ios.git`, tag `SpotHopper-v2`)
+  - JTSReachability (from `http://github.com/brennanMKE/JTSReachability.git`, tag `1.1.0`)
   - MBProgressHUD (~> 0.8.0)
   - Mixpanel (~> 2.3.0)
   - Parse-iOS-SDK (~> 1.2.19)
@@ -88,34 +85,35 @@ EXTERNAL SOURCES:
     :git: https://github.com/brennanMKE/BitlyForiOS.git
     :tag: 0.0.3
   JHAccordion:
-    :git: https://github.com/brennanMKE/JHAccordion.git
-    :tag: current
+    :git: https://github.com/SpotHopperLLC/JHAccordion.git
+    :tag: SpotHopper-v2
   JHAutoCompleteTextField:
     :git: http://github.com/joshdholtz/JHAutoCompleteTextField.git
   JHSidebar:
     :git: https://github.com/joshdholtz/JHSidebar.git
+  JSONAPI:
+    :git: https://github.com/SpotHopperLLC/jsonapi-ios.git
+    :tag: SpotHopper-v2
   JTSReachability:
     :git: http://github.com/brennanMKE/JTSReachability.git
-    :tag: 0.0.1
+    :tag: 1.1.0
   Promises:
     :git: http://github.com/joshdholtz/ios-promises.git
 
 SPEC CHECKSUMS:
   AFNetworking: a4d0e9a64de9242986620dafd1b3cee3b413ac5c
   BitlyForiOS: c6eb9b297cb503757a616fc201b3362fb857e8b4
-  BlocksKit: 07c8a80f04275efac6a5f8b973782489c083a182
+  BlocksKit: 4439e7f30a9f90743462ca63545a15c1f4304cef
   Bolts: 2635e8698a630774689441047f3465d78c48d485
-  CRGradientNavigationBar: e11429639a863683acc90887b9c86e75cb5d098c
   Facebook-iOS-SDK: f20274d809f112ba540842e2b6cbe50128d51b7b
-  iRate: a42e2ae364634fd1eb07af3cb6985905ced01fa8
   JHAccordion: 4f0337990465b25f8de5ed304609fa9362281db0
   JHAutoCompleteTextField: 1ca69c82441d9b5bf474e10d36585247030f7594
   JHSidebar: 8305caa8641e862994378ee3d61370c79e6b5a07
-  JSONAPI: 9b8f1449bcdcbb00a3c1efc37effbb881093b4dd
-  JTSReachability: 9892b33f1677bd9361406d8c466868fcda892574
+  JSONAPI: cb581ae10fb26b0d5b421ebe1a447946772c0115
+  JTSReachability: 68c4706858c216b24097242d9880ff52e4749dd3
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
   Mixpanel: 9aba38257fc4d2777ab5db1afc55e22bdfd57a4a
-  Parse-iOS-SDK: 5e1f7e649a02f1cc19e73cc95bd43d7778848314
+  Parse-iOS-SDK: 3781eeb56fa6b30d4feee97ee0d22595c07d6c70
   PhotoZoom: 52b044c8086589e85415718402df6c4b5f411cb1
   Promises: c9d4e849f307a53b1b8714c64ff4b6e8695b24e1
   Raven: e26260198babba5e09f31425ce88a21ee0532137

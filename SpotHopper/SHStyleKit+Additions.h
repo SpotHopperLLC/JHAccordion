@@ -9,8 +9,9 @@
 extern NSString * const SHStyleKitColorNameMyTintColor;
 extern NSString * const SHStyleKitColorNameMyTintTransparentColor;
 extern NSString * const SHStyleKitColorNameMyTextColor;
+extern NSString * const SHStyleKitColorNameMyTextTransparentColor;
 extern NSString * const SHStyleKitColorNameMyWhiteColor;
-extern NSString * const SHStyleKitColorNameMyWhiteColorTransparent;
+extern NSString * const SHStyleKitColorNameMyWhiteTransparentColor;
 extern NSString * const SHStyleKitColorNameMyBlackColor;
 extern NSString * const SHStyleKitColorNameMyPencilColor;
 extern NSString * const SHStyleKitColorNameMyClearColor;
@@ -18,10 +19,11 @@ extern NSString * const SHStyleKitColorNameMyClearColor;
 typedef enum {
     SHStyleKitColorNone = 0,
     SHStyleKitColorMyTintColor,
-    SHStyleKitColorMyTintColorTransparent,
+    SHStyleKitColorMyTintTransparentColor,
     SHStyleKitColorMyTextColor,
+    SHStyleKitColorMyTextTransparentColor,
     SHStyleKitColorMyWhiteColor,
-    SHStyleKitColorMyWhiteColorTransparent,
+    SHStyleKitColorMyWhiteTransparentColor,
     SHStyleKitColorMyBlackColor,
     SHStyleKitColorMyPencilColor,
     SHStyleKitColorMyClearColor
@@ -47,6 +49,7 @@ typedef enum {
     SHStyleKitDrawingDrinkMenuIcon,
     SHStyleKitDrawingReviewsIcon,
     SHStyleKitDrawingSearchIcon,
+    SHStyleKitDrawingStarIcon,
     SHStyleKitDrawingMapBubblePinFilledIcon,
     SHStyleKitDrawingMapBubblePinEmptyIcon,
     SHStyleKitDrawingSpotSideBarIcon,

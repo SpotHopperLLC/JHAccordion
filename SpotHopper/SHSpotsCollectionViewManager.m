@@ -90,7 +90,8 @@
             [self.collectionView setContentOffset:CGPointMake(0, 0)];
             _currentIndex = 0;
             _isUpdatingData = FALSE;
-            [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:_currentIndex]];
+            
+            [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:_currentIndex] position:_currentIndex+1 isSpecials:FALSE];
         }
     }
 }
@@ -336,7 +337,7 @@
 #pragma mark -
 
 - (void)reportedChangedIndex {
-    [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:_currentIndex]];
+    [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:_currentIndex] position:_currentIndex+1 isSpecials:FALSE];
 
     if ([self.delegate respondsToSelector:@selector(spotsCollectionViewManager:didChangeToSpotAtIndex:)]) {
         [self.delegate spotsCollectionViewManager:self didChangeToSpotAtIndex:_currentIndex];

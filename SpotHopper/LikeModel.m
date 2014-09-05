@@ -102,7 +102,7 @@
             [[self sh_sharedCache] cacheLikes:likes];
             
             // only track a successful search
-            [Tracker track:@"Fetch User Likes" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
+            [Tracker track:@"Fetch User Likes" properties:@{ @"Duration" : [NSNumber numberWithFloat:duration] }];
             
             if (successBlock) {
                 successBlock(likes);
@@ -139,24 +139,20 @@
     NSDictionary *params = @{
                              @"daily_special_id" : specialId
                              };
-    NSDate *startDate = [NSDate date];
     NSString *path = [NSString stringWithFormat:@"/api/likes"];
 
     [[ClientSessionManager sharedClient] POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
-        NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:startDate];
-        
         if (operation.isCancelled || operation.response.statusCode == 204) {
-            [Tracker trackUserLikedSpecial:special];
             if (successBlock) {
                 successBlock(nil);
             }
         }
         else if (operation.response.statusCode == 200) {
             // only track a successful search
-            [Tracker track:@"Post Like Special" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
+            [Tracker trackUserLikedSpecial:special];
             
             NSArray *likes = [jsonApi resourcesForKey:@"likes"];
             LikeModel *like = likes.count ? likes[0] : nil;
@@ -194,14 +190,11 @@
 
 + (void)unlikeSpecial:(SpecialModel *)special success:(void(^)(BOOL success))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
     NSDictionary *params = @{};
-    NSDate *startDate = [NSDate date];
     NSString *path = [NSString stringWithFormat:@"/api/daily_specials/%li/likes", (long)[special.ID integerValue]];
     
     [[ClientSessionManager sharedClient] DELETE:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
-        
-        NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:startDate];
         
         [[LikeModel likeForSpecial:special] then:^(LikeModel *like) {
             [self removeLike:like];
@@ -211,7 +204,6 @@
         if (operation.isCancelled || operation.response.statusCode == 204) {
             // only track a successful search
             [Tracker trackUserUnlikedSpecial:special];
-            [Tracker track:@"Delete Like Special" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
 
             if (successBlock) {
                 successBlock(TRUE);

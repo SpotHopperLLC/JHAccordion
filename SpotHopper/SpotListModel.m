@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#define kMinRadiusFloat 0.5f
-#define kMaxRadiusFloat 5.0f
+#define kMinRadiusFloat 0.1f
+#define kMaxRadiusFloat 10.0f
 #define kMaxRadius @kMaxRadiusFloat
 #define kMetersPerMile 1609.344
 
@@ -400,6 +400,7 @@
             [jsonSliders addObject:@{
                                      @"slider_template_id" : slider.sliderTemplate.ID,
                                      @"value" : slider.value,
+                                     @"starred" : [NSNumber numberWithBool:slider.starred]
                                      }];
         }
     }

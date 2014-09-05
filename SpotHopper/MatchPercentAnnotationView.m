@@ -154,7 +154,8 @@
             
             if (self.spot.matchPercent.length) {
                 NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:kFontSize] };
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:self.spot.matchPercent attributes:attributes];
+                NSString *matchPercent = self.spot.matchPercent.length ? self.spot.matchPercent : @"";
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:matchPercent attributes:attributes];
                 self.percentLabel.attributedText = attributedString;
                 self.highlightedPercentLabel.attributedText = attributedString;
             }
