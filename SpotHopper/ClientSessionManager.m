@@ -383,7 +383,7 @@
         contentLength = @"0";
     }
     if (_debug) {
-        NSLog(@"Status Code: %li", response.statusCode);
+        NSLog(@"Status Code: %li", (long)response.statusCode);
         NSLog(@"Content-Length: %@", contentLength);
         NSLog(@"Path: %@", response.URL.path);
     }
