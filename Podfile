@@ -4,7 +4,6 @@ platform :ios, '7.0'
 
 # Networking
 pod 'AFNetworking', '~> 2.0.0'
-# pod 'JSONAPI', '~> 0.2'
 pod 'JSONAPI', :git => 'https://github.com/SpotHopperLLC/jsonapi-ios.git', :tag => 'SpotHopper-v2'
 pod 'BitlyForiOS', :git => 'https://github.com/brennanMKE/BitlyForiOS.git', :tag => '0.0.3'
 
@@ -12,7 +11,7 @@ pod 'BitlyForiOS', :git => 'https://github.com/brennanMKE/BitlyForiOS.git', :tag
 pod 'Promises', :git => 'http://github.com/joshdholtz/ios-promises.git'
 
 # UI
-pod 'JHAccordion', :git => 'https://github.com/brennanMKE/JHAccordion.git', :tag => 'current'
+pod 'JHAccordion', :git => 'https://github.com/SpotHopperLLC/JHAccordion.git', :tag => 'SpotHopper-v2'
 pod 'UIView-Autolayout', '~> 0.2.0'
 pod 'JHAutoCompleteTextField', :git => 'http://github.com/joshdholtz/JHAutoCompleteTextField.git'
 pod 'JHSidebar', :git => 'https://github.com/joshdholtz/JHSidebar.git'

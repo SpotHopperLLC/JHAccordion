@@ -40,7 +40,7 @@
 //- (void)goToDrinkListMenuAtSpot:(SpotModel*)spot;
 //- (void)goToDrinkList:(DrinkListModel*)drinkList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders atSpot:(SpotModel*)spot;
 //- (void)goToFindDrinksAt:(DrinkModel*)drink;
-//- (void)goToDrinkProfile:(DrinkModel*)drink;
+- (void)goToDrinkProfile:(DrinkModel*)drink;
 
 // Reviews
 - (void)goToReviewMenu;
@@ -60,7 +60,7 @@
 // Spots
 //- (void)goToSpotListMenu;
 //- (void)goToSpotList:(SpotListModel*)spotList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders;
-//- (void)goToSpotProfile:(SpotModel *)spot;
+- (void)goToSpotProfile:(SpotModel *)spot;
 
 // Menu
 - (void)goToMenu:(SpotModel*)spot;

@@ -250,13 +250,10 @@
         JSONAPIResource *result = [_results objectAtIndex:indexPath.row];
         if ([result isKindOfClass:[DrinkModel class]] == YES) {
             DrinkModel *drink = (DrinkModel*)result;
-            // TODO: reimplement
-            //[self goToDrinkProfile:drink];
-
+            [self goToDrinkProfile:drink];
         } else if ([result isKindOfClass:[SpotModel class]] == YES) {
             SpotModel *spot = (SpotModel*)result;
-            // TODO: reimplement
-            //[self goToSpotProfile:spot];
+            [self goToSpotProfile:spot];
         }
     } else if (indexPath.section == 3) {
         if (indexPath.row == 0) {

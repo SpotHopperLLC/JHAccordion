@@ -128,6 +128,7 @@
 
 @implementation SHSlidersSearchTableViewManager {
     BOOL _isPreparingForMode;
+    BOOL _isAdjustingTableView;
 }
 
 #pragma mark - Public
@@ -362,10 +363,6 @@
 #pragma mark -
 
 - (IBAction)starButtonTapped:(UIButton *)button {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
-    
-    DebugLog(@"selected: %@", button.selected ? @"Y" : @"N");
-    
     NSIndexPath *indexPath = [self indexPathForView:button inTableView:self.tableView];
     SliderModel *sliderModel = [self sliderModelAtIndexPath:indexPath];
     
@@ -386,10 +383,14 @@
     }
     
     if (slider.userMoved) {
+        NSString *type = [self isSelectingSpotlist] ? @"Spot" : self.drinkTypeName.length ? self.drinkTypeName : @"NULL";
+
         if (!button.selected && count < 3) {
             button.selected = TRUE;
             sliderModel.starred = TRUE;
             count++;
+            
+            [Tracker trackStarredSlider:type sliderName:sliderModel.name];
             
             if (count < 3) {
                 [self showStatusText:@"Starred as more important"];
@@ -405,6 +406,8 @@
             button.selected = FALSE;
             sliderModel.starred = FALSE;
             count--;
+            
+            [Tracker trackUnstarredSlider:type sliderName:sliderModel.name];
             
             [self showStatusText:@"Un-Starred as less important"];
         }
@@ -1084,6 +1087,7 @@
     [self updateSectionTitle:[NSString stringWithFormat:@"Step 1 - %@", spotlist.name] section:indexPath.section];
     
     void (^completeBlock)(BOOL) = ^void (BOOL didSetAdvancedSlider) {
+        _isAdjustingTableView = TRUE;
         [self.accordion closeSection:indexPath.section];
         
         if (self.mode == SHModeSpots) {
@@ -1100,6 +1104,10 @@
         }
         
         [self notifyThatManagerIsFree];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            _isAdjustingTableView = FALSE;
+        });
     };
     
     [self notifyThatManagerIsBusy:@"Pre-setting mood sliders"];
@@ -1116,6 +1124,7 @@
 }
 
 - (void)userDidSelectBaseAlcoholAtIndexPath:(NSIndexPath *)indexPath {
+    _isAdjustingTableView = TRUE;
     BaseAlcoholModel *baseAlcohol = [self baseAlcoholAtIndexPath:indexPath];
     
     [self updateSectionTitle:[NSString stringWithFormat:@"Step 1 - %@", baseAlcohol.name] section:indexPath.section];
@@ -1129,6 +1138,10 @@
         self.baseAlcoholName = baseAlcohol.name;
         self.selectedBaseAlcohol = baseAlcohol;
     }
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        _isAdjustingTableView = FALSE;
+    });
 }
 
 - (void)userDidSelectDrinkSubTypeAtIndexPath:(NSIndexPath *)indexPath {
@@ -1151,8 +1164,13 @@
         NSAssert(self.selectedDrinkType.ID, @"ID must be defined");
         NSAssert(!self.selectedDrinkSubType || self.selectedDrinkSubType.ID, @"ID must be defined is the model instance is defined");
         
+        _isAdjustingTableView = TRUE;
         [self prepareTableViewForDrinkType:self.selectedDrinkType andDrinkSubType:self.selectedDrinkSubType withCompletionBlock:nil];
         [self notifyThatManagerIsFree];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            _isAdjustingTableView = FALSE;
+        });
     });
 }
 
@@ -1168,6 +1186,7 @@
     }
     
     void (^completeBlock)(BOOL) = ^void (BOOL didSetAdvancedSlider) {
+        _isAdjustingTableView = TRUE;
         [self.accordion closeSection:indexPath.section];
         
         if (self.mode == SHModeBeer) {
@@ -1205,6 +1224,10 @@
         }
         
         [self notifyThatManagerIsFree];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            _isAdjustingTableView = FALSE;
+        });
     };
     
     [self notifyThatManagerIsBusy:@"Pre-setting flavor sliders"];
@@ -1918,7 +1941,9 @@
 }
 
 - (void)accordion:(JHAccordion*)accordion contentSizeChanged:(CGSize)contentSize {
-    [accordion slideUpLastOpenedSection];
+    if (!_isAdjustingTableView) {
+        [accordion slideUpLastOpenedSection];
+    }
 }
 
 - (void)accordion:(JHAccordion*)accordion openingSection:(NSInteger)section {

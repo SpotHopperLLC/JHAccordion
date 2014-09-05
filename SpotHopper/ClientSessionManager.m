@@ -378,20 +378,23 @@
             break;
     }
     
-    if (response.allHeaderFields[@"Content-Length"] != nil) {
-        NSString *contentLength = response.allHeaderFields[@"Content-Length"];
-        if (_debug) {
-            NSLog(@"Content-Length: %@", contentLength);
-            NSLog(@"Path: %@", response.URL.path);
-        }
-        
-        [Tracker track:@"API Content Length" properties:@{
-                                                          @"Content-Length" : [NSNumber numberWithInteger:[contentLength integerValue]],
-                                                          @"Path" : response.URL.path.length ? response.URL.path : @"Unknown",
-                                                          @"Duration" : [NSNumber numberWithFloat:duration] ? : @0,
-                                                          @"Network" : network
-                                                          }];
+    NSString *contentLength = response.allHeaderFields[@"Content-Length"];
+    if (!contentLength.length) {
+        contentLength = @"0";
     }
+    if (_debug) {
+        NSLog(@"Status Code: %li", response.statusCode);
+        NSLog(@"Content-Length: %@", contentLength);
+        NSLog(@"Path: %@", response.URL.path);
+    }
+    
+    [Tracker track:@"API Response" properties:@{
+                                                @"Status Code" : [NSNumber numberWithInteger:response.statusCode],
+                                                @"Path" : response.URL.path.length ? response.URL.path : @"Unknown",
+                                                @"Duration" : [NSNumber numberWithFloat:duration] ? : @0,
+                                                @"Content Length" : [NSNumber numberWithInteger:[contentLength integerValue]],
+                                                @"Network" : network
+                                                }];
 }
 
 #pragma mark - Session Helpers

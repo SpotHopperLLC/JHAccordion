@@ -296,7 +296,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="4Hi-en-bRr" userLabel="Left Label" customClass="SHLabelLatoLight">
-                                                    <rect key="frame" x="10" y="8" width="42" height="21"/>
+                                                    <rect key="frame" x="54" y="8" width="42" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -312,7 +312,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <slider opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="cRP-Wt-nB2" userLabel="Custom Slider" customClass="SHSlider">
-                                                    <rect key="frame" x="8" y="28" width="260" height="31"/>
+                                                    <rect key="frame" x="52" y="28" width="216" height="31"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="b42-Mj-MDL" id="j9R-wW-uhK"/>
@@ -348,7 +348,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="RSn-Nc-RyQ" secondAttribute="bottom" id="Cfm-F1-nWc"/>
                                                 <constraint firstItem="zjA-4d-Oaj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4Hi-en-bRr" secondAttribute="trailing" constant="8" id="D8H-W3-Tqh"/>
                                                 <constraint firstItem="YZ1-nI-Akf" firstAttribute="top" secondItem="uWa-nO-xSc" secondAttribute="top" constant="8" id="GxY-Zb-6Ak"/>
-                                                <constraint firstItem="cRP-Wt-nB2" firstAttribute="leading" secondItem="uWa-nO-xSc" secondAttribute="leading" constant="10" id="IQh-b5-qPu"/>
+                                                <constraint firstItem="cRP-Wt-nB2" firstAttribute="leading" secondItem="uWa-nO-xSc" secondAttribute="leading" constant="54" id="IQh-b5-qPu"/>
                                                 <constraint firstItem="zjA-4d-Oaj" firstAttribute="trailing" secondItem="cRP-Wt-nB2" secondAttribute="trailing" id="NC8-pk-haW"/>
                                                 <constraint firstAttribute="trailing" secondItem="RSn-Nc-RyQ" secondAttribute="trailing" constant="10" id="T34-tV-8YP"/>
                                                 <constraint firstAttribute="trailing" secondItem="cRP-Wt-nB2" secondAttribute="trailing" constant="54" id="YJ7-3j-lHo"/>

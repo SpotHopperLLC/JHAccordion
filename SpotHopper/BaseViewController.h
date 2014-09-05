@@ -14,6 +14,7 @@
 #import <UIKit/UIKit.h>
 
 #import "FooterViewController.h"
+#import "ShareViewController.h"
 
 #import "MBProgressHUD.h"
 
@@ -90,6 +91,8 @@
 - (FooterViewController*)footerViewController;
 
 - (void)slideCell:(UITableViewCell *)cell aboveTableViewMidwayPoint:(UITableView *)tableView;
+
+- (void)showShareViewControllerWithSpot:(SpotModel *)spot shareType:(ShareViewControllerShareType)shareType;
 
 // URL Scheme Support
 - (void)handleOpenedURL:(NSURL *)openedURL;

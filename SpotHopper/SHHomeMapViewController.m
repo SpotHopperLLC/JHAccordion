@@ -25,7 +25,6 @@
 #import "SHDrinkProfileViewController.h"
 #import "SHLocationPickerViewController.h"
 #import "SHGlobalSearchViewController.h"
-//#import "SearchViewController.h"
 #import "ShareViewController.h"
 
 #import "ClientSessionManager.h"
@@ -84,7 +83,7 @@
 
 #define kTagSearchTextField 501
 
-#define kMeterToMile 0.000621371f
+#define kMetersPerMile 1609.344
 #define kDebugAnnotationViewPositions NO
 
 #define kCollectionContainerViewHeight 200.0f
@@ -321,6 +320,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [self repositionOnCurrentDeviceLocation:TRUE];
         });
+    }
+    else if ([self searchRadius] > kMetersPerMile * 100) {
+        // 100 miles
+        [self repositionOnCurrentDeviceLocation:TRUE];
     }
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
@@ -1509,6 +1512,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     spotlist.spots = @[spot];
     self.spotListModel = spotlist;
     
+    [self removeSearchAreaCircle];
     [self.mapOverlayCollectionViewController displaySingleSpot:spot];
     [self populateMapWithSpots:@[spot]];
     
@@ -1545,6 +1549,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     drinklist.drinks = @[drink];
     self.drinkListModel = drinklist;
     
+    [self removeSearchAreaCircle];
     [self.mapOverlayCollectionViewController displaySingleDrink:drink];
     
     DrinkListRequest *request = [[DrinkListRequest alloc] init];
@@ -1671,8 +1676,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)fetchSpecialsWithCompletionBlock:(void (^)())completionBlock {
     [self hideBottomViewWithCompletionBlock:^{
-        [SpotModel fetchSpotsWithSpecialsTodayForCoordinate:[self visibleMapCenterCoordinate] success:^(NSArray *spots) {
-            [self processSpecialsWithSpots:spots];
+        [SpotModel fetchSpecialsSpotlistForCoordinate:[self visibleMapCenterCoordinate] radius:[self searchRadius] success:^(SpotListModel *spotlist) {
+            [self processSpecialsSpotlist:spotlist];
             
             if (completionBlock) {
                 completionBlock();
@@ -1778,14 +1783,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         }
     }
     
-    if (spots.count > 1) {
-        [self repositionMapOnAnnotations:self.mapView.annotations animated:TRUE];
-    }
-    else if (spots.count == 1) {
-        SpotModel *spot = spots[0];
-        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(spot.latitude.floatValue, spot.longitude.floatValue);
-        [self repositionMapOnCoordinate:coordinate animated:TRUE];
-    }
+//    if (spots.count > 1) {
+//        [self repositionMapOnAnnotations:self.mapView.annotations animated:TRUE];
+//    }
+//    else if (spots.count == 1) {
+//        SpotModel *spot = spots[0];
+//        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(spot.latitude.floatValue, spot.longitude.floatValue);
+//        [self repositionMapOnCoordinate:coordinate animated:TRUE];
+//    }
     
     if (spots.count) {
         if (self.selectedSpot && [spots containsObject:self.selectedSpot]) {
@@ -1946,6 +1951,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)repositionMapOnAnnotations:(NSArray *)annotations animated:(BOOL)animated {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
     self.repositioningMap = TRUE;
     
     if (!self.searchThisAreaView.hidden) {
@@ -2223,8 +2230,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)searchAgainWithCompletionBlock:(void (^)())completionBlock {
-    //[self flashSearchRadius];
-    
     if (self.mode == SHModeSpecials) {
         [self fetchSpecialsWithCompletionBlock:completionBlock];
     }
@@ -2333,16 +2338,20 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }];
 }
 
-- (void)flashSearchRadius {
-    CLLocationCoordinate2D center = [self visibleMapCenterCoordinate];
-    CGFloat radius = [self searchRadius];
-    
-    MKCircle *circleOverlay = [MKCircle circleWithCenterCoordinate:center radius:radius];
-    [self.mapView addOverlay:circleOverlay];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        [self.mapView removeOverlay:circleOverlay];
-    });
+- (void)addSearchAreaCircleWithCoordinate:(CLLocationCoordinate2D)coordinate radius:(CLLocationDistance)radius {
+//    if (radius > 0) {
+//        MKCircle *circleOverlay = [MKCircle circleWithCenterCoordinate:coordinate radius:radius];
+//        [self.mapView addOverlay:circleOverlay];
+//    }
+}
+
+- (void)removeSearchAreaCircle {
+    // remove just circle overlays
+//    for (id <MKOverlay> overlay in self.mapView.overlays) {
+//        if ([overlay isKindOfClass:[MKCircle class]]) {
+//            [self.mapView removeOverlay:overlay];
+//        }
+//    }
 }
 
 - (void)flashMapBoxing {
@@ -2415,7 +2424,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)shareSpecialForSpot:(SpotModel *)spot {
     // TODO: replace with new sharing option
-    //[self showShareViewControllerWithSpot:spot shareType:ShareViewControllerShareSpecial];
+    [self showShareViewControllerWithSpot:spot shareType:ShareViewControllerShareSpecial];
 }
 
 - (void)addShadowToView:(UIView *)view {
@@ -2746,10 +2755,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark - Processing Search Results
 #pragma mark -
 
-- (void)processSpecialsWithSpots:(NSArray *)spotModels {
-    [Tracker trackDrinkSpecials:spotModels];
+- (void)processSpecialsSpotlist:(SpotListModel *)spotlist {
+    [Tracker trackDrinkSpecials:spotlist];
 
-    if (!spotModels.count) {
+    if (!spotlist.spots.count) {
         [Tracker trackNoSpecialsResults];
         [Tracker trackUserNoSpecialsResults];
         
@@ -2762,7 +2771,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self descope];
         [self resetSearch];
         self.mode = SHModeSpecials;
-        self.specialsSpotModels = spotModels;
+        self.specialsSpotModels = spotlist.spots;
         
         if (self.specialsSpotModels.count >= 5) {
             SpotModel *spot = self.specialsSpotModels[0];
@@ -2771,7 +2780,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             [Tracker trackUserGoodSpecialsResults];
         }
         
-        [self displaySpecialsForSpots:spotModels];
+        [self removeSearchAreaCircle];
+        if (spotlist.latitude && spotlist.longitude && spotlist.radius) {
+            CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(spotlist.latitude.floatValue, spotlist.longitude.floatValue);
+            CLLocationDistance radius = spotlist.radius.floatValue * kMetersPerMile;
+            [self addSearchAreaCircleWithCoordinate:coordinate radius:radius];
+        }
+        
+        [self displaySpecialsForSpots:spotlist.spots];
     }
 }
 
@@ -2803,6 +2819,12 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         }
 
         [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
+            [self removeSearchAreaCircle];
+            if (self.spotListModel.latitude && self.spotListModel.longitude && self.spotListModel.radius) {
+                CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(self.spotListModel.latitude.floatValue, self.spotListModel.longitude.floatValue);
+                CLLocationDistance radius = self.spotListModel.radius.floatValue * kMetersPerMile;
+                [self addSearchAreaCircleWithCoordinate:coordinate radius:radius];
+            }
             [self displaySpotlist:spotlistModel];
         }];
     }
@@ -2865,6 +2887,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         }
         
         [self hideSlidersSearch:TRUE forMode:mode withCompletionBlock:^{
+            [self removeSearchAreaCircle];
+            if (self.drinkListModel.latitude && self.drinkListModel.longitude && self.drinkListModel.radius) {
+                CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(self.drinkListModel.latitude.floatValue, self.drinkListModel.longitude.floatValue);
+                CLLocationDistance radius = self.drinkListModel.radius.floatValue * kMetersPerMile;
+                [self addSearchAreaCircleWithCoordinate:coordinate radius:radius];
+            }
+            
             [self displayDrinklist:drinklistModel forMode:mode];
         }];
     }
@@ -3396,8 +3425,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     if ([overlay isKindOfClass:[MKCircle class]]) {
         MKCircleRenderer *circleView = [[MKCircleRenderer alloc] initWithCircle:overlay];
         
-        circleView.strokeColor = [[SHStyleKit color:SHStyleKitColorMyWhiteColor] colorWithAlphaComponent:0.1f];
+        circleView.strokeColor = [[SHStyleKit color:SHStyleKitColorMyTintColor] colorWithAlphaComponent:0.35f];
         circleView.fillColor = [[SHStyleKit color:SHStyleKitColorMyWhiteColor] colorWithAlphaComponent:0.25f];
+//        circleView.fillColor = [[SHStyleKit color:SHStyleKitColorMyTintColor] colorWithAlphaComponent:0.75f];
         circleView.lineWidth = 1.0f;
         circleView.alpha = 1.0f;
         
@@ -3448,9 +3478,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     if (self.repositioningMap) {
         return;
     }
-    
-    //[self flashSearchRadius];
-    //[self flashMapBoxing];
     
     CLLocation *mapCenterLocation = [[CLLocation alloc] initWithLatitude:self.mapView.centerCoordinate.latitude longitude:self.mapView.centerCoordinate.longitude];
     [TellMeMyLocation setMapCenterLocation:mapCenterLocation];

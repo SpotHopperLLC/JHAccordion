@@ -62,7 +62,7 @@ DEPENDENCIES:
   - BitlyForiOS (from `https://github.com/brennanMKE/BitlyForiOS.git`, tag `0.0.3`)
   - BlocksKit (~> 2.2.0)
   - Facebook-iOS-SDK (~> 3.0)
-  - JHAccordion (from `https://github.com/brennanMKE/JHAccordion.git`, tag `current`)
+  - JHAccordion (from `https://github.com/SpotHopperLLC/JHAccordion.git`, tag `SpotHopper-v2`)
   - JHAutoCompleteTextField (from `http://github.com/joshdholtz/JHAutoCompleteTextField.git`)
   - JHSidebar (from `https://github.com/joshdholtz/JHSidebar.git`)
   - JSONAPI (from `https://github.com/SpotHopperLLC/jsonapi-ios.git`, tag `SpotHopper-v2`)
@@ -85,8 +85,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/brennanMKE/BitlyForiOS.git
     :tag: 0.0.3
   JHAccordion:
-    :git: https://github.com/brennanMKE/JHAccordion.git
-    :tag: current
+    :git: https://github.com/SpotHopperLLC/JHAccordion.git
+    :tag: SpotHopper-v2
   JHAutoCompleteTextField:
     :git: http://github.com/joshdholtz/JHAutoCompleteTextField.git
   JHSidebar:

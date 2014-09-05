@@ -73,4 +73,11 @@
 
 + (void)trackUserUnlikedSpecial:(SpecialModel *)special;
 
+#pragma mark - Starred Sliders
+#pragma mark -
+
++ (void)trackStarredSlider:(NSString *)type sliderName:(NSString *)sliderName;
+
++ (void)trackUnstarredSlider:(NSString *)type sliderName:(NSString *)sliderName;
+
 @end

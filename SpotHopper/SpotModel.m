@@ -19,10 +19,12 @@
 #import "SpecialModel.h"
 #import "LikeModel.h"
 #import "UserModel.h"
+#import "SpotListModel.h"
 
 #import "Tracker.h"
 
 #define kPageSize @25
+#define kMetersPerMile 1609.344
 
 @interface SpotModelCache : NSCache
 
@@ -146,7 +148,7 @@
     NSInteger dayOfWeek = [comps weekday] - 1;
     
     // TODO: add radius
-    CGFloat miles = 500.0f;
+    CGFloat miles = 1.0f;
     
     /*
      * Searches spots for specials
@@ -311,7 +313,7 @@
 
 #pragma mark - Revised Code for 2.0
 
-+ (void)fetchSpotsWithSpecialsTodayForCoordinate:(CLLocationCoordinate2D)coordinate success:(void(^)(NSArray *spots))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
++ (void)fetchSpecialsSpotlistForCoordinate:(CLLocationCoordinate2D)coordinate radius:(CLLocationDistance)radius success:(void(^)(SpotListModel *spotlist))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
     
     // adjust time back 4 hours to help handle the midnight boundary
     NSTimeInterval fourHoursAgo = 60 * 60 * 4 * -1;
@@ -328,6 +330,8 @@
     components = [calendar components:units fromDate:[NSDate date]];
     NSString *cutOffTime = [NSString stringWithFormat:@"%02li:%02li", (long)components.hour, (long)components.minute];
     
+    CGFloat miles = radius / kMetersPerMile;
+    
     /*
      * Searches spots for specials
      */
@@ -339,6 +343,7 @@
                              kSpotModelParamQueryDayOfWeek : [NSNumber numberWithInteger:weekday],
                              kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:coordinate.latitude],
                              kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:coordinate.longitude],
+                             kSpotModelParamQueryRadius : [NSNumber numberWithFloat:miles],
                              @"cut_off_time" : cutOffTime
                              };
     
@@ -375,8 +380,20 @@
                     return [count2 compare:count1];
                 }];
                 
+                // extract values from meta
+                CGFloat latitude = [jsonApi.meta[@"lat"] floatValue];
+                CGFloat longitude = [jsonApi.meta[@"lng"] floatValue];
+                CGFloat radius = [jsonApi.meta[@"radius"] floatValue];
+                
+                SpotListModel *spotlist = [[SpotListModel alloc] init];
+                spotlist.name = @"Specials";
+                spotlist.spots = sortedSpots;
+                spotlist.latitude = [NSNumber numberWithFloat:latitude];
+                spotlist.longitude = [NSNumber numberWithFloat:longitude];
+                spotlist.radius = [NSNumber numberWithFloat:radius];
+                
                 if (successBlock) {
-                    successBlock(sortedSpots);
+                    successBlock(spotlist);
                 }
             };
 
@@ -393,12 +410,12 @@
     }];
 }
 
-+ (Promise *)fetchSpotsWithSpecialsTodayForCoordinate:(CLLocationCoordinate2D)coordinate {
++ (Promise *)fetchSpecialsSpotlistForCoordinate:(CLLocationCoordinate2D)coordinate radius:(CLLocationDistance)radius {
     Deferred *deferred = [Deferred deferred];
     
-    [self fetchSpotsWithSpecialsTodayForCoordinate:coordinate success:^(NSArray *spots) {
+    [self fetchSpecialsSpotlistForCoordinate:coordinate radius:radius success:^(SpotListModel *spotlist) {
         // Resolves promise
-        [deferred resolveWith:spots];
+        [deferred resolveWith:spotlist];
     } failure:^(ErrorModel *errorModel) {
         // Rejects promise
         [deferred rejectWith:errorModel];

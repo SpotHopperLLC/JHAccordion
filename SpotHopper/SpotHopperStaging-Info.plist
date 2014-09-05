@@ -19,7 +19,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.1.1</string>
+	<string>2.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -35,40 +35,40 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2.1.1</string>
+	<string>2.2</string>
+	<key>FacebookAppID</key>
+	<string>580342112079086</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
 	<key>SpotHopperSettings</key>
 	<dict>
-		<key>Debug</key>
-		<false/>
+		<key>AppURLScheme</key>
+		<string>spothopperappstaging</string>
+		<key>BaseUrl</key>
+		<string>http://spothopper-staging.herokuapp.com</string>
 		<key>BitlyAPIKey</key>
 		<string>R_11cbfeb881bd416fa9328fc8d239f0f8</string>
 		<key>BitlyShortURL</key>
 		<string>http://go.spotapps.co</string>
 		<key>BitlyUsername</key>
 		<string>spothopper</string>
+		<key>Debug</key>
+		<false/>
 		<key>MixpanelToken</key>
 		<string>3ac20701be2cc0a75809e4b6f7886039</string>
+		<key>ParseApplicationID</key>
+		<string>e7ynWt1Awl8MRH1PNtLqouvZTboLSv1CajoEzdOA</string>
+		<key>ParseClientKey</key>
+		<string>u19chmbzr47a3Sx8GVGZrvZslV4ZJczPFSR3Gkt9</string>
 		<key>TrackingEnabled</key>
 		<true/>
 		<key>TwitterConsumerKey</key>
 		<string>enlXFrFlBlOPkaBoOJunQ</string>
 		<key>TwitterConsumerSecret</key>
 		<string>UHRcQ8WXs13Iug7VpliivDxwQuGtoMg5KsaoIF3jWbM</string>
-		<key>AppURLScheme</key>
-		<string>spothopperappstaging</string>
-		<key>BaseUrl</key>
-		<string>http://spothopper-staging.herokuapp.com</string>
 		<key>WebsiteUrl</key>
 		<string>http://spothopper-staging.herokuapp.com</string>
-		<key>ParseApplicationID</key>
-		<string>e7ynWt1Awl8MRH1PNtLqouvZTboLSv1CajoEzdOA</string>
-		<key>ParseClientKey</key>
-		<string>u19chmbzr47a3Sx8GVGZrvZslV4ZJczPFSR3Gkt9</string>
 	</dict>
-	<key>FacebookAppID</key>
-	<string>580342112079086</string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Lato-Light.ttf</string>

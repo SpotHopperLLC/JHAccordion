@@ -10,6 +10,7 @@
 
 #import "SpotModel.h"
 #import "DrinkModel.h"
+#import "DrinkTypeModel.h"
 #import "SpotListModel.h"
 #import "DrinkListModel.h"
 #import "SpotListRequest.h"
@@ -277,9 +278,9 @@
     [self trackLocationPropertiesForEvent:@"User sets new location" properties:@{}];
 }
 
-+ (void)trackDrinkSpecials:(NSArray *)spots {
++ (void)trackDrinkSpecials:(SpotListModel *)spotlists {
     NSMutableDictionary *properties = @{
-                                        @"Spots count" : [NSNumber numberWithInteger:spots.count]
+                                        @"Spots count" : [NSNumber numberWithInteger:spotlists.spots.count]
                                         }.mutableCopy;
     
     [self trackLocationPropertiesForEvent:@"Drink specials fetched" properties:properties];
@@ -433,12 +434,21 @@
 #pragma mark - List View
 #pragma mark -
 
-+ (void)trackListViewDidDisplaySpot:(SpotModel *)spot {
-    [self track:@"List View Displayed Spot" properties:@{ @"Name" : spot.name.length ? spot.name : @"NULL" }];
++ (void)trackListViewDidDisplaySpot:(SpotModel *)spot  position:(NSUInteger)position isSpecials:(BOOL)isSpecials {
+    [self trackLocationPropertiesForEvent:@"List View Displayed Spot" properties:@{
+                                                                                   @"Name" : spot.name.length ? spot.name : @"NULL",
+                                                                                   @"Position" : [NSNumber numberWithInteger:position],
+                                                                                   @"Is Specials" : [NSNumber numberWithBool:isSpecials] }];
 }
 
-+ (void)trackListViewDidDisplayDrink:(DrinkModel *)drink {
-    [self track:@"List View Displayed Drink" properties:@{ @"Name" : drink.name.length ? drink.name : @"NULL" }];
++ (void)trackListViewDidDisplayDrink:(DrinkModel *)drink  position:(NSUInteger)position {
+    
+    
+    
+    [self trackLocationPropertiesForEvent:@"List View Displayed Drink" properties:@{
+                                                                                    @"Name" : drink.name.length ? drink.name : @"NULL",
+                                                                                    @"Type" : drink.drinkType.name.length ? drink.drinkType.name : @"NULL",
+                                                                                    @"Position" : [NSNumber numberWithInteger:position] }];
 }
 
 #pragma mark - Location

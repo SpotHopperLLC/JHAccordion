@@ -87,7 +87,7 @@
 
 + (void)trackUserSetNewLocation;
 
-+ (void)trackDrinkSpecials:(NSArray *)spots;
++ (void)trackDrinkSpecials:(SpotListModel *)spotlist;
 
 + (void)trackSpotlist:(SpotListModel *)spotlist request:(SpotListRequest *)request;
 
@@ -153,9 +153,9 @@
 #pragma mark - List View
 #pragma mark -
 
-+ (void)trackListViewDidDisplaySpot:(SpotModel *)spot;
++ (void)trackListViewDidDisplaySpot:(SpotModel *)spot  position:(NSUInteger)position isSpecials:(BOOL)isSpecials;
 
-+ (void)trackListViewDidDisplayDrink:(DrinkModel *)drink;
++ (void)trackListViewDidDisplayDrink:(DrinkModel *)drink position:(NSUInteger)position;
 
 #pragma mark - Location
 #pragma mark -

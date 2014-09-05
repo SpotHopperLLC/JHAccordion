@@ -46,20 +46,12 @@
 #pragma mark -
 
 - (NSDictionary *)mapKeysToProperties {
-    // Maps values in JSON key 'name' to 'name' property
-    // Maps values in JSON key 'featured' to 'featured' property
-    // Maps values in JSON key 'latitude' to 'latitude' property
-    // Maps values in JSON key 'longitude' to 'longitude' property
-    // Maps linked resource in JSON key 'drinks' to 'drinks' property
-    // Maps linked resource in JSON key 'spot' to 'spot' property
-    // Maps linked resource in JSON key 'sliders' to 'sliders' property
-    // Maps linked resource in JSON key 'drink_type' to 'drinkType' property
-    // Maps linked resource in JSON key 'drink_subtype' to 'drinkSubtype' property
     return @{
              @"name" : @"name",
              @"featured" : @"featured",
              @"latitude" : @"latitude",
              @"longitude" : @"longitude",
+             @"radius" : @"radius",
              @"links.drinks" : @"drinks",
              @"links.spot" : @"spot",
              @"links.sliders" : @"sliders",
