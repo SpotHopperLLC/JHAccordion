@@ -49,11 +49,11 @@
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="220" id="OKI-g8-rFX"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="0.80000000000000004" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="0.90000000000000002" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="1" alpha="0.75" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="v4X-PM-32V" firstAttribute="leading" secondItem="65M-In-Igo" secondAttribute="leading" constant="8" id="5Pr-yL-tA7"/>
                                     <constraint firstAttribute="bottom" secondItem="v4X-PM-32V" secondAttribute="bottom" constant="8" id="CqT-dX-fIC"/>
@@ -242,7 +242,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Au2-eX-c6N" userLabel="Delete Button">
-                                                    <rect key="frame" x="260" y="2" width="40" height="40"/>
+                                                    <rect key="frame" x="264" y="2" width="40" height="40"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="CbI-LN-4Fb"/>
@@ -258,7 +258,7 @@
                                                 <constraint firstItem="HS5-ij-VMr" firstAttribute="centerY" secondItem="Au2-eX-c6N" secondAttribute="centerY" id="7Bg-D5-1rb"/>
                                                 <constraint firstItem="HS5-ij-VMr" firstAttribute="leading" secondItem="lSZ-XW-qAU" secondAttribute="leading" constant="20" symbolic="YES" id="ldp-B0-UDV"/>
                                                 <constraint firstItem="HS5-ij-VMr" firstAttribute="top" secondItem="lSZ-XW-qAU" secondAttribute="top" constant="11" id="qZh-b7-uak"/>
-                                                <constraint firstAttribute="trailing" secondItem="Au2-eX-c6N" secondAttribute="trailing" constant="20" id="wRl-gm-sx7"/>
+                                                <constraint firstAttribute="trailing" secondItem="Au2-eX-c6N" secondAttribute="trailing" constant="16" id="wRl-gm-sx7"/>
                                                 <constraint firstItem="Au2-eX-c6N" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HS5-ij-VMr" secondAttribute="trailing" constant="8" symbolic="YES" id="zFw-5J-be0"/>
                                             </constraints>
                                         </tableViewCellContentView>

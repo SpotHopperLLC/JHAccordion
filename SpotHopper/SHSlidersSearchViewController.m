@@ -246,7 +246,7 @@
     return kCLLocationCoordinate2DInvalid;
 }
 
-- (CGFloat)searchRadius {
+- (CLLocationDistance)searchRadius {
     if ([self.delegate respondsToSelector:@selector(searchRadiusForSlidersSearchViewController:)]) {
         CLLocationDistance meters = [self.delegate searchRadiusForSlidersSearchViewController:self];
         return meters;

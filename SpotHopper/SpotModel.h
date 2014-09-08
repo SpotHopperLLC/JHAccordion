@@ -67,6 +67,8 @@
 
 @property (nonatomic, strong) MenuModel *menu;
 
+@property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
+
 - (NSString *)addressCityState;
 - (NSString *)fullAddress;
 - (NSString *)cityState;

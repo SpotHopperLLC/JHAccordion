@@ -259,6 +259,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     self.view.backgroundColor = [UIColor clearColor];
     
+    self.statusView.layer.cornerRadius = 15.f;
+    self.statusView.clipsToBounds = TRUE;
+    
     _actionButtonTapCount = 0;
 
     [self hideStatus:FALSE withCompletionBlock:nil];
@@ -1511,6 +1514,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     spotlist.name = spot.name;
     spotlist.spots = @[spot];
     self.spotListModel = spotlist;
+
+    [self repositionMapOnCoordinate:spot.coordinate animated:TRUE withCompletionBlock:^{
+        
+    }];
     
     [self removeSearchAreaCircle];
     [self.mapOverlayCollectionViewController displaySingleSpot:spot];
@@ -1675,6 +1682,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)fetchSpecialsWithCompletionBlock:(void (^)())completionBlock {
+    [self addSearchAreaCircleWithCoordinate:self.mapView.centerCoordinate radius:[self searchRadius]];
+    
     [self hideBottomViewWithCompletionBlock:^{
         [SpotModel fetchSpecialsSpotlistForCoordinate:[self visibleMapCenterCoordinate] radius:[self searchRadius] success:^(SpotListModel *spotlist) {
             [self processSpecialsSpotlist:spotlist];
@@ -1783,14 +1792,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         }
     }
     
-//    if (spots.count > 1) {
-//        [self repositionMapOnAnnotations:self.mapView.annotations animated:TRUE];
-//    }
-//    else if (spots.count == 1) {
-//        SpotModel *spot = spots[0];
-//        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(spot.latitude.floatValue, spot.longitude.floatValue);
-//        [self repositionMapOnCoordinate:coordinate animated:TRUE];
-//    }
+    if (spots.count > 1) {
+        [self repositionMapOnAnnotations:self.mapView.annotations animated:TRUE];
+    }
+    else if (spots.count == 1) {
+        SpotModel *spot = spots[0];
+        [self repositionMapOnCoordinate:spot.coordinate animated:TRUE];
+    }
     
     if (spots.count) {
         if (self.selectedSpot && [spots containsObject:self.selectedSpot]) {
@@ -1821,6 +1829,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                 [self.mapView selectAnnotation:annotation animated:TRUE];
             }
         }
+    }
+
+    if (self.mode == SHModeBeer || self.mode == SHModeCocktail || self.mode == SHModeWine) {
+        [self repositionMapOnCoordinate:spot.coordinate forced:TRUE animated:TRUE withCompletionBlock:nil];
     }
 }
 
@@ -1896,6 +1908,29 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)repositionMapOnCoordinate:(CLLocationCoordinate2D)coordinate animated:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    [self repositionMapOnCoordinate:coordinate forced:FALSE animated:animated withCompletionBlock:completionBlock];
+}
+
+- (void)repositionMapOnCoordinate:(CLLocationCoordinate2D)coordinate forced:(BOOL)forced animated:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    // if all annotations are in the happy region then repositioning is not necessary
+    
+    if (!forced) {
+        CLLocationDistance radius = [self searchRadius];
+        if (radius < kMetersPerMile * 60) {
+            CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:self.mapView.centerCoordinate.latitude longitude:self.mapView.centerCoordinate.longitude];
+            
+            CLLocation *annotationLocation  = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
+            CLLocationDistance distance = [centerLocation distanceFromLocation:annotationLocation];
+            
+            if (distance < radius) {
+                if (completionBlock) {
+                    completionBlock();
+                }
+                return;
+            }
+        }
+    }
+    
     if (!CLLocationCoordinate2DIsValid(coordinate)) {
         _isValidLocation = FALSE;
         self.repositioningMap = TRUE;
@@ -1936,7 +1971,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
         [UIView animateWithDuration:0.4f delay:0.0f options:options animations:^{
             if (widthPadding > kMapPadding/2 || heightPadding > kMapPadding/2) {
-                [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(self.topEdgePadding, 45.0f, self.bottomEdgePadding, 45.0f) animated:animated];
+                [self.mapView setVisibleMapRect:mapRect edgePadding:UIEdgeInsetsMake(self.topEdgePadding, 15.0f, self.bottomEdgePadding, 15.0f) animated:animated];
             }
             else {
                 [self.mapView setCenterCoordinate:coordinate animated:TRUE];
@@ -1952,6 +1987,27 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)repositionMapOnAnnotations:(NSArray *)annotations animated:(BOOL)animated {
     DebugLog(@"%@", NSStringFromSelector(_cmd));
+
+    // if all annotations are in the happy region then repositioning is not necessary
+    CLLocationDistance radius = [self searchRadius];
+    if (radius < kMetersPerMile * 60) {
+        BOOL needsToReposition = FALSE;
+        CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:self.mapView.centerCoordinate.latitude longitude:self.mapView.centerCoordinate.longitude];
+        
+        for (id <MKAnnotation> annotation in annotations) {
+            CLLocation *annotationLocation  = [[CLLocation alloc] initWithLatitude:annotation.coordinate.latitude longitude:annotation.coordinate.longitude];
+            CLLocationDistance distance = [centerLocation distanceFromLocation:annotationLocation];
+
+            if (distance > radius) {
+                needsToReposition = TRUE;
+                break;
+            }
+        }
+        
+        if (!needsToReposition) {
+            return;
+        }
+    }
     
     self.repositioningMap = TRUE;
     
