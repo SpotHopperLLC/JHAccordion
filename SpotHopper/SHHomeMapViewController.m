@@ -1917,7 +1917,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     if (!forced) {
         CLLocationDistance radius = [self searchRadius];
         if (radius < kMetersPerMile * 60) {
-            CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:self.mapView.centerCoordinate.latitude longitude:self.mapView.centerCoordinate.longitude];
+            CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:self.visibleMapCenterCoordinate.latitude longitude:self.visibleMapCenterCoordinate.longitude];
             
             CLLocation *annotationLocation  = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
             CLLocationDistance distance = [centerLocation distanceFromLocation:annotationLocation];
@@ -1986,13 +1986,11 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)repositionMapOnAnnotations:(NSArray *)annotations animated:(BOOL)animated {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
-
     // if all annotations are in the happy region then repositioning is not necessary
     CLLocationDistance radius = [self searchRadius];
     if (radius < kMetersPerMile * 60) {
         BOOL needsToReposition = FALSE;
-        CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:self.mapView.centerCoordinate.latitude longitude:self.mapView.centerCoordinate.longitude];
+        CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:self.visibleMapCenterCoordinate.latitude longitude:self.visibleMapCenterCoordinate.longitude];
         
         for (id <MKAnnotation> annotation in annotations) {
             CLLocation *annotationLocation  = [[CLLocation alloc] initWithLatitude:annotation.coordinate.latitude longitude:annotation.coordinate.longitude];
