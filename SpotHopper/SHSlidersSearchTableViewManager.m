@@ -46,7 +46,8 @@
 #define kSliderCellLeftLabel 1
 #define kSliderCellRightLabel 2
 #define kSliderCellSlider 3
-#define kSliderCellDividerView 4
+#define kSliderCellStarButton 4
+#define kSliderCellDividerView 5
 
 #define kSectionSpotType 0
 #define kSectionSpotlists 1
@@ -127,16 +128,17 @@
 
 @implementation SHSlidersSearchTableViewManager {
     BOOL _isPreparingForMode;
+    BOOL _isAdjustingTableView;
 }
 
-#pragma mark - Public Methods
+#pragma mark - Public
 #pragma mark -
 
 - (void)prepare {
     // prepare accordion
     self.accordion = [[JHAccordion alloc] initWithTableView:self.tableView];
     self.accordion.delegate = self;
-
+    
     // prefetch data which is cached
     [self fetchMySpotlistsWithCompletionBlock:nil];
     [self fetchMyDrinklistsWithCompletionBlock:nil];
@@ -313,6 +315,15 @@
     return !self.drinkTypeName.length;
 }
 
+#pragma mark - Private
+#pragma mark -
+
+- (void)showStatusText:(NSString *)text {
+    if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerHasStatus:text:)]) {
+        [self.delegate slidersSearchTableViewManagerHasStatus:self text:text];
+    }
+}
+
 #pragma mark - Location
 #pragma mark -
 
@@ -350,6 +361,58 @@
 
 #pragma mark - User Actions
 #pragma mark -
+
+- (IBAction)starButtonTapped:(UIButton *)button {
+    NSIndexPath *indexPath = [self indexPathForView:button inTableView:self.tableView];
+    SliderModel *sliderModel = [self sliderModelAtIndexPath:indexPath];
+    
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    SHSlider *slider = [self sliderInView:cell withTag:kSliderCellSlider];
+    
+    NSUInteger count = 0;
+    for (SliderModel *slider in self.sliders) {
+        if (slider.starred) {
+            count++;
+        }
+    }
+    
+    for (SliderModel *slider in self.advancedSliders) {
+        if (slider.starred) {
+            count++;
+        }
+    }
+    
+    if (slider.userMoved) {
+        NSString *type = [self isSelectingSpotlist] ? @"Spot" : self.drinkTypeName.length ? self.drinkTypeName : @"NULL";
+
+        if (!button.selected && count < 3) {
+            button.selected = TRUE;
+            sliderModel.starred = TRUE;
+            count++;
+            
+            [Tracker trackStarredSlider:type sliderName:sliderModel.name];
+            
+            if (count < 3) {
+                [self showStatusText:@"Starred as more important"];
+            }
+            else if (count == 3) {
+                [self showStatusText:@"3rd slider starred (max 3)"];
+            }
+        }
+        else if (!button.selected && count == 3) {
+            [self showStatusText:@"You can only star 3 sliders"];
+        }
+        else if (button.selected) {
+            button.selected = FALSE;
+            sliderModel.starred = FALSE;
+            count--;
+            
+            [Tracker trackUnstarredSlider:type sliderName:sliderModel.name];
+            
+            [self showStatusText:@"Un-Starred as less important"];
+        }
+    }
+}
 
 - (IBAction)sliderValueChanged:(id)sender {
 }
@@ -703,6 +766,31 @@
 #pragma mark - UITableViewDelegate
 #pragma mark -
 
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.mode == SHModeSpots) {
+        if (indexPath.section == kSection_Spots_Spotlists) {
+            return TRUE;
+        }
+    }
+    else if (self.mode == SHModeBeer) {
+        if (indexPath.section == kSection_Beer_Drinklists) {
+            return TRUE;
+        }
+    }
+    else if (self.mode == SHModeCocktail) {
+        if (indexPath.section == kSection_Cocktail_BaseAlcohol || indexPath.section == kSection_Cocktail_Drinklists) {
+            return TRUE;
+        }
+    }
+    else if (self.mode == SHModeWine) {
+        if (indexPath.section == kSection_Wine_Type || indexPath.section == kSection_Wine_Drinklists) {
+            return TRUE;
+        }
+    }
+    
+    return FALSE;
+}
+
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.mode == SHModeSpots) {
         if (indexPath.section == kSection_Spots_Spotlists) {
@@ -861,7 +949,7 @@
     titleLabel.text = title;
     
     UIView *backgroundView = [[UIView alloc] init];
-    backgroundView.backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintColorTransparent];
+    backgroundView.backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintTransparentColor];
     cell.selectedBackgroundView = backgroundView;
     
     [SHStyleKit setButton:deleteButton withDrawing:SHStyleKitDrawingDeleteIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyTextColor size:CGSizeMake(30, 30)];
@@ -932,7 +1020,7 @@
     titleLabel.text = title;
     
     UIView *backgroundView = [[UIView alloc] init];
-    backgroundView.backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintColorTransparent];
+    backgroundView.backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintTransparentColor];
     cell.selectedBackgroundView = backgroundView;
     
     return cell;
@@ -942,15 +1030,25 @@
     static NSString *SliderCellIdentifier = @"SliderCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SliderCellIdentifier forIndexPath:indexPath];
+    SliderModel *sliderModel = [self sliderModelAtIndexPath:indexPath];
     
+    DebugLog(@"sliderModel: %@", sliderModel);
+    
+    SHSlider *slider = [self sliderInView:cell withTag:kSliderCellSlider];
     UILabel *minLabel = [self labelInView:cell withTag:kSliderCellLeftLabel];
     UILabel *maxLabel = [self labelInView:cell withTag:kSliderCellRightLabel];
+    UIButton *starButton = [self buttonInView:cell withTag:kSliderCellStarButton];
     
     [SHStyleKit setLabel:minLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setLabel:maxLabel textColor:SHStyleKitColorMyTextColor];
     
-    SliderModel *sliderModel = [self sliderModelAtIndexPath:indexPath];
-    SHSlider *slider = [self sliderInView:cell withTag:kSliderCellSlider];
+    CGFloat widthAndHeight = 24.0f;
+    CGFloat inset = 44.0f - widthAndHeight;
+    CGSize imageSize = CGSizeMake(widthAndHeight, widthAndHeight);
+    [starButton setImage:[SHStyleKit drawImage:SHStyleKitDrawingStarIcon color:SHStyleKitColorMyTextTransparentColor size:imageSize] forState:UIControlStateNormal];
+    [starButton setImage:[SHStyleKit drawImage:SHStyleKitDrawingStarIcon color:SHStyleKitColorMyTintTransparentColor size:imageSize] forState:UIControlStateSelected];
+    [starButton setImageEdgeInsets:UIEdgeInsetsMake(0.0f, inset, inset, 0.0f)];
+    starButton.selected = sliderModel.starred;
     
     NSAssert(sliderModel, @"slider Model is required");
     NSAssert(slider, @"Slider View is required");
@@ -972,6 +1070,8 @@
         }
     }
     
+    starButton.hidden = !slider.userMoved;
+    
     return cell;
 }
 
@@ -987,6 +1087,7 @@
     [self updateSectionTitle:[NSString stringWithFormat:@"Step 1 - %@", spotlist.name] section:indexPath.section];
     
     void (^completeBlock)(BOOL) = ^void (BOOL didSetAdvancedSlider) {
+        _isAdjustingTableView = TRUE;
         [self.accordion closeSection:indexPath.section];
         
         if (self.mode == SHModeSpots) {
@@ -1003,6 +1104,10 @@
         }
         
         [self notifyThatManagerIsFree];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            _isAdjustingTableView = FALSE;
+        });
     };
     
     [self notifyThatManagerIsBusy:@"Pre-setting mood sliders"];
@@ -1019,6 +1124,7 @@
 }
 
 - (void)userDidSelectBaseAlcoholAtIndexPath:(NSIndexPath *)indexPath {
+    _isAdjustingTableView = TRUE;
     BaseAlcoholModel *baseAlcohol = [self baseAlcoholAtIndexPath:indexPath];
     
     [self updateSectionTitle:[NSString stringWithFormat:@"Step 1 - %@", baseAlcohol.name] section:indexPath.section];
@@ -1032,6 +1138,10 @@
         self.baseAlcoholName = baseAlcohol.name;
         self.selectedBaseAlcohol = baseAlcohol;
     }
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        _isAdjustingTableView = FALSE;
+    });
 }
 
 - (void)userDidSelectDrinkSubTypeAtIndexPath:(NSIndexPath *)indexPath {
@@ -1054,14 +1164,20 @@
         NSAssert(self.selectedDrinkType.ID, @"ID must be defined");
         NSAssert(!self.selectedDrinkSubType || self.selectedDrinkSubType.ID, @"ID must be defined is the model instance is defined");
         
+        _isAdjustingTableView = TRUE;
         [self prepareTableViewForDrinkType:self.selectedDrinkType andDrinkSubType:self.selectedDrinkSubType withCompletionBlock:nil];
         [self notifyThatManagerIsFree];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            _isAdjustingTableView = FALSE;
+        });
     });
 }
 
 - (void)userDidSelectDrinklistAtIndexPath:(NSIndexPath *)indexPath {
     DrinkListModel *drinklist = [self drinklistAtIndexPath:indexPath];
     self.selectedDrinklist = drinklist;
+    
     if (self.mode == SHModeBeer) {
         [self updateSectionTitle:[NSString stringWithFormat:@"Step 1 - %@", drinklist.name] section:indexPath.section];
     }
@@ -1070,6 +1186,7 @@
     }
     
     void (^completeBlock)(BOOL) = ^void (BOOL didSetAdvancedSlider) {
+        _isAdjustingTableView = TRUE;
         [self.accordion closeSection:indexPath.section];
         
         if (self.mode == SHModeBeer) {
@@ -1107,6 +1224,10 @@
         }
         
         [self notifyThatManagerIsFree];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            _isAdjustingTableView = FALSE;
+        });
     };
     
     [self notifyThatManagerIsBusy:@"Pre-setting flavor sliders"];
@@ -1259,10 +1380,11 @@
         NSAssert(searchSlider.sliderTemplate, @"Slider Template must be defined");
         
         searchSlider.value = nil;
-        for (SliderModel *spotlistSlider in sliders) {
-            NSAssert(spotlistSlider.sliderTemplate, @"Slider Templates must be defined");
-            if ([searchSlider.sliderTemplate isEqual:spotlistSlider.sliderTemplate]) {
-                searchSlider.value = spotlistSlider.value;
+        for (SliderModel *loadedSlider in sliders) {
+            NSAssert(loadedSlider.sliderTemplate, @"Slider Templates must be defined");
+            if ([searchSlider.sliderTemplate isEqual:loadedSlider.sliderTemplate]) {
+                searchSlider.value = loadedSlider.value;
+                searchSlider.starred = loadedSlider.starred;
                 if (searchSlider.sliderTemplate.isAdvanced) {
                     didSetAdvancedSlider = TRUE;
                 }
@@ -1793,6 +1915,13 @@
 - (void)slider:(SHSlider *)slider valueDidFinishChanging:(CGFloat)value {
     NSAssert(self.delegate, @"Delegate is required");
     
+    NSIndexPath *indexPath = [self indexPathForView:slider inTableView:self.tableView];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    UIButton *starButton = [self buttonInView:cell withTag:kSliderCellStarButton];
+    if (starButton) {
+        starButton.hidden = !slider.userMoved;
+    }
+    
     NSString *sliderType = [self isSelectingSpotlist] ? @"Spotlist" : @"Drinklist";
     
     if (slider.sliderModel) {
@@ -1812,7 +1941,9 @@
 }
 
 - (void)accordion:(JHAccordion*)accordion contentSizeChanged:(CGSize)contentSize {
-    [accordion slideUpLastOpenedSection];
+    if (!_isAdjustingTableView) {
+        [accordion slideUpLastOpenedSection];
+    }
 }
 
 - (void)accordion:(JHAccordion*)accordion openingSection:(NSInteger)section {

@@ -40,7 +40,7 @@
 #import <JSONAPI/JSONAPI.h>
 #import <CoreLocation/CoreLocation.h>
 
-@class ErrorModel, AverageReviewModel, SpotTypeModel, LiveSpecialModel, MenuModel, SpecialModel, CLLocation;
+@class ErrorModel, AverageReviewModel, SpotListModel, SpotTypeModel, LiveSpecialModel, MenuModel, SpecialModel, CLLocation;
 
 @interface SpotModel : SHJSONAPIResource
 
@@ -67,6 +67,8 @@
 
 @property (nonatomic, strong) MenuModel *menu;
 
+@property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
+
 - (NSString *)addressCityState;
 - (NSString *)fullAddress;
 - (NSString *)cityState;
@@ -91,9 +93,9 @@
 
 #pragma mark - Revised Code for 2.0
 
-+ (void)fetchSpotsWithSpecialsTodayForCoordinate:(CLLocationCoordinate2D)coordinate success:(void(^)(NSArray *spots))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
++ (void)fetchSpecialsSpotlistForCoordinate:(CLLocationCoordinate2D)coordinate radius:(CLLocationDistance)radius success:(void(^)(SpotListModel *spotlist))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
-+ (Promise *)fetchSpotsWithSpecialsTodayForCoordinate:(CLLocationCoordinate2D)coordinate;
++ (Promise *)fetchSpecialsSpotlistForCoordinate:(CLLocationCoordinate2D)coordinate radius:(CLLocationDistance)radius;
 
 + (void)fetchSpotsNearLocation:(CLLocation *)location success:(void (^)(NSArray *spots))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
 

@@ -25,8 +25,8 @@
 
 #define kPageSize @15
 
-#define kMinRadiusFloat 0.5f
-#define kMaxRadiusFloat 5.0f
+#define kMinRadiusFloat 0.1f
+#define kMaxRadiusFloat 10.0f
 #define kMetersPerMile 1609.344
 
 @interface DrinkModelCache : NSCache
@@ -227,7 +227,7 @@
             NSArray *drinks = [jsonApi resourcesForKey:@"drinks"];
             
             // only track a successful search
-            [Tracker track:@"Drink Search Duration" properties:@{ @"Duration" : [NSNumber numberWithInteger:duration] }];
+            [Tracker track:@"Drink Search Duration" properties:@{ @"Duration" : [NSNumber numberWithFloat:duration] }];
             
             if (successBlock) {
                 successBlock(drinks);

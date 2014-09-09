@@ -15,12 +15,11 @@
 #pragma mark -
 
 - (NSDictionary *)mapKeysToProperties {
-    // Maps values in JSON key 'value' to 'value' property
     return @{
              @"value" : @"value",
+             @"starred" : @"starred",
              @"links.slider_template" : @"sliderTemplate"
              };
-    
 }
 
 #pragma mark - Debugging
@@ -46,7 +45,8 @@
     
     copy.value = self.value;
     copy.sliderTemplate = self.sliderTemplate;
-        
+    copy.starred = self.starred;
+    
     return copy;
 }
 

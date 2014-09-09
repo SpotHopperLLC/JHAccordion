@@ -10,6 +10,8 @@
 
 @interface SHAppConfiguration : NSObject
 
++ (BOOL)isDebuggingEnabled;
+
 + (BOOL)isTrackingEnabled;
 
 + (NSString *)mixpanelToken;
@@ -19,5 +21,19 @@
 + (NSString *)bitlyAPIKey;
 
 + (NSString *)bitlyShortURL;
+
++ (NSString *)twitterConsumerKey;
+
++ (NSString *)twitterConsumerSecret;
+
++ (NSString *)appURLScheme;
+
++ (NSString *)baseUrl;
+
++ (NSString *)websiteUrl;
+
++ (NSString *)parseApplicationID;
+
++ (NSString *)parseClientKey;
 
 @end

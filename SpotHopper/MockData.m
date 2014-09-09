@@ -8,10 +8,12 @@
 
 #import "MockData.h"
 
+#import "SHAppConfiguration.h"
+
 @implementation MockData
 
 + (Mockery*)startTheMockery {
-    Mockery *mockery = [Mockery mockeryWithURL:kBaseUrl];
+    Mockery *mockery = [Mockery mockeryWithURL:[SHAppConfiguration baseUrl]];
     
     /*
      * DRINKS
@@ -135,14 +137,14 @@
     if (ID.intValue == 1) {
         return @{
                  @"id": @1,
-                 @"name": @"Boobs and Billiards Scotch",
+                 @"name": @"Billiards & Scotch",
                  @"image_url" : @"http://placekitten.com/300/300",
-                 @"description": @"Super premium breasts and pool balls scotch which reeks of upper crust.",
+                 @"description": @"Super premium chalk and pool balls scotch which reeks of upper crust.",
                  @"abv": @0.9,
                  @"style": @"IPA",
                  @"vintage": @1984,
-                 @"region": @"Your mom's butt",
-                 @"recipe": @"1 part boobs\n1part billiards",
+                 @"region": @"Upstate",
+                 @"recipe": @"1 part chalk\n1 part billiards",
                  @"links" : links
                  };
     }

@@ -15,6 +15,7 @@
 @property (readonly) NSString *name;
 
 @property (nonatomic, strong) NSNumber *value;
+@property (nonatomic, assign) BOOL starred;
 @property (nonatomic, strong) SliderTemplateModel *sliderTemplate;
 
 @end

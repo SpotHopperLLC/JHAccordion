@@ -9,10 +9,11 @@
 #import "SHStyleKit+Additions.h"
 
 NSString * const SHStyleKitColorNameMyTintColor = @"myTintColor";
-NSString * const SHStyleKitColorNameMyTintTransparentColor = @"myTintColorTransparent";
+NSString * const SHStyleKitColorNameMyTintTransparentColor = @"myTintTransparentColor";
 NSString * const SHStyleKitColorNameMyTextColor = @"myTextColor";
+NSString * const SHStyleKitColorNameMyTextTransparentColor = @"myTextTransparentColor";
 NSString * const SHStyleKitColorNameMyWhiteColor = @"myWhiteColor";
-NSString * const SHStyleKitColorNameMyWhiteColorTransparent = @"myWhiteColorTransparent";
+NSString * const SHStyleKitColorNameMyWhiteTransparentColor = @"myWhiteTransparentColor";
 NSString * const SHStyleKitColorNameMyBlackColor = @"myBlackColor";
 NSString * const SHStyleKitColorNameMyPencilColor = @"myPencilColor";
 NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
@@ -29,14 +30,16 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
     switch (color) {
         case SHStyleKitColorMyTintColor:
             return SHStyleKit.myTintColor;
-        case SHStyleKitColorMyTintColorTransparent:
-            return SHStyleKit.myTintColorTransparent;
+        case SHStyleKitColorMyTintTransparentColor:
+            return SHStyleKit.myTintTransparentColor;
         case SHStyleKitColorMyTextColor:
             return SHStyleKit.myTextColor;
+        case SHStyleKitColorMyTextTransparentColor:
+            return SHStyleKit.myTextTransparentColor;
         case SHStyleKitColorMyWhiteColor:
             return SHStyleKit.myWhiteColor;
-        case SHStyleKitColorMyWhiteColorTransparent:
-            return SHStyleKit.myWhiteColorTransparent;
+        case SHStyleKitColorMyWhiteTransparentColor:
+            return SHStyleKit.myWhiteTransparentColor;
         case SHStyleKitColorMyBlackColor:
             return SHStyleKit.myBlackColor;
         case SHStyleKitColorMyPencilColor:
@@ -53,14 +56,16 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
     switch (color) {
         case SHStyleKitColorMyTintColor:
             return SHStyleKitColorNameMyTintColor;
-        case SHStyleKitColorMyTintColorTransparent:
+        case SHStyleKitColorMyTintTransparentColor:
             return SHStyleKitColorNameMyTintTransparentColor;
         case SHStyleKitColorMyTextColor:
             return SHStyleKitColorNameMyTextColor;
+        case SHStyleKitColorMyTextTransparentColor:
+            return SHStyleKitColorNameMyTextTransparentColor;
         case SHStyleKitColorMyWhiteColor:
             return SHStyleKitColorNameMyWhiteColor;
-        case SHStyleKitColorMyWhiteColorTransparent:
-            return SHStyleKitColorNameMyWhiteColorTransparent;
+        case SHStyleKitColorMyWhiteTransparentColor:
+            return SHStyleKitColorNameMyWhiteTransparentColor;
         case SHStyleKitColorMyBlackColor:
             return SHStyleKitColorNameMyBlackColor;
         case SHStyleKitColorMyClearColor:
@@ -235,6 +240,28 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
         case SHStyleKitDrawingSearchIcon:
             [SHStyleKit drawSearchIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
             break;
+        case SHStyleKitDrawingStarIcon:
+            if (color == SHStyleKitColorMyTintColor) {
+                [SHStyleKit drawStarIconWithScaleX:scaleX scaleY:scaleY
+                                   strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]
+                                     fillColorName:[SHStyleKit colorName:SHStyleKitColorMyTintColor]];
+            }
+            else if (color == SHStyleKitColorMyTintTransparentColor) {
+                [SHStyleKit drawStarIconWithScaleX:scaleX scaleY:scaleY
+                                   strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]
+                                     fillColorName:[SHStyleKit colorName:SHStyleKitColorMyTintTransparentColor]];
+            }
+            else if (color == SHStyleKitColorMyTextTransparentColor) {
+                [SHStyleKit drawStarIconWithScaleX:scaleX scaleY:scaleY
+                                   strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]
+                                     fillColorName:[SHStyleKit colorName:SHStyleKitColorMyTextTransparentColor]];
+            }
+            else if (color == SHStyleKitColorMyWhiteColor) {
+                [SHStyleKit drawStarIconWithScaleX:scaleX scaleY:scaleY
+                                   strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyTintColor]
+                                     fillColorName:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]];
+            }
+            break;
         case SHStyleKitDrawingMapBubblePinFilledIcon:
             [SHStyleKit drawMapBubblePinFilledIconWithScaleX:scaleX scaleY:scaleY];
             break;
@@ -250,7 +277,6 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
         case SHStyleKitDrawingDrinksIcon:
             [SHStyleKit drawDrinksIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
             break;
-            
         case SHStyleKitDrawingShareIcon:
             if (color == SHStyleKitColorMyTintColor) {
                 [SHStyleKit drawShareIconWithScaleX:scaleX

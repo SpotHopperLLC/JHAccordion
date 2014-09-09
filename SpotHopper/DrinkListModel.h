@@ -31,6 +31,7 @@
 @property (nonatomic, strong) NSArray *drinks;
 @property (nonatomic, strong) NSNumber *latitude;
 @property (nonatomic, strong) NSNumber *longitude;
+@property (nonatomic, strong) NSNumber *radius;
 @property (nonatomic, strong) SpotModel *spot;
 @property (nonatomic, strong) NSArray *sliders;
 

@@ -16,14 +16,14 @@
 #import "UIAlertView+Block.h"
 
 #import "AccountSettingsViewController.h"
-#import "FooterViewController.h"
-#import "LiveSpecialViewController.h"
-#import "SidebarViewController.h"
-#import "SearchViewController.h"
+//#import "FooterViewController.h"
+//#import "SidebarViewController.h"
+//#import "SearchViewController.h"
+#import "ShareViewController.h"
 
 #import "LaunchViewController.h"
-#import "DrinkProfileViewController.h"
-#import "SpotProfileViewController.h"
+//#import "DrinkProfileViewController.h"
+//#import "SpotProfileViewController.h"
 
 #import "SpotModel.h"
 #import "DrinkModel.h"
@@ -49,7 +49,7 @@
 
 typedef void(^AlertBlock)();
 
-@interface BaseViewController ()<UINavigationControllerDelegate, SidebarViewControllerDelegate, LiveSpecialViewControllerDelegate, SearchViewControllerDelegate>
+@interface BaseViewController () <UINavigationControllerDelegate, ShareViewControllerDelegate>
 
 @property (nonatomic, strong) UIAlertView *alertView;
 @property (nonatomic, copy) AlertBlock alertBlock;
@@ -59,6 +59,8 @@ typedef void(^AlertBlock)();
 
 @property (nonatomic, strong) UIImageView *backgroundImage;
 @property (nonatomic, strong) FooterViewController *footerViewController;
+
+@property (nonatomic, strong) ShareViewController *shareViewController;
 
 @property (nonatomic, assign) BOOL loaded;
 
@@ -122,11 +124,6 @@ typedef void(^AlertBlock)();
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-
-#ifndef kDisableSideBarDelegateInBase
-    SidebarViewController *sidebar = (SidebarViewController*)self.navigationController.sidebarViewController.rightViewController;
-    [sidebar setDelegate:self];
-#endif
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -166,7 +163,8 @@ typedef void(^AlertBlock)();
     if (liveSpecialId != nil) {
         LiveSpecialModel *liveSpecial = [[LiveSpecialModel alloc] init];
         [liveSpecial setID:liveSpecialId];
-        [self showLiveSpecialViewController:liveSpecial needToFetch:YES];
+        // TODO: replace
+        //[self showLiveSpecialViewController:liveSpecial needToFetch:YES];
     }
     
 }
@@ -209,11 +207,13 @@ typedef void(^AlertBlock)();
         if (modelId != NSNotFound) {
             LiveSpecialModel *liveSpecial =[[LiveSpecialModel alloc] init];
             [liveSpecial setID:[NSNumber numberWithInteger:modelId]];
-            [self showLiveSpecialViewController:liveSpecial needToFetch:YES];
+            // TODO: replace
+            //[self showLiveSpecialViewController:liveSpecial needToFetch:YES];
         }
-        else {
-            [self goToTonightsSpecials];
-        }
+        // TODO: reimplement
+//        else {
+//            [self goToTonightsSpecials];
+//        }
     }
 }
 
@@ -244,43 +244,6 @@ typedef void(^AlertBlock)();
     else {
         [self showAlert:@"Oops" message:@"Something went wrong. Please try again."];
     }
-}
-
-#pragma mark - SidebarViewControllerDelegate
-
-- (void)sidebarViewControllerClickedSearch:(SidebarViewController *)sidebarViewController {
-    SearchViewController *viewController = [[SearchViewController alloc] initWithNibName:@"SearchViewController" bundle:[NSBundle mainBundle]];
-    [viewController setDelegate:self];
-    [self.navigationController pushViewController:viewController animated:YES];
-}
-
-- (void)sidebarViewControllerClickedSpots:(SidebarViewController *)sidebarViewController {
-    [self goToSpotListMenu];
-}
-
-- (void)sidebarViewControllerClickedDrinks:(SidebarViewController *)sidebarViewController {
-    [self goToDrinks];
-}
-
-- (void)sidebarViewControllerClickedSpecials:(SidebarViewController *)sidebarViewController {
-    [self goToTonightsSpecials];
-}
-
-- (void)sidebarViewControllerClickedReview:(SidebarViewController *)sidebarViewController {
-    if ([self promptLoginNeeded:@"Cannot add a review without logging in"] == NO) {
-        [self goToReviewMenu];
-    }
-}
-
-- (void)sidebarViewControllerClickedCheckin:(SidebarViewController *)sidebarViewController {
-    if ([self promptLoginNeeded:@"Cannot checkin without logging in"] == NO) {
-        [self goToCheckin:nil];
-    }
-}
-
-- (void)sidebarViewControllerClickedAccount:(SidebarViewController *)sidebarViewController {
-    AccountSettingsViewController *viewController = [[self userStoryboard] instantiateViewControllerWithIdentifier:@"AccountSettingsViewController"];
-    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - HUD
@@ -877,91 +840,33 @@ typedef void(^AlertBlock)();
     }
 }
 
-#pragma mark - LiveSpecialViewController
-
-- (void)showLiveSpecialViewController:(LiveSpecialModel *)liveSpecial needToFetch:(BOOL)needToFetch {
-    if (_liveSpecialViewController == nil) {
-        
-        // Create live special view controller
-        _liveSpecialViewController = [[LiveSpecialViewController alloc] initWithNibName:@"LiveSpecialViewController" bundle:[NSBundle mainBundle]];
-        [_liveSpecialViewController setDelegate:self];
-        
-        // Set alpha to zero so we can animate in
-        [_liveSpecialViewController.view setAlpha:0.0f];
-        [_liveSpecialViewController.view setFrame:self.navigationController.view.frame];
-        
-        // Adding to window
-        [[[UIApplication sharedApplication] keyWindow]  addSubview:_liveSpecialViewController.view];
-        
-        // Animating in
-        [UIView animateWithDuration:0.35 animations:^{
-            [_liveSpecialViewController.view setAlpha:1.0f];
-        }];
-    }
-    
-    // Updating live special text
-    [_liveSpecialViewController setNeedToFetch:needToFetch];
-    [_liveSpecialViewController setLiveSpecial:liveSpecial];
-}
-
-- (void)hideLiveSpecialViewController:(void(^)(void))completion {
-    
-    // Animating live special out
-    [UIView animateWithDuration:0.35 animations:^{
-        [_liveSpecialViewController.view setAlpha:0.0f];
-    } completion:^(BOOL finished) {
-        
-        // Removing live special from view
-        [_liveSpecialViewController.view removeFromSuperview];
-        _liveSpecialViewController = nil;
-
-        if (completion != nil) {
-            completion();
-        }
-    }];
-}
-
-#pragma mark - LiveSpecialViewControllerDelegate
-
-- (void)liveSpecialViewControllerClickedClose:(LiveSpecialViewController *)viewController {
-    [self hideLiveSpecialViewController:nil];
-}
-
-- (void)liveSpecialViewControllerClickedShare:(LiveSpecialViewController *)viewController {
-    LiveSpecialModel *liveSpecial = [viewController liveSpecial];
-    
-    [self hideLiveSpecialViewController:^{
-        [self showShareViewControllerWithSpot:liveSpecial.spot shareType:ShareViewControllerShareSpecial];
-    }];
-}
-
 #pragma mark - ShareViewController
 
-- (void)showShareViewControllerWithCheckIn:(CheckInModel *)checkIn {
-    if (_shareViewController == nil) {
-        
-        // Create lshare view controller
-        _shareViewController = [[self shareStoryboard] instantiateViewControllerWithIdentifier:( IS_FOUR_INCH ? @"ShareViewController" : @"ShareViewControllerIPhone4" )];
-        [_shareViewController setDelegate:self];
-        
-        // Set alpha to zero so we can animate in
-        [_shareViewController.view setAlpha:0.0f];
-        [_shareViewController.view setFrame:self.navigationController.view.frame];
-        
-        // Adding to window
-        [[[UIApplication sharedApplication] keyWindow] addSubview:_shareViewController.view];
-        
-        // Animating in
-        [UIView animateWithDuration:0.35 animations:^{
-            [_shareViewController.view setAlpha:1.0f];
-        }];
-    }
-    
-    // Updating live special text
-    [_shareViewController setCheckIn:checkIn];
-    [_shareViewController setSpot:checkIn.spot];
-    [_shareViewController setShareType:ShareViewControllerShareCheckin];
-}
+//- (void)showShareViewControllerWithCheckIn:(CheckInModel *)checkIn {
+//    if (_shareViewController == nil) {
+//        
+//        // Create lshare view controller
+//        _shareViewController = [[self shareStoryboard] instantiateViewControllerWithIdentifier:( IS_FOUR_INCH ? @"ShareViewController" : @"ShareViewControllerIPhone4" )];
+//        [_shareViewController setDelegate:self];
+//        
+//        // Set alpha to zero so we can animate in
+//        [_shareViewController.view setAlpha:0.0f];
+//        [_shareViewController.view setFrame:self.navigationController.view.frame];
+//        
+//        // Adding to window
+//        [[[UIApplication sharedApplication] keyWindow] addSubview:_shareViewController.view];
+//        
+//        // Animating in
+//        [UIView animateWithDuration:0.35 animations:^{
+//            [_shareViewController.view setAlpha:1.0f];
+//        }];
+//    }
+//    
+//    // Updating live special text
+//    [_shareViewController setCheckIn:checkIn];
+//    [_shareViewController setSpot:checkIn.spot];
+//    [_shareViewController setShareType:ShareViewControllerShareCheckin];
+//}
 
 - (void)showShareViewControllerWithSpot:(SpotModel *)spot shareType:(ShareViewControllerShareType)shareType {
     if (_shareViewController == nil) {
@@ -1002,46 +907,6 @@ typedef void(^AlertBlock)();
             completion();
         }
     }];
-}
-
-#pragma mark - ShareViewControllerDelegate
-
-- (void)shareViewControllerClickedClose:(ShareViewController *)viewController {
-    [self hideShareViewController:nil];
-}
-
-- (void)shareViewControllerDidFinish:(ShareViewController *)viewController {
-    [self hideShareViewController:^{
-        
-    }];
-}
-
-#pragma mark - SearchViewControllerDelegate
-
-- (void)searchViewController:(SearchViewController *)viewController selectedDrink:(DrinkModel *)drink {
-    
-    DrinkProfileViewController *drinkViewController = [[self drinksStoryboard] instantiateViewControllerWithIdentifier:@"DrinkProfileViewController"];
-    [drinkViewController setDrink:drink];
-    
-    NSMutableArray *viewControllers = self.navigationController.viewControllers.mutableCopy;
-    [viewControllers removeLastObject];
-    [viewControllers addObject:drinkViewController];
-    
-    [self.navigationController setViewControllers:viewControllers animated:YES];
-    
-}
-
-- (void)searchViewController:(SearchViewController *)viewController selectedSpot:(SpotModel *)spot {
- 
-    SpotProfileViewController *spotViewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotProfileViewController"];
-    [spotViewController setSpot:spot];
-    
-    NSMutableArray *viewControllers = self.navigationController.viewControllers.mutableCopy;
-    [viewControllers removeLastObject];
-    [viewControllers addObject:spotViewController];
-    
-    [self.navigationController setViewControllers:viewControllers animated:YES];
-    
 }
 
 #pragma mark - Prompt Login Needed
@@ -1090,6 +955,17 @@ typedef void(^AlertBlock)();
     }
     
     return NSNotFound;
+}
+
+#pragma mark - ShareViewControllerDelegate
+#pragma mark -
+
+- (void)shareViewControllerClickedClose:(ShareViewController*)viewController {
+    [self hideShareViewController:nil];
+}
+
+- (void)shareViewControllerDidFinish:(ShareViewController*)viewController {
+    [self hideShareViewController:nil];
 }
 
 @end

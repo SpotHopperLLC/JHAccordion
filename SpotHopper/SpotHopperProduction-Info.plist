@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.1.0</string>
+	<string>2.2.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -27,20 +27,47 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb504677422978889</string>
 				<string>spothopper</string>
 				<string>spothopperapp</string>
-				<string>spothopperv2</string>
-				<string>spothopperappv2</string>
+				<string>fb504677422978889</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2.1.0</string>
+	<string>201409081838</string>
 	<key>FacebookAppID</key>
 	<string>504677422978889</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>SpotHopperSettings</key>
+	<dict>
+		<key>AppURLScheme</key>
+		<string>spothopper</string>
+		<key>BaseUrl</key>
+		<string>https://api.spotapps.co</string>
+		<key>BitlyAPIKey</key>
+		<string>R_11cbfeb881bd416fa9328fc8d239f0f8</string>
+		<key>BitlyShortURL</key>
+		<string>http://go.spotapps.co</string>
+		<key>BitlyUsername</key>
+		<string>spothopper</string>
+		<key>Debug</key>
+		<false/>
+		<key>MixpanelToken</key>
+		<string>003978c7399ef9503dd3edbc92ca50d0</string>
+		<key>ParseApplicationID</key>
+		<string>8gsK1txoPG66EvpzxhHPFJeeNjWTwe1SF5j1jIKN</string>
+		<key>ParseClientKey</key>
+		<string>z86QKJFiLmSxWAekThVpTo8yLpp29nekhTiUgV2i</string>
+		<key>TrackingEnabled</key>
+		<true/>
+		<key>TwitterConsumerKey</key>
+		<string>FeB6rg5yUFu7aL9InVmxQ</string>
+		<key>TwitterConsumerSecret</key>
+		<string>diroak8ksZoZu1BMA5U6lp5WBgJWAAGkoJsYGnjGwrI</string>
+		<key>WebsiteUrl</key>
+		<string>http://www.spothopperapp.com</string>
+	</dict>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Lato-Light.ttf</string>
@@ -74,19 +101,6 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>SpotHopperSettings</key>
-	<dict>
-		<key>MixpanelToken</key>
-		<string>003978c7399ef9503dd3edbc92ca50d0</string>
-		<key>TrackingEnabled</key>
-		<true/>
-		<key>BitlyUsername</key>
-		<string>spothopper</string>
-		<key>BitlyAPIKey</key>
-		<string>R_11cbfeb881bd416fa9328fc8d239f0f8</string>
-		<key>BitlyShortURL</key>
-		<string>http://go.spotapps.co</string>
-	</dict>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 </dict>

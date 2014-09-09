@@ -42,7 +42,7 @@
 
 + (void)prepareResources {
     [self linkResources];
-    [self useResources];
+    [self mapModels];
     [self registerFormatters];
 }
 
@@ -51,59 +51,61 @@
 
 // Initializes resource linking for JSONAPI
 + (void)linkResources {
-    [JSONAPIResourceLinker link:@"average_review" toLinkedType:@"average_reviews"];
-    [JSONAPIResourceLinker link:@"base_alcohol" toLinkedType:@"base_alcohols"];
-    [JSONAPIResourceLinker link:@"checkin" toLinkedType:@"checkins"];
-    [JSONAPIResourceLinker link:@"drink" toLinkedType:@"drinks"];
-    [JSONAPIResourceLinker link:@"drink_type" toLinkedType:@"drink_types"];
-    [JSONAPIResourceLinker link:@"drink_subtype" toLinkedType:@"drink_subtypes"];
-    [JSONAPIResourceLinker link:@"drink_list" toLinkedType:@"drink_lists"];
-    [JSONAPIResourceLinker link:@"image" toLinkedType:@"images"];
-    [JSONAPIResourceLinker link:@"live_special" toLinkedType:@"live_specials"];
-    [JSONAPIResourceLinker link:@"menu_item" toLinkedType:@"menu_items"];
-    [JSONAPIResourceLinker link:@"menu_type" toLinkedType:@"menu_types"];
-    [JSONAPIResourceLinker link:@"price" toLinkedType:@"prices"];
-    [JSONAPIResourceLinker link:@"review" toLinkedType:@"reviews"];
-    [JSONAPIResourceLinker link:@"size" toLinkedType:@"sizes"];
-    [JSONAPIResourceLinker link:@"slider" toLinkedType:@"sliders"];
-    [JSONAPIResourceLinker link:@"slider_template" toLinkedType:@"slider_templates"];
-    [JSONAPIResourceLinker link:@"spot" toLinkedType:@"spots"];
-    [JSONAPIResourceLinker link:@"spot_type" toLinkedType:@"spot_types"];
-    [JSONAPIResourceLinker link:@"spot_list" toLinkedType:@"spot_lists"];
-    [JSONAPIResourceLinker link:@"spot_list_mood" toLinkedType:@"spot_list_moods"];
-    [JSONAPIResourceLinker link:@"daily_special" toLinkedType:@"daily_specials"];
-    [JSONAPIResourceLinker link:@"likes" toLinkedType:@"likes"];
-    [JSONAPIResourceLinker link:@"user" toLinkedType:@"users"];
+    JSONAPIResourceLinker *linker = [JSONAPIResourceLinker defaultInstance];
+    [linker link:@"average_review" toLinkedType:@"average_reviews"];
+    [linker link:@"base_alcohol" toLinkedType:@"base_alcohols"];
+    [linker link:@"checkin" toLinkedType:@"checkins"];
+    [linker link:@"drink" toLinkedType:@"drinks"];
+    [linker link:@"drink_type" toLinkedType:@"drink_types"];
+    [linker link:@"drink_subtype" toLinkedType:@"drink_subtypes"];
+    [linker link:@"drink_list" toLinkedType:@"drink_lists"];
+    [linker link:@"image" toLinkedType:@"images"];
+    [linker link:@"live_special" toLinkedType:@"live_specials"];
+    [linker link:@"menu_item" toLinkedType:@"menu_items"];
+    [linker link:@"menu_type" toLinkedType:@"menu_types"];
+    [linker link:@"price" toLinkedType:@"prices"];
+    [linker link:@"review" toLinkedType:@"reviews"];
+    [linker link:@"size" toLinkedType:@"sizes"];
+    [linker link:@"slider" toLinkedType:@"sliders"];
+    [linker link:@"slider_template" toLinkedType:@"slider_templates"];
+    [linker link:@"spot" toLinkedType:@"spots"];
+    [linker link:@"spot_type" toLinkedType:@"spot_types"];
+    [linker link:@"spot_list" toLinkedType:@"spot_lists"];
+    [linker link:@"spot_list_mood" toLinkedType:@"spot_list_moods"];
+    [linker link:@"daily_special" toLinkedType:@"daily_specials"];
+    [linker link:@"likes" toLinkedType:@"likes"];
+    [linker link:@"user" toLinkedType:@"users"];
 }
 
 // Initializes model linking for JSONAPI
-+ (void)useResources {
-    [JSONAPIResourceModeler useResource:[AverageReviewModel class] toLinkedType:@"average_reviews"];
-    [JSONAPIResourceModeler useResource:[BaseAlcoholModel class] toLinkedType:@"base_alcohols"];
-    [JSONAPIResourceModeler useResource:[CheckInModel class] toLinkedType:@"checkins"];
-    [JSONAPIResourceModeler useResource:[DrinkModel class] toLinkedType:@"drinks"];
-    [JSONAPIResourceModeler useResource:[DrinkTypeModel class] toLinkedType:@"drink_types"];
-    [JSONAPIResourceModeler useResource:[DrinkSubTypeModel class] toLinkedType:@"drink_subtypes"];
-    [JSONAPIResourceModeler useResource:[DrinkListModel class] toLinkedType:@"drink_lists"];
-    [JSONAPIResourceModeler useResource:[ErrorModel class] toLinkedType:@"errors"];
-    [JSONAPIResourceModeler useResource:[ImageModel class] toLinkedType:@"images"];
-    [JSONAPIResourceModeler useResource:[LiveSpecialModel class] toLinkedType:@"live_specials"];
-    [JSONAPIResourceModeler useResource:[MenuItemModel class] toLinkedType:@"menu_items"];
-    [JSONAPIResourceModeler useResource:[MenuTypeModel class] toLinkedType:@"menu_types"];
-    [JSONAPIResourceModeler useResource:[PriceModel class] toLinkedType:@"prices"];
-    [JSONAPIResourceModeler useResource:[ReviewModel class] toLinkedType:@"reviews"];
-    [JSONAPIResourceModeler useResource:[SizeModel class] toLinkedType:@"sizes"];
-    [JSONAPIResourceModeler useResource:[SliderModel class] toLinkedType:@"sliders"];
-    [JSONAPIResourceModeler useResource:[SliderTemplateModel class] toLinkedType:@"slider_templates"];
-    [JSONAPIResourceModeler useResource:[SpotModel class] toLinkedType:@"spots"];
-    [JSONAPIResourceModeler useResource:[SpotTypeModel class] toLinkedType:@"spot_types"];
-    [JSONAPIResourceModeler useResource:[SpotListModel class] toLinkedType:@"spot_lists"];
-    [JSONAPIResourceModeler useResource:[SpotListMoodModel class] toLinkedType:@"spot_list_moods"];
-    [JSONAPIResourceModeler useResource:[SpotListModel class] toLinkedType:@"spot_lists"];
-    [JSONAPIResourceModeler useResource:[SpecialModel class] toLinkedType:@"daily_specials"];
-    [JSONAPIResourceModeler useResource:[SpecialModel class] toLinkedType:@"specials"];
-    [JSONAPIResourceModeler useResource:[LikeModel class] toLinkedType:@"likes"];
-    [JSONAPIResourceModeler useResource:[UserModel class] toLinkedType:@"users"];
++ (void)mapModels {
+    JSONAPIResourceModeler *modeler = [JSONAPIResourceModeler defaultInstance];
+    [modeler useResource:[AverageReviewModel class] toLinkedType:@"average_reviews"];
+    [modeler useResource:[BaseAlcoholModel class] toLinkedType:@"base_alcohols"];
+    [modeler useResource:[CheckInModel class] toLinkedType:@"checkins"];
+    [modeler useResource:[DrinkModel class] toLinkedType:@"drinks"];
+    [modeler useResource:[DrinkTypeModel class] toLinkedType:@"drink_types"];
+    [modeler useResource:[DrinkSubTypeModel class] toLinkedType:@"drink_subtypes"];
+    [modeler useResource:[DrinkListModel class] toLinkedType:@"drink_lists"];
+    [modeler useResource:[ErrorModel class] toLinkedType:@"errors"];
+    [modeler useResource:[ImageModel class] toLinkedType:@"images"];
+    [modeler useResource:[LiveSpecialModel class] toLinkedType:@"live_specials"];
+    [modeler useResource:[MenuItemModel class] toLinkedType:@"menu_items"];
+    [modeler useResource:[MenuTypeModel class] toLinkedType:@"menu_types"];
+    [modeler useResource:[PriceModel class] toLinkedType:@"prices"];
+    [modeler useResource:[ReviewModel class] toLinkedType:@"reviews"];
+    [modeler useResource:[SizeModel class] toLinkedType:@"sizes"];
+    [modeler useResource:[SliderModel class] toLinkedType:@"sliders"];
+    [modeler useResource:[SliderTemplateModel class] toLinkedType:@"slider_templates"];
+    [modeler useResource:[SpotModel class] toLinkedType:@"spots"];
+    [modeler useResource:[SpotTypeModel class] toLinkedType:@"spot_types"];
+    [modeler useResource:[SpotListModel class] toLinkedType:@"spot_lists"];
+    [modeler useResource:[SpotListMoodModel class] toLinkedType:@"spot_list_moods"];
+    [modeler useResource:[SpotListModel class] toLinkedType:@"spot_lists"];
+    [modeler useResource:[SpecialModel class] toLinkedType:@"daily_specials"];
+    [modeler useResource:[SpecialModel class] toLinkedType:@"specials"];
+    [modeler useResource:[LikeModel class] toLinkedType:@"likes"];
+    [modeler useResource:[UserModel class] toLinkedType:@"users"];
 }
 
 + (void)registerFormatters {
@@ -115,8 +117,10 @@
     [dateFormatterMilliseconds setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
     [dateFormatterMilliseconds setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];
     
+    JSONAPIResourceFormatter *formatter = [JSONAPIResourceFormatter defaultInstance];
+    
     // Date
-    [JSONAPIResourceFormatter registerFormat:@"Date" withBlock:^id(id jsonValue) {
+    [formatter registerFormat:@"Date" withBlock:^id(id jsonValue) {
         NSDate *date = nil;
         NSError *error = nil;
         
@@ -136,7 +140,7 @@
     }];
     
     // ShortDate
-    [JSONAPIResourceFormatter registerFormat:@"ShortDate" withBlock:^id(id jsonValue) {
+    [formatter registerFormat:@"ShortDate" withBlock:^id(id jsonValue) {
         NSString *string = (NSString *)jsonValue;
             NSDate *date = nil;
             if (string.length > 0) {
@@ -152,7 +156,7 @@
     }];
     
     // Time
-    [JSONAPIResourceFormatter registerFormat:@"Time" withBlock:^id(id jsonValue) {
+    [formatter registerFormat:@"Time" withBlock:^id(id jsonValue) {
         NSDate *date = nil;
         
         if ([jsonValue isKindOfClass:[NSString class]]) {
@@ -179,14 +183,14 @@
     }];
     
     // Weekday
-    [JSONAPIResourceFormatter registerFormat:@"Weekday" withBlock:^id(id jsonValue) {
+    [formatter registerFormat:@"Weekday" withBlock:^id(id jsonValue) {
         NSInteger weekday = [jsonValue integerValue];
         
         return [NSNumber numberWithInteger:weekday];
     }];
     
     // Time Interval
-    [JSONAPIResourceFormatter registerFormat:@"TimeInterval" withBlock:^id(id jsonValue) {
+    [formatter registerFormat:@"TimeInterval" withBlock:^id(id jsonValue) {
         NSInteger minutes = [jsonValue integerValue];
         
         // convert to seconds

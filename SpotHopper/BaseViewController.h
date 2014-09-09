@@ -14,21 +14,18 @@
 #import <UIKit/UIKit.h>
 
 #import "FooterViewController.h"
+#import "ShareViewController.h"
 
 #import "MBProgressHUD.h"
 
 #import "JHPullRefreshViewController.h"
-#import "ShareViewController.h"
 
 #import "TTTAttributedLabel+QuickFonting.h"
 
 @class LiveSpecialModel, SpotModel, ErrorModel;
-@class LiveSpecialViewController;
 
-@interface BaseViewController : JHPullRefreshViewController<FooterViewControllerDelegate, ShareViewControllerDelegate>
+@interface BaseViewController : JHPullRefreshViewController<FooterViewControllerDelegate>
 
-@property (nonatomic, strong) LiveSpecialViewController *liveSpecialViewController;
-@property (nonatomic, strong) ShareViewController *shareViewController;
 @property (nonatomic, readonly) NSString *screenName; // override
 
 @property (readonly) BOOL hasFourInchDisplay;
@@ -95,17 +92,10 @@
 
 - (void)slideCell:(UITableViewCell *)cell aboveTableViewMidwayPoint:(UITableView *)tableView;
 
+- (void)showShareViewControllerWithSpot:(SpotModel *)spot shareType:(ShareViewControllerShareType)shareType;
+
 // URL Scheme Support
 - (void)handleOpenedURL:(NSURL *)openedURL;
-
-// LiveSpecialViewController
-- (void)showLiveSpecialViewController:(LiveSpecialModel *)liveSpecial needToFetch:(BOOL)needToFetch;
-- (void)hideLiveSpecialViewController:(void(^)(void))completion;
-
-// ShareViewController
-- (void)showShareViewControllerWithCheckIn:(CheckInModel *)checkIn;
-- (void)showShareViewControllerWithSpot:(SpotModel*)spot shareType:(ShareViewControllerShareType)shareType;
-- (void)hideShareViewController:(void(^)(void))completion;
 
 // Prompt Login Needed
 - (BOOL)promptLoginNeeded:(NSString*)message;
