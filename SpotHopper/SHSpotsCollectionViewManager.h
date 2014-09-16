@@ -32,7 +32,7 @@
 
 @end
 
-@protocol SHSpotsCollectionViewManagerDelegate <NSObject>
+@protocol SHSpotsCollectionViewManagerDelegate <SHBaseCollectionViewManagerDelegate>
 
 @optional
 

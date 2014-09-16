@@ -10,7 +10,14 @@
 
 #import "Tracker.h"
 
-#import <AFNetworking/UIImageView+AFNetworking.h>
+#import <AFNetworking/AFNetworking.h>
+
+@interface ThumbnailImageCache : NSCache
+
+- (UIImage *)cachedThumbnailImageForKey:(NSString *)key;
+- (void)cacheThumbnailImage:(UIImage *)thumbnailImage forKey:(NSString *)key;
+
+@end
 
 @implementation NetworkHelper
 
@@ -21,41 +28,27 @@
         return;
     }
     
-    UIImageView *thumbImageView = [[UIImageView alloc] init];
-    UIImageView *fullImageView = [[UIImageView alloc] init];
+    // 1) fetch thumbnail image (which may be cached) and run callback block
+    // 2) fetch full size image and run callback block
     
-    // first load the thumb image
-    NSMutableURLRequest *thumbImageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageModel.thumbUrl]];
-    [thumbImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    [thumbImageView setImageWithURLRequest:thumbImageRequest placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *thumbImage) {
-        
-        if (thumbImage && thumbImageBlock) {
-            thumbImageBlock(thumbImage);
-        }
-        
-        // then load the large image
-        NSMutableURLRequest *fullImageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageModel.fullUrl]];
-        [fullImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-        [fullImageView setImageWithURLRequest:fullImageRequest placeholderImage:thumbImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *fullImage) {
-            
-            if (fullImage && fullImageBlock) {
-                fullImageBlock(fullImage);
-            }
-            
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            [Tracker track:@"Error Loading Image" properties:@{@"URL" : imageModel.fullUrl}];
-            
-            if (errorBlock) {
-                errorBlock(error);
-            }
-        }];
-        
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [Tracker track:@"Error Loading Image" properties:@{@"URL" : imageModel.thumbUrl}];
-        
-        if (errorBlock) {
+    NSURL *thumbUrl = [NSURL URLWithString:imageModel.thumbUrl];
+    [self fetchImageWithURL:thumbUrl cachable:TRUE withCompletionBlock:^(UIImage *image, NSError *error) {
+        if (error && errorBlock) {
             errorBlock(error);
         }
+        else if (image && thumbImageBlock) {
+            thumbImageBlock(image);
+        }
+        
+        NSURL *fullUrl = [NSURL URLWithString:imageModel.fullUrl];
+        [self fetchImageWithURL:fullUrl cachable:FALSE withCompletionBlock:^(UIImage *image, NSError *error) {
+            if (error && errorBlock) {
+                errorBlock(error);
+            }
+            else if (image && fullImageBlock) {
+                fullImageBlock(image);
+            }
+        }];
     }];
 }
 
@@ -65,17 +58,13 @@
         return;
     }
     
-    __weak UIImageView *weakImageView = imageView;
+    imageView.image = placeholderImage;
     
-    // first load the thumb image
-    NSMutableURLRequest *thumbImageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageModel.thumbUrl]];
-    [thumbImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    [weakImageView setImageWithURLRequest:thumbImageRequest placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *thumbImage) {
-        
-        weakImageView.image = thumbImage;
-        
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [Tracker track:@"Error Loading Image" properties:@{@"URL" : imageModel.thumbUrl}];
+    NSURL *url = [NSURL URLWithString:imageModel.thumbUrl];
+    [self fetchImageWithURL:url cachable:TRUE withCompletionBlock:^(UIImage *image, NSError *error) {
+        if (image) {
+            imageView.image = image;
+        }
     }];
 }
 
@@ -85,17 +74,13 @@
         return;
     }
     
-    __weak UIImageView *weakImageView = imageView;
+    imageView.image = placeholderImage;
     
-    // first load the small image
-    NSMutableURLRequest *smallImageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageModel.smallUrl]];
-    [smallImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    [weakImageView setImageWithURLRequest:smallImageRequest placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *smallImage) {
-        
-        weakImageView.image = smallImage;
-        
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [Tracker track:@"Error Loading Image" properties:@{@"URL" : imageModel.smallUrl}];
+    NSURL *url = [NSURL URLWithString:imageModel.smallUrl];
+    [self fetchImageWithURL:url cachable:TRUE withCompletionBlock:^(UIImage *image, NSError *error) {
+        if (image) {
+            imageView.image = image;
+        }
     }];
 }
 
@@ -107,21 +92,85 @@
 + (void)preloadImageModels:(NSArray *)imageModels index:(NSUInteger)index {
     if (index < imageModels.count) {
         ImageModel *imageModel = (ImageModel *)imageModels[index];
-        
+
         // pre-download all thumb images
-        NSString *thumbUrl = imageModel.thumbUrl;
-        if (thumbUrl.length) {
-            NSMutableURLRequest *thumbImageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:thumbUrl]];
-            [thumbImageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-            UIImageView *imgView = [[UIImageView alloc] init];
-            [imgView setImageWithURLRequest:thumbImageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                
+        if (imageModel.thumbUrl.length) {
+            NSURL *url = [NSURL URLWithString:imageModel.thumbUrl];
+            [self fetchImageWithURL:url cachable:TRUE withCompletionBlock:^(UIImage *image, NSError *error) {
                 [self preloadImageModels:imageModels index:index+1];
-                
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                [Tracker track:@"Error Loading Image" properties:@{@"URL" : thumbUrl}];
             }];
         }
+    }
+}
+
++ (void)fetchImageWithURL:(NSURL *)url cachable:(BOOL)cachable withCompletionBlock:(void (^)(UIImage *image, NSError *error))completionBlock {
+    if (!completionBlock) {
+        return;
+    }
+    
+    if (cachable) {
+        UIImage *image = [[self sh_sharedCache] cachedThumbnailImageForKey:url.absoluteString];
+        if (image) {
+            completionBlock(image, nil);
+            return;
+        }
+    }
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    request.HTTPMethod = @"GET";
+    request.timeoutInterval = 20;
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (operation.response.statusCode == 200 && [responseObject isKindOfClass:[NSData class]]) {
+            UIImage *image = [[UIImage alloc] initWithData:responseObject];
+            [[self sh_sharedCache] cachedThumbnailImageForKey:url.absoluteString];
+            
+            completionBlock(image, nil);
+        }
+        else {
+            NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"Unexpected response for image request"};
+            NSError *error = [NSError errorWithDomain:@"NetworkHelper" code:400 userInfo:userInfo];
+            completionBlock(nil, error);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    }];
+    
+    [operation start];
+}
+
+#pragma mark - Caching
+
++ (ThumbnailImageCache *)sh_sharedCache {
+    static ThumbnailImageCache *_sh_Cache = nil;
+    static dispatch_once_t oncePredicate;
+    dispatch_once(&oncePredicate, ^{
+        _sh_Cache = [[ThumbnailImageCache alloc] init];
+        
+        [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * __unused notification) {
+            [_sh_Cache removeAllObjects];
+        }];
+    });
+    
+    return _sh_Cache;
+}
+
+@end
+
+@implementation ThumbnailImageCache
+
+- (UIImage *)cachedThumbnailImageForKey:(NSString *)key {
+    return [self objectForKey:key];
+}
+
+- (void)cacheThumbnailImage:(UIImage *)thumbnailImage forKey:(NSString *)key {
+    if (thumbnailImage) {
+        [self setObject:thumbnailImage forKey:key];
+    }
+    else {
+        [self removeObjectForKey:key];
     }
 }
 

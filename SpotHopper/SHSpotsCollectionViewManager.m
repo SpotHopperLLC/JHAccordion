@@ -44,13 +44,17 @@
 #define kSpotCellReviewItButton 13
 #define kSpotCellMenuButton 14
 
+#define kSpotCellTableView 600
+
 #pragma mark - Class Extension
 #pragma mark -
 
-@interface SHSpotsCollectionViewManager ()
+@interface SHSpotsCollectionViewManager () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, weak) IBOutlet id<SHSpotsCollectionViewManagerDelegate> delegate;
+
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic, strong) SpotListModel *spotList;
 
@@ -176,6 +180,8 @@
         [self renderCell:cell withSpot:spot atIndex:indexPath.item];
     }
     
+    [self attachedPanGestureToCell:cell];
+    
     return cell;
 }
 
@@ -185,12 +191,27 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"Selected item %lu", (long)indexPath.item);
     
-    if ([self.delegate respondsToSelector:@selector(spotsCollectionViewManager:didSelectSpotAtIndex:)]) {
-        [self.delegate spotsCollectionViewManager:self didSelectSpotAtIndex:indexPath.item];
+    if ([self.delegate respondsToSelector:@selector(collectionViewManagerDidTapHeader:)]) {
+        [self.delegate collectionViewManagerDidTapHeader:self];
     }
+    
+//    if ([self.delegate respondsToSelector:@selector(spotsCollectionViewManager:didSelectSpotAtIndex:)]) {
+//        [self.delegate spotsCollectionViewManager:self didSelectSpotAtIndex:indexPath.item];
+//    }
 }
 
 #pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView.tag == kSpotCellTableView) {
+        // if value is < -50 then trigger view to collapse view
+        if (scrollView.contentOffset.y < -50.0f) {
+            if ([self.delegate respondsToSelector:@selector(collectionViewManagerShouldCollapse:)]) {
+                [self.delegate collectionViewManagerShouldCollapse:self];
+            }
+        }
+    }
+}
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView == self.collectionView) {
@@ -201,6 +222,15 @@
                 [self reportedChangedIndex];
             }
         });
+    }
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    if (fabsf(velocity.x) > 0.1) {
+        CGFloat width = CGRectGetWidth(self.collectionView.frame);
+        CGFloat x = targetContentOffset->x;
+        x = roundf(x / width) * width;
+        targetContentOffset->x = x;
     }
 }
 

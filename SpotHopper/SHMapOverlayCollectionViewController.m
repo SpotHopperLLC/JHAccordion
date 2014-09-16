@@ -62,6 +62,11 @@ typedef enum {
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+//    // HACK: position must be set to appear at the top
+//    CGRect frame = self.collectionView.frame;
+//    frame.origin.y = 0.0f;
+//    self.collectionView.frame = frame;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -138,6 +143,16 @@ typedef enum {
     self.collectionView.dataSource = self.drinksCollectionViewManager;
     self.collectionView.delegate = self.drinksCollectionViewManager;
     [self.drinksCollectionViewManager updateDrinkList:drinklist];
+}
+
+- (void)expandedViewDidAppear {
+    // TODO: do something
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)expandedViewDidDisappear {
+    // TODO: do something
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
 }
 
 #pragma mark - Private
@@ -257,6 +272,41 @@ typedef enum {
             DrinkModel *drink = [self.drinksCollectionViewManager drinkAtIndex:index];
             [SHNotifications reviewDrink:drink];
         }
+    }
+}
+
+#pragma mark - SHBaseCollectionViewManagerDelegate
+#pragma mark -
+
+- (UIView *)collectionViewManagerPrimaryView:(SHBaseCollectionViewManager *)mgr{
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewControllerPrimaryView:)]) {
+        return [self.delegate mapOverlayCollectionViewControllerPrimaryView:self];
+    }
+    
+    return nil;
+}
+
+- (void)collectionViewManagerDidTapHeader:(SHBaseCollectionViewManager *)mgr {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewControllerDidTapHeader:)]) {
+        [self.delegate mapOverlayCollectionViewControllerDidTapHeader:self];
+    }
+}
+
+- (void)collectionViewManagerShouldCollapse:(SHBaseCollectionViewManager *)mgr {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewControllerShouldCollapse:)]) {
+        [self.delegate mapOverlayCollectionViewControllerShouldCollapse:self];
+    }
+}
+
+- (void)collectionViewManager:(SHBaseCollectionViewManager *)mgr didMoveToPoint:(CGPoint)point {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didMoveToPoint:)]) {
+        [self.delegate mapOverlayCollectionViewController:self didMoveToPoint:point];
+    }
+}
+
+- (void)collectionViewManager:(SHBaseCollectionViewManager *)mgr didStopMovingAtPoint:(CGPoint)point withVelocity:(CGPoint)velocity {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didStopMovingAtPoint:withVelocity:)]) {
+        [self.delegate mapOverlayCollectionViewController:self didStopMovingAtPoint:point withVelocity:velocity];
     }
 }
 

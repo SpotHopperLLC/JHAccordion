@@ -120,7 +120,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     SHHomeNavigationDelegate,
     SHMapOverlayCollectionDelegate,
     SHMapFooterNavigationDelegate,
-    SHSpotsCollectionViewManagerDelegate,
     SHSlidersSearchDelegate,
     SHLocationPickerDelegate,
     SpotCalloutViewDelegate,
@@ -157,7 +156,12 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 @property (weak, nonatomic) NSLayoutConstraint *homeNavigationViewBottomConstraint;
 @property (weak, nonatomic) NSLayoutConstraint *collectionContainerViewBottomConstraint;
 
+@property (weak, nonatomic) IBOutlet UIView *expandedReferenceView;
 @property (weak, nonatomic) UIView *collectionContainerView;
+@property (weak, nonatomic) UIView *clippedContainerView;
+
+@property (weak, nonatomic) NSLayoutConstraint *collectionContainerHeightConstraint;
+@property (weak, nonatomic) NSLayoutConstraint *clippedBottomConstraint;
 
 @property (weak, nonatomic) IBOutlet UIView *areYouHerePromptView;
 @property (weak, nonatomic) IBOutlet TTTAttributedLabel *areYouHerePromptLabel;
@@ -220,6 +224,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     BOOL _isOverlayAnimating;
     BOOL _isValidLocation;
     BOOL _didLeaveForFirstLaunch;
+    BOOL _isMapOverlayExpanded;
     NSInteger _repositioningMapCount;
     NSInteger _actionButtonTapCount;
 }
@@ -421,6 +426,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark -
 
 - (void)embedChildViewControllers {
+    // height for the expanded view
+    CGFloat expandedHeight = CGRectGetHeight(self.expandedReferenceView.frame);
+    
     if (!self.locationMenuBarViewController.view.superview) {
         [self embedViewController:self.locationMenuBarViewController intoView:self.view placementBlock:^(UIView *view) {
             [view pinToSuperviewEdges:JRTViewPinTopEdge inset:0.0f usingLayoutGuidesFrom:self];
@@ -449,27 +457,40 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         UIView *collectionContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), kCollectionContainerViewHeight)];
         collectionContainerView.translatesAutoresizingMaskIntoConstraints = NO;
         collectionContainerView.backgroundColor = [UIColor clearColor];
-        [self addShadowToView:collectionContainerView];
-        
+        //[self addShadowToView:collectionContainerView];
         [self.view addSubview:collectionContainerView];
         NSArray *bottomConstaints = [collectionContainerView pinToSuperviewEdges:JRTViewPinBottomEdge inset:0.0f usingLayoutGuidesFrom:self];
         NSAssert(bottomConstaints.count == 1, @"There should be only 1 bottom constraint.");
         self.collectionContainerViewBottomConstraint = bottomConstaints[0];
         [collectionContainerView pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0];
-        [collectionContainerView constrainToHeight:kCollectionContainerViewHeight];
+        self.collectionContainerHeightConstraint = [collectionContainerView constrainToHeight:kCollectionContainerViewHeight];
         self.collectionContainerView = collectionContainerView;
         
-        [self embedViewController:self.mapOverlayCollectionViewController intoView:self.collectionContainerView placementBlock:^(UIView *view) {
-            [view pinToSuperviewEdges:JRTViewPinBottomEdge inset:kFooterNavigationViewHeight];
-            [view pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0];
-            [view constrainToHeight:kCollectionViewHeight];
+        // TODO: add clipped view
+        UIView *clippedContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), kCollectionViewHeight)];
+        clippedContainerView.translatesAutoresizingMaskIntoConstraints = NO;
+        clippedContainerView.clipsToBounds = TRUE;
+        clippedContainerView.backgroundColor = [UIColor clearColor];
+        [collectionContainerView addSubview:clippedContainerView];
+        [clippedContainerView pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0f];
+        [clippedContainerView pinToSuperviewEdges:JRTViewPinTopEdge inset:0.0f];
+        self.clippedBottomConstraint = [clippedContainerView pinToSuperviewEdges:JRTViewPinBottomEdge inset:kFooterNavigationViewHeight][0];
+        self.clippedContainerView = clippedContainerView;
+        
+        // TODO: put collection view into clipped view
+        [self embedViewController:self.mapOverlayCollectionViewController intoView:self.clippedContainerView placementBlock:^(UIView *view) {
+            [view pinToSuperviewEdges:JRTViewPinTopEdge | JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0f];
+            [view constrainToHeight:expandedHeight];
         }];
-    
+        
         [self embedViewController:self.mapFooterNavigationViewController intoView:self.collectionContainerView placementBlock:^(UIView *view) {
             [view pinToSuperviewEdges:JRTViewPinBottomEdge inset:0.0f];
             [view pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0];
             [view constrainToHeight:kFooterNavigationViewHeight];
         }];
+        
+        NSAssert(self.collectionContainerHeightConstraint, @"Constraint is required");
+        NSAssert(self.clippedBottomConstraint, @"Constraint is required");
         
         [self hideCollectionContainerView:FALSE withCompletionBlock:nil];
     }
@@ -607,6 +628,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
         [self.mapOverlayCollectionViewController viewDidAppear:animated];
+        
         if (completionBlock) {
             completionBlock();
         }
@@ -2806,6 +2828,67 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     return customView && customView.tag == kTagSearchTextField;
 }
 
+- (void)pullUp:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    CGFloat duration = animated ? 0.75f : 0.0f;
+    CGFloat height = CGRectGetHeight(self.expandedReferenceView.frame);
+    
+    DebugLog(@"height: %f", height);
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.6f initialSpringVelocity:0.25f options:options animations:^{
+        self.collectionContainerHeightConstraint.constant = height;
+        self.clippedBottomConstraint.constant = 0.0f;
+        
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
+        
+        CGRect containerFrame = self.collectionContainerView.frame;
+        containerFrame.origin.y = self.topLayoutGuide.length;
+        self.collectionContainerView.frame = containerFrame;
+        
+        CGRect clippedFrame = self.clippedContainerView.frame;
+        clippedFrame.origin.y = 0.0f;
+        self.clippedContainerView.frame = clippedFrame;
+        
+        self.locationMenuBarViewController.view.alpha = 0.0f;
+    } completion:^(BOOL finished) {
+        _isMapOverlayExpanded = TRUE;
+        
+        [self.mapOverlayCollectionViewController expandedViewDidAppear];
+        
+        if (completionBlock) {
+            completionBlock();
+        }
+    }];
+}
+
+- (void)pullDown:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    CGFloat duration = animated ? 0.75f : 0.0f;
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.9f initialSpringVelocity:0.25f options:options animations:^{
+        self.collectionContainerHeightConstraint.constant = kCollectionContainerViewHeight;
+        self.clippedBottomConstraint.constant = kFooterNavigationViewHeight;
+        
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
+        
+        CGRect clippedFrame = self.clippedContainerView.frame;
+        clippedFrame.size.height = kCollectionViewHeight;
+        self.clippedContainerView.frame = clippedFrame;
+        
+        self.locationMenuBarViewController.view.alpha = 1.0f;
+    } completion:^(BOOL finished) {
+        _isMapOverlayExpanded = FALSE;
+        
+        [self.mapOverlayCollectionViewController expandedViewDidDisappear];
+        
+        if (completionBlock) {
+            completionBlock();
+        }
+    }];
+}
+
 #pragma mark - Processing Search Results
 #pragma mark -
 
@@ -2826,6 +2909,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self resetSearch];
         self.mode = SHModeSpecials;
         self.specialsSpotModels = spotlist.spots;
+        
+        [self pullDown:FALSE withCompletionBlock:nil];
         
         if (self.specialsSpotModels.count >= 5) {
             SpotModel *spot = self.specialsSpotModels[0];
@@ -2863,6 +2948,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.spotListRequest = request;
         self.mode = SHModeSpots;
         self.spotListModel = spotlistModel;
+        
+        [self pullDown:FALSE withCompletionBlock:nil];
         
         if (self.spotListModel.spots.count) {
             SpotModel *spot = self.spotListModel.spots[0];
@@ -2916,6 +3003,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.drinkListRequest = request;
         self.mode = mode;
         self.drinkListModel = drinklistModel;
+        
+        [self pullDown:FALSE withCompletionBlock:nil];
         
         if (self.drinkListModel.drinks.count) {
             DrinkModel *drink = self.drinkListModel.drinks[0];
@@ -3109,6 +3198,56 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }
     else {
         NSAssert(FALSE, @"Index should always be in bounds");
+    }
+}
+
+- (UIView *)mapOverlayCollectionViewControllerPrimaryView:(SHMapOverlayCollectionViewController *)mgr {
+    return self.expandedReferenceView;
+}
+
+- (void)mapOverlayCollectionViewControllerDidTapHeader:(SHMapOverlayCollectionViewController *)mgr {
+    if (_isMapOverlayExpanded) {
+        [self pullDown:TRUE withCompletionBlock:nil];
+    }
+    else {
+        [self pullUp:TRUE withCompletionBlock:nil];
+    }
+}
+
+- (void)mapOverlayCollectionViewControllerShouldCollapse:(SHMapOverlayCollectionViewController *)mgr {
+    if (_isMapOverlayExpanded) {
+        [self pullDown:TRUE withCompletionBlock:nil];
+    }
+}
+
+- (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didMoveToPoint:(CGPoint)point {
+    CGRect frame = self.clippedContainerView.frame;
+    CGFloat height = CGRectGetHeight(self.expandedReferenceView.frame) - point.y;
+    
+    DebugLog(@"y: %f", point.y);
+    
+    frame.origin.y = point.y;
+    
+    self.clippedContainerView.frame = frame;
+    self.collectionContainerHeightConstraint.constant = height;
+}
+
+- (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didStopMovingAtPoint:(CGPoint)point withVelocity:(CGPoint)velocity {
+    if (_isMapOverlayExpanded) {
+        if (point.y < 100.0f) {
+            [self pullUp:TRUE withCompletionBlock:nil];
+        }
+        else {
+            [self pullDown:TRUE withCompletionBlock:nil];
+        }
+    }
+    else {
+        if (point.y < (CGRectGetHeight(self.expandedReferenceView.frame) * 0.75f)) {
+            [self pullUp:TRUE withCompletionBlock:nil];
+        }
+        else {
+            [self pullDown:TRUE withCompletionBlock:nil];
+        }
     }
 }
 

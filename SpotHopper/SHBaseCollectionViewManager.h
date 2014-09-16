@@ -10,9 +10,17 @@
 
 @class SpotModel;
 
+@protocol SHBaseCollectionViewManagerDelegate;
+
 @interface SHBaseCollectionViewManager : NSObject
 
-- (void)renderCell:(UICollectionViewCell *)cell withSpot:(SpotModel *)spot atIndex:(NSUInteger)index;
+@property (weak, nonatomic) id<SHBaseCollectionViewManagerDelegate> delegate;
+
+- (void)expandedViewDidAppear;
+
+- (void)expandedViewDidDisappear;
+
+- (void)attachedPanGestureToCell:(UICollectionViewCell *)cell;
 
 - (UILabel *)labelInView:(UIView *)view withTag:(NSUInteger)tag;
 - (UIButton *)buttonInView:(UIView *)view withTag:(NSUInteger)tag;
@@ -20,5 +28,23 @@
 - (UIImageView *)imageViewInView:(UIView *)view withTag:(NSUInteger)tag;
 
 - (NSIndexPath *)indexPathForCurrentItemInCollectionView:(UICollectionView *)collectionView;
+
+@end
+
+@protocol SHBaseCollectionViewManagerDelegate <NSObject>
+
+@required
+
+- (UIView *)collectionViewManagerPrimaryView:(SHBaseCollectionViewManager *)mgr;
+
+@optional
+
+- (void)collectionViewManagerDidTapHeader:(SHBaseCollectionViewManager *)mgr;
+
+- (void)collectionViewManagerShouldCollapse:(SHBaseCollectionViewManager *)mgr;
+
+- (void)collectionViewManager:(SHBaseCollectionViewManager *)mgr didMoveToPoint:(CGPoint)point;
+
+- (void)collectionViewManager:(SHBaseCollectionViewManager *)mgr didStopMovingAtPoint:(CGPoint)point withVelocity:(CGPoint)velocity;
 
 @end

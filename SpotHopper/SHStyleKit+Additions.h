@@ -77,7 +77,8 @@ typedef enum {
     SHStyleKitDrawingPencilArrowRight,
     SHStyleKitDrawingPencilArrowLeft,
     SHStyleKitDrawingPencilArrowUp,
-    SHStyleKitDrawingPencilArrowDown
+    SHStyleKitDrawingPencilArrowDown,
+    SHStyleKitDrawingSwooshDial
 } SHStyleKitDrawing;
 
 #import "SHStyleKit.h"
@@ -108,6 +109,8 @@ typedef enum {
 + (UIImage *)drawImage:(SHStyleKitDrawing)drawing size:(CGSize)size;
 
 + (UIImage *)drawImage:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size;
+
++ (UIImage *)drawImage:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size position:(CGFloat)position;
 
 #pragma mark - Backgrounds
 #pragma mark -

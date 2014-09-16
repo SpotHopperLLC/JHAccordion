@@ -3,7 +3,7 @@
 platform :ios, '7.0'
 
 # Networking
-pod 'AFNetworking', '~> 2.0.0'
+pod 'AFNetworking', '~> 2.4'
 pod 'JSONAPI', :git => 'https://github.com/SpotHopperLLC/jsonapi-ios.git', :tag => 'SpotHopper-v2'
 pod 'BitlyForiOS', :git => 'https://github.com/brennanMKE/BitlyForiOS.git', :tag => '0.0.3'
 

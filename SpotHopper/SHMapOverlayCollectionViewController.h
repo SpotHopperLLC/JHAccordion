@@ -37,6 +37,10 @@
 
 - (void)displaySingleDrink:(DrinkModel *)drink;
 
+- (void)expandedViewDidAppear;
+
+- (void)expandedViewDidDisappear;
+
 @end
 
 @protocol SHMapOverlayCollectionDelegate <NSObject>
@@ -48,5 +52,21 @@
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didRequestShareSpecialForSpotAtIndex:(NSUInteger)index;
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didChangeToDrinkAtIndex:(NSUInteger)index;
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didSelectDrinkAtIndex:(NSUInteger)index;
+
+// support for pullup UI
+
+@required
+
+- (UIView *)mapOverlayCollectionViewControllerPrimaryView:(SHMapOverlayCollectionViewController *)mgr;
+
+@optional
+
+- (void)mapOverlayCollectionViewControllerDidTapHeader:(SHMapOverlayCollectionViewController *)mgr;
+
+- (void)mapOverlayCollectionViewControllerShouldCollapse:(SHMapOverlayCollectionViewController *)mgr;
+
+- (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didMoveToPoint:(CGPoint)point;
+
+- (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didStopMovingAtPoint:(CGPoint)point withVelocity:(CGPoint)velocity;
 
 @end

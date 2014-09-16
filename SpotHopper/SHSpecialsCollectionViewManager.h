@@ -40,7 +40,7 @@
 
 @end
 
-@protocol SHSpecialsCollectionViewManagerDelegate <NSObject>
+@protocol SHSpecialsCollectionViewManagerDelegate <SHBaseCollectionViewManagerDelegate>
 
 @optional
 

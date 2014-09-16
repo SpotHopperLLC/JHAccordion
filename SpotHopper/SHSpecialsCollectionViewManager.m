@@ -34,13 +34,17 @@
 #define kSpecialCellPositionLabel 10
 #define kSpecialCellTimeLabel 11
 
+#define kSpecialCellTableView 600
+
 #pragma mark - Class Extension
 #pragma mark -
 
-@interface SHSpecialsCollectionViewManager ()
+@interface SHSpecialsCollectionViewManager () <UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, weak) IBOutlet id<SHSpecialsCollectionViewManagerDelegate> delegate;
+
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
 
 @property (nonatomic, strong) NSArray *spots;
 
@@ -191,8 +195,9 @@
     if (indexPath.item < self.spots.count) {
         SpotModel *spot = self.spots[indexPath.item];
         [self renderCell:cell withSpot:spot atIndex:indexPath.item];
-
     }
+    
+    [self attachedPanGestureToCell:cell];
     
     return cell;
 }
@@ -203,12 +208,70 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     DebugLog(@"Selected item %lu", (long)indexPath.item);
     
-    if ([self.delegate respondsToSelector:@selector(specialsCollectionViewManager:didSelectSpotAtIndex:)]) {
-        [self.delegate specialsCollectionViewManager:self didSelectSpotAtIndex:indexPath.item];
+    if ([self.delegate respondsToSelector:@selector(collectionViewManagerDidTapHeader:)]) {
+        [self.delegate collectionViewManagerDidTapHeader:self];
+    }
+    
+//    if ([self.delegate respondsToSelector:@selector(specialsCollectionViewManager:didSelectSpotAtIndex:)]) {
+//        [self.delegate specialsCollectionViewManager:self didSelectSpotAtIndex:indexPath.item];
+//    }
+}
+
+#pragma mark - UITableViewDataSource
+#pragma mark -
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 21;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (indexPath.row == 0) {
+        static NSString *CellIdentifier = @"DialsCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        UIImageView *image1 = (UIImageView *)[cell viewWithTag:1];
+        UIImageView *image2 = (UIImageView *)[cell viewWithTag:2];
+        UIImageView *image3 = (UIImageView *)[cell viewWithTag:3];
+        
+        CGSize size = CGSizeMake(40, 40);
+        image1.image = [SHStyleKit drawImage:SHStyleKitDrawingSwooshDial color:SHStyleKitColorMyTintColor size:size position:0.25f];
+        image2.image = [SHStyleKit drawImage:SHStyleKitDrawingSwooshDial color:SHStyleKitColorMyTintColor size:size position:0.5f];
+        image3.image = [SHStyleKit drawImage:SHStyleKitDrawingSwooshDial color:SHStyleKitColorMyTintColor size:size position:0.85f];
+        
+        return cell;
+    }
+    
+    else {
+        static NSString *CellIdentifier = @"TableCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        return cell;
+        
     }
 }
 
+#pragma mark - UITableViewDelegate
+#pragma mark -
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [tableView deselectRowAtIndexPath:indexPath animated:TRUE];
+    });
+}
+
 #pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (scrollView.tag == kSpecialCellTableView) {
+        // if value is < -50 then trigger view to collapse view
+        if (scrollView.contentOffset.y < -50.0f) {
+            if ([self.delegate respondsToSelector:@selector(collectionViewManagerShouldCollapse:)]) {
+                [self.delegate collectionViewManagerShouldCollapse:self];
+            }
+        }
+    }
+}
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView == self.collectionView) {
@@ -219,6 +282,15 @@
                 [self reportedChangedIndex];
             }
         });
+    }
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    if (fabsf(velocity.x) > 0.1) {
+        CGFloat width = CGRectGetWidth(self.collectionView.frame);
+        CGFloat x = targetContentOffset->x;
+        x = roundf(x / width) * width;
+        targetContentOffset->x = x;
     }
 }
 
@@ -259,6 +331,8 @@
     UIButton *shareButton = [self buttonInView:cell withTag:kSpecialCellShareButton];
     UILabel *positionLabel = [self labelInView:cell withTag:kSpecialCellPositionLabel];
     
+    UITableView *tableView = (UITableView *)[cell viewWithTag:kSpecialCellTableView];
+    
     NSAssert(nameLabel, @"View must be defined");
     NSAssert(timeLabel, @"View must be defined");
     NSAssert(specialTextView, @"View must be defined");
@@ -266,6 +340,11 @@
     NSAssert(likeLabel, @"View must be defined");
     NSAssert(shareButton, @"View must be defined");
     NSAssert(positionLabel, @"View must be defined");
+    
+    NSAssert(tableView, @"View must be defined");
+    
+    tableView.dataSource = self;
+    tableView.delegate = self;
     
     [SHStyleKit setLabel:nameLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:timeLabel textColor:SHStyleKitColorMyTextColor];

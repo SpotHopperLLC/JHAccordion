@@ -34,7 +34,7 @@
 
 + (void)track:(NSString *)event {
     if ([SHAppConfiguration isTrackingEnabled]) {
-        DebugLog(@"event: %@", event);
+        //DebugLog(@"event: %@", event);
         [[Mixpanel sharedInstance] track:event];
     }
 }
@@ -44,8 +44,8 @@
 }
 
 + (void)track:(NSString *)event properties:(NSDictionary *)properties andTrackUserAction:(BOOL)trackUserAction {
-    DebugLog(@"Event: %@", event);
-    DebugLog(@"Properties: %@", properties);
+    //DebugLog(@"Event: %@", event);
+    //DebugLog(@"Properties: %@", properties);
     
     if ([SHAppConfiguration isTrackingEnabled]) {
         [[Mixpanel sharedInstance] track:event properties:properties];
@@ -203,7 +203,7 @@
     locationProperties[@"Center latitude"] = [NSNumber numberWithFloat:mapCenterLocation.coordinate.latitude];
     locationProperties[@"Center longitude"] = [NSNumber numberWithFloat:mapCenterLocation.coordinate.longitude];
     
-    DebugLog(@"locationProperties: %@", locationProperties);
+    //DebugLog(@"locationProperties: %@", locationProperties);
     
     return locationProperties;
 }
@@ -231,7 +231,7 @@
     }
     
     [[RavenClient sharedClient] captureMessage:logMessage level:kRavenLogLevelDebugError];
-    DebugLog(@"%@", logMessage);
+    //DebugLog(@"%@", logMessage);
 }
 
 @end
