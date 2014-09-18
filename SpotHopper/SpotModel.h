@@ -69,6 +69,7 @@
 
 @property (nonatomic, strong) MenuModel *menu;
 
+@property (nonatomic, readonly) NSString *hoursForToday;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 
 - (NSString *)addressCityState;
