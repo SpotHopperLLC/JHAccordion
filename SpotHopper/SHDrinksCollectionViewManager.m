@@ -16,6 +16,8 @@
 #import "BaseAlcoholModel.h"
 #import "AverageReviewModel.h"
 
+#import "SHCollectionViewTableManager.h"
+
 #import "SHStyleKit+Additions.h"
 #import "UIImageView+AFNetworking.h"
 #import "NetworkHelper.h"
@@ -46,12 +48,12 @@
 #define kDrinkCellFindSimilarButton 12
 #define kDrinkCellReviewItButton 13
 
-#define kDrinkCellTableView 600
+#define kDrinkCellTableContainerView 600
 
 #pragma mark - Class Extension
 #pragma mark -
 
-@interface SHDrinksCollectionViewManager () <UICollectionViewDataSource, UICollectionViewDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface SHDrinksCollectionViewManager () <SHCollectionViewTableManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, weak) IBOutlet id<SHDrinksCollectionViewManagerDelegate> delegate;
 
@@ -167,6 +169,15 @@
     }
 }
 
+#pragma mark - SHCollectionViewTableManagerDelegate
+#pragma mark -
+
+- (void)collectionViewTableManagerShouldCollapse:(SHCollectionViewTableManager *)mgr {
+    if ([self.delegate respondsToSelector:@selector(collectionViewManagerShouldCollapse:)]) {
+        [self.delegate collectionViewManagerShouldCollapse:self];
+    }
+}
+
 #pragma mark - UICollectionViewDataSource
 #pragma mark -
 
@@ -176,8 +187,28 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kDrinkCellIdentifier forIndexPath:indexPath];
+    
+    UIView *selectedBackgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+    selectedBackgroundView.backgroundColor = [UIColor clearColor];
+    cell.selectedBackgroundView = selectedBackgroundView;
+    
     if (indexPath.item < self.drinkList.drinks.count) {
         DrinkModel *drink = self.drinkList.drinks[indexPath.item];
+        
+        UIView *tableContainerView = [cell viewWithTag:kDrinkCellTableContainerView];
+        UITableView *tableView = nil;
+        if (!tableContainerView.subviews.count) {
+            tableView = [self embedTableViewInSuperView:tableContainerView];
+        }
+        else {
+            tableView = (UITableView *)tableContainerView.subviews[0];
+        }
+        
+        SHCollectionViewTableManager *tableManager = [[SHCollectionViewTableManager alloc] init];
+        tableManager.delegate = self;
+        [tableManager manageTableView:tableView forDrink:drink];
+        [self addTableManager:tableManager forIndexPath:indexPath];
+        
         [self renderCell:cell withDrink:drink atIndex:indexPath.item];
     }
     
@@ -205,61 +236,8 @@
     return CGSizeMake(CGRectGetWidth(collectionView.frame), CGRectGetHeight(collectionView.frame));
 }
 
-#pragma mark - UITableViewDataSource
-#pragma mark -
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 21;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (indexPath.row == 0) {
-        static NSString *CellIdentifier = @"DialsCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-        
-        UIImageView *image1 = (UIImageView *)[cell viewWithTag:1];
-        UIImageView *image2 = (UIImageView *)[cell viewWithTag:2];
-        UIImageView *image3 = (UIImageView *)[cell viewWithTag:3];
-        
-        CGSize size = CGSizeMake(40, 40);
-        image1.image = [SHStyleKit drawImage:SHStyleKitDrawingSwooshDial color:SHStyleKitColorMyTintColor size:size position:0.25f];
-        image2.image = [SHStyleKit drawImage:SHStyleKitDrawingSwooshDial color:SHStyleKitColorMyTintColor size:size position:0.5f];
-        image3.image = [SHStyleKit drawImage:SHStyleKitDrawingSwooshDial color:SHStyleKitColorMyTintColor size:size position:0.85f];
-        
-        return cell;
-    }
-    
-    else {
-        static NSString *CellIdentifier = @"TableCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-        
-        return cell;
-        
-    }
-}
-
-#pragma mark - UITableViewDelegate
-#pragma mark -
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        [tableView deselectRowAtIndexPath:indexPath animated:TRUE];
-    });
-}
-
 #pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (scrollView.tag == kDrinkCellTableView) {
-        // if value is < -50 then trigger view to collapse view
-        if (scrollView.contentOffset.y < -50.0f) {
-            if ([self.delegate respondsToSelector:@selector(collectionViewManagerShouldCollapse:)]) {
-                [self.delegate collectionViewManagerShouldCollapse:self];
-            }
-        }
-    }
-}
+#pragma mark -
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView == self.collectionView) {
@@ -300,8 +278,6 @@
     UIButton *findSimilarButton = [self buttonInView:cell withTag:kDrinkCellFindSimilarButton];
     UIButton *reviewItButton = [self buttonInView:cell withTag:kDrinkCellReviewItButton];
     
-    UITableView *tableView = (UITableView *)[cell viewWithTag:kDrinkCellTableView];
-    
     NSAssert(drinkImageView, @"View must be defined");
     NSAssert(nameLabel, @"View must be defined");
     NSAssert(breweryLabel, @"View must be defined");
@@ -315,11 +291,6 @@
     NSAssert(findSimilarButton, @"View must be defined");
     NSAssert(reviewItButton, @"View must be defined");
     
-    NSAssert(tableView, @"View must be defined");
-    
-    tableView.dataSource = self;
-    tableView.delegate = self;
-
     [SHStyleKit setLabel:nameLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:breweryLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setLabel:styleLabel textColor:SHStyleKitColorMyTextColor];

@@ -97,7 +97,7 @@
         }
         else {
             [self showHUD:@"Finding Best Matches"];
-            [self.slidersSearchTableViewManager fetchDrinkListResultsWithListName:listName withCompletionBlock:^(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel) {
+            [self.slidersSearchTableViewManager fetchDrinkListResultsWithListName:listName basedOnSliders:TRUE withCompletionBlock:^(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel) {
                 [self hideHUD];
                 if (errorModel) {
                     [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
@@ -276,6 +276,26 @@
     if (self.searchButton.hidden) {
         [self showSearchButton:TRUE withCompletionBlock:nil];
     }
+}
+
+- (void)slidersSearchTableViewManagerDidSelectHighestRated:(SHSlidersSearchTableViewManager *)manager {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    // TODO: prepare Highest Rated drinklist
+    [self showHUD:@"Finding Best Matches"];
+    [self.slidersSearchTableViewManager fetchDrinkListResultsWithListName:@"Highest Rated" basedOnSliders:FALSE withCompletionBlock:^(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel) {
+        [self hideHUD];
+
+        if (errorModel) {
+            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+            [self showAlert:@"Oops" message:errorModel.human];
+        }
+        else {
+            if ([self.delegate respondsToSelector:@selector(slidersSearchViewController:didPrepareDrinklist:withRequest:forMode:)]) {
+                [self.delegate slidersSearchViewController:self didPrepareDrinklist:drinkListModel withRequest:request forMode:self.mode];
+            }
+        }
+    }];
 }
 
 - (void)slidersSearchTableViewManagerWillAnimate:(SHSlidersSearchTableViewManager *)manager {

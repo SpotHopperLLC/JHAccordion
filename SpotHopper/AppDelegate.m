@@ -74,9 +74,6 @@
     
     [SHModelResourceManager prepareResources];
     
-    NSLog(@"Linker: %@", [JSONAPIResourceLinker defaultInstance]);
-    NSLog(@"Modeler: %@", [JSONAPIResourceModeler defaultInstance]);
-    
 #ifndef NDEBUG
     
     NSString *drinksType = [[JSONAPIResourceLinker defaultInstance] linkedType:@"drinks"];

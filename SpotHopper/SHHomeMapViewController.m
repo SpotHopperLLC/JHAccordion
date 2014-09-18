@@ -111,6 +111,8 @@
 #define kResetCooldownPeriodInSeconds 1200
 #endif
 
+#define kTagCollectionsTableView 100
+
 NSString* const HomeMapToSpotProfile = @"HomeMapToSpotProfile";
 NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
@@ -209,6 +211,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 @property (readonly, nonatomic) CGRect visibleMapFrame;
 @property (readonly, nonatomic) MKCoordinateRegion visibleMapRegion;
 @property (readonly, nonatomic) CLLocationCoordinate2D visibleMapCenterCoordinate;
+@property (readonly, nonatomic) CLLocationDistance searchRadius;
 
 @property (readonly, nonatomic) BOOL isSearchTextFieldVisible;
 
@@ -329,7 +332,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             [self repositionOnCurrentDeviceLocation:TRUE];
         });
     }
-    else if ([self searchRadius] > kMetersPerMile * 100) {
+    else if (self.searchRadius > kMetersPerMile * 100) {
         // 100 miles
         [self repositionOnCurrentDeviceLocation:TRUE];
     }
@@ -455,6 +458,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
     if (!self.collectionContainerView && !self.mapOverlayCollectionViewController.view.superview && !self.mapFooterNavigationViewController.view.superview) {
         UIView *collectionContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), kCollectionContainerViewHeight)];
+        collectionContainerView.tag = 100;
         collectionContainerView.translatesAutoresizingMaskIntoConstraints = NO;
         collectionContainerView.backgroundColor = [UIColor clearColor];
         //[self addShadowToView:collectionContainerView];
@@ -466,8 +470,16 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.collectionContainerHeightConstraint = [collectionContainerView constrainToHeight:kCollectionContainerViewHeight];
         self.collectionContainerView = collectionContainerView;
         
-        // TODO: add clipped view
+        // top shadow (-10 origin)
+        CGSize topShadowSize = CGSizeMake(CGRectGetWidth(self.view.frame), 10.0f);
+        UIImageView *topShadowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, -10.0f, topShadowSize.width, topShadowSize.height)];
+        topShadowImageView.backgroundColor = [UIColor clearColor];
+        UIImage *topShadowImage = [SHStyleKit drawImage:SHStyleKitDrawingTopShadow size:topShadowSize];
+        topShadowImageView.image = topShadowImage;
+        [collectionContainerView addSubview:topShadowImageView];
+        
         UIView *clippedContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), kCollectionViewHeight)];
+        clippedContainerView.tag = 200;
         clippedContainerView.translatesAutoresizingMaskIntoConstraints = NO;
         clippedContainerView.clipsToBounds = TRUE;
         clippedContainerView.backgroundColor = [UIColor clearColor];
@@ -477,12 +489,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.clippedBottomConstraint = [clippedContainerView pinToSuperviewEdges:JRTViewPinBottomEdge inset:kFooterNavigationViewHeight][0];
         self.clippedContainerView = clippedContainerView;
         
-        // TODO: put collection view into clipped view
+        self.mapOverlayCollectionViewController.view.tag = 300;
         [self embedViewController:self.mapOverlayCollectionViewController intoView:self.clippedContainerView placementBlock:^(UIView *view) {
             [view pinToSuperviewEdges:JRTViewPinTopEdge | JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0f];
             [view constrainToHeight:expandedHeight];
         }];
         
+        self.mapFooterNavigationViewController.view.tag = 400;
         [self embedViewController:self.mapFooterNavigationViewController intoView:self.collectionContainerView placementBlock:^(UIView *view) {
             [view pinToSuperviewEdges:JRTViewPinBottomEdge inset:0.0f];
             [view pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0];
@@ -1296,6 +1309,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     self.selectedSpot = nil;
     self.selectedDrink = nil;
     
+    [self hideSearch:FALSE withCompletionBlock:nil];
     [self hideStatus:TRUE withCompletionBlock:nil];
 }
 
@@ -1380,12 +1394,12 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                     CLLocation *nearestLocation = [[CLLocation alloc] initWithLatitude:nearestSpot.latitude.floatValue longitude:nearestSpot.longitude.floatValue];
                     CLLocationDistance meters = [self.currentLocation distanceFromLocation:nearestLocation];
                     if (meters < 150) {
-                        DrinkListRequest *request = [self.drinkListRequest copy];
-                        request.name = kDrinkListModelDefaultName;
+                        DrinkListRequest *request = self.drinkListRequest.copy;
+                        //request.name = kDrinkListModelDefaultName;
                         request.drinkListId = nil;
                         request.spotId = nearestSpot.ID;
-                        request.coordinate = [self visibleMapCenterCoordinate];
-                        request.radius = [self searchRadius];
+                        request.coordinate = self.visibleMapCenterCoordinate;
+                        request.radius = self.searchRadius;
                         
                         [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
                             if (!self.isScopedToSpot && drinkListModel.drinks.count) {
@@ -1583,8 +1597,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     DrinkListRequest *request = [[DrinkListRequest alloc] init];
     request.drinkId = drink.ID;
-    request.coordinate = [self visibleMapCenterCoordinate];
-    request.radius = [self searchRadius];
+    request.coordinate = self.visibleMapCenterCoordinate;
+    request.radius = self.searchRadius;
     self.drinkListRequest = request;
     
     if (!self.homeNavigationViewController.view.hidden) {
@@ -1704,10 +1718,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)fetchSpecialsWithCompletionBlock:(void (^)())completionBlock {
-    [self addSearchAreaCircleWithCoordinate:self.mapView.centerCoordinate radius:[self searchRadius]];
+    [self addSearchAreaCircleWithCoordinate:self.mapView.centerCoordinate radius:self.searchRadius];
     
     [self hideBottomViewWithCompletionBlock:^{
-        [SpotModel fetchSpecialsSpotlistForCoordinate:[self visibleMapCenterCoordinate] radius:[self searchRadius] success:^(SpotListModel *spotlist) {
+        [SpotModel fetchSpecialsSpotlistForCoordinate:self.visibleMapCenterCoordinate radius:self.searchRadius success:^(SpotListModel *spotlist) {
             [self processSpecialsSpotlist:spotlist];
             
             if (completionBlock) {
@@ -1937,7 +1951,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     // if all annotations are in the happy region then repositioning is not necessary
     
     if (!forced) {
-        CLLocationDistance radius = [self searchRadius];
+        CLLocationDistance radius = self.searchRadius;
         if (radius < kMetersPerMile * 60) {
             CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:self.visibleMapCenterCoordinate.latitude longitude:self.visibleMapCenterCoordinate.longitude];
             
@@ -2009,7 +2023,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)repositionMapOnAnnotations:(NSArray *)annotations animated:(BOOL)animated {
     // if all annotations are in the happy region then repositioning is not necessary
-    CLLocationDistance radius = [self searchRadius];
+    CLLocationDistance radius = self.searchRadius;
     if (radius < kMetersPerMile * 60) {
         BOOL needsToReposition = FALSE;
         CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:self.visibleMapCenterCoordinate.latitude longitude:self.visibleMapCenterCoordinate.longitude];
@@ -2107,6 +2121,11 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     if (!self.homeNavigationViewController.view.hidden) {
         return self.homeNavigationViewController.view.frame;
     }
+    else if (_isMapOverlayExpanded) {
+        CGRect frame = self.collectionContainerView.frame;
+        frame.size.height = kCollectionContainerViewHeight;
+        return frame;
+    }
     else {
         return self.collectionContainerView.frame;
     }
@@ -2141,13 +2160,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (MKCoordinateRegion)visibleMapRegion {
-    MKCoordinateRegion region = [self.mapView convertRect:[self visibleMapFrame] toRegionFromView:self.mapView];
+    MKCoordinateRegion region = [self.mapView convertRect:self.visibleMapFrame toRegionFromView:self.mapView];
     
     return region;
 }
 
 - (CLLocationCoordinate2D)visibleMapCenterCoordinate {
-    MKCoordinateRegion visibleRegion = [self visibleMapRegion];
+    MKCoordinateRegion visibleRegion = self.visibleMapRegion;
 
     return visibleRegion.center;
 }
@@ -2170,7 +2189,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (CLLocationDistance)searchRadius {
-    MKCoordinateRegion visibleRegion = [self visibleMapRegion];
+    MKCoordinateRegion visibleRegion = self.visibleMapRegion;
     CLLocationCoordinate2D visibleCenter = visibleRegion.center;
 
     CLLocation *boundaryLocation = [[CLLocation alloc] initWithLatitude:(visibleCenter.latitude + visibleRegion.span.latitudeDelta) longitude:visibleCenter.longitude];
@@ -2312,10 +2331,26 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     else if (self.drinkListRequest) {
         DrinkListRequest *request = [self.drinkListRequest copy];
         request.spotId = nil;
-        request.coordinate = [self visibleMapCenterCoordinate];
-        request.radius = [self searchRadius];
-        
-        if (!self.drinkListModel.ID && self.selectedDrink) {
+        request.coordinate = self.visibleMapCenterCoordinate;
+        request.radius = self.searchRadius;
+
+        if (!self.drinkListModel.ID && [@"Highest Rated" isEqualToString:request.name]) {
+            [DrinkListModel fetchHighestRatedDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
+                [self processDrinklistModel:drinkListModel withRequest:request forMode:self.mode];
+                
+                if (completionBlock) {
+                    completionBlock();
+                }
+            } failure:^(ErrorModel *errorModel) {
+                [self oops:errorModel caller:_cmd message:@"There was a problem while fetching drinks for this spot. Please try again."];
+                [self restoreNavigationIfNeeded];
+                
+                if (completionBlock) {
+                    completionBlock();
+                }
+            }];
+        }
+        else if (!self.drinkListModel.ID && self.selectedDrink) {
             [self displaySingleDrink:self.selectedDrink];
             
             if (completionBlock) {
@@ -2351,8 +2386,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }
     else if (self.spotListRequest) {
         SpotListRequest *request = [self.spotListRequest copy];
-        request.coordinate = [self visibleMapCenterCoordinate];
-        request.radius = [self searchRadius];
+        request.coordinate = self.visibleMapCenterCoordinate;
+        request.radius = self.searchRadius;
         
         if (!self.spotListModel.ID && self.selectedSpot) {
             [self displaySingleSpot:self.selectedSpot];
@@ -2431,7 +2466,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)flashMapBoxing {
-    CGRect visibleFrame = [self.mapView convertRegion:[self visibleMapRegion] toRectToView:self.mapView];
+    CGRect visibleFrame = [self.mapView convertRegion:self.visibleMapRegion toRectToView:self.mapView];
     
     __block UIView *markerView = [[UIView alloc] initWithFrame:visibleFrame];
     markerView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.75f];
@@ -2461,7 +2496,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self.locationMenuBarViewController updateLocationTitle:@"Where are you at?"];
     }
     else {
-        CLLocationCoordinate2D coordinate = [self visibleMapCenterCoordinate];
+        CLLocationCoordinate2D coordinate = self.visibleMapCenterCoordinate;
         CLLocation *location = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
         
         CLGeocoder *geocoder = [[CLGeocoder alloc] init];
@@ -2701,8 +2736,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             
             DrinkListRequest *request = [[DrinkListRequest alloc] init];
             request.name = name;
-            request.coordinate = [self visibleMapCenterCoordinate];
-            request.radius = [self searchRadius];
+            request.coordinate = self.visibleMapCenterCoordinate;
+            request.radius = self.searchRadius;
             request.sliders = drinkModel.averageReview.sliders;
             request.drinkId = drinkModel.ID;
             request.drinkTypeId = drinkModel.drinkType.ID;
@@ -2744,8 +2779,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [[spot fetchSpot] then:^(SpotModel *spotModel) {
             SpotListRequest *request = [[SpotListRequest alloc] init];
             request.name = [NSString stringWithFormat:@"Similar to %@", spotModel.name];
-            request.coordinate = [self visibleMapCenterCoordinate];
-            request.radius = [self searchRadius];
+            request.coordinate = self.visibleMapCenterCoordinate;
+            request.radius = self.searchRadius;
             request.sliders = spotModel.averageReview.sliders;
             request.spotId = spotModel.ID;
             request.spotTypeId = spotModel.spotType.ID;
@@ -2832,7 +2867,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     CGFloat duration = animated ? 0.75f : 0.0f;
     CGFloat height = CGRectGetHeight(self.expandedReferenceView.frame);
     
-    DebugLog(@"height: %f", height);
+    //DebugLog(@"height: %f", height);
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.6f initialSpringVelocity:0.25f options:options animations:^{
@@ -3187,6 +3222,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didChangeToDrinkAtIndex:(NSUInteger)index {
     if (self.drinkListModel.drinks.count && index < self.drinkListModel.drinks.count) {
         DrinkModel *drink = self.drinkListModel.drinks[index];
+        DebugLog(@"drink id: %@", drink.ID);
         [self updateMapWithCurrentDrink:drink];
     }
 }
@@ -3205,6 +3241,28 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     return self.expandedReferenceView;
 }
 
+- (UITableView *)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)mgr embedTableViewInSuperview:(UIView *)superview {
+    UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"CollectionsTableVC"];
+    UITableView *tableView = (UITableView *)[vc.view viewWithTag:kTagCollectionsTableView];
+    
+    NSAssert([tableView isKindOfClass:[UITableView class]], @"Table View is required");
+    
+    [tableView removeFromSuperview];
+    tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    [superview addSubview:tableView];
+    [self fillSubview:tableView inSuperView:superview];
+    
+//    vc.view.translatesAutoresizingMaskIntoConstraints = NO;
+//    [self addChildViewController:vc];
+//    [superview addSubview:vc.view];
+
+//    if (tableView) {
+//        [self embedViewController:vc intoView:superview];
+//    }
+    
+    return tableView;
+}
+
 - (void)mapOverlayCollectionViewControllerDidTapHeader:(SHMapOverlayCollectionViewController *)mgr {
     if (_isMapOverlayExpanded) {
         [self pullDown:TRUE withCompletionBlock:nil];
@@ -3221,15 +3279,23 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didMoveToPoint:(CGPoint)point {
-    CGRect frame = self.clippedContainerView.frame;
     CGFloat height = CGRectGetHeight(self.expandedReferenceView.frame) - point.y;
     
-    DebugLog(@"y: %f", point.y);
+    CGRect containerFrame = self.collectionContainerView.frame;
+    containerFrame.origin.y = point.y;
+    containerFrame.size.height = height;
+    self.collectionContainerView.frame = containerFrame;
     
-    frame.origin.y = point.y;
+    CGRect clippedFrame = self.clippedContainerView.frame;
+    clippedFrame.origin.y = 0.0f;
+    clippedFrame.size.height = height;
+    self.clippedContainerView.frame = clippedFrame;
     
-    self.clippedContainerView.frame = frame;
     self.collectionContainerHeightConstraint.constant = height;
+    self.clippedBottomConstraint.constant = kFooterNavigationViewHeight;
+    
+    [self.view setNeedsLayout];
+    [self.view layoutIfNeeded];
 }
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didStopMovingAtPoint:(CGPoint)point withVelocity:(CGPoint)velocity {
@@ -3314,11 +3380,11 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (CLLocationCoordinate2D)searchCoordinateForSlidersSearchViewController:(SHSlidersSearchViewController *)vc {
-    return [self visibleMapCenterCoordinate];
+    return self.visibleMapCenterCoordinate;
 }
 
 - (CLLocationDistance)searchRadiusForSlidersSearchViewController:(SHSlidersSearchViewController *)vc {
-    return [self searchRadius];
+    return self.searchRadius;
 }
 
 - (SpotModel *)slidersSearchViewControllerScopedSpot:(SHSlidersSearchViewController *)vc {
@@ -3675,7 +3741,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     CLLocation *mapCenterLocation = [[CLLocation alloc] initWithLatitude:self.mapView.centerCoordinate.latitude longitude:self.mapView.centerCoordinate.longitude];
     [TellMeMyLocation setMapCenterLocation:mapCenterLocation];
     
-    DebugLog(@"[regions addObject:@{@\"name\" : @\"%@\", @\"latitude\": [NSNumber numberWithDouble:%ff], @\"longitude\": [NSNumber numberWithDouble:%ff], @\"radius\": [NSNumber numberWithDouble:%ff], @\"weight\" : [NSNumber numberWithInteger:5]}];", self.locationMenuBarViewController.locationTitle, self.visibleMapCenterCoordinate.latitude, self.visibleMapCenterCoordinate.longitude, [self searchRadius]);
+    DebugLog(@"[regions addObject:@{@\"name\" : @\"%@\", @\"latitude\": [NSNumber numberWithDouble:%ff], @\"longitude\": [NSNumber numberWithDouble:%ff], @\"radius\": [NSNumber numberWithDouble:%ff], @\"weight\" : [NSNumber numberWithInteger:5]}];", self.locationMenuBarViewController.locationTitle, self.visibleMapCenterCoordinate.latitude, self.visibleMapCenterCoordinate.longitude, self.searchRadius);
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [self updateLocationName];
@@ -3689,7 +3755,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self.mapView removeAnnotations:self.mapView.annotations];
         // add an annotation for the current visible map center
         MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
-        point.coordinate = [self visibleMapCenterCoordinate];
+        point.coordinate = self.visibleMapCenterCoordinate;
         [self.mapView addAnnotation:point];
     }
 }

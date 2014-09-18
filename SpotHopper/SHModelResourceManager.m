@@ -44,6 +44,10 @@
     [self linkResources];
     [self mapModels];
     [self registerFormatters];
+    
+#ifndef NDEBUG
+    [JSONAPI setIsDebuggingEnabled:TRUE];
+#endif
 }
 
 #pragma mark - Private
@@ -60,6 +64,7 @@
     [linker link:@"drink_subtype" toLinkedType:@"drink_subtypes"];
     [linker link:@"drink_list" toLinkedType:@"drink_lists"];
     [linker link:@"image" toLinkedType:@"images"];
+    [linker link:@"image" toLinkedType:@"highlight_images"];
     [linker link:@"live_special" toLinkedType:@"live_specials"];
     [linker link:@"menu_item" toLinkedType:@"menu_items"];
     [linker link:@"menu_type" toLinkedType:@"menu_types"];
@@ -89,6 +94,7 @@
     [modeler useResource:[DrinkListModel class] toLinkedType:@"drink_lists"];
     [modeler useResource:[ErrorModel class] toLinkedType:@"errors"];
     [modeler useResource:[ImageModel class] toLinkedType:@"images"];
+    [modeler useResource:[ImageModel class] toLinkedType:@"highlight_images"];
     [modeler useResource:[LiveSpecialModel class] toLinkedType:@"live_specials"];
     [modeler useResource:[MenuItemModel class] toLinkedType:@"menu_items"];
     [modeler useResource:[MenuTypeModel class] toLinkedType:@"menu_types"];
@@ -108,6 +114,7 @@
     [modeler useResource:[UserModel class] toLinkedType:@"users"];
 }
 
+// Registers formatters to loading values
 + (void)registerFormatters {
     NSDateFormatter *dateFormatterSeconds = [[NSDateFormatter alloc] init];
     [dateFormatterSeconds setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];

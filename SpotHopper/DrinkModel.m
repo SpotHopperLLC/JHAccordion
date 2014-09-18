@@ -258,7 +258,8 @@
 }
 
 - (void)fetchDrink:(void(^)(DrinkModel *drinkModel))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
-    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drinks/%ld", (long)[self.ID integerValue] ] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    DebugLog(@"drink: %@", self.ID);
+    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drinks/%ld", (long)[self.ID integerValue]] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
@@ -466,6 +467,7 @@
 - (NSDictionary *)mapKeysToProperties {
     return @{
              @"name" : @"name",
+             @"description" : @"descriptionText",
              @"image_url" : @"imageUrl",
              @"links.drink_type" : @"drinkType",
              @"links.drink_subtype" : @"drinkSubtype",
@@ -483,7 +485,8 @@
              @"links.average_review" : @"averageReview",
              @"match" : @"match",
              @"links.base_alcohols" : @"baseAlochols",
-             @"links.images" : @"images"
+             @"links.images" : @"images",
+             @"links.highlight_images" : @"highlightImages"
              };
 }
 

@@ -78,7 +78,8 @@ typedef enum {
     SHStyleKitDrawingPencilArrowLeft,
     SHStyleKitDrawingPencilArrowUp,
     SHStyleKitDrawingPencilArrowDown,
-    SHStyleKitDrawingSwooshDial
+    SHStyleKitDrawingSwooshDial,
+    SHStyleKitDrawingTopShadow
 } SHStyleKitDrawing;
 
 #import "SHStyleKit.h"

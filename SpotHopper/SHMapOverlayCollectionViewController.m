@@ -286,6 +286,14 @@ typedef enum {
     return nil;
 }
 
+- (UITableView *)collectionViewManager:(SHBaseCollectionViewManager *)mgr embedTableViewInSuperview:(UIView *)superview {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:embedTableViewInSuperview:)]) {
+        return [self.delegate mapOverlayCollectionViewController:self embedTableViewInSuperview:superview];
+    }
+    
+    return nil;
+}
+
 - (void)collectionViewManagerDidTapHeader:(SHBaseCollectionViewManager *)mgr {
     if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewControllerDidTapHeader:)]) {
         [self.delegate mapOverlayCollectionViewControllerDidTapHeader:self];

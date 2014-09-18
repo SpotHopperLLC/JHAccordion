@@ -34,7 +34,7 @@
 
 - (void)fetchSpotListResultsWithListName:(NSString *)listName withCompletionBlock:(void (^)(SpotListModel *spotListModel, SpotListRequest *request, ErrorModel *errorModel))completionBlock;
 
-- (void)fetchDrinkListResultsWithListName:(NSString *)listName withCompletionBlock:(void (^)(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel))completionBlock;
+- (void)fetchDrinkListResultsWithListName:(NSString *)listName basedOnSliders:(BOOL)basedOnSliders withCompletionBlock:(void (^)(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel))completionBlock;
 
 @end
 
@@ -47,6 +47,8 @@
 @optional
 
 - (void)slidersSearchTableViewManagerDidChangeSlider:(SHSlidersSearchTableViewManager *)manager;
+
+- (void)slidersSearchTableViewManagerDidSelectHighestRated:(SHSlidersSearchTableViewManager *)manager;
 
 - (void)slidersSearchTableViewManagerWillAnimate:(SHSlidersSearchTableViewManager *)manager;
 - (void)slidersSearchTableViewManagerDidAnimate:(SHSlidersSearchTableViewManager *)manager;

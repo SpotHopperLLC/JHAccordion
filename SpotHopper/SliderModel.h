@@ -18,4 +18,6 @@
 @property (nonatomic, assign) BOOL starred;
 @property (nonatomic, strong) SliderTemplateModel *sliderTemplate;
 
+- (NSComparisonResult)compare:(SliderModel *)otherSlider;
+
 @end

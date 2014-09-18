@@ -17,7 +17,7 @@
 
 #define kNotReachableErrorsDictionary @{ @"errors" : @[ @{ @"human" : @"Network connection is down." } ] }
 
-#define kTimeoutInterval 20
+#define kTimeoutInterval 25
 
 #import "ClientSessionManager.h"
 

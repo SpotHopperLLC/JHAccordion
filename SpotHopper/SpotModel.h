@@ -45,6 +45,7 @@
 @interface SpotModel : SHJSONAPIResource
 
 @property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *descriptionText;
 @property (nonatomic, strong) NSString *imageUrl;
 @property (nonatomic, strong) NSString *address;
 @property (nonatomic, strong) NSString *city;
@@ -60,6 +61,7 @@
 @property (nonatomic, strong) AverageReviewModel *averageReview;
 @property (nonatomic, strong) NSNumber *match;
 @property (nonatomic, strong) NSArray *images;
+@property (nonatomic, strong) NSArray *highlightImages;
 @property (nonatomic, strong) NSArray *dailySpecials;
 @property (nonatomic, strong) NSArray *liveSpecials;
 @property (nonatomic, strong) NSArray *specials;

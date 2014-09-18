@@ -1275,6 +1275,10 @@
 		269E5D8719BA70A800A228C7 /* img_share_background_iphone5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 269E5D3919BA70A800A228C7 /* img_share_background_iphone5@2x.png */; };
 		269E5D8819BA70A800A228C7 /* img_share_background_iphone5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 269E5D3919BA70A800A228C7 /* img_share_background_iphone5@2x.png */; };
 		269E5D8919BA70A800A228C7 /* img_share_background_iphone5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 269E5D3919BA70A800A228C7 /* img_share_background_iphone5@2x.png */; };
+		269E849E19CA383100F201B9 /* SHCollectionViewTableManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 269E849D19CA383100F201B9 /* SHCollectionViewTableManager.m */; };
+		269E849F19CA383100F201B9 /* SHCollectionViewTableManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 269E849D19CA383100F201B9 /* SHCollectionViewTableManager.m */; };
+		269E84A019CA383100F201B9 /* SHCollectionViewTableManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 269E849D19CA383100F201B9 /* SHCollectionViewTableManager.m */; };
+		269E84A119CA383100F201B9 /* SHCollectionViewTableManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 269E849D19CA383100F201B9 /* SHCollectionViewTableManager.m */; };
 		26A7E3661922CE8000FF7B88 /* SpotHopper.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26A7E3651922CE8000FF7B88 /* SpotHopper.storyboard */; };
 		26A7E3671922CE8000FF7B88 /* SpotHopper.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26A7E3651922CE8000FF7B88 /* SpotHopper.storyboard */; };
 		26A7E3691922CE8000FF7B88 /* SpotHopper.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26A7E3651922CE8000FF7B88 /* SpotHopper.storyboard */; };
@@ -1711,6 +1715,7 @@
 		2623801F1986F83500F0940A /* Tracker+Events.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Tracker+Events.m"; sourceTree = "<group>"; };
 		262A65B0195893F800A4DACD /* MenuModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuModel.h; sourceTree = "<group>"; };
 		262A65B1195893F800A4DACD /* MenuModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuModel.m; sourceTree = "<group>"; };
+		262B958719CA145200C2B1CC /* SpotHopperProduction.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SpotHopperProduction.entitlements; sourceTree = SOURCE_ROOT; };
 		2633CCEE19A53E7600764036 /* LikeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LikeModel.h; sourceTree = "<group>"; };
 		2633CCEF19A53E7600764036 /* LikeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LikeModel.m; sourceTree = "<group>"; };
 		2640B00D193E6C2D00978725 /* SHDrinksCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHDrinksCollectionViewManager.h; path = SpotHopper/SHDrinksCollectionViewManager.h; sourceTree = "<group>"; };
@@ -1824,6 +1829,8 @@
 		269E5D3719BA70A800A228C7 /* img_share_background_iphone4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_share_background_iphone4@2x.png"; sourceTree = "<group>"; };
 		269E5D3819BA70A800A228C7 /* img_share_background_iphone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_share_background_iphone5.png; sourceTree = "<group>"; };
 		269E5D3919BA70A800A228C7 /* img_share_background_iphone5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_share_background_iphone5@2x.png"; sourceTree = "<group>"; };
+		269E849C19CA383100F201B9 /* SHCollectionViewTableManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHCollectionViewTableManager.h; sourceTree = "<group>"; };
+		269E849D19CA383100F201B9 /* SHCollectionViewTableManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHCollectionViewTableManager.m; sourceTree = "<group>"; };
 		26A7E3651922CE8000FF7B88 /* SpotHopper.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SpotHopper.storyboard; sourceTree = "<group>"; };
 		26A7E3811922D20700FF7B88 /* SHStyleKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHStyleKit.h; path = SpotHopper/SHStyleKit.h; sourceTree = "<group>"; };
 		26A7E3821922D20700FF7B88 /* SHStyleKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHStyleKit.m; path = SpotHopper/SHStyleKit.m; sourceTree = "<group>"; };
@@ -2175,6 +2182,7 @@
 				26B6768218E9F61400DAD113 /* SpotHopperProduction-Info.plist */,
 				0386646F186D352400985CEC /* InfoPlist.strings */,
 				03866472186D352400985CEC /* main.m */,
+				262B958719CA145200C2B1CC /* SpotHopperProduction.entitlements */,
 				03866474186D352400985CEC /* SpotHopper-Prefix.pch */,
 			);
 			name = "Supporting Files";
@@ -3086,14 +3094,16 @@
 			children = (
 				2668971D192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.h */,
 				2668971E192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m */,
+				269E849C19CA383100F201B9 /* SHCollectionViewTableManager.h */,
+				269E849D19CA383100F201B9 /* SHCollectionViewTableManager.m */,
 				26689716192F2A82004FAC2D /* SHBaseCollectionViewManager.h */,
 				26689717192F2A82004FAC2D /* SHBaseCollectionViewManager.m */,
 				A6CA343419390BCF001BB23A /* SHImageModelCollectionViewManager.h */,
 				A6CA343519390BCF001BB23A /* SHImageModelCollectionViewManager.m */,
-				2654B894192BB6B200A66BED /* SHSpotsCollectionViewManager.h */,
-				2654B895192BB6B200A66BED /* SHSpotsCollectionViewManager.m */,
 				26C428CB192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.h */,
 				26C428CC192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m */,
+				2654B894192BB6B200A66BED /* SHSpotsCollectionViewManager.h */,
+				2654B895192BB6B200A66BED /* SHSpotsCollectionViewManager.m */,
 				2640B00D193E6C2D00978725 /* SHDrinksCollectionViewManager.h */,
 				2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */,
 			);
@@ -3254,6 +3264,9 @@
 					03CABFAC18E7716400FAC5F5 = {
 						DevelopmentTeam = 54WBL6WQLV;
 						SystemCapabilities = {
+							com.apple.SafariKeychain = {
+								enabled = 1;
+							};
 							com.apple.iOS = {
 								enabled = 1;
 							};
@@ -4281,6 +4294,7 @@
 				03E882E218C7A39000BD8FBB /* AdjustSliderOptionCell.m in Sources */,
 				A62B333D193D086F00CE4BF0 /* SHSectionHeaderView.m in Sources */,
 				0345708F18DC00EE0095E4A8 /* BaseAlcoholModel.m in Sources */,
+				269E849E19CA383100F201B9 /* SHCollectionViewTableManager.m in Sources */,
 				03AF8ECA18E5B6C800DD9356 /* ShareViewController.m in Sources */,
 				039B6FF41887143B00C590F8 /* SearchCell.m in Sources */,
 				039B70251888847200C590F8 /* NSNumber+Helpers.m in Sources */,
@@ -4448,6 +4462,7 @@
 				03CABFF818E7716400FAC5F5 /* DropdownOptionCell.m in Sources */,
 				03CABFFA18E7716400FAC5F5 /* SectionHeaderView.m in Sources */,
 				03CABFFB18E7716400FAC5F5 /* UIActionSheet+Block.m in Sources */,
+				269E84A119CA383100F201B9 /* SHCollectionViewTableManager.m in Sources */,
 				03CABFFC18E7716400FAC5F5 /* TellMeMyLocation.m in Sources */,
 				03CABFFD18E7716400FAC5F5 /* DrinkTypeModel.m in Sources */,
 				03CABFFE18E7716400FAC5F5 /* AdjustSliderOptionCell.m in Sources */,
@@ -4607,6 +4622,7 @@
 				03F4E8E718CA34260056EAA9 /* TellMeMyLocation.m in Sources */,
 				03F4E8E818CA34260056EAA9 /* DrinkTypeModel.m in Sources */,
 				03F4E8E918CA34260056EAA9 /* AdjustSliderOptionCell.m in Sources */,
+				269E849F19CA383100F201B9 /* SHCollectionViewTableManager.m in Sources */,
 				0345709018DC03010095E4A8 /* BaseAlcoholModel.m in Sources */,
 				03F4E8EA18CA34260056EAA9 /* SearchCell.m in Sources */,
 				03F4E8EC18CA34260056EAA9 /* NSNumber+Helpers.m in Sources */,
@@ -4766,6 +4782,7 @@
 				267E054D1922CC48004457B4 /* DropdownOptionCell.m in Sources */,
 				267E054F1922CC48004457B4 /* SectionHeaderView.m in Sources */,
 				267E05501922CC48004457B4 /* UIActionSheet+Block.m in Sources */,
+				269E84A019CA383100F201B9 /* SHCollectionViewTableManager.m in Sources */,
 				267E05511922CC48004457B4 /* TellMeMyLocation.m in Sources */,
 				267E05521922CC48004457B4 /* DrinkTypeModel.m in Sources */,
 				267E05531922CC48004457B4 /* AdjustSliderOptionCell.m in Sources */,
@@ -5038,8 +5055,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_ENTITLEMENTS = SpotHopperProduction.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5050,7 +5068,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "$(inherited)";
 				PRODUCT_NAME = SpotHopperProduction;
-				PROVISIONING_PROFILE = "758698f2-436b-4548-ab0d-b141cf3a545e";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -5061,8 +5079,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_ENTITLEMENTS = SpotHopperProduction.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5077,7 +5096,7 @@
 					"-DNDEBUG=1",
 				);
 				PRODUCT_NAME = SpotHopperProduction;
-				PROVISIONING_PROFILE = "758698f2-436b-4548-ab0d-b141cf3a545e";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

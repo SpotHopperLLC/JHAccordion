@@ -59,6 +59,8 @@
 
 - (UIView *)mapOverlayCollectionViewControllerPrimaryView:(SHMapOverlayCollectionViewController *)mgr;
 
+- (UITableView *)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)mgr embedTableViewInSuperview:(UIView *)superview;
+
 @optional
 
 - (void)mapOverlayCollectionViewControllerDidTapHeader:(SHMapOverlayCollectionViewController *)mgr;

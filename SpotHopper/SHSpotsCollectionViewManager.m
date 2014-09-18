@@ -19,6 +19,8 @@
 
 #import "TellMeMyLocation.h"
 
+#import "SHCollectionViewTableManager.h"
+
 #import "Tracker.h"
 #import "Tracker+Events.h"
 #import "Tracker+People.h"
@@ -44,17 +46,17 @@
 #define kSpotCellReviewItButton 13
 #define kSpotCellMenuButton 14
 
-#define kSpotCellTableView 600
+#define kSpotCellTableContainerView 600
 
 #pragma mark - Class Extension
 #pragma mark -
 
-@interface SHSpotsCollectionViewManager () <UIGestureRecognizerDelegate>
+@interface SHSpotsCollectionViewManager () <SHCollectionViewTableManagerDelegate, UIGestureRecognizerDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, weak) IBOutlet id<SHSpotsCollectionViewManagerDelegate> delegate;
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) UITableView *tableView;
 
 @property (nonatomic, strong) SpotListModel *spotList;
 
@@ -166,6 +168,15 @@
     }
 }
 
+#pragma mark - SHCollectionViewTableManagerDelegate
+#pragma mark -
+
+- (void)collectionViewTableManagerShouldCollapse:(SHCollectionViewTableManager *)mgr {
+    if ([self.delegate respondsToSelector:@selector(collectionViewManagerShouldCollapse:)]) {
+        [self.delegate collectionViewManagerShouldCollapse:self];
+    }
+}
+
 #pragma mark - UICollectionViewDataSource
 #pragma mark -
 
@@ -175,8 +186,28 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kSpotCellIdentifier forIndexPath:indexPath];
+    
+    UIView *selectedBackgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+    selectedBackgroundView.backgroundColor = [UIColor clearColor];
+    cell.selectedBackgroundView = selectedBackgroundView;
+    
     if (indexPath.item < self.spotList.spots.count) {
         SpotModel *spot = self.spotList.spots[indexPath.item];
+        
+        UIView *tableContainerView = [cell viewWithTag:kSpotCellTableContainerView];
+        UITableView *tableView = nil;
+        if (!tableContainerView.subviews.count) {
+            tableView = [self embedTableViewInSuperView:tableContainerView];
+        }
+        else {
+            tableView = (UITableView *)tableContainerView.subviews[0];
+        }
+        
+        SHCollectionViewTableManager *tableManager = [[SHCollectionViewTableManager alloc] init];
+        tableManager.delegate = self;
+        [tableManager manageTableView:tableView forSpot:spot];
+        [self addTableManager:tableManager forIndexPath:indexPath];
+        
         [self renderCell:cell withSpot:spot atIndex:indexPath.item];
     }
     
@@ -201,17 +232,7 @@
 }
 
 #pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (scrollView.tag == kSpotCellTableView) {
-        // if value is < -50 then trigger view to collapse view
-        if (scrollView.contentOffset.y < -50.0f) {
-            if ([self.delegate respondsToSelector:@selector(collectionViewManagerShouldCollapse:)]) {
-                [self.delegate collectionViewManagerShouldCollapse:self];
-            }
-        }
-    }
-}
+#pragma mark -
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView == self.collectionView) {

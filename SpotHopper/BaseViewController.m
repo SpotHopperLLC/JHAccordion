@@ -724,8 +724,12 @@ typedef void(^AlertBlock)();
 
 - (void)fillSubview:(UIView *)subview inSuperView:(UIView *)superview {
     NSDictionary *views = NSDictionaryOfVariableBindings(subview);
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[subview]|" options:0 metrics:nil views:views]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[subview]|" options:0 metrics:nil views:views]];
+    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[subview]|" options:0 metrics:nil views:views]];
+    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[subview]|" options:0 metrics:nil views:views]];
+}
+
+- (void)embedViewController:(UIViewController *)vc intoView:(UIView *)superview {
+    [self embedViewController:vc intoView:superview placementBlock:nil];
 }
 
 - (void)embedViewController:(UIViewController *)vc intoView:(UIView *)superview placementBlock:(void (^)(UIView *view))placementBlock {

@@ -139,7 +139,7 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
 
 + (UIImage *)drawImage:(SHStyleKitDrawing)drawing size:(CGSize)size;
 {
-    return [SHStyleKit drawImage:drawing color:SHStyleKitColorNone size:size];
+    return [SHStyleKit drawImage:drawing color:SHStyleKitColorNone size:size position:0.0f];
 }
 
 + (UIImage *)drawImage:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size {
@@ -148,7 +148,7 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
 
 + (UIImage *)drawImage:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size position:(CGFloat)position;
 {
-    if (CGSizeEqualToSize(size, CGSizeZero)) {
+    if (CGSizeEqualToSize(size, CGSizeZero) && drawing != SHStyleKitDrawingTopShadow) {
         NSLog(@"Size cannot be zero");
         return nil;
     }
@@ -400,6 +400,10 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
             
         case SHStyleKitDrawingSwooshDial:
             [SHStyleKit drawSwooshRatingWithScaleX:scaleX scaleY:scaleY strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyTintColor] fillColorName:[SHStyleKit colorName:SHStyleKitColorMyTextTransparentColor] position:position];
+            break;
+            
+        case SHStyleKitDrawingTopShadow:
+            [SHStyleKit drawTopShadow];
             
         default:
             break;

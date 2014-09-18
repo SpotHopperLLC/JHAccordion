@@ -81,6 +81,7 @@
 - (void)onClickShowSidebar:(id)sender;
 
 - (void)fillSubview:(UIView *)subview inSuperView:(UIView *)superview;
+- (void)embedViewController:(UIViewController *)vc intoView:(UIView *)superview;
 - (void)embedViewController:(UIViewController *)vc intoView:(UIView *)superview placementBlock:(void (^)(UIView *view))placementBlock;
 - (void)removeEmbeddedViewController:(UIViewController *)vc;
 

@@ -42,6 +42,7 @@
 
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'name' to 'name' property
+    // Maps values in JSON key 'description' to 'descriptionText' property
     // Maps values in JSON key 'image_url' to 'imageUrl' property
     // Maps values in JSON key 'address' to 'address' property
     // Maps values in JSON key 'city' to 'city' property
@@ -63,6 +64,7 @@
     // Maps linked resource in JSON key 'specials' to 'specials' property
     return @{
              @"name" : @"name",
+             @"description" : @"descriptionText",
              @"image_url" : @"imageUrl",
              @"address" : @"address",
              @"city" : @"city",
@@ -79,6 +81,7 @@
              @"links.slider_templates" : @"sliderTemplates",
              @"links.spot_type" : @"spotType",
              @"links.images" : @"images",
+             @"links.highlight_images" : @"highlightImages",
              @"links.live_specials" : @"liveSpecials",
              @"links.average_review" : @"averageReview",
              @"links.specials" : @"specials"

@@ -8,20 +8,51 @@
 
 #import "SHBaseCollectionViewManager.h"
 
+#import "SHCollectionViewTableManager.h"
+
 #define kTagHeaderView 500
 #define kTagTableView 600
 
 #pragma mark - Class Extension
 #pragma mark -
 
-@interface SHBaseCollectionViewManager () <UIGestureRecognizerDelegate>
+@interface SHBaseCollectionViewManager () <UIGestureRecognizerDelegate, SHCollectionViewTableManagerDelegate>
 
 @property (strong, nonatomic) UIPanGestureRecognizer *panGestureRecognizer;
+
+@property (readonly, nonatomic) UIView *primaryView;
+@property (readonly, nonatomic) UIStoryboard *storyboard;
+
+@property (strong, nonatomic) NSMutableDictionary *tableManagers;
 
 @end
 
 @implementation SHBaseCollectionViewManager {
     CGPoint _panGestureStartingPoint;
+}
+
+#pragma mark - Initialization
+#pragma mark -
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self.tableManagers = @{}.mutableCopy;
+    }
+    return self;
+}
+
+#pragma mark - Public
+#pragma mark -
+
+- (void)addTableManager:(SHCollectionViewTableManager *)tableManager forIndexPath:(NSIndexPath *)indexPath {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    self.tableManagers[indexPath] = tableManager;
+}
+
+- (void)removeTableManagerForIndexPath:(NSIndexPath *)indexPath {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    [self.tableManagers removeObjectForKey:indexPath];
 }
 
 #pragma mark - Methods to override
@@ -57,8 +88,16 @@
     return nil;
 }
 
+- (UITableView *)embedTableViewInSuperView:(UIView *)superview {
+    if ([self.delegate respondsToSelector:@selector(collectionViewManager:embedTableViewInSuperview:)]) {
+        return [self.delegate collectionViewManager:self embedTableViewInSuperview:superview];
+    }
+    
+    return nil;
+}
+
 - (void)panningDidMoveToPoint:(CGPoint)point {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    //DebugLog(@"%@", NSStringFromSelector(_cmd));
     
     if ([self.delegate respondsToSelector:@selector(collectionViewManager:didMoveToPoint:)]) {
         [self.delegate collectionViewManager:self didMoveToPoint:point];
@@ -66,7 +105,7 @@
 }
 
 - (void)panningDidStopMovingAtPoint:(CGPoint)point withVelocity:(CGPoint)velocity {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    //DebugLog(@"%@", NSStringFromSelector(_cmd));
     
     if ([self.delegate respondsToSelector:@selector(collectionViewManager:didStopMovingAtPoint:withVelocity:)]) {
         [self.delegate collectionViewManager:self didStopMovingAtPoint:point withVelocity:velocity];
@@ -77,31 +116,35 @@
 #pragma mark -
 
 - (IBAction)panGestureRecognized:(UIPanGestureRecognizer *)gestureRecognizer {
-    LOG_FRAME(@"primary", self.primaryView.frame);
+    //LOG_FRAME(@"primary", self.primaryView.frame);
     
     CGPoint point = [gestureRecognizer locationInView:self.primaryView];
     CGFloat adjustedY = point.y - _panGestureStartingPoint.y;
     
-    switch (gestureRecognizer.state) {
-        case UIGestureRecognizerStateBegan:
-        case UIGestureRecognizerStateChanged: {
-            [self panningDidMoveToPoint:CGPointMake(0.0f, adjustedY)];
+    //DebugLog(@"adjustedY: %f", adjustedY);
+    
+//    if (adjustedY < 0.0f) {
+        switch (gestureRecognizer.state) {
+            case UIGestureRecognizerStateBegan:
+            case UIGestureRecognizerStateChanged: {
+                [self panningDidMoveToPoint:CGPointMake(0.0f, adjustedY)];
+            }
+                break;
+                
+            case UIGestureRecognizerStateEnded:
+            case UIGestureRecognizerStateCancelled:
+            case UIGestureRecognizerStateFailed: {
+                CGPoint velocity = [gestureRecognizer velocityInView:gestureRecognizer.view];
+                [self panningDidStopMovingAtPoint:CGPointMake(0.0f, adjustedY) withVelocity:velocity];
+            }
+                
+                break;
+                
+            default:
+                NSAssert(FALSE, @"Condition should never occur.");
+                break;
         }
-            break;
-            
-        case UIGestureRecognizerStateEnded:
-        case UIGestureRecognizerStateCancelled:
-        case UIGestureRecognizerStateFailed: {
-            CGPoint velocity = [gestureRecognizer velocityInView:gestureRecognizer.view];
-            [self panningDidStopMovingAtPoint:CGPointMake(0.0f, adjustedY) withVelocity:velocity];
-        }
-            
-            break;
-            
-        default:
-            NSAssert(FALSE, @"Condition should never occur.");
-            break;
-    }
+//    }
 }
 
 #pragma mark - Helper Methods
@@ -170,6 +213,15 @@
     }
     
     return should;
+}
+
+#pragma mark - SHCollectionViewTableManagerDelegate
+#pragma mark -
+
+- (void)collectionViewTableManagerShouldCollapse:(SHCollectionViewTableManager *)mgr {
+    if ([self.delegate respondsToSelector:@selector(collectionViewManagerShouldCollapse:)]) {
+        [self.delegate collectionViewManagerShouldCollapse:self];
+    }
 }
 
 @end

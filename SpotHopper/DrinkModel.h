@@ -36,11 +36,13 @@
 @class DrinkSubTypeModel;
 @class SpotModel;
 @class DrinkListRequest;
+@class ImageModel;
 @class CLLocation;
 
 @interface DrinkModel : SHJSONAPIResource
 
 @property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *descriptionText;
 @property (nonatomic, strong) NSString *imageUrl;
 @property (nonatomic, strong) DrinkTypeModel *drinkType;
 @property (nonatomic, strong) DrinkSubTypeModel *drinkSubtype;
@@ -58,6 +60,7 @@
 @property (nonatomic, strong) NSNumber *match;
 @property (nonatomic, strong) NSArray *baseAlochols;
 @property (nonatomic, strong) NSArray *images;
+@property (nonatomic, strong) NSArray *highlightImages;
 @property (nonatomic, strong) NSNumber *relevance;
 
 @property (nonatomic, readonly) BOOL isBeer;

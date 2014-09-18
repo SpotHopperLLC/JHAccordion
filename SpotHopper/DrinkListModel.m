@@ -428,7 +428,7 @@
     NSMutableDictionary *params = @{
                                     kSpotModelParamPage : @1,
                                     kSpotModelParamsPageSize : @10,
-                                    @"name" : request.name,
+                                    @"name" : request.name.length ? request.name : @"Highest Rated",
                                     @"sliders" : jsonSliders,
                                     kDrinkListModelParamBasedOnSlider : [NSNumber numberWithBool:request.isBasedOnSliders],
                                     @"drink_id" : request.drinkId ? request.drinkId : [NSNull null],
@@ -554,7 +554,11 @@
 
 + (void)fetchDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinkListModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     // if request has a drinklist id then it is an updated (PUT) otherwise it is a create (POST) action and both should return a result set with an identical structure
-    if (!request.drinkListId) {
+    if ([request.name isEqualToString:@"Highest Rated"] && !request.drinkListId) {
+//        NSAssert(FALSE, @"");
+        [self fetchHighestRatedDrinkListWithRequest:request success:successBlock failure:failureBlock];
+    }
+    else if (!request.drinkListId) {
         [self createDrinkListWithRequest:request success:successBlock failure:failureBlock];
     }
     else if (request.drinkListId && request.isFeatured) {
@@ -623,6 +627,74 @@
     Deferred *deferred = [Deferred deferred];
     
     [self fetchDrinkList:^(DrinkListModel *drinklist) {
+        // Resolves promise
+        [deferred resolveWith:drinklist];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
++ (void)fetchHighestRatedDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinklist))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    NSMutableDictionary *params = @{
+                                    kSpotModelParamPage : @1,
+                                    kSpotModelParamsPageSize : @10,
+                                    @"name" : request.name,
+                                    @"drink_id" : request.drinkId ? request.drinkId : [NSNull null],
+                                    @"drink_type_id" : request.drinkTypeId ? request.drinkTypeId : [NSNull null],
+                                    @"drink_subtype_id" : request.drinkSubTypeId ? request.drinkSubTypeId : [NSNull null],
+                                    @"base_alcohol_id" : request.baseAlcoholId ? request.baseAlcoholId : [NSNull null],
+                                    @"spot_id" : request.spotId ? request.spotId : [NSNull null]
+                                    }.mutableCopy;
+    
+    if (CLLocationCoordinate2DIsValid(request.coordinate)) {
+        params[@"lat"] = [NSNumber numberWithFloat:request.coordinate.latitude];
+        params[@"lng"] = [NSNumber numberWithFloat:request.coordinate.longitude];
+    }
+    
+    CGFloat miles = request.radius / kMetersPerMile;
+    NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
+    params[kDrinkListModelParamRadius] = radiusParam;
+    
+    DebugLog(@"params: %@", params);
+    
+    [[ClientSessionManager sharedClient] GET:@"/api/drink_lists/highest_rated" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
+            DrinkListModel *model = [jsonApi resourceForKey:@"drink_lists"];
+            
+            // limit to 10
+            if (model.drinks.count > 10) {
+                model.drinks = [model.drinks subarrayWithRange:NSMakeRange(0, 10)];
+            }
+            
+            if (successBlock) {
+                successBlock(model);
+            }
+        }
+        else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            if (failureBlock) {
+                failureBlock(errorModel);
+            }
+        }
+    }];
+}
+
++ (Promise *)fetchHighestRatedDrinkListWithRequest:(DrinkListRequest *)request {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [self fetchHighestRatedDrinkListWithRequest:request success:^(DrinkListModel *drinklist) {
         // Resolves promise
         [deferred resolveWith:drinklist];
     } failure:^(ErrorModel *errorModel) {
