@@ -146,6 +146,17 @@ typedef enum {
 
 - (IBAction)detailButtonTapped:(id)sender {
     DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    if (self.spot) {
+        if ([self.delegate respondsToSelector:@selector(collectionViewTableManager:displaySpot:)]) {
+            [self.delegate collectionViewTableManager:self displaySpot:self.spot];
+        }
+    }
+    else if (self.drink) {
+        if ([self.delegate respondsToSelector:@selector(collectionViewTableManager:displayDrink:)]) {
+            [self.delegate collectionViewTableManager:self displayDrink:self.drink];
+        }
+    }
 }
 
 #pragma mark - Rendering Cells
@@ -168,6 +179,7 @@ typedef enum {
 
     UIButton *detailButton = (UIButton *)[cell viewWithTag:4];
     [SHStyleKit setButton:detailButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTintTransparentColor];
+    [detailButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
     [detailButton addTarget:self action:@selector(detailButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     CGSize size = CGSizeMake(60, 60);

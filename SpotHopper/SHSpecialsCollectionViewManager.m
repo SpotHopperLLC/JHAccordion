@@ -189,6 +189,12 @@
     }
 }
 
+- (void)collectionViewTableManager:(SHCollectionViewTableManager *)mgr displaySpot:(SpotModel *)spot {
+    if ([self.delegate respondsToSelector:@selector(specialsCollectionViewManager:displaySpot:)]) {
+        [self.delegate specialsCollectionViewManager:self displaySpot:spot];
+    }
+}
+
 #pragma mark - UICollectionViewDataSource
 #pragma mark -
 

@@ -178,6 +178,12 @@
     }
 }
 
+- (void)collectionViewTableManager:(SHCollectionViewTableManager *)mgr displayDrink:(DrinkModel *)drink {
+    if ([self.delegate respondsToSelector:@selector(drinksCollectionViewManager:displayDrink:)]) {
+        [self.delegate drinksCollectionViewManager:self displayDrink:drink];
+    }
+}
+
 #pragma mark - UICollectionViewDataSource
 #pragma mark -
 

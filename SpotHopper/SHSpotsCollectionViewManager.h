@@ -39,4 +39,6 @@
 - (void)spotsCollectionViewManager:(SHSpotsCollectionViewManager *)manager didChangeToSpotAtIndex:(NSUInteger)index;
 - (void)spotsCollectionViewManager:(SHSpotsCollectionViewManager *)manager didSelectSpotAtIndex:(NSUInteger)index;
 
+- (void)spotsCollectionViewManager:(SHSpotsCollectionViewManager *)manager displaySpot:(SpotModel *)spot;
+
 @end

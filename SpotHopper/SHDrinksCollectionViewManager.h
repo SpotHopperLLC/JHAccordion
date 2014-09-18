@@ -37,4 +37,6 @@
 - (void)drinksCollectionViewManager:(SHDrinksCollectionViewManager *)manager didChangeToDrinkAtIndex:(NSUInteger)index;
 - (void)drinksCollectionViewManager:(SHDrinksCollectionViewManager *)manager didSelectDrinkAtIndex:(NSUInteger)index;
 
+- (void)drinksCollectionViewManager:(SHDrinksCollectionViewManager *)manager displayDrink:(DrinkModel *)drink;
+
 @end

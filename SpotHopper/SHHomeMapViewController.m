@@ -3237,6 +3237,19 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }
 }
 
+- (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc displaySpot:(SpotModel *)spot {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    self.selectedSpot = spot;
+    [self performSegueWithIdentifier:HomeMapToSpotProfile sender:self];
+}
+
+- (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc displayDrink:(DrinkModel *)drink {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    self.selectedDrink = drink;
+    [self performSegueWithIdentifier:HomeMapToDrinkProfile sender:self];
+}
+
 - (UIView *)mapOverlayCollectionViewControllerPrimaryView:(SHMapOverlayCollectionViewController *)mgr {
     return self.expandedReferenceView;
 }

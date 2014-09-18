@@ -333,6 +333,12 @@ typedef enum {
     }
 }
 
+- (void)spotsCollectionViewManager:(SHSpotsCollectionViewManager *)manager displaySpot:(SpotModel *)spot {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:displaySpot:)]) {
+        [self.delegate mapOverlayCollectionViewController:self displaySpot:spot];
+    }
+}
+
 #pragma mark - SHSpecialsCollectionViewManagerDelegate
 #pragma mark -
 
@@ -354,6 +360,12 @@ typedef enum {
     }
 }
 
+- (void)specialsCollectionViewManager:(SHSpecialsCollectionViewManager *)manager displaySpot:(SpotModel *)spot {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:displaySpot:)]) {
+        [self.delegate mapOverlayCollectionViewController:self displaySpot:spot];
+    }
+}
+
 #pragma mark - SHDrinksCollectionViewManagerDelegate
 #pragma mark -
 
@@ -366,6 +378,12 @@ typedef enum {
 - (void)drinksCollectionViewManager:(SHDrinksCollectionViewManager *)manager didSelectDrinkAtIndex:(NSUInteger)index {
     if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didSelectDrinkAtIndex:)]) {
         [self.delegate mapOverlayCollectionViewController:self didSelectDrinkAtIndex:index];
+    }
+}
+
+- (void)drinksCollectionViewManager:(SHDrinksCollectionViewManager *)manager displayDrink:(DrinkModel *)drink {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:displayDrink:)]) {
+        [self.delegate mapOverlayCollectionViewController:self displayDrink:drink];
     }
 }
 

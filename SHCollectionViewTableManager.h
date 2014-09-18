@@ -30,4 +30,10 @@
 
 - (void)collectionViewTableManagerShouldCollapse:(SHCollectionViewTableManager *)mgr;
 
+@optional
+
+- (void)collectionViewTableManager:(SHCollectionViewTableManager *)mgr displaySpot:(SpotModel *)spot;
+
+- (void)collectionViewTableManager:(SHCollectionViewTableManager *)mgr displayDrink:(DrinkModel *)drink;
+
 @end
