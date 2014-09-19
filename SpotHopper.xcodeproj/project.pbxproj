@@ -1279,6 +1279,10 @@
 		269E849F19CA383100F201B9 /* SHCollectionViewTableManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 269E849D19CA383100F201B9 /* SHCollectionViewTableManager.m */; };
 		269E84A019CA383100F201B9 /* SHCollectionViewTableManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 269E849D19CA383100F201B9 /* SHCollectionViewTableManager.m */; };
 		269E84A119CA383100F201B9 /* SHCollectionViewTableManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 269E849D19CA383100F201B9 /* SHCollectionViewTableManager.m */; };
+		269E84A419CB666F00F201B9 /* SHAppContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 269E84A319CB666F00F201B9 /* SHAppContext.m */; };
+		269E84A519CB666F00F201B9 /* SHAppContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 269E84A319CB666F00F201B9 /* SHAppContext.m */; };
+		269E84A619CB666F00F201B9 /* SHAppContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 269E84A319CB666F00F201B9 /* SHAppContext.m */; };
+		269E84A719CB666F00F201B9 /* SHAppContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 269E84A319CB666F00F201B9 /* SHAppContext.m */; };
 		26A7E3661922CE8000FF7B88 /* SpotHopper.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26A7E3651922CE8000FF7B88 /* SpotHopper.storyboard */; };
 		26A7E3671922CE8000FF7B88 /* SpotHopper.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26A7E3651922CE8000FF7B88 /* SpotHopper.storyboard */; };
 		26A7E3691922CE8000FF7B88 /* SpotHopper.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26A7E3651922CE8000FF7B88 /* SpotHopper.storyboard */; };
@@ -1298,6 +1302,10 @@
 		26C428DD192D625A00B67F10 /* SHBaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C428DB192D625A00B67F10 /* SHBaseNavigationController.m */; };
 		26C428DF192D625A00B67F10 /* SHBaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C428DB192D625A00B67F10 /* SHBaseNavigationController.m */; };
 		26C428E0192D625A00B67F10 /* SHBaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C428DB192D625A00B67F10 /* SHBaseNavigationController.m */; };
+		26C6621819CCC2F3005685CB /* SHRatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C6621719CCC2F3005685CB /* SHRatingView.m */; };
+		26C6621919CCC2F3005685CB /* SHRatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C6621719CCC2F3005685CB /* SHRatingView.m */; };
+		26C6621A19CCC2F3005685CB /* SHRatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C6621719CCC2F3005685CB /* SHRatingView.m */; };
+		26C6621B19CCC2F3005685CB /* SHRatingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C6621719CCC2F3005685CB /* SHRatingView.m */; };
 		26D0A89E19704BCB00F64384 /* SHNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 26D0A89D19704BCB00F64384 /* SHNotifications.m */; };
 		26D0A89F19704BCB00F64384 /* SHNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 26D0A89D19704BCB00F64384 /* SHNotifications.m */; };
 		26D0A8A119704BCB00F64384 /* SHNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 26D0A89D19704BCB00F64384 /* SHNotifications.m */; };
@@ -1831,6 +1839,8 @@
 		269E5D3919BA70A800A228C7 /* img_share_background_iphone5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_share_background_iphone5@2x.png"; sourceTree = "<group>"; };
 		269E849C19CA383100F201B9 /* SHCollectionViewTableManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHCollectionViewTableManager.h; sourceTree = "<group>"; };
 		269E849D19CA383100F201B9 /* SHCollectionViewTableManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHCollectionViewTableManager.m; sourceTree = "<group>"; };
+		269E84A219CB666F00F201B9 /* SHAppContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAppContext.h; sourceTree = "<group>"; };
+		269E84A319CB666F00F201B9 /* SHAppContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHAppContext.m; sourceTree = "<group>"; };
 		26A7E3651922CE8000FF7B88 /* SpotHopper.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SpotHopper.storyboard; sourceTree = "<group>"; };
 		26A7E3811922D20700FF7B88 /* SHStyleKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHStyleKit.h; path = SpotHopper/SHStyleKit.h; sourceTree = "<group>"; };
 		26A7E3821922D20700FF7B88 /* SHStyleKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHStyleKit.m; path = SpotHopper/SHStyleKit.m; sourceTree = "<group>"; };
@@ -1841,6 +1851,8 @@
 		26C428CC192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSpecialsCollectionViewManager.m; path = SpotHopper/SHSpecialsCollectionViewManager.m; sourceTree = "<group>"; };
 		26C428DA192D625A00B67F10 /* SHBaseNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHBaseNavigationController.h; path = SpotHopper/SHBaseNavigationController.h; sourceTree = "<group>"; };
 		26C428DB192D625A00B67F10 /* SHBaseNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHBaseNavigationController.m; path = SpotHopper/SHBaseNavigationController.m; sourceTree = "<group>"; };
+		26C6621619CCC2F3005685CB /* SHRatingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHRatingView.h; sourceTree = "<group>"; };
+		26C6621719CCC2F3005685CB /* SHRatingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHRatingView.m; sourceTree = "<group>"; };
 		26D0A89C19704BCB00F64384 /* SHNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHNotifications.h; path = SpotHopper/SHNotifications.h; sourceTree = "<group>"; };
 		26D0A89D19704BCB00F64384 /* SHNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHNotifications.m; path = SpotHopper/SHNotifications.m; sourceTree = "<group>"; };
 		26D6F664199DB587001CA54D /* SHAppConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAppConfiguration.h; sourceTree = "<group>"; };
@@ -3106,6 +3118,8 @@
 				2654B895192BB6B200A66BED /* SHSpotsCollectionViewManager.m */,
 				2640B00D193E6C2D00978725 /* SHDrinksCollectionViewManager.h */,
 				2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */,
+				269E84A219CB666F00F201B9 /* SHAppContext.h */,
+				269E84A319CB666F00F201B9 /* SHAppContext.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -3143,6 +3157,8 @@
 			children = (
 				A62B333B193D086F00CE4BF0 /* SHSectionHeaderView.h */,
 				A62B333C193D086F00CE4BF0 /* SHSectionHeaderView.m */,
+				26C6621619CCC2F3005685CB /* SHRatingView.h */,
+				26C6621719CCC2F3005685CB /* SHRatingView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -4212,6 +4228,7 @@
 				03F2D9371871E88000C69576 /* LaunchViewController.m in Sources */,
 				2690EB74199901220026DC52 /* SHPlacemark.m in Sources */,
 				03763FB718D9EBFC00A9A30B /* SHTableViewCell.m in Sources */,
+				26C6621819CCC2F3005685CB /* SHRatingView.m in Sources */,
 				03F2D94D18722CAC00C69576 /* SHNavigationBar.m in Sources */,
 				03F6BF6818C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.m in Sources */,
 				038664D8186D376900985CEC /* UIView+RelativityLaws.m in Sources */,
@@ -4279,6 +4296,7 @@
 				038664D6186D376900985CEC /* UILabelGotham.m in Sources */,
 				03CA72B8187C4D5800815284 /* SHSlider.m in Sources */,
 				039ABBEF18CE3BB700B84AE6 /* SpotAnnotationCallout.m in Sources */,
+				269E84A419CB666F00F201B9 /* SHAppContext.m in Sources */,
 				039F545818D2BB30004B2B67 /* DrinkCardCollectionViewCell.m in Sources */,
 				033A3F0F18E38CEE00E07F39 /* LiveSpecialModel.m in Sources */,
 				2668971F192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m in Sources */,
@@ -4380,6 +4398,7 @@
 				03CABFB718E7716400FAC5F5 /* ClientSessionManager.m in Sources */,
 				03CABFB818E7716400FAC5F5 /* CheckinConfirmationViewController.m in Sources */,
 				03CABFB918E7716400FAC5F5 /* MenuItemCell.m in Sources */,
+				26C6621B19CCC2F3005685CB /* SHRatingView.m in Sources */,
 				03CABFBA18E7716400FAC5F5 /* LaunchViewController.m in Sources */,
 				03CABFBB18E7716400FAC5F5 /* SHTableViewCell.m in Sources */,
 				03CABFBC18E7716400FAC5F5 /* SHNavigationBar.m in Sources */,
@@ -4447,6 +4466,7 @@
 				03CABFEE18E7716400FAC5F5 /* NSString+Common.m in Sources */,
 				2654B893192BB68C00A66BED /* SHStyleKit+Additions.m in Sources */,
 				2654B8CD192BB6E000A66BED /* SHSidebarViewController.m in Sources */,
+				269E84A719CB666F00F201B9 /* SHAppContext.m in Sources */,
 				26A7E3871922D20700FF7B88 /* SHStyleKit.m in Sources */,
 				03CABFEF18E7716400FAC5F5 /* AverageReviewModel.m in Sources */,
 				A62B334F193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */,
@@ -4540,6 +4560,7 @@
 				03F4E8B118CA34260056EAA9 /* LaunchViewController.m in Sources */,
 				2690EB75199901220026DC52 /* SHPlacemark.m in Sources */,
 				03763FB818D9ED7800A9A30B /* SHTableViewCell.m in Sources */,
+				26C6621919CCC2F3005685CB /* SHRatingView.m in Sources */,
 				03F4E8B218CA34260056EAA9 /* SHNavigationBar.m in Sources */,
 				03F4E8B318CA34260056EAA9 /* TTTAttributedLabel+QuickFonting.m in Sources */,
 				03F4E8B418CA34260056EAA9 /* UIView+RelativityLaws.m in Sources */,
@@ -4607,6 +4628,7 @@
 				A62B334C193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */,
 				03F4E8DF18CA34260056EAA9 /* UIAlertView+Block.m in Sources */,
 				03F4E8E018CA34260056EAA9 /* UILabelGotham.m in Sources */,
+				269E84A519CB666F00F201B9 /* SHAppContext.m in Sources */,
 				03F4E8E118CA34260056EAA9 /* SHSlider.m in Sources */,
 				039ABBF118CE3BBD00B84AE6 /* SpotAnnotationCallout.m in Sources */,
 				039F545918D2BB30004B2B67 /* DrinkCardCollectionViewCell.m in Sources */,
@@ -4700,6 +4722,7 @@
 				267E05031922CC48004457B4 /* ClientSessionManager.m in Sources */,
 				267E05041922CC48004457B4 /* CheckinConfirmationViewController.m in Sources */,
 				267E05051922CC48004457B4 /* MenuItemCell.m in Sources */,
+				26C6621A19CCC2F3005685CB /* SHRatingView.m in Sources */,
 				267E05061922CC48004457B4 /* LaunchViewController.m in Sources */,
 				267E05071922CC48004457B4 /* SHTableViewCell.m in Sources */,
 				267E05081922CC48004457B4 /* SHNavigationBar.m in Sources */,
@@ -4767,6 +4790,7 @@
 				267E05431922CC48004457B4 /* NSString+Common.m in Sources */,
 				2654B892192BB68C00A66BED /* SHStyleKit+Additions.m in Sources */,
 				2654B8CC192BB6E000A66BED /* SHSidebarViewController.m in Sources */,
+				269E84A619CB666F00F201B9 /* SHAppContext.m in Sources */,
 				26A7E3861922D20700FF7B88 /* SHStyleKit.m in Sources */,
 				267E05441922CC48004457B4 /* AverageReviewModel.m in Sources */,
 				A62B334E193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */,

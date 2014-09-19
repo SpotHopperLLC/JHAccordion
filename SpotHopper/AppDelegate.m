@@ -412,4 +412,34 @@
     }];
 }
 
+- (BOOL)canPhone {
+    return ([[UIApplication sharedApplication] canOpenURL: [NSURL URLWithString: @"tel://"]]);
+}
+
+- (BOOL)canSkype {
+    return ([[UIApplication sharedApplication] canOpenURL: [NSURL URLWithString: @"skype:"]]);
+}
+
+- (void)callPhoneNumber:(NSString *)formattedPhoneNumber {
+    NSCharacterSet *charactersToRemove = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+    NSString *number = [[formattedPhoneNumber componentsSeparatedByCharactersInSet:charactersToRemove] componentsJoinedByString:@"" ];
+    
+    NSString *urlString = [NSString stringWithFormat:@"tel://%@", number];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+    });
+}
+
+- (void)skypePhoneNumber:(NSString *)formattedPhoneNumber {
+    NSCharacterSet *charactersToRemove = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+    NSString *number = [[formattedPhoneNumber componentsSeparatedByCharactersInSet:charactersToRemove] componentsJoinedByString:@"" ];
+    
+    NSString *urlString = [NSString stringWithFormat:@"skype:%@?call", number];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+    });
+}
+
 @end

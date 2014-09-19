@@ -8,6 +8,8 @@
 
 #import "SHHomeMapViewController.h"
 
+#import "SHAppContext.h"
+
 #import "UIViewController+Navigator.h"
 #import "JHSidebarViewController.h"
 #import "UIView+AutoLayout.h"
@@ -1395,7 +1397,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                     CLLocationDistance meters = [self.currentLocation distanceFromLocation:nearestLocation];
                     if (meters < 150) {
                         DrinkListRequest *request = self.drinkListRequest.copy;
-                        //request.name = kDrinkListModelDefaultName;
+                        if (![@"Highest Rated" isEqualToString:request.name]) {
+                            request.name = kDrinkListModelDefaultName;
+                        }
+                        request.transient = TRUE;
                         request.drinkListId = nil;
                         request.spotId = nearestSpot.ID;
                         request.coordinate = self.visibleMapCenterCoordinate;
@@ -2945,6 +2950,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.mode = SHModeSpecials;
         self.specialsSpotModels = spotlist.spots;
         
+        [[SHAppContext defaultInstance] changeContextToMode:SHModeSpecials specialsSpotlist:spotlist];
+        
         [self pullDown:FALSE withCompletionBlock:nil];
         
         if (self.specialsSpotModels.count >= 5) {
@@ -2968,10 +2975,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)processSpotlistModel:(SpotListModel *)spotlistModel withRequest:(SpotListRequest *)request {
     [Tracker trackSpotlist:spotlistModel request:request];
     
-    [Tracker trackNoSpotResults];
-    [Tracker trackUserNoSpotResults];
-    
     if (!spotlistModel.spots.count) {
+        [Tracker trackNoSpotResults];
+        [Tracker trackUserNoSpotResults];
+
         [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
             [self showAlert:@"Oops" message:@"There are no spots which match in this location. Please try another search area."];
             [self restoreNavigationIfNeeded];
@@ -2983,6 +2990,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.spotListRequest = request;
         self.mode = SHModeSpots;
         self.spotListModel = spotlistModel;
+        
+        [[SHAppContext defaultInstance] changeContextToMode:self.mode spotlistRequest:request spotlist:spotlistModel];
         
         [self pullDown:FALSE withCompletionBlock:nil];
         
@@ -3038,6 +3047,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.drinkListRequest = request;
         self.mode = mode;
         self.drinkListModel = drinklistModel;
+        
+        [[SHAppContext defaultInstance] changeContextToMode:self.mode drinklistRequest:request drinklist:drinklistModel];
         
         [self pullDown:FALSE withCompletionBlock:nil];
         

@@ -467,7 +467,6 @@
 - (NSDictionary *)mapKeysToProperties {
     return @{
              @"name" : @"name",
-             @"description" : @"descriptionText",
              @"image_url" : @"imageUrl",
              @"links.drink_type" : @"drinkType",
              @"links.drink_subtype" : @"drinkSubtype",
@@ -610,22 +609,33 @@
     return [kDrinkTypeNameWine isEqualToString:self.drinkType.name];
 }
 
+- (ImageModel *)highlightImage {
+    if (self.highlightImages.count) {
+        return self.highlightImages[0];
+    }
+    else if (self.images.count) {
+        return self.images[0];
+    }
+    
+    return nil;
+}
+
 - (NSString *)rating {
     if (self.isWine && ![@"Sparkling" isEqualToString:self.drinkSubtype.name]) {
         if (self.drinkSubtype.name.length) {
-            return [NSString stringWithFormat:@"%@ - Rating %.0f/10", self.drinkSubtype.name, [self.averageReview.rating floatValue]];
+            return [NSString stringWithFormat:@"%@ - Rating %.0f/10", self.drinkSubtype.name, self.averageReview.rating.floatValue];
         }
         else {
-            return [NSString stringWithFormat:@"Rating %.0f/10", [self.averageReview.rating floatValue]];
+            return [NSString stringWithFormat:@"Rating %.0f/10", self.averageReview.rating.floatValue];
         }
     }
     else {
-        return [NSString stringWithFormat:@"Rating %.0f/10", [self.averageReview.rating floatValue]];
+        return [NSString stringWithFormat:@"Rating %.0f/10", self.averageReview.rating.floatValue];
     }
 }
 
 - (NSString *)ratingShort {
-    return [NSString stringWithFormat:@"%.0f/10", [self.averageReview.rating floatValue]];
+    return [NSString stringWithFormat:@"%.0f/10", self.averageReview.rating.floatValue];
 }
 
 - (NSString *)drinkStyle {

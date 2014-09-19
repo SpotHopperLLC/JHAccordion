@@ -92,7 +92,17 @@
     }
     
     return result;
+}
+
+#pragma mark - Equals
+
+- (BOOL)isEqual:(id)object {
+    if ([object isKindOfClass:[SliderModel class]]) {
+        SliderModel *otherSlider = (SliderModel *)object;
+        return [self.sliderTemplate isEqual:otherSlider.sliderTemplate];
+    }
     
+    return FALSE;
 }
 
 @end

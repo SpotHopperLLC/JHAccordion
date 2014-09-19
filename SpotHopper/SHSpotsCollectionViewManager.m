@@ -268,14 +268,11 @@
     UIImageView *spotImageView = (UIImageView *)[cell viewWithTag:kSpotCellSpotImageView];
     
     spotImageView.image = nil;
+    ImageModel *highlightImage = spot.highlightImage;
     
-    if (spot.imageUrl.length) {
-        [spotImageView setImageWithURL:[NSURL URLWithString:spot.imageUrl] placeholderImage:spot.placeholderImage];
-    }
-    else if (spot.images.count) {
-        ImageModel *imageModel = spot.images[0];
+    if (highlightImage) {
         __weak UIImageView *weakImageView = spotImageView;
-        [NetworkHelper loadImage:imageModel placeholderImage:spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
+        [NetworkHelper loadImage:highlightImage placeholderImage:spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
             weakImageView.image = thumbImage;
         } withFullImageBlock:^(UIImage *fullImage) {
             weakImageView.image = fullImage;
@@ -292,12 +289,9 @@
     UILabel *typeLabel = [self labelInView:cell withTag:kSpotCellSpotTypeLabel];
     UILabel *neighborhoodLabel = [self labelInView:cell withTag:kSpotCellNeighborhoodLabel];
     UILabel *distanceLabel = [self labelInView:cell withTag:kSpotCellDistanceLabel];
-    UILabel *positionLabel = [self labelInView:cell withTag:kSpotCellPositionLabel];
     UIImageView *matchImageView = [self imageViewInView:cell withTag:kSpotCellMatchPercentageImageView];
     UILabel *percentageLabel = [self labelInView:cell withTag:kSpotCellPercentageLabel];
     UILabel *matchLabel = [self labelInView:cell withTag:kSpotCellMatchLabel];
-    UIButton *previousButton = [self buttonInView:cell withTag:kSpotCellLeftButton];
-    UIButton *nextButton = [self buttonInView:cell withTag:kSpotCellRightButton];
     UIButton *findSimilarButton = [self buttonInView:cell withTag:kSpotCellFindSimilarButton];
     UIButton *reviewItButton = [self buttonInView:cell withTag:kSpotCellReviewItButton];
     UIButton *menuButton = [self buttonInView:cell withTag:kSpotCellMenuButton];
@@ -306,12 +300,9 @@
     NSAssert(typeLabel, @"View must be defined");
     NSAssert(neighborhoodLabel, @"View must be defined");
     NSAssert(distanceLabel, @"View must be defined");
-    NSAssert(positionLabel, @"View must be defined");
     NSAssert(matchImageView, @"View must be defined");
     NSAssert(percentageLabel, @"View must be defined");
     NSAssert(matchLabel, @"View must be defined");
-    NSAssert(previousButton, @"View must be defined");
-    NSAssert(nextButton, @"View must be defined");
     NSAssert(findSimilarButton, @"View must be defined");
     NSAssert(reviewItButton, @"View must be defined");
     NSAssert(menuButton, @"View must be defined");
@@ -319,7 +310,6 @@
     [SHStyleKit setLabel:typeLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setLabel:neighborhoodLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setLabel:distanceLabel textColor:SHStyleKitColorMyTextColor];
-    [SHStyleKit setLabel:positionLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setLabel:percentageLabel textColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setLabel:matchLabel textColor:SHStyleKitColorMyTintColor];
     
@@ -331,7 +321,6 @@
     [typeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [neighborhoodLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [distanceLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
-    [positionLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [percentageLabel setFont:[UIFont fontWithName:@"Lato-Light" size:22.0f]];
     [matchLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
     [findSimilarButton.titleLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
@@ -356,7 +345,6 @@
     CGFloat miles = meters * kMeterToMile;
     
     distanceLabel.text = [NSString stringWithFormat:@"%0.1f miles away", miles];
-    positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", (long)index+1, (long)self.spotList.spots.count];
     percentageLabel.text = [NSString stringWithFormat:@"%@", spot.matchPercent];
     
     if (self.spotList.spots.count == 1) {
@@ -364,9 +352,6 @@
         
         percentageLabel.hidden = TRUE;
         matchLabel.hidden = TRUE;
-        previousButton.hidden = TRUE;
-        nextButton.hidden = TRUE;
-        positionLabel.hidden = TRUE;
         findSimilarButton.hidden = FALSE;
         reviewItButton.hidden = FALSE;
         menuButton.hidden = FALSE;
@@ -377,16 +362,9 @@
 
         percentageLabel.hidden = FALSE;
         matchLabel.hidden = FALSE;
-        positionLabel.hidden = FALSE;
         findSimilarButton.hidden = TRUE;
         reviewItButton.hidden = TRUE;
         menuButton.hidden = TRUE;
-        
-        [SHStyleKit setButton:previousButton withDrawing:SHStyleKitDrawingArrowLeftIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
-        previousButton.hidden = index == 0;
-        
-        [SHStyleKit setButton:nextButton withDrawing:SHStyleKitDrawingArrowRightIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
-        nextButton.hidden = index == self.spotList.spots.count - 1;
     }
 }
 

@@ -68,6 +68,9 @@ typedef enum {
     SHStyleKitDrawingArrowDownIcon,
     SHStyleKitDrawingDeleteIcon,
     SHStyleKitDrawingCloseIcon,
+    SHStyleKitDrawingClockIcon,
+    SHStyleKitDrawingPhoneIcon,
+    SHStyleKitDrawingMoreIcon,
     SHStyleKitDrawingPlaceholderBasic,
     SHStyleKitDrawingDefaultAvatarIcon,
     SHStyleKitDrawingGradientBackground,
@@ -79,7 +82,8 @@ typedef enum {
     SHStyleKitDrawingPencilArrowUp,
     SHStyleKitDrawingPencilArrowDown,
     SHStyleKitDrawingSwooshDial,
-    SHStyleKitDrawingTopShadow
+    SHStyleKitDrawingTopShadow,
+    SHStyleKitDrawingRatingStars
 } SHStyleKitDrawing;
 
 #import "SHStyleKit.h"
@@ -112,6 +116,8 @@ typedef enum {
 + (UIImage *)drawImage:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size;
 
 + (UIImage *)drawImage:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size position:(CGFloat)position;
+
++ (UIImage *)drawImageForRatingStarsWithPercentage:(CGFloat)percentage size:(CGSize)size;
 
 #pragma mark - Backgrounds
 #pragma mark -

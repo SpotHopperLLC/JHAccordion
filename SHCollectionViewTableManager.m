@@ -8,21 +8,33 @@
 
 #import "SHCollectionViewTableManager.h"
 
+#import "SHAppContext.h"
+
+#import "AppDelegate.h"
 #import "SpotModel.h"
 #import "DrinkModel.h"
 #import "AverageReviewModel.h"
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
+#import "SpecialModel.h"
 
 #import "SHStyleKit+Additions.h"
+#import "NetworkHelper.h"
 #import "Tracker.h"
+#import "TellMeMyLocation.h"
 
+#import "UIAlertView+Block.h"
+
+#define kRowNameSpotSummary @"Spot Summary"
 #define kRowNameSummarySliders @"Summary Sliders"
 #define kRowNameDescription @"Description"
 #define kRowNameHoursAndPhone @"Hours and Phone"
-#define kRowNameHappyHour @"Happy Hour"
+#define kRowNamePhotosAndReview @"Photos and Review"
+#define kRowNameTodaysSpecial @"Today's Special"
 #define kRowNameDrinkSummary @"Drink Summary"
 #define kRowNameHighestRated @"Highest Rated"
+
+#define kMeterToMile 0.000621371f
 
 typedef enum {
     Special,
@@ -57,9 +69,29 @@ typedef enum {
     self.rows = @[].mutableCopy;
     
     self.tableView = tableView;
+    [tableView reloadData];
     
     [spot fetchSpot:^(SpotModel *spotModel) {
         self.spot = spotModel;
+        
+        [self prepareSummarySliders];
+        
+        [self.rows addObject:kRowNameSpotSummary];
+        
+        if (self.summarySliders.count) {
+            [self.rows addObject:kRowNameSummarySliders];
+        }
+        
+        if (self.spot.descriptionOfSpot.length) {
+            [self.rows addObject:kRowNameDescription];
+        }
+        
+        if (self.spot.hoursForToday.length || self.spot.phoneNumber.length) {
+            [self.rows addObject:kRowNameHoursAndPhone];
+        }
+        
+        [self.rows addObject:kRowNamePhotosAndReview];
+        
         [tableView reloadData];
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
@@ -75,21 +107,38 @@ typedef enum {
     self.rows = @[].mutableCopy;
     
     self.tableView = tableView;
+    [tableView reloadData];
     
     [spot fetchSpot:^(SpotModel *spotModel) {
         self.spot = spotModel;
-        NSAssert(self.spot.averageReview.sliders.count, @"Sliders are required");
-        self.summarySliders = [self extractSummarySliders:self.spot.averageReview.sliders];
+        
+#ifdef NDEBUG
+        // set phone number during development
+        self.spot.phoneNumber = @"4148031004";
+#endif
+        
+        [self prepareSummarySliders];
+        
+        [self.rows addObject:kRowNameSpotSummary];
         
         if (self.summarySliders.count) {
             [self.rows addObject:kRowNameSummarySliders];
         }
         
-        self.spot.descriptionText = @"Testing Description";
-        
-        if (self.spot.descriptionText.length) {
+        if (self.spot.descriptionOfSpot.length) {
             [self.rows addObject:kRowNameDescription];
         }
+        
+        if (self.spot.hoursForToday.length || self.spot.phoneNumber.length) {
+            [self.rows addObject:kRowNameHoursAndPhone];
+        }
+        
+        NSString *specialForToday = [self specialForToday];
+        if (specialForToday.length) {
+            [self.rows addObject:kRowNameTodaysSpecial];
+        }
+        
+        [self.rows addObject:kRowNamePhotosAndReview];
         
         [tableView reloadData];
     } failure:^(ErrorModel *errorModel) {
@@ -106,11 +155,31 @@ typedef enum {
     self.rows = @[].mutableCopy;
     
     self.tableView = tableView;
+    [tableView reloadData];
     
     [drink fetchDrink:^(DrinkModel *drinkModel) {
         self.drink = drinkModel;
         NSAssert(self.drink.averageReview.sliders.count, @"Sliders are required");
-        self.summarySliders = [self extractSummarySliders:self.drink.averageReview.sliders];
+        
+        [self prepareSummarySliders];
+        
+        if (self.summarySliders.count) {
+            [self.rows addObject:kRowNameSummarySliders];
+        }
+        
+        if (self.drink.descriptionOfDrink.length) {
+            [self.rows addObject:kRowNameDescription];
+        }
+        
+        if (self.drink.isBeer && self.drink.abv.floatValue > 0.0f) {
+            [self.rows addObject:kRowNameDrinkSummary];
+        }
+        else if (self.drink.isWine) {
+            [self.rows addObject:kRowNameDrinkSummary];
+        }
+        
+        [self.rows addObject:kRowNamePhotosAndReview];
+        
         [tableView reloadData];
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
@@ -119,6 +188,41 @@ typedef enum {
 
 #pragma mark - Private
 #pragma mark -
+
+- (void)prepareSummarySliders {
+    if (self.spot) {
+        NSArray *spotSliders = self.spot.averageReview.sliders;
+        NSArray *spotlistSliders = [SHAppContext defaultInstance].spotlistRequest.sliders;
+        
+        if (spotlistSliders) {
+            for (SliderModel *spotSlider in spotSliders) {
+                for (SliderModel *spotlistSlider in spotlistSliders) {
+                    if (spotlistSlider.starred) {
+                        if ([spotSlider isEqual:spotlistSlider]) {
+                            spotSlider.starred = spotlistSlider.starred;
+                        }
+                    }
+                }
+            }
+        }
+    
+        self.summarySliders = [self extractSummarySliders:spotSliders];
+    }
+    else if (self.drink) {
+        NSArray *drinkSliders = self.drink.averageReview.sliders;
+        NSArray *drinklistSliders = [SHAppContext defaultInstance].drinkListRequest.sliders;
+        
+        for (SliderModel *drinkSlider in drinkSliders) {
+            for (SliderModel *drinklistSlider in drinklistSliders) {
+                if ([drinkSlider isEqual:drinklistSlider]) {
+                    drinkSlider.starred = drinklistSlider.starred;
+                }
+            }
+        }
+        
+        self.summarySliders = [self extractSummarySliders:drinkSliders];
+    }
+}
 
 - (NSArray *)extractSummarySliders:(NSArray *)allSliders {
     NSArray *sorted = [allSliders sortedArrayUsingComparator:^NSComparisonResult(SliderModel *slider1, SliderModel *slider2) {
@@ -141,12 +245,29 @@ typedef enum {
     return nil;
 }
 
+- (CGFloat)heightForString:(NSString *)text font:(UIFont *)font maxWidth:(CGFloat)maxWidth {
+    if (![text isKindOfClass:[NSString class]] || !text.length) {
+        // no text means no height
+        return 0;
+    }
+    
+    NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
+    NSDictionary *attributes = @{ NSFontAttributeName : font };
+    CGSize size = [text boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX) options:options attributes:attributes context:nil].size;
+    CGFloat height = ceilf(size.height) + 1; // add 1 point as padding
+    
+    return height;
+}
+
+- (NSString *)specialForToday {
+    SpecialModel *special = self.spot.specialForToday;
+    return special.text;
+}
+
 #pragma mark - User Actions
 #pragma mark -
 
 - (IBAction)detailButtonTapped:(id)sender {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
-    
     if (self.spot) {
         if ([self.delegate respondsToSelector:@selector(collectionViewTableManager:displaySpot:)]) {
             [self.delegate collectionViewTableManager:self displaySpot:self.spot];
@@ -159,10 +280,57 @@ typedef enum {
     }
 }
 
+- (IBAction)phoneButtonTapped:(id)sender {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    NSString *formattedPhoneNumber = self.spot.formattedPhoneNumber;
+    
+    if ([appDelegate canPhone] || [appDelegate canSkype]) {
+        if (self.spot.phoneNumber.length) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Do you want to call?" message:formattedPhoneNumber delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+            [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                if (buttonIndex == 1) {
+                    DebugLog(@"calling");
+                    
+                    if ([appDelegate canPhone]) {
+                        [appDelegate callPhoneNumber:formattedPhoneNumber];
+                    }
+                    else if ([appDelegate canSkype]) {
+                        [appDelegate skypePhoneNumber:formattedPhoneNumber];
+                    }
+                }
+            }];
+        }
+    }
+    else {
+        [UIPasteboard generalPasteboard].string = self.spot.phoneNumber;
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Phone" message:@"Your iOS device cannot make phone calls. Please install Skype if you'd like to call this number. The number has also been copied so you can paste it into any app you choose." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alertView show];
+    }
+}
+
 #pragma mark - Rendering Cells
 #pragma mark -
 
-- (UITableViewCell *)renderCellForSummarySliders:(NSArray *)summarySliders atIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)renderCellForAboutSpotAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"AboutSpotCell" forIndexPath:indexPath];
+
+    CLLocation *spotLocation = [[CLLocation alloc] initWithLatitude:[self.spot.latitude floatValue] longitude:[self.spot.longitude floatValue]];
+    CLLocation *currentLocation = [TellMeMyLocation currentLocation];
+    CLLocationDistance meters = [currentLocation distanceFromLocation:spotLocation];
+    
+    CGFloat miles = meters * kMeterToMile;
+
+    UILabel *distanceLabel = (UILabel *)[cell viewWithTag:2];
+    
+    distanceLabel.text =  [NSString stringWithFormat:@"%0.1f miles away", miles];
+    
+    return cell;
+}
+
+- (UITableViewCell *)renderCellForSummarySlidersAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"SummarySlidersCell" forIndexPath:indexPath];
 
     UILabel *leftLabel1 = (UILabel *)[cell viewWithTag:101];
@@ -178,14 +346,15 @@ typedef enum {
     UIImageView *imageView3 = (UIImageView *)[cell viewWithTag:303];
 
     UIButton *detailButton = (UIButton *)[cell viewWithTag:4];
+    [SHStyleKit setButton:detailButton withDrawing:SHStyleKitDrawingMoreIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setButton:detailButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTintTransparentColor];
     [detailButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
     [detailButton addTarget:self action:@selector(detailButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     CGSize size = CGSizeMake(60, 60);
     
-    if (summarySliders.count > 0) {
-        SliderModel *slider = summarySliders[0];
+    if (self.summarySliders.count > 0) {
+        SliderModel *slider = self.summarySliders[0];
         CGFloat position = slider.value.floatValue/10;
         leftLabel1.text = slider.sliderTemplate.minLabelShortDisplayed;
         rightLabel1.text = slider.sliderTemplate.maxLabelShortDisplayed;
@@ -197,8 +366,8 @@ typedef enum {
         imageView1.image = nil;
     }
     
-    if (summarySliders.count > 1) {
-        SliderModel *slider = summarySliders[1];
+    if (self.summarySliders.count > 1) {
+        SliderModel *slider = self.summarySliders[1];
         CGFloat position = slider.value.floatValue/10;
         leftLabel2.text = slider.sliderTemplate.minLabelShortDisplayed;
         rightLabel2.text = slider.sliderTemplate.maxLabelShortDisplayed;
@@ -210,8 +379,8 @@ typedef enum {
         imageView2.image = nil;
     }
 
-    if (summarySliders.count > 2) {
-        SliderModel *slider = summarySliders[2];
+    if (self.summarySliders.count > 2) {
+        SliderModel *slider = self. summarySliders[2];
         CGFloat position = slider.value.floatValue/10;
         leftLabel3.text = slider.sliderTemplate.minLabelShortDisplayed;
         rightLabel3.text = slider.sliderTemplate.maxLabelShortDisplayed;
@@ -226,12 +395,162 @@ typedef enum {
     return cell;
 }
 
-- (UITableViewCell *)renderCellForDescription:(NSString *)description atIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)renderCellForDescriptionAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"DescriptionCell" forIndexPath:indexPath];
-
+    
+    NSString *description = nil;
+    
+    if (self.mode == Special || self.mode == Spot) {
+        description = self.spot.descriptionOfSpot;
+    }
+    else if (self.mode == Drink) {
+        description = self.drink.descriptionOfDrink;
+    }
+    
     UILabel *descriptionLabel = (UILabel *)[cell viewWithTag:1];
-    [descriptionLabel setFont:[UIFont fontWithName:@"Lato-Light" size:descriptionLabel.font.pointSize]];
     descriptionLabel.text = description;
+    
+    return cell;
+}
+
+- (UITableViewCell *)renderCellForHoursAndPhoneAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"HoursAndPhoneCell" forIndexPath:indexPath];
+    
+    UIImageView *clockImageView = (UIImageView *)[cell viewWithTag:1];
+    UIImageView *phoneImageView = (UIImageView *)[cell viewWithTag:3];
+    
+    UILabel *hoursLabel = (UILabel *)[cell viewWithTag:2];
+    UIButton *phoneButton = (UIButton *)[cell viewWithTag:4];
+    
+    [phoneButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [phoneButton addTarget:self action:@selector(phoneButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+
+    
+    [SHStyleKit setButton:phoneButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
+    
+    NSString *hoursForToday = self.spot.hoursForToday;
+    
+    CGSize size = CGSizeMake(30.0f, 30.0f);
+    
+    if (hoursForToday.length) {
+        hoursLabel.text = hoursForToday;
+        clockImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingClockIcon color:SHStyleKitColorMyTextColor size:size];
+    }
+    else {
+        hoursLabel.text = nil;
+        clockImageView.image = nil;
+    }
+    
+    if (self.spot.phoneNumber.length) {
+        [phoneButton setTitle:self.spot.formattedPhoneNumber forState:UIControlStateNormal];
+        phoneImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingPhoneIcon color:SHStyleKitColorMyTintColor size:size];
+    }
+    else {
+        [phoneButton setTitle:@"" forState:UIControlStateNormal];
+        phoneImageView.image = nil;
+    }
+    
+    return cell;
+}
+
+- (UITableViewCell *)renderCellForPhotosAndReviewAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"PhotosAndReviewCell" forIndexPath:indexPath];
+    
+    UIButton *photoButton = (UIButton *)[cell viewWithTag:1];
+    UIButton *reviewButton = (UIButton *)[cell viewWithTag:4];
+    
+    UILabel *photosLabel = (UILabel *)[cell viewWithTag:2];
+    UILabel *reviewLabel = (UILabel *)[cell viewWithTag:3];
+    
+    [SHStyleKit setLabel:photosLabel textColor:SHStyleKitColorMyTintColor];
+    [SHStyleKit setLabel:reviewLabel textColor:SHStyleKitColorMyTintColor];
+    
+    ImageModel *imageModel = nil;
+
+    if (self.mode == Special || self.mode == Spot) {
+        imageModel = self.spot.highlightImage;
+    }
+    else if (self.mode == Drink) {
+        imageModel = self.drink.highlightImage;
+    }
+    
+    if (imageModel) {
+        [NetworkHelper loadImage:imageModel placeholderImage:nil withThumbImageBlock:^(UIImage *thumbImage) {
+            [photoButton setImage:thumbImage forState:UIControlStateNormal];
+        } withFullImageBlock:^(UIImage *fullImage) {
+            [photoButton setImage:fullImage forState:UIControlStateNormal];
+        } withErrorBlock:^(NSError *error) {
+            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+        }];
+    }
+    
+    [SHStyleKit setButton:reviewButton withDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
+    
+    return cell;
+}
+
+- (UITableViewCell *)renderCellForTodaysSpecialAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"TodaysSpecialCell" forIndexPath:indexPath];
+    
+    UILabel *specialLabel = (UILabel *)[cell viewWithTag:2];
+    specialLabel.text = [self specialForToday];
+    
+    return cell;
+}
+
+- (UITableViewCell *)renderCellForBeerSummaryAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"BeerSummaryCell" forIndexPath:indexPath];
+    
+    UILabel *abvLabel = (UILabel *)[cell viewWithTag:1];
+    abvLabel.text = [NSString stringWithFormat:@"%@ ABV", self.drink.abvPercentString];
+    
+    return cell;
+}
+
+- (UITableViewCell *)renderCellForWineSummaryAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"WineSummaryCell" forIndexPath:indexPath];
+    
+    UILabel *abvLabel = (UILabel *)[cell viewWithTag:1];
+    UILabel *vintageLabel = (UILabel *)[cell viewWithTag:2];
+    UILabel *varietalLabel = (UILabel *)[cell viewWithTag:3];
+    
+    if (self.drink.abv.floatValue > 0) {
+        abvLabel.text = self.drink.abvPercentString;
+    }
+    else {
+        abvLabel.text = nil;
+    }
+    if (self.drink.vintage) {
+        vintageLabel.text = [NSString stringWithFormat:@"%@", self.drink.vintage];
+    }
+    else {
+        vintageLabel.text = nil;
+    }
+    if (self.drink.varietal.length) {
+        varietalLabel.text = self.drink.varietal;
+    }
+    else {
+        varietalLabel.text = nil;
+    }
+    
+    return cell;
+}
+
+- (UITableViewCell *)renderCellForCocktailSummaryAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"CocktailSummaryCell" forIndexPath:indexPath];
+    
+    // Note: There is nothing to display here currently.
+    
+    return cell;
+}
+
+- (UITableViewCell *)renderCellForErrorAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ErrorCell" forIndexPath:indexPath];
+    
+    NSString *rowName = [self nameForRowAtIndexPath:indexPath];
+    
+    UILabel *errorLabel = (UILabel *)[cell viewWithTag:1];
+    errorLabel.text = [NSString stringWithFormat:@"Error at %lu, %lu (%@)", (unsigned long)indexPath.section, (unsigned long)indexPath.row, rowName];
     
     return cell;
 }
@@ -244,28 +563,73 @@ typedef enum {
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     UITableViewCell *cell = nil;
     
     NSString *rowName = [self nameForRowAtIndexPath:indexPath];
     
     if (self.mode == Special) {
-        NSAssert(FALSE, @"Not Supported");
-    }
-    else if (self.mode == Spot) {
-        if ([rowName isEqualToString:kRowNameSummarySliders]) {
-            cell = [self renderCellForSummarySliders:self.summarySliders atIndexPath:indexPath];
+        if ([rowName isEqualToString:kRowNameSpotSummary]) {
+            cell = [self renderCellForAboutSpotAtIndexPath:indexPath];
+        }
+        else if ([rowName isEqualToString:kRowNameSummarySliders]) {
+            cell = [self renderCellForSummarySlidersAtIndexPath:indexPath];
         }
         else if ([rowName isEqualToString:kRowNameDescription]) {
-            cell = [self renderCellForDescription:self.spot.descriptionText atIndexPath:indexPath];
+            cell = [self renderCellForDescriptionAtIndexPath:indexPath];
+        }
+        else if ([rowName isEqualToString:kRowNameHoursAndPhone]) {
+            cell = [self renderCellForHoursAndPhoneAtIndexPath:indexPath];
+        }
+        else if ([rowName isEqualToString:kRowNamePhotosAndReview]) {
+            cell = [self renderCellForPhotosAndReviewAtIndexPath:indexPath];
+        }
+        else {
+            cell = [self renderCellForErrorAtIndexPath:indexPath];
+        }
+    }
+    else if (self.mode == Spot) {
+        if ([rowName isEqualToString:kRowNameSpotSummary]) {
+            cell = [self renderCellForAboutSpotAtIndexPath:indexPath];
+        }
+        else if ([rowName isEqualToString:kRowNameSummarySliders]) {
+            cell = [self renderCellForSummarySlidersAtIndexPath:indexPath];
+        }
+        else if ([rowName isEqualToString:kRowNameDescription]) {
+            cell = [self renderCellForDescriptionAtIndexPath:indexPath];
+        }
+        else if ([rowName isEqualToString:kRowNameTodaysSpecial]) {
+            cell = [self renderCellForTodaysSpecialAtIndexPath:indexPath];
+        }
+        else if ([rowName isEqualToString:kRowNameHoursAndPhone]) {
+            cell = [self renderCellForHoursAndPhoneAtIndexPath:indexPath];
+        }
+        else if ([rowName isEqualToString:kRowNamePhotosAndReview]) {
+            cell = [self renderCellForPhotosAndReviewAtIndexPath:indexPath];
+        }
+        else {
+            cell = [self renderCellForErrorAtIndexPath:indexPath];
         }
     }
     else if (self.mode == Drink) {
         if ([rowName isEqualToString:kRowNameSummarySliders]) {
-            cell = [self renderCellForSummarySliders:self.summarySliders atIndexPath:indexPath];
+            cell = [self renderCellForSummarySlidersAtIndexPath:indexPath];
         }
         else if ([rowName isEqualToString:kRowNameDescription]) {
-            cell = [self renderCellForDescription:self.drink.descriptionText atIndexPath:indexPath];
+            cell = [self renderCellForDescriptionAtIndexPath:indexPath];
+        }
+        else if ([rowName isEqualToString:kRowNameDrinkSummary]) {
+            if (self.drink.isBeer) {
+                cell = [self renderCellForBeerSummaryAtIndexPath:indexPath];
+            }
+            else if (self.drink.isWine) {
+                cell = [self renderCellForWineSummaryAtIndexPath:indexPath];
+            }
+        }
+        else if ([rowName isEqualToString:kRowNamePhotosAndReview]) {
+            cell = [self renderCellForPhotosAndReviewAtIndexPath:indexPath];
+        }
+        else {
+            cell = [self renderCellForErrorAtIndexPath:indexPath];
         }
     }
 
@@ -285,8 +649,43 @@ typedef enum {
 #pragma mark -
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
+    NSString *rowName = [self nameForRowAtIndexPath:indexPath];
+    
+    if ([rowName isEqualToString:kRowNameSummarySliders]) {
         return 70.0f;
+    }
+    else if ([rowName isEqualToString:kRowNameDescription]) {
+        NSString *text = nil;
+        if (self.mode == Special || self.mode == Spot) {
+            text = self.spot.descriptionOfSpot;
+        }
+        else if (self.mode == Drink) {
+            text = self.drink.descriptionOfDrink;
+        }
+        
+        UIFont *font = [UIFont fontWithName:@"Lato-Light" size:14.0f];
+        CGFloat height = [self heightForString:text font:font maxWidth:300.0f] + 20.0f;
+        
+        return height;
+    }
+    else if ([rowName isEqualToString:kRowNameHoursAndPhone]) {
+        return 44.0f;
+    }
+    else if ([rowName isEqualToString:kRowNamePhotosAndReview]) {
+        return 70.0f;
+    }
+    else if ([rowName isEqualToString:kRowNameTodaysSpecial]) {
+        NSString *text = [self specialForToday];
+        UIFont *font = [UIFont fontWithName:@"Lato-Light" size:14.0f];
+        CGFloat height = [self heightForString:text font:font maxWidth:300.0f] + 50.0f;
+        
+        return height;
+    }
+    else if ([rowName isEqualToString:kRowNameDrinkSummary]) {
+        return 44.0f;
+    }
+    else if ([rowName isEqualToString:kRowNameHighestRated]) {
+        return 44.0f;
     }
     else {
         return 44.0f;

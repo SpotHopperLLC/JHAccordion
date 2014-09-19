@@ -73,7 +73,7 @@
 - (void)updateSpots:(NSArray *)spots {
     NSAssert(self.delegate, @"Delegate must be defined");
     
-    static NSString *lock;
+    static NSString *lock = @"LOCK";
     @synchronized(lock) {
         if (_isUpdatingData) {
             [self performSelector:@selector(updateSpots:) withObject:spots afterDelay:0.25];
@@ -286,14 +286,11 @@
     UIImageView *spotImageView = (UIImageView *)[cell viewWithTag:kSpecialCellSpotImageView];
     
     spotImageView.image = nil;
+    ImageModel *highlightImage = spot.highlightImage;
     
-    if (spot.imageUrl.length) {
-        [spotImageView setImageWithURL:[NSURL URLWithString:spot.imageUrl] placeholderImage:spot.placeholderImage];
-    }
-    else if (spot.images.count) {
-        ImageModel *imageModel = spot.images[0];
+    if (highlightImage) {
         __weak UIImageView *weakImageView = spotImageView;
-        [NetworkHelper loadImage:imageModel placeholderImage:spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
+        [NetworkHelper loadImage:highlightImage placeholderImage:spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
             weakImageView.image = thumbImage;
         } withFullImageBlock:^(UIImage *fullImage) {
             weakImageView.image = fullImage;
@@ -312,7 +309,6 @@
     UIButton *likeButton = [self buttonInView:cell withTag:kSpecialCellLikeButton];
     UILabel *likeLabel = [self labelInView:cell withTag:kSpecialCellLikeLabel];
     UIButton *shareButton = [self buttonInView:cell withTag:kSpecialCellShareButton];
-    UILabel *positionLabel = [self labelInView:cell withTag:kSpecialCellPositionLabel];
     
     NSAssert(nameLabel, @"View must be defined");
     NSAssert(timeLabel, @"View must be defined");
@@ -320,21 +316,18 @@
     NSAssert(likeButton, @"View must be defined");
     NSAssert(likeLabel, @"View must be defined");
     NSAssert(shareButton, @"View must be defined");
-    NSAssert(positionLabel, @"View must be defined");
     
     [SHStyleKit setLabel:nameLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:timeLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setButton:likeButton withDrawing:SHStyleKitDrawingThumbsUpIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setButton:shareButton withDrawing:SHStyleKitDrawingShareIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setLabel:likeLabel textColor:SHStyleKitColorMyTintColor];
-    [SHStyleKit setLabel:positionLabel textColor:SHStyleKitColorMyTextColor];
     
     [nameLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
     [timeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
     specialTextView.contentOffset = CGPointMake(0.0f, 0.0f);
     [specialTextView setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [likeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
-    [positionLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     
     nameLabel.text = spot.name;
     
@@ -364,16 +357,6 @@
         likeButton.hidden = TRUE;
         likeLabel.hidden = TRUE;
     }
-    
-    positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", (long)index+1, (long)self.spots.count];
-    
-    UIButton *previousButton = [self buttonInView:cell withTag:kSpecialCellLeftButton];
-    [SHStyleKit setButton:previousButton withDrawing:SHStyleKitDrawingArrowLeftIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
-    previousButton.hidden = index == 0;
-    
-    UIButton *nextButton = [self buttonInView:cell withTag:kSpecialCellRightButton];
-    [SHStyleKit setButton:nextButton withDrawing:SHStyleKitDrawingArrowRightIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
-    nextButton.hidden = index == self.spots.count - 1;
 }
 
 #pragma mark - Private

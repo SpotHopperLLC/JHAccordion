@@ -12,5 +12,6 @@
 
 - (NSDate*)formatBirthday:(NSString*)string;
 - (NSDate*)formatDateTimestamp:(NSString*)string;
+- (NSString *)formatPhoneNumber:(NSString *)phoneNumber;
 
 @end

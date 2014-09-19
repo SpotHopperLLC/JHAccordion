@@ -1785,17 +1785,25 @@
     NSMutableArray *allTheSliders = @[].mutableCopy;
     [allTheSliders addObjectsFromArray:self.sliders];
     [allTheSliders addObjectsFromArray:self.advancedSliders];
+
+    SpotListRequest *request = [[SpotListRequest alloc] init];
+    
+    NSArray *sorted = [allTheSliders sortedArrayUsingComparator:^NSComparisonResult(SliderModel *slider1, SliderModel *slider2) {
+        return [slider1 compare:slider2];
+    }];
+    
+    request.sliders = sorted;
     
     NSString *sliderType = [self isSelectingSpotlist] ? @"Spotlist" : @"Drinklist";
     
     for (SliderModel *sliderModel in self.sliders) {
         if (sliderModel.value) {
-            [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @NO}];
+            [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @NO, @"Starred" : sliderModel.starred ? @YES : @NO}];
         }
     }
     for (SliderModel *sliderModel in self.advancedSliders) {
         if (sliderModel.value) {
-            [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @YES}];
+            [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @YES, @"Starred" : sliderModel.starred ? @YES : @NO}];
         }
     }
     
@@ -1810,7 +1818,6 @@
     
     [Tracker trackCreatingSpotList];
     
-    SpotListRequest *request = [[SpotListRequest alloc] init];
     if (self.selectedSpotlist && ![[NSNull null] isEqual:self.selectedSpotlist.ID]) {
         request.spotListId = self.selectedSpotlist.ID;
     }
@@ -1829,7 +1836,6 @@
     
     request.coordinate = coordinate;
     request.radius = radius;
-    request.sliders = allTheSliders;
     
     NSDate *startDate = [NSDate date];
     [[SpotListModel fetchSpotListWithRequest:request] then:^(SpotListModel *spotListModel) {
@@ -1857,18 +1863,22 @@
         [allTheSliders addObjectsFromArray:self.sliders];
         [allTheSliders addObjectsFromArray:self.advancedSliders];
         
-        request.sliders = allTheSliders;
+        NSArray *sorted = [allTheSliders sortedArrayUsingComparator:^NSComparisonResult(SliderModel *slider1, SliderModel *slider2) {
+            return [slider1 compare:slider2];
+        }];
+        
+        request.sliders = sorted;
         
         NSString *sliderType = [self isSelectingSpotlist] ? @"Spotlist" : @"Drinklist";
         
         for (SliderModel *sliderModel in self.sliders) {
             if (sliderModel.value) {
-                [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @NO}];
+                [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @NO, @"Starred" : sliderModel.starred ? @YES : @NO}];
             }
         }
         for (SliderModel *sliderModel in self.advancedSliders) {
             if (sliderModel.value) {
-                [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @YES}];
+                [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @YES, @"Starred" : sliderModel.starred ? @YES : @NO}];
             }
         }
     }

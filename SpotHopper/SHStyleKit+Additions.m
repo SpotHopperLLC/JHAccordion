@@ -339,6 +339,18 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
             [SHStyleKit drawCloseIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
             break;
             
+        case SHStyleKitDrawingClockIcon:
+            [SHStyleKit drawClockIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
+            break;
+            
+        case SHStyleKitDrawingPhoneIcon:
+            [SHStyleKit drawPhoneIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
+            break;
+            
+        case SHStyleKitDrawingMoreIcon:
+            [SHStyleKit drawMoreIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
+            break;
+            
         case SHStyleKitDrawingDeleteIcon:
             [SHStyleKit drawDeleteIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
             break;
@@ -410,15 +422,40 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
     }
     
     // draw the outline to debug image creation
-     //[SHStyleKit drawOutlineIconWithScaleX:scaleX scaleY:scaleY strokeColorName:SHStyleKitColorNameMyTintColor];
+    //[SHStyleKit drawOutlineIconWithScaleX:scaleX scaleY:scaleY strokeColorName:SHStyleKitColorNameMyTintColor];
     
     image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    // only a last resort
-    //image = [SHStyleKit resizeImage:image toMaximumSize:size];
-    
     [[self sh_sharedImageCache] cacheImage:image forDrawing:drawing color:color size:size rotation:rotation position:position];
+    
+    return image;
+}
+
++ (UIImage *)drawImageForRatingStarsWithPercentage:(CGFloat)percentage size:(CGSize)size;
+{
+    SHStyleKitDrawing drawing = SHStyleKitDrawingRatingStars;
+    UIImage *image = [[self sh_sharedImageCache] cachedImageForDrawing:drawing color:SHStyleKitColorMyTintColor size:size rotation:0.0f position:percentage];
+    if (image) {
+        return image;
+    }
+    
+    CGFloat scaleY = size.height / 1000.f;
+    CGFloat scaleX = scaleY; // size.width / 5200.0f;
+    SHStyleKitColor color = SHStyleKitColorMyTintColor;
+    NSString *colorName = [SHStyleKit colorName:color];
+    
+    UIGraphicsBeginImageContextWithOptions(size, NO, 0.0f);
+    
+    [SHStyleKit drawRatingStarsWithScaleX:scaleX scaleY:scaleY fillColorName:colorName percentage:percentage];
+
+    // draw the outline to debug image creation
+    //[SHStyleKit drawOutlineIconWithScaleX:scaleX scaleY:scaleY strokeColorName:SHStyleKitColorNameMyTintColor];
+    
+    image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    [[self sh_sharedImageCache] cacheImage:image forDrawing:drawing color:color size:size rotation:0.0f position:0.0f];
     
     return image;
 }

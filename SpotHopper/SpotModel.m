@@ -20,6 +20,7 @@
 #import "LikeModel.h"
 #import "UserModel.h"
 #import "SpotListModel.h"
+#import "ImageModel.h"
 
 #import "Tracker.h"
 
@@ -42,7 +43,7 @@
 
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'name' to 'name' property
-    // Maps values in JSON key 'description' to 'descriptionText' property
+    // Maps values in JSON key 'description' to 'descriptionOfSpot' property
     // Maps values in JSON key 'image_url' to 'imageUrl' property
     // Maps values in JSON key 'address' to 'address' property
     // Maps values in JSON key 'city' to 'city' property
@@ -64,7 +65,7 @@
     // Maps linked resource in JSON key 'specials' to 'specials' property
     return @{
              @"name" : @"name",
-             @"description" : @"descriptionText",
+             @"description" : @"descriptionOfSpot",
              @"image_url" : @"imageUrl",
              @"address" : @"address",
              @"city" : @"city",
@@ -86,6 +87,24 @@
              @"links.average_review" : @"averageReview",
              @"links.specials" : @"specials"
              };
+}
+
+#pragma mark - Read-only properties
+#pragma mark -
+
+- (ImageModel *)highlightImage {
+    if (self.highlightImages.count) {
+        return self.highlightImages[0];
+    }
+    else if (self.images.count) {
+        return self.images[0];
+    }
+    
+    return nil;
+}
+
+- (NSString *)formattedPhoneNumber {
+    return [self formatPhoneNumber:self.phoneNumber];
 }
 
 - (NSString *)hoursForToday {

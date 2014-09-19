@@ -42,7 +42,6 @@
 @interface DrinkModel : SHJSONAPIResource
 
 @property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSString *descriptionText;
 @property (nonatomic, strong) NSString *imageUrl;
 @property (nonatomic, strong) DrinkTypeModel *drinkType;
 @property (nonatomic, strong) DrinkSubTypeModel *drinkSubtype;
@@ -67,6 +66,7 @@
 @property (nonatomic, readonly) BOOL isCocktail;
 @property (nonatomic, readonly) BOOL isWine;
 
+@property (nonatomic, readonly) ImageModel *highlightImage;
 @property (nonatomic, readonly) NSString *rating;
 @property (nonatomic, readonly) NSString *ratingShort;
 @property (nonatomic, readonly) NSString *drinkStyle;
