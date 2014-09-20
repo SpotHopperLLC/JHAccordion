@@ -3175,6 +3175,7 @@
 				03866460186D352400985CEC /* Frameworks */,
 				03866461186D352400985CEC /* Resources */,
 				38FAC0397798409790BA14AF /* Copy Pods Resources */,
+				26E3C56919CCFF7100BC0634 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3214,6 +3215,7 @@
 				03CAC02A18E7716400FAC5F5 /* Frameworks */,
 				03CAC03218E7716400FAC5F5 /* Resources */,
 				03CAC16618E7716400FAC5F5 /* Copy Pods Resources */,
+				264CF2DB19CCFBEC00310A56 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3233,6 +3235,7 @@
 				03F4E90818CA34260056EAA9 /* Frameworks */,
 				03F4E91018CA34260056EAA9 /* Resources */,
 				03F4E9F118CA34260056EAA9 /* Copy Pods Resources */,
+				26E3C56819CCFF6A00BC0634 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3252,6 +3255,7 @@
 				267E05821922CC48004457B4 /* Frameworks */,
 				267E058A1922CC48004457B4 /* Resources */,
 				267E06CD1922CC48004457B4 /* Copy Pods Resources */,
+				264CF2DC19CCFC9800310A56 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -4114,6 +4118,32 @@
 			shellScript = "\"${SRCROOT}/Pods/Pods-SpotHopperDev-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		264CF2DB19CCFBEC00310A56 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "appBuild=`date \"+%Y.%m.%d.%H%M%S\"`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $appBuild\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\necho \"Updated ${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"";
+		};
+		264CF2DC19CCFC9800310A56 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "appBuild=`date \"+%Y.%m.%d.%H%M%S\"`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $appBuild\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\necho \"Updated ${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"";
+		};
 		267E04F71922CC48004457B4 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -4143,6 +4173,32 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Pods-SpotHopperStaging-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		26E3C56819CCFF6A00BC0634 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "appBuild=`date \"+%Y.%m.%d.%H%M%S\"`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $appBuild\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\necho \"Updated ${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"";
+		};
+		26E3C56919CCFF7100BC0634 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "appBuild=`date \"+%Y.%m.%d.%H%M%S\"`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $appBuild\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\necho \"Updated ${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"";
 		};
 		38FAC0397798409790BA14AF /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
