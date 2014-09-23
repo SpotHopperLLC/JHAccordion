@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SHRatingView : UIView
+IB_DESIGNABLE
+@interface SHRatingView : UIImageView
 
-@property (assign, nonatomic) CGFloat percentage;
+// 10 point scale translated to percentage on 100 point scale
+@property (assign, nonatomic) IBInspectable CGFloat rating;
 
 @end

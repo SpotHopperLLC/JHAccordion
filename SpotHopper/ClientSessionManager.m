@@ -391,7 +391,7 @@
 - (void)logResponse:(NSHTTPURLResponse *)response startDate:(NSDate *)startDate {
     NSAssert(startDate, @"Start Date is required");
     NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:startDate];
-    DebugLog(@"duration: %f", duration);
+    //DebugLog(@"duration: %f", duration);
     JTSNetworkStatus networkStatus = [[JTSReachabilityResponder sharedInstance] networkStatus];
     
     NSString *network = @"Unknown";

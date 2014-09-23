@@ -690,6 +690,10 @@
 		262380211986F83500F0940A /* Tracker+Events.m in Sources */ = {isa = PBXBuildFile; fileRef = 2623801F1986F83500F0940A /* Tracker+Events.m */; };
 		262380231986F83500F0940A /* Tracker+Events.m in Sources */ = {isa = PBXBuildFile; fileRef = 2623801F1986F83500F0940A /* Tracker+Events.m */; };
 		262380241986F83500F0940A /* Tracker+Events.m in Sources */ = {isa = PBXBuildFile; fileRef = 2623801F1986F83500F0940A /* Tracker+Events.m */; };
+		2624373F19D07F7000A48BB3 /* RatingSwooshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2624373E19D07F7000A48BB3 /* RatingSwooshView.m */; };
+		2624374019D07F7000A48BB3 /* RatingSwooshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2624373E19D07F7000A48BB3 /* RatingSwooshView.m */; };
+		2624374119D07F7000A48BB3 /* RatingSwooshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2624373E19D07F7000A48BB3 /* RatingSwooshView.m */; };
+		2624374219D07F7000A48BB3 /* RatingSwooshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2624373E19D07F7000A48BB3 /* RatingSwooshView.m */; };
 		262A65B2195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
 		262A65B3195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
 		262A65B5195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
@@ -1060,6 +1064,10 @@
 		268542E6199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */; };
 		268542E8199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */; };
 		268542E9199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */; };
+		2685DA9319D09B0C00A778FD /* SHButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2685DA9219D09B0C00A778FD /* SHButton.m */; };
+		2685DA9419D09B0C00A778FD /* SHButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2685DA9219D09B0C00A778FD /* SHButton.m */; };
+		2685DA9519D09B0C00A778FD /* SHButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2685DA9219D09B0C00A778FD /* SHButton.m */; };
+		2685DA9619D09B0C00A778FD /* SHButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2685DA9219D09B0C00A778FD /* SHButton.m */; };
 		2686683419A3EE0F00284A74 /* SpecialModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2686683319A3EE0F00284A74 /* SpecialModel.m */; };
 		2686683519A3EE0F00284A74 /* SpecialModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2686683319A3EE0F00284A74 /* SpecialModel.m */; };
 		2686683819A3F91500284A74 /* SHModelResourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2686683719A3F91500284A74 /* SHModelResourceManager.m */; };
@@ -1721,6 +1729,8 @@
 		261E9CD91989C2EF00BC9A9E /* SHTappableTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHTappableTextView.m; sourceTree = "<group>"; };
 		2623801E1986F83500F0940A /* Tracker+Events.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tracker+Events.h"; sourceTree = "<group>"; };
 		2623801F1986F83500F0940A /* Tracker+Events.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Tracker+Events.m"; sourceTree = "<group>"; };
+		2624373D19D07F7000A48BB3 /* RatingSwooshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RatingSwooshView.h; sourceTree = "<group>"; };
+		2624373E19D07F7000A48BB3 /* RatingSwooshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RatingSwooshView.m; sourceTree = "<group>"; };
 		262A65B0195893F800A4DACD /* MenuModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuModel.h; sourceTree = "<group>"; };
 		262A65B1195893F800A4DACD /* MenuModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuModel.m; sourceTree = "<group>"; };
 		262B958719CA145200C2B1CC /* SpotHopperProduction.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SpotHopperProduction.entitlements; sourceTree = SOURCE_ROOT; };
@@ -1778,6 +1788,8 @@
 		267E06D31922CCA2004457B4 /* SpotHopperStaging-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperStaging-Info.plist"; sourceTree = "<group>"; };
 		268542E3199050E4008DBFB2 /* SHHomeNavigationButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHHomeNavigationButton.h; sourceTree = "<group>"; };
 		268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHHomeNavigationButton.m; sourceTree = "<group>"; };
+		2685DA9119D09B0C00A778FD /* SHButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButton.h; sourceTree = "<group>"; };
+		2685DA9219D09B0C00A778FD /* SHButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButton.m; sourceTree = "<group>"; };
 		2686683219A3EE0F00284A74 /* SpecialModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialModel.h; sourceTree = "<group>"; };
 		2686683319A3EE0F00284A74 /* SpecialModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpecialModel.m; sourceTree = "<group>"; };
 		2686683619A3F91500284A74 /* SHModelResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHModelResourceManager.h; sourceTree = "<group>"; };
@@ -3159,6 +3171,10 @@
 				A62B333C193D086F00CE4BF0 /* SHSectionHeaderView.m */,
 				26C6621619CCC2F3005685CB /* SHRatingView.h */,
 				26C6621719CCC2F3005685CB /* SHRatingView.m */,
+				2624373D19D07F7000A48BB3 /* RatingSwooshView.h */,
+				2624373E19D07F7000A48BB3 /* RatingSwooshView.m */,
+				2685DA9119D09B0C00A778FD /* SHButton.h */,
+				2685DA9219D09B0C00A778FD /* SHButton.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -4400,6 +4416,7 @@
 				038664CB186D376900985CEC /* NSArray+SaveLoad.m in Sources */,
 				A688DB57194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m in Sources */,
 				03E882DF18C797BA00BD8FBB /* UIView+AddBorder.m in Sources */,
+				2685DA9319D09B0C00A778FD /* SHButton.m in Sources */,
 				262380201986F83500F0940A /* Tracker+Events.m in Sources */,
 				039F548A18D33BA9004B2B67 /* DrinkMenuViewController.m in Sources */,
 				26C428CD192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m in Sources */,
@@ -4407,6 +4424,7 @@
 				03F2D93E187208C200C69576 /* SHLabelLatoLight.m in Sources */,
 				2691C4B919AFE411006F720C /* LocationChooserViewController.m in Sources */,
 				2654B8BF192BB6E000A66BED /* SHMapFooterNavigationViewController.m in Sources */,
+				2624373F19D07F7000A48BB3 /* RatingSwooshView.m in Sources */,
 				0381044A18B6889300A410DB /* SpotAnnotation.m in Sources */,
 				03121A3C18BE361A00C9FFA3 /* NewReviewTypeViewController.m in Sources */,
 				03C8DAEA188B44C20082321C /* SliderModel.m in Sources */,
@@ -4570,6 +4588,7 @@
 				03CAC01818E7716400FAC5F5 /* SpotModel.m in Sources */,
 				03CAC01918E7716400FAC5F5 /* NSArray+SaveLoad.m in Sources */,
 				03CAC01B18E7716400FAC5F5 /* UIView+AddBorder.m in Sources */,
+				2685DA9619D09B0C00A778FD /* SHButton.m in Sources */,
 				03CAC01C18E7716400FAC5F5 /* DrinkMenuViewController.m in Sources */,
 				26C428D1192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m in Sources */,
 				03CAC01D18E7716400FAC5F5 /* SHLabelLatoLight.m in Sources */,
@@ -4577,6 +4596,7 @@
 				03CAC01E18E7716400FAC5F5 /* SpotAnnotation.m in Sources */,
 				03CAC01F18E7716400FAC5F5 /* NewReviewTypeViewController.m in Sources */,
 				03CAC02018E7716400FAC5F5 /* SliderModel.m in Sources */,
+				2624374219D07F7000A48BB3 /* RatingSwooshView.m in Sources */,
 				03CAC02218E7716400FAC5F5 /* SpotCardCollectionViewCell.m in Sources */,
 				03CAC02318E7716400FAC5F5 /* ImageModel.m in Sources */,
 				26EB38B218FC7E1100E84A3B /* NSNull+Debugging.m in Sources */,
@@ -4732,6 +4752,7 @@
 				03F4E8FB18CA34260056EAA9 /* NSArray+SaveLoad.m in Sources */,
 				03F4E8FD18CA34260056EAA9 /* UIView+AddBorder.m in Sources */,
 				039F548B18D33BA9004B2B67 /* DrinkMenuViewController.m in Sources */,
+				2685DA9419D09B0C00A778FD /* SHButton.m in Sources */,
 				262380211986F83500F0940A /* Tracker+Events.m in Sources */,
 				26C428CE192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m in Sources */,
 				268542E6199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */,
@@ -4739,6 +4760,7 @@
 				2654B8C0192BB6E000A66BED /* SHMapFooterNavigationViewController.m in Sources */,
 				2691C4BA19AFE411006F720C /* LocationChooserViewController.m in Sources */,
 				03F4E8FF18CA34260056EAA9 /* SpotAnnotation.m in Sources */,
+				2624374019D07F7000A48BB3 /* RatingSwooshView.m in Sources */,
 				03F4E90018CA34260056EAA9 /* NewReviewTypeViewController.m in Sources */,
 				03F4E90118CA34260056EAA9 /* SliderModel.m in Sources */,
 				03F4E90218CA34260056EAA9 /* SpotCardCollectionViewCell.m in Sources */,
@@ -4894,6 +4916,7 @@
 				267E056F1922CC48004457B4 /* SpotModel.m in Sources */,
 				267E05701922CC48004457B4 /* NSArray+SaveLoad.m in Sources */,
 				267E05721922CC48004457B4 /* UIView+AddBorder.m in Sources */,
+				2685DA9519D09B0C00A778FD /* SHButton.m in Sources */,
 				267E05731922CC48004457B4 /* DrinkMenuViewController.m in Sources */,
 				26C428D0192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m in Sources */,
 				267E05751922CC48004457B4 /* SHLabelLatoLight.m in Sources */,
@@ -4901,6 +4924,7 @@
 				267E05761922CC48004457B4 /* SpotAnnotation.m in Sources */,
 				267E05771922CC48004457B4 /* NewReviewTypeViewController.m in Sources */,
 				267E05781922CC48004457B4 /* SliderModel.m in Sources */,
+				2624374119D07F7000A48BB3 /* RatingSwooshView.m in Sources */,
 				267E057A1922CC48004457B4 /* SpotCardCollectionViewCell.m in Sources */,
 				267E057B1922CC48004457B4 /* ImageModel.m in Sources */,
 				267E057C1922CC48004457B4 /* NSNull+Debugging.m in Sources */,

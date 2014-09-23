@@ -258,7 +258,6 @@
 }
 
 - (void)fetchDrink:(void(^)(DrinkModel *drinkModel))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
-    DebugLog(@"drink: %@", self.ID);
     [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drinks/%ld", (long)[self.ID integerValue]] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];

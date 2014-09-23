@@ -135,7 +135,7 @@
             completionBlock(nil, error);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error.localizedDescription);
+        completionBlock(nil, error);
     }];
     
     [operation start];

@@ -6,10 +6,7 @@
 //  Copyright (c) 2014 SpotHopper. All rights reserved.
 //
 
-#define kLocationUpdateTimeout              5.0
-#define kTimeBetweenLocationRefreshes       30
-#define kSimulatorLatitude                  43.060179
-#define kSimulatorLongitude                 -87.885228
+#define kLocationUpdateTimeout              10.0
 
 #define kLastLocationLat @"last_location_lat"
 #define kLastLocationLng @"last_location_lng"
@@ -381,7 +378,7 @@ static NSString *_currentMapCenterLocationZip;
     CLLocationDistance distance = [castleLocation distanceFromLocation:location];
 
     // distance in meters
-    return distance < 25;
+    return distance < 50;
 }
 
 #pragma mark - Private Implemention
@@ -391,7 +388,7 @@ static NSString *_currentMapCenterLocationZip;
     
     if (!self.bestLocation) {
         [Tracker trackTimingOutBeforeLocationFound];
-        [self performSelector:@selector(stopUpdatingLocationAfterTimeout:) withObject:manager afterDelay:1.0f];
+        [self performSelector:@selector(stopUpdatingLocationAfterTimeout:) withObject:manager afterDelay:kLocationUpdateTimeout];
         return;
     }
     

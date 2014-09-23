@@ -44,7 +44,7 @@
 
 @optional
 
-- (void)specialsCollectionViewManager:(SHSpecialsCollectionViewManager *)manager didChangeToSpotAtIndex:(NSUInteger)index;
+- (void)specialsCollectionViewManager:(SHSpecialsCollectionViewManager *)manager didChangeToSpotAtIndex:(NSUInteger)index count:(NSUInteger)count;
 - (void)specialsCollectionViewManager:(SHSpecialsCollectionViewManager *)manager didSelectSpotAtIndex:(NSUInteger)index;
 
 - (void)specialsCollectionViewManager:(SHSpecialsCollectionViewManager *)manager displaySpot:(SpotModel *)spot;

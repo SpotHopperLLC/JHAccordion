@@ -9,6 +9,7 @@
 #import "SHHomeMapViewController.h"
 
 #import "SHAppContext.h"
+#import "SHAppConfiguration.h"
 
 #import "UIViewController+Navigator.h"
 #import "JHSidebarViewController.h"
@@ -38,7 +39,6 @@
 #import "SpotCalloutView.h"
 
 #import "SHButtonLatoBold.h"
-
 #import "TellMeMyLocation.h"
 
 #import "JTSReachabilityResponder.h"
@@ -70,6 +70,9 @@
 #import "UIImage+BlurredFrame.h"
 #import "UIImage+ImageEffects.h"
 
+#import "SSTURLShortener.h"
+#import "NetworkHelper.h"
+
 #import "UIAlertView+Block.h"
 #import "TTTAttributedLabel.h"
 #import "TTTAttributedLabel+QuickFonting.h"
@@ -88,8 +91,8 @@
 #define kMetersPerMile 1609.344
 #define kDebugAnnotationViewPositions NO
 
-#define kCollectionContainerViewHeight 200.0f
-#define kCollectionViewHeight 150.0f
+#define kCollectionContainerViewHeight 150.0f
+#define kCollectionViewHeight 100.0f
 #define kFooterNavigationViewHeight 50.0f
 
 #define kBlurRadius 2.5f
@@ -165,6 +168,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 @property (weak, nonatomic) UIView *clippedContainerView;
 
 @property (weak, nonatomic) NSLayoutConstraint *collectionContainerHeightConstraint;
+//@property (weak, nonatomic) NSLayoutConstraint *collectionHeightConstraint;
 @property (weak, nonatomic) NSLayoutConstraint *clippedBottomConstraint;
 
 @property (weak, nonatomic) IBOutlet UIView *areYouHerePromptView;
@@ -433,6 +437,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)embedChildViewControllers {
     // height for the expanded view
     CGFloat expandedHeight = CGRectGetHeight(self.expandedReferenceView.frame);
+    DebugLog(@"expandedHeight: %f", expandedHeight);
+    
+    //self.expandedReferenceView.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.5];
     
     if (!self.locationMenuBarViewController.view.superview) {
         [self embedViewController:self.locationMenuBarViewController intoView:self.view placementBlock:^(UIView *view) {
@@ -454,8 +461,15 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             self.homeNavigationViewBottomConstraint = bottomConstaints[0];
             [view pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0];
             [view constrainToHeight:180.0f];
-            [self addShadowToView:view];
         }];
+        
+        // top shadow (-10 origin)
+        CGSize topShadowSize = CGSizeMake(CGRectGetWidth(self.view.frame), 10.0f);
+        UIImageView *topShadowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, -10.0f, topShadowSize.width, topShadowSize.height)];
+        topShadowImageView.backgroundColor = [UIColor clearColor];
+        UIImage *topShadowImage = [SHStyleKit drawImage:SHStyleKitDrawingTopShadow size:topShadowSize];
+        topShadowImageView.image = topShadowImage;
+        [self.homeNavigationViewController.view addSubview:topShadowImageView];
     }
 
     if (!self.collectionContainerView && !self.mapOverlayCollectionViewController.view.superview && !self.mapFooterNavigationViewController.view.superview) {
@@ -494,7 +508,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.mapOverlayCollectionViewController.view.tag = 300;
         [self embedViewController:self.mapOverlayCollectionViewController intoView:self.clippedContainerView placementBlock:^(UIView *view) {
             [view pinToSuperviewEdges:JRTViewPinTopEdge | JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0f];
-            [view constrainToHeight:expandedHeight];
+            //[view constrainToHeight:expandedHeight];
+            [view pinAttribute:NSLayoutAttributeHeight toAttribute:NSLayoutAttributeHeight ofItem:self.expandedReferenceView];
         }];
         
         self.mapFooterNavigationViewController.view.tag = 400;
@@ -1295,6 +1310,16 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleShowSpotPhotosNotification:)
+                                                 name:SHShowSpotPhotosNotificationName
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleShowDrinkPhotosNotification:)
+                                                 name:SHShowDrinkPhotosNotificationName
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleOpenMenuForSpotNotification:)
                                                  name:SHOpenMenuForSpotNotificationName
                                                object:nil];
@@ -1389,7 +1414,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         if (seconds > 1200) {
             [self refreshCurrentLocationForAccuracy:kCLLocationAccuracyNearestTenMeters withCompletionBlock:^(NSError *error) {
                 [self fetchNearbySpotsAtLocation:self.currentLocation withCompletionBlock:^(NSArray *spots) {
-                    DebugLog(@"found %lu nearby spots", (unsigned long)spots.count);
                     self.nearbySpots = spots;
                     
                     SpotModel *nearestSpot = self.nearbySpots[0];
@@ -1407,7 +1431,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                         request.radius = self.searchRadius;
                         
                         [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
-                            if (!self.isScopedToSpot && drinkListModel.drinks.count) {
+                            if (!_isMapOverlayExpanded && !self.isScopedToSpot && drinkListModel.drinks.count) {
                                 [self showAreYouHerePromptForSpot:nearestSpot animated:TRUE withCompletionBlock:nil];
                                 self.lastAreYouHerePrompt = [NSDate date];
                             }
@@ -2126,14 +2150,15 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     if (!self.homeNavigationViewController.view.hidden) {
         return self.homeNavigationViewController.view.frame;
     }
-    else if (_isMapOverlayExpanded) {
+//    else if (_isMapOverlayExpanded) {
+    else {
         CGRect frame = self.collectionContainerView.frame;
         frame.size.height = kCollectionContainerViewHeight;
         return frame;
     }
-    else {
-        return self.collectionContainerView.frame;
-    }
+//    else {
+//        return self.collectionContainerView.frame;
+//    }
 }
 
 - (CGFloat)topEdgePadding {
@@ -2539,8 +2564,24 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)shareSpecialForSpot:(SpotModel *)spot {
-    // TODO: replace with new sharing option
-    [self showShareViewControllerWithSpot:spot shareType:ShareViewControllerShareSpecial];
+    NSString *link = [NSString stringWithFormat:@"%@/spots/%lu/specials", [SHAppConfiguration websiteUrl], (unsigned long)[spot.ID integerValue]];
+    
+    // go.spotapps.co -> www.spothopperapp.com
+    [SSTURLShortener shortenURL:[NSURL URLWithString:link] username:[SHAppConfiguration bitlyUsername] apiKey:[SHAppConfiguration bitlyAPIKey] withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
+        [NetworkHelper loadImage:spot.highlightImage placeholderImage:nil withThumbImageBlock:nil withFullImageBlock:^(UIImage *fullImage) {
+            NSMutableArray *activityItems = @[].mutableCopy;
+            [activityItems addObject:[NSString stringWithFormat:@"Special at %@", spot.name]];
+            [activityItems addObject:spot.specialForToday.text];
+            [activityItems addObject:shortenedURL];
+            [activityItems addObject:fullImage];
+            NSMutableArray *activities = @[].mutableCopy;
+            UIActivityViewController *activityView = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activities];
+            
+            [self presentViewController:activityView animated:YES completion:nil];
+        } withErrorBlock:^(NSError *error) {
+            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+        }];
+    }];
 }
 
 - (void)addShadowToView:(UIView *)view {
@@ -2872,11 +2913,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     CGFloat duration = animated ? 0.75f : 0.0f;
     CGFloat height = CGRectGetHeight(self.expandedReferenceView.frame);
     
-    //DebugLog(@"height: %f", height);
+    DebugLog(@"height: %f", height);
+    
+    [self.mapOverlayCollectionViewController expandedViewWillAppear];
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.6f initialSpringVelocity:0.25f options:options animations:^{
         self.collectionContainerHeightConstraint.constant = height;
+        //self.collectionHeightConstraint.constant = height;
         self.clippedBottomConstraint.constant = 0.0f;
         
         [self.view setNeedsLayout];
@@ -2905,9 +2949,12 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)pullDown:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
     CGFloat duration = animated ? 0.75f : 0.0f;
     
+    [self.mapOverlayCollectionViewController expandedViewWillDisappear];
+    
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.9f initialSpringVelocity:0.25f options:options animations:^{
         self.collectionContainerHeightConstraint.constant = kCollectionContainerViewHeight;
+        //self.collectionHeightConstraint.constant = kCollectionContainerViewHeight;
         self.clippedBottomConstraint.constant = kFooterNavigationViewHeight;
         
         [self.view setNeedsLayout];
@@ -3233,7 +3280,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didChangeToDrinkAtIndex:(NSUInteger)index {
     if (self.drinkListModel.drinks.count && index < self.drinkListModel.drinks.count) {
         DrinkModel *drink = self.drinkListModel.drinks[index];
-        DebugLog(@"drink id: %@", drink.ID);
         [self updateMapWithCurrentDrink:drink];
     }
 }
@@ -3885,6 +3931,28 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)handleReviewSpotNotification:(NSNotification *)notification {
     SpotModel *spot = notification.userInfo[SHReviewSpotNotificationKey];
     [self goToNewReviewForSpot:spot];
+}
+
+- (void)handleShowSpotPhotosNotification:(NSNotification *)notification {
+    SpotModel *spot = notification.userInfo[SHShowSpotPhotosNotificationKey];
+
+    if (spot.images.count > 0) {
+        [self goToPhotoAlbum:spot.images atIndex:0];
+    }
+    else {
+        [self goToPhotoViewer:spot.images atIndex:0 fromPhotoAlbum:nil];
+    }
+}
+
+- (void)handleShowDrinkPhotosNotification:(NSNotification *)notification {
+    DrinkModel *drink = notification.userInfo[SHShowDrinkPhotosNotificationKey];
+    
+    if (drink.images.count > 0) {
+        [self goToPhotoAlbum:drink.images atIndex:0];
+    }
+    else {
+        [self goToPhotoViewer:drink.images atIndex:0 fromPhotoAlbum:nil];
+    }
 }
 
 - (void)handleOpenMenuForSpotNotification:(NSNotification *)notification {

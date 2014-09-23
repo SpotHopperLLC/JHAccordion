@@ -33,7 +33,6 @@
     return MAX(1, self.imageModels.count);
 }
 
-// The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     // dequeue named cell template
     
@@ -67,8 +66,6 @@
 #pragma mark -
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"Selected item!");
-    
     //trigger segue
     if ([self.delegate respondsToSelector:@selector(imageCollectionViewManager:didSelectImageAtIndex:)]) {
         [self.delegate imageCollectionViewManager:self didSelectImageAtIndex:_currentIndex];
@@ -97,7 +94,6 @@
 - (void)changeIndex:(NSUInteger)index {
     // change collection view position if the index is in bounds and set _currentIndex
     if (index != _currentIndex && index < self.imageModels.count) {
-        NSLog(@"Manager - Changing to index: %lu", (long)index);
         _currentIndex = index;
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_currentIndex inSection:0];
         [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:TRUE];

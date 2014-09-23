@@ -103,7 +103,6 @@
 
 - (void)changeIndex:(NSUInteger)index {
     if (index != _currentIndex && index < self.drinkList.drinks.count) {
-        NSLog(@"Manager - Changing to index: %lu", (long)index);
         _currentIndex = index;
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_currentIndex inSection:0];
         [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:TRUE];
@@ -225,8 +224,6 @@
 #pragma mark -
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"Selected item %lu", (long)indexPath.item);
-    
     if ([self.delegate respondsToSelector:@selector(collectionViewManagerDidTapHeader:)]) {
         [self.delegate collectionViewManagerDidTapHeader:self];
     }
@@ -234,6 +231,10 @@
 //    if ([self.delegate respondsToSelector:@selector(drinksCollectionViewManager:didSelectDrinkAtIndex:)]) {
 //        [self.delegate drinksCollectionViewManager:self didSelectDrinkAtIndex:indexPath.item];
 //    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    [self removeTableManagerForIndexPath:indexPath];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -256,12 +257,21 @@
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
-    if (fabsf(velocity.x) > 0.1) {
-        CGFloat width = CGRectGetWidth(self.collectionView.frame);
+    // if the velocity is "slow" it should just go the next cell, otherwise let it go to the next paged position
+    // positive x is moving right, negative x is moving left
+    // slow is < 0.75
+    
+    CGFloat width = CGRectGetWidth(self.collectionView.frame);
+    NSUInteger currentIndex = MAX(MIN(round(self.collectionView.contentOffset.x / CGRectGetWidth(self.collectionView.frame)), self.drinkList.drinks.count - 1), 0);
+    
+    if (fabsf(velocity.x) > 2.0) {
         CGFloat x = targetContentOffset->x;
         x = roundf(x / width) * width;
-        DebugLog(@"x: %f", x);
         targetContentOffset->x = x;
+    }
+    else {
+        NSUInteger targetIndex = velocity.x > 0.0 ? MIN(currentIndex + 1, self.drinkList.drinks.count - 1) : MAX(currentIndex - 1, 0);
+        targetContentOffset->x = targetIndex * width;
     }
 }
 
@@ -269,17 +279,17 @@
 #pragma mark -
 
 - (void)renderCell:(UICollectionViewCell *)cell withDrink:(DrinkModel *)drink atIndex:(NSUInteger)index {
-    UIImageView *drinkImageView = [self imageViewInView:cell withTag:kDrinkCellDrinkImageView];
-    UILabel *nameLabel = [self labelInView:cell withTag:kDrinkCellDrinkNameLabel];
-    UILabel *breweryLabel = [self labelInView:cell withTag:kDrinkCellBreweryLabel];
-    UILabel *styleLabel = [self labelInView:cell withTag:kDrinkCellStyleLabel];
-    UIImageView *matchImageView = [self imageViewInView:cell withTag:kDrinkCellMatchPercentageImageView];
-    UILabel *percentageLabel = [self labelInView:cell withTag:kDrinkCellMatchPercentageLabel];
-    UILabel *matchLabel = [self labelInView:cell withTag:kDrinkCellMatchLabel];
-    UIButton *findSimilarButton = [self buttonInView:cell withTag:kDrinkCellFindSimilarButton];
-    UIButton *reviewItButton = [self buttonInView:cell withTag:kDrinkCellReviewItButton];
+    UIView *headerView = [cell viewWithTag:500];
     
-    SHRatingView *ratingView = (SHRatingView *)[cell viewWithTag:kDrinkCellRatingView];
+    UIImageView *drinkImageView = [self imageViewInView:headerView withTag:kDrinkCellDrinkImageView];
+    UILabel *nameLabel = [self labelInView:headerView withTag:kDrinkCellDrinkNameLabel];
+    UILabel *breweryLabel = [self labelInView:headerView withTag:kDrinkCellBreweryLabel];
+    UILabel *styleLabel = [self labelInView:headerView withTag:kDrinkCellStyleLabel];
+    UIImageView *matchImageView = [self imageViewInView:headerView withTag:kDrinkCellMatchPercentageImageView];
+    UILabel *percentageLabel = [self labelInView:headerView withTag:kDrinkCellMatchPercentageLabel];
+    UILabel *matchLabel = [self labelInView:headerView withTag:kDrinkCellMatchLabel];
+    
+    SHRatingView *ratingView = (SHRatingView *)[headerView viewWithTag:kDrinkCellRatingView];
     
     NSAssert(drinkImageView, @"View must be defined");
     NSAssert(nameLabel, @"View must be defined");
@@ -287,27 +297,17 @@
     NSAssert(styleLabel, @"View must be defined");
     NSAssert(percentageLabel, @"View must be defined");
     NSAssert(matchLabel, @"View must be defined");
-    NSAssert(findSimilarButton, @"View must be defined");
-    NSAssert(reviewItButton, @"View must be defined");
     NSAssert(ratingView, @"View must be defined");
     
     [SHStyleKit setLabel:nameLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:breweryLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setLabel:styleLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setLabel:matchLabel textColor:SHStyleKitColorMyTintColor];
-    [SHStyleKit setButton:findSimilarButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
-    [SHStyleKit setButton:reviewItButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
     
     [nameLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
     [breweryLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [styleLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [matchLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
-    [findSimilarButton.titleLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
-    [reviewItButton.titleLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
-    
-    CGSize buttonImageSize = CGSizeMake(30, 30);
-    [SHStyleKit setButton:findSimilarButton withDrawing:SHStyleKitDrawingSearchIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor size:buttonImageSize];
-    [SHStyleKit setButton:reviewItButton withDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor size:buttonImageSize];
     
     drinkImageView.image = nil;
     ImageModel *highlightImage = drink.highlightImage;
@@ -331,7 +331,7 @@
     breweryLabel.text = drink.spot.name;
     styleLabel.text = drink.drinkStyle;
 
-    ratingView.percentage = drink.averageReview.rating.floatValue;
+    ratingView.rating = drink.averageReview.rating.floatValue;
     
     if (drink.matchPercent.length) {
         percentageLabel.hidden = FALSE;
@@ -345,15 +345,6 @@
         matchLabel.hidden = TRUE;
         matchImageView.image = nil;
     }
-    
-    if (self.drinkList.drinks.count == 1) {
-        findSimilarButton.hidden = FALSE;
-        reviewItButton.hidden = FALSE;
-    }
-    else {
-        findSimilarButton.hidden = TRUE;
-        reviewItButton.hidden = TRUE;
-    }
 }
 
 #pragma mark - Private
@@ -362,8 +353,8 @@
 - (void)reportedChangedIndex {
     [Tracker trackListViewDidDisplayDrink:[self drinkAtIndex:_currentIndex] position:_currentIndex+1];
     
-    if ([self.delegate respondsToSelector:@selector(drinksCollectionViewManager:didChangeToDrinkAtIndex:)]) {
-        [self.delegate drinksCollectionViewManager:self didChangeToDrinkAtIndex:_currentIndex];
+    if ([self.delegate respondsToSelector:@selector(drinksCollectionViewManager:didChangeToDrinkAtIndex:count:)]) {
+        [self.delegate drinksCollectionViewManager:self didChangeToDrinkAtIndex:_currentIndex count:self.drinkList.drinks.count];
     }
 }
 

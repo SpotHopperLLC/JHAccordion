@@ -104,7 +104,6 @@
 
 - (void)changeIndex:(NSUInteger)index {
     if (index != _currentIndex && index < self.spotList.spots.count) {
-        NSLog(@"Manager - Changing to index: %lu", (long)index);
         _currentIndex = index;
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_currentIndex inSection:0];
         [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:TRUE];
@@ -226,8 +225,6 @@
 #pragma mark -
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"Selected item %lu", (long)indexPath.item);
-    
     if ([self.delegate respondsToSelector:@selector(collectionViewManagerDidTapHeader:)]) {
         [self.delegate collectionViewManagerDidTapHeader:self];
     }
@@ -235,6 +232,14 @@
 //    if ([self.delegate respondsToSelector:@selector(spotsCollectionViewManager:didSelectSpotAtIndex:)]) {
 //        [self.delegate spotsCollectionViewManager:self didSelectSpotAtIndex:indexPath.item];
 //    }
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return CGSizeMake(CGRectGetWidth(collectionView.frame), CGRectGetHeight(collectionView.frame));
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    [self removeTableManagerForIndexPath:indexPath];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -253,11 +258,21 @@
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
-    if (fabsf(velocity.x) > 0.1) {
-        CGFloat width = CGRectGetWidth(self.collectionView.frame);
+    // if the velocity is "slow" it should just go the next cell, otherwise let it go to the next paged position
+    // positive x is moving right, negative x is moving left
+    // slow is < 0.75
+    
+    CGFloat width = CGRectGetWidth(self.collectionView.frame);
+    NSUInteger currentIndex = MAX(MIN(round(self.collectionView.contentOffset.x / CGRectGetWidth(self.collectionView.frame)), self.spotList.spots.count - 1), 0);
+    
+    if (fabsf(velocity.x) > 2.0) {
         CGFloat x = targetContentOffset->x;
         x = roundf(x / width) * width;
         targetContentOffset->x = x;
+    }
+    else {
+        NSUInteger targetIndex = velocity.x > 0.0 ? MIN(currentIndex + 1, self.spotList.spots.count - 1) : MAX(currentIndex - 1, 0);
+        targetContentOffset->x = targetIndex * width;
     }
 }
 
@@ -265,7 +280,9 @@
 #pragma mark -
 
 - (void)renderCell:(UICollectionViewCell *)cell withSpot:(SpotModel *)spot atIndex:(NSUInteger)index {
-    UIImageView *spotImageView = (UIImageView *)[cell viewWithTag:kSpotCellSpotImageView];
+    UIView *headerView = [cell viewWithTag:500];
+    
+    UIImageView *spotImageView = (UIImageView *)[headerView viewWithTag:kSpotCellSpotImageView];
     
     spotImageView.image = nil;
     ImageModel *highlightImage = spot.highlightImage;
@@ -285,16 +302,13 @@
         spotImageView.image = spot.placeholderImage;
     }
     
-    UILabel *nameLabel = [self labelInView:cell withTag:kSpotCellSpotNameLabel];
-    UILabel *typeLabel = [self labelInView:cell withTag:kSpotCellSpotTypeLabel];
-    UILabel *neighborhoodLabel = [self labelInView:cell withTag:kSpotCellNeighborhoodLabel];
-    UILabel *distanceLabel = [self labelInView:cell withTag:kSpotCellDistanceLabel];
-    UIImageView *matchImageView = [self imageViewInView:cell withTag:kSpotCellMatchPercentageImageView];
-    UILabel *percentageLabel = [self labelInView:cell withTag:kSpotCellPercentageLabel];
-    UILabel *matchLabel = [self labelInView:cell withTag:kSpotCellMatchLabel];
-    UIButton *findSimilarButton = [self buttonInView:cell withTag:kSpotCellFindSimilarButton];
-    UIButton *reviewItButton = [self buttonInView:cell withTag:kSpotCellReviewItButton];
-    UIButton *menuButton = [self buttonInView:cell withTag:kSpotCellMenuButton];
+    UILabel *nameLabel = [self labelInView:headerView withTag:kSpotCellSpotNameLabel];
+    UILabel *typeLabel = [self labelInView:headerView withTag:kSpotCellSpotTypeLabel];
+    UILabel *neighborhoodLabel = [self labelInView:headerView withTag:kSpotCellNeighborhoodLabel];
+    UILabel *distanceLabel = [self labelInView:headerView withTag:kSpotCellDistanceLabel];
+    UIImageView *matchImageView = [self imageViewInView:headerView withTag:kSpotCellMatchPercentageImageView];
+    UILabel *percentageLabel = [self labelInView:headerView withTag:kSpotCellPercentageLabel];
+    UILabel *matchLabel = [self labelInView:headerView withTag:kSpotCellMatchLabel];
     
     NSAssert(nameLabel, @"View must be defined");
     NSAssert(typeLabel, @"View must be defined");
@@ -303,9 +317,6 @@
     NSAssert(matchImageView, @"View must be defined");
     NSAssert(percentageLabel, @"View must be defined");
     NSAssert(matchLabel, @"View must be defined");
-    NSAssert(findSimilarButton, @"View must be defined");
-    NSAssert(reviewItButton, @"View must be defined");
-    NSAssert(menuButton, @"View must be defined");
     
     [SHStyleKit setLabel:typeLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setLabel:neighborhoodLabel textColor:SHStyleKitColorMyTextColor];
@@ -313,24 +324,12 @@
     [SHStyleKit setLabel:percentageLabel textColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setLabel:matchLabel textColor:SHStyleKitColorMyTintColor];
     
-    [SHStyleKit setButton:findSimilarButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
-    [SHStyleKit setButton:reviewItButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
-    [SHStyleKit setButton:menuButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
-    
     [nameLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
     [typeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [neighborhoodLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [distanceLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [percentageLabel setFont:[UIFont fontWithName:@"Lato-Light" size:22.0f]];
     [matchLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
-    [findSimilarButton.titleLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
-    [reviewItButton.titleLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
-    [menuButton.titleLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
-    
-    CGSize buttonImageSize = CGSizeMake(30, 30);
-    [SHStyleKit setButton:findSimilarButton withDrawing:SHStyleKitDrawingSearchIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor size:buttonImageSize];
-    [SHStyleKit setButton:reviewItButton withDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor size:buttonImageSize];
-    [SHStyleKit setButton:menuButton withDrawing:SHStyleKitDrawingDrinkMenuIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor size:buttonImageSize];
     
     nameLabel.text = spot.name;
     nameLabel.textColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
@@ -352,9 +351,6 @@
         
         percentageLabel.hidden = TRUE;
         matchLabel.hidden = TRUE;
-        findSimilarButton.hidden = FALSE;
-        reviewItButton.hidden = FALSE;
-        menuButton.hidden = FALSE;
     }
     else {
         UIImage *bubbleImage = [SHStyleKit drawImage:SHStyleKitDrawingMapBubblePinFilledIcon color:SHStyleKitColorNone size:CGSizeMake(60, 60)];
@@ -362,9 +358,6 @@
 
         percentageLabel.hidden = FALSE;
         matchLabel.hidden = FALSE;
-        findSimilarButton.hidden = TRUE;
-        reviewItButton.hidden = TRUE;
-        menuButton.hidden = TRUE;
     }
 }
 
@@ -374,8 +367,8 @@
 - (void)reportedChangedIndex {
     [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:_currentIndex] position:_currentIndex+1 isSpecials:FALSE];
 
-    if ([self.delegate respondsToSelector:@selector(spotsCollectionViewManager:didChangeToSpotAtIndex:)]) {
-        [self.delegate spotsCollectionViewManager:self didChangeToSpotAtIndex:_currentIndex];
+    if ([self.delegate respondsToSelector:@selector(spotsCollectionViewManager:didChangeToSpotAtIndex:count:)]) {
+        [self.delegate spotsCollectionViewManager:self didChangeToSpotAtIndex:_currentIndex count:self.spotList.spots.count];
     }
 }
 

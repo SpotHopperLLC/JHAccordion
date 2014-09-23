@@ -37,6 +37,12 @@ extern NSString * const SHFindSimilarToSpotNotificationKey;
 extern NSString * const SHReviewSpotNotificationName;
 extern NSString * const SHReviewSpotNotificationKey;
 
+extern NSString * const SHShowSpotPhotosNotificationName;
+extern NSString * const SHShowSpotPhotosNotificationKey;
+
+extern NSString * const SHShowDrinkPhotosNotificationName;
+extern NSString * const SHShowDrinkPhotosNotificationKey;
+
 extern NSString * const SHOpenMenuForSpotNotificationName;
 extern NSString * const SHOpenMenuForSpotNotificationKey;
 
@@ -69,6 +75,10 @@ extern NSString * const SHAppOpenedWithURLNotificationKey;
 + (void)reviewSpot:(SpotModel *)spot;
 
 + (void)openMenuForSpot:(SpotModel *)spot;
+
++ (void)showPhotosForSpot:(SpotModel *)spot;
+
++ (void)showPhotosForDrink:(DrinkModel *)drink;
 
 + (void)userDidLoginIn;
 

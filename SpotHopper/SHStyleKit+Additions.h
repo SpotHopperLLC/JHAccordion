@@ -81,7 +81,7 @@ typedef enum {
     SHStyleKitDrawingPencilArrowLeft,
     SHStyleKitDrawingPencilArrowUp,
     SHStyleKitDrawingPencilArrowDown,
-    SHStyleKitDrawingSwooshDial,
+    SHStyleKitDrawingRatingSwoosh,
     SHStyleKitDrawingTopShadow,
     SHStyleKitDrawingRatingStars
 } SHStyleKitDrawing;
@@ -115,7 +115,7 @@ typedef enum {
 
 + (UIImage *)drawImage:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size;
 
-+ (UIImage *)drawImage:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size position:(CGFloat)position;
++ (UIImage *)drawImage:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size percentage:(CGFloat)percentage;
 
 + (UIImage *)drawImageForRatingStarsWithPercentage:(CGFloat)percentage size:(CGSize)size;
 

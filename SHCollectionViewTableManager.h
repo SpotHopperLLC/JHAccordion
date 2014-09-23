@@ -22,6 +22,8 @@
 
 - (void)manageTableView:(UITableView *)tableView forDrink:(DrinkModel *)drink;
 
+- (void)prepareForReuse;
+
 @end
 
 @protocol SHCollectionViewTableManagerDelegate <NSObject>

@@ -39,6 +39,10 @@
     [_collectionView reloadData];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
 #pragma mark - Public
 #pragma mark -
 

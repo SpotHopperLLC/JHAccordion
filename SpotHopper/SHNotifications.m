@@ -34,6 +34,12 @@ NSString * const SHFindSimilarToSpotNotificationKey = @"SHFindSimilarToSpotNotif
 NSString * const SHReviewSpotNotificationName = @"SHReviewSpotNotificationName";
 NSString * const SHReviewSpotNotificationKey =  @"SHReviewSpotNotificationKey";
 
+NSString * const SHShowSpotPhotosNotificationName = @"SHShowSpotPhotosNotificationName";
+NSString * const SHShowSpotPhotosNotificationKey = @"SHShowSpotPhotosNotificationKey";
+
+NSString * const SHShowDrinkPhotosNotificationName = @"SHShowDrinkPhotosNotificationName";
+NSString * const SHShowDrinkPhotosNotificationKey = @"SHShowDrinkPhotosNotificationKey";
+
 NSString * const SHOpenMenuForSpotNotificationName = @"SHOpenMenuForSpotNotificationName";
 NSString * const SHOpenMenuForSpotNotificationKey = @"SHOpenMenuForSpotNotificationKey";
 
@@ -116,6 +122,20 @@ NSString * const SHAppOpenedWithURLNotificationKey = @"SHAppOpenedWithURLNotific
 + (void)openMenuForSpot:(SpotModel *)spot {
     NSDictionary *userInfo = @{ SHOpenMenuForSpotNotificationKey : spot };
     [[NSNotificationCenter defaultCenter] postNotificationName:SHOpenMenuForSpotNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
++ (void)showPhotosForSpot:(SpotModel *)spot {
+    NSDictionary *userInfo = @{ SHShowSpotPhotosNotificationKey : spot };
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHShowSpotPhotosNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
++ (void)showPhotosForDrink:(DrinkModel *)drink {
+    NSDictionary *userInfo = @{ SHShowDrinkPhotosNotificationKey : drink };
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHShowDrinkPhotosNotificationName
                                                         object:nil
                                                       userInfo:userInfo];
 }

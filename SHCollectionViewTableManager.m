@@ -9,6 +9,7 @@
 #import "SHCollectionViewTableManager.h"
 
 #import "SHAppContext.h"
+#import "SHNotifications.h"
 
 #import "AppDelegate.h"
 #import "SpotModel.h"
@@ -17,7 +18,9 @@
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
 #import "SpecialModel.h"
+#import "RatingSwooshView.h"
 
+#import "SHButton.h"
 #import "SHStyleKit+Additions.h"
 #import "NetworkHelper.h"
 #import "Tracker.h"
@@ -37,6 +40,7 @@
 #define kMeterToMile 0.000621371f
 
 typedef enum {
+    TableManagerModeNone,
     Special,
     Spot,
     Drink,
@@ -92,7 +96,10 @@ typedef enum {
         
         [self.rows addObject:kRowNamePhotosAndReview];
         
-        [tableView reloadData];
+        [self.tableView reloadData];
+        
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 180, 0);
+        self.tableView.scrollIndicatorInsets = tableView.contentInset;
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
@@ -119,8 +126,6 @@ typedef enum {
         
         [self prepareSummarySliders];
         
-        [self.rows addObject:kRowNameSpotSummary];
-        
         if (self.summarySliders.count) {
             [self.rows addObject:kRowNameSummarySliders];
         }
@@ -140,7 +145,10 @@ typedef enum {
         
         [self.rows addObject:kRowNamePhotosAndReview];
         
-        [tableView reloadData];
+        [self.tableView reloadData];
+        
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 180, 0);
+        self.tableView.scrollIndicatorInsets = tableView.contentInset;
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
@@ -180,10 +188,22 @@ typedef enum {
         
         [self.rows addObject:kRowNamePhotosAndReview];
         
-        [tableView reloadData];
+        [self.tableView reloadData];
+        
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 180, 0);
+        self.tableView.scrollIndicatorInsets = tableView.contentInset;
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
+}
+
+- (void)prepareForReuse {
+    self.mode = TableManagerModeNone;
+    self.tableView = nil;
+    self.spot = nil;
+    self.drink = nil;
+    self.summarySliders = nil;
+    self.rows = nil;
 }
 
 #pragma mark - Private
@@ -267,7 +287,7 @@ typedef enum {
 #pragma mark - User Actions
 #pragma mark -
 
-- (IBAction)detailButtonTapped:(id)sender {
+- (IBAction)moreButtonTapped:(id)sender {
     if (self.spot) {
         if ([self.delegate respondsToSelector:@selector(collectionViewTableManager:displaySpot:)]) {
             [self.delegate collectionViewTableManager:self displaySpot:self.spot];
@@ -311,6 +331,24 @@ typedef enum {
     }
 }
 
+- (IBAction)photosButtonTapped:(id)sender {
+    if (self.spot) {
+        [SHNotifications showPhotosForSpot:self.spot];
+    }
+    else if (self.drink) {
+        [SHNotifications showPhotosForDrink:self.drink];
+    }
+}
+
+- (IBAction)reviewButtonTapped:(id)sender {
+    if (self.spot) {
+        [SHNotifications reviewSpot:self.spot];
+    }
+    else if (self.drink) {
+        [SHNotifications reviewDrink:self.drink];
+    }
+}
+
 #pragma mark - Rendering Cells
 #pragma mark -
 
@@ -341,55 +379,57 @@ typedef enum {
     UILabel *rightLabel2 = (UILabel *)[cell viewWithTag:202];
     UILabel *rightLabel3 = (UILabel *)[cell viewWithTag:302];
     
-    UIImageView *imageView1 = (UIImageView *)[cell viewWithTag:103];
-    UIImageView *imageView2 = (UIImageView *)[cell viewWithTag:203];
-    UIImageView *imageView3 = (UIImageView *)[cell viewWithTag:303];
+    RatingSwooshView *ratingSwooshView1 = (RatingSwooshView *)[cell viewWithTag:103];
+    RatingSwooshView *ratingSwooshView2 = (RatingSwooshView *)[cell viewWithTag:203];
+    RatingSwooshView *ratingSwooshView3 = (RatingSwooshView *)[cell viewWithTag:303];
 
-    UIButton *detailButton = (UIButton *)[cell viewWithTag:4];
-    [SHStyleKit setButton:detailButton withDrawing:SHStyleKitDrawingMoreIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
-    [SHStyleKit setButton:detailButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTintTransparentColor];
-    [detailButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-    [detailButton addTarget:self action:@selector(detailButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    SHButton *moreButton = (SHButton *)[cell viewWithTag:4];
     
-    CGSize size = CGSizeMake(60, 60);
+    moreButton.drawing = SHStyleKitDrawingMoreIcon;
+    moreButton.normalColor = SHStyleKitColorMyTintColor;
+    moreButton.highlightedColor = SHStyleKitColorMyTextColor;
+    
+    [moreButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [moreButton addTarget:self action:@selector(moreButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     if (self.summarySliders.count > 0) {
         SliderModel *slider = self.summarySliders[0];
-        CGFloat position = slider.value.floatValue/10;
+        //DebugLog(@"value: %@", slider.value);
+        CGFloat percentage = slider.value.floatValue*10;
         leftLabel1.text = slider.sliderTemplate.minLabelShortDisplayed;
         rightLabel1.text = slider.sliderTemplate.maxLabelShortDisplayed;
-        imageView1.image = [SHStyleKit drawImage:SHStyleKitDrawingSwooshDial color:SHStyleKitColorMyTintColor size:size position:position];
+        ratingSwooshView1.percentage = percentage;
     }
     else {
         leftLabel1.text = nil;
         rightLabel1.text = nil;
-        imageView1.image = nil;
+        ratingSwooshView1.image = nil;
     }
     
     if (self.summarySliders.count > 1) {
         SliderModel *slider = self.summarySliders[1];
-        CGFloat position = slider.value.floatValue/10;
+        CGFloat percentage = slider.value.floatValue*10;
         leftLabel2.text = slider.sliderTemplate.minLabelShortDisplayed;
         rightLabel2.text = slider.sliderTemplate.maxLabelShortDisplayed;
-        imageView2.image = [SHStyleKit drawImage:SHStyleKitDrawingSwooshDial color:SHStyleKitColorMyTintColor size:size position:position];
+        ratingSwooshView2.percentage = percentage;
     }
     else {
         leftLabel2.text = nil;
         rightLabel2.text = nil;
-        imageView2.image = nil;
+        ratingSwooshView2.image = nil;
     }
 
     if (self.summarySliders.count > 2) {
         SliderModel *slider = self. summarySliders[2];
-        CGFloat position = slider.value.floatValue/10;
+        CGFloat percentage = slider.value.floatValue*10;
         leftLabel3.text = slider.sliderTemplate.minLabelShortDisplayed;
         rightLabel3.text = slider.sliderTemplate.maxLabelShortDisplayed;
-        imageView3.image = [SHStyleKit drawImage:SHStyleKitDrawingSwooshDial color:SHStyleKitColorMyTintColor size:size position:position];
+        ratingSwooshView3.percentage = percentage;
     }
     else {
         leftLabel3.text = nil;
         rightLabel3.text = nil;
-        imageView3.image = nil;
+        ratingSwooshView3.image = nil;
     }
 
     return cell;
@@ -456,14 +496,31 @@ typedef enum {
 - (UITableViewCell *)renderCellForPhotosAndReviewAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"PhotosAndReviewCell" forIndexPath:indexPath];
     
-    UIButton *photoButton = (UIButton *)[cell viewWithTag:1];
-    UIButton *reviewButton = (UIButton *)[cell viewWithTag:4];
+    UIButton *photoImageButton = (UIButton *)[cell viewWithTag:1];
+    SHButton *reviewImageButton = (SHButton *)[cell viewWithTag:4];
     
-    UILabel *photosLabel = (UILabel *)[cell viewWithTag:2];
-    UILabel *reviewLabel = (UILabel *)[cell viewWithTag:3];
+    UIButton *photoButton = (UIButton *)[cell viewWithTag:2];
+    UIButton *reviewButton = (UIButton *)[cell viewWithTag:3];
     
-    [SHStyleKit setLabel:photosLabel textColor:SHStyleKitColorMyTintColor];
-    [SHStyleKit setLabel:reviewLabel textColor:SHStyleKitColorMyTintColor];
+    [SHStyleKit setButton:photoButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setButton:reviewButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
+    
+    photoButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    
+    if (self.spot) {
+        [reviewButton setTitle:@"Review Spot" forState:UIControlStateNormal];
+    }
+    else if (self.drink) {
+        if (self.drink.isBeer) {
+            [reviewButton setTitle:@"Review Beer" forState:UIControlStateNormal];
+        }
+        else if (self.drink.isCocktail) {
+            [reviewButton setTitle:@"Review Cocktail" forState:UIControlStateNormal];
+        }
+        else if (self.drink.isWine) {
+            [reviewButton setTitle:@"Review Wine" forState:UIControlStateNormal];
+        }
+    }
     
     ImageModel *imageModel = nil;
 
@@ -476,15 +533,29 @@ typedef enum {
     
     if (imageModel) {
         [NetworkHelper loadImage:imageModel placeholderImage:nil withThumbImageBlock:^(UIImage *thumbImage) {
-            [photoButton setImage:thumbImage forState:UIControlStateNormal];
+            [photoImageButton setImage:thumbImage forState:UIControlStateNormal];
         } withFullImageBlock:^(UIImage *fullImage) {
-            [photoButton setImage:fullImage forState:UIControlStateNormal];
+            [photoImageButton setImage:fullImage forState:UIControlStateNormal];
         } withErrorBlock:^(NSError *error) {
             [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
     }
     
-    [SHStyleKit setButton:reviewButton withDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
+    reviewImageButton.drawing = SHStyleKitDrawingReviewsIcon;
+    reviewImageButton.normalColor = SHStyleKitColorMyTintColor;
+    reviewImageButton.highlightedColor = SHStyleKitColorMyTextColor;
+    
+    [photoImageButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [photoImageButton addTarget:self action:@selector(photosButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [reviewImageButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [reviewImageButton addTarget:self action:@selector(reviewButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [photoButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [photoButton addTarget:self action:@selector(photosButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [reviewButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [reviewButton addTarget:self action:@selector(reviewButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     return cell;
 }
@@ -588,10 +659,7 @@ typedef enum {
         }
     }
     else if (self.mode == Spot) {
-        if ([rowName isEqualToString:kRowNameSpotSummary]) {
-            cell = [self renderCellForAboutSpotAtIndexPath:indexPath];
-        }
-        else if ([rowName isEqualToString:kRowNameSummarySliders]) {
+        if ([rowName isEqualToString:kRowNameSummarySliders]) {
             cell = [self renderCellForSummarySlidersAtIndexPath:indexPath];
         }
         else if ([rowName isEqualToString:kRowNameDescription]) {
@@ -652,7 +720,7 @@ typedef enum {
     NSString *rowName = [self nameForRowAtIndexPath:indexPath];
     
     if ([rowName isEqualToString:kRowNameSummarySliders]) {
-        return 70.0f;
+        return 60.0f;
     }
     else if ([rowName isEqualToString:kRowNameDescription]) {
         NSString *text = nil;
@@ -671,18 +739,18 @@ typedef enum {
     else if ([rowName isEqualToString:kRowNameHoursAndPhone]) {
         return 44.0f;
     }
-    else if ([rowName isEqualToString:kRowNamePhotosAndReview]) {
-        return 70.0f;
-    }
     else if ([rowName isEqualToString:kRowNameTodaysSpecial]) {
         NSString *text = [self specialForToday];
         UIFont *font = [UIFont fontWithName:@"Lato-Light" size:14.0f];
-        CGFloat height = [self heightForString:text font:font maxWidth:300.0f] + 50.0f;
+        CGFloat height = [self heightForString:text font:font maxWidth:300.0f] + 53.0f;
         
         return height;
     }
     else if ([rowName isEqualToString:kRowNameDrinkSummary]) {
-        return 44.0f;
+        return 30.0f;
+    }
+    else if ([rowName isEqualToString:kRowNamePhotosAndReview]) {
+        return 50.0f;
     }
     else if ([rowName isEqualToString:kRowNameHighestRated]) {
         return 44.0f;

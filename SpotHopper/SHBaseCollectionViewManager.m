@@ -46,12 +46,12 @@
 #pragma mark -
 
 - (void)addTableManager:(SHCollectionViewTableManager *)tableManager forIndexPath:(NSIndexPath *)indexPath {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
     self.tableManagers[indexPath] = tableManager;
 }
 
 - (void)removeTableManagerForIndexPath:(NSIndexPath *)indexPath {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    SHCollectionViewTableManager *tableManager = self.tableManagers[indexPath];
+    [tableManager prepareForReuse];
     [self.tableManagers removeObjectForKey:indexPath];
 }
 

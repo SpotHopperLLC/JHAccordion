@@ -11,6 +11,7 @@
 #import "SpecialModel.h"
 #import "SpotModel.h"
 
+#import "SHButton.h"
 #import "SHStyleKit+Additions.h"
 #import "UIImageView+AFNetworking.h"
 #import "NetworkHelper.h"
@@ -202,7 +203,6 @@
     return self.spots.count;
 }
 
-// The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kSpecialCellIdentifier forIndexPath:indexPath];
     
@@ -249,6 +249,10 @@
 //    }
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return CGSizeMake(CGRectGetWidth(collectionView.frame), CGRectGetHeight(collectionView.frame));
+}
+
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     [self removeTableManagerForIndexPath:indexPath];
 }
@@ -269,11 +273,23 @@
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
-    if (fabsf(velocity.x) > 0.1) {
-        CGFloat width = CGRectGetWidth(self.collectionView.frame);
+    // if the velocity is "slow" it should just go the next cell, otherwise let it go to the next paged position
+    // positive x is moving right, negative x is moving left
+    // slow is < 0.75
+    
+    CGFloat width = CGRectGetWidth(self.collectionView.frame);
+    NSUInteger currentIndex = MAX(MIN(round(self.collectionView.contentOffset.x / CGRectGetWidth(self.collectionView.frame)), self.spots.count - 1), 0);
+
+    DebugLog(@"%@, %lu", NSStringFromSelector(_cmd), (unsigned long)currentIndex);
+
+    if (fabsf(velocity.x) > 2.0) {
         CGFloat x = targetContentOffset->x;
         x = roundf(x / width) * width;
         targetContentOffset->x = x;
+    }
+    else {
+        NSUInteger targetIndex = velocity.x > 0.0 ? MIN(currentIndex + 1, self.spots.count - 1) : MAX(currentIndex - 1, 0);
+        targetContentOffset->x = targetIndex * width;
     }
 }
 
@@ -281,9 +297,12 @@
 #pragma mark -
 
 - (void)renderCell:(UICollectionViewCell *)cell withSpot:(SpotModel *)spot atIndex:(NSUInteger)index {
+    UIView *headerView = [cell viewWithTag:500];
+    
     SpecialModel *special = [spot specialForToday];
-
-    UIImageView *spotImageView = (UIImageView *)[cell viewWithTag:kSpecialCellSpotImageView];
+    UIImageView *spotImageView = (UIImageView *)[headerView viewWithTag:kSpecialCellSpotImageView];
+    
+    NSAssert([spotImageView isKindOfClass:[UIImageView class]], @"Image View is expected");
     
     spotImageView.image = nil;
     ImageModel *highlightImage = spot.highlightImage;
@@ -303,24 +322,25 @@
         spotImageView.image = spot.placeholderImage;
     }
     
-    UILabel *nameLabel = [self labelInView:cell withTag:kSpecialCellSpotNameLabel];
-    UILabel *timeLabel = [self labelInView:cell withTag:kSpecialCellTimeLabel];
-    UITextView *specialTextView = [self textViewInView:cell withTag:kSpecialCellSpecialTextView];
-    UIButton *likeButton = [self buttonInView:cell withTag:kSpecialCellLikeButton];
-    UILabel *likeLabel = [self labelInView:cell withTag:kSpecialCellLikeLabel];
-    UIButton *shareButton = [self buttonInView:cell withTag:kSpecialCellShareButton];
+    UILabel *nameLabel = [self labelInView:headerView withTag:kSpecialCellSpotNameLabel];
+    UILabel *timeLabel = [self labelInView:headerView withTag:kSpecialCellTimeLabel];
+    UITextView *specialTextView = [self textViewInView:headerView withTag:kSpecialCellSpecialTextView];
+    SHButton *likeButton = (SHButton *)[self buttonInView:headerView withTag:kSpecialCellLikeButton];
+    UILabel *likeLabel = [self labelInView:headerView withTag:kSpecialCellLikeLabel];
     
     NSAssert(nameLabel, @"View must be defined");
     NSAssert(timeLabel, @"View must be defined");
     NSAssert(specialTextView, @"View must be defined");
     NSAssert(likeButton, @"View must be defined");
     NSAssert(likeLabel, @"View must be defined");
-    NSAssert(shareButton, @"View must be defined");
     
     [SHStyleKit setLabel:nameLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:timeLabel textColor:SHStyleKitColorMyTextColor];
-    [SHStyleKit setButton:likeButton withDrawing:SHStyleKitDrawingThumbsUpIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyWhiteColor];
-    [SHStyleKit setButton:shareButton withDrawing:SHStyleKitDrawingShareIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyWhiteColor];
+    
+    likeButton.drawing = SHStyleKitDrawingThumbsUpIcon;
+    likeButton.normalColor = SHStyleKitColorMyTintColor;
+    likeButton.highlightedColor = SHStyleKitColorMyWhiteColor;
+    
     [SHStyleKit setLabel:likeLabel textColor:SHStyleKitColorMyTintColor];
     
     [nameLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
@@ -365,8 +385,8 @@
 - (void)reportedChangedIndex {
     [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:_currentIndex] position:_currentIndex+1 isSpecials:TRUE];
     
-    if ([self.delegate respondsToSelector:@selector(specialsCollectionViewManager:didChangeToSpotAtIndex:)]) {
-        [self.delegate specialsCollectionViewManager:self didChangeToSpotAtIndex:_currentIndex];
+    if ([self.delegate respondsToSelector:@selector(specialsCollectionViewManager:didChangeToSpotAtIndex:count:)]) {
+        [self.delegate specialsCollectionViewManager:self didChangeToSpotAtIndex:_currentIndex count:self.spots.count];
     }
 }
 

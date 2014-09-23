@@ -79,7 +79,7 @@
         result = (NSComparisonResult)NSOrderedDescending;
     }
     else {
-        // now check showInSummary
+        // next check showInSummary
         if (self.sliderTemplate.showInSummary && !otherSlider.sliderTemplate.showInSummary) {
             result = (NSComparisonResult)NSOrderedAscending;
         }

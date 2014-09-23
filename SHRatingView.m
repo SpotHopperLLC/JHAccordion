@@ -10,44 +10,29 @@
 
 #import "SHStyleKit+Additions.h"
 
-#pragma mark - Class Extension
-#pragma mark -
-
-@interface SHRatingView ()
-
-@property (weak, nonatomic) UIImageView *imageView;
-
-@end
-
 @implementation SHRatingView
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    
-    self.backgroundColor = [UIColor clearColor];
-    
-    if (!self.imageView) {
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame))];
-        
-        imageView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:imageView];
-        
-        self.imageView = imageView;
-        
-        NSDictionary *views = NSDictionaryOfVariableBindings(imageView);
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[imageView]|" options:0 metrics:nil views:views]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[imageView]|" options:0 metrics:nil views:views]];
-        
-        UIImage *image = [SHStyleKit drawImageForRatingStarsWithPercentage:(self.percentage * 10) size:self.frame.size];
-        self.imageView.image = image;
-    }
+    [self prepareView];
 }
 
-- (void)setPercentage:(CGFloat)percentage {
-    _percentage = percentage;
-    
-    UIImage *image = [SHStyleKit drawImageForRatingStarsWithPercentage:(_percentage * 10) size:self.frame.size];
-    self.imageView.image = image;
+- (void)drawRect:(CGRect)rect {
+    [self prepareView];
 }
+
+- (void)prepareView {
+    self.backgroundColor = [UIColor clearColor];
+    UIImage *image = [SHStyleKit drawImageForRatingStarsWithPercentage:(_rating * 10) size:self.frame.size];
+    self.image = image;
+}
+
+#if !TARGET_INTERFACE_BUILDER
+- (void)setRating:(CGFloat)rating {
+    _rating = rating;
+    self.image = [SHStyleKit drawImageForRatingStarsWithPercentage:(_rating * 10) size:self.frame.size];;
+    [self setNeedsDisplay];
+}
+#endif
 
 @end

@@ -37,8 +37,10 @@
 
 - (void)displaySingleDrink:(DrinkModel *)drink;
 
+- (void)expandedViewWillAppear;
 - (void)expandedViewDidAppear;
 
+- (void)expandedViewWillDisappear;
 - (void)expandedViewDidDisappear;
 
 @end
