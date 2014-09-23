@@ -6,35 +6,33 @@
 //  Copyright (c) 2014 SpotHopper. All rights reserved.
 //
 
-#import "RatingSwooshView.h"
+#import "SHRatingSwooshView.h"
 
 #import "SHStyleKit+Additions.h"
 
-@implementation RatingSwooshView
+@implementation SHRatingSwooshView
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    [self prepareView];
-}
+//- (void)drawRect:(CGRect)rect {
+//    [self updateSwooshImage];
+//}
 
-- (void)drawRect:(CGRect)rect {
-    [self prepareView];
-}
+//- (void)layoutSubviews {
+//    [super layoutSubviews];
+//}
 
-- (void)prepareView {
+- (void)updateSwooshImage {
     self.contentMode = UIViewContentModeCenter;
     self.backgroundColor = [UIColor clearColor];
     
     CGFloat width = CGRectGetWidth(self.frame);
     CGSize size = CGSizeMake(width, width); // ensure the scale is square
-    
     self.image = [SHStyleKit drawImage:SHStyleKitDrawingRatingSwoosh color:SHStyleKitColorMyTintColor size:size percentage:_percentage];
 }
 
 #if !TARGET_INTERFACE_BUILDER
 - (void)setPercentage:(CGFloat)percentage {
     _percentage = percentage;
-    [self prepareView];
+    [self updateSwooshImage];
 }
 #endif
 

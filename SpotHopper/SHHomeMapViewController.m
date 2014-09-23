@@ -244,9 +244,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)viewDidLoad {
     [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
     
-    //NSAssert(self.navigationController.sidebarViewController, @"Sidebar controller must be defined");
-    //NSAssert(self.navigationController.sidebarViewController.rightViewController, @"Right VC on sidebar must be defined");
-    
     self.mySideBarViewController = (SHSidebarViewController *)self.navigationController.sidebarViewController.rightViewController;
     self.mySideBarViewController.delegate = self;
     

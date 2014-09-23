@@ -11,7 +11,7 @@
 #import "SpecialModel.h"
 #import "SpotModel.h"
 
-#import "SHButton.h"
+#import "SHDrawnButton.h"
 #import "SHStyleKit+Additions.h"
 #import "UIImageView+AFNetworking.h"
 #import "NetworkHelper.h"
@@ -144,9 +144,14 @@
         SpecialModel *special = [spot specialForToday];
         
         UIButton *likeButton = [self buttonInView:cell withTag:kSpecialCellLikeButton];
+        UIImage *highlightedImage = [SHStyleKit drawImage:SHStyleKitDrawingThumbsUpIcon color:SHStyleKitColorMyTintColor size:CGSizeMake(30, 30)];
+        [likeButton setImage:highlightedImage forState:UIControlStateHighlighted];
         likeButton.highlighted = special.userLikesSpecial;
         
         UILabel *likeLabel = [self labelInView:cell withTag:kSpecialCellLikeLabel];
+        
+        NSAssert(special.likeCount < 40000, @"Likes should not exceed 40000 normally");
+        
         likeLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)special.likeCount];
     }
 }
@@ -250,6 +255,7 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    LOG_FRAME(@"collection view", collectionView.frame);
     return CGSizeMake(CGRectGetWidth(collectionView.frame), CGRectGetHeight(collectionView.frame));
 }
 
@@ -325,7 +331,7 @@
     UILabel *nameLabel = [self labelInView:headerView withTag:kSpecialCellSpotNameLabel];
     UILabel *timeLabel = [self labelInView:headerView withTag:kSpecialCellTimeLabel];
     UITextView *specialTextView = [self textViewInView:headerView withTag:kSpecialCellSpecialTextView];
-    SHButton *likeButton = (SHButton *)[self buttonInView:headerView withTag:kSpecialCellLikeButton];
+    UIButton *likeButton = [self buttonInView:headerView withTag:kSpecialCellLikeButton];
     UILabel *likeLabel = [self labelInView:headerView withTag:kSpecialCellLikeLabel];
     
     NSAssert(nameLabel, @"View must be defined");
@@ -336,11 +342,7 @@
     
     [SHStyleKit setLabel:nameLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:timeLabel textColor:SHStyleKitColorMyTextColor];
-    
-    likeButton.drawing = SHStyleKitDrawingThumbsUpIcon;
-    likeButton.normalColor = SHStyleKitColorMyTintColor;
-    likeButton.highlightedColor = SHStyleKitColorMyWhiteColor;
-    
+    [SHStyleKit setButton:likeButton withDrawing:SHStyleKitDrawingThumbsUpIcon normalColor:SHStyleKitColorMyWhiteColor highlightedColor:SHStyleKitColorMyTintColor size:CGSizeMake(30, 30)];
     [SHStyleKit setLabel:likeLabel textColor:SHStyleKitColorMyTintColor];
     
     [nameLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];

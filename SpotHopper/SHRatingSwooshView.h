@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-IB_DESIGNABLE
-@interface RatingSwooshView : UIImageView
+//IB_DESIGNABLE
+@interface SHRatingSwooshView : UIImageView
 
-@property (assign, nonatomic) IBInspectable CGFloat percentage; // 100 point scale
+// IBInspectable
+@property (assign, nonatomic) CGFloat percentage; // 100 point scale
 
 @end

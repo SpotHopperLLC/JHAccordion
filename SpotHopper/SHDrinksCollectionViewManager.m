@@ -18,7 +18,7 @@
 
 #import "SHCollectionViewTableManager.h"
 
-#import "SHRatingView.h"
+#import "SHRatingStarsView.h"
 #import "SHStyleKit+Additions.h"
 #import "UIImageView+AFNetworking.h"
 #import "NetworkHelper.h"
@@ -238,6 +238,7 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    LOG_FRAME(@"collection view", collectionView.frame);
     return CGSizeMake(CGRectGetWidth(collectionView.frame), CGRectGetHeight(collectionView.frame));
 }
 
@@ -289,7 +290,7 @@
     UILabel *percentageLabel = [self labelInView:headerView withTag:kDrinkCellMatchPercentageLabel];
     UILabel *matchLabel = [self labelInView:headerView withTag:kDrinkCellMatchLabel];
     
-    SHRatingView *ratingView = (SHRatingView *)[headerView viewWithTag:kDrinkCellRatingView];
+    SHRatingStarsView *ratingView = (SHRatingStarsView *)[headerView viewWithTag:kDrinkCellRatingView];
     
     NSAssert(drinkImageView, @"View must be defined");
     NSAssert(nameLabel, @"View must be defined");

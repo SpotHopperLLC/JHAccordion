@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-IB_DESIGNABLE
-@interface SHRatingView : UIImageView
+//IB_DESIGNABLE
+@interface SHRatingStarsView : UIImageView
 
 // 10 point scale translated to percentage on 100 point scale
-@property (assign, nonatomic) IBInspectable CGFloat rating;
+//IBInspectable
+@property (assign, nonatomic) CGFloat rating;
 
 @end

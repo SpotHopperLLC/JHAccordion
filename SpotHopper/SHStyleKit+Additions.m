@@ -319,13 +319,13 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
         case SHStyleKitDrawingThumbsUpIcon:
             if (color == SHStyleKitColorMyTintColor) {
                 [SHStyleKit drawThumbsUpIconWithScaleX:scaleX scaleY:scaleY
-                                        strokeColorName:colorName
-                                          fillColorName:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]];
+                                        strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]
+                                          fillColorName:colorName];
             }
             else {
                 [SHStyleKit drawThumbsUpIconWithScaleX:scaleX scaleY:scaleY
-                                        strokeColorName:colorName
-                                          fillColorName:[SHStyleKit colorName:SHStyleKitColorMyTintColor]];
+                                        strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyTintColor]
+                                          fillColorName:colorName];
             }
             break;
         case SHStyleKitDrawingNavigationArrowRightIcon:

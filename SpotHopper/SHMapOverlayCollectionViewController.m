@@ -11,7 +11,7 @@
 #import <UIKit/UIKit.h>
 
 #import "SHAppContext.h"
-#import "SHButton.h"
+#import "SHDrawnButton.h"
 
 #import "SHStyleKit+Additions.h"
 
@@ -48,11 +48,10 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet SHDrinksCollectionViewManager *drinksCollectionViewManager;
 
 @property (weak, nonatomic) IBOutlet UIView *positionView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *positionViewTopContraint;
 
-@property (weak, nonatomic) IBOutlet SHButton *previousButton;
+@property (weak, nonatomic) IBOutlet SHDrawnButton *previousButton;
 @property (weak, nonatomic) IBOutlet UILabel *positionLabel;
-@property (weak, nonatomic) IBOutlet SHButton *nextButton;
+@property (weak, nonatomic) IBOutlet SHDrawnButton *nextButton;
 
 @property (assign, nonatomic) SHOverlayCollectionViewMode mode;
 
@@ -76,19 +75,16 @@ typedef enum {
     self.positionView.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.9];
     self.positionView.layer.cornerRadius = CGRectGetHeight(self.positionView.frame) * 0.4;
     self.positionView.layer.borderColor = [[SHStyleKit color:SHStyleKitColorMyTintColor] CGColor];
-    self.positionView.layer.borderWidth = 2.0;
+    self.positionView.layer.borderWidth = 1.0;
     
     self.positionLabel.textColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
     
     [self.previousButton setTitle:nil forState:UIControlStateNormal];
-    self.previousButton.drawing = SHStyleKitDrawingArrowLeftIcon;
-    self.previousButton.normalColor = SHStyleKitColorMyTintColor;
-    self.previousButton.highlightedColor = SHStyleKitColorMyTextColor;
-
     [self.nextButton setTitle:nil forState:UIControlStateNormal];
-    self.nextButton.drawing = SHStyleKitDrawingArrowRightIcon;
-    self.nextButton.normalColor = SHStyleKitColorMyTintColor;
-    self.nextButton.highlightedColor = SHStyleKitColorMyTextColor;
+    
+    CGSize drawingSize = CGSizeMake(20, 20);
+    [self.previousButton setButtonDrawing:SHStyleKitDrawingArrowLeftIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor drawingSize:drawingSize];
+    [self.nextButton setButtonDrawing:SHStyleKitDrawingArrowRightIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor drawingSize:drawingSize];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -183,39 +179,17 @@ typedef enum {
 }
 
 - (void)expandedViewWillAppear {
-    DebugLog(@"%@, %f", NSStringFromSelector(_cmd), CGRectGetHeight(self.collectionView.frame));
-
-    CGFloat topOffset = (CGRectGetHeight(self.collectionView.frame) - CGRectGetHeight(self.positionView.frame) - 56) * -1;
-    DebugLog(@"topOffset: %f", topOffset);
-    
     self.positionView.hidden = FALSE;
-    
-    self.positionViewTopContraint.constant = topOffset;
-    [self.view setNeedsLayout];
-    [self.view layoutIfNeeded];
 }
 
 - (void)expandedViewDidAppear {
-    DebugLog(@"%@, %f", NSStringFromSelector(_cmd), CGRectGetHeight(self.collectionView.frame));
 }
 
 - (void)expandedViewWillDisappear {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
-
-    // account for bottom navigation and a margin
-    CGFloat topOffset = (kHeaderHeight - CGRectGetHeight(self.positionView.frame) - 14) * -1;
-    DebugLog(@"topOffset: %f", topOffset);
-    
     self.positionView.hidden = TRUE;
-    
-    self.positionViewTopContraint.constant = topOffset;
-    [self.view setNeedsLayout];
-    [self.view layoutIfNeeded];
-
 }
 
 - (void)expandedViewDidDisappear {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
 }
 
 #pragma mark - Private

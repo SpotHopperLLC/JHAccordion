@@ -14,13 +14,14 @@
 #import "AppDelegate.h"
 #import "SpotModel.h"
 #import "DrinkModel.h"
+#import "SpotTypeModel.h"
 #import "AverageReviewModel.h"
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
 #import "SpecialModel.h"
-#import "RatingSwooshView.h"
+#import "SHRatingSwooshView.h"
 
-#import "SHButton.h"
+#import "SHDrawnButton.h"
 #import "SHStyleKit+Additions.h"
 #import "NetworkHelper.h"
 #import "Tracker.h"
@@ -98,8 +99,8 @@ typedef enum {
         
         [self.tableView reloadData];
         
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 180, 0);
-        self.tableView.scrollIndicatorInsets = tableView.contentInset;
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, [self bottomContentInset], 0);
+        self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, [self bottomScrollIndicatorInset], 0);
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
@@ -147,8 +148,8 @@ typedef enum {
         
         [self.tableView reloadData];
         
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 180, 0);
-        self.tableView.scrollIndicatorInsets = tableView.contentInset;
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, [self bottomContentInset], 0);
+        self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, [self bottomScrollIndicatorInset], 0);
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
@@ -182,7 +183,7 @@ typedef enum {
         if (self.drink.isBeer && self.drink.abv.floatValue > 0.0f) {
             [self.rows addObject:kRowNameDrinkSummary];
         }
-        else if (self.drink.isWine) {
+        else if (self.drink.isWine && (self.drink.abv.floatValue > 0 || self.drink.vintage || self.drink.region.length)) {
             [self.rows addObject:kRowNameDrinkSummary];
         }
         
@@ -190,8 +191,8 @@ typedef enum {
         
         [self.tableView reloadData];
         
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 180, 0);
-        self.tableView.scrollIndicatorInsets = tableView.contentInset;
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, [self bottomContentInset], 0);
+        self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, [self bottomScrollIndicatorInset], 0);
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
@@ -204,6 +205,28 @@ typedef enum {
     self.drink = nil;
     self.summarySliders = nil;
     self.rows = nil;
+}
+
+- (CGFloat)bottomContentInset {
+    if ([self hasFourInchDisplay]) {
+        return 100.0;
+    }
+    else {
+        return 180.0;
+    }
+}
+
+- (CGFloat)bottomScrollIndicatorInset {
+    if ([self hasFourInchDisplay]) {
+        return 100.0;
+    }
+    else {
+        return 180.0;
+    }
+}
+
+- (BOOL)hasFourInchDisplay {
+    return ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone && [UIScreen mainScreen].bounds.size.height == 568.0);
 }
 
 #pragma mark - Private
@@ -361,7 +384,12 @@ typedef enum {
     
     CGFloat miles = meters * kMeterToMile;
 
+    UILabel *aboutThisLabel = (UILabel *)[cell viewWithTag:1];
     UILabel *distanceLabel = (UILabel *)[cell viewWithTag:2];
+    
+    if (self.spot.spotType.name.length) {
+        aboutThisLabel.text = [NSString stringWithFormat:@"About this %@", self.spot.spotType.name];
+    }
     
     distanceLabel.text =  [NSString stringWithFormat:@"%0.1f miles away", miles];
     
@@ -379,15 +407,13 @@ typedef enum {
     UILabel *rightLabel2 = (UILabel *)[cell viewWithTag:202];
     UILabel *rightLabel3 = (UILabel *)[cell viewWithTag:302];
     
-    RatingSwooshView *ratingSwooshView1 = (RatingSwooshView *)[cell viewWithTag:103];
-    RatingSwooshView *ratingSwooshView2 = (RatingSwooshView *)[cell viewWithTag:203];
-    RatingSwooshView *ratingSwooshView3 = (RatingSwooshView *)[cell viewWithTag:303];
+    SHRatingSwooshView *ratingSwooshView1 = (SHRatingSwooshView *)[cell viewWithTag:103];
+    SHRatingSwooshView *ratingSwooshView2 = (SHRatingSwooshView *)[cell viewWithTag:203];
+    SHRatingSwooshView *ratingSwooshView3 = (SHRatingSwooshView *)[cell viewWithTag:303];
 
-    SHButton *moreButton = (SHButton *)[cell viewWithTag:4];
+    SHDrawnButton *moreButton = (SHDrawnButton *)[cell viewWithTag:4];
     
-    moreButton.drawing = SHStyleKitDrawingMoreIcon;
-    moreButton.normalColor = SHStyleKitColorMyTintColor;
-    moreButton.highlightedColor = SHStyleKitColorMyTextColor;
+    [moreButton setButtonDrawing:SHStyleKitDrawingMoreIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor drawingSize:moreButton.frame.size];
     
     [moreButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
     [moreButton addTarget:self action:@selector(moreButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -497,7 +523,7 @@ typedef enum {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"PhotosAndReviewCell" forIndexPath:indexPath];
     
     UIButton *photoImageButton = (UIButton *)[cell viewWithTag:1];
-    SHButton *reviewImageButton = (SHButton *)[cell viewWithTag:4];
+    SHDrawnButton *reviewImageButton = (SHDrawnButton *)[cell viewWithTag:4];
     
     UIButton *photoButton = (UIButton *)[cell viewWithTag:2];
     UIButton *reviewButton = (UIButton *)[cell viewWithTag:3];
@@ -541,9 +567,7 @@ typedef enum {
         }];
     }
     
-    reviewImageButton.drawing = SHStyleKitDrawingReviewsIcon;
-    reviewImageButton.normalColor = SHStyleKitColorMyTintColor;
-    reviewImageButton.highlightedColor = SHStyleKitColorMyTextColor;
+    [reviewImageButton setButtonDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor drawingSize:reviewImageButton.frame.size];
     
     [photoImageButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
     [photoImageButton addTarget:self action:@selector(photosButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -564,7 +588,10 @@ typedef enum {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"TodaysSpecialCell" forIndexPath:indexPath];
     
     UILabel *specialLabel = (UILabel *)[cell viewWithTag:2];
+    UILabel *hoursLabel = (UILabel *)[cell viewWithTag:3];
+
     specialLabel.text = [self specialForToday];
+    hoursLabel.text = self.spot.specialForToday.timeString;
     
     return cell;
 }
@@ -597,8 +624,8 @@ typedef enum {
     else {
         vintageLabel.text = nil;
     }
-    if (self.drink.varietal.length) {
-        varietalLabel.text = self.drink.varietal;
+    if (self.drink.region.length) {
+        varietalLabel.text = self.drink.region;
     }
     else {
         varietalLabel.text = nil;
@@ -719,8 +746,11 @@ typedef enum {
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *rowName = [self nameForRowAtIndexPath:indexPath];
     
-    if ([rowName isEqualToString:kRowNameSummarySliders]) {
-        return 60.0f;
+    if ([rowName isEqualToString:kRowNameSpotSummary]) {
+        return 50.0f;
+    }
+    else if ([rowName isEqualToString:kRowNameSummarySliders]) {
+        return 90.0f;
     }
     else if ([rowName isEqualToString:kRowNameDescription]) {
         NSString *text = nil;
@@ -731,23 +761,23 @@ typedef enum {
             text = self.drink.descriptionOfDrink;
         }
         
-        UIFont *font = [UIFont fontWithName:@"Lato-Light" size:14.0f];
-        CGFloat height = [self heightForString:text font:font maxWidth:300.0f] + 20.0f;
+        UIFont *font = [UIFont fontWithName:@"Lato-Light" size:15.0f];
+        CGFloat height = [self heightForString:text font:font maxWidth:300.0f] + 10.0f;
         
         return height;
     }
     else if ([rowName isEqualToString:kRowNameHoursAndPhone]) {
-        return 44.0f;
+        return 60.0f;
     }
     else if ([rowName isEqualToString:kRowNameTodaysSpecial]) {
         NSString *text = [self specialForToday];
-        UIFont *font = [UIFont fontWithName:@"Lato-Light" size:14.0f];
-        CGFloat height = [self heightForString:text font:font maxWidth:300.0f] + 53.0f;
+        UIFont *font = [UIFont fontWithName:@"Lato-Light" size:15.0f];
+        CGFloat height = [self heightForString:text font:font maxWidth:300.0f] + 62.0f;
         
         return height;
     }
     else if ([rowName isEqualToString:kRowNameDrinkSummary]) {
-        return 30.0f;
+        return 54.0f;
     }
     else if ([rowName isEqualToString:kRowNamePhotosAndReview]) {
         return 50.0f;
@@ -770,6 +800,7 @@ typedef enum {
 #pragma mark -
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    LOG_INSET(@"table view", scrollView.contentInset);
     if (scrollView == self.tableView) {
         // if value is < -50 then trigger view to collapse view
         if (scrollView.contentOffset.y < -50.0f) {
