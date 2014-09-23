@@ -1416,7 +1416,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                     CLLocationDistance meters = [self.currentLocation distanceFromLocation:nearestLocation];
                     if (meters < 150) {
                         DrinkListRequest *request = self.drinkListRequest.copy;
-                        if (![@"Highest Rated" isEqualToString:request.name]) {
+                        if (![request.name hasPrefix:@"Highest Rated"]) {
                             request.name = kDrinkListModelDefaultName;
                         }
                         request.transient = TRUE;

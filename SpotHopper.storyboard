@@ -26,7 +26,6 @@
             <string>Lato-Regular</string>
             <string>Lato-Regular</string>
             <string>Lato-Regular</string>
-            <string>Lato-Regular</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -2531,26 +2530,6 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </button>
-                                                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bD7-Df-RDn">
-                                                    <rect key="frame" x="10" y="5" width="40" height="40"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="40" id="gLV-YD-Egg"/>
-                                                        <constraint firstAttribute="width" constant="40" id="yGy-0U-OiW"/>
-                                                    </constraints>
-                                                    <state key="normal">
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                </button>
-                                                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iA1-AN-Bvw">
-                                                    <rect key="frame" x="58" y="10" width="46" height="29"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="46" id="mEj-AC-Jqe"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
-                                                    <state key="normal" title="More Photos">
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                </button>
                                                 <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QXP-iG-tKy">
                                                     <rect key="frame" x="206" y="11" width="56" height="29"/>
                                                     <fontDescription key="fontDescription" name="Lato-Light" family="Lato" pointSize="14"/>
@@ -2562,15 +2541,11 @@
                                             <constraints>
                                                 <constraint firstItem="kor-47-rwh" firstAttribute="leading" secondItem="05c-I3-vVR" secondAttribute="leading" id="4qo-Ct-7l3"/>
                                                 <constraint firstItem="kor-47-rwh" firstAttribute="top" secondItem="05c-I3-vVR" secondAttribute="top" id="5j1-Hi-rJd"/>
-                                                <constraint firstItem="iA1-AN-Bvw" firstAttribute="leading" secondItem="bD7-Df-RDn" secondAttribute="trailing" constant="8" id="Et1-L3-Trc"/>
                                                 <constraint firstAttribute="centerY" secondItem="QXP-iG-tKy" secondAttribute="centerY" id="XJX-6D-zJV"/>
-                                                <constraint firstAttribute="centerY" secondItem="iA1-AN-Bvw" secondAttribute="centerY" id="XeA-wz-xPZ"/>
-                                                <constraint firstAttribute="centerY" secondItem="bD7-Df-RDn" secondAttribute="centerY" id="Z4k-yv-iyf"/>
                                                 <constraint firstAttribute="centerY" secondItem="9Oj-fA-7Pd" secondAttribute="centerY" id="bpl-iZ-XOZ"/>
                                                 <constraint firstAttribute="trailing" secondItem="9Oj-fA-7Pd" secondAttribute="trailing" constant="10" id="d2u-Hj-br6"/>
                                                 <constraint firstItem="9Oj-fA-7Pd" firstAttribute="leading" secondItem="QXP-iG-tKy" secondAttribute="trailing" constant="8" id="p7h-e2-wl6"/>
                                                 <constraint firstAttribute="trailing" secondItem="kor-47-rwh" secondAttribute="trailing" id="qlt-8G-hIN"/>
-                                                <constraint firstItem="bD7-Df-RDn" firstAttribute="leading" secondItem="05c-I3-vVR" secondAttribute="leading" constant="10" id="vTK-3o-3jk"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

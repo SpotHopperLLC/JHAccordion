@@ -554,7 +554,7 @@
 
 + (void)fetchDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinkListModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     // if request has a drinklist id then it is an updated (PUT) otherwise it is a create (POST) action and both should return a result set with an identical structure
-    if ([request.name isEqualToString:@"Highest Rated"] && !request.drinkListId) {
+    if ([request.name hasPrefix:@"Highest Rated"] && !request.drinkListId) {
         [self fetchHighestRatedDrinkListWithRequest:request success:successBlock failure:failureBlock];
     }
     else if (!request.drinkListId) {
@@ -670,6 +670,19 @@
         }
         else if (operation.response.statusCode == 200) {
             DrinkListModel *model = [jsonApi resourceForKey:@"drink_lists"];
+            
+            if (model.drinks.count) {
+                DrinkModel *drink = model.drinks[0];
+                if (drink.isBeer) {
+                    model.name = @"Highest Rated Beers";
+                }
+                else if (drink.isWine) {
+                    model.name = @"Highest Rated Wines";
+                }
+                else if (drink.isCocktail) {
+                    model.name = @"Highest Rated Cocktails";
+                }
+            }
             
             // limit to 10
             if (model.drinks.count > 10) {
