@@ -25,14 +25,16 @@
     self.contentMode = UIViewContentModeCenter;
     self.backgroundColor = [UIColor clearColor];
     
-    self.image = [SHStyleKit drawImage:SHStyleKitDrawingRatingSwoosh color:SHStyleKitColorMyTintColor size:self.frame.size percentage:_percentage];
+    CGFloat width = CGRectGetWidth(self.frame);
+    CGSize size = CGSizeMake(width, width); // ensure the scale is square
+    
+    self.image = [SHStyleKit drawImage:SHStyleKitDrawingRatingSwoosh color:SHStyleKitColorMyTintColor size:size percentage:_percentage];
 }
 
 #if !TARGET_INTERFACE_BUILDER
 - (void)setPercentage:(CGFloat)percentage {
     _percentage = percentage;
-    //self.image = [SHStyleKit drawImage:SHStyleKitDrawingRatingSwoosh color:SHStyleKitColorMyTintColor size:self.frame.size percentage:_percentage];
-    [self setNeedsDisplay];
+    [self prepareView];
 }
 #endif
 
