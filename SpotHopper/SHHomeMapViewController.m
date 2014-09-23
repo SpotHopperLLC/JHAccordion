@@ -436,8 +436,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)embedChildViewControllers {
     // height for the expanded view
-    CGFloat expandedHeight = CGRectGetHeight(self.expandedReferenceView.frame);
-    DebugLog(@"expandedHeight: %f", expandedHeight);
     
     //self.expandedReferenceView.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.5];
     
