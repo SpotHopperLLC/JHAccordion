@@ -1922,6 +1922,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             else {
                 [self repositionMapOnCoordinate:kCLLocationCoordinate2DInvalid animated:animated];
             }
+            
+            [[SHAppContext defaultInstance] changeCoordinate:self.visibleMapCenterCoordinate andRadius:self.searchRadius];
         }
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.45f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
@@ -3802,6 +3804,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     if (self.repositioningMap) {
         return;
     }
+    
+    [[SHAppContext defaultInstance] changeCoordinate:self.visibleMapCenterCoordinate andRadius:self.searchRadius];
     
     CLLocation *mapCenterLocation = [[CLLocation alloc] initWithLatitude:self.mapView.centerCoordinate.latitude longitude:self.mapView.centerCoordinate.longitude];
     [TellMeMyLocation setMapCenterLocation:mapCenterLocation];

@@ -23,8 +23,11 @@
 
 + (void)loadImage:(ImageModel *)imageModel placeholderImage:(UIImage *)placeholderImage withThumbImageBlock:(void (^)(UIImage *thumbImage))thumbImageBlock withFullImageBlock:(void (^)(UIImage *fullImage))fullImageBlock withErrorBlock:(void (^)(NSError *error))errorBlock {
     
-    if (!imageModel.thumbUrl.length || !imageModel.fullUrl.length) {
+    if (!imageModel.thumbUrl || !imageModel.fullUrl) {
         // do nothing since there is no image to load
+        if (placeholderImage && fullImageBlock) {
+            fullImageBlock(placeholderImage);
+        }
         return;
     }
     

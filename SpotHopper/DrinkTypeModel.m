@@ -8,7 +8,35 @@
 
 #import "DrinkTypeModel.h"
 
+#import "Constants.h"
+
 @implementation DrinkTypeModel
+
+#pragma mark - Public
+
++ (instancetype)beerDrinkType {
+    DrinkTypeModel *drinkType = [[DrinkTypeModel alloc] init];
+    drinkType.name = kDrinkTypeNameBeer;
+    drinkType.ID = kBeerDrinkTypeID;
+    
+    return drinkType;
+}
+
++ (instancetype)wineDrinkType {
+    DrinkTypeModel *drinkType = [[DrinkTypeModel alloc] init];
+    drinkType.name = kDrinkTypeNameWine;
+    drinkType.ID = kWineDrinkTypeID;
+    
+    return drinkType;
+}
+
++ (instancetype)cocktailDrinkType {
+    DrinkTypeModel *drinkType = [[DrinkTypeModel alloc] init];
+    drinkType.name = kDrinkTypeNameCocktail;
+    drinkType.ID = kCocktailDrinkTypeID;
+    
+    return drinkType;
+}
 
 #pragma mark - Debugging
 

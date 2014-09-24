@@ -11,10 +11,13 @@
 #import "ClientSessionManager.h"
 #import "ErrorModel.h"
 #import "LiveSpecialModel.h"
+#import "SliderModel.h"
 #import "SliderTemplateModel.h"
+#import "AverageReviewModel.h"
 #import "MenuItemModel.h"
 #import "MenuTypeModel.h"
 #import "MenuModel.h"
+#import "DrinkTypeModel.h"
 #import "SpotTypeModel.h"
 #import "SpecialModel.h"
 #import "LikeModel.h"
@@ -138,6 +141,38 @@
 
 - (CLLocationCoordinate2D)coordinate {
     return CLLocationCoordinate2DMake(self.latitude.floatValue, self.longitude.floatValue);
+}
+
+- (DrinkTypeModel *)preferredDrinkType {
+    // look at each slider to get the slider value for each emphasis and compare them
+    CGFloat beerEmphasis = 0.0;
+    CGFloat wineEmphasis = 0.0;
+    CGFloat cocktailEmphasis = 0.0;
+    
+    for (SliderModel *slider in self.averageReview.sliders) {
+        if ([slider.sliderTemplate.ID isEqual:kBeerEmphasisSliderID]) {
+            beerEmphasis = slider.value.floatValue;
+        }
+        else if ([slider.sliderTemplate.ID isEqual:kWineEmphasisSliderID]) {
+            wineEmphasis = slider.value.floatValue;
+        }
+        else if ([slider.sliderTemplate.ID isEqual:kCocktailEmphasisSliderID]) {
+            cocktailEmphasis = slider.value.floatValue;
+        }
+        if (beerEmphasis && wineEmphasis && cocktailEmphasis) {
+            break;
+        }
+    }
+    
+    if (cocktailEmphasis > wineEmphasis && cocktailEmphasis > beerEmphasis) {
+        return [DrinkTypeModel cocktailDrinkType];
+    }
+    else if (wineEmphasis > beerEmphasis) {
+        return [DrinkTypeModel wineDrinkType];
+    }
+    else {
+        return [DrinkTypeModel beerDrinkType];
+    }
 }
 
 #pragma mark - Debugging

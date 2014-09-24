@@ -16,4 +16,8 @@
 
 @property (nonatomic, strong) NSArray *subtypes;
 
++ (instancetype)beerDrinkType;
++ (instancetype)wineDrinkType;
++ (instancetype)cocktailDrinkType;
+
 @end

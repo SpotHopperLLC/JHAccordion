@@ -441,13 +441,14 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
     }
     
     CGFloat scaleY = size.height / 1000.f;
-    CGFloat scaleX = scaleY; // size.width / 5200.0f;
+    CGFloat scaleX = size.width / 5200.0f;
+    CGFloat scale = MIN(scaleX, scaleY);
     SHStyleKitColor color = SHStyleKitColorMyTintColor;
     NSString *colorName = [SHStyleKit colorName:color];
     
     UIGraphicsBeginImageContextWithOptions(size, NO, 0.0f);
     
-    [SHStyleKit drawRatingStarsWithScaleX:scaleX scaleY:scaleY fillColorName:colorName percentage:percentage];
+    [SHStyleKit drawRatingStarsWithScaleX:scale scaleY:scale fillColorName:colorName percentage:percentage];
 
     // draw the outline to debug image creation
     //[SHStyleKit drawOutlineIconWithScaleX:scaleX scaleY:scaleY strokeColorName:SHStyleKitColorNameMyTintColor];

@@ -23,6 +23,8 @@
 @property (strong, nonatomic) DrinkListRequest *drinkListRequest;
 @property (strong, nonatomic) SpotListModel *spotlist;
 @property (strong, nonatomic) DrinkListModel *drinklist;
+@property (assign, nonatomic) CLLocationCoordinate2D coordinate;
+@property (assign, nonatomic) CLLocationDistance radius;
 
 + (instancetype)defaultInstance;
 
@@ -31,5 +33,7 @@
 - (void)changeContextToMode:(SHMode)mode spotlistRequest:(SpotListRequest *)spotlistRequest spotlist:(SpotListModel *)spotlist;
 
 - (void)changeContextToMode:(SHMode)mode drinklistRequest:(DrinkListRequest *)drinklistRequest drinklist:(DrinkListModel *)drinklist;
+
+- (void)changeCoordinate:(CLLocationCoordinate2D)coordinate andRadius:(CLLocationDistance)radius;
 
 @end

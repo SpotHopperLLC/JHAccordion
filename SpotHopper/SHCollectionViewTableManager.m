@@ -19,10 +19,14 @@
 #import "SliderModel.h"
 #import "SliderTemplateModel.h"
 #import "SpecialModel.h"
-#import "SHRatingSwooshView.h"
+#import "DrinkTypeModel.h"
+#import "DrinkListModel.h"
 
+#import "SHRatingSwooshView.h"
+#import "SHRatingStarsView.h"
 #import "SHDrawnButton.h"
 #import "SHStyleKit+Additions.h"
+
 #import "NetworkHelper.h"
 #import "Tracker.h"
 #import "TellMeMyLocation.h"
@@ -57,6 +61,8 @@ typedef enum {
 @property (nonatomic, assign) TableManagerMode mode;
 @property (nonatomic, strong) SpotModel *spot;
 @property (nonatomic, strong) DrinkModel *drink;
+
+@property (nonatomic, strong) DrinkListModel *highestRatedDrinklist;
 
 @property (nonatomic, strong) NSArray *summarySliders;
 @property (nonatomic, strong) NSMutableArray *rows;
@@ -120,36 +126,55 @@ typedef enum {
     [spot fetchSpot:^(SpotModel *spotModel) {
         self.spot = spotModel;
         
+        DrinkListRequest *request = [[DrinkListRequest alloc] init];
+        request.name = @"Highest Rated";
+        request.coordinate = [[SHAppContext defaultInstance] coordinate];
+        request.radius = [[SHAppContext defaultInstance] radius];
+        request.drinkTypeId = self.spot.preferredDrinkType.ID;
+        request.transient = TRUE;
+        request.spotId = self.spot.ID;
+        
+        [DrinkListModel fetchHighestRatedDrinkListWithRequest:request success:^(DrinkListModel *drinklist) {
+            self.highestRatedDrinklist = drinklist;
+            
 #ifdef NDEBUG
-        // set phone number during development
-        self.spot.phoneNumber = @"4148031004";
+            // set phone number during development
+            self.spot.phoneNumber = @"4148031004";
 #endif
+            
+            [self prepareSummarySliders];
+            
+            if (self.summarySliders.count) {
+                [self.rows addObject:kRowNameSummarySliders];
+            }
+            
+            if (self.spot.descriptionOfSpot.length) {
+                [self.rows addObject:kRowNameDescription];
+            }
+            
+            if (self.spot.hoursForToday.length || self.spot.phoneNumber.length) {
+                [self.rows addObject:kRowNameHoursAndPhone];
+            }
+            
+            NSString *specialForToday = [self specialForToday];
+            if (specialForToday.length) {
+                [self.rows addObject:kRowNameTodaysSpecial];
+            }
+            
+            if (self.highestRatedDrinklist.drinks.count) {
+                [self.rows addObject:kRowNameHighestRated];
+            }
+            
+            [self.rows addObject:kRowNamePhotosAndReview];
+            
+            [self.tableView reloadData];
+            
+            self.tableView.contentInset = UIEdgeInsetsMake(0, 0, [self bottomContentInset], 0);
+            self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, [self bottomScrollIndicatorInset], 0);
+        } failure:^(ErrorModel *errorModel) {
+            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+        }];
         
-        [self prepareSummarySliders];
-        
-        if (self.summarySliders.count) {
-            [self.rows addObject:kRowNameSummarySliders];
-        }
-        
-        if (self.spot.descriptionOfSpot.length) {
-            [self.rows addObject:kRowNameDescription];
-        }
-        
-        if (self.spot.hoursForToday.length || self.spot.phoneNumber.length) {
-            [self.rows addObject:kRowNameHoursAndPhone];
-        }
-        
-        NSString *specialForToday = [self specialForToday];
-        if (specialForToday.length) {
-            [self.rows addObject:kRowNameTodaysSpecial];
-        }
-        
-        [self.rows addObject:kRowNamePhotosAndReview];
-        
-        [self.tableView reloadData];
-        
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, [self bottomContentInset], 0);
-        self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, [self bottomScrollIndicatorInset], 0);
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
@@ -204,6 +229,7 @@ typedef enum {
     self.spot = nil;
     self.drink = nil;
     self.summarySliders = nil;
+    self.highestRatedDrinklist = nil;
     self.rows = nil;
 }
 
@@ -218,10 +244,10 @@ typedef enum {
 
 - (CGFloat)bottomScrollIndicatorInset {
     if ([self hasFourInchDisplay]) {
-        return 100.0;
+        return 50.0;
     }
     else {
-        return 180.0;
+        return 130.0;
     }
 }
 
@@ -360,6 +386,12 @@ typedef enum {
     }
     else if (self.drink) {
         [SHNotifications showPhotosForDrink:self.drink];
+    }
+}
+
+- (IBAction)menuButtonTapped:(id)sender {
+    if (self.spot) {
+        [SHNotifications openMenuForSpot:self.spot];
     }
 }
 
@@ -514,6 +546,102 @@ typedef enum {
     else {
         [phoneButton setTitle:@"" forState:UIControlStateNormal];
         phoneImageView.image = nil;
+    }
+    
+    return cell;
+}
+
+- (UITableViewCell *)renderCellForHighestRatedAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"HighestRatedCell" forIndexPath:indexPath];
+    
+    SHDrawnButton *menuImageButton = (SHDrawnButton *)[cell viewWithTag:501];
+    UIButton *menuTextButton = (UIButton *)[cell viewWithTag:502];
+    
+    [menuImageButton setButtonDrawing:SHStyleKitDrawingDrinkMenuIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setButton:menuTextButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
+    
+    [menuImageButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [menuImageButton addTarget:self action:@selector(menuButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [menuTextButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [menuTextButton addTarget:self action:@selector(menuButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    menuTextButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    menuTextButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [menuTextButton setTitle:@"full\nmenu" forState:UIControlStateNormal];
+    
+    UIView *container1View = [cell viewWithTag:2];
+    UIView *container2View = [cell viewWithTag:3];
+    UIView *container3View = [cell viewWithTag:4];
+    
+    // hide the container views while the highest rated is fetched
+    container1View.hidden = TRUE;
+    container2View.hidden = TRUE;
+    container3View.hidden = TRUE;
+    
+    UIImageView *drink1ImageView = (UIImageView *)[cell viewWithTag:201];
+    UILabel *drink1Label = (UILabel *)[cell viewWithTag:202];
+    SHRatingStarsView *rating1View = (SHRatingStarsView *)[cell viewWithTag:203];
+    
+    UIImageView *drink2ImageView = (UIImageView *)[cell viewWithTag:301];
+    UILabel *drink2Label = (UILabel *)[cell viewWithTag:302];
+    SHRatingStarsView *rating2View = (SHRatingStarsView *)[cell viewWithTag:303];
+    
+    UIImageView *drink3ImageView = (UIImageView *)[cell viewWithTag:401];
+    UILabel *drink3Label = (UILabel *)[cell viewWithTag:402];
+    SHRatingStarsView *rating3View = (SHRatingStarsView *)[cell viewWithTag:403];
+    
+    if (self.highestRatedDrinklist.drinks.count) {
+        DrinkModel *drink = self.highestRatedDrinklist.drinks[0];
+        container1View.hidden = FALSE;
+        
+        drink1Label.text = drink.name;
+        rating1View.rating = drink.averageReview.rating.floatValue;
+        drink1ImageView.layer.borderColor = [[[UIColor lightGrayColor] colorWithAlphaComponent:0.8] CGColor];
+        drink1ImageView.layer.borderWidth = 1.0;
+        
+        [NetworkHelper loadImage:drink.highlightImage placeholderImage:drink.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
+            drink1ImageView.image = thumbImage;
+        } withFullImageBlock:^(UIImage *fullImage) {
+            drink1ImageView.image = fullImage;
+        } withErrorBlock:^(NSError *error) {
+            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+        }];
+    }
+    
+    if (self.highestRatedDrinklist.drinks.count > 1) {
+        DrinkModel *drink = self.highestRatedDrinklist.drinks[1];
+        container2View.hidden = FALSE;
+        
+        drink2Label.text = drink.name;
+        rating2View.rating = drink.averageReview.rating.floatValue;
+        drink2ImageView.layer.borderColor = [[[UIColor lightGrayColor] colorWithAlphaComponent:0.8] CGColor];
+        drink2ImageView.layer.borderWidth = 1.0;
+        
+        [NetworkHelper loadImage:drink.highlightImage placeholderImage:drink.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
+            drink2ImageView.image = thumbImage;
+        } withFullImageBlock:^(UIImage *fullImage) {
+            drink2ImageView.image = fullImage;
+        } withErrorBlock:^(NSError *error) {
+            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+        }];
+    }
+    
+    if (self.highestRatedDrinklist.drinks.count > 2) {
+        DrinkModel *drink = self.highestRatedDrinklist.drinks[2];
+        container3View.hidden = FALSE;
+        
+        drink3Label.text = drink.name;
+        rating3View.rating = drink.averageReview.rating.floatValue;
+        drink3ImageView.layer.borderColor = [[[UIColor lightGrayColor] colorWithAlphaComponent:0.8] CGColor];
+        drink3ImageView.layer.borderWidth = 1.0;
+        
+        [NetworkHelper loadImage:drink.highlightImage placeholderImage:drink.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
+            drink3ImageView.image = thumbImage;
+        } withFullImageBlock:^(UIImage *fullImage) {
+            drink3ImageView.image = fullImage;
+        } withErrorBlock:^(NSError *error) {
+            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+        }];
     }
     
     return cell;
@@ -698,6 +826,9 @@ typedef enum {
         else if ([rowName isEqualToString:kRowNameHoursAndPhone]) {
             cell = [self renderCellForHoursAndPhoneAtIndexPath:indexPath];
         }
+        else if ([rowName isEqualToString:kRowNameHighestRated]) {
+            cell = [self renderCellForHighestRatedAtIndexPath:indexPath];
+        }
         else if ([rowName isEqualToString:kRowNamePhotosAndReview]) {
             cell = [self renderCellForPhotosAndReviewAtIndexPath:indexPath];
         }
@@ -783,7 +914,7 @@ typedef enum {
         return 50.0f;
     }
     else if ([rowName isEqualToString:kRowNameHighestRated]) {
-        return 44.0f;
+        return 160.0f;
     }
     else {
         return 44.0f;
@@ -800,7 +931,6 @@ typedef enum {
 #pragma mark -
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    LOG_INSET(@"table view", scrollView.contentInset);
     if (scrollView == self.tableView) {
         // if value is < -50 then trigger view to collapse view
         if (scrollView.contentOffset.y < -50.0f) {

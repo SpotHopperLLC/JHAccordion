@@ -281,7 +281,7 @@
 - (void)slidersSearchTableViewManagerDidSelectHighestRated:(SHSlidersSearchTableViewManager *)manager {
     DebugLog(@"%@", NSStringFromSelector(_cmd));
     
-    // TODO: prepare Highest Rated drinklist
+    // prepare Highest Rated drinklist
     [self showHUD:@"Finding Best Matches"];
     [self.slidersSearchTableViewManager fetchDrinkListResultsWithListName:@"Highest Rated" basedOnSliders:FALSE withCompletionBlock:^(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel) {
         [self hideHUD];

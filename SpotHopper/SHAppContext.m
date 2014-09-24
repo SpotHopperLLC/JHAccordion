@@ -47,4 +47,9 @@
     self.spotlist = nil;
 }
 
+- (void)changeCoordinate:(CLLocationCoordinate2D)coordinate andRadius:(CLLocationDistance)radius {
+    self.coordinate = coordinate;
+    self.radius = radius;
+}
+
 @end

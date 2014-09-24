@@ -657,8 +657,6 @@
     NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
     params[kDrinkListModelParamRadius] = radiusParam;
     
-    DebugLog(@"params: %@", params);
-    
     [[ClientSessionManager sharedClient] GET:@"/api/drink_lists/highest_rated" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];

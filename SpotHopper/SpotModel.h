@@ -40,7 +40,7 @@
 #import <JSONAPI/JSONAPI.h>
 #import <CoreLocation/CoreLocation.h>
 
-@class ErrorModel, AverageReviewModel, SpotListModel, SpotTypeModel, LiveSpecialModel, MenuModel, SpecialModel, ImageModel, CLLocation;
+@class ErrorModel, AverageReviewModel, SpotListModel, SpotTypeModel, LiveSpecialModel, MenuModel, SpecialModel, ImageModel, DrinkTypeModel, CLLocation;
 
 @interface SpotModel : SHJSONAPIResource
 
@@ -73,6 +73,8 @@
 @property (nonatomic, readonly) NSString *formattedPhoneNumber;
 @property (nonatomic, readonly) NSString *hoursForToday;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
+
+@property (nonatomic, readonly) DrinkTypeModel *preferredDrinkType;
 
 - (NSString *)addressCityState;
 - (NSString *)fullAddress;
