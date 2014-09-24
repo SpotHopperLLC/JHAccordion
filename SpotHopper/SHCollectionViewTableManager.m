@@ -233,6 +233,9 @@ typedef enum {
     self.rows = nil;
 }
 
+#pragma mark - Private
+#pragma mark -
+
 - (CGFloat)bottomContentInset {
     if ([self hasFourInchDisplay]) {
         return 100.0;
@@ -254,9 +257,6 @@ typedef enum {
 - (BOOL)hasFourInchDisplay {
     return ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone && [UIScreen mainScreen].bounds.size.height == 568.0);
 }
-
-#pragma mark - Private
-#pragma mark -
 
 - (void)prepareSummarySliders {
     if (self.spot) {

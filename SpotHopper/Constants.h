@@ -41,14 +41,6 @@
 #define kDrinkTypeNameWine @"Wine"
 #define kDrinkTypeNameLiquor @"Liquor"
 
-#define kBeerEmphasisSliderID @19
-#define kWineEmphasisSliderID @20
-#define kCocktailEmphasisSliderID @21
-
-#define kBeerDrinkTypeID @1
-#define kWineDrinkTypeID @2
-#define kCocktailDrinkTypeID @3
-
 #define kStateList @[@"AL",@"AK",@"AZ",@"AR",@"CA",@"CO",@"CT",@"DE",@"FL",@"GA",@"HI",@"ID",@"IL",@"IN",@"IA",@"KS",@"KY",@"LA",@"ME",@"MD",@"MA",@"MI",@"MN",@"MS",@"MO",@"MT",@"NE",@"NV",@"NH",@"NJ",@"NM",@"NY",@"NC",@"ND",@"OH",@"OK",@"OR",@"PA",@"RI",@"SC",@"SD",@"TN",@"TX",@"UT",@"VT",@"VA",@"WA",@"WV",@"WI",@"WY"]
 
 #define kNationalMapCenterLatitude 38.8729021

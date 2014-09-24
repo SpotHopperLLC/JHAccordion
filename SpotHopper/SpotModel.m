@@ -8,6 +8,8 @@
 
 #import "SpotModel.h"
 
+#import "SHAppConfiguration.h"
+
 #import "ClientSessionManager.h"
 #import "ErrorModel.h"
 #import "LiveSpecialModel.h"

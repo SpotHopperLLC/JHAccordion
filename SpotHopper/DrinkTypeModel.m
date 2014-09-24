@@ -9,6 +9,7 @@
 #import "DrinkTypeModel.h"
 
 #import "Constants.h"
+#import "SHAppConfiguration.h"
 
 @implementation DrinkTypeModel
 
