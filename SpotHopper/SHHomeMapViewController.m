@@ -8,6 +8,7 @@
 
 #import "SHHomeMapViewController.h"
 
+#import "SHAppUtil.h"
 #import "SHAppContext.h"
 #import "SHAppConfiguration.h"
 
@@ -1310,6 +1311,18 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handlePushToDrinkNotification:)
+                                                 name:SHPushToDrinkNotificationName
+                                               object:nil];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handlePushToSpotNotification:)
+                                                 name:SHPushToSpotNotificationName
+                                               object:nil];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleShowDrinkPhotosNotification:)
                                                  name:SHShowDrinkPhotosNotificationName
                                                object:nil];
@@ -2266,9 +2279,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     [button setTitle:title forState:UIControlStateNormal];
-    //button.titleLabel.font = [UIFont fontWithName:@"Lato-Light" size:button.titleLabel.font.pointSize];
     [SHStyleKit setButton:button normalTextColor:SHStyleKitColorMyWhiteColor highlightedTextColor:SHStyleKitColorMyTintColor];
-    CGFloat buttonTextWidth = [self widthForString:button.titleLabel.text font:button.titleLabel.font maxWidth:150.0f];
+    CGFloat buttonTextWidth = [[SHAppUtil defaultInstance] widthForString:button.titleLabel.text font:button.titleLabel.font maxWidth:150.0f];
     button.frame = CGRectMake(0, 0, buttonTextWidth + 10, 32);
     
     return button;
@@ -3910,6 +3922,16 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [self displaySingleDrink:drink];
     });
+}
+
+- (void)handlePushToDrinkNotification:(NSNotification *)notification {
+    DrinkModel *drink = notification.userInfo[SHPushToDrinkNotificationKey];
+    [self goToDrinkProfile:drink];
+}
+
+- (void)handlePushToSpotNotification:(NSNotification *)notification {
+    SpotModel *spot = notification.userInfo[SHPushToSpotNotificationKey];
+    [self goToSpotProfile:spot];
 }
 
 - (void)handleFindSimilarToDrinkNotification:(NSNotification *)notification {

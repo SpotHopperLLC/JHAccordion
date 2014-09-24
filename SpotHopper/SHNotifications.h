@@ -25,6 +25,12 @@ extern NSString * const SHDisplayDrinkNotificationKey;
 extern NSString * const SHDisplaySpotNotificationName;
 extern NSString * const SHDisplaySpotNotificationKey;
 
+extern NSString * const SHPushToDrinkNotificationName;
+extern NSString * const SHPushToDrinkNotificationKey;
+
+extern NSString * const SHPushToSpotNotificationName;
+extern NSString * const SHPushToSpotNotificationKey;
+
 extern NSString * const SHFindSimilarToDrinkNotificationName;
 extern NSString * const SHFindSimilarToDrinkNotificationKey;
 
@@ -65,6 +71,10 @@ extern NSString * const SHAppOpenedWithURLNotificationKey;
 + (void)displayDrink:(DrinkModel *)drink;
 
 + (void)displaySpot:(SpotModel *)spot;
+
++ (void)pushToDrink:(DrinkModel *)drink;
+
++ (void)pushToSpot:(SpotModel *)spot;
 
 + (void)findSimilarToDrink:(DrinkModel *)drink;
 

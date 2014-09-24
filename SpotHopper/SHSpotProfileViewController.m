@@ -8,6 +8,8 @@
 
 #import "SHSpotProfileViewController.h"
 
+#import "SHAppUtil.h"
+
 #import "SpotModel.h"
 #import "LiveSpecialModel.h"
 #import "SpotTypeModel.h"
@@ -454,9 +456,9 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     else if (kSectionSpecials == indexPath.section) {
         NSString *special = [self specialsForToday];
         
-        CGFloat maxWidth = 280.f;
-        CGFloat titleHeight = [self heightForString:SpotSpecialLabelText font:[self specialTitleFont] maxWidth:maxWidth];
-        CGFloat detailHeight = [self heightForString:special font:[self specialDetailFont] maxWidth:maxWidth];
+        CGFloat maxWidth = 280.0f;
+        CGFloat titleHeight = [[SHAppUtil defaultInstance] heightForString:SpotSpecialLabelText font:[self specialTitleFont] maxWidth:maxWidth];
+        CGFloat detailHeight = [[SHAppUtil defaultInstance] heightForString:special font:[self specialDetailFont] maxWidth:maxWidth];
         
         CGFloat height = special.length ? titleHeight + detailHeight + 24.0f : 0.0f;
         

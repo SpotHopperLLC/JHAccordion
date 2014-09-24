@@ -8,6 +8,8 @@
 
 #import "SHSpecialsCollectionViewManager.h"
 
+#import "SHAppUtil.h"
+
 #import "SpecialModel.h"
 #import "SpotModel.h"
 
@@ -28,7 +30,7 @@
 
 #define kSpecialCellSpotImageView 1
 #define kSpecialCellSpotNameLabel 2
-#define kSpecialCellSpecialTextView 3
+#define kSpecialCellSpecialLabel 3
 #define kSpecialCellLikeButton 4
 #define kSpecialCellLikeLabel 5
 #define kSpecialCellShareButton 6
@@ -330,13 +332,13 @@
     
     UILabel *nameLabel = [self labelInView:headerView withTag:kSpecialCellSpotNameLabel];
     UILabel *timeLabel = [self labelInView:headerView withTag:kSpecialCellTimeLabel];
-    UITextView *specialTextView = [self textViewInView:headerView withTag:kSpecialCellSpecialTextView];
+    UILabel *specialLabel = [self labelInView:headerView withTag:kSpecialCellSpecialLabel];
     UIButton *likeButton = [self buttonInView:headerView withTag:kSpecialCellLikeButton];
     UILabel *likeLabel = [self labelInView:headerView withTag:kSpecialCellLikeLabel];
     
     NSAssert(nameLabel, @"View must be defined");
     NSAssert(timeLabel, @"View must be defined");
-    NSAssert(specialTextView, @"View must be defined");
+    NSAssert(specialLabel, @"View must be defined");
     NSAssert(likeButton, @"View must be defined");
     NSAssert(likeLabel, @"View must be defined");
     
@@ -345,23 +347,11 @@
     [SHStyleKit setButton:likeButton withDrawing:SHStyleKitDrawingThumbsUpIcon normalColor:SHStyleKitColorMyWhiteColor highlightedColor:SHStyleKitColorMyTintColor size:CGSizeMake(30, 30)];
     [SHStyleKit setLabel:likeLabel textColor:SHStyleKitColorMyTintColor];
     
-    [nameLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
-    [timeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
-    specialTextView.contentOffset = CGPointMake(0.0f, 0.0f);
-    [specialTextView setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
-    [likeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
-    
     nameLabel.text = spot.name;
     
     if (special) {
         timeLabel.text = special.timeString;
-        
-        NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:14.0], NSForegroundColorAttributeName : [SHStyleKit myTextColor] };
-        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:special.text.length ? special.text : @"No Special" attributes:attributes];
-        specialTextView.attributedText = attributedString;
-        [specialTextView setContentOffset:CGPointMake(0, 0)];
-        [specialTextView flashScrollIndicators];
-        
+        specialLabel.text = special.text.length ? special.text : @"No Special";
         likeButton.highlighted = special.userLikesSpecial;
         likeLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)special.likeCount];
         likeButton.hidden = FALSE;
@@ -369,15 +359,15 @@
     }
     else {
         timeLabel.text = nil;
-        
-        NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:14.0], NSForegroundColorAttributeName : [SHStyleKit myTextColor] };
-        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:@"No Special" attributes:attributes];
-        specialTextView.attributedText = attributedString;
-        [specialTextView setContentOffset:CGPointMake(0, 0)];
-        [specialTextView flashScrollIndicators];
-
+        specialLabel.text = @"No Special";
         likeButton.hidden = TRUE;
         likeLabel.hidden = TRUE;
+    }
+    
+    NSLayoutConstraint *heightConstraint = [[SHAppUtil defaultInstance] getHeightConstraint:specialLabel];
+    if (heightConstraint) {
+        CGFloat height = [[SHAppUtil defaultInstance] heightForString:specialLabel.text font:specialLabel.font maxWidth:CGRectGetWidth(specialLabel.frame)];
+        heightConstraint.constant = MIN(61.0, height);
     }
 }
 

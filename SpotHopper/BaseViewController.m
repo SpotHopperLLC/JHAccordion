@@ -9,6 +9,7 @@
 #import "BaseViewController.h"
 
 #import "SHAppConfiguration.h"
+#import "SHAppUtil.h"
 
 #import "MBProgressHUD.h"
 
@@ -458,59 +459,19 @@ typedef void(^AlertBlock)();
 #pragma mark - Text
 
 - (CGFloat)heightForAttributedString:(NSAttributedString *)text maxWidth:(CGFloat)maxWidth {
-    if ([text isKindOfClass:[NSString class]] && !text.length) {
-        // no text means no height
-        return 0;
-    }
-    
-    NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
-    CGSize size = [text boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX) options:options context:nil].size;
-    
-    CGFloat height = ceilf(size.height) + 1; // add 1 point as padding
-    
-    return height;
+    return [[SHAppUtil defaultInstance] heightForAttributedString:text maxWidth:maxWidth];
 }
 
 - (CGFloat)heightForString:(NSString *)text font:(UIFont *)font maxWidth:(CGFloat)maxWidth {
-    if (![text isKindOfClass:[NSString class]] || !text.length) {
-        // no text means no height
-        return 0;
-    }
-    
-    NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
-    NSDictionary *attributes = @{ NSFontAttributeName : font };
-    CGSize size = [text boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX) options:options attributes:attributes context:nil].size;
-    CGFloat height = ceilf(size.height) + 1; // add 1 point as padding
-    
-    return height;
+    return [[SHAppUtil defaultInstance] heightForString:text font:font maxWidth:maxWidth];
 }
 
 - (CGFloat)widthForAttributedString:(NSAttributedString *)text maxWidth:(CGFloat)maxHeight {
-    if ([text isKindOfClass:[NSString class]] && !text.length) {
-        // no text means no height
-        return 0;
-    }
-    
-    NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
-    CGSize size = [text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, maxHeight) options:options context:nil].size;
-    
-    CGFloat width = ceilf(size.width) + 1; // add 1 point as padding
-    
-    return width;
+    return [[SHAppUtil defaultInstance] widthForAttributedString:text maxWidth:maxHeight];
 }
 
 - (CGFloat)widthForString:(NSString *)text font:(UIFont *)font maxWidth:(CGFloat)maxHeight {
-    if (![text isKindOfClass:[NSString class]] || !text.length) {
-        // no text means no height
-        return 0;
-    }
-    
-    NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
-    NSDictionary *attributes = @{ NSFontAttributeName : font };
-    CGSize size = [text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, maxHeight) options:options attributes:attributes context:nil].size;
-    CGFloat width = ceilf(size.width) + 1; // add 1 point as padding
-    
-    return width;
+    return [[SHAppUtil defaultInstance] widthForString:text font:font maxWidth:maxHeight];
 }
 
 - (void)changeLabelToLatoLight:(UIView *)view {
@@ -524,7 +485,7 @@ typedef void(^AlertBlock)();
         
         // change label height to fit text
         CGRect frame = label.frame;
-        frame.size.height = [self heightForString:label.text font:label.font maxWidth:CGRectGetWidth(label.frame)];
+        frame.size.height = [[SHAppUtil defaultInstance] heightForString:label.text font:label.font maxWidth:CGRectGetWidth(label.frame)];
         label.frame = frame;
         
         if (boldText.length) {

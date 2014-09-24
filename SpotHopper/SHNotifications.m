@@ -22,6 +22,12 @@ NSString * const SHDisplayDrinkNotificationKey = @"SHDisplayDrinkNotificationKey
 NSString * const SHDisplaySpotNotificationName = @"SHDisplaySpotNotificationName";
 NSString * const SHDisplaySpotNotificationKey = @"SHDisplaySpotNotificationKey";
 
+NSString * const SHPushToDrinkNotificationName = @"SHPushToDrinkNotificationName";
+NSString * const SHPushToDrinkNotificationKey = @"SHPushToDrinkNotificationKey";
+
+NSString * const SHPushToSpotNotificationName = @"SHPushToSpotNotificationName";
+NSString * const SHPushToSpotNotificationKey = @"SHPushToSpotNotificationKey";
+
 NSString * const SHFindSimilarToDrinkNotificationName = @"SHFindSimilarToDrinkNotificationName";
 NSString * const SHFindSimilarToDrinkNotificationKey = @"SHFindSimilarToDrinkNotificationKey";
 
@@ -87,6 +93,20 @@ NSString * const SHAppOpenedWithURLNotificationKey = @"SHAppOpenedWithURLNotific
 + (void)displaySpot:(SpotModel *)spot {
     NSDictionary *userInfo = @{ SHDisplaySpotNotificationKey : spot };
     [[NSNotificationCenter defaultCenter] postNotificationName:SHDisplaySpotNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
++ (void)pushToDrink:(DrinkModel *)drink {
+    NSDictionary *userInfo = @{ SHPushToDrinkNotificationKey : drink };
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHPushToDrinkNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
++ (void)pushToSpot:(SpotModel *)spot {
+    NSDictionary *userInfo = @{ SHPushToSpotNotificationKey : spot };
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHPushToSpotNotificationName
                                                         object:nil
                                                       userInfo:userInfo];
 }

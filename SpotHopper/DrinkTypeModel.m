@@ -39,6 +39,18 @@
     return drinkType;
 }
 
+- (UIImage *)placeholderImage {
+    if ([self.ID isEqual:kBeerDrinkTypeID]) {
+        return [UIImage imageNamed:@"beer_placeholder"];
+    } else if ([self.ID isEqual:kWineDrinkTypeID]) {
+        return [UIImage imageNamed:@"cocktail_placeholder"];
+    } else if ([self.ID isEqual:kCocktailDrinkTypeID]) {
+        return [UIImage imageNamed:@"wine_placeholder"];
+    }
+    
+    return nil;
+}
+
 #pragma mark - Debugging
 
 - (NSString *)description {

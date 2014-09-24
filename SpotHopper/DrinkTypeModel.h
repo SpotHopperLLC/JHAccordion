@@ -16,6 +16,8 @@
 
 @property (nonatomic, strong) NSArray *subtypes;
 
+@property (nonatomic, readonly) UIImage *placeholderImage;
+
 + (instancetype)beerDrinkType;
 + (instancetype)wineDrinkType;
 + (instancetype)cocktailDrinkType;

@@ -710,6 +710,10 @@
 		2619B5FB19D222950043FD65 /* SHDrawnButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2619B5F919D222950043FD65 /* SHDrawnButton.m */; };
 		2619B5FC19D222950043FD65 /* SHDrawnButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2619B5F919D222950043FD65 /* SHDrawnButton.m */; };
 		2619B5FD19D222950043FD65 /* SHDrawnButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2619B5F919D222950043FD65 /* SHDrawnButton.m */; };
+		2619EBBF19D37857008A31B3 /* SHAppUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2619EBBE19D37857008A31B3 /* SHAppUtil.m */; };
+		2619EBC019D37857008A31B3 /* SHAppUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2619EBBE19D37857008A31B3 /* SHAppUtil.m */; };
+		2619EBC119D37857008A31B3 /* SHAppUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2619EBBE19D37857008A31B3 /* SHAppUtil.m */; };
+		2619EBC219D37857008A31B3 /* SHAppUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2619EBBE19D37857008A31B3 /* SHAppUtil.m */; };
 		261E9CDA1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E9CD91989C2EF00BC9A9E /* SHTappableTextView.m */; };
 		261E9CDB1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E9CD91989C2EF00BC9A9E /* SHTappableTextView.m */; };
 		261E9CDD1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E9CD91989C2EF00BC9A9E /* SHTappableTextView.m */; };
@@ -1739,6 +1743,8 @@
 		2619B5EF19D222840043FD65 /* SHRatingStarsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHRatingStarsView.m; path = SpotHopper/SHRatingStarsView.m; sourceTree = "<group>"; };
 		2619B5F819D222950043FD65 /* SHDrawnButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHDrawnButton.h; path = SpotHopper/SHDrawnButton.h; sourceTree = "<group>"; };
 		2619B5F919D222950043FD65 /* SHDrawnButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHDrawnButton.m; path = SpotHopper/SHDrawnButton.m; sourceTree = "<group>"; };
+		2619EBBD19D37857008A31B3 /* SHAppUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAppUtil.h; sourceTree = "<group>"; };
+		2619EBBE19D37857008A31B3 /* SHAppUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHAppUtil.m; sourceTree = "<group>"; };
 		261E9CD81989C2EF00BC9A9E /* SHTappableTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHTappableTextView.h; sourceTree = "<group>"; };
 		261E9CD91989C2EF00BC9A9E /* SHTappableTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHTappableTextView.m; sourceTree = "<group>"; };
 		2623801E1986F83500F0940A /* Tracker+Events.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tracker+Events.h"; sourceTree = "<group>"; };
@@ -2992,6 +2998,19 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
+		2619EBBC19D37825008A31B3 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				2619B5D419D2220C0043FD65 /* SHAppContext.h */,
+				2619B5D519D2220C0043FD65 /* SHAppContext.m */,
+				2619B5CE19D221ED0043FD65 /* SHAppConfiguration.h */,
+				2619B5CF19D221ED0043FD65 /* SHAppConfiguration.m */,
+				2619EBBD19D37857008A31B3 /* SHAppUtil.h */,
+				2619EBBE19D37857008A31B3 /* SHAppUtil.m */,
+			);
+			name = App;
+			sourceTree = "<group>";
+		};
 		26723E4C193FBF9800628833 /* Requests */ = {
 			isa = PBXGroup;
 			children = (
@@ -3040,14 +3059,13 @@
 		26A7E3621922CE3C00FF7B88 /* Redesign 2.0 */ = {
 			isa = PBXGroup;
 			children = (
+				2619EBBC19D37825008A31B3 /* App */,
 				26D0A89B19704BA300F64384 /* Notifications */,
 				26A7E3801922D1E700FF7B88 /* StyleKit */,
 				26A7E3631922CE5300FF7B88 /* Storyboards */,
 				26A7E3641922CE5A00FF7B88 /* View Controllers */,
 				A62B333A193D084400CE4BF0 /* Views */,
 				26C816C71926EC2D00E237F2 /* Managers */,
-				2619B5CE19D221ED0043FD65 /* SHAppConfiguration.h */,
-				2619B5CF19D221ED0043FD65 /* SHAppConfiguration.m */,
 			);
 			name = "Redesign 2.0";
 			path = ..;
@@ -3130,8 +3148,6 @@
 				2654B895192BB6B200A66BED /* SHSpotsCollectionViewManager.m */,
 				2640B00D193E6C2D00978725 /* SHDrinksCollectionViewManager.h */,
 				2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */,
-				2619B5D419D2220C0043FD65 /* SHAppContext.h */,
-				2619B5D519D2220C0043FD65 /* SHAppContext.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -4158,7 +4174,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "appBuild=`date \"+%Y.%m.%d.%H\"`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $appBuild\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\necho \"Updated ${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"";
+			shellScript = "appBuild=`date \"+%Y.%m.%d.%H%M\"`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $appBuild\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\necho \"Updated ${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"";
 		};
 		267E04F71922CC48004457B4 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4369,6 +4385,7 @@
 				038664D0186D376900985CEC /* UIAlertView+Block.m in Sources */,
 				038664D6186D376900985CEC /* UILabelGotham.m in Sources */,
 				03CA72B8187C4D5800815284 /* SHSlider.m in Sources */,
+				2619EBBF19D37857008A31B3 /* SHAppUtil.m in Sources */,
 				039ABBEF18CE3BB700B84AE6 /* SpotAnnotationCallout.m in Sources */,
 				039F545818D2BB30004B2B67 /* DrinkCardCollectionViewCell.m in Sources */,
 				033A3F0F18E38CEE00E07F39 /* LiveSpecialModel.m in Sources */,
@@ -4541,6 +4558,7 @@
 				2654B893192BB68C00A66BED /* SHStyleKit+Additions.m in Sources */,
 				2654B8CD192BB6E000A66BED /* SHSidebarViewController.m in Sources */,
 				26A7E3871922D20700FF7B88 /* SHStyleKit.m in Sources */,
+				2619EBC219D37857008A31B3 /* SHAppUtil.m in Sources */,
 				03CABFEF18E7716400FAC5F5 /* AverageReviewModel.m in Sources */,
 				A62B334F193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */,
 				03CABFF018E7716400FAC5F5 /* UIAlertView+Block.m in Sources */,
@@ -4705,6 +4723,7 @@
 				03F4E8DE18CA34260056EAA9 /* AverageReviewModel.m in Sources */,
 				A62B334C193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */,
 				03F4E8DF18CA34260056EAA9 /* UIAlertView+Block.m in Sources */,
+				2619EBC019D37857008A31B3 /* SHAppUtil.m in Sources */,
 				03F4E8E018CA34260056EAA9 /* UILabelGotham.m in Sources */,
 				03F4E8E118CA34260056EAA9 /* SHSlider.m in Sources */,
 				039ABBF118CE3BBD00B84AE6 /* SpotAnnotationCallout.m in Sources */,
@@ -4869,6 +4888,7 @@
 				2654B892192BB68C00A66BED /* SHStyleKit+Additions.m in Sources */,
 				2654B8CC192BB6E000A66BED /* SHSidebarViewController.m in Sources */,
 				26A7E3861922D20700FF7B88 /* SHStyleKit.m in Sources */,
+				2619EBC119D37857008A31B3 /* SHAppUtil.m in Sources */,
 				267E05441922CC48004457B4 /* AverageReviewModel.m in Sources */,
 				A62B334E193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */,
 				267E05451922CC48004457B4 /* UIAlertView+Block.m in Sources */,

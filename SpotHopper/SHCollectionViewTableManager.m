@@ -93,6 +93,11 @@ typedef enum {
             [self.rows addObject:kRowNameSummarySliders];
         }
         
+        NSString *specialForToday = [self specialForToday];
+        if (specialForToday.length) {
+            [self.rows addObject:kRowNameTodaysSpecial];
+        }
+        
         if (self.spot.descriptionOfSpot.length) {
             [self.rows addObject:kRowNameDescription];
         }
@@ -126,55 +131,38 @@ typedef enum {
     [spot fetchSpot:^(SpotModel *spotModel) {
         self.spot = spotModel;
         
-        DrinkListRequest *request = [[DrinkListRequest alloc] init];
-        request.name = @"Highest Rated";
-        request.coordinate = [[SHAppContext defaultInstance] coordinate];
-        request.radius = [[SHAppContext defaultInstance] radius];
-        request.drinkTypeId = self.spot.preferredDrinkType.ID;
-        request.transient = TRUE;
-        request.spotId = self.spot.ID;
-        
-        [DrinkListModel fetchHighestRatedDrinkListWithRequest:request success:^(DrinkListModel *drinklist) {
-            self.highestRatedDrinklist = drinklist;
-            
 #ifdef NDEBUG
-            // set phone number during development
-            self.spot.phoneNumber = @"4148031004";
+        // set phone number during development
+        self.spot.phoneNumber = @"4148031004";
 #endif
-            
-            [self prepareSummarySliders];
-            
-            if (self.summarySliders.count) {
-                [self.rows addObject:kRowNameSummarySliders];
-            }
-            
-            if (self.spot.descriptionOfSpot.length) {
-                [self.rows addObject:kRowNameDescription];
-            }
-            
-            if (self.spot.hoursForToday.length || self.spot.phoneNumber.length) {
-                [self.rows addObject:kRowNameHoursAndPhone];
-            }
-            
-            NSString *specialForToday = [self specialForToday];
-            if (specialForToday.length) {
-                [self.rows addObject:kRowNameTodaysSpecial];
-            }
-            
-            if (self.highestRatedDrinklist.drinks.count) {
-                [self.rows addObject:kRowNameHighestRated];
-            }
-            
-            [self.rows addObject:kRowNamePhotosAndReview];
-            
-            [self.tableView reloadData];
-            
-            self.tableView.contentInset = UIEdgeInsetsMake(0, 0, [self bottomContentInset], 0);
-            self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, [self bottomScrollIndicatorInset], 0);
-        } failure:^(ErrorModel *errorModel) {
-            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
-        }];
         
+        [self prepareSummarySliders];
+        
+        if (self.summarySliders.count) {
+            [self.rows addObject:kRowNameSummarySliders];
+        }
+        
+        if (self.spot.descriptionOfSpot.length) {
+            [self.rows addObject:kRowNameDescription];
+        }
+        
+        if (self.spot.hoursForToday.length || self.spot.phoneNumber.length) {
+            [self.rows addObject:kRowNameHoursAndPhone];
+        }
+        
+        NSString *specialForToday = [self specialForToday];
+        if (specialForToday.length) {
+            [self.rows addObject:kRowNameTodaysSpecial];
+        }
+        
+        [self.rows addObject:kRowNameHighestRated];
+        
+        [self.rows addObject:kRowNamePhotosAndReview];
+        
+        [self.tableView reloadData];
+        
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, [self bottomContentInset], 0);
+        self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, [self bottomScrollIndicatorInset], 0);
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
@@ -229,7 +217,6 @@ typedef enum {
     self.spot = nil;
     self.drink = nil;
     self.summarySliders = nil;
-    self.highestRatedDrinklist = nil;
     self.rows = nil;
 }
 
@@ -329,14 +316,38 @@ typedef enum {
 }
 
 - (NSString *)specialForToday {
-    SpecialModel *special = self.spot.specialForToday;
-    return special.text;
+    if (self.spot) {
+        SpecialModel *special = self.spot.specialForToday;
+        return special.text;
+    }
+    
+    return nil;
+}
+
+- (void)updateButton:(UIButton *)button withDrink:(DrinkModel *)drink {
+    button.layer.borderColor = [[[UIColor lightGrayColor] colorWithAlphaComponent:0.8] CGColor];
+    button.layer.borderWidth = 1.0;
+    
+    button.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    button.clipsToBounds = TRUE;
+    [button setImage:drink.placeholderImage forState:UIControlStateNormal];
+    
+    [button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [button addTarget:self action:@selector(drinkButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [NetworkHelper loadImage:drink.highlightImage placeholderImage:drink.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
+        [button setImage:thumbImage forState:UIControlStateNormal];
+    } withFullImageBlock:^(UIImage *fullImage) {
+        [button setImage:fullImage forState:UIControlStateNormal];
+    } withErrorBlock:^(NSError *error) {
+        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+    }];
 }
 
 #pragma mark - User Actions
 #pragma mark -
 
-- (IBAction)moreButtonTapped:(id)sender {
+- (IBAction)moreButtonTapped:(UIButton *)button {
     if (self.spot) {
         if ([self.delegate respondsToSelector:@selector(collectionViewTableManager:displaySpot:)]) {
             [self.delegate collectionViewTableManager:self displaySpot:self.spot];
@@ -349,7 +360,7 @@ typedef enum {
     }
 }
 
-- (IBAction)phoneButtonTapped:(id)sender {
+- (IBAction)phoneButtonTapped:(UIButton *)button {
     DebugLog(@"%@", NSStringFromSelector(_cmd));
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -380,7 +391,7 @@ typedef enum {
     }
 }
 
-- (IBAction)photosButtonTapped:(id)sender {
+- (IBAction)photosButtonTapped:(UIButton *)button {
     if (self.spot) {
         [SHNotifications showPhotosForSpot:self.spot];
     }
@@ -389,18 +400,38 @@ typedef enum {
     }
 }
 
-- (IBAction)menuButtonTapped:(id)sender {
+- (IBAction)menuButtonTapped:(UIButton *)button {
     if (self.spot) {
         [SHNotifications openMenuForSpot:self.spot];
     }
 }
 
-- (IBAction)reviewButtonTapped:(id)sender {
+- (IBAction)reviewButtonTapped:(UIButton *)button {
     if (self.spot) {
         [SHNotifications reviewSpot:self.spot];
     }
     else if (self.drink) {
         [SHNotifications reviewDrink:self.drink];
+    }
+}
+
+- (IBAction)drinkButtonTapped:(UIButton *)button {
+    // use the tag to determine which drink for the highest rated list to use
+    // 201 == 0
+    // 301 == 1
+    // 401 == 2
+    
+    if (button.tag == 201 && self.highestRatedDrinklist.drinks.count) {
+        DrinkModel *drink = self.highestRatedDrinklist.drinks[0];
+        [SHNotifications pushToDrink:drink];
+    }
+    else if (button.tag == 301 && self.highestRatedDrinklist.drinks.count > 1) {
+        DrinkModel *drink = self.highestRatedDrinklist.drinks[1];
+        [SHNotifications pushToDrink:drink];
+    }
+    else if (button.tag == 401 && self.highestRatedDrinklist.drinks.count > 2) {
+        DrinkModel *drink = self.highestRatedDrinklist.drinks[2];
+        [SHNotifications pushToDrink:drink];
     }
 }
 
@@ -578,71 +609,86 @@ typedef enum {
     container2View.hidden = TRUE;
     container3View.hidden = TRUE;
     
-    UIImageView *drink1ImageView = (UIImageView *)[cell viewWithTag:201];
+    UIButton *drink1Button = (UIButton *)[cell viewWithTag:201];
     UILabel *drink1Label = (UILabel *)[cell viewWithTag:202];
     SHRatingStarsView *rating1View = (SHRatingStarsView *)[cell viewWithTag:203];
     
-    UIImageView *drink2ImageView = (UIImageView *)[cell viewWithTag:301];
+    UIButton *drink2Button = (UIButton *)[cell viewWithTag:301];
     UILabel *drink2Label = (UILabel *)[cell viewWithTag:302];
     SHRatingStarsView *rating2View = (SHRatingStarsView *)[cell viewWithTag:303];
     
-    UIImageView *drink3ImageView = (UIImageView *)[cell viewWithTag:401];
+    UIButton *drink3Button = (UIButton *)[cell viewWithTag:401];
     UILabel *drink3Label = (UILabel *)[cell viewWithTag:402];
     SHRatingStarsView *rating3View = (SHRatingStarsView *)[cell viewWithTag:403];
     
-    if (self.highestRatedDrinklist.drinks.count) {
-        DrinkModel *drink = self.highestRatedDrinklist.drinks[0];
-        container1View.hidden = FALSE;
-        
-        drink1Label.text = drink.name;
-        rating1View.rating = drink.averageReview.rating.floatValue;
-        drink1ImageView.layer.borderColor = [[[UIColor lightGrayColor] colorWithAlphaComponent:0.8] CGColor];
-        drink1ImageView.layer.borderWidth = 1.0;
-        
-        [NetworkHelper loadImage:drink.highlightImage placeholderImage:drink.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
-            drink1ImageView.image = thumbImage;
-        } withFullImageBlock:^(UIImage *fullImage) {
-            drink1ImageView.image = fullImage;
-        } withErrorBlock:^(NSError *error) {
-            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
-        }];
-    }
+    DrinkListRequest *request = [[DrinkListRequest alloc] init];
+    request.name = @"Highest Rated";
+    request.coordinate = [[SHAppContext defaultInstance] coordinate];
+    request.radius = [[SHAppContext defaultInstance] radius];
+    request.drinkTypeId = self.spot.preferredDrinkType.ID;
+    request.transient = TRUE;
+    request.spotId = self.spot.ID;
     
-    if (self.highestRatedDrinklist.drinks.count > 1) {
-        DrinkModel *drink = self.highestRatedDrinklist.drinks[1];
-        container2View.hidden = FALSE;
+    [DrinkListModel fetchHighestRatedDrinkListWithRequest:request success:^(DrinkListModel *drinklist) {
+        self.highestRatedDrinklist = drinklist;
         
-        drink2Label.text = drink.name;
-        rating2View.rating = drink.averageReview.rating.floatValue;
-        drink2ImageView.layer.borderColor = [[[UIColor lightGrayColor] colorWithAlphaComponent:0.8] CGColor];
-        drink2ImageView.layer.borderWidth = 1.0;
-        
-        [NetworkHelper loadImage:drink.highlightImage placeholderImage:drink.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
-            drink2ImageView.image = thumbImage;
-        } withFullImageBlock:^(UIImage *fullImage) {
-            drink2ImageView.image = fullImage;
-        } withErrorBlock:^(NSError *error) {
-            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
-        }];
-    }
-    
-    if (self.highestRatedDrinklist.drinks.count > 2) {
-        DrinkModel *drink = self.highestRatedDrinklist.drinks[2];
-        container3View.hidden = FALSE;
-        
-        drink3Label.text = drink.name;
-        rating3View.rating = drink.averageReview.rating.floatValue;
-        drink3ImageView.layer.borderColor = [[[UIColor lightGrayColor] colorWithAlphaComponent:0.8] CGColor];
-        drink3ImageView.layer.borderWidth = 1.0;
-        
-        [NetworkHelper loadImage:drink.highlightImage placeholderImage:drink.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
-            drink3ImageView.image = thumbImage;
-        } withFullImageBlock:^(UIImage *fullImage) {
-            drink3ImageView.image = fullImage;
-        } withErrorBlock:^(NSError *error) {
-            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
-        }];
-    }
+        if (!drinklist.drinks.count) {
+            container1View.hidden = FALSE;
+            container2View.hidden = FALSE;
+            container3View.hidden = FALSE;
+            
+            UIImage *placeholderImage = self.spot.preferredDrinkType.placeholderImage;
+            
+            drink1Label.text = @"";
+            drink2Label.text = @"";
+            drink3Label.text = @"";
+            
+            rating1View.rating = 0;
+            rating2View.rating = 0;
+            rating3View.rating = 0;
+            
+            drink1Button.imageView.contentMode = UIViewContentModeScaleAspectFill;
+            drink1Button.clipsToBounds = TRUE;
+            drink2Button.imageView.contentMode = UIViewContentModeScaleAspectFill;
+            drink2Button.clipsToBounds = TRUE;
+            drink3Button.imageView.contentMode = UIViewContentModeScaleAspectFill;
+            drink3Button.clipsToBounds = TRUE;
+            
+            [drink1Button setImage:placeholderImage forState:UIControlStateNormal];
+            [drink2Button setImage:placeholderImage forState:UIControlStateNormal];
+            [drink3Button setImage:placeholderImage forState:UIControlStateNormal];
+        }
+        else {
+            if (drinklist.drinks.count) {
+                DrinkModel *drink = drinklist.drinks[0];
+                container1View.hidden = FALSE;
+                
+                drink1Label.text = drink.name;
+                rating1View.rating = drink.averageReview.rating.floatValue;
+                [self updateButton:drink1Button withDrink:drink];
+            }
+            
+            if (drinklist.drinks.count > 1) {
+                DrinkModel *drink = drinklist.drinks[1];
+                container2View.hidden = FALSE;
+                
+                drink2Label.text = drink.name;
+                rating2View.rating = drink.averageReview.rating.floatValue;
+                [self updateButton:drink2Button withDrink:drink];
+            }
+            
+            if (drinklist.drinks.count > 2) {
+                DrinkModel *drink = drinklist.drinks[2];
+                container3View.hidden = FALSE;
+                
+                drink3Label.text = drink.name;
+                rating3View.rating = drink.averageReview.rating.floatValue;
+                [self updateButton:drink3Button withDrink:drink];
+            }
+        }
+    } failure:^(ErrorModel *errorModel) {
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+    }];
     
     return cell;
 }
@@ -799,6 +845,9 @@ typedef enum {
         }
         else if ([rowName isEqualToString:kRowNameSummarySliders]) {
             cell = [self renderCellForSummarySlidersAtIndexPath:indexPath];
+        }
+        else if ([rowName isEqualToString:kRowNameTodaysSpecial]) {
+            cell = [self renderCellForTodaysSpecialAtIndexPath:indexPath];
         }
         else if ([rowName isEqualToString:kRowNameDescription]) {
             cell = [self renderCellForDescriptionAtIndexPath:indexPath];
