@@ -39,6 +39,9 @@
 - (NSArray *)cachedDrinkTypes;
 - (void)cacheDrinkTypes:(NSArray *)drinkTypes;
 
+- (DrinkModel *)cachedDrinkForKey:(NSString *)key;
+- (void)cacheDrink:(DrinkModel *)drink withKey:(NSString *)key;
+
 @end
 
 @implementation DrinkModel
@@ -258,6 +261,13 @@
 }
 
 - (void)fetchDrink:(void(^)(DrinkModel *drinkModel))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    NSString *key = [NSString stringWithFormat:@"Drink-%@", self.ID];
+    DrinkModel *cachedDrink = [[DrinkModel sh_sharedCache] cachedDrinkForKey:key];
+    if (cachedDrink && successBlock) {
+        successBlock(cachedDrink);
+        return;
+    }
+    
     [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drinks/%ld", (long)[self.ID integerValue]] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
@@ -268,9 +278,12 @@
             }
         }
         else if (operation.response.statusCode == 200) {
-            DrinkModel *model = [jsonApi resourceForKey:@"drinks"];
+            DrinkModel *drinkModel = [jsonApi resourceForKey:@"drinks"];
+            
+            [[DrinkModel sh_sharedCache] cacheDrink:drinkModel withKey:key];
+            
             if (successBlock) {
-                successBlock(model);
+                successBlock(drinkModel);
             }
         } else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
@@ -512,88 +525,6 @@
     return ( rel == nil ? @0 : rel );
 }
 
-// properties are now mapped
-
-/*
- 
-//- (NSString *)name {
-//    return [self objectForKey:@"name"];
-//}
-
-//- (NSString *)imageUrl {
-//    return [self objectForKey:@"image_url"];
-//}
-
-//- (DrinkTypeModel *)drinkType {
-//    return [self linkedResourceForKey:@"drink_type"];
-//}
- 
-//- (DrinkSubTypeModel *)drinkSubtype {
-//    return [self linkedResourceForKey:@"drink_subtype"];
-//}
-
-//- (NSString *)type {
-//    return [self objectForKey:@"type"];
-//}
-
-//- (NSString *)subtype {
-//    return [self objectForKey:@"subtype"];
-//}
-
-//- (NSString *)descriptionOfDrink {
-//    return [self objectForKey:@"description"];
-//}
-
-//- (NSString *)recipeOfDrink {
-//    return [self objectForKey:@"recipe"];
-//}
-
-//- (NSNumber *)abv {
-//    return [self objectForKey:@"abv"];
-//}
- 
-//- (NSString *)style {
-//    return [self objectForKey:@"style"];
-//}
-
-//- (NSString *)varietal {
-//    return [self objectForKey:@"varietal"];
-//}
-
-//- (NSNumber *)vintage {
-//    return [self objectForKey:@"vintage"];
-//}
-
-//- (NSNumber *)region {
-//    return [self objectForKey:@"region"];
-//}
-
-//- (SpotModel *)spot {
-//    return [self linkedResourceForKey:@"spot"];
-//}
-
-//- (NSNumber *)spotId {
-//    return [self objectForKey:@"spot_id"];
-//}
-
-//- (AverageReviewModel *)averageReview {
-//    return [self linkedResourceForKey:@"average_review"];
-//}
-
-//- (NSNumber *)match {
-//    return [self objectForKey:@"match"];
-//}
-
-//- (NSArray *)baseAlochols {
-//    return [self linkedResourceForKey:@"base_alcohols"];
-//}
-
-//- (NSArray *)images {
-//    return [self linkedResourceForKey:@"images"];
-//}
-
- */
-
 #pragma mark - Helpers
 
 - (BOOL)isBeer {
@@ -700,6 +631,19 @@ NSString * const DrinkTypesKey = @"DrinkTypes";
         [self removeObjectForKey:DrinkTypesKey];
     }
     
+}
+
+- (DrinkModel *)cachedDrinkForKey:(NSString *)key {
+    return [self objectForKey:key];
+}
+
+- (void)cacheDrink:(DrinkModel *)drink withKey:(NSString *)key {
+    if (drink) {
+        [self setObject:drink forKey:key];
+    }
+    else {
+        [self removeObjectForKey:key];
+    }
 }
 
 @end

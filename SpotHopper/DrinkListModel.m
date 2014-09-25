@@ -33,6 +33,9 @@
 - (NSArray *)cachedDrinklists;
 - (void)cacheDrinklists:(NSArray *)drinklists;
 
+- (DrinkListModel *)cachedDrinklistForKey:(NSString *)key;
+- (void)cacheDrinklist:(DrinkListModel *)drinklist forKey:(NSString *)key;
+
 @end
 
 @implementation DrinkListModel
@@ -637,6 +640,15 @@
 }
 
 + (void)fetchHighestRatedDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinklist))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    // get cached drinklist if spotId is defined
+    if (request.spotId) {
+        NSString *key = [NSString stringWithFormat:@"HighestRatedDrinklistForSpot-%@", request.spotId];
+        DrinkListModel *drinklist = [[self sh_sharedCache] cachedDrinklistForKey:key];
+        if (drinklist && successBlock) {
+            successBlock(drinklist);
+        }
+    }
+    
     NSMutableDictionary *params = @{
                                     kSpotModelParamPage : @1,
                                     kSpotModelParamsPageSize : @10,
@@ -667,28 +679,33 @@
             }
         }
         else if (operation.response.statusCode == 200) {
-            DrinkListModel *model = [jsonApi resourceForKey:@"drink_lists"];
+            DrinkListModel *drinklistModel = [jsonApi resourceForKey:@"drink_lists"];
             
-            if (model.drinks.count) {
-                DrinkModel *drink = model.drinks[0];
+            if (drinklistModel.drinks.count) {
+                DrinkModel *drink = drinklistModel.drinks[0];
                 if (drink.isBeer) {
-                    model.name = @"Highest Rated Beers";
+                    drinklistModel.name = @"Highest Rated Beers";
                 }
                 else if (drink.isWine) {
-                    model.name = @"Highest Rated Wines";
+                    drinklistModel.name = @"Highest Rated Wines";
                 }
                 else if (drink.isCocktail) {
-                    model.name = @"Highest Rated Cocktails";
+                    drinklistModel.name = @"Highest Rated Cocktails";
                 }
             }
             
             // limit to 10
-            if (model.drinks.count > 10) {
-                model.drinks = [model.drinks subarrayWithRange:NSMakeRange(0, 10)];
+            if (drinklistModel.drinks.count > 10) {
+                drinklistModel.drinks = [drinklistModel.drinks subarrayWithRange:NSMakeRange(0, 10)];
+            }
+            
+            if (request.spotId) {
+                NSString *key = [NSString stringWithFormat:@"HighestRatedDrinklistForSpot-%@", request.spotId];
+                [[self sh_sharedCache] cacheDrinklist:drinklistModel forKey:key];
             }
             
             if (successBlock) {
-                successBlock(model);
+                successBlock(drinklistModel);
             }
         }
         else {
@@ -769,6 +786,19 @@ NSString * const DrinklistsKey = @"Drinklists";
     }
     else {
         [self removeObjectForKey:DrinklistsKey];
+    }
+}
+
+- (DrinkListModel *)cachedDrinklistForKey:(NSString *)key {
+    return [self objectForKey:key];
+}
+
+- (void)cacheDrinklist:(DrinkListModel *)drinklist forKey:(NSString *)key {
+    if (drinklist) {
+        [self setObject:drinklist forKey:key];
+    }
+    else {
+        [self removeObjectForKey:key];
     }
 }
 

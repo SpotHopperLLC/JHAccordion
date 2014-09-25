@@ -96,7 +96,6 @@
 - (void)changeIndex:(NSUInteger)index {
     // change collection view position if the index is in bounds and set _currentIndex
     if (index != _currentIndex && index < self.spots.count) {
-        DebugLog(@"Manager - Changing to index: %lu", (long)index);
         _currentIndex = index;
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_currentIndex inSection:0];
         [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:TRUE];
@@ -245,8 +244,6 @@
 #pragma mark -
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    DebugLog(@"Selected item %lu", (long)indexPath.item);
-    
     if ([self.delegate respondsToSelector:@selector(collectionViewManagerDidTapHeader:)]) {
         [self.delegate collectionViewManagerDidTapHeader:self];
     }
@@ -287,8 +284,6 @@
     
     CGFloat width = CGRectGetWidth(self.collectionView.frame);
     NSUInteger currentIndex = MAX(MIN(round(self.collectionView.contentOffset.x / CGRectGetWidth(self.collectionView.frame)), self.spots.count - 1), 0);
-
-    DebugLog(@"%@, %lu", NSStringFromSelector(_cmd), (unsigned long)currentIndex);
 
     if (fabsf(velocity.x) > 2.0) {
         CGFloat x = targetContentOffset->x;

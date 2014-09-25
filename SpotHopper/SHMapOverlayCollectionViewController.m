@@ -221,8 +221,6 @@ typedef enum {
 #pragma mark -
 
 - (IBAction)previousButtonTapped:(id)sender {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
-    
     if (self.mode == SHOverlayCollectionViewModeSpecials) {
         [self.specialsCollectionViewManager goPrevious];
     }
@@ -235,8 +233,6 @@ typedef enum {
 }
 
 - (IBAction)nextButtonTapped:(id)sender {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
-
     if (self.mode == SHOverlayCollectionViewModeSpecials) {
         [self.specialsCollectionViewManager goNext];
     }

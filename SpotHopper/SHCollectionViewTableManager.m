@@ -335,7 +335,15 @@ typedef enum {
     [button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
     [button addTarget:self action:@selector(drinkButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
-    [NetworkHelper loadImage:drink.highlightImage placeholderImage:drink.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
+    [self updateButton:button withImage:drink.highlightImage placeholderImage:drink.placeholderImage];
+}
+
+- (void)updateButton:(UIButton *)button withImage:(ImageModel *)image placeholderImage:(UIImage *)placeholderImage {
+    
+    button.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    button.clipsToBounds = TRUE;
+    
+    [NetworkHelper loadImage:image placeholderImage:placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
         [button setImage:thumbImage forState:UIControlStateNormal];
     } withFullImageBlock:^(UIImage *fullImage) {
         [button setImage:fullImage forState:UIControlStateNormal];
@@ -397,6 +405,25 @@ typedef enum {
     }
     else if (self.drink) {
         [SHNotifications showPhotosForDrink:self.drink];
+    }
+}
+
+- (IBAction)photoButtonTapped:(UIButton *)button {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    NSArray *images = self.spot ? self.spot.images : self.drink.images;
+    
+    if (button.tag == 201 && self.spot.images.count) {
+        ImageModel *image = images[0];
+        [SHNotifications showPhoto:image];
+    }
+    else if (button.tag == 301 && self.spot.images.count > 1) {
+        ImageModel *image = images[1];
+        [SHNotifications showPhoto:image];
+    }
+    else if (button.tag == 401 && self.spot.images.count > 2) {
+        ImageModel *image = images[2];
+        [SHNotifications showPhoto:image];
     }
 }
 
@@ -554,7 +581,6 @@ typedef enum {
     [phoneButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
     [phoneButton addTarget:self action:@selector(phoneButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 
-    
     [SHStyleKit setButton:phoneButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
     
     NSString *hoursForToday = self.spot.hoursForToday;
@@ -696,64 +722,120 @@ typedef enum {
 - (UITableViewCell *)renderCellForPhotosAndReviewAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"PhotosAndReviewCell" forIndexPath:indexPath];
     
-    UIButton *photoImageButton = (UIButton *)[cell viewWithTag:1];
-    SHDrawnButton *reviewImageButton = (SHDrawnButton *)[cell viewWithTag:4];
+    UILabel *titleLabel = (UILabel *)[cell viewWithTag:1];
     
-    UIButton *photoButton = (UIButton *)[cell viewWithTag:2];
-    UIButton *reviewButton = (UIButton *)[cell viewWithTag:3];
+    UIView *photo1View = [cell viewWithTag:2];
+    UIView *photo2View = [cell viewWithTag:3];
+    UIView *photo3View = [cell viewWithTag:4];
     
-    [SHStyleKit setButton:photoButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
-    [SHStyleKit setButton:reviewButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
+    UIButton *textButton = (UIButton *)[cell viewWithTag:5];
+    UIButton *imageButton = (UIButton *)[cell viewWithTag:6];
     
-    photoButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    UIButton *photo1Button = (UIButton *)[cell viewWithTag:201];
+    UILabel *photo1Label = (UILabel *)[cell viewWithTag:202];
     
-    if (self.spot) {
-        [reviewButton setTitle:@"Review Spot" forState:UIControlStateNormal];
+    UIButton *photo2Button = (UIButton *)[cell viewWithTag:301];
+    UILabel *photo2Label = (UILabel *)[cell viewWithTag:302];
+    
+    UIButton *photo3Button = (UIButton *)[cell viewWithTag:401];
+    UILabel *photo3Label = (UILabel *)[cell viewWithTag:402];
+    
+    photo1Label.text = @"see\nall";
+    photo1Label.lineBreakMode = NSLineBreakByWordWrapping;
+    
+    photo2Label.text = @"see\nall";
+    photo2Label.lineBreakMode = NSLineBreakByWordWrapping;
+    
+    photo3Label.text = @"see\nall";
+    photo3Label.lineBreakMode = NSLineBreakByWordWrapping;
+    
+    [photo1Button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [photo1Button addTarget:self action:@selector(photoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [photo2Button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [photo2Button addTarget:self action:@selector(photoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [photo3Button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [photo3Button addTarget:self action:@selector(photoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIImage *placeholderImage = self.spot ? self.spot.placeholderImage : self.drink.placeholderImage;
+    
+    titleLabel.text = [NSString stringWithFormat:@"Photos of %@...", self.spot ? self.spot.name : self.drink.name];
+    
+    NSArray *images = self.spot ? self.spot.images : self.drink.images;
+    
+    if (images.count > 2) {
+        titleLabel.hidden = FALSE;
+        
+        // hide labels over first 2 photo views
+        photo1Label.hidden = TRUE;
+        photo2Label.hidden = TRUE;
+        photo3Label.hidden = FALSE;
+        
+        photo1View.hidden = FALSE;
+        photo2View.hidden = FALSE;
+        photo3View.hidden = FALSE;
+        
+        [self updateButton:photo1Button withImage:images[0] placeholderImage:placeholderImage];
+        [self updateButton:photo2Button withImage:images[1] placeholderImage:placeholderImage];
+        [self updateButton:photo3Button withImage:images[2] placeholderImage:placeholderImage];
+        
+        [photo1Button addTarget:self action:@selector(photoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [photo2Button addTarget:self action:@selector(photoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [photo3Button addTarget:self action:@selector(photosButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     }
-    else if (self.drink) {
-        if (self.drink.isBeer) {
-            [reviewButton setTitle:@"Review Beer" forState:UIControlStateNormal];
-        }
-        else if (self.drink.isCocktail) {
-            [reviewButton setTitle:@"Review Cocktail" forState:UIControlStateNormal];
-        }
-        else if (self.drink.isWine) {
-            [reviewButton setTitle:@"Review Wine" forState:UIControlStateNormal];
-        }
+    else if (images.count > 1) {
+        titleLabel.hidden = FALSE;
+        
+        // hide labels over 2nd photo view
+        photo1Label.hidden = TRUE;
+        photo2Label.hidden = FALSE;
+        
+        photo1View.hidden = FALSE;
+        photo2View.hidden = FALSE;
+        photo3View.hidden = TRUE;
+        
+        [self updateButton:photo1Button withImage:images[0] placeholderImage:placeholderImage];
+        [self updateButton:photo2Button withImage:images[1] placeholderImage:placeholderImage];
+        
+        [photo1Button addTarget:self action:@selector(photoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [photo2Button addTarget:self action:@selector(photosButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    else if (images.count == 1) {
+        titleLabel.text = [NSString stringWithFormat:@"Photo of %@...", self.spot ? self.spot.name : self.drink.name];
+        titleLabel.hidden = FALSE;
+        
+        // leave just 1 photo view with the label visible
+        photo1Label.hidden = TRUE;
+        
+        photo1View.hidden = FALSE;
+        photo2View.hidden = TRUE;
+        photo3View.hidden = TRUE;
+        
+        [self updateButton:photo1Button withImage:images[0] placeholderImage:placeholderImage];
+        
+        [photo1Button addTarget:self action:@selector(photosButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    else {
+        titleLabel.hidden = TRUE;
+        
+        // hide all photo views
+        photo1View.hidden = TRUE;
+        photo2View.hidden = TRUE;
+        photo3View.hidden = TRUE;
     }
     
-    ImageModel *imageModel = nil;
+    [SHStyleKit setButton:textButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
+    [textButton setTitle:@"Write a\nReview!" forState:UIControlStateNormal];
+    textButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    
+    [SHStyleKit setButton:imageButton withDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
+    
+    [textButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [textButton addTarget:self action:@selector(reviewButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 
-    if (self.mode == Special || self.mode == Spot) {
-        imageModel = self.spot.highlightImage;
-    }
-    else if (self.mode == Drink) {
-        imageModel = self.drink.highlightImage;
-    }
-    
-    if (imageModel) {
-        [NetworkHelper loadImage:imageModel placeholderImage:nil withThumbImageBlock:^(UIImage *thumbImage) {
-            [photoImageButton setImage:thumbImage forState:UIControlStateNormal];
-        } withFullImageBlock:^(UIImage *fullImage) {
-            [photoImageButton setImage:fullImage forState:UIControlStateNormal];
-        } withErrorBlock:^(NSError *error) {
-            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
-        }];
-    }
-    
-    [reviewImageButton setButtonDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor drawingSize:reviewImageButton.frame.size];
-    
-    [photoImageButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-    [photoImageButton addTarget:self action:@selector(photosButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [reviewImageButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-    [reviewImageButton addTarget:self action:@selector(reviewButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [photoButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-    [photoButton addTarget:self action:@selector(photosButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [reviewButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-    [reviewButton addTarget:self action:@selector(reviewButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [imageButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [imageButton addTarget:self action:@selector(reviewButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     return cell;
 }
@@ -960,7 +1042,7 @@ typedef enum {
         return 54.0f;
     }
     else if ([rowName isEqualToString:kRowNamePhotosAndReview]) {
-        return 50.0f;
+        return 114.0f;
     }
     else if ([rowName isEqualToString:kRowNameHighestRated]) {
         return 160.0f;

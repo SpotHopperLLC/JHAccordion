@@ -1311,6 +1311,16 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleShowDrinkPhotosNotification:)
+                                                 name:SHShowDrinkPhotosNotificationName
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleShowPhotoNotification:)
+                                                 name:SHShowPhotoNotificationName
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handlePushToDrinkNotification:)
                                                  name:SHPushToDrinkNotificationName
                                                object:nil];
@@ -1319,12 +1329,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handlePushToSpotNotification:)
                                                  name:SHPushToSpotNotificationName
-                                               object:nil];
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleShowDrinkPhotosNotification:)
-                                                 name:SHShowDrinkPhotosNotificationName
                                                object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -2922,8 +2926,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     CGFloat duration = animated ? 0.75f : 0.0f;
     CGFloat height = CGRectGetHeight(self.expandedReferenceView.frame);
     
-    DebugLog(@"height: %f", height);
-    
     [self.mapOverlayCollectionViewController expandedViewWillAppear];
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
@@ -3974,6 +3976,11 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     else {
         [self goToPhotoViewer:drink.images atIndex:0 fromPhotoAlbum:nil];
     }
+}
+
+- (void)handleShowPhotoNotification:(NSNotification *)notification {
+    ImageModel *image = notification.userInfo[SHShowPhotoNotificationKey];
+    [self goToPhotoViewer:@[image] atIndex:0 fromPhotoAlbum:nil];
 }
 
 - (void)handleOpenMenuForSpotNotification:(NSNotification *)notification {

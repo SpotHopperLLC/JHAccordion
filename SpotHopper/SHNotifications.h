@@ -49,6 +49,9 @@ extern NSString * const SHShowSpotPhotosNotificationKey;
 extern NSString * const SHShowDrinkPhotosNotificationName;
 extern NSString * const SHShowDrinkPhotosNotificationKey;
 
+extern NSString * const SHShowPhotoNotificationName;
+extern NSString * const SHShowPhotoNotificationKey;
+
 extern NSString * const SHOpenMenuForSpotNotificationName;
 extern NSString * const SHOpenMenuForSpotNotificationKey;
 
@@ -89,6 +92,8 @@ extern NSString * const SHAppOpenedWithURLNotificationKey;
 + (void)showPhotosForSpot:(SpotModel *)spot;
 
 + (void)showPhotosForDrink:(DrinkModel *)drink;
+
++ (void)showPhoto:(ImageModel *)image;
 
 + (void)userDidLoginIn;
 

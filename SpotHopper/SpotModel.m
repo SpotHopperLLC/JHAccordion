@@ -42,6 +42,9 @@
 - (NSArray *)cachedSpotTypes;
 - (void)cacheSpotTypes:(NSArray *)spotTypes;
 
+- (SpotModel *)cachedSpotForKey:(NSString *)key;
+- (void)cacheSpot:(SpotModel *)spot withKey:(NSString *)key;
+
 @end
 
 @implementation SpotModel
@@ -626,6 +629,13 @@
 }
 
 - (void)fetchSpot:(void (^)(SpotModel *spotModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    NSString *key = [NSString stringWithFormat:@"Spot-%@", self.ID];
+    SpotModel *cachedSpot = [[SpotModel sh_sharedCache] cachedSpotForKey:key];
+    if (cachedSpot && successBlock) {
+        successBlock(cachedSpot);
+        return;
+    }
+    
     [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/spots/%ld", (long)[self.ID integerValue]] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI
@@ -637,10 +647,12 @@
             }
         }
         else if (operation.response.statusCode == 200) {
-            SpotModel *model = [jsonApi resourceForKey:@"spots"];
+            SpotModel *spotModel = [jsonApi resourceForKey:@"spots"];
+            
+            [[SpotModel sh_sharedCache] cacheSpot:spotModel withKey:key];
             
             if (successBlock) {
-                successBlock(model);
+                successBlock(spotModel);
             }
         } else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
@@ -934,6 +946,19 @@ NSString * const SpotTypesKey = @"SpotTypesKey";
     }
     else {
         [self removeObjectForKey:SpotTypesKey];
+    }
+}
+
+- (SpotModel *)cachedSpotForKey:(NSString *)key {
+    return [self objectForKey:key];
+}
+
+- (void)cacheSpot:(SpotModel *)spot withKey:(NSString *)key {
+    if (spot) {
+        [self setObject:spot forKey:key];
+    }
+    else {
+        [self removeObjectForKey:key];
     }
 }
 

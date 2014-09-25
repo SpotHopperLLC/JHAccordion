@@ -99,7 +99,7 @@ typedef void(^AlertBlock)();
     
     _backButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_nav_back"] style:UIBarButtonItemStylePlain target:self action:@selector(onClickBack:)];
     [_backButtonItem setBackgroundImage:[[UIImage alloc] init] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    if ([self.navigationController.viewControllers count] > 1) {
+    if (self.navigationController.viewControllers.count > 1) {
         [self.navigationItem setBackBarButtonItem:nil];
         [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(onClickBack:)]];
     }

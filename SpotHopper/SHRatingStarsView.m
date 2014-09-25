@@ -27,7 +27,6 @@
 
 #if !TARGET_INTERFACE_BUILDER
 - (void)setRating:(CGFloat)rating {
-    DebugLog(@"%@, %f", NSStringFromSelector(_cmd), rating);
     _rating = rating;
     [self updateStarsImage];
 }
