@@ -642,7 +642,7 @@
 + (void)fetchHighestRatedDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinklist))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     // get cached drinklist if spotId is defined
     if (request.spotId) {
-        NSString *key = [NSString stringWithFormat:@"HighestRatedDrinklistForSpot-%@", request.spotId];
+        NSString *key = [NSString stringWithFormat:@"HighestRatedDrinklistForSpot-%@-DrinkType-%@", request.spotId, request.drinkTypeId];
         DrinkListModel *drinklist = [[self sh_sharedCache] cachedDrinklistForKey:key];
         if (drinklist && successBlock) {
             successBlock(drinklist);
@@ -700,7 +700,7 @@
             }
             
             if (request.spotId) {
-                NSString *key = [NSString stringWithFormat:@"HighestRatedDrinklistForSpot-%@", request.spotId];
+                NSString *key = [NSString stringWithFormat:@"HighestRatedDrinklistForSpot-%@-DrinkType-%@", request.spotId, request.drinkTypeId];
                 [[self sh_sharedCache] cacheDrinklist:drinklistModel forKey:key];
             }
             

@@ -282,21 +282,6 @@
 
 #pragma mark - Commons
 
-//- (void)goToFindSimilarSpots:(id<FindSimilarViewControllerDelegate>)delegate {
-//    [Tracker track:@"View Similar Spots" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
-//    FindSimilarViewController *viewController = [[FindSimilarViewController alloc] initWithNibName:@"FindSimilarViewController" bundle:[NSBundle mainBundle]];
-//    [viewController setSearchDrinks:NO];
-//    [viewController setDelegate:delegate];
-//    [self.navigationController pushViewController:viewController animated:YES];
-//}
-
-//- (void)goToFindSimilarDrinks:(id<FindSimilarDrinksViewControllerDelegate>)delegate {
-//    [Tracker track:@"View Similar Drinks" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
-//    FindSimilarDrinksViewController *viewController = [[FindSimilarDrinksViewController alloc] initWithNibName:@"FindSimilarDrinksViewController" bundle:[NSBundle mainBundle]];
-//    [viewController setDelegate:delegate];
-//    [self.navigationController pushViewController:viewController animated:YES];
-//}
-
 - (void)goToPhotoAlbum:(NSArray *)images atIndex:(NSUInteger)index {
     [Tracker track:@"View Photo Album" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
     UIStoryboard *commonStoryboard = [UIStoryboard storyboardWithName:@"Common" bundle:nil];

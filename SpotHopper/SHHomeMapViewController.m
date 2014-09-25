@@ -72,7 +72,7 @@
 #import "UIImage+ImageEffects.h"
 
 #import "SSTURLShortener.h"
-#import "NetworkHelper.h"
+#import "ImageUtil.h"
 
 #import "UIAlertView+Block.h"
 #import "TTTAttributedLabel.h"
@@ -92,6 +92,7 @@
 #define kMetersPerMile 1609.344
 #define kDebugAnnotationViewPositions NO
 
+#define kHomeNavHeight 150.0f
 #define kCollectionContainerViewHeight 150.0f
 #define kCollectionViewHeight 100.0f
 #define kFooterNavigationViewHeight 50.0f
@@ -456,7 +457,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             NSAssert(bottomConstaints.count == 1, @"There should be only 1 bottom constraint.");
             self.homeNavigationViewBottomConstraint = bottomConstaints[0];
             [view pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0];
-            [view constrainToHeight:180.0f];
+            [view constrainToHeight:kHomeNavHeight];
         }];
         
         // top shadow (-10 origin)
@@ -1961,6 +1962,11 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [self.tellMeMyLocation findMe:accuracy found:^(CLLocation *newLocation) {
         self.currentLocation = newLocation;
         
+        if (self.mapView.isUserLocationVisible) {
+            CLLocationDirection distance = [newLocation distanceFromLocation:self.mapView.userLocation.location];
+            [Tracker trackFetchedLocationFromMapsUserLocation:distance];
+        }
+        
         if (completionBlock) {
             completionBlock(nil);
         }
@@ -2581,7 +2587,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     // go.spotapps.co -> www.spothopperapp.com
     [SSTURLShortener shortenURL:[NSURL URLWithString:link] username:[SHAppConfiguration bitlyUsername] apiKey:[SHAppConfiguration bitlyAPIKey] withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
-        [NetworkHelper loadImage:spot.highlightImage placeholderImage:nil withThumbImageBlock:nil withFullImageBlock:^(UIImage *fullImage) {
+        [ImageUtil loadImage:spot.highlightImage placeholderImage:nil withThumbImageBlock:nil withFullImageBlock:^(UIImage *fullImage) {
             NSMutableArray *activityItems = @[].mutableCopy;
             [activityItems addObject:[NSString stringWithFormat:@"Special at %@", spot.name]];
             [activityItems addObject:spot.specialForToday.text];

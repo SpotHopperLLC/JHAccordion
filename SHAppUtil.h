@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class ImageModel;
+
 @interface SHAppUtil : NSObject
 
 + (instancetype)defaultInstance;
@@ -33,5 +35,12 @@
 - (NSLayoutConstraint *)getHeightConstraint:(UIView *)view;
 
 - (NSLayoutConstraint *)getConstraintInView:(UIView *)view forLayoutAttribute:(NSLayoutAttribute)layoutAttribute;
+
+#pragma mark - Loading Images
+#pragma mark -
+
+- (void)loadImage:(ImageModel *)imageModel intoImageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage;
+
+- (void)loadImage:(ImageModel *)imageModel intoButton:(UIButton *)button placeholderImage:(UIImage *)placeholderImage;
 
 @end

@@ -12,7 +12,7 @@
 #import "PhotoViewerViewController.h"
 
 #import "ImageModel.h"
-#import "NetworkHelper.h"
+#import "ImageUtil.h"
 #import "Tracker.h"
 
 #define kImageView 1
@@ -46,7 +46,7 @@
         ImageModel *imageModel = self.imageModels[indexPath.item];
         
         __weak UIImageView *weakImageView = imageView;
-        [NetworkHelper loadImage:imageModel placeholderImage:nil withThumbImageBlock:^(UIImage *thumbImage) {
+        [ImageUtil loadImage:imageModel placeholderImage:nil withThumbImageBlock:^(UIImage *thumbImage) {
             weakImageView.image = thumbImage;
         } withFullImageBlock:^(UIImage *fullImage) {
             weakImageView.image = fullImage;

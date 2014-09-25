@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 SpotHopper. All rights reserved.
 //
 
-#import "NetworkHelper.h"
+#import "ImageUtil.h"
 
 #import "Tracker.h"
 
@@ -19,7 +19,7 @@
 
 @end
 
-@implementation NetworkHelper
+@implementation ImageUtil
 
 + (void)loadImage:(ImageModel *)imageModel placeholderImage:(UIImage *)placeholderImage withThumbImageBlock:(void (^)(UIImage *thumbImage))thumbImageBlock withFullImageBlock:(void (^)(UIImage *fullImage))fullImageBlock withErrorBlock:(void (^)(NSError *error))errorBlock {
     
@@ -134,7 +134,7 @@
         }
         else {
             NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"Unexpected response for image request"};
-            NSError *error = [NSError errorWithDomain:@"NetworkHelper" code:400 userInfo:userInfo];
+            NSError *error = [NSError errorWithDomain:@"ImageUtil" code:400 userInfo:userInfo];
             completionBlock(nil, error);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

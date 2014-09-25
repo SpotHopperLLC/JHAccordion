@@ -11,7 +11,7 @@
 #import "ImageModel.h"
 #import "SpotTypeModel.h"
 
-#import "NetworkHelper.h"
+#import "ImageUtil.h"
 
 @implementation SpotCardCollectionViewCell
 
@@ -28,7 +28,7 @@
     // Sets image
     if (spot.images.count) {
         ImageModel *imageModel = spot.images[0];
-        [NetworkHelper loadImage:imageModel placeholderImage:spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
+        [ImageUtil loadImage:imageModel placeholderImage:spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
             self.imgSpot.image = thumbImage;
         } withFullImageBlock:^(UIImage *fullImage) {
             self.imgSpot.image = fullImage;

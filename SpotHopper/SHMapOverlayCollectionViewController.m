@@ -30,6 +30,7 @@
 #import "UIAlertView+Block.h"
 
 #define kHeaderHeight 100.0
+#define kFooterHeight 50.0
 
 typedef enum {
     SHOverlayCollectionViewModeNone = 0,
@@ -180,6 +181,8 @@ typedef enum {
 
 - (void)expandedViewWillAppear {
     self.positionView.hidden = FALSE;
+    
+    self.collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, kFooterHeight, 0);
 }
 
 - (void)expandedViewDidAppear {
@@ -187,6 +190,11 @@ typedef enum {
 
 - (void)expandedViewWillDisappear {
     self.positionView.hidden = TRUE;
+    self.collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.collectionView.frame) - kFooterHeight, 0);
+    
+    CGFloat height = CGRectGetHeight(self.collectionView.frame);
+    CGFloat bottom = height - kHeaderHeight;
+    self.collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, bottom, 0);
 }
 
 - (void)expandedViewDidDisappear {

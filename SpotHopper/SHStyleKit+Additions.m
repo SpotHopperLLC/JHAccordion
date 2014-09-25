@@ -239,7 +239,31 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
             [SHStyleKit drawDrinkMenuIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
             break;
         case SHStyleKitDrawingReviewsIcon:
-            [SHStyleKit drawReviewsIconWithScaleX:scaleX scaleY:scaleY strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor] fillColorName:[SHStyleKit colorName:SHStyleKitColorMyTintColor]];
+            if (color == SHStyleKitColorMyTintColor) {
+                [SHStyleKit drawReviewsIconWithScaleX:scaleX scaleY:scaleY
+                                   strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]
+                                     fillColorName:[SHStyleKit colorName:SHStyleKitColorMyTintColor]];
+            }
+            else if (color == SHStyleKitColorMyTintTransparentColor) {
+                [SHStyleKit drawReviewsIconWithScaleX:scaleX scaleY:scaleY
+                                   strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]
+                                     fillColorName:[SHStyleKit colorName:SHStyleKitColorMyTintTransparentColor]];
+            }
+            else if (color == SHStyleKitColorMyTextColor) {
+                [SHStyleKit drawReviewsIconWithScaleX:scaleX scaleY:scaleY
+                                      strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyTextTransparentColor]
+                                        fillColorName:[SHStyleKit colorName:SHStyleKitColorMyTextColor]];
+            }
+            else if (color == SHStyleKitColorMyTextTransparentColor) {
+                [SHStyleKit drawReviewsIconWithScaleX:scaleX scaleY:scaleY
+                                   strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]
+                                     fillColorName:[SHStyleKit colorName:SHStyleKitColorMyTextTransparentColor]];
+            }
+            else if (color == SHStyleKitColorMyWhiteColor) {
+                [SHStyleKit drawReviewsIconWithScaleX:scaleX scaleY:scaleY
+                                   strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyTintColor]
+                                     fillColorName:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]];
+            }
             break;
         case SHStyleKitDrawingSearchIcon:
             [SHStyleKit drawSearchIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];

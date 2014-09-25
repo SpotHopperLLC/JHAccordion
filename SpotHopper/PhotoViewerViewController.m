@@ -12,7 +12,7 @@
 
 #import "PZPhotoView.h"
 #import "ImageModel.h"
-#import "NetworkHelper.h"
+#import "ImageUtil.h"
 
 @interface PhotoViewerViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate>
 
@@ -98,7 +98,7 @@
     if ([view isKindOfClass:[PZPhotoView class]]) {
         __weak PZPhotoView *photoView = (PZPhotoView *)view;
         ImageModel *imageModel = (ImageModel *)_images[indexPath.item];
-        [NetworkHelper loadImage:imageModel placeholderImage:nil withThumbImageBlock:^(UIImage *thumbImage) {
+        [ImageUtil loadImage:imageModel placeholderImage:nil withThumbImageBlock:^(UIImage *thumbImage) {
             [photoView displayImage:thumbImage];
         } withFullImageBlock:^(UIImage *fullImage) {
             [photoView displayImage:fullImage];

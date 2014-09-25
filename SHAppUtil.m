@@ -8,6 +8,9 @@
 
 #import "SHAppUtil.h"
 
+#import "ImageUtil.h"
+#import "Tracker.h"
+
 @implementation SHAppUtil
 
 + (instancetype)defaultInstance {
@@ -119,6 +122,32 @@
     }
     
     return foundConstraint;
+}
+
+#pragma mark - Loading Images
+#pragma mark -
+
+- (void)loadImage:(ImageModel *)imageModel intoImageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage {
+    [ImageUtil loadImage:imageModel placeholderImage:placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
+        imageView.image = thumbImage;
+    } withFullImageBlock:^(UIImage *fullImage) {
+        imageView.image = fullImage;
+    } withErrorBlock:^(NSError *error) {
+        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+    }];
+}
+
+- (void)loadImage:(ImageModel *)imageModel intoButton:(UIButton *)button placeholderImage:(UIImage *)placeholderImage {
+    button.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    button.clipsToBounds = TRUE;
+    
+    [ImageUtil loadImage:imageModel placeholderImage:placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
+        [button setImage:thumbImage forState:UIControlStateNormal];
+    } withFullImageBlock:^(UIImage *fullImage) {
+        [button setImage:fullImage forState:UIControlStateNormal];
+    } withErrorBlock:^(NSError *error) {
+        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+    }];
 }
 
 @end

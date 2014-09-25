@@ -10,7 +10,7 @@
 
 #import "ImageModel.h"
 
-@interface NetworkHelper : NSObject
+@interface ImageUtil : NSObject
 
 + (void)loadImage:(ImageModel *)imageModel placeholderImage:(UIImage *)placeholderImage withThumbImageBlock:(void (^)(UIImage *thumbImage))thumbImageBlock withFullImageBlock:(void (^)(UIImage *fullImage))fullImageBlock withErrorBlock:(void (^)(NSError *error))errorBlock;
 

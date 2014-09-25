@@ -851,9 +851,9 @@
 		26741C4619AFCB3800E1CE8B /* FooterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0320233A1875E060008368C2 /* FooterViewController.xib */; };
 		26741C4719AFCB3800E1CE8B /* FooterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0320233A1875E060008368C2 /* FooterViewController.xib */; };
 		26741C4819AFCB3900E1CE8B /* FooterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0320233A1875E060008368C2 /* FooterViewController.xib */; };
-		267C5E3A1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
-		267C5E3B1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
-		267C5E3D1908B7CC00D60EB5 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
+		267C5E3A1908B7CC00D60EB5 /* ImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* ImageUtil.m */; };
+		267C5E3B1908B7CC00D60EB5 /* ImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* ImageUtil.m */; };
+		267C5E3D1908B7CC00D60EB5 /* ImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* ImageUtil.m */; };
 		267D78D618F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */; };
 		267D78D718F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */; };
 		267D78D918F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */; };
@@ -872,7 +872,7 @@
 		267E05081922CC48004457B4 /* SHNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F2D94C18722CAC00C69576 /* SHNavigationBar.m */; };
 		267E05091922CC48004457B4 /* TTTAttributedLabel+QuickFonting.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF6718C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.m */; };
 		267E050A1922CC48004457B4 /* UIView+RelativityLaws.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664C2186D376900985CEC /* UIView+RelativityLaws.m */; };
-		267E050B1922CC48004457B4 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* NetworkHelper.m */; };
+		267E050B1922CC48004457B4 /* ImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* ImageUtil.m */; };
 		267E050C1922CC48004457B4 /* UIImage+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 038664B8186D376900985CEC /* UIImage+Rotation.m */; };
 		267E050D1922CC48004457B4 /* UIButton+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CA726A187B510500815284 /* UIButton+Block.m */; };
 		267E050E1922CC48004457B4 /* SHButtonLatoLightRightImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03412C3A188053E7000F16A8 /* SHButtonLatoLightRightImage.m */; };
@@ -1796,8 +1796,8 @@
 		2668971E192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSlidersSearchTableViewManager.m; path = SpotHopper/SHSlidersSearchTableViewManager.m; sourceTree = "<group>"; };
 		26723E4D193FBFC000628833 /* DrinkListRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkListRequest.h; sourceTree = "<group>"; };
 		26723E4E193FBFC000628833 /* DrinkListRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkListRequest.m; sourceTree = "<group>"; };
-		267C5E381908B7CC00D60EB5 /* NetworkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkHelper.h; sourceTree = "<group>"; };
-		267C5E391908B7CC00D60EB5 /* NetworkHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkHelper.m; sourceTree = "<group>"; };
+		267C5E381908B7CC00D60EB5 /* ImageUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageUtil.h; sourceTree = "<group>"; };
+		267C5E391908B7CC00D60EB5 /* ImageUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageUtil.m; sourceTree = "<group>"; };
 		267D78D418F4A8DD00E95D54 /* SHButtonLatoBold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoBold.h; sourceTree = "<group>"; };
 		267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoBold.m; sourceTree = "<group>"; };
 		267E06D11922CC48004457B4 /* Staging.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Staging.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2495,8 +2495,8 @@
 				039F548E18D340AE004B2B67 /* MenuItemModel.m */,
 				0345709218DF7DDD0095E4A8 /* MenuTypeModel.h */,
 				0345709318DF7DDD0095E4A8 /* MenuTypeModel.m */,
-				267C5E381908B7CC00D60EB5 /* NetworkHelper.h */,
-				267C5E391908B7CC00D60EB5 /* NetworkHelper.m */,
+				267C5E381908B7CC00D60EB5 /* ImageUtil.h */,
+				267C5E391908B7CC00D60EB5 /* ImageUtil.m */,
 				03CAC18418E9C74000FAC5F5 /* PriceModel.h */,
 				03CAC18518E9C74000FAC5F5 /* PriceModel.m */,
 				03CA728D187C3B2E00815284 /* ReviewModel.h */,
@@ -4320,7 +4320,7 @@
 				03F6BF6818C6DE5200172F13 /* TTTAttributedLabel+QuickFonting.m in Sources */,
 				038664D8186D376900985CEC /* UIView+RelativityLaws.m in Sources */,
 				2619B5F019D222840043FD65 /* SHRatingSwooshView.m in Sources */,
-				267C5E3A1908B7CC00D60EB5 /* NetworkHelper.m in Sources */,
+				267C5E3A1908B7CC00D60EB5 /* ImageUtil.m in Sources */,
 				038664D4186D376900985CEC /* UIImage+Rotation.m in Sources */,
 				03CA726B187B510500815284 /* UIButton+Block.m in Sources */,
 				03412C3B188053E7000F16A8 /* SHButtonLatoLightRightImage.m in Sources */,
@@ -4494,7 +4494,7 @@
 				03CABFBD18E7716400FAC5F5 /* TTTAttributedLabel+QuickFonting.m in Sources */,
 				2619B5F319D222840043FD65 /* SHRatingSwooshView.m in Sources */,
 				03CABFBE18E7716400FAC5F5 /* UIView+RelativityLaws.m in Sources */,
-				267C5E3D1908B7CC00D60EB5 /* NetworkHelper.m in Sources */,
+				267C5E3D1908B7CC00D60EB5 /* ImageUtil.m in Sources */,
 				03CABFBF18E7716400FAC5F5 /* UIImage+Rotation.m in Sources */,
 				03CABFC018E7716400FAC5F5 /* UIButton+Block.m in Sources */,
 				03CABFC118E7716400FAC5F5 /* SHButtonLatoLightRightImage.m in Sources */,
@@ -4658,7 +4658,7 @@
 				03F4E8B318CA34260056EAA9 /* TTTAttributedLabel+QuickFonting.m in Sources */,
 				03F4E8B418CA34260056EAA9 /* UIView+RelativityLaws.m in Sources */,
 				2619B5F119D222840043FD65 /* SHRatingSwooshView.m in Sources */,
-				267C5E3B1908B7CC00D60EB5 /* NetworkHelper.m in Sources */,
+				267C5E3B1908B7CC00D60EB5 /* ImageUtil.m in Sources */,
 				03F4E8B518CA34260056EAA9 /* UIImage+Rotation.m in Sources */,
 				03F4E8B618CA34260056EAA9 /* UIButton+Block.m in Sources */,
 				03F4E8B718CA34260056EAA9 /* SHButtonLatoLightRightImage.m in Sources */,
@@ -4824,7 +4824,7 @@
 				267E05091922CC48004457B4 /* TTTAttributedLabel+QuickFonting.m in Sources */,
 				2619B5F219D222840043FD65 /* SHRatingSwooshView.m in Sources */,
 				267E050A1922CC48004457B4 /* UIView+RelativityLaws.m in Sources */,
-				267E050B1922CC48004457B4 /* NetworkHelper.m in Sources */,
+				267E050B1922CC48004457B4 /* ImageUtil.m in Sources */,
 				267E050C1922CC48004457B4 /* UIImage+Rotation.m in Sources */,
 				267E050D1922CC48004457B4 /* UIButton+Block.m in Sources */,
 				267E050E1922CC48004457B4 /* SHButtonLatoLightRightImage.m in Sources */,

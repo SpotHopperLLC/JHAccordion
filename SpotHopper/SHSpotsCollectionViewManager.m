@@ -15,7 +15,7 @@
 
 #import "SHStyleKit+Additions.h"
 #import "UIImageView+AFNetworking.h"
-#import "NetworkHelper.h"
+#import "ImageUtil.h"
 
 #import "TellMeMyLocation.h"
 
@@ -93,11 +93,15 @@
             _isUpdatingData = TRUE;
             self.spotList = spotList;
             [self.collectionView reloadData];
-            [self.collectionView setContentOffset:CGPointMake(0, 0)];
+            self.collectionView.contentOffset = CGPointMake(0, 0);
             _currentIndex = 0;
             _isUpdatingData = FALSE;
             
             [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:_currentIndex] position:_currentIndex+1 isSpecials:FALSE];
+            
+            for (SpotModel *spot in spotList.spots) {
+                [ImageUtil preloadImageModels:spot.images];
+            }
         }
     }
 }
@@ -290,7 +294,7 @@
     
     if (highlightImage) {
         __weak UIImageView *weakImageView = spotImageView;
-        [NetworkHelper loadImage:highlightImage placeholderImage:spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
+        [ImageUtil loadImage:highlightImage placeholderImage:spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
             weakImageView.image = thumbImage;
         } withFullImageBlock:^(UIImage *fullImage) {
             weakImageView.image = fullImage;

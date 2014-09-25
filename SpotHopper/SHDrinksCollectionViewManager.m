@@ -21,7 +21,7 @@
 #import "SHRatingStarsView.h"
 #import "SHStyleKit+Additions.h"
 #import "UIImageView+AFNetworking.h"
-#import "NetworkHelper.h"
+#import "ImageUtil.h"
 
 #import "TellMeMyLocation.h"
 
@@ -92,11 +92,15 @@
         else {
             _isUpdatingData = TRUE;
             self.drinkList = drinkList;
-            [self.collectionView setContentOffset:CGPointMake(0, 0)];
             [self.collectionView reloadData];
+            self.collectionView.contentOffset = CGPointMake(0, 0);
             _currentIndex = 0;
             _isUpdatingData = FALSE;
             [Tracker trackListViewDidDisplayDrink:[self drinkAtIndex:_currentIndex] position:_currentIndex+1];
+            
+            for (DrinkModel *drink in drinkList.drinks) {
+                [ImageUtil preloadImageModels:drink.images];
+            }
         }
     }
 }
@@ -315,7 +319,7 @@
     
     if (highlightImage) {
         __weak UIImageView *weakImageView = drinkImageView;
-        [NetworkHelper loadImage:highlightImage placeholderImage:drink.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
+        [ImageUtil loadImage:highlightImage placeholderImage:drink.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
             weakImageView.image = thumbImage;
         } withFullImageBlock:^(UIImage *fullImage) {
             weakImageView.image = fullImage;

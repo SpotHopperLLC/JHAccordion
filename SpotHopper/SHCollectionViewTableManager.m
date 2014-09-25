@@ -27,7 +27,7 @@
 #import "SHDrawnButton.h"
 #import "SHStyleKit+Additions.h"
 
-#import "NetworkHelper.h"
+#import "ImageUtil.h"
 #import "Tracker.h"
 #import "TellMeMyLocation.h"
 
@@ -93,17 +93,17 @@ typedef enum {
             [self.rows addObject:kRowNameSummarySliders];
         }
         
-        NSString *specialForToday = [self specialForToday];
-        if (specialForToday.length) {
-            [self.rows addObject:kRowNameTodaysSpecial];
-        }
-        
         if (self.spot.descriptionOfSpot.length) {
             [self.rows addObject:kRowNameDescription];
         }
         
         if (self.spot.hoursForToday.length || self.spot.phoneNumber.length) {
             [self.rows addObject:kRowNameHoursAndPhone];
+        }
+        
+        NSString *specialForToday = [self specialForToday];
+        if (specialForToday.length) {
+            [self.rows addObject:kRowNameTodaysSpecial];
         }
         
         [self.rows addObject:kRowNamePhotosAndReview];
@@ -131,11 +131,6 @@ typedef enum {
     [spot fetchSpot:^(SpotModel *spotModel) {
         self.spot = spotModel;
         
-#ifdef NDEBUG
-        // set phone number during development
-        self.spot.phoneNumber = @"4148031004";
-#endif
-        
         [self prepareSummarySliders];
         
         if (self.summarySliders.count) {
@@ -150,12 +145,12 @@ typedef enum {
             [self.rows addObject:kRowNameHoursAndPhone];
         }
         
+        [self.rows addObject:kRowNameHighestRated];
+        
         NSString *specialForToday = [self specialForToday];
         if (specialForToday.length) {
             [self.rows addObject:kRowNameTodaysSpecial];
         }
-        
-        [self.rows addObject:kRowNameHighestRated];
         
         [self.rows addObject:kRowNamePhotosAndReview];
         
@@ -343,7 +338,7 @@ typedef enum {
     button.imageView.contentMode = UIViewContentModeScaleAspectFill;
     button.clipsToBounds = TRUE;
     
-    [NetworkHelper loadImage:image placeholderImage:placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
+    [ImageUtil loadImage:image placeholderImage:placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
         [button setImage:thumbImage forState:UIControlStateNormal];
     } withFullImageBlock:^(UIImage *fullImage) {
         [button setImage:fullImage forState:UIControlStateNormal];
@@ -380,8 +375,6 @@ typedef enum {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Do you want to call?" message:formattedPhoneNumber delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
             [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {
                 if (buttonIndex == 1) {
-                    DebugLog(@"calling");
-                    
                     if ([appDelegate canPhone]) {
                         [appDelegate callPhoneNumber:formattedPhoneNumber];
                     }
@@ -750,13 +743,8 @@ typedef enum {
     photo3Label.lineBreakMode = NSLineBreakByWordWrapping;
     
     [photo1Button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-    [photo1Button addTarget:self action:@selector(photoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    
     [photo2Button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-    [photo2Button addTarget:self action:@selector(photoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    
     [photo3Button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-    [photo3Button addTarget:self action:@selector(photoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     UIImage *placeholderImage = self.spot ? self.spot.placeholderImage : self.drink.placeholderImage;
     

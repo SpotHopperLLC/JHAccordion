@@ -16,7 +16,7 @@
 #import "SHDrawnButton.h"
 #import "SHStyleKit+Additions.h"
 #import "UIImageView+AFNetworking.h"
-#import "NetworkHelper.h"
+#import "ImageUtil.h"
 
 #import "Tracker.h"
 #import "Tracker+Events.h"
@@ -84,11 +84,15 @@
         else {
             _isUpdatingData = TRUE;
             self.spots = spots;
-            [self.collectionView setContentOffset:CGPointMake(0, 0)];
+            self.collectionView.contentOffset = CGPointMake(0, 0);
             [self.collectionView reloadData];
             _currentIndex = 0;
             _isUpdatingData = FALSE;
             [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:_currentIndex] position:_currentIndex+1 isSpecials:TRUE];
+            
+            for (SpotModel *spot in spots) {
+                [ImageUtil preloadImageModels:spot.images];
+            }
         }
     }
 }
@@ -254,7 +258,6 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    LOG_FRAME(@"collection view", collectionView.frame);
     return CGSizeMake(CGRectGetWidth(collectionView.frame), CGRectGetHeight(collectionView.frame));
 }
 
@@ -312,7 +315,7 @@
     
     if (highlightImage) {
         __weak UIImageView *weakImageView = spotImageView;
-        [NetworkHelper loadImage:highlightImage placeholderImage:spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
+        [ImageUtil loadImage:highlightImage placeholderImage:spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
             weakImageView.image = thumbImage;
         } withFullImageBlock:^(UIImage *fullImage) {
             weakImageView.image = fullImage;

@@ -106,6 +106,13 @@
     [self trackLocationPropertiesForEvent:@"Exiting GlobalSearch" properties:@{@"Selected a result" : [NSNumber numberWithBool:selected]}];
 }
 
+#pragma mark - Location
+#pragma mark -
+
++ (void)trackFetchedLocationFromMapsUserLocation:(CLLocationDistance)distance {
+    [Tracker track:@"Fetched Location" properties:@{@"Distance from User Location" : [NSNumber numberWithFloat:distance]}];
+}
+
 #pragma mark -
 
 + (void)trackViewedHome {

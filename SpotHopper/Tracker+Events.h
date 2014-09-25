@@ -39,6 +39,11 @@
 
 + (void)trackLeavingGlobalSearch:(BOOL)selected;
 
+#pragma mark - Location
+#pragma mark -
+
++ (void)trackFetchedLocationFromMapsUserLocation:(CLLocationDistance)distance;
+
 #pragma mark -
 
 + (void)trackViewedHome;
