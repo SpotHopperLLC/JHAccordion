@@ -50,4 +50,8 @@
 
 + (NSString *)parseClientKey;
 
++ (BOOL)isCrashlyticsEnabled;
+
++ (NSString *)crashlyticsKey;
+
 @end

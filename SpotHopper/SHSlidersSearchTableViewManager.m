@@ -1188,6 +1188,19 @@
         drinklist.name = kHighestRatedName;
         self.selectedDrinklist = drinklist;
         
+        if (self.selectedDrinkType.isBeer) {
+            [Tracker trackSelectedHighestRatedForBeer];
+            [Tracker trackUserSelectedHighestRatedForBeer];
+        }
+        else if (self.selectedDrinkType.isWine) {
+            [Tracker trackSelectedHighestRatedForWine];
+            [Tracker trackUserSelectedHighestRatedForWine];
+        }
+        else if (self.selectedDrinkType.isCocktail) {
+            [Tracker trackSelectedHighestRatedForCocktail];
+            [Tracker trackUserSelectedHighestRatedForCocktail];
+        }
+        
         if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerDidSelectHighestRated:)]) {
             [self.delegate slidersSearchTableViewManagerDidSelectHighestRated:self];
         }

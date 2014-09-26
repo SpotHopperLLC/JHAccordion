@@ -45,6 +45,8 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:SpotCalloutViewIdentifier];
     SpotCalloutView *calloutView = (SpotCalloutView *)[vc.view viewWithTag:1];
     
+    calloutView.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.25];
+    
     calloutView.translatesAutoresizingMaskIntoConstraints = YES;
     
     return calloutView;
@@ -141,6 +143,7 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
 }
 
 - (void)placeInMapView:(MKMapView *)mapView insideAnnotationView:(MKAnnotationView *)annotationView {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
     [SpotCalloutView removeCalloutViewFromAnnotationView:annotationView];
     
     self.mapView = mapView;
@@ -176,15 +179,16 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
 }
 
 - (void)adjustHeightWithIntrinsicSize {
-    [self setNeedsLayout];
-    [self layoutIfNeeded];
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+//    [self setNeedsLayout];
+//    [self layoutIfNeeded];
     
     CGRect frame = self.frame;
     frame.size.height = CGRectGetHeight(self.containerView.frame) + kHeightOfArrow;
     self.frame = frame;
     
-    UIImage *backgroundImage = [self drawRoundedCorners:self.frame.size position:0.5 borderRadius:10 strokeWidth:1];
-    self.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
+//    UIImage *backgroundImage = [self drawRoundedCorners:self.frame.size position:0.5 borderRadius:10 strokeWidth:1];
+//    self.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
 }
 
 - (UIImage *)drawRoundedCorners:(CGSize)size position:(CGFloat)position borderRadius:(CGFloat)borderRadius strokeWidth:(CGFloat)strokeWidth {

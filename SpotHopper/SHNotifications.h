@@ -61,6 +61,11 @@ extern NSString * const SHUserDidLogOutNotificationName;
 extern NSString * const SHAppOpenedWithURLNotificationName;
 extern NSString * const SHAppOpenedWithURLNotificationKey;
 
+extern NSString * const SHAppShareNotificationName;
+extern NSString * const SHAppSpotNotificationKey;
+extern NSString * const SHAppSpecialNotificationKey;
+extern NSString * const SHAppDrinkNotificationKey;
+
 @interface SHNotifications : NSObject
 
 + (void)goToHomeMap;
@@ -98,5 +103,11 @@ extern NSString * const SHAppOpenedWithURLNotificationKey;
 + (void)userDidLoginIn;
 
 + (void)userDidLoginOut;
+
++ (void)shareSpecial:(SpecialModel *)special atSpot:(SpotModel *)spot;
+
++ (void)shareSpot:(SpotModel *)spot;
+
++ (void)shareDrink:(DrinkModel *)drink;
 
 @end

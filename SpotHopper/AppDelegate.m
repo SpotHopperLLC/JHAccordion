@@ -15,11 +15,9 @@
 #import "SHAppConfiguration.h"
 
 #import "ClientSessionManager.h"
-
 #import "SHModelResourceManager.h"
 
 #import "UserState.h"
-
 #import "MockData.h"
 
 #import "TellMeMyLocation.h"
@@ -36,10 +34,11 @@
 
 #import "SHStyleKit.h"
 
+#import "Crashlytics.h"
+
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
 #import <JSONAPI/JSONAPI.h>
 #import <Parse/Parse.h>
-#import <Raven/RavenClient.h>
 #import <STTwitter/STTwitter.h>
 
 @interface AppDelegate()
@@ -68,9 +67,18 @@
     UIRemoteNotificationType types = UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound;
     [application registerForRemoteNotificationTypes:types];
     
-    // Initializes Raven (Sentry) for error reporting/logging
-    [RavenClient clientWithDSN:kSentryDSN];
-    [[RavenClient sharedClient] setupExceptionHandler];
+    if ([SHAppConfiguration isCrashlyticsEnabled]) {
+        NSString *crashlyticsKey = [SHAppConfiguration crashlyticsKey];
+        [Crashlytics startWithAPIKey:crashlyticsKey];
+        
+        if ([UserModel isLoggedIn]) {
+            UserModel *user = [[ClientSessionManager sharedClient] currentUser];
+            [[Crashlytics sharedInstance] setUserIdentifier:user.ID];
+            if (user.email.length) {
+                [[Crashlytics sharedInstance] setUserEmail:user.email];
+            }
+        }
+    }
     
     [SHModelResourceManager prepareResources];
     
@@ -213,6 +221,9 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    [Tracker trackTotalContentLength];
+    
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {

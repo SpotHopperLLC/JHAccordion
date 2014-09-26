@@ -38,6 +38,7 @@ PODS:
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
   - Bolts (1.1.2)
+  - CrashlyticsFramework (2.2.4)
   - Facebook-iOS-SDK (3.17.0):
     - Bolts
   - JHAccordion (0.1.0)
@@ -52,7 +53,6 @@ PODS:
     - Facebook-iOS-SDK (~> 3.7)
   - PhotoZoom (0.0.2)
   - Promises (0.1.2)
-  - Raven (0.2.0)
   - Reveal-iOS-SDK (1.0.5)
   - STTwitter (0.0.9)
   - SVPulsingAnnotationView (0.3.0)
@@ -64,6 +64,7 @@ DEPENDENCIES:
   - AFNetworking (~> 2.4)
   - BitlyForiOS (from `https://github.com/brennanMKE/BitlyForiOS.git`, tag `0.0.3`)
   - BlocksKit (~> 2.2.0)
+  - CrashlyticsFramework (~> 2.2)
   - Facebook-iOS-SDK (~> 3.0)
   - JHAccordion (from `https://github.com/SpotHopperLLC/JHAccordion.git`, tag `SpotHopper-v2`)
   - JHAutoCompleteTextField (from `http://github.com/joshdholtz/JHAutoCompleteTextField.git`)
@@ -75,7 +76,6 @@ DEPENDENCIES:
   - Parse-iOS-SDK (~> 1.2.19)
   - PhotoZoom (~> 0.0)
   - Promises (from `http://github.com/joshdholtz/ios-promises.git`)
-  - Raven (~> 0.2.0)
   - Reveal-iOS-SDK
   - STTwitter (~> 0.0.7)
   - SVPulsingAnnotationView (~> 0.3.0)
@@ -108,6 +108,7 @@ SPEC CHECKSUMS:
   BitlyForiOS: c6eb9b297cb503757a616fc201b3362fb857e8b4
   BlocksKit: 4439e7f30a9f90743462ca63545a15c1f4304cef
   Bolts: 2635e8698a630774689441047f3465d78c48d485
+  CrashlyticsFramework: 0c28a2c07a51b7691e6668b83824b0b0be77f307
   Facebook-iOS-SDK: f20274d809f112ba540842e2b6cbe50128d51b7b
   JHAccordion: 4f0337990465b25f8de5ed304609fa9362281db0
   JHAutoCompleteTextField: 1ca69c82441d9b5bf474e10d36585247030f7594
@@ -119,7 +120,6 @@ SPEC CHECKSUMS:
   Parse-iOS-SDK: 3781eeb56fa6b30d4feee97ee0d22595c07d6c70
   PhotoZoom: 52b044c8086589e85415718402df6c4b5f411cb1
   Promises: c9d4e849f307a53b1b8714c64ff4b6e8695b24e1
-  Raven: e26260198babba5e09f31425ce88a21ee0532137
   Reveal-iOS-SDK: d4b2f4c20d5b823b7f8b88250fe1b71cecd424a7
   STTwitter: bc2c74ffeeff6ead7b03cfec0c5d9e6be2d54e56
   SVPulsingAnnotationView: 92364bec02160f481d1b603afc904183d385c3e6

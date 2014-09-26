@@ -24,7 +24,8 @@ pod 'SVPulsingAnnotationView', '~> 0.3.0'
 pod 'JTSReachability', :git => 'http://github.com/brennanMKE/JTSReachability.git', :tag => '1.1.0'
 
 # Debugging
-pod 'Raven', '~> 0.2.0'
+# pod 'Raven', '~> 0.2.0'
+pod 'CrashlyticsFramework', '~> 2.2'
 
 # Social
 pod 'Facebook-iOS-SDK', '~> 3.0'

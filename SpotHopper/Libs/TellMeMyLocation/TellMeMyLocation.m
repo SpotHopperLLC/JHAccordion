@@ -55,10 +55,18 @@ static NSString *_currentMapCenterLocationZip;
 - (void)findMe:(CLLocationAccuracy)accuracy {
     self.startDate = [NSDate date];
     
-    if ([CLLocationManager locationServicesEnabled] && ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)) {
+    CLAuthorizationStatus authorizationStatus = [CLLocationManager authorizationStatus];
+    
+    if ([CLLocationManager locationServicesEnabled] && (authorizationStatus == kCLAuthorizationStatusAuthorized || authorizationStatus == kCLAuthorizationStatusNotDetermined)) {
         if (!self.locationManager) {
             self.locationManager = [[CLLocationManager alloc] init];
             [self.locationManager setDelegate:self];
+        }
+        
+        NSAssert(self.locationManager, @"Location Manager is required");
+
+        if ([self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+            [self.locationManager requestAlwaysAuthorization];
         }
         
         [self.locationManager setDesiredAccuracy:accuracy];
@@ -480,6 +488,21 @@ static NSString *_currentMapCenterLocationZip;
         manager.delegate = nil;
         [self finishWithBestLocation:self.bestLocation error:nil];
     }
+}
+
+- (BOOL)locationManagerShouldDisplayHeadingCalibration:(CLLocationManager *)manager {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    return TRUE;
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    DebugLog(@"%@, %d", NSStringFromSelector(_cmd), status);
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+didFinishDeferredUpdatesWithError:(NSError *)error {
+    DebugLog(@"%@, %@", NSStringFromSelector(_cmd), error);
 }
 
 @end

@@ -68,6 +68,8 @@
 		<string>UHRcQ8WXs13Iug7VpliivDxwQuGtoMg5KsaoIF3jWbM</string>
 		<key>WebsiteUrl</key>
 		<string>http://spothopper-staging.herokuapp.com</string>
+		<key>CrashlyticsKey</key>
+		<string>35aca4223395cee9b73550f97a3022ea413e2c71</string>
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
@@ -90,5 +92,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>SpotHopper will use your location to show you the best local recommendations.</string>
 </dict>
 </plist>

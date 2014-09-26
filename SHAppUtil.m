@@ -8,8 +8,15 @@
 
 #import "SHAppUtil.h"
 
+#import "SHAppConfiguration.h"
+
+#import "SpotModel.h"
+#import "SpecialModel.h"
+#import "DrinkModel.h"
+
 #import "ImageUtil.h"
 #import "Tracker.h"
+#import "SSTURLShortener.h"
 
 @implementation SHAppUtil
 
@@ -21,6 +28,106 @@
         defaultInstance = [[SHAppUtil alloc] init];
     });
     return defaultInstance;
+}
+
+#pragma mark - Sharing
+#pragma mark -
+
+- (void)shareSpecial:(SpecialModel *)special atSpot:(SpotModel *)spot withViewController:(UIViewController *)vc {
+    if (!spot.highlightImage) {
+        [self shareSpecial:special atSpot:spot image:nil withViewController:vc];
+    }
+    else {
+        [ImageUtil loadImage:spot.highlightImage placeholderImage:nil withThumbImageBlock:nil withFullImageBlock:^(UIImage *fullImage) {
+            [self shareSpecial:special atSpot:spot image:fullImage withViewController:vc];
+        } withErrorBlock:^(NSError *error) {
+            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+        }];
+    }
+}
+
+- (void)shareSpecial:(SpecialModel *)special atSpot:(SpotModel *)spot image:(UIImage *)image withViewController:(UIViewController *)vc {
+    NSString *link = [NSString stringWithFormat:@"%@/spots/%lu/specials", [SHAppConfiguration websiteUrl], (unsigned long)[spot.ID integerValue]];
+    
+    // go.spotapps.co -> www.spothopperapp.com
+    [SSTURLShortener shortenURL:[NSURL URLWithString:link] username:[SHAppConfiguration bitlyUsername] apiKey:[SHAppConfiguration bitlyAPIKey] withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
+        NSString *specialText = special.text;
+        
+        NSMutableArray *activityItems = @[].mutableCopy;
+        [activityItems addObject:[NSString stringWithFormat:@"Special at %@", spot.name]];
+        [activityItems addObject:specialText.length ? specialText : @""];
+        [activityItems addObject:shortenedURL];
+        if (image) {
+            [activityItems addObject:image];
+        }
+        NSMutableArray *activities = @[].mutableCopy;
+        UIActivityViewController *activityView = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activities];
+        
+        [vc presentViewController:activityView animated:YES completion:nil];
+    }];
+}
+
+- (void)shareSpot:(SpotModel *)spot withViewController:(UIViewController *)vc {
+    if (!spot.highlightImage) {
+        [self shareSpot:spot image:nil withViewController:vc];
+    }
+    else {
+        [ImageUtil loadImage:spot.highlightImage placeholderImage:nil withThumbImageBlock:nil withFullImageBlock:^(UIImage *fullImage) {
+            [self shareSpot:spot image:fullImage withViewController:vc];
+        } withErrorBlock:^(NSError *error) {
+            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+        }];
+    }
+}
+
+- (void)shareSpot:(SpotModel *)spot image:(UIImage *)image withViewController:(UIViewController *)vc {
+    NSString *link = [NSString stringWithFormat:@"%@/spots/%lu", [SHAppConfiguration websiteUrl], (unsigned long)[spot.ID integerValue]];
+
+    // go.spotapps.co -> www.spothopperapp.com
+    [SSTURLShortener shortenURL:[NSURL URLWithString:link] username:[SHAppConfiguration bitlyUsername] apiKey:[SHAppConfiguration bitlyAPIKey] withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
+        NSMutableArray *activityItems = @[].mutableCopy;
+        [activityItems addObject:spot.name.length ? spot.name : @""];
+        [activityItems addObject:shortenedURL];
+        if (image) {
+            [activityItems addObject:image];
+        }
+        NSMutableArray *activities = @[].mutableCopy;
+        UIActivityViewController *activityView = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activities];
+        
+        [vc presentViewController:activityView animated:YES completion:nil];
+    }];
+}
+
+- (void)shareDrink:(DrinkModel *)drink withViewController:(UIViewController *)vc {
+    if (!drink.highlightImage) {
+        [self shareDrink:drink image:nil withViewController:vc];
+    }
+    else {
+        [ImageUtil loadImage:drink.highlightImage placeholderImage:nil withThumbImageBlock:nil withFullImageBlock:^(UIImage *fullImage) {
+            [self shareDrink:drink image:fullImage withViewController:vc];
+        } withErrorBlock:^(NSError *error) {
+            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+        }];
+    }
+}
+
+- (void)shareDrink:(DrinkModel *)drink image:(UIImage *)image withViewController:(UIViewController *)vc {
+    NSString *link = [NSString stringWithFormat:@"%@/drinks/%lu", [SHAppConfiguration websiteUrl], (unsigned long)[drink.ID integerValue]];
+    
+    // go.spotapps.co -> www.spothopperapp.com
+    [SSTURLShortener shortenURL:[NSURL URLWithString:link] username:[SHAppConfiguration bitlyUsername] apiKey:[SHAppConfiguration bitlyAPIKey] withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
+        
+        NSMutableArray *activityItems = @[].mutableCopy;
+        [activityItems addObject:drink.name.length ? drink.name : @""];
+        [activityItems addObject:shortenedURL];
+        if (image) {
+            [activityItems addObject:image];
+        }
+        NSMutableArray *activities = @[].mutableCopy;
+        UIActivityViewController *activityView = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activities];
+        
+        [vc presentViewController:activityView animated:YES completion:nil];
+    }];
 }
 
 #pragma mark - Text Height

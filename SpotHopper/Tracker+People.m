@@ -83,6 +83,44 @@
     [self trackUserAction:@"User Good Specials Results"];
 }
 
+#pragma mark - Highest Rated
+#pragma mark -
+
++ (void)trackUserSelectedHighestRatedForBeer {
+    [self trackUserAction:@"User Selected Highest Rated: Beer"];
+}
+
++ (void)trackUserSelectedHighestRatedForWine {
+    [self trackUserAction:@"User Selected Highest Rated: Wine"];
+}
+
++ (void)trackUserSelectedHighestRatedForCocktail {
+    [self trackUserAction:@"User Selected Highest Rated: Cocktail"];
+}
+
+#pragma mark - Pullup UI
+#pragma mark -
+
++ (void)trackUserTappedFullDrinkMenu {
+    [self trackUserAction:@"User Tapped Full Drink Menu"];
+}
+
++ (void)trackUserTappedMorePhotos {
+    [self trackUserAction:@"User Tapped More Photos"];
+}
+
++ (void)trackUserTappedAllSliders {
+    [self trackUserAction:@"User Tapped All Sliders"];
+}
+
++ (void)trackUserTappedPhoneNumber {
+    [self trackUserAction:@"User Tapped Phone Number"];
+}
+
++ (void)trackUserTappedShare {
+    [self trackUserAction:@"User Tapped Share"];
+}
+
 #pragma mark - Home Map Actions
 #pragma mark -
 

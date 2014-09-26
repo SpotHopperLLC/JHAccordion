@@ -36,6 +36,8 @@
 @property (nonatomic, strong) NSString *cookie;
 @property (nonatomic, strong) UserModel *currentUser;
 
+@property (nonatomic, readwrite, assign) NSUInteger totalContentLength;
+
 @end
 
 @implementation ClientSessionManager
@@ -353,6 +355,16 @@
     return operation;
 }
 
+#pragma mark - Track Content Length
+
+- (void)incrementContentLength:(NSUInteger)contentLength {
+    self.totalContentLength += contentLength;
+}
+
+- (void)resetContentLength {
+    self.totalContentLength = 0;
+}
+
 #pragma mark - Handle error response
 
 - (id)responseForOperation:(AFHTTPRequestOperation *)operation {
@@ -383,15 +395,15 @@
     CGFloat elapsedTime = [[NSDate date] timeIntervalSinceDate:date];
     NSString *body = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
     NSString *message = [NSString stringWithFormat:@"[Error] %ld '%@' [%.04f s]: %@", statusCode, [[operation.response URL] absoluteString], elapsedTime, body];
-    [[RavenClient sharedClient] captureMessage:message level:kRavenLogLevelDebugWarning];
+    [Tracker logError:message class:[self class] trace:NSStringFromSelector(_cmd)];
 }
 
 #pragma mark - Logging
 
 - (void)logResponse:(NSHTTPURLResponse *)response startDate:(NSDate *)startDate {
+    //DebugLog(@"response: %@", response.allHeaderFields);
     NSAssert(startDate, @"Start Date is required");
     NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:startDate];
-    //DebugLog(@"duration: %f", duration);
     JTSNetworkStatus networkStatus = [[JTSReachabilityResponder sharedInstance] networkStatus];
     
     NSString *network = @"Unknown";
@@ -410,7 +422,7 @@
         default:
             break;
     }
-    
+
     NSString *contentLength = response.allHeaderFields[@"Content-Length"];
     if (!contentLength.length) {
         contentLength = @"0";
@@ -428,6 +440,8 @@
                                                 @"Content Length" : [NSNumber numberWithInteger:[contentLength integerValue]],
                                                 @"Network" : network
                                                 }];
+    
+    [self incrementContentLength:[contentLength integerValue]];
 }
 
 #pragma mark - Session Helpers

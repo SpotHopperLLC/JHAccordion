@@ -39,6 +39,34 @@
 
 + (void)trackLeavingGlobalSearch:(BOOL)selected;
 
+#pragma mark - Highest Rated
+#pragma mark -
+
++ (void)trackSelectedHighestRatedForBeer;
+
++ (void)trackSelectedHighestRatedForWine;
+
++ (void)trackSelectedHighestRatedForCocktail;
+
+#pragma mark - Pullup UI
+#pragma mark -
+
++ (void)trackTappedFullDrinkMenu;
+
++ (void)trackTappedMorePhotos;
+
++ (void)trackTappedAllSliders;
+
++ (void)trackTappedPhoneNumber;
+
++ (void)trackTappedWriteAReview;
+
++ (void)trackPulledUpCollectionViewForSpecialsSpots:(NSArray *)spots atIndex:(NSUInteger)index;
+
++ (void)trackPulledUpCollectionViewForSpotlist:(SpotListModel *)spotlist atIndex:(NSUInteger)index;
+
++ (void)trackPulledUpCollectionViewForDrinklist:(DrinkListModel *)drinklist atIndex:(NSUInteger)index;
+
 #pragma mark - Location
 #pragma mark -
 
@@ -97,6 +125,8 @@
 + (void)trackSpotlist:(SpotListModel *)spotlist request:(SpotListRequest *)request;
 
 + (void)trackDrinklist:(DrinkListModel *)drinklist mode:(SHMode)mode request:(DrinkListRequest *)request;
+
++ (void)trackTotalContentLength;
 
 #pragma mark - Logins
 #pragma mark -

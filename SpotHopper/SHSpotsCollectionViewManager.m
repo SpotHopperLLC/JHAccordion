@@ -265,7 +265,7 @@
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
     // if the velocity is "slow" it should just go the next cell, otherwise let it go to the next paged position
     // positive x is moving right, negative x is moving left
-    // slow is < 0.75
+    // slow is < 0.2.0
     
     CGFloat width = CGRectGetWidth(self.collectionView.frame);
     NSUInteger currentIndex = MAX(MIN(round(self.collectionView.contentOffset.x / CGRectGetWidth(self.collectionView.frame)), self.spotList.spots.count - 1), 0);

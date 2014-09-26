@@ -1336,6 +1336,11 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                                              selector:@selector(handleOpenMenuForSpotNotification:)
                                                  name:SHOpenMenuForSpotNotificationName
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleAppShareNotification:)
+                                                 name:SHAppShareNotificationName
+                                               object:nil];
 }
 
 - (void)resetSearch {
@@ -2683,12 +2688,15 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             [calloutView setIcon:SpotCalloutIconLoading spotNameText:spotName drink1Text:nil drink2Text:nil];
             [calloutView placeInMapView:mapView insideAnnotationView:pin];
             
+            LOG_FRAME(@"callout", calloutView.frame);
+            
             [self repositionMapOnCoordinate:pin.annotation.coordinate animated:TRUE];
             
             UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
             [UIView animateWithDuration:0.25f delay:0.5f usingSpringWithDamping:9.0 initialSpringVelocity:9.0 options:options animations:^{
                 calloutView.alpha = 1.0f;
             } completion:^(BOOL finished) {
+                calloutView.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.25];
             }];
         }
         
@@ -2929,6 +2937,16 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)pullUp:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    if (self.mode == SHModeSpecials) {
+        [Tracker trackPulledUpCollectionViewForSpecialsSpots:self.specialsSpotModels atIndex:self.currentIndex];
+    }
+    else if (self.mode == SHModeSpots) {
+        [Tracker trackPulledUpCollectionViewForSpotlist:self.spotListModel atIndex:self.currentIndex];
+    }
+    else if (self.mode == SHModeBeer || self.mode == SHModeWine || self.mode == SHModeCocktail) {
+        [Tracker trackPulledUpCollectionViewForDrinklist:self.drinkListModel atIndex:self.currentIndex];
+    }
+    
     CGFloat duration = animated ? 0.75f : 0.0f;
     CGFloat height = CGRectGetHeight(self.expandedReferenceView.frame);
     
@@ -3256,6 +3274,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark -
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didChangeToSpotAtIndex:(NSUInteger)index {
+    self.currentIndex = index;
     if (self.mode == SHModeSpots && index < self.spotListModel.spots.count) {
         SpotModel *spot = self.spotListModel.spots[index];
         [self selectSpot:spot];
@@ -3268,6 +3287,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc didSelectSpotAtIndex:(NSUInteger)index {
     // Note: Do not focus on spot when spot is selected
+    self.currentIndex = index;
 
     SpotModel *spot = nil;
     
@@ -3830,8 +3850,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     CLLocation *mapCenterLocation = [[CLLocation alloc] initWithLatitude:self.mapView.centerCoordinate.latitude longitude:self.mapView.centerCoordinate.longitude];
     [TellMeMyLocation setMapCenterLocation:mapCenterLocation];
     
-    DebugLog(@"[regions addObject:@{@\"name\" : @\"%@\", @\"latitude\": [NSNumber numberWithDouble:%ff], @\"longitude\": [NSNumber numberWithDouble:%ff], @\"radius\": [NSNumber numberWithDouble:%ff], @\"weight\" : [NSNumber numberWithInteger:5]}];", self.locationMenuBarViewController.locationTitle, self.visibleMapCenterCoordinate.latitude, self.visibleMapCenterCoordinate.longitude, self.searchRadius);
-    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [self updateLocationName];
     });
@@ -3992,6 +4010,22 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)handleOpenMenuForSpotNotification:(NSNotification *)notification {
     SpotModel *spot = notification.userInfo[SHOpenMenuForSpotNotificationKey];
     [self goToMenu:spot];
+}
+
+- (void)handleAppShareNotification:(NSNotification *)notification {
+    SpecialModel *special = notification.userInfo[SHAppSpecialNotificationKey];
+    SpotModel *spot = notification.userInfo[SHAppSpotNotificationKey];
+    DrinkModel *drink = notification.userInfo[SHAppDrinkNotificationKey];
+    
+    if (special && spot) {
+        [[SHAppUtil defaultInstance] shareSpecial:special atSpot:spot withViewController:self];
+    }
+    else if (spot) {
+        [[SHAppUtil defaultInstance] shareSpot:spot withViewController:self];
+    }
+    else if (drink) {
+        [[SHAppUtil defaultInstance] shareDrink:drink withViewController:self];
+    }
 }
 
 @end

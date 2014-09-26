@@ -58,6 +58,11 @@ NSString * const SHUserDidLogOutNotificationName = @"SHUserDidLogOutNotification
 NSString * const SHAppOpenedWithURLNotificationName = @"SHAppOpenedWithURLNotificationName";
 NSString * const SHAppOpenedWithURLNotificationKey = @"SHAppOpenedWithURLNotificationKey";
 
+NSString * const SHAppShareNotificationName = @"SHAppShareNotificationName";
+NSString * const SHAppSpotNotificationKey = @"SHAppSpotNotificationKey";
+NSString * const SHAppSpecialNotificationKey = @"SHAppSpecialNotificationKey";
+NSString * const SHAppDrinkNotificationKey = @"SHAppDrinkNotificationKey";
+
 @implementation SHNotifications
 
 + (void)goToHomeMap {
@@ -180,6 +185,34 @@ NSString * const SHAppOpenedWithURLNotificationKey = @"SHAppOpenedWithURLNotific
     [[NSNotificationCenter defaultCenter] postNotificationName:SHUserDidLogOutNotificationName
                                                         object:nil
                                                       userInfo:nil];
+}
+
++ (void)shareSpecial:(SpecialModel *)special atSpot:(SpotModel *)spot {
+    NSAssert(special, @"Parameter is required");
+    NSAssert(spot, @"Parameter is required");
+    NSDictionary *userInfo = @{SHAppSpecialNotificationKey : special, SHAppSpotNotificationKey : spot};
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHAppShareNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
++ (void)shareSpot:(SpotModel *)spot {
+    NSAssert(spot, @"Parameter is required");
+    NSDictionary *userInfo = @{SHAppSpotNotificationKey : spot};
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHAppShareNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
++ (void)shareDrink:(DrinkModel *)drink {
+    NSAssert(drink, @"Parameter is required");
+    NSDictionary *userInfo = @{SHAppDrinkNotificationKey : drink};
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHAppShareNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
 }
 
 @end

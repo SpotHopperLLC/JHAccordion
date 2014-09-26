@@ -830,7 +830,7 @@
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
         if (drinkType == nil || [drinkType objectForKey:@"id"] == nil) {
             [self showAlert:@"Oops" message:@"Not able to submit a beer right now"];
-            [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create beer" level:kRavenLogLevelDebugError];
+            [Tracker logError:@"Drink type nil when trying to create beer" class:[self class] trace:NSStringFromSelector(_cmd)];
             return;
         }
         NSNumber *drinkId = [drinkType objectForKey:@"id"];
@@ -936,7 +936,7 @@
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
         if (drinkType == nil || [drinkType objectForKey:@"id"] == nil) {
             [self showAlert:@"Oops" message:@"Not able to submit a wine right now"];
-            [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create wine" level:kRavenLogLevelDebugError];
+            [Tracker logError:@"Drink type nil when trying to create wine" class:[self class] trace:NSStringFromSelector(_cmd)];
             return;
         }
         NSNumber *drinkId = [drinkType objectForKey:@"id"];

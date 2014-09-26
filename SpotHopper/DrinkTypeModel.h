@@ -22,4 +22,8 @@
 + (instancetype)wineDrinkType;
 + (instancetype)cocktailDrinkType;
 
+- (BOOL)isBeer;
+- (BOOL)isWine;
+- (BOOL)isCocktail;
+
 @end

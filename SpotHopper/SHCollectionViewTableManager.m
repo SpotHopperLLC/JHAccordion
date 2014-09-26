@@ -29,6 +29,8 @@
 
 #import "ImageUtil.h"
 #import "Tracker.h"
+#import "Tracker+Events.h"
+#import "Tracker+People.h"
 #import "TellMeMyLocation.h"
 
 #import "UIAlertView+Block.h"
@@ -41,6 +43,7 @@
 #define kRowNameTodaysSpecial @"Today's Special"
 #define kRowNameDrinkSummary @"Drink Summary"
 #define kRowNameHighestRated @"Highest Rated"
+#define kRowNameShare @"Share"
 
 #define kMeterToMile 0.000621371f
 
@@ -108,6 +111,8 @@ typedef enum {
         
         [self.rows addObject:kRowNamePhotosAndReview];
         
+        [self.rows addObject:kRowNameShare];
+        
         [self.tableView reloadData];
         
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, [self bottomContentInset], 0);
@@ -153,6 +158,8 @@ typedef enum {
         }
         
         [self.rows addObject:kRowNamePhotosAndReview];
+
+        [self.rows addObject:kRowNameShare];
         
         [self.tableView reloadData];
         
@@ -196,6 +203,8 @@ typedef enum {
         }
         
         [self.rows addObject:kRowNamePhotosAndReview];
+        
+        [self.rows addObject:kRowNameShare];
         
         [self.tableView reloadData];
         
@@ -351,6 +360,8 @@ typedef enum {
 #pragma mark -
 
 - (IBAction)moreButtonTapped:(UIButton *)button {
+    [Tracker trackUserTappedAllSliders];
+    
     if (self.spot) {
         if ([self.delegate respondsToSelector:@selector(collectionViewTableManager:displaySpot:)]) {
             [self.delegate collectionViewTableManager:self displaySpot:self.spot];
@@ -364,7 +375,7 @@ typedef enum {
 }
 
 - (IBAction)phoneButtonTapped:(UIButton *)button {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    [Tracker trackUserTappedPhoneNumber];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -393,6 +404,8 @@ typedef enum {
 }
 
 - (IBAction)photosButtonTapped:(UIButton *)button {
+    [Tracker trackUserTappedMorePhotos];
+    
     if (self.spot) {
         [SHNotifications showPhotosForSpot:self.spot];
     }
@@ -402,7 +415,7 @@ typedef enum {
 }
 
 - (IBAction)photoButtonTapped:(UIButton *)button {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    [Tracker trackUserTappedMorePhotos];
     
     NSArray *images = self.spot ? self.spot.images : self.drink.images;
     
@@ -421,12 +434,16 @@ typedef enum {
 }
 
 - (IBAction)menuButtonTapped:(UIButton *)button {
+    [Tracker trackUserTappedFullDrinkMenu];
+    
     if (self.spot) {
         [SHNotifications openMenuForSpot:self.spot];
     }
 }
 
 - (IBAction)reviewButtonTapped:(UIButton *)button {
+    [Tracker trackTappedWriteAReview];
+    
     if (self.spot) {
         [SHNotifications reviewSpot:self.spot];
     }
@@ -452,6 +469,20 @@ typedef enum {
     else if (button.tag == 401 && self.highestRatedDrinklist.drinks.count > 2) {
         DrinkModel *drink = self.highestRatedDrinklist.drinks[2];
         [SHNotifications pushToDrink:drink];
+    }
+}
+
+- (IBAction)shareButtonTapped:(UIButton *)button {
+    [Tracker trackUserTappedShare];
+    
+    if (self.mode == Special) {
+        [SHNotifications shareSpecial:self.spot.specialForToday atSpot:self.spot];
+    }
+    else if (self.mode == Spot) {
+        [SHNotifications shareSpot:self.spot];
+    }
+    else if (self.mode == Drink) {
+        [SHNotifications shareDrink:self.drink];
     }
 }
 
@@ -817,7 +848,7 @@ typedef enum {
     [textButton setTitle:@"Write a\nReview!" forState:UIControlStateNormal];
     textButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     
-    [SHStyleKit setButton:imageButton withDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setButton:imageButton withDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor size:CGSizeMake(30, 30)];
     
     [textButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
     [textButton addTarget:self action:@selector(reviewButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -886,6 +917,19 @@ typedef enum {
     return cell;
 }
 
+- (UITableViewCell *)renderCellForSharingAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ShareCell" forIndexPath:indexPath];
+    
+    UIButton *button = (UIButton *)[cell viewWithTag:2];
+    
+    [SHStyleKit setButton:button withDrawing:SHStyleKitDrawingShareIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor size:CGSizeMake(30, 30)];
+    
+    [button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [button addTarget:self action:@selector(shareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    return cell;
+}
+
 - (UITableViewCell *)renderCellForErrorAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ErrorCell" forIndexPath:indexPath];
     
@@ -928,6 +972,9 @@ typedef enum {
         else if ([rowName isEqualToString:kRowNamePhotosAndReview]) {
             cell = [self renderCellForPhotosAndReviewAtIndexPath:indexPath];
         }
+        else if ([rowName isEqualToString:kRowNameShare]) {
+            cell = [self renderCellForSharingAtIndexPath:indexPath];
+        }
         else {
             cell = [self renderCellForErrorAtIndexPath:indexPath];
         }
@@ -951,6 +998,9 @@ typedef enum {
         else if ([rowName isEqualToString:kRowNamePhotosAndReview]) {
             cell = [self renderCellForPhotosAndReviewAtIndexPath:indexPath];
         }
+        else if ([rowName isEqualToString:kRowNameShare]) {
+            cell = [self renderCellForSharingAtIndexPath:indexPath];
+        }
         else {
             cell = [self renderCellForErrorAtIndexPath:indexPath];
         }
@@ -972,6 +1022,9 @@ typedef enum {
         }
         else if ([rowName isEqualToString:kRowNamePhotosAndReview]) {
             cell = [self renderCellForPhotosAndReviewAtIndexPath:indexPath];
+        }
+        else if ([rowName isEqualToString:kRowNameShare]) {
+            cell = [self renderCellForSharingAtIndexPath:indexPath];
         }
         else {
             cell = [self renderCellForErrorAtIndexPath:indexPath];

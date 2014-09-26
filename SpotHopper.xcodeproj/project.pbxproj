@@ -736,6 +736,10 @@
 		2645E30F195B37660021D2BC /* SpotCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2645E30D195B37660021D2BC /* SpotCalloutView.m */; };
 		2645E311195B37660021D2BC /* SpotCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2645E30D195B37660021D2BC /* SpotCalloutView.m */; };
 		2645E312195B37660021D2BC /* SpotCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2645E30D195B37660021D2BC /* SpotCalloutView.m */; };
+		2647C28B19D5D8C90083A16F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2647C28A19D5D8C90083A16F /* CoreLocation.framework */; };
+		2647C28C19D5D8D00083A16F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2647C28A19D5D8C90083A16F /* CoreLocation.framework */; };
+		2647C28D19D5D8D80083A16F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2647C28A19D5D8C90083A16F /* CoreLocation.framework */; };
+		2647C28E19D5D8DF0083A16F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2647C28A19D5D8C90083A16F /* CoreLocation.framework */; };
 		2654B88F192BB68C00A66BED /* SHStyleKit+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B88E192BB68C00A66BED /* SHStyleKit+Additions.m */; };
 		2654B890192BB68C00A66BED /* SHStyleKit+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B88E192BB68C00A66BED /* SHStyleKit+Additions.m */; };
 		2654B892192BB68C00A66BED /* SHStyleKit+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B88E192BB68C00A66BED /* SHStyleKit+Additions.m */; };
@@ -1758,6 +1762,7 @@
 		2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHDrinksCollectionViewManager.m; path = SpotHopper/SHDrinksCollectionViewManager.m; sourceTree = "<group>"; };
 		2645E30C195B37660021D2BC /* SpotCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotCalloutView.h; sourceTree = "<group>"; };
 		2645E30D195B37660021D2BC /* SpotCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotCalloutView.m; sourceTree = "<group>"; };
+		2647C28A19D5D8C90083A16F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		2654B88D192BB68C00A66BED /* SHStyleKit+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SHStyleKit+Additions.h"; path = "SpotHopper/SHStyleKit+Additions.h"; sourceTree = "<group>"; };
 		2654B88E192BB68C00A66BED /* SHStyleKit+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SHStyleKit+Additions.m"; path = "SpotHopper/SHStyleKit+Additions.m"; sourceTree = "<group>"; };
 		2654B894192BB6B200A66BED /* SHSpotsCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSpotsCollectionViewManager.h; path = SpotHopper/SHSpotsCollectionViewManager.h; sourceTree = "<group>"; };
@@ -1919,6 +1924,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2647C28E19D5D8DF0083A16F /* CoreLocation.framework in Frameworks */,
 				03E4454918B5705800C88421 /* MapKit.framework in Frameworks */,
 				03CA7291187C3B4900815284 /* Social.framework in Frameworks */,
 				03866469186D352400985CEC /* CoreGraphics.framework in Frameworks */,
@@ -1944,6 +1950,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2647C28C19D5D8D00083A16F /* CoreLocation.framework in Frameworks */,
 				03CAC02B18E7716400FAC5F5 /* MapKit.framework in Frameworks */,
 				03CAC02D18E7716400FAC5F5 /* Social.framework in Frameworks */,
 				03CAC02E18E7716400FAC5F5 /* CoreGraphics.framework in Frameworks */,
@@ -1957,6 +1964,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2647C28D19D5D8D80083A16F /* CoreLocation.framework in Frameworks */,
 				03F4E90918CA34260056EAA9 /* MapKit.framework in Frameworks */,
 				03F4E90B18CA34260056EAA9 /* Social.framework in Frameworks */,
 				03F4E90C18CA34260056EAA9 /* CoreGraphics.framework in Frameworks */,
@@ -1970,6 +1978,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2647C28B19D5D8C90083A16F /* CoreLocation.framework in Frameworks */,
 				267E05831922CC48004457B4 /* MapKit.framework in Frameworks */,
 				267E05851922CC48004457B4 /* Social.framework in Frameworks */,
 				267E05861922CC48004457B4 /* CoreGraphics.framework in Frameworks */,
@@ -2160,6 +2169,7 @@
 		03866465186D352400985CEC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2647C28A19D5D8C90083A16F /* CoreLocation.framework */,
 				26DEBFFD19B6665F0071FA88 /* libPods-SpotHopperStaging.a */,
 				26DEBFE519B6660C0071FA88 /* Foundation.framework */,
 				26DEBFE319B662270071FA88 /* libPods-SpotHopperStaging.a */,
@@ -3248,6 +3258,7 @@
 				03CAC03218E7716400FAC5F5 /* Resources */,
 				03CAC16618E7716400FAC5F5 /* Copy Pods Resources */,
 				264CF2DB19CCFBEC00310A56 /* ShellScript */,
+				26D94A6419D505BC00C0CED9 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3288,6 +3299,7 @@
 				267E058A1922CC48004457B4 /* Resources */,
 				267E06CD1922CC48004457B4 /* Copy Pods Resources */,
 				264CF2DC19CCFC9800310A56 /* ShellScript */,
+				26D94A6519D506E300C0CED9 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -4205,6 +4217,32 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Pods-SpotHopperStaging-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		26D94A6419D505BC00C0CED9 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "    Crashlytics.framework/run 35aca4223395cee9b73550f97a3022ea413e2c71 f05de3aa6ab4cab201a1be19e25ffe8d6d442c6725a5ddcae1f66a0f356bfd3e";
+		};
+		26D94A6519D506E300C0CED9 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Pods/CrashlyticsFramework/Crashlytics.framework/run 35aca4223395cee9b73550f97a3022ea413e2c71 f05de3aa6ab4cab201a1be19e25ffe8d6d442c6725a5ddcae1f66a0f356bfd3e";
 		};
 		26E3C56819CCFF6A00BC0634 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;

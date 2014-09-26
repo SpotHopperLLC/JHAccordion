@@ -8,11 +8,20 @@
 
 #import <Foundation/Foundation.h>
 
-@class ImageModel;
+@class SpotModel, SpecialModel, DrinkModel, ImageModel;
 
 @interface SHAppUtil : NSObject
 
 + (instancetype)defaultInstance;
+
+#pragma mark - Sharing
+#pragma mark -
+
+- (void)shareSpecial:(SpecialModel *)special atSpot:(SpotModel *)spot withViewController:(UIViewController *)vc;
+
+- (void)shareSpot:(SpotModel *)spot withViewController:(UIViewController *)vc;
+
+- (void)shareDrink:(DrinkModel *)drink withViewController:(UIViewController *)vc;
 
 #pragma mark - Text Height
 #pragma mark -

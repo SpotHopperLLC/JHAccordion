@@ -62,4 +62,13 @@
     return [[NSBundle mainBundle] infoDictionary][@"SpotHopperSettings"][@"ParseClientKey"];
 }
 
++ (BOOL)isCrashlyticsEnabled {
+    return self.crashlyticsKey.length;
+}
+
++ (NSString *)crashlyticsKey {
+    return [[NSBundle mainBundle] infoDictionary][@"SpotHopperSettings"][@"CrashlyticsKey"];
+}
+
+
 @end

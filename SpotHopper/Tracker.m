@@ -21,12 +21,12 @@
 
 #import "TellMeMyLocation.h"
 #import "Mixpanel.h"
-#import "RavenClient.h"
 #import "ErrorModel.h"
 #import "UserModel.h"
 #import "ClientSessionManager.h"
 
 #import "SHAppConfiguration.h"
+#import "Crashlytics.h"
 
 #define kUnknown @"Unknown"
 
@@ -203,8 +203,6 @@
     locationProperties[@"Center latitude"] = [NSNumber numberWithFloat:mapCenterLocation.coordinate.latitude];
     locationProperties[@"Center longitude"] = [NSNumber numberWithFloat:mapCenterLocation.coordinate.longitude];
     
-    //DebugLog(@"locationProperties: %@", locationProperties);
-    
     return locationProperties;
 }
 
@@ -215,23 +213,30 @@
     NSString *logMessage = nil;
 
     if (!message) {
-        logMessage = [NSString stringWithFormat:@"ERROR: %@ - %@ - %@", @"Error was nil!", NSStringFromClass(class), trace];
+        logMessage = [NSString stringWithFormat:@"%@", @"Error was nil!"];
     }
     else if ([message isKindOfClass:[NSString class]]) {
         NSString *msg = (NSString *)message;
-        logMessage = [NSString stringWithFormat:@"ERROR: %@ - %@ - %@", msg, NSStringFromClass(class), trace];
+        logMessage = [NSString stringWithFormat:@"ERROR: %@", msg];
     }
     else if ([message isKindOfClass:[NSError class]]) {
         NSError *err = (NSError *)message;
-        logMessage = [NSString stringWithFormat:@"ERROR: %@ - %@ - %@", err.description, NSStringFromClass(class), trace];
+        logMessage = [NSString stringWithFormat:@"ERROR: %@", err.description];
     }
     else if ([message isKindOfClass:[ErrorModel class]]) {
         ErrorModel *err = (ErrorModel *)message;
-        logMessage = [NSString stringWithFormat:@"ERROR: %@ - %@ - %@", err.human, NSStringFromClass(class), trace];
+        logMessage = [NSString stringWithFormat:@"ERROR: %@", err.human];
     }
     
-    [[RavenClient sharedClient] captureMessage:logMessage level:kRavenLogLevelDebugError];
-    //DebugLog(@"%@", logMessage);
+    NSString *className = NSStringFromClass(class);
+    
+    [self track:@"Log Message" properties:@{
+                                            @"Message" : logMessage.length ? logMessage : @"N/A",
+                                            @"Class" : className.length ? className : @"N/A",
+                                            @"Trace" : trace.length ? trace : @"N/A",
+                                            @"Level" : level.length ? level : @"N/A"}];
+    
+    CLS_LOG(@"%@ - %@ - %@", logMessage, className, trace);
 }
 
 @end
