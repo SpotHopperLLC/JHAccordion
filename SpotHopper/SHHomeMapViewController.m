@@ -444,11 +444,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             [view pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0];
             [view constrainToHeight:40.0f];
         }];
-        
-        // TODO: fix the shadow effect
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-//            [self addShadowToView:self.locationMenuBarViewController.view];
-//        });
     }
     
     if (!self.homeNavigationViewController.view.superview) {
@@ -2681,6 +2676,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             // show a callout view before the menu is load which can take a long time
             
             SpotCalloutView *calloutView = [SpotCalloutView loadView];
+            NSAssert(calloutView, @"Callout View is required");
             calloutView.delegate = self;
             
             calloutView.alpha = 0.0f;
@@ -2688,15 +2684,12 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             [calloutView setIcon:SpotCalloutIconLoading spotNameText:spotName drink1Text:nil drink2Text:nil];
             [calloutView placeInMapView:mapView insideAnnotationView:pin];
             
-            LOG_FRAME(@"callout", calloutView.frame);
-            
             [self repositionMapOnCoordinate:pin.annotation.coordinate animated:TRUE];
             
             UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
             [UIView animateWithDuration:0.25f delay:0.5f usingSpringWithDamping:9.0 initialSpringVelocity:9.0 options:options animations:^{
                 calloutView.alpha = 1.0f;
             } completion:^(BOOL finished) {
-                calloutView.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.25];
             }];
         }
         
@@ -2770,6 +2763,16 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             [updatedCalloutView setIcon:calloutIcon spotNameText:spotName drink1Text:nil drink2Text:nil];
             [updatedCalloutView placeInMapView:mapView insideAnnotationView:pin];
         } always:nil];
+    }
+}
+
+- (void)spelunk:(UIView *)view depth:(NSUInteger)depth withAppearanceBlock:(void (^)(UIView *view, NSUInteger depth))appearanceBlock {
+    if (appearanceBlock) {
+        appearanceBlock(view, depth);
+    }
+    
+    for (UIView *subview in view.subviews) {
+        [self spelunk:subview depth:depth+1 withAppearanceBlock:appearanceBlock];
     }
 }
 
@@ -3332,14 +3335,11 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc displaySpot:(SpotModel *)spot {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
-    
     self.selectedSpot = spot;
     [self performSegueWithIdentifier:HomeMapToSpotProfile sender:self];
 }
 
 - (void)mapOverlayCollectionViewController:(SHMapOverlayCollectionViewController *)vc displayDrink:(DrinkModel *)drink {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
     self.selectedDrink = drink;
     [self performSegueWithIdentifier:HomeMapToDrinkProfile sender:self];
 }
@@ -3584,7 +3584,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         MatchPercentAnnotationView *pin = (MatchPercentAnnotationView *)annotationView;
         if (pin.spot) {
             self.selectedSpot = pin.spot;
-            [self performSegueWithIdentifier:HomeMapToSpotProfile sender:self];
+            [self goToSpotProfile:pin.spot];
+//            [self performSegueWithIdentifier:HomeMapToSpotProfile sender:self];
         }
     }
 }

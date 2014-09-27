@@ -43,13 +43,18 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
 + (SpotCalloutView *)loadView {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SpotHopper" bundle:nil];
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:SpotCalloutViewIdentifier];
-    SpotCalloutView *calloutView = (SpotCalloutView *)[vc.view viewWithTag:1];
     
-    calloutView.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.25];
+    UIView *view = [vc.view viewWithTag:101];
     
-    calloutView.translatesAutoresizingMaskIntoConstraints = YES;
+    if ([view isKindOfClass:[SpotCalloutView class]]) {
+        SpotCalloutView *calloutView = (SpotCalloutView *)view;
+        
+        calloutView.translatesAutoresizingMaskIntoConstraints = YES;
+        
+        return calloutView;
+    }
     
-    return calloutView;
+    return nil;
 }
 
 + (BOOL)hasCalloutViewInAnnotationView:(MKAnnotationView *)annotationView {
@@ -180,15 +185,17 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
 
 - (void)adjustHeightWithIntrinsicSize {
     DebugLog(@"%@", NSStringFromSelector(_cmd));
-//    [self setNeedsLayout];
-//    [self layoutIfNeeded];
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
     
     CGRect frame = self.frame;
     frame.size.height = CGRectGetHeight(self.containerView.frame) + kHeightOfArrow;
     self.frame = frame;
+
+//    self.backgroundColor = [[UIColor greenColor] colorWithAlphaComponent:0.5];
     
-//    UIImage *backgroundImage = [self drawRoundedCorners:self.frame.size position:0.5 borderRadius:10 strokeWidth:1];
-//    self.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
+    UIImage *backgroundImage = [self drawRoundedCorners:self.frame.size position:0.5 borderRadius:10 strokeWidth:1];
+    self.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
 }
 
 - (UIImage *)drawRoundedCorners:(CGSize)size position:(CGFloat)position borderRadius:(CGFloat)borderRadius strokeWidth:(CGFloat)strokeWidth {

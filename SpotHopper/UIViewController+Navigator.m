@@ -157,20 +157,6 @@
 
 #pragma mark - Spots
 
-//- (void)goToSpotListMenu {
-//    [Tracker track:@"View Spotlist Menu" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
-//    SpotListsMenuViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotListsMenuViewController"];
-//    [self.navigationController pushViewController:viewController animated:YES];
-//}
-
-//- (void)goToSpotList:(SpotListModel*)spotList createdWithAdjustSliders:(BOOL)createdWithAdjustSliders {
-//    [Tracker track:@"View Spotlist" properties:@{@"Name" : spotList.name, @"Created with Sliders" : createdWithAdjustSliders ? @YES : @NO, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
-//    SpotListViewController *viewController = [[self spotsStoryboard] instantiateViewControllerWithIdentifier:@"SpotListViewController"];
-//    [viewController setSpotList:spotList];
-//    [viewController setCreatedWithAdjustSliders:createdWithAdjustSliders];
-//    [self.navigationController pushViewController:viewController animated:YES];
-//}
-
 - (void)goToSpotProfile:(SpotModel *)spot {
     [Tracker track:@"View Spot Profile" properties:@{@"Name" : spot.name, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
     
@@ -206,14 +192,6 @@
     [viewController setMenuItems:menuItems];
     [self.navigationController pushViewController:viewController animated:YES];
 }
-
-#pragma mark - Specials
-
-//- (void)goToTonightsSpecials {
-//    [Tracker track:@"View Tonight Specials" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
-//    TonightsSpecialsViewController *viewController = [[self specialsStoryboard] instantiateViewControllerWithIdentifier:@"TonightsSpecialsViewController"];
-//    [self.navigationController pushViewController:viewController animated:YES];
-//}
 
 #pragma mark - Checkin
 

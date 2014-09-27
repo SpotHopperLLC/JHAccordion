@@ -14,7 +14,7 @@
 
 @interface MatchPercentAnnotationView : MKAnnotationView
 
-@property (nonatomic, strong) SpotModel *spot;
+@property (nonatomic, weak) SpotModel *spot;
 @property (nonatomic, assign) SHStyleKitDrawing drawing;
 @property (nonatomic, strong) SpotAnnotationCallout *calloutView;
 @property (nonatomic, assign) BOOL useLargeIcon;
