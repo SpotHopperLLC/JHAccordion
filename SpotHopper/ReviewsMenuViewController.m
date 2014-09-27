@@ -68,7 +68,7 @@
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
+    [super viewDidLoad];
     
     // Shows sidebar button in nav
 //    [self showSidebarButton:YES animated:YES];
@@ -81,6 +81,10 @@
     _results = [NSMutableArray array];
     
     _updatedSearchNeeded = TRUE;
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

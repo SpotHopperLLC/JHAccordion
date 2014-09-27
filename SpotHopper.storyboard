@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="xUM-VU-R28">
     <dependencies>
-        <deployment version="2048" identifier="iOS"/>
+        <deployment version="2048" defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -688,13 +688,13 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view tag="101" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Lo-m9-3c3" customClass="SpotCalloutView">
-                                <rect key="frame" x="20" y="27" width="200" height="67"/>
+                                <rect key="frame" x="20" y="26" width="200" height="69"/>
                                 <subviews>
                                     <view tag="201" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="apI-6g-LM2" userLabel="Container View">
-                                        <rect key="frame" x="0.0" y="0.0" width="200" height="67"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="69"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BWb-kh-4Jj" userLabel="Icon Image View">
-                                                <rect key="frame" x="5" y="6" width="40" height="40"/>
+                                                <rect key="frame" x="5" y="7" width="40" height="40"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="Vc8-nR-aGh"/>
@@ -702,26 +702,35 @@
                                                 </constraints>
                                             </imageView>
                                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="M5E-fT-5dx">
-                                                <rect key="frame" x="15" y="16" width="20" height="20"/>
+                                                <rect key="frame" x="15" y="17" width="20" height="20"/>
                                             </activityIndicatorView>
                                             <view tag="301" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gil-6U-86q" userLabel="Labels View">
-                                                <rect key="frame" x="49" y="0.0" width="121" height="53"/>
+                                                <rect key="frame" x="49" y="0.0" width="121" height="55"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Spot Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="117" translatesAutoresizingMaskIntoConstraints="NO" id="UbC-of-nnu" customClass="SHLabelLatoBold">
-                                                        <rect key="frame" x="0.0" y="2" width="121" height="15"/>
+                                                        <rect key="frame" x="0.0" y="4" width="121" height="15"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="15" id="z61-Kr-T3g"/>
+                                                        </constraints>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Drink 1" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="117" translatesAutoresizingMaskIntoConstraints="NO" id="Zc8-Nz-2g7" customClass="SHLabelLatoRegular">
-                                                        <rect key="frame" x="0.0" y="19" width="121" height="12"/>
+                                                        <rect key="frame" x="0.0" y="21" width="121" height="12"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="12" id="U5F-Kf-SQF"/>
+                                                        </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Drink 2" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="117" translatesAutoresizingMaskIntoConstraints="NO" id="e3V-HS-MZK" customClass="SHLabelLatoRegular">
-                                                        <rect key="frame" x="0.0" y="33" width="121" height="12"/>
+                                                        <rect key="frame" x="0.0" y="35" width="121" height="12"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="12" id="abo-Lq-qEB"/>
+                                                        </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -730,10 +739,9 @@
                                                 <constraints>
                                                     <constraint firstAttribute="bottom" secondItem="e3V-HS-MZK" secondAttribute="bottom" constant="8" id="1Gk-Oe-P5I"/>
                                                     <constraint firstItem="Zc8-Nz-2g7" firstAttribute="leading" secondItem="gil-6U-86q" secondAttribute="leading" id="3rN-14-M9n"/>
-                                                    <constraint firstItem="UbC-of-nnu" firstAttribute="top" secondItem="gil-6U-86q" secondAttribute="top" constant="2" id="Grt-Zb-JJw"/>
+                                                    <constraint firstItem="UbC-of-nnu" firstAttribute="top" secondItem="gil-6U-86q" secondAttribute="top" constant="4" id="Grt-Zb-JJw"/>
                                                     <constraint firstItem="e3V-HS-MZK" firstAttribute="top" secondItem="Zc8-Nz-2g7" secondAttribute="bottom" constant="2" id="Ksl-go-gVR"/>
                                                     <constraint firstItem="Zc8-Nz-2g7" firstAttribute="top" secondItem="UbC-of-nnu" secondAttribute="bottom" constant="2" id="Lje-uA-TAh"/>
-                                                    <constraint firstItem="Zc8-Nz-2g7" firstAttribute="top" secondItem="UbC-of-nnu" secondAttribute="bottom" constant="2" id="SvW-PB-rXx"/>
                                                     <constraint firstAttribute="trailing" secondItem="Zc8-Nz-2g7" secondAttribute="trailing" id="Xcw-Od-doa"/>
                                                     <constraint firstAttribute="trailing" secondItem="UbC-of-nnu" secondAttribute="trailing" id="f8c-Pw-pRr"/>
                                                     <constraint firstAttribute="trailing" secondItem="e3V-HS-MZK" secondAttribute="trailing" id="w1f-Yl-hid"/>
@@ -742,7 +750,7 @@
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Amr-p6-Odc" userLabel="Callout Button">
-                                                <rect key="frame" x="156" y="4" width="44" height="44"/>
+                                                <rect key="frame" x="156" y="5" width="44" height="44"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="Ct9-m6-3hy"/>

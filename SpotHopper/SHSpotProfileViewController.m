@@ -108,7 +108,10 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 #pragma mark -
 
 - (void)viewDidLoad {
-    [self viewDidLoad:@[kDidLoadOptionsNoBackground]];
+    [super viewDidLoad];
+    
+    NSAssert(self.tableView, @"Outlet is required");
+    NSAssert([self.tableView isKindOfClass:[UITableView class]], @"Table View must be correct class");
     
     NSDictionary *titleTextAttributes = @{ NSForegroundColorAttributeName : [SHStyleKit color:SHStyleKitColorMyTextColor], NSFontAttributeName : [UIFont fontWithName:@"Lato-Bold" size:20.0f]};
     self.navigationController.navigationBar.titleTextAttributes = titleTextAttributes;
@@ -155,6 +158,10 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsNoBackground];
 }
 
 - (void)viewWillAppear:(BOOL)animated{

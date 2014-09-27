@@ -30,7 +30,9 @@
 
 @property (readonly) BOOL hasFourInchDisplay;
 
-- (void)viewDidLoad:(NSArray*)options;
+- (void)viewDidLoad:(NSArray*)options __deprecated;
+
+- (NSArray *)viewOptions;
 
 - (void)showHUDCompleted:(NSString*)text;
 - (void)showHUDCompleted:(NSString*)text block:(dispatch_block_t)block;

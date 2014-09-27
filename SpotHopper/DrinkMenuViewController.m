@@ -60,7 +60,7 @@
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
+    [super viewDidLoad];
     
     // Sets title
     [self setTitle:@"Full Drink Menu"];
@@ -89,6 +89,10 @@
     _drinkSubtypes = [NSMutableDictionary dictionary];
     
     [self fetchMenuItems];
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

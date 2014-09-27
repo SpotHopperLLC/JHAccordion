@@ -35,7 +35,7 @@
 #pragma mark -
 
 - (void)viewDidLoad {
-    [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
+    [super viewDidLoad];
 
     self.lblHeader.textColor = [SHStyleKit myTextColor];
     
@@ -53,6 +53,10 @@
     [SHStyleKit setLabel:self.lblBeer textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:self.lblCocktails textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:self.lblWine textColor:SHStyleKitColorMyTintColor];
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsNoBackground];
 }
 
 #pragma mark - User Actions

@@ -55,7 +55,7 @@ typedef void(^AlertBlock)();
 @property (nonatomic, strong) UIAlertView *alertView;
 @property (nonatomic, copy) AlertBlock alertBlock;
 
-@property (nonatomic, strong) UIBarButtonItem *backButtonItem;
+//@property (nonatomic, strong) UIBarButtonItem *backButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *rightSidebarButtonItem;
 
 @property (nonatomic, strong) UIImageView *backgroundImage;
@@ -78,15 +78,9 @@ typedef void(^AlertBlock)();
 }
 
 - (void)viewDidLoad {
-    [self viewDidLoad:@[kDidLoadOptionsBlurredBackground]];
-}
-
-- (void)viewDidLoad:(NSArray*)options {
     [super viewDidLoad];
     
-    if ([options containsObject:kDidLoadOptionsDontAdjustForIOS6] == NO && SYSTEM_VERSION_LESS_THAN(@"7.0")) {
-        [self adjustIOS6Crap];
-    }
+    NSArray *options = [self viewOptions];
     
     if (![options containsObject:kDidLoadOptionsNoBackground]) {
         _backgroundImage = [[UIImageView alloc] initWithFrame:self.view.frame];
@@ -96,22 +90,18 @@ typedef void(^AlertBlock)();
         
         [self.view insertSubview:_backgroundImage atIndex:0];
     }
-    
-    _backButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_nav_back"] style:UIBarButtonItemStylePlain target:self action:@selector(onClickBack:)];
-    [_backButtonItem setBackgroundImage:[[UIImage alloc] init] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    if (self.navigationController.viewControllers.count > 1) {
-        [self.navigationItem setBackBarButtonItem:nil];
-        [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(onClickBack:)]];
-    }
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsBlurredBackground];
+}
+
+- (void)viewDidLoad:(NSArray*)options {
+    [super viewDidLoad];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    if ([self.navigationController.viewControllers count] > 1) {
-        [self.navigationItem setBackBarButtonItem:nil];
-        [self.navigationItem setLeftBarButtonItem:_backButtonItem];
-    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushNotificationReceived:) name:kNotificationPushReceived object:nil];
     
@@ -138,14 +128,6 @@ typedef void(^AlertBlock)();
 
 - (BOOL)prefersStatusBarHidden {
     return NO;
-}
-
-- (void)adjustIOS6Crap {
-    for (UIView *view in self.view.subviews) {
-        CGRect frame = view.frame;
-        frame.origin.y -= 64.0f;
-        [view setFrame:frame];
-    }
 }
 
 - (void)didReceiveMemoryWarning {

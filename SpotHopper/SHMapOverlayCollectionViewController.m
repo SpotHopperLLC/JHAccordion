@@ -64,7 +64,7 @@ typedef enum {
 #pragma mark -
 
 - (void)viewDidLoad {
-    [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
+    [super viewDidLoad];
     
     NSAssert(self.collectionView, @"Outlet is required");
     NSAssert(self.spotsCollectionViewManager, @"Outlet is required");
@@ -86,6 +86,10 @@ typedef enum {
     CGSize drawingSize = CGSizeMake(20, 20);
     [self.previousButton setButtonDrawing:SHStyleKitDrawingArrowLeftIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor drawingSize:drawingSize];
     [self.nextButton setButtonDrawing:SHStyleKitDrawingArrowRightIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor drawingSize:drawingSize];
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsNoBackground];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

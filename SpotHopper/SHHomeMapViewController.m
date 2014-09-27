@@ -244,7 +244,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark -
 
 - (void)viewDidLoad {
-    [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
+    [super viewDidLoad];
     
     self.mySideBarViewController = (SHSidebarViewController *)self.navigationController.sidebarViewController.rightViewController;
     self.mySideBarViewController.delegate = self;
@@ -291,6 +291,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [SpotListModel fetchMySpotLists];
         [DrinkListModel fetchMyDrinkLists];
     }
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsNoBackground];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

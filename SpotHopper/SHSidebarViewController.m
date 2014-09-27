@@ -37,7 +37,7 @@
 - (void)viewDidLoad {
 //    if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
 //        self.edgesForExtendedLayout = UIRectEdgeNone;
-    [super viewDidLoad:@[kDidLoadOptionsDontAdjustForIOS6, kDidLoadOptionsNoBackground]];
+    [super viewDidLoad];
 	
     // Increasing left inset of button titles
     UIEdgeInsets insets = UIEdgeInsetsMake(0, 15.0f, 0, 0);
@@ -55,6 +55,10 @@
     [self.btnLogin addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
     
     [self updateView:NO];
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsDontAdjustForIOS6, kDidLoadOptionsNoBackground];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

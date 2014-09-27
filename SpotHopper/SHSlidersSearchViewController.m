@@ -44,7 +44,7 @@
 #pragma mark -
 
 - (void)viewDidLoad {
-    [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
+    [super viewDidLoad];
     
     [self.slidersSearchTableViewManager prepare];
     
@@ -52,6 +52,10 @@
     self.toastLabel.font = [UIFont fontWithName:@"Lato-Light" size:18.0f];
     
     self.toastView.layer.cornerRadius = 15.0f;
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsNoBackground];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

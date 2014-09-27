@@ -74,7 +74,7 @@
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad:@[kDidLoadOptionsDontAdjustForIOS6]];
+    [super viewDidLoad];
 
     // Logs current user out
     [[ClientSessionManager sharedClient] logout];
@@ -97,6 +97,10 @@
     [_viewFormCreate setFrame:frameCreateForm];
     
     [SHStyleKit setImageView:self.imgBottomArrow withDrawing:SHStyleKitDrawingPencilArrowUp color:SHStyleKitColorMyClearColor];
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsDontAdjustForIOS6];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

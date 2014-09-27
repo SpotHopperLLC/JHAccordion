@@ -29,13 +29,13 @@ pod 'CrashlyticsFramework', '~> 2.2'
 
 # Social
 pod 'Facebook-iOS-SDK', '~> 3.0'
-pod 'STTwitter', '~> 0.0.7'
+pod 'STTwitter', '~> 0.1'
 
 # Push notifications
 pod 'Parse-iOS-SDK', '~> 1.2.19'
 
 # Analytics
-pod 'Mixpanel', '~> 2.3.0'
+pod 'Mixpanel', '~> 2.5'
 # pod 'GoogleAnalytics-iOS-SDK', '~> 3.0.0'
 
 target "SpotHopperLocal" do
