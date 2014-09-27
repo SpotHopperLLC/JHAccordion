@@ -74,6 +74,8 @@
 
 + (void)trackUserTappedPhoneNumber;
 
++ (void)trackUserTappedWriteAReview;
+
 + (void)trackUserTappedShare;
 
 #pragma mark - Home Map Actions

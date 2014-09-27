@@ -134,23 +134,27 @@
 #pragma mark -
 
 + (void)trackTappedFullDrinkMenu {
-    [self trackUserAction:@"Tapped Full Drink Menu"];
+    [self track:@"Tapped Full Drink Menu"];
 }
 
 + (void)trackTappedMorePhotos {
-    [self trackUserAction:@"Tapped More Photos"];
+    [self track:@"Tapped More Photos"];
 }
 
 + (void)trackTappedAllSliders {
-    [self trackUserAction:@"Tapped All Sliders"];
+    [self track:@"Tapped All Sliders"];
 }
 
 + (void)trackTappedPhoneNumber {
-    [self trackUserAction:@"Tapped Phone Number"];
+    [self track:@"Tapped Phone Number"];
 }
 
 + (void)trackTappedWriteAReview {
-    [self trackUserAction:@"Tapped Write a Review"];
+    [self track:@"Tapped Write a Review"];
+}
+
++ (void)trackTappedShare {
+    [self track:@"Tapped Share"];
 }
 
 + (void)trackPulledUpCollectionViewForSpecialsSpots:(NSArray *)spots atIndex:(NSUInteger)index {

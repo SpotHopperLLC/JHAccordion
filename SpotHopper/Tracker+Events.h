@@ -61,6 +61,8 @@
 
 + (void)trackTappedWriteAReview;
 
++ (void)trackTappedShare;
+
 + (void)trackPulledUpCollectionViewForSpecialsSpots:(NSArray *)spots atIndex:(NSUInteger)index;
 
 + (void)trackPulledUpCollectionViewForSpotlist:(SpotListModel *)spotlist atIndex:(NSUInteger)index;

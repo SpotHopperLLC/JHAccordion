@@ -117,6 +117,10 @@
     [self trackUserAction:@"User Tapped Phone Number"];
 }
 
++ (void)trackUserTappedWriteAReview {
+    [self trackUserAction:@"User Tapped Write a Review"];
+}
+
 + (void)trackUserTappedShare {
     [self trackUserAction:@"User Tapped Share"];
 }

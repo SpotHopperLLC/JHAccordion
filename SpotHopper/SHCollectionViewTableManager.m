@@ -361,6 +361,7 @@ typedef enum {
 
 - (IBAction)moreButtonTapped:(UIButton *)button {
     [Tracker trackUserTappedAllSliders];
+    [Tracker trackTappedAllSliders];
     
     if (self.spot) {
         if ([self.delegate respondsToSelector:@selector(collectionViewTableManager:displaySpot:)]) {
@@ -376,6 +377,7 @@ typedef enum {
 
 - (IBAction)phoneButtonTapped:(UIButton *)button {
     [Tracker trackUserTappedPhoneNumber];
+    [Tracker trackTappedPhoneNumber];
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -416,6 +418,7 @@ typedef enum {
 
 - (IBAction)photoButtonTapped:(UIButton *)button {
     [Tracker trackUserTappedMorePhotos];
+    [Tracker trackTappedMorePhotos];
     
     NSArray *images = self.spot ? self.spot.images : self.drink.images;
     
@@ -435,6 +438,7 @@ typedef enum {
 
 - (IBAction)menuButtonTapped:(UIButton *)button {
     [Tracker trackUserTappedFullDrinkMenu];
+    [Tracker trackTappedFullDrinkMenu];
     
     if (self.spot) {
         [SHNotifications openMenuForSpot:self.spot];
@@ -442,6 +446,7 @@ typedef enum {
 }
 
 - (IBAction)reviewButtonTapped:(UIButton *)button {
+    [Tracker trackUserTappedWriteAReview];
     [Tracker trackTappedWriteAReview];
     
     if (self.spot) {
@@ -474,6 +479,7 @@ typedef enum {
 
 - (IBAction)shareButtonTapped:(UIButton *)button {
     [Tracker trackUserTappedShare];
+    [Tracker trackTappedShare];
     
     if (self.mode == Special) {
         [SHNotifications shareSpecial:self.spot.specialForToday atSpot:self.spot];
@@ -920,12 +926,32 @@ typedef enum {
 - (UITableViewCell *)renderCellForSharingAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ShareCell" forIndexPath:indexPath];
     
-    UIButton *button = (UIButton *)[cell viewWithTag:2];
+    UILabel *titleLabel = (UILabel *)[cell viewWithTag:1];
+    UIButton *imageButton = (UIButton *)[cell viewWithTag:2];
+    UIButton *textButton = (UIButton *)[cell viewWithTag:3];
     
-    [SHStyleKit setButton:button withDrawing:SHStyleKitDrawingShareIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor size:CGSizeMake(30, 30)];
+    [SHStyleKit setButton:textButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
     
-    [button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-    [button addTarget:self action:@selector(shareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    if (self.mode == Special) {
+        titleLabel.text = @"Thinking about coming here?";
+        [textButton setTitle:@"Share special with friends" forState:UIControlStateNormal];
+    }
+    else if (self.mode == Spot) {
+        titleLabel.text = @"Thinking about coming here?";
+        [textButton setTitle:@"Share spot with friends" forState:UIControlStateNormal];
+    }
+    else if (self.mode == Drink) {
+        titleLabel.text = @"Drink this?";
+        [textButton setTitle:@"Brag to your friends" forState:UIControlStateNormal];
+    }
+    
+    [SHStyleKit setButton:imageButton withDrawing:SHStyleKitDrawingShareIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextTransparentColor size:CGSizeMake(30, 30)];
+
+    [imageButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [imageButton addTarget:self action:@selector(shareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+
+    [textButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [textButton addTarget:self action:@selector(shareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     return cell;
 }
@@ -1087,6 +1113,9 @@ typedef enum {
     }
     else if ([rowName isEqualToString:kRowNameHighestRated]) {
         return 160.0f;
+    }
+    else if ([rowName isEqualToString:kRowNameShare]) {
+        return 100.0f;
     }
     else {
         return 44.0f;

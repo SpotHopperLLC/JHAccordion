@@ -311,21 +311,21 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
                                              scaleY:scaleY
                                          color1Name:colorName
                                          color2Name:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]
-                                         color3Name:[SHStyleKit colorName:SHStyleKitColorMyTextColor]];
+                                         color3Name:[SHStyleKit colorName:SHStyleKitColorMyTextTransparentColor]];
             }
             else if (color == SHStyleKitColorMyWhiteColor) {
                 [SHStyleKit drawShareIconWithScaleX:scaleX
                                              scaleY:scaleY
                                          color1Name:colorName
                                          color2Name:[SHStyleKit colorName:SHStyleKitColorMyTintColor]
-                                         color3Name:[SHStyleKit colorName:SHStyleKitColorMyTextColor]];
+                                         color3Name:[SHStyleKit colorName:SHStyleKitColorMyTextTransparentColor]];
             }
             else {
                 [SHStyleKit drawShareIconWithScaleX:scaleX
                                              scaleY:scaleY
                                          color1Name:colorName
                                          color2Name:[SHStyleKit colorName:SHStyleKitColorMyTextColor]
-                                         color3Name:[SHStyleKit colorName:SHStyleKitColorMyTintColor]];
+                                         color3Name:[SHStyleKit colorName:SHStyleKitColorMyTintTransparentColor]];
             }
             break;
         case SHStyleKitDrawingCheckMarkIcon:
