@@ -57,7 +57,7 @@ typedef enum {
 #pragma mark - Class Extension
 #pragma mark -
 
-@interface SHCollectionViewTableManager () <UITableViewDataSource, UITableViewDelegate>
+@interface SHCollectionViewTableManager () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 
@@ -77,7 +77,11 @@ typedef enum {
 - (void)manageTableView:(UITableView *)tableView forTodaysSpecialAtSpot:(SpotModel *)spot {
     NSAssert(tableView, @"Table View is required");
     NSAssert(self.delegate, @"Delegate is required");
+    NSAssert([self conformsToProtocol:@protocol(UITableViewDelegate)], @"Class must conform to protocol");
+    NSAssert([self conformsToProtocol:@protocol(UITableViewDataSource)], @"Class must conform to protocol");
+    
     self.mode = Special;
+    
     tableView.dataSource = self;
     tableView.delegate = self;
     self.rows = @[].mutableCopy;
@@ -125,7 +129,11 @@ typedef enum {
 - (void)manageTableView:(UITableView *)tableView forSpot:(SpotModel *)spot {
     NSAssert(tableView, @"Table View is required");
     NSAssert(self.delegate, @"Delegate is required");
+    NSAssert([self conformsToProtocol:@protocol(UITableViewDelegate)], @"Class must conform to protocol");
+    NSAssert([self conformsToProtocol:@protocol(UITableViewDataSource)], @"Class must conform to protocol");
+
     self.mode = Spot;
+    
     tableView.dataSource = self;
     tableView.delegate = self;
     self.rows = @[].mutableCopy;
@@ -173,7 +181,11 @@ typedef enum {
 - (void)manageTableView:(UITableView *)tableView forDrink:(DrinkModel *)drink {
     NSAssert(tableView, @"Table View is required");
     NSAssert(self.delegate, @"Delegate is required");
+    NSAssert([self conformsToProtocol:@protocol(UITableViewDelegate)], @"Class must conform to protocol");
+    NSAssert([self conformsToProtocol:@protocol(UITableViewDataSource)], @"Class must conform to protocol");
+
     self.mode = Drink;
+    
     tableView.dataSource = self;
     tableView.delegate = self;
     self.rows = @[].mutableCopy;
@@ -343,7 +355,6 @@ typedef enum {
 }
 
 - (void)updateButton:(UIButton *)button withImage:(ImageModel *)image placeholderImage:(UIImage *)placeholderImage {
-    
     button.imageView.contentMode = UIViewContentModeScaleAspectFill;
     button.clipsToBounds = TRUE;
     
@@ -364,14 +375,10 @@ typedef enum {
     [Tracker trackTappedAllSliders];
     
     if (self.spot) {
-        if ([self.delegate respondsToSelector:@selector(collectionViewTableManager:displaySpot:)]) {
-            [self.delegate collectionViewTableManager:self displaySpot:self.spot];
-        }
+        [SHNotifications pushToSpot:self.spot];
     }
     else if (self.drink) {
-        if ([self.delegate respondsToSelector:@selector(collectionViewTableManager:displayDrink:)]) {
-            [self.delegate collectionViewTableManager:self displayDrink:self.drink];
-        }
+        [SHNotifications pushToDrink:self.drink];
     }
 }
 

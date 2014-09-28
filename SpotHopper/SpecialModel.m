@@ -142,7 +142,7 @@
             [components setMinute:[parts[1] integerValue]];
         }
         
-        date = [calendar dateFromComponents:components];
+        adjustedDate = [calendar dateFromComponents:components];
     }
     
     return adjustedDate;

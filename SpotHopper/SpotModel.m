@@ -148,6 +148,37 @@
     return CLLocationCoordinate2DMake(self.latitude.floatValue, self.longitude.floatValue);
 }
 
+- (NSString *)closeTimeForToday {
+    
+    // Sets "Opens at <some time>" or "Open until <some time>"
+    NSString *closeTime = nil;
+    NSArray *hoursForToday = [self.hoursOfOperation datesForToday];
+    
+    if (hoursForToday) {
+        // Creates formatter
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"h:mm a"];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
+        
+        // Gets open and close dates
+        NSDate *dateOpen = hoursForToday.firstObject;
+        NSDate *dateClose = hoursForToday.lastObject;
+        
+        NSAssert(dateOpen, @"Date must be defined");
+        NSAssert(dateClose, @"Date must be defined");
+        
+        // Sets the stuff
+        NSDate *now = [NSDate date];
+        if ([now timeIntervalSinceDate:dateOpen] > 0 && [now timeIntervalSinceDate:dateClose] < 0) {
+            closeTime = [NSString stringWithFormat:@"Open until %@", [dateFormatter stringFromDate:dateClose]];
+        } else {
+            closeTime = [NSString stringWithFormat:@"Opens at %@", [dateFormatter stringFromDate:dateOpen]];
+        }
+    }
+    
+    return closeTime;
+}
+
 - (DrinkTypeModel *)preferredDrinkType {
     // look at each slider to get the slider value for each emphasis and compare them
     CGFloat beerEmphasis = 0.0;
@@ -854,10 +885,11 @@
 }
 
 - (NSString *)matchPercent {
-    if ([self match] == nil) {
-        return nil;
+    if (self.match) {
+        return [NSString stringWithFormat:@"%d%%", (int)(self.match.floatValue * 100)];
     }
-    return [NSString stringWithFormat:@"%d%%", (int)([self match].floatValue * 100)];
+    
+    return nil;
 }
 
 - (NSArray *)sliderTemplates {

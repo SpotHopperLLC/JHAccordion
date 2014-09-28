@@ -84,7 +84,7 @@
 - (void)updateDrinkList:(DrinkListModel *)drinkList {
     NSAssert(self.delegate, @"Delegate must be defined");
     
-    static NSString *lock;
+    static NSString *lock = @"LOCK";
     @synchronized(lock) {
         if (_isUpdatingData) {
             [self performSelector:@selector(updateDrinkList:) withObject:drinkList afterDelay:0.25];

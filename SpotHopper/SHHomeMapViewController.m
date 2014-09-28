@@ -3911,7 +3911,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             SHMode mode = SHModeNone;
             if (drinklist.drinks.count > 0) {
                 drink = drinklist.drinks[0];
-                mode = [self modeForDrink:self.selectedDrink];
+                mode = [self modeForDrink:drink];
             }
             
             [self processDrinklistModel:drinklist withRequest:request forMode:mode];
@@ -3961,7 +3961,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)handlePushToSpotNotification:(NSNotification *)notification {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
     SpotModel *spot = notification.userInfo[SHPushToSpotNotificationKey];
+    DebugLog(@"spot: %@", spot);
     [self goToSpotProfile:spot];
 }
 

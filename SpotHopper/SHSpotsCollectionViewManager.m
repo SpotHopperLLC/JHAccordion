@@ -84,7 +84,7 @@
 - (void)updateSpotList:(SpotListModel *)spotList {
     NSAssert(self.delegate, @"Delegate must be defined");
 
-    static NSString *lock;
+    static NSString *lock = @"LOCK";
     @synchronized(lock) {
         if (_isUpdatingData) {
             [self performSelector:@selector(updateSpotList:) withObject:spotList afterDelay:0.25];

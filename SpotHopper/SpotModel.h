@@ -74,6 +74,8 @@
 @property (nonatomic, readonly) NSString *hoursForToday;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 
+@property (nonatomic, readonly) NSString *closeTimeForToday;
+
 @property (nonatomic, readonly) DrinkTypeModel *preferredDrinkType;
 
 - (NSString *)addressCityState;

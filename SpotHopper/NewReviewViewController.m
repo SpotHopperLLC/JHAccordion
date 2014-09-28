@@ -1321,12 +1321,10 @@
     BOOL containsHouse = [name.lowercaseString contains:@"house"];
     
     CGRect frame = _viewFormNewCocktail.frame;
-    CGFloat heightDiff = 0.0f;
     if (!containsHouse) {
         frame.size.height = CGRectGetMaxY(_txtCocktailAlcoholType.frame) + 16.0f;
     } else {
         frame.size.height = CGRectGetMaxY(_txtCocktailWhichSpot.frame) + 16.0f;
-        heightDiff = CGRectGetHeight(_viewFormNewCocktail.frame) - CGRectGetHeight(frame);
     }
     
     [UIView animateWithDuration:(animate ? 0.35f : 0.0f) animations:^{
@@ -1336,7 +1334,6 @@
         [_imgCocktailWhichSpot setAlpha:(containsHouse ? 1.0f : 0.0f)];
         [_txtCocktailWhichSpot setAlpha:(containsHouse ? 1.0f : 0.0f)];
     } completion:^(BOOL finished) {
-        
     }];
 }
 

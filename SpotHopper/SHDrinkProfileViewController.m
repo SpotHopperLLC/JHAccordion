@@ -106,6 +106,11 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    NSAssert(self.tableView, @"Outlet is required");
+    NSAssert([self.tableView isKindOfClass:[UITableView class]], @"Table View must be correct class");
+    NSAssert([self.tableView.delegate isEqual:self], @"Delegate must self");
+    NSAssert([self.tableView.dataSource isEqual:self], @"DataSource must self");
+    
     NSDictionary *titleTextAttributes = @{ NSForegroundColorAttributeName : [SHStyleKit color:SHStyleKitColorMyTextColor], NSFontAttributeName : [UIFont fontWithName:@"Lato-Bold" size:20.0f]};
     self.navigationController.navigationBar.titleTextAttributes = titleTextAttributes;
     

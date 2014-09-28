@@ -1823,12 +1823,6 @@
     CLLocationCoordinate2D coordinate = [self searchCenterCoordinate];
     CGFloat radius = [self searchRadius];
     
-    NSNumber *latitude = nil, *longitude = nil;
-    if (CLLocationCoordinate2DIsValid(coordinate)) {
-        latitude = [NSNumber numberWithFloat:coordinate.latitude];
-        longitude = [NSNumber numberWithFloat:coordinate.longitude];
-    }
-    
     [Tracker trackCreatingSpotList];
     
     if (self.selectedSpotlist && ![[NSNull null] isEqual:self.selectedSpotlist.ID]) {
