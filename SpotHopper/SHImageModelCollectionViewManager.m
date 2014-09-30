@@ -21,7 +21,9 @@
 #pragma mark -
 
 @interface SHImageModelCollectionViewManager ()
+
 @property (nonatomic, weak) IBOutlet id<SHImageModelCollectionDelegate> delegate;
+
 @end
 
 @implementation SHImageModelCollectionViewManager
@@ -66,7 +68,6 @@
 #pragma mark -
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    //trigger segue
     if ([self.delegate respondsToSelector:@selector(imageCollectionViewManager:didSelectImageAtIndex:)]) {
         [self.delegate imageCollectionViewManager:self didSelectImageAtIndex:_currentIndex];
     }

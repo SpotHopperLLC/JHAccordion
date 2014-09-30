@@ -57,9 +57,10 @@
         [activityItems addObject:[NSString stringWithFormat:@"Special at %@", spot.name]];
         [activityItems addObject:specialText.length ? specialText : @""];
         [activityItems addObject:shortenedURL];
-        if (image) {
-            [activityItems addObject:image];
-        }
+//        [activityItems addObject:[NSURL URLWithString:link]];
+//        if (image) {
+//            [activityItems addObject:image];
+//        }
         NSMutableArray *activities = @[].mutableCopy;
         UIActivityViewController *activityView = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activities];
         
@@ -88,9 +89,10 @@
         NSMutableArray *activityItems = @[].mutableCopy;
         [activityItems addObject:spot.name.length ? spot.name : @""];
         [activityItems addObject:shortenedURL];
-        if (image) {
-            [activityItems addObject:image];
-        }
+//        [activityItems addObject:[NSURL URLWithString:link]];
+//        if (image) {
+//            [activityItems addObject:image];
+//        }
         NSMutableArray *activities = @[].mutableCopy;
         UIActivityViewController *activityView = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activities];
         
@@ -120,9 +122,10 @@
         NSMutableArray *activityItems = @[].mutableCopy;
         [activityItems addObject:drink.name.length ? drink.name : @""];
         [activityItems addObject:shortenedURL];
-        if (image) {
-            [activityItems addObject:image];
-        }
+//        [activityItems addObject:[NSURL URLWithString:link]];
+//        if (image) {
+//            [activityItems addObject:image];
+//        }
         NSMutableArray *activities = @[].mutableCopy;
         UIActivityViewController *activityView = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activities];
         

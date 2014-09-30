@@ -62,8 +62,8 @@ typedef enum {
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 
 @property (nonatomic, assign) TableManagerMode mode;
-@property (nonatomic, strong) SpotModel *spot;
-@property (nonatomic, strong) DrinkModel *drink;
+@property (nonatomic, weak) SpotModel *spot;
+@property (nonatomic, weak) DrinkModel *drink;
 
 @property (nonatomic, strong) DrinkListModel *highestRatedDrinklist;
 
@@ -229,6 +229,8 @@ typedef enum {
 
 - (void)prepareForReuse {
     self.mode = TableManagerModeNone;
+    self.tableView.delegate = nil;
+    self.tableView.dataSource = nil;
     self.tableView = nil;
     self.spot = nil;
     self.drink = nil;

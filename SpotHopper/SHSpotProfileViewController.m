@@ -95,9 +95,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 @property (weak, nonatomic) IBOutlet UIImageView *topShadowImageView;
 @property (weak, nonatomic) UIView *footerContainerView;
 
-@property (strong, nonatomic)  NSString *matchPercentage;
-@property (strong, nonatomic)  NSString *closeTime;
-
 @end
 
 @implementation SHSpotProfileViewController{
@@ -112,6 +109,8 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     
     NSAssert(self.tableView, @"Outlet is required");
     NSAssert([self.tableView isKindOfClass:[UITableView class]], @"Table View must be correct class");
+    NSAssert([self.tableView.delegate isEqual:self], @"Delegate must be self");
+    NSAssert([self.tableView.dataSource isEqual:self], @"DataSource must be self");
     
     NSDictionary *titleTextAttributes = @{ NSForegroundColorAttributeName : [SHStyleKit color:SHStyleKitColorMyTextColor], NSFontAttributeName : [UIFont fontWithName:@"Lato-Bold" size:20.0f]};
     self.navigationController.navigationBar.titleTextAttributes = titleTextAttributes;
@@ -140,21 +139,10 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     self.drinkMenuButton.titleLabel.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
     [self.drinkMenuButton setTitleColor:SHStyleKit.myTextColor forState:UIControlStateNormal];
     
-    self.matchPercentage = [self.spot matchPercent];
-    if ([self findCloseTimeForToday]) {
-        self.closeTime = [self findCloseTimeForToday];
-    }
-    
     //fetch spot slider and review info
-    [self.spot getSpot:nil success:^(SpotModel *spotModel, JSONAPI *jsonApi) {
-        
-        if (spotModel) {
-            self.spot = spotModel;
-            self.spot.sliderTemplates = spotModel.sliderTemplates;
-            self.spot.averageReview = spotModel.averageReview;
-            [self.tableView reloadData];
-        }
-        
+    [self.spot fetchSpot:^(SpotModel *spotModel) {
+        self.spot = spotModel;
+        [self.tableView reloadData];
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
@@ -164,13 +152,12 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     return @[kDidLoadOptionsNoBackground];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     [Tracker trackSpotProfileScreenViewed:self.spot];
     
     [self hideTopBars:TRUE withCompletionBlock:^{
-        DebugLog(@"Done hiding top bars");
     }];
 }
 
@@ -203,12 +190,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
 
 #pragma mark - Private
 #pragma mark -
-
-- (NSString *)specialsForToday {
-    SpecialModel *special = self.spot.specialForToday;
-    
-    return special.text;
-}
 
 - (UIFont *)specialTitleFont {
     return [UIFont fontWithName:@"Lato-Bold" size:20.0f];
@@ -283,36 +264,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     }];
 }
 
-- (NSString *)findCloseTimeForToday {
-    // Sets "Opens at <some time>" or "Open until <some time>"
-    NSString *closeTime = nil;
-    NSArray *hoursForToday = [self.spot.hoursOfOperation datesForToday];
-    
-    if (hoursForToday) {
-        // Creates formatter
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"h:mm a"];
-        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
-        
-        // Gets open and close dates
-        NSDate *dateOpen = hoursForToday.firstObject;
-        NSDate *dateClose = hoursForToday.lastObject;
-        
-        NSAssert(dateOpen, @"Date must be defined");
-        NSAssert(dateClose, @"Date must be defined");
-        
-        // Sets the stuff
-        NSDate *now = [NSDate date];
-        if ([now timeIntervalSinceDate:dateOpen] > 0 && [now timeIntervalSinceDate:dateClose] < 0) {
-            closeTime = [NSString stringWithFormat:@"Open until %@", [dateFormatter stringFromDate:dateClose]];
-        } else {
-            closeTime = [NSString stringWithFormat:@"Opens at %@", [dateFormatter stringFromDate:dateOpen]];
-        }
-    }
-    
-    return closeTime;
-}
-
 - (void)updateImageArrows {
     NSUInteger index = self.imageModelCollectionViewManager.currentIndex;
     
@@ -324,6 +275,114 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
         self.previousImageButton.alpha = hasPrev ? 1.0 : 0.1;
     } completion:^(BOOL finished) {
     }];
+}
+
+#pragma mark - Rendering Cells
+#pragma mark -
+
+- (UITableViewCell *)renderCollectionViewCellForTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath {
+    static NSString *CollectionViewCellIdentifier = @"CollectionViewCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CollectionViewCellIdentifier forIndexPath:indexPath];
+    
+    UICollectionView *collectionView = (UICollectionView *)[cell viewWithTag:kTagCollectionView];
+    
+    self.imageModelCollectionViewManager.collectionView = collectionView;
+    collectionView.delegate = self.imageModelCollectionViewManager;
+    collectionView.dataSource = self.imageModelCollectionViewManager;
+    self.imageModelCollectionViewManager.imageModels = self.spot.images;
+    self.imageModelCollectionViewManager.placeholderImage = self.spot.placeholderImage;
+    
+    self.previousImageButton = (UIButton *)[cell viewWithTag:kTagPreviousImageButton];
+    self.nextImageButton = (UIButton *)[cell viewWithTag:kTagNextImageButton];
+    
+    [self.previousImageButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self.nextImageButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self updateImageArrows];
+    
+    return cell;
+}
+
+- (UITableViewCell *)renderSpotDetailsCellForTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath {
+    static NSString *SpotDetailsCellIdentifier = @"SpotDetailsCell";
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:SpotDetailsCellIdentifier forIndexPath:indexPath];
+    
+    UILabel *spotName = (UILabel*)[cell viewWithTag:kTagSpotNameLabel];
+    spotName.font = [UIFont fontWithName:@"Lato-Bold" size:20.0f];
+    [SHStyleKit setLabel:spotName textColor:SHStyleKitColorMyTintColor];
+    spotName.text = self.spot.name;
+    
+    //todo:update to display the spot type as well as the expense
+    UILabel *spotType = (UILabel*)[cell viewWithTag:kTagSpotTypeLabel];
+    spotType.font = [UIFont fontWithName:@"Lato-LightItalic" size:18.0f];
+    spotType.text = self.spot.spotType.name;
+    
+    UILabel *spotMatch = (UILabel*)[cell viewWithTag:kTagSpotRelevancyLabel];
+    if (self.spot.matchPercent.length) {
+        spotMatch.font = [UIFont fontWithName:@"Lato-LightItalic" size:18.0f];
+        spotMatch.text = [NSString stringWithFormat:@"%@ Match", self.spot.matchPercent];
+    }
+    else{
+        spotMatch.text = @"";
+    }
+    
+    UILabel *spotCloseTime = (UILabel*)[cell viewWithTag:kTagSpotCloseTimeLabel];
+    spotCloseTime.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
+    NSString *closeTime = self.spot.closeTimeForToday;
+    spotCloseTime.text = closeTime.length ? closeTime : @"";
+    
+    UILabel *spotAddress = (UILabel*)[cell viewWithTag:kTagSpotAddressLabel];
+    spotAddress.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
+    spotAddress.text = self.spot.addressCityState;
+    
+    return cell;
+}
+
+- (UITableViewCell *)renderSpecialsCellForTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath {
+    static NSString *SpotSpecialsCellIdentifier = @"SpotSpecialsCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SpotSpecialsCellIdentifier forIndexPath:indexPath];
+    
+    UILabel *titleLabel = (UILabel *)[cell viewWithTag:kTagSpotSpecialLabel];
+    UILabel *detailsLabel = (UILabel *)[cell viewWithTag:kTagSpotSpecialDetailsLabel];
+    UILabel *hoursLabel = (UILabel *)[cell viewWithTag:kTagSpotSpecialHoursLabel];
+    
+    titleLabel.font = [self specialTitleFont];
+    detailsLabel.font = [self specialDetailFont];
+    hoursLabel.font = [self specialDetailFont];
+    
+    SpecialModel *special = self.spot.specialForToday;
+    detailsLabel.text = special.text.length ? special.text : @"No Special";
+    hoursLabel.text = special.timeString;
+    
+    return cell;
+}
+
+- (UITableViewCell *)renderSliderCellForTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath {
+    static NSString *SpotVibeIdentifier = @"SpotVibeCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SpotVibeIdentifier forIndexPath:indexPath];
+    
+    if (indexPath.row < self.spot.averageReview.sliders.count) {
+        SliderModel *sliderModel = self.spot.averageReview.sliders[indexPath.row];
+        SliderTemplateModel *sliderTemplate = sliderModel.sliderTemplate;
+        
+        SHSlider *slider = (SHSlider *)[cell viewWithTag:kTagVibeSlider];
+        UILabel *minValue = (UILabel *)[cell viewWithTag:kTagLeftVibeLabel];
+        UILabel *maxValue = (UILabel *)[cell viewWithTag:kTagRightVibeLabel];
+        slider.vibeFeel = TRUE;
+        
+        minValue.text = sliderTemplate.minLabel.length ? sliderTemplate.minLabel : nil;
+        maxValue.text = sliderTemplate.maxLabel.length ? sliderTemplate.maxLabel : nil;
+        [slider setSelectedValue:(sliderModel.value.floatValue / 10.0f)];
+    }
+    
+    return cell;
+}
+
+- (UITableViewCell *)renderErrorCellForTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath {
+    static NSString *ErrorIdentifier = @"ErrorCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ErrorIdentifier forIndexPath:indexPath];
+    
+    return cell;
 }
 
 #pragma mark - UITableViewDataSource
@@ -354,93 +413,20 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     UITableViewCell *cell = nil;
     
     if (kSectionImages == indexPath.section) {
-        static NSString *CollectionViewCellIdentifier = @"CollectionViewCell";
-        cell = [tableView dequeueReusableCellWithIdentifier:CollectionViewCellIdentifier forIndexPath:indexPath];
-        
-        UICollectionView *collectionView = (UICollectionView *)[cell viewWithTag:kTagCollectionView];
-        
-        self.imageModelCollectionViewManager.collectionView = collectionView;
-        collectionView.delegate = self.imageModelCollectionViewManager;
-        collectionView.dataSource = self.imageModelCollectionViewManager;
-        self.imageModelCollectionViewManager.imageModels = self.spot.images;
-        self.imageModelCollectionViewManager.placeholderImage = self.spot.placeholderImage;
-        
-        self.previousImageButton = (UIButton *)[cell viewWithTag:kTagPreviousImageButton];
-        self.nextImageButton = (UIButton *)[cell viewWithTag:kTagNextImageButton];
-        
-        [self.previousImageButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [self.nextImageButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [self updateImageArrows];
+        cell = [self renderCollectionViewCellForTableView:tableView atIndexPath:indexPath];
     }
     else if (kSectionDetails == indexPath.section) {
-        static NSString *SpotDetailsCellIdentifier = @"SpotDetailsCell";
-        cell = [tableView dequeueReusableCellWithIdentifier:SpotDetailsCellIdentifier forIndexPath:indexPath];
-        
-        UILabel *spotName = (UILabel*)[cell viewWithTag:kTagSpotNameLabel];
-        spotName.font = [UIFont fontWithName:@"Lato-Bold" size:20.0f];
-        [SHStyleKit setLabel:spotName textColor:SHStyleKitColorMyTintColor];
-        spotName.text = self.spot.name;
-        
-        //todo:update to display the spot type as well as the expense
-        UILabel *spotType = (UILabel*)[cell viewWithTag:kTagSpotTypeLabel];
-        spotType.font = [UIFont fontWithName:@"Lato-LightItalic" size:18.0f];
-        spotType.text = self.spot.spotType.name;
-        
-        UILabel *spotMatch = (UILabel*)[cell viewWithTag:kTagSpotRelevancyLabel];
-        if (self.matchPercentage) {
-            spotMatch.font = [UIFont fontWithName:@"Lato-LightItalic" size:18.0f];
-            spotMatch.text = [NSString stringWithFormat:@"%@ Match",self.matchPercentage];
-        }
-        else{
-            spotMatch.text = @"";
-        }
-        
-        UILabel *spotCloseTime = (UILabel*)[cell viewWithTag:kTagSpotCloseTimeLabel];
-        spotCloseTime.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
-        spotCloseTime.text = self.closeTime;
-        
-        UILabel *spotAddress = (UILabel*)[cell viewWithTag:kTagSpotAddressLabel];
-        spotAddress.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
-        spotAddress.text = self.spot.addressCityState;
+        cell = [self renderSpotDetailsCellForTableView:tableView atIndexPath:indexPath];
     }
     else if (kSectionSpecials == indexPath.section) {
-        static NSString *SpotSpecialsCellIdentifier = @"SpotSpecialsCell";
-        cell = [tableView dequeueReusableCellWithIdentifier:SpotSpecialsCellIdentifier forIndexPath:indexPath];
-        
-        UILabel *titleLabel = (UILabel *)[cell viewWithTag:kTagSpotSpecialLabel];
-        UILabel *detailsLabel = (UILabel *)[cell viewWithTag:kTagSpotSpecialDetailsLabel];
-        UILabel *hoursLabel = (UILabel *)[cell viewWithTag:kTagSpotSpecialHoursLabel];
-
-        titleLabel.font = [self specialTitleFont];
-        detailsLabel.font = [self specialDetailFont];
-        hoursLabel.font = [self specialDetailFont];
-        
-        SpecialModel *special = self.spot.specialForToday;
-        detailsLabel.text = special.text.length ? special.text : @"No Special";
-        hoursLabel.text = special.timeString;
+        cell = [self renderSpecialsCellForTableView:tableView atIndexPath:indexPath];
     }
     else if (kSectionSliders == indexPath.section) {
-        static NSString *SpotVibeIdentifier = @"SpotVibeCell";
-        cell = [tableView dequeueReusableCellWithIdentifier:SpotVibeIdentifier forIndexPath:indexPath];
-        
-        if (indexPath.row < self.spot.averageReview.sliders.count) {
-            SliderModel *sliderModel = self.spot.averageReview.sliders[indexPath.row];
-            SliderTemplateModel *sliderTemplate = sliderModel.sliderTemplate;
-            
-            SHSlider *slider = (SHSlider *)[cell viewWithTag:kTagVibeSlider];
-            UILabel *minValue = (UILabel *)[cell viewWithTag:kTagLeftVibeLabel];
-            UILabel *maxValue = (UILabel *)[cell viewWithTag:kTagRightVibeLabel];
-            slider.vibeFeel = TRUE;
-            
-            minValue.text = sliderTemplate.minLabel.length ? sliderTemplate.minLabel : nil;
-            maxValue.text = sliderTemplate.maxLabel.length ? sliderTemplate.maxLabel : nil;
-            [slider setSelectedValue:(sliderModel.value.floatValue / 10.0f)];
-        }
-        else {
-            DebugLog(@"indexPath, %lu, %lu", (unsigned long)indexPath.section, (unsigned long)indexPath.row);
-            NSAssert(FALSE, @"Index should never be out of range");
-        }
+        cell = [self renderSliderCellForTableView:tableView atIndexPath:indexPath];
+    }
+    else {
+        //NSAssert(FALSE, @"Index should never be out of range");
+        cell = [self renderErrorCellForTableView:tableView atIndexPath:indexPath];
     }
     
     return cell;
@@ -461,7 +447,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
         return 95.0f;
     }
     else if (kSectionSpecials == indexPath.section) {
-        NSString *special = [self specialsForToday];
+        NSString *special = self.spot.specialForToday.text;
         
         CGFloat maxWidth = 280.0f;
         CGFloat titleHeight = [[SHAppUtil defaultInstance] heightForString:SpotSpecialLabelText font:[self specialTitleFont] maxWidth:maxWidth];
@@ -474,8 +460,9 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
     else if (kSectionSliders == indexPath.section) {
         return 80.0f;
     }
-    
-    return 0.0f;
+    else {
+        return 5.0f;
+    }
 }
 
 #pragma mark - SHImageModelCollectionDelegate
@@ -527,7 +514,6 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
                     frame.size.height = topImageHeight;
                     frame.origin.y = yPos;
                     imageView.frame = frame;
-                    //LOG_FRAME(@"frame", frame);
                 }
             }
         }

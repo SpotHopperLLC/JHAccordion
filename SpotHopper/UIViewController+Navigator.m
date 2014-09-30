@@ -159,10 +159,10 @@
 
 - (void)goToSpotProfile:(SpotModel *)spot {
     [Tracker track:@"View Spot Profile" properties:@{@"Name" : spot.name, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    
+
     SHSpotProfileViewController *vc = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHSpotProfileVC"];
-    [vc setSpot:spot];
-    
+    vc.spot = spot;
+
     if (self.navigationController.viewControllers.count && [self isEqual:self.navigationController.viewControllers[0]]) {
         [self.navigationController pushViewController:vc animated:TRUE];
     }

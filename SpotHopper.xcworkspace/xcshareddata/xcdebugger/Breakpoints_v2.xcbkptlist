@@ -128,9 +128,16 @@
             moduleName = "">
             <Actions>
                <BreakpointActionProxy
+                  ActionExtensionID = "Xcode.BreakpointAction.Log">
+                  <ActionContent
+                     message = "doesNotRecognizeSelector"
+                     conveyanceType = "0">
+                  </ActionContent>
+               </BreakpointActionProxy>
+               <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">
                   <ActionContent
-                     consoleCommand = "">
+                     consoleCommand = "po NSStringFromSelector(_cmd);">
                   </ActionContent>
                </BreakpointActionProxy>
             </Actions>
