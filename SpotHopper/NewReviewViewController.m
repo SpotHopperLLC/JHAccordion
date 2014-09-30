@@ -141,7 +141,7 @@
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
+    [super viewDidLoad];
     
     // Sets title
     [self setTitle:@"New Reviews"];
@@ -166,6 +166,10 @@
     
     [_tblReviews setTableHeaderView:[self formForReviewTypeIndex:_selectedReviewType]];
     [self fetchFormData];
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -830,7 +834,7 @@
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
         if (drinkType == nil || [drinkType objectForKey:@"id"] == nil) {
             [self showAlert:@"Oops" message:@"Not able to submit a beer right now"];
-            [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create beer" level:kRavenLogLevelDebugError];
+            [Tracker logError:@"Drink type nil when trying to create beer" class:[self class] trace:NSStringFromSelector(_cmd)];
             return;
         }
         NSNumber *drinkId = [drinkType objectForKey:@"id"];
@@ -936,7 +940,7 @@
         NSDictionary *drinkType = [self getDrinkType:_selectedReviewType];
         if (drinkType == nil || [drinkType objectForKey:@"id"] == nil) {
             [self showAlert:@"Oops" message:@"Not able to submit a wine right now"];
-            [[RavenClient sharedClient] captureMessage:@"Drink type nil when trying to create wine" level:kRavenLogLevelDebugError];
+            [Tracker logError:@"Drink type nil when trying to create wine" class:[self class] trace:NSStringFromSelector(_cmd)];
             return;
         }
         NSNumber *drinkId = [drinkType objectForKey:@"id"];
@@ -1317,12 +1321,10 @@
     BOOL containsHouse = [name.lowercaseString contains:@"house"];
     
     CGRect frame = _viewFormNewCocktail.frame;
-    CGFloat heightDiff = 0.0f;
     if (!containsHouse) {
         frame.size.height = CGRectGetMaxY(_txtCocktailAlcoholType.frame) + 16.0f;
     } else {
         frame.size.height = CGRectGetMaxY(_txtCocktailWhichSpot.frame) + 16.0f;
-        heightDiff = CGRectGetHeight(_viewFormNewCocktail.frame) - CGRectGetHeight(frame);
     }
     
     [UIView animateWithDuration:(animate ? 0.35f : 0.0f) animations:^{
@@ -1332,7 +1334,6 @@
         [_imgCocktailWhichSpot setAlpha:(containsHouse ? 1.0f : 0.0f)];
         [_txtCocktailWhichSpot setAlpha:(containsHouse ? 1.0f : 0.0f)];
     } completion:^(BOOL finished) {
-        
     }];
 }
 

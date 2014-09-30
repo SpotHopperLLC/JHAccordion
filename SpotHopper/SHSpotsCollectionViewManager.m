@@ -15,9 +15,11 @@
 
 #import "SHStyleKit+Additions.h"
 #import "UIImageView+AFNetworking.h"
-#import "NetworkHelper.h"
+#import "ImageUtil.h"
 
 #import "TellMeMyLocation.h"
+
+#import "SHCollectionViewTableManager.h"
 
 #import "Tracker.h"
 #import "Tracker+Events.h"
@@ -44,13 +46,17 @@
 #define kSpotCellReviewItButton 13
 #define kSpotCellMenuButton 14
 
+#define kSpotCellTableContainerView 600
+
 #pragma mark - Class Extension
 #pragma mark -
 
-@interface SHSpotsCollectionViewManager ()
+@interface SHSpotsCollectionViewManager () <SHCollectionViewTableManagerDelegate, UIGestureRecognizerDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, weak) IBOutlet id<SHSpotsCollectionViewManagerDelegate> delegate;
+
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) UITableView *tableView;
 
 @property (nonatomic, strong) SpotListModel *spotList;
 
@@ -78,7 +84,7 @@
 - (void)updateSpotList:(SpotListModel *)spotList {
     NSAssert(self.delegate, @"Delegate must be defined");
 
-    static NSString *lock;
+    static NSString *lock = @"LOCK";
     @synchronized(lock) {
         if (_isUpdatingData) {
             [self performSelector:@selector(updateSpotList:) withObject:spotList afterDelay:0.25];
@@ -87,18 +93,21 @@
             _isUpdatingData = TRUE;
             self.spotList = spotList;
             [self.collectionView reloadData];
-            [self.collectionView setContentOffset:CGPointMake(0, 0)];
+            self.collectionView.contentOffset = CGPointMake(0, 0);
             _currentIndex = 0;
             _isUpdatingData = FALSE;
             
             [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:_currentIndex] position:_currentIndex+1 isSpecials:FALSE];
+            
+            for (SpotModel *spot in spotList.spots) {
+                [ImageUtil preloadImageModels:spot.images];
+            }
         }
     }
 }
 
 - (void)changeIndex:(NSUInteger)index {
     if (index != _currentIndex && index < self.spotList.spots.count) {
-        NSLog(@"Manager - Changing to index: %lu", (long)index);
         _currentIndex = index;
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_currentIndex inSection:0];
         [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:TRUE];
@@ -162,6 +171,21 @@
     }
 }
 
+#pragma mark - SHCollectionViewTableManagerDelegate
+#pragma mark -
+
+- (void)collectionViewTableManagerShouldCollapse:(SHCollectionViewTableManager *)mgr {
+    if ([self.delegate respondsToSelector:@selector(collectionViewManagerShouldCollapse:)]) {
+        [self.delegate collectionViewManagerShouldCollapse:self];
+    }
+}
+
+- (void)collectionViewTableManager:(SHCollectionViewTableManager *)mgr displaySpot:(SpotModel *)spot {
+    if ([self.delegate respondsToSelector:@selector(spotsCollectionViewManager:displaySpot:)]) {
+        [self.delegate spotsCollectionViewManager:self displaySpot:spot];
+    }
+}
+
 #pragma mark - UICollectionViewDataSource
 #pragma mark -
 
@@ -171,10 +195,32 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kSpotCellIdentifier forIndexPath:indexPath];
+    
+    UIView *selectedBackgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+    selectedBackgroundView.backgroundColor = [UIColor clearColor];
+    cell.selectedBackgroundView = selectedBackgroundView;
+    
     if (indexPath.item < self.spotList.spots.count) {
         SpotModel *spot = self.spotList.spots[indexPath.item];
+        
+        UIView *tableContainerView = [cell viewWithTag:kSpotCellTableContainerView];
+        UITableView *tableView = nil;
+        if (!tableContainerView.subviews.count) {
+            tableView = [self embedTableViewInSuperView:tableContainerView];
+        }
+        else {
+            tableView = (UITableView *)tableContainerView.subviews[0];
+        }
+        
+        SHCollectionViewTableManager *tableManager = [[SHCollectionViewTableManager alloc] init];
+        tableManager.delegate = self;
+        [tableManager manageTableView:tableView forSpot:spot];
+        [self addTableManager:tableManager forIndexPath:indexPath];
+        
         [self renderCell:cell withSpot:spot atIndex:indexPath.item];
     }
+    
+    [self attachedPanGestureToCell:cell];
     
     return cell;
 }
@@ -183,14 +229,26 @@
 #pragma mark -
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"Selected item %lu", (long)indexPath.item);
-    
-    if ([self.delegate respondsToSelector:@selector(spotsCollectionViewManager:didSelectSpotAtIndex:)]) {
-        [self.delegate spotsCollectionViewManager:self didSelectSpotAtIndex:indexPath.item];
+    if ([self.delegate respondsToSelector:@selector(collectionViewManagerDidTapHeader:)]) {
+        [self.delegate collectionViewManagerDidTapHeader:self];
     }
+    
+//    if ([self.delegate respondsToSelector:@selector(spotsCollectionViewManager:didSelectSpotAtIndex:)]) {
+//        [self.delegate spotsCollectionViewManager:self didSelectSpotAtIndex:indexPath.item];
+//    }
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    LOG_FRAME(@"collection view", collectionView.frame);
+    return CGSizeMake(CGRectGetWidth(collectionView.frame), CGRectGetHeight(collectionView.frame));
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    [self removeTableManagerForIndexPath:indexPath];
 }
 
 #pragma mark - UIScrollViewDelegate
+#pragma mark -
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView == self.collectionView) {
@@ -204,21 +262,39 @@
     }
 }
 
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    // if the velocity is "slow" it should just go the next cell, otherwise let it go to the next paged position
+    // positive x is moving right, negative x is moving left
+    // slow is < 0.2.0
+    
+    CGFloat width = CGRectGetWidth(self.collectionView.frame);
+    NSUInteger currentIndex = MAX(MIN(round(self.collectionView.contentOffset.x / CGRectGetWidth(self.collectionView.frame)), self.spotList.spots.count - 1), 0);
+    
+    if (fabsf(velocity.x) > 2.0) {
+        CGFloat x = targetContentOffset->x;
+        x = roundf(x / width) * width;
+        targetContentOffset->x = x;
+    }
+    else {
+        NSUInteger targetIndex = velocity.x > 0.0 ? MIN(currentIndex + 1, self.spotList.spots.count - 1) : MAX(currentIndex - 1, 0);
+        targetContentOffset->x = targetIndex * width;
+    }
+}
+
 #pragma mark - Base Overrides
 #pragma mark -
 
 - (void)renderCell:(UICollectionViewCell *)cell withSpot:(SpotModel *)spot atIndex:(NSUInteger)index {
-    UIImageView *spotImageView = (UIImageView *)[cell viewWithTag:kSpotCellSpotImageView];
+    UIView *headerView = [cell viewWithTag:500];
+    
+    UIImageView *spotImageView = (UIImageView *)[headerView viewWithTag:kSpotCellSpotImageView];
     
     spotImageView.image = nil;
+    ImageModel *highlightImage = spot.highlightImage;
     
-    if (spot.imageUrl.length) {
-        [spotImageView setImageWithURL:[NSURL URLWithString:spot.imageUrl] placeholderImage:spot.placeholderImage];
-    }
-    else if (spot.images.count) {
-        ImageModel *imageModel = spot.images[0];
+    if (highlightImage) {
         __weak UIImageView *weakImageView = spotImageView;
-        [NetworkHelper loadImage:imageModel placeholderImage:spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
+        [ImageUtil loadImage:highlightImage placeholderImage:spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
             weakImageView.image = thumbImage;
         } withFullImageBlock:^(UIImage *fullImage) {
             weakImageView.image = fullImage;
@@ -231,60 +307,34 @@
         spotImageView.image = spot.placeholderImage;
     }
     
-    UILabel *nameLabel = [self labelInView:cell withTag:kSpotCellSpotNameLabel];
-    UILabel *typeLabel = [self labelInView:cell withTag:kSpotCellSpotTypeLabel];
-    UILabel *neighborhoodLabel = [self labelInView:cell withTag:kSpotCellNeighborhoodLabel];
-    UILabel *distanceLabel = [self labelInView:cell withTag:kSpotCellDistanceLabel];
-    UILabel *positionLabel = [self labelInView:cell withTag:kSpotCellPositionLabel];
-    UIImageView *matchImageView = [self imageViewInView:cell withTag:kSpotCellMatchPercentageImageView];
-    UILabel *percentageLabel = [self labelInView:cell withTag:kSpotCellPercentageLabel];
-    UILabel *matchLabel = [self labelInView:cell withTag:kSpotCellMatchLabel];
-    UIButton *previousButton = [self buttonInView:cell withTag:kSpotCellLeftButton];
-    UIButton *nextButton = [self buttonInView:cell withTag:kSpotCellRightButton];
-    UIButton *findSimilarButton = [self buttonInView:cell withTag:kSpotCellFindSimilarButton];
-    UIButton *reviewItButton = [self buttonInView:cell withTag:kSpotCellReviewItButton];
-    UIButton *menuButton = [self buttonInView:cell withTag:kSpotCellMenuButton];
+    UILabel *nameLabel = [self labelInView:headerView withTag:kSpotCellSpotNameLabel];
+    UILabel *typeLabel = [self labelInView:headerView withTag:kSpotCellSpotTypeLabel];
+    UILabel *neighborhoodLabel = [self labelInView:headerView withTag:kSpotCellNeighborhoodLabel];
+    UILabel *distanceLabel = [self labelInView:headerView withTag:kSpotCellDistanceLabel];
+    UIImageView *matchImageView = [self imageViewInView:headerView withTag:kSpotCellMatchPercentageImageView];
+    UILabel *percentageLabel = [self labelInView:headerView withTag:kSpotCellPercentageLabel];
+    UILabel *matchLabel = [self labelInView:headerView withTag:kSpotCellMatchLabel];
     
     NSAssert(nameLabel, @"View must be defined");
     NSAssert(typeLabel, @"View must be defined");
     NSAssert(neighborhoodLabel, @"View must be defined");
     NSAssert(distanceLabel, @"View must be defined");
-    NSAssert(positionLabel, @"View must be defined");
     NSAssert(matchImageView, @"View must be defined");
     NSAssert(percentageLabel, @"View must be defined");
     NSAssert(matchLabel, @"View must be defined");
-    NSAssert(previousButton, @"View must be defined");
-    NSAssert(nextButton, @"View must be defined");
-    NSAssert(findSimilarButton, @"View must be defined");
-    NSAssert(reviewItButton, @"View must be defined");
-    NSAssert(menuButton, @"View must be defined");
     
     [SHStyleKit setLabel:typeLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setLabel:neighborhoodLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setLabel:distanceLabel textColor:SHStyleKitColorMyTextColor];
-    [SHStyleKit setLabel:positionLabel textColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setLabel:percentageLabel textColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setLabel:matchLabel textColor:SHStyleKitColorMyTintColor];
-    
-    [SHStyleKit setButton:findSimilarButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
-    [SHStyleKit setButton:reviewItButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
-    [SHStyleKit setButton:menuButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
     
     [nameLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
     [typeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [neighborhoodLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [distanceLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
-    [positionLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     [percentageLabel setFont:[UIFont fontWithName:@"Lato-Light" size:22.0f]];
     [matchLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
-    [findSimilarButton.titleLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
-    [reviewItButton.titleLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
-    [menuButton.titleLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
-    
-    CGSize buttonImageSize = CGSizeMake(30, 30);
-    [SHStyleKit setButton:findSimilarButton withDrawing:SHStyleKitDrawingSearchIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor size:buttonImageSize];
-    [SHStyleKit setButton:reviewItButton withDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor size:buttonImageSize];
-    [SHStyleKit setButton:menuButton withDrawing:SHStyleKitDrawingDrinkMenuIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor size:buttonImageSize];
     
     nameLabel.text = spot.name;
     nameLabel.textColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
@@ -299,7 +349,6 @@
     CGFloat miles = meters * kMeterToMile;
     
     distanceLabel.text = [NSString stringWithFormat:@"%0.1f miles away", miles];
-    positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", (long)index+1, (long)self.spotList.spots.count];
     percentageLabel.text = [NSString stringWithFormat:@"%@", spot.matchPercent];
     
     if (self.spotList.spots.count == 1) {
@@ -307,12 +356,6 @@
         
         percentageLabel.hidden = TRUE;
         matchLabel.hidden = TRUE;
-        previousButton.hidden = TRUE;
-        nextButton.hidden = TRUE;
-        positionLabel.hidden = TRUE;
-        findSimilarButton.hidden = FALSE;
-        reviewItButton.hidden = FALSE;
-        menuButton.hidden = FALSE;
     }
     else {
         UIImage *bubbleImage = [SHStyleKit drawImage:SHStyleKitDrawingMapBubblePinFilledIcon color:SHStyleKitColorNone size:CGSizeMake(60, 60)];
@@ -320,16 +363,6 @@
 
         percentageLabel.hidden = FALSE;
         matchLabel.hidden = FALSE;
-        positionLabel.hidden = FALSE;
-        findSimilarButton.hidden = TRUE;
-        reviewItButton.hidden = TRUE;
-        menuButton.hidden = TRUE;
-        
-        [SHStyleKit setButton:previousButton withDrawing:SHStyleKitDrawingArrowLeftIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
-        previousButton.hidden = index == 0;
-        
-        [SHStyleKit setButton:nextButton withDrawing:SHStyleKitDrawingArrowRightIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
-        nextButton.hidden = index == self.spotList.spots.count - 1;
     }
 }
 
@@ -339,8 +372,8 @@
 - (void)reportedChangedIndex {
     [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:_currentIndex] position:_currentIndex+1 isSpecials:FALSE];
 
-    if ([self.delegate respondsToSelector:@selector(spotsCollectionViewManager:didChangeToSpotAtIndex:)]) {
-        [self.delegate spotsCollectionViewManager:self didChangeToSpotAtIndex:_currentIndex];
+    if ([self.delegate respondsToSelector:@selector(spotsCollectionViewManager:didChangeToSpotAtIndex:count:)]) {
+        [self.delegate spotsCollectionViewManager:self didChangeToSpotAtIndex:_currentIndex count:self.spotList.spots.count];
     }
 }
 

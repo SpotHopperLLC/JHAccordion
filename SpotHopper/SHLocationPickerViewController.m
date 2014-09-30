@@ -40,11 +40,15 @@
 #pragma mark -
 
 - (void)viewDidLoad {
-    [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
+    [super viewDidLoad];
     
     NSAssert(self.tableView, @"Outlet is required");
     NSAssert(self.tableView.delegate == self, @"Delegate must be self");
     NSAssert(self.tableView.dataSource == self, @"DataSource must be self");
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsNoBackground];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

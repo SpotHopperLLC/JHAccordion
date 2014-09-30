@@ -23,7 +23,7 @@
 #pragma mark -
 
 - (void)viewDidLoad {
-    [self viewDidLoad:@[kDidLoadOptionsNoBackground]];
+    [super viewDidLoad];
     
     self.navigationController.navigationBar.barTintColor = [SHStyleKit myLightHeaderColor];
     self.navigationController.navigationBar.translucent = NO;
@@ -32,6 +32,10 @@
     self.backgroundImageView.image = [SHStyleKit gradientBackgroundWithSize:self.view.frame.size];
     
     self.tableView.hidden = TRUE;
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsNoBackground];
 }
 
 #pragma mark - User Actions

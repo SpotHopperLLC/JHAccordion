@@ -8,12 +8,15 @@
 
 #import "SHSpecialsCollectionViewManager.h"
 
+#import "SHAppUtil.h"
+
 #import "SpecialModel.h"
 #import "SpotModel.h"
 
+#import "SHDrawnButton.h"
 #import "SHStyleKit+Additions.h"
 #import "UIImageView+AFNetworking.h"
-#import "NetworkHelper.h"
+#import "ImageUtil.h"
 
 #import "Tracker.h"
 #import "Tracker+Events.h"
@@ -21,11 +24,13 @@
 
 #import "NSArray+DailySpecials.h"
 
+#import "SHCollectionViewTableManager.h"
+
 #define kSpecialCellIdentifier @"SpecialCell"
 
 #define kSpecialCellSpotImageView 1
 #define kSpecialCellSpotNameLabel 2
-#define kSpecialCellSpecialTextView 3
+#define kSpecialCellSpecialLabel 3
 #define kSpecialCellLikeButton 4
 #define kSpecialCellLikeLabel 5
 #define kSpecialCellShareButton 6
@@ -34,12 +39,15 @@
 #define kSpecialCellPositionLabel 10
 #define kSpecialCellTimeLabel 11
 
+#define kSpecialCellTableContainerView 600
+
 #pragma mark - Class Extension
 #pragma mark -
 
-@interface SHSpecialsCollectionViewManager ()
+@interface SHSpecialsCollectionViewManager () <SHCollectionViewTableManagerDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, weak) IBOutlet id<SHSpecialsCollectionViewManagerDelegate> delegate;
+
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 
 @property (nonatomic, strong) NSArray *spots;
@@ -68,7 +76,7 @@
 - (void)updateSpots:(NSArray *)spots {
     NSAssert(self.delegate, @"Delegate must be defined");
     
-    static NSString *lock;
+    static NSString *lock = @"LOCK";
     @synchronized(lock) {
         if (_isUpdatingData) {
             [self performSelector:@selector(updateSpots:) withObject:spots afterDelay:0.25];
@@ -76,11 +84,15 @@
         else {
             _isUpdatingData = TRUE;
             self.spots = spots;
-            [self.collectionView setContentOffset:CGPointMake(0, 0)];
             [self.collectionView reloadData];
+            self.collectionView.contentOffset = CGPointMake(0, 0);
             _currentIndex = 0;
             _isUpdatingData = FALSE;
             [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:_currentIndex] position:_currentIndex+1 isSpecials:TRUE];
+            
+            for (SpotModel *spot in spots) {
+                [ImageUtil preloadImageModels:spot.images];
+            }
         }
     }
 }
@@ -88,7 +100,6 @@
 - (void)changeIndex:(NSUInteger)index {
     // change collection view position if the index is in bounds and set _currentIndex
     if (index != _currentIndex && index < self.spots.count) {
-        DebugLog(@"Manager - Changing to index: %lu", (long)index);
         _currentIndex = index;
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_currentIndex inSection:0];
         [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:TRUE];
@@ -138,9 +149,14 @@
         SpecialModel *special = [spot specialForToday];
         
         UIButton *likeButton = [self buttonInView:cell withTag:kSpecialCellLikeButton];
+        UIImage *highlightedImage = [SHStyleKit drawImage:SHStyleKitDrawingThumbsUpIcon color:SHStyleKitColorMyTintColor size:CGSizeMake(30, 30)];
+        [likeButton setImage:highlightedImage forState:UIControlStateHighlighted];
         likeButton.highlighted = special.userLikesSpecial;
         
         UILabel *likeLabel = [self labelInView:cell withTag:kSpecialCellLikeLabel];
+        
+        NSAssert(special.likeCount < 40000, @"Likes should not exceed 40000 normally");
+        
         likeLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)special.likeCount];
     }
 }
@@ -175,6 +191,21 @@
     }
 }
 
+#pragma mark - SHCollectionViewTableManagerDelegate
+#pragma mark -
+
+- (void)collectionViewTableManagerShouldCollapse:(SHCollectionViewTableManager *)mgr {
+    if ([self.delegate respondsToSelector:@selector(collectionViewManagerShouldCollapse:)]) {
+        [self.delegate collectionViewManagerShouldCollapse:self];
+    }
+}
+
+- (void)collectionViewTableManager:(SHCollectionViewTableManager *)mgr displaySpot:(SpotModel *)spot {
+    if ([self.delegate respondsToSelector:@selector(specialsCollectionViewManager:displaySpot:)]) {
+        [self.delegate specialsCollectionViewManager:self displaySpot:spot];
+    }
+}
+
 #pragma mark - UICollectionViewDataSource
 #pragma mark -
 
@@ -182,17 +213,33 @@
     return self.spots.count;
 }
 
-// The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    // dequeue named cell template
-    
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kSpecialCellIdentifier forIndexPath:indexPath];
+    
+    UIView *selectedBackgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+    selectedBackgroundView.backgroundColor = [UIColor clearColor];
+    cell.selectedBackgroundView = selectedBackgroundView;
     
     if (indexPath.item < self.spots.count) {
         SpotModel *spot = self.spots[indexPath.item];
-        [self renderCell:cell withSpot:spot atIndex:indexPath.item];
+        
+        UIView *tableContainerView = [cell viewWithTag:kSpecialCellTableContainerView];
+        UITableView *tableView = nil;
+        if (!tableContainerView.subviews.count) {
+             tableView = [self embedTableViewInSuperView:tableContainerView];
+        }
+        else {
+            tableView = (UITableView *)tableContainerView.subviews[0];
+        }
+        SHCollectionViewTableManager *tableManager = [[SHCollectionViewTableManager alloc] init];
+        tableManager.delegate = self;
+        [tableManager manageTableView:tableView forTodaysSpecialAtSpot:spot];
+        [self addTableManager:tableManager forIndexPath:indexPath];
 
+        [self renderCell:cell withSpot:spot atIndex:indexPath.item];
     }
+    
+    [self attachedPanGestureToCell:cell];
     
     return cell;
 }
@@ -201,14 +248,25 @@
 #pragma mark -
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    DebugLog(@"Selected item %lu", (long)indexPath.item);
-    
-    if ([self.delegate respondsToSelector:@selector(specialsCollectionViewManager:didSelectSpotAtIndex:)]) {
-        [self.delegate specialsCollectionViewManager:self didSelectSpotAtIndex:indexPath.item];
+    if ([self.delegate respondsToSelector:@selector(collectionViewManagerDidTapHeader:)]) {
+        [self.delegate collectionViewManagerDidTapHeader:self];
     }
+    
+//    if ([self.delegate respondsToSelector:@selector(specialsCollectionViewManager:didSelectSpotAtIndex:)]) {
+//        [self.delegate specialsCollectionViewManager:self didSelectSpotAtIndex:indexPath.item];
+//    }
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return CGSizeMake(CGRectGetWidth(collectionView.frame), CGRectGetHeight(collectionView.frame));
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    [self removeTableManagerForIndexPath:indexPath];
 }
 
 #pragma mark - UIScrollViewDelegate
+#pragma mark -
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView == self.collectionView) {
@@ -222,23 +280,42 @@
     }
 }
 
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    // if the velocity is "slow" it should just go the next cell, otherwise let it go to the next paged position
+    // positive x is moving right, negative x is moving left
+    // slow is < 2.0
+    
+    CGFloat width = CGRectGetWidth(self.collectionView.frame);
+    NSUInteger currentIndex = MAX(MIN(round(self.collectionView.contentOffset.x / CGRectGetWidth(self.collectionView.frame)), self.spots.count - 1), 0);
+
+    if (fabsf(velocity.x) > 2.0) {
+        CGFloat x = targetContentOffset->x;
+        x = roundf(x / width) * width;
+        targetContentOffset->x = x;
+    }
+    else {
+        NSUInteger targetIndex = velocity.x > 0.0 ? MIN(currentIndex + 1, self.spots.count - 1) : MAX(currentIndex - 1, 0);
+        targetContentOffset->x = targetIndex * width;
+    }
+}
+
 #pragma mark - Base Overrides
 #pragma mark -
 
 - (void)renderCell:(UICollectionViewCell *)cell withSpot:(SpotModel *)spot atIndex:(NSUInteger)index {
+    UIView *headerView = [cell viewWithTag:500];
+    
     SpecialModel *special = [spot specialForToday];
-
-    UIImageView *spotImageView = (UIImageView *)[cell viewWithTag:kSpecialCellSpotImageView];
+    UIImageView *spotImageView = (UIImageView *)[headerView viewWithTag:kSpecialCellSpotImageView];
+    
+    NSAssert([spotImageView isKindOfClass:[UIImageView class]], @"Image View is expected");
     
     spotImageView.image = nil;
+    ImageModel *highlightImage = spot.highlightImage;
     
-    if (spot.imageUrl.length) {
-        [spotImageView setImageWithURL:[NSURL URLWithString:spot.imageUrl] placeholderImage:spot.placeholderImage];
-    }
-    else if (spot.images.count) {
-        ImageModel *imageModel = spot.images[0];
+    if (highlightImage) {
         __weak UIImageView *weakImageView = spotImageView;
-        [NetworkHelper loadImage:imageModel placeholderImage:spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
+        [ImageUtil loadImage:highlightImage placeholderImage:spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
             weakImageView.image = thumbImage;
         } withFullImageBlock:^(UIImage *fullImage) {
             weakImageView.image = fullImage;
@@ -251,47 +328,28 @@
         spotImageView.image = spot.placeholderImage;
     }
     
-    UILabel *nameLabel = [self labelInView:cell withTag:kSpecialCellSpotNameLabel];
-    UILabel *timeLabel = [self labelInView:cell withTag:kSpecialCellTimeLabel];
-    UITextView *specialTextView = [self textViewInView:cell withTag:kSpecialCellSpecialTextView];
-    UIButton *likeButton = [self buttonInView:cell withTag:kSpecialCellLikeButton];
-    UILabel *likeLabel = [self labelInView:cell withTag:kSpecialCellLikeLabel];
-    UIButton *shareButton = [self buttonInView:cell withTag:kSpecialCellShareButton];
-    UILabel *positionLabel = [self labelInView:cell withTag:kSpecialCellPositionLabel];
+    UILabel *nameLabel = [self labelInView:headerView withTag:kSpecialCellSpotNameLabel];
+    UILabel *timeLabel = [self labelInView:headerView withTag:kSpecialCellTimeLabel];
+    UILabel *specialLabel = [self labelInView:headerView withTag:kSpecialCellSpecialLabel];
+    UIButton *likeButton = [self buttonInView:headerView withTag:kSpecialCellLikeButton];
+    UILabel *likeLabel = [self labelInView:headerView withTag:kSpecialCellLikeLabel];
     
     NSAssert(nameLabel, @"View must be defined");
     NSAssert(timeLabel, @"View must be defined");
-    NSAssert(specialTextView, @"View must be defined");
+    NSAssert(specialLabel, @"View must be defined");
     NSAssert(likeButton, @"View must be defined");
     NSAssert(likeLabel, @"View must be defined");
-    NSAssert(shareButton, @"View must be defined");
-    NSAssert(positionLabel, @"View must be defined");
     
     [SHStyleKit setLabel:nameLabel textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:timeLabel textColor:SHStyleKitColorMyTextColor];
-    [SHStyleKit setButton:likeButton withDrawing:SHStyleKitDrawingThumbsUpIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyWhiteColor];
-    [SHStyleKit setButton:shareButton withDrawing:SHStyleKitDrawingShareIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyWhiteColor];
+    [SHStyleKit setButton:likeButton withDrawing:SHStyleKitDrawingThumbsUpIcon normalColor:SHStyleKitColorMyWhiteColor highlightedColor:SHStyleKitColorMyTintColor size:CGSizeMake(30, 30)];
     [SHStyleKit setLabel:likeLabel textColor:SHStyleKitColorMyTintColor];
-    [SHStyleKit setLabel:positionLabel textColor:SHStyleKitColorMyTextColor];
-    
-    [nameLabel setFont:[UIFont fontWithName:@"Lato-Bold" size:14.0f]];
-    [timeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:12.0f]];
-    specialTextView.contentOffset = CGPointMake(0.0f, 0.0f);
-    [specialTextView setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
-    [likeLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
-    [positionLabel setFont:[UIFont fontWithName:@"Lato-Light" size:14.0f]];
     
     nameLabel.text = spot.name;
     
     if (special) {
         timeLabel.text = special.timeString;
-        
-        NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:14.0], NSForegroundColorAttributeName : [SHStyleKit myTextColor] };
-        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:special.text.length ? special.text : @"No Special" attributes:attributes];
-        specialTextView.attributedText = attributedString;
-        [specialTextView setContentOffset:CGPointMake(0, 0)];
-        [specialTextView flashScrollIndicators];
-        
+        specialLabel.text = special.text.length ? special.text : @"No Special";
         likeButton.highlighted = special.userLikesSpecial;
         likeLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)special.likeCount];
         likeButton.hidden = FALSE;
@@ -299,26 +357,16 @@
     }
     else {
         timeLabel.text = nil;
-        
-        NSDictionary *attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Lato-Light" size:14.0], NSForegroundColorAttributeName : [SHStyleKit myTextColor] };
-        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:@"No Special" attributes:attributes];
-        specialTextView.attributedText = attributedString;
-        [specialTextView setContentOffset:CGPointMake(0, 0)];
-        [specialTextView flashScrollIndicators];
-
+        specialLabel.text = @"No Special";
         likeButton.hidden = TRUE;
         likeLabel.hidden = TRUE;
     }
     
-    positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", (long)index+1, (long)self.spots.count];
-    
-    UIButton *previousButton = [self buttonInView:cell withTag:kSpecialCellLeftButton];
-    [SHStyleKit setButton:previousButton withDrawing:SHStyleKitDrawingArrowLeftIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
-    previousButton.hidden = index == 0;
-    
-    UIButton *nextButton = [self buttonInView:cell withTag:kSpecialCellRightButton];
-    [SHStyleKit setButton:nextButton withDrawing:SHStyleKitDrawingArrowRightIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
-    nextButton.hidden = index == self.spots.count - 1;
+    NSLayoutConstraint *heightConstraint = [[SHAppUtil defaultInstance] getHeightConstraint:specialLabel];
+    if (heightConstraint) {
+        CGFloat height = [[SHAppUtil defaultInstance] heightForString:specialLabel.text font:specialLabel.font maxWidth:CGRectGetWidth(specialLabel.frame)];
+        heightConstraint.constant = MIN(61.0, height);
+    }
 }
 
 #pragma mark - Private
@@ -327,8 +375,8 @@
 - (void)reportedChangedIndex {
     [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:_currentIndex] position:_currentIndex+1 isSpecials:TRUE];
     
-    if ([self.delegate respondsToSelector:@selector(specialsCollectionViewManager:didChangeToSpotAtIndex:)]) {
-        [self.delegate specialsCollectionViewManager:self didChangeToSpotAtIndex:_currentIndex];
+    if ([self.delegate respondsToSelector:@selector(specialsCollectionViewManager:didChangeToSpotAtIndex:count:)]) {
+        [self.delegate specialsCollectionViewManager:self didChangeToSpotAtIndex:_currentIndex count:self.spots.count];
     }
 }
 

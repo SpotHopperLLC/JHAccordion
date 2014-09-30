@@ -9,6 +9,7 @@
 #import "BaseViewController.h"
 
 #import "SHAppConfiguration.h"
+#import "SHAppUtil.h"
 
 #import "MBProgressHUD.h"
 
@@ -54,7 +55,7 @@ typedef void(^AlertBlock)();
 @property (nonatomic, strong) UIAlertView *alertView;
 @property (nonatomic, copy) AlertBlock alertBlock;
 
-@property (nonatomic, strong) UIBarButtonItem *backButtonItem;
+//@property (nonatomic, strong) UIBarButtonItem *backButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *rightSidebarButtonItem;
 
 @property (nonatomic, strong) UIImageView *backgroundImage;
@@ -77,15 +78,9 @@ typedef void(^AlertBlock)();
 }
 
 - (void)viewDidLoad {
-    [self viewDidLoad:@[kDidLoadOptionsBlurredBackground]];
-}
-
-- (void)viewDidLoad:(NSArray*)options {
     [super viewDidLoad];
     
-    if ([options containsObject:kDidLoadOptionsDontAdjustForIOS6] == NO && SYSTEM_VERSION_LESS_THAN(@"7.0")) {
-        [self adjustIOS6Crap];
-    }
+    NSArray *options = [self viewOptions];
     
     if (![options containsObject:kDidLoadOptionsNoBackground]) {
         _backgroundImage = [[UIImageView alloc] initWithFrame:self.view.frame];
@@ -95,22 +90,18 @@ typedef void(^AlertBlock)();
         
         [self.view insertSubview:_backgroundImage atIndex:0];
     }
-    
-    _backButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"btn_nav_back"] style:UIBarButtonItemStylePlain target:self action:@selector(onClickBack:)];
-    [_backButtonItem setBackgroundImage:[[UIImage alloc] init] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    if ([self.navigationController.viewControllers count] > 1) {
-        [self.navigationItem setBackBarButtonItem:nil];
-        [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(onClickBack:)]];
-    }
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsBlurredBackground];
+}
+
+- (void)viewDidLoad:(NSArray*)options {
+    [super viewDidLoad];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    if ([self.navigationController.viewControllers count] > 1) {
-        [self.navigationItem setBackBarButtonItem:nil];
-        [self.navigationItem setLeftBarButtonItem:_backButtonItem];
-    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushNotificationReceived:) name:kNotificationPushReceived object:nil];
     
@@ -137,14 +128,6 @@ typedef void(^AlertBlock)();
 
 - (BOOL)prefersStatusBarHidden {
     return NO;
-}
-
-- (void)adjustIOS6Crap {
-    for (UIView *view in self.view.subviews) {
-        CGRect frame = view.frame;
-        frame.origin.y -= 64.0f;
-        [view setFrame:frame];
-    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -458,59 +441,19 @@ typedef void(^AlertBlock)();
 #pragma mark - Text
 
 - (CGFloat)heightForAttributedString:(NSAttributedString *)text maxWidth:(CGFloat)maxWidth {
-    if ([text isKindOfClass:[NSString class]] && !text.length) {
-        // no text means no height
-        return 0;
-    }
-    
-    NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
-    CGSize size = [text boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX) options:options context:nil].size;
-    
-    CGFloat height = ceilf(size.height) + 1; // add 1 point as padding
-    
-    return height;
+    return [[SHAppUtil defaultInstance] heightForAttributedString:text maxWidth:maxWidth];
 }
 
 - (CGFloat)heightForString:(NSString *)text font:(UIFont *)font maxWidth:(CGFloat)maxWidth {
-    if (![text isKindOfClass:[NSString class]] || !text.length) {
-        // no text means no height
-        return 0;
-    }
-    
-    NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
-    NSDictionary *attributes = @{ NSFontAttributeName : font };
-    CGSize size = [text boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX) options:options attributes:attributes context:nil].size;
-    CGFloat height = ceilf(size.height) + 1; // add 1 point as padding
-    
-    return height;
+    return [[SHAppUtil defaultInstance] heightForString:text font:font maxWidth:maxWidth];
 }
 
 - (CGFloat)widthForAttributedString:(NSAttributedString *)text maxWidth:(CGFloat)maxHeight {
-    if ([text isKindOfClass:[NSString class]] && !text.length) {
-        // no text means no height
-        return 0;
-    }
-    
-    NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
-    CGSize size = [text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, maxHeight) options:options context:nil].size;
-    
-    CGFloat width = ceilf(size.width) + 1; // add 1 point as padding
-    
-    return width;
+    return [[SHAppUtil defaultInstance] widthForAttributedString:text maxWidth:maxHeight];
 }
 
 - (CGFloat)widthForString:(NSString *)text font:(UIFont *)font maxWidth:(CGFloat)maxHeight {
-    if (![text isKindOfClass:[NSString class]] || !text.length) {
-        // no text means no height
-        return 0;
-    }
-    
-    NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
-    NSDictionary *attributes = @{ NSFontAttributeName : font };
-    CGSize size = [text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, maxHeight) options:options attributes:attributes context:nil].size;
-    CGFloat width = ceilf(size.width) + 1; // add 1 point as padding
-    
-    return width;
+    return [[SHAppUtil defaultInstance] widthForString:text font:font maxWidth:maxHeight];
 }
 
 - (void)changeLabelToLatoLight:(UIView *)view {
@@ -524,7 +467,7 @@ typedef void(^AlertBlock)();
         
         // change label height to fit text
         CGRect frame = label.frame;
-        frame.size.height = [self heightForString:label.text font:label.font maxWidth:CGRectGetWidth(label.frame)];
+        frame.size.height = [[SHAppUtil defaultInstance] heightForString:label.text font:label.font maxWidth:CGRectGetWidth(label.frame)];
         label.frame = frame;
         
         if (boldText.length) {
@@ -724,8 +667,12 @@ typedef void(^AlertBlock)();
 
 - (void)fillSubview:(UIView *)subview inSuperView:(UIView *)superview {
     NSDictionary *views = NSDictionaryOfVariableBindings(subview);
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[subview]|" options:0 metrics:nil views:views]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[subview]|" options:0 metrics:nil views:views]];
+    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[subview]|" options:0 metrics:nil views:views]];
+    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[subview]|" options:0 metrics:nil views:views]];
+}
+
+- (void)embedViewController:(UIViewController *)vc intoView:(UIView *)superview {
+    [self embedViewController:vc intoView:superview placementBlock:nil];
 }
 
 - (void)embedViewController:(UIViewController *)vc intoView:(UIView *)superview placementBlock:(void (^)(UIView *view))placementBlock {

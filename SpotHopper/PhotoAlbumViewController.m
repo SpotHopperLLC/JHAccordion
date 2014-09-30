@@ -11,7 +11,7 @@
 #import "UIViewController+Navigator.h"
 
 #import "ImageModel.h"
-#import "NetworkHelper.h"
+#import "ImageUtil.h"
 
 @interface PhotoAlbumViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
@@ -39,6 +39,10 @@
     [_collectionView reloadData];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
 #pragma mark - Public
 #pragma mark -
 
@@ -60,7 +64,7 @@
         UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ImageCell" forIndexPath:indexPath];
         UIImageView *imageView = (UIImageView *)[cell viewWithTag:1];
         NSCAssert(imageView, @"Image View is required");
-        [NetworkHelper loadThumbnailImage:imageModel imageView:imageView placeholderImage:self.placeholderImage];
+        [ImageUtil loadThumbnailImage:imageModel imageView:imageView placeholderImage:self.placeholderImage];
         
         cell.backgroundColor = self.selectedIndex == indexPath.item ? [UIColor whiteColor] : [UIColor blackColor];
     

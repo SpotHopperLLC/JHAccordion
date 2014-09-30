@@ -30,12 +30,13 @@
 
 @end
 
-@protocol SHDrinksCollectionViewManagerDelegate <NSObject>
+@protocol SHDrinksCollectionViewManagerDelegate <SHBaseCollectionViewManagerDelegate>
 
 @optional
 
-
-- (void)drinksCollectionViewManager:(SHDrinksCollectionViewManager *)manager didChangeToDrinkAtIndex:(NSUInteger)index;
+- (void)drinksCollectionViewManager:(SHDrinksCollectionViewManager *)manager didChangeToDrinkAtIndex:(NSUInteger)index count:(NSUInteger)count;
 - (void)drinksCollectionViewManager:(SHDrinksCollectionViewManager *)manager didSelectDrinkAtIndex:(NSUInteger)index;
+
+- (void)drinksCollectionViewManager:(SHDrinksCollectionViewManager *)manager displayDrink:(DrinkModel *)drink;
 
 @end

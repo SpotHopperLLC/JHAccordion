@@ -19,9 +19,9 @@ NSString * const SHStyleKitColorNameMyPencilColor = @"myPencilColor";
 NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
 
 @interface SHStyleKitCache : NSCache
-- (UIImage *)cachedImageForDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size rotation:(NSInteger)rotation;
+- (UIImage *)cachedImageForDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size rotation:(NSInteger)rotation percentage:(CGFloat)percentage;
 - (void)cacheImage:(UIImage *)image
-        forDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size rotation:(NSInteger)rotation;
+        forDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size rotation:(NSInteger)rotation percentage:(CGFloat)percentage;
 @end
 
 @implementation SHStyleKit (Additions)
@@ -139,12 +139,16 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
 
 + (UIImage *)drawImage:(SHStyleKitDrawing)drawing size:(CGSize)size;
 {
-    return [SHStyleKit drawImage:drawing color:SHStyleKitColorNone size:size];
+    return [SHStyleKit drawImage:drawing color:SHStyleKitColorNone size:size percentage:0.0f];
 }
 
-+ (UIImage *)drawImage:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size;
++ (UIImage *)drawImage:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size {
+    return [self drawImage:drawing color:color size:size percentage:0.0f];
+}
+
++ (UIImage *)drawImage:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size percentage:(CGFloat)percentage;
 {
-    if (CGSizeEqualToSize(size, CGSizeZero)) {
+    if (CGSizeEqualToSize(size, CGSizeZero) && drawing != SHStyleKitDrawingTopShadow) {
         NSLog(@"Size cannot be zero");
         return nil;
     }
@@ -174,7 +178,7 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
             break;
     }
     
-    UIImage *image = [[self sh_sharedImageCache] cachedImageForDrawing:drawing color:color size:size rotation:rotation];
+    UIImage *image = [[self sh_sharedImageCache] cachedImageForDrawing:drawing color:color size:size rotation:rotation percentage:percentage];
     if (image) {
         return image;
     }
@@ -235,7 +239,31 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
             [SHStyleKit drawDrinkMenuIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
             break;
         case SHStyleKitDrawingReviewsIcon:
-            [SHStyleKit drawReviewsIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
+            if (color == SHStyleKitColorMyTintColor) {
+                [SHStyleKit drawReviewsIconWithScaleX:scaleX scaleY:scaleY
+                                   strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]
+                                     fillColorName:[SHStyleKit colorName:SHStyleKitColorMyTintColor]];
+            }
+            else if (color == SHStyleKitColorMyTintTransparentColor) {
+                [SHStyleKit drawReviewsIconWithScaleX:scaleX scaleY:scaleY
+                                   strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]
+                                     fillColorName:[SHStyleKit colorName:SHStyleKitColorMyTintTransparentColor]];
+            }
+            else if (color == SHStyleKitColorMyTextColor) {
+                [SHStyleKit drawReviewsIconWithScaleX:scaleX scaleY:scaleY
+                                      strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyTextTransparentColor]
+                                        fillColorName:[SHStyleKit colorName:SHStyleKitColorMyTextColor]];
+            }
+            else if (color == SHStyleKitColorMyTextTransparentColor) {
+                [SHStyleKit drawReviewsIconWithScaleX:scaleX scaleY:scaleY
+                                   strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]
+                                     fillColorName:[SHStyleKit colorName:SHStyleKitColorMyTextTransparentColor]];
+            }
+            else if (color == SHStyleKitColorMyWhiteColor) {
+                [SHStyleKit drawReviewsIconWithScaleX:scaleX scaleY:scaleY
+                                   strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyTintColor]
+                                     fillColorName:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]];
+            }
             break;
         case SHStyleKitDrawingSearchIcon:
             [SHStyleKit drawSearchIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
@@ -283,21 +311,21 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
                                              scaleY:scaleY
                                          color1Name:colorName
                                          color2Name:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]
-                                         color3Name:[SHStyleKit colorName:SHStyleKitColorMyTextColor]];
+                                         color3Name:[SHStyleKit colorName:SHStyleKitColorMyTextTransparentColor]];
             }
             else if (color == SHStyleKitColorMyWhiteColor) {
                 [SHStyleKit drawShareIconWithScaleX:scaleX
                                              scaleY:scaleY
                                          color1Name:colorName
                                          color2Name:[SHStyleKit colorName:SHStyleKitColorMyTintColor]
-                                         color3Name:[SHStyleKit colorName:SHStyleKitColorMyTextColor]];
+                                         color3Name:[SHStyleKit colorName:SHStyleKitColorMyTextTransparentColor]];
             }
             else {
                 [SHStyleKit drawShareIconWithScaleX:scaleX
                                              scaleY:scaleY
                                          color1Name:colorName
                                          color2Name:[SHStyleKit colorName:SHStyleKitColorMyTextColor]
-                                         color3Name:[SHStyleKit colorName:SHStyleKitColorMyTintColor]];
+                                         color3Name:[SHStyleKit colorName:SHStyleKitColorMyTintTransparentColor]];
             }
             break;
         case SHStyleKitDrawingCheckMarkIcon:
@@ -315,13 +343,13 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
         case SHStyleKitDrawingThumbsUpIcon:
             if (color == SHStyleKitColorMyTintColor) {
                 [SHStyleKit drawThumbsUpIconWithScaleX:scaleX scaleY:scaleY
-                                        strokeColorName:colorName
-                                          fillColorName:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]];
+                                        strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]
+                                          fillColorName:colorName];
             }
             else {
                 [SHStyleKit drawThumbsUpIconWithScaleX:scaleX scaleY:scaleY
-                                        strokeColorName:colorName
-                                          fillColorName:[SHStyleKit colorName:SHStyleKitColorMyTintColor]];
+                                        strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyTintColor]
+                                          fillColorName:colorName];
             }
             break;
         case SHStyleKitDrawingNavigationArrowRightIcon:
@@ -333,6 +361,18 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
             
         case SHStyleKitDrawingCloseIcon:
             [SHStyleKit drawCloseIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
+            break;
+            
+        case SHStyleKitDrawingClockIcon:
+            [SHStyleKit drawClockIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
+            break;
+            
+        case SHStyleKitDrawingPhoneIcon:
+            [SHStyleKit drawPhoneIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
+            break;
+            
+        case SHStyleKitDrawingMoreIcon:
+            [SHStyleKit drawMoreIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
             break;
             
         case SHStyleKitDrawingDeleteIcon:
@@ -394,20 +434,53 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
             [SHStyleKit drawPencilArrowWithScaleX:scaleX scaleY:scaleY rotation:rotation];
             break;
             
+        case SHStyleKitDrawingRatingSwoosh:
+            [SHStyleKit drawRatingSwooshWithScaleX:scaleX scaleY:scaleY strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyTintColor] fillColorName:[SHStyleKit colorName:SHStyleKitColorMyTextTransparentColor] percentage:percentage];
+            break;
+            
+        case SHStyleKitDrawingTopShadow:
+            [SHStyleKit drawTopShadow];
+            
         default:
             break;
     }
     
     // draw the outline to debug image creation
-     //[SHStyleKit drawOutlineIconWithScaleX:scaleX scaleY:scaleY strokeColorName:SHStyleKitColorNameMyTintColor];
+    //[SHStyleKit drawOutlineIconWithScaleX:scaleX scaleY:scaleY strokeColorName:SHStyleKitColorNameMyTintColor];
     
     image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    // only a last resort
-    image = [SHStyleKit resizeImage:image toMaximumSize:size];
+    [[self sh_sharedImageCache] cacheImage:image forDrawing:drawing color:color size:size rotation:rotation percentage:percentage];
     
-    [[self sh_sharedImageCache] cacheImage:image forDrawing:drawing color:color size:size rotation:rotation];
+    return image;
+}
+
++ (UIImage *)drawImageForRatingStarsWithPercentage:(CGFloat)percentage size:(CGSize)size;
+{
+    SHStyleKitDrawing drawing = SHStyleKitDrawingRatingStars;
+    UIImage *image = [[self sh_sharedImageCache] cachedImageForDrawing:drawing color:SHStyleKitColorMyTintColor size:size rotation:0.0f percentage:percentage];
+    if (image) {
+        return image;
+    }
+    
+    CGFloat scaleY = size.height / 1000.f;
+    CGFloat scaleX = size.width / 5200.0f;
+    CGFloat scale = MIN(scaleX, scaleY);
+    SHStyleKitColor color = SHStyleKitColorMyTintColor;
+    NSString *colorName = [SHStyleKit colorName:color];
+    
+    UIGraphicsBeginImageContextWithOptions(size, NO, 0.0f);
+    
+    [SHStyleKit drawRatingStarsWithScaleX:scale scaleY:scale fillColorName:colorName percentage:percentage];
+
+    // draw the outline to debug image creation
+    //[SHStyleKit drawOutlineIconWithScaleX:scaleX scaleY:scaleY strokeColorName:SHStyleKitColorNameMyTintColor];
+    
+    image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    [[self sh_sharedImageCache] cacheImage:image forDrawing:drawing color:color size:size rotation:0.0f percentage:percentage];
     
     return image;
 }
@@ -417,7 +490,7 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
 
 + (UIImage *)gradientBackgroundWithSize:(CGSize)size;
 {
-    UIImage *image = [[self sh_sharedImageCache] cachedImageForDrawing:SHStyleKitDrawingGradientBackground color:SHStyleKitColorNone size:size rotation:0];
+    UIImage *image = [[self sh_sharedImageCache] cachedImageForDrawing:SHStyleKitDrawingGradientBackground color:SHStyleKitColorNone size:size rotation:0 percentage:0.0f];
     if (image) {
         return image;
     }
@@ -427,7 +500,7 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
     image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    [[self sh_sharedImageCache] cacheImage:image forDrawing:SHStyleKitDrawingGradientBackground color:SHStyleKitColorNone size:size rotation:0];
+    [[self sh_sharedImageCache] cacheImage:image forDrawing:SHStyleKitDrawingGradientBackground color:SHStyleKitColorNone size:size rotation:0 percentage:0.0f];
     
     return image;
 }
@@ -475,21 +548,22 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
 
 @implementation SHStyleKitCache
 
-- (NSString *)keyForDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size rotation:(NSInteger)rotation;
+- (NSString *)keyForDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size rotation:(NSInteger)rotation percentage:(CGFloat)percentage;
 {
-    return [NSString stringWithFormat:@"drawing-%li-color-%li-width-%f-height-%f-rotation-%li", (long)drawing, (long)color, size.width, size.height, (long)rotation];
+    NSString *key = [NSString stringWithFormat:@"drawing-%li-color-%li-width-%f-height-%f-rotation-%li-percentage-%f", (long)drawing, (long)color, size.width, size.height, (long)rotation, percentage];
+    return key;
 }
 
-- (UIImage *)cachedImageForDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size rotation:(NSInteger)rotation;
+- (UIImage *)cachedImageForDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size rotation:(NSInteger)rotation percentage:(CGFloat)percentage;
 {
-    NSString *key = [self keyForDrawing:drawing color:color size:size rotation:rotation];
+    NSString *key = [self keyForDrawing:drawing color:color size:size rotation:rotation percentage:percentage];
     return [self objectForKey:key];
 }
 
 - (void)cacheImage:(UIImage *)image
-        forDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size rotation:(NSInteger)rotation;
+        forDrawing:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size rotation:(NSInteger)rotation percentage:(CGFloat)percentage;
 {
-    NSString *key = [self keyForDrawing:drawing color:color size:size rotation:rotation];
+    NSString *key = [self keyForDrawing:drawing color:color size:size rotation:rotation percentage:percentage];
     if (!image || !key.length) {
         return;
     }

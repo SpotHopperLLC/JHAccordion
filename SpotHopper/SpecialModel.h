@@ -18,7 +18,7 @@
 
 @property (copy, nonatomic) NSString *text;
 @property (assign, nonatomic) SHWeekday weekday;
-@property (assign, nonatomic) NSInteger likeCount;
+@property (assign, nonatomic) NSUInteger likeCount;
 @property (copy, nonatomic) NSString *startTimeString;
 @property (assign, nonatomic) NSTimeInterval duration; // seconds
 @property (strong, nonatomic) SpotModel *spot;

@@ -43,11 +43,18 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
 + (SpotCalloutView *)loadView {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SpotHopper" bundle:nil];
     UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:SpotCalloutViewIdentifier];
-    SpotCalloutView *calloutView = (SpotCalloutView *)vc.view;
     
-    calloutView.translatesAutoresizingMaskIntoConstraints = YES;
+    UIView *view = [vc.view viewWithTag:101];
     
-    return calloutView;
+    if ([view isKindOfClass:[SpotCalloutView class]]) {
+        SpotCalloutView *calloutView = (SpotCalloutView *)view;
+        
+        calloutView.translatesAutoresizingMaskIntoConstraints = YES;
+        
+        return calloutView;
+    }
+    
+    return nil;
 }
 
 + (BOOL)hasCalloutViewInAnnotationView:(MKAnnotationView *)annotationView {
@@ -141,6 +148,7 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
 }
 
 - (void)placeInMapView:(MKMapView *)mapView insideAnnotationView:(MKAnnotationView *)annotationView {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
     [SpotCalloutView removeCalloutViewFromAnnotationView:annotationView];
     
     self.mapView = mapView;
@@ -176,12 +184,15 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
 }
 
 - (void)adjustHeightWithIntrinsicSize {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
     [self setNeedsLayout];
     [self layoutIfNeeded];
     
     CGRect frame = self.frame;
     frame.size.height = CGRectGetHeight(self.containerView.frame) + kHeightOfArrow;
     self.frame = frame;
+
+//    self.backgroundColor = [[UIColor greenColor] colorWithAlphaComponent:0.5];
     
     UIImage *backgroundImage = [self drawRoundedCorners:self.frame.size position:0.5 borderRadius:10 strokeWidth:1];
     self.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];

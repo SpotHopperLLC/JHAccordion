@@ -22,9 +22,10 @@
 @property (assign) BOOL hasSeenSpotlists;
 @property (assign) BOOL hasSeenDrinklists;
 
+@property (nonatomic, readonly) NSUInteger totalContentLength;
+
 - (void)cancelAllHTTPOperationsWithMethod:(NSString*)method path:(NSString*)path parameters:(NSDictionary*)parameters ignoreParams:(BOOL)ignoreParams;
 
-// Cause I said so
 - (AFHTTPRequestOperation *)GET:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success;
 - (AFHTTPRequestOperation *)POST:(NSString *)URLString parameters:(NSDictionary *)parameters constructingBodyWithBlock:(void (^)(id<AFMultipartFormData>))block success:(void (^)(AFHTTPRequestOperation *, id))success;
 - (AFHTTPRequestOperation *)POST:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success;
@@ -41,5 +42,11 @@
 - (BOOL)isLoggedIn;
 - (void)login:(NSHTTPURLResponse*)response user:(UserModel*)user;
 - (void)logout;
+
+#pragma mark - Track Content Length
+
+- (void)incrementContentLength:(NSUInteger)contentLength;
+
+- (void)resetContentLength;
 
 @end

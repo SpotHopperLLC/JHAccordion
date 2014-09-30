@@ -42,7 +42,7 @@
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
+    [super viewDidLoad];
     
     // Sets title
     [self setTitle:@"Full Drink Menu"];
@@ -62,7 +62,10 @@
     [labelHeader setTextAlignment:NSTextAlignmentCenter];
     [labelHeader setText:_spot.name];
     [_tblMenu setTableHeaderView:labelHeader];
-    
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

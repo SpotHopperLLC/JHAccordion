@@ -22,6 +22,12 @@ NSString * const SHDisplayDrinkNotificationKey = @"SHDisplayDrinkNotificationKey
 NSString * const SHDisplaySpotNotificationName = @"SHDisplaySpotNotificationName";
 NSString * const SHDisplaySpotNotificationKey = @"SHDisplaySpotNotificationKey";
 
+NSString * const SHPushToDrinkNotificationName = @"SHPushToDrinkNotificationName";
+NSString * const SHPushToDrinkNotificationKey = @"SHPushToDrinkNotificationKey";
+
+NSString * const SHPushToSpotNotificationName = @"SHPushToSpotNotificationName";
+NSString * const SHPushToSpotNotificationKey = @"SHPushToSpotNotificationKey";
+
 NSString * const SHFindSimilarToDrinkNotificationName = @"SHFindSimilarToDrinkNotificationName";
 NSString * const SHFindSimilarToDrinkNotificationKey = @"SHFindSimilarToDrinkNotificationKey";
 
@@ -34,6 +40,15 @@ NSString * const SHFindSimilarToSpotNotificationKey = @"SHFindSimilarToSpotNotif
 NSString * const SHReviewSpotNotificationName = @"SHReviewSpotNotificationName";
 NSString * const SHReviewSpotNotificationKey =  @"SHReviewSpotNotificationKey";
 
+NSString * const SHShowSpotPhotosNotificationName = @"SHShowSpotPhotosNotificationName";
+NSString * const SHShowSpotPhotosNotificationKey = @"SHShowSpotPhotosNotificationKey";
+
+NSString * const SHShowDrinkPhotosNotificationName = @"SHShowDrinkPhotosNotificationName";
+NSString * const SHShowDrinkPhotosNotificationKey = @"SHShowDrinkPhotosNotificationKey";
+
+NSString * const SHShowPhotoNotificationName = @"SHShowPhotoNotificationName";
+NSString * const SHShowPhotoNotificationKey = @"SHShowPhotoNotificationKey";
+
 NSString * const SHOpenMenuForSpotNotificationName = @"SHOpenMenuForSpotNotificationName";
 NSString * const SHOpenMenuForSpotNotificationKey = @"SHOpenMenuForSpotNotificationKey";
 
@@ -42,6 +57,11 @@ NSString * const SHUserDidLogOutNotificationName = @"SHUserDidLogOutNotification
 
 NSString * const SHAppOpenedWithURLNotificationName = @"SHAppOpenedWithURLNotificationName";
 NSString * const SHAppOpenedWithURLNotificationKey = @"SHAppOpenedWithURLNotificationKey";
+
+NSString * const SHAppShareNotificationName = @"SHAppShareNotificationName";
+NSString * const SHAppSpotNotificationKey = @"SHAppSpotNotificationKey";
+NSString * const SHAppSpecialNotificationKey = @"SHAppSpecialNotificationKey";
+NSString * const SHAppDrinkNotificationKey = @"SHAppDrinkNotificationKey";
 
 @implementation SHNotifications
 
@@ -85,6 +105,20 @@ NSString * const SHAppOpenedWithURLNotificationKey = @"SHAppOpenedWithURLNotific
                                                       userInfo:userInfo];
 }
 
++ (void)pushToDrink:(DrinkModel *)drink {
+    NSDictionary *userInfo = @{ SHPushToDrinkNotificationKey : drink };
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHPushToDrinkNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
++ (void)pushToSpot:(SpotModel *)spot {
+    NSDictionary *userInfo = @{ SHPushToSpotNotificationKey : spot };
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHPushToSpotNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
 + (void)findSimilarToDrink:(DrinkModel *)drink {
     NSDictionary *userInfo = @{ SHFindSimilarToDrinkNotificationKey : drink };
     [[NSNotificationCenter defaultCenter] postNotificationName:SHFindSimilarToDrinkNotificationName
@@ -120,6 +154,27 @@ NSString * const SHAppOpenedWithURLNotificationKey = @"SHAppOpenedWithURLNotific
                                                       userInfo:userInfo];
 }
 
++ (void)showPhotosForSpot:(SpotModel *)spot {
+    NSDictionary *userInfo = @{ SHShowSpotPhotosNotificationKey : spot };
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHShowSpotPhotosNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
++ (void)showPhotosForDrink:(DrinkModel *)drink {
+    NSDictionary *userInfo = @{ SHShowDrinkPhotosNotificationKey : drink };
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHShowDrinkPhotosNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
++ (void)showPhoto:(ImageModel *)image {
+    NSDictionary *userInfo = @{ SHShowPhotoNotificationKey : image };
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHShowPhotoNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
 + (void)userDidLoginIn {
     [[NSNotificationCenter defaultCenter] postNotificationName:SHUserDidLogInNotificationName
                                                         object:nil
@@ -130,6 +185,34 @@ NSString * const SHAppOpenedWithURLNotificationKey = @"SHAppOpenedWithURLNotific
     [[NSNotificationCenter defaultCenter] postNotificationName:SHUserDidLogOutNotificationName
                                                         object:nil
                                                       userInfo:nil];
+}
+
++ (void)shareSpecial:(SpecialModel *)special atSpot:(SpotModel *)spot {
+    NSAssert(special, @"Parameter is required");
+    NSAssert(spot, @"Parameter is required");
+    NSDictionary *userInfo = @{SHAppSpecialNotificationKey : special, SHAppSpotNotificationKey : spot};
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHAppShareNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
++ (void)shareSpot:(SpotModel *)spot {
+    NSAssert(spot, @"Parameter is required");
+    NSDictionary *userInfo = @{SHAppSpotNotificationKey : spot};
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHAppShareNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
++ (void)shareDrink:(DrinkModel *)drink {
+    NSAssert(drink, @"Parameter is required");
+    NSDictionary *userInfo = @{SHAppDrinkNotificationKey : drink};
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHAppShareNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
 }
 
 @end

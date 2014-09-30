@@ -12,7 +12,7 @@
 #import "PhotoViewerViewController.h"
 
 #import "ImageModel.h"
-#import "NetworkHelper.h"
+#import "ImageUtil.h"
 #import "Tracker.h"
 
 #define kImageView 1
@@ -21,7 +21,9 @@
 #pragma mark -
 
 @interface SHImageModelCollectionViewManager ()
+
 @property (nonatomic, weak) IBOutlet id<SHImageModelCollectionDelegate> delegate;
+
 @end
 
 @implementation SHImageModelCollectionViewManager
@@ -33,7 +35,6 @@
     return MAX(1, self.imageModels.count);
 }
 
-// The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     // dequeue named cell template
     
@@ -47,7 +48,7 @@
         ImageModel *imageModel = self.imageModels[indexPath.item];
         
         __weak UIImageView *weakImageView = imageView;
-        [NetworkHelper loadImage:imageModel placeholderImage:nil withThumbImageBlock:^(UIImage *thumbImage) {
+        [ImageUtil loadImage:imageModel placeholderImage:nil withThumbImageBlock:^(UIImage *thumbImage) {
             weakImageView.image = thumbImage;
         } withFullImageBlock:^(UIImage *fullImage) {
             weakImageView.image = fullImage;
@@ -67,9 +68,6 @@
 #pragma mark -
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"Selected item!");
-    
-    //trigger segue
     if ([self.delegate respondsToSelector:@selector(imageCollectionViewManager:didSelectImageAtIndex:)]) {
         [self.delegate imageCollectionViewManager:self didSelectImageAtIndex:_currentIndex];
     }
@@ -97,7 +95,6 @@
 - (void)changeIndex:(NSUInteger)index {
     // change collection view position if the index is in bounds and set _currentIndex
     if (index != _currentIndex && index < self.imageModels.count) {
-        NSLog(@"Manager - Changing to index: %lu", (long)index);
         _currentIndex = index;
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_currentIndex inSection:0];
         [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:TRUE];

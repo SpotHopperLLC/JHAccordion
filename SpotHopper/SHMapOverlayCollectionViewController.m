@@ -10,6 +10,9 @@
 
 #import <UIKit/UIKit.h>
 
+#import "SHAppContext.h"
+#import "SHDrawnButton.h"
+
 #import "SHStyleKit+Additions.h"
 
 #import "SpotListModel.h"
@@ -25,6 +28,9 @@
 #import "SHNotifications.h"
 
 #import "UIAlertView+Block.h"
+
+#define kHeaderHeight 100.0
+#define kFooterHeight 50.0
 
 typedef enum {
     SHOverlayCollectionViewModeNone = 0,
@@ -42,6 +48,12 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet SHSpecialsCollectionViewManager *specialsCollectionViewManager;
 @property (weak, nonatomic) IBOutlet SHDrinksCollectionViewManager *drinksCollectionViewManager;
 
+@property (weak, nonatomic) IBOutlet UIView *positionView;
+
+@property (weak, nonatomic) IBOutlet SHDrawnButton *previousButton;
+@property (weak, nonatomic) IBOutlet UILabel *positionLabel;
+@property (weak, nonatomic) IBOutlet SHDrawnButton *nextButton;
+
 @property (assign, nonatomic) SHOverlayCollectionViewMode mode;
 
 @end
@@ -52,16 +64,41 @@ typedef enum {
 #pragma mark -
 
 - (void)viewDidLoad {
-    [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
+    [super viewDidLoad];
     
     NSAssert(self.collectionView, @"Outlet is required");
     NSAssert(self.spotsCollectionViewManager, @"Outlet is required");
     NSAssert(self.drinksCollectionViewManager, @"Outlet is required");
     NSAssert(self.specialsCollectionViewManager, @"Outlet is required");
+    
+    self.positionView.hidden = TRUE;
+    self.positionView.clipsToBounds = YES;
+    self.positionView.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.9];
+    self.positionView.layer.cornerRadius = CGRectGetHeight(self.positionView.frame) * 0.4;
+    self.positionView.layer.borderColor = [[SHStyleKit color:SHStyleKitColorMyTintColor] CGColor];
+    self.positionView.layer.borderWidth = 1.0;
+    
+    self.positionLabel.textColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
+    
+    [self.previousButton setTitle:nil forState:UIControlStateNormal];
+    [self.nextButton setTitle:nil forState:UIControlStateNormal];
+    
+    CGSize drawingSize = CGSizeMake(20, 20);
+    [self.previousButton setButtonDrawing:SHStyleKitDrawingArrowLeftIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor drawingSize:drawingSize];
+    [self.nextButton setButtonDrawing:SHStyleKitDrawingArrowRightIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor drawingSize:drawingSize];
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsNoBackground];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+//    // HACK: position must be set to appear at the top
+//    CGRect frame = self.collectionView.frame;
+//    frame.origin.y = 0.0f;
+//    self.collectionView.frame = frame;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -87,6 +124,8 @@ typedef enum {
     self.collectionView.dataSource = self.spotsCollectionViewManager;
     self.collectionView.delegate = self.spotsCollectionViewManager;
     [self.spotsCollectionViewManager updateSpotList:spotList];
+    
+    [self updatePosition:0 count:spotList.spots.count];
 }
 
 - (void)displaySpot:(SpotModel *)spot {
@@ -131,6 +170,8 @@ typedef enum {
     self.collectionView.dataSource = self.specialsCollectionViewManager;
     self.collectionView.delegate = self.specialsCollectionViewManager;
     [self.specialsCollectionViewManager updateSpots:spots];
+    
+    [self updatePosition:0 count:spots.count];
 }
 
 - (void)displayDrinklist:(DrinkListModel *)drinklist {
@@ -138,20 +179,81 @@ typedef enum {
     self.collectionView.dataSource = self.drinksCollectionViewManager;
     self.collectionView.delegate = self.drinksCollectionViewManager;
     [self.drinksCollectionViewManager updateDrinkList:drinklist];
+    
+    [self updatePosition:0 count:drinklist.drinks.count];
+}
+
+- (void)expandedViewWillAppear {
+    self.positionView.hidden = FALSE;
+    
+    self.collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, kFooterHeight, 0);
+}
+
+- (void)expandedViewDidAppear {
+}
+
+- (void)expandedViewWillDisappear {
+    self.positionView.hidden = TRUE;
+    self.collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.collectionView.frame) - kFooterHeight, 0);
+    
+    CGFloat height = CGRectGetHeight(self.collectionView.frame);
+    CGFloat bottom = height - kHeaderHeight;
+    self.collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, bottom, 0);
+}
+
+- (void)expandedViewDidDisappear {
 }
 
 #pragma mark - Private
 #pragma mark -
 
+- (void)updatePosition:(NSUInteger)index count:(NSUInteger)count {
+    self.positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", (unsigned long)index+1, (unsigned long)count];
+    
+    if (index == 0) {
+        self.previousButton.alpha = 0.25;
+        self.previousButton.userInteractionEnabled = FALSE;
+    }
+    else {
+        self.previousButton.alpha = 1.0;
+        self.previousButton.userInteractionEnabled = TRUE;
+    }
+    
+    if (index == count - 1) {
+        self.nextButton.alpha = 0.25;
+        self.nextButton.userInteractionEnabled = FALSE;
+    }
+    else {
+        self.nextButton.alpha = 1.0;
+        self.nextButton.userInteractionEnabled = TRUE;
+    }
+}
+
 #pragma mark - User Actions
 #pragma mark -
 
-- (IBAction)spotCellLeftButtonTapped:(id)sender {
-    [self.spotsCollectionViewManager goPrevious];
+- (IBAction)previousButtonTapped:(id)sender {
+    if (self.mode == SHOverlayCollectionViewModeSpecials) {
+        [self.specialsCollectionViewManager goPrevious];
+    }
+    else if (self.mode == SHOverlayCollectionViewModeSpotlists) {
+        [self.spotsCollectionViewManager goPrevious];
+    }
+    else if (self.mode == SHOverlayCollectionViewModeDrinklists) {
+        [self.drinksCollectionViewManager goPrevious];
+    }
 }
 
-- (IBAction)spotCellRightButtonTapped:(id)sender {
-    [self.spotsCollectionViewManager goNext];
+- (IBAction)nextButtonTapped:(id)sender {
+    if (self.mode == SHOverlayCollectionViewModeSpecials) {
+        [self.specialsCollectionViewManager goNext];
+    }
+    else if (self.mode == SHOverlayCollectionViewModeSpotlists) {
+        [self.spotsCollectionViewManager goNext];
+    }
+    else if (self.mode == SHOverlayCollectionViewModeDrinklists) {
+        [self.drinksCollectionViewManager goNext];
+    }
 }
 
 - (IBAction)spotCellFindSimilarButtonTapped:(id)sender {
@@ -182,14 +284,6 @@ typedef enum {
             [SHNotifications openMenuForSpot:spot];
         }
     }
-}
-
-- (IBAction)specialCellLeftButtonTapped:(id)sender {
-    [self.specialsCollectionViewManager goPrevious];
-}
-
-- (IBAction)specialCellRightButtonTapped:(id)sender {
-    [self.specialsCollectionViewManager goNext];
 }
 
 - (IBAction)specialCellLikeButtonTapped:(id)sender {
@@ -232,14 +326,6 @@ typedef enum {
     }
 }
 
-- (IBAction)drinkCellLeftButtonTapped:(id)sender {
-    [self.drinksCollectionViewManager goPrevious];
-}
-
-- (IBAction)drinkCellRightButtonTapped:(id)sender {
-    [self.drinksCollectionViewManager goNext];
-}
-
 - (IBAction)drinkCellFindSimilarButtonTapped:(id)sender {
     if (self.mode == SHOverlayCollectionViewModeDrink) {
         NSUInteger index = [self.drinksCollectionViewManager indexForViewInCollectionViewCell:sender];
@@ -260,10 +346,54 @@ typedef enum {
     }
 }
 
+#pragma mark - SHBaseCollectionViewManagerDelegate
+#pragma mark -
+
+- (UIView *)collectionViewManagerPrimaryView:(SHBaseCollectionViewManager *)mgr{
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewControllerPrimaryView:)]) {
+        return [self.delegate mapOverlayCollectionViewControllerPrimaryView:self];
+    }
+    
+    return nil;
+}
+
+- (UITableView *)collectionViewManager:(SHBaseCollectionViewManager *)mgr embedTableViewInSuperview:(UIView *)superview {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:embedTableViewInSuperview:)]) {
+        return [self.delegate mapOverlayCollectionViewController:self embedTableViewInSuperview:superview];
+    }
+    
+    return nil;
+}
+
+- (void)collectionViewManagerDidTapHeader:(SHBaseCollectionViewManager *)mgr {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewControllerDidTapHeader:)]) {
+        [self.delegate mapOverlayCollectionViewControllerDidTapHeader:self];
+    }
+}
+
+- (void)collectionViewManagerShouldCollapse:(SHBaseCollectionViewManager *)mgr {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewControllerShouldCollapse:)]) {
+        [self.delegate mapOverlayCollectionViewControllerShouldCollapse:self];
+    }
+}
+
+- (void)collectionViewManager:(SHBaseCollectionViewManager *)mgr didMoveToPoint:(CGPoint)point {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didMoveToPoint:)]) {
+        [self.delegate mapOverlayCollectionViewController:self didMoveToPoint:point];
+    }
+}
+
+- (void)collectionViewManager:(SHBaseCollectionViewManager *)mgr didStopMovingAtPoint:(CGPoint)point withVelocity:(CGPoint)velocity {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didStopMovingAtPoint:withVelocity:)]) {
+        [self.delegate mapOverlayCollectionViewController:self didStopMovingAtPoint:point withVelocity:velocity];
+    }
+}
+
 #pragma mark - SHSpotsCollectionViewManagerDelegate
 #pragma mark -
 
-- (void)spotsCollectionViewManager:(SHSpotsCollectionViewManager *)manager didChangeToSpotAtIndex:(NSUInteger)index {
+- (void)spotsCollectionViewManager:(SHSpotsCollectionViewManager *)manager didChangeToSpotAtIndex:(NSUInteger)index count:(NSUInteger)count {
+    [self updatePosition:index count:count];
     if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didChangeToSpotAtIndex:)]) {
         [self.delegate mapOverlayCollectionViewController:self didChangeToSpotAtIndex:index];
     }
@@ -275,10 +405,17 @@ typedef enum {
     }
 }
 
+- (void)spotsCollectionViewManager:(SHSpotsCollectionViewManager *)manager displaySpot:(SpotModel *)spot {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:displaySpot:)]) {
+        [self.delegate mapOverlayCollectionViewController:self displaySpot:spot];
+    }
+}
+
 #pragma mark - SHSpecialsCollectionViewManagerDelegate
 #pragma mark -
 
-- (void)specialsCollectionViewManager:(SHSpecialsCollectionViewManager *)manager didChangeToSpotAtIndex:(NSUInteger)index {
+- (void)specialsCollectionViewManager:(SHSpecialsCollectionViewManager *)manager didChangeToSpotAtIndex:(NSUInteger)index count:(NSUInteger)count {
+    [self updatePosition:index count:count];
     if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didChangeToSpotAtIndex:)]) {
         [self.delegate mapOverlayCollectionViewController:self didChangeToSpotAtIndex:index];
     }
@@ -296,10 +433,17 @@ typedef enum {
     }
 }
 
+- (void)specialsCollectionViewManager:(SHSpecialsCollectionViewManager *)manager displaySpot:(SpotModel *)spot {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:displaySpot:)]) {
+        [self.delegate mapOverlayCollectionViewController:self displaySpot:spot];
+    }
+}
+
 #pragma mark - SHDrinksCollectionViewManagerDelegate
 #pragma mark -
 
-- (void)drinksCollectionViewManager:(SHDrinksCollectionViewManager *)manager didChangeToDrinkAtIndex:(NSUInteger)index {
+- (void)drinksCollectionViewManager:(SHDrinksCollectionViewManager *)manager didChangeToDrinkAtIndex:(NSUInteger)index count:(NSUInteger)count {
+    [self updatePosition:index count:count];
     if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didChangeToDrinkAtIndex:)]) {
         [self.delegate mapOverlayCollectionViewController:self didChangeToDrinkAtIndex:index];
     }
@@ -308,6 +452,12 @@ typedef enum {
 - (void)drinksCollectionViewManager:(SHDrinksCollectionViewManager *)manager didSelectDrinkAtIndex:(NSUInteger)index {
     if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:didSelectDrinkAtIndex:)]) {
         [self.delegate mapOverlayCollectionViewController:self didSelectDrinkAtIndex:index];
+    }
+}
+
+- (void)drinksCollectionViewManager:(SHDrinksCollectionViewManager *)manager displayDrink:(DrinkModel *)drink {
+    if ([self.delegate respondsToSelector:@selector(mapOverlayCollectionViewController:displayDrink:)]) {
+        [self.delegate mapOverlayCollectionViewController:self displayDrink:drink];
     }
 }
 

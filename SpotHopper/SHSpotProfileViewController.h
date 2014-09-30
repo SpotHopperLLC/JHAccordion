@@ -14,6 +14,6 @@
 @interface SHSpotProfileViewController : BaseViewController
 
 //spot model which details will be shown
-@property (strong,nonatomic) SpotModel *spot;
+@property (weak, nonatomic) SpotModel *spot;
 
 @end

@@ -84,6 +84,20 @@
     return date;
 }
 
+- (NSString *)formatPhoneNumber:(NSString *)phoneNumber {
+    // formatting requires a 10 digit phone number
+    if (phoneNumber.length == 10) {
+        NSArray *components = @[[phoneNumber substringWithRange:NSMakeRange(0, 3)],
+                                [phoneNumber substringWithRange:NSMakeRange(3, 3)],
+                                [phoneNumber substringWithRange:NSMakeRange(6, phoneNumber.length - 6)]];
+        
+        NSString *formattedPhoneNumber = [NSString stringWithFormat:@"(%@) %@-%@", components[0], components[1], components[2]];
+        return formattedPhoneNumber;
+    }
+    
+    return phoneNumber;
+}
+
 #pragma mark - NSCoding
 
 - (NSArray *)propertyKeys {

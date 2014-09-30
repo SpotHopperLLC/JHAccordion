@@ -30,7 +30,9 @@
 
 @property (readonly) BOOL hasFourInchDisplay;
 
-- (void)viewDidLoad:(NSArray*)options;
+- (void)viewDidLoad:(NSArray*)options __deprecated;
+
+- (NSArray *)viewOptions;
 
 - (void)showHUDCompleted:(NSString*)text;
 - (void)showHUDCompleted:(NSString*)text block:(dispatch_block_t)block;
@@ -57,10 +59,10 @@
 - (CGFloat)getKeyboardHeight:(NSNotification *)notification forBeginning:(BOOL)forBeginning;
 - (UIViewAnimationOptions)getKeyboardAnimationCurve:(NSNotification *)notification;
 
-- (CGFloat)heightForAttributedString:(NSAttributedString *)text maxWidth:(CGFloat)maxWidth;
-- (CGFloat)heightForString:(NSString *)text font:(UIFont *)font maxWidth:(CGFloat)maxWidth;
-- (CGFloat)widthForAttributedString:(NSAttributedString *)text maxWidth:(CGFloat)maxHeight;
-- (CGFloat)widthForString:(NSString *)text font:(UIFont *)font maxWidth:(CGFloat)maxHeight;
+- (CGFloat)heightForAttributedString:(NSAttributedString *)text maxWidth:(CGFloat)maxWidth __deprecated;
+- (CGFloat)heightForString:(NSString *)text font:(UIFont *)font maxWidth:(CGFloat)maxWidth __deprecated;
+- (CGFloat)widthForAttributedString:(NSAttributedString *)text maxWidth:(CGFloat)maxHeight __deprecated;
+- (CGFloat)widthForString:(NSString *)text font:(UIFont *)font maxWidth:(CGFloat)maxHeight __deprecated;
 
 - (void)changeLabelToLatoLight:(UIView *)view;
 - (void)changeLabelToLatoLight:(UIView *)view withBoldText:(NSString *)boldText;
@@ -81,6 +83,7 @@
 - (void)onClickShowSidebar:(id)sender;
 
 - (void)fillSubview:(UIView *)subview inSuperView:(UIView *)superview;
+- (void)embedViewController:(UIViewController *)vc intoView:(UIView *)superview;
 - (void)embedViewController:(UIViewController *)vc intoView:(UIView *)superview placementBlock:(void (^)(UIView *view))placementBlock;
 - (void)removeEmbeddedViewController:(UIViewController *)vc;
 

@@ -21,4 +21,12 @@
 - (void)twitterChooseAccount:(UIView*)view success:(void(^)(ACAccount* account))successHandler cancel:(void(^)())cancelHandler noAccounts:(void(^)())noAccounts permissionDenied:(void(^)())permissionDeniedHandler;
 - (void)twitterAuth:(ACAccount*)account success:(void(^)(NSString *oAuthToken, NSString *oAuthTokenSecret, NSString *userID, NSString *screenName))successHandler failure:(void(^)(NSError *error))failureHandler;
 
+- (BOOL)canPhone;
+
+- (BOOL)canSkype;
+
+- (void)callPhoneNumber:(NSString *)formattedPhoneNumber;
+
+- (void)skypePhoneNumber:(NSString *)formattedPhoneNumber;
+
 @end

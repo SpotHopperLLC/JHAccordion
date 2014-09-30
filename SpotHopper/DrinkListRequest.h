@@ -16,6 +16,7 @@
 @property (copy, nonatomic) NSString *name;
 @property (assign, nonatomic, getter = isFeatured) BOOL featured;
 @property (assign, nonatomic, getter = isBasedOnSliders) BOOL basedOnSliders;
+@property (assign, nonatomic, getter = isTransient) BOOL transient;
 @property (assign, nonatomic) CLLocationCoordinate2D coordinate;
 @property (assign, nonatomic) CLLocationDistance radius;
 @property (strong, nonatomic) NSArray *sliders;

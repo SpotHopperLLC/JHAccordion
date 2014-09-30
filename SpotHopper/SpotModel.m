@@ -8,18 +8,24 @@
 
 #import "SpotModel.h"
 
+#import "SHAppConfiguration.h"
+
 #import "ClientSessionManager.h"
 #import "ErrorModel.h"
 #import "LiveSpecialModel.h"
+#import "SliderModel.h"
 #import "SliderTemplateModel.h"
+#import "AverageReviewModel.h"
 #import "MenuItemModel.h"
 #import "MenuTypeModel.h"
 #import "MenuModel.h"
+#import "DrinkTypeModel.h"
 #import "SpotTypeModel.h"
 #import "SpecialModel.h"
 #import "LikeModel.h"
 #import "UserModel.h"
 #import "SpotListModel.h"
+#import "ImageModel.h"
 
 #import "Tracker.h"
 
@@ -36,12 +42,16 @@
 - (NSArray *)cachedSpotTypes;
 - (void)cacheSpotTypes:(NSArray *)spotTypes;
 
+- (SpotModel *)cachedSpotForKey:(NSString *)key;
+- (void)cacheSpot:(SpotModel *)spot withKey:(NSString *)key;
+
 @end
 
 @implementation SpotModel
 
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'name' to 'name' property
+    // Maps values in JSON key 'description' to 'descriptionOfSpot' property
     // Maps values in JSON key 'image_url' to 'imageUrl' property
     // Maps values in JSON key 'address' to 'address' property
     // Maps values in JSON key 'city' to 'city' property
@@ -63,6 +73,7 @@
     // Maps linked resource in JSON key 'specials' to 'specials' property
     return @{
              @"name" : @"name",
+             @"description" : @"descriptionOfSpot",
              @"image_url" : @"imageUrl",
              @"address" : @"address",
              @"city" : @"city",
@@ -79,14 +90,125 @@
              @"links.slider_templates" : @"sliderTemplates",
              @"links.spot_type" : @"spotType",
              @"links.images" : @"images",
+             @"links.highlight_images" : @"highlightImages",
              @"links.live_specials" : @"liveSpecials",
              @"links.average_review" : @"averageReview",
              @"links.specials" : @"specials"
              };
 }
 
+#pragma mark - Read-only properties
+#pragma mark -
+
+- (ImageModel *)highlightImage {
+    if (self.highlightImages.count) {
+        return self.highlightImages[0];
+    }
+    else if (self.images.count) {
+        return self.images[0];
+    }
+    
+    return nil;
+}
+
+- (NSString *)formattedPhoneNumber {
+    return [self formatPhoneNumber:self.phoneNumber];
+}
+
+- (NSString *)hoursForToday {
+    NSString *closeTime = nil;
+    NSArray *hoursForToday = [self.hoursOfOperation datesForToday];
+    
+    if (hoursForToday) {
+        // Creates formatter
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"h:mm a"];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
+        
+        // Gets open and close dates
+        NSDate *dateOpen = hoursForToday.firstObject;
+        NSDate *dateClose = hoursForToday.lastObject;
+        
+        NSAssert(dateOpen, @"Date must be defined");
+        NSAssert(dateClose, @"Date must be defined");
+        
+        // Sets the stuff
+        NSDate *now = [NSDate date];
+        if ([now timeIntervalSinceDate:dateOpen] > 0 && [now timeIntervalSinceDate:dateClose] < 0) {
+            closeTime = [NSString stringWithFormat:@"Open until %@", [dateFormatter stringFromDate:dateClose]];
+        } else {
+            closeTime = [NSString stringWithFormat:@"Opens at %@", [dateFormatter stringFromDate:dateOpen]];
+        }
+    }
+    
+    return closeTime;
+}
+
 - (CLLocationCoordinate2D)coordinate {
     return CLLocationCoordinate2DMake(self.latitude.floatValue, self.longitude.floatValue);
+}
+
+- (NSString *)closeTimeForToday {
+    
+    // Sets "Opens at <some time>" or "Open until <some time>"
+    NSString *closeTime = nil;
+    NSArray *hoursForToday = [self.hoursOfOperation datesForToday];
+    
+    if (hoursForToday) {
+        // Creates formatter
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"h:mm a"];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
+        
+        // Gets open and close dates
+        NSDate *dateOpen = hoursForToday.firstObject;
+        NSDate *dateClose = hoursForToday.lastObject;
+        
+        NSAssert(dateOpen, @"Date must be defined");
+        NSAssert(dateClose, @"Date must be defined");
+        
+        // Sets the stuff
+        NSDate *now = [NSDate date];
+        if ([now timeIntervalSinceDate:dateOpen] > 0 && [now timeIntervalSinceDate:dateClose] < 0) {
+            closeTime = [NSString stringWithFormat:@"Open until %@", [dateFormatter stringFromDate:dateClose]];
+        } else {
+            closeTime = [NSString stringWithFormat:@"Opens at %@", [dateFormatter stringFromDate:dateOpen]];
+        }
+    }
+    
+    return closeTime;
+}
+
+- (DrinkTypeModel *)preferredDrinkType {
+    // look at each slider to get the slider value for each emphasis and compare them
+    CGFloat beerEmphasis = 0.0;
+    CGFloat wineEmphasis = 0.0;
+    CGFloat cocktailEmphasis = 0.0;
+    
+    for (SliderModel *slider in self.averageReview.sliders) {
+        if ([slider.sliderTemplate.ID isEqual:kBeerEmphasisSliderID]) {
+            beerEmphasis = slider.value.floatValue;
+        }
+        else if ([slider.sliderTemplate.ID isEqual:kWineEmphasisSliderID]) {
+            wineEmphasis = slider.value.floatValue;
+        }
+        else if ([slider.sliderTemplate.ID isEqual:kCocktailEmphasisSliderID]) {
+            cocktailEmphasis = slider.value.floatValue;
+        }
+        if (beerEmphasis && wineEmphasis && cocktailEmphasis) {
+            break;
+        }
+    }
+    
+    if (cocktailEmphasis > wineEmphasis && cocktailEmphasis > beerEmphasis) {
+        return [DrinkTypeModel cocktailDrinkType];
+    }
+    else if (wineEmphasis > beerEmphasis) {
+        return [DrinkTypeModel wineDrinkType];
+    }
+    else {
+        return [DrinkTypeModel beerDrinkType];
+    }
 }
 
 #pragma mark - Debugging
@@ -538,6 +660,13 @@
 }
 
 - (void)fetchSpot:(void (^)(SpotModel *spotModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    NSString *key = [NSString stringWithFormat:@"Spot-%@", self.ID];
+    SpotModel *cachedSpot = [[SpotModel sh_sharedCache] cachedSpotForKey:key];
+    if (cachedSpot && successBlock) {
+        successBlock(cachedSpot);
+        return;
+    }
+    
     [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/spots/%ld", (long)[self.ID integerValue]] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI
@@ -549,10 +678,12 @@
             }
         }
         else if (operation.response.statusCode == 200) {
-            SpotModel *model = [jsonApi resourceForKey:@"spots"];
+            SpotModel *spotModel = [jsonApi resourceForKey:@"spots"];
+            
+            [[SpotModel sh_sharedCache] cacheSpot:spotModel withKey:key];
             
             if (successBlock) {
-                successBlock(model);
+                successBlock(spotModel);
             }
         } else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
@@ -754,10 +885,11 @@
 }
 
 - (NSString *)matchPercent {
-    if ([self match] == nil) {
-        return nil;
+    if (self.match) {
+        return [NSString stringWithFormat:@"%d%%", (int)(self.match.floatValue * 100)];
     }
-    return [NSString stringWithFormat:@"%d%%", (int)([self match].floatValue * 100)];
+    
+    return nil;
 }
 
 - (NSArray *)sliderTemplates {
@@ -846,6 +978,19 @@ NSString * const SpotTypesKey = @"SpotTypesKey";
     }
     else {
         [self removeObjectForKey:SpotTypesKey];
+    }
+}
+
+- (SpotModel *)cachedSpotForKey:(NSString *)key {
+    return [self objectForKey:key];
+}
+
+- (void)cacheSpot:(SpotModel *)spot withKey:(NSString *)key {
+    if (spot) {
+        [self setObject:spot forKey:key];
+    }
+    else {
+        [self removeObjectForKey:key];
     }
 }
 

@@ -38,6 +38,7 @@
     copy.name = self.name;
     copy.featured = self.isFeatured;
     copy.basedOnSliders = self.basedOnSliders;
+    copy.transient = self.transient;
     copy.coordinate = self.coordinate;
     copy.sliders = self.sliders;
     copy.drinkId = self.drinkId;

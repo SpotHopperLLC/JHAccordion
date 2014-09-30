@@ -40,11 +40,12 @@
 #import <JSONAPI/JSONAPI.h>
 #import <CoreLocation/CoreLocation.h>
 
-@class ErrorModel, AverageReviewModel, SpotListModel, SpotTypeModel, LiveSpecialModel, MenuModel, SpecialModel, CLLocation;
+@class ErrorModel, AverageReviewModel, SpotListModel, SpotTypeModel, LiveSpecialModel, MenuModel, SpecialModel, ImageModel, DrinkTypeModel, CLLocation;
 
 @interface SpotModel : SHJSONAPIResource
 
 @property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *descriptionOfSpot;
 @property (nonatomic, strong) NSString *imageUrl;
 @property (nonatomic, strong) NSString *address;
 @property (nonatomic, strong) NSString *city;
@@ -60,6 +61,7 @@
 @property (nonatomic, strong) AverageReviewModel *averageReview;
 @property (nonatomic, strong) NSNumber *match;
 @property (nonatomic, strong) NSArray *images;
+@property (nonatomic, strong) NSArray *highlightImages;
 @property (nonatomic, strong) NSArray *dailySpecials;
 @property (nonatomic, strong) NSArray *liveSpecials;
 @property (nonatomic, strong) NSArray *specials;
@@ -67,7 +69,14 @@
 
 @property (nonatomic, strong) MenuModel *menu;
 
+@property (nonatomic, readonly) ImageModel *highlightImage;
+@property (nonatomic, readonly) NSString *formattedPhoneNumber;
+@property (nonatomic, readonly) NSString *hoursForToday;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
+
+@property (nonatomic, readonly) NSString *closeTimeForToday;
+
+@property (nonatomic, readonly) DrinkTypeModel *preferredDrinkType;
 
 - (NSString *)addressCityState;
 - (NSString *)fullAddress;

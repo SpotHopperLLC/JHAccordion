@@ -68,7 +68,7 @@
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
+    [super viewDidLoad];
     
     // Sets title
     if (_createReview == YES) {
@@ -94,6 +94,10 @@
     _spotPage = @1;
     
     _updatedSearchNeeded = TRUE;
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

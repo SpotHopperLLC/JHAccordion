@@ -79,6 +79,8 @@
 #define kOpenedPosition M_PI_2
 #define kClosedPosition M_PI_2 * -1
 
+#define kHighestRatedName @"Highest Rated"
+
 #define kCustomSlidersTitle @"Skip"
 
 #pragma mark - Class Extension
@@ -466,7 +468,7 @@
         switch (section) {
             case kSection_Beer_Drinklists:
                 // Moods, Drinklists
-                return self.drinklists.count;
+                return self.drinklists.count + 1;
             case kSection_Beer_Sliders:
                 // Basic Sliders
                 return self.sliders.count;
@@ -484,7 +486,7 @@
                 return self.baseAlcohols.count;
             case kSection_Cocktail_Drinklists:
                 // Moods, Drinklists
-                return self.drinklists.count;
+                return self.drinklists.count + 1;
             case kSection_Cocktail_Sliders:
                 // Basic Sliders
                 return self.sliders.count;
@@ -502,7 +504,7 @@
                 return self.wineSubTypes.count;
             case kSection_Wine_Drinklists:
                 // Moods, Drinklists
-                return self.drinklists.count;
+                return self.drinklists.count + 1;
             case kSection_Wine_Sliders:
                 // Basic Sliders
                 return self.sliders.count;
@@ -689,7 +691,7 @@
     if (self.mode == SHModeSpots) {
         if (indexPath.section == kSection_Spots_Spotlists && indexPath.row < self.spotlists.count) {
             SpotListModel *spotlist = [self spotlistAtIndexPath:indexPath];
-            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:spotlist.name deleteEnabled:[spotlist.ID isEqual:[NSNull null]]];
+            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:spotlist.name deleteEnabled:![spotlist.ID isEqual:[NSNull null]]];
         }
         else if (indexPath.section == kSection_Spots_Sliders && indexPath.row < self.sliders.count) {
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
@@ -702,9 +704,12 @@
         }
     }
     else if (self.mode == SHModeBeer) {
-        if (indexPath.section == kSection_Beer_Drinklists && indexPath.row < self.drinklists.count) {
+        if (indexPath.section == kSection_Beer_Drinklists && indexPath.row == 0) {
+            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:@"Highest Rated" deleteEnabled:FALSE];
+        }
+        else if (indexPath.section == kSection_Beer_Drinklists && indexPath.row - 1 < self.drinklists.count) {
             DrinkListModel *drinklist = [self drinklistAtIndexPath:indexPath];
-            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:drinklist.name deleteEnabled:[drinklist.ID isEqual:[NSNull null]]];
+            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:drinklist.name deleteEnabled:![drinklist.ID isEqual:[NSNull null]]];
         }
         else if (indexPath.section == kSection_Beer_Sliders && indexPath.row < self.sliders.count) {
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
@@ -721,9 +726,12 @@
             BaseAlcoholModel *baseAlcohol = [self baseAlcoholAtIndexPath:indexPath];
             return [self configureSubTypeCellForIndexPath:indexPath forTableView:tableView withTitle:baseAlcohol.name];
         }
-        else if (indexPath.section == kSection_Cocktail_Drinklists && indexPath.row < self.drinklists.count) {
+        else if (indexPath.section == kSection_Cocktail_Drinklists && indexPath.row == 0) {
+            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:@"Highest Rated" deleteEnabled:FALSE];
+        }
+        else if (indexPath.section == kSection_Cocktail_Drinklists && indexPath.row - 1 < self.drinklists.count) {
             DrinkListModel *drinklist = [self drinklistAtIndexPath:indexPath];
-            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:drinklist.name deleteEnabled:[drinklist.ID isEqual:[NSNull null]]];
+            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:drinklist.name deleteEnabled:![drinklist.ID isEqual:[NSNull null]]];
         }
         else if (indexPath.section == kSection_Cocktail_Sliders && indexPath.row < self.sliders.count) {
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
@@ -740,9 +748,12 @@
             DrinkSubTypeModel *drinkSubType = [self drinkSubTypeAtIndexPath:indexPath];
             return [self configureSubTypeCellForIndexPath:indexPath forTableView:tableView withTitle:drinkSubType.name];
         }
-        else if (indexPath.section == kSection_Wine_Drinklists && indexPath.row < self.drinklists.count) {
+        else if (indexPath.section == kSection_Wine_Drinklists && indexPath.row == 0) {
+            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:@"Highest Rated" deleteEnabled:FALSE];
+        }
+        else if (indexPath.section == kSection_Wine_Drinklists && indexPath.row - 1 < self.drinklists.count) {
             DrinkListModel *drinklist = [self drinklistAtIndexPath:indexPath];
-            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:drinklist.name deleteEnabled:[drinklist.ID isEqual:[NSNull null]]];
+            return [self configureListCellForIndexPath:indexPath forTableView:tableView withTitle:drinklist.name deleteEnabled:![drinklist.ID isEqual:[NSNull null]]];
         }
         else if (indexPath.section == kSection_Wine_Sliders && indexPath.row < self.sliders.count) {
             return [self configureSliderCellForIndexPath:indexPath forTableView:tableView];
@@ -943,7 +954,7 @@
     UILabel *titleLabel = [self labelInView:cell withTag:kListCellTitleLabel];
     UIButton *deleteButton = [self buttonInView:cell withTag:kListCellDeleteButton];
     
-    deleteButton.hidden = deleteEnabled;
+    deleteButton.hidden = !deleteEnabled;
     
     [SHStyleKit setLabel:titleLabel textColor:SHStyleKitColorMyTextColor];
     titleLabel.text = title;
@@ -1032,8 +1043,6 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SliderCellIdentifier forIndexPath:indexPath];
     SliderModel *sliderModel = [self sliderModelAtIndexPath:indexPath];
     
-    DebugLog(@"sliderModel: %@", sliderModel);
-    
     SHSlider *slider = [self sliderInView:cell withTag:kSliderCellSlider];
     UILabel *minLabel = [self labelInView:cell withTag:kSliderCellLeftLabel];
     UILabel *maxLabel = [self labelInView:cell withTag:kSliderCellRightLabel];
@@ -1092,8 +1101,7 @@
         
         if (self.mode == SHModeSpots) {
             if (didSetAdvancedSlider) {
-                [self.accordion openSections:@[[NSNumber numberWithInteger:kSection_Spots_Sliders],
-                                                                 [NSNumber numberWithInteger:kSection_Spots_AdvancedSliders]]];
+                [self.accordion openSections:@[[NSNumber numberWithInteger:kSection_Spots_Sliders], [NSNumber numberWithInteger:kSection_Spots_AdvancedSliders]]];
             }
             else {
                 [self.accordion openSections:@[[NSNumber numberWithInteger:kSection_Spots_Sliders]]];
@@ -1175,72 +1183,96 @@
 }
 
 - (void)userDidSelectDrinklistAtIndexPath:(NSIndexPath *)indexPath {
-    DrinkListModel *drinklist = [self drinklistAtIndexPath:indexPath];
-    self.selectedDrinklist = drinklist;
-    
-    if (self.mode == SHModeBeer) {
-        [self updateSectionTitle:[NSString stringWithFormat:@"Step 1 - %@", drinklist.name] section:indexPath.section];
+    if (indexPath.row == 0 ) {
+        DrinkListModel *drinklist = [[DrinkListModel alloc] init];
+        drinklist.name = kHighestRatedName;
+        self.selectedDrinklist = drinklist;
+        
+        if (self.selectedDrinkType.isBeer) {
+            [Tracker trackSelectedHighestRatedForBeer];
+            [Tracker trackUserSelectedHighestRatedForBeer];
+        }
+        else if (self.selectedDrinkType.isWine) {
+            [Tracker trackSelectedHighestRatedForWine];
+            [Tracker trackUserSelectedHighestRatedForWine];
+        }
+        else if (self.selectedDrinkType.isCocktail) {
+            [Tracker trackSelectedHighestRatedForCocktail];
+            [Tracker trackUserSelectedHighestRatedForCocktail];
+        }
+        
+        if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerDidSelectHighestRated:)]) {
+            [self.delegate slidersSearchTableViewManagerDidSelectHighestRated:self];
+        }
     }
     else {
-        [self updateSectionTitle:[NSString stringWithFormat:@"Step 2 - %@", drinklist.name] section:indexPath.section];
-    }
-    
-    void (^completeBlock)(BOOL) = ^void (BOOL didSetAdvancedSlider) {
-        _isAdjustingTableView = TRUE;
-        [self.accordion closeSection:indexPath.section];
+        DrinkListModel *drinklist = [self drinklistAtIndexPath:indexPath];
+        self.selectedDrinklist = drinklist;
         
         if (self.mode == SHModeBeer) {
-            [Tracker trackBeerStyleSelected:drinklist stylesCount:self.drinklists.count position:indexPath.row];
-            if (didSetAdvancedSlider) {
-                [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Beer_Sliders],
-                                                                 [NSNumber numberWithInteger:kSection_Beer_AdvancedSliders]]];
-            }
-            else {
-                [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Beer_Sliders]]];
-            }
-        }
-        else if (self.mode == SHModeCocktail) {
-            [Tracker trackCocktailStyleSelected:drinklist stylesCount:self.drinklists.count position:indexPath.row];
-            if (didSetAdvancedSlider) {
-                [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Cocktail_Sliders],
-                                                                 [NSNumber numberWithInteger:kSection_Cocktail_AdvancedSliders]]];
-            }
-            else {
-                [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Cocktail_Sliders]]];
-            }
-        }
-        else if (self.mode == SHModeWine) {
-            [Tracker trackWineStyleSelected:drinklist stylesCount:self.drinklists.count position:indexPath.row];
-            if (didSetAdvancedSlider) {
-                [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Wine_Sliders],
-                                                                 [NSNumber numberWithInteger:kSection_Wine_AdvancedSliders]]];
-            }
-            else {
-                [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Wine_Sliders]]];
-            }
+            [self updateSectionTitle:[NSString stringWithFormat:@"Step 1 - %@", drinklist.name] section:indexPath.section];
         }
         else {
-            NSAssert(FALSE, @"Condition should not be met");
+            [self updateSectionTitle:[NSString stringWithFormat:@"Step 2 - %@", drinklist.name] section:indexPath.section];
         }
         
-        [self notifyThatManagerIsFree];
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            _isAdjustingTableView = FALSE;
-        });
-    };
-    
-    [self notifyThatManagerIsBusy:@"Pre-setting flavor sliders"];
-    if ([[NSNull null] isEqual:drinklist.ID]) {
-        [self updateSliders:nil withCompletionBlock:completeBlock];
-    }
-    else {
-        [[drinklist fetchDrinkList] then:^(DrinkListModel *drinklist) {
-            [self updateSliders:drinklist.sliders withCompletionBlock:completeBlock];
-        } fail:^(ErrorModel *errorModel) {
+        void (^completeBlock)(BOOL) = ^void (BOOL didSetAdvancedSlider) {
+            _isAdjustingTableView = TRUE;
+            [self.accordion closeSection:indexPath.section];
+            
+            if (self.mode == SHModeBeer) {
+                [Tracker trackBeerStyleSelected:drinklist stylesCount:self.drinklists.count position:indexPath.row];
+                if (didSetAdvancedSlider) {
+                    [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Beer_Sliders],
+                                                                     [NSNumber numberWithInteger:kSection_Beer_AdvancedSliders]]];
+                }
+                else {
+                    [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Beer_Sliders]]];
+                }
+            }
+            else if (self.mode == SHModeCocktail) {
+                [Tracker trackCocktailStyleSelected:drinklist stylesCount:self.drinklists.count position:indexPath.row];
+                if (didSetAdvancedSlider) {
+                    [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Cocktail_Sliders],
+                                                                     [NSNumber numberWithInteger:kSection_Cocktail_AdvancedSliders]]];
+                }
+                else {
+                    [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Cocktail_Sliders]]];
+                }
+            }
+            else if (self.mode == SHModeWine) {
+                [Tracker trackWineStyleSelected:drinklist stylesCount:self.drinklists.count position:indexPath.row];
+                if (didSetAdvancedSlider) {
+                    [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Wine_Sliders],
+                                                                     [NSNumber numberWithInteger:kSection_Wine_AdvancedSliders]]];
+                }
+                else {
+                    [self.accordion immediatelyResetOpenedSections:@[[NSNumber numberWithInteger:kSection_Wine_Sliders]]];
+                }
+            }
+            else {
+                NSAssert(FALSE, @"Condition should not be met");
+            }
+            
             [self notifyThatManagerIsFree];
-            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
-        } always:nil];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.25f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                _isAdjustingTableView = FALSE;
+            });
+        };
+        
+        [self notifyThatManagerIsBusy:@"Pre-setting flavor sliders"];
+        if ([[NSNull null] isEqual:drinklist.ID]) {
+            [self updateSliders:nil withCompletionBlock:completeBlock];
+        }
+        else {
+            [[drinklist fetchDrinkList] then:^(DrinkListModel *drinklist) {
+                [self updateSliders:drinklist.sliders withCompletionBlock:completeBlock];
+            } fail:^(ErrorModel *errorModel) {
+                [self notifyThatManagerIsFree];
+                [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+            } always:nil];
+        }
     }
 }
 
@@ -1328,7 +1360,11 @@
     
     for (DrinkListModel *drinklist in drinklists) {
         
-        NSAssert(drinklist.drinkType, @"Drinklist must have a drink type");
+//        NSAssert(drinklist.drinkType, @"Drinklist must have a drink type");
+        
+        if (!drinklist.drinkType.name.length) {
+            DebugLog(@"Drink type should be defined");
+        }
         
         if ([[NSNull null] isEqual:drinklist.ID]) {
             // Custom list option
@@ -1442,9 +1478,17 @@
 }
 
 - (DrinkListModel *)drinklistAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row < self.drinklists.count) {
-        DrinkListModel *drinklist = self.drinklists[indexPath.row];
+    if (indexPath.row == 0) {
+        DrinkListModel *drinklist = [[DrinkListModel alloc] init];
+        drinklist.name = kHighestRatedName;
         return drinklist;
+    }
+    else {
+        NSUInteger adjustedRow = indexPath.row - 1;
+        if (adjustedRow < self.drinklists.count) {
+            DrinkListModel *drinklist = self.drinklists[adjustedRow];
+            return drinklist;
+        }
     }
     
     return nil;
@@ -1523,6 +1567,15 @@
     if ([UserModel isLoggedIn]) {
         [[DrinkListModel fetchMyDrinkLists] then:^(NSArray *drinklists) {
             
+#ifndef NDEBUG
+            for (DrinkListModel *drinklist __unused in drinklists) {
+//                NSAssert(drinklist.drinkType.name.length, @"Drink Type must be defined");
+                if (!drinklist.drinkType.name.length) {
+                    DebugLog(@"Drinklist does not have a drink type: %@", drinklist.name);
+                }
+            }
+#endif
+            
             // add Custom Mood at the top
             DrinkListModel *skipDrinklist = [[DrinkListModel alloc] init];
             skipDrinklist.ID = [NSNull null];
@@ -1534,12 +1587,6 @@
             NSMutableArray *allDrinklists = @[].mutableCopy;
             [allDrinklists addObjectsFromArray:drinklists];
             [allDrinklists addObject:skipDrinklist];
-            
-#ifndef NDEBUG
-            for (DrinkListModel *drinklist __unused in allDrinklists) {
-                NSAssert(drinklist.drinkType.name.length, @"Drink Type must be defined");
-            }
-#endif
             
             if (completionBlock) {
                 completionBlock(allDrinklists);
@@ -1751,32 +1798,33 @@
     NSMutableArray *allTheSliders = @[].mutableCopy;
     [allTheSliders addObjectsFromArray:self.sliders];
     [allTheSliders addObjectsFromArray:self.advancedSliders];
+
+    SpotListRequest *request = [[SpotListRequest alloc] init];
+    
+    NSArray *sorted = [allTheSliders sortedArrayUsingComparator:^NSComparisonResult(SliderModel *slider1, SliderModel *slider2) {
+        return [slider1 compare:slider2];
+    }];
+    
+    request.sliders = sorted;
     
     NSString *sliderType = [self isSelectingSpotlist] ? @"Spotlist" : @"Drinklist";
     
     for (SliderModel *sliderModel in self.sliders) {
         if (sliderModel.value) {
-            [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @NO}];
+            [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @NO, @"Starred" : sliderModel.starred ? @YES : @NO}];
         }
     }
     for (SliderModel *sliderModel in self.advancedSliders) {
         if (sliderModel.value) {
-            [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @YES}];
+            [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @YES, @"Starred" : sliderModel.starred ? @YES : @NO}];
         }
     }
     
     CLLocationCoordinate2D coordinate = [self searchCenterCoordinate];
     CGFloat radius = [self searchRadius];
     
-    NSNumber *latitude = nil, *longitude = nil;
-    if (CLLocationCoordinate2DIsValid(coordinate)) {
-        latitude = [NSNumber numberWithFloat:coordinate.latitude];
-        longitude = [NSNumber numberWithFloat:coordinate.longitude];
-    }
-    
     [Tracker trackCreatingSpotList];
     
-    SpotListRequest *request = [[SpotListRequest alloc] init];
     if (self.selectedSpotlist && ![[NSNull null] isEqual:self.selectedSpotlist.ID]) {
         request.spotListId = self.selectedSpotlist.ID;
     }
@@ -1795,7 +1843,6 @@
     
     request.coordinate = coordinate;
     request.radius = radius;
-    request.sliders = allTheSliders;
     
     NSDate *startDate = [NSDate date];
     [[SpotListModel fetchSpotListWithRequest:request] then:^(SpotListModel *spotListModel) {
@@ -1813,21 +1860,33 @@
     }];
 }
 
-- (void)fetchDrinkListResultsWithListName:(NSString *)listName withCompletionBlock:(void (^)(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel))completionBlock {
-    NSMutableArray *allTheSliders = @[].mutableCopy;
-    [allTheSliders addObjectsFromArray:self.sliders];
-    [allTheSliders addObjectsFromArray:self.advancedSliders];
+- (void)fetchDrinkListResultsWithListName:(NSString *)listName basedOnSliders:(BOOL)basedOnSliders withCompletionBlock:(void (^)(DrinkListModel *drinkListModel, DrinkListRequest *request, ErrorModel *errorModel))completionBlock {
     
-    NSString *sliderType = [self isSelectingSpotlist] ? @"Spotlist" : @"Drinklist";
+    DrinkListRequest *request = [[DrinkListRequest alloc] init];
+    request.basedOnSliders = basedOnSliders;
     
-    for (SliderModel *sliderModel in self.sliders) {
-        if (sliderModel.value) {
-            [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @NO}];
+    if (basedOnSliders) {
+        NSMutableArray *allTheSliders = @[].mutableCopy;
+        [allTheSliders addObjectsFromArray:self.sliders];
+        [allTheSliders addObjectsFromArray:self.advancedSliders];
+        
+        NSArray *sorted = [allTheSliders sortedArrayUsingComparator:^NSComparisonResult(SliderModel *slider1, SliderModel *slider2) {
+            return [slider1 compare:slider2];
+        }];
+        
+        request.sliders = sorted;
+        
+        NSString *sliderType = [self isSelectingSpotlist] ? @"Spotlist" : @"Drinklist";
+        
+        for (SliderModel *sliderModel in self.sliders) {
+            if (sliderModel.value) {
+                [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @NO, @"Starred" : sliderModel.starred ? @YES : @NO}];
+            }
         }
-    }
-    for (SliderModel *sliderModel in self.advancedSliders) {
-        if (sliderModel.value) {
-            [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @YES}];
+        for (SliderModel *sliderModel in self.advancedSliders) {
+            if (sliderModel.value) {
+                [Tracker track:@"Slider Value Set" properties:@{@"Type" : sliderType, @"Name" : sliderModel.sliderTemplate.name, @"Value" : sliderModel.value, @"Advanced" : @YES, @"Starred" : sliderModel.starred ? @YES : @NO}];
+            }
         }
     }
     
@@ -1846,7 +1905,6 @@
     NSNumber *drinkSubTypeID = self.selectedDrinkSubType.ID;
     NSNumber *baseAlcoholID = self.selectedBaseAlcohol.ID;
     
-    DrinkListRequest *request = [[DrinkListRequest alloc] init];
     if (self.selectedDrinklist && ![[NSNull null] isEqual:self.selectedDrinklist.ID]) {
         request.drinkListId = self.selectedDrinklist.ID;
         request.name = self.selectedDrinklist.name;
@@ -1858,7 +1916,6 @@
     
     request.coordinate = coordinate;
     request.radius = radiusInMiles;
-    request.sliders = allTheSliders;
     request.drinkTypeId = drinkTypeID;
     request.drinkSubTypeId = drinkSubTypeID;
     request.baseAlcoholId = baseAlcoholID;

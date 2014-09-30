@@ -33,6 +33,9 @@
 - (NSArray *)cachedDrinklists;
 - (void)cacheDrinklists:(NSArray *)drinklists;
 
+- (DrinkListModel *)cachedDrinklistForKey:(NSString *)key;
+- (void)cacheDrinklist:(DrinkListModel *)drinklist forKey:(NSString *)key;
+
 @end
 
 @implementation DrinkListModel
@@ -428,7 +431,7 @@
     NSMutableDictionary *params = @{
                                     kSpotModelParamPage : @1,
                                     kSpotModelParamsPageSize : @10,
-                                    @"name" : request.name,
+                                    @"name" : request.name.length ? request.name : @"Highest Rated",
                                     @"sliders" : jsonSliders,
                                     kDrinkListModelParamBasedOnSlider : [NSNumber numberWithBool:request.isBasedOnSliders],
                                     @"drink_id" : request.drinkId ? request.drinkId : [NSNull null],
@@ -554,7 +557,10 @@
 
 + (void)fetchDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinkListModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     // if request has a drinklist id then it is an updated (PUT) otherwise it is a create (POST) action and both should return a result set with an identical structure
-    if (!request.drinkListId) {
+    if ([request.name hasPrefix:@"Highest Rated"] && !request.drinkListId) {
+        [self fetchHighestRatedDrinkListWithRequest:request success:successBlock failure:failureBlock];
+    }
+    else if (!request.drinkListId) {
         [self createDrinkListWithRequest:request success:successBlock failure:failureBlock];
     }
     else if (request.drinkListId && request.isFeatured) {
@@ -633,6 +639,99 @@
     return deferred.promise;
 }
 
++ (void)fetchHighestRatedDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinklist))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    // get cached drinklist if spotId is defined
+    if (request.spotId) {
+        NSString *key = [NSString stringWithFormat:@"HighestRatedDrinklistForSpot-%@-DrinkType-%@", request.spotId, request.drinkTypeId];
+        DrinkListModel *drinklist = [[self sh_sharedCache] cachedDrinklistForKey:key];
+        if (drinklist && successBlock) {
+            successBlock(drinklist);
+        }
+    }
+    
+    NSMutableDictionary *params = @{
+                                    kSpotModelParamPage : @1,
+                                    kSpotModelParamsPageSize : @10,
+                                    @"name" : request.name,
+                                    @"drink_id" : request.drinkId ? request.drinkId : [NSNull null],
+                                    @"drink_type_id" : request.drinkTypeId ? request.drinkTypeId : [NSNull null],
+                                    @"drink_subtype_id" : request.drinkSubTypeId ? request.drinkSubTypeId : [NSNull null],
+                                    @"base_alcohol_id" : request.baseAlcoholId ? request.baseAlcoholId : [NSNull null],
+                                    @"spot_id" : request.spotId ? request.spotId : [NSNull null]
+                                    }.mutableCopy;
+    
+    if (CLLocationCoordinate2DIsValid(request.coordinate)) {
+        params[@"lat"] = [NSNumber numberWithFloat:request.coordinate.latitude];
+        params[@"lng"] = [NSNumber numberWithFloat:request.coordinate.longitude];
+    }
+    
+    CGFloat miles = request.radius / kMetersPerMile;
+    NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
+    params[kDrinkListModelParamRadius] = radiusParam;
+    
+    [[ClientSessionManager sharedClient] GET:@"/api/drink_lists/highest_rated" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
+            DrinkListModel *drinklistModel = [jsonApi resourceForKey:@"drink_lists"];
+            
+            if (drinklistModel.drinks.count) {
+                DrinkModel *drink = drinklistModel.drinks[0];
+                if (drink.isBeer) {
+                    drinklistModel.name = @"Highest Rated Beers";
+                }
+                else if (drink.isWine) {
+                    drinklistModel.name = @"Highest Rated Wines";
+                }
+                else if (drink.isCocktail) {
+                    drinklistModel.name = @"Highest Rated Cocktails";
+                }
+            }
+            
+            // limit to 10
+            if (drinklistModel.drinks.count > 10) {
+                drinklistModel.drinks = [drinklistModel.drinks subarrayWithRange:NSMakeRange(0, 10)];
+            }
+            
+            if (request.spotId) {
+                NSString *key = [NSString stringWithFormat:@"HighestRatedDrinklistForSpot-%@-DrinkType-%@", request.spotId, request.drinkTypeId];
+                [[self sh_sharedCache] cacheDrinklist:drinklistModel forKey:key];
+            }
+            
+            if (successBlock) {
+                successBlock(drinklistModel);
+            }
+        }
+        else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            if (failureBlock) {
+                failureBlock(errorModel);
+            }
+        }
+    }];
+}
+
++ (Promise *)fetchHighestRatedDrinkListWithRequest:(DrinkListRequest *)request {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [self fetchHighestRatedDrinkListWithRequest:request success:^(DrinkListModel *drinklist) {
+        // Resolves promise
+        [deferred resolveWith:drinklist];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
 - (void)purgeDrinkList:(void (^)(BOOL success))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     [[ClientSessionManager sharedClient] DELETE:[NSString stringWithFormat:@"/api/drink_lists/%ld", (long)[self.ID integerValue]] parameters:@{} success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Parses response with JSONAPI
@@ -687,6 +786,19 @@ NSString * const DrinklistsKey = @"Drinklists";
     }
     else {
         [self removeObjectForKey:DrinklistsKey];
+    }
+}
+
+- (DrinkListModel *)cachedDrinklistForKey:(NSString *)key {
+    return [self objectForKey:key];
+}
+
+- (void)cacheDrinklist:(DrinkListModel *)drinklist forKey:(NSString *)key {
+    if (drinklist) {
+        [self setObject:drinklist forKey:key];
+    }
+    else {
+        [self removeObjectForKey:key];
     }
 }
 

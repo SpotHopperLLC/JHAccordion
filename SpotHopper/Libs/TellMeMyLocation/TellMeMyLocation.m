@@ -6,10 +6,7 @@
 //  Copyright (c) 2014 SpotHopper. All rights reserved.
 //
 
-#define kLocationUpdateTimeout              5.0
-#define kTimeBetweenLocationRefreshes       30
-#define kSimulatorLatitude                  43.060179
-#define kSimulatorLongitude                 -87.885228
+#define kLocationUpdateTimeout              10.0
 
 #define kLastLocationLat @"last_location_lat"
 #define kLastLocationLng @"last_location_lng"
@@ -58,10 +55,18 @@ static NSString *_currentMapCenterLocationZip;
 - (void)findMe:(CLLocationAccuracy)accuracy {
     self.startDate = [NSDate date];
     
-    if ([CLLocationManager locationServicesEnabled] && ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)) {
+    CLAuthorizationStatus authorizationStatus = [CLLocationManager authorizationStatus];
+    
+    if ([CLLocationManager locationServicesEnabled] && (authorizationStatus == kCLAuthorizationStatusAuthorized || authorizationStatus == kCLAuthorizationStatusNotDetermined)) {
         if (!self.locationManager) {
             self.locationManager = [[CLLocationManager alloc] init];
             [self.locationManager setDelegate:self];
+        }
+        
+        NSAssert(self.locationManager, @"Location Manager is required");
+
+        if ([self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+            [self.locationManager requestAlwaysAuthorization];
         }
         
         [self.locationManager setDesiredAccuracy:accuracy];
@@ -381,7 +386,7 @@ static NSString *_currentMapCenterLocationZip;
     CLLocationDistance distance = [castleLocation distanceFromLocation:location];
 
     // distance in meters
-    return distance < 25;
+    return distance < 50;
 }
 
 #pragma mark - Private Implemention
@@ -391,7 +396,7 @@ static NSString *_currentMapCenterLocationZip;
     
     if (!self.bestLocation) {
         [Tracker trackTimingOutBeforeLocationFound];
-        [self performSelector:@selector(stopUpdatingLocationAfterTimeout:) withObject:manager afterDelay:1.0f];
+        [self performSelector:@selector(stopUpdatingLocationAfterTimeout:) withObject:manager afterDelay:kLocationUpdateTimeout];
         return;
     }
     
@@ -483,6 +488,21 @@ static NSString *_currentMapCenterLocationZip;
         manager.delegate = nil;
         [self finishWithBestLocation:self.bestLocation error:nil];
     }
+}
+
+- (BOOL)locationManagerShouldDisplayHeadingCalibration:(CLLocationManager *)manager {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    return TRUE;
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    DebugLog(@"%@, %d", NSStringFromSelector(_cmd), status);
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+didFinishDeferredUpdatesWithError:(NSError *)error {
+    DebugLog(@"%@, %@", NSStringFromSelector(_cmd), error);
 }
 
 @end

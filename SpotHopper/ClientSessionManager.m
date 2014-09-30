@@ -17,6 +17,8 @@
 
 #define kNotReachableErrorsDictionary @{ @"errors" : @[ @{ @"human" : @"Network connection is down." } ] }
 
+#define kTimeoutInterval 25
+
 #import "ClientSessionManager.h"
 
 #import "UserModel.h"
@@ -33,6 +35,8 @@
 
 @property (nonatomic, strong) NSString *cookie;
 @property (nonatomic, strong) UserModel *currentUser;
+
+@property (nonatomic, readwrite, assign) NSUInteger totalContentLength;
 
 @end
 
@@ -77,7 +81,8 @@
 }
 
 - (void)cancelAllHTTPOperationsWithMethod:(NSString*)method path:(NSString*)path parameters:(NSDictionary*)parameters ignoreParams:(BOOL)ignoreParams {
-    NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:(method ?: @"GET") URLString:[[NSURL URLWithString:path relativeToURL:self.baseURL] absoluteString] parameters:parameters];
+    NSError *error;
+    NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:(method ?: @"GET") URLString:[[NSURL URLWithString:path relativeToURL:self.baseURL] absoluteString] parameters:parameters error:&error];
     NSString *URLStringToMatched = [[request URL] absoluteString];
     
     for (NSOperation *operation in [self.operationQueue operations]) {
@@ -114,7 +119,9 @@
     }
     
     NSDate *now = [NSDate date];
-    return [super GET:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:@"GET" URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters error:nil];
+    request.timeoutInterval = kTimeoutInterval;
+    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
             NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, (long)operation.response.statusCode, operation.responseString);
             NSLog(@"%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
@@ -144,6 +151,10 @@
         success(operation, response);
         [self handleError:operation withResponseObject:response timeStarted:now];
     }];
+    
+    [self.operationQueue addOperation:operation];
+
+    return operation;
 }
 
 - (AFHTTPRequestOperation *)POST:(NSString *)URLString parameters:(NSDictionary *)parameters constructingBodyWithBlock:(void (^)(id<AFMultipartFormData>))block success:(void (^)(AFHTTPRequestOperation *, id responseObject))success {
@@ -157,7 +168,9 @@
     }
     
     NSDate *now = [NSDate date];
-    return [super POST:URLString parameters:parameters constructingBodyWithBlock:block success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSMutableURLRequest *request = [self.requestSerializer multipartFormRequestWithMethod:@"POST" URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters constructingBodyWithBlock:block error:nil];
+    request.timeoutInterval = kTimeoutInterval;
+    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
             NSLog(@"Request Headers\n\t%@", operation.request.allHTTPHeaderFields);
             NSLog(@"Request Body\n\t%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
@@ -188,6 +201,10 @@
         success(operation, response);
         [self handleError:operation withResponseObject:response timeStarted:now];
     }];
+    
+    [self.operationQueue addOperation:operation];
+    
+    return operation;
 }
 
 - (AFHTTPRequestOperation *)POST:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id responseObject))success {
@@ -201,7 +218,9 @@
     }
     
     NSDate *now = [NSDate date];
-    return [super POST:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:@"POST" URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters error:nil];
+    request.timeoutInterval = kTimeoutInterval;
+    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
             NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, (long)operation.response.statusCode, operation.responseString);
             NSLog(@"Request Headers - %@", operation.request.allHTTPHeaderFields);
@@ -234,6 +253,10 @@
         success(operation, response);
         [self handleError:operation withResponseObject:response timeStarted:now];
     }];
+    
+    [self.operationQueue addOperation:operation];
+    
+    return operation;
 }
 
 - (AFHTTPRequestOperation *)PUT:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id responseObject))success {
@@ -247,7 +270,9 @@
     }
     
     NSDate *now = [NSDate date];
-    return [super PUT:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:@"PUT" URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters error:nil];
+    request.timeoutInterval = kTimeoutInterval;
+    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
             NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, (long)operation.response.statusCode, operation.responseString);
             NSLog(@"%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
@@ -276,6 +301,10 @@
         success(operation, response);
         [self handleError:operation withResponseObject:response timeStarted:now];
     }];
+    
+    [self.operationQueue addOperation:operation];
+    
+    return operation;
 }
 
 - (AFHTTPRequestOperation *)DELETE:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id responseObject))success {
@@ -289,7 +318,9 @@
     }
     
     NSDate *now = [NSDate date];
-    return [super DELETE:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:@"DELETE" URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters error:nil];
+    request.timeoutInterval = kTimeoutInterval;
+    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (_debug) {
             NSLog(@"%@ %ld - %@", operation.request.URL.standardizedURL, (long)operation.response.statusCode, operation.responseString);
             NSLog(@"%@", [[NSString alloc] initWithData:operation.request.HTTPBody encoding:NSUTF8StringEncoding]);
@@ -318,6 +349,20 @@
         success(operation, response);
         [self handleError:operation withResponseObject:response timeStarted:now];
     }];
+    
+    [self.operationQueue addOperation:operation];
+    
+    return operation;
+}
+
+#pragma mark - Track Content Length
+
+- (void)incrementContentLength:(NSUInteger)contentLength {
+    self.totalContentLength += contentLength;
+}
+
+- (void)resetContentLength {
+    self.totalContentLength = 0;
 }
 
 #pragma mark - Handle error response
@@ -350,15 +395,15 @@
     CGFloat elapsedTime = [[NSDate date] timeIntervalSinceDate:date];
     NSString *body = [[NSString alloc] initWithData:operation.responseData encoding:NSUTF8StringEncoding];
     NSString *message = [NSString stringWithFormat:@"[Error] %ld '%@' [%.04f s]: %@", statusCode, [[operation.response URL] absoluteString], elapsedTime, body];
-    [[RavenClient sharedClient] captureMessage:message level:kRavenLogLevelDebugWarning];
+    [Tracker logError:message class:[self class] trace:NSStringFromSelector(_cmd)];
 }
 
 #pragma mark - Logging
 
 - (void)logResponse:(NSHTTPURLResponse *)response startDate:(NSDate *)startDate {
+    //DebugLog(@"response: %@", response.allHeaderFields);
     NSAssert(startDate, @"Start Date is required");
     NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:startDate];
-    DebugLog(@"duration: %f", duration);
     JTSNetworkStatus networkStatus = [[JTSReachabilityResponder sharedInstance] networkStatus];
     
     NSString *network = @"Unknown";
@@ -377,7 +422,7 @@
         default:
             break;
     }
-    
+
     NSString *contentLength = response.allHeaderFields[@"Content-Length"];
     if (!contentLength.length) {
         contentLength = @"0";
@@ -395,6 +440,8 @@
                                                 @"Content Length" : [NSNumber numberWithInteger:[contentLength integerValue]],
                                                 @"Network" : network
                                                 }];
+    
+    [self incrementContentLength:[contentLength integerValue]];
 }
 
 #pragma mark - Session Helpers

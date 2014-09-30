@@ -10,7 +10,7 @@
 
 #import "ImageModel.h"
 
-#import "NetworkHelper.h"
+#import "ImageUtil.h"
 
 @implementation SpotImageCollectViewCell
 
@@ -21,7 +21,7 @@
         [self.imgSpot setImage:placeholderImage];
     }
     else {
-        [NetworkHelper loadImage:imageModel placeholderImage:placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
+        [ImageUtil loadImage:imageModel placeholderImage:placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
             self.imgSpot.image = thumbImage;
         } withFullImageBlock:^(UIImage *fullImage) {
             self.imgSpot.image = fullImage;

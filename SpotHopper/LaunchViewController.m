@@ -74,7 +74,7 @@
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad:@[kDidLoadOptionsDontAdjustForIOS6]];
+    [super viewDidLoad];
 
     // Logs current user out
     [[ClientSessionManager sharedClient] logout];
@@ -97,6 +97,10 @@
     [_viewFormCreate setFrame:frameCreateForm];
     
     [SHStyleKit setImageView:self.imgBottomArrow withDrawing:SHStyleKitDrawingPencilArrowUp color:SHStyleKitColorMyClearColor];
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsDontAdjustForIOS6];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -216,7 +220,7 @@
     [appDelegate facebookAuth:YES success:^(FBSession *session) {
         [self doLoginFacebook];
     } failure:^(FBSessionState state, NSError *error) {
-        [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:@"[Facebook Connect] - Failed to oauth, %@", [error localizedDescription]] level:kRavenLogLevelDebugInfo];
+        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
         [self showAlert:@"Oops" message:@"Looks like there was an error logging in with Facebook"];
         [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
@@ -237,7 +241,9 @@
         } failure:^(NSError *error) {
             // TODO: Link to FAQ on how to fix - logout and log back in
             // Error - Error Domain=STTwitterOS Code=0 "Error processing your OAuth request: invalid signature or token" UserInfo=0x17827a040 {NSLocalizedDescription=Error processing your OAuth request: invalid signature or token}
-            [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:@"[Twitter Connect] - Failed to reverse oauth, %@", [error localizedDescription]] level:kRavenLogLevelDebugInfo];
+            
+            NSString *message = [NSString stringWithFormat:@"[Twitter Connect] - Failed to reverse oauth, %@", [error localizedDescription]];
+            [Tracker logError:message class:[self class] trace:NSStringFromSelector(_cmd)];
             [self showAlert:@"Oops" message:@"Looks like there was an error logging in with Twitter.\n\n Go to Settings app to logout and login without Twitter account, then try logging in with Twitter again here."];
         }];
         
@@ -247,10 +253,12 @@
     } cancel:^{
         
     } noAccounts:^{
-        [[RavenClient sharedClient] captureMessage:@"[Twitter Connect] - No accounts" level:kRavenLogLevelDebugInfo];
+        NSString *message = @"[Twitter Connect] - No accounts";
+        [Tracker logError:message class:[self class] trace:NSStringFromSelector(_cmd)];
         [self showAlert:@"No Accounts Found" message:@"No Twitter accounts were found logged in to this device..\n\nPlease connect Twitter account in the Settings app if you would like to use Twitter in SpotHopper"];
     } permissionDenied:^{
-        [[RavenClient sharedClient] captureMessage:@"[Twitter Connect] - Permission denied" level:kRavenLogLevelDebugInfo];
+        NSString *message = @"[Twitter Connect] - Permission denied";
+        [Tracker logError:message class:[self class] trace:NSStringFromSelector(_cmd)];
         [self showAlert:@"Permission Denied" message:@"SpotHopper does not have permission to use Twitter.\n\nPlease adjust the permissions in the Settings app if you would like to use Twitter in SpotHopper"];
     }];
 }

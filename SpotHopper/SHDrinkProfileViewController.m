@@ -104,11 +104,15 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 #pragma mark -
 
 - (void)viewDidLoad {
-    [self viewDidLoad:@[kDidLoadOptionsNoBackground]];
+    [super viewDidLoad];
+    
+    NSAssert(self.tableView, @"Outlet is required");
+    NSAssert([self.tableView isKindOfClass:[UITableView class]], @"Table View must be correct class");
+    NSAssert([self.tableView.delegate isEqual:self], @"Delegate must be self");
+    NSAssert([self.tableView.dataSource isEqual:self], @"DataSource must be self");
     
     NSDictionary *titleTextAttributes = @{ NSForegroundColorAttributeName : [SHStyleKit color:SHStyleKitColorMyTextColor], NSFontAttributeName : [UIFont fontWithName:@"Lato-Bold" size:20.0f]};
     self.navigationController.navigationBar.titleTextAttributes = titleTextAttributes;
-    NSLog(@"nav controller babiees: %@", self.navigationController.viewControllers);
     
     self.topShadowImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingTopBarWhiteShadowBackground size:CGSizeMake(320, 64)];
     
@@ -142,6 +146,10 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsNoBackground];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -326,7 +334,6 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
             numberOfRows = 1;
             break;
         case kSectionSliders:
-            NSLog(@"# of templates:  %lu", (unsigned long)self.drink.averageReview.sliders.count);
             numberOfRows = self.drink.averageReview.sliders.count;
             break;
         default:

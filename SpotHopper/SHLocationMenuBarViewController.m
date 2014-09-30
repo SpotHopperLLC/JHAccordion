@@ -49,7 +49,7 @@
 #pragma mark -
 
 - (void)viewDidLoad {
-    [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
+    [super viewDidLoad];
     
     UIColor *textColor = [SHStyleKit myTextColor];
     self.nearLabel.textColor = textColor;
@@ -67,6 +67,10 @@
     [SHStyleKit setButton:self.searchCancelButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
     
     [self updateLocationTitle:@"Locating..."];
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsNoBackground];
 }
 
 #pragma mark - Public

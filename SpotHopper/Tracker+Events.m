@@ -15,8 +15,10 @@
 #import "DrinkListModel.h"
 #import "SpotListRequest.h"
 #import "DrinkListRequest.h"
+#import "SpecialModel.h"
 
 #import "TellMeMyLocation.h"
+#import "ClientSessionManager.h"
 
 #import "Mixpanel.h"
 
@@ -104,6 +106,78 @@
 
 + (void)trackLeavingGlobalSearch:(BOOL)selected {
     [self trackLocationPropertiesForEvent:@"Exiting GlobalSearch" properties:@{@"Selected a result" : [NSNumber numberWithBool:selected]}];
+}
+
+#pragma mark - Location
+#pragma mark -
+
++ (void)trackFetchedLocationFromMapsUserLocation:(CLLocationDistance)distance {
+    [Tracker track:@"Fetched Location" properties:@{@"Distance from User Location" : [NSNumber numberWithFloat:distance]}];
+}
+
+#pragma mark - Highest Rated
+#pragma mark -
+
++ (void)trackSelectedHighestRatedForBeer {
+    [self track:@"Selected Highest Rated: Beer"];
+}
+
++ (void)trackSelectedHighestRatedForWine {
+    [self track:@"Selected Highest Rated: Wine"];
+}
+
++ (void)trackSelectedHighestRatedForCocktail {
+    [self track:@"Selected Highest Rated: Cocktail"];
+}
+
+#pragma mark - Pullup UI
+#pragma mark -
+
++ (void)trackTappedFullDrinkMenu {
+    [self track:@"Tapped Full Drink Menu"];
+}
+
++ (void)trackTappedMorePhotos {
+    [self track:@"Tapped More Photos"];
+}
+
++ (void)trackTappedAllSliders {
+    [self track:@"Tapped All Sliders"];
+}
+
++ (void)trackTappedPhoneNumber {
+    [self track:@"Tapped Phone Number"];
+}
+
++ (void)trackTappedWriteAReview {
+    [self track:@"Tapped Write a Review"];
+}
+
++ (void)trackTappedShare {
+    [self track:@"Tapped Share"];
+}
+
++ (void)trackPulledUpCollectionViewForSpecialsSpots:(NSArray *)spots atIndex:(NSUInteger)index {
+    if (index < spots.count) {
+        SpotModel *spot = spots[index];
+        SpecialModel *special = [spot specialForToday];
+        [Tracker track:@"Pulled up Collection View" properties:@{@"Spot" : spot.name.length ? spot.name : @"N/A", @"Special" : @TRUE, @"Match" : spot.matchPercent.length ? spot.matchPercent : @"N/A", @"Likes" : [NSNumber numberWithInteger:special.likeCount], @"Position" : [NSNumber numberWithInteger:index+1], @"Total" : [NSNumber numberWithInteger:spots.count]}];
+    }
+}
+
++ (void)trackPulledUpCollectionViewForSpotlist:(SpotListModel *)spotlist atIndex:(NSUInteger)index {
+    if (index < spotlist.spots.count) {
+        SpotModel *spot = spotlist.spots[index];
+        [Tracker track:@"Pulled up Collection View" properties:@{@"Spot" : spot.name.length ? spot.name : @"N/A", @"Special" : @FALSE, @"Match" : spot.matchPercent.length ? spot.matchPercent : @"N/A", @"Position" : [NSNumber numberWithInteger:index+1], @"Total" : [NSNumber numberWithInteger:spotlist.spots.count]}];
+        
+    }
+}
+
++ (void)trackPulledUpCollectionViewForDrinklist:(DrinkListModel *)drinklist atIndex:(NSUInteger)index {
+    if (index < drinklist.drinks.count) {
+        DrinkModel *drink = drinklist.drinks[index];
+        [Tracker track:@"Pulled up Collection View" properties:@{@"Drink" : drink.name.length ? drink.name : @"N/A", @"Match" : drink.matchPercent.length ? drink.matchPercent : @"N/A", @"Position" : [NSNumber numberWithInteger:index+1], @"Total" : [NSNumber numberWithInteger:drinklist.drinks.count]}];
+    }
 }
 
 #pragma mark -
@@ -316,6 +390,12 @@
     else  {
         [self trackLocationPropertiesForEvent:@"Drinklist fetched" properties:properties];
     }
+}
+
++ (void)trackTotalContentLength {
+    NSUInteger totalContentLength = [[ClientSessionManager sharedClient] totalContentLength];
+    [self track:@"Total Content Length" properties:@{@"Content Length" : [NSNumber numberWithUnsignedLong:totalContentLength]}];
+    [[ClientSessionManager sharedClient] resetContentLength];
 }
 
 #pragma mark - Logins

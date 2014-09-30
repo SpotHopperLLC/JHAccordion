@@ -65,7 +65,7 @@
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad:@[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6]];
+    [super viewDidLoad];
     
     // Sets title
     [self setTitle:@"Check In"];
@@ -106,6 +106,10 @@
     _spots = [NSMutableArray array];
     
     _tblSpots.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 65.0, 0.0f);
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsBlurredBackground,kDidLoadOptionsDontAdjustForIOS6];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

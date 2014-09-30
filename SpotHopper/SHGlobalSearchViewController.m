@@ -53,7 +53,7 @@
 #pragma mark -
 
 - (void)viewDidLoad {
-    [super viewDidLoad:@[kDidLoadOptionsNoBackground]];
+    [super viewDidLoad];
     
     NSAssert(self.tableView, @"Outlet is required");
     NSAssert(self.tableView.dataSource, @"DataSource is required");
@@ -63,6 +63,10 @@
     [self registerRefreshTableView:self.tableView withReloadType:kPullRefreshTypeBoth];
     
     self.results = nil;
+}
+
+- (NSArray *)viewOptions {
+    return @[kDidLoadOptionsNoBackground];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

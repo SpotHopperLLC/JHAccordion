@@ -8,7 +8,60 @@
 
 #import "DrinkTypeModel.h"
 
+#import "Constants.h"
+#import "SHAppConfiguration.h"
+
 @implementation DrinkTypeModel
+
+#pragma mark - Public
+
+- (UIImage *)placeholderImage {
+    if ([self.ID isEqual:kBeerDrinkTypeID]) {
+        return [UIImage imageNamed:@"beer_placeholder"];
+    } else if ([self.ID isEqual:kWineDrinkTypeID]) {
+        return [UIImage imageNamed:@"cocktail_placeholder"];
+    } else if ([self.ID isEqual:kCocktailDrinkTypeID]) {
+        return [UIImage imageNamed:@"wine_placeholder"];
+    }
+    
+    return nil;
+}
+
++ (instancetype)beerDrinkType {
+    DrinkTypeModel *drinkType = [[DrinkTypeModel alloc] init];
+    drinkType.name = kDrinkTypeNameBeer;
+    drinkType.ID = kBeerDrinkTypeID;
+    
+    return drinkType;
+}
+
++ (instancetype)wineDrinkType {
+    DrinkTypeModel *drinkType = [[DrinkTypeModel alloc] init];
+    drinkType.name = kDrinkTypeNameWine;
+    drinkType.ID = kWineDrinkTypeID;
+    
+    return drinkType;
+}
+
++ (instancetype)cocktailDrinkType {
+    DrinkTypeModel *drinkType = [[DrinkTypeModel alloc] init];
+    drinkType.name = kDrinkTypeNameCocktail;
+    drinkType.ID = kCocktailDrinkTypeID;
+    
+    return drinkType;
+}
+
+- (BOOL)isBeer {
+    return [self.ID isEqual:kBeerDrinkTypeID];
+}
+
+- (BOOL)isWine {
+    return [self.ID isEqual:kWineDrinkTypeID];
+}
+
+- (BOOL)isCocktail {
+    return [self.ID isEqual:kCocktailDrinkTypeID];
+}
 
 #pragma mark - Debugging
 

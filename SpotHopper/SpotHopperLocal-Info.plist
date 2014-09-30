@@ -90,5 +90,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>SpotHopper will use your location to show you the best local recommendations.</string>
 </dict>
 </plist>

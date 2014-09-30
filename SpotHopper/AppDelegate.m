@@ -15,11 +15,9 @@
 #import "SHAppConfiguration.h"
 
 #import "ClientSessionManager.h"
-
 #import "SHModelResourceManager.h"
 
 #import "UserState.h"
-
 #import "MockData.h"
 
 #import "TellMeMyLocation.h"
@@ -36,10 +34,11 @@
 
 #import "SHStyleKit.h"
 
+#import "Crashlytics.h"
+
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
 #import <JSONAPI/JSONAPI.h>
 #import <Parse/Parse.h>
-#import <Raven/RavenClient.h>
 #import <STTwitter/STTwitter.h>
 
 @interface AppDelegate()
@@ -68,14 +67,20 @@
     UIRemoteNotificationType types = UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound;
     [application registerForRemoteNotificationTypes:types];
     
-    // Initializes Raven (Sentry) for error reporting/logging
-    [RavenClient clientWithDSN:kSentryDSN];
-    [[RavenClient sharedClient] setupExceptionHandler];
+    if ([SHAppConfiguration isCrashlyticsEnabled]) {
+        NSString *crashlyticsKey = [SHAppConfiguration crashlyticsKey];
+        [Crashlytics startWithAPIKey:crashlyticsKey];
+        
+        if ([UserModel isLoggedIn]) {
+            UserModel *user = [[ClientSessionManager sharedClient] currentUser];
+            [[Crashlytics sharedInstance] setUserIdentifier:user.ID];
+            if (user.email.length) {
+                [[Crashlytics sharedInstance] setUserEmail:user.email];
+            }
+        }
+    }
     
     [SHModelResourceManager prepareResources];
-    
-    NSLog(@"Linker: %@", [JSONAPIResourceLinker defaultInstance]);
-    NSLog(@"Modeler: %@", [JSONAPIResourceModeler defaultInstance]);
     
 #ifndef NDEBUG
     
@@ -216,6 +221,9 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    [Tracker trackTotalContentLength];
+    
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -413,6 +421,36 @@
     } errorBlock:^(NSError *error) {
         failureHandler(error);
     }];
+}
+
+- (BOOL)canPhone {
+    return ([[UIApplication sharedApplication] canOpenURL: [NSURL URLWithString: @"tel://"]]);
+}
+
+- (BOOL)canSkype {
+    return ([[UIApplication sharedApplication] canOpenURL: [NSURL URLWithString: @"skype:"]]);
+}
+
+- (void)callPhoneNumber:(NSString *)formattedPhoneNumber {
+    NSCharacterSet *charactersToRemove = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+    NSString *number = [[formattedPhoneNumber componentsSeparatedByCharactersInSet:charactersToRemove] componentsJoinedByString:@"" ];
+    
+    NSString *urlString = [NSString stringWithFormat:@"tel://%@", number];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+    });
+}
+
+- (void)skypePhoneNumber:(NSString *)formattedPhoneNumber {
+    NSCharacterSet *charactersToRemove = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+    NSString *number = [[formattedPhoneNumber componentsSeparatedByCharactersInSet:charactersToRemove] componentsJoinedByString:@"" ];
+    
+    NSString *urlString = [NSString stringWithFormat:@"skype:%@?call", number];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+    });
 }
 
 @end

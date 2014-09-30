@@ -36,54 +36,42 @@
     return self.name;
 }
 
+#pragma mark - Mappings
+
+- (NSDictionary *)mapKeysToProperties {
+    return @{
+             @"name" : @"name",
+             @"min_label" : @"minLabel",
+             @"max_label" : @"maxLabel",
+             @"max_label_short" : @"maxLabelShort",
+             @"min_label_short" : @"minLabelShort",
+             @"show_in_summary" : @"showInSummary",
+             @"default_value" : @"defaultValue",
+             @"required" : @"required",
+             @"order" : @"order",
+             @"importance" : @"importance",
+             @"links.spot_types" : @"spotTypes",
+             @"links.drink_types" : @"drinkTypes",
+             @"links.drink_subtypes" : @"drinkSubtypes"
+             };
+}
+
 #pragma mark - Getters
 
-- (NSString *)name {
-    return [self objectForKey:@"name"];
+- (NSString *)minLabelShortDisplayed {
+    if (self.minLabelShort.length) {
+        return self.minLabelShort;
+    }
+    
+    return self.minLabel;
 }
 
-- (NSString *)minLabel {
-    if (_minLabel != nil) return _minLabel;
-    _minLabel = [self objectForKey:@"min_label"];
-    return _minLabel;
-}
-
-- (NSString *)maxLabel {
-    if (_maxLabel != nil) return _maxLabel;
-    _maxLabel = [self objectForKey:@"max_label"];
-    return _maxLabel;
-}
-
-- (NSNumber *)defaultValue {
-    if (_defaultValue != nil) return _defaultValue;
-    _defaultValue = [self objectForKey:@"default_value"];
-    return _defaultValue;
-}
-
-- (BOOL)required {
-    return [[self objectForKey:@"required"] boolValue];
-}
-
-- (NSArray *)spotTypes {
-    if (_spotTypes != nil) return _spotTypes;
-    _spotTypes = [self linkedResourceForKey:@"spot_types"];
-    return _spotTypes;
-}
-
-- (NSArray *)drinkTypes {
-    if (_drinkTypes != nil) return _drinkTypes;
-    _drinkTypes = [self linkedResourceForKey:@"drink_types"];
-    return _drinkTypes;
-}
-
-- (NSArray *)drinkSubtypes {
-    if (_drinkSubtypes != nil) return _drinkSubtypes;
-    _drinkSubtypes = [self linkedResourceForKey:@"drink_subtypes"];
-    return _drinkSubtypes;
-}
-
-- (NSNumber *)order {
-    return [self objectForKey:@"order"];
+- (NSString *)maxLabelShortDisplayed {
+    if (self.maxLabelShort.length) {
+        return self.maxLabelShort;
+    }
+    
+    return self.maxLabel;
 }
 
 - (BOOL)isAdvanced {

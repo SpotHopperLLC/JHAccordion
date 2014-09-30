@@ -96,7 +96,11 @@
     NSString *start = [self shortTimeStringForDate:self.startTime];
     NSString *end = [self shortTimeStringForDate:self.endTime];
     
-    return [NSString stringWithFormat:@"%@ - %@", start, end];
+    if (start.length && end.length) {
+        return [NSString stringWithFormat:@"%@ - %@", start, end];
+    }
+    
+    return nil;
 }
 
 - (NSUInteger)durationInMinutes {
@@ -138,7 +142,7 @@
             [components setMinute:[parts[1] integerValue]];
         }
         
-        date = [calendar dateFromComponents:components];
+        adjustedDate = [calendar dateFromComponents:components];
     }
     
     return adjustedDate;

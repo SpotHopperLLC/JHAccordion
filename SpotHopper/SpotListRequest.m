@@ -38,6 +38,7 @@
     copy.name = self.name;
     copy.featured = self.isFeatured;
     copy.basedOnSliders = self.isBasedOnSliders;
+    copy.transient = self.transient;
     copy.coordinate = self.coordinate;
     copy.radius = self.radius;
     copy.sliders = self.sliders;

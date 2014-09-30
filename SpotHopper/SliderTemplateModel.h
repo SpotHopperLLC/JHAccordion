@@ -25,12 +25,19 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *minLabel;
 @property (nonatomic, strong) NSString *maxLabel;
+@property (nonatomic, strong) NSString *minLabelShort;
+@property (nonatomic, strong) NSString *maxLabelShort;
 @property (nonatomic, strong) NSNumber *defaultValue;
 @property (nonatomic, assign) BOOL required;
+@property (nonatomic, assign) BOOL showInSummary;
 @property (nonatomic, strong) NSArray *spotTypes;
 @property (nonatomic, strong) NSArray *drinkTypes;
 @property (nonatomic, strong) NSArray *drinkSubtypes;
 @property (nonatomic, strong) NSNumber *order;
+@property (nonatomic, strong) NSNumber *importance;
+
+@property (readonly, nonatomic) NSString *minLabelShortDisplayed;
+@property (readonly, nonatomic) NSString *maxLabelShortDisplayed;
 
 @property (readonly) BOOL isAdvanced;
 
