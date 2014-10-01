@@ -5,7 +5,7 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>CDA18879-86F0-463B-9D5C-ED732C4DC3C0</string>
+	<string>C3F287D6-F8D3-4957-8D7A-69426E4455FA</string>
 	<key>IDESourceControlProjectName</key>
 	<string>SpotHopper</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
@@ -20,7 +20,7 @@
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>446B2BF8-15D4-4C0A-AF2E-53CE2115DE2B</key>
-		<string>..-SpotHopper</string>
+		<string>../../iOS-SpotHopper</string>
 		<key>673AC8420A5BD2B28FFEB2747D4EBA701272AD3E</key>
 		<string>..</string>
 	</dict>
