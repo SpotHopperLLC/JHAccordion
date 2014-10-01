@@ -20,7 +20,7 @@
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>446B2BF8-15D4-4C0A-AF2E-53CE2115DE2B</key>
-		<string>../../iOS-SpotHopper</string>
+		<string>..-SpotHopper</string>
 		<key>673AC8420A5BD2B28FFEB2747D4EBA701272AD3E</key>
 		<string>..</string>
 	</dict>

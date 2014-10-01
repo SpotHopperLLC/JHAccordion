@@ -20,6 +20,7 @@
 
 @optional
 
+- (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc checkInButtonTapped:(id)sender;
 - (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc spotsButtonTapped:(id)sender;
 - (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc specialsButtonTapped:(id)sender;
 - (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc beersButtonTapped:(id)sender;

@@ -12,6 +12,7 @@
 
 @interface SHMapFooterNavigationViewController ()
 
+@property (weak, nonatomic) IBOutlet UIButton *btnCheckIn;
 @property (weak, nonatomic) IBOutlet UIButton *btnSpots;
 @property (weak, nonatomic) IBOutlet UIButton *btnSpecials;
 @property (weak, nonatomic) IBOutlet UIButton *btnBeer;
@@ -28,7 +29,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [SHStyleKit setButton:self.btnSpots withDrawing:SHStyleKitDrawingSpotIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+    [SHStyleKit setButton:self.btnCheckIn withDrawing:SHStyleKitDrawingSpotIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+    [SHStyleKit setButton:self.btnSpots withDrawing:SHStyleKitDrawingTapIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setButton:self.btnSpecials withDrawing:SHStyleKitDrawingSpecialsIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setButton:self.btnBeer withDrawing:SHStyleKitDrawingBeerIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setButton:self.btnCocktail withDrawing:SHStyleKitDrawingCocktailIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
@@ -41,6 +43,12 @@
 
 #pragma mark - User Actions
 #pragma mark -
+
+- (IBAction)checkInButtonTapped:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(footerNavigationViewController:checkInButtonTapped:)]) {
+        [self.delegate footerNavigationViewController:self checkInButtonTapped:sender];
+    }
+}
 
 - (IBAction)spotsButtonTapped:(id)sender {
     if ([self.delegate respondsToSelector:@selector(footerNavigationViewController:spotsButtonTapped:)]) {

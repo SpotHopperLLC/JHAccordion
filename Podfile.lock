@@ -20,7 +20,7 @@ PODS:
   - AFNetworking/UIKit (2.4.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - BitlyForiOS (0.0.3):
+  - BitlyForiOS (1.0.0):
     - AFNetworking (~> 2.0)
   - BlocksKit (2.2.5):
     - BlocksKit/All
@@ -62,7 +62,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 2.4)
-  - BitlyForiOS (from `https://github.com/brennanMKE/BitlyForiOS.git`, tag `0.0.3`)
+  - BitlyForiOS (from `https://github.com/brennanMKE/BitlyForiOS.git`, tag `1.0.0`)
   - BlocksKit (~> 2.2.0)
   - CrashlyticsFramework (~> 2.2)
   - Facebook-iOS-SDK (~> 3.0)
@@ -86,7 +86,7 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   BitlyForiOS:
     :git: https://github.com/brennanMKE/BitlyForiOS.git
-    :tag: 0.0.3
+    :tag: 1.0.0
   JHAccordion:
     :git: https://github.com/SpotHopperLLC/JHAccordion.git
     :tag: SpotHopper-v2
@@ -105,7 +105,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
-  BitlyForiOS: c6eb9b297cb503757a616fc201b3362fb857e8b4
+  BitlyForiOS: c603f7266069455b532b60ca6cccd4fb8ac4050c
   BlocksKit: 4439e7f30a9f90743462ca63545a15c1f4304cef
   Bolts: 2635e8698a630774689441047f3465d78c48d485
   CrashlyticsFramework: 0c28a2c07a51b7691e6668b83824b0b0be77f307
@@ -127,4 +127,4 @@ SPEC CHECKSUMS:
   UIImage+BlurredFrame: 0c38f5760d72125c47d16001a88faaac573bd35d
   UIView-Autolayout: 7c05eb666738eba682f686c2da236578177e2ebb
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.34.1

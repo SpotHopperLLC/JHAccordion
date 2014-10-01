@@ -22,6 +22,7 @@
 
 @optional
 
+- (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc checkInButtonTapped:(id)sender;
 - (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc spotsButtonTapped:(id)sender;
 - (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc specialsButtonTapped:(id)sender;
 - (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc beersButtonTapped:(id)sender;

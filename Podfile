@@ -1,6 +1,9 @@
-# link_with ['SpotHopper', 'SpotHopperTests']
 
 platform :ios, '7.0'
+
+source 'https://github.com/CocoaPods/Specs.git'
+
+link_with ['SpotHopperLocal', 'SpotHopperDev', 'SpotHopperStaging', 'SpotHopperProduction']
 
 # Networking
 pod 'AFNetworking', '~> 2.4'

@@ -29,7 +29,7 @@
 #import "SHDrinkProfileViewController.h"
 #import "SHLocationPickerViewController.h"
 #import "SHGlobalSearchViewController.h"
-#import "ShareViewController.h"
+#import "SHCheckinViewController.h"
 
 #import "ClientSessionManager.h"
 #import "SHNotifications.h"
@@ -133,6 +133,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     SHLocationPickerDelegate,
     SpotCalloutViewDelegate,
     SHGlobalSearchViewControllerDelegate,
+    SHCheckinViewControllerDelegate,
     UITextFieldDelegate,
     MKMapViewDelegate>
 
@@ -157,6 +158,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 @property (strong, nonatomic) SHSlidersSearchViewController *slidersSearchViewController;
 @property (strong, nonatomic) SHGlobalSearchViewController *globalSearchViewController;
 @property (strong, nonatomic) SHLocationPickerViewController *locationPickerViewController;
+@property (strong, nonatomic) SHCheckinViewController *checkinViewController;
 
 @property (weak, nonatomic) NSLayoutConstraint *sideBarRightEdgeConstraint;
 @property (weak, nonatomic) NSLayoutConstraint *blurredViewHeightConstraint;
@@ -165,12 +167,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 @property (weak, nonatomic) NSLayoutConstraint *homeNavigationViewBottomConstraint;
 @property (weak, nonatomic) NSLayoutConstraint *collectionContainerViewBottomConstraint;
 
+@property (weak, nonatomic) NSLayoutConstraint *checkinViewBottomConstraint;
+
 @property (weak, nonatomic) IBOutlet UIView *expandedReferenceView;
 @property (weak, nonatomic) UIView *collectionContainerView;
 @property (weak, nonatomic) UIView *clippedContainerView;
 
 @property (weak, nonatomic) NSLayoutConstraint *collectionContainerHeightConstraint;
-//@property (weak, nonatomic) NSLayoutConstraint *collectionHeightConstraint;
 @property (weak, nonatomic) NSLayoutConstraint *clippedBottomConstraint;
 
 @property (weak, nonatomic) IBOutlet UIView *areYouHerePromptView;
@@ -249,9 +252,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     self.mySideBarViewController = (SHSidebarViewController *)self.navigationController.sidebarViewController.rightViewController;
     self.mySideBarViewController.delegate = self;
     
-    //NSAssert(self.mySideBarViewController.delegate == self, @"My sidebar delegate must be self");
-    //NSAssert([self.mySideBarViewController.delegate isKindOfClass:[SHHomeMapViewController class]], @"My sidebar delegate must be this class");
-    
     self.locationMenuBarViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHLocationMenuBarViewController"];
     self.locationMenuBarViewController.delegate = self;
     self.homeNavigationViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHHomeNavigationViewController"];
@@ -317,6 +317,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [self embedChildViewControllers];
     
     [self hideSearch:FALSE withCompletionBlock:nil];
+    [self hideCheckin:FALSE withCompletionBlock:nil];
     [self hideSearchThisArea:FALSE withCompletionBlock:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -462,6 +463,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         // top shadow (-10 origin)
         CGSize topShadowSize = CGSizeMake(CGRectGetWidth(self.view.frame), 10.0f);
         UIImageView *topShadowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, -10.0f, topShadowSize.width, topShadowSize.height)];
+        topShadowImageView.translatesAutoresizingMaskIntoConstraints = TRUE;
         topShadowImageView.backgroundColor = [UIColor clearColor];
         UIImage *topShadowImage = [SHStyleKit drawImage:SHStyleKitDrawingTopShadow size:topShadowSize];
         topShadowImageView.image = topShadowImage;
@@ -473,7 +475,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         collectionContainerView.tag = 100;
         collectionContainerView.translatesAutoresizingMaskIntoConstraints = NO;
         collectionContainerView.backgroundColor = [UIColor clearColor];
-        //[self addShadowToView:collectionContainerView];
         [self.view addSubview:collectionContainerView];
         NSArray *bottomConstaints = [collectionContainerView pinToSuperviewEdges:JRTViewPinBottomEdge inset:0.0f usingLayoutGuidesFrom:self];
         NSAssert(bottomConstaints.count == 1, @"There should be only 1 bottom constraint.");
@@ -485,6 +486,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         // top shadow (-10 origin)
         CGSize topShadowSize = CGSizeMake(CGRectGetWidth(self.view.frame), 10.0f);
         UIImageView *topShadowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, -10.0f, topShadowSize.width, topShadowSize.height)];
+        topShadowImageView.translatesAutoresizingMaskIntoConstraints = TRUE;
         topShadowImageView.backgroundColor = [UIColor clearColor];
         UIImage *topShadowImage = [SHStyleKit drawImage:SHStyleKitDrawingTopShadow size:topShadowSize];
         topShadowImageView.image = topShadowImage;
@@ -782,6 +784,114 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         self.globalSearchViewController.view.hidden = TRUE;
         [self restoreNormalNavigationItems:animated withCompletionBlock:completionBlock];
         [self restoreNavigationIfNeeded];
+    }];
+}
+
+- (void)showCheckin:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    // TODO: change to pop down out of view by moving bottom constraint
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    [self checkNetworkReachabilityWithCompletionBlock:^{
+        [self hideBottomViewWithCompletionBlock:^{
+            self.checkinViewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHCheckinViewController"];
+            self.checkinViewController.delegate = self;
+            self.checkinViewController.view.tag = 8001;
+            CGFloat height = 240.0f;
+            [self embedViewController:self.checkinViewController intoView:self.view placementBlock:^(UIView *view) {
+                NSArray *bottomConstaints = [view pinToSuperviewEdges:JRTViewPinBottomEdge inset:0.0f usingLayoutGuidesFrom:self];
+                NSAssert(bottomConstaints.count == 1, @"There should be only 1 bottom constraint.");
+                self.checkinViewBottomConstraint = bottomConstaints[0];
+                self.checkinViewBottomConstraint.constant = height;
+                
+                [view pinToSuperviewEdges:JRTViewPinLeftEdge|JRTViewPinRightEdge inset:0.0f usingLayoutGuidesFrom:self];
+                [view constrainToHeight:height];
+            }];
+            
+            [self.view setNeedsLayout];
+            [self.view layoutIfNeeded];
+            
+            // top shadow (-10 origin)
+            CGSize topShadowSize = CGSizeMake(CGRectGetWidth(self.view.frame), 10.0f);
+            UIImageView *topShadowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, -10.0f, topShadowSize.width, topShadowSize.height)];
+            topShadowImageView.translatesAutoresizingMaskIntoConstraints = TRUE;
+            topShadowImageView.backgroundColor = [UIColor clearColor];
+            UIImage *topShadowImage = [SHStyleKit drawImage:SHStyleKitDrawingTopShadow size:topShadowSize];
+            topShadowImageView.image = topShadowImage;
+            [self.checkinViewController.view addSubview:topShadowImageView];
+            
+            [self.checkinViewController viewWillAppear:animated];
+            
+            CGFloat duration = animated ? 0.25f : 0.0f;
+            UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+            [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.8f initialSpringVelocity:10.f options:options animations:^{
+                self.checkinViewBottomConstraint.constant = 0.0f;
+                [self.view setNeedsLayout];
+                [self.view layoutIfNeeded];
+            } completion:^(BOOL finished) {
+                [self.checkinViewController viewDidAppear:animated];
+                
+                if (completionBlock) {
+                    completionBlock();
+                }
+            }];
+        }];
+        
+    }];
+}
+
+- (void)hideCheckin:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    // TODO: change to pop up from bottom by moving bottom constraint
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+//    [self.checkinViewController viewWillDisappear:animated];
+//
+//    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+//    [UIView animateWithDuration:(animated ? 0.25f : 0.0f) delay:0.0 options:options animations:^{
+//        self.checkinViewController.view.alpha = 0.0f;
+//    } completion:^(BOOL finished) {
+//        [self.view setNeedsLayout];
+//        [self.view layoutIfNeeded];
+//        
+//        self.checkinViewController.view.hidden = TRUE;
+//        [self restoreNormalNavigationItems:animated withCompletionBlock:completionBlock];
+//        [self restoreNavigationIfNeeded];
+//
+//        [self.checkinViewController viewDidDisappear:animated];
+//        
+//        [self.checkinViewController.view removeFromSuperview];
+//        self.checkinViewController.delegate = nil;
+//        self.checkinViewController = nil;
+//    }];
+    
+    [self.checkinViewController viewWillDisappear:animated];
+    
+    if (!self.searchThisAreaView.hidden) {
+        [self hideSearchThisArea:animated withCompletionBlock:nil];
+    }
+    
+    if (!self.statusView.hidden) {
+        [self hideStatus:animated withCompletionBlock:nil];
+    }
+    
+    CGFloat duration = animated ? 0.25f : 0.0f;
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.8f initialSpringVelocity:10.f options:options animations:^{
+        self.checkinViewBottomConstraint.constant = CGRectGetHeight(self.checkinViewController.view.frame);
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        [self.checkinViewController viewDidDisappear:animated];
+        
+        [self restoreNormalNavigationItems:animated withCompletionBlock:completionBlock];
+        [self restoreNavigationIfNeeded];
+        
+        [self.checkinViewController.view removeFromSuperview];
+        self.checkinViewController.delegate = nil;
+        self.checkinViewController = nil;
+
+        if (completionBlock) {
+            completionBlock();
+        }
     }];
 }
 
@@ -1414,6 +1524,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     else if (!self.collectionContainerView.hidden) {
         [self hideCollectionContainerView:TRUE withCompletionBlock:completionBlock];
     }
+    else if (!self.checkinViewController.view.hidden) {
+        [self hideCheckin:TRUE withCompletionBlock:completionBlock];
+    }
+
     else if (completionBlock) {
         completionBlock();
     }
@@ -3257,6 +3371,12 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark - SHHomeNavigationDelegate
 #pragma mark -
 
+- (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc checkInButtonTapped:(id)sender {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    [self showCheckin:TRUE withCompletionBlock:nil];
+}
+
 - (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc spotsButtonTapped:(id)sender {
     [self searchForMode:SHModeSpots];
 }
@@ -3449,6 +3569,12 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     else if (completionBlock) {
         completionBlock();
     }
+}
+
+- (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc checkInButtonTapped:(id)sender {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    [self showCheckin:TRUE withCompletionBlock:nil];
 }
 
 - (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc spotsButtonTapped:(id)sender {
@@ -3692,6 +3818,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         searchTextField.rightView = nil;
         searchTextField.rightViewMode = UITextFieldViewModeNever;
     }
+}
+
+#pragma mark - SHCheckinViewControllerDelegate
+#pragma mark -
+
+- (void)checkInViewControllerCancelButtonTapped:(SHCheckinViewController *)vc {
+    [self hideCheckin:TRUE withCompletionBlock:nil];
 }
 
 #pragma mark - UITextFieldDelegate

@@ -676,8 +676,21 @@
 		03F6BF7018C6E8BD00172F13 /* ListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF6F18C6E8BD00172F13 /* ListCell.m */; };
 		03F6BF7218C6E8CD00172F13 /* ListCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF7118C6E8CD00172F13 /* ListCellView.xib */; };
 		03F6BF7518C6EE2B00172F13 /* SpotListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F6BF7418C6EE2B00172F13 /* SpotListModel.m */; };
+		0456E36037CE7C53B3220BAC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
 		2602BD9D18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
 		2602BD9E18E283C500C93BBF /* Common.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2602BD9C18E283C500C93BBF /* Common.storyboard */; };
+		261323ED19DCA13300E051DB /* SHCheckinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 261323EC19DCA13300E051DB /* SHCheckinViewController.m */; };
+		261323EE19DCA13300E051DB /* SHCheckinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 261323EC19DCA13300E051DB /* SHCheckinViewController.m */; };
+		261323EF19DCA13300E051DB /* SHCheckinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 261323EC19DCA13300E051DB /* SHCheckinViewController.m */; };
+		261323F019DCA13300E051DB /* SHCheckinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 261323EC19DCA13300E051DB /* SHCheckinViewController.m */; };
+		261323F319DCA19100E051DB /* SHAppUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 261323F219DCA19100E051DB /* SHAppUtil.m */; };
+		261323F419DCA19100E051DB /* SHAppUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 261323F219DCA19100E051DB /* SHAppUtil.m */; };
+		261323F519DCA19100E051DB /* SHAppUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 261323F219DCA19100E051DB /* SHAppUtil.m */; };
+		261323F619DCA19100E051DB /* SHAppUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 261323F219DCA19100E051DB /* SHAppUtil.m */; };
+		261323F819DCA2B900E051DB /* Gainesville.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 261323F719DCA2B900E051DB /* Gainesville.gpx */; };
+		261323F919DCA2B900E051DB /* Gainesville.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 261323F719DCA2B900E051DB /* Gainesville.gpx */; };
+		261323FA19DCA2B900E051DB /* Gainesville.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 261323F719DCA2B900E051DB /* Gainesville.gpx */; };
+		261323FB19DCA2B900E051DB /* Gainesville.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 261323F719DCA2B900E051DB /* Gainesville.gpx */; };
 		2619B5D019D221ED0043FD65 /* SHAppConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2619B5CF19D221ED0043FD65 /* SHAppConfiguration.m */; };
 		2619B5D119D221ED0043FD65 /* SHAppConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2619B5CF19D221ED0043FD65 /* SHAppConfiguration.m */; };
 		2619B5D219D221ED0043FD65 /* SHAppConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2619B5CF19D221ED0043FD65 /* SHAppConfiguration.m */; };
@@ -710,10 +723,6 @@
 		2619B5FB19D222950043FD65 /* SHDrawnButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2619B5F919D222950043FD65 /* SHDrawnButton.m */; };
 		2619B5FC19D222950043FD65 /* SHDrawnButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2619B5F919D222950043FD65 /* SHDrawnButton.m */; };
 		2619B5FD19D222950043FD65 /* SHDrawnButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2619B5F919D222950043FD65 /* SHDrawnButton.m */; };
-		2619EBBF19D37857008A31B3 /* SHAppUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2619EBBE19D37857008A31B3 /* SHAppUtil.m */; };
-		2619EBC019D37857008A31B3 /* SHAppUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2619EBBE19D37857008A31B3 /* SHAppUtil.m */; };
-		2619EBC119D37857008A31B3 /* SHAppUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2619EBBE19D37857008A31B3 /* SHAppUtil.m */; };
-		2619EBC219D37857008A31B3 /* SHAppUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2619EBBE19D37857008A31B3 /* SHAppUtil.m */; };
 		261E9CDA1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E9CD91989C2EF00BC9A9E /* SHTappableTextView.m */; };
 		261E9CDB1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E9CD91989C2EF00BC9A9E /* SHTappableTextView.m */; };
 		261E9CDD1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E9CD91989C2EF00BC9A9E /* SHTappableTextView.m */; };
@@ -1350,6 +1359,7 @@
 		26FFAFF4191B367B00D222B7 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */; };
 		26FFAFF5191B367B00D222B7 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */; };
 		26FFAFF7191B367B00D222B7 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */; };
+		58A621880EFAEF3148967132 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9816A19827543A8863B8CBF /* libPods.a */; };
 		5F881FD0AAD84878A974907D /* libPods-SpotHopperLocal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3557E960D2924E8BA2015473 /* libPods-SpotHopperLocal.a */; };
 		97823373F922492BA6339515 /* libPods-SpotHopperStaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 123F4C2DFBE04705AFDF66F5 /* libPods-SpotHopperStaging.a */; };
 		A62B333D193D086F00CE4BF0 /* SHSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A62B333C193D086F00CE4BF0 /* SHSectionHeaderView.m */; };
@@ -1729,8 +1739,14 @@
 		03F6BF7118C6E8CD00172F13 /* ListCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListCellView.xib; sourceTree = "<group>"; };
 		03F6BF7318C6EE2B00172F13 /* SpotListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotListModel.h; sourceTree = "<group>"; };
 		03F6BF7418C6EE2B00172F13 /* SpotListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotListModel.m; sourceTree = "<group>"; };
+		10703ED628EAB3A29B96F8EF /* Pods-SpotHopperDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotHopperDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-SpotHopperDev/Pods-SpotHopperDev.release.xcconfig"; sourceTree = "<group>"; };
 		123F4C2DFBE04705AFDF66F5 /* libPods-SpotHopperStaging.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpotHopperStaging.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2602BD9C18E283C500C93BBF /* Common.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Common.storyboard; sourceTree = "<group>"; };
+		261323EB19DCA13300E051DB /* SHCheckinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHCheckinViewController.h; path = SpotHopper/SHCheckinViewController.h; sourceTree = "<group>"; };
+		261323EC19DCA13300E051DB /* SHCheckinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHCheckinViewController.m; path = SpotHopper/SHCheckinViewController.m; sourceTree = "<group>"; };
+		261323F119DCA19100E051DB /* SHAppUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHAppUtil.h; path = SpotHopper/SHAppUtil.h; sourceTree = "<group>"; };
+		261323F219DCA19100E051DB /* SHAppUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHAppUtil.m; path = SpotHopper/SHAppUtil.m; sourceTree = "<group>"; };
+		261323F719DCA2B900E051DB /* Gainesville.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Gainesville.gpx; sourceTree = "<group>"; };
 		2619B5CE19D221ED0043FD65 /* SHAppConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHAppConfiguration.h; path = SpotHopper/SHAppConfiguration.h; sourceTree = "<group>"; };
 		2619B5CF19D221ED0043FD65 /* SHAppConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHAppConfiguration.m; path = SpotHopper/SHAppConfiguration.m; sourceTree = "<group>"; };
 		2619B5D419D2220C0043FD65 /* SHAppContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHAppContext.h; path = SpotHopper/SHAppContext.h; sourceTree = "<group>"; };
@@ -1747,8 +1763,6 @@
 		2619B5EF19D222840043FD65 /* SHRatingStarsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHRatingStarsView.m; path = SpotHopper/SHRatingStarsView.m; sourceTree = "<group>"; };
 		2619B5F819D222950043FD65 /* SHDrawnButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHDrawnButton.h; path = SpotHopper/SHDrawnButton.h; sourceTree = "<group>"; };
 		2619B5F919D222950043FD65 /* SHDrawnButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHDrawnButton.m; path = SpotHopper/SHDrawnButton.m; sourceTree = "<group>"; };
-		2619EBBD19D37857008A31B3 /* SHAppUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAppUtil.h; sourceTree = "<group>"; };
-		2619EBBE19D37857008A31B3 /* SHAppUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHAppUtil.m; sourceTree = "<group>"; };
 		261E9CD81989C2EF00BC9A9E /* SHTappableTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHTappableTextView.h; sourceTree = "<group>"; };
 		261E9CD91989C2EF00BC9A9E /* SHTappableTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHTappableTextView.m; sourceTree = "<group>"; };
 		2623801E1986F83500F0940A /* Tracker+Events.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tracker+Events.h"; sourceTree = "<group>"; };
@@ -1902,8 +1916,11 @@
 		26FF53B8191B577D00834FBD /* CheckInModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CheckInModel.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		26FFAFF2191B367B00D222B7 /* PhotoViewerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewerViewController.h; sourceTree = "<group>"; };
 		26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewerViewController.m; sourceTree = "<group>"; };
-		28166567EC6E42329AF4A745 /* Pods-SpotHopperLocal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotHopperLocal.xcconfig"; path = "Pods/Pods-SpotHopperLocal.xcconfig"; sourceTree = "<group>"; };
+		28A358827102DC3BC8B6E82F /* Pods-SpotHopperLocal.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotHopperLocal.release.xcconfig"; path = "Pods/Target Support Files/Pods-SpotHopperLocal/Pods-SpotHopperLocal.release.xcconfig"; sourceTree = "<group>"; };
+		2EA4F3C0D9B8CA7977AD204A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		3557E960D2924E8BA2015473 /* libPods-SpotHopperLocal.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpotHopperLocal.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B7559DD76E2B6D4BA604316 /* Pods-SpotHopperDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotHopperDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SpotHopperDev/Pods-SpotHopperDev.debug.xcconfig"; sourceTree = "<group>"; };
+		8780DA97940E28DC947D4DF6 /* Pods-SpotHopperLocal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotHopperLocal.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SpotHopperLocal/Pods-SpotHopperLocal.debug.xcconfig"; sourceTree = "<group>"; };
 		90AAD79CD27D48B987A3A0C5 /* libPods-SpotHopperDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SpotHopperDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A62B333B193D086F00CE4BF0 /* SHSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSectionHeaderView.h; path = SpotHopper/SHSectionHeaderView.h; sourceTree = "<group>"; };
 		A62B333C193D086F00CE4BF0 /* SHSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSectionHeaderView.m; path = SpotHopper/SHSectionHeaderView.m; sourceTree = "<group>"; };
@@ -1913,10 +1930,10 @@
 		A688DB56194A2ACA00AA3CE8 /* SHDrinkProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHDrinkProfileViewController.m; path = SpotHopper/SHDrinkProfileViewController.m; sourceTree = "<group>"; };
 		A6CA343419390BCF001BB23A /* SHImageModelCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHImageModelCollectionViewManager.h; path = SpotHopper/SHImageModelCollectionViewManager.h; sourceTree = "<group>"; };
 		A6CA343519390BCF001BB23A /* SHImageModelCollectionViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHImageModelCollectionViewManager.m; path = SpotHopper/SHImageModelCollectionViewManager.m; sourceTree = "<group>"; };
-		B1EBE873E3124E54A24ED229 /* Pods-SpotHopperDev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotHopperDev.xcconfig"; path = "Pods/Pods-SpotHopperDev.xcconfig"; sourceTree = "<group>"; };
-		B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		B810734D40097568351333A2 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		C7A3FB4D5BA7576CBFF6E8D3 /* Pods-SpotHopperStaging.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotHopperStaging.release.xcconfig"; path = "Pods/Target Support Files/Pods-SpotHopperStaging/Pods-SpotHopperStaging.release.xcconfig"; sourceTree = "<group>"; };
 		C9816A19827543A8863B8CBF /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		FDB944FEB24D4B3FB05C26E9 /* Pods-SpotHopperStaging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotHopperStaging.xcconfig"; path = "Pods/Pods-SpotHopperStaging.xcconfig"; sourceTree = "<group>"; };
+		EDD9BC79FDEA654BEB8DB6BA /* Pods-SpotHopperStaging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotHopperStaging.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SpotHopperStaging/Pods-SpotHopperStaging.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1971,6 +1988,7 @@
 				03F4E90D18CA34260056EAA9 /* UIKit.framework in Frameworks */,
 				03F4E90E18CA34260056EAA9 /* Foundation.framework in Frameworks */,
 				B603C870603D4E1C905D19CD /* libPods-SpotHopperDev.a in Frameworks */,
+				58A621880EFAEF3148967132 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1985,6 +2003,7 @@
 				267E05871922CC48004457B4 /* UIKit.framework in Frameworks */,
 				267E05881922CC48004457B4 /* Foundation.framework in Frameworks */,
 				97823373F922492BA6339515 /* libPods-SpotHopperStaging.a in Frameworks */,
+				0456E36037CE7C53B3220BAC /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2147,10 +2166,7 @@
 				0386648B186D352500985CEC /* SpotHopperTests */,
 				03866465186D352400985CEC /* Frameworks */,
 				03866464186D352400985CEC /* Products */,
-				B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */,
-				B1EBE873E3124E54A24ED229 /* Pods-SpotHopperDev.xcconfig */,
-				28166567EC6E42329AF4A745 /* Pods-SpotHopperLocal.xcconfig */,
-				FDB944FEB24D4B3FB05C26E9 /* Pods-SpotHopperStaging.xcconfig */,
+				996AC210727F41798C21C4EA /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -3015,8 +3031,8 @@
 				2619B5D519D2220C0043FD65 /* SHAppContext.m */,
 				2619B5CE19D221ED0043FD65 /* SHAppConfiguration.h */,
 				2619B5CF19D221ED0043FD65 /* SHAppConfiguration.m */,
-				2619EBBD19D37857008A31B3 /* SHAppUtil.h */,
-				2619EBBE19D37857008A31B3 /* SHAppUtil.m */,
+				261323F119DCA19100E051DB /* SHAppUtil.h */,
+				261323F219DCA19100E051DB /* SHAppUtil.m */,
 			);
 			name = App;
 			sourceTree = "<group>";
@@ -3117,6 +3133,8 @@
 				2619B5E119D2224B0043FD65 /* SHLocationPickerViewController.m */,
 				2619B5E619D2225C0043FD65 /* SHGlobalSearchViewController.h */,
 				2619B5E719D2225C0043FD65 /* SHGlobalSearchViewController.m */,
+				261323EB19DCA13300E051DB /* SHCheckinViewController.h */,
+				261323EC19DCA13300E051DB /* SHCheckinViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -3186,9 +3204,25 @@
 				26F0FDE218EB1B18001BB0CD /* Milwaukee.gpx */,
 				26F0FDE318EB1B18001BB0CD /* New York.gpx */,
 				26F0FDE418EB1B18001BB0CD /* San Francisco.gpx */,
+				261323F719DCA2B900E051DB /* Gainesville.gpx */,
 			);
 			path = Locations;
 			sourceTree = SOURCE_ROOT;
+		};
+		996AC210727F41798C21C4EA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2EA4F3C0D9B8CA7977AD204A /* Pods.debug.xcconfig */,
+				B810734D40097568351333A2 /* Pods.release.xcconfig */,
+				5B7559DD76E2B6D4BA604316 /* Pods-SpotHopperDev.debug.xcconfig */,
+				10703ED628EAB3A29B96F8EF /* Pods-SpotHopperDev.release.xcconfig */,
+				8780DA97940E28DC947D4DF6 /* Pods-SpotHopperLocal.debug.xcconfig */,
+				28A358827102DC3BC8B6E82F /* Pods-SpotHopperLocal.release.xcconfig */,
+				EDD9BC79FDEA654BEB8DB6BA /* Pods-SpotHopperStaging.debug.xcconfig */,
+				C7A3FB4D5BA7576CBFF6E8D3 /* Pods-SpotHopperStaging.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
 		};
 		A62B333A193D084400CE4BF0 /* Views */ = {
 			isa = PBXGroup;
@@ -3422,6 +3456,7 @@
 				03F2D92C1871DC1400C69576 /* Lato-Italic.ttf in Resources */,
 				2663A4F019B6815000B4232A /* btn_sidebar_icon_reviews.png in Resources */,
 				03E4456718B65D8A00C88421 /* btn_spot_profile_find_similar@2x.png in Resources */,
+				261323F819DCA2B900E051DB /* Gainesville.gpx in Resources */,
 				03866527186DE0F700985CEC /* img_expand_east@2x.png in Resources */,
 				269E5CD619BA5D5200A228C7 /* img_arrow_east.png in Resources */,
 				03E4456D18B65E1500C88421 /* Spots.storyboard in Resources */,
@@ -3696,6 +3731,7 @@
 				03CAC10118E7716400FAC5F5 /* ReviewSliderCellView.xib in Resources */,
 				03CAC10218E7716400FAC5F5 /* beer_placeholder.png in Resources */,
 				03CAC10718E7716400FAC5F5 /* spot_placeholder@2x.png in Resources */,
+				261323FB19DCA2B900E051DB /* Gainesville.gpx in Resources */,
 				03CAC10A18E7716400FAC5F5 /* img_expand_north.png in Resources */,
 				03CAC10B18E7716400FAC5F5 /* 37x-Checkmark@2x.png in Resources */,
 				03CAC10D18E7716400FAC5F5 /* img_arrow_west_circle@2x.png in Resources */,
@@ -3792,6 +3828,7 @@
 				03F4E93C18CA34260056EAA9 /* btn_spot_profile_find_similar@2x.png in Resources */,
 				2663A4F119B6815000B4232A /* btn_sidebar_icon_reviews.png in Resources */,
 				039F54C318D7FF1B004B2B67 /* img_expand_south.png in Resources */,
+				261323F919DCA2B900E051DB /* Gainesville.gpx in Resources */,
 				03F4E93D18CA34260056EAA9 /* img_expand_east@2x.png in Resources */,
 				269E5CD719BA5D5200A228C7 /* img_arrow_east.png in Resources */,
 				03F4E94518CA34260056EAA9 /* Spots.storyboard in Resources */,
@@ -4058,6 +4095,7 @@
 				267E06641922CC48004457B4 /* beer_placeholder.png in Resources */,
 				267E06691922CC48004457B4 /* spot_placeholder@2x.png in Resources */,
 				267E066C1922CC48004457B4 /* img_expand_north.png in Resources */,
+				261323FA19DCA2B900E051DB /* Gainesville.gpx in Resources */,
 				267E066D1922CC48004457B4 /* 37x-Checkmark@2x.png in Resources */,
 				267E066F1922CC48004457B4 /* img_arrow_west_circle@2x.png in Resources */,
 				267E06731922CC48004457B4 /* Main.storyboard in Resources */,
@@ -4129,7 +4167,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		03F4E8AA18CA34260056EAA9 /* Check Pods Manifest.lock */ = {
@@ -4159,7 +4197,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-SpotHopperDev-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SpotHopperDev/Pods-SpotHopperDev-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		264CF2DB19CCFBEC00310A56 /* ShellScript */ = {
@@ -4215,7 +4253,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-SpotHopperStaging-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SpotHopperStaging/Pods-SpotHopperStaging-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		26D94A6419D505BC00C0CED9 /* ShellScript */ = {
@@ -4282,7 +4320,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SpotHopperLocal/Pods-SpotHopperLocal-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		4D2B49071C184BB6A0A93E50 /* Check Pods Manifest.lock */ = {
@@ -4383,6 +4421,7 @@
 				038664EA186D37BC00985CEC /* RefreshView.m in Sources */,
 				038664CD186D376900985CEC /* NSDate+Util.m in Sources */,
 				0320236D18774DD1008368C2 /* ReviewsMenuViewController.m in Sources */,
+				261323ED19DCA13300E051DB /* SHCheckinViewController.m in Sources */,
 				03F6BF7018C6E8BD00172F13 /* ListCell.m in Sources */,
 				038664D3186D376900985CEC /* UIImage+Resize.m in Sources */,
 				2691C4AD19AFE1B1006F720C /* SHButtonLatoLightLocation.m in Sources */,
@@ -4423,7 +4462,6 @@
 				038664D0186D376900985CEC /* UIAlertView+Block.m in Sources */,
 				038664D6186D376900985CEC /* UILabelGotham.m in Sources */,
 				03CA72B8187C4D5800815284 /* SHSlider.m in Sources */,
-				2619EBBF19D37857008A31B3 /* SHAppUtil.m in Sources */,
 				039ABBEF18CE3BB700B84AE6 /* SpotAnnotationCallout.m in Sources */,
 				039F545818D2BB30004B2B67 /* DrinkCardCollectionViewCell.m in Sources */,
 				033A3F0F18E38CEE00E07F39 /* LiveSpecialModel.m in Sources */,
@@ -4464,6 +4502,7 @@
 				03CAC18618E9C74000FAC5F5 /* PriceModel.m in Sources */,
 				26689711192F2A71004FAC2D /* SHSlidersSearchViewController.m in Sources */,
 				038664D1186D376900985CEC /* UIImage+Alpha.m in Sources */,
+				261323F319DCA19100E051DB /* SHAppUtil.m in Sources */,
 				03F2D95318722FB700C69576 /* SHNavigationController.m in Sources */,
 				0372FF5518E34E88009188B5 /* SpecialsCell.m in Sources */,
 				039F541818D11E57004B2B67 /* SpotListMoodModel.m in Sources */,
@@ -4556,6 +4595,7 @@
 				03CABFD118E7716400FAC5F5 /* NSDate+Globalize.m in Sources */,
 				03CABFD218E7716400FAC5F5 /* RefreshView.m in Sources */,
 				03CABFD318E7716400FAC5F5 /* NSDate+Util.m in Sources */,
+				261323F019DCA13300E051DB /* SHCheckinViewController.m in Sources */,
 				03CABFD418E7716400FAC5F5 /* ReviewsMenuViewController.m in Sources */,
 				262380241986F83500F0940A /* Tracker+Events.m in Sources */,
 				03CABFD518E7716400FAC5F5 /* ListCell.m in Sources */,
@@ -4596,7 +4636,6 @@
 				2654B893192BB68C00A66BED /* SHStyleKit+Additions.m in Sources */,
 				2654B8CD192BB6E000A66BED /* SHSidebarViewController.m in Sources */,
 				26A7E3871922D20700FF7B88 /* SHStyleKit.m in Sources */,
-				2619EBC219D37857008A31B3 /* SHAppUtil.m in Sources */,
 				03CABFEF18E7716400FAC5F5 /* AverageReviewModel.m in Sources */,
 				A62B334F193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */,
 				03CABFF018E7716400FAC5F5 /* UIAlertView+Block.m in Sources */,
@@ -4637,6 +4676,7 @@
 				03CAC18918E9C74000FAC5F5 /* PriceModel.m in Sources */,
 				26689715192F2A71004FAC2D /* SHSlidersSearchViewController.m in Sources */,
 				03CAC01218E7716400FAC5F5 /* UIImage+Alpha.m in Sources */,
+				261323F619DCA19100E051DB /* SHAppUtil.m in Sources */,
 				03CAC01418E7716400FAC5F5 /* SHNavigationController.m in Sources */,
 				2691C4A619AFE189006F720C /* AdjustSliderSectionHeaderView.m in Sources */,
 				03CAC01518E7716400FAC5F5 /* SpecialsCell.m in Sources */,
@@ -4721,6 +4761,7 @@
 				03F4E8C418CA34260056EAA9 /* RefreshView.m in Sources */,
 				03F4E8C518CA34260056EAA9 /* NSDate+Util.m in Sources */,
 				03F4E8C618CA34260056EAA9 /* ReviewsMenuViewController.m in Sources */,
+				261323EE19DCA13300E051DB /* SHCheckinViewController.m in Sources */,
 				03F4E8C718CA34260056EAA9 /* ListCell.m in Sources */,
 				03F4E8C818CA34260056EAA9 /* UIImage+Resize.m in Sources */,
 				2691C4AC19AFE1B0006F720C /* SHButtonLatoLightLocation.m in Sources */,
@@ -4761,7 +4802,6 @@
 				03F4E8DE18CA34260056EAA9 /* AverageReviewModel.m in Sources */,
 				A62B334C193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */,
 				03F4E8DF18CA34260056EAA9 /* UIAlertView+Block.m in Sources */,
-				2619EBC019D37857008A31B3 /* SHAppUtil.m in Sources */,
 				03F4E8E018CA34260056EAA9 /* UILabelGotham.m in Sources */,
 				03F4E8E118CA34260056EAA9 /* SHSlider.m in Sources */,
 				039ABBF118CE3BBD00B84AE6 /* SpotAnnotationCallout.m in Sources */,
@@ -4802,6 +4842,7 @@
 				03CAC18718E9C74000FAC5F5 /* PriceModel.m in Sources */,
 				26689712192F2A71004FAC2D /* SHSlidersSearchViewController.m in Sources */,
 				03F4E8F618CA34260056EAA9 /* UIImage+Alpha.m in Sources */,
+				261323F419DCA19100E051DB /* SHAppUtil.m in Sources */,
 				03F4E8F818CA34260056EAA9 /* SHNavigationController.m in Sources */,
 				0372FF5618E34E88009188B5 /* SpecialsCell.m in Sources */,
 				039F541A18D2506D004B2B67 /* SpotListMoodModel.m in Sources */,
@@ -4886,6 +4927,7 @@
 				267E05211922CC48004457B4 /* NSDate+Globalize.m in Sources */,
 				267E05221922CC48004457B4 /* RefreshView.m in Sources */,
 				267E05231922CC48004457B4 /* NSDate+Util.m in Sources */,
+				261323EF19DCA13300E051DB /* SHCheckinViewController.m in Sources */,
 				267E05241922CC48004457B4 /* ReviewsMenuViewController.m in Sources */,
 				262380231986F83500F0940A /* Tracker+Events.m in Sources */,
 				267E05251922CC48004457B4 /* ListCell.m in Sources */,
@@ -4926,7 +4968,6 @@
 				2654B892192BB68C00A66BED /* SHStyleKit+Additions.m in Sources */,
 				2654B8CC192BB6E000A66BED /* SHSidebarViewController.m in Sources */,
 				26A7E3861922D20700FF7B88 /* SHStyleKit.m in Sources */,
-				2619EBC119D37857008A31B3 /* SHAppUtil.m in Sources */,
 				267E05441922CC48004457B4 /* AverageReviewModel.m in Sources */,
 				A62B334E193D090100CE4BF0 /* SHSpotProfileViewController.m in Sources */,
 				267E05451922CC48004457B4 /* UIAlertView+Block.m in Sources */,
@@ -4967,6 +5008,7 @@
 				267E05681922CC48004457B4 /* PriceModel.m in Sources */,
 				26689714192F2A71004FAC2D /* SHSlidersSearchViewController.m in Sources */,
 				267E05691922CC48004457B4 /* UIImage+Alpha.m in Sources */,
+				261323F519DCA19100E051DB /* SHAppUtil.m in Sources */,
 				267E056B1922CC48004457B4 /* SHNavigationController.m in Sources */,
 				2691C4A719AFE18A006F720C /* AdjustSliderSectionHeaderView.m in Sources */,
 				267E056C1922CC48004457B4 /* SpecialsCell.m in Sources */,
@@ -5111,7 +5153,7 @@
 		};
 		03866496186D352500985CEC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */;
+			baseConfigurationReference = 8780DA97940E28DC947D4DF6 /* Pods-SpotHopperLocal.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -5135,7 +5177,7 @@
 		};
 		03866497186D352500985CEC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */;
+			baseConfigurationReference = 28A358827102DC3BC8B6E82F /* Pods-SpotHopperLocal.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -5163,7 +5205,6 @@
 		};
 		03866499186D352500985CEC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SpotHopperLocal.app/SpotHopperLocal";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5190,7 +5231,6 @@
 		};
 		0386649A186D352500985CEC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SpotHopperLocal.app/SpotHopperLocal";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5213,7 +5253,7 @@
 		};
 		03CAC16818E7716400FAC5F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */;
+			baseConfigurationReference = 2EA4F3C0D9B8CA7977AD204A /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -5237,7 +5277,7 @@
 		};
 		03CAC16918E7716400FAC5F5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B9B4E1BE6462426EAD84B5EC /* Pods.xcconfig */;
+			baseConfigurationReference = B810734D40097568351333A2 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -5249,6 +5289,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"PRODUCTION=1",
+					NS_BLOCK_ASSERTIONS,
+					NDEBUG,
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperProduction-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -5265,7 +5307,7 @@
 		};
 		03F4E9F318CA34260056EAA9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B1EBE873E3124E54A24ED229 /* Pods-SpotHopperDev.xcconfig */;
+			baseConfigurationReference = 5B7559DD76E2B6D4BA604316 /* Pods-SpotHopperDev.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -5288,7 +5330,7 @@
 		};
 		03F4E9F418CA34260056EAA9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B1EBE873E3124E54A24ED229 /* Pods-SpotHopperDev.xcconfig */;
+			baseConfigurationReference = 10703ED628EAB3A29B96F8EF /* Pods-SpotHopperDev.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -5315,12 +5357,12 @@
 		};
 		267E06CF1922CC48004457B4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FDB944FEB24D4B3FB05C26E9 /* Pods-SpotHopperStaging.xcconfig */;
+			baseConfigurationReference = EDD9BC79FDEA654BEB8DB6BA /* Pods-SpotHopperStaging.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5331,24 +5373,26 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "$(inherited)";
 				PRODUCT_NAME = Staging;
-				PROVISIONING_PROFILE = "cedd0e8a-1d6e-4a12-bea9-64d2bfa268e6";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
 		};
 		267E06D01922CC48004457B4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FDB944FEB24D4B3FB05C26E9 /* Pods-SpotHopperStaging.xcconfig */;
+			baseConfigurationReference = C7A3FB4D5BA7576CBFF6E8D3 /* Pods-SpotHopperStaging.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					"STAGING2=1",
+					NS_BLOCK_ASSERTIONS,
+					NDEBUG,
+					"STAGING=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperStaging-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -5358,7 +5402,7 @@
 					"-DNDEBUG=1",
 				);
 				PRODUCT_NAME = Staging;
-				PROVISIONING_PROFILE = "cedd0e8a-1d6e-4a12-bea9-64d2bfa268e6";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
