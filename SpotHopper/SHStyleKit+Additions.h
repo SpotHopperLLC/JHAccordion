@@ -71,6 +71,8 @@ typedef enum {
     SHStyleKitDrawingClockIcon,
     SHStyleKitDrawingPhoneIcon,
     SHStyleKitDrawingMoreIcon,
+    SHStyleKitDrawingCheckinIcon,
+    SHStyleKitDrawingCheckinMarkIcon,
     SHStyleKitDrawingPlaceholderBasic,
     SHStyleKitDrawingDefaultAvatarIcon,
     SHStyleKitDrawingGradientBackground,

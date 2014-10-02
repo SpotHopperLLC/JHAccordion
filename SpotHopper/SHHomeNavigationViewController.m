@@ -44,7 +44,7 @@
     NSCAssert(self.btnSpots.frame.size.width > 0, @"Width must already be set");
     NSCAssert(self.btnSpots.frame.size.height > 0, @"Height must already be set");
     
-    [SHStyleKit setButton:self.btnCheckIn withDrawing:SHStyleKitDrawingSpotIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setButton:self.btnCheckIn withDrawing:SHStyleKitDrawingCheckinIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setButton:self.btnSpots withDrawing:SHStyleKitDrawingTapIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setButton:self.btnSpecials withDrawing:SHStyleKitDrawingSpecialsIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setButton:self.btnBeer withDrawing:SHStyleKitDrawingBeerIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];

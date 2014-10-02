@@ -52,4 +52,17 @@
     self.radius = radius;
 }
 
+- (void)changeDeviceLocation:(CLLocation *)deviceLocation {
+    self.deviceLocation = deviceLocation;
+}
+
+- (CLLocation *)location {
+    if (CLLocationCoordinate2DIsValid(self.coordinate)) {
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:self.coordinate.latitude longitude:self.coordinate.longitude];
+        return location;
+    }
+    
+    return nil;
+}
+
 @end

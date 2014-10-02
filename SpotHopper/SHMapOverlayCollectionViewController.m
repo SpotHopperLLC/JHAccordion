@@ -38,15 +38,17 @@ typedef enum {
     SHOverlayCollectionViewModeSpecials,
     SHOverlayCollectionViewModeDrinklists,
     SHOverlayCollectionViewModeSpot,
-    SHOverlayCollectionViewModeDrink
+    SHOverlayCollectionViewModeDrink,
+    SHOverlayCollectionViewModeCheckin
 } SHOverlayCollectionViewMode;
 
-@interface SHMapOverlayCollectionViewController () <SHSpotsCollectionViewManagerDelegate, SHSpecialsCollectionViewManagerDelegate, SHDrinksCollectionViewManagerDelegate>
+@interface SHMapOverlayCollectionViewController () <SHSpotsCollectionViewManagerDelegate, SHSpecialsCollectionViewManagerDelegate, SHDrinksCollectionViewManagerDelegate, SHCheckinCollectionViewManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet SHSpotsCollectionViewManager *spotsCollectionViewManager;
 @property (weak, nonatomic) IBOutlet SHSpecialsCollectionViewManager *specialsCollectionViewManager;
 @property (weak, nonatomic) IBOutlet SHDrinksCollectionViewManager *drinksCollectionViewManager;
+@property (weak, nonatomic) IBOutlet SHCheckinCollectionViewManager *checkinCollectionViewManager;
 
 @property (weak, nonatomic) IBOutlet UIView *positionView;
 
@@ -70,6 +72,7 @@ typedef enum {
     NSAssert(self.spotsCollectionViewManager, @"Outlet is required");
     NSAssert(self.drinksCollectionViewManager, @"Outlet is required");
     NSAssert(self.specialsCollectionViewManager, @"Outlet is required");
+    NSAssert(self.checkinCollectionViewManager, @"Outlet is required");
     
     self.positionView.hidden = TRUE;
     self.positionView.clipsToBounds = YES;
@@ -163,6 +166,14 @@ typedef enum {
     DrinkListModel *drinklist = [[DrinkListModel alloc] init];
     drinklist.drinks = @[drink];
     [self.drinksCollectionViewManager updateDrinkList:drinklist];
+}
+
+- (void)displayCheckin:(CheckInModel *)checkin atSpot:(SpotModel *)spot {
+    self.mode = SHOverlayCollectionViewModeCheckin;
+    
+    self.collectionView.dataSource = self.checkinCollectionViewManager;
+    self.collectionView.delegate = self.checkinCollectionViewManager;
+    [self.checkinCollectionViewManager setCheckin:checkin andSpot:spot];
 }
 
 - (void)displaySpecialsForSpots:(NSArray *)spots {
@@ -460,5 +471,10 @@ typedef enum {
         [self.delegate mapOverlayCollectionViewController:self displayDrink:drink];
     }
 }
+
+#pragma mark - SHCheckinCollectionViewManagerDelegate
+#pragma mark -
+
+// nothing to implement
 
 @end

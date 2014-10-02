@@ -55,6 +55,7 @@
     [self.tableManagers removeObjectForKey:indexPath];
 }
 
+
 #pragma mark - Methods to override
 #pragma mark -
 
@@ -77,20 +78,16 @@
     headerView.gestureRecognizers = @[self.panGestureRecognizer];
 }
 
+- (NSUInteger)itemCount {
+    return 0;
+}
+
 #pragma mark - Private
 #pragma mark -
 
 - (UIView *)primaryView {
     if ([self.delegate respondsToSelector:@selector(collectionViewManagerPrimaryView:)]) {
         return [self.delegate collectionViewManagerPrimaryView:self];
-    }
-    
-    return nil;
-}
-
-- (UITableView *)embedTableViewInSuperView:(UIView *)superview {
-    if ([self.delegate respondsToSelector:@selector(collectionViewManager:embedTableViewInSuperview:)]) {
-        return [self.delegate collectionViewManager:self embedTableViewInSuperview:superview];
     }
     
     return nil;
@@ -191,6 +188,18 @@
     return nil;
 }
 
+- (UITableView *)embedTableViewInSuperView:(UIView *)superview {
+    if ([self.delegate respondsToSelector:@selector(collectionViewManager:embedTableViewInSuperview:)]) {
+        return [self.delegate collectionViewManager:self embedTableViewInSuperview:superview];
+    }
+    
+    return nil;
+}
+
+- (void)reportedChangedIndex {
+    // override
+}
+
 #pragma mark - UIGestureRecognizerDelegate
 #pragma mark -
 
@@ -213,6 +222,54 @@
     }
     
     return should;
+}
+
+#pragma mark - UIScrollViewDelegate
+#pragma mark -
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (!decelerate) {
+        CGFloat width = CGRectGetWidth(scrollView.frame);
+        CGFloat mod = fmodf(scrollView.contentOffset.x, width);
+        if (mod != 0.0f) {
+            NSUInteger currentIndex = MAX(MIN(round(scrollView.contentOffset.x / CGRectGetWidth(scrollView.frame)), self.itemCount - 1), 0);
+            NSUInteger targetIndex = MAX(MIN(currentIndex, self.itemCount - 1), 0);
+            
+            CGPoint target = CGPointMake(targetIndex * width, 0);
+            [scrollView setContentOffset:target animated:TRUE];
+        }
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    if ([scrollView isKindOfClass:[UICollectionView class]]) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            NSIndexPath *indexPath = [self indexPathForCurrentItemInCollectionView:(UICollectionView *)scrollView];
+            if (indexPath.item != _currentIndex) {
+                _currentIndex = indexPath.item;
+                [self reportedChangedIndex];
+            }
+        });
+    }
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    // if the velocity is "slow" it should just go the next cell, otherwise let it go to the next paged position
+    // positive x is moving right, negative x is moving left
+    // slow is < 2.0
+    
+    CGFloat width = CGRectGetWidth(scrollView.frame);
+    NSUInteger currentIndex = MAX(MIN(round(scrollView.contentOffset.x / CGRectGetWidth(scrollView.frame)), self.itemCount - 1), 0);
+    
+    if (fabsf(velocity.x) > 2.0) {
+        CGFloat x = targetContentOffset->x;
+        x = roundf(x / width) * width;
+        targetContentOffset->x = x;
+    }
+    else if (fabsf(velocity.x) > 0.1) {
+        NSUInteger targetIndex = velocity.x > 0.0 ? MIN(currentIndex + 1, self.itemCount - 1) : MAX(currentIndex - 1, 0);
+        targetContentOffset->x = targetIndex * width;
+    }
 }
 
 #pragma mark - SHCollectionViewTableManagerDelegate

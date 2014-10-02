@@ -69,7 +69,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.delegate respondsToSelector:@selector(imageCollectionViewManager:didSelectImageAtIndex:)]) {
-        [self.delegate imageCollectionViewManager:self didSelectImageAtIndex:_currentIndex];
+        [self.delegate imageCollectionViewManager:self didSelectImageAtIndex:self.currentIndex];
     }
 }
 
@@ -79,8 +79,8 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView == self.collectionView) {
         NSIndexPath *indexPath = [self indexPathForCurrentItemInCollectionView:self.collectionView];
-        if (indexPath.item != _currentIndex) {
-            _currentIndex = indexPath.item;
+        if (indexPath.item != self.currentIndex) {
+            self.currentIndex = indexPath.item;
             [self reportedChangedIndex];
         }
     }
@@ -93,10 +93,10 @@
  changes the index of the collection view to either the previous or next image's index
  */
 - (void)changeIndex:(NSUInteger)index {
-    // change collection view position if the index is in bounds and set _currentIndex
-    if (index != _currentIndex && index < self.imageModels.count) {
-        _currentIndex = index;
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_currentIndex inSection:0];
+    // change collection view position if the index is in bounds and set self.currentIndex
+    if (index != self.currentIndex && index < self.imageModels.count) {
+        self.currentIndex = index;
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.currentIndex inSection:0];
         [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:TRUE];
         [self reportedChangedIndex];
     }
@@ -138,14 +138,14 @@
 }
 
 - (void)goPrevious {
-    if ([self hasPrevious] && _currentIndex > 0) {
-        [self changeIndex:(_currentIndex - 1)];
+    if ([self hasPrevious] && self.currentIndex > 0) {
+        [self changeIndex:(self.currentIndex - 1)];
     }
 }
 
 - (void)goNext {
     if ([self hasNext]) {
-        [self changeIndex:(_currentIndex+1)];
+        [self changeIndex:(self.currentIndex+1)];
     }
 }
 
@@ -174,7 +174,7 @@
 
 - (void)reportedChangedIndex {
     if ([self.delegate respondsToSelector:@selector(imageCollectionViewManager:didChangeToImageAtIndex:)]) {
-        [self.delegate imageCollectionViewManager:self didChangeToImageAtIndex:_currentIndex];
+        [self.delegate imageCollectionViewManager:self didChangeToImageAtIndex:self.currentIndex];
     }
 }
 

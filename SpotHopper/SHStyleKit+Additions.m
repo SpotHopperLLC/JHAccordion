@@ -375,6 +375,14 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
             [SHStyleKit drawMoreIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
             break;
             
+        case SHStyleKitDrawingCheckinIcon:
+            [SHStyleKit drawCheckinIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
+            break;
+            
+        case SHStyleKitDrawingCheckinMarkIcon:
+            [SHStyleKit drawCheckinMarkIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
+            break;
+            
         case SHStyleKitDrawingDeleteIcon:
             [SHStyleKit drawDeleteIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
             break;

@@ -26,6 +26,10 @@
 @property (assign, nonatomic) CLLocationCoordinate2D coordinate;
 @property (assign, nonatomic) CLLocationDistance radius;
 
+@property (strong, nonatomic) CLLocation *deviceLocation;
+
+@property (readonly, nonatomic) CLLocation *location;
+
 + (instancetype)defaultInstance;
 
 - (void)changeContextToMode:(SHMode)mode specialsSpotlist:(SpotListModel *)spotlist;
@@ -35,5 +39,7 @@
 - (void)changeContextToMode:(SHMode)mode drinklistRequest:(DrinkListRequest *)drinklistRequest drinklist:(DrinkListModel *)drinklist;
 
 - (void)changeCoordinate:(CLLocationCoordinate2D)coordinate andRadius:(CLLocationDistance)radius;
+
+- (void)changeDeviceLocation:(CLLocation *)deviceLocation;
 
 @end

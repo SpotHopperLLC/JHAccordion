@@ -21,6 +21,7 @@
 #import "SpecialModel.h"
 #import "DrinkTypeModel.h"
 #import "DrinkListModel.h"
+#import "CheckInModel.h"
 
 #import "SHRatingSwooshView.h"
 #import "SHRatingStarsView.h"
@@ -44,6 +45,7 @@
 #define kRowNameDrinkSummary @"Drink Summary"
 #define kRowNameHighestRated @"Highest Rated"
 #define kRowNameShare @"Share"
+#define kRowNameShareCheckin @"Share Checkin"
 
 #define kMeterToMile 0.000621371f
 
@@ -51,6 +53,7 @@ typedef enum {
     TableManagerModeNone,
     Special,
     Spot,
+    Checkin,
     Drink,
 } TableManagerMode;
 
@@ -64,6 +67,7 @@ typedef enum {
 @property (nonatomic, assign) TableManagerMode mode;
 @property (nonatomic, weak) SpotModel *spot;
 @property (nonatomic, weak) DrinkModel *drink;
+@property (nonatomic, weak) CheckInModel *checkin;
 
 @property (nonatomic, strong) DrinkListModel *highestRatedDrinklist;
 
@@ -217,6 +221,44 @@ typedef enum {
         [self.rows addObject:kRowNamePhotosAndReview];
         
         [self.rows addObject:kRowNameShare];
+        
+        [self.tableView reloadData];
+        
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, [self bottomContentInset], 0);
+        self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, [self bottomScrollIndicatorInset], 0);
+    } failure:^(ErrorModel *errorModel) {
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+    }];
+}
+
+- (void)manageTableView:(UITableView *)tableView forCheckin:(CheckInModel *)checkin atSpot:(SpotModel *)spot {
+    NSAssert(tableView, @"Table View is required");
+    NSAssert(self.delegate, @"Delegate is required");
+    NSAssert([self conformsToProtocol:@protocol(UITableViewDelegate)], @"Class must conform to protocol");
+    NSAssert([self conformsToProtocol:@protocol(UITableViewDataSource)], @"Class must conform to protocol");
+    
+    self.mode = Checkin;
+    
+    tableView.dataSource = self;
+    tableView.delegate = self;
+    self.rows = @[].mutableCopy;
+    
+    self.tableView = tableView;
+    [tableView reloadData];
+    
+    self.checkin = checkin;
+    
+    [spot fetchSpot:^(SpotModel *spotModel) {
+        self.spot = spotModel;
+        
+        [self.rows addObject:kRowNameHighestRated];
+        
+        NSString *specialForToday = [self specialForToday];
+        if (specialForToday.length) {
+            [self.rows addObject:kRowNameTodaysSpecial];
+        }
+        
+        [self.rows addObject:kRowNameShareCheckin];
         
         [self.tableView reloadData];
         
@@ -499,6 +541,13 @@ typedef enum {
     else if (self.mode == Drink) {
         [SHNotifications shareDrink:self.drink];
     }
+}
+
+- (IBAction)shareCheckinButtonTapped:(UIButton *)button {
+    [Tracker trackUserTappedShare];
+    [Tracker trackTappedShare];
+
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
 }
 
 #pragma mark - Rendering Cells
@@ -965,6 +1014,43 @@ typedef enum {
     return cell;
 }
 
+- (UITableViewCell *)renderCellForSharingCheckinAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ShareCheckinCell" forIndexPath:indexPath];
+    
+    UIButton *shareImageButton = (UIButton *)[cell viewWithTag:2];
+    UIButton *shareTextButton = (UIButton *)[cell viewWithTag:3];
+    
+    UIButton *reviewTextButton = (UIButton *)[cell viewWithTag:4];
+    UIButton *reviewImageButton = (UIButton *)[cell viewWithTag:5];
+    
+    [SHStyleKit setButton:shareTextButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setButton:reviewTextButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setButton:shareImageButton withDrawing:SHStyleKitDrawingShareIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextTransparentColor size:CGSizeMake(30, 30)];
+    [SHStyleKit setButton:reviewImageButton withDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextTransparentColor size:CGSizeMake(30, 30)];
+
+    shareTextButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    shareTextButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+    [shareTextButton setTitle:@"Share\nCheckin" forState:UIControlStateNormal];
+    
+    reviewTextButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    reviewTextButton.titleLabel.textAlignment = NSTextAlignmentRight;
+    [reviewTextButton setTitle:@"Write\nReview" forState:UIControlStateNormal];
+    
+    [shareImageButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [shareImageButton addTarget:self action:@selector(shareCheckinButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [shareTextButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [shareTextButton addTarget:self action:@selector(shareCheckinButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [reviewTextButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [reviewTextButton addTarget:self action:@selector(reviewButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [reviewImageButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [reviewImageButton addTarget:self action:@selector(reviewButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    return cell;
+}
+
 - (UITableViewCell *)renderCellForErrorAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ErrorCell" forIndexPath:indexPath];
     
@@ -1038,6 +1124,17 @@ typedef enum {
         }
         else {
             cell = [self renderCellForErrorAtIndexPath:indexPath];
+        }
+    }
+    else if (self.mode == Checkin) {
+        if ([rowName isEqualToString:kRowNameHighestRated]) {
+            cell = [self renderCellForHighestRatedAtIndexPath:indexPath];
+        }
+        else if ([rowName isEqualToString:kRowNameTodaysSpecial]) {
+            cell = [self renderCellForTodaysSpecialAtIndexPath:indexPath];
+        }
+        else if ([rowName isEqualToString:kRowNameShareCheckin]) {
+            cell = [self renderCellForSharingCheckinAtIndexPath:indexPath];
         }
     }
     else if (self.mode == Drink) {

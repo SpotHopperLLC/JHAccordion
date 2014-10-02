@@ -96,6 +96,15 @@
 
 #pragma mark - Equals
 
+- (NSUInteger)hash {
+    if (self.sliderTemplate) {
+        return self.sliderTemplate.hash;
+    }
+    else {
+        return super.hash;
+    }
+}
+
 - (BOOL)isEqual:(id)object {
     if ([object isKindOfClass:[SliderModel class]]) {
         SliderModel *otherSlider = (SliderModel *)object;

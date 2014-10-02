@@ -78,6 +78,8 @@
 
 @property (nonatomic, readonly) DrinkTypeModel *preferredDrinkType;
 
+@property (nonatomic, readonly) CLLocation *location;
+
 - (NSString *)addressCityState;
 - (NSString *)fullAddress;
 - (NSString *)cityState;
@@ -106,9 +108,13 @@
 
 + (Promise *)fetchSpecialsSpotlistForCoordinate:(CLLocationCoordinate2D)coordinate radius:(CLLocationDistance)radius;
 
-+ (void)fetchSpotsNearLocation:(CLLocation *)location success:(void (^)(NSArray *spots))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
++ (void)fetchSpotsNearLocation:(CLLocation *)location success:(void (^)(NSArray *spots))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock __deprecated;
 
-+ (Promise *)fetchSpotsNearLocation:(CLLocation *)location;
++ (Promise *)fetchSpotsNearLocation:(CLLocation *)location __deprecated;
+
++ (void)fetchSpotsNearLocation:(CLLocation *)location radius:(CLLocationDistance)radius success:(void (^)(NSArray *spots))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise *)fetchSpotsNearLocation:(CLLocation *)location radius:(CLLocationDistance)radius;
 
 + (void)fetchSpotsWithText:(NSString *)text page:(NSNumber *)page success:(void(^)(NSArray *spots))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 

@@ -211,6 +211,16 @@
     }
 }
 
+- (CLLocation *)location {
+    if (CLLocationCoordinate2DIsValid(self.coordinate)) {
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:self.coordinate.latitude longitude:self.coordinate.longitude];
+        return location;
+    }
+    else {
+        return nil;
+    }
+}
+
 #pragma mark - Debugging
 
 - (NSString *)description {
@@ -551,6 +561,11 @@
 }
 
 + (void)fetchSpotsNearLocation:(CLLocation *)location success:(void (^)(NSArray *spots))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    CLLocationDistance radius = 2.0 * kMetersPerMile;
+    [self fetchSpotsNearLocation:location radius:radius success:successBlock failure:failureBlock];
+}
+
++ (void)fetchSpotsNearLocation:(CLLocation *)location radius:(CLLocationDistance)radius success:(void (^)(NSArray *spots))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     NSMutableDictionary *params = @{
                                          kSpotModelParamQuery : @"",
                                          kSpotModelParamQueryVisibleToUsers : @"true",
@@ -559,11 +574,17 @@
                                          kSpotModelParamSources : kSpotModelParamSourcesSpotHopper
                                          }.mutableCopy;
     
-    if (location != nil && CLLocationCoordinate2DIsValid(location.coordinate)) {
+    if (location && CLLocationCoordinate2DIsValid(location.coordinate)) {
         [params setObject:[NSNumber numberWithFloat:location.coordinate.latitude] forKey:kSpotModelParamQueryLatitude];
         [params setObject:[NSNumber numberWithFloat:location.coordinate.longitude] forKey:kSpotModelParamQueryLongitude];
     }
     
+    if (radius) {
+    
+    CGFloat miles = radius / kMetersPerMile;
+        params[kSpotModelParamQueryRadius] = [NSNumber numberWithFloat:miles];
+    }
+
     [[ClientSessionManager sharedClient] GET:@"/api/spots" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI
@@ -575,9 +596,12 @@
             }
         }
         else if (operation.response.statusCode == 200) {
-            NSArray *models = [jsonApi resourcesForKey:@"spots"];
+            NSArray *spots = [jsonApi resourcesForKey:@"spots"];
+            
+            NSArray *sortedSpots = [self sortSpots:spots forLocation:location];
+            
             if (successBlock) {
-                successBlock(models);
+                successBlock(sortedSpots);
             }
         } else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
@@ -589,10 +613,15 @@
 }
 
 + (Promise *)fetchSpotsNearLocation:(CLLocation *)location {
+    CLLocationDistance radius = 2.0 * kMetersPerMile;
+    return [self fetchSpotsNearLocation:location radius:radius];
+}
+
++ (Promise *)fetchSpotsNearLocation:(CLLocation *)location radius:(CLLocationDistance)radius {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
-    [self fetchSpotsNearLocation:location success:^(NSArray *spots) {
+    [self fetchSpotsNearLocation:location radius:radius success:^(NSArray *spots) {
         // Resolves promise
         [deferred resolveWith:spots];
     } failure:^(ErrorModel *errorModel) {
@@ -838,6 +867,29 @@
     });
     
     return _sh_Cache;
+}
+
+#pragma mark - Sorting
+#pragma mark -
+
++ (NSArray *)sortSpots:(NSArray *)spots forLocation:(CLLocation *)location {
+    NSArray *sortedSpots = [spots sortedArrayUsingComparator:^NSComparisonResult(SpotModel *spot1, SpotModel *spot2) {
+        CLLocationDistance distance1 = [location distanceFromLocation:spot1.location];
+        CLLocationDistance distance2 = [location distanceFromLocation:spot2.location];
+        
+        NSComparisonResult result = NSOrderedSame;
+        
+        if (distance1 < distance2) {
+            result = (NSComparisonResult)NSOrderedAscending;
+        }
+        else {
+            result = (NSComparisonResult)NSOrderedDescending;
+        }
+        
+        return result;
+    }];
+
+    return sortedSpots;
 }
 
 #pragma mark - Getters

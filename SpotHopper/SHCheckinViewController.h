@@ -8,6 +8,8 @@
 
 #import "BaseViewController.h"
 
+@class SpotModel;
+
 @protocol SHCheckinViewControllerDelegate;
 
 @interface SHCheckinViewController : BaseViewController
@@ -18,6 +20,10 @@
 
 @protocol SHCheckinViewControllerDelegate <NSObject>
 
+@optional
+
 - (void)checkInViewControllerCancelButtonTapped:(SHCheckinViewController *)vc;
+
+- (void)checkInViewController:(SHCheckinViewController *)vc checkInAtSpot:(SpotModel *)spot;
 
 @end

@@ -785,6 +785,10 @@
 		2654B8CF192BB6E000A66BED /* SHSpotsMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B8AA192BB6E000A66BED /* SHSpotsMenuViewController.m */; };
 		2654B8D1192BB6E000A66BED /* SHSpotsMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B8AA192BB6E000A66BED /* SHSpotsMenuViewController.m */; };
 		2654B8D2192BB6E000A66BED /* SHSpotsMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2654B8AA192BB6E000A66BED /* SHSpotsMenuViewController.m */; };
+		2659EEE719DDF2400056C102 /* SHCheckinCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2659EEE619DDF2400056C102 /* SHCheckinCollectionViewManager.m */; };
+		2659EEE819DDF2400056C102 /* SHCheckinCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2659EEE619DDF2400056C102 /* SHCheckinCollectionViewManager.m */; };
+		2659EEE919DDF2400056C102 /* SHCheckinCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2659EEE619DDF2400056C102 /* SHCheckinCollectionViewManager.m */; };
+		2659EEEA19DDF2400056C102 /* SHCheckinCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2659EEE619DDF2400056C102 /* SHCheckinCollectionViewManager.m */; };
 		265CE70D1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */; };
 		265CE70E1911899C008DAF5E /* PhotoAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */; };
 		265CE7101911899C008DAF5E /* PhotoAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */; };
@@ -1795,6 +1799,8 @@
 		2654B8A8192BB6E000A66BED /* SHSidebarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSidebarViewController.m; path = SpotHopper/SHSidebarViewController.m; sourceTree = "<group>"; };
 		2654B8A9192BB6E000A66BED /* SHSpotsMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSpotsMenuViewController.h; path = SpotHopper/SHSpotsMenuViewController.h; sourceTree = "<group>"; };
 		2654B8AA192BB6E000A66BED /* SHSpotsMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSpotsMenuViewController.m; path = SpotHopper/SHSpotsMenuViewController.m; sourceTree = "<group>"; };
+		2659EEE519DDF2400056C102 /* SHCheckinCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHCheckinCollectionViewManager.h; path = SpotHopper/SHCheckinCollectionViewManager.h; sourceTree = "<group>"; };
+		2659EEE619DDF2400056C102 /* SHCheckinCollectionViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHCheckinCollectionViewManager.m; path = SpotHopper/SHCheckinCollectionViewManager.m; sourceTree = "<group>"; };
 		265CE70B1911899C008DAF5E /* PhotoAlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAlbumViewController.h; sourceTree = "<group>"; };
 		265CE70C1911899C008DAF5E /* PhotoAlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAlbumViewController.m; sourceTree = "<group>"; };
 		2663A4D019B680E200B4232A /* orange_gradient_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orange_gradient_background.png; sourceTree = "<group>"; };
@@ -3176,6 +3182,8 @@
 				2654B895192BB6B200A66BED /* SHSpotsCollectionViewManager.m */,
 				2640B00D193E6C2D00978725 /* SHDrinksCollectionViewManager.h */,
 				2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */,
+				2659EEE519DDF2400056C102 /* SHCheckinCollectionViewManager.h */,
+				2659EEE619DDF2400056C102 /* SHCheckinCollectionViewManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -4497,6 +4505,7 @@
 				038664D7186D376900985CEC /* UILabelRockwell.m in Sources */,
 				2619B5D619D2220C0043FD65 /* SHAppContext.m in Sources */,
 				2619B5E219D2224B0043FD65 /* SHLocationPickerViewController.m in Sources */,
+				2659EEE719DDF2400056C102 /* SHCheckinCollectionViewManager.m in Sources */,
 				2619B5E819D2225C0043FD65 /* SHGlobalSearchViewController.m in Sources */,
 				037D13A618A450DB00B89535 /* CLGeocoder+DoubleLookup.m in Sources */,
 				03CAC18618E9C74000FAC5F5 /* PriceModel.m in Sources */,
@@ -4671,6 +4680,7 @@
 				2619B5D919D2220C0043FD65 /* SHAppContext.m in Sources */,
 				03CAC01018E7716400FAC5F5 /* UILabelRockwell.m in Sources */,
 				2619B5E519D2224B0043FD65 /* SHLocationPickerViewController.m in Sources */,
+				2659EEEA19DDF2400056C102 /* SHCheckinCollectionViewManager.m in Sources */,
 				2619B5EB19D2225C0043FD65 /* SHGlobalSearchViewController.m in Sources */,
 				03CAC01118E7716400FAC5F5 /* CLGeocoder+DoubleLookup.m in Sources */,
 				03CAC18918E9C74000FAC5F5 /* PriceModel.m in Sources */,
@@ -4837,6 +4847,7 @@
 				03F4E8F418CA34260056EAA9 /* UILabelRockwell.m in Sources */,
 				2619B5D719D2220C0043FD65 /* SHAppContext.m in Sources */,
 				2619B5E319D2224B0043FD65 /* SHLocationPickerViewController.m in Sources */,
+				2659EEE819DDF2400056C102 /* SHCheckinCollectionViewManager.m in Sources */,
 				2619B5E919D2225C0043FD65 /* SHGlobalSearchViewController.m in Sources */,
 				03F4E8F518CA34260056EAA9 /* CLGeocoder+DoubleLookup.m in Sources */,
 				03CAC18718E9C74000FAC5F5 /* PriceModel.m in Sources */,
@@ -5003,6 +5014,7 @@
 				2619B5D819D2220C0043FD65 /* SHAppContext.m in Sources */,
 				267E05661922CC48004457B4 /* UILabelRockwell.m in Sources */,
 				2619B5E419D2224B0043FD65 /* SHLocationPickerViewController.m in Sources */,
+				2659EEE919DDF2400056C102 /* SHCheckinCollectionViewManager.m in Sources */,
 				2619B5EA19D2225C0043FD65 /* SHGlobalSearchViewController.m in Sources */,
 				267E05671922CC48004457B4 /* CLGeocoder+DoubleLookup.m in Sources */,
 				267E05681922CC48004457B4 /* PriceModel.m in Sources */,

@@ -82,6 +82,15 @@
     return self.location;
 }
 
+- (NSUInteger)hash {
+    if (self.name.length) {
+        return self.name.hash;
+    }
+    else {
+        return super.hash;
+    }
+}
+
 - (BOOL)isEqual:(id)object {
     if ([object isKindOfClass:[SHPlacemark class]]) {
         SHPlacemark *other = (SHPlacemark *)object;
