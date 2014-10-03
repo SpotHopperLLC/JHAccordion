@@ -13,6 +13,7 @@
 #import "SpotModel.h"
 #import "SpecialModel.h"
 #import "DrinkModel.h"
+#import "CheckInModel.h"
 
 #import "ImageUtil.h"
 #import "Tracker.h"
@@ -121,6 +122,39 @@
         
         NSMutableArray *activityItems = @[].mutableCopy;
         [activityItems addObject:drink.name.length ? drink.name : @""];
+        [activityItems addObject:shortenedURL];
+//        [activityItems addObject:[NSURL URLWithString:link]];
+//        if (image) {
+//            [activityItems addObject:image];
+//        }
+        NSMutableArray *activities = @[].mutableCopy;
+        UIActivityViewController *activityView = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activities];
+        
+        [vc presentViewController:activityView animated:YES completion:nil];
+    }];
+}
+
+- (void)shareCheckin:(CheckInModel *)checkin withViewController:(UIViewController *)vc {
+    if (!checkin.spot.highlightImage) {
+        [self shareCheckin:checkin image:nil withViewController:vc];
+    }
+    else {
+        [ImageUtil loadImage:checkin.spot.highlightImage placeholderImage:nil withThumbImageBlock:nil withFullImageBlock:^(UIImage *fullImage) {
+            [self shareCheckin:checkin image:fullImage withViewController:vc];
+        } withErrorBlock:^(NSError *error) {
+            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+        }];
+    }
+}
+
+- (void)shareCheckin:(CheckInModel *)checkin image:(UIImage *)image withViewController:(UIViewController *)vc {
+    NSString *link = [NSString stringWithFormat:@"%@/checkins/%@", [SHAppConfiguration websiteUrl], checkin.ID];
+    
+    // go.spotapps.co -> www.spothopperapp.com
+    [SSTURLShortener shortenURL:[NSURL URLWithString:link] username:[SHAppConfiguration bitlyUsername] apiKey:[SHAppConfiguration bitlyAPIKey] withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
+        
+        NSMutableArray *activityItems = @[].mutableCopy;
+        [activityItems addObject:checkin.spot.name.length ? checkin.spot.name : @""];
         [activityItems addObject:shortenedURL];
 //        [activityItems addObject:[NSURL URLWithString:link]];
 //        if (image) {

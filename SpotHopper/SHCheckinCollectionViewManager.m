@@ -27,6 +27,7 @@
 
 #import <CoreLocation/CoreLocation.h>
 
+#define kCheckinCellTableContainerView 600
 
 #pragma mark - Class Extension
 #pragma mark -
@@ -75,34 +76,11 @@
     return 1;
 }
 
-// The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    // dequeue named cell template
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CheckinCell" forIndexPath:indexPath];
+    static NSString *CheckinCellIdentifier = @"CheckinCell";
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CheckinCellIdentifier forIndexPath:indexPath];
     
-    UIView *headerView = [cell viewWithTag:500];
-    
-    UIImageView *spotImageView = (UIImageView *)[headerView viewWithTag:1];
-    UILabel *nameLabel = (UILabel *)[headerView viewWithTag:2];
-    UILabel *typeLabel = (UILabel *)[headerView viewWithTag:3];
-    UIImageView *iconImageView = (UIImageView *)[headerView viewWithTag:5];
-    
-    [ImageUtil loadImage:self.spot.highlightImage placeholderImage:self.spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
-        spotImageView.image = thumbImage;
-    } withFullImageBlock:^(UIImage *fullImage) {
-        spotImageView.image = fullImage;
-    } withErrorBlock:^(NSError *error) {
-        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
-    }];
-    
-    nameLabel.text = self.spot.name;
-    typeLabel.text = self.spot.spotType.name;
-
-    iconImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingCheckinMarkIcon color:SHStyleKitColorMyTextColor size:CGSizeMake(50, 50)];
-    
-    
-    
-    UIView *tableContainerView = [cell viewWithTag:600];
+    UIView *tableContainerView = [cell viewWithTag:kCheckinCellTableContainerView];
     UITableView *tableView = nil;
     if (!tableContainerView.subviews.count) {
         tableView = [self embedTableViewInSuperView:tableContainerView];
@@ -115,6 +93,10 @@
     tableManager.delegate = self;
     [tableManager manageTableView:tableView forCheckin:self.checkin atSpot:self.spot];
     [self addTableManager:tableManager forIndexPath:indexPath];
+    
+    [self renderCell:cell withSpot:self.spot atIndex:indexPath.item];
+    
+    [self attachedPanGestureToCell:cell];
     
     return cell;
 }
@@ -143,7 +125,6 @@
     UIView *headerView = [cell viewWithTag:500];
     
     UIImageView *spotImageView = (UIImageView *)[headerView viewWithTag:1];
-    
     UILabel *nameLabel = (UILabel *)[cell viewWithTag:2];
     UILabel *typeLabel = (UILabel *)[cell viewWithTag:3];
     UIImageView *checkmarkImageView = (UIImageView *)[cell viewWithTag:5];
@@ -169,7 +150,7 @@
     nameLabel.text = spot.name;
     typeLabel.text = spot.spotType.name;
     
-    checkmarkImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingCheckMarkIcon color:SHStyleKitColorMyTextColor size:CGSizeMake(40, 40)];
+    checkmarkImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingCheckinMarkIcon color:SHStyleKitColorMyTextTransparentColor size:CGSizeMake(50, 50)];
 }
 
 @end

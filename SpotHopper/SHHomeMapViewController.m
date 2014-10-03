@@ -4165,6 +4165,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     SpecialModel *special = notification.userInfo[SHAppSpecialNotificationKey];
     SpotModel *spot = notification.userInfo[SHAppSpotNotificationKey];
     DrinkModel *drink = notification.userInfo[SHAppDrinkNotificationKey];
+    CheckInModel *checkin = notification.userInfo[SHAppCheckinNotificationKey];
     
     if (special && spot) {
         [[SHAppUtil defaultInstance] shareSpecial:special atSpot:spot withViewController:self];
@@ -4174,6 +4175,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }
     else if (drink) {
         [[SHAppUtil defaultInstance] shareDrink:drink withViewController:self];
+    }
+    else if (checkin) {
+        [[SHAppUtil defaultInstance] shareCheckin:checkin withViewController:self];
     }
 }
 

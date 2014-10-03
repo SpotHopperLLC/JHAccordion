@@ -65,9 +65,9 @@ typedef enum {
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 
 @property (nonatomic, assign) TableManagerMode mode;
-@property (nonatomic, weak) SpotModel *spot;
-@property (nonatomic, weak) DrinkModel *drink;
-@property (nonatomic, weak) CheckInModel *checkin;
+@property (nonatomic, strong) SpotModel *spot;
+@property (nonatomic, strong) DrinkModel *drink;
+@property (nonatomic, strong) CheckInModel *checkin;
 
 @property (nonatomic, strong) DrinkListModel *highestRatedDrinklist;
 
@@ -284,21 +284,35 @@ typedef enum {
 #pragma mark -
 
 - (CGFloat)bottomContentInset {
+    // TODO: figure out why there is a difference (bottom layout guide?)
+    
+    CGFloat bottom = 180.0;
+    
     if ([self hasFourInchDisplay]) {
-        return 100.0;
+        bottom -= 80.0;
     }
-    else {
-        return 180.0;
+    
+    if (self.mode == Checkin) {
+        bottom -= 30.0;
     }
+    
+    return bottom;
 }
 
 - (CGFloat)bottomScrollIndicatorInset {
+    // TODO: figure out why there is a difference (bottom layout guide?)
+    
+    CGFloat bottom = 130.0;
+    
     if ([self hasFourInchDisplay]) {
-        return 50.0;
+        bottom -= 80.0;
     }
-    else {
-        return 130.0;
+    
+    if (self.mode == Checkin) {
+        bottom -= 30.0;
     }
+    
+    return bottom;
 }
 
 - (BOOL)hasFourInchDisplay {
@@ -541,13 +555,9 @@ typedef enum {
     else if (self.mode == Drink) {
         [SHNotifications shareDrink:self.drink];
     }
-}
-
-- (IBAction)shareCheckinButtonTapped:(UIButton *)button {
-    [Tracker trackUserTappedShare];
-    [Tracker trackTappedShare];
-
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    else if (self.mode == Checkin) {
+        [SHNotifications shareCheckin:self.checkin];
+    }
 }
 
 #pragma mark - Rendering Cells
@@ -1017,16 +1027,24 @@ typedef enum {
 - (UITableViewCell *)renderCellForSharingCheckinAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ShareCheckinCell" forIndexPath:indexPath];
     
+    UILabel *titleLabel = (UILabel *)[cell viewWithTag:1];
     UIButton *shareImageButton = (UIButton *)[cell viewWithTag:2];
     UIButton *shareTextButton = (UIButton *)[cell viewWithTag:3];
-    
     UIButton *reviewTextButton = (UIButton *)[cell viewWithTag:4];
     UIButton *reviewImageButton = (UIButton *)[cell viewWithTag:5];
+    
+    NSAssert(titleLabel, @"View is required");
+    NSAssert(shareImageButton, @"View is required");
+    NSAssert(shareTextButton, @"View is required");
+    NSAssert(reviewTextButton, @"View is required");
+    NSAssert(reviewImageButton, @"View is required");
     
     [SHStyleKit setButton:shareTextButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setButton:reviewTextButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setButton:shareImageButton withDrawing:SHStyleKitDrawingShareIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextTransparentColor size:CGSizeMake(30, 30)];
     [SHStyleKit setButton:reviewImageButton withDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextTransparentColor size:CGSizeMake(30, 30)];
+    
+    titleLabel.text = @"Like this spot?";
 
     shareTextButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     shareTextButton.titleLabel.textAlignment = NSTextAlignmentLeft;
@@ -1037,10 +1055,10 @@ typedef enum {
     [reviewTextButton setTitle:@"Write\nReview" forState:UIControlStateNormal];
     
     [shareImageButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-    [shareImageButton addTarget:self action:@selector(shareCheckinButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [shareImageButton addTarget:self action:@selector(shareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     [shareTextButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-    [shareTextButton addTarget:self action:@selector(shareCheckinButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [shareTextButton addTarget:self action:@selector(shareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     [reviewTextButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
     [reviewTextButton addTarget:self action:@selector(reviewButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -1221,6 +1239,9 @@ typedef enum {
         return 160.0f;
     }
     else if ([rowName isEqualToString:kRowNameShare]) {
+        return 100.0f;
+    }
+    else if ([rowName isEqualToString:kRowNameShareCheckin]) {
         return 100.0f;
     }
     else {

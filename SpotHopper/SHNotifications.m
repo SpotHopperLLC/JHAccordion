@@ -62,6 +62,7 @@ NSString * const SHAppShareNotificationName = @"SHAppShareNotificationName";
 NSString * const SHAppSpotNotificationKey = @"SHAppSpotNotificationKey";
 NSString * const SHAppSpecialNotificationKey = @"SHAppSpecialNotificationKey";
 NSString * const SHAppDrinkNotificationKey = @"SHAppDrinkNotificationKey";
+NSString * const SHAppCheckinNotificationKey = @"SHAppCheckinNotificationKey";
 
 @implementation SHNotifications
 
@@ -209,6 +210,15 @@ NSString * const SHAppDrinkNotificationKey = @"SHAppDrinkNotificationKey";
 + (void)shareDrink:(DrinkModel *)drink {
     NSAssert(drink, @"Parameter is required");
     NSDictionary *userInfo = @{SHAppDrinkNotificationKey : drink};
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHAppShareNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
++ (void)shareCheckin:(CheckInModel *)checkin {
+    NSAssert(checkin, @"Parameter is required");
+    NSDictionary *userInfo = @{SHAppCheckinNotificationKey : checkin};
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SHAppShareNotificationName
                                                         object:nil

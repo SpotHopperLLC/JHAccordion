@@ -10,6 +10,7 @@
 #import "SpotListRequest.h"
 #import "DrinkModel.h"
 #import "SpotModel.h"
+#import "CheckInModel.h"
 
 extern NSString * const SHGoToHomeMapNotificationName;
 
@@ -65,6 +66,7 @@ extern NSString * const SHAppShareNotificationName;
 extern NSString * const SHAppSpotNotificationKey;
 extern NSString * const SHAppSpecialNotificationKey;
 extern NSString * const SHAppDrinkNotificationKey;
+extern NSString * const SHAppCheckinNotificationKey;
 
 @interface SHNotifications : NSObject
 
@@ -109,5 +111,7 @@ extern NSString * const SHAppDrinkNotificationKey;
 + (void)shareSpot:(SpotModel *)spot;
 
 + (void)shareDrink:(DrinkModel *)drink;
+
++ (void)shareCheckin:(CheckInModel *)checkin;
 
 @end

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class SpotModel, SpecialModel, DrinkModel, ImageModel;
+@class SpotModel, SpecialModel, DrinkModel, ImageModel, CheckInModel;
 
 @interface SHAppUtil : NSObject
 
@@ -22,6 +22,8 @@
 - (void)shareSpot:(SpotModel *)spot withViewController:(UIViewController *)vc;
 
 - (void)shareDrink:(DrinkModel *)drink withViewController:(UIViewController *)vc;
+
+- (void)shareCheckin:(CheckInModel *)checkin withViewController:(UIViewController *)vc;
 
 #pragma mark - Text Height
 #pragma mark -
