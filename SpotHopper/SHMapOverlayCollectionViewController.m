@@ -234,6 +234,8 @@ typedef enum {
     
     _shouldHidePositionView = count <= 1;
     
+    self.positionView.hidden = _shouldHidePositionView;
+    
     if (index == 0) {
         self.previousButton.alpha = 0.25;
         self.previousButton.userInteractionEnabled = FALSE;

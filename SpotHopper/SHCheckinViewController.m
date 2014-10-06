@@ -14,6 +14,7 @@
 
 #import "SHStyleKit+Additions.h"
 #import "ImageUtil.h"
+#import "SHNotifications.h"
 
 #import "Tracker.h"
 #import "Tracker+Events.h"
@@ -180,7 +181,7 @@
     else if (indexPath.row < self.spots.count) {
         return 60.0f;
     }
-    else if (indexPath.row > self.spots.count) {
+    else if (indexPath.row >= self.spots.count) {
         return 60.0f;
     }
     else {
@@ -189,14 +190,20 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // TODO: tell delegate to check in at this spot
-    
     if ([self isSpotAtIndexPath:indexPath]) {
         SpotModel *spot = self.spots[indexPath.row];
         
         if ([self.delegate respondsToSelector:@selector(checkInViewController:checkInAtSpot:)]) {
             [self.delegate checkInViewController:self checkInAtSpot:spot];
         }
+        
+        CLLocation *currentLocation = [[SHAppContext defaultInstance] deviceLocation];
+        CLLocationDistance distance = [currentLocation distanceFromLocation:spot.location];
+        
+        [Tracker trackCheckedInAtSpot:spot position:indexPath.row+1 count:self.spots.count distance:distance];
+    }
+    else {
+        [SHNotifications reviewSpot:nil];
     }
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{

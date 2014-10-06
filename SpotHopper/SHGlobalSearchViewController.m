@@ -12,6 +12,7 @@
 #import "SpotModel.h"
 #import "ErrorModel.h"
 
+#import "SHNotifications.h"
 #import "SHStyleKit+Additions.h"
 
 #import "Tracker.h"
@@ -346,10 +347,8 @@
     NSInteger resourceIndex = [self resourceIndexForRowIndex:indexPath.row];
     
     if (resourceIndex == NSNotFound) {
-        // go to Add Review screen
-        if ([self.delegate respondsToSelector:@selector(globalSearchViewControllerDidRequestReview:)]) {
-            [self.delegate globalSearchViewControllerDidRequestReview:self];
-        }
+        // go to Add New Review screen
+        [SHNotifications reviewSpot:nil];
     }
     else if (resourceIndex < self.results.count) {
         SHJSONAPIResource *result = [self.results objectAtIndex:resourceIndex];

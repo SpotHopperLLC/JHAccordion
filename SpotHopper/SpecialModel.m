@@ -187,6 +187,9 @@
     NSDateComponents *components = [calendar components:units fromDate:date];
     
     NSUInteger adjustedHour = components.hour > 12 ? components.hour - 12 : components.hour;
+    if (!adjustedHour) {
+        adjustedHour = 12;
+    }
     
     if (components.minute == 0) {
         NSString *ampm = components.hour < 12 ? @"AM" : @"PM";

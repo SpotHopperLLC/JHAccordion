@@ -90,13 +90,17 @@
         else if (operation.response.statusCode == 200) {
             UserModel *userModel = [jsonApi resourceForKey:@"users"];
             [[ClientSessionManager sharedClient] login:operation.response user:userModel];
-            successBlock(userModel, operation.response);
+            if (successBlock) {
+                successBlock(userModel, operation.response);
+            }
             
             // Resolves promise
             [deferred resolve];
         } else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
-            failureBlock(errorModel);
+            if (failureBlock) {
+                failureBlock(errorModel);
+            }
             
             // Rejects promise
             [deferred rejectWith:errorModel];

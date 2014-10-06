@@ -286,19 +286,22 @@
 
 - (void)facebookAuth:(BOOL)allowLogin success:(void(^)(FBSession *session))successHandler failure:(void(^)(FBSessionState state, NSError *error))failureHandler {
     
+    if (!successHandler || !failureHandler) {
+        return;
+    }
+    
     if ([[FBSession activeSession] isOpen] == YES) {
         successHandler([FBSession activeSession]);
         return;
     }
     
     if (allowLogin == YES) {
-        FBSession* sess = [[FBSession alloc] initWithPermissions:[NSArray arrayWithObject:@"publish_actions, email"]];
+        FBSession* sess = [[FBSession alloc] initWithPermissions:@[@"public_profile, publish_actions, email, user_friends"]];
         [FBSession setActiveSession:sess];
         [sess openWithBehavior:(FBSessionLoginBehaviorWithFallbackToWebView) completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
             
             switch (state) {
                 case FBSessionStateOpen:
-//                    [FBSession setActiveSession:session];
                     successHandler(session);
                     
                     break;

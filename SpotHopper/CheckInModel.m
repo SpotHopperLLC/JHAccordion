@@ -18,7 +18,7 @@
 #pragma mark - Debugging
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ - %@ [%@]", self.ID, self.href, NSStringFromClass([self class])];
+    return [NSString stringWithFormat:@"%@ - %@ [%@]", self.ID, self.spot.name, NSStringFromClass([self class])];
 }
 
 #pragma mark -

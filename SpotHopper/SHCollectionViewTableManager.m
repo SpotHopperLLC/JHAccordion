@@ -560,6 +560,13 @@ typedef enum {
     }
 }
 
+- (IBAction)shareSpecialButtonTapped:(UIButton *)button {
+    [Tracker trackUserTappedShare];
+    [Tracker trackTappedShare];
+    
+    [SHNotifications shareSpecial:self.spot.specialForToday atSpot:self.spot];
+}
+
 #pragma mark - Rendering Cells
 #pragma mark -
 
@@ -1048,23 +1055,27 @@ typedef enum {
 
     shareTextButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     shareTextButton.titleLabel.textAlignment = NSTextAlignmentLeft;
-    [shareTextButton setTitle:@"Share\nCheckin" forState:UIControlStateNormal];
+    [shareTextButton setTitle:@"Share\nSpecial" forState:UIControlStateNormal];
     
     reviewTextButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     reviewTextButton.titleLabel.textAlignment = NSTextAlignmentRight;
     [reviewTextButton setTitle:@"Write\nReview" forState:UIControlStateNormal];
     
     [shareImageButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-    [shareImageButton addTarget:self action:@selector(shareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [shareImageButton addTarget:self action:@selector(shareSpecialButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     [shareTextButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-    [shareTextButton addTarget:self action:@selector(shareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [shareTextButton addTarget:self action:@selector(shareSpecialButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     [reviewTextButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
     [reviewTextButton addTarget:self action:@selector(reviewButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     [reviewImageButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
     [reviewImageButton addTarget:self action:@selector(reviewButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    BOOL hasSpecial = [self.rows containsObject:kRowNameTodaysSpecial];
+    shareImageButton.hidden = !hasSpecial;
+    shareTextButton.hidden = !hasSpecial;
     
     return cell;
 }

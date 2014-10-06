@@ -39,8 +39,8 @@ PODS:
     - BlocksKit/DynamicDelegate
   - Bolts (1.1.2)
   - CrashlyticsFramework (2.2.4)
-  - Facebook-iOS-SDK (3.18.0):
-    - Bolts
+  - Facebook-iOS-SDK (3.19.0):
+    - Bolts (~> 1.0)
   - JHAccordion (0.1.0)
   - JHAutoCompleteTextField (0.1.0)
   - JHSidebar (0.1.2)
@@ -54,7 +54,7 @@ PODS:
   - PhotoZoom (0.0.2)
   - Promises (0.1.2)
   - Reveal-iOS-SDK (1.0.5)
-  - STTwitter (0.1.4)
+  - STTwitter (0.1.5)
   - SVPulsingAnnotationView (0.3.0)
   - TTTAttributedLabel (1.10.1)
   - UIImage+BlurredFrame (0.0.4)
@@ -109,7 +109,7 @@ SPEC CHECKSUMS:
   BlocksKit: 4439e7f30a9f90743462ca63545a15c1f4304cef
   Bolts: 2635e8698a630774689441047f3465d78c48d485
   CrashlyticsFramework: 0c28a2c07a51b7691e6668b83824b0b0be77f307
-  Facebook-iOS-SDK: fa12c51cc57bfb6f92e47793c9d4d2c65bc92741
+  Facebook-iOS-SDK: cb7d74759d0b1ba546e6e6f1dde407b0d4e448d6
   JHAccordion: 4f0337990465b25f8de5ed304609fa9362281db0
   JHAutoCompleteTextField: 1ca69c82441d9b5bf474e10d36585247030f7594
   JHSidebar: 8305caa8641e862994378ee3d61370c79e6b5a07
@@ -121,7 +121,7 @@ SPEC CHECKSUMS:
   PhotoZoom: 52b044c8086589e85415718402df6c4b5f411cb1
   Promises: c9d4e849f307a53b1b8714c64ff4b6e8695b24e1
   Reveal-iOS-SDK: d4b2f4c20d5b823b7f8b88250fe1b71cecd424a7
-  STTwitter: 809f63f856341fdd103fbc6d9e4818d48a91be0c
+  STTwitter: 60f28af91d622b9a3f74f28cd021413277d413bb
   SVPulsingAnnotationView: 92364bec02160f481d1b603afc904183d385c3e6
   TTTAttributedLabel: 94bb04f1e005616002dd2cee0262a0082e533627
   UIImage+BlurredFrame: 0c38f5760d72125c47d16001a88faaac573bd35d

@@ -40,8 +40,6 @@
 - (void)globalSearchViewController:(SHGlobalSearchViewController *)vc didSelectSimilarToSpot:(SpotModel *)spot;
 - (void)globalSearchViewController:(SHGlobalSearchViewController *)vc didSelectSimilarToDrink:(DrinkModel *)drink;
 
-- (void)globalSearchViewControllerDidRequestReview:(SHGlobalSearchViewController *)vc;
-
 - (void)globalSearchViewControllerStartedSearching:(SHGlobalSearchViewController *)vc;
 - (void)globalSearchViewControllerStoppedSearching:(SHGlobalSearchViewController *)vc;
 

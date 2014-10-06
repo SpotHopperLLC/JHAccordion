@@ -22,4 +22,6 @@
 
 @protocol SHCheckinCollectionViewManagerDelegate <SHBaseCollectionViewManagerDelegate>
 
+// do nothing
+
 @end

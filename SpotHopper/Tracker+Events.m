@@ -16,6 +16,7 @@
 #import "SpotListRequest.h"
 #import "DrinkListRequest.h"
 #import "SpecialModel.h"
+#import "CheckInModel.h"
 
 #import "TellMeMyLocation.h"
 #import "ClientSessionManager.h"
@@ -509,6 +510,48 @@
 
 + (void)trackWineButtonTapped {
     [self track:@"Wine Button Tapped"];
+}
+
+#pragma mark - Checkins
+#pragma mark -
+
++ (void)trackCheckinButtonTapped {
+    [self track:@"Checkin Button Tapped"];
+}
+
++ (void)trackCheckinCancelButtonTapped {
+    [self track:@"Checkin Cancel Button Tapped"];
+}
+
++ (void)trackCheckedInAtSpot:(SpotModel *)spot position:(NSUInteger)position count:(NSUInteger)count distance:(CLLocationDistance)distance {
+    
+    [self track:@"Checking In" properties:@{
+                                            @"Spot ID" : spot.ID ? spot.ID : [NSNull null],
+                                            @"Spot Name" : spot.name.length ? spot.name : [NSNull null],
+                                            @"Position" : [NSNumber numberWithInteger:position],
+                                            @"Count" : [NSNumber numberWithInteger:count],
+                                            @"Position" : [NSNumber numberWithFloat:distance]
+                                 }];
+    
+}
+
+#pragma mark - Sharing
+#pragma mark -
+
++ (void)trackSharingSpot:(SpotModel *)spot {
+    [Tracker track:@"Sharing Spot" properties:@{@"Spot ID" : spot.ID ? spot.ID : [NSNull null], @"Spot Name" : spot.name.length ? spot.name : [NSNull null]}];
+}
+
++ (void)trackSharingDrink:(DrinkModel *)drink {
+    [Tracker track:@"Sharing Drink" properties:@{@"Drink ID" : drink.ID ? drink.ID : [NSNull null], @"Drink Name" : drink.name.length ? drink.name : [NSNull null]}];
+}
+
++ (void)trackSharingSpecial:(SpecialModel *)special atSpot:(SpotModel *)spot {
+    [Tracker track:@"Sharing Special" properties:@{@"Spot ID" : spot.ID ? spot.ID : [NSNull null], @"Weekday" : special.weekdayString.length ? special.weekdayString : [NSNull null], @"Likes Count" : [NSNumber numberWithInteger:special.likeCount]}];
+}
+
++ (void)trackSharingCheckin:(CheckInModel *)checkin {
+    [Tracker track:@"Sharing Checkin" properties:@{@"Checkin ID" : checkin.ID ? checkin.ID : [NSNull null], @"Spot ID" : checkin.spot.ID ? checkin.spot.ID : [NSNull null], @"Spot Name" : checkin.spot.name.length ? checkin.spot.name : [NSNull null]}];
 }
 
 #pragma mark - List View

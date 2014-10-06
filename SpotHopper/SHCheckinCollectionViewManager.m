@@ -18,6 +18,7 @@
 #import "ImageUtil.h"
 
 #import "TellMeMyLocation.h"
+#import "SHNotifications.h"
 
 #import "SHCollectionViewTableManager.h"
 
@@ -54,10 +55,25 @@
 }
 
 - (void)setCheckin:(CheckInModel *)checkin andSpot:(SpotModel *)spot {
+    DebugLog(@"checkin: %@", checkin);
     self.checkin = checkin;
     self.spot = spot;
     
+    DebugLog(@"spot: %@", spot.name);
+    
+    NSAssert(self.collectionView, @"Outlet is required");
+    
     [self.collectionView reloadData];
+}
+
+#pragma mark - User Actions
+#pragma mark -
+
+- (IBAction)shareButtonTapped:(UIButton *)button {
+    [Tracker trackUserTappedShare];
+    [Tracker trackTappedShare];
+    
+    [SHNotifications shareCheckin:self.checkin];
 }
 
 #pragma mark - SHCollectionViewTableManagerDelegate
@@ -122,12 +138,29 @@
 #pragma mark -
 
 - (void)renderCell:(UICollectionViewCell *)cell withSpot:(SpotModel *)spot atIndex:(NSUInteger)index {
+    DebugLog(@"%@ (%@)", NSStringFromSelector(_cmd), spot.name);
     UIView *headerView = [cell viewWithTag:500];
     
     UIImageView *spotImageView = (UIImageView *)[headerView viewWithTag:1];
     UILabel *nameLabel = (UILabel *)[cell viewWithTag:2];
     UILabel *typeLabel = (UILabel *)[cell viewWithTag:3];
-    UIImageView *checkmarkImageView = (UIImageView *)[cell viewWithTag:5];
+    UIButton *shareImageButton = (UIButton *)[cell viewWithTag:5];
+    UIButton *shareTextButton = (UIButton *)[cell viewWithTag:6];
+    
+    NSAssert(spotImageView, @"View is required");
+    NSAssert(nameLabel, @"View is required");
+    NSAssert(typeLabel, @"View is required");
+    NSAssert(shareImageButton, @"View is required");
+    NSAssert(shareTextButton, @"View is required");
+    
+    [SHStyleKit setButton:shareTextButton normalTextColor:SHStyleKitColorMyTintColor highlightedTextColor:SHStyleKitColorMyTextColor];
+    [SHStyleKit setButton:shareImageButton withDrawing:SHStyleKitDrawingShareIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextTransparentColor size:CGSizeMake(30, 30)];
+    
+    [shareImageButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [shareImageButton addTarget:self action:@selector(shareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [shareTextButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [shareTextButton addTarget:self action:@selector(shareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
     spotImageView.image = nil;
     ImageModel *highlightImage = spot.highlightImage;
@@ -149,8 +182,6 @@
     
     nameLabel.text = spot.name;
     typeLabel.text = spot.spotType.name;
-    
-    checkmarkImageView.image = [SHStyleKit drawImage:SHStyleKitDrawingCheckinMarkIcon color:SHStyleKitColorMyTextTransparentColor size:CGSizeMake(50, 50)];
 }
 
 @end

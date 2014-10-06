@@ -128,7 +128,7 @@ NSString * const SHAppCheckinNotificationKey = @"SHAppCheckinNotificationKey";
 }
 
 + (void)reviewDrink:(DrinkModel *)drink {
-    NSDictionary *userInfo = @{ SHReviewDrinkNotificationKey : drink };
+    NSDictionary *userInfo = drink ? @{ SHReviewDrinkNotificationKey : drink} : @{};
     [[NSNotificationCenter defaultCenter] postNotificationName:SHReviewDrinkNotificationName
                                                         object:nil
                                                       userInfo:userInfo];
@@ -142,7 +142,7 @@ NSString * const SHAppCheckinNotificationKey = @"SHAppCheckinNotificationKey";
 }
 
 + (void)reviewSpot:(SpotModel *)spot {
-    NSDictionary *userInfo = @{ SHReviewSpotNotificationKey : spot };
+    NSDictionary *userInfo = spot ? @{ SHReviewSpotNotificationKey : spot} : @{};
     [[NSNotificationCenter defaultCenter] postNotificationName:SHReviewSpotNotificationName
                                                         object:nil
                                                       userInfo:userInfo];

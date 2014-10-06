@@ -75,7 +75,8 @@ typedef enum {
     SHModeSpecials,
     SHModeBeer,
     SHModeCocktail,
-    SHModeWine
+    SHModeWine,
+    SHModeCheckin
 } SHMode;
 
 #endif

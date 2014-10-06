@@ -16,8 +16,12 @@
 #import "CheckInModel.h"
 
 #import "ImageUtil.h"
-#import "Tracker.h"
 #import "SSTURLShortener.h"
+
+#import "Tracker.h"
+#import "Tracker+Events.h"
+#import "Tracker+People.h"
+
 
 @implementation SHAppUtil
 
@@ -48,7 +52,8 @@
 }
 
 - (void)shareSpecial:(SpecialModel *)special atSpot:(SpotModel *)spot image:(UIImage *)image withViewController:(UIViewController *)vc {
-    NSString *link = [NSString stringWithFormat:@"%@/spots/%lu/specials", [SHAppConfiguration websiteUrl], (unsigned long)[spot.ID integerValue]];
+    [Tracker trackSharingSpecial:special atSpot:spot];
+    NSString *link = [NSString stringWithFormat:@"%@/spots/%lu/specials/%i", [SHAppConfiguration websiteUrl], (unsigned long)[spot.ID integerValue], (int)special.weekday];
     
     // go.spotapps.co -> www.spothopperapp.com
     [SSTURLShortener shortenURL:[NSURL URLWithString:link] username:[SHAppConfiguration bitlyUsername] apiKey:[SHAppConfiguration bitlyAPIKey] withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
@@ -83,6 +88,7 @@
 }
 
 - (void)shareSpot:(SpotModel *)spot image:(UIImage *)image withViewController:(UIViewController *)vc {
+    [Tracker trackSharingSpot:spot];
     NSString *link = [NSString stringWithFormat:@"%@/spots/%lu", [SHAppConfiguration websiteUrl], (unsigned long)[spot.ID integerValue]];
 
     // go.spotapps.co -> www.spothopperapp.com
@@ -115,6 +121,7 @@
 }
 
 - (void)shareDrink:(DrinkModel *)drink image:(UIImage *)image withViewController:(UIViewController *)vc {
+    [Tracker trackSharingDrink:drink];
     NSString *link = [NSString stringWithFormat:@"%@/drinks/%lu", [SHAppConfiguration websiteUrl], (unsigned long)[drink.ID integerValue]];
     
     // go.spotapps.co -> www.spothopperapp.com
@@ -148,13 +155,15 @@
 }
 
 - (void)shareCheckin:(CheckInModel *)checkin image:(UIImage *)image withViewController:(UIViewController *)vc {
+    [Tracker trackSharingCheckin:checkin];
     NSString *link = [NSString stringWithFormat:@"%@/checkins/%@", [SHAppConfiguration websiteUrl], checkin.ID];
     
     // go.spotapps.co -> www.spothopperapp.com
     [SSTURLShortener shortenURL:[NSURL URLWithString:link] username:[SHAppConfiguration bitlyUsername] apiKey:[SHAppConfiguration bitlyAPIKey] withCompletionBlock:^(NSURL *shortenedURL, NSError *error) {
         
         NSMutableArray *activityItems = @[].mutableCopy;
-        [activityItems addObject:checkin.spot.name.length ? checkin.spot.name : @""];
+         
+        [activityItems addObject:[NSString stringWithFormat:@"Checked in at %@", checkin.spot.name.length ? checkin.spot.name : @""]];
         [activityItems addObject:shortenedURL];
 //        [activityItems addObject:[NSURL URLWithString:link]];
 //        if (image) {

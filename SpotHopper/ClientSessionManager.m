@@ -28,7 +28,7 @@
 
 #import "JTSReachabilityResponder.h"
 
-#import <FacebookSDK/Facebook.h>
+#import "FacebookSDK.h"
 #import <Parse/Parse.h>
 
 @interface ClientSessionManager()

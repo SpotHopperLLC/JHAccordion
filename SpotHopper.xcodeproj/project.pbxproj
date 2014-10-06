@@ -3102,6 +3102,36 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
+		26150E4319E32E600063F026 /* Tables */ = {
+			isa = PBXGroup;
+			children = (
+				2668971D192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.h */,
+				2668971E192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m */,
+				2619B5DA19D222330043FD65 /* SHCollectionViewTableManager.h */,
+				2619B5DB19D222330043FD65 /* SHCollectionViewTableManager.m */,
+			);
+			name = Tables;
+			sourceTree = "<group>";
+		};
+		26150E4419E32E660063F026 /* Collections */ = {
+			isa = PBXGroup;
+			children = (
+				26689716192F2A82004FAC2D /* SHBaseCollectionViewManager.h */,
+				26689717192F2A82004FAC2D /* SHBaseCollectionViewManager.m */,
+				A6CA343419390BCF001BB23A /* SHImageModelCollectionViewManager.h */,
+				A6CA343519390BCF001BB23A /* SHImageModelCollectionViewManager.m */,
+				26C428CB192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.h */,
+				26C428CC192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m */,
+				2654B894192BB6B200A66BED /* SHSpotsCollectionViewManager.h */,
+				2654B895192BB6B200A66BED /* SHSpotsCollectionViewManager.m */,
+				2640B00D193E6C2D00978725 /* SHDrinksCollectionViewManager.h */,
+				2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */,
+				2659EEE519DDF2400056C102 /* SHCheckinCollectionViewManager.h */,
+				2659EEE619DDF2400056C102 /* SHCheckinCollectionViewManager.m */,
+			);
+			name = Collections;
+			sourceTree = "<group>";
+		};
 		2619EBBC19D37825008A31B3 /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -3240,22 +3270,8 @@
 		26C816C71926EC2D00E237F2 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				2668971D192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.h */,
-				2668971E192FCEC6004FAC2D /* SHSlidersSearchTableViewManager.m */,
-				2619B5DA19D222330043FD65 /* SHCollectionViewTableManager.h */,
-				2619B5DB19D222330043FD65 /* SHCollectionViewTableManager.m */,
-				26689716192F2A82004FAC2D /* SHBaseCollectionViewManager.h */,
-				26689717192F2A82004FAC2D /* SHBaseCollectionViewManager.m */,
-				A6CA343419390BCF001BB23A /* SHImageModelCollectionViewManager.h */,
-				A6CA343519390BCF001BB23A /* SHImageModelCollectionViewManager.m */,
-				26C428CB192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.h */,
-				26C428CC192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m */,
-				2654B894192BB6B200A66BED /* SHSpotsCollectionViewManager.h */,
-				2654B895192BB6B200A66BED /* SHSpotsCollectionViewManager.m */,
-				2640B00D193E6C2D00978725 /* SHDrinksCollectionViewManager.h */,
-				2640B00E193E6C2D00978725 /* SHDrinksCollectionViewManager.m */,
-				2659EEE519DDF2400056C102 /* SHCheckinCollectionViewManager.h */,
-				2659EEE619DDF2400056C102 /* SHCheckinCollectionViewManager.m */,
+				26150E4319E32E600063F026 /* Tables */,
+				26150E4419E32E660063F026 /* Collections */,
 			);
 			name = Managers;
 			sourceTree = "<group>";

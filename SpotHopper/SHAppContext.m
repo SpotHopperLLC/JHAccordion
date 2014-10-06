@@ -8,6 +8,23 @@
 
 #import "SHAppContext.h"
 
+#pragma mark - Class Extension
+#pragma mark -
+
+@interface SHAppContext ()
+
+@property (readwrite, strong, nonatomic) SpotListRequest *spotlistRequest;
+@property (readwrite, strong, nonatomic) DrinkListRequest *drinkListRequest;
+@property (readwrite, strong, nonatomic) SpotListModel *spotlist;
+@property (readwrite, strong, nonatomic) DrinkListModel *drinklist;
+@property (readwrite, assign, nonatomic) CLLocationCoordinate2D coordinate;
+@property (readwrite, assign, nonatomic) CLLocationDistance radius;
+
+@property (readwrite, strong, nonatomic) CLLocation *deviceLocation;
+@property (readwrite, strong, nonatomic) CheckInModel *checkin;
+
+@end
+
 @implementation SHAppContext
 
 + (instancetype)defaultInstance {
@@ -18,6 +35,15 @@
         defaultInstance = [[SHAppContext alloc] init];
     });
     return defaultInstance;
+}
+
+- (CLLocation *)mapLocation {
+    if (CLLocationCoordinate2DIsValid(self.coordinate)) {
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:self.coordinate.latitude longitude:self.coordinate.longitude];
+        return location;
+    }
+    
+    return nil;
 }
 
 - (void)changeContextToMode:(SHMode)mode specialsSpotlist:(SpotListModel *)spotlist {
@@ -47,7 +73,7 @@
     self.spotlist = nil;
 }
 
-- (void)changeCoordinate:(CLLocationCoordinate2D)coordinate andRadius:(CLLocationDistance)radius {
+- (void)changeMapCoordinate:(CLLocationCoordinate2D)coordinate andRadius:(CLLocationDistance)radius {
     self.coordinate = coordinate;
     self.radius = radius;
 }
@@ -56,13 +82,8 @@
     self.deviceLocation = deviceLocation;
 }
 
-- (CLLocation *)location {
-    if (CLLocationCoordinate2DIsValid(self.coordinate)) {
-        CLLocation *location = [[CLLocation alloc] initWithLatitude:self.coordinate.latitude longitude:self.coordinate.longitude];
-        return location;
-    }
-    
-    return nil;
+- (void)changeCheckin:(CheckInModel *)checkin {
+    self.checkin = checkin;
 }
 
 @end
