@@ -65,6 +65,9 @@
             <string>Lato-Regular</string>
             <string>Lato-Regular</string>
             <string>Lato-Regular</string>
+            <string>Lato-Regular</string>
+            <string>Lato-Regular</string>
+            <string>Lato-Regular</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -4706,11 +4709,8 @@
                                 <rect key="frame" x="0.0" y="518" width="320" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XVc-sV-xhW" userLabel="Find Similar Button">
-                                        <rect key="frame" x="10" y="10" width="120" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="K6N-Sw-T9Q"/>
-                                            <constraint firstAttribute="width" constant="120" id="MDE-gV-vfW"/>
-                                        </constraints>
+                                        <rect key="frame" x="17" y="10" width="90" height="30"/>
+                                        <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Find Similar">
                                             <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -4720,13 +4720,25 @@
                                             <action selector="similarDrinksButtonTapped:" destination="g2C-SZ-b4O" eventType="touchUpInside" id="ldG-0H-I2f"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BrE-ZR-ymI" userLabel="Review It Button">
-                                        <rect key="frame" x="190" y="10" width="120" height="30"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ElT-Ya-dxJ" userLabel="Share Drink Button">
+                                        <rect key="frame" x="115" y="10" width="90" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="d8k-Qt-ZN6"/>
-                                            <constraint firstAttribute="width" constant="120" id="lmc-fw-jyP"/>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="rVY-bg-4WT"/>
+                                            <constraint firstAttribute="height" constant="30" id="2yl-gY-GBF"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="90" id="mSA-nH-97Y"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="12"/>
+                                        <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" title="Share Drink">
+                                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="shareDrinkButtonTapped:" destination="g2C-SZ-b4O" eventType="touchUpInside" id="MvI-hC-slE"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BrE-ZR-ymI" userLabel="Review Button">
+                                        <rect key="frame" x="213" y="10" width="90" height="30"/>
+                                        <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Review It">
                                             <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -4739,11 +4751,17 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="0.90000000000000002" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="BrE-ZR-ymI" secondAttribute="trailing" constant="10" id="OOS-1y-vil"/>
-                                    <constraint firstItem="XVc-sV-xhW" firstAttribute="leading" secondItem="q0c-2k-EPb" secondAttribute="leading" constant="10" id="PIg-Z6-ozY"/>
-                                    <constraint firstItem="BrE-ZR-ymI" firstAttribute="top" secondItem="q0c-2k-EPb" secondAttribute="top" constant="10" id="Sn3-mY-JAL"/>
+                                    <constraint firstItem="BrE-ZR-ymI" firstAttribute="leading" secondItem="ElT-Ya-dxJ" secondAttribute="trailing" constant="8" id="FKY-4Y-74C"/>
+                                    <constraint firstItem="BrE-ZR-ymI" firstAttribute="width" secondItem="ElT-Ya-dxJ" secondAttribute="width" id="L5d-VT-jVG"/>
+                                    <constraint firstItem="BrE-ZR-ymI" firstAttribute="height" secondItem="ElT-Ya-dxJ" secondAttribute="height" id="N6F-58-0eY"/>
+                                    <constraint firstAttribute="centerX" secondItem="ElT-Ya-dxJ" secondAttribute="centerX" id="PPq-2E-wy3"/>
+                                    <constraint firstItem="BrE-ZR-ymI" firstAttribute="centerY" secondItem="ElT-Ya-dxJ" secondAttribute="centerY" id="Xf3-wZ-13i"/>
                                     <constraint firstAttribute="height" constant="50" id="ZZ3-KX-ThR"/>
-                                    <constraint firstItem="XVc-sV-xhW" firstAttribute="top" secondItem="q0c-2k-EPb" secondAttribute="top" constant="10" id="oN6-vc-nXk"/>
+                                    <constraint firstItem="ElT-Ya-dxJ" firstAttribute="height" secondItem="XVc-sV-xhW" secondAttribute="height" id="cTY-9h-5Mt"/>
+                                    <constraint firstItem="ElT-Ya-dxJ" firstAttribute="leading" secondItem="XVc-sV-xhW" secondAttribute="trailing" constant="8" id="dso-wG-xAJ"/>
+                                    <constraint firstItem="ElT-Ya-dxJ" firstAttribute="width" secondItem="XVc-sV-xhW" secondAttribute="width" id="vrB-xf-sXM"/>
+                                    <constraint firstItem="ElT-Ya-dxJ" firstAttribute="centerY" secondItem="XVc-sV-xhW" secondAttribute="centerY" id="wkn-dr-Zvr"/>
+                                    <constraint firstItem="ElT-Ya-dxJ" firstAttribute="top" secondItem="q0c-2k-EPb" secondAttribute="top" constant="10" id="zh6-9P-eyW"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -4765,6 +4783,7 @@
                     <connections>
                         <outlet property="imageModelCollectionViewManager" destination="MoW-va-KOf" id="3lZ-YE-fFk"/>
                         <outlet property="reviewItButton" destination="BrE-ZR-ymI" id="icN-ig-cbj"/>
+                        <outlet property="shareDrinkButton" destination="ElT-Ya-dxJ" id="3fU-uT-qWT"/>
                         <outlet property="similarDrinksButton" destination="XVc-sV-xhW" id="cfP-OJ-7y3"/>
                         <outlet property="tableView" destination="CY5-tV-GxO" id="7sa-SS-CcZ"/>
                         <outlet property="topShadowImageView" destination="c7S-i7-0th" id="gub-5L-d3P"/>
@@ -4801,7 +4820,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Ags-6p-98d"/>
-        <segue reference="m5e-QT-orl"/>
+        <segue reference="bf7-dq-aod"/>
+        <segue reference="JUZ-1I-e8k"/>
     </inferredMetricsTieBreakers>
 </document>

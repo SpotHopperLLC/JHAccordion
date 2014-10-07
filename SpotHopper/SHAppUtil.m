@@ -22,6 +22,7 @@
 #import "Tracker+Events.h"
 #import "Tracker+People.h"
 
+#import <FacebookSDK/FacebookSDK.h>
 
 @implementation SHAppUtil
 
@@ -174,6 +175,69 @@
         
         [vc presentViewController:activityView animated:YES completion:nil];
     }];
+}
+
+#pragma mark - Facebook
+#pragma mark -
+
+- (void)ensureFacebookGrantedPermissions:(NSArray *)permissionsNeeded withCompletionBlock:(void (^)(BOOL success, NSError *error))completionBlock {
+    if (!completionBlock) {
+        return;
+    }
+    
+//    if ([FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound) {
+    
+    if (![[FBSession activeSession] isOpen]) {
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"FBSession is not active"};
+        NSError *error = [NSError errorWithDomain:@"Facebook" code:400 userInfo:userInfo];
+        completionBlock(FALSE, error);
+        return;
+    }
+    
+    // Request the permissions the user currently has
+    [FBRequestConnection startWithGraphPath:@"/me/permissions"
+                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                              if (!error) {
+                                  NSArray *results = (NSArray *)[result data];
+                                  NSDictionary *currentPermissions = results[0];
+                                  NSMutableArray *requestPermissions = @[].mutableCopy;
+                                  
+                                  // Check if all the permissions we need are present in the user's current permissions
+                                  // If they are not present add them to the permissions to be requested
+                                  for (NSString *permission in permissionsNeeded) {
+                                      if (![currentPermissions objectForKey:permission]) {
+                                          [requestPermissions addObject:permission];
+                                      }
+                                  }
+                                  
+                                  // If we have permissions to request
+                                  if ([requestPermissions count] > 0) {
+                                      // Ask for the missing permissions
+                                      [FBSession.activeSession requestNewPublishPermissions:requestPermissions
+                                                                            defaultAudience:FBSessionDefaultAudienceFriends
+                                                                          completionHandler:^(FBSession *session, NSError *error) {
+                                                                              if (!error) {
+                                                                                  // Permission granted, we can request the user information
+                                                                                  completionBlock(TRUE, nil);
+                                                                              }
+                                                                              else {
+                                                                                  // An error occurred, handle the error
+                                                                                  // See our Handling Errors guide: https://developers.facebook.com/docs/ios/errors/
+                                                                                  completionBlock(FALSE, error);
+                                                                              }
+                                                                          }];
+                                  }
+                                  else {
+                                      // Permissions are present, we can request the user information
+                                      completionBlock(TRUE, nil);
+                                  }
+                              }
+                              else {
+                                  // There was an error requesting the permission information
+                                  // See our Handling Errors guide: https://developers.facebook.com/docs/ios/errors/
+                                  completionBlock(FALSE, error);
+                              }
+                          }];
 }
 
 #pragma mark - Text Height

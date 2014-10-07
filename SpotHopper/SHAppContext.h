@@ -24,8 +24,9 @@
 @property (readonly, nonatomic) DrinkListRequest *drinkListRequest;
 @property (readonly, nonatomic) SpotListModel *spotlist;
 @property (readonly, nonatomic) DrinkListModel *drinklist;
-@property (readonly, nonatomic) CLLocationCoordinate2D coordinate;
+@property (readonly, nonatomic) CLLocationCoordinate2D mapCoordinate;
 @property (readonly, nonatomic) CLLocationDistance radius;
+@property (readonly, nonatomic) CGFloat radiusInMiles;
 
 @property (readonly, nonatomic) CLLocation *mapLocation;
 

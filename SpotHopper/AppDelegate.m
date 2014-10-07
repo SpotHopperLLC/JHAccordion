@@ -13,6 +13,7 @@
 
 #import "SHNavigationBar.h"
 #import "SHAppConfiguration.h"
+#import "SHAppUtil.h"
 
 #import "ClientSessionManager.h"
 #import "SHModelResourceManager.h"
@@ -115,6 +116,15 @@
     // Open Facebook active session
     [self facebookAuth:NO success:^(FBSession *session) {
         NSLog(@"We have an active FB session");
+        
+        [[SHAppUtil defaultInstance] ensureFacebookGrantedPermissions:@[] withCompletionBlock:^(BOOL success, NSError *error) {
+            if (error) {
+                DebugLog(@"Error: %@", error);
+            }
+            else {
+                DebugLog(@"success: %@", success ? @"YES" : @"NO");
+            }
+        }];
     } failure:^(FBSessionState state, NSError *error) {
         NSLog(@"We DON'T have an active FB session");
         [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
@@ -290,7 +300,7 @@
         return;
     }
     
-    if ([[FBSession activeSession] isOpen] == YES) {
+    if ([[FBSession activeSession] isOpen]) {
         successHandler([FBSession activeSession]);
         return;
     }
@@ -315,13 +325,13 @@
                     if (error) {
                         failureHandler(state, error);
                     }
+                    MAAssert(FALSE, @"State not handled");
                     break;
             }
-            
         }];
     }
     else {
-        [FBSession openActiveSessionWithPublishPermissions:@[@"publish_actions"] defaultAudience:FBSessionDefaultAudienceFriends allowLoginUI:NO completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
+        if (![FBSession openActiveSessionWithPublishPermissions:@[@"publish_actions"] defaultAudience:FBSessionDefaultAudienceFriends allowLoginUI:NO completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
             switch (state) {
                 case FBSessionStateOpen:
                     successHandler(session);
@@ -337,11 +347,20 @@
                     if (error) {
                         failureHandler(state, error);
                     }
+                    MAAssert(FALSE, @"State not handled");
                     break;
             }
-        }];
+        }]) {
+            if ([[FBSession activeSession] isOpen]) {
+                successHandler([FBSession activeSession]);
+            }
+            else {
+                NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"FBSession is not active"};
+                NSError *error = [NSError errorWithDomain:@"Facebook" code:400 userInfo:userInfo];
+                failureHandler([[FBSession activeSession] state], error);
+            }
+        }
     }
-    
 }
 
 #pragma mark - Twitter Connect

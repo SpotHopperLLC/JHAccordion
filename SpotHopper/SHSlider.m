@@ -50,6 +50,7 @@ double getValue(double min, double max, double currentPercentage) {
 
 @property (nonatomic, weak) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, weak) UIPanGestureRecognizer *panGestureRecognizer;
+@property (nonatomic, weak) UILongPressGestureRecognizer *longPressGestureRecognizer;
 
 @end
 
@@ -83,12 +84,15 @@ double getValue(double min, double max, double currentPercentage) {
     // add the tap and pan gestures for the added behavior
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sliderGestureRecognized:)];
     UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(sliderGestureRecognized:)];
+    UILongPressGestureRecognizer *longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureRecognized:)];
     tapGestureRecognizer.delegate = self;
     panGestureRecognizer.delegate = self;
-    slider.gestureRecognizers = @[tapGestureRecognizer, panGestureRecognizer];
+    longPressGestureRecognizer.delegate = self;
+    slider.gestureRecognizers = @[tapGestureRecognizer, panGestureRecognizer, longPressGestureRecognizer];
     
     // ensure the built-in gestures fire the delegate callbacks
     [self addTarget:self action:@selector(valueChanged:) forControlEvents:UIControlEventValueChanged];
+    [self addTarget:self action:@selector(touchUpInside:) forControlEvents:UIControlEventTouchUpInside];
     [self addTarget:self action:@selector(touchUpInside:) forControlEvents:UIControlEventTouchUpInside];
     
     self.tapGestureRecognizer = tapGestureRecognizer;
@@ -181,6 +185,11 @@ double getValue(double min, double max, double currentPercentage) {
     }
 }
 
+- (IBAction)longPressGestureRecognized:(UIGestureRecognizer *)recognizer {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    [self reportValueDidReset];
+}
+
 - (void)valueChanged:(id)sender {
     [self reportValueDidChange];
 }
@@ -207,6 +216,17 @@ double getValue(double min, double max, double currentPercentage) {
     if ([self.delegate respondsToSelector:@selector(slider:valueDidFinishChanging:)]) {
         self.selectedValue = self.value;
         [self.delegate slider:self valueDidFinishChanging:self.value];
+    }
+}
+
+- (void)reportValueDidReset {
+    self.value = 0.5;
+    self.sliderModel.value = nil;
+    self.userMoved = FALSE;
+    
+    if ([self.delegate respondsToSelector:@selector(sliderValueDidReset:)]) {
+        self.selectedValue = self.value;
+        [self.delegate sliderValueDidReset:self];
     }
 }
 

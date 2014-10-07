@@ -329,8 +329,7 @@
     else {
         // assemble params internally to encapsulate implementation details
         
-        CGFloat miles = request.radius / kMetersPerMile;
-        NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
+        NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, request.radius), kMinRadiusFloat)];
         
         NSDictionary *params = @{
                                  kSpotModelParamPage : @1,
@@ -339,6 +338,8 @@
                                  kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:request.coordinate.longitude],
                                  kSpotModelParamQueryRadius : radiusParam
                                  };
+        
+        DebugLog(@"params: %@", params);
         
         [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"/api/drinks/%ld/spots", (long)[self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             

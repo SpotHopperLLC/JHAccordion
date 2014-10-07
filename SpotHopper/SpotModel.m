@@ -466,7 +466,7 @@
     components = [calendar components:units fromDate:[NSDate date]];
     NSString *cutOffTime = [NSString stringWithFormat:@"%02li:%02li", (long)components.hour, (long)components.minute];
     
-    CGFloat miles = radius / kMetersPerMile;
+    CGFloat radiusInMiles = radius / kMetersPerMile;
     
     /*
      * Searches spots for specials
@@ -479,7 +479,7 @@
                              kSpotModelParamQueryDayOfWeek : [NSNumber numberWithInteger:weekday],
                              kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:coordinate.latitude],
                              kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:coordinate.longitude],
-                             kSpotModelParamQueryRadius : [NSNumber numberWithFloat:miles],
+                             kSpotModelParamQueryRadius : [NSNumber numberWithFloat:radiusInMiles],
                              @"cut_off_time" : cutOffTime
                              };
     
@@ -580,9 +580,7 @@
     }
     
     if (radius) {
-    
-    CGFloat miles = radius / kMetersPerMile;
-        params[kSpotModelParamQueryRadius] = [NSNumber numberWithFloat:miles];
+        params[kSpotModelParamQueryRadius] = [NSNumber numberWithFloat:radius];
     }
 
     [[ClientSessionManager sharedClient] GET:@"/api/spots" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {

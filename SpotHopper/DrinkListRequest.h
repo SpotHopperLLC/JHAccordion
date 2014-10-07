@@ -18,7 +18,7 @@
 @property (assign, nonatomic, getter = isBasedOnSliders) BOOL basedOnSliders;
 @property (assign, nonatomic, getter = isTransient) BOOL transient;
 @property (assign, nonatomic) CLLocationCoordinate2D coordinate;
-@property (assign, nonatomic) CLLocationDistance radius;
+@property (assign, nonatomic) CGFloat radius; // miles
 @property (strong, nonatomic) NSArray *sliders;
 @property (strong, nonatomic) NSNumber *drinkId;
 @property (strong, nonatomic) NSNumber *drinkTypeId;

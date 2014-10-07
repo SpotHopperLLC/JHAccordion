@@ -8,6 +8,8 @@
 
 #import "SHAppContext.h"
 
+#define kMetersPerMile 1609.344
+
 #pragma mark - Class Extension
 #pragma mark -
 
@@ -17,7 +19,7 @@
 @property (readwrite, strong, nonatomic) DrinkListRequest *drinkListRequest;
 @property (readwrite, strong, nonatomic) SpotListModel *spotlist;
 @property (readwrite, strong, nonatomic) DrinkListModel *drinklist;
-@property (readwrite, assign, nonatomic) CLLocationCoordinate2D coordinate;
+@property (readwrite, assign, nonatomic) CLLocationCoordinate2D mapCoordinate;
 @property (readwrite, assign, nonatomic) CLLocationDistance radius;
 
 @property (readwrite, strong, nonatomic) CLLocation *deviceLocation;
@@ -38,12 +40,16 @@
 }
 
 - (CLLocation *)mapLocation {
-    if (CLLocationCoordinate2DIsValid(self.coordinate)) {
-        CLLocation *location = [[CLLocation alloc] initWithLatitude:self.coordinate.latitude longitude:self.coordinate.longitude];
+    if (CLLocationCoordinate2DIsValid(self.mapCoordinate)) {
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:self.mapCoordinate.latitude longitude:self.mapCoordinate.longitude];
         return location;
     }
     
     return nil;
+}
+
+- (CGFloat)radiusInMiles {
+    return self.radius / kMetersPerMile;
 }
 
 - (void)changeContextToMode:(SHMode)mode specialsSpotlist:(SpotListModel *)spotlist {
@@ -73,8 +79,8 @@
     self.spotlist = nil;
 }
 
-- (void)changeMapCoordinate:(CLLocationCoordinate2D)coordinate andRadius:(CLLocationDistance)radius {
-    self.coordinate = coordinate;
+- (void)changeMapCoordinate:(CLLocationCoordinate2D)mapCoordinate andRadius:(CLLocationDistance)radius {
+    self.mapCoordinate = mapCoordinate;
     self.radius = radius;
 }
 

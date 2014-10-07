@@ -148,7 +148,6 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
 }
 
 - (void)placeInMapView:(MKMapView *)mapView insideAnnotationView:(MKAnnotationView *)annotationView {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
     [SpotCalloutView removeCalloutViewFromAnnotationView:annotationView];
     
     self.mapView = mapView;
@@ -184,7 +183,6 @@ NSString * const SpotCalloutViewIdentifier = @"SpotCalloutView";
 }
 
 - (void)adjustHeightWithIntrinsicSize {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
     [self setNeedsLayout];
     [self layoutIfNeeded];
     

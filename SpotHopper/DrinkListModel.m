@@ -446,7 +446,7 @@
         params[kDrinkListModelParamLongitude] = [NSNumber numberWithFloat:request.coordinate.longitude];
     }
     
-    CGFloat miles = request.radius / kMetersPerMile;
+    CGFloat miles = request.radius;
     NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
     params[kDrinkListModelParamRadius] = radiusParam;
     
@@ -665,8 +665,7 @@
         params[@"lng"] = [NSNumber numberWithFloat:request.coordinate.longitude];
     }
     
-    CGFloat miles = request.radius / kMetersPerMile;
-    NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
+    NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, request.radius), kMinRadiusFloat)];
     params[kDrinkListModelParamRadius] = radiusParam;
     
     [[ClientSessionManager sharedClient] GET:@"/api/drink_lists/highest_rated" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {

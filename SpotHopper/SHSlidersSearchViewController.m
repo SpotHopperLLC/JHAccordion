@@ -282,6 +282,10 @@
     }
 }
 
+- (void)slidersSearchTableViewManagerDidClearSliders:(SHSlidersSearchTableViewManager *)manager {
+    [self hideSearchButton:TRUE withCompletionBlock:nil];
+}
+
 - (void)slidersSearchTableViewManagerDidSelectHighestRated:(SHSlidersSearchTableViewManager *)manager {
     DebugLog(@"%@", NSStringFromSelector(_cmd));
     

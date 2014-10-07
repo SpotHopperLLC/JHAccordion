@@ -47,6 +47,7 @@
 @optional
 
 - (void)slidersSearchTableViewManagerDidChangeSlider:(SHSlidersSearchTableViewManager *)manager;
+- (void)slidersSearchTableViewManagerDidClearSliders:(SHSlidersSearchTableViewManager *)manager;
 
 - (void)slidersSearchTableViewManagerDidSelectHighestRated:(SHSlidersSearchTableViewManager *)manager;
 

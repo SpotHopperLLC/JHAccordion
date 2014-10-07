@@ -25,6 +25,11 @@
 
 - (void)shareCheckin:(CheckInModel *)checkin withViewController:(UIViewController *)vc;
 
+#pragma mark - Facebook
+#pragma mark -
+
+- (void)ensureFacebookGrantedPermissions:(NSArray *)permissionsNeeded withCompletionBlock:(void (^)(BOOL success, NSError *error))completionBlock;
+
 #pragma mark - Text Height
 #pragma mark -
 

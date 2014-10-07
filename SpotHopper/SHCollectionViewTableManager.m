@@ -754,8 +754,8 @@ typedef enum {
     
     DrinkListRequest *request = [[DrinkListRequest alloc] init];
     request.name = @"Highest Rated";
-    request.coordinate = [[SHAppContext defaultInstance] coordinate];
-    request.radius = [[SHAppContext defaultInstance] radius];
+    request.coordinate = [[SHAppContext defaultInstance] mapCoordinate];
+    request.radius = [[SHAppContext defaultInstance] radiusInMiles];
     request.drinkTypeId = self.spot.preferredDrinkType.ID;
     request.transient = TRUE;
     request.spotId = self.spot.ID;

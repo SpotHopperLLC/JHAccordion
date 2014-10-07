@@ -225,6 +225,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 @property (readonly, nonatomic) MKCoordinateRegion visibleMapRegion;
 @property (readonly, nonatomic) CLLocationCoordinate2D visibleMapCenterCoordinate;
 @property (readonly, nonatomic) CLLocationDistance searchRadius;
+@property (readonly, nonatomic) CGFloat searchRadiusInMiles;
 
 @property (readonly, nonatomic) BOOL isSearchTextFieldVisible;
 
@@ -871,6 +872,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)showSlidersSearch:(BOOL)animated forMode:(SHMode)mode withCompletionBlock:(void (^)())completionBlock {
     [self.slidersSearchViewController viewWillAppear:animated];
     
+    [[SHAppContext defaultInstance] changeMapCoordinate:self.visibleMapCenterCoordinate andRadius:self.searchRadius];
+    
     _isShowingSearchView = TRUE;
     
     [self prepareBlurredScreen];
@@ -965,7 +968,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     // set the label
     UIFont *font = [UIFont fontWithName:@"Lato-Regular" size:self.areYouHerePromptLabel.font.pointSize];
     NSString *name = spot.name;
-    NSString *text = [NSString stringWithFormat:@"Are you at %@?", name];
+    NSString *text = [NSString stringWithFormat:@"Limit results to %@?", name];
     [self.areYouHerePromptLabel setText:text withFont:font onString:name];
     
     self.areYouHerePromptView.hidden = FALSE;
@@ -1512,15 +1515,16 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)promptUserToCheckIn {
     if (!self.isScopedToSpot && self.drinkListRequest) {
         // prompt the user to select the nearest spot with a 1 hour period between prompts
-        NSTimeInterval seconds = 5000.0f;
-        if (self.lastAreYouHerePrompt) {
-            seconds = [[NSDate date] timeIntervalSinceDate:self.lastAreYouHerePrompt];
-        }
+        NSTimeInterval seconds =  [[NSDate date] timeIntervalSinceDate:self.lastAreYouHerePrompt ? self.lastAreYouHerePrompt : [NSDate distantPast]];
+        NSTimeInterval checkinSeconds = [[NSDate date] timeIntervalSinceDate:self.checkin.createdAt ? self.checkin.createdAt : [NSDate distantPast]];
 
         // 20 minutes between prompts (does not account for last spot user selected)
         if (seconds > 1200) {
-            [self refreshCurrentLocationForAccuracy:kCLLocationAccuracyNearestTenMeters withCompletionBlock:^(NSError *error) {
-                [self fetchNearbySpotsAtLocation:self.currentLocation withCompletionBlock:^(NSArray *spots) {
+            if (self.checkin && checkinSeconds < 1200) {
+                [self showAreYouHerePromptForSpot:self.checkin.spot animated:TRUE withCompletionBlock:nil];
+            }
+            else if (self.mapView.userLocation) {
+                [self fetchNearbySpotsAtLocation:self.mapView.userLocation.location withCompletionBlock:^(NSArray *spots) {
                     self.nearbySpots = spots;
                     
                     SpotModel *nearestSpot = self.nearbySpots[0];
@@ -1535,7 +1539,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                         request.drinkListId = nil;
                         request.spotId = nearestSpot.ID;
                         request.coordinate = self.visibleMapCenterCoordinate;
-                        request.radius = self.searchRadius;
+                        request.radius = self.searchRadiusInMiles;
                         
                         [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
                             if (!_isMapOverlayExpanded && !self.isScopedToSpot && drinkListModel.drinks.count) {
@@ -1545,7 +1549,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                         } failure:nil];
                     }
                 }];
-            }];
+            }
         }
     }
 }
@@ -1706,6 +1710,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)displayCheckin:(CheckInModel *)checkin atSpot:(SpotModel *)spot {
     DebugLog(@"%@", NSStringFromSelector(_cmd));
     
+    [self descope];
+    [self resetSearch];
     self.mode = SHModeCheckin;
     self.checkin = checkin;
     [self updateNavigationItemTitle:checkin.spot.name];
@@ -1757,7 +1763,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     DrinkListRequest *request = [[DrinkListRequest alloc] init];
     request.drinkId = drink.ID;
     request.coordinate = self.visibleMapCenterCoordinate;
-    request.radius = self.searchRadius;
+    request.radius = self.searchRadiusInMiles;
     self.drinkListRequest = request;
     
     if (!self.homeNavigationViewController.view.hidden) {
@@ -2372,6 +2378,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     return radius;
 }
 
+- (CGFloat)searchRadiusInMiles {
+    return self.searchRadius / kMetersPerMile;
+}
+
 - (void)restoreNormalNavigationItems:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
     UIBarButtonItem *searchBarButtonItem = nil;
     
@@ -2495,6 +2505,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)searchAgainWithCompletionBlock:(void (^)())completionBlock {
+    [[SHAppContext defaultInstance] changeMapCoordinate:self.visibleMapCenterCoordinate andRadius:self.searchRadius];
+    
     if (self.mode == SHModeSpecials) {
         [self fetchSpecialsWithCompletionBlock:completionBlock];
     }
@@ -2502,7 +2514,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         DrinkListRequest *request = [self.drinkListRequest copy];
         request.spotId = nil;
         request.coordinate = self.visibleMapCenterCoordinate;
-        request.radius = self.searchRadius;
+        request.radius = self.searchRadiusInMiles;
 
         if (!self.drinkListModel.ID && [@"Highest Rated" isEqualToString:request.name]) {
             [DrinkListModel fetchHighestRatedDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
@@ -2557,7 +2569,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     else if (self.spotListRequest) {
         SpotListRequest *request = [self.spotListRequest copy];
         request.coordinate = self.visibleMapCenterCoordinate;
-        request.radius = self.searchRadius;
+        request.radius = self.searchRadiusInMiles;
         
         if (!self.spotListModel.ID && self.selectedSpot) {
             [self displaySingleSpot:self.selectedSpot];
@@ -2934,7 +2946,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             DrinkListRequest *request = [[DrinkListRequest alloc] init];
             request.name = name;
             request.coordinate = self.visibleMapCenterCoordinate;
-            request.radius = self.searchRadius;
+            request.radius = self.searchRadiusInMiles;
             request.sliders = drinkModel.averageReview.sliders;
             request.drinkId = drinkModel.ID;
             request.drinkTypeId = drinkModel.drinkType.ID;
@@ -2977,7 +2989,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             SpotListRequest *request = [[SpotListRequest alloc] init];
             request.name = [NSString stringWithFormat:@"Similar to %@", spotModel.name];
             request.coordinate = self.visibleMapCenterCoordinate;
-            request.radius = self.searchRadius;
+            request.radius = self.searchRadiusInMiles;
             request.sliders = spotModel.averageReview.sliders;
             request.spotId = spotModel.ID;
             request.spotTypeId = spotModel.spotType.ID;

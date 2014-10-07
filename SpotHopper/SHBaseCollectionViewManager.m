@@ -113,12 +113,8 @@
 #pragma mark -
 
 - (IBAction)panGestureRecognized:(UIPanGestureRecognizer *)gestureRecognizer {
-    //LOG_FRAME(@"primary", self.primaryView.frame);
-    
     CGPoint point = [gestureRecognizer locationInView:self.primaryView];
     CGFloat adjustedY = point.y - _panGestureStartingPoint.y;
-    
-    //DebugLog(@"adjustedY: %f", adjustedY);
     
 //    if (adjustedY < 0.0f) {
         switch (gestureRecognizer.state) {
