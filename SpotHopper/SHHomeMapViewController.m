@@ -1710,6 +1710,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)displayCheckin:(CheckInModel *)checkin atSpot:(SpotModel *)spot {
     DebugLog(@"%@", NSStringFromSelector(_cmd));
     
+    self.lastAreYouHerePrompt = nil;
     [self descope];
     [self resetSearch];
     self.mode = SHModeCheckin;
