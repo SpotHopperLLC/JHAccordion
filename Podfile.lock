@@ -37,7 +37,7 @@ PODS:
   - BlocksKit/UIKit (2.2.5):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
-  - Bolts (1.1.2)
+  - Bolts (1.1.3)
   - CrashlyticsFramework (2.2.4)
   - Facebook-iOS-SDK (3.19.0):
     - Bolts (~> 1.0)
@@ -47,10 +47,9 @@ PODS:
   - JSONAPI (0.2.0)
   - JTSReachability (1.1.0)
   - MBProgressHUD (0.8)
-  - Mixpanel (2.5.3)
-  - Parse-iOS-SDK (1.2.21):
-    - Bolts
-    - Facebook-iOS-SDK (~> 3.7)
+  - Mixpanel (2.5.4)
+  - Parse (1.4.1):
+    - Bolts (~> 1.1.2)
   - PhotoZoom (0.0.2)
   - Promises (0.1.2)
   - Reveal-iOS-SDK (1.0.5)
@@ -73,7 +72,7 @@ DEPENDENCIES:
   - JTSReachability (from `http://github.com/brennanMKE/JTSReachability.git`, tag `1.1.0`)
   - MBProgressHUD (~> 0.8.0)
   - Mixpanel (~> 2.5)
-  - Parse-iOS-SDK (~> 1.2.19)
+  - Parse (~> 1.4)
   - PhotoZoom (~> 0.0)
   - Promises (from `http://github.com/joshdholtz/ios-promises.git`)
   - Reveal-iOS-SDK
@@ -107,7 +106,7 @@ SPEC CHECKSUMS:
   AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
   BitlyForiOS: c603f7266069455b532b60ca6cccd4fb8ac4050c
   BlocksKit: 4439e7f30a9f90743462ca63545a15c1f4304cef
-  Bolts: 2635e8698a630774689441047f3465d78c48d485
+  Bolts: 3db0a875235e0c9042b013af13af0f00f79b102c
   CrashlyticsFramework: 0c28a2c07a51b7691e6668b83824b0b0be77f307
   Facebook-iOS-SDK: cb7d74759d0b1ba546e6e6f1dde407b0d4e448d6
   JHAccordion: 4f0337990465b25f8de5ed304609fa9362281db0
@@ -116,8 +115,8 @@ SPEC CHECKSUMS:
   JSONAPI: cb581ae10fb26b0d5b421ebe1a447946772c0115
   JTSReachability: 68c4706858c216b24097242d9880ff52e4749dd3
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
-  Mixpanel: 708ec9a6ee6e741f7db107831e18b2fc2e7531f1
-  Parse-iOS-SDK: 3781eeb56fa6b30d4feee97ee0d22595c07d6c70
+  Mixpanel: 87167a0b0a74f11f0ee3787f291357494730617c
+  Parse: db1a09c832b7509edcc88a65dc07229f5e578c73
   PhotoZoom: 52b044c8086589e85415718402df6c4b5f411cb1
   Promises: c9d4e849f307a53b1b8714c64ff4b6e8695b24e1
   Reveal-iOS-SDK: d4b2f4c20d5b823b7f8b88250fe1b71cecd424a7
@@ -127,4 +126,4 @@ SPEC CHECKSUMS:
   UIImage+BlurredFrame: 0c38f5760d72125c47d16001a88faaac573bd35d
   UIView-Autolayout: 7c05eb666738eba682f686c2da236578177e2ebb
 
-COCOAPODS: 0.34.1
+COCOAPODS: 0.34.2

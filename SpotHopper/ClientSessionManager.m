@@ -21,10 +21,12 @@
 
 #import "ClientSessionManager.h"
 
+#import "SHAppConfiguration.h"
+#import "SHAppUtil.h"
+
 #import "UserModel.h"
 #import "Tracker.h"
 #import "SHNotifications.h"
-#import "SHAppConfiguration.h"
 
 #import "JTSReachabilityResponder.h"
 
@@ -422,8 +424,9 @@
         default:
             break;
     }
-
-    NSString *contentLength = response.allHeaderFields[@"Content-Length"];
+    
+    NSString *contentLength = [NSString stringWithFormat:@"%li", (long)response.expectedContentLength];
+    
     if (!contentLength.length) {
         contentLength = @"0";
     }
@@ -493,12 +496,7 @@
     [self.requestSerializer setValue:cookie forHTTPHeaderField:@"Cookie"];
     [self setCurrentUser:user];
     
-    if ([SHAppConfiguration parseApplicationID].length) {
-        PFInstallation *currentInstallation = [PFInstallation currentInstallation];
-        [currentInstallation addUniqueObject:[NSString stringWithFormat:@"user-%@", self.currentUser.ID] forKey:@"channels"];
-        [currentInstallation saveInBackground];
-    }
-    
+    [[SHAppUtil defaultInstance] updateParse];
     [SHNotifications userDidLoginIn];
 }
 

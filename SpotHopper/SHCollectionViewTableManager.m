@@ -760,7 +760,7 @@ typedef enum {
     request.transient = TRUE;
     request.spotId = self.spot.ID;
     
-    [DrinkListModel fetchHighestRatedDrinkListWithRequest:request success:^(DrinkListModel *drinklist) {
+    [DrinkListModel fetchHighestRatedDrinkListWithRequest:request pageSize:3 success:^(DrinkListModel *drinklist) {
         self.highestRatedDrinklist = drinklist;
         
         if (!drinklist.drinks.count) {

@@ -12,7 +12,7 @@
 
 #import "SHModelResourceManager.h"
 
-@class SpotModel, ErrorModel;
+@class SpotModel, ImageModel, ErrorModel;
 
 @interface SpecialModel : SHJSONAPIResource
 
@@ -22,6 +22,7 @@
 @property (copy, nonatomic) NSString *startTimeString;
 @property (assign, nonatomic) NSTimeInterval duration; // seconds
 @property (strong, nonatomic) SpotModel *spot;
+@property (strong, nonatomic) NSArray *images;
 
 @property (assign, nonatomic) BOOL userLikesSpecial;
 

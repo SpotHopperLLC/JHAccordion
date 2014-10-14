@@ -640,6 +640,11 @@
 }
 
 + (void)fetchHighestRatedDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinklist))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    [self fetchHighestRatedDrinkListWithRequest:request pageSize:10 success:successBlock failure:failureBlock];
+}
+
++ (void)fetchHighestRatedDrinkListWithRequest:(DrinkListRequest *)request pageSize:(NSUInteger)pageSize success:(void (^)(DrinkListModel *drinklist))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+
     // get cached drinklist if spotId is defined
     if (request.spotId) {
         NSString *key = [NSString stringWithFormat:@"HighestRatedDrinklistForSpot-%@-DrinkType-%@", request.spotId, request.drinkTypeId];
@@ -651,7 +656,7 @@
     
     NSMutableDictionary *params = @{
                                     kSpotModelParamPage : @1,
-                                    kSpotModelParamsPageSize : @10,
+                                    kSpotModelParamsPageSize : [NSNumber numberWithInteger:pageSize],
                                     @"name" : request.name,
                                     @"drink_id" : request.drinkId ? request.drinkId : [NSNull null],
                                     @"drink_type_id" : request.drinkTypeId ? request.drinkTypeId : [NSNull null],
@@ -717,10 +722,14 @@
 }
 
 + (Promise *)fetchHighestRatedDrinkListWithRequest:(DrinkListRequest *)request {
+    return [self fetchHighestRatedDrinkListWithRequest:request];
+}
+
++ (Promise *)fetchHighestRatedDrinkListWithRequest:(DrinkListRequest *)request pageSize:(NSUInteger)pageSize {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
-    [self fetchHighestRatedDrinkListWithRequest:request success:^(DrinkListModel *drinklist) {
+    [self fetchHighestRatedDrinkListWithRequest:request pageSize:pageSize success:^(DrinkListModel *drinklist) {
         // Resolves promise
         [deferred resolveWith:drinklist];
     } failure:^(ErrorModel *errorModel) {

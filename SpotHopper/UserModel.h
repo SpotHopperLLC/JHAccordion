@@ -14,6 +14,7 @@
 #define kUserModelParamName @"name"
 #define kUserModelParamGender @"gender"
 #define kUserModelParamBirthday @"birthday"
+#define kUserModelParamSettings @"settings"
 #define kUserModelParamLatitude @"latitude"
 #define kUserModelParamLongitude @"longitude"
 #define kUserModelParamFacebookAccessToken @"facebook_access_token"
@@ -33,14 +34,14 @@
 
 @interface UserModel : SHJSONAPIResource
 
-@property (nonatomic, strong, readonly) NSString *email;
-@property (nonatomic, strong, readonly) NSString *role;
-@property (nonatomic, strong, readonly) NSString *name;
-@property (nonatomic, strong, readonly) NSString *facebookId;
-@property (nonatomic, strong, readonly) NSString *twitterId;
-@property (nonatomic, strong, readonly) NSDate *birthday;
-@property (nonatomic, strong, readonly) NSDictionary *settings;
-@property (nonatomic, strong, readonly) NSString *gender;
+@property (nonatomic, strong) NSString *email;
+@property (nonatomic, strong) NSString *role;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *facebookId;
+@property (nonatomic, strong) NSString *twitterId;
+@property (nonatomic, strong) NSDate *birthday;
+@property (nonatomic, strong) NSDictionary *settings;
+@property (nonatomic, strong) NSString *gender;
 
 + (Promise*)registerUser:(NSDictionary*)params success:(void(^)(UserModel *userModel, NSHTTPURLResponse *response))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 + (Promise*)loginUser:(NSDictionary*)params success:(void(^)(UserModel *userModel, NSHTTPURLResponse *response))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
@@ -60,5 +61,8 @@
 
 + (BOOL)isLoggedIn;
 + (UserModel *)currentUser;
+
++ (void)updateUser:(UserModel *)user success:(void(^)(UserModel *updatedUser))successBlock failure:(void(^)(ErrorModel* errorModel))failureBlock;
++ (Promise *)updateUser:(UserModel *)user;
 
 @end

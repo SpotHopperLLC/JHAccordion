@@ -413,6 +413,51 @@
     return user;
 }
 
++ (void)updateUser:(UserModel *)user success:(void(^)(UserModel *updatedUser))successBlock failure:(void(^)(ErrorModel* errorModel))failureBlock {
+    if (!successBlock || !failureBlock) {
+        return;
+    }
+    
+    NSDictionary *params  = @{
+                                 kUserModelParamName : user.name.length ? user.name : @"",
+                                 kUserModelParamEmail : user.email.length ? user.email : @"",
+                                 kUserModelParamBirthday : user.birthday ? user.birthday : [NSNull null],
+                                 kUserModelParamGender : user.gender.length ? user.gender : [NSNull null],
+                                 kUserModelParamSettings : user.settings ? user.settings : @{}
+                              };
+    
+    [[ClientSessionManager sharedClient] PUT:[NSString stringWithFormat:@"/api/users/%ld", (long)[user.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            successBlock(nil);
+        }
+        else if (operation.response.statusCode == 200) {
+            UserModel *userModel = [jsonApi resourceForKey:@"users"];
+            successBlock(userModel);
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+        }
+    }];
+}
+
++ (Promise *)updateUser:(UserModel *)user {
+    Deferred *deferred = [Deferred deferred];
+    
+    [self updateUser:user success:^(UserModel *updatedUser) {
+        // Resolves promise
+        [deferred resolveWith:updatedUser];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+
+    return deferred.promise;
+}
+
 #pragma mark - Mapping
 
 - (NSDictionary *)mapKeysToProperties {

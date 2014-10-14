@@ -9,6 +9,7 @@
 #import "SHAppUtil.h"
 
 #import "SHAppConfiguration.h"
+#import "ClientSessionManager.h"
 
 #import "SpotModel.h"
 #import "SpecialModel.h"
@@ -23,6 +24,7 @@
 #import "Tracker+People.h"
 
 #import <FacebookSDK/FacebookSDK.h>
+#import <Parse/Parse.h>
 
 @implementation SHAppUtil
 
@@ -177,6 +179,62 @@
     }];
 }
 
+#pragma mark - Parse
+#pragma mark -
+
+- (void)updateParse {
+    if ([UserModel isLoggedIn] && [SHAppConfiguration parseApplicationID].length) {
+        PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+        UserModel *currentUser = [UserModel currentUser];
+        [currentInstallation addUniqueObject:[NSString stringWithFormat:@"user-%@", currentUser.ID] forKey:@"channels"];
+        [currentInstallation addUniqueObject:currentUser.ID ? currentUser.ID : [NSNull null] forKey:@"spotHopperUserId"];
+        [currentInstallation addUniqueObject:currentUser.email.length ? currentUser.email : [NSNull null] forKey:@"email"];
+        [currentInstallation saveInBackground];
+        
+        // Value for currentUser is now always due to [PFUser enableAutomaticUser]
+        PFUser *parseUser = [PFUser currentUser];
+        [parseUser setObject:currentUser.ID forKey:@"spotHopperUserId"];
+        [parseUser setObject:currentUser.email.length ? currentUser.email : [NSNull null] forKey:@"email"];
+        [parseUser saveInBackground];
+        
+//        PFQuery *query = [PFUser query];
+//        [query whereKey:@"spotHopperUserId" equalTo:currentUser.ID];
+//        [query includeKey:@"sessionToken"];
+//        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//            PFUser *parseUser = [PFUser currentUser];
+//            
+//            if (!error && objects.count) {
+//                // become user
+//                PFUser *existingUser = objects.firstObject;
+//                DebugLog(@"current: %@", parseUser.sessionToken);
+//                DebugLog(@"existing: %@", existingUser.sessionToken);
+//                if (existingUser.sessionToken.length && ![parseUser.username isEqualToString:existingUser.username]) {
+//                    [PFUser becomeInBackground:existingUser.sessionToken block:^(PFUser *user, NSError *error) {
+//                        if (error) {
+//                            DebugLog(@"Error: %@", error);
+//                        }
+//                        else {
+//                            DebugLog(@"user: %@", user[@"spotHopperUserId"]);
+//                        }
+//                    }];
+//                }
+//                else {
+//                    [parseUser setObject:currentUser.ID forKey:@"spotHopperUserId"];
+//                    [parseUser setObject:currentUser.email.length ? currentUser.email : [NSNull null] forKey:@"email"];
+//                    [parseUser saveInBackground];
+//                }
+//            }
+//            else {
+//                // Value for currentUser is now always due to [PFUser enableAutomaticUser]
+//                [parseUser setObject:currentUser.ID forKey:@"spotHopperUserId"];
+//                [parseUser setObject:currentUser.email.length ? currentUser.email : [NSNull null] forKey:@"email"];
+//                [parseUser saveInBackground];
+//            }
+//        }];
+        
+    }
+}
+
 #pragma mark - Facebook
 #pragma mark -
 
@@ -238,6 +296,103 @@
                                   completionBlock(FALSE, error);
                               }
                           }];
+}
+
+- (void)fetchFacebookDetailsWithCompletionBlock:(void (^)(BOOL success, NSError *error))completionBlock {
+    if (!completionBlock) {
+        return;
+    }
+    
+    if ([[FBSession activeSession] isOpen]) {
+        NSArray *permissions = [[FBSession activeSession] permissions];
+        if ([permissions containsObject:@"public_profile"]) {
+            // TODO: fetch public profile details to store on UserModel, Parse and Mixpanel
+            
+            [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                if (!error) {
+                    // Success! Include your code to handle the results here
+                    NSLog(@"user info: %@", result);
+                    
+                    if ([result isKindOfClass:[NSDictionary class]]) {
+                        NSDictionary *dict = (NSDictionary *)result;
+                        NSString *name = dict[@"name"];
+                        NSString *email = dict[@"email"];
+                        NSString *gender = dict[@"gender"];
+
+                        UserModel *user = [[ClientSessionManager sharedClient] currentUser];
+                        
+                        if (name.length && !user.name.length) {
+                            user.name = name;
+                        }
+                        if (email.length && !user.email.length) {
+                            user.email = email;
+                        }
+                        if (gender.length && !user.gender.length) {
+                            user.gender = gender;
+                        }
+
+                        // Note: Settings are not currently supported by the backend
+                        
+                        [UserModel updateUser:user success:^(UserModel *updatedUser) {
+                            DebugLog(@"updatedUser: %@", updatedUser);
+                        } failure:^(ErrorModel *errorModel) {
+                            DebugLog(@"Error: %@", errorModel);
+                        }];
+                        
+                        PFUser *parseUser = [PFUser currentUser];
+                        
+                        if (parseUser) {
+                            NSString *className = @"FacebookUserProfile";
+                            PFQuery *query = [PFQuery queryWithClassName:className];
+                            [query whereKey:@"user" equalTo:parseUser];
+                            
+                            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                                if (!error) {
+                                    PFObject *facebookUserProfile = objects.firstObject;
+                                    if (!facebookUserProfile) {
+                                        facebookUserProfile = [[PFObject alloc] initWithClassName:className];
+                                    }
+                                    
+                                    for (NSString *key in dict.allKeys) {
+                                        facebookUserProfile[key] = dict[key];
+                                    }
+                                    
+                                    PFACL *acl = [PFACL ACL];
+                                    [acl setWriteAccess:TRUE forUser:parseUser];
+                                    [facebookUserProfile setACL:acl];
+                                    
+                                    [facebookUserProfile saveInBackground];
+                                }
+                            }];
+                        }
+                    }
+                    
+//                    birthday = "10/22/1975";
+//                    email = "offwhite@gmail.com";
+//                    "first_name" = Brennan;
+//                    gender = male;
+//                    id = 10152111225878359;
+//                    "last_name" = Stehling;
+//                    link = "https://www.facebook.com/app_scoped_user_id/10152111225878359/";
+//                    locale = "en_US";
+//                    name = "Brennan Stehling";
+//                    timezone = "-5";
+//                    "updated_time" = "2014-08-29T17:24:00+0000";
+//                    verified = 1;
+                    
+                }
+                else {
+                    // An error occurred, we need to handle the error
+                    // See: https://developers.facebook.com/docs/ios/errors   
+                }
+            }];
+            
+        }
+        
+        if ([permissions containsObject:@"user_friends"]) {
+            // TODO: fetch user friends to store on UserModel, Parse and Mixpanel
+        }
+    }
 }
 
 #pragma mark - Text Height

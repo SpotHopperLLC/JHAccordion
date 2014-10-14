@@ -395,7 +395,10 @@
 
 + (void)trackTotalContentLength {
     NSUInteger totalContentLength = [[ClientSessionManager sharedClient] totalContentLength];
-    [self track:@"Total Content Length" properties:@{@"Content Length" : [NSNumber numberWithUnsignedLong:totalContentLength]}];
+    [self track:@"Total Content Length" properties:@{
+                                                     @"Bytes" : [NSNumber numberWithUnsignedLong:totalContentLength],
+                                                     @"KB" : [NSNumber numberWithUnsignedLong:totalContentLength / 1024],
+                                                     @"MB" : [NSNumber numberWithUnsignedLong:totalContentLength / 1024 / 1024]}];
     [[ClientSessionManager sharedClient] resetContentLength];
 }
 

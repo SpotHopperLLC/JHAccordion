@@ -32,7 +32,7 @@
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
-	SpotListRequest *copy = [[[self class] alloc] init];
+	SpotListRequest *copy = [[[self class] allocWithZone:zone] init];
     
     copy.spotListId = self.spotListId;
     copy.name = self.name;

@@ -11,6 +11,7 @@
 #import "ClientSessionManager.h"
 #import "ErrorModel.h"
 #import "SpotModel.h"
+#import "ImageModel.h"
 
 #import "Tracker.h"
 
@@ -35,8 +36,9 @@
              @"like_count" : @"likeCount",
              @"start_time" : @"startTimeString",
              @"duration_minutes" : @"TimeInterval:duration",
-             @"links.spot" : @"spot"
-            };
+             @"links.spot" : @"spot",
+             @"links.images" : @"images"
+             };
 }
 
 #pragma mark - Calculated Getters

@@ -255,7 +255,8 @@
             [self showAlert:@"Oops" message:errorModel.human];
             [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
         }];
-    } else {
+    }
+    else {
         [self notLoggedIn];
     }
     

@@ -62,11 +62,21 @@
         [Parse setApplicationId:[SHAppConfiguration parseApplicationID]
                       clientKey:[SHAppConfiguration parseClientKey]];
         [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+        [PFUser enableAutomaticUser];
     }
     
     // Prompts user for permission to send notifications
-    UIRemoteNotificationType types = UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound;
-    [application registerForRemoteNotificationTypes:types];
+    if ([application respondsToSelector:@selector(registerForRemoteNotifications)] && [application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+        [application registerForRemoteNotifications];
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIRemoteNotificationTypeBadge
+                                                                                             |UIRemoteNotificationTypeSound
+                                                                                             |UIRemoteNotificationTypeAlert) categories:nil];
+        [application registerUserNotificationSettings:settings];
+    }
+    else {
+        UIRemoteNotificationType types = UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound;
+        [application registerForRemoteNotificationTypes:types];
+    }
     
     if ([SHAppConfiguration isCrashlyticsEnabled]) {
         NSString *crashlyticsKey = [SHAppConfiguration crashlyticsKey];
@@ -113,18 +123,9 @@
     // Initializes cookie for network calls
     [[ClientSessionManager sharedClient] isLoggedIn];
     
-    // Open Facebook active session
+    // Open Facebook active session (handler is never called when facebookAuth is NO)
     [self facebookAuth:NO success:^(FBSession *session) {
         NSLog(@"We have an active FB session");
-        
-        [[SHAppUtil defaultInstance] ensureFacebookGrantedPermissions:@[] withCompletionBlock:^(BOOL success, NSError *error) {
-            if (error) {
-                DebugLog(@"Error: %@", error);
-            }
-            else {
-                DebugLog(@"success: %@", success ? @"YES" : @"NO");
-            }
-        }];
     } failure:^(FBSessionState state, NSError *error) {
         NSLog(@"We DON'T have an active FB session");
         [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
@@ -198,12 +199,24 @@
     }
 }
 
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+}
+
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler {
+    DebugLog(@"%@, %@, %@", NSStringFromSelector(_cmd), identifier, userInfo);
+    
+    // TODO review for iOS 8 changes to Push Notifications
+}
+
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     // Store the deviceToken in the current Installation and save it to Parse.
     if ([SHAppConfiguration parseApplicationID].length) {
         PFInstallation *currentInstallation = [PFInstallation currentInstallation];
         [currentInstallation setDeviceTokenFromData:deviceToken];
         [currentInstallation saveInBackground];
+        
+        [[SHAppUtil defaultInstance] updateParse];
     }
 
     // prepare Mixpanel to send notifications to this device
@@ -233,7 +246,6 @@
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
     [Tracker trackTotalContentLength];
-    
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -302,6 +314,13 @@
     
     if ([[FBSession activeSession] isOpen]) {
         successHandler([FBSession activeSession]);
+        
+        [[SHAppUtil defaultInstance] fetchFacebookDetailsWithCompletionBlock:^(BOOL success, NSError *error) {
+            if (error) {
+                DebugLog(@"Error: %@", error);
+                [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+            }
+        }];
         return;
     }
     
@@ -353,6 +372,12 @@
         }]) {
             if ([[FBSession activeSession] isOpen]) {
                 successHandler([FBSession activeSession]);
+                [[SHAppUtil defaultInstance] fetchFacebookDetailsWithCompletionBlock:^(BOOL success, NSError *error) {
+                    if (error) {
+                        DebugLog(@"Error: %@", error);
+                        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+                    }
+                }];
             }
             else {
                 NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"FBSession is not active"};

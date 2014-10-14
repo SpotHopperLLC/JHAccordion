@@ -276,26 +276,30 @@
     
     SpecialModel *special = [spot specialForToday];
     UIImageView *spotImageView = (UIImageView *)[headerView viewWithTag:kSpecialCellSpotImageView];
-    
-    NSAssert([spotImageView isKindOfClass:[UIImageView class]], @"Image View is expected");
-    
     spotImageView.image = nil;
-    ImageModel *highlightImage = spot.highlightImage;
     
-    if (highlightImage) {
-        __weak UIImageView *weakImageView = spotImageView;
-        [ImageUtil loadImage:highlightImage placeholderImage:spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
-            weakImageView.image = thumbImage;
-        } withFullImageBlock:^(UIImage *fullImage) {
-            weakImageView.image = fullImage;
-        } withErrorBlock:^(NSError *error) {
-            weakImageView.image = spot.placeholderImage;
-            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
-        }];
-    }
-    else {
-        spotImageView.image = spot.placeholderImage;
-    }
+    [SpecialModel fetchSpecial:special success:^(SpecialModel *fetchedSpecial) {
+        NSAssert([spotImageView isKindOfClass:[UIImageView class]], @"Image View is expected");
+        
+        ImageModel *highlightImage = fetchedSpecial.images.count ? fetchedSpecial.images.firstObject : spot.highlightImage;
+        
+        if (highlightImage) {
+            __weak UIImageView *weakImageView = spotImageView;
+            [ImageUtil loadImage:highlightImage placeholderImage:spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
+                weakImageView.image = thumbImage;
+            } withFullImageBlock:^(UIImage *fullImage) {
+                weakImageView.image = fullImage;
+            } withErrorBlock:^(NSError *error) {
+                weakImageView.image = spot.placeholderImage;
+                [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+            }];
+        }
+        else {
+            spotImageView.image = spot.placeholderImage;
+        }
+    } failure:^(ErrorModel *errorModel) {
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+    }];
     
     UILabel *nameLabel = [self labelInView:headerView withTag:kSpecialCellSpotNameLabel];
     UILabel *timeLabel = [self labelInView:headerView withTag:kSpecialCellTimeLabel];

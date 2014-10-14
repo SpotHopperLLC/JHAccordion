@@ -9,6 +9,8 @@
 #import "LaunchViewController.h"
 
 #import "AppDelegate.h"
+#import "SHAppConfiguration.h"
+#import "SHAppUtil.h"
 
 #import "UIViewController+Navigator.h"
 #import "ClientSessionManager.h"
@@ -272,6 +274,13 @@
                                  kUserModelParamFacebookAccessToken: [[[FBSession activeSession] accessTokenData] accessToken]
                                  };
         [Tracker trackLoggingInWithFacebook];
+        
+        [[SHAppUtil defaultInstance] fetchFacebookDetailsWithCompletionBlock:^(BOOL success, NSError *error) {
+            if (error) {
+                DebugLog(@"Error: %@", error);
+                [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+            }
+        }];
         
         [self doLoginOperation:params];
     } else {
