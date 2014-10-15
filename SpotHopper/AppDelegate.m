@@ -34,6 +34,7 @@
 #import "UserState.h"
 
 #import "SHStyleKit.h"
+#import "SSTURLShortener.h"
 
 #import "Crashlytics.h"
 
@@ -171,17 +172,21 @@
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    BFURL *parsedUrl = [BFURL URLWithURL:url];
-    
-    NSString *fullURLString = parsedUrl.targetURL.absoluteString;
     NSInteger maximumExpectedLength = 2048;
+    if (!url.absoluteString.length || url.absoluteString.length > maximumExpectedLength) {
+        // The URL is longer than we expect. Stop servicing it.
+        return NO;
+    }
+    
+    BFURL *parsedUrl = [BFURL URLWithURL:url];
+    NSString *fullURLString = parsedUrl.targetURL.absoluteString;
     
     if (!fullURLString.length || fullURLString.length > maximumExpectedLength) {
         // The URL is longer than we expect. Stop servicing it.
         return NO;
     }
     
-    if ([self isURLSchemePrefixForURLString:fullURLString] || [fullURLString hasPrefix:[SHAppConfiguration websiteUrl]]) {
+    if ([self isShortenedURL:fullURLString] || [self isURLSchemePrefixForURLString:fullURLString] || [fullURLString hasPrefix:[SHAppConfiguration websiteUrl]]) {
         self.openedURL = parsedUrl.targetURL;
         if (parsedUrl.appLinkReferer.sourceURL) {
             self.sourceURL = parsedUrl.appLinkReferer.sourceURL;
@@ -189,9 +194,22 @@
         
         NSURL *targetURL = parsedUrl.targetURL;
         NSURL *sourceURL = parsedUrl.appLinkReferer.sourceURL;
-        [Tracker trackDeepLinkWithTargetURL:targetURL sourceURL:sourceURL sourceApplication:sourceApplication];
+
+        // if the targetURL is a shortened URL then expand it first
+        if ([self isShortenedURL:targetURL.absoluteString]) {
+            [SSTURLShortener expandURL:targetURL username:[SHAppConfiguration bitlyUsername] apiKey:[SHAppConfiguration bitlyAPIKey] withCompletionBlock:^(NSURL *expandedURL, NSError *error) {
+                if (!error) {
+                    self.openedURL = expandedURL;
+                    [Tracker trackDeepLinkWithTargetURL:expandedURL sourceURL:sourceURL sourceApplication:sourceApplication];
+                    [SHNotifications appOpenedWithURL:expandedURL];
+                }
+            }];
+        }
+        else {
+            [Tracker trackDeepLinkWithTargetURL:targetURL sourceURL:sourceURL sourceApplication:sourceApplication];
+            [SHNotifications appOpenedWithURL:targetURL];
+        }
         
-        [SHNotifications appOpenedWithURL:url];
         return YES;
     }
     else {
@@ -267,6 +285,11 @@
 }
 
 #pragma mark - Private
+
+- (BOOL)isShortenedURL:(NSString *)urlString {
+    NSString *bitlyShortURL = [SHAppConfiguration bitlyShortURL];
+    return [urlString hasPrefix:bitlyShortURL];
+}
 
 - (BOOL)isURLSchemePrefixForURLString:(NSString *)urlString {
     NSArray *urlTypes = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"];

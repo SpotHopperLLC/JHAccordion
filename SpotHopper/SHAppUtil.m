@@ -194,8 +194,11 @@
         // Value for currentUser is now always due to [PFUser enableAutomaticUser]
         PFUser *parseUser = [PFUser currentUser];
         [parseUser setObject:currentUser.ID forKey:@"spotHopperUserId"];
-        [parseUser setObject:currentUser.email.length ? currentUser.email : [NSNull null] forKey:@"email"];
+        [parseUser setObject:currentUser.email.length ? currentUser.email : [NSNull null] forKey:@"spotHopperEmail"];
         [parseUser saveInBackground];
+        
+        // The following code will require fetching the session token for the fetched user in order to use becomeInBackground
+        // Right now it the session token is not returned when the PFUser is fetched by spoerHoperUserId
         
 //        PFQuery *query = [PFUser query];
 //        [query whereKey:@"spotHopperUserId" equalTo:currentUser.ID];

@@ -3152,16 +3152,38 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [CheckInModel checkInAtSpot:spot success:^(CheckInModel *checkin) {
         [self hideCheckin:TRUE withCompletionBlock:^{
             [self displayCheckin:checkin atSpot:spot];
+            [[SHAppContext defaultInstance] endActivity:@"Checkin"];
         }];
     } failure:^(ErrorModel *errorModel) {
         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
 }
 
+- (void)checkNetworkReachabilityWithCompletionBlock:(void (^)())completionBlock {
+    if (![[JTSReachabilityResponder sharedInstance] isReachable]) {
+        [self showAlert:@"Oops" message:@"Sorry, the network is not currently accessible."];
+    }
+    else if (completionBlock) {
+        completionBlock();
+    }
+}
+
+- (void)checkLocationWithCompletionBlock:(void (^)())completionBlock {
+    if (!_isValidLocation) {
+        // prompt user to chooser their location manually
+        
+        [self pickLocation];
+    }
+    else if (completionBlock) {
+        completionBlock();
+    }
+}
+
 #pragma mark - Processing Search Results
 #pragma mark -
 
 - (void)processSpecialsSpotlist:(SpotListModel *)spotlist {
+    [[SHAppContext defaultInstance] endActivity:@"Search Specials"];
     [Tracker trackDrinkSpecials:spotlist];
 
     if (!spotlist.spots.count) {
@@ -3203,6 +3225,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)processSpotlistModel:(SpotListModel *)spotlistModel withRequest:(SpotListRequest *)request {
     [Tracker trackSpotlist:spotlistModel request:request];
+    [[SHAppContext defaultInstance] endActivity:@"Search Spots"];
     
     if (!spotlistModel.spots.count) {
         [Tracker trackNoSpotResults];
@@ -3247,19 +3270,24 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)processDrinklistModel:(DrinkListModel *)drinklistModel withRequest:(DrinkListRequest *)request forMode:(SHMode)mode {
     [Tracker trackDrinklist:drinklistModel mode:mode request:request];
     
+    
+    
     if (!drinklistModel.drinks.count) {
         switch (mode) {
             case SHModeBeer:
                 [Tracker trackNoBeerResults];
                 [Tracker trackUserNoBeerResults];
+                [[SHAppContext defaultInstance] endActivity:@"Search Beers"];
                 break;
             case SHModeCocktail:
                 [Tracker trackNoCocktailResults];
                 [Tracker trackUserNoCocktailResults];
+                [[SHAppContext defaultInstance] endActivity:@"Search Wines"];
                 break;
             case SHModeWine:
                 [Tracker trackNoWineResults];
                 [Tracker trackUserNoWineResults];
+                [[SHAppContext defaultInstance] endActivity:@"Search Cocktails"];
                 break;
                 
             default:
@@ -3407,26 +3435,66 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     DebugLog(@"%@", NSStringFromSelector(_cmd));
     
     [Tracker trackCheckinButtonTapped];
+    [[SHAppContext defaultInstance] startActivity:@"Checkin"];
     [self showCheckin:TRUE withCompletionBlock:nil];
 }
 
 - (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc spotsButtonTapped:(id)sender {
+    [[SHAppContext defaultInstance] startActivity:@"Search Spots"];
     [self searchForMode:SHModeSpots];
 }
 
 - (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc specialsButtonTapped:(id)sender {
+    [[SHAppContext defaultInstance] startActivity:@"Search Specials"];
     [self searchForMode:SHModeSpecials];
 }
 
 - (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc beersButtonTapped:(id)sender {
+    [[SHAppContext defaultInstance] startActivity:@"Search Beers"];
     [self searchForMode:SHModeBeer];
 }
 
 - (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc cocktailsButtonTapped:(id)sender {
+    [[SHAppContext defaultInstance] startActivity:@"Search Cocktails"];
     [self searchForMode:SHModeCocktail];
 }
 
 - (void)homeNavigationViewController:(SHHomeNavigationViewController *)vc winesButtonTapped:(id)sender {
+    [[SHAppContext defaultInstance] startActivity:@"Search Wines"];
+    [self searchForMode:SHModeWine];
+}
+
+#pragma mark - SHMapFooterNavigationDelegate
+#pragma mark -
+
+- (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc checkInButtonTapped:(id)sender {
+    [Tracker trackCheckinButtonTapped];
+    [[SHAppContext defaultInstance] startActivity:@"Checkin"];
+    [self showCheckin:TRUE withCompletionBlock:nil];
+}
+
+- (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc spotsButtonTapped:(id)sender {
+    [[SHAppContext defaultInstance] startActivity:@"Search Spots"];
+    [self searchForMode:SHModeSpots];
+}
+
+- (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc specialsButtonTapped:(id)sender {
+    [[SHAppContext defaultInstance] startActivity:@"Search Specials"];
+    [self searchForMode:SHModeSpecials];
+}
+
+- (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc beersButtonTapped:(id)sender {
+    [[SHAppContext defaultInstance] startActivity:@"Search Beers"];
+    [self searchForMode:SHModeBeer];
+}
+
+- (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc cocktailsButtonTapped:(id)sender {
+    [[SHAppContext defaultInstance] startActivity:@"Search Cocktails"];
+    [self searchForMode:SHModeCocktail];
+}
+
+- (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc winesButtonTapped:(id)sender {
+    [[SHAppContext defaultInstance] startActivity:@"Search Wines"];
     [self searchForMode:SHModeWine];
 }
 
@@ -3579,56 +3647,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             [self pullDown:TRUE withCompletionBlock:nil];
         }
     }
-}
-
-#pragma mark - SHMapFooterNavigationDelegate
-#pragma mark -
-
-- (void)checkNetworkReachabilityWithCompletionBlock:(void (^)())completionBlock {
-    if (![[JTSReachabilityResponder sharedInstance] isReachable]) {
-        [self showAlert:@"Oops" message:@"Sorry, the network is not currently accessible."];
-    }
-    else if (completionBlock) {
-        completionBlock();
-    }
-}
-
-- (void)checkLocationWithCompletionBlock:(void (^)())completionBlock {
-    if (!_isValidLocation) {
-        // prompt user to chooser their location manually
-
-        [self pickLocation];
-    }
-    else if (completionBlock) {
-        completionBlock();
-    }
-}
-
-- (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc checkInButtonTapped:(id)sender {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
-    
-    [Tracker trackCheckinButtonTapped];
-    [self showCheckin:TRUE withCompletionBlock:nil];
-}
-
-- (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc spotsButtonTapped:(id)sender {
-    [self searchForMode:SHModeSpots];
-}
-
-- (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc specialsButtonTapped:(id)sender {
-    [self searchForMode:SHModeSpecials];
-}
-
-- (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc beersButtonTapped:(id)sender {
-    [self searchForMode:SHModeBeer];
-}
-
-- (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc cocktailsButtonTapped:(id)sender {
-    [self searchForMode:SHModeCocktail];
-}
-
-- (void)footerNavigationViewController:(SHMapFooterNavigationViewController *)vc winesButtonTapped:(id)sender {
-    [self searchForMode:SHModeWine];
 }
 
 #pragma mark - SHSlidersSearchDelegate
@@ -3850,6 +3868,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 #pragma mark -
 
 - (void)checkInViewControllerCancelButtonTapped:(SHCheckinViewController *)vc {
+    [[SHAppContext defaultInstance] endActivity:@"Checkin"];
     [Tracker trackCheckinCancelButtonTapped];
     [self hideCheckin:TRUE withCompletionBlock:nil];
 }

@@ -8,6 +8,8 @@
 
 #import "SHAppContext.h"
 
+#import "Tracker+Events.h"
+
 #define kMetersPerMile 1609.344
 
 #pragma mark - Class Extension
@@ -24,6 +26,9 @@
 
 @property (readwrite, strong, nonatomic) CLLocation *deviceLocation;
 @property (readwrite, strong, nonatomic) CheckInModel *checkin;
+
+@property (readwrite, strong, nonatomic) NSString *activityName;
+@property (readwrite, strong, nonatomic) NSDate *activityStartDate;
 
 @end
 
@@ -90,6 +95,24 @@
 
 - (void)changeCheckin:(CheckInModel *)checkin {
     self.checkin = checkin;
+}
+
+- (void)startActivity:(NSString *)activityName {
+    DebugLog(@"%@ - %@", NSStringFromSelector(_cmd), activityName);
+    self.activityName = activityName;
+    self.activityStartDate = [NSDate date];
+}
+
+- (void)endActivity:(NSString *)activityName {
+    DebugLog(@"%@ - %@", NSStringFromSelector(_cmd), activityName);
+    if ([activityName isEqualToString:self.activityName]) {
+        NSTimeInterval duration = ABS([self.activityStartDate timeIntervalSinceNow]);
+        [Tracker trackActivity:activityName duration:duration];
+
+        // reset
+        self.activityName = nil;
+        self.activityStartDate = nil;
+    }
 }
 
 @end

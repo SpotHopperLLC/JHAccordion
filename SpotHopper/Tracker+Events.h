@@ -22,6 +22,11 @@
 
 + (void)trackSpotProfileScreenViewed:(SpotModel *)spot;
 
+#pragma mark - Activities
+#pragma mark -
+
++ (void)trackActivity:(NSString *)activityName duration:(NSTimeInterval)duration;
+
 #pragma mark - Global Search
 #pragma mark -
 

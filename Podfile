@@ -1,5 +1,5 @@
 
-platform :ios, '7.0'
+platform :ios, '7.1'
 
 source 'https://github.com/CocoaPods/Specs.git'
 
@@ -8,7 +8,7 @@ def import_pods
     # Networking
     pod 'AFNetworking', '~> 2.4'
     pod 'JSONAPI', :git => 'https://github.com/SpotHopperLLC/jsonapi-ios.git', :tag => 'SpotHopper-v2'
-    pod 'BitlyForiOS', :git => 'https://github.com/brennanMKE/BitlyForiOS.git', :tag => '1.0.0'
+    pod 'BitlyForiOS', :git => 'https://github.com/brennanMKE/BitlyForiOS.git', :tag => '1.1.0'
 
     # Helpers
     pod 'Promises', :git => 'http://github.com/joshdholtz/ios-promises.git'

@@ -33,6 +33,9 @@
 @property (readonly, nonatomic) CLLocation *deviceLocation;
 @property (readonly, nonatomic) CheckInModel *checkin;
 
+@property (readonly, nonatomic) NSString *activityName;
+@property (readonly, nonatomic) NSDate *activityStartDate;
+
 + (instancetype)defaultInstance;
 
 - (void)changeContextToMode:(SHMode)mode specialsSpotlist:(SpotListModel *)spotlist;
@@ -46,5 +49,9 @@
 - (void)changeDeviceLocation:(CLLocation *)deviceLocation;
 
 - (void)changeCheckin:(CheckInModel *)checkin;
+
+- (void)startActivity:(NSString *)activityName;
+
+- (void)endActivity:(NSString *)activityName;
 
 @end

@@ -61,6 +61,17 @@
                                                                     }];
 }
 
+#pragma mark - Activities
+#pragma mark -
+
++ (void)trackActivity:(NSString *)activityName duration:(NSTimeInterval)duration {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    [self track:@"Activity" properties:@{
+                                         @"Name" : activityName.length ? activityName : @"NULL",
+                                         @"Duration" : [NSNumber numberWithFloat:duration]
+                                         }];
+}
+
 #pragma mark - Global Search
 #pragma mark -
 
