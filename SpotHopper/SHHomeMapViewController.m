@@ -4110,6 +4110,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     if (seconds > kResetCooldownPeriodInSeconds) {
         [self resetView];
     }
+    
+    if (!self.mapView.showsUserLocation) {
+        [self repositionOnCurrentDeviceLocation:TRUE];
+    }
 }
 
 - (void)handleGoToHomeMapNotification:(NSNotification *)notification {
