@@ -1894,6 +1894,7 @@
 		2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotListRequest.m; sourceTree = "<group>"; };
 		268C8CA0190089D00011E0F8 /* UserState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserState.h; sourceTree = "<group>"; };
 		268C8CA1190089D00011E0F8 /* UserState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserState.m; sourceTree = "<group>"; };
+		268E0F4319F55DB7005C46C7 /* Brookfield.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Brookfield.gpx; sourceTree = "<group>"; };
 		2690EB72199901220026DC52 /* SHPlacemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHPlacemark.h; sourceTree = "<group>"; };
 		2690EB73199901220026DC52 /* SHPlacemark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHPlacemark.m; sourceTree = "<group>"; };
 		2691C4B619AFE411006F720C /* LocationChooserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationChooserViewController.h; sourceTree = "<group>"; };
@@ -3297,6 +3298,7 @@
 				26F0FDE318EB1B18001BB0CD /* New York.gpx */,
 				26F0FDE418EB1B18001BB0CD /* San Francisco.gpx */,
 				261323F719DCA2B900E051DB /* Gainesville.gpx */,
+				268E0F4319F55DB7005C46C7 /* Brookfield.gpx */,
 			);
 			path = Locations;
 			sourceTree = SOURCE_ROOT;
@@ -5444,8 +5446,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"PRODUCTION=1",
-					NS_BLOCK_ASSERTIONS,
-					NDEBUG,
+					"NS_BLOCK_ASSERTIONS=1",
+					"NDEBUG=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperProduction-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
@@ -5545,8 +5547,8 @@
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					NS_BLOCK_ASSERTIONS,
-					NDEBUG,
+					"NS_BLOCK_ASSERTIONS=1",
+					"NDEBUG=1",
 					"STAGING=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/SpotHopper/SpotHopperStaging-Info.plist";

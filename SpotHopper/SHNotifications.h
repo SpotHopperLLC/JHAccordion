@@ -8,6 +8,7 @@
 
 #import "DrinkListRequest.h"
 #import "SpotListRequest.h"
+#import "SpecialModel.h"
 #import "DrinkModel.h"
 #import "SpotModel.h"
 #import "CheckInModel.h"

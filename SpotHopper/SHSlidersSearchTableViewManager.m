@@ -84,7 +84,7 @@
 
 #define kHighestRatedName @"Highest Rated"
 
-#define kCustomSlidersTitle @"Skip"
+#define kCustomSlidersTitle @"Custom Search"
 
 #pragma mark - Class Extension
 #pragma mark -

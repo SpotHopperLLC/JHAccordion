@@ -353,7 +353,7 @@
     NSString *source = sourceURL.host.length ? sourceURL.host : sourceURL.scheme.length ? sourceURL.scheme : @"NULL";
 
     [self trackUserAction:@"User Deep Link"];
-    [self trackLocationPropertiesForEvent:@"Deep Link" properties:@{@"Target Path" : targetPath, @"Source" : source, @"Source Application" : sourceApplication }];
+    [self trackLocationPropertiesForEvent:@"Deep Link" properties:@{@"Target Path" : targetPath, @"Source" : source, @"Source Application" : sourceApplication.length ? sourceApplication : @"NULL" }];
 }
 
 + (void)trackUserTappedLocationPickerButton {

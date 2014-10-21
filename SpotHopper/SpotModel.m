@@ -451,6 +451,8 @@
 
 + (void)fetchSpecialsSpotlistForCoordinate:(CLLocationCoordinate2D)coordinate radius:(CLLocationDistance)radius success:(void(^)(SpotListModel *spotlist))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
     
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
     // adjust time back 4 hours to help handle the midnight boundary
     NSTimeInterval fourHoursAgo = 60 * 60 * 4 * -1;
     NSDate *offsetTime = [[NSDate date] dateByAddingTimeInterval:fourHoursAgo];

@@ -72,7 +72,7 @@
     Deferred *deferred = [Deferred deferred];
     
     // Logs current user out
-    [[ClientSessionManager sharedClient] logout];
+    //[[ClientSessionManager sharedClient] logout];
     
     [[ClientSessionManager sharedClient] POST:@"/api/sessions" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -414,20 +414,25 @@
 }
 
 + (void)updateUser:(UserModel *)user success:(void(^)(UserModel *updatedUser))successBlock failure:(void(^)(ErrorModel* errorModel))failureBlock {
-    if (!successBlock || !failureBlock) {
+    if (!user || !successBlock || !failureBlock) {
         return;
     }
     
-    NSDictionary *params  = @{
+    NSMutableDictionary *params  = @{
                                  kUserModelParamName : user.name.length ? user.name : @"",
                                  kUserModelParamEmail : user.email.length ? user.email : @"",
-                                 kUserModelParamBirthday : user.birthday ? user.birthday : [NSNull null],
-                                 kUserModelParamGender : user.gender.length ? user.gender : [NSNull null],
-                                 kUserModelParamSettings : user.settings ? user.settings : @{}
-                              };
+                                 kUserModelParamGender : user.gender.length ? user.gender : [NSNull null]
+                              }.mutableCopy;
+
+    if (user.birthday) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        [params setObject:[dateFormatter stringFromDate:user.birthday] forKey:kUserModelParamBirthday];
+    }
     
-    [[ClientSessionManager sharedClient] PUT:[NSString stringWithFormat:@"/api/users/%ld", (long)[user.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
+    NSString *URLString = [NSString stringWithFormat:@"/api/users/%ld", (long)[user.ID integerValue]];
+    
+    [[ClientSessionManager sharedClient] PUT:URLString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
@@ -441,6 +446,13 @@
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
             failureBlock(errorModel);
         }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DebugLog(@"Error: %@", error);
+        ErrorModel *errorModel = [[ErrorModel alloc] init];
+        errorModel.error = error.localizedDescription;
+        errorModel.human = error.localizedDescription;
+        failureBlock(errorModel);
     }];
 }
 
@@ -485,8 +497,7 @@
                                                                                     @"role" : self.role != nil ? self.role : @"",
                                                                                     @"name" : self.name != nil ? self.name : @"",
                                                                                     @"facebook_id" : self.facebookId != nil ? self.facebookId : @"",
-                                                                                    @"twitter_id" : self.twitterId != nil ? self.twitterId : @"",
-                                                                                    @"birthday" : self.birthday != nil ? self.birthday : @""
+                                                                                    @"twitter_id" : self.twitterId != nil ? self.twitterId : @""
                                                                                     } options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding];
 }
 

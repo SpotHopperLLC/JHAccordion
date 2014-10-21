@@ -54,7 +54,7 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-//    [[ClientSessionManager sharedClient] setHasSeenLaunch:NO];
+    [SHModelResourceManager prepareResources];
 
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
@@ -92,7 +92,22 @@
         }
     }
     
-    [SHModelResourceManager prepareResources];
+    FBSessionTokenCachingStrategy *cachingStrategy = [FBSessionTokenCachingStrategy defaultInstance];
+    if ([FBSessionTokenCachingStrategy isValidTokenInformation:[cachingStrategy fetchTokenInformation]]) {
+        [FBSession openActiveSessionWithAllowLoginUI:NO];
+    }
+    
+    if ([[FBSession activeSession] isOpen]) {
+        [[SHAppUtil defaultInstance] fetchFacebookDetailsWithCompletionBlock:^(BOOL success, NSError *error) {
+            if (error) {
+                DebugLog(@"Error: %@", error);
+                [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+            }
+        }];
+    }
+    else {
+        DebugLog(@"Facebook session is not active");
+    }
     
 #ifndef NDEBUG
     
@@ -123,14 +138,6 @@
     
     // Initializes cookie for network calls
     [[ClientSessionManager sharedClient] isLoggedIn];
-    
-    // Open Facebook active session (handler is never called when facebookAuth is NO)
-    [self facebookAuth:NO success:^(FBSession *session) {
-        NSLog(@"We have an active FB session");
-    } failure:^(FBSessionState state, NSError *error) {
-        NSLog(@"We DON'T have an active FB session");
-        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
-    }];
     
     if ([SHAppConfiguration isTrackingEnabled]) {
         NSString *token = [SHAppConfiguration mixpanelToken];
@@ -167,6 +174,11 @@
             }];
         }];
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleFacebookSessionDidBecomeOpenActiveSessionNotification:)
+                                                 name:FBSessionDidBecomeOpenActiveSessionNotification
+                                               object:nil];
     
     return YES;
 }
@@ -344,6 +356,7 @@
                 [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
             }
         }];
+        
         return;
     }
     
@@ -376,6 +389,9 @@
         if (![FBSession openActiveSessionWithPublishPermissions:@[@"publish_actions"] defaultAudience:FBSessionDefaultAudienceFriends allowLoginUI:NO completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
             switch (state) {
                 case FBSessionStateOpen:
+                case FBSessionStateCreated:
+                case FBSessionStateCreatedTokenLoaded:
+                case FBSessionStateOpenTokenExtended:
                     successHandler(session);
                     
                     break;
@@ -395,12 +411,6 @@
         }]) {
             if ([[FBSession activeSession] isOpen]) {
                 successHandler([FBSession activeSession]);
-                [[SHAppUtil defaultInstance] fetchFacebookDetailsWithCompletionBlock:^(BOOL success, NSError *error) {
-                    if (error) {
-                        DebugLog(@"Error: %@", error);
-                        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
-                    }
-                }];
             }
             else {
                 NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"FBSession is not active"};
@@ -408,6 +418,19 @@
                 failureHandler([[FBSession activeSession] state], error);
             }
         }
+    }
+}
+
+- (void)handleFacebookSessionDidBecomeOpenActiveSessionNotification:(NSNotification *)notification {
+    DebugLog(@"FB session did become open active session.");
+    
+    if ([[FBSession activeSession] isOpen]) {
+        [[SHAppUtil defaultInstance] fetchFacebookDetailsWithCompletionBlock:^(BOOL success, NSError *error) {
+            if (error) {
+                DebugLog(@"Error: %@", error);
+                [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+            }
+        }];
     }
 }
 

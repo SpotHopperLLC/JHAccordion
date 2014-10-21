@@ -246,8 +246,6 @@
         return;
     }
     
-//    if ([FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound) {
-    
     if (![[FBSession activeSession] isOpen]) {
         NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"FBSession is not active"};
         NSError *error = [NSError errorWithDomain:@"Facebook" code:400 userInfo:userInfo];
@@ -302,99 +300,177 @@
 }
 
 - (void)fetchFacebookDetailsWithCompletionBlock:(void (^)(BOOL success, NSError *error))completionBlock {
-    if (!completionBlock) {
-        return;
-    }
+    [self fetchFacebookPublicProfileWithCompletionBlock:^(BOOL publicProfileSuccess, NSError *error) {
+        [self fetchFacebookFriendsListWithCompletionBlock:^(BOOL friendsListSuccess, NSError *error) {
+            if (completionBlock) {
+                completionBlock(publicProfileSuccess && friendsListSuccess, nil);
+            }
+        }];
+    }];
+}
+
+- (void)fetchFacebookPublicProfileWithCompletionBlock:(void (^)(BOOL success, NSError *error))completionBlock {
+    // fetch public profile details to store on UserModel, Parse and Mixpanel
     
     if ([[FBSession activeSession] isOpen]) {
         NSArray *permissions = [[FBSession activeSession] permissions];
         if ([permissions containsObject:@"public_profile"]) {
-            // TODO: fetch public profile details to store on UserModel, Parse and Mixpanel
-            
-            [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+            [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, NSDictionary *result, NSError *error) {
                 if (!error) {
-                    // Success! Include your code to handle the results here
-                    NSLog(@"user info: %@", result);
+                    NSString *name = result[@"name"];
+                    NSString *email = result[@"email"];
+                    NSString *gender = result[@"gender"];
+                    NSString *birthday = result[@"birthday"];
                     
-                    if ([result isKindOfClass:[NSDictionary class]]) {
-                        NSDictionary *dict = (NSDictionary *)result;
-                        NSString *name = dict[@"name"];
-                        NSString *email = dict[@"email"];
-                        NSString *gender = dict[@"gender"];
-
-                        UserModel *user = [[ClientSessionManager sharedClient] currentUser];
-                        
-                        if (name.length && !user.name.length) {
-                            user.name = name;
-                        }
-                        if (email.length && !user.email.length) {
-                            user.email = email;
-                        }
-                        if (gender.length && !user.gender.length) {
-                            user.gender = gender;
-                        }
-
-                        // Note: Settings are not currently supported by the backend
-                        
-                        [UserModel updateUser:user success:^(UserModel *updatedUser) {
-                            DebugLog(@"updatedUser: %@", updatedUser);
-                        } failure:^(ErrorModel *errorModel) {
-                            DebugLog(@"Error: %@", errorModel);
-                        }];
-                        
-                        PFUser *parseUser = [PFUser currentUser];
-                        
-                        if (parseUser) {
-                            NSString *className = @"FacebookUserProfile";
-                            PFQuery *query = [PFQuery queryWithClassName:className];
-                            [query whereKey:@"user" equalTo:parseUser];
-                            
-                            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                                if (!error) {
-                                    PFObject *facebookUserProfile = objects.firstObject;
-                                    if (!facebookUserProfile) {
-                                        facebookUserProfile = [[PFObject alloc] initWithClassName:className];
-                                    }
-                                    
-                                    for (NSString *key in dict.allKeys) {
-                                        facebookUserProfile[key] = dict[key];
-                                    }
-                                    
-                                    PFACL *acl = [PFACL ACL];
-                                    [acl setWriteAccess:TRUE forUser:parseUser];
-                                    [facebookUserProfile setACL:acl];
-                                    
-                                    [facebookUserProfile saveInBackground];
-                                }
-                            }];
+                    UserModel *user = [[ClientSessionManager sharedClient] currentUser];
+                    
+                    if (name.length && !user.name.length) {
+                        user.name = name;
+                    }
+                    if (email.length && !user.email.length) {
+                        user.email = email;
+                    }
+                    if (gender.length && !user.gender.length) {
+                        user.gender = gender;
+                    }
+                    if (birthday.length) {
+                        // birthday = "MM/DD/YYYY";
+                        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                        [formatter setDateFormat:@"MM/dd/yyyy"];
+                        NSDate *date = [formatter dateFromString:birthday];
+                        if (date) {
+                            user.birthday = date;
                         }
                     }
                     
-//                    birthday = "10/22/1975";
-//                    email = "offwhite@gmail.com";
-//                    "first_name" = Brennan;
-//                    gender = male;
-//                    id = 10152111225878359;
-//                    "last_name" = Stehling;
-//                    link = "https://www.facebook.com/app_scoped_user_id/10152111225878359/";
-//                    locale = "en_US";
-//                    name = "Brennan Stehling";
-//                    timezone = "-5";
-//                    "updated_time" = "2014-08-29T17:24:00+0000";
-//                    verified = 1;
+                    // Note: Settings are not currently supported by the backend
+                    
+                    [UserModel updateUser:user success:^(UserModel *updatedUser) {
+                        DebugLog(@"updatedUser: %@", updatedUser);
+                    } failure:^(ErrorModel *errorModel) {
+                        DebugLog(@"Error: %@", errorModel);
+                    }];
+                    
+                    PFUser *parseUser = [PFUser currentUser];
+                    UserModel *currentUser = [UserModel currentUser];
+                    
+                    NSString *className = @"FacebookUserProfile";
+                    PFQuery *query = [PFQuery queryWithClassName:className];
+                    [query whereKey:@"user" equalTo:parseUser];
+                    
+                    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                        if (!error) {
+                            PFObject *facebookUserProfile = objects.firstObject;
+                            if (!facebookUserProfile) {
+                                DebugLog(@"No match!");
+                                facebookUserProfile = [[PFObject alloc] initWithClassName:className];
+                                facebookUserProfile[@"user"] = parseUser;
+                                facebookUserProfile[@"spotHopperUserId"] = currentUser.ID;
+                                
+                                PFACL *acl = [PFACL ACL];
+                                [acl setWriteAccess:YES forUser:parseUser];
+                                [acl setReadAccess:YES forUser:parseUser];
+                                [facebookUserProfile setACL:acl];
+                            }
+                            else {
+                                DebugLog(@"Match!");
+                            }
+                            
+                            for (NSString *key in result.allKeys) {
+                                if ([@"id" isEqualToString:key]) {
+                                    facebookUserProfile[@"facebookId"] = result[key];
+                                }
+                                else {
+                                    facebookUserProfile[key] = result[key];
+                                }
+                            }
+                            
+                            [facebookUserProfile saveInBackground];
+                        }
+                        
+                        if (completionBlock) {
+                            completionBlock(TRUE, nil);
+                        }
+                    }];
+                }
+                else {
+                    if (completionBlock) {
+                        completionBlock(FALSE, error);
+                    }
+                }
+            }];
+            return;
+        }
+    }
+
+    if (completionBlock) {
+        completionBlock(FALSE, nil);
+    }
+}
+
+- (void)fetchFacebookFriendsListWithCompletionBlock:(void (^)(BOOL success, NSError *error))completionBlock {
+    // fetch user friends to store on UserModel, Parse and Mixpanel
+    
+    if ([[FBSession activeSession] isOpen]) {
+        NSArray *permissions = [[FBSession activeSession] permissions];
+        
+        if ([permissions containsObject:@"user_friends"]) {
+            [FBRequestConnection startForMyFriendsWithCompletionHandler:^(FBRequestConnection *connection, NSDictionary *result, NSError *error) {
+                if (!error) {
+                    NSMutableArray *facebookIds = @[].mutableCopy;
+                    
+                    for (NSDictionary *dict in result[@"data"]) {
+                        [facebookIds addObject:dict[@"id"]];
+                    }
+                    
+                    PFUser *parseUser = [PFUser currentUser];
+                    UserModel *currentUser = [UserModel currentUser];
+                    
+                    NSString *className = @"FacebookFriends";
+                    PFQuery *query = [PFQuery queryWithClassName:className];
+                    [query whereKey:@"user" equalTo:parseUser];
+                    
+                    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                        if (!error) {
+                            PFObject *facebookFriends = objects.firstObject;
+                            if (!facebookFriends) {
+                                DebugLog(@"No match!");
+                                facebookFriends = [[PFObject alloc] initWithClassName:className];
+                                facebookFriends[@"user"] = parseUser;
+                                facebookFriends[@"spotHopperUserId"] = currentUser.ID;
+                                PFACL *acl = [PFACL ACL];
+                                [acl setWriteAccess:YES forUser:parseUser];
+                                [acl setReadAccess:YES forUser:parseUser];
+                                [facebookFriends setACL:acl];
+                            }
+                            else {
+                                DebugLog(@"Match!");
+                            }
+                            
+                            facebookFriends[@"friends"] = facebookIds;
+                            
+                            [facebookFriends saveInBackground];
+                            
+                            [Tracker trackFacebookFriendsList:facebookIds];
+                        }
+                        if (completionBlock) {
+                            completionBlock(TRUE, nil);
+                        }
+                    }];
                     
                 }
                 else {
-                    // An error occurred, we need to handle the error
-                    // See: https://developers.facebook.com/docs/ios/errors   
+                    if (completionBlock) {
+                        completionBlock(FALSE, error);
+                    }
                 }
             }];
-            
+            return;
         }
-        
-        if ([permissions containsObject:@"user_friends"]) {
-            // TODO: fetch user friends to store on UserModel, Parse and Mixpanel
-        }
+    }
+    
+    if (completionBlock) {
+        completionBlock(FALSE, nil);
     }
 }
 

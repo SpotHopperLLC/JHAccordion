@@ -399,6 +399,8 @@ typedef enum {
 }
 
 - (void)updateButton:(UIButton *)button withDrink:(DrinkModel *)drink {
+    MAAssert(button, @"Button must be defined");
+    MAAssert(drink, @"Drink must be defined");
     button.layer.borderColor = [[[UIColor lightGrayColor] colorWithAlphaComponent:0.8] CGColor];
     button.layer.borderWidth = 1.0;
     
@@ -779,11 +781,16 @@ typedef enum {
             rating3View.rating = 0;
             
             drink1Button.imageView.contentMode = UIViewContentModeScaleAspectFill;
-            drink1Button.clipsToBounds = TRUE;
             drink2Button.imageView.contentMode = UIViewContentModeScaleAspectFill;
-            drink2Button.clipsToBounds = TRUE;
             drink3Button.imageView.contentMode = UIViewContentModeScaleAspectFill;
+
+            drink1Button.clipsToBounds = TRUE;
+            drink2Button.clipsToBounds = TRUE;
             drink3Button.clipsToBounds = TRUE;
+
+            [drink1Button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+            [drink2Button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+            [drink3Button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
             
             [drink1Button setImage:placeholderImage forState:UIControlStateNormal];
             [drink2Button setImage:placeholderImage forState:UIControlStateNormal];

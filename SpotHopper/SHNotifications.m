@@ -72,7 +72,6 @@ NSString * const SHAppCheckinNotificationKey = @"SHAppCheckinNotificationKey";
 
 + (void)appOpenedWithURL:(NSURL *)url {
     NSDictionary *userInfo = @{ SHAppOpenedWithURLNotificationKey : url };
-    DebugLog(@"userInfo: %@", userInfo);
     [[NSNotificationCenter defaultCenter] postNotificationName:SHAppOpenedWithURLNotificationName
                                                         object:nil
                                                       userInfo:userInfo];
@@ -191,6 +190,12 @@ NSString * const SHAppCheckinNotificationKey = @"SHAppCheckinNotificationKey";
 + (void)shareSpecial:(SpecialModel *)special atSpot:(SpotModel *)spot {
     NSAssert(special, @"Parameter is required");
     NSAssert(spot, @"Parameter is required");
+    
+    if (!special || !spot) {
+        // do nothing (this condition should not happen normally)
+        return;
+    }
+    
     NSDictionary *userInfo = @{SHAppSpecialNotificationKey : special, SHAppSpotNotificationKey : spot};
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SHAppShareNotificationName
@@ -200,6 +205,12 @@ NSString * const SHAppCheckinNotificationKey = @"SHAppCheckinNotificationKey";
 
 + (void)shareSpot:(SpotModel *)spot {
     NSAssert(spot, @"Parameter is required");
+    
+    if (!spot) {
+        // do nothing (this condition should not happen normally)
+        return;
+    }
+    
     NSDictionary *userInfo = @{SHAppSpotNotificationKey : spot};
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SHAppShareNotificationName
@@ -209,6 +220,12 @@ NSString * const SHAppCheckinNotificationKey = @"SHAppCheckinNotificationKey";
 
 + (void)shareDrink:(DrinkModel *)drink {
     NSAssert(drink, @"Parameter is required");
+    
+    if (!drink) {
+        // do nothing (this condition should not happen normally)
+        return;
+    }
+    
     NSDictionary *userInfo = @{SHAppDrinkNotificationKey : drink};
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SHAppShareNotificationName
@@ -218,6 +235,11 @@ NSString * const SHAppCheckinNotificationKey = @"SHAppCheckinNotificationKey";
 
 + (void)shareCheckin:(CheckInModel *)checkin {
     NSAssert(checkin, @"Parameter is required");
+    
+    if (!checkin) {
+        // do nothing (this condition should not happen normally)
+        return;
+    }
     NSDictionary *userInfo = @{SHAppCheckinNotificationKey : checkin};
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SHAppShareNotificationName

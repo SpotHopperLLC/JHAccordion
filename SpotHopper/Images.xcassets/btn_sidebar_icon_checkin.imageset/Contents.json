@@ -9,6 +9,10 @@
       "idiom" : "universal",
       "scale" : "2x",
       "filename" : "btn_sidebar_icon_checkin@2x.png"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

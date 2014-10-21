@@ -79,7 +79,7 @@
     [super viewDidLoad];
 
     // Logs current user out
-    [[ClientSessionManager sharedClient] logout];
+    //[[ClientSessionManager sharedClient] logout];
     
     // Initialize properties - login
     _keyboardUp = NO;
@@ -274,13 +274,6 @@
                                  kUserModelParamFacebookAccessToken: [[[FBSession activeSession] accessTokenData] accessToken]
                                  };
         [Tracker trackLoggingInWithFacebook];
-        
-        [[SHAppUtil defaultInstance] fetchFacebookDetailsWithCompletionBlock:^(BOOL success, NSError *error) {
-            if (error) {
-                DebugLog(@"Error: %@", error);
-                [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
-            }
-        }];
         
         [self doLoginOperation:params];
     } else {

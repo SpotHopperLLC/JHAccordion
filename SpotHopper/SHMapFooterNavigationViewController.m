@@ -29,8 +29,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [SHStyleKit setButton:self.btnCheckIn withDrawing:SHStyleKitDrawingCheckinIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
-    [SHStyleKit setButton:self.btnSpots withDrawing:SHStyleKitDrawingTapIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+    [SHStyleKit setButton:self.btnCheckIn withDrawing:SHStyleKitDrawingCheckinMarkIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
+    [SHStyleKit setButton:self.btnSpots withDrawing:SHStyleKitDrawingSpotIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setButton:self.btnSpecials withDrawing:SHStyleKitDrawingSpecialsIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setButton:self.btnBeer withDrawing:SHStyleKitDrawingBeerIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
     [SHStyleKit setButton:self.btnCocktail withDrawing:SHStyleKitDrawingCocktailIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor];
