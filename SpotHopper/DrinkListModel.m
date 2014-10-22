@@ -446,7 +446,7 @@
         params[kDrinkListModelParamLongitude] = [NSNumber numberWithFloat:request.coordinate.longitude];
     }
     
-    CGFloat miles = request.radius / kMetersPerMile;
+    CGFloat miles = request.radius;
     NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
     params[kDrinkListModelParamRadius] = radiusParam;
     
@@ -640,6 +640,11 @@
 }
 
 + (void)fetchHighestRatedDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinklist))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    [self fetchHighestRatedDrinkListWithRequest:request pageSize:10 success:successBlock failure:failureBlock];
+}
+
++ (void)fetchHighestRatedDrinkListWithRequest:(DrinkListRequest *)request pageSize:(NSUInteger)pageSize success:(void (^)(DrinkListModel *drinklist))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+
     // get cached drinklist if spotId is defined
     if (request.spotId) {
         NSString *key = [NSString stringWithFormat:@"HighestRatedDrinklistForSpot-%@-DrinkType-%@", request.spotId, request.drinkTypeId];
@@ -651,7 +656,7 @@
     
     NSMutableDictionary *params = @{
                                     kSpotModelParamPage : @1,
-                                    kSpotModelParamsPageSize : @10,
+                                    kSpotModelParamsPageSize : [NSNumber numberWithInteger:pageSize],
                                     @"name" : request.name,
                                     @"drink_id" : request.drinkId ? request.drinkId : [NSNull null],
                                     @"drink_type_id" : request.drinkTypeId ? request.drinkTypeId : [NSNull null],
@@ -665,8 +670,7 @@
         params[@"lng"] = [NSNumber numberWithFloat:request.coordinate.longitude];
     }
     
-    CGFloat miles = request.radius / kMetersPerMile;
-    NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
+    NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, request.radius), kMinRadiusFloat)];
     params[kDrinkListModelParamRadius] = radiusParam;
     
     [[ClientSessionManager sharedClient] GET:@"/api/drink_lists/highest_rated" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -718,10 +722,14 @@
 }
 
 + (Promise *)fetchHighestRatedDrinkListWithRequest:(DrinkListRequest *)request {
+    return [self fetchHighestRatedDrinkListWithRequest:request];
+}
+
++ (Promise *)fetchHighestRatedDrinkListWithRequest:(DrinkListRequest *)request pageSize:(NSUInteger)pageSize {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
-    [self fetchHighestRatedDrinkListWithRequest:request success:^(DrinkListModel *drinklist) {
+    [self fetchHighestRatedDrinkListWithRequest:request pageSize:pageSize success:^(DrinkListModel *drinklist) {
         // Resolves promise
         [deferred resolveWith:drinklist];
     } failure:^(ErrorModel *errorModel) {

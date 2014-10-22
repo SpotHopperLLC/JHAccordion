@@ -9,6 +9,8 @@
 #import "CheckInModel.h"
 
 #import "ClientSessionManager.h"
+
+#import "SpotModel.h"
 #import "ErrorModel.h"
 
 @implementation CheckInModel
@@ -16,7 +18,7 @@
 #pragma mark - Debugging
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ - %@ [%@]", self.ID, self.href, NSStringFromClass([self class])];
+    return [NSString stringWithFormat:@"%@ - %@ [%@]", self.ID, self.spot.name, NSStringFromClass([self class])];
 }
 
 #pragma mark -
@@ -140,6 +142,51 @@
             // Rejects promise
             [deferred rejectWith:errorModel];
         }
+    }];
+    
+    return deferred.promise;
+}
+
+#pragma mark - Revised Code for 2.0
+
++ (void)checkInAtSpot:(SpotModel *)spot success:(void(^)(CheckInModel *checkin))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    NSDictionary *params = @{@"spot_id" : spot.ID};
+    
+    [[ClientSessionManager sharedClient] POST:@"/api/checkins" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
+            CheckInModel *checkin = [jsonApi resourceForKey:@"checkins"];
+            
+            if (successBlock) {
+                successBlock(checkin);
+            }
+        }
+        else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            if (failureBlock) {
+                failureBlock(errorModel);
+            }
+        }
+    }];
+}
+
++ (Promise *)checkInAtSpot:(SpotModel *)spot {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [self checkInAtSpot:spot success:^(CheckInModel *checkin) {
+        // Resolves promise
+        [deferred resolveWith:checkin];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
     }];
     
     return deferred.promise;

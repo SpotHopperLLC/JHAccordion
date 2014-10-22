@@ -33,4 +33,9 @@
 - (Promise *)postCheckIn:(NSDictionary *)params success:(void(^)(CheckInModel *checkInModel, JSONAPI* jsonAPI))successBlock failure:(void(^)(ErrorModel* errorModel))failureBlock;
 - (Promise *)putCheckIn:(NSDictionary *)params success:(void(^)(CheckInModel *checkInModel, JSONAPI* jsonAPI))successBlock failure:(void(^)(ErrorModel* errorModel))failureBlock;
 
+#pragma mark - Revised Code for 2.0
+
++ (void)checkInAtSpot:(SpotModel *)spot success:(void(^)(CheckInModel *checkin))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
++ (Promise *)checkInAtSpot:(SpotModel *)spot;
+
 @end

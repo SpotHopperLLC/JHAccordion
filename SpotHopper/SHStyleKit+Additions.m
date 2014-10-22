@@ -313,6 +313,13 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
                                          color2Name:[SHStyleKit colorName:SHStyleKitColorMyWhiteColor]
                                          color3Name:[SHStyleKit colorName:SHStyleKitColorMyTextTransparentColor]];
             }
+            else if (color == SHStyleKitColorMyTextColor) {
+                [SHStyleKit drawShareIconWithScaleX:scaleX
+                                             scaleY:scaleY
+                                         color1Name:colorName
+                                         color2Name:[SHStyleKit colorName:SHStyleKitColorMyTextTransparentColor]
+                                         color3Name:[SHStyleKit colorName:SHStyleKitColorMyTextTransparentColor]];
+            }
             else if (color == SHStyleKitColorMyWhiteColor) {
                 [SHStyleKit drawShareIconWithScaleX:scaleX
                                              scaleY:scaleY
@@ -373,6 +380,14 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
             
         case SHStyleKitDrawingMoreIcon:
             [SHStyleKit drawMoreIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
+            break;
+            
+        case SHStyleKitDrawingCheckinIcon:
+            [SHStyleKit drawCheckinIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
+            break;
+            
+        case SHStyleKitDrawingCheckinMarkIcon:
+            [SHStyleKit drawCheckinMarkIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
             break;
             
         case SHStyleKitDrawingDeleteIcon:

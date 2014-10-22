@@ -36,4 +36,6 @@
 // one the user completes the gesture this callback is fired
 - (void)slider:(SHSlider *)slider valueDidFinishChanging:(CGFloat)value;
 
+- (void)sliderValueDidReset:(SHSlider *)slider;
+
 @end

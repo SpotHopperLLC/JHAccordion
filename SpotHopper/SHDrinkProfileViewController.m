@@ -87,6 +87,7 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (weak, nonatomic) IBOutlet UIButton *similarDrinksButton;
+@property (weak, nonatomic) IBOutlet UIButton *shareDrinkButton;
 @property (weak, nonatomic) IBOutlet UIButton *reviewItButton;
 
 @property (weak, nonatomic) IBOutlet UIImageView *topShadowImageView;
@@ -126,12 +127,24 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     
     CGSize buttonImageSize = CGSizeMake(30, 30);
     [SHStyleKit setButton:self.similarDrinksButton withDrawing:SHStyleKitDrawingSearchIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor size:buttonImageSize];
+    [SHStyleKit setButton:self.shareDrinkButton withDrawing:SHStyleKitDrawingShareIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor size:buttonImageSize];
     [SHStyleKit setButton:self.reviewItButton withDrawing:SHStyleKitDrawingReviewsIcon normalColor:SHStyleKitColorMyTextColor highlightedColor:SHStyleKitColorMyWhiteColor size:buttonImageSize];
     
-    self.similarDrinksButton.titleLabel.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
+    self.similarDrinksButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    self.similarDrinksButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [self.similarDrinksButton setTitle:@"Similar\nDrinks" forState:UIControlStateNormal];
+
+    self.shareDrinkButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    self.shareDrinkButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [self.shareDrinkButton setTitle:@"Share\nDrink" forState:UIControlStateNormal];
+
+    self.reviewItButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    self.reviewItButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [self.reviewItButton setTitle:@"Review\nIt" forState:UIControlStateNormal];
+
+    
     [self.similarDrinksButton setTitleColor:SHStyleKit.myTextColor forState:UIControlStateNormal];
     
-    self.reviewItButton.titleLabel.font = [UIFont fontWithName:@"Lato-Light" size:12.0f];
     [self.reviewItButton setTitleColor:SHStyleKit.myTextColor forState:UIControlStateNormal];
     
     self.matchPercentage = [self.drink matchPercent];
@@ -199,6 +212,10 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
 
 - (IBAction)similarDrinksButtonTapped:(id)sender {
     [SHNotifications findSimilarToDrink:self.drink];
+}
+
+- (IBAction)shareDrinkButtonTapped:(id)sender {
+    [SHNotifications shareDrink:self.drink];
 }
 
 - (IBAction)reviewItButtonTapped:(id)sender {
@@ -551,7 +568,6 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
                     frame.size.height = topImageHeight;
                     frame.origin.y = yPos;
                     imageView.frame = frame;
-                    //LOG_FRAME(@"frame", frame);
                 }
             }
         }

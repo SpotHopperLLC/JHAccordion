@@ -31,6 +31,8 @@
 
 + (void)trackUserLeavingLoginNotLoggedIn;
 
++ (void)trackFacebookFriendsList:(NSArray *)friendsList;
+
 #pragma mark - Search Results
 #pragma mark -
 

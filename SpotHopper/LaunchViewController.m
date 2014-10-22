@@ -9,6 +9,8 @@
 #import "LaunchViewController.h"
 
 #import "AppDelegate.h"
+#import "SHAppConfiguration.h"
+#import "SHAppUtil.h"
 
 #import "UIViewController+Navigator.h"
 #import "ClientSessionManager.h"
@@ -77,7 +79,7 @@
     [super viewDidLoad];
 
     // Logs current user out
-    [[ClientSessionManager sharedClient] logout];
+    //[[ClientSessionManager sharedClient] logout];
     
     // Initialize properties - login
     _keyboardUp = NO;

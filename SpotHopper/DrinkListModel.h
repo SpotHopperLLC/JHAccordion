@@ -64,7 +64,11 @@
 
 + (void)fetchHighestRatedDrinkListWithRequest:(DrinkListRequest *)request success:(void (^)(DrinkListModel *drinklist))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
 
++ (void)fetchHighestRatedDrinkListWithRequest:(DrinkListRequest *)request pageSize:(NSUInteger)pageSize success:(void (^)(DrinkListModel *drinklist))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
+
 + (Promise *)fetchHighestRatedDrinkListWithRequest:(DrinkListRequest *)request;
+
++ (Promise *)fetchHighestRatedDrinkListWithRequest:(DrinkListRequest *)request pageSize:(NSUInteger)pageSize;
 
 - (void)purgeDrinkList:(void (^)(BOOL success))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
 

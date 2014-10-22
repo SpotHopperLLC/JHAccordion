@@ -211,6 +211,16 @@
     }
 }
 
+- (CLLocation *)location {
+    if (CLLocationCoordinate2DIsValid(self.coordinate)) {
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:self.coordinate.latitude longitude:self.coordinate.longitude];
+        return location;
+    }
+    else {
+        return nil;
+    }
+}
+
 #pragma mark - Debugging
 
 - (NSString *)description {
@@ -441,6 +451,8 @@
 
 + (void)fetchSpecialsSpotlistForCoordinate:(CLLocationCoordinate2D)coordinate radius:(CLLocationDistance)radius success:(void(^)(SpotListModel *spotlist))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
     
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
     // adjust time back 4 hours to help handle the midnight boundary
     NSTimeInterval fourHoursAgo = 60 * 60 * 4 * -1;
     NSDate *offsetTime = [[NSDate date] dateByAddingTimeInterval:fourHoursAgo];
@@ -456,7 +468,7 @@
     components = [calendar components:units fromDate:[NSDate date]];
     NSString *cutOffTime = [NSString stringWithFormat:@"%02li:%02li", (long)components.hour, (long)components.minute];
     
-    CGFloat miles = radius / kMetersPerMile;
+    CGFloat radiusInMiles = radius / kMetersPerMile;
     
     /*
      * Searches spots for specials
@@ -469,7 +481,7 @@
                              kSpotModelParamQueryDayOfWeek : [NSNumber numberWithInteger:weekday],
                              kSpotModelParamQueryLatitude : [NSNumber numberWithFloat:coordinate.latitude],
                              kSpotModelParamQueryLongitude : [NSNumber numberWithFloat:coordinate.longitude],
-                             kSpotModelParamQueryRadius : [NSNumber numberWithFloat:miles],
+                             kSpotModelParamQueryRadius : [NSNumber numberWithFloat:radiusInMiles],
                              @"cut_off_time" : cutOffTime
                              };
     
@@ -551,6 +563,11 @@
 }
 
 + (void)fetchSpotsNearLocation:(CLLocation *)location success:(void (^)(NSArray *spots))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    CLLocationDistance radius = 2.0 * kMetersPerMile;
+    [self fetchSpotsNearLocation:location radius:radius success:successBlock failure:failureBlock];
+}
+
++ (void)fetchSpotsNearLocation:(CLLocation *)location radius:(CLLocationDistance)radius success:(void (^)(NSArray *spots))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     NSMutableDictionary *params = @{
                                          kSpotModelParamQuery : @"",
                                          kSpotModelParamQueryVisibleToUsers : @"true",
@@ -559,11 +576,15 @@
                                          kSpotModelParamSources : kSpotModelParamSourcesSpotHopper
                                          }.mutableCopy;
     
-    if (location != nil && CLLocationCoordinate2DIsValid(location.coordinate)) {
+    if (location && CLLocationCoordinate2DIsValid(location.coordinate)) {
         [params setObject:[NSNumber numberWithFloat:location.coordinate.latitude] forKey:kSpotModelParamQueryLatitude];
         [params setObject:[NSNumber numberWithFloat:location.coordinate.longitude] forKey:kSpotModelParamQueryLongitude];
     }
     
+    if (radius) {
+        params[kSpotModelParamQueryRadius] = [NSNumber numberWithFloat:radius];
+    }
+
     [[ClientSessionManager sharedClient] GET:@"/api/spots" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI
@@ -575,9 +596,12 @@
             }
         }
         else if (operation.response.statusCode == 200) {
-            NSArray *models = [jsonApi resourcesForKey:@"spots"];
+            NSArray *spots = [jsonApi resourcesForKey:@"spots"];
+            
+            NSArray *sortedSpots = [self sortSpots:spots forLocation:location];
+            
             if (successBlock) {
-                successBlock(models);
+                successBlock(sortedSpots);
             }
         } else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
@@ -589,10 +613,15 @@
 }
 
 + (Promise *)fetchSpotsNearLocation:(CLLocation *)location {
+    CLLocationDistance radius = 2.0 * kMetersPerMile;
+    return [self fetchSpotsNearLocation:location radius:radius];
+}
+
++ (Promise *)fetchSpotsNearLocation:(CLLocation *)location radius:(CLLocationDistance)radius {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
-    [self fetchSpotsNearLocation:location success:^(NSArray *spots) {
+    [self fetchSpotsNearLocation:location radius:radius success:^(NSArray *spots) {
         // Resolves promise
         [deferred resolveWith:spots];
     } failure:^(ErrorModel *errorModel) {
@@ -838,6 +867,29 @@
     });
     
     return _sh_Cache;
+}
+
+#pragma mark - Sorting
+#pragma mark -
+
++ (NSArray *)sortSpots:(NSArray *)spots forLocation:(CLLocation *)location {
+    NSArray *sortedSpots = [spots sortedArrayUsingComparator:^NSComparisonResult(SpotModel *spot1, SpotModel *spot2) {
+        CLLocationDistance distance1 = [location distanceFromLocation:spot1.location];
+        CLLocationDistance distance2 = [location distanceFromLocation:spot2.location];
+        
+        NSComparisonResult result = NSOrderedSame;
+        
+        if (distance1 < distance2) {
+            result = (NSComparisonResult)NSOrderedAscending;
+        }
+        else {
+            result = (NSComparisonResult)NSOrderedDescending;
+        }
+        
+        return result;
+    }];
+
+    return sortedSpots;
 }
 
 #pragma mark - Getters

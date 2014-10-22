@@ -50,31 +50,4 @@
     return ( messages.count > 0 ? [messages componentsJoinedByString:@"\n"] : [self human] );
 }
 
-#pragma mark - Getters
-
-//- (NSString *)human {
-//    if (!_human) {
-//        NSString *human = [self objectForKey:@"human"];
-//        _human = (human.length > 0 ? human : @"An unknown error occured");
-//    }
-//    
-//    return _human;
-//}
-//
-//- (NSString *)error {
-//    if (_error) {
-//        _error = [self objectForKey:@"error"];
-//    }
-//    
-//    return _error;
-//}
-//
-//- (NSDictionary *)validations {
-//    if (!_validations) {
-//        _validations = [self objectForKey:@"validations"];
-//    }
-//    
-//    return _validations;
-//}
-
 @end

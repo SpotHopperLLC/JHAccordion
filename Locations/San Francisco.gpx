@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" version="1.1" creator="gpx-poi.com">
+<?xml version="1.0"?>
+<gpx version="1.1" creator="Xcode">
    <wpt lat="37.766372" lon="-122.442627">
-      <time>2014-04-01T16:00:43Z</time>
       <name>San Francisco, CA</name>
    </wpt>
 </gpx>

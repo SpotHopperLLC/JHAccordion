@@ -10,7 +10,7 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-@class SHJSONAPIResource, SpotModel, DrinkModel, SpotListModel, DrinkListModel, SpotListRequest, DrinkListRequest;
+@class SHJSONAPIResource, SpotModel, DrinkModel, SpotListModel, DrinkListModel, SpotListRequest, DrinkListRequest, SpecialModel, CheckInModel;
 
 @interface Tracker (Events)
 
@@ -21,6 +21,11 @@
 + (void)trackDrinkProfileScreenViewed:(DrinkModel *)drink;
 
 + (void)trackSpotProfileScreenViewed:(SpotModel *)spot;
+
+#pragma mark - Activities
+#pragma mark -
+
++ (void)trackActivity:(NSString *)activityName duration:(NSTimeInterval)duration;
 
 #pragma mark - Global Search
 #pragma mark -
@@ -187,10 +192,30 @@
 
 + (void)trackWineButtonTapped;
 
+#pragma mark - Checkins
+#pragma mark -
+
++ (void)trackCheckinButtonTapped;
+
++ (void)trackCheckinCancelButtonTapped;
+
++ (void)trackCheckedInAtSpot:(SpotModel *)spot position:(NSUInteger)position count:(NSUInteger)count distance:(CLLocationDistance)distance;
+
+#pragma mark - Sharing
+#pragma mark -
+
++ (void)trackSharingSpot:(SpotModel *)spot;
+
++ (void)trackSharingDrink:(DrinkModel *)drink;
+
++ (void)trackSharingSpecial:(SpecialModel *)special atSpot:(SpotModel *)spot;
+
++ (void)trackSharingCheckin:(CheckInModel *)checkin;
+
 #pragma mark - List View
 #pragma mark -
 
-+ (void)trackListViewDidDisplaySpot:(SpotModel *)spot  position:(NSUInteger)position isSpecials:(BOOL)isSpecials;
++ (void)trackListViewDidDisplaySpot:(SpotModel *)spot position:(NSUInteger)position isSpecials:(BOOL)isSpecials;
 
 + (void)trackListViewDidDisplayDrink:(DrinkModel *)drink position:(NSUInteger)position;
 

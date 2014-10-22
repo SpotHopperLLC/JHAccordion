@@ -62,6 +62,7 @@ NSString * const SHAppShareNotificationName = @"SHAppShareNotificationName";
 NSString * const SHAppSpotNotificationKey = @"SHAppSpotNotificationKey";
 NSString * const SHAppSpecialNotificationKey = @"SHAppSpecialNotificationKey";
 NSString * const SHAppDrinkNotificationKey = @"SHAppDrinkNotificationKey";
+NSString * const SHAppCheckinNotificationKey = @"SHAppCheckinNotificationKey";
 
 @implementation SHNotifications
 
@@ -71,7 +72,6 @@ NSString * const SHAppDrinkNotificationKey = @"SHAppDrinkNotificationKey";
 
 + (void)appOpenedWithURL:(NSURL *)url {
     NSDictionary *userInfo = @{ SHAppOpenedWithURLNotificationKey : url };
-    DebugLog(@"userInfo: %@", userInfo);
     [[NSNotificationCenter defaultCenter] postNotificationName:SHAppOpenedWithURLNotificationName
                                                         object:nil
                                                       userInfo:userInfo];
@@ -127,7 +127,7 @@ NSString * const SHAppDrinkNotificationKey = @"SHAppDrinkNotificationKey";
 }
 
 + (void)reviewDrink:(DrinkModel *)drink {
-    NSDictionary *userInfo = @{ SHReviewDrinkNotificationKey : drink };
+    NSDictionary *userInfo = drink ? @{ SHReviewDrinkNotificationKey : drink} : @{};
     [[NSNotificationCenter defaultCenter] postNotificationName:SHReviewDrinkNotificationName
                                                         object:nil
                                                       userInfo:userInfo];
@@ -141,7 +141,7 @@ NSString * const SHAppDrinkNotificationKey = @"SHAppDrinkNotificationKey";
 }
 
 + (void)reviewSpot:(SpotModel *)spot {
-    NSDictionary *userInfo = @{ SHReviewSpotNotificationKey : spot };
+    NSDictionary *userInfo = spot ? @{ SHReviewSpotNotificationKey : spot} : @{};
     [[NSNotificationCenter defaultCenter] postNotificationName:SHReviewSpotNotificationName
                                                         object:nil
                                                       userInfo:userInfo];
@@ -190,6 +190,12 @@ NSString * const SHAppDrinkNotificationKey = @"SHAppDrinkNotificationKey";
 + (void)shareSpecial:(SpecialModel *)special atSpot:(SpotModel *)spot {
     NSAssert(special, @"Parameter is required");
     NSAssert(spot, @"Parameter is required");
+    
+    if (!special || !spot) {
+        // do nothing (this condition should not happen normally)
+        return;
+    }
+    
     NSDictionary *userInfo = @{SHAppSpecialNotificationKey : special, SHAppSpotNotificationKey : spot};
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SHAppShareNotificationName
@@ -199,6 +205,12 @@ NSString * const SHAppDrinkNotificationKey = @"SHAppDrinkNotificationKey";
 
 + (void)shareSpot:(SpotModel *)spot {
     NSAssert(spot, @"Parameter is required");
+    
+    if (!spot) {
+        // do nothing (this condition should not happen normally)
+        return;
+    }
+    
     NSDictionary *userInfo = @{SHAppSpotNotificationKey : spot};
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SHAppShareNotificationName
@@ -208,7 +220,27 @@ NSString * const SHAppDrinkNotificationKey = @"SHAppDrinkNotificationKey";
 
 + (void)shareDrink:(DrinkModel *)drink {
     NSAssert(drink, @"Parameter is required");
+    
+    if (!drink) {
+        // do nothing (this condition should not happen normally)
+        return;
+    }
+    
     NSDictionary *userInfo = @{SHAppDrinkNotificationKey : drink};
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHAppShareNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
++ (void)shareCheckin:(CheckInModel *)checkin {
+    NSAssert(checkin, @"Parameter is required");
+    
+    if (!checkin) {
+        // do nothing (this condition should not happen normally)
+        return;
+    }
+    NSDictionary *userInfo = @{SHAppCheckinNotificationKey : checkin};
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SHAppShareNotificationName
                                                         object:nil

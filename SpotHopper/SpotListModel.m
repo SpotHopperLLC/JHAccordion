@@ -419,8 +419,7 @@
     }
     
     if (request.radius) {
-        CGFloat miles = request.radius / kMetersPerMile;
-        NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, miles), kMinRadiusFloat)];
+        NSNumber *radiusParam = [NSNumber numberWithFloat:MAX(MIN(kMaxRadiusFloat, request.radius), kMinRadiusFloat)];
         params[kSpotListModelParamRadius] = radiusParam;
     }
     

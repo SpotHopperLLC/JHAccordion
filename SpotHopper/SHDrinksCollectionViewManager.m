@@ -64,7 +64,6 @@
 
 @implementation SHDrinksCollectionViewManager {
     BOOL _isUpdatingData;
-    NSUInteger _currentIndex;
 }
 
 #pragma mark - Initialization
@@ -81,6 +80,10 @@
 #pragma mark - Public
 #pragma mark -
 
+- (NSUInteger)itemCount {
+    return self.drinkList.drinks.count;
+}
+
 - (void)updateDrinkList:(DrinkListModel *)drinkList {
     NSAssert(self.delegate, @"Delegate must be defined");
     
@@ -94,9 +97,9 @@
             self.drinkList = drinkList;
             [self.collectionView reloadData];
             self.collectionView.contentOffset = CGPointMake(0, 0);
-            _currentIndex = 0;
+            self.currentIndex = 0;
             _isUpdatingData = FALSE;
-            [Tracker trackListViewDidDisplayDrink:[self drinkAtIndex:_currentIndex] position:_currentIndex+1];
+            [Tracker trackListViewDidDisplayDrink:[self drinkAtIndex:self.currentIndex] position:self.currentIndex+1];
             
             for (DrinkModel *drink in drinkList.drinks) {
                 [ImageUtil preloadImageModels:drink.images];
@@ -106,9 +109,9 @@
 }
 
 - (void)changeIndex:(NSUInteger)index {
-    if (index != _currentIndex && index < self.drinkList.drinks.count) {
-        _currentIndex = index;
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_currentIndex inSection:0];
+    if (index != self.currentIndex && index < self.drinkList.drinks.count) {
+        self.currentIndex = index;
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.currentIndex inSection:0];
         [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:TRUE];
         [self reportedChangedIndex];
     }
@@ -159,14 +162,14 @@
 }
 
 - (void)goPrevious {
-    if ([self hasPrevious] && _currentIndex > 0) {
-        [self changeIndex:_currentIndex - 1];
+    if ([self hasPrevious] && self.currentIndex > 0) {
+        [self changeIndex:self.currentIndex - 1];
     }
 }
 
 - (void)goNext {
     if ([self hasNext]) {
-        [self changeIndex:_currentIndex+1];
+        [self changeIndex:self.currentIndex+1];
     }
 }
 
@@ -242,42 +245,7 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    LOG_FRAME(@"collection view", collectionView.frame);
     return CGSizeMake(CGRectGetWidth(collectionView.frame), CGRectGetHeight(collectionView.frame));
-}
-
-#pragma mark - UIScrollViewDelegate
-#pragma mark -
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    if (scrollView == self.collectionView) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            NSIndexPath *indexPath = [self indexPathForCurrentItemInCollectionView:self.collectionView];
-            if (indexPath.item != _currentIndex) {
-                _currentIndex = indexPath.item;
-                [self reportedChangedIndex];
-            }
-        });
-    }
-}
-
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
-    // if the velocity is "slow" it should just go the next cell, otherwise let it go to the next paged position
-    // positive x is moving right, negative x is moving left
-    // slow is < 2.0
-    
-    CGFloat width = CGRectGetWidth(self.collectionView.frame);
-    NSUInteger currentIndex = MAX(MIN(round(self.collectionView.contentOffset.x / CGRectGetWidth(self.collectionView.frame)), self.drinkList.drinks.count - 1), 0);
-    
-    if (fabsf(velocity.x) > 2.0) {
-        CGFloat x = targetContentOffset->x;
-        x = roundf(x / width) * width;
-        targetContentOffset->x = x;
-    }
-    else {
-        NSUInteger targetIndex = velocity.x > 0.0 ? MIN(currentIndex + 1, self.drinkList.drinks.count - 1) : MAX(currentIndex - 1, 0);
-        targetContentOffset->x = targetIndex * width;
-    }
 }
 
 #pragma mark - Base Overrides
@@ -356,10 +324,10 @@
 #pragma mark -
 
 - (void)reportedChangedIndex {
-    [Tracker trackListViewDidDisplayDrink:[self drinkAtIndex:_currentIndex] position:_currentIndex+1];
+    [Tracker trackListViewDidDisplayDrink:[self drinkAtIndex:self.currentIndex] position:self.currentIndex+1];
     
     if ([self.delegate respondsToSelector:@selector(drinksCollectionViewManager:didChangeToDrinkAtIndex:count:)]) {
-        [self.delegate drinksCollectionViewManager:self didChangeToDrinkAtIndex:_currentIndex count:self.drinkList.drinks.count];
+        [self.delegate drinksCollectionViewManager:self didChangeToDrinkAtIndex:self.currentIndex count:self.drinkList.drinks.count];
     }
 }
 

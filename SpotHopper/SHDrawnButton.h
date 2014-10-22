@@ -11,7 +11,7 @@
 #import "SHStyleKit+Additions.h"
 
 // Xcode 6 is not ready for custom views
-//IB_DESIGNABLE
+// IB_DESIGNABLE
 @interface SHDrawnButton : UIButton
 
 // IBInspectable

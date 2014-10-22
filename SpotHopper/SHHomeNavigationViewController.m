@@ -15,12 +15,14 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *lblHeader;
 
+@property (weak, nonatomic) IBOutlet UIButton *btnCheckIn;
 @property (weak, nonatomic) IBOutlet UIButton *btnSpots;
 @property (weak, nonatomic) IBOutlet UIButton *btnSpecials;
 @property (weak, nonatomic) IBOutlet UIButton *btnBeer;
 @property (weak, nonatomic) IBOutlet UIButton *btnCocktails;
 @property (weak, nonatomic) IBOutlet UIButton *btnWine;
 
+@property (weak, nonatomic) IBOutlet UILabel *lblCheckIn;
 @property (weak, nonatomic) IBOutlet UILabel *lblSpots;
 @property (weak, nonatomic) IBOutlet UILabel *lblSpecials;
 @property (weak, nonatomic) IBOutlet UILabel *lblBeer;
@@ -42,12 +44,14 @@
     NSCAssert(self.btnSpots.frame.size.width > 0, @"Width must already be set");
     NSCAssert(self.btnSpots.frame.size.height > 0, @"Height must already be set");
     
+    [SHStyleKit setButton:self.btnCheckIn withDrawing:SHStyleKitDrawingCheckinMarkIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setButton:self.btnSpots withDrawing:SHStyleKitDrawingSpotIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setButton:self.btnSpecials withDrawing:SHStyleKitDrawingSpecialsIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setButton:self.btnBeer withDrawing:SHStyleKitDrawingBeerIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setButton:self.btnCocktails withDrawing:SHStyleKitDrawingCocktailIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
     [SHStyleKit setButton:self.btnWine withDrawing:SHStyleKitDrawingWineIcon normalColor:SHStyleKitColorMyTintColor highlightedColor:SHStyleKitColorMyTextColor];
     
+    [SHStyleKit setLabel:self.lblCheckIn textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:self.lblSpots textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:self.lblSpecials textColor:SHStyleKitColorMyTintColor];
     [SHStyleKit setLabel:self.lblBeer textColor:SHStyleKitColorMyTintColor];
@@ -61,6 +65,12 @@
 
 #pragma mark - User Actions
 #pragma mark -
+
+- (IBAction)checkInButtonTapped:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(homeNavigationViewController:checkInButtonTapped:)]) {
+        [self.delegate homeNavigationViewController:self checkInButtonTapped:sender];
+    }
+}
 
 - (IBAction)spotsButtonTapped:(id)sender {
     if ([self.delegate respondsToSelector:@selector(homeNavigationViewController:spotsButtonTapped:)]) {

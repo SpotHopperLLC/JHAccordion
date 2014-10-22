@@ -11,6 +11,7 @@
 #import "ClientSessionManager.h"
 #import "ErrorModel.h"
 #import "SpotModel.h"
+#import "ImageModel.h"
 
 #import "Tracker.h"
 
@@ -35,8 +36,9 @@
              @"like_count" : @"likeCount",
              @"start_time" : @"startTimeString",
              @"duration_minutes" : @"TimeInterval:duration",
-             @"links.spot" : @"spot"
-            };
+             @"links.spot" : @"spot",
+             @"links.images" : @"images"
+             };
 }
 
 #pragma mark - Calculated Getters
@@ -187,6 +189,9 @@
     NSDateComponents *components = [calendar components:units fromDate:date];
     
     NSUInteger adjustedHour = components.hour > 12 ? components.hour - 12 : components.hour;
+    if (!adjustedHour) {
+        adjustedHour = 12;
+    }
     
     if (components.minute == 0) {
         NSString *ampm = components.hour < 12 ? @"AM" : @"PM";

@@ -64,4 +64,8 @@
 
 #endif
 
+- (void)prepareForInterfaceBuilder {
+    [self drawButtonImage];
+}
+
 @end

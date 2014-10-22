@@ -70,5 +70,4 @@
     return [[NSBundle mainBundle] infoDictionary][@"SpotHopperSettings"][@"CrashlyticsKey"];
 }
 
-
 @end

@@ -16,6 +16,9 @@
 
 @property (weak, nonatomic) id<SHBaseCollectionViewManagerDelegate> delegate;
 
+@property (assign, nonatomic) NSUInteger currentIndex;
+@property (readonly, nonatomic) NSUInteger itemCount;
+
 - (void)addTableManager:(SHCollectionViewTableManager *)tableManager forIndexPath:(NSIndexPath *)indexPath;
 
 - (void)removeTableManagerForIndexPath:(NSIndexPath *)indexPath;
@@ -32,7 +35,6 @@
 - (UIImageView *)imageViewInView:(UIView *)view withTag:(NSUInteger)tag;
 
 - (NSIndexPath *)indexPathForCurrentItemInCollectionView:(UICollectionView *)collectionView;
-
 - (UITableView *)embedTableViewInSuperView:(UIView *)superview;
 
 @end

@@ -20,8 +20,8 @@ PODS:
   - AFNetworking/UIKit (2.4.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - BitlyForiOS (0.0.3):
-    - AFNetworking (~> 2.0)
+  - BitlyForiOS (1.1.0):
+    - AFNetworking (~> 2.4)
   - BlocksKit (2.2.5):
     - BlocksKit/All
   - BlocksKit/All (2.2.5):
@@ -37,24 +37,23 @@ PODS:
   - BlocksKit/UIKit (2.2.5):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
-  - Bolts (1.1.2)
+  - Bolts (1.1.3)
   - CrashlyticsFramework (2.2.4)
-  - Facebook-iOS-SDK (3.18.0):
-    - Bolts
+  - Facebook-iOS-SDK (3.19.0):
+    - Bolts (~> 1.0)
   - JHAccordion (0.1.0)
   - JHAutoCompleteTextField (0.1.0)
   - JHSidebar (0.1.2)
   - JSONAPI (0.2.0)
   - JTSReachability (1.1.0)
   - MBProgressHUD (0.8)
-  - Mixpanel (2.5.3)
-  - Parse-iOS-SDK (1.2.21):
-    - Bolts
-    - Facebook-iOS-SDK (~> 3.7)
+  - Mixpanel (2.5.4)
+  - Parse (1.4.1):
+    - Bolts (~> 1.1.2)
   - PhotoZoom (0.0.2)
   - Promises (0.1.2)
-  - Reveal-iOS-SDK (1.0.5)
-  - STTwitter (0.1.4)
+  - Reveal-iOS-SDK (1.0.6)
+  - STTwitter (0.1.5)
   - SVPulsingAnnotationView (0.3.0)
   - TTTAttributedLabel (1.10.1)
   - UIImage+BlurredFrame (0.0.4)
@@ -62,7 +61,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 2.4)
-  - BitlyForiOS (from `https://github.com/brennanMKE/BitlyForiOS.git`, tag `0.0.3`)
+  - BitlyForiOS (from `https://github.com/brennanMKE/BitlyForiOS.git`, tag `1.1.0`)
   - BlocksKit (~> 2.2.0)
   - CrashlyticsFramework (~> 2.2)
   - Facebook-iOS-SDK (~> 3.0)
@@ -73,7 +72,7 @@ DEPENDENCIES:
   - JTSReachability (from `http://github.com/brennanMKE/JTSReachability.git`, tag `1.1.0`)
   - MBProgressHUD (~> 0.8.0)
   - Mixpanel (~> 2.5)
-  - Parse-iOS-SDK (~> 1.2.19)
+  - Parse (~> 1.4)
   - PhotoZoom (~> 0.0)
   - Promises (from `http://github.com/joshdholtz/ios-promises.git`)
   - Reveal-iOS-SDK
@@ -86,7 +85,7 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   BitlyForiOS:
     :git: https://github.com/brennanMKE/BitlyForiOS.git
-    :tag: 0.0.3
+    :tag: 1.1.0
   JHAccordion:
     :git: https://github.com/SpotHopperLLC/JHAccordion.git
     :tag: SpotHopper-v2
@@ -105,26 +104,26 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
-  BitlyForiOS: c6eb9b297cb503757a616fc201b3362fb857e8b4
+  BitlyForiOS: b31acbdc416e5d19e91fd1f75190b6235292d534
   BlocksKit: 4439e7f30a9f90743462ca63545a15c1f4304cef
-  Bolts: 2635e8698a630774689441047f3465d78c48d485
+  Bolts: 3db0a875235e0c9042b013af13af0f00f79b102c
   CrashlyticsFramework: 0c28a2c07a51b7691e6668b83824b0b0be77f307
-  Facebook-iOS-SDK: fa12c51cc57bfb6f92e47793c9d4d2c65bc92741
+  Facebook-iOS-SDK: cb7d74759d0b1ba546e6e6f1dde407b0d4e448d6
   JHAccordion: 4f0337990465b25f8de5ed304609fa9362281db0
   JHAutoCompleteTextField: 1ca69c82441d9b5bf474e10d36585247030f7594
   JHSidebar: 8305caa8641e862994378ee3d61370c79e6b5a07
   JSONAPI: cb581ae10fb26b0d5b421ebe1a447946772c0115
   JTSReachability: 68c4706858c216b24097242d9880ff52e4749dd3
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
-  Mixpanel: 708ec9a6ee6e741f7db107831e18b2fc2e7531f1
-  Parse-iOS-SDK: 3781eeb56fa6b30d4feee97ee0d22595c07d6c70
+  Mixpanel: 87167a0b0a74f11f0ee3787f291357494730617c
+  Parse: db1a09c832b7509edcc88a65dc07229f5e578c73
   PhotoZoom: 52b044c8086589e85415718402df6c4b5f411cb1
   Promises: c9d4e849f307a53b1b8714c64ff4b6e8695b24e1
-  Reveal-iOS-SDK: d4b2f4c20d5b823b7f8b88250fe1b71cecd424a7
-  STTwitter: 809f63f856341fdd103fbc6d9e4818d48a91be0c
+  Reveal-iOS-SDK: 74a39b426dbc915962704ed24f43ee32ae7797f9
+  STTwitter: 60f28af91d622b9a3f74f28cd021413277d413bb
   SVPulsingAnnotationView: 92364bec02160f481d1b603afc904183d385c3e6
   TTTAttributedLabel: 94bb04f1e005616002dd2cee0262a0082e533627
   UIImage+BlurredFrame: 0c38f5760d72125c47d16001a88faaac573bd35d
   UIView-Autolayout: 7c05eb666738eba682f686c2da236578177e2ebb
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.34.2

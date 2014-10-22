@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class SpotModel, SpecialModel, DrinkModel, ImageModel;
+@class SpotModel, SpecialModel, DrinkModel, ImageModel, CheckInModel;
 
 @interface SHAppUtil : NSObject
 
@@ -22,6 +22,19 @@
 - (void)shareSpot:(SpotModel *)spot withViewController:(UIViewController *)vc;
 
 - (void)shareDrink:(DrinkModel *)drink withViewController:(UIViewController *)vc;
+
+- (void)shareCheckin:(CheckInModel *)checkin withViewController:(UIViewController *)vc;
+
+#pragma mark - Parse
+#pragma mark -
+
+- (void)updateParse;
+
+#pragma mark - Facebook
+#pragma mark -
+
+- (void)ensureFacebookGrantedPermissions:(NSArray *)permissionsNeeded withCompletionBlock:(void (^)(BOOL success, NSError *error))completionBlock;
+- (void)fetchFacebookDetailsWithCompletionBlock:(void (^)(BOOL success, NSError *error))completionBlock;
 
 #pragma mark - Text Height
 #pragma mark -

@@ -72,7 +72,7 @@
     Deferred *deferred = [Deferred deferred];
     
     // Logs current user out
-    [[ClientSessionManager sharedClient] logout];
+    //[[ClientSessionManager sharedClient] logout];
     
     [[ClientSessionManager sharedClient] POST:@"/api/sessions" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -90,13 +90,17 @@
         else if (operation.response.statusCode == 200) {
             UserModel *userModel = [jsonApi resourceForKey:@"users"];
             [[ClientSessionManager sharedClient] login:operation.response user:userModel];
-            successBlock(userModel, operation.response);
+            if (successBlock) {
+                successBlock(userModel, operation.response);
+            }
             
             // Resolves promise
             [deferred resolve];
         } else {
             ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
-            failureBlock(errorModel);
+            if (failureBlock) {
+                failureBlock(errorModel);
+            }
             
             // Rejects promise
             [deferred rejectWith:errorModel];
@@ -409,6 +413,63 @@
     return user;
 }
 
++ (void)updateUser:(UserModel *)user success:(void(^)(UserModel *updatedUser))successBlock failure:(void(^)(ErrorModel* errorModel))failureBlock {
+    if (!user || !successBlock || !failureBlock) {
+        return;
+    }
+    
+    NSMutableDictionary *params  = @{
+                                 kUserModelParamName : user.name.length ? user.name : @"",
+                                 kUserModelParamEmail : user.email.length ? user.email : @"",
+                                 kUserModelParamGender : user.gender.length ? user.gender : [NSNull null]
+                              }.mutableCopy;
+
+    if (user.birthday) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        [params setObject:[dateFormatter stringFromDate:user.birthday] forKey:kUserModelParamBirthday];
+    }
+    
+    NSString *URLString = [NSString stringWithFormat:@"/api/users/%ld", (long)[user.ID integerValue]];
+    
+    [[ClientSessionManager sharedClient] PUT:URLString parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            successBlock(nil);
+        }
+        else if (operation.response.statusCode == 200) {
+            UserModel *userModel = [jsonApi resourceForKey:@"users"];
+            successBlock(userModel);
+        } else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DebugLog(@"Error: %@", error);
+        ErrorModel *errorModel = [[ErrorModel alloc] init];
+        errorModel.error = error.localizedDescription;
+        errorModel.human = error.localizedDescription;
+        failureBlock(errorModel);
+    }];
+}
+
++ (Promise *)updateUser:(UserModel *)user {
+    Deferred *deferred = [Deferred deferred];
+    
+    [self updateUser:user success:^(UserModel *updatedUser) {
+        // Resolves promise
+        [deferred resolveWith:updatedUser];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+
+    return deferred.promise;
+}
+
 #pragma mark - Mapping
 
 - (NSDictionary *)mapKeysToProperties {
@@ -436,8 +497,7 @@
                                                                                     @"role" : self.role != nil ? self.role : @"",
                                                                                     @"name" : self.name != nil ? self.name : @"",
                                                                                     @"facebook_id" : self.facebookId != nil ? self.facebookId : @"",
-                                                                                    @"twitter_id" : self.twitterId != nil ? self.twitterId : @"",
-                                                                                    @"birthday" : self.birthday != nil ? self.birthday : @""
+                                                                                    @"twitter_id" : self.twitterId != nil ? self.twitterId : @""
                                                                                     } options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding];
 }
 

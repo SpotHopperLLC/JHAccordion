@@ -8,6 +8,9 @@
 
 #import "SHSlidersSearchTableViewManager.h"
 
+#import "SHAppConfiguration.h"
+#import "SHAppContext.h"
+
 #import "JHAccordion.h"
 
 #import "SHSlider.h"
@@ -81,7 +84,7 @@
 
 #define kHighestRatedName @"Highest Rated"
 
-#define kCustomSlidersTitle @"Skip"
+#define kCustomSlidersTitle @"Custom Search"
 
 #pragma mark - Class Extension
 #pragma mark -
@@ -1820,8 +1823,8 @@
         }
     }
     
-    CLLocationCoordinate2D coordinate = [self searchCenterCoordinate];
-    CGFloat radius = [self searchRadius];
+    CLLocationCoordinate2D coordinate = [[SHAppContext defaultInstance] mapCoordinate];
+    CGFloat radius = [[SHAppContext defaultInstance] radiusInMiles];
     
     [Tracker trackCreatingSpotList];
     
@@ -1889,9 +1892,8 @@
             }
         }
     }
-    
-    CLLocationCoordinate2D coordinate = [self searchCenterCoordinate];
-    CGFloat radiusInMiles = [self searchRadius];
+
+    CLLocationCoordinate2D coordinate = [[SHAppContext defaultInstance] mapCoordinate];
     
     NSNumber *latitude = nil, *longitude = nil;
     if (CLLocationCoordinate2DIsValid(coordinate)) {
@@ -1915,7 +1917,7 @@
     }
     
     request.coordinate = coordinate;
-    request.radius = radiusInMiles;
+    request.radius = [[SHAppContext defaultInstance] radiusInMiles];
     request.drinkTypeId = drinkTypeID;
     request.drinkSubTypeId = drinkSubTypeID;
     request.baseAlcoholId = baseAlcoholID;
@@ -1987,6 +1989,45 @@
     
     if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerDidChangeSlider:)]) {
         [self.delegate slidersSearchTableViewManagerDidChangeSlider:self];
+    }
+}
+
+- (void)sliderValueDidReset:(SHSlider *)slider {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    NSIndexPath *indexPath = [self indexPathForView:slider inTableView:self.tableView];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    UIButton *starButton = [self buttonInView:cell withTag:kSliderCellStarButton];
+    
+    starButton.selected = FALSE;
+    starButton.hidden = TRUE;
+    
+    SliderModel *sliderModel = [self sliderModelAtIndexPath:indexPath];
+    if (sliderModel) {
+        sliderModel.starred = FALSE;
+    }
+    
+    BOOL anySlidersSet = FALSE;
+    for (SliderModel *slider in self.sliders) {
+        if (slider.value) {
+            anySlidersSet = TRUE;
+            break;
+        }
+    }
+    
+    if (!anySlidersSet) {
+        for (SliderModel *slider in self.advancedSliders) {
+            if (slider.value) {
+                anySlidersSet = TRUE;
+                break;
+            }
+        }
+    }
+    
+    if (!anySlidersSet) {
+        if ([self.delegate respondsToSelector:@selector(slidersSearchTableViewManagerDidClearSliders:)]) {
+            [self.delegate slidersSearchTableViewManagerDidClearSliders:self];
+        }
     }
 }
 

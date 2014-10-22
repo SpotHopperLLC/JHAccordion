@@ -12,8 +12,7 @@
 
 @protocol SHSpotsCollectionViewManagerDelegate;
 
-@class SpotListModel;
-@class SpotModel;
+@class SpotListModel, SpotModel;
 
 @interface SHSpotsCollectionViewManager : SHBaseCollectionViewManager <UICollectionViewDataSource, UICollectionViewDelegate>
 

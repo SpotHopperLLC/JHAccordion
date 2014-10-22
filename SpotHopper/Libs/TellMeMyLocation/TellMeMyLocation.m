@@ -150,7 +150,6 @@ static NSString *_currentMapCenterLocationZip;
 + (void)setCurrentDeviceLocation:(CLLocation *)deviceLocation {
     _currentDeviceLocation = deviceLocation;
     
-
     [[[CLGeocoder alloc] init] reverseGeocodeLocation:deviceLocation completionHandler:^(NSArray *placemarks, NSError *error) {
         if (!error && placemarks.count) {
             CLPlacemark *placemark = placemarks[0];

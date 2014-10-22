@@ -11,11 +11,13 @@
 #import "SHSpotsCollectionViewManager.h"
 #import "SHSpecialsCollectionViewManager.h"
 #import "SHDrinksCollectionViewManager.h"
+#import "SHCheckinCollectionViewManager.h"
 
 @class SpotListModel;
 @class DrinkListModel;
 @class SpotModel;
 @class DrinkModel;
+@class CheckInModel;
 
 @protocol SHMapOverlayCollectionDelegate;
 
@@ -36,6 +38,8 @@
 - (void)displaySingleSpot:(SpotModel *)spot;
 
 - (void)displaySingleDrink:(DrinkModel *)drink;
+
+- (void)displayCheckin:(CheckInModel *)checkin atSpot:(SpotModel *)spot;
 
 - (void)expandedViewWillAppear;
 - (void)expandedViewDidAppear;

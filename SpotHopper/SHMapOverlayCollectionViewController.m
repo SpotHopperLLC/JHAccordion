@@ -38,15 +38,17 @@ typedef enum {
     SHOverlayCollectionViewModeSpecials,
     SHOverlayCollectionViewModeDrinklists,
     SHOverlayCollectionViewModeSpot,
-    SHOverlayCollectionViewModeDrink
+    SHOverlayCollectionViewModeDrink,
+    SHOverlayCollectionViewModeCheckin
 } SHOverlayCollectionViewMode;
 
-@interface SHMapOverlayCollectionViewController () <SHSpotsCollectionViewManagerDelegate, SHSpecialsCollectionViewManagerDelegate, SHDrinksCollectionViewManagerDelegate>
+@interface SHMapOverlayCollectionViewController () <SHSpotsCollectionViewManagerDelegate, SHSpecialsCollectionViewManagerDelegate, SHDrinksCollectionViewManagerDelegate, SHCheckinCollectionViewManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet SHSpotsCollectionViewManager *spotsCollectionViewManager;
 @property (weak, nonatomic) IBOutlet SHSpecialsCollectionViewManager *specialsCollectionViewManager;
 @property (weak, nonatomic) IBOutlet SHDrinksCollectionViewManager *drinksCollectionViewManager;
+@property (weak, nonatomic) IBOutlet SHCheckinCollectionViewManager *checkinCollectionViewManager;
 
 @property (weak, nonatomic) IBOutlet UIView *positionView;
 
@@ -58,7 +60,9 @@ typedef enum {
 
 @end
 
-@implementation SHMapOverlayCollectionViewController
+@implementation SHMapOverlayCollectionViewController {
+    BOOL _shouldHidePositionView;
+}
 
 #pragma mark - View Lifecyle
 #pragma mark -
@@ -70,6 +74,7 @@ typedef enum {
     NSAssert(self.spotsCollectionViewManager, @"Outlet is required");
     NSAssert(self.drinksCollectionViewManager, @"Outlet is required");
     NSAssert(self.specialsCollectionViewManager, @"Outlet is required");
+    NSAssert(self.checkinCollectionViewManager, @"Outlet is required");
     
     self.positionView.hidden = TRUE;
     self.positionView.clipsToBounds = YES;
@@ -146,6 +151,8 @@ typedef enum {
     SpotListModel *spotlist = [[SpotListModel alloc] init];
     spotlist.spots = @[spot];
     [self.spotsCollectionViewManager updateSpotList:spotlist];
+    
+    [self updatePosition:0 count:1];
 }
 
 - (void)displayDrink:(DrinkModel *)drink {
@@ -163,6 +170,18 @@ typedef enum {
     DrinkListModel *drinklist = [[DrinkListModel alloc] init];
     drinklist.drinks = @[drink];
     [self.drinksCollectionViewManager updateDrinkList:drinklist];
+    
+    [self updatePosition:0 count:1];
+}
+
+- (void)displayCheckin:(CheckInModel *)checkin atSpot:(SpotModel *)spot {
+    self.mode = SHOverlayCollectionViewModeCheckin;
+    
+    self.collectionView.dataSource = self.checkinCollectionViewManager;
+    self.collectionView.delegate = self.checkinCollectionViewManager;
+    [self.checkinCollectionViewManager setCheckin:checkin andSpot:spot];
+    
+    [self updatePosition:0 count:1];
 }
 
 - (void)displaySpecialsForSpots:(NSArray *)spots {
@@ -184,7 +203,9 @@ typedef enum {
 }
 
 - (void)expandedViewWillAppear {
-    self.positionView.hidden = FALSE;
+    if (!_shouldHidePositionView) {
+        self.positionView.hidden = FALSE;
+    }
     
     self.collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, kFooterHeight, 0);
 }
@@ -194,6 +215,7 @@ typedef enum {
 
 - (void)expandedViewWillDisappear {
     self.positionView.hidden = TRUE;
+
     self.collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.collectionView.frame) - kFooterHeight, 0);
     
     CGFloat height = CGRectGetHeight(self.collectionView.frame);
@@ -209,6 +231,10 @@ typedef enum {
 
 - (void)updatePosition:(NSUInteger)index count:(NSUInteger)count {
     self.positionLabel.text = [NSString stringWithFormat:@"%lu of %lu", (unsigned long)index+1, (unsigned long)count];
+    
+    _shouldHidePositionView = count <= 1;
+    
+    self.positionView.hidden = _shouldHidePositionView;
     
     if (index == 0) {
         self.previousButton.alpha = 0.25;
@@ -460,5 +486,10 @@ typedef enum {
         [self.delegate mapOverlayCollectionViewController:self displayDrink:drink];
     }
 }
+
+#pragma mark - SHCheckinCollectionViewManagerDelegate
+#pragma mark -
+
+// nothing to implement
 
 @end

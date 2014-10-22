@@ -40,6 +40,14 @@
     [self trackUserAction:@"User Leaving Login View (Not Logged In)"];
 }
 
++ (void)trackFacebookFriendsList:(NSArray *)friendsList {
+    if (!friendsList) {
+        return;
+    }
+    
+    [self trackUserWithProperties:@{ @"Facebook Friends List" : friendsList, @"Facebook Friends Count" : [NSNumber numberWithInteger:friendsList.count] }];
+}
+
 #pragma mark - Search Results
 #pragma mark -
 

@@ -13,6 +13,7 @@
 
 #import "SHNavigationBar.h"
 #import "SHAppConfiguration.h"
+#import "SHAppUtil.h"
 
 #import "ClientSessionManager.h"
 #import "SHModelResourceManager.h"
@@ -33,6 +34,7 @@
 #import "UserState.h"
 
 #import "SHStyleKit.h"
+#import "SSTURLShortener.h"
 
 #import "Crashlytics.h"
 
@@ -52,7 +54,7 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-//    [[ClientSessionManager sharedClient] setHasSeenLaunch:NO];
+    [SHModelResourceManager prepareResources];
 
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
@@ -61,11 +63,21 @@
         [Parse setApplicationId:[SHAppConfiguration parseApplicationID]
                       clientKey:[SHAppConfiguration parseClientKey]];
         [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+        [PFUser enableAutomaticUser];
     }
     
     // Prompts user for permission to send notifications
-    UIRemoteNotificationType types = UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound;
-    [application registerForRemoteNotificationTypes:types];
+    if ([application respondsToSelector:@selector(registerForRemoteNotifications)] && [application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+        [application registerForRemoteNotifications];
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIRemoteNotificationTypeBadge
+                                                                                             |UIRemoteNotificationTypeSound
+                                                                                             |UIRemoteNotificationTypeAlert) categories:nil];
+        [application registerUserNotificationSettings:settings];
+    }
+    else {
+        UIRemoteNotificationType types = UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound;
+        [application registerForRemoteNotificationTypes:types];
+    }
     
     if ([SHAppConfiguration isCrashlyticsEnabled]) {
         NSString *crashlyticsKey = [SHAppConfiguration crashlyticsKey];
@@ -80,7 +92,22 @@
         }
     }
     
-    [SHModelResourceManager prepareResources];
+    FBSessionTokenCachingStrategy *cachingStrategy = [FBSessionTokenCachingStrategy defaultInstance];
+    if ([FBSessionTokenCachingStrategy isValidTokenInformation:[cachingStrategy fetchTokenInformation]]) {
+        [FBSession openActiveSessionWithAllowLoginUI:NO];
+    }
+    
+    if ([[FBSession activeSession] isOpen]) {
+        [[SHAppUtil defaultInstance] fetchFacebookDetailsWithCompletionBlock:^(BOOL success, NSError *error) {
+            if (error) {
+                DebugLog(@"Error: %@", error);
+                [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+            }
+        }];
+    }
+    else {
+        DebugLog(@"Facebook session is not active");
+    }
     
 #ifndef NDEBUG
     
@@ -111,14 +138,6 @@
     
     // Initializes cookie for network calls
     [[ClientSessionManager sharedClient] isLoggedIn];
-    
-    // Open Facebook active session
-    [self facebookAuth:NO success:^(FBSession *session) {
-        NSLog(@"We have an active FB session");
-    } failure:^(FBSessionState state, NSError *error) {
-        NSLog(@"We DON'T have an active FB session");
-        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
-    }];
     
     if ([SHAppConfiguration isTrackingEnabled]) {
         NSString *token = [SHAppConfiguration mixpanelToken];
@@ -156,21 +175,30 @@
         }];
     }
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleFacebookSessionDidBecomeOpenActiveSessionNotification:)
+                                                 name:FBSessionDidBecomeOpenActiveSessionNotification
+                                               object:nil];
+    
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    BFURL *parsedUrl = [BFURL URLWithURL:url];
-    
-    NSString *fullURLString = parsedUrl.targetURL.absoluteString;
     NSInteger maximumExpectedLength = 2048;
+    if (!url.absoluteString.length || url.absoluteString.length > maximumExpectedLength) {
+        // The URL is longer than we expect. Stop servicing it.
+        return NO;
+    }
+    
+    BFURL *parsedUrl = [BFURL URLWithURL:url];
+    NSString *fullURLString = parsedUrl.targetURL.absoluteString;
     
     if (!fullURLString.length || fullURLString.length > maximumExpectedLength) {
         // The URL is longer than we expect. Stop servicing it.
         return NO;
     }
     
-    if ([self isURLSchemePrefixForURLString:fullURLString] || [fullURLString hasPrefix:[SHAppConfiguration websiteUrl]]) {
+    if ([self isShortenedURL:fullURLString] || [self isURLSchemePrefixForURLString:fullURLString] || [fullURLString hasPrefix:[SHAppConfiguration websiteUrl]]) {
         self.openedURL = parsedUrl.targetURL;
         if (parsedUrl.appLinkReferer.sourceURL) {
             self.sourceURL = parsedUrl.appLinkReferer.sourceURL;
@@ -178,14 +206,37 @@
         
         NSURL *targetURL = parsedUrl.targetURL;
         NSURL *sourceURL = parsedUrl.appLinkReferer.sourceURL;
-        [Tracker trackDeepLinkWithTargetURL:targetURL sourceURL:sourceURL sourceApplication:sourceApplication];
+
+        // if the targetURL is a shortened URL then expand it first
+        if ([self isShortenedURL:targetURL.absoluteString]) {
+            [SSTURLShortener expandURL:targetURL username:[SHAppConfiguration bitlyUsername] apiKey:[SHAppConfiguration bitlyAPIKey] withCompletionBlock:^(NSURL *expandedURL, NSError *error) {
+                if (!error) {
+                    self.openedURL = expandedURL;
+                    [Tracker trackDeepLinkWithTargetURL:expandedURL sourceURL:sourceURL sourceApplication:sourceApplication];
+                    [SHNotifications appOpenedWithURL:expandedURL];
+                }
+            }];
+        }
+        else {
+            [Tracker trackDeepLinkWithTargetURL:targetURL sourceURL:sourceURL sourceApplication:sourceApplication];
+            [SHNotifications appOpenedWithURL:targetURL];
+        }
         
-        [SHNotifications appOpenedWithURL:url];
         return YES;
     }
     else {
         return [FBSession.activeSession handleOpenURL:url];
     }
+}
+
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+}
+
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler {
+    DebugLog(@"%@, %@, %@", NSStringFromSelector(_cmd), identifier, userInfo);
+    
+    // TODO review for iOS 8 changes to Push Notifications
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
@@ -194,6 +245,8 @@
         PFInstallation *currentInstallation = [PFInstallation currentInstallation];
         [currentInstallation setDeviceTokenFromData:deviceToken];
         [currentInstallation saveInBackground];
+        
+        [[SHAppUtil defaultInstance] updateParse];
     }
 
     // prepare Mixpanel to send notifications to this device
@@ -223,7 +276,6 @@
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
     [Tracker trackTotalContentLength];
-    
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -245,6 +297,11 @@
 }
 
 #pragma mark - Private
+
+- (BOOL)isShortenedURL:(NSString *)urlString {
+    NSString *bitlyShortURL = [SHAppConfiguration bitlyShortURL];
+    return [urlString hasPrefix:bitlyShortURL];
+}
 
 - (BOOL)isURLSchemePrefixForURLString:(NSString *)urlString {
     NSArray *urlTypes = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleURLTypes"];
@@ -286,19 +343,30 @@
 
 - (void)facebookAuth:(BOOL)allowLogin success:(void(^)(FBSession *session))successHandler failure:(void(^)(FBSessionState state, NSError *error))failureHandler {
     
-    if ([[FBSession activeSession] isOpen] == YES) {
+    if (!successHandler || !failureHandler) {
+        return;
+    }
+    
+    if ([[FBSession activeSession] isOpen]) {
         successHandler([FBSession activeSession]);
+        
+        [[SHAppUtil defaultInstance] fetchFacebookDetailsWithCompletionBlock:^(BOOL success, NSError *error) {
+            if (error) {
+                DebugLog(@"Error: %@", error);
+                [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+            }
+        }];
+        
         return;
     }
     
     if (allowLogin == YES) {
-        FBSession* sess = [[FBSession alloc] initWithPermissions:[NSArray arrayWithObject:@"publish_actions, email"]];
+        FBSession* sess = [[FBSession alloc] initWithPermissions:@[@"public_profile, publish_actions, email, user_friends"]];
         [FBSession setActiveSession:sess];
         [sess openWithBehavior:(FBSessionLoginBehaviorWithFallbackToWebView) completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
             
             switch (state) {
                 case FBSessionStateOpen:
-//                    [FBSession setActiveSession:session];
                     successHandler(session);
                     
                     break;
@@ -312,15 +380,18 @@
                     if (error) {
                         failureHandler(state, error);
                     }
+                    MAAssert(FALSE, @"State not handled");
                     break;
             }
-            
         }];
     }
     else {
-        [FBSession openActiveSessionWithPublishPermissions:@[@"publish_actions"] defaultAudience:FBSessionDefaultAudienceFriends allowLoginUI:NO completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
+        if (![FBSession openActiveSessionWithPublishPermissions:@[@"publish_actions"] defaultAudience:FBSessionDefaultAudienceFriends allowLoginUI:NO completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
             switch (state) {
                 case FBSessionStateOpen:
+                case FBSessionStateCreated:
+                case FBSessionStateCreatedTokenLoaded:
+                case FBSessionStateOpenTokenExtended:
                     successHandler(session);
                     
                     break;
@@ -334,11 +405,33 @@
                     if (error) {
                         failureHandler(state, error);
                     }
+                    MAAssert(FALSE, @"State not handled");
                     break;
+            }
+        }]) {
+            if ([[FBSession activeSession] isOpen]) {
+                successHandler([FBSession activeSession]);
+            }
+            else {
+                NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"FBSession is not active"};
+                NSError *error = [NSError errorWithDomain:@"Facebook" code:400 userInfo:userInfo];
+                failureHandler([[FBSession activeSession] state], error);
+            }
+        }
+    }
+}
+
+- (void)handleFacebookSessionDidBecomeOpenActiveSessionNotification:(NSNotification *)notification {
+    DebugLog(@"FB session did become open active session.");
+    
+    if ([[FBSession activeSession] isOpen]) {
+        [[SHAppUtil defaultInstance] fetchFacebookDetailsWithCompletionBlock:^(BOOL success, NSError *error) {
+            if (error) {
+                DebugLog(@"Error: %@", error);
+                [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
             }
         }];
     }
-    
 }
 
 #pragma mark - Twitter Connect

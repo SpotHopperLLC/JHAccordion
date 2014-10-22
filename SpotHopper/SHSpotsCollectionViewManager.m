@@ -64,7 +64,6 @@
 
 @implementation SHSpotsCollectionViewManager {
     BOOL _isUpdatingData;
-    NSUInteger _currentIndex;
 }
 
 #pragma mark - Initialization
@@ -81,6 +80,10 @@
 #pragma mark - Public
 #pragma mark -
 
+- (NSUInteger)itemCount {
+    return self.spotList.spots.count;
+}
+
 - (void)updateSpotList:(SpotListModel *)spotList {
     NSAssert(self.delegate, @"Delegate must be defined");
 
@@ -94,10 +97,10 @@
             self.spotList = spotList;
             [self.collectionView reloadData];
             self.collectionView.contentOffset = CGPointMake(0, 0);
-            _currentIndex = 0;
+            self.currentIndex = 0;
             _isUpdatingData = FALSE;
             
-            [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:_currentIndex] position:_currentIndex+1 isSpecials:FALSE];
+            [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:self.currentIndex] position:self.currentIndex+1 isSpecials:FALSE];
             
             for (SpotModel *spot in spotList.spots) {
                 [ImageUtil preloadImageModels:spot.images];
@@ -107,9 +110,9 @@
 }
 
 - (void)changeIndex:(NSUInteger)index {
-    if (index != _currentIndex && index < self.spotList.spots.count) {
-        _currentIndex = index;
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_currentIndex inSection:0];
+    if (index != self.currentIndex && index < self.spotList.spots.count) {
+        self.currentIndex = index;
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.currentIndex inSection:0];
         [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:TRUE];
         [self reportedChangedIndex];
     }
@@ -160,14 +163,14 @@
 }
 
 - (void)goPrevious {
-    if ([self hasPrevious] && _currentIndex > 0) {
-        [self changeIndex:_currentIndex - 1];
+    if ([self hasPrevious] && self.currentIndex > 0) {
+        [self changeIndex:self.currentIndex - 1];
     }
 }
 
 - (void)goNext {
     if ([self hasNext]) {
-        [self changeIndex:_currentIndex+1];
+        [self changeIndex:self.currentIndex+1];
     }
 }
 
@@ -239,46 +242,11 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    LOG_FRAME(@"collection view", collectionView.frame);
     return CGSizeMake(CGRectGetWidth(collectionView.frame), CGRectGetHeight(collectionView.frame));
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     [self removeTableManagerForIndexPath:indexPath];
-}
-
-#pragma mark - UIScrollViewDelegate
-#pragma mark -
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    if (scrollView == self.collectionView) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            NSIndexPath *indexPath = [self indexPathForCurrentItemInCollectionView:self.collectionView];
-            if (indexPath.item != _currentIndex) {
-                _currentIndex = indexPath.item;
-                [self reportedChangedIndex];
-            }
-        });
-    }
-}
-
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
-    // if the velocity is "slow" it should just go the next cell, otherwise let it go to the next paged position
-    // positive x is moving right, negative x is moving left
-    // slow is < 0.2.0
-    
-    CGFloat width = CGRectGetWidth(self.collectionView.frame);
-    NSUInteger currentIndex = MAX(MIN(round(self.collectionView.contentOffset.x / CGRectGetWidth(self.collectionView.frame)), self.spotList.spots.count - 1), 0);
-    
-    if (fabsf(velocity.x) > 2.0) {
-        CGFloat x = targetContentOffset->x;
-        x = roundf(x / width) * width;
-        targetContentOffset->x = x;
-    }
-    else {
-        NSUInteger targetIndex = velocity.x > 0.0 ? MIN(currentIndex + 1, self.spotList.spots.count - 1) : MAX(currentIndex - 1, 0);
-        targetContentOffset->x = targetIndex * width;
-    }
 }
 
 #pragma mark - Base Overrides
@@ -370,10 +338,10 @@
 #pragma mark -
 
 - (void)reportedChangedIndex {
-    [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:_currentIndex] position:_currentIndex+1 isSpecials:FALSE];
+    [Tracker trackListViewDidDisplaySpot:[self spotAtIndex:self.currentIndex] position:self.currentIndex+1 isSpecials:FALSE];
 
     if ([self.delegate respondsToSelector:@selector(spotsCollectionViewManager:didChangeToSpotAtIndex:count:)]) {
-        [self.delegate spotsCollectionViewManager:self didChangeToSpotAtIndex:_currentIndex count:self.spotList.spots.count];
+        [self.delegate spotsCollectionViewManager:self didChangeToSpotAtIndex:self.currentIndex count:self.spotList.spots.count];
     }
 }
 

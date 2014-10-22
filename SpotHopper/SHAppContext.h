@@ -14,17 +14,27 @@
 #import "DrinkListRequest.h"
 #import "SpotListModel.h"
 #import "DrinkListModel.h"
+#import "CheckInModel.h"
 
 @interface SHAppContext : NSObject
 
 @property (assign, nonatomic) SHMode mode;
 
-@property (strong, nonatomic) SpotListRequest *spotlistRequest;
-@property (strong, nonatomic) DrinkListRequest *drinkListRequest;
-@property (strong, nonatomic) SpotListModel *spotlist;
-@property (strong, nonatomic) DrinkListModel *drinklist;
-@property (assign, nonatomic) CLLocationCoordinate2D coordinate;
-@property (assign, nonatomic) CLLocationDistance radius;
+@property (readonly, nonatomic) SpotListRequest *spotlistRequest;
+@property (readonly, nonatomic) DrinkListRequest *drinkListRequest;
+@property (readonly, nonatomic) SpotListModel *spotlist;
+@property (readonly, nonatomic) DrinkListModel *drinklist;
+@property (readonly, nonatomic) CLLocationCoordinate2D mapCoordinate;
+@property (readonly, nonatomic) CLLocationDistance radius;
+@property (readonly, nonatomic) CGFloat radiusInMiles;
+
+@property (readonly, nonatomic) CLLocation *mapLocation;
+
+@property (readonly, nonatomic) CLLocation *deviceLocation;
+@property (readonly, nonatomic) CheckInModel *checkin;
+
+@property (readonly, nonatomic) NSString *activityName;
+@property (readonly, nonatomic) NSDate *activityStartDate;
 
 + (instancetype)defaultInstance;
 
@@ -34,6 +44,14 @@
 
 - (void)changeContextToMode:(SHMode)mode drinklistRequest:(DrinkListRequest *)drinklistRequest drinklist:(DrinkListModel *)drinklist;
 
-- (void)changeCoordinate:(CLLocationCoordinate2D)coordinate andRadius:(CLLocationDistance)radius;
+- (void)changeMapCoordinate:(CLLocationCoordinate2D)coordinate andRadius:(CLLocationDistance)radius;
+
+- (void)changeDeviceLocation:(CLLocation *)deviceLocation;
+
+- (void)changeCheckin:(CheckInModel *)checkin;
+
+- (void)startActivity:(NSString *)activityName;
+
+- (void)endActivity:(NSString *)activityName;
 
 @end

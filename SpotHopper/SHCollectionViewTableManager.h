@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class SpotModel, DrinkModel;
+@class SpotModel, DrinkModel, CheckInModel;
 
 @protocol SHCollectionViewTableManagerDelegate;
 
@@ -21,6 +21,8 @@
 - (void)manageTableView:(UITableView *)tableView forSpot:(SpotModel *)spot;
 
 - (void)manageTableView:(UITableView *)tableView forDrink:(DrinkModel *)drink;
+
+- (void)manageTableView:(UITableView *)tableView forCheckin:(CheckInModel *)checkin atSpot:(SpotModel *)spot;
 
 - (void)prepareForReuse;
 
