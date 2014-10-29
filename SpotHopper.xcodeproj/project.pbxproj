@@ -970,6 +970,10 @@
 		267514411A006EFA00A7D0BB /* UIImageView+Haneke.m in Sources */ = {isa = PBXBuildFile; fileRef = 267514331A006EFA00A7D0BB /* UIImageView+Haneke.m */; };
 		267514421A006EFA00A7D0BB /* UIImageView+Haneke.m in Sources */ = {isa = PBXBuildFile; fileRef = 267514331A006EFA00A7D0BB /* UIImageView+Haneke.m */; };
 		267514431A006EFA00A7D0BB /* UIImageView+Haneke.m in Sources */ = {isa = PBXBuildFile; fileRef = 267514331A006EFA00A7D0BB /* UIImageView+Haneke.m */; };
+		267514461A00748000A7D0BB /* InstantMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 267514441A00748000A7D0BB /* InstantMenu.storyboard */; };
+		267514471A00748000A7D0BB /* InstantMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 267514441A00748000A7D0BB /* InstantMenu.storyboard */; };
+		267514481A00748000A7D0BB /* InstantMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 267514441A00748000A7D0BB /* InstantMenu.storyboard */; };
+		267514491A00748000A7D0BB /* InstantMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 267514441A00748000A7D0BB /* InstantMenu.storyboard */; };
 		267C5E3A1908B7CC00D60EB5 /* ImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* ImageUtil.m */; };
 		267C5E3B1908B7CC00D60EB5 /* ImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* ImageUtil.m */; };
 		267C5E3D1908B7CC00D60EB5 /* ImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* ImageUtil.m */; };
@@ -1968,6 +1972,7 @@
 		2675142F1A006EFA00A7D0BB /* HNKCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HNKCache.m; sourceTree = "<group>"; };
 		267514321A006EFA00A7D0BB /* UIImageView+Haneke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Haneke.h"; sourceTree = "<group>"; };
 		267514331A006EFA00A7D0BB /* UIImageView+Haneke.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Haneke.m"; sourceTree = "<group>"; };
+		267514451A00748000A7D0BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MenuAdmin/Base.lproj/InstantMenu.storyboard; sourceTree = "<group>"; };
 		267C5E381908B7CC00D60EB5 /* ImageUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageUtil.h; sourceTree = "<group>"; };
 		267C5E391908B7CC00D60EB5 /* ImageUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageUtil.m; sourceTree = "<group>"; };
 		267D78D418F4A8DD00E95D54 /* SHButtonLatoBold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoBold.h; sourceTree = "<group>"; };
@@ -3247,6 +3252,7 @@
 		267513AE1A00614C00A7D0BB /* Instant Menu */ = {
 			isa = PBXGroup;
 			children = (
+				267514441A00748000A7D0BB /* InstantMenu.storyboard */,
 				267513AF1A0061AF00A7D0BB /* View Controllers */,
 				267513BC1A00653700A7D0BB /* Misc */,
 				267514251A006D9700A7D0BB /* Categories */,
@@ -3788,6 +3794,7 @@
 				039ABBE218CE326C00B84AE6 /* SpotAnnotationCalloutView.xib in Resources */,
 				269E5CE619BA5D5200A228C7 /* table_footer_background.png in Resources */,
 				03CA72EC18803F7F00815284 /* 51-power.png in Resources */,
+				267514461A00748000A7D0BB /* InstantMenu.storyboard in Resources */,
 				2659EEF719DE453D0056C102 /* btn_context_checkin.png in Resources */,
 				03CA7295187C406200815284 /* ReviewHeaderDrinkView.xib in Resources */,
 				03F2D92B1871DC1400C69576 /* Lato-HairlineItalic.ttf in Resources */,
@@ -4038,6 +4045,7 @@
 				269E5D6519BA70A800A228C7 /* btn_share_text.png in Resources */,
 				03CAC11118E7716400FAC5F5 /* Main.storyboard in Resources */,
 				03CAC11318E7716400FAC5F5 /* btn_home_add_reveiew@2x.png in Resources */,
+				267514491A00748000A7D0BB /* InstantMenu.storyboard in Resources */,
 				03CAC11418E7716400FAC5F5 /* ReviewCellView.xib in Resources */,
 				03CAC11618E7716400FAC5F5 /* cocktail_placeholder.png in Resources */,
 				03CAC11B18E7716400FAC5F5 /* img_expand_east.png in Resources */,
@@ -4184,6 +4192,7 @@
 				03F4E97518CA34260056EAA9 /* ReviewHeaderDrinkView.xib in Resources */,
 				269E5CE719BA5D5200A228C7 /* table_footer_background.png in Resources */,
 				26E6A0B1192317C200BCA5C6 /* MyriadPro-Bold.ttf in Resources */,
+				267514471A00748000A7D0BB /* InstantMenu.storyboard in Resources */,
 				2659EEF819DE453D0056C102 /* btn_context_checkin.png in Resources */,
 				03F4E97818CA34260056EAA9 /* Lato-HairlineItalic.ttf in Resources */,
 				03F4E97918CA34260056EAA9 /* logo_spothopper@2x.png in Resources */,
@@ -4390,6 +4399,7 @@
 				267E06481922CC48004457B4 /* app_background.png in Resources */,
 				26A7E3691922CE8000FF7B88 /* SpotHopper.storyboard in Resources */,
 				267E064C1922CC48004457B4 /* icon_arrow_shadow@2x.png in Resources */,
+				267514481A00748000A7D0BB /* InstantMenu.storyboard in Resources */,
 				269E5CF819BA5D5200A228C7 /* table_header_background.png in Resources */,
 				267E064E1922CC48004457B4 /* AutoCompleteCellView.xib in Resources */,
 				269E5D7819BA70A800A228C7 /* btn_share_unselected@2x.png in Resources */,
@@ -5470,6 +5480,14 @@
 				0386648F186D352500985CEC /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		267514441A00748000A7D0BB /* InstantMenu.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				267514451A00748000A7D0BB /* Base */,
+			);
+			name = InstantMenu.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

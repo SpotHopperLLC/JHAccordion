@@ -68,10 +68,6 @@
 
 #define kNumberOfCells 2
 
-//NSString* const DrinkProfileToPhotoViewer = @"DrinkProfileToPhotoViewer";
-//NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
-//NSString* const UnwindFromDrinkProfileToHomeMapFindSimilar = @"unwindFromDrinkProfileToHomeMapFindSimilar";
-
 @interface SHMenuAdminDrinkProfileViewController () <UITableViewDataSource, UITableViewDelegate, SHImageModelCollectionDelegate /*, SHDrinkDetailFooterNavigationDelegate */>
 
 @property (strong, nonatomic) IBOutlet SHImageModelCollectionViewManager *imageModelCollectionViewManager;

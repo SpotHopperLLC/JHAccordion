@@ -5,10 +5,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <scenes>
-        <!--Menu Admin Home View Controller-->
+        <!--Home-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController storyboardIdentifier="SHHomeMenuAdminViewController" id="vXZ-lx-hvc" customClass="SHMenuAdminHomeViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SHHomeMenuAdminViewController" id="vXZ-lx-hvc" userLabel="Home" customClass="SHMenuAdminHomeViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
@@ -701,10 +701,10 @@
             </objects>
             <point key="canvasLocation" x="-2262" y="287"/>
         </scene>
-        <!--Menu Admin Search View Controller-->
+        <!--Search-->
         <scene sceneID="qWV-PN-u62">
             <objects>
-                <viewController storyboardIdentifier="SHMenuAdminSearchViewController" id="cYj-kr-rwd" customClass="SHMenuAdminSearchViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SHMenuAdminSearchViewController" id="cYj-kr-rwd" userLabel="Search" customClass="SHMenuAdminSearchViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ihx-4e-vWg"/>
                         <viewControllerLayoutGuide type="bottom" id="OYt-as-Umw"/>
@@ -895,10 +895,10 @@
             </objects>
             <point key="canvasLocation" x="-1643" y="-70"/>
         </scene>
-        <!--Menu Admin Login View Controller-->
+        <!--Login-->
         <scene sceneID="qZg-Aw-Quk">
             <objects>
-                <viewController storyboardIdentifier="SHMenuAdminLoginViewController" id="Rmy-lN-2HX" customClass="SHMenuAdminLoginViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SHMenuAdminLoginViewController" id="Rmy-lN-2HX" userLabel="Login" customClass="SHMenuAdminLoginViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3G2-x1-dtI"/>
                         <viewControllerLayoutGuide type="bottom" id="bPF-WZ-aJf"/>
@@ -980,10 +980,10 @@
             </objects>
             <point key="canvasLocation" x="-2262" y="993"/>
         </scene>
-        <!--Sidebar View Controller-->
+        <!--Sidebar-->
         <scene sceneID="XwN-VJ-xfB">
             <objects>
-                <viewController id="HEl-e0-h9y" customClass="JHSidebarViewController" sceneMemberID="viewController">
+                <viewController id="HEl-e0-h9y" userLabel="Sidebar" customClass="JHSidebarViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="oFW-eM-nUY"/>
                         <viewControllerLayoutGuide type="bottom" id="ZIC-xU-Ere"/>
@@ -1001,7 +1001,7 @@
         <!--Navigation Controller-->
         <scene sceneID="wuH-d1-SxS">
             <objects>
-                <navigationController storyboardIdentifier="JHMainView" id="mVr-dI-0Dd" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="JHMainView" id="mVr-dI-0Dd" userLabel="Navigation Controller" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="5dt-mc-a0i">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1016,10 +1016,10 @@
             </objects>
             <point key="canvasLocation" x="-2791" y="268"/>
         </scene>
-        <!--View Controller-->
+        <!--Left Sidebar-->
         <scene sceneID="kaX-Fx-sYf">
             <objects>
-                <viewController storyboardIdentifier="JHLeftSidebar" id="pZe-u6-SRy" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="JHLeftSidebar" id="pZe-u6-SRy" userLabel="Left Sidebar" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="exD-8D-Kep"/>
                         <viewControllerLayoutGuide type="bottom" id="LPP-D7-Jjn"/>
@@ -1034,10 +1034,10 @@
             </objects>
             <point key="canvasLocation" x="-2831" y="-409"/>
         </scene>
-        <!--Menu Admin Sidebar View Controller-->
+        <!--Sidebar-->
         <scene sceneID="pWf-KV-JdI">
             <objects>
-                <viewController storyboardIdentifier="JHRightSidebar" id="tdo-7j-XU5" customClass="SHMenuAdminSidebarViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="JHRightSidebar" id="tdo-7j-XU5" userLabel="Sidebar" customClass="SHMenuAdminSidebarViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tc9-GX-whi"/>
                         <viewControllerLayoutGuide type="bottom" id="scp-bq-R3i"/>
@@ -1171,10 +1171,10 @@
             </objects>
             <point key="canvasLocation" x="-2262" y="-409"/>
         </scene>
-        <!--Menu Admin Drink Profile View Controller-->
+        <!--Drink Profile-->
         <scene sceneID="IMv-Zz-pJW">
             <objects>
-                <viewController storyboardIdentifier="SHDrinkProfileVC" automaticallyAdjustsScrollViewInsets="NO" id="DDU-yF-4VY" customClass="SHMenuAdminDrinkProfileViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SHMenuAdminDrinkProfileVC" automaticallyAdjustsScrollViewInsets="NO" id="DDU-yF-4VY" userLabel="Drink Profile" customClass="SHMenuAdminDrinkProfileViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="F8w-PQ-yD5"/>
                         <viewControllerLayoutGuide type="bottom" id="14E-yn-m4M"/>
