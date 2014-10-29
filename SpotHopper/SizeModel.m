@@ -21,7 +21,8 @@
 - (NSDictionary *)mapKeysToProperties {
     // Maps values in JSON key 'name' to 'name' property
     return @{
-             @"name" : @"name"
+             @"name" : @"name",
+             @"links.menu_types": @"menuTypes"
              };
 }
 

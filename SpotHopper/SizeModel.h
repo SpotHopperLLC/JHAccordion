@@ -11,5 +11,6 @@
 @interface SizeModel : SHJSONAPIResource
 
 @property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSArray *menuTypes;
 
 @end
