@@ -3266,16 +3266,16 @@
 		267513AF1A0061AF00A7D0BB /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				267513CF1A006C3200A7D0BB /* SHMenuAdminDrinkProfileViewController.h */,
-				267513D01A006C3200A7D0BB /* SHMenuAdminDrinkProfileViewController.m */,
 				267513D51A006C3200A7D0BB /* SHMenuAdminHomeViewController.h */,
 				267513D61A006C3200A7D0BB /* SHMenuAdminHomeViewController.m */,
 				267513D91A006C3200A7D0BB /* SHMenuAdminLoginViewController.h */,
 				267513DA1A006C3200A7D0BB /* SHMenuAdminLoginViewController.m */,
-				267513E11A006C3200A7D0BB /* SHMenuAdminSearchViewController.h */,
-				267513E21A006C3200A7D0BB /* SHMenuAdminSearchViewController.m */,
 				267513E31A006C3200A7D0BB /* SHMenuAdminSidebarViewController.h */,
 				267513E41A006C3200A7D0BB /* SHMenuAdminSidebarViewController.m */,
+				267513E11A006C3200A7D0BB /* SHMenuAdminSearchViewController.h */,
+				267513E21A006C3200A7D0BB /* SHMenuAdminSearchViewController.m */,
+				267513CF1A006C3200A7D0BB /* SHMenuAdminDrinkProfileViewController.h */,
+				267513D01A006C3200A7D0BB /* SHMenuAdminDrinkProfileViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";

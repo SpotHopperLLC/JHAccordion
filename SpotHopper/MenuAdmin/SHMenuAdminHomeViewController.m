@@ -16,6 +16,8 @@
 #import "SHMenuAdminSidebarViewController.h"
 #import "SHMenuAdminDrinkProfileViewController.h"
 
+#import "SHAppUtil.h"
+
 #import "Haneke.h"
 #import "JHSidebarViewController.h"
 
@@ -27,7 +29,7 @@
 #import "MenuTypeModel.h"
 #import "DrinkModel.h"
 #import "DrinkTypeModel.h"
-//#import "DrinkSubtypeModel.h"
+//#import "DrinkSubTypeModel.h"
 #import "BaseAlcoholModel.h"
 #import "PriceModel.h"
 #import "SizeModel.h"
@@ -775,7 +777,8 @@ typedef enum {
             prices = [NSString stringWithFormat:@"%@ \n", [prices stringByAppendingString:[price priceAndSize]]];
         }
     }
-    CGFloat priceTextHeight = [self heightForString:prices font:[UIFont systemFontOfSize:10.0f] maxWidth:self.tableView.frame.size.width];
+    
+    CGFloat priceTextHeight = [[SHAppUtil defaultInstance] heightForString:prices font:[UIFont systemFontOfSize:10.0f] maxWidth:self.tableView.frame.size.width];
     
     return height + priceTextHeight;
 }

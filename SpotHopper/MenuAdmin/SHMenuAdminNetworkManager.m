@@ -11,6 +11,7 @@
 #import "SHMenuAdminNetworkManager.h"
 #import "ClientSessionManager.h"
 
+#import "MenuModel.h"
 #import "MenuItemModel.h"
 #import "PriceModel.h"
 #import "SpotModel.h"
@@ -166,20 +167,19 @@
 }
 
 - (void)fetchMenuItems:(SpotModel*)spot success:(void(^)(NSArray* menuItems))success failure:(void(^)(ErrorModel* error))failure{
+    if (!success || !failure) {
+        return;
+    }
     
-    [spot getMenuItems:nil success:^(NSArray *menuItems, JSONAPI *json) {
-        
+    [spot fetchMenu:^(MenuModel *menu) {
         if (success) {
-            success(menuItems);
+            success(menu.items);
         }
-        
-    } failure:^(ErrorModel *error) {
+    } failure:^(ErrorModel *errorModel) {
         if (failure) {
-            failure(error);
+            failure(errorModel);
         }
-        
     }];
-    
 }
 
 - (void)deleteMenuItem:(MenuItemModel*)menuItem spot:(SpotModel*)spot success:(void(^)())success failure:(void(^)(ErrorModel* error))failure{
