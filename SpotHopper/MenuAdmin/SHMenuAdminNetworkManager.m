@@ -108,8 +108,8 @@
                 success(spots);
             }
 
-        }else {
-            
+        }
+        else {
             if (failure) {
                 ErrorModel *error = [jsonApi resourceForKey:@"errors"];
                 failure(error);
@@ -135,7 +135,7 @@
      */
     
     //create params and post new menu item
-    NSMutableDictionary *params = [NSMutableDictionary new];
+    NSMutableDictionary *params = @{}.mutableCopy;
     [params setObject:menuItem.drink.ID forKey:@"drink_id"];
     [params setObject:menuTypeID forKey:@"menu_type_id"];
     [params setObject:spot.ID forKey:@"spot_id"];
@@ -154,7 +154,8 @@
                 success(created);
             }
             
-        }else {
+        }
+        else {
             
             if (failure) {
                 ErrorModel *error = [jsonApi resourceForKey:@"errors"];
@@ -194,7 +195,8 @@
             if (success) {
                 success();
             }
-        }else {
+        }
+        else {
             if (failure) {
                 ErrorModel *error = [jsonApi resourceForKey:@"errors"];
                 failure(error);
@@ -301,7 +303,8 @@
                 success(prices);
             }
             
-        }else {
+        }
+        else {
             if (failure) {
                 ErrorModel *error = [jsonApi resourceForKey:@"errors"];
                 failure(error);
@@ -339,7 +342,8 @@
                 success();
             }
             
-        }else {
+        }
+        else {
             if (failure) {
                 ErrorModel *error = [jsonApi resourceForKey:@"errors"];
                 failure(error);
@@ -365,7 +369,8 @@
                 success (sizes);
             }
             
-        }else {
+        }
+        else {
             if (failure) {
                 ErrorModel *error = [jsonApi resourceForKey:@"errors"];
                 failure(error);
@@ -380,12 +385,16 @@
 
 - (void)fetchMenuTypes:(SpotModel*)spot success:(void(^)(NSArray* menuTypes))success failure:(void(^)(ErrorModel* error))failure{
     
-    [[ClientSessionManager sharedClient] GET:@"/api/spots/47/menu_items?page_size=0" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSString *path = [NSString stringWithFormat:@"/api/spots/%@/menu_items?page_size=0", spot ? spot.ID : @47];
+    DebugLog(@"path: %@", path);
+    [[ClientSessionManager sharedClient] GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSDictionary *response = (NSDictionary*) responseObject;
         NSDictionary *form = [response objectForKey:@"form"];
         
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:form];
+        
+        DebugLog(@"status code: %li", (long)operation.response.statusCode);
         
         if (operation.response.statusCode == 200) {
             NSArray *menuTypes = [jsonApi resourcesForKey:@"menu_types"];
@@ -394,7 +403,8 @@
                 success(menuTypes);
             }
        
-        }else {
+        }
+        else {
             if (failure) {
                 ErrorModel *error = [jsonApi resourceForKey:@"errors"];
                 failure(error);
@@ -422,7 +432,8 @@
                 success(drinkTypes);
             }
            
-        }else {
+        }
+        else {
             if (failure) {
                 ErrorModel *error = [jsonApi resourceForKey:@"errors"];
                 failure(error);

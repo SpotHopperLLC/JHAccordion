@@ -30,7 +30,7 @@
         self.txtfldPrice.delegate = self;
         
         self.lblSize = [[UILabel alloc]initWithFrame:CGRectMake(88, 0, 67, 30)];
-        self.lblSize.userInteractionEnabled = true;
+        self.lblSize.userInteractionEnabled = TRUE;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showSizePicker)];
         [self.lblSize addGestureRecognizer:tap];
         self.lblSize.text = @"per size ";
@@ -116,7 +116,7 @@
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc]init];
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     [formatter setLocale: [NSLocale localeWithLocaleIdentifier:@"en_US"]];
-    formatter.usesSignificantDigits = false;
+    formatter.usesSignificantDigits = FALSE;
     formatter.maximumSignificantDigits = 4;
     formatter.minimumSignificantDigits = 2;
     

@@ -13,7 +13,7 @@
 
 - (void)styleAsFilterButtonWithTopImage:(UIImage*)image text:(NSString*)text{
     //{top, left, bottom, right}
-    [self setBaseFilterButtonProperties:false image:image text:text];
+    [self setBaseFilterButtonProperties:FALSE image:image text:text];
     
     // the space between the image and text
     CGFloat spacing = 6.0;
@@ -31,7 +31,7 @@
 
 - (void)styleAsFilterButtonWithSideImage:(UIImage*)image text:(NSString*)text{
     //{top, left, bottom, right}
-    [self setBaseFilterButtonProperties:true image:image text:text];
+    [self setBaseFilterButtonProperties:TRUE image:image text:text];
 
     // the space between the image and text
     CGFloat spacing = 8.0;

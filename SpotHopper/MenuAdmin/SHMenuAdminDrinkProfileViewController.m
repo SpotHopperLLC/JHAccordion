@@ -209,7 +209,8 @@
 
                        // drinkDescription.text = descriptionOfDrink;
                         
-                    }else {
+                    }
+                    else {
                         drinkDescription.text = @"";
                     }
                     
@@ -238,14 +239,16 @@
                         
                         if (self.drink.vintage > 0) {
                             vintage.text = [NSString stringWithFormat:@"%ld",(long)[self.drink.vintage integerValue] ];
-                        }else {
+                        }
+                        else {
                             vintage.text = @"";
                         }
                         
                         
                         region.font = [UIFont fontWithName:@"Lato-Light" size:14.0f];
                         region.text = self.drink.region;
-                    }else{
+                    }
+                    else{
                         vintage.text = @"";
                         region.text = @"";
                     }
@@ -254,7 +257,8 @@
                     if (self.matchPercentage) {
                         match.font = [UIFont fontWithName:@"Lato-LightItalic" size:18.0f];
                         match.text = [NSString stringWithFormat:@"%@ Match",self.matchPercentage];
-                    }else{
+                    }
+                    else{
                         match.text = @"";
                     }
                     
@@ -268,9 +272,11 @@
                     NSString *message;
                     if (_isWine) {
                         message = self.drink.varietal;
-                    }else if (_isBeer) {
+                    }
+                    else if (_isBeer) {
                         message = self.drink.style;
-                    }else {
+                    }
+                    else {
                         BaseAlcoholModel *baseAlcohol = [self.drink.baseAlochols firstObject];
                         message = baseAlcohol.name;
                     }
@@ -282,7 +288,8 @@
                     if (_isWine || _isBeer) {
                         beerAndWineInfo.font = [UIFont fontWithName:@"Lato-Light" size:14.0f];
                         beerAndWineInfo.text = [NSString stringWithFormat:@"%.3f ABV", [self.drink.abv floatValue]];
-                    }else {
+                    }
+                    else {
                         beerAndWineInfo.text = @"";
                     }
                     
@@ -532,11 +539,14 @@
 - (void)findDrinkType {
     if ([self.drink isBeer]) {
         _isBeer = TRUE;
-    }else if ([self.drink isWine]) {
+    }
+    else if ([self.drink isWine]) {
         _isWine = TRUE;
-    }else if ([self.drink isCocktail]) {
+    }
+    else if ([self.drink isCocktail]) {
         _isCocktail = TRUE;
-    }else {
+    }
+    else {
         NSAssert(self.drink, @"drink must have a defined type");
     }
     
@@ -555,7 +565,8 @@
 //            viewController.selectedIndex = self.currentIndex;
 //        }
 //        
-//    }else if ([segue.destinationViewController isKindOfClass:[PhotoAlbumViewController class]]){
+//    }
+//    else if ([segue.destinationViewController isKindOfClass:[PhotoAlbumViewController class]]){
 //        PhotoAlbumViewController *viewController = segue.destinationViewController;
 //        viewController.images = self.imageModelCollectionViewManager.imageModels;
 //        

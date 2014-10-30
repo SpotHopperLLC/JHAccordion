@@ -23,12 +23,12 @@
 {
     self = [super initWithFrame:CGRectMake(0, 0, kPriceSizeRowWidth, kPriceSizeRowHeight)];
     if (self) {
-        _didAddNewRow = false;
+        _didAddNewRow = FALSE;
         self.indexOfRemovedRow = 0; // sentinal value since first row can never be removed
         
         SHMenuAdminPriceSizeRowView *row = [[SHMenuAdminPriceSizeRowView alloc]initWithFrame:CGRectMake(0, 0, kPriceSizeRowWidth, kPriceSizeRowHeight)];
         row.delegate = self;
-        row.btnRemovePriceAndSize.enabled = false;
+        row.btnRemovePriceAndSize.enabled = FALSE;
 
         [self addSubview:row];
         self.height = 0;
@@ -78,7 +78,7 @@
 - (SHMenuAdminPriceSizeRowView*)addNewPriceSizeRow {
     //if subviews that are PriceSizeContainers less than 5??
     //add new container to the subview
-    self.didAddNewRow = true;
+    self.didAddNewRow = TRUE;
     NSMutableArray *rows = [NSMutableArray array];
     
     //find # of rows in container already
@@ -89,7 +89,7 @@
     }
     
     if (rows.count >=kMaxRowsShown) {
-        self.didAddNewRow = false;
+        self.didAddNewRow = FALSE;
         return nil;// define some failing behavior
     }
     
@@ -98,8 +98,8 @@
     if (rows.count == 1) {
         SHMenuAdminPriceSizeRowView *first = [rows firstObject];
         newRow = [[SHMenuAdminPriceSizeRowView alloc]initWithFrame:CGRectMake(0, (first.frame.origin.y + kPriceSizeRowHeight +kPadding), kPriceSizeRowWidth, kPriceSizeRowHeight)];
-        
-    }else if(rows.count > 1 && rows.count < kMaxRowsShown){
+    }
+    else if(rows.count > 1 && rows.count < kMaxRowsShown){
         SHMenuAdminPriceSizeRowView *last = [rows lastObject];
         newRow = [[SHMenuAdminPriceSizeRowView alloc]initWithFrame:CGRectMake(0, (last.frame.origin.y + kPriceSizeRowHeight +kPadding), kPriceSizeRowWidth, kPriceSizeRowHeight)];
         NSLog(@"added row at: %@",NSStringFromCGRect(self.frame));
@@ -119,7 +119,7 @@
 
 - (BOOL)removePrizeSizeRow:(UIView*)container {
     NSInteger containerCount = 0;
-    BOOL removed = true;
+    BOOL removed = TRUE;
     
     for (NSInteger i = 0; i < self.subviews.count; i++) {
         if ([self.subviews[i] isKindOfClass:[SHMenuAdminPriceSizeRowView class]]) {
@@ -128,7 +128,7 @@
     }
     
     if (containerCount == 1) {
-        return removed = false;
+        return removed = FALSE;
         //no deletion of last price column
     }
     

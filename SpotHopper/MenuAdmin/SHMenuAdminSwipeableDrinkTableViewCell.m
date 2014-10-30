@@ -39,7 +39,7 @@ static CGFloat const kBounceValue = 40.0f;
     [super awakeFromNib];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showDrinkDetails)];
-    self.lblDrinkName.userInteractionEnabled = true;
+    self.lblDrinkName.userInteractionEnabled = TRUE;
     [self.lblDrinkName addGestureRecognizer:tap];
     
     self.panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panThisCell:)];
@@ -113,7 +113,7 @@ static CGFloat const kBounceValue = 40.0f;
         return fabs(velocity.y) < fabs(velocity.x);
     }
     
-    return false;
+    return FALSE;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
@@ -156,14 +156,14 @@ static CGFloat const kBounceValue = 40.0f;
                 if (!panningLeft) {
                     CGFloat constant = MAX(-deltaX, 0);
                     if (constant == 0) {
-                        [self resetConstraintConstantsToZero:true notifyDelegateDidClose:false];
+                        [self resetConstraintConstantsToZero:TRUE notifyDelegateDidClose:FALSE];
                     }else {
                         self.contentViewRightConstraint.constant = constant;
                     }
                 }else {
                     CGFloat constant = MIN(-deltaX, [self buttonTotalWidth]);
                     if (constant == [self buttonTotalWidth]) {
-                        [self setConstraintsToShowAllButtons:true notifyDelegateDidOpen:false];
+                        [self setConstraintsToShowAllButtons:TRUE notifyDelegateDidOpen:FALSE];
                     }else {
                         self.contentViewRightConstraint.constant = constant;
                     }
@@ -174,14 +174,14 @@ static CGFloat const kBounceValue = 40.0f;
                 if (!panningLeft) {
                     CGFloat constant = MAX(adjustment, 0);
                     if (constant == 0) {
-                        [self resetConstraintConstantsToZero:true notifyDelegateDidClose:false];
+                        [self resetConstraintConstantsToZero:TRUE notifyDelegateDidClose:FALSE];
                     }else {
                         self.contentViewRightConstraint.constant = constant;
                     }
                 }else {
                     CGFloat constant = MIN(adjustment, [self buttonTotalWidth]);
                     if (constant == [self buttonTotalWidth]) {
-                        [self setConstraintsToShowAllButtons:true notifyDelegateDidOpen:false];
+                        [self setConstraintsToShowAllButtons:TRUE notifyDelegateDidOpen:FALSE];
                     }else {
                         self.contentViewRightConstraint.constant = constant;
                     }
@@ -195,18 +195,18 @@ static CGFloat const kBounceValue = 40.0f;
             if (self.startingRightLayoutConstraintConstant == 0) {
                 CGFloat halfOfDeleteButton = CGRectGetWidth(self.btnDelete.frame) / 2;
                 if (self.contentViewRightConstraint.constant >= halfOfDeleteButton) {
-                    [self setConstraintsToShowAllButtons:true notifyDelegateDidOpen:true];
+                    [self setConstraintsToShowAllButtons:TRUE notifyDelegateDidOpen:TRUE];
                 }else {
-                    [self resetConstraintConstantsToZero:true notifyDelegateDidClose:true];
+                    [self resetConstraintConstantsToZero:TRUE notifyDelegateDidClose:TRUE];
                 }
                 
             }else {
                 CGFloat photoButtonPlusHalfOfFlavorProfile = CGRectGetWidth(self.btnPhoto.frame) + (CGRectGetWidth(self.btnFlavorProfile.frame)/2);
                 
                 if (self.contentViewRightConstraint.constant >= photoButtonPlusHalfOfFlavorProfile) {
-                    [self setConstraintsToShowAllButtons:true notifyDelegateDidOpen:true];
+                    [self setConstraintsToShowAllButtons:TRUE notifyDelegateDidOpen:TRUE];
                 }else {
-                    [self resetConstraintConstantsToZero:true notifyDelegateDidClose:true];
+                    [self resetConstraintConstantsToZero:TRUE notifyDelegateDidClose:TRUE];
                 }
                 
             }

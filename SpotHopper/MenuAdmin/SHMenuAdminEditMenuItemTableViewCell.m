@@ -30,7 +30,7 @@
     [super prepareForReuse];
     //initialize all the stuffffs
 
-    isConfiguredForAdd = false;
+    isConfiguredForAdd = FALSE;
     //clear prototype views
     for (UIView *view in self.priceSizeWrapper.subviews) {
         [view removeFromSuperview];
@@ -53,13 +53,14 @@
         if ([self.delegate respondsToSelector:@selector(cancelButtonTapped:)]) {
             [self.delegate cancelButtonTapped:self];
         }
-    }else if (sender == self.btnSave) {
-        
+    }
+    else if (sender == self.btnSave) {
         if (isConfiguredForAdd){
             if ([self.delegate respondsToSelector:@selector(addButtonTapped:)]) {
                 [self.delegate addButtonTapped:self];
             }
-        }else{
+        }
+        else {
             if ([self.delegate respondsToSelector:@selector(saveButtonTapped:)]) {
                 [self.delegate saveButtonTapped:self];
             }
@@ -96,12 +97,12 @@
 }
 
 - (void)configureCellForAdd {
-    isConfiguredForAdd = true;
+    isConfiguredForAdd = TRUE;
     [self.btnSave setTitle:kAddTitle forState:UIControlStateNormal];
 }
 
 - (void)configureCellForEdit {
-    isConfiguredForAdd = false;
+    isConfiguredForAdd = FALSE;
     [self.btnSave setTitle:kSaveTitle forState:UIControlStateNormal];
 }
 

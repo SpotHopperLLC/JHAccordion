@@ -205,25 +205,7 @@ typedef enum {
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //if the user is not logged in or has not seen the launch screen at once... go to the login screen
-    if ( !([[ClientSessionManager sharedClient] isLoggedIn]) || !([[ClientSessionManager sharedClient] hasSeenLaunch])) {
-        SHMenuAdminLoginViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"SHMenuAdminLoginViewController"];
-        vc.delegate = self;
-        
-        [self presentViewController:vc animated:true completion:nil];
-    }else {
-        [self showHUD:@"Loading Menu"];
-        
-        [self configureForUser];
-        
-        //show hud while loading menu initially
-        [self fetchUserSpots:^{
-            //fetch menu items
-            [self fetchMenuItems];
-        }];
-    }
-
-    //fetch supported menu sizes and types
+    // fetch supported menu sizes and types
     [self fetchMenuSizes];
     [self fetchMenuTypes];
     
@@ -232,19 +214,19 @@ typedef enum {
     self.sidebarViewController.delegate = self;
 
     //initalize stuff
-    _isAddingMenuItem = false;
-    _isEditingMenuItem = false;
+    _isAddingMenuItem = FALSE;
+    _isEditingMenuItem = FALSE;
     _indexOfRowForEditing = 0;
-    _isShowingMenu = true;
+    _isShowingMenu = TRUE;
     
     self.cellWithOpenDrawers = [NSMutableDictionary dictionary];
     
-    self.menuTypes = [NSSet setWithObjects: kMenuSubtypeNameOnTap,kMenuSubtypeNameBottled,kMenuSubtypeNameRedWine,kMenuSubtypeNameWhiteWine,
-                      kMenuSubtypeNameRoseWine,kMenuSubtypeNameFortifiedWine,kMenuSubtypeNameSparklingWine,kMenuSubtypeNameHouseCocktail,kMenuSubtypeNameCommonCocktail, nil ];
+    self.menuTypes = [NSSet setWithArray: @[kMenuSubtypeNameOnTap,kMenuSubtypeNameBottled,kMenuSubtypeNameRedWine,kMenuSubtypeNameWhiteWine,
+                      kMenuSubtypeNameRoseWine,kMenuSubtypeNameFortifiedWine,kMenuSubtypeNameSparklingWine,kMenuSubtypeNameHouseCocktail,kMenuSubtypeNameCommonCocktail]];
     
-    self.menuTypeMap = [NSMutableDictionary new];
-    self.typeSizeMap = [NSMutableDictionary new];
-    self.sizes = [NSArray new];
+    self.menuTypeMap = @{}.mutableCopy;
+    self.typeSizeMap = @{}.mutableCopy;
+    self.sizes = @[].mutableCopy;
     
     //initialize picker
     UITableViewCell *pickerViewCellToCheck = [self.tableView dequeueReusableCellWithIdentifier:kPickerCellIdentifier];
@@ -268,7 +250,7 @@ typedef enum {
     [self styleHome];
     
     //set beer as default
-    self.btnBeer.enabled = false;
+    self.btnBeer.enabled = FALSE;
     self.btnCurrentDrink = self.btnBeer;
     self.btnCurrentDrink.backgroundColor = [SHMenuAdminStyleSupport sharedInstance].ORANGE;
     self.currentDrinkType = kDrinkTypeNameBeer;
@@ -276,7 +258,7 @@ typedef enum {
     self.currentDrinkTypeEnum = DrinkTypeBeer;
     
     //set on-tap as default
-    self.btnOnTap.enabled = false;
+    self.btnOnTap.enabled = FALSE;
     self.btnCurrentMenuSubtype = self.btnOnTap;
     self.btnCurrentMenuSubtype.backgroundColor = [SHMenuAdminStyleSupport sharedInstance].ORANGE;
     self.currentMenuSubtype = kMenuSubtypeNameOnTap;
@@ -288,7 +270,24 @@ typedef enum {
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    //[self.navigationController.sidebarViewController showRightSidebar:false];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        // if the user is not logged in or has not seen the launch screen at once... go to the login screen
+        if (!([[ClientSessionManager sharedClient] isLoggedIn]) || !([[ClientSessionManager sharedClient] hasSeenLaunch])) {
+            [self performSegueWithIdentifier:@"HomeToLogin" sender:self];
+        }
+        else {
+            [self showHUD:@"Loading Menu"];
+            
+            [self configureForUser];
+            
+            //show hud while loading menu initially
+            [self fetchUserSpots:^{
+                //fetch menu items
+                [self fetchMenuItems];
+            }];
+        }
+    });
 
     self.navigationController.title = self.spot.name;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -302,6 +301,45 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    DebugLog(@"segue: %@", segue.identifier);
+
+    if ([segue.destinationViewController isKindOfClass:[SHMenuAdminLoginViewController class]]) {
+        SHMenuAdminLoginViewController *vc = (SHMenuAdminLoginViewController *)segue.destinationViewController;
+        vc.delegate = self;
+    }
+    else if ([segue.destinationViewController isKindOfClass:[SHMenuAdminSearchViewController class]]) {
+        SHMenuAdminSearchViewController *vc = (SHMenuAdminSearchViewController *)segue.destinationViewController;
+        
+        //todo: implement logic for isSpotSearch
+        if (self.isSpotSearch) {
+            vc.isSpotSearch = TRUE;
+        }
+        
+        //get current drink type based on button and pass drink type
+        vc.drinkType = self.currentDrinkType;
+        vc.filteredMenuItems = self.filteredMenuItems;
+        vc.menuType = self.currentMenuSubtype;
+        
+        if ([self.currentDrinkType isEqualToString:kDrinkTypeNameWine]) {
+            //send current menu subtype
+            vc.isWine = TRUE;
+        }
+        
+        if ([self.currentMenuSubtype isEqualToString:kMenuSubtypeNameHouseCocktail]) {
+            vc.isHouseCocktail = TRUE;
+            vc.spot = self.spot;
+        }
+        
+        vc.delegate = self;
+    }
+    else if ([segue.destinationViewController isKindOfClass:[SHMenuAdminDrinkProfileViewController class]]) {
+        SHMenuAdminDrinkProfileViewController *vc = (SHMenuAdminDrinkProfileViewController*)segue.destinationViewController;
+        vc.drink = self.drinkToShow;
+    }
+}
+
+
 #pragma mark - Menu Toggle Actions
 #pragma mark -
 
@@ -309,9 +347,11 @@ typedef enum {
     
     if ([drinkType isEqualToString:kDrinkTypeNameBeer]) {
         self.txtfldAddDrink.text = @"Add new beer named...";
-    }else if ([drinkType isEqualToString:kDrinkTypeNameWine]) {
+    }
+    else if ([drinkType isEqualToString:kDrinkTypeNameWine]) {
         self.txtfldAddDrink.text = @"Add new wine named...";
-    }else if ([drinkType isEqualToString:kDrinkTypeNameCocktail]) {
+    }
+    else if ([drinkType isEqualToString:kDrinkTypeNameCocktail]) {
         self.txtfldAddDrink.text = @"Add new cocktail named...";
     }
 }
@@ -321,14 +361,14 @@ typedef enum {
     NSAssert(buttonPressed, @"button can't be null");
     //return old drink button to original state
     self.btnCurrentDrink.backgroundColor = [SHMenuAdminStyleSupport sharedInstance].LIGHT_ORANGE;
-    self.btnCurrentDrink.enabled = true;
+    self.btnCurrentDrink.enabled = TRUE;
     
     self.btnCurrentDrink = buttonPressed;
-    self.btnCurrentDrink.enabled = false;
+    self.btnCurrentDrink.enabled = FALSE;
     self.btnCurrentDrink.backgroundColor = [SHMenuAdminStyleSupport sharedInstance].ORANGE;
     
     if ([buttonPressed isEqual:self.btnBeer]) {
-        self.beerSubtypeContainer.hidden = false;
+        self.beerSubtypeContainer.hidden = FALSE;
         
         [self setCurrentSubtypesButton:self.btnOnTap];
         [self setSubtypesContainer:self.beerSubtypeContainer];
@@ -343,8 +383,9 @@ typedef enum {
         
         [self filterMenuItems:DrinkTypeBeer subTypes:MenuSubtypeOnTap];
         
-    }else if ([buttonPressed isEqual:self.btnWine]) {
-        self.wineSubtypeContainer.hidden = false;
+    }
+    else if ([buttonPressed isEqual:self.btnWine]) {
+        self.wineSubtypeContainer.hidden = FALSE;
         
         [self setCurrentSubtypesButton:self.btnRedWine];
         [self setSubtypesContainer:self.wineSubtypeContainer];
@@ -358,8 +399,9 @@ typedef enum {
         
         [self filterMenuItems:DrinkTypeWine subTypes:MenuSubtypeRedWine];
         
-    }else if ([buttonPressed isEqual:self.btnCocktails]){
-        self.cocktailSubtypeContainer.hidden = false;
+    }
+    else if ([buttonPressed isEqual:self.btnCocktails]){
+        self.cocktailSubtypeContainer.hidden = FALSE;
         
         [self setCurrentSubtypesButton:self.btnHouseCocktail];
         [self setSubtypesContainer:self.cocktailSubtypeContainer];
@@ -386,12 +428,14 @@ typedef enum {
         self.currentMenuTypeEnum = MenuSubtypeOnTap;
         
         [self filterMenuItems:DrinkTypeBeer subTypes:MenuSubtypeOnTap];
-    }else if ([buttonPressed isEqual:self.btnBottles]) {
+    }
+    else if ([buttonPressed isEqual:self.btnBottles]) {
         self.currentMenuSubtype = kMenuSubtypeNameBottled;
         self.currentMenuTypeEnum = MenuSubtypeBottles;
         
         [self filterMenuItems:DrinkTypeBeer subTypes:MenuSubtypeBottles];
-    }else{
+    }
+    else{
         NSAssert(buttonPressed,@"button pressed must be a beer btn");
     }
     
@@ -407,27 +451,32 @@ typedef enum {
         self.currentMenuTypeEnum = MenuSubtypeRedWine;
 
         [self filterMenuItems:DrinkTypeWine subTypes:MenuSubtypeRedWine];
-    }else if ([buttonPressed isEqual:self.btnWhiteWine]) {
+    }
+    else if ([buttonPressed isEqual:self.btnWhiteWine]) {
         self.currentMenuSubtype = kMenuSubtypeNameWhiteWine;
         self.currentMenuTypeEnum = MenuSubtypeWhiteWine;
 
         [self filterMenuItems:DrinkTypeWine subTypes:MenuSubtypeWhiteWine];
-    }else if ([buttonPressed isEqual:self.btnSparklingWine]) {
+    }
+    else if ([buttonPressed isEqual:self.btnSparklingWine]) {
         self.currentMenuSubtype = kMenuSubtypeNameSparklingWine;
         self.currentMenuTypeEnum = MenuSubtypeSparklingWine;
 
         [self filterMenuItems:DrinkTypeWine subTypes:MenuSubtypeSparklingWine];
-    }else if ([buttonPressed isEqual:self.btnRoseWine]) {
+    }
+    else if ([buttonPressed isEqual:self.btnRoseWine]) {
         self.currentMenuSubtype = kMenuSubtypeNameRoseWine;
         self.currentMenuTypeEnum = MenuSubtypeRoseWine;
 
         [self filterMenuItems:DrinkTypeWine subTypes:MenuSubtypeRoseWine];
-    }else if ([buttonPressed isEqual:self.btnFortifiedWine]) {
+    }
+    else if ([buttonPressed isEqual:self.btnFortifiedWine]) {
         self.currentMenuSubtype = kMenuSubtypeNameFortifiedWine;
         self.currentMenuTypeEnum = MenuSubtypeFortifiedWine;
 
         [self filterMenuItems:DrinkTypeWine subTypes:MenuSubtypeFortifiedWine];
-    }else{
+    }
+    else{
         NSAssert(buttonPressed,@"button pressed must be a wine btn");
     }
     
@@ -443,25 +492,24 @@ typedef enum {
         self.currentMenuTypeEnum = MenuSubtypeHouseCocktail;
 
         [self filterMenuItems:DrinkTypeCocktail subTypes:MenuSubtypeHouseCocktail];
-    }else if ([buttonPressed isEqual:self.btnCommonCocktail]) {
+    }
+    else if ([buttonPressed isEqual:self.btnCommonCocktail]) {
         self.currentMenuSubtype = kMenuSubtypeNameCommonCocktail;
         self.currentMenuTypeEnum = MenuSubtypeCommonCocktail;
 
         [self filterMenuItems:DrinkTypeCocktail subTypes:MenuSubtypeCommonCocktail];
-    }else{
+    }
+    else{
         NSAssert(buttonPressed,@"button pressed must be a cocktail btn");
     }
-    
 }
 
 #pragma mark - SHMenuAdminLoginDelegate
 #pragma mark -
 
 - (void)loginDidFinish:(SHMenuAdminLoginViewController *)loginViewController {
-    [self hideHUD];
-    
+//    [self hideHUD];
     [self configureForUser];
-    
     [self fetchUserSpots:^{
         [self fetchMenuItems];
     }];
@@ -482,7 +530,7 @@ typedef enum {
 
 - (void)viewAllSpotsTapped:(SHMenuAdminSidebarViewController*)sidebarViewController{
     [self.navigationController.sidebarViewController toggleRightSidebar];
-    self.isSpotSearch = true;
+    self.isSpotSearch = TRUE;
 
     [self performSegueWithIdentifier:kSegueHomeToSearch sender:self];
 }
@@ -495,13 +543,14 @@ typedef enum {
 
 - (void)logoutTapped:(SHMenuAdminSidebarViewController*)sidebarViewController {
     [[ClientSessionManager sharedClient] logout];
-    [[ClientSessionManager sharedClient] setHasSeenLaunch:false];
+    [[ClientSessionManager sharedClient] setHasSeenLaunch:FALSE];
     
     //show login screen
-    SHMenuAdminLoginViewController *viewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"SHMenuAdminLoginViewController"];
-    [self presentViewController:viewController animated:true completion:nil];
+//    SHMenuAdminLoginViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SHMenuAdminLoginViewController"];
+//    [self presentViewController:viewController animated:TRUE completion:nil];
+    
+    [self performSegueWithIdentifier:@"HomeToLogin" sender:self];
 }
-
 
 #pragma mark - UITableViewDataSource
 #pragma mark -
@@ -536,11 +585,9 @@ typedef enum {
         return pickerCell;
     }
     
-    
     //if the cell is being edited then cause it to grow
     if (self.isEditingMenuItem || self.isAddingMenuItem) {
         if (indexPath.section == 0 && indexPath.row == self.indexOfRowForEditing) {
-            
             if (!self.editMenuItem) {
                 NSAssert(self.editMenuItem, @"edit menu item should be set");
             }
@@ -551,7 +598,8 @@ typedef enum {
             //handle if adding item and not editing
             if (self.isAddingMenuItem) {
                 [editCell configureCellForAdd];
-            }else {
+            }
+            else {
                 [editCell configureCellForEdit];
             }
             
@@ -560,24 +608,27 @@ typedef enum {
             
             if ([self.editMenuItem.drink.drinkType.name isEqualToString:kDrinkTypeNameBeer]) {
                 editCell.lblDrinkSpecifics.text = self.editMenuItem.drink.style;
-            }else if ([self.editMenuItem.drink.drinkType.name isEqualToString:kDrinkTypeNameWine]){
+            }
+            else if ([self.editMenuItem.drink.drinkType.name isEqualToString:kDrinkTypeNameWine]){
                 editCell.lblDrinkSpecifics.text = self.editMenuItem.drink.varietal;
-            }else if ([self.editMenuItem.drink.drinkType.name isEqualToString:kDrinkTypeNameCocktail]){
+            }
+            else if ([self.editMenuItem.drink.drinkType.name isEqualToString:kDrinkTypeNameCocktail]){
                 //check to see if there are base alcohols
                 if (self.editMenuItem.drink.baseAlochols.count > 0) {
                     BaseAlcoholModel *baseAlcohol = [self.editMenuItem.drink.baseAlochols objectAtIndex:0];
                     editCell.lblDrinkSpecifics.text = baseAlcohol.name;
                 }
-            }else {
+            }
+            else {
                 NSAssert(self.editMenuItem.drink.drinkType.name, @"Unknown type for drinks");
             }
-            
             
             if (self.editMenuItem.drink.images.count) {
                 //assumption that there is only one photo per drink
                 ImageModel *imageModel = [self.editMenuItem.drink.images firstObject];
                 [editCell.drinkImage hnk_setImageFromURL:[NSURL URLWithString:imageModel.thumbUrl]];
-            }else {
+            }
+            else {
                 //placeholder images
                 UIImage *placeHolderImage = [self placeHolderImageForType:self.editMenuItem];
                 if (!placeHolderImage) {
@@ -600,7 +651,8 @@ typedef enum {
                     SHMenuAdminIndexPathViewPair *ipvp = [[SHMenuAdminIndexPathViewPair alloc]init:indexPath view:container];
                     [self addNewPathViewPair:ipvp];
                 }
-            }else {
+            }
+            else {
                 container = [self containerForAdd:editCell];
             }
             
@@ -609,7 +661,6 @@ typedef enum {
             
             //configure cell rows
             if (self.editMenuItem.prices.count) {
-                
                 SHMenuAdminPriceSizeRowContainerView *container = [editCell.priceSizeWrapper.subviews firstObject];
                     //for each price
                     // if the first price use default row provided
@@ -622,8 +673,8 @@ typedef enum {
                         SHMenuAdminPriceSizeRowView *row = [container.subviews firstObject];
                         [self configurePriceSizeRow:row withPriceSize:[self.editMenuItem.prices firstObject]];
                     
-                    }else {
-                        
+                    }
+                    else {
                         //if the container subviews are less than the number of prices
                             //add new row
                             //configure row
@@ -643,7 +694,6 @@ typedef enum {
     
     //normal view
     if (indexPath.row < self.menuItems.count) {
-
         MenuItemModel *menuItem = [self.filteredMenuItems objectAtIndex:indexPath.row];
         
         SHMenuAdminSwipeableDrinkTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
@@ -654,16 +704,19 @@ typedef enum {
         
         if ([menuItem.drink.drinkType.name isEqualToString:kDrinkTypeNameBeer]) {
             cell.lblDrinkSpecifics.text = menuItem.drink.style;
-        }else if ([menuItem.drink.drinkType.name isEqualToString:kDrinkTypeNameWine]){
+        }
+        else if ([menuItem.drink.drinkType.name isEqualToString:kDrinkTypeNameWine]){
             cell.lblDrinkSpecifics.text = menuItem.drink.varietal;
-        }else if ([menuItem.drink.drinkType.name isEqualToString:kDrinkTypeNameCocktail]){
+        }
+        else if ([menuItem.drink.drinkType.name isEqualToString:kDrinkTypeNameCocktail]){
             //check to see if there are base alcohols
             if (menuItem.drink.baseAlochols.count > 0) {
                 BaseAlcoholModel *baseAlcohol = [menuItem.drink.baseAlochols objectAtIndex:0];
                 cell.lblDrinkSpecifics.text = baseAlcohol.name;
             }
             
-        }else {
+        }
+        else {
             NSAssert(menuItem.drink.drinkType.name, @"Unknown type for drinks");
         }
         
@@ -672,7 +725,8 @@ typedef enum {
             //assumption that there is only one photo per drink
             ImageModel *imageModel = [menuItem.drink.images firstObject];
             [cell.drinkImage hnk_setImageFromURL:[NSURL URLWithString:imageModel.thumbUrl]];
-        }else {
+        }
+        else {
            //placeholder images
             UIImage *placeHolderImage = [self placeHolderImageForType:menuItem];
             if (!placeHolderImage) {
@@ -698,7 +752,8 @@ typedef enum {
             }
             
             cell.lblPrice.text = prices;
-        }else {
+        }
+        else {
             cell.lblPrice.text = @"";
         }
         
@@ -719,7 +774,6 @@ typedef enum {
     CLS_LOG(@"empty menu items caused crash. [filtered menu items:%@]", self.filteredMenuItems);
     
     return nil;
-    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -732,7 +786,8 @@ typedef enum {
             NSInteger row = indexPath.row -1;
             menuItem = [self.filteredMenuItems objectAtIndex:row];
         }
-    }else {
+    }
+    else {
         menuItem = [self.filteredMenuItems objectAtIndex:indexPath.row];
     }
 
@@ -743,18 +798,21 @@ typedef enum {
             SHMenuAdminPriceSizeRowContainerView *container;
             if (self.isEditingMenuItem) {
                 container = [self getViewForEditCellAtIndexPath:indexPath];
-            }else {
+            }
+            else {
                 container = self.addContainer;
             }
             
             if (container.subviews.count > self.editMenuItem.prices.count) {
                 height =  175.0f + container.height +8.0f; //8.0f = bottom padding
-            }else {
+            }
+            else {
                 NSInteger menuPrices = 0;
 
                 if (self.editMenuItem.prices.count > MAX_PRICES_SHOWN) {
                     menuPrices = MAX_PRICES_SHOWN;
-                }else {
+                }
+                else {
                     menuPrices = self.editMenuItem.prices.count;
                 }
                 
@@ -819,12 +877,12 @@ typedef enum {
 - (void)editButtonTapped:(SHMenuAdminSwipeableDrinkTableViewCell *)cell {
     NSLog(@"edit button tapped");
     
-    //set isEditing bool true
+    //set isEditing bool TRUE
     //trigger reload on table view @ index of the cell to resize the cell
     //disable swipe gestures on the cell
     //show edit view
     
-    self.isEditingMenuItem = true;
+    self.isEditingMenuItem = TRUE;
     
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     
@@ -837,15 +895,15 @@ typedef enum {
     
     //close door
     if (self.isShowingMenu) {
-        [self setConstraintsToHideView:true];
+        [self setConstraintsToHideView:TRUE];
     }
     
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     
     //scroll cell to top that's being edited
-    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:true];
+    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:TRUE];
     
-    self.tableView.scrollEnabled = false;
+    self.tableView.scrollEnabled = FALSE;
 }
 
 - (void)deleteButtonTapped:(SHMenuAdminSwipeableDrinkTableViewCell *)cell {
@@ -864,22 +922,19 @@ typedef enum {
     MenuItemModel *menuItem = self.filteredMenuItems[indexPath.row];
     
     [[SHMenuAdminNetworkManager sharedInstance] deleteMenuItem:menuItem spot:self.spot success:^{
-        
         [self.filteredMenuItems removeObject:menuItem];
         [self.menuItems removeObject:menuItem];
         [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
         
         if (!self.filteredMenuItems.count) {
-            [self setConstraintsToShowView:true];
-            [self showEmptyView:true];
+            [self setConstraintsToShowView:TRUE];
+            [self showEmptyView:TRUE];
         }
-
     } failure:^(ErrorModel* error){
         [self showAlert:@"Network error" message:@"Please try again"];
         
         CLS_LOG(@"network error deleting menu item [%@]. Error:%@", menuItem, error.humanValidations);
     }];
-    
 }
 
 #pragma mark - SwipeableDrinkCellDelegate - Open/Close callbacks
@@ -887,7 +942,6 @@ typedef enum {
 
 - (void)cellDidOpen:(UITableViewCell *)cell {
     if (cell) {
-        
         NSIndexPath *currentEditingIndexPath = [self.tableView indexPathForCell:cell];
         
         if ([self.cellWithOpenDrawers objectForKey:self.currentMenuSubtype]) {
@@ -896,7 +950,8 @@ typedef enum {
             [storedIndexes addObject:currentEditingIndexPath];
             [self.cellWithOpenDrawers setObject:storedIndexes forKey:self.currentMenuSubtype];
             
-        }else {
+        }
+        else {
             //if the key is not already in dictionary, add key and new array with size
             //if supported filter type
             if ([self.menuTypes containsObject:self.currentMenuSubtype]) {
@@ -916,7 +971,6 @@ typedef enum {
             [storedIndexes removeObject:[self.tableView indexPathForCell:cell]];
         }
     }
-    
 }
 
 #pragma mark - EditMenuItemCellDelegate - User Actions
@@ -932,11 +986,10 @@ typedef enum {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 
     if(indexPath.row == (totalRows -1)){
-        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:true];
+        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:TRUE];
     }
     
     [self.tableView reloadData];
-
 }
 
 - (void)removePriceAndSizeButtonTapped:(SHMenuAdminEditMenuItemTableViewCell*)cell indexOfRemoved:(NSInteger)indexOfRemovedRow {
@@ -950,7 +1003,6 @@ typedef enum {
     }
     
     [self.tableView reloadData];
-
 }
 
 - (void)cancelButtonTapped:(SHMenuAdminEditMenuItemTableViewCell *)cell {
@@ -958,13 +1010,13 @@ typedef enum {
     
     self.editMenuItem = nil;
     
-    //set isEditing to false and reload table view
+    //set isEditing to FALSE and reload table view
     if (self.isEditingMenuItem) {
-        self.isEditingMenuItem = false;
+        self.isEditingMenuItem = FALSE;
     }
     
     if (self.isAddingMenuItem) {
-        self.isAddingMenuItem = false;
+        self.isAddingMenuItem = FALSE;
         self.addContainer = nil;
         [self.filteredMenuItems removeObjectAtIndex:0];//removes the newly added drink
     }
@@ -978,8 +1030,8 @@ typedef enum {
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     
     if (!self.filteredMenuItems.count) {
-        [self setConstraintsToShowView:true];
-        [self showEmptyView:true];
+        [self setConstraintsToShowView:TRUE];
+        [self showEmptyView:TRUE];
     }
 }
 
@@ -995,7 +1047,7 @@ typedef enum {
         //3. show updated tableview
         //   remove the cell from list of cells that are open
         
-        hvc.isAddingMenuItem = false;
+        hvc.isAddingMenuItem = FALSE;
         hvc.addContainer = nil;
         
         [hvc hideKeyboard];
@@ -1019,7 +1071,7 @@ typedef enum {
         //1. remove edit cell at that row
         //2. close drawer and hide picker or keyboard if shown
         //3. show updated tableview
-        self.isEditingMenuItem = false;
+        self.isEditingMenuItem = FALSE;
         
         // replace edit menu item prices with menu item
         menuItem.prices = self.editMenuItem.prices;
@@ -1038,13 +1090,12 @@ typedef enum {
         //refresh view
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     }];
-    
 }
 
 - (void)sizeLabelTapped:(SHMenuAdminEditMenuItemTableViewCell *)cell priceSizeContainer:(SHMenuAdminPriceSizeRowView *)row {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     MenuItemModel *menuItem = self.filteredMenuItems[indexPath.row];
-    [self.view endEditing:true];
+    [self.view endEditing:TRUE];
     
     //if the size picker is not shown
         //show size picker
@@ -1102,7 +1153,6 @@ typedef enum {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.indexOfRowForEditing inSection:0];
     SHMenuAdminEditMenuItemTableViewCell *cell = (SHMenuAdminEditMenuItemTableViewCell*)[self.tableView cellForRowAtIndexPath:indexPath];
 
-    
     if (!self.lastSelectedContainer || ![cell.priceSizeWrapper.subviews containsObject:self.lastSelectedContainer]) {
         NSAssert(self.lastSelectedContainer, @"last selected price size container cannot be nil");
     }
@@ -1110,12 +1160,12 @@ typedef enum {
     NSString *displaySize = nil;
     if ([size.name isEqualToString:kSizeNameNone]) {
         displaySize = kSizeNameNoneValue;
-    }else {
+    }
+    else {
         displaySize = size.name;
     }
     
     self.lastSelectedContainer.lblSize.text = displaySize;
-
 }
 
 #pragma mark - Picker Helpers
@@ -1129,15 +1179,13 @@ typedef enum {
     [self.tableView beginUpdates];
     
     if ([self sizePickerIsShown] /*&& (self.sizePickerIndexPath.row - 1 == indexPath.row)*/){
-        
         [self hideExistingPicker];
         
         if (!self.isEditingMenuItem) {
-            self.tableView.scrollEnabled = true;
+            self.tableView.scrollEnabled = TRUE;
         }
-        
-    }else {
-        
+    }
+    else {
         NSIndexPath *newPickerIndexPath = [self calculateIndexPathForNewPicker:indexPath];
         
         if ([self sizePickerIsShown]){
@@ -1159,10 +1207,10 @@ typedef enum {
         
         if (price.size) {
             NSInteger index = [self.sizes indexOfObject:price.size];
-            [self.pickerView selectRow:index inComponent:0 animated:true];
+            [self.pickerView selectRow:index inComponent:0 animated:TRUE];
         }
         
-        self.tableView.scrollEnabled = false;
+        self.tableView.scrollEnabled = FALSE;
     }
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -1171,14 +1219,14 @@ typedef enum {
 }
 
 - (NSIndexPath *)calculateIndexPathForNewPicker:(NSIndexPath *)selectedIndexPath {
-    
     NSIndexPath *newIndexPath;
     
     if (([self sizePickerIsShown]) && (self.sizePickerIndexPath.row < selectedIndexPath.row)){
         
         newIndexPath = [NSIndexPath indexPathForRow:selectedIndexPath.row - 1 inSection:0];
         
-    }else {
+    }
+    else {
         newIndexPath = [NSIndexPath indexPathForRow:selectedIndexPath.row inSection:0];
     }
     
@@ -1186,14 +1234,11 @@ typedef enum {
 }
 
 - (void)showNewPickerAtIndex:(NSIndexPath *)indexPath {
-    
     NSArray *indexPaths = @[[NSIndexPath indexPathForRow:indexPath.row + 1 inSection:0]];
-    
     [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void)hideExistingPicker {
-    
     [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.sizePickerIndexPath.row inSection:0]]
                           withRowAnimation:UITableViewRowAnimationFade];
     
@@ -1204,7 +1249,6 @@ typedef enum {
 #pragma mark -
 
 - (void)panMenuTypeFilterButtons:(UIPanGestureRecognizer*)recognizer {
-    
     if (self.isEditingMenuItem || self.isAddingMenuItem) {
         return;
     }
@@ -1232,20 +1276,22 @@ typedef enum {
                 //view is open
                 if (!panningDown) {
                     if (!self.subtypeFilterBottomConstraint.constant == 0) {
-                        [self setConstraintsToShowView:true];
+                        [self setConstraintsToShowView:TRUE];
                     }
                     
-                    self.tableView.scrollEnabled = true;
+                    self.tableView.scrollEnabled = TRUE;
 
 //                    CGFloat constant = MAX(deltaY, 0);
 //                    
 //                    if (constant == 0) {
-//                        [self setConstraintsToShowView:true];
-//                    }else {
+//                        [self setConstraintsToShowView:TRUE];
+//                    }
+//                    else {
 //                        self.subtypeFilterBottomConstraint.constant = constant;
 //                    }
 //                    
-                }else {
+                }
+                else {
                     //user is scrolling up
                     
                     //if the view.bottom_constraint == the bottom of the drink type filters
@@ -1254,16 +1300,18 @@ typedef enum {
                         //update the view's bottom constraint
                     CGFloat constant = MIN(-deltaY, kFilterButtonContainerHeightOffset);
                     if (constant == kFilterButtonContainerHeightOffset) {
-                        self.tableView.scrollEnabled = true;
-                        [self setConstraintsToHideView:true];
-                    }else {
+                        self.tableView.scrollEnabled = TRUE;
+                        [self setConstraintsToHideView:TRUE];
+                    }
+                    else {
                         self.subtypeFilterBottomConstraint.constant = constant;
-                        self.tableView.scrollEnabled = false;
+                        self.tableView.scrollEnabled = FALSE;
 
                     }
                 }
                 
-            }else {
+            }
+            else {
                 //handle if the view is partially open or close
                 //how much the view has opened from original position
                 CGFloat adjustment = self.startingBottomLayoutConstraintConstant - deltaY;
@@ -1271,31 +1319,29 @@ typedef enum {
                 if (!panningDown) {
                     CGFloat constant = MAX(adjustment, 0);
                     if (constant == 0) {
-                        self.tableView.scrollEnabled = true;
-                        [self setConstraintsToShowView:true];
-                    }else {
-                        self.tableView.scrollEnabled = false;
-                        self.subtypeFilterBottomConstraint.constant = constant;
+                        self.tableView.scrollEnabled = TRUE;
+                        [self setConstraintsToShowView:TRUE];
                     }
-                    
-                }else {
-                    
-                    CGFloat constant = MIN(adjustment, kFilterButtonContainerHeightOffset);
-                    
-                    if (constant == kFilterButtonContainerHeightOffset) { 
-                        self.tableView.scrollEnabled = true;
-                        [self setConstraintsToHideView:true];
-                    } else {
-                        self.tableView.scrollEnabled = false;
+                    else {
+                        self.tableView.scrollEnabled = FALSE;
                         self.subtypeFilterBottomConstraint.constant = constant;
                     }
                 }
-
-                
+                else {
+                    CGFloat constant = MIN(adjustment, kFilterButtonContainerHeightOffset);
+                    
+                    if (constant == kFilterButtonContainerHeightOffset) { 
+                        self.tableView.scrollEnabled = TRUE;
+                        [self setConstraintsToHideView:TRUE];
+                    }
+                    else {
+                        self.tableView.scrollEnabled = FALSE;
+                        self.subtypeFilterBottomConstraint.constant = constant;
+                    }
+                }
             }
             
             self.subtypeFilterTopConstraint.constant = -self.subtypeFilterBottomConstraint.constant;
-
         }
             break;
         case UIGestureRecognizerStateEnded:{
@@ -1306,13 +1352,13 @@ typedef enum {
                 //if less than half-way close, automatically close
                 if (self.subtypeFilterBottomConstraint.constant <= halfOfContainer) {
                     //close container
-                    [self setConstraintsToHideView:true];
+                    [self setConstraintsToHideView:TRUE];
                 }
 
-            }else {
+            }
+            else {
                 //do some other stuffs
             }
-
         }
             break;
         case UIGestureRecognizerStateCancelled:
@@ -1321,8 +1367,6 @@ typedef enum {
         default:
             break;
     }
-
-    
 }
 
 - (void)setConstraintsToShowView:(BOOL)animated {
@@ -1330,12 +1374,11 @@ typedef enum {
         return;
     }
     
-    self.isShowingMenu = true;
-    [self updateConstraintsIfNeeded:true completion:^(BOOL finished) {
+    self.isShowingMenu = TRUE;
+    [self updateConstraintsIfNeeded:TRUE completion:^(BOOL finished) {
         self.subtypeFilterBottomConstraint.constant = 0;
         self.subtypeFilterTopConstraint.constant = 0;
     }];
-    
 }
 
 - (void)setConstraintsToHideView:(BOOL)animated {
@@ -1343,17 +1386,15 @@ typedef enum {
         return;
     }
 
-    self.isShowingMenu = false;
-    [self updateConstraintsIfNeeded:true completion:^(BOOL finished) {
+    self.isShowingMenu = FALSE;
+    [self updateConstraintsIfNeeded:TRUE completion:^(BOOL finished) {
         self.subtypeFilterBottomConstraint.constant = kFilterButtonContainerHeightOffset;
         self.subtypeFilterTopConstraint.constant = -kFilterButtonContainerHeightOffset;
     }];
-    
-  
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    return true;
+    return TRUE;
 }
 
 - (void)updateConstraintsIfNeeded:(BOOL)animated completion:(void (^)(BOOL finished))completion {
@@ -1372,7 +1413,7 @@ typedef enum {
 
 - (void)searchViewController:(SHMenuAdminSearchViewController *)viewController selectedDrink:(DrinkModel*)drink {
     if (!self.emptyView.isHidden) {
-        [self showEmptyView:false];
+        [self showEmptyView:FALSE];
     }
     
     //create new menu item
@@ -1387,14 +1428,13 @@ typedef enum {
     
     //set edit attributes
     self.editMenuItem = menuItem;
-    self.isAddingMenuItem = true;
+    self.isAddingMenuItem = TRUE;
     self.indexOfRowForEditing = 0;
     [self.filteredMenuItems insertObject:self.editMenuItem atIndex:0];
 
-    
     //close door
     if (self.isShowingMenu) {
-        [self setConstraintsToHideView:true];
+        [self setConstraintsToHideView:TRUE];
     }
     
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -1406,7 +1446,7 @@ typedef enum {
     }
     
     //disable scrolling
-    self.tableView.scrollEnabled = false;
+    self.tableView.scrollEnabled = FALSE;
 
 }
 
@@ -1415,7 +1455,6 @@ typedef enum {
 }
 
 - (void)updateSpot:(SpotModel*)spot {
-    
     //if the selected spot is the same as the current spot
         //do nothing
     if (![self.spot isEqual:spot]) {
@@ -1425,8 +1464,8 @@ typedef enum {
         self.title = spot.name;
         
         //reset edit state
-        self.isEditingMenuItem = false;
-        self.isAddingMenuItem = false;
+        self.isEditingMenuItem = FALSE;
+        self.isAddingMenuItem = FALSE;
         
         [self.indexPathViewPairMap removeAllObjects];
         [self.cellWithOpenDrawers removeAllObjects];
@@ -1439,41 +1478,8 @@ typedef enum {
 #pragma mark -
 
 - (void)goToSearchView {
-    self.isSpotSearch = false;
+    self.isSpotSearch = FALSE;
     [self performSegueWithIdentifier:kSegueHomeToSearch sender:self];
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.destinationViewController isKindOfClass:[SHMenuAdminSearchViewController class]]) {
-        SHMenuAdminSearchViewController *vc = (SHMenuAdminSearchViewController *)segue.destinationViewController;
-        
-        //todo: implement logic for isSpotSearch
-        if (self.isSpotSearch) {
-            vc.isSpotSearch = true;
-        }
-        
-        //get current drink type based on button and pass drink type
-        vc.drinkType = self.currentDrinkType;
-        vc.filteredMenuItems = self.filteredMenuItems;
-        vc.menuType = self.currentMenuSubtype;
-        
-        if ([self.currentDrinkType isEqualToString:kDrinkTypeNameWine]) {
-            //send current menu subtype
-            vc.isWine = true;
-        }
-        
-        if ([self.currentMenuSubtype isEqualToString:kMenuSubtypeNameHouseCocktail]) {
-            vc.isHouseCocktail = true;
-            vc.spot = self.spot;
-        }
-        
-        vc.delegate = self;
-    }
-    
-    if ([segue.destinationViewController isKindOfClass:[SHMenuAdminDrinkProfileViewController class]]) {
-        SHMenuAdminDrinkProfileViewController *vc = (SHMenuAdminDrinkProfileViewController*)segue.destinationViewController;
-        vc.drink = self.drinkToShow;
-    }
 }
 
 #pragma mark - Fetch User Spots
@@ -1485,14 +1491,12 @@ typedef enum {
 }
 
 - (void)fetchUserSpots:(void(^)())success {
-    
     [[SHMenuAdminNetworkManager sharedInstance] fetchUserSpots:self.user queryParam:nil page:@1 pageSize:@MAX_PRICES_SHOWN success:^(NSArray *spots) {
         if (spots.count > 1) {
             self.sidebarViewController.spots = spots;
             [self.sidebarViewController refreshSidebar];
-            [self.navigationController.sidebarViewController showRightSidebar:true];
+            [self.navigationController.sidebarViewController showRightSidebar:TRUE];
         }
-        
         
         //set default loaded spot as the first spot in the list
         self.spot = [spots firstObject];
@@ -1502,33 +1506,28 @@ typedef enum {
         if (success) {
             success();
         }
-   
     } failure:^(ErrorModel *error) {
       //  [self showAlert:@"Network error" message:@"Please try again"];
         CLS_LOG(@"network error fetching user's spots: %@", error.humanValidations);
     }];
-    
 }
 
 #pragma mark - Fetch and filter menu items
 #pragma mark -
 
 - (void)fetchMenuItems {
-    
     self.menuItems = [NSMutableArray array];
     
     [[SHMenuAdminNetworkManager sharedInstance] fetchMenuItems:self.spot success:^(NSArray *menuItems) {
-        
         if (menuItems.count) {
-            
             for (MenuItemModel *menuItem in menuItems) {
                 [self.menuItems addObject:menuItem];
             }
             
             [self filterMenuItems:self.currentDrinkTypeEnum subTypes:self.currentMenuTypeEnum];
-        }else {
-            
-            [self showEmptyView:true];
+        }
+        else {
+            [self showEmptyView:TRUE];
             
             [self.filteredMenuItems removeAllObjects];
             [self.menuItems removeAllObjects];
@@ -1540,15 +1539,15 @@ typedef enum {
         
     } failure:^(ErrorModel *error){
         CLS_LOG(@"network error fetching menu items: %@", error.humanValidations);
-        //try to fetch menu items again
-        [self fetchMenuItems];
+        //try to fetch menu items again in a few seconds
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self fetchMenuItems];
+        });
     }];
 }
 
 - (void)fetchMenuSizes {
-    
     [[SHMenuAdminNetworkManager sharedInstance] fetchDrinkSizes:self.spot success:^(NSArray *sizes) {
-        
         for (SizeModel *size in sizes) {
             for (MenuTypeModel *menuType in size.menuTypes) {
                 //if menu type key found
@@ -1559,8 +1558,8 @@ typedef enum {
                         [storedSizes addObject:size];
                         [self.typeSizeMap setObject:storedSizes forKey:menuType.name];
                     }
-                    
-                }else {
+                }
+                else {
                     //if the key is not already in dictionary, add key and new array with size
                     //if supported filter type
                     if ([self.menuTypes containsObject:menuType.name]) {
@@ -1572,39 +1571,35 @@ typedef enum {
                 }
             }
         }
-        
     } failure:^(ErrorModel* error){
-        
         CLS_LOG(@"network error fetching menu sizes: %@", error.humanValidations);
         
-        //attempt to fetch sizes again if the error occurs
-        [self fetchMenuSizes];
-    
+        //try to fetch sizes again in a few seconds
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self fetchMenuSizes];
+        });
     }];
-
 }
 
 - (void)fetchMenuTypes {
-    
     [[SHMenuAdminNetworkManager sharedInstance] fetchMenuTypes:self.spot success:^(NSArray *menuTypes) {
-    
         if (menuTypes) {
             for (MenuTypeModel *menuType in menuTypes) {
                 [self.menuTypeMap setObject:menuType.ID forKey:menuType.name];
             }
         }
-        
-    } failure:^(ErrorModel* error){
-        
+    } failure:^(ErrorModel *error){
         CLS_LOG(@"network error fetching menu types: %@", error.humanValidations);
         //attempt to fetch types again if the error occurs
-        [self fetchMenuTypes];
+        
+        //try to fetch menu types again in a few seconds
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self fetchMenuTypes];
+        });
     }];
-    
 }
 
 - (void)filterMenuItems:(DrinkTypes)type subTypes:(MenuSubtypes)subtype {
-    
     NSPredicate *typeFilter;
     NSPredicate *subtypeFilter;
     
@@ -1689,7 +1684,8 @@ typedef enum {
         NSPredicate *search = [NSCompoundPredicate andPredicateWithSubpredicates:@[typeFilter, subtypeFilter]];
         self.filteredMenuItems = [[self.menuItems filteredArrayUsingPredicate:search] mutableCopy];
         
-    }else {
+    }
+    else {
         self.filteredMenuItems = [[self.menuItems filteredArrayUsingPredicate:typeFilter]mutableCopy];
     }
     
@@ -1700,10 +1696,10 @@ typedef enum {
     if (!self.filteredMenuItems.count) {
         //hide tableview
         //show empty
-        [self showEmptyView:true];
-    }else {
-      
-        [self showEmptyView:false];
+        [self showEmptyView:TRUE];
+    }
+    else {
+        [self showEmptyView:FALSE];
         //update view after filtering
         [self.tableView reloadData];
     }
@@ -1712,12 +1708,13 @@ typedef enum {
 
 - (void)showEmptyView:(BOOL)show {
     if (show) {
-        self.tableView.hidden = true;
-        self.emptyView.hidden = false;
+        self.tableView.hidden = TRUE;
+        self.emptyView.hidden = FALSE;
         self.lblEmpty.text = [NSString stringWithFormat:@"No %@s added.", [self.currentDrinkType lowercaseString]];
-    }else {
-        self.emptyView.hidden = true;
-        self.tableView.hidden = false;
+    }
+    else {
+        self.emptyView.hidden = TRUE;
+        self.tableView.hidden = FALSE;
     }
 }
 
@@ -1727,14 +1724,14 @@ typedef enum {
 }
 
 - (void)addNewPathViewPair:(SHMenuAdminIndexPathViewPair *)indexPathViewPair {
-    
     if ([self.indexPathViewPairMap objectForKey:self.currentMenuSubtype]) {
         //if key already exists...
         NSMutableArray *indexPathViewPairs = [self.indexPathViewPairMap objectForKey:self.currentMenuSubtype];
         [indexPathViewPairs addObject:indexPathViewPair];
         [self.indexPathViewPairMap setObject:indexPathViewPairs forKey:self.currentMenuSubtype];
         
-    }else {
+    }
+    else {
         //if the key is not already in dictionary, add key and new array with size
         //if supported filter type
         if ([self.menuTypes containsObject:self.currentMenuSubtype]) {
@@ -1747,7 +1744,6 @@ typedef enum {
 }
 
 - (SHMenuAdminPriceSizeRowContainerView *)getViewForEditCellAtIndexPath:(NSIndexPath*)indexPath {
-
     SHMenuAdminPriceSizeRowContainerView *container = nil;
     
     if ([self.indexPathViewPairMap objectForKey:self.currentMenuSubtype]) {
@@ -1767,7 +1763,6 @@ typedef enum {
 }
 
 - (SHMenuAdminPriceSizeRowContainerView *)containerForAdd:(SHMenuAdminEditMenuItemTableViewCell*)editCell {
-    
     //if addContainer doesn't exist
     //create a new container and add new pair to dictionary
     //else
@@ -1831,11 +1826,9 @@ typedef enum {
     menuItem.prices = prices;
     
     return menuItem;
-    
 }
 
 - (void)createMenuItem:(MenuItemModel *)menuItem success:(void(^)())success {
-    
     id ID = [self.menuTypeMap objectForKey:menuItem.menuType.name];
     
     [[SHMenuAdminNetworkManager sharedInstance] createMenuItem:menuItem spot:self.spot menuType:ID success:^(MenuItemModel *created) {
@@ -1860,13 +1853,15 @@ typedef enum {
                 created.prices = menuItem.prices;
                 //use newly fetched menu item to post prices to
                 [self postPrices:created success:success];
-            }else {
+            }
+            else {
                 if (success) {
                     success();
                 }
             }
         
-        }else {
+        }
+        else {
             NSAssert(index, @"object should exist");
         }
         
@@ -1877,9 +1872,7 @@ typedef enum {
 }
 
 - (void)saveEdits:(MenuItemModel *)menuItem success:(void(^)())success {
-    
     [[SHMenuAdminNetworkManager sharedInstance] updatePrices:menuItem success:^(NSArray* prices) {
-        
         if (prices){
             menuItem.prices = prices;
         }
@@ -1890,16 +1883,13 @@ typedef enum {
     } failure:^(ErrorModel *error) {
           CLS_LOG(@"network error adding new prices to menu item [name: %@]. Error: %@", menuItem, error.humanValidations);
     }];
-    
 }
 
 - (void)postPrices:(MenuItemModel *)menuItem success:(void(^)())success {
-
     //create params and post new prices
     if (menuItem.prices.count) {
 
         [[SHMenuAdminNetworkManager sharedInstance] createPrices:menuItem success:^(NSArray* prices) {
-            
             if (prices){
                 menuItem.prices = prices;
             }
@@ -1907,7 +1897,6 @@ typedef enum {
             if (success) {
                 success();
             }
-            
         } failure:^(ErrorModel *error) {
             CLS_LOG(@"network error adding new prices to menu item [name: %@]. Error: %@", menuItem, error.humanValidations);
         }];
@@ -1919,18 +1908,18 @@ typedef enum {
 
 - (void)setCurrentSubtypesButton:(UIButton*)new {
     //return old menu subtype button to original state
-    self.btnCurrentMenuSubtype.enabled = true;
+    self.btnCurrentMenuSubtype.enabled = TRUE;
     self.btnCurrentMenuSubtype.backgroundColor = [SHMenuAdminStyleSupport sharedInstance].LIGHT_ORANGE;
     
     self.btnCurrentMenuSubtype = new;
-    self.btnCurrentMenuSubtype.enabled = false;
+    self.btnCurrentMenuSubtype.enabled = FALSE;
     self.btnCurrentMenuSubtype.backgroundColor = [SHMenuAdminStyleSupport sharedInstance].ORANGE;
 }
 
 - (void)setSubtypesContainer:(UIView*)new {
-    self.currentSubtypesContainer.hidden = true;
+    self.currentSubtypesContainer.hidden = TRUE;
     self.currentSubtypesContainer = new;
-    self.currentSubtypesContainer.hidden = false;
+    self.currentSubtypesContainer.hidden = FALSE;
 }
 
 #pragma mark - Keyboard
@@ -1989,7 +1978,7 @@ typedef enum {
 }
 
 - (void)hideKeyboard {
-    [self.view endEditing:true];
+    [self.view endEditing:TRUE];
     
     if ([self sizePickerIsShown]) {
         NSIndexPath *indexPath = [[self.tableView indexPathsForVisibleRows]firstObject];
@@ -2013,10 +2002,12 @@ typedef enum {
         if (priceInStupidCents.cents != nil && priceInStupidCents.size != nil) {
             container.txtfldPrice.text = price;
             container.lblSize.text = priceInStupidCents.size.name;
-        } else if (priceInStupidCents.cents != nil) {
+        }
+        else if (priceInStupidCents.cents != nil) {
             container.txtfldPrice.text = price;
             container.lblSize.text = kSizeNameNoneValue;
-        } else if (priceInStupidCents.size != nil) {
+        }
+        else if (priceInStupidCents.size != nil) {
             container.txtfldPrice.text = @"$0.00";
             container.lblSize.text = priceInStupidCents.size.name;
         }
@@ -2029,9 +2020,11 @@ typedef enum {
     
     if ([drinkType isEqualToString:kDrinkTypeNameBeer]) {
         placeholder = [UIImage imageNamed:@"placeholderBeer"];
-    }else if ([drinkType isEqualToString:kDrinkTypeNameWine]) {
+    }
+    else if ([drinkType isEqualToString:kDrinkTypeNameWine]) {
         placeholder = [UIImage imageNamed:@"placeholderWine.png"];
-    }else if ([drinkType isEqualToString:kDrinkTypeNameCocktail]) {
+    }
+    else if ([drinkType isEqualToString:kDrinkTypeNameCocktail]) {
         placeholder = [UIImage imageNamed:@"placeholderCocktail.png"];
     }
     
@@ -2053,7 +2046,6 @@ typedef enum {
 }
 
 - (void)styleButtons {
-    //here
     [self.btnBeer styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"beerIcon.png"] text:kDrinkTypeNameBeer];
     [self.btnBeer addBottomBorder];
     [self.btnBeer addTopBorder];
@@ -2080,22 +2072,18 @@ typedef enum {
     [self.btnWhiteWine styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"wineIcon.png"] text:kMenuSubtypeNameWhiteWine];
     [self.btnWhiteWine addBottomBorder];
     [self.btnWhiteWine addLeftBorder];
-
     
     [self.btnFortifiedWine styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"fortifiedIcon.png"] text:kMenuSubtypeNameFortifiedWine];
     [self.btnFortifiedWine addBottomBorder];
     [self.btnFortifiedWine addLeftBorder];
-
     
     [self.btnSparklingWine styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"sparklingIcon.png"] text:kMenuSubtypeNameSparklingWine];
     [self.btnSparklingWine addBottomBorder];
     [self.btnSparklingWine addLeftBorder];
-
     
     [self.btnRoseWine styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"roseIcon.png"] text:kMenuSubtypeNameRoseWine];
     [self.btnRoseWine addBottomBorder];
     [self.btnRoseWine addLeftBorder];
-
     
     [self.btnHouseCocktail styleAsFilterButtonWithSideImage:[UIImage imageNamed:@"houseCocktailsIcon.png"] text:kMenuSubtypeNameHouseCocktail];
     [self.btnHouseCocktail addBottomBorder];
@@ -2103,7 +2091,6 @@ typedef enum {
     [self.btnCommonCocktail styleAsFilterButtonWithSideImage:[UIImage imageNamed:@"cocktailIcon.png"] text:kMenuSubtypeNameCommonCocktail];
     [self.btnCommonCocktail addBottomBorder];
     [self.btnCommonCocktail addLeftBorder];
-
 }
 
 @end

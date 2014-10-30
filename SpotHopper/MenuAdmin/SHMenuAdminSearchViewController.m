@@ -255,7 +255,7 @@
         
         //delegate to the homeviewcontroller to add a new cell with the DrinkModel info
         if ([_delegate respondsToSelector:@selector(searchViewController:selectedDrink:)]) {
-            [self.navigationController popViewControllerAnimated:true];
+            [self.navigationController popViewControllerAnimated:TRUE];
             [_delegate searchViewController:self selectedDrink:drink];
         }
         
@@ -266,7 +266,7 @@
             //delegate to the homeviewcontroller to
             //1. fetch menu items w/ new spot's id
             //2. display menu items
-            [self.navigationController popViewControllerAnimated:true];
+            [self.navigationController popViewControllerAnimated:TRUE];
             [_delegate searchViewController:self selectedSpot:spot];
         }
     }
@@ -282,7 +282,8 @@
 //       
 //        if (spot.addressCityState) {
 //             height += [self heightForString:spot.addressCityState font:[UIFont fontWithName:@"Lato-Italic" size:14.0f] maxWidth:kMaxAddressWidth];
-//        }else {
+//        }
+//        else {
 //            height = 85.0f;
 //        }
         
@@ -381,10 +382,8 @@
             
             CLS_LOG(@"network error searching for spots. Error: %@", error.humanValidations);
         }];
-
-        
-    }else {
-        
+    }
+    else {
         //search drinks
         id drinkTypeID = [self.drinkTypeMap objectForKey:self.drinkType];
         NSMutableDictionary *extraParams = [NSMutableDictionary dictionary];

@@ -46,9 +46,11 @@
     NSString *specifics = nil;
     if ([drink.drinkType.name isEqualToString:kDrinkTypeNameBeer]) {
         specifics = drink.style;
-    }else if ([drink.drinkType.name isEqualToString:kDrinkTypeNameWine]) {
+    }
+    else if ([drink.drinkType.name isEqualToString:kDrinkTypeNameWine]) {
         specifics = [drink.vintage stringValue];
-    }else if ([drink.drinkType.name isEqualToString:kDrinkTypeNameCocktail]) {
+    }
+    else if ([drink.drinkType.name isEqualToString:kDrinkTypeNameCocktail]) {
         BaseAlcoholModel *baseAlcohol = [drink.baseAlochols firstObject];
         if (baseAlcohol) {
             specifics = baseAlcohol.name;

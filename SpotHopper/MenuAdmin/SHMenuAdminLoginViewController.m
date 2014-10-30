@@ -24,12 +24,10 @@
 
 @property (weak, nonatomic) SHMenuAdminNetworkManager *networkManager;
 
-@property (weak, nonatomic) IBOutlet UITextField *txtfldEmail;
-@property (weak, nonatomic) IBOutlet UITextField *txtfldPassword;
-@property (weak, nonatomic) IBOutlet UIView *container;
-
-@property (weak, nonatomic) IBOutlet UIImageView *logo;
-@property (nonatomic, assign) BOOL keyboardUp;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UITextField *emailTextField;
+@property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (weak, nonatomic) IBOutlet UIImageView *logoImageView;
 
 @end
 
@@ -41,10 +39,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _keyboardUp = NO;
+#ifndef NDEBUG
+    self.emailTextField.text = @"niko.ivanovic@spothopperapp.com";
+    self.passwordTextField.text = @"spothopper071";
+#endif
     
-    self.navigationController.navigationBarHidden = true;
-    self.container.backgroundColor = [UIColor clearColor];
+    self.navigationController.navigationBarHidden = TRUE;
     // Do any additional setup after loading the view.
 }
 
@@ -61,10 +61,6 @@
     // Sets in settings that user has seen launch
     [[ClientSessionManager sharedClient] setHasSeenLaunch:YES];
     
-    if ([self.delegate respondsToSelector:@selector(loginDidFinish:)]) {
-        [self.delegate loginDidFinish:self];
-    }
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
@@ -76,6 +72,13 @@
     [self login];
 }
 
+- (IBAction)tapGestureRecognized:(id)sender {
+    if (![sender isKindOfClass:[UITextField class]] &&
+        ![sender isKindOfClass:[UIButton class]]) {
+        [self.view endEditing:TRUE];
+    }
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [self login];
     return YES;
@@ -85,8 +88,8 @@
 #pragma mark -
 
 - (void)login {
-    NSString *email = [self.txtfldEmail.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    NSString *password = self.txtfldPassword.text;
+    NSString *email = [self.emailTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *password = self.passwordTextField.text;
     
     if (email.length == 0) {
         [self showAlert:@"Oops" message:@"Email is required"];
@@ -100,7 +103,6 @@
     [self showHUD:@"Logging in"];
 
     [[SHMenuAdminNetworkManager sharedInstance] loginUser:email password:password success:^(UserModel *user) {
-        
         if ([user.role isEqualToString:kUserRoleUser]) {
             //show error message not validated
             [self showAlert:@"Oops" message:@"You must be a bar owner or administrator to login"];
@@ -111,19 +113,22 @@
             
             return;
         }
-        
-        [self hideHUD];
-        [[ClientSessionManager sharedClient]setHasSeenLaunch:true];
-        [self dismissViewControllerAnimated:true completion:nil];
-        
+        else {
+            [self hideHUD];
+            [[ClientSessionManager sharedClient] setHasSeenLaunch:TRUE];
+//            [self dismissViewControllerAnimated:TRUE completion:nil];
+            [self.presentingViewController dismissViewControllerAnimated:TRUE completion:^{
+                MAAssert(self.delegate, @"Delegate is required");
+                if ([self.delegate respondsToSelector:@selector(loginDidFinish:)]) {
+                    [self.delegate loginDidFinish:self];
+                }
+            }];
+        }
     } failure:^(ErrorModel *error) {
-        
         CLS_LOG(@"login issue: %@", error.humanValidations);
         [self hideHUD];
         [self showAlert:@"Oops" message:error.humanValidations];
-        
     }];
-    
 }
 
 #pragma mark - Keyboard
@@ -131,70 +136,22 @@
 - (void)keyboardWillShow:(NSNotification*)notification {
     CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     
-    // Animate the current view out of the way
-    if (self.view.frame.origin.y >= 0)
-    {
-        [self setViewMovedUp:YES keyboardFrame:keyboardFrame];
-    }
-    else if (self.view.frame.origin.y < 0)
-    {
-        [self setViewMovedUp:NO keyboardFrame:keyboardFrame];
-    }
+    CGFloat height = CGRectGetHeight(keyboardFrame);
+    
+    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, height, 0);
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification {
-    CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    
-    if (self.view.frame.origin.y >= 0)
-    {
-        [self setViewMovedUp:YES keyboardFrame:keyboardFrame];
-    }
-    else if (self.view.frame.origin.y < 0)
-    {
-        [self setViewMovedUp:NO keyboardFrame:keyboardFrame];
-    }
-}
-
-- (float)offsetForKeyboard {
-    return 210.0f;
-}
-
-- (void)setViewMovedUp:(BOOL)movedUp keyboardFrame:(CGRect)keyboardFrame {
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.3]; // if you want to slide up the view
-    
-    CGRect rect = self.container.frame;
-    if (_keyboardUp == NO)
-    {
-        _keyboardUp = YES;
-        // 1. move the view's origin up so that the text field that will be hidden come above the keyboard
-        // 2. increase the size of the view so that the area behind the keyboard is covered up.
-        rect.origin.y -= [self offsetForKeyboard];
-        rect.size.height += [self offsetForKeyboard];
-        
-        [self.logo setAlpha:0.0f];
-    }
-    else
-    {
-        _keyboardUp = NO;
-        // revert back to the normal state.
-        rect.origin.y += [self offsetForKeyboard];
-        rect.size.height -= [self offsetForKeyboard];
-        
-        [self.logo setAlpha:1.0f];
-    }
-    self.container.frame = rect;
-    
-    [UIView commitAnimations];
+    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
 }
 
 - (void)clearTextFields {
-    self.txtfldPassword.text = @"";
-    self.txtfldEmail.text = @"";
+    self.passwordTextField.text = nil;
+    self.emailTextField.text = nil;
 }
 
 - (NSArray *)textfieldToHideKeyboard {
-    return @[self.txtfldEmail, self.txtfldPassword];
+    return @[self.emailTextField, self.passwordTextField];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {

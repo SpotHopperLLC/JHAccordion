@@ -137,10 +137,10 @@
 
 - (void)toggleSearchBasedOnUserRole {
     if (![self.user.role isEqualToString:@"admin"]) {
-        self.btnSeeAllSpots.hidden = true;
+        self.btnSeeAllSpots.hidden = TRUE;
     }else {
         if (self.btnSeeAllSpots.hidden) {
-            self.btnSeeAllSpots.hidden = false;
+            self.btnSeeAllSpots.hidden = FALSE;
         }
     }
 }
