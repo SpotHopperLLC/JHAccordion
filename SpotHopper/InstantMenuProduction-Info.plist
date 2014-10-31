@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Instant Menu</string>
+	<string>Menu Blast</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
@@ -40,7 +40,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Instant Menu will use your location to discover nearby spots.</string>
+	<string>Menu Blast will use your location to discover nearby spots.</string>
 	<key>SpotHopperSettings</key>
 	<dict>
 		<key>AppURLScheme</key>

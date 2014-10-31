@@ -25,6 +25,7 @@ def import_pods
     pod 'BlocksKit', '~> 2.2.0'
     pod 'SVPulsingAnnotationView', '~> 0.3.0'
     pod 'JTSReachability', :git => 'http://github.com/brennanMKE/JTSReachability.git', :tag => '1.1.0'
+    pod 'Haneke', '~> 1.0'
 
     # Debugging
     # pod 'Raven', '~> 0.2.0'
@@ -41,7 +42,6 @@ def import_pods
     pod 'Mixpanel', '~> 2.5'
 
 end
-
 
 target "SpotHopperLocal" do
     import_pods
@@ -65,5 +65,16 @@ target "SpotHopperStaging" do
 end
 
 target "SpotHopperProduction" do
+    import_pods
+end
+
+target "InstantMenuStaging" do
+    import_pods
+    
+    # Debugging UI
+    pod 'Reveal-iOS-SDK'
+end
+
+target "InstantMenuProduction" do
     import_pods
 end

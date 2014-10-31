@@ -10,6 +10,8 @@
 #import "UIView+AutoLayout.h"
 #import "SHMenuAdminStyleSupport.h"
 
+#import "SHStyleKit+Additions.h"
+
 #define kMaxContainers 5
 
 #define kPriceSizeContainerHeight 30.0f
@@ -110,18 +112,8 @@
 #pragma mark -
 
 - (void)styleCell {
-    UIFont *regLato = [UIFont fontWithName:@"Lato-Regular" size:12.0f];
-    
-    self.lblDrinkName.font = [UIFont fontWithName:@"Lato-Bold" size:18.0f];
-    
-    self.lblDrinkSpecifics.font = regLato;
-    self.lblBrewSpot.font = regLato;
-    
-    self.btnCancel.titleLabel.font = regLato;
-    self.btnCancel.titleLabel.textColor = [SHMenuAdminStyleSupport sharedInstance].ORANGE;
-    
-    self.btnSave.titleLabel.font = [UIFont fontWithName:@"Lato-Bold" size:18.0f];
-    self.btnSave.titleLabel.textColor = [SHMenuAdminStyleSupport sharedInstance].ORANGE;
+    self.btnCancel.titleLabel.textColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
+    self.btnSave.titleLabel.textColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
 }
 
 @end

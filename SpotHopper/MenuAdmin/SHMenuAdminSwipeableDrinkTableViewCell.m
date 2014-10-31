@@ -49,8 +49,7 @@ static CGFloat const kBounceValue = 40.0f;
     [self styleCell];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
@@ -61,7 +60,6 @@ static CGFloat const kBounceValue = 40.0f;
     [self resetConstraintConstantsToZero:NO notifyDelegateDidClose:NO];
 }
 
-
 #pragma mark - Actions
 #pragma mark -
 
@@ -71,15 +69,18 @@ static CGFloat const kBounceValue = 40.0f;
         if ([self.delegate respondsToSelector:@selector(photoButtonTapped:)]) {
             [self.delegate photoButtonTapped:self];
         }
-    }else if (sender == self.btnFlavorProfile) {
+    }
+    else if (sender == self.btnFlavorProfile) {
         if ([self.delegate respondsToSelector:@selector(flavorProfileButtonTapped:)]) {
             [self.delegate flavorProfileButtonTapped:self];
         }
-    }else if (sender == self.btnEdit) {
+    }
+    else if (sender == self.btnEdit) {
         if ([self.delegate respondsToSelector:@selector(editButtonTapped:)]) {
             [self.delegate editButtonTapped:self];
         }
-    }else if (sender == self.btnDelete) {
+    }
+    else if (sender == self.btnDelete) {
         if ([self.delegate respondsToSelector:@selector(deleteButtonTapped:)]) {
             [self.delegate deleteButtonTapped:self];
         }
@@ -93,13 +94,12 @@ static CGFloat const kBounceValue = 40.0f;
     }
 }
 
-
 #pragma mark - Enable/Disable Gestures
 #pragma mark -
+
 - (void)toggleSwipeGesture:(BOOL)enable {
     self.panRecognizer.enabled = enable;
 }
-
 
 #pragma mark - UIGestureRecognizerDelegate
 #pragma mark -
@@ -116,21 +116,20 @@ static CGFloat const kBounceValue = 40.0f;
     return FALSE;
 }
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return YES;
 }
 
 #pragma mark - Public
 #pragma mark -
+
 - (void)openCell {
     [self setConstraintsToShowAllButtons:NO notifyDelegateDidOpen:NO];
 }
 
--(void)closeCell {
+- (void)closeCell {
     [self resetConstraintConstantsToZero:YES notifyDelegateDidClose:NO];
 }
-
 
 #pragma mark - Private
 #pragma mark -
@@ -157,32 +156,39 @@ static CGFloat const kBounceValue = 40.0f;
                     CGFloat constant = MAX(-deltaX, 0);
                     if (constant == 0) {
                         [self resetConstraintConstantsToZero:TRUE notifyDelegateDidClose:FALSE];
-                    }else {
-                        self.contentViewRightConstraint.constant = constant;
                     }
-                }else {
-                    CGFloat constant = MIN(-deltaX, [self buttonTotalWidth]);
-                    if (constant == [self buttonTotalWidth]) {
-                        [self setConstraintsToShowAllButtons:TRUE notifyDelegateDidOpen:FALSE];
-                    }else {
+                    else {
                         self.contentViewRightConstraint.constant = constant;
                     }
                 }
-            }else {
+                else {
+                    CGFloat constant = MIN(-deltaX, [self buttonTotalWidth]);
+                    if (constant == [self buttonTotalWidth]) {
+                        [self setConstraintsToShowAllButtons:TRUE notifyDelegateDidOpen:FALSE];
+                    }
+                    else {
+                        self.contentViewRightConstraint.constant = constant;
+                    }
+                }
+            }
+            else {
                 
                 CGFloat adjustment = self.startingRightLayoutConstraintConstant - deltaX;
                 if (!panningLeft) {
                     CGFloat constant = MAX(adjustment, 0);
                     if (constant == 0) {
                         [self resetConstraintConstantsToZero:TRUE notifyDelegateDidClose:FALSE];
-                    }else {
+                    }
+                    else {
                         self.contentViewRightConstraint.constant = constant;
                     }
-                }else {
+                }
+                else {
                     CGFloat constant = MIN(adjustment, [self buttonTotalWidth]);
                     if (constant == [self buttonTotalWidth]) {
                         [self setConstraintsToShowAllButtons:TRUE notifyDelegateDidOpen:FALSE];
-                    }else {
+                    }
+                    else {
                         self.contentViewRightConstraint.constant = constant;
                     }
                 }
@@ -196,16 +202,19 @@ static CGFloat const kBounceValue = 40.0f;
                 CGFloat halfOfDeleteButton = CGRectGetWidth(self.btnDelete.frame) / 2;
                 if (self.contentViewRightConstraint.constant >= halfOfDeleteButton) {
                     [self setConstraintsToShowAllButtons:TRUE notifyDelegateDidOpen:TRUE];
-                }else {
+                }
+                else {
                     [self resetConstraintConstantsToZero:TRUE notifyDelegateDidClose:TRUE];
                 }
                 
-            }else {
+            }
+            else {
                 CGFloat photoButtonPlusHalfOfFlavorProfile = CGRectGetWidth(self.btnPhoto.frame) + (CGRectGetWidth(self.btnFlavorProfile.frame)/2);
                 
                 if (self.contentViewRightConstraint.constant >= photoButtonPlusHalfOfFlavorProfile) {
                     [self setConstraintsToShowAllButtons:TRUE notifyDelegateDidOpen:TRUE];
-                }else {
+                }
+                else {
                     [self resetConstraintConstantsToZero:TRUE notifyDelegateDidClose:TRUE];
                 }
                 
@@ -244,6 +253,8 @@ static CGFloat const kBounceValue = 40.0f;
 }
 
 - (void)resetConstraintConstantsToZero:(BOOL)animated notifyDelegateDidClose:(BOOL)notifyDelegate {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
     if (notifyDelegate && [self.delegate respondsToSelector:@selector(cellDidClose:)]) {
         [self.delegate cellDidClose:self];
     }
@@ -256,20 +267,18 @@ static CGFloat const kBounceValue = 40.0f;
     self.contentViewLeftConstraint.constant = kBounceValue;
     
     [self updateConstraintsIfNeeded:animated completion:^(BOOL finished) {
-//        if (finished) {
-            self.contentViewRightConstraint.constant = 0;
-            self.contentViewLeftConstraint.constant = 0;
-            
-            [self updateConstraintsIfNeeded:animated completion:^(BOOL finished) {
-//                if (finished) {
-                    self.startingRightLayoutConstraintConstant = self.contentViewRightConstraint.constant;
-//                }
-            }];
-//        }
+        self.contentViewRightConstraint.constant = 0;
+        self.contentViewLeftConstraint.constant = 0;
+        
+        [self updateConstraintsIfNeeded:animated completion:^(BOOL finished) {
+            self.startingRightLayoutConstraintConstant = self.contentViewRightConstraint.constant;
+        }];
     }];
 }
 
 - (void)setConstraintsToShowAllButtons:(BOOL)animated notifyDelegateDidOpen:(BOOL)notifyDelegate {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
     if (notifyDelegate && [self.delegate respondsToSelector:@selector(cellDidOpen:)]) {
         [self.delegate cellDidOpen:self];
     }
@@ -282,26 +291,19 @@ static CGFloat const kBounceValue = 40.0f;
     self.contentViewRightConstraint.constant = [self buttonTotalWidth] + kBounceValue;
     
     [self updateConstraintsIfNeeded:animated completion:^(BOOL finished) {
-//        if (finished) {
-            self.contentViewLeftConstraint.constant = -[self buttonTotalWidth];
-            self.contentViewRightConstraint.constant = [self buttonTotalWidth];
-            
-            [self updateConstraintsIfNeeded:animated completion:^(BOOL finished) {
-//                if (finished) {
-                    self.startingRightLayoutConstraintConstant = self.contentViewRightConstraint.constant;
-//                }
-            }];
-//        }
+        self.contentViewLeftConstraint.constant = -[self buttonTotalWidth];
+        self.contentViewRightConstraint.constant = [self buttonTotalWidth];
+        
+        [self updateConstraintsIfNeeded:animated completion:^(BOOL finished) {
+            self.startingRightLayoutConstraintConstant = self.contentViewRightConstraint.constant;
+        }];
     }];
-    
 }
-
-
 
 //returns the starting position of the leftmost button (photo)
 //represents the amount the upper layer has to reposition
 - (CGFloat)buttonTotalWidth {
-    return CGRectGetWidth(self.frame) - CGRectGetMinX(self.btnEdit.frame);
+    return CGRectGetWidth(self.frame) - CGRectGetMinX(self.btnPhoto.frame);
     //    return CGRectGetWidth(self.frame) - CGRectGetMinX(self.btnPhoto.frame);
 }
 
@@ -309,28 +311,14 @@ static CGFloat const kBounceValue = 40.0f;
 #pragma mark -
 
 - (void)styleCell {
-
-    UIFont *regLato = [UIFont fontWithName:@"Lato-Regular" size:12.0f];
- 
     self.lblDrinkName.textColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
-    self.lblDrinkName.font = [UIFont fontWithName:@"Lato-Regular" size:18.0f];
-    
-    self.lblDrinkSpecifics.font = regLato;
-    self.lblBrewSpot.font = regLato;
-
-    self.lblPrice.font = [UIFont fontWithName:@"Lato-Italic" size:12.0f];
     self.lblPrice.textColor = [SHStyleKit color:SHStyleKitColorMyTextColor];
-
-    self.lblSlidePrompt.font = [UIFont fontWithName:@"Lato-Regular" size:10.0f];
     self.lblSlidePrompt.textColor = [SHStyleKit color:SHStyleKitColorMyTextColor];
     
-    
-    [self.btnPhoto styleAsEditButton:[UIImage imageNamed:@"photoIcon.png"] text:@"Photo"];
-    [self.btnFlavorProfile styleAsEditButton:[UIImage imageNamed:@"flavorProfileIcon.png"] text:@"Flavor Profile"];
-    [self.btnEdit styleAsEditButton:[UIImage imageNamed:@"editIcon.png"] text:@"Edit"];
-    [self.btnDelete styleAsEditButton:[UIImage imageNamed:@"trashIcon.png"] text:@"Delete"];
-    
+    [self.btnPhoto styleAsEditButton:[UIImage imageNamed:@"photoIcon"] text:@"Photo"];
+    [self.btnFlavorProfile styleAsEditButton:[UIImage imageNamed:@"flavorProfileIcon"] text:@"Flavor\nProfile"];
+    [self.btnEdit styleAsEditButton:[UIImage imageNamed:@"editIcon"] text:@"Edit"];
+    [self.btnDelete styleAsEditButton:[UIImage imageNamed:@"trashIcon"] text:@"Delete"];
 }
-
 
 @end

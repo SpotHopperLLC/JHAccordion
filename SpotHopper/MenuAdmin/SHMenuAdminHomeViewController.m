@@ -266,6 +266,17 @@ typedef enum {
     
     self.currentSubtypesContainer = self.beerSubtypeContainer;
     
+    if (([[ClientSessionManager sharedClient] isLoggedIn]) && ([[ClientSessionManager sharedClient] hasSeenLaunch])) {
+        [self showHUD:@"Loading Menu"];
+        
+        [self configureForUser];
+        
+        //show hud while loading menu initially
+        [self fetchUserSpots:^{
+            //fetch menu items
+            [self fetchMenuItems];
+        }];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -275,17 +286,6 @@ typedef enum {
         // if the user is not logged in or has not seen the launch screen at once... go to the login screen
         if (!([[ClientSessionManager sharedClient] isLoggedIn]) || !([[ClientSessionManager sharedClient] hasSeenLaunch])) {
             [self performSegueWithIdentifier:@"HomeToLogin" sender:self];
-        }
-        else {
-            [self showHUD:@"Loading Menu"];
-            
-            [self configureForUser];
-            
-            //show hud while loading menu initially
-            [self fetchUserSpots:^{
-                //fetch menu items
-                [self fetchMenuItems];
-            }];
         }
     });
 
@@ -301,9 +301,11 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    DebugLog(@"segue: %@", segue.identifier);
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.destinationViewController isKindOfClass:[SHMenuAdminLoginViewController class]]) {
         SHMenuAdminLoginViewController *vc = (SHMenuAdminLoginViewController *)segue.destinationViewController;
         vc.delegate = self;
@@ -338,7 +340,6 @@ typedef enum {
         vc.drink = self.drinkToShow;
     }
 }
-
 
 #pragma mark - Menu Toggle Actions
 #pragma mark -
@@ -573,7 +574,7 @@ typedef enum {
     static NSString *CellIdentifier = @"Cell";
     static NSString *EditCellIdentifier = @"EditCell";
 
-    if ([self sizePickerIsShown] && (self.sizePickerIndexPath.row == indexPath.row)){
+    if ([self sizePickerIsShown] && (self.sizePickerIndexPath.row == indexPath.row)) {
         UITableViewCell *pickerCell = [tableView dequeueReusableCellWithIdentifier:kPickerCellIdentifier];
         
         if (!pickerCell) {
@@ -746,7 +747,10 @@ typedef enum {
             
             for (PriceModel *price in menuItem.prices) {
                 if ((price.cents || price.size) && (count <= MAX_PRICES_SHOWN)) {
-                    prices = [NSString stringWithFormat:@"%@ \n", [prices stringByAppendingString:[price priceAndSize]]];
+                    NSString *priceString = [price priceAndSize];
+                    if (priceString.length) {
+                        prices = [NSString stringWithFormat:@"%@ \n", [prices stringByAppendingString:priceString]];
+                    }
                 }
                 count++;
             }
@@ -832,7 +836,10 @@ typedef enum {
     NSString *prices = @"";
     for (PriceModel *price in menuItem.prices) {
         if (price.cents || price.size) {
-            prices = [NSString stringWithFormat:@"%@ \n", [prices stringByAppendingString:[price priceAndSize]]];
+            NSString *priceString = [price priceAndSize];
+            if (priceString.length) {
+                prices = [NSString stringWithFormat:@"%@ \n", [prices stringByAppendingString:priceString]];
+            }
         }
     }
     
@@ -1516,13 +1523,11 @@ typedef enum {
 #pragma mark -
 
 - (void)fetchMenuItems {
-    self.menuItems = [NSMutableArray array];
+    self.menuItems = @[].mutableCopy;
     
     [[SHMenuAdminNetworkManager sharedInstance] fetchMenuItems:self.spot success:^(NSArray *menuItems) {
         if (menuItems.count) {
-            for (MenuItemModel *menuItem in menuItems) {
-                [self.menuItems addObject:menuItem];
-            }
+            [self.menuItems addObjectsFromArray:menuItems];
             
             [self filterMenuItems:self.currentDrinkTypeEnum subTypes:self.currentMenuTypeEnum];
         }
@@ -2016,16 +2021,16 @@ typedef enum {
 
 - (UIImage*)placeHolderImageForType:(MenuItemModel *)menuItem {
     NSString *drinkType = menuItem.drink.drinkType.name;
-    UIImage *placeholder = [UIImage new];
+    UIImage *placeholder = nil;
     
     if ([drinkType isEqualToString:kDrinkTypeNameBeer]) {
         placeholder = [UIImage imageNamed:@"placeholderBeer"];
     }
     else if ([drinkType isEqualToString:kDrinkTypeNameWine]) {
-        placeholder = [UIImage imageNamed:@"placeholderWine.png"];
+        placeholder = [UIImage imageNamed:@"placeholderWine"];
     }
     else if ([drinkType isEqualToString:kDrinkTypeNameCocktail]) {
-        placeholder = [UIImage imageNamed:@"placeholderCocktail.png"];
+        placeholder = [UIImage imageNamed:@"placeholderCocktail"];
     }
     
     return placeholder;
@@ -2046,49 +2051,49 @@ typedef enum {
 }
 
 - (void)styleButtons {
-    [self.btnBeer styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"beerIcon.png"] text:kDrinkTypeNameBeer];
+    [self.btnBeer styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"beerIcon"] text:kDrinkTypeNameBeer];
     [self.btnBeer addBottomBorder];
     [self.btnBeer addTopBorder];
     
-    [self.btnWine styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"wineIcon.png"] text:kDrinkTypeNameWine];
+    [self.btnWine styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"wineIcon"] text:kDrinkTypeNameWine];
     self.btnWine.layer.borderColor = [UIColor whiteColor].CGColor;
     self.btnWine.layer.borderWidth = 0.5f;
      
-    [self.btnCocktails styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"cocktailIcon.png"] text:kDrinkTypeNameCocktail];
+    [self.btnCocktails styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"cocktailIcon"] text:kDrinkTypeNameCocktail];
     [self.btnCocktails addBottomBorder];
     [self.btnCocktails addTopBorder];
     [self.btnCocktails addLeftBorder];
     
-    [self.btnOnTap styleAsFilterButtonWithSideImage:[UIImage imageNamed:@"onTap.png"] text:@"On Tap"];
+    [self.btnOnTap styleAsFilterButtonWithSideImage:[UIImage imageNamed:@"onTap"] text:@"On Tap"];
     [self.btnOnTap addBottomBorder];
 
-    [self.btnBottles styleAsFilterButtonWithSideImage:[UIImage imageNamed:@"bottlesIcon.png"] text:@"Bottles & Cans"];
+    [self.btnBottles styleAsFilterButtonWithSideImage:[UIImage imageNamed:@"bottlesIcon"] text:@"Bottles & Cans"];
     [self.btnBottles addBottomBorder];
     [self.btnBottles addLeftBorder];
 
-    [self.btnRedWine styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"redIcon.png"] text:kMenuSubtypeNameRedWine];
+    [self.btnRedWine styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"redIcon"] text:kMenuSubtypeNameRedWine];
     [self.btnRedWine addBottomBorder];
     
-    [self.btnWhiteWine styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"wineIcon.png"] text:kMenuSubtypeNameWhiteWine];
+    [self.btnWhiteWine styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"wineIcon"] text:kMenuSubtypeNameWhiteWine];
     [self.btnWhiteWine addBottomBorder];
     [self.btnWhiteWine addLeftBorder];
     
-    [self.btnFortifiedWine styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"fortifiedIcon.png"] text:kMenuSubtypeNameFortifiedWine];
+    [self.btnFortifiedWine styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"fortifiedIcon"] text:kMenuSubtypeNameFortifiedWine];
     [self.btnFortifiedWine addBottomBorder];
     [self.btnFortifiedWine addLeftBorder];
     
-    [self.btnSparklingWine styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"sparklingIcon.png"] text:kMenuSubtypeNameSparklingWine];
+    [self.btnSparklingWine styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"sparklingIcon"] text:kMenuSubtypeNameSparklingWine];
     [self.btnSparklingWine addBottomBorder];
     [self.btnSparklingWine addLeftBorder];
     
-    [self.btnRoseWine styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"roseIcon.png"] text:kMenuSubtypeNameRoseWine];
+    [self.btnRoseWine styleAsFilterButtonWithTopImage:[UIImage imageNamed:@"roseIcon"] text:kMenuSubtypeNameRoseWine];
     [self.btnRoseWine addBottomBorder];
     [self.btnRoseWine addLeftBorder];
     
-    [self.btnHouseCocktail styleAsFilterButtonWithSideImage:[UIImage imageNamed:@"houseCocktailsIcon.png"] text:kMenuSubtypeNameHouseCocktail];
+    [self.btnHouseCocktail styleAsFilterButtonWithSideImage:[UIImage imageNamed:@"houseCocktailsIcon"] text:kMenuSubtypeNameHouseCocktail];
     [self.btnHouseCocktail addBottomBorder];
     
-    [self.btnCommonCocktail styleAsFilterButtonWithSideImage:[UIImage imageNamed:@"cocktailIcon.png"] text:kMenuSubtypeNameCommonCocktail];
+    [self.btnCommonCocktail styleAsFilterButtonWithSideImage:[UIImage imageNamed:@"cocktailIcon"] text:kMenuSubtypeNameCommonCocktail];
     [self.btnCommonCocktail addBottomBorder];
     [self.btnCommonCocktail addLeftBorder];
 }

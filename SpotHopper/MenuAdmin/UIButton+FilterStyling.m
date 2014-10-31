@@ -70,8 +70,7 @@
     self.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (imageSize.height + spacing), 0.0);
     
     CGSize titleSize = self.titleLabel.frame.size;
-    self.imageEdgeInsets = UIEdgeInsetsMake(- (titleSize.height + spacing), 0.0,-8.0, - titleSize.width);
-    
+    self.imageEdgeInsets = UIEdgeInsetsMake(- (titleSize.height + spacing), 0.0, -8.0, - titleSize.width);
 }
 
 - (void)addBottomBorder{

@@ -61,12 +61,6 @@
     return @[kDidLoadOptionsDontAdjustForIOS6, kDidLoadOptionsNoBackground];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
 #pragma mark - Actions
 
 - (IBAction)onClickClose:(id)sender {
