@@ -109,26 +109,26 @@
         DebugLog(@"Facebook session is not active");
     }
     
-#ifndef NDEBUG
-    
-    NSString *drinksType = [[JSONAPIResourceLinker defaultInstance] linkedType:@"drinks"];
-    Class drinksClass = [[JSONAPIResourceModeler defaultInstance] resourceForLinkedType:drinksType];
-    NSLog(@"Drinks Class: %@", NSStringFromClass(drinksClass));
-    
-    NSString *spotsType = [[JSONAPIResourceLinker defaultInstance] linkedType:@"spots"];
-    Class spotsClass = [[JSONAPIResourceModeler defaultInstance] resourceForLinkedType:spotsType];
-    NSLog(@"Spots Class: %@", NSStringFromClass(spotsClass));
-    
-    NSLog(@"Linker: %@", [JSONAPIResourceLinker defaultInstance]);
-    NSLog(@"Modeler: %@", [JSONAPIResourceModeler defaultInstance]);
-    
-    JSONAPIResourceLinker *linker = [JSONAPIResourceLinker defaultInstance];
-    JSONAPIResourceModeler *modeler = [JSONAPIResourceModeler defaultInstance];
-    
-    NSAssert([linker isEqual:[JSONAPIResourceLinker defaultInstance]], @"Linker must equal default instance");
-    NSAssert([modeler isEqual:[JSONAPIResourceModeler defaultInstance]], @"Modeler must equal default instance");
-    
-#endif
+//#ifndef NDEBUG
+//    
+//    NSString *drinksType = [[JSONAPIResourceLinker defaultInstance] linkedType:@"drinks"];
+//    Class drinksClass = [[JSONAPIResourceModeler defaultInstance] resourceForLinkedType:drinksType];
+//    NSLog(@"Drinks Class: %@", NSStringFromClass(drinksClass));
+//    
+//    NSString *spotsType = [[JSONAPIResourceLinker defaultInstance] linkedType:@"spots"];
+//    Class spotsClass = [[JSONAPIResourceModeler defaultInstance] resourceForLinkedType:spotsType];
+//    NSLog(@"Spots Class: %@", NSStringFromClass(spotsClass));
+//    
+//    NSLog(@"Linker: %@", [JSONAPIResourceLinker defaultInstance]);
+//    NSLog(@"Modeler: %@", [JSONAPIResourceModeler defaultInstance]);
+//    
+//    JSONAPIResourceLinker *linker = [JSONAPIResourceLinker defaultInstance];
+//    JSONAPIResourceModeler *modeler = [JSONAPIResourceModeler defaultInstance];
+//    
+//    NSAssert([linker isEqual:[JSONAPIResourceLinker defaultInstance]], @"Linker must equal default instance");
+//    NSAssert([modeler isEqual:[JSONAPIResourceModeler defaultInstance]], @"Modeler must equal default instance");
+//    
+//#endif
     
     // Navigation bar styling
     [[UINavigationBar appearance] setTintColor:kColorOrange];

@@ -46,7 +46,7 @@
 #pragma mark - User
 #pragma mark -
 
-- (void)loginUser:(NSString*)email password:(NSString*)password success:(void(^)(UserModel* user))success failure:(void(^)(ErrorModel *error))failure{
+- (void)loginUser:(NSString *)email password:(NSString *)password success:(void(^)(UserModel *user))successBlock failure:(void(^)(ErrorModel *error))failureBlock {
     
     NSDictionary *params = @{
                             kUserModelParamEmail : email,
@@ -60,21 +60,21 @@
         [Crashlytics setUserIdentifier:userModel.ID];
         [Crashlytics setUserName:userModel.name];
 #endif
-        if (success) {
-            success(userModel);
+        if (successBlock) {
+            successBlock(userModel);
         }
         
     } failure:^(ErrorModel *errorModel) {
     
-        if (failure) {
-            failure(errorModel);
+        if (failureBlock) {
+            failureBlock(errorModel);
         }
 
     }];
 
 }
 
-- (void)fetchUserSpots:(UserModel*)user queryParam:(NSString*)query page:(NSNumber*)page pageSize:(NSNumber*)pageSize success:(void(^)(NSArray* spots))success failure:(void(^)(ErrorModel *error))failure{
+- (void)fetchUserSpots:(UserModel *)user queryParam:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize success:(void(^)(NSArray *spots))successBlock failure:(void(^)(ErrorModel *error))failureBlock {
   
     if (!page) {
         NSAssert(page, @"page number must be specified");
@@ -102,29 +102,25 @@
         
         // Parses response with JSONAPI
         if (operation.response.statusCode == 200) {
-            
-            if (success) {
+            if (successBlock) {
                 NSArray *spots = [jsonApi resourcesForKey:@"spots"];
-                success(spots);
+                successBlock(spots);
             }
-
         }
         else {
-            if (failure) {
+            if (failureBlock) {
                 ErrorModel *error = [jsonApi resourceForKey:@"errors"];
-                failure(error);
+                failureBlock(error);
             }
-
         }
     }];
     
 }
 
-
 #pragma mark - Menu Item
 #pragma mark -
 
-- (void)createMenuItem:(MenuItemModel*)menuItem spot:(SpotModel*)spot menuType:(id)menuTypeID success:(void(^)(MenuItemModel* created))success failure:(void(^)(ErrorModel*error))failure{
+- (void)createMenuItem:(MenuItemModel *)menuItem spot:(SpotModel *)spot menuType:(id)menuTypeID success:(void(^)(MenuItemModel *created))successBlock failure:(void(^)(ErrorModel *error))failureBlock {
     
     /**
      {
@@ -148,67 +144,62 @@
         
         if (operation.response.statusCode == 200) {
             
-            if (success) {
+            if (successBlock) {
                 MenuItemModel *created = [jsonApi resourceForKey:@"menu_items"];
-                success(created);
+                successBlock(created);
             }
             
         }
         else {
             
-            if (failure) {
+            if (failureBlock) {
                 ErrorModel *error = [jsonApi resourceForKey:@"errors"];
-                failure(error);
+                failureBlock(error);
             }
         }
-        
     }];
-
 }
 
-- (void)fetchMenuItems:(SpotModel*)spot success:(void(^)(NSArray* menuItems))success failure:(void(^)(ErrorModel* error))failure{
-    if (!success || !failure) {
+- (void)fetchMenuItems:(SpotModel *)spot success:(void(^)(NSArray *menuItems))successBlock failure:(void(^)(ErrorModel *error))failureBlock {
+    if (!successBlock || !failureBlock) {
         return;
     }
     
     [spot fetchMenu:^(MenuModel *menu) {
-        if (success) {
-            success(menu.items);
+        if (successBlock) {
+            successBlock(menu.items);
         }
     } failure:^(ErrorModel *errorModel) {
-        if (failure) {
-            failure(errorModel);
+        if (failureBlock) {
+            failureBlock(errorModel);
         }
     }];
 }
 
-- (void)deleteMenuItem:(MenuItemModel*)menuItem spot:(SpotModel*)spot success:(void(^)())success failure:(void(^)(ErrorModel* error))failure{
+- (void)deleteMenuItem:(MenuItemModel *)menuItem spot:(SpotModel *)spot success:(void(^)())successBlock failure:(void(^)(ErrorModel *error))failureBlock {
   
     //DELETE /api/spots/:spot_id/menu_items/:id
     [[ClientSessionManager sharedClient] DELETE:[NSString stringWithFormat:@"/api/spots/%ld/menu_items/%ld", (long)[spot.ID integerValue], (long)[menuItem.ID integerValue]] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        CLS_LOG(@"%li", (long)operation.response.statusCode);
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
         if (operation.response.statusCode == 204) {
-            if (success) {
-                success();
+            if (successBlock) {
+                successBlock();
             }
         }
         else {
-            if (failure) {
+            if (failureBlock) {
                 ErrorModel *error = [jsonApi resourceForKey:@"errors"];
-                failure(error);
+                failureBlock(error);
             }
         }
-        
     }];
-    
 }
 
 #pragma mark - Drinks
 #pragma mark -
-- (void)fetchDrinks:(id)drinkTypeID queryParam:(NSString*)query page:(NSNumber*)page pageSize:(NSNumber*)pageSize extraParams:(NSDictionary*)extraParams success:(void(^)(NSArray* drinks))success failure:(void(^)(ErrorModel *error))failure{
+- (void)fetchDrinks:(id)drinkTypeID queryParam:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize extraParams:(NSDictionary *)extraParams success:(void(^)(NSArray *drinks))successBlock failure:(void(^)(ErrorModel *error))failureBlock {
   
     if (!drinkTypeID) {
         NSAssert(drinkTypeID, @"drink type ID must be specified");
@@ -242,21 +233,20 @@
     }
     
     [DrinkModel getDrinks:paramsDrinks success:^(NSArray *drinkModels, JSONAPI *jsonApi) {
-        if (success) {
-            success(drinkModels);
+        if (successBlock) {
+            successBlock(drinkModels);
         }
     } failure:^(ErrorModel *errorModel) {
-        if (failure) {
-            failure(errorModel);
+        if (failureBlock) {
+            failureBlock(errorModel);
         }
     }];
-    
 }
 
 #pragma mark - Prices
 #pragma mark -
 
-- (void)postPricesWithQueryString:(NSString*)query menuItem:(MenuItemModel*)menuItem success:(void(^)(NSArray* prices))success failure:(void(^)(ErrorModel *errorModel))failure{
+- (void)postPricesWithQueryString:(NSString *)query menuItem:(MenuItemModel *)menuItem success:(void(^)(NSArray *prices))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     
@@ -279,7 +269,6 @@
     
     [params setObject:priceParams forKey:@"prices"];
     
-    
     //POST /api/menu_items/:menu_item_id/prices
     [[ClientSessionManager sharedClient] POST:[NSString stringWithFormat:query, (long)[menuItem.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -290,93 +279,73 @@
         if (operation.response.statusCode == 200) {
             NSArray *prices = [jsonApi resourcesForKey:@"prices"];
             
-            if (success) {
-                success(prices);
+            if (successBlock) {
+                successBlock(prices);
             }
-            
         }
         else {
-            if (failure) {
+            if (failureBlock) {
                 ErrorModel *error = [jsonApi resourceForKey:@"errors"];
-                failure(error);
+                failureBlock(error);
             }
-            
         }
     }];
-
-    
 }
 
-
-- (void)createPrices:(MenuItemModel*)menuItem success:(void(^)(NSArray* prices))success failure:(void(^)(ErrorModel *errorModel))failure{
-    
-    [self postPricesWithQueryString:kCreatePriceQueryString menuItem:menuItem success:success failure:failure];
+- (void)createPrices:(MenuItemModel *)menuItem success:(void(^)(NSArray *prices))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    [self postPricesWithQueryString:kCreatePriceQueryString menuItem:menuItem success:successBlock failure:failureBlock];
 }
 
-- (void)updatePrices:(MenuItemModel*)menuItem success:(void(^)(NSArray* prices))success failure:(void(^)(ErrorModel *errorModel))failure{
-    
-    [self postPricesWithQueryString:kUpdatePriceQueryString menuItem:menuItem success:success failure:failure];
-    
+- (void)updatePrices:(MenuItemModel *)menuItem success:(void(^)(NSArray *prices))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    [self postPricesWithQueryString:kUpdatePriceQueryString menuItem:menuItem success:successBlock failure:failureBlock];
 }
 
-- (void)deletePrice:(PriceModel*)price menuItem:(MenuItemModel*)menuItem success:(void(^)())success failure:(void(^)(ErrorModel* error))failure{
-    
+- (void)deletePrice:(PriceModel *)price menuItem:(MenuItemModel *)menuItem success:(void(^)())successBlock failure:(void(^)(ErrorModel *error))failureBlock {
     //DELETE /api/menu_items/:menu_item_id/prices/:id
     [[ClientSessionManager sharedClient] DELETE:[NSString stringWithFormat:@"/api/menu_items/%ld/prices/%ld", (long)[menuItem.ID integerValue], (long)[price.ID integerValue]] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
 
         if (operation.response.statusCode == 204) {
-            
-            if (success) {
-                success();
+            if (successBlock) {
+                successBlock();
             }
-            
         }
         else {
-            if (failure) {
+            if (failureBlock) {
                 ErrorModel *error = [jsonApi resourceForKey:@"errors"];
-                failure(error);
+                failureBlock(error);
             }
         }
     }];
-    
 }
 
 #pragma mark - Menu Sizes
 #pragma mark -
 
-- (void)fetchDrinkSizes:(SpotModel*)spot success:(void(^)(NSArray* sizes))success failure:(void(^)(ErrorModel* error))failure{
-   
+- (void)fetchDrinkSizes:(SpotModel *)spot success:(void(^)(NSArray *sizes))successBlock failure:(void(^)(ErrorModel *error))failureBlock {
     [[ClientSessionManager sharedClient] GET:@"/api/sizes" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
         if (operation.response.statusCode == 200) {
-            
-            if (success) {
+            if (successBlock) {
                 NSArray *sizes = [jsonApi resourcesForKey:@"sizes"];
-                success (sizes);
+                successBlock(sizes);
             }
-            
         }
         else {
-            if (failure) {
+            if (failureBlock) {
                 ErrorModel *error = [jsonApi resourceForKey:@"errors"];
-                failure(error);
+                failureBlock(error);
             }
         }
     }];
-    
 }
 
 #pragma mark - Menu Types
 #pragma mark -
 
-- (void)fetchMenuTypes:(SpotModel*)spot success:(void(^)(NSArray* menuTypes))success failure:(void(^)(ErrorModel* error))failure{
-    
+- (void)fetchMenuTypes:(SpotModel *)spot success:(void(^)(NSArray *menuTypes))successBlock failure:(void(^)(ErrorModel *error))failureBlock {
     NSString *path = [NSString stringWithFormat:@"/api/spots/%@/menu_items?page_size=0", spot ? spot.ID : @47];
-    DebugLog(@"path: %@", path);
     [[ClientSessionManager sharedClient] GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSDictionary *response = (NSDictionary*) responseObject;
@@ -384,30 +353,27 @@
         
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:form];
         
-        DebugLog(@"status code: %li", (long)operation.response.statusCode);
-        
         if (operation.response.statusCode == 200) {
             NSArray *menuTypes = [jsonApi resourcesForKey:@"menu_types"];
             
-            if (success) {
-                success(menuTypes);
+            if (successBlock) {
+                successBlock(menuTypes);
             }
        
         }
         else {
-            if (failure) {
+            if (failureBlock) {
                 ErrorModel *error = [jsonApi resourceForKey:@"errors"];
-                failure(error);
+                failureBlock(error);
             }
         }
     }];
-    
 }
 
 #pragma mark - Drink Types
 #pragma mark -
 
-- (void)fetchDrinkTypes:(void(^)(NSArray* drinkTypes))success failure:(void(^)(ErrorModel* error))failure{
+- (void)fetchDrinkTypes:(void(^)(NSArray *drinkTypes))successBlock failure:(void(^)(ErrorModel *error))failureBlock {
     [[ClientSessionManager sharedClient] GET:@"/api/drinks?page_size=0" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSDictionary *response = (NSDictionary*) responseObject;
@@ -418,20 +384,18 @@
         if (operation.response.statusCode == 200) {
             NSArray *drinkTypes = [jsonApi resourcesForKey:@"drink_types"];
             
-            if (success) {
-                success(drinkTypes);
+            if (successBlock) {
+                successBlock(drinkTypes);
             }
            
         }
         else {
-            if (failure) {
+            if (failureBlock) {
                 ErrorModel *error = [jsonApi resourceForKey:@"errors"];
-                failure(error);
+                failureBlock(error);
             }
         }
     }];
-
 }
-
 
 @end

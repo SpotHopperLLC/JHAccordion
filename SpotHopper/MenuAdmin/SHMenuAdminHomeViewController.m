@@ -237,7 +237,7 @@ typedef enum {
     
     //gestures
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
-    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panMenuTypeFilterButtons:)];
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureRecognized:)];
     panGesture.delegate = self;
     
     [self.tableView addGestureRecognizer:tapGesture];
@@ -1298,7 +1298,9 @@ typedef enum {
 #pragma mark - UIGestureDelegate/Filter Type Panning
 #pragma mark -
 
-- (void)panMenuTypeFilterButtons:(UIPanGestureRecognizer *)recognizer {
+- (void)panGestureRecognized:(UIPanGestureRecognizer *)recognizer {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
     if (self.isEditingMenuItem || self.isAddingMenuItem) {
         return;
     }
@@ -1999,13 +2001,14 @@ typedef enum {
 }
 
 - (void)hideKeyboard {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
     [self.view endEditing:TRUE];
     
     if ([self sizePickerIsShown]) {
         NSIndexPath *indexPath = [[self.tableView indexPathsForVisibleRows]firstObject];
         [self toggleSizePicker:indexPath];
     }
-    
 }
 
 #pragma mark - Private Helpers
