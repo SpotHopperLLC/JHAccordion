@@ -323,21 +323,6 @@
         return;
     }
     
-    // Checks to make sure one value has been slid
-    BOOL oneSliderSlid = NO;
-    for (SliderModel *slider in _sliders) {
-        if (slider.value != nil) {
-            oneSliderSlid = YES;
-            break;
-        }
-    }
-    
-    // Alerts if no sliders slid
-    if (oneSliderSlid == NO) {
-        [self showAlert:@"Oops" message:@"Please adjust at least one slider before submitting"];
-        return;
-    }
-    
     if (_review != nil) {
         
         if (_reviewRatingSlider == nil) {
