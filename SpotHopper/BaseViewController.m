@@ -138,9 +138,6 @@ typedef void(^AlertBlock)();
 #pragma mark - Push notification 
 
 - (void)pushNotificationReceived:(NSNotification*)notification {
-    NSLog(@"Handling push on - %@", self);
-    
-    //NSNumber *spotId = [notification.userInfo objectForKey:@"s_id"];
     NSNumber *liveSpecialId = [notification.userInfo objectForKey:@"ls_id"];
     
     if (liveSpecialId != nil) {

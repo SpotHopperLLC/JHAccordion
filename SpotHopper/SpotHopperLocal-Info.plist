@@ -38,6 +38,8 @@
 	<string>257516844415659</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>SpotHopper will use your location to show you the best local recommendations.</string>
 	<key>SpotHopperSettings</key>
 	<dict>
 		<key>AppURLScheme</key>
@@ -46,6 +48,8 @@
 		<string>http://192.168.1.2:9292</string>
 		<key>BitlyAPIKey</key>
 		<string>R_11cbfeb881bd416fa9328fc8d239f0f8</string>
+		<key>BitlyAccessToken</key>
+		<string>b7ec1a2bb2d708bb0fd57d603d6f3b3a321c995c</string>
 		<key>BitlyShortURL</key>
 		<string>http://go.spotapps.co</string>
 		<key>BitlyUsername</key>
@@ -90,7 +94,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>SpotHopper will use your location to show you the best local recommendations.</string>
 </dict>
 </plist>

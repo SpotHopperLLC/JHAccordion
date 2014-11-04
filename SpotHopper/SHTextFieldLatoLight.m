@@ -34,7 +34,7 @@
     
     UIFont *font = [UIFont fontWithName:kFontName size:self.font.pointSize];
     if (font == nil) {
-        NSLog(@"Font not found - %@", kFontName);
+        DebugLog(@"Font not found - %@", kFontName);
     }
     [self setFont:font];
 }

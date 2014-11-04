@@ -106,6 +106,8 @@
 
 + (Promise *)fetchDrinkTypes;
 
++ (void)createPhotoForDrink:(NSString*)imagePath drink:(DrinkModel*)drink success:(void(^)(ImageModel *imageModel))success failure:(void(^)(ErrorModel* error))failure;
+
 #pragma mark -
 
 - (NSString*)abvPercentString;

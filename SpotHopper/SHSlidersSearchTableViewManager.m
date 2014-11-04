@@ -685,7 +685,7 @@
         return view;
     }
     
-    NSAssert(false, @"Condition should never be met");
+    NSAssert(FALSE, @"Condition should never be met");
     
     return nil;
 }

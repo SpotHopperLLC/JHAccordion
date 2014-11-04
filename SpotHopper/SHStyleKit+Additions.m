@@ -149,7 +149,7 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
 + (UIImage *)drawImage:(SHStyleKitDrawing)drawing color:(SHStyleKitColor)color size:(CGSize)size percentage:(CGFloat)percentage;
 {
     if (CGSizeEqualToSize(size, CGSizeZero) && drawing != SHStyleKitDrawingTopShadow) {
-        NSLog(@"Size cannot be zero");
+        DebugLog(@"Size cannot be zero");
         return nil;
     }
     

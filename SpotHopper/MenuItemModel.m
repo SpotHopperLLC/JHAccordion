@@ -42,4 +42,24 @@
              };
 }
 
+
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone {
+    // do not call super because this class is somehow not KVO compliant for menu_item
+    MenuItemModel *copy = [[MenuItemModel alloc] init];
+    
+    copy.ID = self.ID;
+    
+    copy.name = self.name;
+    copy.inStock = self.inStock;
+    copy.drink = self.drink;
+    copy.spot = self.spot;
+    copy.menuType = self.menuType;
+    copy.prices = self.prices;
+    
+    return copy;
+}
+
+
 @end

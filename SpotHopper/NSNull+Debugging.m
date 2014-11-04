@@ -17,7 +17,7 @@
     NSString *message = [NSString stringWithFormat:@"NSNull issue - %@ - %@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), caller];
     [Tracker logError:message class:[self class] trace:NSStringFromSelector(_cmd)];
     
-    NSLog(@"%@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+    DebugLog(@"%@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
     return 0;
 }
 
@@ -26,7 +26,7 @@
     NSString *message = [NSString stringWithFormat:@"NSNull issue - %@ - %@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), caller];
     [Tracker logError:message class:[self class] trace:NSStringFromSelector(_cmd)];
     
-    NSLog(@"%@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+    DebugLog(@"%@ - %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
     return 0;
 }
 

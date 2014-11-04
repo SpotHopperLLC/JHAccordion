@@ -547,6 +547,7 @@
                                             @"Position" : [NSNumber numberWithFloat:distance]
                                  }];
     
+    [self trackUserAction:@"Checking In"];
 }
 
 #pragma mark - Sharing

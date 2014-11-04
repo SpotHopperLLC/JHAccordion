@@ -31,7 +31,7 @@
 - (void)setupLatoLight {
     UIFont *font = [UIFont fontWithName:kFontName size:self.titleLabel.font.pointSize];
     if (font == nil) {
-        NSLog(@"Font not found - %@", kFontName);
+        DebugLog(@"Font not found - %@", kFontName);
     }
     [self.titleLabel setFont:font];
 }

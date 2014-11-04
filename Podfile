@@ -8,7 +8,7 @@ def import_pods
     # Networking
     pod 'AFNetworking', '~> 2.4'
     pod 'JSONAPI', :git => 'https://github.com/SpotHopperLLC/jsonapi-ios.git', :tag => 'SpotHopper-v2'
-    pod 'BitlyForiOS', :git => 'https://github.com/brennanMKE/BitlyForiOS.git', :tag => '1.1.0'
+    pod 'BitlyForiOS', :git => 'https://github.com/brennanMKE/BitlyForiOS.git', :tag => '1.2.0'
 
     # Helpers
     pod 'Promises', :git => 'http://github.com/joshdholtz/ios-promises.git'
@@ -25,9 +25,13 @@ def import_pods
     pod 'BlocksKit', '~> 2.2.0'
     pod 'SVPulsingAnnotationView', '~> 0.3.0'
     pod 'JTSReachability', :git => 'http://github.com/brennanMKE/JTSReachability.git', :tag => '1.1.0'
+    pod 'Haneke', '~> 1.0'
+    
+    # Images
+    # Note: This Transloadit library needs to be published properly via Trunks
+    pod 'TransloaditAPI', :git => 'https://github.com/transloadit/ios-sdk.git'
 
     # Debugging
-    # pod 'Raven', '~> 0.2.0'
     pod 'CrashlyticsFramework', '~> 2.2'
 
     # Social
@@ -41,7 +45,6 @@ def import_pods
     pod 'Mixpanel', '~> 2.5'
 
 end
-
 
 target "SpotHopperLocal" do
     import_pods
@@ -65,5 +68,16 @@ target "SpotHopperStaging" do
 end
 
 target "SpotHopperProduction" do
+    import_pods
+end
+
+target "InstantMenuStaging" do
+    import_pods
+    
+    # Debugging UI
+    pod 'Reveal-iOS-SDK'
+end
+
+target "InstantMenuProduction" do
     import_pods
 end

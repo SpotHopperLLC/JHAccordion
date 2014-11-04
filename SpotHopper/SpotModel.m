@@ -979,9 +979,6 @@
     NSDate *now = [NSDate date];
     for (LiveSpecialModel *liveSpecial in [self liveSpecials]) {
         
-        //NSLog(@"LS Start date - %@", [liveSpecial startDate]);
-        //NSLog(@"LS End date - %@", [liveSpecial endDate]);
-        
         // Checks if currents special start BEFORE now and ends AFTER now
         if ( [liveSpecial.startDate timeIntervalSinceDate:now] < 0
             && [liveSpecial.endDate timeIntervalSinceDate:now] > 0) {

@@ -1503,7 +1503,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             [self showCollectionContainerView:TRUE withCompletionBlock:nil];
         }
         else {
-            [self showHomeNavigation:true withCompletionBlock:nil];
+            [self showHomeNavigation:TRUE withCompletionBlock:nil];
         }
     }
 }
@@ -2311,7 +2311,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         });
     }
     
-    // HACK a bug somehow sets isUserInteractionEnabled to false when a map view animates
+    // HACK a bug somehow sets isUserInteractionEnabled to FALSE when a map view animates
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.35 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         self.mapView.userInteractionEnabled = TRUE;
     });

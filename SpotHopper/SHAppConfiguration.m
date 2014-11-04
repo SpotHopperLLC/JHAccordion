@@ -10,6 +10,18 @@
 
 @implementation SHAppConfiguration
 
++ (NSString *)configuration {
+    return [[NSBundle mainBundle] infoDictionary][@"SpotHopperSettings"][@"Configuration"];
+}
+
++ (BOOL)isProduction {
+    return[@"Production" caseInsensitiveCompare:[self configuration]] == NSOrderedSame;
+}
+
++ (BOOL)isStaging {
+    return[@"Staging" caseInsensitiveCompare:[self configuration]] == NSOrderedSame;
+}
+
 + (BOOL)isDebuggingEnabled {
     return [[[NSBundle mainBundle] infoDictionary][@"SpotHopperSettings"][@"Debug"] boolValue];
 }
@@ -30,8 +42,32 @@
     return [[NSBundle mainBundle] infoDictionary][@"SpotHopperSettings"][@"BitlyAPIKey"];
 }
 
++ (NSString *)bitlyAccessToken {
+    return [[NSBundle mainBundle] infoDictionary][@"SpotHopperSettings"][@"BitlyAccessToken"];
+}
+
 + (NSString *)bitlyShortURL {
     return [[NSBundle mainBundle] infoDictionary][@"SpotHopperSettings"][@"BitlyShortURL"];
+}
+
++ (NSString *)transloaditAPIKey {
+    return [[NSBundle mainBundle] infoDictionary][@"SpotHopperSettings"][@"TransloaditAPIKey"];
+}
+
++ (NSString *)transloaditSpotsTemplate {
+    return [[NSBundle mainBundle] infoDictionary][@"SpotHopperSettings"][@"TransloaditSpotsTemplate"];
+}
+
++ (NSString *)transloaditDrinksTemplate {
+    return [[NSBundle mainBundle] infoDictionary][@"SpotHopperSettings"][@"TransloaditDrinksTemplate"];
+}
+
++ (NSString *)transloaditUsersTemplate {
+    return [[NSBundle mainBundle] infoDictionary][@"SpotHopperSettings"][@"TransloaditUsersTemplate"];
+}
+
++ (NSString *)transloaditSpecialsTemplate {
+    return [[NSBundle mainBundle] infoDictionary][@"SpotHopperSettings"][@"TransloaditSpecialsTemplate"];
 }
 
 + (NSString *)twitterConsumerKey {

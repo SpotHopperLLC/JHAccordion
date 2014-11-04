@@ -459,6 +459,32 @@
     return deferred.promise;
 }
 
++ (void)createPhotoForDrink:(NSString*)imagePath drink:(DrinkModel*)drink success:(void(^)(ImageModel *imageModel))successBlock failure:(void(^)(ErrorModel* error))failureBlock {
+    NSDictionary *params = @{
+                             @"path" : imagePath.length ? imagePath : @"",
+                             @"drink_id" : drink ? drink.ID : @0
+                             };
+    
+    //POST /api/images
+    [[ClientSessionManager sharedClient] POST:@"/api/images" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 200) {
+            ImageModel *imageModel = [jsonApi resourceForKey:@"images"];
+            
+            if (successBlock) {
+                successBlock(imageModel);
+            }
+        }
+        else {
+            if (failureBlock) {
+                ErrorModel *error = [jsonApi resourceForKey:@"errors"];
+                failureBlock(error);
+            }
+        }
+    }];
+}
+
 #pragma mark - Caching
 
 + (DrinkModelCache *)sh_sharedCache {
