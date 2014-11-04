@@ -42,7 +42,7 @@
     
     UIFont *font = [UIFont fontWithName:fontName size:self.font.pointSize];
     if (font == nil) {
-        NSLog(@"Font not found - %@", fontName);
+        DebugLog(@"Font not found - %@", fontName);
     }
     [self setFont:font];
 }
@@ -69,13 +69,13 @@
     if (italic == YES) {
         UIFont *font = [UIFont fontWithName:kFontNameItalic size:self.font.pointSize];
         if (font == nil) {
-            NSLog(@"Font not found - %@", kFontNameItalic);
+            DebugLog(@"Font not found - %@", kFontNameItalic);
         }
         [self setFont:font];
     } else {
         UIFont *font = [UIFont fontWithName:kFontName size:self.font.pointSize];
         if (font == nil) {
-            NSLog(@"Font not found - %@", kFontName);
+            DebugLog(@"Font not found - %@", kFontName);
         }
         [self setFont:font];
     }

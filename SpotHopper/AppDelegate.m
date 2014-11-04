@@ -209,7 +209,7 @@
 
         // if the targetURL is a shortened URL then expand it first
         if ([self isShortenedURL:targetURL.absoluteString]) {
-            [SSTURLShortener expandURL:targetURL username:[SHAppConfiguration bitlyUsername] apiKey:[SHAppConfiguration bitlyAPIKey] withCompletionBlock:^(NSURL *expandedURL, NSError *error) {
+            [SSTURLShortener expandURL:targetURL accessToken:[SHAppConfiguration bitlyAccessToken] withCompletionBlock:^(NSURL *expandedURL, NSError *error) {
                 if (!error) {
                     self.openedURL = expandedURL;
                     [Tracker trackDeepLinkWithTargetURL:expandedURL sourceURL:sourceURL sourceApplication:sourceApplication];

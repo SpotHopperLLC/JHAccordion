@@ -362,7 +362,6 @@
                         if (!error) {
                             PFObject *facebookUserProfile = objects.firstObject;
                             if (!facebookUserProfile) {
-                                DebugLog(@"No match!");
                                 facebookUserProfile = [[PFObject alloc] initWithClassName:className];
                                 facebookUserProfile[@"user"] = parseUser;
                                 facebookUserProfile[@"spotHopperUserId"] = currentUser.ID;
@@ -371,9 +370,6 @@
                                 [acl setWriteAccess:YES forUser:parseUser];
                                 [acl setReadAccess:YES forUser:parseUser];
                                 [facebookUserProfile setACL:acl];
-                            }
-                            else {
-                                DebugLog(@"Match!");
                             }
                             
                             for (NSString *key in result.allKeys) {
@@ -434,7 +430,6 @@
                         if (!error) {
                             PFObject *facebookFriends = objects.firstObject;
                             if (!facebookFriends) {
-                                DebugLog(@"No match!");
                                 facebookFriends = [[PFObject alloc] initWithClassName:className];
                                 facebookFriends[@"user"] = parseUser;
                                 facebookFriends[@"spotHopperUserId"] = currentUser.ID;
@@ -442,9 +437,6 @@
                                 [acl setWriteAccess:YES forUser:parseUser];
                                 [acl setReadAccess:YES forUser:parseUser];
                                 [facebookFriends setACL:acl];
-                            }
-                            else {
-                                DebugLog(@"Match!");
                             }
                             
                             facebookFriends[@"friends"] = facebookIds;
@@ -457,7 +449,6 @@
                             completionBlock(TRUE, nil);
                         }
                     }];
-                    
                 }
                 else {
                     if (completionBlock) {

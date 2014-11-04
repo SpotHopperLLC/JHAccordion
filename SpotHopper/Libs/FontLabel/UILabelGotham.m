@@ -44,12 +44,12 @@
     if (font != nil) {
         [self setFont:font];
     } else {
-        NSLog(@"Cannot find font - %@", fontName);
-        NSLog(@"Available fonts are...");
+        DebugLog(@"Cannot find font - %@", fontName);
+        DebugLog(@"Available fonts are...");
         for(NSString* family in [UIFont familyNames]) {
-            NSLog(@"  %@", family);
+            DebugLog(@"  %@", family);
             for(NSString* name in [UIFont fontNamesForFamilyName: family]) {
-                NSLog(@"    %@", name);
+                DebugLog(@"    %@", name);
             }
         }
     }

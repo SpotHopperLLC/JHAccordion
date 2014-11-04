@@ -90,8 +90,6 @@
                              @"sliders" : jsonSliders
                              };
     
-    NSLog(@"Post Review Params - %@", params);
-    
     [[ClientSessionManager sharedClient] POST:@"/api/reviews" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI
@@ -136,8 +134,6 @@
                              @"rating" : self.rating,
                              @"sliders" : jsonSliders
                              };
-    
-    NSLog(@"Put Review Params - %@", params);
     
     [[ClientSessionManager sharedClient] PUT:[NSString stringWithFormat:@"/api/reviews/%ld", (long)[self.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

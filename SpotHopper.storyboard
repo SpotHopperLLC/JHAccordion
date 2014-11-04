@@ -106,6 +106,10 @@
                                     <action selector="compassButtonTapped:" destination="WvW-kG-wPv" eventType="touchUpInside" id="na7-ug-sDG"/>
                                 </connections>
                             </button>
+                            <view tag="500" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V3V-T6-eR1" userLabel="Container View">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="65M-In-Igo" userLabel="Status View">
                                 <rect key="frame" x="42" y="185" width="236" height="33"/>
                                 <subviews>
@@ -213,16 +217,10 @@
                                     <constraint firstItem="e9R-d4-3Dt" firstAttribute="top" secondItem="Pjs-u1-LFU" secondAttribute="bottom" constant="18" id="uXy-2t-NeW"/>
                                 </constraints>
                             </view>
-                            <view tag="500" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V3V-T6-eR1" userLabel="Container View">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="M7v-zX-zUl" secondAttribute="trailing" id="7mx-Pq-IIB"/>
-                            <constraint firstItem="V3V-T6-eR1" firstAttribute="leading" secondItem="7So-m6-aYn" secondAttribute="leading" id="A2k-sJ-74k"/>
-                            <constraint firstItem="V3V-T6-eR1" firstAttribute="top" secondItem="7So-m6-aYn" secondAttribute="top" id="AR4-sg-n8R"/>
                             <constraint firstItem="NLr-zB-HzB" firstAttribute="top" secondItem="7So-m6-aYn" secondAttribute="top" id="C62-f7-FXM"/>
                             <constraint firstAttribute="centerX" secondItem="65M-In-Igo" secondAttribute="centerX" id="DSW-tW-XmY"/>
                             <constraint firstItem="lVO-Li-dx2" firstAttribute="top" secondItem="2SI-rp-QfL" secondAttribute="bottom" constant="130" id="Hwu-CO-RK2"/>
@@ -235,11 +233,9 @@
                             <constraint firstItem="tKe-Qo-IuZ" firstAttribute="leading" secondItem="7So-m6-aYn" secondAttribute="leading" id="fV1-2M-AC9"/>
                             <constraint firstItem="NLr-zB-HzB" firstAttribute="leading" secondItem="7So-m6-aYn" secondAttribute="leading" id="gGB-tk-mwA"/>
                             <constraint firstItem="lVO-Li-dx2" firstAttribute="top" secondItem="65M-In-Igo" secondAttribute="bottom" constant="350" id="hkN-n9-Ub0"/>
-                            <constraint firstAttribute="trailing" secondItem="V3V-T6-eR1" secondAttribute="trailing" id="lq3-Wn-Uk0"/>
                             <constraint firstItem="2SI-rp-QfL" firstAttribute="leading" secondItem="7So-m6-aYn" secondAttribute="leading" constant="20" id="mLI-nu-Cc9"/>
                             <constraint firstItem="M7v-zX-zUl" firstAttribute="leading" secondItem="7So-m6-aYn" secondAttribute="leading" id="mOa-Ud-Plc"/>
                             <constraint firstItem="lVO-Li-dx2" firstAttribute="top" secondItem="QHs-5Q-8nO" secondAttribute="bottom" constant="260" id="mdZ-nH-hLn"/>
-                            <constraint firstItem="lVO-Li-dx2" firstAttribute="top" secondItem="V3V-T6-eR1" secondAttribute="bottom" id="n0b-PH-Mum"/>
                             <constraint firstAttribute="trailing" secondItem="2SI-rp-QfL" secondAttribute="trailing" constant="20" id="ziC-gs-b89"/>
                         </constraints>
                     </view>

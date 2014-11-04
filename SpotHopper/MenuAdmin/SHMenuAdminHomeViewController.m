@@ -15,6 +15,7 @@
 #import "SHMenuAdminSearchViewController.h"
 #import "SHMenuAdminSidebarViewController.h"
 #import "SHMenuAdminDrinkProfileViewController.h"
+#import "SHMenuAdminTransloaditManager.h"
 
 #import "SHAppUtil.h"
 
@@ -29,7 +30,6 @@
 #import "MenuTypeModel.h"
 #import "DrinkModel.h"
 #import "DrinkTypeModel.h"
-//#import "DrinkSubTypeModel.h"
 #import "BaseAlcoholModel.h"
 #import "PriceModel.h"
 #import "SizeModel.h"
@@ -95,7 +95,7 @@ typedef enum {
 #define kSegueHomeToSearch @"HomeToSearch"
 #define kSegueHomeToDrink @"HomeToDrink"
 
-@interface SHMenuAdminHomeViewController() <UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate, UIGestureRecognizerDelegate, UITextFieldDelegate, SHMenuAdminSidebarViewControllerDelegate, SHMenuAdminSwipeableDrinkCellDelegate, SHMenuAdminEditMenuItemCellDelegate, SHMenuAdminSearchViewControllerDelegate, SHMenuAdminLoginDelegate>
+@interface SHMenuAdminHomeViewController() <UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate, UIGestureRecognizerDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SHMenuAdminSidebarViewControllerDelegate, SHMenuAdminSwipeableDrinkCellDelegate, SHMenuAdminEditMenuItemCellDelegate, SHMenuAdminSearchViewControllerDelegate, SHMenuAdminLoginDelegate>
 
 @property (nonatomic, strong) SHMenuAdminSidebarViewController *sidebarViewController;
 
@@ -117,6 +117,9 @@ typedef enum {
 
 @property (strong, nonatomic) NSMutableArray *menuItems;
 @property (strong, nonatomic) NSMutableArray *filteredMenuItems;
+
+//keeps track of the index path of the cell which a photo is being taken for
+@property (strong, nonatomic) NSIndexPath *indexPathForPhotoTaken;
 
 @property (strong, nonatomic) UIPickerView *pickerView;
 @property (strong, nonatomic) NSIndexPath *sizePickerIndexPath;
@@ -859,7 +862,7 @@ typedef enum {
 #pragma mark -
 
 - (void)drinkLabelTapped:(SHMenuAdminSwipeableDrinkTableViewCell *)cell {
-    NSLog(@"drink label tapped");
+    DebugLog(@"drink label tapped");
     
 //    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 //    
@@ -874,16 +877,14 @@ typedef enum {
 }
 
 - (void)photoButtonTapped:(SHMenuAdminSwipeableDrinkTableViewCell *)cell {
-    NSLog(@"photo button tapped");
+    [self takePictureForCell:cell];
 }
 
 - (void)flavorProfileButtonTapped:(SHMenuAdminSwipeableDrinkTableViewCell *)cell {
-    NSLog(@"flavor profile button tapped");
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
 }
 
 - (void)editButtonTapped:(SHMenuAdminSwipeableDrinkTableViewCell *)cell {
-    NSLog(@"edit button tapped");
-    
     //set isEditing bool TRUE
     //trigger reload on table view @ index of the cell to resize the cell
     //disable swipe gestures on the cell
@@ -914,8 +915,6 @@ typedef enum {
 }
 
 - (void)deleteButtonTapped:(SHMenuAdminSwipeableDrinkTableViewCell *)cell {
-    NSLog(@"delete button tapped");
-    
     //get menu item @ index
     //do request to delete
     //update view on success
@@ -984,8 +983,6 @@ typedef enum {
 #pragma mark -
 
 - (void)addPriceAndSizeButtonTapped:(SHMenuAdminEditMenuItemTableViewCell*)cell {
-    NSLog(@"add menu item btn tapped");
-
     self.editMenuItem = [self gatherInfoToCreateMenuItem:cell];
     
     //if the cell is the last cell then offset the tableview
@@ -1000,8 +997,6 @@ typedef enum {
 }
 
 - (void)removePriceAndSizeButtonTapped:(SHMenuAdminEditMenuItemTableViewCell*)cell indexOfRemoved:(NSInteger)indexOfRemovedRow {
-    NSLog(@"remove menu item btn tapped");
-    
     //have to figure out the index of prices which you have to remove
     if (indexOfRemovedRow < self.editMenuItem.prices.count) {
         NSMutableArray *editPrices = [self.editMenuItem.prices mutableCopy];
@@ -1013,8 +1008,6 @@ typedef enum {
 }
 
 - (void)cancelButtonTapped:(SHMenuAdminEditMenuItemTableViewCell *)cell {
-    NSLog(@"cancel btn tapped");
-    
     self.editMenuItem = nil;
     
     //set isEditing to FALSE and reload table view
@@ -1065,8 +1058,6 @@ typedef enum {
 }
 
 - (void)saveButtonTapped:(SHMenuAdminEditMenuItemTableViewCell *)cell {
-    NSLog(@"save btn tapped");
-
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     MenuItemModel *menuItem = self.filteredMenuItems[indexPath.row];
     
@@ -1131,9 +1122,78 @@ typedef enum {
 }
 
 - (void)viewShouldScroll {
-    NSLog(@"scroll em");
-    
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
     //scroll view so that height of the textfield is not
+}
+
+#pragma mark - Image Picker Delegate
+#pragma mark -
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+    if (!image) {
+        // get the original image instead of the edited version
+        image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    }
+    
+    //todo: show image in the appropriate cell
+    SHMenuAdminSwipeableDrinkTableViewCell *cell = (SHMenuAdminSwipeableDrinkTableViewCell*)[self.tableView cellForRowAtIndexPath:self.indexPathForPhotoTaken];
+    cell.drinkImage.image = image;
+    
+    MenuItemModel *menuItem = [self.filteredMenuItems objectAtIndex:self.indexPathForPhotoTaken.row];
+    
+    if (!menuItem) {
+        NSAssert(menuItem, @"menu item which picture was taken for should exist");
+    }
+    
+    [self showHUD:@"Uploading..."];
+    
+    // TODO: store image with Transloadit
+    SHMenuAdminTransloaditManager *transloaditManager = [[SHMenuAdminTransloaditManager alloc] init];
+    [transloaditManager uploadDrinkImageToTransloadit:image withCompletionBlock:^(NSString *path, NSError *error) {
+        DebugLog(@"path: %@", path);
+        
+        [DrinkModel createPhotoForDrink:path drink:menuItem.drink success:^(ImageModel *imageModel) {
+            [self hideHUD];
+            
+            //insert photo into array of
+            NSMutableArray *images = [menuItem.drink.images mutableCopy];
+            [images insertObject:imageModel atIndex:0];
+            menuItem.drink.images = images;
+
+        } failure:^(ErrorModel *error) {
+            [self hideHUD];
+            CLSLog(@"saving image path to backend failed");
+        }];
+    }];
+    
+    /*
+    //upload the photo to transloadit
+    TransloaditManager *manager = [TransloaditManager new];
+    [manager loadImageToTransloadit:img success:^(NSString *path) {
+        //post image to backend
+        [[NetworkManager sharedInstance] createPhotoForDrink:path drink:menuItem.drink success:^(ImageModel *created) {
+            
+            insert photo into array of
+            NSMutableArray *images = [menuItem.drink.images mutableCopy];
+            [images insertObject:created atIndex:0];
+            menuItem.drink.images = images;
+     
+        } failure:^(ErrorModel *error) {
+            CLSLog(@"saving image path to backend failed");
+        }];
+        
+    } failure:^{
+        CLSLog(@"uploading image to transloadit failed.");
+    }];
+     */
+    
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:true completion:nil];
 }
 
 #pragma mark - PickerView Datasource
@@ -1426,7 +1486,6 @@ typedef enum {
     //create new menu item
     MenuItemModel *menuItem = [MenuItemModel new];
     menuItem.drink = drink;
-    NSLog(@"drink subtype: %@", drink.drinkType.name);
     
     //need menu type id
     MenuTypeModel *menuType = [MenuTypeModel new];
@@ -1507,7 +1566,6 @@ typedef enum {
         
         //set default loaded spot as the first spot in the list
         self.spot = [spots firstObject];
-        NSLog(@"spot id: %@", self.spot.ID);
         self.title = self.spot.name;
         
         if (success) {
@@ -1942,7 +2000,6 @@ typedef enum {
     if (self.isEditingMenuItem) {
         CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
         CGFloat h = CGRectGetHeight(keyboardFrame);
-        NSLog(@"keyboard frame height: %f", h);
         
         SHMenuAdminEditMenuItemTableViewCell *editCell = nil;
         
@@ -1994,6 +2051,29 @@ typedef enum {
 
 #pragma mark - Private Helpers
 #pragma mark -
+
+- (void)takePictureForCell:(SHMenuAdminSwipeableDrinkTableViewCell *)cell {
+    if (!cell) {
+        NSAssert(cell, @"cell cannnot be nil");
+    }
+    
+    self.indexPathForPhotoTaken = [self.tableView indexPathForCell:cell];
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]){
+        
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc]init];
+        
+        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        imagePicker.mediaTypes =@[(NSString *) kUTTypeImage];
+        imagePicker.allowsEditing = true;
+        imagePicker.delegate = self;
+        
+        [self presentViewController:imagePicker animated:true completion:nil];
+    }
+    else {
+        [self showAlert:@"No camera detected" message:@"Sorry, we must have permissions to use your camera to use this feature"];
+    }
+}
 
 - (void)configurePriceSizeRow:(SHMenuAdminPriceSizeRowView *)container withPriceSize:(PriceModel *)priceInStupidCents {
     if (container) {

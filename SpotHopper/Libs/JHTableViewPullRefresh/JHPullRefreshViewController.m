@@ -210,11 +210,11 @@
 #pragma mark - JHPullRefresh methods for override
 
 - (void)reloadTableViewDataPullUp {
-    NSLog(@"Please override up");
+    // override
 }
 
 - (void)reloadTableViewDataPullDown {
-    NSLog(@"Please override down");
+    // override
 }
 
 @end

@@ -73,21 +73,18 @@
 
 - (void)addPriceAndSizeButtonTapped:(SHMenuAdminPriceSizeRowContainerView*)container {
     if ([self.delegate respondsToSelector:@selector(addPriceAndSizeButtonTapped:)]) {
-        NSLog(@"add btn pressed: edit menu cell");
         [self.delegate addPriceAndSizeButtonTapped:self];
     }
 }
 
 - (void)removePriceAndSizeButtonTapped:(SHMenuAdminPriceSizeRowContainerView*)container indexOfRemoved:(NSInteger)indexOfRemovedRow{
     if ([self.delegate respondsToSelector:@selector(removePriceAndSizeButtonTapped:indexOfRemoved:)]) {
-        NSLog(@"remove btn pressed: edit menu cell");
         [self.delegate removePriceAndSizeButtonTapped:self indexOfRemoved:indexOfRemovedRow];
     }
 }
 
 - (void)sizeLabelTapped:(SHMenuAdminPriceSizeRowContainerView*)container row:(SHMenuAdminPriceSizeRowView *)row{
     if ([self.delegate respondsToSelector:@selector(sizeLabelTapped:priceSizeContainer:)]) {
-        NSLog(@"size label pressed: edit menu cell");
         [self.delegate sizeLabelTapped:self priceSizeContainer:row];
     }
 }

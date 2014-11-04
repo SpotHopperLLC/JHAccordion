@@ -43,12 +43,26 @@
 	<string>Menu Blast will use your location to discover nearby spots.</string>
 	<key>SpotHopperSettings</key>
 	<dict>
+		<key>Configuration</key>
+		<string>Production</string>
+		<key>TransloaditAPIKey</key>
+		<string>13f353c0b5c711e380700d9414c75dd9</string>
+		<key>TransloaditSpotsTemplate</key>
+		<string>0e5af0b0bad811e39d0109b45d670766</string>
+		<key>TransloaditDrinksTemplate</key>
+		<string>9124ba30b84e11e3b1c3d5d9c59c9917</string>
+		<key>TransloaditUsersTemplate</key>
+		<string>9aff9430bad811e39d0109b45d670766</string>
+		<key>TransloaditSpecialsTemplate</key>
+		<string>7b054dc052de11e489a56f9623cf8362</string>
 		<key>AppURLScheme</key>
 		<string>instantmenu</string>
 		<key>BaseUrl</key>
 		<string>https://api.spotapps.co</string>
 		<key>BitlyAPIKey</key>
 		<string>R_11cbfeb881bd416fa9328fc8d239f0f8</string>
+		<key>BitlyAccessToken</key>
+		<string>b7ec1a2bb2d708bb0fd57d603d6f3b3a321c995c</string>
 		<key>BitlyShortURL</key>
 		<string>http://go.spotapps.co</string>
 		<key>BitlyUsername</key>

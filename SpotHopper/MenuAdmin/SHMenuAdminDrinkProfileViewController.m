@@ -160,7 +160,6 @@
             numberOfRows =  kNumberOfCells;
             break;
         case 1:
-            NSLog(@"# of templates:  %lu", (unsigned long)self.drink.averageReview.sliders.count);
             numberOfRows = self.drink.averageReview.sliders.count;
             break;
         default:

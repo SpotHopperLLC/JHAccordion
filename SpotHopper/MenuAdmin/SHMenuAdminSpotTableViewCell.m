@@ -43,7 +43,8 @@
     if (spot.images.count) {
         ImageModel *image = spot.images[0];
         [self.imgIcon hnk_setImageFromURL:[NSURL URLWithString:image.thumbUrl]];
-    }else {
+    }
+    else {
         self.imgIcon.image = [UIImage imageNamed:@"placeholderSpot.png"];
     }
 }

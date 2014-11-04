@@ -45,7 +45,7 @@
     [self addTarget:self action:@selector(onClickSelf:) forControlEvents:UIControlEventTouchUpInside];
 
 #ifdef STAGING
-    NSLog(@"%@ - %@", kTellMeMyLocationChangedNotification, NSStringFromClass([self class]));
+    DebugLog(@"%@ - %@", kTellMeMyLocationChangedNotification, NSStringFromClass([self class]));
     NSCAssert([self respondsToSelector:@selector(tellMeMyLocationChangedNotification:)], @"Current instance must implement tellMeMyLocationChangedNotification:");
 #endif
     
@@ -54,9 +54,6 @@
                                                  selector:@selector(tellMeMyLocationChangedNotification:)
                                                      name:kTellMeMyLocationChangedNotification
                                                    object:nil];
-    }
-    else {
-        NSLog(@"self: %@", NSStringFromClass([self class]));
     }
 }
 

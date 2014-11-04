@@ -12,10 +12,11 @@
 
 static CGFloat const kBounceValue = 40.0f;
 
-@interface SHMenuAdminSwipeableDrinkTableViewCell() <UIGestureRecognizerDelegate>
+@interface SHMenuAdminSwipeableDrinkTableViewCell () <UIGestureRecognizerDelegate>
 
 #pragma mark - Menu Button Properties
 #pragma mark -
+
 @property (weak, nonatomic) IBOutlet UIView *upperLayerContainer;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnPhoto;
@@ -25,6 +26,7 @@ static CGFloat const kBounceValue = 40.0f;
 
 #pragma mark - Pan Gesture Properties
 #pragma mark -
+
 @property (nonatomic, strong) UIPanGestureRecognizer *panRecognizer;
 @property (nonatomic, assign) CGPoint panStartPoint;
 @property (nonatomic, assign) CGFloat startingRightLayoutConstraintConstant;

@@ -20,7 +20,7 @@ PODS:
   - AFNetworking/UIKit (2.4.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - BitlyForiOS (1.1.0):
+  - BitlyForiOS (1.2.0):
     - AFNetworking (~> 2.4)
   - BlocksKit (2.2.5):
     - BlocksKit/All
@@ -56,13 +56,14 @@ PODS:
   - Reveal-iOS-SDK (1.0.6)
   - STTwitter (0.1.5)
   - SVPulsingAnnotationView (0.3.0)
+  - TransloaditAPI (1.0.0)
   - TTTAttributedLabel (1.10.1)
   - UIImage+BlurredFrame (0.0.4)
   - UIView-Autolayout (0.2.0)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.4)
-  - BitlyForiOS (from `https://github.com/brennanMKE/BitlyForiOS.git`, tag `1.1.0`)
+  - BitlyForiOS (from `https://github.com/brennanMKE/BitlyForiOS.git`, tag `1.2.0`)
   - BlocksKit (~> 2.2.0)
   - CrashlyticsFramework (~> 2.2)
   - Facebook-iOS-SDK (~> 3.0)
@@ -80,6 +81,7 @@ DEPENDENCIES:
   - Reveal-iOS-SDK
   - STTwitter (~> 0.1)
   - SVPulsingAnnotationView (~> 0.3.0)
+  - TransloaditAPI (from `https://github.com/transloadit/ios-sdk.git`)
   - TTTAttributedLabel (~> 1.10)
   - UIImage+BlurredFrame (~> 0.0)
   - UIView-Autolayout (~> 0.2.0)
@@ -87,7 +89,7 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   BitlyForiOS:
     :git: https://github.com/brennanMKE/BitlyForiOS.git
-    :tag: 1.1.0
+    :tag: 1.2.0
   JHAccordion:
     :git: https://github.com/SpotHopperLLC/JHAccordion.git
     :tag: SpotHopper-v2
@@ -103,10 +105,12 @@ EXTERNAL SOURCES:
     :tag: 1.1.0
   Promises:
     :git: http://github.com/joshdholtz/ios-promises.git
+  TransloaditAPI:
+    :git: https://github.com/transloadit/ios-sdk.git
 
 SPEC CHECKSUMS:
   AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
-  BitlyForiOS: b31acbdc416e5d19e91fd1f75190b6235292d534
+  BitlyForiOS: 07a379c310a33020d2379dedc5653343fb0e147e
   BlocksKit: 4439e7f30a9f90743462ca63545a15c1f4304cef
   Bolts: 3db0a875235e0c9042b013af13af0f00f79b102c
   CrashlyticsFramework: 82d124501d97d3b5d49bd6209dea21c6b7f0a33d
@@ -125,6 +129,7 @@ SPEC CHECKSUMS:
   Reveal-iOS-SDK: 74a39b426dbc915962704ed24f43ee32ae7797f9
   STTwitter: 60f28af91d622b9a3f74f28cd021413277d413bb
   SVPulsingAnnotationView: 92364bec02160f481d1b603afc904183d385c3e6
+  TransloaditAPI: 0eb4dd592e4693b8b5d0a464f48c5db7f02a2571
   TTTAttributedLabel: 94bb04f1e005616002dd2cee0262a0082e533627
   UIImage+BlurredFrame: 0c38f5760d72125c47d16001a88faaac573bd35d
   UIView-Autolayout: 7c05eb666738eba682f686c2da236578177e2ebb

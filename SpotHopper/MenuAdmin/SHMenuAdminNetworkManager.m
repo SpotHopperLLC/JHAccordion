@@ -144,7 +144,6 @@
     [[ClientSessionManager sharedClient] POST:[NSString stringWithFormat:@"/api/spots/%ld/menu_items", (long)[spot.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI
-        NSLog(@"adding menu item finished with status: %ld",(long)operation.response.statusCode);
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
         
         if (operation.response.statusCode == 200) {
@@ -288,16 +287,8 @@
         NSDictionary *response = (NSDictionary*) responseObject;
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:response];
 
-        
-        NSLog(@"%ld", (long)operation.response.statusCode);
-        
         if (operation.response.statusCode == 200) {
-            
             NSArray *prices = [jsonApi resourcesForKey:@"prices"];
-            
-//            for (JSONAPIResource *price in prices) {
-//                NSLog(@"%@", price);
-//            }
             
             if (success) {
                 success(prices);
@@ -333,7 +324,6 @@
     //DELETE /api/menu_items/:menu_item_id/prices/:id
     [[ClientSessionManager sharedClient] DELETE:[NSString stringWithFormat:@"/api/menu_items/%ld/prices/%ld", (long)[menuItem.ID integerValue], (long)[price.ID integerValue]] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSLog(@"deleting price finished w/ status code of %li", (long)operation.response.statusCode);
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
 
         if (operation.response.statusCode == 204) {

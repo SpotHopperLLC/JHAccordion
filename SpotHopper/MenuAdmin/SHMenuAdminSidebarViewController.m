@@ -116,7 +116,8 @@
         
         if (i == 0) {
             button = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 320.0f, kButtonHeight)];
-        }else {
+        }
+        else {
             UIButton *previous = [self.btnContainer.subviews lastObject];
             button = [[UIButton alloc]initWithFrame:CGRectMake(0, (previous.frame.origin.y + kButtonHeight), 320.0f, kButtonHeight)];
         }
@@ -132,7 +133,8 @@
 - (void)toggleSearchBasedOnUserRole {
     if (![self.user.role isEqualToString:@"admin"]) {
         self.btnSeeAllSpots.hidden = TRUE;
-    }else {
+    }
+    else {
         if (self.btnSeeAllSpots.hidden) {
             self.btnSeeAllSpots.hidden = FALSE;
         }

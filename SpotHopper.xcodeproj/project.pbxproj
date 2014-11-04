@@ -744,6 +744,12 @@
 		262380241986F83500F0940A /* Tracker+Events.m in Sources */ = {isa = PBXBuildFile; fileRef = 2623801F1986F83500F0940A /* Tracker+Events.m */; };
 		262506EA1A04217000437259 /* MenuAdminImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 262506E91A04217000437259 /* MenuAdminImages.xcassets */; };
 		262506EB1A04217000437259 /* MenuAdminImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 262506E91A04217000437259 /* MenuAdminImages.xcassets */; };
+		262506EE1A04498600437259 /* SHMenuAdminTransloaditManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 262506ED1A04498600437259 /* SHMenuAdminTransloaditManager.m */; };
+		262506EF1A04498600437259 /* SHMenuAdminTransloaditManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 262506ED1A04498600437259 /* SHMenuAdminTransloaditManager.m */; };
+		262506F01A04498600437259 /* SHMenuAdminTransloaditManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 262506ED1A04498600437259 /* SHMenuAdminTransloaditManager.m */; };
+		262506F11A04498600437259 /* SHMenuAdminTransloaditManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 262506ED1A04498600437259 /* SHMenuAdminTransloaditManager.m */; };
+		262506F21A04498600437259 /* SHMenuAdminTransloaditManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 262506ED1A04498600437259 /* SHMenuAdminTransloaditManager.m */; };
+		262506F31A0457EA00437259 /* SHMenuAdminTransloaditManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 262506ED1A04498600437259 /* SHMenuAdminTransloaditManager.m */; };
 		262A65B2195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
 		262A65B3195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
 		262A65B5195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
@@ -1378,7 +1384,6 @@
 		267515131A016AFD00A7D0BB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03866468186D352400985CEC /* CoreGraphics.framework */; };
 		267515141A016AFD00A7D0BB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0386646A186D352400985CEC /* UIKit.framework */; };
 		267515151A016AFD00A7D0BB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03866466186D352400985CEC /* Foundation.framework */; };
-		267515161A016AFD00A7D0BB /* libPods-SpotHopperProduction.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4FCD79065E7CA43932C686F /* libPods-SpotHopperProduction.a */; };
 		267515181A016AFD00A7D0BB /* RefreshView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 038664E8186D37BC00985CEC /* RefreshView.xib */; };
 		267515191A016AFD00A7D0BB /* icon_sliders.png in Resources */ = {isa = PBXBuildFile; fileRef = 269E5CA819BA5D5200A228C7 /* icon_sliders.png */; };
 		2675151A1A016AFD00A7D0BB /* ListCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF7118C6E8CD00172F13 /* ListCellView.xib */; };
@@ -1729,7 +1734,6 @@
 		2675168F1A016B1300A7D0BB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03866468186D352400985CEC /* CoreGraphics.framework */; };
 		267516901A016B1300A7D0BB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0386646A186D352400985CEC /* UIKit.framework */; };
 		267516911A016B1300A7D0BB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03866466186D352400985CEC /* Foundation.framework */; };
-		267516921A016B1300A7D0BB /* libPods-SpotHopperProduction.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4FCD79065E7CA43932C686F /* libPods-SpotHopperProduction.a */; };
 		267516941A016B1300A7D0BB /* RefreshView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 038664E8186D37BC00985CEC /* RefreshView.xib */; };
 		267516951A016B1300A7D0BB /* icon_sliders.png in Resources */ = {isa = PBXBuildFile; fileRef = 269E5CA819BA5D5200A228C7 /* icon_sliders.png */; };
 		267516961A016B1300A7D0BB /* ListCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F6BF7118C6E8CD00172F13 /* ListCellView.xib */; };
@@ -2814,6 +2818,8 @@
 		2623801E1986F83500F0940A /* Tracker+Events.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tracker+Events.h"; sourceTree = "<group>"; };
 		2623801F1986F83500F0940A /* Tracker+Events.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Tracker+Events.m"; sourceTree = "<group>"; };
 		262506E91A04217000437259 /* MenuAdminImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = MenuAdminImages.xcassets; path = MenuAdmin/MenuAdminImages.xcassets; sourceTree = "<group>"; };
+		262506EC1A04498600437259 /* SHMenuAdminTransloaditManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHMenuAdminTransloaditManager.h; sourceTree = "<group>"; };
+		262506ED1A04498600437259 /* SHMenuAdminTransloaditManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHMenuAdminTransloaditManager.m; sourceTree = "<group>"; };
 		262A65B0195893F800A4DACD /* MenuModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuModel.h; sourceTree = "<group>"; };
 		262A65B1195893F800A4DACD /* MenuModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuModel.m; sourceTree = "<group>"; };
 		262B958719CA145200C2B1CC /* SpotHopperProduction.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SpotHopperProduction.entitlements; sourceTree = SOURCE_ROOT; };
@@ -3144,7 +3150,6 @@
 				267515131A016AFD00A7D0BB /* CoreGraphics.framework in Frameworks */,
 				267515141A016AFD00A7D0BB /* UIKit.framework in Frameworks */,
 				267515151A016AFD00A7D0BB /* Foundation.framework in Frameworks */,
-				267515161A016AFD00A7D0BB /* libPods-SpotHopperProduction.a in Frameworks */,
 				0CBDC77C3E2FC598E9F94EE6 /* libPods-InstantMenuStaging.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3159,7 +3164,6 @@
 				2675168F1A016B1300A7D0BB /* CoreGraphics.framework in Frameworks */,
 				267516901A016B1300A7D0BB /* UIKit.framework in Frameworks */,
 				267516911A016B1300A7D0BB /* Foundation.framework in Frameworks */,
-				267516921A016B1300A7D0BB /* libPods-SpotHopperProduction.a in Frameworks */,
 				8E60AAD193C3DEF2494905FB /* libPods-InstantMenuProduction.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4308,6 +4312,8 @@
 				267513DC1A006C3200A7D0BB /* SHMenuAdminNetworkManager.m */,
 				267513E71A006C3200A7D0BB /* SHMenuAdminStyleSupport.h */,
 				267513E81A006C3200A7D0BB /* SHMenuAdminStyleSupport.m */,
+				262506EC1A04498600437259 /* SHMenuAdminTransloaditManager.h */,
+				262506ED1A04498600437259 /* SHMenuAdminTransloaditManager.m */,
 			);
 			name = Misc;
 			sourceTree = "<group>";
@@ -6593,6 +6599,7 @@
 				0381044D18B69E2100A410DB /* SpotTypeModel.m in Sources */,
 				2675141F1A006C3200A7D0BB /* SHMenuAdminSwipeableDrinkTableViewCell.m in Sources */,
 				039B6FEE18870E4A00C590F8 /* SearchNewReviewViewController.m in Sources */,
+				262506EE1A04498600437259 /* SHMenuAdminTransloaditManager.m in Sources */,
 				039B7009188721BB00C590F8 /* FooterShadowCell.m in Sources */,
 				03CAC18C18E9C74F00FAC5F5 /* SizeModel.m in Sources */,
 				03866477186D352400985CEC /* AppDelegate.m in Sources */,
@@ -6783,6 +6790,7 @@
 				2654B89A192BB6B200A66BED /* SHSpotsCollectionViewManager.m in Sources */,
 				267514221A006C3200A7D0BB /* SHMenuAdminSwipeableDrinkTableViewCell.m in Sources */,
 				A62B3341193D086F00CE4BF0 /* SHSectionHeaderView.m in Sources */,
+				262506F11A04498600437259 /* SHMenuAdminTransloaditManager.m in Sources */,
 				03CABFDB18E7716400FAC5F5 /* NSString+Currency.m in Sources */,
 				03CABFDC18E7716400FAC5F5 /* ErrorModel.m in Sources */,
 				03CABFDD18E7716400FAC5F5 /* UserModel.m in Sources */,
@@ -6965,6 +6973,7 @@
 				03F4E8CF18CA34260056EAA9 /* UserModel.m in Sources */,
 				267514201A006C3200A7D0BB /* SHMenuAdminSwipeableDrinkTableViewCell.m in Sources */,
 				03F4E8D018CA34260056EAA9 /* SpotTypeModel.m in Sources */,
+				262506EF1A04498600437259 /* SHMenuAdminTransloaditManager.m in Sources */,
 				03F4E8D118CA34260056EAA9 /* SearchNewReviewViewController.m in Sources */,
 				03F4E8D218CA34260056EAA9 /* FooterShadowCell.m in Sources */,
 				03CAC18D18E9C74F00FAC5F5 /* SizeModel.m in Sources */,
@@ -7147,6 +7156,7 @@
 				2675149E1A016AFD00A7D0BB /* SHSpotsCollectionViewManager.m in Sources */,
 				2675149F1A016AFD00A7D0BB /* SHMenuAdminSwipeableDrinkTableViewCell.m in Sources */,
 				267514A01A016AFD00A7D0BB /* SHSectionHeaderView.m in Sources */,
+				262506F21A04498600437259 /* SHMenuAdminTransloaditManager.m in Sources */,
 				267514A11A016AFD00A7D0BB /* NSString+Currency.m in Sources */,
 				267514A21A016AFD00A7D0BB /* ErrorModel.m in Sources */,
 				267514A31A016AFD00A7D0BB /* UserModel.m in Sources */,
@@ -7329,6 +7339,7 @@
 				2675161A1A016B1300A7D0BB /* SHSpotsCollectionViewManager.m in Sources */,
 				2675161B1A016B1300A7D0BB /* SHMenuAdminSwipeableDrinkTableViewCell.m in Sources */,
 				2675161C1A016B1300A7D0BB /* SHSectionHeaderView.m in Sources */,
+				262506F31A0457EA00437259 /* SHMenuAdminTransloaditManager.m in Sources */,
 				2675161D1A016B1300A7D0BB /* NSString+Currency.m in Sources */,
 				2675161E1A016B1300A7D0BB /* ErrorModel.m in Sources */,
 				2675161F1A016B1300A7D0BB /* UserModel.m in Sources */,
@@ -7511,6 +7522,7 @@
 				2654B899192BB6B200A66BED /* SHSpotsCollectionViewManager.m in Sources */,
 				267514211A006C3200A7D0BB /* SHMenuAdminSwipeableDrinkTableViewCell.m in Sources */,
 				A62B3340193D086F00CE4BF0 /* SHSectionHeaderView.m in Sources */,
+				262506F01A04498600437259 /* SHMenuAdminTransloaditManager.m in Sources */,
 				267E052C1922CC48004457B4 /* NSString+Currency.m in Sources */,
 				267E052D1922CC48004457B4 /* ErrorModel.m in Sources */,
 				267E052E1922CC48004457B4 /* UserModel.m in Sources */,
@@ -7968,7 +7980,7 @@
 		};
 		267515D41A016AFE00A7D0BB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 263D6CA71A03F33E002E2A18 /* Pods-InstantMenuStaging.debug.xcconfig */;
+			baseConfigurationReference = 263D6CA81A03F33E002E2A18 /* Pods-InstantMenuStaging.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = MenuAdminAppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = MenuAdminLaunchImage;

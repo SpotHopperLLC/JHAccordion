@@ -32,9 +32,6 @@
 
         [self addSubview:row];
         self.height = 0;
-        
-        NSLog(@"init height: %f", self.frame.size.height);
-        
     }
     
     return self;
@@ -102,7 +99,6 @@
     else if(rows.count > 1 && rows.count < kMaxRowsShown){
         SHMenuAdminPriceSizeRowView *last = [rows lastObject];
         newRow = [[SHMenuAdminPriceSizeRowView alloc]initWithFrame:CGRectMake(0, (last.frame.origin.y + kPriceSizeRowHeight +kPadding), kPriceSizeRowWidth, kPriceSizeRowHeight)];
-        NSLog(@"added row at: %@",NSStringFromCGRect(self.frame));
     }
     
     newRow.delegate = self;

@@ -82,7 +82,6 @@
 
 - (void)showSizePicker {
     if ([self.delegate respondsToSelector:@selector(sizeLabelTapped:)]) {
-        NSLog(@"size lbl tapped");
         [self.delegate sizeLabelTapped:self];
     }
 }
@@ -93,7 +92,6 @@
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     
     if ([self.delegate respondsToSelector:@selector(viewShouldScroll)]) {
-        NSLog(@"size lbl tapped");
         [self.delegate viewShouldScroll];
     }
     

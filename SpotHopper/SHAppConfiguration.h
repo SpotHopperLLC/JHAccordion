@@ -24,6 +24,12 @@
 
 @interface SHAppConfiguration : NSObject
 
++ (NSString *)configuration;
+
++ (BOOL)isProduction;
+
++ (BOOL)isStaging;
+
 + (BOOL)isDebuggingEnabled;
 
 + (BOOL)isTrackingEnabled;
@@ -34,7 +40,19 @@
 
 + (NSString *)bitlyAPIKey;
 
++ (NSString *)bitlyAccessToken;
+
 + (NSString *)bitlyShortURL;
+
++ (NSString *)transloaditAPIKey;
+
++ (NSString *)transloaditSpotsTemplate;
+
++ (NSString *)transloaditDrinksTemplate;
+
++ (NSString *)transloaditUsersTemplate;
+
++ (NSString *)transloaditSpecialsTemplate;
 
 + (NSString *)twitterConsumerKey;
 

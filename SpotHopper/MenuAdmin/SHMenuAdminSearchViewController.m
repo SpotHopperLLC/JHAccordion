@@ -170,13 +170,10 @@
     CGFloat height;
     
     if (show == YES) {
-        NSLog(@"frame %@",NSStringFromCGRect( self.tblResults.frame));
         height  = CGRectGetHeight(self.view.frame) - CGRectGetMinY(self.tblResults.frame) - CGRectGetHeight(keyboardFrame);
         //        frame.size.height = CGRectGetHeight(self.view.frame) - CGRectGetMinY(frame) - CGRectGetHeight(keyboardFrame);
 
         
-        NSLog(@"calculated height: %f", height);
-
         if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
             height -= 20.0f;
         }
@@ -250,8 +247,6 @@
                 return;
             }
         }
-        
-        NSLog(@"%@, %@, %@", drink.name, drink.drinkType.name, drink.drinkSubtype.name);
         
         //delegate to the homeviewcontroller to add a new cell with the DrinkModel info
         if ([_delegate respondsToSelector:@selector(searchViewController:selectedDrink:)]) {
@@ -403,7 +398,8 @@
                         [_results addObject:drink];
                     }
                 }
-            }else {
+            }
+            else {
                 // Adds drinks to results
                 [_results addObjectsFromArray:drinks];
             }

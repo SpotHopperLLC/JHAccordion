@@ -44,12 +44,20 @@
 	<string>SpotHopper will use your location to show you the best local recommendations.</string>
 	<key>SpotHopperSettings</key>
 	<dict>
+		<key>Configuration</key>
+		<string>Staging</string>
+		<key>TransloaditAPIKey</key>
+		<string>13f353c0b5c711e380700d9414c75dd9</string>
+		<key>TransloaditTemplate</key>
+		<string>e1e2abb0b85011e3922975ac311ef1ad</string>
 		<key>AppURLScheme</key>
 		<string>spothopperappstaging</string>
 		<key>BaseUrl</key>
 		<string>http://spothopper-staging.herokuapp.com</string>
 		<key>BitlyAPIKey</key>
 		<string>R_11cbfeb881bd416fa9328fc8d239f0f8</string>
+		<key>BitlyAccessToken</key>
+		<string>b7ec1a2bb2d708bb0fd57d603d6f3b3a321c995c</string>
 		<key>BitlyShortURL</key>
 		<string>http://go.spotapps.co</string>
 		<key>BitlyUsername</key>
