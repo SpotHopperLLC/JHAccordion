@@ -87,7 +87,7 @@
                                             <constraint firstItem="b1k-qr-ywD" firstAttribute="top" secondItem="uyk-ac-rcf" secondAttribute="top" id="nrR-ec-cqc"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qs3-3Y-llG" userLabel="Beer Subtypes">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qs3-3Y-llG" userLabel="Beer SubType Container">
                                         <rect key="frame" x="0.0" y="60" width="320" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZSh-IR-gMx" userLabel="On Tap Button">
@@ -121,7 +121,7 @@
                                             <constraint firstAttribute="bottom" secondItem="ZSh-IR-gMx" secondAttribute="bottom" id="uQr-RE-Wv0"/>
                                         </constraints>
                                     </view>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xmo-Le-Kas" userLabel="Wine Subtypes Container">
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xmo-Le-Kas" userLabel="Wine SubType Container">
                                         <rect key="frame" x="0.0" y="60" width="320" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aid-P0-59h" userLabel="Red Button">
@@ -183,7 +183,7 @@
                                             <constraint firstAttribute="width" constant="320" id="y2y-RK-YJd"/>
                                         </constraints>
                                     </view>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xaN-wm-ueQ" userLabel="Cocktail Subtypes Container">
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xaN-wm-ueQ" userLabel="Cocktail SubTypes Container">
                                         <rect key="frame" x="0.0" y="60" width="320" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JWL-60-QfQ" userLabel="House Cocktails Button">
@@ -680,7 +680,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="beerSubtypeContainer" destination="Qs3-3Y-llG" id="Oog-KP-jKB"/>
+                        <outlet property="beerSubTypeContainer" destination="Qs3-3Y-llG" id="XUg-xN-SXr"/>
                         <outlet property="btnBeer" destination="VUd-qD-L54" id="P1v-79-6Sv"/>
                         <outlet property="btnBottles" destination="nVH-eL-q8Y" id="Gu9-II-qda"/>
                         <outlet property="btnCocktails" destination="BQC-4h-fHR" id="gMf-ff-24f"/>
@@ -693,17 +693,17 @@
                         <outlet property="btnSparklingWine" destination="RcL-Gw-aSe" id="say-CW-aLb"/>
                         <outlet property="btnWhiteWine" destination="Y4Y-uu-0xo" id="Tk2-OY-t3r"/>
                         <outlet property="btnWine" destination="b1k-qr-ywD" id="GNL-xb-q0B"/>
-                        <outlet property="cocktailSubtypeContainer" destination="xaN-wm-ueQ" id="qzx-tg-wXx"/>
+                        <outlet property="cocktailSubTypeContainer" destination="xaN-wm-ueQ" id="ja8-5w-l3s"/>
                         <outlet property="emptyView" destination="7e0-Y1-DGg" id="Nsc-yp-RfF"/>
                         <outlet property="lblEmpty" destination="IC0-Dj-sXb" id="txA-8J-JGi"/>
-                        <outlet property="menuTypeFilterContainer" destination="uyk-ac-rcf" id="zEu-2u-UHU"/>
+                        <outlet property="menuTypeFilterContainer" destination="uyk-ac-rcf" id="0XK-I9-aNH"/>
                         <outlet property="subtypeFilterBottomConstraint" destination="8RT-05-Kl3" id="nyp-Rz-eoS"/>
                         <outlet property="subtypeFilterContainer" destination="eSG-lL-MbD" id="0Gh-vX-76m"/>
                         <outlet property="subtypeFilterTopConstraint" destination="eqS-IW-AEe" id="Exg-ZQ-wBR"/>
                         <outlet property="tableView" destination="V1h-kT-2cW" id="uWQ-fg-MFN"/>
                         <outlet property="txtfldAddDrink" destination="X5S-J2-1IS" id="3EC-pW-UOT"/>
                         <outlet property="txtfldContainer" destination="EFn-f8-qcU" id="xI5-Pq-Lf7"/>
-                        <outlet property="wineSubtypeContainer" destination="xmo-Le-Kas" id="oZQ-gd-j09"/>
+                        <outlet property="wineSubTypeContainer" destination="xmo-Le-Kas" id="Rrl-gi-N7X"/>
                         <segue destination="cYj-kr-rwd" kind="push" identifier="HomeToSearch" id="5pz-N4-qHi"/>
                         <segue destination="DDU-yF-4VY" kind="push" identifier="HomeToDrink" id="wuT-lT-Srv"/>
                         <segue destination="Rmy-lN-2HX" kind="modal" identifier="HomeToLogin" modalTransitionStyle="flipHorizontal" id="31h-WQ-e3P"/>

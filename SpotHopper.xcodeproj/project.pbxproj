@@ -4441,24 +4441,16 @@
 		26A7E3621922CE3C00FF7B88 /* Redesign 2.0 */ = {
 			isa = PBXGroup;
 			children = (
+				26A7E3651922CE8000FF7B88 /* SpotHopper.storyboard */,
 				2619EBBC19D37825008A31B3 /* App */,
 				26D0A89B19704BA300F64384 /* Notifications */,
 				26A7E3801922D1E700FF7B88 /* StyleKit */,
-				26A7E3631922CE5300FF7B88 /* Storyboards */,
 				26A7E3641922CE5A00FF7B88 /* View Controllers */,
 				A62B333A193D084400CE4BF0 /* Views */,
 				26C816C71926EC2D00E237F2 /* Managers */,
 			);
 			name = "Redesign 2.0";
 			path = ..;
-			sourceTree = "<group>";
-		};
-		26A7E3631922CE5300FF7B88 /* Storyboards */ = {
-			isa = PBXGroup;
-			children = (
-				26A7E3651922CE8000FF7B88 /* SpotHopper.storyboard */,
-			);
-			name = Storyboards;
 			sourceTree = "<group>";
 		};
 		26A7E3641922CE5A00FF7B88 /* View Controllers */ = {

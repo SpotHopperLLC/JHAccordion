@@ -239,7 +239,7 @@ static CGFloat const kBounceValue = 40.0f;
 }
 
 - (void)updateConstraintsIfNeeded:(BOOL)animated completion:(void (^)(BOOL finished))completion {
-    float duration = 0;
+    CGFloat duration = 0;
     if (animated) {
         duration = 0.3;
     }
@@ -251,7 +251,6 @@ static CGFloat const kBounceValue = 40.0f;
             completion(finished);
         }
     }];
-    
 }
 
 - (void)resetConstraintConstantsToZero:(BOOL)animated notifyDelegateDidClose:(BOOL)notifyDelegate {
