@@ -1202,6 +1202,7 @@ typedef enum {
     if (!cell) {
         DebugLog(@"Index Path: %lu, %lu", (unsigned long)indexPath.section, (unsigned long)indexPath.row);
         NSAssert(FALSE, @"Cell must be defined");
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"InvalidCell"];
     }
     
     UIView *selectedBackgroundView = [[UIView alloc] initWithFrame:CGRectZero];

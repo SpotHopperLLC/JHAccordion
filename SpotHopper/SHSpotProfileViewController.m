@@ -429,6 +429,13 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
         cell = [self renderErrorCellForTableView:tableView atIndexPath:indexPath];
     }
     
+    NSAssert(cell, @"Cell must be defined");
+    
+    // extra precaution
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"InvalidCell"];
+    }
+    
     return cell;
 }
 

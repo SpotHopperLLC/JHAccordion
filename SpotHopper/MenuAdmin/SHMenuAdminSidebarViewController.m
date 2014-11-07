@@ -6,16 +6,14 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-
 #import "SHMenuAdminSidebarViewController.h"
+
 #import "SpotModel.h"
-#import "SHMenuAdminSearchViewController.h"
-
 #import "UserModel.h"
-
 #import "Tracker.h"
 #import "ClientSessionManager.h"
 
+//#import "SHMenuAdminSearchViewController.h"
 #import "SHMenuAdminStyleSupport.h"
 #import "UIButton+FilterStyling.h"
 
@@ -25,36 +23,30 @@
 #define kPageSize 5
 #define kButtonHeight 50.0
 
-@interface SHMenuAdminSidebarViewController ()
+@interface SHMenuAdminSidebarViewController () <UITableViewDataSource, UITableViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (weak, nonatomic) IBOutlet UIView *backgroundView;
-@property (weak, nonatomic) IBOutlet UIButton *btnSeeAllSpots;
-@property (weak, nonatomic) IBOutlet UIButton *btnClose;
-@property (weak, nonatomic) IBOutlet UIButton *btnLogout;
-@property (weak, nonatomic) IBOutlet UILabel *lblInstructions;
+@property (weak, nonatomic) IBOutlet UIButton *seeAllSpotsButton;
+@property (weak, nonatomic) IBOutlet UIButton *closeButton;
+@property (weak, nonatomic) IBOutlet UIButton *logoutButton;
+@property (weak, nonatomic) IBOutlet UILabel *instructionsLabel;
 
-@property (weak, nonatomic) IBOutlet UIView *btnContainer;
 @property (strong, nonatomic) UserModel *user;
 
 @end
 
 @implementation SHMenuAdminSidebarViewController
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-    
+    MAAssert(self.tableView, @"Outlet must be connected");
+    MAAssert([self.tableView.delegate isEqual:self], @"Delegate must be connected");
+    MAAssert([self.tableView.dataSource isEqual:self], @"DataSource must be connected");
+
     [self styleSidebar];
-    
-    //clear out prototype buttons 
-    for (UIButton *button in self.btnContainer.subviews) {
-        [button removeFromSuperview];
-    }
-    
-    [self refreshSidebar];
 }
 
 - (NSArray *)viewOptions {
@@ -62,8 +54,9 @@
 }
 
 #pragma mark - Actions
+#pragma mark -
 
-- (IBAction)onClickClose:(id)sender {
+- (IBAction)closeButtonTapped:(id)sender {
     if ([self.delegate respondsToSelector:@selector(closeButtonTapped:)]) {
         [self.delegate closeButtonTapped:self];
     }
@@ -81,97 +74,98 @@
     }
 }
 
-- (void)spotButtonTapped:(id)sender {
-    UIButton *button = (UIButton*)sender;
-    button.backgroundColor = [SHMenuAdminStyleSupport sharedInstance].LIGHT_ORANGE;
+#pragma mark -  Refresh
+#pragma mark -
 
+- (void)changeSpots:(NSArray *)spots {
+    self.spots = spots;
+    [self.tableView reloadData];
+    self.user = [ClientSessionManager sharedClient].currentUser;
+    [self toggleSearchBasedOnUserRole];
+}
+
+#pragma mark - Private
+#pragma mark -
+
+- (SpotModel *)spotForIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row < self.spots.count) {
+        return self.spots[indexPath.row];
+    }
+    
+    return nil;
+}
+
+- (void)selectSpot:(SpotModel *)spot {
     if ([self.delegate respondsToSelector:@selector(spotTapped:spot:)]){
-        NSInteger index = [self.btnContainer.subviews indexOfObject:button];
-        SpotModel *spot = [self.spots objectAtIndex:index];
         [self.delegate spotTapped:self spot:spot];
     }
 }
 
-#pragma mark -  Refresh
-#pragma mark -
-- (void)refreshSidebar {
-    self.user = [ClientSessionManager sharedClient].currentUser;
-    [self toggleSearchBasedOnUserRole];
-    [self fillContainerWithSpotButtons];
-}
-
-#pragma mark - Private
-
-- (void)fillContainerWithSpotButtons {
-    
-    //get rid of prototype views
-    for (UIButton *button in self.btnContainer.subviews) {
-        [button removeFromSuperview];
-    }
-    
-    for (NSInteger i = 0; i < self.spots.count; i++) {
-
-        SpotModel *spot = self.spots[i];
-        UIButton *button;
-        
-        if (i == 0) {
-            button = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 320.0f, kButtonHeight)];
-        }
-        else {
-            UIButton *previous = [self.btnContainer.subviews lastObject];
-            button = [[UIButton alloc]initWithFrame:CGRectMake(0, (previous.frame.origin.y + kButtonHeight), 320.0f, kButtonHeight)];
-        }
-        
-        [self styleButton:button title:spot.name];
-        [button addTarget:self action:@selector(spotButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [button addTarget:self action:@selector(changeBackgroundColor:) forControlEvents:UIControlEventTouchDown];
-        [self.btnContainer addSubview:button];
-    }
-    
-}
-
 - (void)toggleSearchBasedOnUserRole {
-    if (![self.user.role isEqualToString:@"admin"]) {
-        self.btnSeeAllSpots.hidden = TRUE;
+    if (![@"admin" isEqualToString:self.user.role]) {
+        self.seeAllSpotsButton.hidden = TRUE;
     }
-    else {
-        if (self.btnSeeAllSpots.hidden) {
-            self.btnSeeAllSpots.hidden = FALSE;
-        }
+    else if (self.seeAllSpotsButton.hidden) {
+        self.seeAllSpotsButton.hidden = FALSE;
     }
 }
 
 #pragma mark - Styling
 #pragma mark -
 
-- (void)changeBackgroundColor:(id)sender {
-    UIButton *button = (UIButton*)sender;
-    button.backgroundColor = [SHMenuAdminStyleSupport sharedInstance].DARK_ORANGE;
-}
-
 - (void)styleSidebar {
-
-    self.backgroundView.backgroundColor = [UIColor colorWithRed:241.0f/255.0f green:142.0f/255.0f blue:108.0f/255.0f alpha:0.9f];
-    
-    self.lblInstructions.backgroundColor = [SHMenuAdminStyleSupport sharedInstance].DARK_ORANGE;
-    self.lblInstructions.font = [UIFont fontWithName:@"Lato-Light" size:18.0f];
-    
-    self.btnLogout.titleLabel.font = [UIFont fontWithName:@"Lato-Light" size:18.0f];
-    
-    [self.btnSeeAllSpots addTopBorder];
-    self.btnSeeAllSpots.backgroundColor = [UIColor clearColor];
-    self.btnSeeAllSpots.titleLabel.font = [UIFont fontWithName:@"Lato-Bold" size:18.0f];
+    self.backgroundView.backgroundColor = [[SHMenuAdminStyleSupport sharedInstance].LIGHT_ORANGE colorWithAlphaComponent:0.9];
+    self.instructionsLabel.backgroundColor = [SHMenuAdminStyleSupport sharedInstance].DARK_ORANGE;
+    [self.seeAllSpotsButton addTopBorder];
 }
 
-- (void)styleButton:(UIButton*)button title:(NSString*)title{
-    [button setTitle:title forState:UIControlStateNormal];
-    button.titleLabel.font = [UIFont fontWithName:@"Lato-Light" size:18.0f];
-    button.titleLabel.textColor = [UIColor whiteColor];
-    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.contentEdgeInsets = UIEdgeInsetsMake(0.0, 25.0f, 0.0, 0.0);
-    [button addBottomBorder];
+#pragma mark - UITableViewDataSource
+#pragma mark -
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.spots.count;
 }
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *CellIdentifier = @"SpotCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    SpotModel *spot = [self spotForIndexPath:indexPath];
+    
+    UIView *selectedBackgroundView = [[UIView alloc] init];
+    selectedBackgroundView.backgroundColor = [[SHMenuAdminStyleSupport sharedInstance].DARK_ORANGE colorWithAlphaComponent:0.75];
+    cell.selectedBackgroundView = selectedBackgroundView;
+    
+    UILabel *label = (UILabel *)[cell viewWithTag:1];
+    label.text = spot.name;
+    
+    return cell;
+}
 
+#pragma mark - UITableViewDelegate
+#pragma mark -
+
+//- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//    DebugLog(@"%@", NSStringFromSelector(_cmd));
+//    return indexPath;
+//}
+//
+//- (NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+//    DebugLog(@"%@", NSStringFromSelector(_cmd));
+//    return indexPath;
+//}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    SpotModel *spot = [self spotForIndexPath:indexPath];
+    [self selectSpot:spot];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [tableView deselectRowAtIndexPath:indexPath animated:TRUE];
+    });
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 60;
+}
 
 @end

@@ -55,6 +55,8 @@
 -(void)keyboardWillShow:(NSNotification*)notification;
 -(void)keyboardWillHide:(NSNotification*)notification;
 -(void)setViewMovedUp:(BOOL)movedUp keyboardFrame:(CGRect)keyboardFrame;
+- (BOOL)keyboardWillShowWithHeight:(CGFloat)height duration:(CGFloat)duration animationOptions:(UIViewAnimationOptions)animationOptions;
+- (BOOL)keyboardWillHideWithHeight:(CGFloat)height duration:(CGFloat)duration animationOptions:(UIViewAnimationOptions)animationOptions;
 - (NSTimeInterval)getKeyboardDuration:(NSNotification *)notification;
 - (CGFloat)getKeyboardHeight:(NSNotification *)notification forBeginning:(BOOL)forBeginning;
 - (UIViewAnimationOptions)getKeyboardAnimationCurve:(NSNotification *)notification;
@@ -93,6 +95,7 @@
 - (FooterViewController*)addFooterViewController:(void(^)(FooterViewController *footerViewController))initializeBlock;
 - (FooterViewController*)footerViewController;
 
+- (NSIndexPath *)indexPathForView:(UIView *)view inTableView:(UITableView *)tableView;
 - (void)slideCell:(UITableViewCell *)cell aboveTableViewMidwayPoint:(UITableView *)tableView;
 
 - (void)showShareViewControllerWithSpot:(SpotModel *)spot shareType:(ShareViewControllerShareType)shareType;

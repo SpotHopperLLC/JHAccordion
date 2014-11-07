@@ -10,6 +10,14 @@
 
 @implementation SHAppConfiguration
 
++ (NSString *)bundleIdentifier {
+    return [[NSBundle mainBundle] infoDictionary][@"CFBundleIdentifier"];
+}
+
++ (NSString *)bundleDisplayName {
+    return [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
+}
+
 + (NSString *)configuration {
     return [[NSBundle mainBundle] infoDictionary][@"SpotHopperSettings"][@"Configuration"];
 }
@@ -88,6 +96,10 @@
 
 + (NSString *)websiteUrl {
     return [[NSBundle mainBundle] infoDictionary][@"SpotHopperSettings"][@"WebsiteUrl"];
+}
+
++ (BOOL)isParseEnabled {
+    return [[self parseApplicationID] length] > 0;
 }
 
 + (NSString *)parseApplicationID {

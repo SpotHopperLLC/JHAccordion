@@ -56,21 +56,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    CLLocation *location = [[SHAppContext defaultInstance] deviceLocation];
-    CLLocationDistance maxRadius = 0.25f * kMetersPerMile;
-    CLLocationDistance radius = MIN([[SHAppContext defaultInstance] radius], maxRadius);
-
-    // hold onto location to use with table delegates
-    self.currentLocation = location;
-    
-    if (location && CLLocationCoordinate2DIsValid(location.coordinate)) {
-        [[SpotModel fetchSpotsNearLocation:location radius:radius] then:^(NSArray *spots) {
-            DebugLog(@"spots: %@", spots);
-            _isLoadingSpots = FALSE;
-            [self updateSpots:spots];
-        } fail:nil always:^{
-        }];
-    }
+    [self fetchSpots];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -89,6 +75,34 @@
 
 - (BOOL)isSpotAtIndexPath:(NSIndexPath *)indexPath {
     return self.spots.count && indexPath.row < self.spots.count;
+}
+
+- (void)fetchSpots {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fetchSpots) object:nil];
+    
+    CLLocation *location = [[SHAppContext defaultInstance] deviceLocation];
+    
+    if (!location) {
+        [self performSelector:@selector(fetchSpots) withObject:nil afterDelay:0.25];
+        return;
+    }
+    
+    // hold onto location to use with table delegates
+    self.currentLocation = location;
+    
+    CLLocationDistance maxRadius = 0.25f * kMetersPerMile;
+    CLLocationDistance radius = MIN([[SHAppContext defaultInstance] radius], maxRadius);
+    
+    DebugLog(@"location: %@", location);
+    
+    if (location && CLLocationCoordinate2DIsValid(location.coordinate)) {
+        [[SpotModel fetchSpotsNearLocation:location radius:radius] then:^(NSArray *spots) {
+            DebugLog(@"spots: %@", spots);
+            _isLoadingSpots = FALSE;
+            [self updateSpots:spots];
+        } fail:nil always:^{
+        }];
+    }
 }
 
 #pragma mark - User Actions
@@ -162,6 +176,13 @@
         
         UILabel *label = (UILabel *)[cell viewWithTag:1];
         label.text = text;
+    }
+    
+    NSAssert(cell, @"Cell must be defined");
+    
+    // extra precaution
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"InvalidCell"];
     }
     
     UIView *selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];

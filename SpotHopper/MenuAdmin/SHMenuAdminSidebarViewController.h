@@ -13,12 +13,12 @@
 
 @protocol SHMenuAdminSidebarViewControllerDelegate;
 
-@interface SHMenuAdminSidebarViewController : BaseViewController
+@interface SHMenuAdminSidebarViewController : UIViewController
 
 @property (nonatomic, weak) id<SHMenuAdminSidebarViewControllerDelegate> delegate;
 @property (nonatomic, strong) NSArray *spots;
 
-- (void)refreshSidebar;
+- (void)changeSpots:(NSArray *)spots;
 
 @end
 

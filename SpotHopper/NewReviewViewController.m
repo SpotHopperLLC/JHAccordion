@@ -132,14 +132,6 @@
 
 @implementation NewReviewViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -196,6 +188,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -515,7 +508,7 @@
     });
 }
 
-- (BOOL)autocompleteHasKeyboardAccessory:(JHAutoCompleteView *)autocomplteView {
+- (BOOL)autocompleteHasKeyboardAccessory:(JHAutoCompleteView *)autocompleteView {
     return YES;
 }
 

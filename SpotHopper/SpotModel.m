@@ -580,6 +580,15 @@
         [params setObject:[NSNumber numberWithFloat:location.coordinate.latitude] forKey:kSpotModelParamQueryLatitude];
         [params setObject:[NSNumber numberWithFloat:location.coordinate.longitude] forKey:kSpotModelParamQueryLongitude];
     }
+    else {
+        if (failureBlock)  {
+            ErrorModel *errorModel = [[ErrorModel alloc] init];
+            errorModel.human = @"Location is not valid";
+            errorModel.error = @"Location is not valid";
+            failureBlock(errorModel);
+        }
+        return;
+    }
     
     if (radius) {
         params[kSpotModelParamQueryRadius] = [NSNumber numberWithFloat:radius];

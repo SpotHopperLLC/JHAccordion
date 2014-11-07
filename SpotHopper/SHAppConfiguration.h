@@ -24,6 +24,10 @@
 
 @interface SHAppConfiguration : NSObject
 
++ (NSString *)bundleIdentifier;
+
++ (NSString *)bundleDisplayName;
+
 + (NSString *)configuration;
 
 + (BOOL)isProduction;
@@ -63,6 +67,8 @@
 + (NSString *)baseUrl;
 
 + (NSString *)websiteUrl;
+
++ (BOOL)isParseEnabled;
 
 + (NSString *)parseApplicationID;
 

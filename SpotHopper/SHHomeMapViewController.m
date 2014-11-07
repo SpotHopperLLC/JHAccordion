@@ -803,6 +803,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
             [[SHAppContext defaultInstance] changeDeviceLocation:self.userLocation];
             
+            if (!self.userLocation) {
+                [self refreshCurrentLocationForAccuracy:kCLLocationAccuracyHundredMeters withCompletionBlock:^(NSError *error) {
+                    if (error) {
+                        DebugLog(@"Error: %@", error);
+                    }
+                }];
+            }
+            
             [self updateNavigationItemTitle:@"Checkin"];
             
             [self hideBottomViewWithCompletionBlock:^{
