@@ -10,10 +10,9 @@
 
 @interface UIButton (FilterStyling)
 
-- (void)styleAsFilterButtonWithTopImage:(UIImage*)image text:(NSString*)text;
-- (void)styleAsFilterButtonWithSideImage:(UIImage*)image text:(NSString*)text;
-- (void)styleAsEditButton:(UIImage*)image text:(NSString*)text;
-
+- (void)styleAsFilterButtonWithTopImage:(UIImage *)image text:(NSString *)text;
+- (void)styleAsFilterButtonWithSideImage:(UIImage *)image text:(NSString *)text;
+- (void)styleAsEditButton:(UIImage *)image text:(NSString *)text;
 
 - (void)addBottomBorder;
 - (void)addTopBorder;

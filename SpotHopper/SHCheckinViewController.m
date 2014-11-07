@@ -178,6 +178,13 @@
         label.text = text;
     }
     
+    NSAssert(cell, @"Cell must be defined");
+    
+    // extra precaution
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"InvalidCell"];
+    }
+    
     UIView *selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
     selectedBackgroundView.backgroundColor = [SHStyleKit color:SHStyleKitColorMyTintTransparentColor];
     cell.selectedBackgroundView = selectedBackgroundView;

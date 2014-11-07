@@ -58,8 +58,7 @@
 
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
-    if ([SHAppConfiguration parseApplicationID].length) {
-        // Initialize Parse
+    if ([SHAppConfiguration isParseEnabled]) {
         [Parse setApplicationId:[SHAppConfiguration parseApplicationID]
                       clientKey:[SHAppConfiguration parseClientKey]];
         [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
@@ -241,10 +240,31 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     // Store the deviceToken in the current Installation and save it to Parse.
-    if ([SHAppConfiguration parseApplicationID].length) {
+    if ([SHAppConfiguration isParseEnabled]) {
         PFInstallation *currentInstallation = [PFInstallation currentInstallation];
         [currentInstallation setDeviceTokenFromData:deviceToken];
-        [currentInstallation saveInBackground];
+        [currentInstallation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            PFQuery *query = [PFQuery queryWithClassName:@"Application"];
+            [query whereKey:@"installation" equalTo:currentInstallation];
+            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                if (error) {
+                    DebugLog(@"Error: %@", error);
+                }
+                else {
+                    PFObject *app = nil;
+                    if (objects.count) {
+                        app = objects.firstObject;
+                    }
+                    else {
+                        app = [PFObject objectWithClassName:@"Application"];
+                    }
+                    [app setObject:currentInstallation forKey:@"installation"];
+                    [app setObject:[SHAppConfiguration bundleIdentifier] forKey:@"appIdentifier"];
+                    [app setObject:[SHAppConfiguration bundleDisplayName] forKey:@"appName"];
+                    [app saveEventually];
+                }
+            }];
+        }];
         
         [[SHAppUtil defaultInstance] updateParse];
     }

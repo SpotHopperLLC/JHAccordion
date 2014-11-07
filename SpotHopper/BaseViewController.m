@@ -328,31 +328,108 @@ typedef void(^AlertBlock)();
     return kOFFSET_FOR_KEYBOARD;
 }
 
--(void)keyboardWillShow:(NSNotification*)notification {
-    CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    
-    // Animate the current view out of the way
-    if (self.view.frame.origin.y >= 0)
-    {
-        [self setViewMovedUp:YES keyboardFrame:keyboardFrame];
-    }
-    else if (self.view.frame.origin.y < 0)
-    {
-        [self setViewMovedUp:NO keyboardFrame:keyboardFrame];
+- (void)keyboardWillShow:(NSNotification*)notification {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    CGFloat height = [self getKeyboardHeight:notification forBeginning:TRUE];
+    NSTimeInterval duration = [self getKeyboardDuration:notification];
+    UIViewAnimationOptions animationOptions = [self getKeyboardAnimationCurve:notification];
+
+    if (![self keyboardWillShowWithHeight:height duration:duration animationOptions:animationOptions]) {
+        CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+        
+        // Animate the current view out of the way
+        if (self.view.frame.origin.y >= 0) {
+            [self setViewMovedUp:YES keyboardFrame:keyboardFrame];
+        }
+        else if (self.view.frame.origin.y < 0) {
+            [self setViewMovedUp:NO keyboardFrame:keyboardFrame];
+        }
     }
 }
 
--(void)keyboardWillHide:(NSNotification*)notification {
-    CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+- (void)keyboardWillHide:(NSNotification*)notification {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    CGFloat height = [self getKeyboardHeight:notification forBeginning:FALSE];
+    NSTimeInterval duration = [self getKeyboardDuration:notification];
+    UIViewAnimationOptions animationOptions = [self getKeyboardAnimationCurve:notification];
     
-    if (self.view.frame.origin.y >= 0)
-    {
-        [self setViewMovedUp:YES keyboardFrame:keyboardFrame];
+    if (![self keyboardWillHideWithHeight:height duration:duration animationOptions:animationOptions]) {
+        CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+        
+        if (self.view.frame.origin.y >= 0)
+        {
+            [self setViewMovedUp:YES keyboardFrame:keyboardFrame];
+        }
+        else if (self.view.frame.origin.y < 0)
+        {
+            [self setViewMovedUp:NO keyboardFrame:keyboardFrame];
+        }
     }
-    else if (self.view.frame.origin.y < 0)
-    {
-        [self setViewMovedUp:NO keyboardFrame:keyboardFrame];
+}
+
+- (NSTimeInterval)getKeyboardDuration:(NSNotification *)notification {
+    NSDictionary *info = [notification userInfo];
+    
+    NSTimeInterval duration;
+    
+    NSValue *durationValue = [info objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    [durationValue getValue:&duration];
+    
+    return duration;
+}
+
+- (CGFloat)getKeyboardHeight:(NSNotification *)notification forBeginning:(BOOL)forBeginning {
+    NSDictionary *info = [notification userInfo];
+    
+    CGFloat keyboardHeight;
+    
+    NSValue *boundsValue = nil;
+    if (forBeginning) {
+        boundsValue = [info valueForKey:UIKeyboardFrameBeginUserInfoKey];
     }
+    else {
+        boundsValue = [info valueForKey:UIKeyboardFrameEndUserInfoKey];
+    }
+    
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    if (UIDeviceOrientationIsLandscape(orientation)) {
+        keyboardHeight = [boundsValue CGRectValue].size.width;
+    }
+    else {
+        keyboardHeight = [boundsValue CGRectValue].size.height;
+    }
+    
+    return keyboardHeight;
+}
+
+- (UIViewAnimationOptions)getKeyboardAnimationCurve:(NSNotification *)notification {
+    UIViewAnimationCurve curve = [[notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    
+    switch (curve) {
+        case UIViewAnimationCurveEaseInOut:
+            return UIViewAnimationOptionCurveEaseInOut;
+            break;
+        case UIViewAnimationCurveEaseIn:
+            return UIViewAnimationOptionCurveEaseIn;
+            break;
+        case UIViewAnimationCurveEaseOut:
+            return UIViewAnimationOptionCurveEaseOut;
+            break;
+        case UIViewAnimationCurveLinear:
+            return UIViewAnimationOptionCurveLinear;
+            break;
+    }
+    
+    return kNilOptions;
+}
+
+- (UIViewAnimationOptions)animationOptionsWithCurve:(UIViewAnimationCurve)curve {
+    //    MAAssert(UIViewAnimationCurveEaseInOut << 16 == UIViewAnimationOptionCurveEaseInOut, @"Shift should match");
+    //    MAAssert(UIViewAnimationCurveEaseIn << 16 == UIViewAnimationOptionCurveEaseIn, @"Shift should match");
+    //    MAAssert(UIViewAnimationCurveEaseOut << 16 == UIViewAnimationOptionCurveEaseOut, @"Shift should match");
+    //    MAAssert(UIViewAnimationCurveLinear << 16 == UIViewAnimationOptionCurveLinear, @"Shift should match");
+    
+    return curve << 16;
 }
 
 //method to move the view up/down whenever the keyboard is shown/dismissed
@@ -379,60 +456,55 @@ typedef void(^AlertBlock)();
     [UIView commitAnimations];
 }
 
-- (NSTimeInterval)getKeyboardDuration:(NSNotification *)notification {
-	NSDictionary *info = [notification userInfo];
-	
-	NSTimeInterval duration;
-	
-	NSValue *durationValue = [info objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-	[durationValue getValue:&duration];
-	
-	return duration;
+- (BOOL)keyboardWillShowWithHeight:(CGFloat)height duration:(CGFloat)duration animationOptions:(UIViewAnimationOptions)animationOptions {
+    // override if necessary
+    
+    UIScrollView *scrollView = [self mainScrollView];
+    if (scrollView) {
+        CGFloat bottom = self.bottomLayoutGuide.length;
+
+        UIEdgeInsets contentInset = scrollView.contentInset;
+        contentInset.bottom = bottom + height;
+        
+        UIEdgeInsets scrollIndicatorInsets = scrollView.scrollIndicatorInsets;
+        scrollIndicatorInsets.bottom = contentInset.bottom;
+        
+        [UIView animateWithDuration:duration delay:0.0 options:animationOptions animations:^{
+            scrollView.contentInset = contentInset;
+            scrollView.scrollIndicatorInsets = scrollIndicatorInsets;
+        } completion:^(BOOL finished) {
+        }];
+    }
+    
+    return scrollView != nil;
 }
 
-- (CGFloat)getKeyboardHeight:(NSNotification *)notification forBeginning:(BOOL)forBeginning {
-	NSDictionary *info = [notification userInfo];
-	
-	CGFloat keyboardHeight;
+- (BOOL)keyboardWillHideWithHeight:(CGFloat)height duration:(CGFloat)duration animationOptions:(UIViewAnimationOptions)animationOptions {
+    // override if necessary
     
-    NSValue *boundsValue = nil;
-    if (forBeginning) {
-        boundsValue = [info valueForKey:UIKeyboardFrameBeginUserInfoKey];
-    }
-    else {
-        boundsValue = [info valueForKey:UIKeyboardFrameEndUserInfoKey];
+    UIScrollView *scrollView = [self mainScrollView];
+    if (scrollView) {
+        CGFloat bottom = self.bottomLayoutGuide.length;
+        
+        UIEdgeInsets contentInset = scrollView.contentInset;
+        contentInset.bottom = bottom;
+        
+        UIEdgeInsets scrollIndicatorInsets = scrollView.scrollIndicatorInsets;
+        scrollIndicatorInsets.bottom = contentInset.bottom;
+        
+        [UIView animateWithDuration:duration delay:0.0 options:animationOptions animations:^{
+            scrollView.contentInset = contentInset;
+            scrollView.scrollIndicatorInsets = scrollIndicatorInsets;
+        } completion:^(BOOL finished) {
+        }];
     }
     
-    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-    if (UIDeviceOrientationIsLandscape(orientation)) {
-        keyboardHeight = [boundsValue CGRectValue].size.width;
-    }
-    else {
-        keyboardHeight = [boundsValue CGRectValue].size.height;
-    }
-    
-	return keyboardHeight;
+    return scrollView != nil;
 }
 
-- (UIViewAnimationOptions)getKeyboardAnimationCurve:(NSNotification *)notification {
-	UIViewAnimationCurve curve = [[notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
-    
-    switch (curve) {
-        case UIViewAnimationCurveEaseInOut:
-            return UIViewAnimationOptionCurveEaseInOut;
-            break;
-        case UIViewAnimationCurveEaseIn:
-            return UIViewAnimationOptionCurveEaseIn;
-            break;
-        case UIViewAnimationCurveEaseOut:
-            return UIViewAnimationOptionCurveEaseOut;
-            break;
-        case UIViewAnimationCurveLinear:
-            return UIViewAnimationOptionCurveLinear;
-            break;
-    }
-    
-    return kNilOptions;
+- (UIScrollView *)mainScrollView {
+    // override to support this behavior
+    return nil;
 }
 
 #pragma mark - Text
@@ -764,6 +836,20 @@ typedef void(^AlertBlock)();
 }
 
 #pragma mark - Table Helper
+
+- (NSIndexPath *)indexPathForView:(UIView *)view inTableView:(UITableView *)tableView {
+    UIView *superview = view.superview;
+    while (![superview isKindOfClass:[UITableViewCell class]]) {
+        superview = superview.superview;
+    }
+    
+    if ([superview isKindOfClass:[UITableViewCell class]]) {
+        NSIndexPath *indexPath = [tableView indexPathForCell:(UITableViewCell *)superview];
+        return indexPath;
+    }
+    
+    return nil;
+}
 
 - (void)slideCell:(UITableViewCell *)cell aboveTableViewMidwayPoint:(UITableView *)tableView {
     NSIndexPath *indexPath = [tableView indexPathForCell:cell];

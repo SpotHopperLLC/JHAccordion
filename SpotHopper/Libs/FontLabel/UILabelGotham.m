@@ -43,7 +43,9 @@
     
     if (font != nil) {
         [self setFont:font];
-    } else {
+    }
+#ifndef NDEBUG
+    else {
         DebugLog(@"Cannot find font - %@", fontName);
         DebugLog(@"Available fonts are...");
         for(NSString* family in [UIFont familyNames]) {
@@ -53,6 +55,7 @@
             }
         }
     }
+#endif
 }
 
 - (BOOL)isBold {

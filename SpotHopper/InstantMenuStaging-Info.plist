@@ -27,9 +27,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>spothopper</string>
-				<string>spothopperapp</string>
-				<string>fb504677422978889</string>
+				<string>fb1490751554536520</string>
 			</array>
 		</dict>
 	</array>
@@ -121,5 +119,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 </dict>
 </plist>

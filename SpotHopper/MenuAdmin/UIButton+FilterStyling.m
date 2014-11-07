@@ -11,7 +11,7 @@
 
 @implementation UIButton (FilterStyling)
 
-- (void)styleAsFilterButtonWithTopImage:(UIImage*)image text:(NSString*)text{
+- (void)styleAsFilterButtonWithTopImage:(UIImage *)image text:(NSString *)text {
     //{top, left, bottom, right}
     [self setBaseFilterButtonProperties:FALSE image:image text:text];
     
@@ -29,7 +29,7 @@
     self.imageEdgeInsets = UIEdgeInsetsMake(- (titleSize.height + spacing), 0.0,-8.0, - titleSize.width);
 }
 
-- (void)styleAsFilterButtonWithSideImage:(UIImage*)image text:(NSString*)text{
+- (void)styleAsFilterButtonWithSideImage:(UIImage *)image text:(NSString *)text {
     //{top, left, bottom, right}
     [self setBaseFilterButtonProperties:TRUE image:image text:text];
 
@@ -41,7 +41,7 @@
     self.titleEdgeInsets = UIEdgeInsetsMake(0.0, imageSize.width + spacing, 0.0, 8.0);
 }
 
-- (void)setBaseFilterButtonProperties:(BOOL)isSideButton image:(UIImage*)image text:(NSString*)text {
+- (void)setBaseFilterButtonProperties:(BOOL)isSideButton image:(UIImage *)image text:(NSString *)text {
     
     CGFloat size = 12.0f;
     if (isSideButton) {
@@ -56,7 +56,7 @@
     [self setImage:image forState:UIControlStateNormal];
 }
 
-- (void)styleAsEditButton:(UIImage*)image text:(NSString*)text {
+- (void)styleAsEditButton:(UIImage *)image text:(NSString *)text {
     [self setTitle:text forState:UIControlStateNormal];
     [self setImage:image forState:UIControlStateNormal];
 
@@ -73,14 +73,14 @@
     self.imageEdgeInsets = UIEdgeInsetsMake(- (titleSize.height + spacing), 0.0, -8.0, - titleSize.width);
 }
 
-- (void)addBottomBorder{
+- (void)addBottomBorder {
     CALayer *bottomBorder = [CALayer layer];
     bottomBorder.frame = CGRectMake(0.0f, (self.frame.size.height - 0.5f), self.frame.size.width, 0.5f);
     bottomBorder.backgroundColor = [UIColor whiteColor].CGColor;
     [self.layer addSublayer:bottomBorder];
 }
 
-- (void)addTopBorder{
+- (void)addTopBorder {
     CALayer *topBorder = [CALayer layer];
     topBorder.frame = CGRectMake(0.0f, 0.0f, self.frame.size.width, 0.5f);
     topBorder.backgroundColor = [UIColor whiteColor].CGColor;
@@ -94,7 +94,7 @@
     [self.layer addSublayer:leftBorder];
 }
 
-- (void)addRightBorder{
+- (void)addRightBorder {
     CALayer *rightBorder = [CALayer layer];
     rightBorder.frame = CGRectMake(-1,-1, 1.0f, self.frame.size.height);
     rightBorder.backgroundColor = [UIColor whiteColor].CGColor;

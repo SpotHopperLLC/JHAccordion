@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewReviewViewController">
@@ -17,39 +17,33 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="184"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="txt_review_form_background.png" id="t2L-xO-C05">
-                    <rect key="frame" x="11" y="20" width="298" height="45"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="txt_review_form_background.png" translatesAutoresizingMaskIntoConstraints="NO" id="t2L-xO-C05" userLabel="Text Field Background Image View">
+                    <rect key="frame" x="10" y="20" width="300" height="45"/>
                 </imageView>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Beer Name..." minimumFontSize="17" id="6Pe-7F-5nJ" customClass="SHTextFieldLatoLight">
-                    <rect key="frame" x="28" y="28" width="265" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Beer Name..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6Pe-7F-5nJ" customClass="SHTextFieldLatoLight">
+                    <rect key="frame" x="28" y="28" width="272" height="30"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="done"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="izX-E4-CL8"/>
                     </connections>
                 </textField>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="txt_review_form_background.png" id="3gz-of-8kn">
-                    <rect key="frame" x="11" y="73" width="298" height="45"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="txt_review_form_background.png" translatesAutoresizingMaskIntoConstraints="NO" id="3gz-of-8kn" userLabel="Text Field Background Image View">
+                    <rect key="frame" x="10" y="73" width="300" height="45"/>
                 </imageView>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Brewery..." minimumFontSize="17" id="fQm-tk-l5C" customClass="SHTextFieldLatoLight">
-                    <rect key="frame" x="28" y="81" width="265" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Brewery..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fQm-tk-l5C" customClass="SHTextFieldLatoLight">
+                    <rect key="frame" x="20" y="81" width="280" height="30"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="done"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="yDi-pb-966"/>
                     </connections>
                 </textField>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="txt_review_form_background.png" id="2gg-Fk-WRw">
-                    <rect key="frame" x="11" y="126" width="298" height="45"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="txt_review_form_background.png" translatesAutoresizingMaskIntoConstraints="NO" id="2gg-Fk-WRw" userLabel="Text Field Background Image View">
+                    <rect key="frame" x="10" y="126" width="300" height="45"/>
                 </imageView>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Style..." minimumFontSize="17" id="efP-Yb-3qt" customClass="SHTextFieldLatoLight">
-                    <rect key="frame" x="28" y="134" width="265" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Style..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="efP-Yb-3qt" customClass="SHTextFieldLatoLight">
+                    <rect key="frame" x="20" y="134" width="280" height="30"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="done"/>
                     <connections>
@@ -58,10 +52,37 @@
                 </textField>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="3gz-of-8kn" firstAttribute="top" secondItem="t2L-xO-C05" secondAttribute="bottom" constant="8" id="1W3-M6-GSc"/>
+                <constraint firstItem="2gg-Fk-WRw" firstAttribute="leading" secondItem="6vR-XX-Lle" secondAttribute="leading" constant="10" id="2xg-L2-KzM"/>
+                <constraint firstItem="2gg-Fk-WRw" firstAttribute="top" secondItem="3gz-of-8kn" secondAttribute="bottom" constant="8" id="3bE-Ns-dGf"/>
+                <constraint firstItem="3gz-of-8kn" firstAttribute="leading" secondItem="6vR-XX-Lle" secondAttribute="leading" constant="10" id="9Mv-4D-z7Y"/>
+                <constraint firstAttribute="trailing" secondItem="efP-Yb-3qt" secondAttribute="trailing" constant="20" id="9pF-pb-T29"/>
+                <constraint firstAttribute="trailing" secondItem="3gz-of-8kn" secondAttribute="trailing" constant="10" id="GGT-Cu-LIo"/>
+                <constraint firstItem="fQm-tk-l5C" firstAttribute="leading" secondItem="6vR-XX-Lle" secondAttribute="leading" constant="20" id="ReW-C2-MXR"/>
+                <constraint firstItem="t2L-xO-C05" firstAttribute="top" secondItem="6vR-XX-Lle" secondAttribute="top" constant="20" id="SR4-A6-Skf"/>
+                <constraint firstAttribute="trailing" secondItem="t2L-xO-C05" secondAttribute="trailing" constant="10" id="T07-ia-NPP"/>
+                <constraint firstItem="efP-Yb-3qt" firstAttribute="leading" secondItem="6vR-XX-Lle" secondAttribute="leading" constant="20" id="TTF-g5-UO9"/>
+                <constraint firstAttribute="trailing" secondItem="2gg-Fk-WRw" secondAttribute="trailing" constant="10" id="Tzg-JH-Maf"/>
+                <constraint firstAttribute="trailing" secondItem="6Pe-7F-5nJ" secondAttribute="trailing" constant="20" id="XhU-j2-S4f"/>
+                <constraint firstItem="2gg-Fk-WRw" firstAttribute="centerY" secondItem="efP-Yb-3qt" secondAttribute="centerY" id="ab8-Ub-IwQ"/>
+                <constraint firstItem="6Pe-7F-5nJ" firstAttribute="leading" secondItem="6vR-XX-Lle" secondAttribute="leading" constant="28" id="dUb-rS-eYB"/>
+                <constraint firstItem="3gz-of-8kn" firstAttribute="centerY" secondItem="fQm-tk-l5C" secondAttribute="centerY" id="hUj-U8-knZ"/>
+                <constraint firstAttribute="centerX" secondItem="efP-Yb-3qt" secondAttribute="centerX" id="lab-fh-Y9n"/>
+                <constraint firstAttribute="trailing" secondItem="fQm-tk-l5C" secondAttribute="trailing" constant="20" id="nUU-Wr-WK2"/>
+                <constraint firstItem="t2L-xO-C05" firstAttribute="centerY" secondItem="6Pe-7F-5nJ" secondAttribute="centerY" id="sdq-7W-VJ1"/>
+                <constraint firstItem="t2L-xO-C05" firstAttribute="leading" secondItem="6vR-XX-Lle" secondAttribute="leading" constant="10" id="vxO-sL-KJ1"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
     <resources>
         <image name="txt_review_form_background.png" width="298" height="45"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

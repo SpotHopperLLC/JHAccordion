@@ -34,6 +34,7 @@
 #pragma mark -
 
 - (void)ensureFacebookGrantedPermissions:(NSArray *)permissionsNeeded withCompletionBlock:(void (^)(BOOL success, NSError *error))completionBlock;
+
 - (void)fetchFacebookDetailsWithCompletionBlock:(void (^)(BOOL success, NSError *error))completionBlock;
 
 #pragma mark - Text Height

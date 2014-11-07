@@ -106,7 +106,7 @@
                                     <action selector="compassButtonTapped:" destination="WvW-kG-wPv" eventType="touchUpInside" id="na7-ug-sDG"/>
                                 </connections>
                             </button>
-                            <view tag="500" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V3V-T6-eR1" userLabel="Container View">
+                            <view tag="500" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V3V-T6-eR1" userLabel="Container View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
@@ -233,9 +233,13 @@
                             <constraint firstItem="tKe-Qo-IuZ" firstAttribute="leading" secondItem="7So-m6-aYn" secondAttribute="leading" id="fV1-2M-AC9"/>
                             <constraint firstItem="NLr-zB-HzB" firstAttribute="leading" secondItem="7So-m6-aYn" secondAttribute="leading" id="gGB-tk-mwA"/>
                             <constraint firstItem="lVO-Li-dx2" firstAttribute="top" secondItem="65M-In-Igo" secondAttribute="bottom" constant="350" id="hkN-n9-Ub0"/>
+                            <constraint firstItem="lVO-Li-dx2" firstAttribute="top" secondItem="V3V-T6-eR1" secondAttribute="bottom" id="m6N-p3-Oda"/>
                             <constraint firstItem="2SI-rp-QfL" firstAttribute="leading" secondItem="7So-m6-aYn" secondAttribute="leading" constant="20" id="mLI-nu-Cc9"/>
                             <constraint firstItem="M7v-zX-zUl" firstAttribute="leading" secondItem="7So-m6-aYn" secondAttribute="leading" id="mOa-Ud-Plc"/>
                             <constraint firstItem="lVO-Li-dx2" firstAttribute="top" secondItem="QHs-5Q-8nO" secondAttribute="bottom" constant="260" id="mdZ-nH-hLn"/>
+                            <constraint firstItem="V3V-T6-eR1" firstAttribute="top" secondItem="7So-m6-aYn" secondAttribute="top" id="v2c-Dq-zYY"/>
+                            <constraint firstAttribute="trailing" secondItem="V3V-T6-eR1" secondAttribute="trailing" id="ycj-bx-UQT"/>
+                            <constraint firstItem="V3V-T6-eR1" firstAttribute="leading" secondItem="7So-m6-aYn" secondAttribute="leading" id="yh3-Q8-USs"/>
                             <constraint firstAttribute="trailing" secondItem="2SI-rp-QfL" secondAttribute="trailing" constant="20" id="ziC-gs-b89"/>
                         </constraints>
                     </view>
@@ -1158,7 +1162,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="0.75" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="ePL-R0-knT" firstAttribute="top" secondItem="gbC-bd-Yv5" secondAttribute="top" id="63g-66-h77"/>
                             <constraint firstAttribute="trailing" secondItem="ePL-R0-knT" secondAttribute="trailing" id="BCJ-dN-fZ9"/>

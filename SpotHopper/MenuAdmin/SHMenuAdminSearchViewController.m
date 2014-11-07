@@ -61,14 +61,6 @@
 
 @implementation SHMenuAdminSearchViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -132,11 +124,6 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return UIStatusBarStyleLightContent;
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Tracking
@@ -310,7 +297,7 @@
     return NO;
 }
 
-#pragma mark - Actions
+#pragma mark - User Actions
 
 - (void)onEditingChangeSearch:(id)sender {
     // Cancel and nil
@@ -321,8 +308,13 @@
     _searchTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(startSearch) userInfo:nil repeats:NO];
 }
 
-- (IBAction)onClickPop:(id)sender {
+- (IBAction)backButtonTapped:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)newDrinkButtonTapped:(id)sender {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    [self performSegueWithIdentifier:@"SearchToNewBeerModal" sender:self];
 }
 
 #pragma mark - Private

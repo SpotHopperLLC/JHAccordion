@@ -97,7 +97,7 @@ typedef enum {
 
 @interface SHMenuAdminHomeViewController() <UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate, UIGestureRecognizerDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SHMenuAdminSidebarViewControllerDelegate, SHMenuAdminSwipeableDrinkCellDelegate, SHMenuAdminEditMenuItemCellDelegate, SHMenuAdminSearchViewControllerDelegate, SHMenuAdminLoginDelegate>
 
-@property (nonatomic, strong) SHMenuAdminSidebarViewController *sidebarViewController;
+@property (nonatomic, strong) SHMenuAdminSidebarViewController *rightSidebarViewController;
 
 @property (nonatomic, strong) UserModel *user;
 
@@ -131,9 +131,9 @@ typedef enum {
 @property (strong, nonatomic) NSArray *sizes;
 
 //dictionary of drink type enums and set of indexpaths of the cells that are currently open
-@property (nonatomic, strong) NSMutableDictionary *cellWithOpenDrawers;
+@property (strong, nonatomic) NSMutableDictionary *cellWithOpenDrawers;
 //drink passed to drink profile
-@property (nonatomic, strong) DrinkModel *drinkToShow;
+@property (strong, nonatomic) DrinkModel *drinkToShow;
 @property (weak, nonatomic) IBOutlet UILabel *lblEmpty;
 
 //empty view that's shown when there are no menu items
@@ -141,15 +141,17 @@ typedef enum {
 
 #pragma mark - Pan Gesture Properties
 #pragma mark -
+
 @property (weak, nonatomic) IBOutlet UIView *subtypeFilterContainer;
-@property (nonatomic, assign) CGPoint panStartPoint;
-@property (nonatomic, assign) CGFloat startingBottomLayoutConstraintConstant;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *subtypeFilterBottomConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *subtypeFilterTopConstraint;
-@property (nonatomic, assign) BOOL isShowingMenu;
+@property (assign, nonatomic) CGPoint panStartPoint;
+@property (assign, nonatomic) CGFloat startingBottomLayoutConstraintConstant;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *subtypeFilterBottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *subtypeFilterTopConstraint;
+@property (assign, nonatomic) BOOL isShowingMenu;
 
 #pragma mark - Editing Properties
 #pragma mark -
+
 @property (nonatomic, strong) MenuItemModel *editMenuItem;
 //toggles whether an item is being added
 @property (nonatomic, assign) BOOL isAddingMenuItem;
@@ -213,8 +215,10 @@ typedef enum {
     [self fetchMenuTypes];
     
     //setup sidebar menu
-    self.sidebarViewController = (SHMenuAdminSidebarViewController *)self.navigationController.sidebarViewController.rightViewController;
-    self.sidebarViewController.delegate = self;
+    self.rightSidebarViewController = (SHMenuAdminSidebarViewController *)self.navigationController.sidebarViewController.rightViewController;
+    //[self.sidebarViewController enablePanGesture];
+    [self.sidebarViewController enableTapGesture];
+    self.rightSidebarViewController.delegate = self;
 
     //initalize stuff
     _isAddingMenuItem = FALSE;
@@ -239,6 +243,9 @@ typedef enum {
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureRecognized:)];
     panGesture.delegate = self;
+    
+//    tapGesture.enabled = FALSE;
+//    panGesture.enabled = FALSE;
     
     [self.tableView addGestureRecognizer:tapGesture];
     [self.tableView addGestureRecognizer:panGesture];
@@ -486,7 +493,7 @@ typedef enum {
     
 }
 
-- (IBAction)toggleCocktailSubtypeButtons:(UIButton*)buttonPressed {
+- (IBAction)toggleCocktailSubtypeButtons:(UIButton *)buttonPressed {
     NSAssert(buttonPressed, @"button can't be null");
     
     [self setCurrentSubTypesButton:buttonPressed];
@@ -529,7 +536,7 @@ typedef enum {
 
 - (void)closeButtonTapped:(SHMenuAdminSidebarViewController *)sidebarViewController {
     //close sidebar
-    [self.sidebarViewController.sidebarViewController toggleRightSidebar];
+    [self.navigationController.sidebarViewController toggleRightSidebar];
 }
 
 - (void)viewAllSpotsTapped:(SHMenuAdminSidebarViewController *)sidebarViewController{
@@ -1101,7 +1108,6 @@ typedef enum {
     
     [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     [self.pickerView reloadAllComponents];
-    
 }
 
 - (void)viewShouldScroll {
@@ -1181,6 +1187,7 @@ typedef enum {
 
 #pragma mark - PickerView Datasource
 #pragma mark -
+
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
     return 1;
 }
@@ -1299,7 +1306,7 @@ typedef enum {
 #pragma mark -
 
 - (void)panGestureRecognized:(UIPanGestureRecognizer *)recognizer {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
+//    DebugLog(@"%@", NSStringFromSelector(_cmd));
     
     if (self.isEditingMenuItem || self.isAddingMenuItem) {
         return;
@@ -1430,6 +1437,7 @@ typedef enum {
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+//    DebugLog(@"%@", NSStringFromSelector(_cmd));
     return TRUE;
 }
 
@@ -1524,11 +1532,10 @@ typedef enum {
     self.user = [[ClientSessionManager sharedClient] currentUser];
 }
 
-- (void)fetchUserSpots:(void(^)())success {
+- (void)fetchUserSpots:(void(^)())successBlock {
     [[SHMenuAdminNetworkManager sharedInstance] fetchUserSpots:self.user queryParam:nil page:@1 pageSize:@MAX_PRICES_SHOWN success:^(NSArray *spots) {
         if (spots.count > 1) {
-            self.sidebarViewController.spots = spots;
-            [self.sidebarViewController refreshSidebar];
+            [self.rightSidebarViewController changeSpots:spots];
             [self.navigationController.sidebarViewController showRightSidebar:TRUE];
         }
         
@@ -1536,8 +1543,8 @@ typedef enum {
         self.spot = [spots firstObject];
         self.title = self.spot.name;
         
-        if (success) {
-            success();
+        if (successBlock) {
+            successBlock();
         }
     } failure:^(ErrorModel *error) {
       //  [self showAlert:@"Network error" message:@"Please try again"];
@@ -2006,7 +2013,7 @@ typedef enum {
     [self.view endEditing:TRUE];
     
     if ([self sizePickerIsShown]) {
-        NSIndexPath *indexPath = [[self.tableView indexPathsForVisibleRows]firstObject];
+        NSIndexPath *indexPath = [[self.tableView indexPathsForVisibleRows] firstObject];
         [self toggleSizePicker:indexPath];
     }
 }
@@ -2026,7 +2033,7 @@ typedef enum {
         UIImagePickerController *imagePicker = [[UIImagePickerController alloc]init];
         
         imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        imagePicker.mediaTypes =@[(NSString *) kUTTypeImage];
+        imagePicker.mediaTypes = @[(NSString *) kUTTypeImage];
         imagePicker.allowsEditing = true;
         imagePicker.delegate = self;
         
@@ -2061,7 +2068,7 @@ typedef enum {
     }
 }
 
-- (UIImage*)placeHolderImageForType:(MenuItemModel *)menuItem {
+- (UIImage *)placeHolderImageForType:(MenuItemModel *)menuItem {
     NSString *drinkType = menuItem.drink.drinkType.name;
     UIImage *placeholder = nil;
     

@@ -774,7 +774,8 @@
     
     NSAssert(FALSE, @"Condition should never be met");
     
-    return nil;
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"InvalidCell"];
+    return cell;
 }
 
 #pragma mark - UITableViewDelegate
@@ -1895,12 +1896,6 @@
 
     CLLocationCoordinate2D coordinate = [[SHAppContext defaultInstance] mapCoordinate];
     
-    NSNumber *latitude = nil, *longitude = nil;
-    if (CLLocationCoordinate2DIsValid(coordinate)) {
-        latitude = [NSNumber numberWithFloat:coordinate.latitude];
-        longitude = [NSNumber numberWithFloat:coordinate.longitude];
-    }
-
     [Tracker trackCreatingDrinkList];
     
     NSNumber *drinkTypeID = self.selectedDrinkType.ID;

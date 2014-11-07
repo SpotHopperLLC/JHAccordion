@@ -496,6 +496,10 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     
     NSAssert(cell, @"Cell must be defined");
     
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"InvalidCell"];
+    }
+    
     return cell;
 }
 

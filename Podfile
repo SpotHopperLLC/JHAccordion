@@ -15,9 +15,9 @@ def import_pods
 
     # UI
     pod 'JHAccordion', :git => 'https://github.com/SpotHopperLLC/JHAccordion.git', :tag => 'SpotHopper-v2'
+    pod 'JHSidebar', :git => 'https://github.com/SpotHopperLLC/JHSidebar.git', :tag => 'SpotHopper-v2'
     pod 'UIView-Autolayout', '~> 0.2.0'
     pod 'JHAutoCompleteTextField', :git => 'http://github.com/joshdholtz/JHAutoCompleteTextField.git'
-    pod 'JHSidebar', :git => 'https://github.com/joshdholtz/JHSidebar.git'
     pod 'TTTAttributedLabel', '~> 1.10'
     pod 'PhotoZoom', '~> 0.0'
     pod 'MBProgressHUD', '~> 0.8.0'
