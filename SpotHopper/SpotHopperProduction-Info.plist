@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.4.0</string>
+	<string>2.4.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -34,7 +34,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2.4.0</string>
+	<string>2.4.1</string>
 	<key>FacebookAppID</key>
 	<string>504677422978889</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -43,12 +43,6 @@
 	<string>SpotHopper will use your location to show you the best local recommendations.</string>
 	<key>SpotHopperSettings</key>
 	<dict>
-		<key>Configuration</key>
-		<string>Production</string>
-		<key>TransloaditAPIKey</key>
-		<string>13f353c0b5c711e380700d9414c75dd9</string>
-		<key>TransloaditTemplate</key>
-		<string>9124ba30b84e11e3b1c3d5d9c59c9917</string>
 		<key>AppURLScheme</key>
 		<string>spothopper</string>
 		<key>BaseUrl</key>
@@ -61,6 +55,8 @@
 		<string>http://go.spotapps.co</string>
 		<key>BitlyUsername</key>
 		<string>spothopper</string>
+		<key>Configuration</key>
+		<string>Production</string>
 		<key>CrashlyticsKey</key>
 		<string>35aca4223395cee9b73550f97a3022ea413e2c71</string>
 		<key>Debug</key>
@@ -73,6 +69,10 @@
 		<string>z86QKJFiLmSxWAekThVpTo8yLpp29nekhTiUgV2i</string>
 		<key>TrackingEnabled</key>
 		<true/>
+		<key>TransloaditAPIKey</key>
+		<string>13f353c0b5c711e380700d9414c75dd9</string>
+		<key>TransloaditTemplate</key>
+		<string>9124ba30b84e11e3b1c3d5d9c59c9917</string>
 		<key>TwitterConsumerKey</key>
 		<string>FeB6rg5yUFu7aL9InVmxQ</string>
 		<key>TwitterConsumerSecret</key>
@@ -88,6 +88,11 @@
 		<string>Lato-LightItalic.ttf</string>
 		<string>avantgardef-book-webfont.ttf</string>
 		<string>MyriadPro-Bold.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
 	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>SpotHopper</string>
@@ -115,10 +120,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>fetch</string>
-		<string>remote-notification</string>
-	</array>
 </dict>
 </plist>
