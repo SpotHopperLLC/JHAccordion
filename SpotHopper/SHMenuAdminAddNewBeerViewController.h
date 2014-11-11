@@ -8,6 +8,18 @@
 
 #import "BaseViewController.h"
 
+#import "DrinkModel.h"
+
+@protocol SHMenuAdminAddNewBeerDelegate;
+
 @interface SHMenuAdminAddNewBeerViewController : BaseViewController
+
+@property (weak, nonatomic) id<SHMenuAdminAddNewBeerDelegate> delegate;
+
+@end
+
+@protocol SHMenuAdminAddNewBeerDelegate <NSObject>
+
+- (void)addNewBeerViewController:(SHMenuAdminAddNewBeerViewController *)vc didCreateDrink:(DrinkModel *)drink;
 
 @end

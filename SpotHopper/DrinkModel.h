@@ -108,6 +108,26 @@
 
 + (void)createPhotoForDrink:(NSString*)imagePath drink:(DrinkModel*)drink success:(void(^)(ImageModel *imageModel))success failure:(void(^)(ErrorModel* error))failure;
 
++ (void)createDrink:(DrinkModel *)drink success:(void(^)(DrinkModel *drinkModel))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise *)createDrink:(DrinkModel *)drink;
+
++ (void)fetchBeerStylesWithSuccess:(void(^)(NSArray *beerStyles))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise *)fetchBeerStyles;
+
++ (void)fetchWineVarietalsWithSuccess:(void(^)(NSArray *varietals))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise *)fetchWineVarietals;
+
++ (void)fetchCocktailTypesWithSuccess:(void(^)(NSArray *cocktailTypes))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise *)fetchCocktailTypes;
+
++ (void)fetchWineTypesWithSuccess:(void(^)(NSArray *wineTypes))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise *)fetchWineTypes;
+
 #pragma mark -
 
 - (NSString*)abvPercentString;

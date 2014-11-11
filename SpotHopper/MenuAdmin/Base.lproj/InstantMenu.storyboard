@@ -986,67 +986,60 @@
                                             <constraint firstAttribute="trailing" secondItem="EcY-tM-Nkz" secondAttribute="trailing" constant="8" id="jwq-zp-LWP"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xgT-Rc-QWX" userLabel="Text Field Container View">
-                                        <rect key="frame" x="10" y="56" width="300" height="40"/>
-                                        <subviews>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Brewery..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SM6-gC-FAw">
-                                                <rect key="frame" x="8" y="8" width="284" height="24"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="20"/>
-                                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" returnKeyType="done"/>
-                                            </textField>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstItem="SM6-gC-FAw" firstAttribute="leading" secondItem="xgT-Rc-QWX" secondAttribute="leading" constant="8" id="K5J-GO-KD4"/>
-                                            <constraint firstItem="SM6-gC-FAw" firstAttribute="top" secondItem="xgT-Rc-QWX" secondAttribute="top" constant="8" id="XPh-15-jLl"/>
-                                            <constraint firstAttribute="trailing" secondItem="SM6-gC-FAw" secondAttribute="trailing" constant="8" id="c0s-Rq-t4i"/>
-                                        </constraints>
-                                    </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Style" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pPT-uf-smi">
-                                        <rect key="frame" x="18" y="104" width="44" height="24"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Brewery" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IZ0-zP-al1">
+                                        <rect key="frame" x="18" y="72" width="76" height="24"/>
                                         <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="20"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yue-RB-xBy">
-                                        <rect key="frame" x="10" y="136" width="300" height="178"/>
-                                        <subviews>
-                                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XsQ-hh-ISp">
-                                                <rect key="frame" x="8" y="8" width="284" height="162"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="284" id="P5k-h5-mbI"/>
-                                                    <constraint firstAttribute="height" constant="162" id="vVy-Fq-7iT"/>
-                                                </constraints>
-                                                <connections>
-                                                    <outlet property="dataSource" destination="yUg-ik-qYM" id="Rf1-V1-7xj"/>
-                                                    <outlet property="delegate" destination="yUg-ik-qYM" id="DqD-gh-45y"/>
-                                                </connections>
-                                            </pickerView>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lTi-be-KXk" userLabel="Set Brewery Button">
+                                        <rect key="frame" x="258" y="64" width="44" height="40"/>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="XsQ-hh-ISp" secondAttribute="trailing" constant="8" id="4E7-Jn-yd8"/>
-                                            <constraint firstAttribute="bottom" secondItem="XsQ-hh-ISp" secondAttribute="bottom" constant="8" id="E6j-gG-6h9"/>
-                                            <constraint firstItem="XsQ-hh-ISp" firstAttribute="top" secondItem="Yue-RB-xBy" secondAttribute="top" constant="8" id="Oc3-R5-92b"/>
-                                            <constraint firstItem="XsQ-hh-ISp" firstAttribute="leading" secondItem="Yue-RB-xBy" secondAttribute="leading" constant="8" id="lBS-sS-etG"/>
+                                            <constraint firstAttribute="width" constant="44" id="LqT-dX-6wu"/>
+                                            <constraint firstAttribute="height" constant="40" id="qiZ-mt-TJW"/>
                                         </constraints>
-                                    </view>
+                                        <state key="normal" title="set">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="setBreweryButtonTapped:" destination="yUg-ik-qYM" eventType="touchUpInside" id="zbH-Ta-1iW"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Style" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pPT-uf-smi">
+                                        <rect key="frame" x="18" y="120" width="44" height="24"/>
+                                        <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="20"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hEi-Vc-e0C" userLabel="Set Style Button">
+                                        <rect key="frame" x="258" y="106" width="44" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="nLq-Xr-af4"/>
+                                            <constraint firstAttribute="height" constant="40" id="pey-1h-skl"/>
+                                        </constraints>
+                                        <state key="normal" title="set">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="setStyleButtonTapped:" destination="yUg-ik-qYM" eventType="touchUpInside" id="hHF-wt-49a"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="Yue-RB-xBy" secondAttribute="bottom" constant="8" id="26N-sl-sxt"/>
-                                    <constraint firstItem="VUk-J1-lTr" firstAttribute="centerX" secondItem="xgT-Rc-QWX" secondAttribute="centerX" id="5Du-GI-9gp"/>
-                                    <constraint firstItem="VUk-J1-lTr" firstAttribute="height" secondItem="xgT-Rc-QWX" secondAttribute="height" id="7Td-EE-nki"/>
-                                    <constraint firstItem="xgT-Rc-QWX" firstAttribute="top" secondItem="VUk-J1-lTr" secondAttribute="bottom" constant="8" id="94Z-zf-Jwk"/>
+                                    <constraint firstAttribute="bottom" secondItem="pPT-uf-smi" secondAttribute="bottom" constant="24" id="8Kd-Or-3on"/>
+                                    <constraint firstItem="pPT-uf-smi" firstAttribute="leading" secondItem="IZ0-zP-al1" secondAttribute="leading" id="9Zh-Jf-PNq"/>
                                     <constraint firstItem="VUk-J1-lTr" firstAttribute="top" secondItem="XxH-Se-rN6" secondAttribute="top" constant="8" id="9ew-2E-Ndq"/>
+                                    <constraint firstItem="IZ0-zP-al1" firstAttribute="top" secondItem="VUk-J1-lTr" secondAttribute="bottom" constant="24" id="BgW-tK-Kwe"/>
+                                    <constraint firstItem="lTi-be-KXk" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="IZ0-zP-al1" secondAttribute="trailing" constant="8" id="Eeb-Nq-6G1"/>
                                     <constraint firstItem="VUk-J1-lTr" firstAttribute="leading" secondItem="XxH-Se-rN6" secondAttribute="leading" constant="10" id="Etz-kp-1Yt"/>
-                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="pPT-uf-smi" secondAttribute="trailing" constant="10" id="Yge-rJ-eS2"/>
-                                    <constraint firstItem="pPT-uf-smi" firstAttribute="top" secondItem="xgT-Rc-QWX" secondAttribute="bottom" constant="8" id="cOr-QG-dah"/>
-                                    <constraint firstAttribute="centerX" secondItem="Yue-RB-xBy" secondAttribute="centerX" id="j2n-l8-i0A"/>
-                                    <constraint firstItem="VUk-J1-lTr" firstAttribute="width" secondItem="xgT-Rc-QWX" secondAttribute="width" id="jEu-9g-NsF"/>
-                                    <constraint firstItem="Yue-RB-xBy" firstAttribute="top" secondItem="pPT-uf-smi" secondAttribute="bottom" constant="8" id="ruE-41-dvd"/>
-                                    <constraint firstItem="pPT-uf-smi" firstAttribute="leading" secondItem="SM6-gC-FAw" secondAttribute="leading" id="s4Q-DN-nhL"/>
+                                    <constraint firstItem="pPT-uf-smi" firstAttribute="top" secondItem="IZ0-zP-al1" secondAttribute="bottom" constant="24" id="HWV-yG-GkT"/>
+                                    <constraint firstItem="hEi-Vc-e0C" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="pPT-uf-smi" secondAttribute="trailing" constant="8" id="eDG-VI-vEf"/>
+                                    <constraint firstItem="IZ0-zP-al1" firstAttribute="centerY" secondItem="lTi-be-KXk" secondAttribute="centerY" id="fRT-cT-YAc"/>
+                                    <constraint firstItem="IZ0-zP-al1" firstAttribute="leading" secondItem="EcY-tM-Nkz" secondAttribute="leading" id="h95-jt-C1U"/>
+                                    <constraint firstItem="hEi-Vc-e0C" firstAttribute="trailing" secondItem="lTi-be-KXk" secondAttribute="trailing" id="oYH-xR-dWA"/>
                                     <constraint firstAttribute="trailing" secondItem="VUk-J1-lTr" secondAttribute="trailing" constant="10" id="uOA-9P-czO"/>
+                                    <constraint firstItem="EcY-tM-Nkz" firstAttribute="trailing" secondItem="lTi-be-KXk" secondAttribute="trailing" id="vUb-GS-WM0"/>
+                                    <constraint firstItem="pPT-uf-smi" firstAttribute="centerY" secondItem="hEi-Vc-e0C" secondAttribute="centerY" constant="6" id="vay-Tp-BNA"/>
                                 </constraints>
                             </scrollView>
                         </subviews>
@@ -1074,19 +1067,22 @@
                     </navigationItem>
                     <connections>
                         <outlet property="beerNameTextField" destination="EcY-tM-Nkz" id="f6T-HF-tqP"/>
-                        <outlet property="breweryTextField" destination="SM6-gC-FAw" id="Wpt-Hs-lm1"/>
+                        <outlet property="breweryLabel" destination="IZ0-zP-al1" id="ulS-xi-gg8"/>
                         <outlet property="scrollView" destination="XxH-Se-rN6" id="a5j-PM-Pfl"/>
-                        <outlet property="stylePickerView" destination="XsQ-hh-ISp" id="qGG-pE-pnq"/>
+                        <outlet property="setBreweryButton" destination="lTi-be-KXk" id="85k-TG-l5r"/>
+                        <outlet property="setStyleButton" destination="hEi-Vc-e0C" id="ALk-TR-hdl"/>
+                        <outlet property="styleLabel" destination="pPT-uf-smi" id="zVd-Pz-jkh"/>
+                        <segue destination="cqn-Rx-zNo" kind="push" identifier="NewBeerToPicker" id="6kW-rt-QCa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hh1-M3-KL9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-698" y="-498"/>
         </scene>
-        <!--View Controller-->
+        <!--Picker-->
         <scene sceneID="YPt-LE-aWB">
             <objects>
-                <viewController id="cqn-Rx-zNo" sceneMemberID="viewController">
+                <viewController id="cqn-Rx-zNo" customClass="SHMenuAdminPickerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="u7w-i4-39N"/>
                         <viewControllerLayoutGuide type="bottom" id="txK-Oo-fba"/>
@@ -1095,17 +1091,81 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="t1b-dL-SwM">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IZg-SY-JTf" userLabel="Top View">
+                                <rect key="frame" x="0.0" y="64" width="320" height="46"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="aIj-S8-gQ7" userLabel="Search Text Field">
+                                        <rect key="frame" x="8" y="8" width="304" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="search"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="cqn-Rx-zNo" id="ZPm-vO-HCY"/>
+                                        </connections>
+                                    </textField>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="aIj-S8-gQ7" firstAttribute="top" secondItem="IZg-SY-JTf" secondAttribute="top" constant="8" id="C0C-HU-Mhk"/>
+                                    <constraint firstAttribute="bottom" secondItem="aIj-S8-gQ7" secondAttribute="bottom" constant="8" id="HwH-Ug-UCO"/>
+                                    <constraint firstAttribute="trailing" secondItem="aIj-S8-gQ7" secondAttribute="trailing" constant="8" id="e7r-1F-64D"/>
+                                    <constraint firstItem="aIj-S8-gQ7" firstAttribute="leading" secondItem="IZg-SY-JTf" secondAttribute="leading" constant="8" id="lSd-35-E3L"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DpA-Gr-opD">
+                                <rect key="frame" x="0.0" y="110" width="320" height="458"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TitleCell" id="TiD-4u-fBY">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TiD-4u-fBY" id="oPC-Y4-gcl">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bNe-Fh-N9W" userLabel="Title Label">
+                                                    <rect key="frame" x="8" y="11" width="79" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="bNe-Fh-N9W" firstAttribute="leading" secondItem="oPC-Y4-gcl" secondAttribute="leading" constant="8" id="7wj-I1-TqZ"/>
+                                                <constraint firstAttribute="centerY" secondItem="bNe-Fh-N9W" secondAttribute="centerY" id="Mq4-rJ-2aQ"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bNe-Fh-N9W" secondAttribute="trailing" constant="8" id="klG-8E-gpD"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="cqn-Rx-zNo" id="j1W-3P-Jr5"/>
+                                    <outlet property="delegate" destination="cqn-Rx-zNo" id="T6t-GQ-0Gj"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="IZg-SY-JTf" firstAttribute="leading" secondItem="ojh-xb-0if" secondAttribute="leading" id="DA7-mv-aQj"/>
+                            <constraint firstAttribute="trailing" secondItem="DpA-Gr-opD" secondAttribute="trailing" id="FXZ-Ox-Kak"/>
+                            <constraint firstItem="DpA-Gr-opD" firstAttribute="top" secondItem="IZg-SY-JTf" secondAttribute="bottom" id="G0N-0A-aDY"/>
+                            <constraint firstAttribute="trailing" secondItem="IZg-SY-JTf" secondAttribute="trailing" id="HX1-iK-1wi"/>
+                            <constraint firstItem="txK-Oo-fba" firstAttribute="top" secondItem="DpA-Gr-opD" secondAttribute="bottom" id="Otz-kN-gR3"/>
+                            <constraint firstItem="DpA-Gr-opD" firstAttribute="leading" secondItem="ojh-xb-0if" secondAttribute="leading" id="XCF-iy-yfP"/>
+                            <constraint firstItem="IZg-SY-JTf" firstAttribute="top" secondItem="u7w-i4-39N" secondAttribute="bottom" id="kVz-pC-OLe"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Picker" id="oEB-zw-A8e">
+                        <barButtonItem key="leftBarButtonItem" title="cancel" id="bjf-tK-djG">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="searchTextField" destination="aIj-S8-gQ7" id="BO5-rO-KBh"/>
+                        <outlet property="tableView" destination="DpA-Gr-opD" id="SxH-8J-Mz4"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JOh-pK-2VC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-286" y="-498"/>
+            <point key="canvasLocation" x="-280" y="-498"/>
         </scene>
         <!--Dummy Home-->
         <scene sceneID="WAR-Rc-RRR">

@@ -9,6 +9,7 @@
 #import <Crashlytics/Crashlytics.h>
 
 #import "SHMenuAdminSearchViewController.h"
+#import "SHMenuAdminAddNewBeerViewController.h"
 
 #import "NSNumber+Helpers.h"
 
@@ -38,7 +39,7 @@
 
 #define kMaxAddressWidth 200.0f
 
-@interface SHMenuAdminSearchViewController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+@interface SHMenuAdminSearchViewController ()<SHMenuAdminAddNewBeerDelegate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableviewBottomConstraint;
@@ -126,6 +127,20 @@
     return UIStatusBarStyleLightContent;
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    DebugLog(@"segue: %@", segue.identifier);
+    
+    if ([@"SearchToNewBeerModal" isEqualToString:segue.identifier]) {
+        if ([segue.destinationViewController isKindOfClass:[UINavigationController class]]) {
+            UINavigationController *nc = (UINavigationController *)segue.destinationViewController;
+            if ([nc.topViewController isKindOfClass:[SHMenuAdminAddNewBeerViewController class]]) {
+                SHMenuAdminAddNewBeerViewController *vc = (SHMenuAdminAddNewBeerViewController *)nc.topViewController;
+                vc.delegate = self;
+            }
+        }
+    }
+}
+
 #pragma mark - Tracking
 
 - (NSString *)screenName {
@@ -177,6 +192,17 @@
         [self dataDidFinishRefreshing];
     }];
 
+}
+
+#pragma mark - SHMenuAdminAddNewBeerDelegate
+#pragma mark -
+
+- (void)addNewBeerViewController:(SHMenuAdminAddNewBeerViewController *)vc didCreateDrink:(DrinkModel *)drink {
+    [vc.presentingViewController dismissViewControllerAnimated:TRUE completion:^{
+        if ([self.delegate respondsToSelector:@selector(searchViewController:selectedDrink:)]) {
+            [self.delegate searchViewController:self selectedDrink:drink];
+        }
+    }];
 }
 
 #pragma mark - UITableViewDataSource
@@ -236,20 +262,18 @@
         }
         
         //delegate to the homeviewcontroller to add a new cell with the DrinkModel info
-        if ([_delegate respondsToSelector:@selector(searchViewController:selectedDrink:)]) {
-            [self.navigationController popViewControllerAnimated:TRUE];
-            [_delegate searchViewController:self selectedDrink:drink];
+        if ([self.delegate respondsToSelector:@selector(searchViewController:selectedDrink:)]) {
+            [self.delegate searchViewController:self selectedDrink:drink];
         }
         
     } else if ([result isKindOfClass:[SpotModel class]] == YES) {
         SpotModel *spot = (SpotModel*)result;
         
-        if ([_delegate respondsToSelector:@selector(searchViewController:selectedSpot:)]) {
+        if ([self.delegate respondsToSelector:@selector(searchViewController:selectedSpot:)]) {
             //delegate to the homeviewcontroller to
             //1. fetch menu items w/ new spot's id
             //2. display menu items
-            [self.navigationController popViewControllerAnimated:TRUE];
-            [_delegate searchViewController:self selectedSpot:spot];
+            [self.delegate searchViewController:self selectedSpot:spot];
         }
     }
     

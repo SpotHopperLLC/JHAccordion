@@ -1490,10 +1490,13 @@ typedef enum {
     
     //disable scrolling
     self.tableView.scrollEnabled = FALSE;
+    
+    [self.navigationController popToViewController:self animated:TRUE];
 }
 
 - (void)searchViewController:(SHMenuAdminSearchViewController *)viewController selectedSpot:(SpotModel*)spot {
     [self updateSpot:spot];
+    [self.navigationController popToViewController:self animated:TRUE];
 }
 
 - (void)updateSpot:(SpotModel *)spot {

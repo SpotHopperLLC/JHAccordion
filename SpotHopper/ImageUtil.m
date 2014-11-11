@@ -23,7 +23,7 @@
 
 + (void)loadImage:(ImageModel *)imageModel placeholderImage:(UIImage *)placeholderImage withThumbImageBlock:(void (^)(UIImage *thumbImage))thumbImageBlock withFullImageBlock:(void (^)(UIImage *fullImage))fullImageBlock withErrorBlock:(void (^)(NSError *error))errorBlock {
     
-    if (!imageModel.thumbUrl || !imageModel.fullUrl) {
+    if (!imageModel.thumbUrl || !imageModel.smallUrl) {
         // do nothing since there is no image to load
         if (placeholderImage && fullImageBlock) {
             fullImageBlock(placeholderImage);
@@ -34,6 +34,8 @@
     // 1) fetch thumbnail image (which may be cached) and run callback block
     // 2) fetch full size image and run callback block
     
+    // TODO: change to use a medium sized image when it is available
+    
     NSURL *thumbUrl = [NSURL URLWithString:imageModel.thumbUrl];
     [self fetchImageWithURL:thumbUrl cachable:TRUE withCompletionBlock:^(UIImage *image, NSError *error) {
         if (error && errorBlock) {
@@ -43,8 +45,8 @@
             thumbImageBlock(image);
         }
         
-        NSURL *fullUrl = [NSURL URLWithString:imageModel.fullUrl];
-        [self fetchImageWithURL:fullUrl cachable:FALSE withCompletionBlock:^(UIImage *image, NSError *error) {
+        NSURL *smallUrl = [NSURL URLWithString:imageModel.smallUrl];
+        [self fetchImageWithURL:smallUrl cachable:FALSE withCompletionBlock:^(UIImage *image, NSError *error) {
             if (error && errorBlock) {
                 errorBlock(error);
             }

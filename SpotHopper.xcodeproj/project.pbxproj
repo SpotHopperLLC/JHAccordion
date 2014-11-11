@@ -2371,6 +2371,8 @@
 		26D6F66A199E6EED001CA54D /* Tracker+People.m in Sources */ = {isa = PBXBuildFile; fileRef = 26D6F669199E6EED001CA54D /* Tracker+People.m */; };
 		26D6F66B199E6EED001CA54D /* Tracker+People.m in Sources */ = {isa = PBXBuildFile; fileRef = 26D6F669199E6EED001CA54D /* Tracker+People.m */; };
 		26DEBFE219B6621C0071FA88 /* libPods-SpotHopperLocal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 26DEBFE119B6621C0071FA88 /* libPods-SpotHopperLocal.a */; };
+		26E5AA361A109ECB00047FCA /* SHMenuAdminPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26E5AA351A109ECB00047FCA /* SHMenuAdminPickerViewController.m */; };
+		26E5AA371A109ECB00047FCA /* SHMenuAdminPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26E5AA351A109ECB00047FCA /* SHMenuAdminPickerViewController.m */; };
 		26E6A0B0192317C200BCA5C6 /* MyriadPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 26E6A0AF192317B700BCA5C6 /* MyriadPro-Bold.ttf */; };
 		26E6A0B1192317C200BCA5C6 /* MyriadPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 26E6A0AF192317B700BCA5C6 /* MyriadPro-Bold.ttf */; };
 		26E6A0B3192317C300BCA5C6 /* MyriadPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 26E6A0AF192317B700BCA5C6 /* MyriadPro-Bold.ttf */; };
@@ -3039,6 +3041,8 @@
 		26DEBFE319B662270071FA88 /* libPods-SpotHopperStaging.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-SpotHopperStaging.a"; path = "Pods/build/Debug-iphoneos/libPods-SpotHopperStaging.a"; sourceTree = "<group>"; };
 		26DEBFE519B6660C0071FA88 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		26DEBFFD19B6665F0071FA88 /* libPods-SpotHopperStaging.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-SpotHopperStaging.a"; path = "Pods/build/Debug-iphoneos/libPods-SpotHopperStaging.a"; sourceTree = "<group>"; };
+		26E5AA341A109ECB00047FCA /* SHMenuAdminPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHMenuAdminPickerViewController.h; sourceTree = "<group>"; };
+		26E5AA351A109ECB00047FCA /* SHMenuAdminPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHMenuAdminPickerViewController.m; sourceTree = "<group>"; };
 		26E6A0AF192317B700BCA5C6 /* MyriadPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "MyriadPro-Bold.ttf"; path = "MyriadPro/MyriadPro-Bold.ttf"; sourceTree = "<group>"; };
 		26EB38AD18FC7E1100E84A3B /* NSNull+Debugging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNull+Debugging.h"; sourceTree = "<group>"; };
 		26EB38AE18FC7E1100E84A3B /* NSNull+Debugging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNull+Debugging.m"; sourceTree = "<group>"; };
@@ -4300,6 +4304,8 @@
 				26F6FE261A0BE30100CEE6E8 /* SHMenuAdminDummyHomeViewController.m */,
 				26FDC1541A0D1A680012CAE5 /* SHMenuAdminAddNewBeerViewController.h */,
 				26FDC1551A0D1A680012CAE5 /* SHMenuAdminAddNewBeerViewController.m */,
+				26E5AA341A109ECB00047FCA /* SHMenuAdminPickerViewController.h */,
+				26E5AA351A109ECB00047FCA /* SHMenuAdminPickerViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -7205,6 +7211,7 @@
 				267514E21A016AFD00A7D0BB /* CLGeocoder+DoubleLookup.m in Sources */,
 				267514E31A016AFD00A7D0BB /* PriceModel.m in Sources */,
 				267514E41A016AFD00A7D0BB /* SHSlidersSearchViewController.m in Sources */,
+				26E5AA361A109ECB00047FCA /* SHMenuAdminPickerViewController.m in Sources */,
 				267514E51A016AFD00A7D0BB /* UIImage+Alpha.m in Sources */,
 				267514E61A016AFD00A7D0BB /* SHAppUtil.m in Sources */,
 				267514E71A016AFD00A7D0BB /* SHNavigationController.m in Sources */,
@@ -7390,6 +7397,7 @@
 				2675165E1A016B1300A7D0BB /* CLGeocoder+DoubleLookup.m in Sources */,
 				2675165F1A016B1300A7D0BB /* PriceModel.m in Sources */,
 				267516601A016B1300A7D0BB /* SHSlidersSearchViewController.m in Sources */,
+				26E5AA371A109ECB00047FCA /* SHMenuAdminPickerViewController.m in Sources */,
 				267516611A016B1300A7D0BB /* UIImage+Alpha.m in Sources */,
 				267516621A016B1300A7D0BB /* SHAppUtil.m in Sources */,
 				267516631A016B1300A7D0BB /* SHNavigationController.m in Sources */,

@@ -124,6 +124,10 @@
 
 - (Promise *)fetchSpot;
 
++ (void)fetchAllSpotTypes:(void (^)(NSArray *allSpotTypes))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise *)fetchAllSpotTypes;
+
 + (void)fetchSpotTypes:(void (^)(NSArray *spotTypes))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
 
 + (Promise *)fetchSpotTypes;
@@ -131,5 +135,13 @@
 - (void)fetchMenu:(void (^)(MenuModel *menu))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
 
 - (Promise *)fetchMenu;
+
++ (void)queryBreweriesWithText:(NSString *)text page:(NSNumber *)page success:(void (^)(NSArray *spots))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise *)queryBreweriesWithText:(NSString *)text page:(NSNumber *)page;
+
++ (void)queryWineriesWithText:(NSString *)text page:(NSNumber *)page success:(void (^)(NSArray *spots))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise *)queryWineriesWithText:(NSString *)text page:(NSNumber *)page;
 
 @end
