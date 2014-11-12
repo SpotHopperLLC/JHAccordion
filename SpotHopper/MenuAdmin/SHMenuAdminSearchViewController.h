@@ -19,9 +19,8 @@
 @property (nonatomic, weak) id<SHMenuAdminSearchViewControllerDelegate> delegate;
 
 @property (nonatomic, assign) BOOL isHouseCocktail;
-@property (nonatomic, assign) BOOL isWine;
 
-@property (nonatomic, strong) NSString *drinkType;
+@property (nonatomic, strong) DrinkTypeModel *drinkType;
 @property (nonatomic, strong) NSString *menuType;
 @property (nonatomic, strong) SpotModel *spot;
 

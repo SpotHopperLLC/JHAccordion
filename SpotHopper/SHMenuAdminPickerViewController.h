@@ -14,16 +14,30 @@
 
 @property (weak, nonatomic) id<SHMenuAdminPickerDelegate>delegate;
 
-- (void)prepareForBreweries;
+- (void)reloadData;
 
-- (void)prepareForWineries;
+- (void)startSearching;
 
-- (void)prepareForBeerStyles;
+- (void)stopSearching;
 
 @end
 
 @protocol SHMenuAdminPickerDelegate <NSObject>
 
-- (void)pickerView:(SHMenuAdminPickerViewController *)pickerView didSelectItem:(id)item;
+@required
+
+- (NSString *)titleTextForPickerView:(SHMenuAdminPickerViewController *)pickerView;
+
+- (NSString *)placeholderTextForPickerView:(SHMenuAdminPickerViewController *)pickerView;
+
+- (NSInteger)numberOfItemsForPickerView:(SHMenuAdminPickerViewController *)pickerView;
+
+- (NSString *)textForPickerView:(SHMenuAdminPickerViewController *)pickerView atIndexPath:(NSIndexPath *)indexPath;
+
+- (void)pickerView:(SHMenuAdminPickerViewController *)pickerView didChangeSearchText:(NSString *)searchText;
+
+- (void)pickerView:(SHMenuAdminPickerViewController *)pickerView didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
+
+- (void)pickerViewDidCancel:(SHMenuAdminPickerViewController *)pickerView;
 
 @end

@@ -20,6 +20,8 @@
 
 @protocol SHMenuAdminAddNewBeerDelegate <NSObject>
 
+- (void)addNewBeerViewControllerDidCancel:(SHMenuAdminAddNewBeerViewController *)vc;
+
 - (void)addNewBeerViewController:(SHMenuAdminAddNewBeerViewController *)vc didCreateDrink:(DrinkModel *)drink;
 
 @end

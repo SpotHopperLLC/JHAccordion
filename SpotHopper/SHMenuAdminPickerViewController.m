@@ -9,30 +9,14 @@
 #import "SHMenuAdminPickerViewController.h"
 
 #import "SHStyleKit+Additions.h"
-#import "SpotModel.h"
-#import "DrinkModel.h"
-
-typedef enum {
-    SHPickerModeNone = 0,
-    SHPickerModeBreweries,
-    SHPickerModeWineries,
-    SHPickerModeBeerStyles
-} SHPickerMode;
 
 @interface SHMenuAdminPickerViewController () <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
-
-@property (assign, nonatomic) SHPickerMode pickerMode;
 
 @property (weak, nonatomic) IBOutlet UITextField *searchTextField;
 
 @property (strong, nonatomic) NSString *searchText;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-
-@property (strong, nonatomic) NSArray *breweries;
-@property (strong, nonatomic) NSArray *wineries;
-@property (strong, nonatomic) NSArray *allBeerStyles;
-@property (strong, nonatomic) NSArray *beerStyles;
 
 @end
 
@@ -50,7 +34,6 @@ typedef enum {
     MAAssert(self.tableView, @"Outlet is required");
     MAAssert(self.tableView.dataSource, @"DataSource is required");
     MAAssert(self.tableView.delegate, @"Delegate is required");
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -60,30 +43,8 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     
-    switch (self.pickerMode) {
-        case SHPickerModeBreweries:
-            
-            self.title = @"Pick a Brewery";
-            self.searchTextField.placeholder = @"Search Breweries";
-            
-            break;
-        case SHPickerModeWineries:
-            
-            self.title = @"Pick a Winery";
-            self.searchTextField.placeholder = @"Search Wineries";
-            
-            break;
-        case SHPickerModeBeerStyles:
-            
-            self.title = @"Pick a Beer Style";
-            self.searchTextField.placeholder = @"Search Beer Styles";
-            
-            break;
-            
-        default:
-            break;
-    }
-    
+    self.title = [self titleText];
+    self.searchTextField.placeholder = [self placeholderText];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -103,6 +64,10 @@ typedef enum {
                                                   object:nil];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
 #pragma mark - Base Overrides
 #pragma mark -
 
@@ -110,180 +75,29 @@ typedef enum {
     return self.tableView;
 }
 
+#pragma mark - User Actions
+#pragma mark -
+
+- (IBAction)cancelButtonTapped:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(pickerViewDidCancel:)]) {
+        [self.delegate pickerViewDidCancel:self];
+    }
+}
+
 #pragma mark - Public
 #pragma mark -
 
-- (void)prepareForBreweries {
-    self.pickerMode = SHPickerModeBreweries;
-    self.breweries = @[];
-}
-
-- (void)prepareForWineries {
-    self.pickerMode = SHPickerModeWineries;
-    self.wineries = @[];
-}
-
-- (void)prepareForBeerStyles {
-    self.pickerMode = SHPickerModeBeerStyles;
-    self.beerStyles = @[];
-    
-    [[DrinkModel fetchBeerStyles] then:^(NSArray *styles) {
-        self.allBeerStyles = styles;
-        self.beerStyles = styles.copy;
-        [self.tableView reloadData];
-    } fail:^(id error) {
-    } always:nil];
-}
-
-#pragma mark - Private
-#pragma mark -
-
-- (id)itemAtIndexPath:(NSIndexPath *)indexPath {
-    switch (self.pickerMode) {
-        case SHPickerModeBreweries:
-            if (indexPath.row < self.breweries.count) {
-                return self.breweries[indexPath.row];
-            }
-            
-            break;
-        case SHPickerModeWineries:
-            if (indexPath.row < self.wineries.count) {
-                return self.wineries[indexPath.row];
-            }
-            
-            break;
-        case SHPickerModeBeerStyles:
-            if (indexPath.row < self.beerStyles.count) {
-                return self.beerStyles[indexPath.row];
-            }
-            
-            break;
-            
-        default:
-            break;
-    }
-    
-    return nil;
-}
-
-- (void)renderCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    UILabel *titleLabel = (UILabel *)[cell viewWithTag:1];
-    
-    MAAssert(titleLabel, @"Label is required");
-    
-    id item = [self itemAtIndexPath:indexPath];
-    
-    if (item) {
-        switch (self.pickerMode) {
-            case SHPickerModeBreweries: {
-                SpotModel *spot = (SpotModel *)item;
-                titleLabel.text = spot.name;
-                }
-                break;
-                
-            case SHPickerModeWineries: {
-                SpotModel *spot = (SpotModel *)item;
-                titleLabel.text = spot.name;
-                }
-                break;
-                
-            case SHPickerModeBeerStyles: {
-                NSString *style = (NSString *)item;
-                titleLabel.text = style;
-                }
-                
-                break;
-                
-            default:
-                break;
-        }
-    }
-    else {
-        titleLabel.text = @"";
-    }
-}
-
-- (void)runSearch {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(runSearch) object:nil];
-    
-    switch (self.pickerMode) {
-        case SHPickerModeBreweries: {
-            [self searchBreweriesWithText:self.searchText];
-        }
-            
-            break;
-        case SHPickerModeWineries: {
-            [self searchWineriesWithText:self.searchText];
-        }
-            break;
-        case SHPickerModeBeerStyles: {
-            [self searchBeerStylesWithText:self.searchText];
-        }
-            
-            break;
-            
-        default:
-            break;
-    }
-}
-
-- (void)searchBreweriesWithText:(NSString *)text {
-    if (text.length) {
-        [self startSearching];
-        [[SpotModel queryBreweriesWithText:text page:@1] then:^(NSArray *breweries) {
-            [self stopSearching];
-            self.breweries = breweries;
-            [self.tableView reloadData];
-            self.tableView.contentOffset = CGPointMake(0, 0);
-        } fail:^(id error) {
-            // TODO: log error
-        } always:nil];
-    }
-    else {
-        self.breweries = @[];
-        [self.tableView reloadData];
-        self.tableView.contentOffset = CGPointMake(0, 0);
-    }
-}
-
-- (void)searchWineriesWithText:(NSString *)text {
-    if (text.length) {
-        [self startSearching];
-        [[SpotModel queryWineriesWithText:text page:@1] then:^(NSArray *wineries) {
-            [self stopSearching];
-            self.wineries = wineries;
-            [self.tableView reloadData];
-            self.tableView.contentOffset = CGPointMake(0, 0);
-        } fail:^(id error) {
-            // TODO: log error
-        } always:nil];
-    }
-    else {
-        self.wineries = @[];
-        [self.tableView reloadData];
-        self.tableView.contentOffset = CGPointMake(0, 0);
-    }
-}
-
-- (void)searchBeerStylesWithText:(NSString *)text {
-    if (text.length) {
-        [self startSearching];
-        self.beerStyles = [self.allBeerStyles filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF CONTAINS[cd] %@", text]];
-        [self stopSearching];
-        [self.tableView reloadData];
-        self.tableView.contentOffset = CGPointMake(0, 0);
-    }
-    else {
-        self.beerStyles = self.allBeerStyles.copy;
-        [self.tableView reloadData];
-        self.tableView.contentOffset = CGPointMake(0, 0);
-    }
+- (void)reloadData {
+    [self stopSearching];
+    [self.tableView reloadData];
+    self.tableView.contentOffset = CGPointMake(0, 0);
 }
 
 - (void)startSearching {
     UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     activityIndicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-    activityIndicatorView.tintColor = [SHStyleKit color:SHStyleKitColorMyTintColor];
+    activityIndicatorView.hidesWhenStopped = TRUE;
+    activityIndicatorView.tag = 100;
     
     CGRect frame = activityIndicatorView.frame;
     frame.size.width += 5.0f;
@@ -296,8 +110,73 @@ typedef enum {
 }
 
 - (void)stopSearching {
+    UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *)[self.searchTextField.rightView viewWithTag:100];
+    [activityIndicatorView stopAnimating];
     self.searchTextField.rightView = nil;
     self.searchTextField.rightViewMode = UITextFieldViewModeNever;
+}
+
+#pragma mark - Private
+#pragma mark -
+
+- (void)renderCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    UILabel *titleLabel = (UILabel *)[cell viewWithTag:1];
+    MAAssert(titleLabel, @"Label is required");
+    titleLabel.text = [self textAtIndexPath:indexPath];
+}
+
+- (void)runSearch {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(runSearch) object:nil];
+    
+    [self startSearching];
+    [self changeSearchText:self.searchText];
+}
+
+#pragma mark - Delegate Calls
+#pragma mark -
+
+- (NSString *)titleText {
+    if ([self.delegate respondsToSelector:@selector(titleTextForPickerView:)]) {
+        return [self.delegate titleTextForPickerView:self];
+    }
+    
+    return nil;
+}
+
+- (NSString *)placeholderText {
+    if ([self.delegate respondsToSelector:@selector(placeholderTextForPickerView:)]) {
+        return [self.delegate placeholderTextForPickerView:self];
+    }
+    
+    return nil;
+}
+
+- (NSInteger)numberOfItems {
+    if ([self.delegate respondsToSelector:@selector(numberOfItemsForPickerView:)]) {
+        return [self.delegate numberOfItemsForPickerView:self];
+    }
+    
+    return 0;
+}
+
+- (NSString *)textAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self.delegate respondsToSelector:@selector(textForPickerView:atIndexPath:)]) {
+        return [self.delegate textForPickerView:self atIndexPath:indexPath];
+    }
+    
+    return nil;
+}
+
+- (void)changeSearchText:(NSString *)searchText {
+    if ([self.delegate respondsToSelector:@selector(pickerView:didChangeSearchText:)]) {
+        return [self.delegate pickerView:self didChangeSearchText:searchText];
+    }
+}
+
+- (void)selectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self.delegate respondsToSelector:@selector(pickerView:didSelectItemAtIndexPath:)]) {
+        return [self.delegate pickerView:self didSelectItemAtIndexPath:indexPath];
+    }
 }
 
 #pragma mark - UITextFieldDelegate
@@ -321,6 +200,8 @@ typedef enum {
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [self.view endEditing:TRUE];
+
+    [self performSelector:@selector(runSearch) withObject:nil afterDelay:0.25];
     
     return TRUE;
 }
@@ -329,24 +210,7 @@ typedef enum {
 #pragma mark -
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger count = 0;
-
-    switch (self.pickerMode) {
-        case SHPickerModeBreweries:
-            count = self.breweries.count;
-            break;
-        case SHPickerModeWineries:
-            count = self.wineries.count;
-            break;
-        case SHPickerModeBeerStyles:
-            count = self.beerStyles.count;
-            break;
-            
-        default:
-            break;
-    }
-    
-    return count;
+    return [self numberOfItems];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -362,10 +226,7 @@ typedef enum {
 #pragma mark -
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self.delegate respondsToSelector:@selector(pickerView:didSelectItem:)]) {
-        id item = [self itemAtIndexPath:indexPath];
-        [self.delegate pickerView:self didSelectItem:item];
-    }
+    [self selectItemAtIndexPath:indexPath];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [tableView deselectRowAtIndexPath:indexPath animated:TRUE];

@@ -59,6 +59,7 @@
 
 + (void)loadThumbnailImage:(ImageModel *)imageModel imageView:(UIImageView *)imageView placeholderImage:(UIImage *)placeholderImage {
     if (!imageModel.thumbUrl.length) {
+        imageView.image = placeholderImage;
         // do nothing since there is no image to load
         return;
     }

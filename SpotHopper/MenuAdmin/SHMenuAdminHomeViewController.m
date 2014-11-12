@@ -19,6 +19,8 @@
 
 #import "SHAppUtil.h"
 
+#import "UIActionSheet+BlocksKit.h"
+
 #import "Haneke.h"
 #import "JHSidebarViewController.h"
 
@@ -110,7 +112,7 @@ typedef enum {
 @property (assign, nonatomic) DrinkTypes currentDrinkTypeEnum;
 @property (assign, nonatomic) MenuSubtypes currentMenuTypeEnum;
 
-@property (strong, nonatomic) NSString *currentDrinkType;
+@property (strong, nonatomic) DrinkTypeModel *currentDrinkType;
 @property (strong, nonatomic) NSString *currentMenuSubType;
 @property (strong, nonatomic) UIView *currentSubTypesContainer;
 @property (strong, nonatomic) SHMenuAdminPriceSizeRowView *lastSelectedContainer;
@@ -263,8 +265,8 @@ typedef enum {
     self.btnBeer.enabled = FALSE;
     self.btnCurrentDrink = self.btnBeer;
     self.btnCurrentDrink.backgroundColor = [SHMenuAdminStyleSupport sharedInstance].ORANGE;
-    self.currentDrinkType = kDrinkTypeNameBeer;
-    [self changeAddTextToDrinkType:kDrinkTypeNameBeer];
+    self.currentDrinkType = [DrinkTypeModel beerDrinkType];
+     [self changeAddTextToDrinkType:self.currentDrinkType];
     self.currentDrinkTypeEnum = DrinkTypeBeer;
     
     //set on-tap as default
@@ -333,11 +335,6 @@ typedef enum {
         vc.filteredMenuItems = self.filteredMenuItems;
         vc.menuType = self.currentMenuSubType;
         
-        if ([self.currentDrinkType isEqualToString:kDrinkTypeNameWine]) {
-            //send current menu subtype
-            vc.isWine = TRUE;
-        }
-        
         if ([self.currentMenuSubType isEqualToString:kMenuSubtypeNameHouseCocktail]) {
             vc.isHouseCocktail = TRUE;
             vc.spot = self.spot;
@@ -354,15 +351,15 @@ typedef enum {
 #pragma mark - Menu Toggle Actions
 #pragma mark -
 
-- (void)changeAddTextToDrinkType:(NSString *)drinkType {
+- (void)changeAddTextToDrinkType:(DrinkTypeModel *)drinkType {
     
-    if ([drinkType isEqualToString:kDrinkTypeNameBeer]) {
+    if ([drinkType isBeer]) {
         self.txtfldAddDrink.text = @"Add new beer named...";
     }
-    else if ([drinkType isEqualToString:kDrinkTypeNameWine]) {
+    else if ([drinkType isWine]) {
         self.txtfldAddDrink.text = @"Add new wine named...";
     }
-    else if ([drinkType isEqualToString:kDrinkTypeNameCocktail]) {
+    else if ([drinkType isCocktail]) {
         self.txtfldAddDrink.text = @"Add new cocktail named...";
     }
 }
@@ -384,9 +381,9 @@ typedef enum {
         [self setCurrentSubTypesButton:self.btnOnTap];
         [self setSubTypesContainer:self.beerSubTypeContainer];
         
-        self.currentDrinkType = kDrinkTypeNameBeer;
+        self.currentDrinkType = [DrinkTypeModel beerDrinkType];
         self.currentMenuSubType = kMenuSubtypeNameOnTap;
-        [self changeAddTextToDrinkType:kDrinkTypeNameBeer];
+        [self changeAddTextToDrinkType:self.currentDrinkType];
         
         //set state of enums
         self.currentDrinkTypeEnum = DrinkTypeBeer;
@@ -401,9 +398,9 @@ typedef enum {
         [self setCurrentSubTypesButton:self.btnRedWine];
         [self setSubTypesContainer:self.wineSubTypeContainer];
         
-        self.currentDrinkType = kDrinkTypeNameWine;
+        self.currentDrinkType = [DrinkTypeModel wineDrinkType];
         self.currentMenuSubType = kMenuSubtypeNameRedWine;
-        [self changeAddTextToDrinkType:kDrinkTypeNameWine];
+        [self changeAddTextToDrinkType:self.currentDrinkType];
         
         self.currentDrinkTypeEnum = DrinkTypeWine;
         self.currentMenuTypeEnum = MenuSubtypeRedWine;
@@ -417,9 +414,9 @@ typedef enum {
         [self setCurrentSubTypesButton:self.btnHouseCocktail];
         [self setSubTypesContainer:self.cocktailSubTypeContainer];
         
-        self.currentDrinkType = kDrinkTypeNameCocktail;
+        self.currentDrinkType = [DrinkTypeModel cocktailDrinkType];
         self.currentMenuSubType = kMenuSubtypeNameHouseCocktail;
-        [self changeAddTextToDrinkType:kDrinkTypeNameCocktail];
+        [self changeAddTextToDrinkType:self.currentDrinkType];
         
         self.currentDrinkTypeEnum = DrinkTypeCocktail;
         self.currentMenuTypeEnum = MenuSubtypeHouseCocktail;
@@ -867,7 +864,7 @@ typedef enum {
 }
 
 - (void)photoButtonTapped:(SHMenuAdminSwipeableDrinkTableViewCell *)cell {
-    [self takePictureForCell:cell];
+    [self selectPhotoForCell:cell];
 }
 
 - (void)flavorProfileButtonTapped:(SHMenuAdminSwipeableDrinkTableViewCell *)cell {
@@ -1138,45 +1135,19 @@ typedef enum {
     
     [self showHUD:@"Uploading..."];
     
-    // TODO: store image with Transloadit
     SHMenuAdminTransloaditManager *transloaditManager = [[SHMenuAdminTransloaditManager alloc] init];
     [transloaditManager uploadDrinkImageToTransloadit:image withCompletionBlock:^(NSString *path, NSError *error) {
-        DebugLog(@"path: %@", path);
-        
         [DrinkModel createPhotoForDrink:path drink:menuItem.drink success:^(ImageModel *imageModel) {
             [self hideHUD];
-            
-            //insert photo into array of
+            //insert photo into array
             NSMutableArray *images = [menuItem.drink.images mutableCopy];
             [images insertObject:imageModel atIndex:0];
             menuItem.drink.images = images;
-
         } failure:^(ErrorModel *error) {
             [self hideHUD];
             CLSLog(@"saving image path to backend failed");
         }];
     }];
-    
-    /*
-    //upload the photo to transloadit
-    TransloaditManager *manager = [TransloaditManager new];
-    [manager loadImageToTransloadit:img success:^(NSString *path) {
-        //post image to backend
-        [[NetworkManager sharedInstance] createPhotoForDrink:path drink:menuItem.drink success:^(ImageModel *created) {
-            
-            insert photo into array of
-            NSMutableArray *images = [menuItem.drink.images mutableCopy];
-            [images insertObject:created atIndex:0];
-            menuItem.drink.images = images;
-     
-        } failure:^(ErrorModel *error) {
-            CLSLog(@"saving image path to backend failed");
-        }];
-        
-    } failure:^{
-        CLSLog(@"uploading image to transloadit failed.");
-    }];
-     */
     
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
@@ -1232,7 +1203,7 @@ typedef enum {
     return self.sizePickerIndexPath != nil;
 }
 
-- (void)toggleSizePicker:(NSIndexPath *)indexPath{
+- (void)toggleSizePicker:(NSIndexPath *)indexPath {
     [self.tableView beginUpdates];
     
     if ([self sizePickerIsShown] /*&& (self.sizePickerIndexPath.row - 1 == indexPath.row)*/){
@@ -1536,7 +1507,7 @@ typedef enum {
 }
 
 - (void)fetchUserSpots:(void(^)())successBlock {
-    [[SHMenuAdminNetworkManager sharedInstance] fetchUserSpots:self.user queryParam:nil page:@1 pageSize:@MAX_PRICES_SHOWN success:^(NSArray *spots) {
+    [UserModel fetchSpotsForUser:self.user query:nil page:@1 pageSize:@MAX_PRICES_SHOWN success:^(NSArray *spots) {
         if (spots.count > 1) {
             [self.rightSidebarViewController changeSpots:spots];
             [self.navigationController.sidebarViewController showRightSidebar:TRUE];
@@ -1549,9 +1520,9 @@ typedef enum {
         if (successBlock) {
             successBlock();
         }
-    } failure:^(ErrorModel *error) {
-      //  [self showAlert:@"Network error" message:@"Please try again"];
-        CLS_LOG(@"network error fetching user's spots: %@", error.humanValidations);
+    } failure:^(ErrorModel *errorModel) {
+        //  [self showAlert:@"Network error" message:@"Please try again"];
+        CLS_LOG(@"network error fetching user's spots: %@", errorModel.humanValidations);
     }];
 }
 
@@ -1749,7 +1720,7 @@ typedef enum {
     if (show) {
         self.tableView.hidden = TRUE;
         self.emptyView.hidden = FALSE;
-        self.lblEmpty.text = [NSString stringWithFormat:@"No %@s added.", [self.currentDrinkType lowercaseString]];
+        self.lblEmpty.text = [NSString stringWithFormat:@"No %@s added.", [self.currentDrinkType.name lowercaseString]];
     }
     else {
         self.emptyView.hidden = TRUE;
@@ -2024,16 +1995,54 @@ typedef enum {
 #pragma mark - Private Helpers
 #pragma mark -
 
-- (void)takePictureForCell:(SHMenuAdminSwipeableDrinkTableViewCell *)cell {
+- (void)selectPhotoForCell:(SHMenuAdminSwipeableDrinkTableViewCell *)cell {
     if (!cell) {
         NSAssert(cell, @"cell cannnot be nil");
     }
     
     self.indexPathForPhotoTaken = [self.tableView indexPathForCell:cell];
     
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]){
+    UIActionSheet *actionSheet = [UIActionSheet bk_actionSheetWithTitle:@"Select Photo"];
+    
+    [actionSheet bk_setCancelButtonWithTitle:@"Cancel" handler:^{
+    }];
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        [actionSheet bk_addButtonWithTitle:@"Take New Photo" handler:^{
+            [self takeNewPhoto];
+        }];
+    }
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        [actionSheet bk_addButtonWithTitle:@"Select Existing Photo" handler:^{
+            [self selectExistingPhoto];
+        }];
+    }
+    
+    [actionSheet showInView:self.view];
+}
+
+- (void)takeNewPhoto {
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
         
-        UIImagePickerController *imagePicker = [[UIImagePickerController alloc]init];
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        imagePicker.mediaTypes = @[(NSString *) kUTTypeImage];
+        imagePicker.allowsEditing = true;
+        imagePicker.delegate = self;
+        
+        [self presentViewController:imagePicker animated:true completion:nil];
+    }
+    else {
+        [self showAlert:@"No camera detected" message:@"Sorry, we must have permissions to use your camera to use this feature"];
+    }
+}
+
+- (void)selectExistingPhoto {
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
         
         imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         imagePicker.mediaTypes = @[(NSString *) kUTTypeImage];
@@ -2045,6 +2054,7 @@ typedef enum {
     else {
         [self showAlert:@"No camera detected" message:@"Sorry, we must have permissions to use your camera to use this feature"];
     }
+    
 }
 
 - (void)configurePriceSizeRow:(SHMenuAdminPriceSizeRowView *)container withPriceSize:(PriceModel *)priceInStupidCents {

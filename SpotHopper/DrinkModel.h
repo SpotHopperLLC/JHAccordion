@@ -22,6 +22,7 @@
 #define kDrinkModelParamDrinkTypeId @"drink_type_id"
 #define kDrinkModelParamDrinkSubtypeId @"drink_subtype_id"
 #define kDrinkModelParamBaseAlcohols @"base_alcohols"
+#define kDrinkModelParamManufacturer @"manufacturer_id"
 
 #define kDrinkModelMetaPage @"page"
 #define kDrinkModelMetaTotalRecords @"total_records"
@@ -127,6 +128,10 @@
 + (void)fetchWineTypesWithSuccess:(void(^)(NSArray *wineTypes))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
 + (Promise *)fetchWineTypes;
+
++ (void)fetchDrinksForDrinkType:(DrinkTypeModel *)drinkType query:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize spot:(SpotModel *)spot success:(void(^)(NSArray *drinks))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise *)fetchDrinksForDrinkType:(DrinkTypeModel *)drinkType query:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize spot:(SpotModel *)spot;
 
 #pragma mark -
 

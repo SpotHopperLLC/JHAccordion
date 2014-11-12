@@ -489,7 +489,7 @@
 }
 
 + (void)createDrink:(DrinkModel *)drink success:(void (^)(DrinkModel *drinkModel))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
-	if (!drink.name.length || !drink.style.length || !drink.drinkType.ID || !drink.spot.ID) {
+	if (!drink.name.length || !drink.drinkType.ID) {
 		if (failureBlock) {
 			ErrorModel *errorModel = [[ErrorModel alloc] init];
 			errorModel.human = @"Drink model is not valid";
@@ -499,12 +499,40 @@
 		return;
 	}
 
-	NSDictionary *params = @{
+	NSMutableDictionary *params = @{
 		kDrinkModelParamName: drink.name,
-		kDrinkModelParamStyle: drink.style,
-		kDrinkModelParamDrinkTypeId: drink.drinkType.ID,
-		kDrinkModelParamSpotId : drink.spot.ID
-	};
+		kDrinkModelParamDrinkTypeId: drink.drinkType.ID
+	}.mutableCopy;
+    
+    if (drink.drinkSubtype.ID) {
+        params[kDrinkModelParamDrinkSubtypeId] = drink.drinkSubtype.ID;
+    }
+    if (drink.spot.ID) {
+        params[kDrinkModelParamSpotId] = drink.spot.ID;
+    }
+    if (drink.style.length) {
+        params[kDrinkModelParamStyle] = drink.style;
+    }
+    if (drink.varietal.length) {
+        params[kDrinkModelParamVarietal] = drink.varietal;
+    }
+    if (drink.vintage) {
+        params[kDrinkModelParamVintage] = drink.vintage;
+    }
+    if (drink.drinkSubtype.ID) {
+        params[kDrinkModelParamDrinkSubtypeId] = drink.drinkSubtype.ID;
+    }
+    if (drink.baseAlochols.count) {
+        NSMutableArray *baseAlcoholIds = @[].mutableCopy;
+        for (BaseAlcoholModel *baseAlcohol in drink.baseAlochols) {
+            if (baseAlcohol.ID) {
+                [baseAlcoholIds addObject:baseAlcohol.ID];
+            }
+        }
+        params[kDrinkModelParamBaseAlcohols] = baseAlcoholIds;
+    }
+    
+    DebugLog(@"params: %@", params);
 
 	[[ClientSessionManager sharedClient] POST:@"/api/drinks" parameters:params success: ^(AFHTTPRequestOperation *operation, id responseObject) {
 	    JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
@@ -564,7 +592,16 @@
 
 + (void)fetchWineVarietalsWithSuccess:(void (^)(NSArray *varietals))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
 	[self fetchDrinkFormsWithSuccess: ^(NSDictionary *forms) {
-	    NSArray *varietals = [[forms objectForKey:@"varietals"] sortedArrayUsingSelector:@selector(compare:)];
+	    NSArray *allVarietals = [[forms objectForKey:@"varietals"] sortedArrayUsingSelector:@selector(compare:)];
+        
+        NSMutableArray *varietals = @[].mutableCopy;
+        
+        for (NSString *varietal in allVarietals) {
+            if (varietal.length) {
+                [varietals addObject:varietal];
+            }
+        }
+        
 	    if (successBlock) {
 	        successBlock(varietals);
 		}
@@ -589,7 +626,7 @@
 	    NSArray *drinkTypes = [forms objectForKey:@"drink_types"];
 	    for (NSDictionary * drinkType in drinkTypes) {
 	        if ([[drinkType[@"name"] lowercaseString] isEqualToString:@"cocktail"]) {
-	            cocktailTypes = drinkType[@"drink_subtypes"];
+                cocktailTypes = [SHJSONAPIResource jsonAPIResources:drinkType[@"drink_subtypes"] withLinked:nil withClass:[DrinkSubTypeModel class]];
 			}
 		}
 
@@ -614,10 +651,11 @@
 + (void)fetchWineTypesWithSuccess:(void (^)(NSArray *wineTypes))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
 	[self fetchDrinkFormsWithSuccess: ^(NSDictionary *forms) {
 	    NSArray *wineTypes = nil;
+        
 	    NSArray *drinkTypes = [forms objectForKey:@"drink_types"];
 	    for (NSDictionary * drinkType in drinkTypes) {
 	        if ([[drinkType[@"name"] lowercaseString] isEqualToString:@"wine"]) {
-	            wineTypes = [drinkType objectForKey:@"drink_subtypes"];
+                wineTypes = [SHJSONAPIResource jsonAPIResources:drinkType[@"drink_subtypes"] withLinked:nil withClass:[DrinkSubTypeModel class]];
 			}
 		}
 
@@ -637,6 +675,63 @@
 	}];
 
 	return deferred.promise;
+}
+
++ (void)fetchDrinksForDrinkType:(DrinkTypeModel *)drinkType query:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize spot:(SpotModel *)spot success:(void(^)(NSArray *drinks))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+
+    // cancel API calls for drinks
+    [[ClientSessionManager sharedClient] cancelAllHTTPOperationsWithMethod:@"GET" path:@"/api/drinks" parameters:nil ignoreParams:YES];
+    
+    NSMutableDictionary *params = [@{
+                                     kDrinkModelParamPage : page ? page : @1,
+                                     kDrinkModelParamsPageSize : pageSize ? pageSize : @20,
+                                     } mutableCopy];
+
+    if (drinkType.ID) {
+        params[kDrinkModelParamDrinkTypeId] = drinkType.ID;
+    }
+    if (query.length) {
+        params[kDrinkModelParamQuery] = query;
+    }
+    if (spot.ID) {
+        params[kDrinkModelParamManufacturer] = spot.ID;
+    }
+    
+    [[ClientSessionManager sharedClient] GET:@"/api/drinks" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
+            NSArray *models = [jsonApi resourcesForKey:@"drinks"];
+            if (successBlock) {
+                successBlock(models);
+            }
+        }
+        else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+        }
+    }];
+}
+
++ (Promise *)fetchDrinksForDrinkType:(DrinkTypeModel *)drinkType query:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize spot:(SpotModel *)spot {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [self fetchDrinksForDrinkType:drinkType query:query page:page pageSize:pageSize spot:spot success:^(NSArray *drinks) {
+        // Resolves promise
+        [deferred resolveWith:drinks];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
 }
 
 #pragma mark - Private

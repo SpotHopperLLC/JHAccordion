@@ -65,4 +65,7 @@
 + (void)updateUser:(UserModel *)user success:(void(^)(UserModel *updatedUser))successBlock failure:(void(^)(ErrorModel* errorModel))failureBlock;
 + (Promise *)updateUser:(UserModel *)user;
 
++ (void)fetchSpotsForUser:(UserModel *)user query:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize success:(void(^)(NSArray *spots))successBlock failure:(void(^)(ErrorModel* errorModel))failureBlock;
++ (Promise *)fetchSpotsForUser:(UserModel *)user query:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize;
+
 @end

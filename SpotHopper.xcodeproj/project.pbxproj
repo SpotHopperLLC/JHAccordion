@@ -2126,6 +2126,30 @@
 		267E06C41922CC48004457B4 /* DropdownOptionCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03CA72CC187DD0BA00815284 /* DropdownOptionCellView.xib */; };
 		267E06C71922CC48004457B4 /* Lato-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03F2D9161871DC1400C69576 /* Lato-BoldItalic.ttf */; };
 		267E06C91922CC48004457B4 /* Share.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03AF8EC518E5B63E00DD9356 /* Share.storyboard */; };
+		26823C9F1A126CF70048D752 /* SHMenuAdminPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26E5AA351A109ECB00047FCA /* SHMenuAdminPickerViewController.m */; };
+		26823CA01A126CFB0048D752 /* SHMenuAdminPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26E5AA351A109ECB00047FCA /* SHMenuAdminPickerViewController.m */; };
+		26823CA11A126CFE0048D752 /* SHMenuAdminPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26E5AA351A109ECB00047FCA /* SHMenuAdminPickerViewController.m */; };
+		26823CA21A126CFF0048D752 /* SHMenuAdminPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26E5AA351A109ECB00047FCA /* SHMenuAdminPickerViewController.m */; };
+		26823CA31A126D030048D752 /* SHMenuAdminAddNewBeerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FDC1551A0D1A680012CAE5 /* SHMenuAdminAddNewBeerViewController.m */; };
+		26823CA41A126D040048D752 /* SHMenuAdminAddNewBeerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FDC1551A0D1A680012CAE5 /* SHMenuAdminAddNewBeerViewController.m */; };
+		26823CA51A126D050048D752 /* SHMenuAdminAddNewBeerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FDC1551A0D1A680012CAE5 /* SHMenuAdminAddNewBeerViewController.m */; };
+		26823CA61A126D060048D752 /* SHMenuAdminAddNewBeerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FDC1551A0D1A680012CAE5 /* SHMenuAdminAddNewBeerViewController.m */; };
+		26823CA71A126D0D0048D752 /* SHMenuAdminDummyHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F6FE261A0BE30100CEE6E8 /* SHMenuAdminDummyHomeViewController.m */; };
+		26823CA81A126D0E0048D752 /* SHMenuAdminDummyHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F6FE261A0BE30100CEE6E8 /* SHMenuAdminDummyHomeViewController.m */; };
+		26823CA91A126D0F0048D752 /* SHMenuAdminDummyHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F6FE261A0BE30100CEE6E8 /* SHMenuAdminDummyHomeViewController.m */; };
+		26823CAA1A126D100048D752 /* SHMenuAdminDummyHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F6FE261A0BE30100CEE6E8 /* SHMenuAdminDummyHomeViewController.m */; };
+		26823CAD1A12821F0048D752 /* SHMenuAdminAddNewWineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26823CAC1A12821F0048D752 /* SHMenuAdminAddNewWineViewController.m */; };
+		26823CAE1A12821F0048D752 /* SHMenuAdminAddNewWineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26823CAC1A12821F0048D752 /* SHMenuAdminAddNewWineViewController.m */; };
+		26823CAF1A12821F0048D752 /* SHMenuAdminAddNewWineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26823CAC1A12821F0048D752 /* SHMenuAdminAddNewWineViewController.m */; };
+		26823CB01A12821F0048D752 /* SHMenuAdminAddNewWineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26823CAC1A12821F0048D752 /* SHMenuAdminAddNewWineViewController.m */; };
+		26823CB11A12821F0048D752 /* SHMenuAdminAddNewWineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26823CAC1A12821F0048D752 /* SHMenuAdminAddNewWineViewController.m */; };
+		26823CB21A12821F0048D752 /* SHMenuAdminAddNewWineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26823CAC1A12821F0048D752 /* SHMenuAdminAddNewWineViewController.m */; };
+		26823CB51A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26823CB41A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m */; };
+		26823CB61A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26823CB41A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m */; };
+		26823CB71A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26823CB41A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m */; };
+		26823CB81A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26823CB41A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m */; };
+		26823CB91A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26823CB41A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m */; };
+		26823CBA1A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26823CB41A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m */; };
 		268542E5199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */; };
 		268542E6199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */; };
 		268542E8199050E4008DBFB2 /* SHHomeNavigationButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */; };
@@ -2960,6 +2984,10 @@
 		267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHButtonLatoBold.m; sourceTree = "<group>"; };
 		267E06D11922CC48004457B4 /* Staging.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Staging.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		267E06D31922CCA2004457B4 /* SpotHopperStaging-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperStaging-Info.plist"; sourceTree = "<group>"; };
+		26823CAB1A12821F0048D752 /* SHMenuAdminAddNewWineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHMenuAdminAddNewWineViewController.h; sourceTree = "<group>"; };
+		26823CAC1A12821F0048D752 /* SHMenuAdminAddNewWineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHMenuAdminAddNewWineViewController.m; sourceTree = "<group>"; };
+		26823CB31A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHMenuAdminAddNewCocktailViewController.h; sourceTree = "<group>"; };
+		26823CB41A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHMenuAdminAddNewCocktailViewController.m; sourceTree = "<group>"; };
 		268542E3199050E4008DBFB2 /* SHHomeNavigationButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHHomeNavigationButton.h; sourceTree = "<group>"; };
 		268542E4199050E4008DBFB2 /* SHHomeNavigationButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHHomeNavigationButton.m; sourceTree = "<group>"; };
 		2686683219A3EE0F00284A74 /* SpecialModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialModel.h; sourceTree = "<group>"; };
@@ -4304,6 +4332,10 @@
 				26F6FE261A0BE30100CEE6E8 /* SHMenuAdminDummyHomeViewController.m */,
 				26FDC1541A0D1A680012CAE5 /* SHMenuAdminAddNewBeerViewController.h */,
 				26FDC1551A0D1A680012CAE5 /* SHMenuAdminAddNewBeerViewController.m */,
+				26823CAB1A12821F0048D752 /* SHMenuAdminAddNewWineViewController.h */,
+				26823CAC1A12821F0048D752 /* SHMenuAdminAddNewWineViewController.m */,
+				26823CB31A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.h */,
+				26823CB41A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m */,
 				26E5AA341A109ECB00047FCA /* SHMenuAdminPickerViewController.h */,
 				26E5AA351A109ECB00047FCA /* SHMenuAdminPickerViewController.m */,
 			);
@@ -6547,11 +6579,13 @@
 				038664D5186D376900985CEC /* UIImage+RoundedCorner.m in Sources */,
 				03CA729A187C43BF00815284 /* ReviewSliderCell.m in Sources */,
 				03C8DAED188B44CB0082321C /* SliderTemplateModel.m in Sources */,
+				26823CA61A126D060048D752 /* SHMenuAdminAddNewBeerViewController.m in Sources */,
 				03E4452518AEE64000C88421 /* AutoCompleteCell.m in Sources */,
 				0345709418DF7DDD0095E4A8 /* MenuTypeModel.m in Sources */,
 				038664CE186D376900985CEC /* NSNumber+Currency.m in Sources */,
 				03F6BF7518C6EE2B00172F13 /* SpotListModel.m in Sources */,
 				03CA7286187C245600815284 /* ReviewViewController.m in Sources */,
+				26823CB51A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m in Sources */,
 				03F2D9051871DB5B00C69576 /* SHButtonLatoLight.m in Sources */,
 				26741C4419AFCB3300E1CE8B /* FooterViewController.m in Sources */,
 				2675140F1A006C3200A7D0BB /* SHMenuAdminSearchViewController.m in Sources */,
@@ -6565,6 +6599,7 @@
 				038664CD186D376900985CEC /* NSDate+Util.m in Sources */,
 				0320236D18774DD1008368C2 /* ReviewsMenuViewController.m in Sources */,
 				261323ED19DCA13300E051DB /* SHCheckinViewController.m in Sources */,
+				26823CA21A126CFF0048D752 /* SHMenuAdminPickerViewController.m in Sources */,
 				267513EB1A006C3200A7D0BB /* SHMenuAdminDrinkProfileViewController.m in Sources */,
 				03F6BF7018C6E8BD00172F13 /* ListCell.m in Sources */,
 				038664D3186D376900985CEC /* UIImage+Resize.m in Sources */,
@@ -6573,6 +6608,7 @@
 				268C8CA2190089D00011E0F8 /* UserState.m in Sources */,
 				2619B5FA19D222950043FD65 /* SHDrawnButton.m in Sources */,
 				03F2D9411872090E00C69576 /* SHTextFieldLatoLight.m in Sources */,
+				26823CAD1A12821F0048D752 /* SHMenuAdminAddNewWineViewController.m in Sources */,
 				0320237018774E25008368C2 /* UIViewController+Navigator.m in Sources */,
 				038664E9186D37BC00985CEC /* JHPullRefreshViewController.m in Sources */,
 				267513EF1A006C3200A7D0BB /* SHMenuAdminDrinkTableViewCell.m in Sources */,
@@ -6653,6 +6689,7 @@
 				03CAC18618E9C74000FAC5F5 /* PriceModel.m in Sources */,
 				26689711192F2A71004FAC2D /* SHSlidersSearchViewController.m in Sources */,
 				038664D1186D376900985CEC /* UIImage+Alpha.m in Sources */,
+				26823CAA1A126D100048D752 /* SHMenuAdminDummyHomeViewController.m in Sources */,
 				261323F319DCA19100E051DB /* SHAppUtil.m in Sources */,
 				03F2D95318722FB700C69576 /* SHNavigationController.m in Sources */,
 				0372FF5518E34E88009188B5 /* SpecialsCell.m in Sources */,
@@ -6738,11 +6775,13 @@
 				03CABFC218E7716400FAC5F5 /* DrinkModel.m in Sources */,
 				03CABFC318E7716400FAC5F5 /* UIImage+RoundedCorner.m in Sources */,
 				26D6F66B199E6EED001CA54D /* Tracker+People.m in Sources */,
+				26823CA31A126D030048D752 /* SHMenuAdminAddNewBeerViewController.m in Sources */,
 				03CABFC418E7716400FAC5F5 /* ReviewSliderCell.m in Sources */,
 				03CABFC518E7716400FAC5F5 /* SliderTemplateModel.m in Sources */,
 				2633CCF119A53E7700764036 /* LikeModel.m in Sources */,
 				03CABFC618E7716400FAC5F5 /* AutoCompleteCell.m in Sources */,
 				03CABFC718E7716400FAC5F5 /* MenuTypeModel.m in Sources */,
+				26823CB81A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m in Sources */,
 				03CABFC818E7716400FAC5F5 /* NSNumber+Currency.m in Sources */,
 				03CABFC918E7716400FAC5F5 /* SpotListModel.m in Sources */,
 				267514121A006C3200A7D0BB /* SHMenuAdminSearchViewController.m in Sources */,
@@ -6756,6 +6795,7 @@
 				03CABFD218E7716400FAC5F5 /* RefreshView.m in Sources */,
 				03CABFD318E7716400FAC5F5 /* NSDate+Util.m in Sources */,
 				261323F019DCA13300E051DB /* SHCheckinViewController.m in Sources */,
+				26823C9F1A126CF70048D752 /* SHMenuAdminPickerViewController.m in Sources */,
 				267513EE1A006C3200A7D0BB /* SHMenuAdminDrinkProfileViewController.m in Sources */,
 				03CABFD418E7716400FAC5F5 /* ReviewsMenuViewController.m in Sources */,
 				262380241986F83500F0940A /* Tracker+Events.m in Sources */,
@@ -6764,6 +6804,7 @@
 				03CABFD618E7716400FAC5F5 /* UIImage+Resize.m in Sources */,
 				2619B5FD19D222950043FD65 /* SHDrawnButton.m in Sources */,
 				268C8CA5190089D00011E0F8 /* UserState.m in Sources */,
+				26823CB01A12821F0048D752 /* SHMenuAdminAddNewWineViewController.m in Sources */,
 				03CABFD718E7716400FAC5F5 /* SHTextFieldLatoLight.m in Sources */,
 				2691C4BC19AFE411006F720C /* LocationChooserViewController.m in Sources */,
 				267513F21A006C3200A7D0BB /* SHMenuAdminDrinkTableViewCell.m in Sources */,
@@ -6844,6 +6885,7 @@
 				03CAC18918E9C74000FAC5F5 /* PriceModel.m in Sources */,
 				26689715192F2A71004FAC2D /* SHSlidersSearchViewController.m in Sources */,
 				03CAC01218E7716400FAC5F5 /* UIImage+Alpha.m in Sources */,
+				26823CA71A126D0D0048D752 /* SHMenuAdminDummyHomeViewController.m in Sources */,
 				261323F619DCA19100E051DB /* SHAppUtil.m in Sources */,
 				03CAC01418E7716400FAC5F5 /* SHNavigationController.m in Sources */,
 				2691C4A619AFE189006F720C /* AdjustSliderSectionHeaderView.m in Sources */,
@@ -6921,11 +6963,13 @@
 				03F4E8B918CA34260056EAA9 /* UIImage+RoundedCorner.m in Sources */,
 				03F4E8BA18CA34260056EAA9 /* ReviewSliderCell.m in Sources */,
 				03F4E8BB18CA34260056EAA9 /* SliderTemplateModel.m in Sources */,
+				26823CA51A126D050048D752 /* SHMenuAdminAddNewBeerViewController.m in Sources */,
 				03F4E8BC18CA34260056EAA9 /* AutoCompleteCell.m in Sources */,
 				0345709518DF7FDD0095E4A8 /* MenuTypeModel.m in Sources */,
 				03F4E8BD18CA34260056EAA9 /* NSNumber+Currency.m in Sources */,
 				03F4E8BE18CA34260056EAA9 /* SpotListModel.m in Sources */,
 				03F4E8BF18CA34260056EAA9 /* ReviewViewController.m in Sources */,
+				26823CB61A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m in Sources */,
 				03F4E8C018CA34260056EAA9 /* SHButtonLatoLight.m in Sources */,
 				26741C4319AFCB3300E1CE8B /* FooterViewController.m in Sources */,
 				267514101A006C3200A7D0BB /* SHMenuAdminSearchViewController.m in Sources */,
@@ -6939,6 +6983,7 @@
 				03F4E8C518CA34260056EAA9 /* NSDate+Util.m in Sources */,
 				03F4E8C618CA34260056EAA9 /* ReviewsMenuViewController.m in Sources */,
 				261323EE19DCA13300E051DB /* SHCheckinViewController.m in Sources */,
+				26823CA01A126CFB0048D752 /* SHMenuAdminPickerViewController.m in Sources */,
 				267513EC1A006C3200A7D0BB /* SHMenuAdminDrinkProfileViewController.m in Sources */,
 				03F4E8C718CA34260056EAA9 /* ListCell.m in Sources */,
 				03F4E8C818CA34260056EAA9 /* UIImage+Resize.m in Sources */,
@@ -6947,6 +6992,7 @@
 				268C8CA3190089D00011E0F8 /* UserState.m in Sources */,
 				2619B5FB19D222950043FD65 /* SHDrawnButton.m in Sources */,
 				03F4E8C918CA34260056EAA9 /* SHTextFieldLatoLight.m in Sources */,
+				26823CAE1A12821F0048D752 /* SHMenuAdminAddNewWineViewController.m in Sources */,
 				03F4E8CB18CA34260056EAA9 /* UIViewController+Navigator.m in Sources */,
 				03F4E8CC18CA34260056EAA9 /* JHPullRefreshViewController.m in Sources */,
 				267513F01A006C3200A7D0BB /* SHMenuAdminDrinkTableViewCell.m in Sources */,
@@ -7027,6 +7073,7 @@
 				03CAC18718E9C74000FAC5F5 /* PriceModel.m in Sources */,
 				26689712192F2A71004FAC2D /* SHSlidersSearchViewController.m in Sources */,
 				03F4E8F618CA34260056EAA9 /* UIImage+Alpha.m in Sources */,
+				26823CA91A126D0F0048D752 /* SHMenuAdminDummyHomeViewController.m in Sources */,
 				261323F419DCA19100E051DB /* SHAppUtil.m in Sources */,
 				03F4E8F818CA34260056EAA9 /* SHNavigationController.m in Sources */,
 				0372FF5618E34E88009188B5 /* SpecialsCell.m in Sources */,
@@ -7110,6 +7157,7 @@
 				2675147E1A016AFD00A7D0BB /* SliderTemplateModel.m in Sources */,
 				2675147F1A016AFD00A7D0BB /* LikeModel.m in Sources */,
 				267514801A016AFD00A7D0BB /* AutoCompleteCell.m in Sources */,
+				26823CB91A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m in Sources */,
 				267514811A016AFD00A7D0BB /* MenuTypeModel.m in Sources */,
 				267514821A016AFD00A7D0BB /* NSNumber+Currency.m in Sources */,
 				267514831A016AFD00A7D0BB /* SpotListModel.m in Sources */,
@@ -7132,6 +7180,7 @@
 				267514941A016AFD00A7D0BB /* UIImage+Resize.m in Sources */,
 				267514951A016AFD00A7D0BB /* SHDrawnButton.m in Sources */,
 				267514961A016AFD00A7D0BB /* UserState.m in Sources */,
+				26823CB11A12821F0048D752 /* SHMenuAdminAddNewWineViewController.m in Sources */,
 				267514971A016AFD00A7D0BB /* SHTextFieldLatoLight.m in Sources */,
 				267514981A016AFD00A7D0BB /* LocationChooserViewController.m in Sources */,
 				267514991A016AFD00A7D0BB /* SHMenuAdminDrinkTableViewCell.m in Sources */,
@@ -7296,6 +7345,7 @@
 				267515FA1A016B1300A7D0BB /* SliderTemplateModel.m in Sources */,
 				267515FB1A016B1300A7D0BB /* LikeModel.m in Sources */,
 				267515FC1A016B1300A7D0BB /* AutoCompleteCell.m in Sources */,
+				26823CBA1A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m in Sources */,
 				267515FD1A016B1300A7D0BB /* MenuTypeModel.m in Sources */,
 				267515FE1A016B1300A7D0BB /* NSNumber+Currency.m in Sources */,
 				267515FF1A016B1300A7D0BB /* SpotListModel.m in Sources */,
@@ -7318,6 +7368,7 @@
 				267516101A016B1300A7D0BB /* UIImage+Resize.m in Sources */,
 				267516111A016B1300A7D0BB /* SHDrawnButton.m in Sources */,
 				267516121A016B1300A7D0BB /* UserState.m in Sources */,
+				26823CB21A12821F0048D752 /* SHMenuAdminAddNewWineViewController.m in Sources */,
 				267516131A016B1300A7D0BB /* SHTextFieldLatoLight.m in Sources */,
 				267516141A016B1300A7D0BB /* LocationChooserViewController.m in Sources */,
 				267516151A016B1300A7D0BB /* SHMenuAdminDrinkTableViewCell.m in Sources */,
@@ -7476,11 +7527,13 @@
 				267E05101922CC48004457B4 /* DrinkModel.m in Sources */,
 				267E05111922CC48004457B4 /* UIImage+RoundedCorner.m in Sources */,
 				26D6F66A199E6EED001CA54D /* Tracker+People.m in Sources */,
+				26823CA41A126D040048D752 /* SHMenuAdminAddNewBeerViewController.m in Sources */,
 				267E05121922CC48004457B4 /* ReviewSliderCell.m in Sources */,
 				267E05131922CC48004457B4 /* SliderTemplateModel.m in Sources */,
 				2633CCF019A53E7600764036 /* LikeModel.m in Sources */,
 				267E05141922CC48004457B4 /* AutoCompleteCell.m in Sources */,
 				267E05151922CC48004457B4 /* MenuTypeModel.m in Sources */,
+				26823CB71A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m in Sources */,
 				267E05161922CC48004457B4 /* NSNumber+Currency.m in Sources */,
 				267E05171922CC48004457B4 /* SpotListModel.m in Sources */,
 				267514111A006C3200A7D0BB /* SHMenuAdminSearchViewController.m in Sources */,
@@ -7494,6 +7547,7 @@
 				267E05221922CC48004457B4 /* RefreshView.m in Sources */,
 				267E05231922CC48004457B4 /* NSDate+Util.m in Sources */,
 				261323EF19DCA13300E051DB /* SHCheckinViewController.m in Sources */,
+				26823CA11A126CFE0048D752 /* SHMenuAdminPickerViewController.m in Sources */,
 				267513ED1A006C3200A7D0BB /* SHMenuAdminDrinkProfileViewController.m in Sources */,
 				267E05241922CC48004457B4 /* ReviewsMenuViewController.m in Sources */,
 				262380231986F83500F0940A /* Tracker+Events.m in Sources */,
@@ -7502,6 +7556,7 @@
 				267E05271922CC48004457B4 /* UIImage+Resize.m in Sources */,
 				2619B5FC19D222950043FD65 /* SHDrawnButton.m in Sources */,
 				267E05281922CC48004457B4 /* UserState.m in Sources */,
+				26823CAF1A12821F0048D752 /* SHMenuAdminAddNewWineViewController.m in Sources */,
 				267E05291922CC48004457B4 /* SHTextFieldLatoLight.m in Sources */,
 				2691C4BB19AFE411006F720C /* LocationChooserViewController.m in Sources */,
 				267513F11A006C3200A7D0BB /* SHMenuAdminDrinkTableViewCell.m in Sources */,
@@ -7582,6 +7637,7 @@
 				267E05681922CC48004457B4 /* PriceModel.m in Sources */,
 				26689714192F2A71004FAC2D /* SHSlidersSearchViewController.m in Sources */,
 				267E05691922CC48004457B4 /* UIImage+Alpha.m in Sources */,
+				26823CA81A126D0E0048D752 /* SHMenuAdminDummyHomeViewController.m in Sources */,
 				261323F519DCA19100E051DB /* SHAppUtil.m in Sources */,
 				267E056B1922CC48004457B4 /* SHNavigationController.m in Sources */,
 				2691C4A719AFE18A006F720C /* AdjustSliderSectionHeaderView.m in Sources */,
