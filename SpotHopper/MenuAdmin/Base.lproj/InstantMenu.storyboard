@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="HEl-e0-h9y">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="Lato-Bold.ttf">
-            <string>Lato-Bold</string>
             <string>Lato-Bold</string>
             <string>Lato-Bold</string>
             <string>Lato-Bold</string>
@@ -329,7 +326,7 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wBQ-Zd-QVH" userLabel="Photo Button">
-                                                    <rect key="frame" x="125" y="0.5" width="65" height="109.5"/>
+                                                    <rect key="frame" x="125" y="0.0" width="65" height="109.5"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="65" id="s2C-Xj-Db3"/>
@@ -516,7 +513,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Drink Specifics" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Ty-YP-oTn" userLabel="Drink Specifics Label">
-                                                            <rect key="frame" x="98" y="77.5" width="214" height="14.5"/>
+                                                            <rect key="frame" x="98" y="77" width="214" height="14.5"/>
                                                             <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="12"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
@@ -772,21 +769,6 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vM0-56-k3j" userLabel="New Drink Button">
-                                        <rect key="frame" x="268" y="22" width="44" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="7WV-cB-oS5"/>
-                                            <constraint firstAttribute="width" constant="44" id="QsZ-g0-bRH"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="30"/>
-                                        <state key="normal" title="+">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="newDrinkButtonTapped:" destination="cYj-kr-rwd" eventType="touchUpInside" id="b9e-XT-Fu8"/>
-                                        </connections>
-                                    </button>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add drink named..." minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Vxg-kA-9jN" userLabel="Search Text Field">
                                         <rect key="frame" x="20" y="58" width="280" height="30"/>
                                         <constraints>
@@ -801,10 +783,7 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.90980392160000001" green="0.34901960780000002" blue="0.23137254900000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="vM0-56-k3j" secondAttribute="trailing" constant="8" id="2Xv-AX-96C"/>
                                     <constraint firstAttribute="trailing" secondItem="Vxg-kA-9jN" secondAttribute="trailing" constant="20" id="4yg-d6-DEe"/>
-                                    <constraint firstItem="vM0-56-k3j" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="bEO-G2-ZNu" secondAttribute="trailing" constant="8" id="8Sa-ca-W1B"/>
-                                    <constraint firstItem="vM0-56-k3j" firstAttribute="centerY" secondItem="bEO-G2-ZNu" secondAttribute="centerY" constant="1" id="BQP-Gr-VdH"/>
                                     <constraint firstItem="bEO-G2-ZNu" firstAttribute="centerY" secondItem="MbV-2n-21x" secondAttribute="centerY" id="Cvc-w6-TQ7"/>
                                     <constraint firstItem="MbV-2n-21x" firstAttribute="leading" secondItem="xcx-ZY-4zV" secondAttribute="leading" constant="9" id="GBM-0M-vID"/>
                                     <constraint firstItem="MbV-2n-21x" firstAttribute="top" secondItem="xcx-ZY-4zV" secondAttribute="top" constant="24" id="HoM-V6-nKp"/>
@@ -818,99 +797,6 @@
                                 <rect key="frame" x="0.0" y="106" width="320" height="398"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DrinkCell" rowHeight="68" id="Jcy-lz-uho" userLabel="Drink Cell" customClass="SHMenuAdminDrinkTableViewCell">
-                                        <rect key="frame" x="0.0" y="22" width="320" height="68"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Jcy-lz-uho" id="Fgh-Nt-kaa">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="67"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Drink Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xx2-7I-l7K" userLabel="Drink Name">
-                                                    <rect key="frame" x="20" y="8" width="80.5" height="18"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Maker" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ELh-Cf-MN0" userLabel="Drink Maker">
-                                                    <rect key="frame" x="20" y="34" width="35" height="14.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Specifics" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xyz-ub-NoL" userLabel="Drink Specifics">
-                                                    <rect key="frame" x="261" y="34" width="51" height="14.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="xyz-ub-NoL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ELh-Cf-MN0" secondAttribute="trailing" constant="10" id="2Yg-p1-dA5"/>
-                                                <constraint firstItem="xyz-ub-NoL" firstAttribute="centerY" secondItem="ELh-Cf-MN0" secondAttribute="centerY" id="9DR-Os-kd1"/>
-                                                <constraint firstItem="ELh-Cf-MN0" firstAttribute="top" secondItem="Xx2-7I-l7K" secondAttribute="bottom" constant="8" id="Evs-lk-Xyn"/>
-                                                <constraint firstItem="Xx2-7I-l7K" firstAttribute="leading" secondItem="Fgh-Nt-kaa" secondAttribute="leading" constant="20" id="Ga7-I7-54r"/>
-                                                <constraint firstAttribute="trailing" secondItem="xyz-ub-NoL" secondAttribute="trailing" constant="8" id="e3k-GQ-uQK"/>
-                                                <constraint firstItem="ELh-Cf-MN0" firstAttribute="leading" secondItem="Fgh-Nt-kaa" secondAttribute="leading" constant="20" id="i0k-HS-NK9"/>
-                                                <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="Xx2-7I-l7K" secondAttribute="trailing" constant="8" id="jcu-4l-MlT"/>
-                                                <constraint firstItem="Xx2-7I-l7K" firstAttribute="top" secondItem="Fgh-Nt-kaa" secondAttribute="top" constant="8" id="zpg-qY-OvL"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="lblDrinkName" destination="Xx2-7I-l7K" id="Tb7-xv-CIS"/>
-                                            <outlet property="lblDrinkSpecifics" destination="xyz-ub-NoL" id="9Sf-JJ-nwT"/>
-                                            <outlet property="lblSpotName" destination="ELh-Cf-MN0" id="4Tw-1g-sbp"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SpotCell" rowHeight="80" id="Et5-3x-93x" userLabel="Spot Cell" customClass="SHMenuAdminSpotTableViewCell">
-                                        <rect key="frame" x="0.0" y="90" width="320" height="80"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Et5-3x-93x" id="W7v-bF-6BI">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="79"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9oA-oF-2Vu">
-                                                    <rect key="frame" x="20" y="8" width="60" height="60"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="60" id="B1a-qs-4RW"/>
-                                                        <constraint firstAttribute="height" constant="60" id="FsG-MX-hTb"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Spot Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NFH-9Y-P16">
-                                                    <rect key="frame" x="90" y="8" width="87" height="20.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="spot type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CW4-YI-3yC">
-                                                    <rect key="frame" x="90" y="30" width="57" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Address" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Jn-8o-BXG">
-                                                    <rect key="frame" x="90" y="47" width="49.5" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="4Jn-8o-BXG" secondAttribute="trailing" constant="8" id="R6m-e5-Kf7"/>
-                                                <constraint firstItem="CW4-YI-3yC" firstAttribute="leading" secondItem="9oA-oF-2Vu" secondAttribute="trailing" constant="10" id="RLz-Yb-hfa"/>
-                                                <constraint firstItem="9oA-oF-2Vu" firstAttribute="top" secondItem="W7v-bF-6BI" secondAttribute="top" constant="8" id="Vxe-3V-47c"/>
-                                                <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="CW4-YI-3yC" secondAttribute="trailing" constant="8" id="aQq-2a-5Yl"/>
-                                                <constraint firstItem="9oA-oF-2Vu" firstAttribute="leading" secondItem="W7v-bF-6BI" secondAttribute="leading" constant="20" id="en8-5c-Oeo"/>
-                                                <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="NFH-9Y-P16" secondAttribute="trailing" constant="8" id="fSL-Dn-6gl"/>
-                                                <constraint firstItem="4Jn-8o-BXG" firstAttribute="top" secondItem="CW4-YI-3yC" secondAttribute="bottom" constant="1" id="i35-rH-Xx4"/>
-                                                <constraint firstItem="CW4-YI-3yC" firstAttribute="top" secondItem="NFH-9Y-P16" secondAttribute="bottom" constant="1" id="igA-TT-XTW"/>
-                                                <constraint firstItem="9oA-oF-2Vu" firstAttribute="centerY" secondItem="CW4-YI-3yC" secondAttribute="centerY" id="n4E-mb-cXG"/>
-                                                <constraint firstItem="NFH-9Y-P16" firstAttribute="leading" secondItem="CW4-YI-3yC" secondAttribute="leading" id="sPx-kQ-LO7"/>
-                                                <constraint firstItem="NFH-9Y-P16" firstAttribute="leading" secondItem="4Jn-8o-BXG" secondAttribute="leading" id="xP9-DM-JeJ"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="imgIcon" destination="9oA-oF-2Vu" id="b7h-DY-03G"/>
-                                            <outlet property="lblSpotAddress" destination="4Jn-8o-BXG" id="RG8-Fr-3pd"/>
-                                            <outlet property="lblSpotName" destination="NFH-9Y-P16" id="5QG-rd-mRd"/>
-                                            <outlet property="lblSpotType" destination="CW4-YI-3yC" id="zfa-Qe-Fwt"/>
-                                        </connections>
-                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DetailCell" rowHeight="80" id="Orz-Zt-2Oi">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
@@ -931,18 +817,19 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle 2" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XuH-WH-VjB" userLabel="Subtitle 2 Label">
-                                                    <rect key="frame" x="76" y="48.5" width="50.5" height="14.5"/>
+                                                    <rect key="frame" x="76" y="47.5" width="50.5" height="14.5"/>
                                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="12"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle 1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XVP-Mc-kJV" userLabel="Subtitle 1 Label">
-                                                    <rect key="frame" x="76" y="31.5" width="59" height="17"/>
+                                                    <rect key="frame" x="76" y="31" width="59" height="17"/>
                                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="14"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="XVP-Mc-kJV" firstAttribute="leading" secondItem="yEy-Di-bLO" secondAttribute="leading" id="1ou-UG-GrX"/>
                                                 <constraint firstItem="HNv-TZ-OlP" firstAttribute="top" secondItem="yEy-Di-bLO" secondAttribute="top" constant="1" id="OUq-1f-xaR"/>
@@ -955,6 +842,7 @@
                                                 <constraint firstItem="XVP-Mc-kJV" firstAttribute="top" secondItem="yEy-Di-bLO" secondAttribute="bottom" id="vog-DN-3xW"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewDrinkCell" id="rEL-Yr-iLB">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -969,12 +857,14 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="xA0-37-YOO" secondAttribute="trailing" constant="8" id="GqJ-Zm-iHk"/>
                                                 <constraint firstAttribute="centerY" secondItem="xA0-37-YOO" secondAttribute="centerY" id="NPa-bA-7bO"/>
                                                 <constraint firstItem="xA0-37-YOO" firstAttribute="leading" secondItem="0Iv-Ur-SJK" secondAttribute="leading" constant="8" id="w6o-Zr-prj"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -997,10 +887,10 @@
                     <navigationItem key="navigationItem" id="Tr3-9g-BPu"/>
                     <connections>
                         <outlet property="headerView" destination="xcx-ZY-4zV" id="P8X-uo-m0b"/>
-                        <outlet property="lblSearch" destination="bEO-G2-ZNu" id="vnu-us-R77"/>
+                        <outlet property="searchLabel" destination="bEO-G2-ZNu" id="0Oe-3X-D9S"/>
+                        <outlet property="searchTextField" destination="Vxg-kA-9jN" id="oNb-ND-6bv"/>
+                        <outlet property="tableView" destination="SrR-LH-tT0" id="9Bc-xK-Shw"/>
                         <outlet property="tableviewBottomConstraint" destination="WlQ-fe-uJi" id="BsJ-tu-ix3"/>
-                        <outlet property="tblResults" destination="SrR-LH-tT0" id="pfu-UT-P63"/>
-                        <outlet property="txtSearch" destination="Vxg-kA-9jN" id="eee-cd-mH7"/>
                         <segue destination="k5U-Dy-bEg" kind="modal" identifier="SearchToNewBeer" modalPresentationStyle="currentContext" id="Vx8-qi-Kda"/>
                         <segue destination="IVM-jO-yqN" kind="modal" identifier="SearchToNewWine" id="M6J-e1-ahK"/>
                         <segue destination="jlU-0f-0ho" kind="modal" identifier="SearchToNewCocktail" id="nJv-mz-UKq"/>
@@ -1919,7 +1809,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Spot" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LPR-QZ-YhC" userLabel="Spot Label">
-                                                    <rect key="frame" x="20" y="19" width="35.5" height="22"/>
+                                                    <rect key="frame" x="20" y="18.5" width="35.5" height="22"/>
                                                     <fontDescription key="fontDescription" name="Lato-Light" family="Lato" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>

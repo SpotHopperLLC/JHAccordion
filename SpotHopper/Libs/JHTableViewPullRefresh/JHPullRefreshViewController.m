@@ -18,6 +18,8 @@
 @property (nonatomic, strong) RefreshView *refreshViewUp;
 @property (nonatomic, assign) BOOL refreshing;
 
+@property (nonatomic, assign) CGFloat keyboardHeight;
+
 @property (nonatomic, strong) UITableView *refreshTableView;
 
 @end
@@ -104,7 +106,9 @@
                 
                 [UIView beginAnimations:nil context:NULL];
                 [UIView setAnimationDuration:0.2];
-                _refreshTableView.contentInset = UIEdgeInsetsMake(60.0f, 0.0f, 0.0f, 0.0f);
+                UIEdgeInsets contentInset = _refreshTableView.contentInset;
+                contentInset.top += 60.0f;
+                _refreshTableView.contentInset = contentInset;
                 [UIView commitAnimations];
                 
                 [self reloadTableViewDataPullDown];
@@ -130,7 +134,9 @@
                 
                 [UIView beginAnimations:nil context:NULL];
                 [UIView setAnimationDuration:0.2];
-                _refreshTableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 60.0f, 0.0f);
+                UIEdgeInsets contentInset = _refreshTableView.contentInset;
+                contentInset.bottom += 60.0f;
+                _refreshTableView.contentInset = contentInset;
                 [UIView commitAnimations];
                 
                 [self reloadTableViewDataPullUp];
@@ -153,7 +159,10 @@
         [UIView animateWithDuration:0.3f animations:^{
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:.3];
-            [_refreshTableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)];
+            UIEdgeInsets contentInset = _refreshTableView.contentInset;
+            contentInset.top = 0.0f;
+            contentInset.bottom = self.keyboardHeight;
+            _refreshTableView.contentInset = contentInset;
             [UIView commitAnimations];
         } completion:^(BOOL finished) {
             if (reloadTable == YES) {
@@ -172,6 +181,10 @@
         
     }
     
+}
+
+- (void)adjustForKeyboardHeight:(CGFloat)height {
+    self.keyboardHeight = height;
 }
 
 #pragma mark - JHPullRefresh methods

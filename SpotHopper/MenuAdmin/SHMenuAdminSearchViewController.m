@@ -14,6 +14,7 @@
 #import "SHMenuAdminAddNewCocktailViewController.h"
 
 #import "NSNumber+Helpers.h"
+#import "UIView+AutoLayout.h"
 
 #import "UserModel.h"
 #import "DrinkModel.h"
@@ -46,14 +47,14 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableviewBottomConstraint;
 @property (assign, nonatomic) CGFloat startingTableviewBottomConstraint;
 
-@property (weak, nonatomic) IBOutlet UITextField *txtSearch;
-@property (weak, nonatomic) IBOutlet UITableView *tblResults;
-@property (weak, nonatomic) IBOutlet UILabel *lblSearch;
+@property (weak, nonatomic) IBOutlet UITextField *searchTextField;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UILabel *searchLabel;
 
 @property (strong, nonatomic) NSTimer *searchTimer;
 
 @property (strong, nonatomic) NSNumber *page;
-@property (strong, nonatomic) NSMutableArray *results;
+@property (strong, nonatomic) NSArray *results;
 
 @end
 
@@ -63,14 +64,11 @@
     [super viewDidLoad];
     
     // Register pull to refresh
-    [self registerRefreshTableView:_tblResults withReloadType:kPullRefreshTypeBoth];
+    [self registerRefreshTableView:_tableView withReloadType:kPullRefreshTypeBoth];
     
     [self styleView];
     
     self.startingTableviewBottomConstraint = self.tableviewBottomConstraint.constant;
-    
-    // Initializes stuff
-    self.results = @[].mutableCopy;
     
     if (self.isHouseCocktail && !self.spot) {
         NSAssert(self.spot, @"spot must be defined if searching for house cocktails");
@@ -81,20 +79,32 @@
     }
     
     if (self.isSpotSearch) {
-        self.txtSearch.placeholder = @"Search for spot named...";
+        self.searchTextField.placeholder = @"Search for spot named...";
     }
+    
+//    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+//        DebugLog(@"iOS 8.x+");
+//        
+//        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
+//        UIVibrancyEffect *effect = [UIVibrancyEffect effectForBlurEffect:blurEffect];
+//        UIVisualEffectView *veView = [[UIVisualEffectView alloc] initWithEffect:effect];
+//        veView.translatesAutoresizingMaskIntoConstraints = NO;
+//        [self.view insertSubview:veView belowSubview:self.tableView];
+//        [veView pinEdges:JRTViewPinAllEdges toSameEdgesOfView:self.tableView];
+//    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
     //hide navbar
     [self.navigationController setNavigationBarHidden:YES animated:animated];
-    
-    [self.txtSearch becomeFirstResponder];
     
     // Keyboard notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    
+    [self.searchTextField becomeFirstResponder];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -145,7 +155,20 @@
 #pragma mark -
 
 - (UIScrollView *)mainScrollView {
-    return self.tblResults;
+    return self.tableView;
+}
+
+#pragma mark - Keyboard Support
+#pragma mark -
+
+- (BOOL)keyboardWillShowWithHeight:(CGFloat)height duration:(CGFloat)duration animationOptions:(UIViewAnimationOptions)animationOptions {
+    [self adjustForKeyboardHeight:height];
+    return [super keyboardWillShowWithHeight:height duration:duration animationOptions:animationOptions];
+}
+
+- (BOOL)keyboardWillHideWithHeight:(CGFloat)height duration:(CGFloat)duration animationOptions:(UIViewAnimationOptions)animationOptions {
+    [self adjustForKeyboardHeight:0];
+    return [super keyboardWillHideWithHeight:height duration:duration animationOptions:animationOptions];
 }
 
 #pragma mark - Tracking
@@ -245,7 +268,7 @@
 #pragma mark -
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (self.results.count) {
+    if (self.results) {
         return self.results.count + 1;
     }
     
@@ -339,7 +362,7 @@
 
 - (void)reloadTableViewDataPullUp {
     // Increments pages
-    [self.page increment];
+    self.page = [self.page increment];
     
     // Does search
     [self doSearch];
@@ -372,10 +395,6 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (IBAction)newDrinkButtonTapped:(id)sender {
-    [self startCreatingNewDrink];
-}
-
 #pragma mark - Private
 #pragma mark -
 
@@ -385,9 +404,10 @@
     // Resets pages and clears results
     self.page = @1;
         
-    if (self.txtSearch.text.length) {
+    if (self.searchTextField.text.length) {
         [self doSearch];
-    } else {
+    }
+    else {
         [self dataDidFinishRefreshing];
     }
 }
@@ -398,9 +418,8 @@
 
         //search spots
         [self startSearching];
-        [UserModel fetchSpotsForUser:user query:self.txtSearch.text page:@1 pageSize:kPageSize success:^(NSArray *spots) {
-            [self.results removeAllObjects];
-            [self.results addObjectsFromArray:spots];
+        [UserModel fetchSpotsForUser:user query:self.searchTextField.text page:@1 pageSize:kPageSize success:^(NSArray *spots) {
+            self.results = spots;
             
             [self sortResultsAfterFetch];
             [self dataDidFinishRefreshing];
@@ -416,21 +435,24 @@
         [self startSearching];
         
         SpotModel * spot = self.isHouseCocktail ? self.spot : nil;
-        [DrinkModel fetchDrinksForDrinkType:self.drinkType query:self.txtSearch.text page:self.page pageSize:kPageSize spot:spot success:^(NSArray *drinks) {
-            [self.results removeAllObjects];
+        [DrinkModel fetchDrinksForDrinkType:self.drinkType query:self.searchTextField.text page:self.page pageSize:kPageSize spot:spot success:^(NSArray *drinks) {
+            
+            NSMutableArray *filteredDrinks = @[].mutableCopy;
             
             //if a wine, only show wines with the correct drink type
             if ([self.drinkType isWine]) {
                 for (DrinkModel *drink in drinks) {
                     if ([drink.drinkSubtype.name isEqualToString:self.menuType]) {
-                        [self.results addObject:drink];
+                        [filteredDrinks addObject:drink];
                     }
                 }
             }
             else {
                 // Adds drinks to results
-                [self.results addObjectsFromArray:drinks];
+                [filteredDrinks addObjectsFromArray:drinks];
             }
+            
+            self.results = filteredDrinks;
             
             [self sortResultsAfterFetch];
             [self dataDidFinishRefreshing];
@@ -454,24 +476,26 @@
     UIView *containerView = [[UIView alloc] initWithFrame:frame];
     [containerView addSubview:activityIndicatorView];
     
-    self.txtSearch.rightView = containerView;
-    self.txtSearch.rightViewMode = UITextFieldViewModeAlways;
+    self.searchTextField.rightView = containerView;
+    self.searchTextField.rightViewMode = UITextFieldViewModeAlways;
     [activityIndicatorView startAnimating];
 }
 
 - (void)stopSearching {
-    UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *)[self.txtSearch.rightView viewWithTag:100];
+    UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *)[self.searchTextField.rightView viewWithTag:100];
     [activityIndicatorView stopAnimating];
-    self.txtSearch.rightView = nil;
-    self.txtSearch.rightViewMode = UITextFieldViewModeNever;
+    self.searchTextField.rightView = nil;
+    self.searchTextField.rightViewMode = UITextFieldViewModeNever;
 }
 
 - (void)sortResultsAfterFetch {
-    [self.results sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+    NSMutableArray *sorted = self.results.mutableCopy;
+    [sorted sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         NSNumber *revObj1 = [obj1 valueForKey:@"relevance"];
         NSNumber *revObj2 = [obj2 valueForKey:@"relevance"];
         return [revObj2 compare:revObj1];
     }];
+    self.results = sorted;
 }
 
 - (void)startCreatingNewDrink {
@@ -492,12 +516,12 @@
 - (void)styleView {
     self.headerView.backgroundColor = [SHMenuAdminStyleSupport sharedInstance].LIGHT_ORANGE;
     
-    self.txtSearch.placeholder = [NSString stringWithFormat:@"Find %@ named...", [self.drinkType.name lowercaseString]];
-    self.txtSearch.font = [UIFont fontWithName:@"Lato-Regular" size:14.0f];
-    self.txtSearch.backgroundColor = [SHMenuAdminStyleSupport sharedInstance].DARK_ORANGE;
-    self.txtSearch.textColor = [UIColor whiteColor];
+    self.searchTextField.placeholder = [NSString stringWithFormat:@"Find %@ named...", [self.drinkType.name lowercaseString]];
+    self.searchTextField.font = [UIFont fontWithName:@"Lato-Regular" size:14.0f];
+    self.searchTextField.backgroundColor = [SHMenuAdminStyleSupport sharedInstance].DARK_ORANGE;
+    self.searchTextField.textColor = [UIColor whiteColor];
     
-    self.lblSearch.font = [UIFont fontWithName:@"Lato-Regular" size:20.0f];
+    self.searchLabel.font = [UIFont fontWithName:@"Lato-Regular" size:20.0f];
 }
 
 @end
