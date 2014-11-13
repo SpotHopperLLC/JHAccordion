@@ -57,6 +57,12 @@
 #pragma mark - View Lifecycle
 #pragma mark -
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    MAAssert(self.scrollView, @"Outlet is required");
+}
+
 - (NSArray *)viewOptions {
     return @[kDidLoadOptionsNoBackground];
 }
