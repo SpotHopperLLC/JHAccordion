@@ -464,8 +464,6 @@ typedef void(^AlertBlock)();
         UIEdgeInsets contentInset = scrollView.contentInset;
         contentInset.bottom = bottom + height;
         
-        DebugLog(@"setting bottom content inset: %f", bottom + height);
-        
         UIEdgeInsets scrollIndicatorInsets = scrollView.scrollIndicatorInsets;
         scrollIndicatorInsets.bottom = contentInset.bottom;
         
