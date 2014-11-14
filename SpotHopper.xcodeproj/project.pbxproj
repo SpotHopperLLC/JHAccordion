@@ -755,6 +755,12 @@
 		262A65B6195893F800A4DACD /* MenuModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 262A65B1195893F800A4DACD /* MenuModel.m */; };
 		2633CCF019A53E7600764036 /* LikeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2633CCEF19A53E7600764036 /* LikeModel.m */; };
 		2633CCF119A53E7700764036 /* LikeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2633CCEF19A53E7600764036 /* LikeModel.m */; };
+		2636330F1A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2636330E1A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m */; };
+		263633101A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2636330E1A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m */; };
+		263633111A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2636330E1A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m */; };
+		263633121A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2636330E1A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m */; };
+		263633131A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2636330E1A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m */; };
+		263633141A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2636330E1A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m */; };
 		263D6CAD1A03F514002E2A18 /* trashIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 263D6CAB1A03F514002E2A18 /* trashIcon.png */; };
 		263D6CAE1A03F514002E2A18 /* trashIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 263D6CAB1A03F514002E2A18 /* trashIcon.png */; };
 		263D6CAF1A03F514002E2A18 /* trashIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 263D6CAB1A03F514002E2A18 /* trashIcon.png */; };
@@ -2842,6 +2848,8 @@
 		262B958719CA145200C2B1CC /* SpotHopperProduction.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SpotHopperProduction.entitlements; sourceTree = SOURCE_ROOT; };
 		2633CCEE19A53E7600764036 /* LikeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LikeModel.h; sourceTree = "<group>"; };
 		2633CCEF19A53E7600764036 /* LikeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LikeModel.m; sourceTree = "<group>"; };
+		2636330D1A167AB10086DE8D /* SHMenuAdminNoAdminViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHMenuAdminNoAdminViewController.h; sourceTree = "<group>"; };
+		2636330E1A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHMenuAdminNoAdminViewController.m; sourceTree = "<group>"; };
 		263D6CA71A03F33E002E2A18 /* Pods-InstantMenuStaging.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Pods-InstantMenuStaging.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InstantMenuStaging/Pods-InstantMenuStaging.debug.xcconfig"; sourceTree = "<group>"; };
 		263D6CA81A03F33E002E2A18 /* Pods-InstantMenuStaging.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Pods-InstantMenuStaging.release.xcconfig"; path = "Pods/Target Support Files/Pods-InstantMenuStaging/Pods-InstantMenuStaging.release.xcconfig"; sourceTree = "<group>"; };
 		263D6CA91A03F359002E2A18 /* Pods-InstantMenuProduction.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Pods-InstantMenuProduction.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InstantMenuProduction/Pods-InstantMenuProduction.debug.xcconfig"; sourceTree = "<group>"; };
@@ -4322,6 +4330,8 @@
 				267513D61A006C3200A7D0BB /* SHMenuAdminHomeViewController.m */,
 				267513D91A006C3200A7D0BB /* SHMenuAdminLoginViewController.h */,
 				267513DA1A006C3200A7D0BB /* SHMenuAdminLoginViewController.m */,
+				2636330D1A167AB10086DE8D /* SHMenuAdminNoAdminViewController.h */,
+				2636330E1A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m */,
 				267513E31A006C3200A7D0BB /* SHMenuAdminSidebarViewController.h */,
 				267513E41A006C3200A7D0BB /* SHMenuAdminSidebarViewController.m */,
 				267513E11A006C3200A7D0BB /* SHMenuAdminSearchViewController.h */,
@@ -6589,6 +6599,7 @@
 				03F2D9051871DB5B00C69576 /* SHButtonLatoLight.m in Sources */,
 				26741C4419AFCB3300E1CE8B /* FooterViewController.m in Sources */,
 				2675140F1A006C3200A7D0BB /* SHMenuAdminSearchViewController.m in Sources */,
+				2636330F1A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m in Sources */,
 				262A65B2195893F800A4DACD /* MenuModel.m in Sources */,
 				039F548F18D340AE004B2B67 /* MenuItemModel.m in Sources */,
 				26D0A89E19704BCB00F64384 /* SHNotifications.m in Sources */,
@@ -6785,6 +6796,7 @@
 				03CABFC818E7716400FAC5F5 /* NSNumber+Currency.m in Sources */,
 				03CABFC918E7716400FAC5F5 /* SpotListModel.m in Sources */,
 				267514121A006C3200A7D0BB /* SHMenuAdminSearchViewController.m in Sources */,
+				263633121A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m in Sources */,
 				03CABFCA18E7716400FAC5F5 /* ReviewViewController.m in Sources */,
 				03CABFCB18E7716400FAC5F5 /* SHButtonLatoLight.m in Sources */,
 				262A65B6195893F800A4DACD /* MenuModel.m in Sources */,
@@ -6973,6 +6985,7 @@
 				03F4E8C018CA34260056EAA9 /* SHButtonLatoLight.m in Sources */,
 				26741C4319AFCB3300E1CE8B /* FooterViewController.m in Sources */,
 				267514101A006C3200A7D0BB /* SHMenuAdminSearchViewController.m in Sources */,
+				263633101A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m in Sources */,
 				039F549018D340AE004B2B67 /* MenuItemModel.m in Sources */,
 				262A65B3195893F800A4DACD /* MenuModel.m in Sources */,
 				261E9CDB1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */,
@@ -7161,6 +7174,7 @@
 				267514811A016AFD00A7D0BB /* MenuTypeModel.m in Sources */,
 				267514821A016AFD00A7D0BB /* NSNumber+Currency.m in Sources */,
 				267514831A016AFD00A7D0BB /* SpotListModel.m in Sources */,
+				263633131A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m in Sources */,
 				267514841A016AFD00A7D0BB /* SHMenuAdminSearchViewController.m in Sources */,
 				267514851A016AFD00A7D0BB /* ReviewViewController.m in Sources */,
 				267514861A016AFD00A7D0BB /* SHButtonLatoLight.m in Sources */,
@@ -7349,6 +7363,7 @@
 				267515FD1A016B1300A7D0BB /* MenuTypeModel.m in Sources */,
 				267515FE1A016B1300A7D0BB /* NSNumber+Currency.m in Sources */,
 				267515FF1A016B1300A7D0BB /* SpotListModel.m in Sources */,
+				263633141A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m in Sources */,
 				267516001A016B1300A7D0BB /* SHMenuAdminSearchViewController.m in Sources */,
 				267516011A016B1300A7D0BB /* ReviewViewController.m in Sources */,
 				267516021A016B1300A7D0BB /* SHButtonLatoLight.m in Sources */,
@@ -7537,6 +7552,7 @@
 				267E05161922CC48004457B4 /* NSNumber+Currency.m in Sources */,
 				267E05171922CC48004457B4 /* SpotListModel.m in Sources */,
 				267514111A006C3200A7D0BB /* SHMenuAdminSearchViewController.m in Sources */,
+				263633111A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m in Sources */,
 				267E05181922CC48004457B4 /* ReviewViewController.m in Sources */,
 				267E05191922CC48004457B4 /* SHButtonLatoLight.m in Sources */,
 				262A65B5195893F800A4DACD /* MenuModel.m in Sources */,

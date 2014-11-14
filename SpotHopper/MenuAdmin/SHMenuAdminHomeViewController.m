@@ -32,6 +32,7 @@
 #import "MenuTypeModel.h"
 #import "DrinkModel.h"
 #import "DrinkTypeModel.h"
+#import "DrinkSubTypeModel.h"
 #import "BaseAlcoholModel.h"
 #import "PriceModel.h"
 #import "SizeModel.h"
@@ -299,6 +300,17 @@ typedef enum {
         if (!([[ClientSessionManager sharedClient] isLoggedIn]) || !([[ClientSessionManager sharedClient] hasSeenLaunch])) {
             [self performSegueWithIdentifier:@"HomeToLogin" sender:self];
         }
+        else if ([[ClientSessionManager sharedClient] isLoggedIn]) {
+            UserModel *currentUser = [UserModel currentUser];
+            
+            if ([@"user" isEqualToString:currentUser.role]) {
+                // display a modal explaining that they are not set up to manage
+                // any spot yet and provide a button which will bring up the mail
+                // message sheet to email support.
+                [self hideHUD];
+                [self performSegueWithIdentifier:@"HomeToNotAdmin" sender:self];
+            }
+        }
     });
 
     self.navigationController.title = self.spot.name;
@@ -338,6 +350,11 @@ typedef enum {
         if ([self.currentMenuSubType isEqualToString:kMenuSubtypeNameHouseCocktail]) {
             vc.isHouseCocktail = TRUE;
             vc.spot = self.spot;
+            vc.drinkSubType = [DrinkSubTypeModel houseCocktailDrinkSubType];
+        }
+        else if ([self.currentMenuSubType isEqualToString:kMenuSubtypeNameCommonCocktail]) {
+            vc.drinkSubType = [DrinkSubTypeModel commonCocktailDrinkSubType];
+            vc.spot = nil;
         }
         
         vc.delegate = self;
@@ -1229,7 +1246,7 @@ typedef enum {
         //find index of the size
         //initialize picker at that position
         NSIndexPath *indexPath = [[self.tableView indexPathsForVisibleRows]firstObject];
-        MenuItemModel *menuItem =  [self.filteredMenuItems objectAtIndex:indexPath.row]; //?
+        MenuItemModel *menuItem =  [self.filteredMenuItems objectAtIndex:indexPath.row];
         
         PriceModel *price = [menuItem.prices firstObject];
         
@@ -1508,8 +1525,8 @@ typedef enum {
 
 - (void)fetchUserSpots:(void(^)())successBlock {
     [UserModel fetchSpotsForUser:self.user query:nil page:@1 pageSize:@MAX_PRICES_SHOWN success:^(NSArray *spots) {
+        [self.rightSidebarViewController changeSpots:spots];
         if (spots.count > 1) {
-            [self.rightSidebarViewController changeSpots:spots];
             [self.navigationController.sidebarViewController showRightSidebar:TRUE];
         }
         
@@ -1548,8 +1565,8 @@ typedef enum {
         [self.tableView reloadData];
         //[self dataDidFinishRefreshing];
         [self hideHUD];
-        
-    } failure:^(ErrorModel *error){
+    } failure:^(ErrorModel *error) {
+        [self hideHUD];
         CLS_LOG(@"network error fetching menu items: %@", error.humanValidations);
         //try to fetch menu items again in a few seconds
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{

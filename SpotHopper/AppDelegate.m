@@ -244,26 +244,32 @@
         PFInstallation *currentInstallation = [PFInstallation currentInstallation];
         [currentInstallation setDeviceTokenFromData:deviceToken];
         [currentInstallation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            PFQuery *query = [PFQuery queryWithClassName:@"Application"];
-            [query whereKey:@"installation" equalTo:currentInstallation];
-            [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-                if (error) {
-                    DebugLog(@"Error: %@", error);
-                }
-                else {
-                    PFObject *app = nil;
-                    if (objects.count) {
-                        app = objects.firstObject;
-                    }
-                    else {
-                        app = [PFObject objectWithClassName:@"Application"];
-                    }
-                    [app setObject:currentInstallation forKey:@"installation"];
-                    [app setObject:[SHAppConfiguration bundleIdentifier] forKey:@"appIdentifier"];
-                    [app setObject:[SHAppConfiguration bundleDisplayName] forKey:@"appName"];
-                    [app saveEventually];
-                }
-            }];
+            if (error) {
+                DebugLog(@"Error: %@", error);
+            }
+//            else if (succeeded) {
+//                PFQuery *query = [PFQuery queryWithClassName:@"Application"];
+//                [query whereKey:@"installation" equalTo:currentInstallation];
+//                [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+//                    if (error) {
+//                        DebugLog(@"Error: %@", error);
+//                    }
+//                    else {
+//                        PFObject *app = nil;
+//                        if (objects.count) {
+//                            app = objects.firstObject;
+//                        }
+//                        else {
+//                            app = [PFObject objectWithClassName:@"Application"];
+//                        }
+//                        [app setObject:currentInstallation forKey:@"installation"];
+//                        [app setObject:[PFUser currentUser] forKey:@"user"];
+//                        [app setObject:[SHAppConfiguration bundleIdentifier] forKey:@"appIdentifier"];
+//                        [app setObject:[SHAppConfiguration bundleDisplayName] forKey:@"appName"];
+//                        [app saveEventually];
+//                    }
+//                }];
+//            }
         }];
         
         [[SHAppUtil defaultInstance] updateParse];

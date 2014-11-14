@@ -677,7 +677,7 @@
 	return deferred.promise;
 }
 
-+ (void)fetchDrinksForDrinkType:(DrinkTypeModel *)drinkType query:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize spot:(SpotModel *)spot success:(void(^)(NSArray *drinks))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
++ (void)fetchDrinksForDrinkType:(DrinkTypeModel *)drinkType drinkSubType:(DrinkSubTypeModel *)drinkSubType query:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize spot:(SpotModel *)spot success:(void(^)(NSArray *drinks))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
 
     // cancel API calls for drinks
     [[ClientSessionManager sharedClient] cancelAllHTTPOperationsWithMethod:@"GET" path:@"/api/drinks" parameters:nil ignoreParams:YES];
@@ -689,6 +689,9 @@
 
     if (drinkType.ID) {
         params[kDrinkModelParamDrinkTypeId] = drinkType.ID;
+    }
+    if (drinkSubType.ID) {
+        params[kDrinkModelParamDrinkSubtypeId] = drinkSubType.ID;
     }
     if (query.length) {
         params[kDrinkModelParamQuery] = query;
@@ -719,11 +722,11 @@
     }];
 }
 
-+ (Promise *)fetchDrinksForDrinkType:(DrinkTypeModel *)drinkType query:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize spot:(SpotModel *)spot {
++ (Promise *)fetchDrinksForDrinkType:(DrinkTypeModel *)drinkType drinkSubType:(DrinkSubTypeModel *)drinkSubType query:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize spot:(SpotModel *)spot {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
-    [self fetchDrinksForDrinkType:drinkType query:query page:page pageSize:pageSize spot:spot success:^(NSArray *drinks) {
+    [self fetchDrinksForDrinkType:drinkType drinkSubType:drinkSubType query:query page:page pageSize:pageSize spot:spot success:^(NSArray *drinks) {
         // Resolves promise
         [deferred resolveWith:drinks];
     } failure:^(ErrorModel *errorModel) {

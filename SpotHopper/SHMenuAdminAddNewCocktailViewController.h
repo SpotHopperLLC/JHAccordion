@@ -9,12 +9,19 @@
 #import "BaseViewController.h"
 
 #import "DrinkModel.h"
+#import "SpotModel.h"
+#import "DrinkTypeModel.h"
+#import "DrinkSubTypeModel.h"
 
 @protocol SHMenuAdminAddNewCocktailDelegate;
 
 @interface SHMenuAdminAddNewCocktailViewController : BaseViewController
 
 @property (weak, nonatomic) id<SHMenuAdminAddNewCocktailDelegate> delegate;
+
+@property (strong, nonatomic) SpotModel *spot;
+@property (strong, nonatomic) DrinkTypeModel *drinkType;
+@property (strong, nonatomic) DrinkSubTypeModel *drinkSubType;
 
 @end
 

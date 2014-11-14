@@ -11,6 +11,7 @@
 @class DrinkModel;
 @class SearchModel;
 @class DrinkTypeModel;
+@class DrinkSubTypeModel;
 
 @protocol SHMenuAdminSearchViewControllerDelegate;
 
@@ -21,6 +22,7 @@
 @property (nonatomic, assign) BOOL isHouseCocktail;
 
 @property (nonatomic, strong) DrinkTypeModel *drinkType;
+@property (nonatomic, strong) DrinkSubTypeModel *drinkSubType;
 @property (nonatomic, strong) NSString *menuType;
 @property (nonatomic, strong) SpotModel *spot;
 

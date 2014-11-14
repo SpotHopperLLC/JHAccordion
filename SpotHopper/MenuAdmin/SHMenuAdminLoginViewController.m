@@ -29,6 +29,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UIImageView *logoImageView;
 
+@property (weak, nonatomic) IBOutlet UIView *textFieldsContainerView;
+
 @end
 
 @implementation SHMenuAdminLoginViewController
@@ -101,29 +103,15 @@
     }
     
     [self showHUD:@"Logging in"];
-
     [[SHMenuAdminNetworkManager sharedInstance] loginUser:email password:password success:^(UserModel *user) {
-        if ([user.role isEqualToString:kUserRoleUser]) {
-            //show error message not validated
-            [self showAlert:@"Oops" message:@"You must be a bar owner or administrator to login"];
-            
-            //log user out
-            [[ClientSessionManager sharedClient] logout];
-            [self clearTextFields];
-            
-            return;
-        }
-        else {
-            [self hideHUD];
-            [[ClientSessionManager sharedClient] setHasSeenLaunch:TRUE];
-//            [self dismissViewControllerAnimated:TRUE completion:nil];
-            [self.presentingViewController dismissViewControllerAnimated:TRUE completion:^{
-                MAAssert(self.delegate, @"Delegate is required");
-                if ([self.delegate respondsToSelector:@selector(loginDidFinish:)]) {
-                    [self.delegate loginDidFinish:self];
-                }
-            }];
-        }
+        [self hideHUD];
+        [[ClientSessionManager sharedClient] setHasSeenLaunch:TRUE];
+        [self.presentingViewController dismissViewControllerAnimated:TRUE completion:^{
+            MAAssert(self.delegate, @"Delegate is required");
+            if ([self.delegate respondsToSelector:@selector(loginDidFinish:)]) {
+                [self.delegate loginDidFinish:self];
+            }
+        }];
     } failure:^(ErrorModel *error) {
         CLS_LOG(@"login issue: %@", error.humanValidations);
         [self hideHUD];
@@ -139,6 +127,10 @@
     CGFloat height = CGRectGetHeight(keyboardFrame);
     
     self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, height, 0);
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        
+    });
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification {

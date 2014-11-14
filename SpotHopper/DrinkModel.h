@@ -129,9 +129,9 @@
 
 + (Promise *)fetchWineTypes;
 
-+ (void)fetchDrinksForDrinkType:(DrinkTypeModel *)drinkType query:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize spot:(SpotModel *)spot success:(void(^)(NSArray *drinks))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
++ (void)fetchDrinksForDrinkType:(DrinkTypeModel *)drinkType drinkSubType:(DrinkSubTypeModel *)drinkSubType query:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize spot:(SpotModel *)spot success:(void(^)(NSArray *drinks))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;
 
-+ (Promise *)fetchDrinksForDrinkType:(DrinkTypeModel *)drinkType query:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize spot:(SpotModel *)spot;
++ (Promise *)fetchDrinksForDrinkType:(DrinkTypeModel *)drinkType drinkSubType:(DrinkSubTypeModel *)drinkSubType query:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize spot:(SpotModel *)spot;
 
 #pragma mark -
 

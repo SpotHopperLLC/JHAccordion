@@ -503,14 +503,6 @@
 - (void)logout {
     [[FBSession activeSession] closeAndClearTokenInformation];
     
-    if ([SHAppConfiguration parseApplicationID].length) {
-        PFInstallation *currentInstallation = [PFInstallation currentInstallation];
-        if (currentInstallation.channels != nil) {
-            [currentInstallation removeObjectsInArray:currentInstallation.channels forKey:@"channels"];
-        }
-        [currentInstallation saveInBackground];
-    }
-    
     NSHTTPCookie *cookie;
     NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     for (cookie in [storage cookies]) {

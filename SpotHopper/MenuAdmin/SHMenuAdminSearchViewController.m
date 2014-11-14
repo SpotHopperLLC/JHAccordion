@@ -144,6 +144,9 @@
             UINavigationController *nc = (UINavigationController *)segue.destinationViewController;
             if ([nc.topViewController isKindOfClass:[SHMenuAdminAddNewCocktailViewController class]]) {
                 SHMenuAdminAddNewCocktailViewController *vc = (SHMenuAdminAddNewCocktailViewController *)nc.topViewController;
+                vc.spot = self.spot;
+                vc.drinkType = self.drinkType;
+                vc.drinkSubType = self.drinkSubType;
                 vc.delegate = self;
             }
         }
@@ -435,7 +438,7 @@
         [self startSearching];
         
         SpotModel * spot = self.isHouseCocktail ? self.spot : nil;
-        [DrinkModel fetchDrinksForDrinkType:self.drinkType query:self.searchTextField.text page:self.page pageSize:kPageSize spot:spot success:^(NSArray *drinks) {
+        [DrinkModel fetchDrinksForDrinkType:self.drinkType drinkSubType:self.drinkSubType query:self.searchTextField.text page:self.page pageSize:kPageSize spot:spot success:^(NSArray *drinks) {
             
             NSMutableArray *filteredDrinks = @[].mutableCopy;
             
