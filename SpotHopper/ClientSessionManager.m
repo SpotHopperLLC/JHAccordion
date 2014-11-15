@@ -517,6 +517,20 @@
     [SHNotifications userDidLoginOut];
 }
 
+- (void)forgotPasswordWithEmail:(NSString *)email withCompletionBlock:(void (^)(NSError *error))completionBlock {
+    NSDictionary *params = @{@"email" : email};
+    
+    [self POST:@"/api/users/forgot_password" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (completionBlock) {
+            completionBlock(nil);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (completionBlock) {
+            completionBlock(error);
+        }
+    }];
+}
+
 #pragma mark - Facebook Helpers
 #pragma mark -
 

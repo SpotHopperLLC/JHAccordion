@@ -6,9 +6,13 @@
 //  Copyright (c) 2014 com.SpotHopper.admin. All rights reserved.
 //
 
-#import <Crashlytics/Crashlytics.h>
-
 #import "SHMenuAdminLoginViewController.h"
+
+#import <Crashlytics/Crashlytics.h>
+#import <MessageUI/MessageUI.h>
+#import <BlocksKit/MFMailComposeViewController+BlocksKit.h>
+#import <BlocksKit/MFMessageComposeViewController+BlocksKit.h>
+
 #import "SHMenuAdminHomeViewController.h"
 
 #import "UserModel.h"
@@ -20,7 +24,7 @@
 
 #define kUserRoleUser @"user"
 
-@interface SHMenuAdminLoginViewController ()
+@interface SHMenuAdminLoginViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) SHMenuAdminNetworkManager *networkManager;
 
@@ -74,16 +78,52 @@
     [self login];
 }
 
+- (IBAction)emailSupportButtonTapped:(id)sender {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    if (![MFMailComposeViewController canSendMail]) {
+        [self showAlert:@"Oops" message:@"Your device has not been set up for mail. Please configure your mail account and try again."];
+        return;
+    }
+    
+    MFMailComposeViewController *vc = [[MFMailComposeViewController alloc] init];
+    [vc setSubject:@"SpotHopper Admin Support"];
+    [vc setToRecipients:@[@"support@spothopperapp.com"]];
+    [vc bk_setCompletionBlock:^(MFMailComposeViewController *controller, MFMailComposeResult result, NSError *error) {
+        [controller.presentingViewController dismissViewControllerAnimated:TRUE completion:^{
+            DebugLog(@"Done");
+        }];
+    }];
+    
+    [self presentViewController:vc animated:TRUE completion:^{
+        DebugLog(@"Done");
+    }];
+}
+
+- (IBAction)forgotPasswordButtonTapped:(id)sender {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    if (!self.emailTextField.text.length) {
+        [self showAlert:@"Oops" message:@"Please enter your email in the text field."];
+        return;
+    }
+    
+    [[ClientSessionManager sharedClient] forgotPasswordWithEmail:self.emailTextField.text withCompletionBlock:^(NSError *error) {
+        if (error) {
+            DebugLog(@"Error: %@", error);
+            [self showAlert:@"Oops" message:@"Sorry, an error occurred while processing this request. Please try again."];
+        }
+        else {
+            [self showAlert:@"Check your Email" message:@"An email has been sent which will allow you to reset your password. If you have any trouble please email support."];
+        }
+    }];
+}
+
 - (IBAction)tapGestureRecognized:(id)sender {
     if (![sender isKindOfClass:[UITextField class]] &&
         ![sender isKindOfClass:[UIButton class]]) {
         [self.view endEditing:TRUE];
     }
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [self login];
-    return YES;
 }
 
 #pragma mark - Private - User Login
@@ -126,15 +166,22 @@
     
     CGFloat height = CGRectGetHeight(keyboardFrame);
     
-    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, height, 0);
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        
-    });
+    UIEdgeInsets insets = UIEdgeInsetsMake(0, 0, height, 0);
+    self.scrollView.contentInset = insets;
+    self.scrollView.scrollIndicatorInsets = insets;
+
+    // move the content up enough so it is all visible
+    CGFloat availableHeight = CGRectGetHeight(self.view.frame) - height;
+    if (self.scrollView.contentSize.height > availableHeight) {
+        CGFloat offset = self.scrollView.contentSize.height  - availableHeight;
+        self.scrollView.contentOffset = CGPointMake(0.0, offset);
+    }
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification {
-    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    UIEdgeInsets insets = UIEdgeInsetsMake(0, 0, 0, 0);
+    self.scrollView.contentInset = insets;
+    self.scrollView.scrollIndicatorInsets = insets;
 }
 
 - (void)clearTextFields {
@@ -162,15 +209,18 @@
     [super touchesBegan:touches withEvent:event];
 }
 
-/*
-#pragma mark - Navigation
+#pragma mark - UITextFieldDelegate
+#pragma mark -
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if ([textField isEqual:self.emailTextField]) {
+        [self.passwordTextField becomeFirstResponder];
+    }
+    else if ([textField isEqual:self.passwordTextField]) {
+        [self.view endEditing:TRUE];
+        [self login];
+    }
+    return YES;
 }
-*/
 
 @end

@@ -16,7 +16,7 @@
 #import "DrinkSubTypeModel.h"
 #import "ErrorModel.h"
 
-@interface SHMenuAdminAddNewWineViewController () <SHMenuAdminPickerDelegate>
+@interface SHMenuAdminAddNewWineViewController () <SHMenuAdminPickerDelegate, UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UITextField *wineNameTextField;
@@ -414,6 +414,15 @@
 
 - (void)pickerViewDidCancel:(SHMenuAdminPickerViewController *)pickerView {
     [self closePickerView:pickerView];
+}
+
+#pragma mark - UITextFieldDelegate
+#pragma mark -
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self.view endEditing:TRUE];
+    [self saveDrink];
+    return TRUE;
 }
 
 @end
