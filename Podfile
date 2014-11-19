@@ -71,13 +71,13 @@ target "SpotHopperProduction" do
     import_pods
 end
 
-target "InstantMenuStaging" do
+target "EasyMenuStaging" do
     import_pods
     
     # Debugging UI
     pod 'Reveal-iOS-SDK'
 end
 
-target "InstantMenuProduction" do
+target "EasyMenuProduction" do
     import_pods
 end

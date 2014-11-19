@@ -271,8 +271,12 @@
 #pragma mark -
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (self.results) {
+    DebugLog(@"self.results.count: %li", (long)self.results.count);
+    if (self.results.count) {
         return self.results.count + 1;
+    }
+    else if (!self.results.count && self.searchTextField.text.length) {
+        return 1;
     }
     
     return 0;
@@ -317,7 +321,7 @@
             for (MenuItemModel *menuItem in self.filteredMenuItems) {
                 if ([menuItem.drink isEqual:drink]) {
                     //display
-                    [self showAlert:[NSString stringWithFormat:@"Duplicate %@", self.drinkType] message:[NSString stringWithFormat:@"%@ is already a part of your %@ selection.", menuItem.drink.name, self.menuType]];
+                    [self showAlert:[NSString stringWithFormat:@"Duplicate %@", self.drinkType.name] message:[NSString stringWithFormat:@"%@ is already a part of your %@ selection.", menuItem.drink.name, self.menuType]];
                     
                     [tableView deselectRowAtIndexPath:indexPath animated:YES];
                     
@@ -360,15 +364,13 @@
 
 - (void)reloadTableViewDataPullDown {
     // Starts search over
-    [self runSearch];
+    [self performSelector:@selector(runSearch) withObject:nil afterDelay:0.25];
 }
 
 - (void)reloadTableViewDataPullUp {
     // Increments pages
     self.page = [self.page increment];
-    
-    // Does search
-    [self doSearch];
+    [self performSelector:@selector(runSearch) withObject:nil afterDelay:0.25];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -411,7 +413,8 @@
         [self doSearch];
     }
     else {
-        [self dataDidFinishRefreshing];
+        self.results = nil;
+        [self.tableView reloadData];
     }
 }
 
@@ -422,11 +425,11 @@
         //search spots
         [self startSearching];
         [UserModel fetchSpotsForUser:user query:self.searchTextField.text page:@1 pageSize:kPageSize success:^(NSArray *spots) {
-            self.results = spots;
-            
-            [self sortResultsAfterFetch];
-            [self dataDidFinishRefreshing];
-            [self stopSearching];
+            if (spots) {
+                [self sortResultsAfterFetch:spots];
+                [self dataDidFinishRefreshing];
+                [self stopSearching];
+            }
         } failure:^(ErrorModel *errorModel) {
             [self stopSearching];
             [self showAlert:@"Network error" message:@"Please try again"];
@@ -437,29 +440,29 @@
         //search drinks
         [self startSearching];
         
+        NSString *searchText = self.searchTextField.text;
         SpotModel * spot = self.isHouseCocktail ? self.spot : nil;
-        [DrinkModel fetchDrinksForDrinkType:self.drinkType drinkSubType:self.drinkSubType query:self.searchTextField.text page:self.page pageSize:kPageSize spot:spot success:^(NSArray *drinks) {
-            
-            NSMutableArray *filteredDrinks = @[].mutableCopy;
-            
-            //if a wine, only show wines with the correct drink type
-            if ([self.drinkType isWine]) {
-                for (DrinkModel *drink in drinks) {
-                    if ([drink.drinkSubtype.name isEqualToString:self.menuType]) {
-                        [filteredDrinks addObject:drink];
+        [DrinkModel fetchDrinksForDrinkType:self.drinkType drinkSubType:self.drinkSubType query:searchText page:self.page pageSize:kPageSize spot:spot success:^(NSArray *drinks) {
+            if (drinks) {
+                NSMutableArray *filteredDrinks = @[].mutableCopy;
+                
+                // if a wine, only show wines with the correct drink type
+                if ([self.drinkType isWine]) {
+                    for (DrinkModel *drink in drinks) {
+                        if ([drink.drinkSubtype.name isEqualToString:self.menuType]) {
+                            [filteredDrinks addObject:drink];
+                        }
                     }
                 }
+                else {
+                    // Adds drinks to results
+                    [filteredDrinks addObjectsFromArray:drinks];
+                }
+                
+                [self sortResultsAfterFetch:filteredDrinks];
+                [self dataDidFinishRefreshing];
+                [self stopSearching];
             }
-            else {
-                // Adds drinks to results
-                [filteredDrinks addObjectsFromArray:drinks];
-            }
-            
-            self.results = filteredDrinks;
-            
-            [self sortResultsAfterFetch];
-            [self dataDidFinishRefreshing];
-            [self stopSearching];
         } failure:^(ErrorModel *errorModel) {
             [self stopSearching];
             [self showAlert:@"Network error" message:@"Please try again"];
@@ -491,13 +494,16 @@
     self.searchTextField.rightViewMode = UITextFieldViewModeNever;
 }
 
-- (void)sortResultsAfterFetch {
-    NSMutableArray *sorted = self.results.mutableCopy;
+- (void)sortResultsAfterFetch:(NSArray *)results {
+    NSMutableArray *sorted = results.mutableCopy;
     [sorted sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         NSNumber *revObj1 = [obj1 valueForKey:@"relevance"];
         NSNumber *revObj2 = [obj2 valueForKey:@"relevance"];
         return [revObj2 compare:revObj1];
     }];
+    
+    DebugLog(@"sorted: %li for %@", (long)self.results.count, self.searchTextField.text);
+    
     self.results = sorted;
 }
 

@@ -534,7 +534,6 @@
 #pragma mark - Facebook Helpers
 #pragma mark -
 
-// TODO: set fetching facebook friends
 - (void)findFacebookFriendsWithCompletionBlock:(void (^)(NSArray *friendUsers, NSError *error))completionBlock {
     // Issue a Facebook Graph API request to get your user's friend list
     [FBRequestConnection startForMyFriendsWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {

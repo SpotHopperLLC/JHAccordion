@@ -700,6 +700,8 @@
         params[kDrinkModelParamManufacturer] = spot.ID;
     }
     
+    DebugLog(@"params: %@", params);
+    
     [[ClientSessionManager sharedClient] GET:@"/api/drinks" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Parses response with JSONAPI
         JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];

@@ -25,3 +25,5 @@ Pods/
 # vim
 *.swp
 
+# Crashlytics
+Crashlytics.framework
