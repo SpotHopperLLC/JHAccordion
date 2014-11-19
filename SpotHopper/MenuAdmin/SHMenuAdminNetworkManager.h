@@ -17,7 +17,7 @@
 //user based network calls
 - (void)loginUser:(NSString *)email password:(NSString *)password success:(void(^)(UserModel *user))successBlock failure:(void(^)(ErrorModel *error))failureBlock;
 
-- (void)fetchUserSpots:(UserModel *)user queryParam:(NSString *)query page:(NSNumber*)page pageSize:(NSNumber*)pageSize success:(void(^)(NSArray *spots))successBlock failure:(void(^)(ErrorModel *error))failureBlock;
+- (void)fetchUserSpots:(UserModel *)user queryParam:(NSString *)query page:(NSNumber*)page pageSize:(NSNumber*)pageSize success:(void(^)(NSArray *spots))successBlock failure:(void(^)(ErrorModel *error))failureBlock __deprecated;
 
 //menu item based network calls
 - (void)createMenuItem:(MenuItemModel *)menuItem spot:(SpotModel*)spot menuType:(id)menuTypeID success:(void(^)(MenuItemModel *created))successBlock failure:(void(^)(ErrorModel *error))failureBlock;
@@ -34,7 +34,7 @@
 - (void)deletePrice:(PriceModel *)price menuItem:(MenuItemModel *)menuItem success:(void(^)())successBlock failure:(void(^)(ErrorModel *error))failureBlock;
 
 //drinks
-- (void)fetchDrinks:(id)drinkTypeID queryParam:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize extraParams:(NSDictionary *)extraParams success:(void(^)(NSArray *drinks))successBlock failure:(void(^)(ErrorModel *error))failureBlock;
+- (void)fetchDrinks:(id)drinkTypeID queryParam:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize extraParams:(NSDictionary *)extraParams success:(void(^)(NSArray *drinks))successBlock failure:(void(^)(ErrorModel *error))failureBlock __deprecated;
 
 //misc.
 - (void)fetchDrinkSizes:(SpotModel *)spot success:(void(^)(NSArray *sizes))successBlock failure:(void(^)(ErrorModel *error))failureBlock;

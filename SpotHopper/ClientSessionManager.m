@@ -503,14 +503,6 @@
 - (void)logout {
     [[FBSession activeSession] closeAndClearTokenInformation];
     
-    if ([SHAppConfiguration parseApplicationID].length) {
-        PFInstallation *currentInstallation = [PFInstallation currentInstallation];
-        if (currentInstallation.channels != nil) {
-            [currentInstallation removeObjectsInArray:currentInstallation.channels forKey:@"channels"];
-        }
-        [currentInstallation saveInBackground];
-    }
-    
     NSHTTPCookie *cookie;
     NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     for (cookie in [storage cookies]) {
@@ -525,10 +517,23 @@
     [SHNotifications userDidLoginOut];
 }
 
+- (void)forgotPasswordWithEmail:(NSString *)email withCompletionBlock:(void (^)(NSError *error))completionBlock {
+    NSDictionary *params = @{@"email" : email};
+    
+    [self POST:@"/api/users/forgot_password" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (completionBlock) {
+            completionBlock(nil);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (completionBlock) {
+            completionBlock(error);
+        }
+    }];
+}
+
 #pragma mark - Facebook Helpers
 #pragma mark -
 
-// TODO: set fetching facebook friends
 - (void)findFacebookFriendsWithCompletionBlock:(void (^)(NSArray *friendUsers, NSError *error))completionBlock {
     // Issue a Facebook Graph API request to get your user's friend list
     [FBRequestConnection startForMyFriendsWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {

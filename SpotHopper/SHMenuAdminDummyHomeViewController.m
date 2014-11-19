@@ -73,7 +73,7 @@
 #pragma mark -
 
 - (void)fetchUserSpots:(void(^)())successBlock {
-    [[SHMenuAdminNetworkManager sharedInstance] fetchUserSpots:self.user queryParam:nil page:@1 pageSize:@MAX_PRICES_SHOWN success:^(NSArray *spots) {
+    [UserModel fetchSpotsForUser:self.user query:nil page:@1 pageSize:@MAX_PRICES_SHOWN success:^(NSArray *spots) {
         if (spots.count > 1) {
             [self.sidebarViewController changeSpots:spots];
             [self.navigationController.sidebarViewController showRightSidebar:TRUE];
@@ -84,9 +84,9 @@
         if (successBlock) {
             successBlock();
         }
-    } failure:^(ErrorModel *error) {
+    } failure:^(ErrorModel *errorModel) {
         //  [self showAlert:@"Network error" message:@"Please try again"];
-        DebugLog(@"Error: %@", error.human);
+        DebugLog(@"Error: %@", errorModel.human);
     }];
 }
 

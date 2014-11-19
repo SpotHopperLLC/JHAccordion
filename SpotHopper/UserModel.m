@@ -470,6 +470,58 @@
     return deferred.promise;
 }
 
++ (void)fetchSpotsForUser:(UserModel *)user query:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize success:(void(^)(NSArray *spots))successBlock failure:(void(^)(ErrorModel* errorModel))failureBlock {
+    
+    NSMutableDictionary *params = @{
+                                    kSpotModelParamPage : page,
+                                    kSpotModelParamsPageSize : pageSize
+                                    }.mutableCopy;
+    
+    if (query) {
+        [params setObject:query forKey:kSpotModelParamQuery];
+    }
+    
+    // /api/users/:id/spots
+    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"api/users/%@/spots", user.ID] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        // Parses response with JSONAPI
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
+            NSArray *spots = [jsonApi resourcesForKey:@"spots"];
+            if (successBlock) {
+                successBlock(spots);
+            }
+        }
+        else {
+            ErrorModel *error = [jsonApi resourceForKey:@"errors"];
+            if (failureBlock) {
+                failureBlock(error);
+            }
+        }
+    }];
+}
+
++ (Promise *)fetchSpotsForUser:(UserModel *)user query:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize {
+    Deferred *deferred = [Deferred deferred];
+    
+    [self fetchSpotsForUser:user query:query page:page pageSize:pageSize success:^(NSArray *spots) {
+        // Resolves promise
+        [deferred resolveWith:spots];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
 #pragma mark - Mapping
 
 - (NSDictionary *)mapKeysToProperties {

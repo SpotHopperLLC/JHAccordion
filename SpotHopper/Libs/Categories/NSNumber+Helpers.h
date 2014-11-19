@@ -12,7 +12,7 @@
 
 - (NSNumber*)increment;
 - (NSNumber*)decrement;
-- (NSNumber*)add:(float)toAdd;
-- (NSNumber*)subtract:(float)toSubtract;
+- (NSNumber*)add:(CGFloat)toAdd;
+- (NSNumber*)subtract:(CGFloat)toSubtract;
 
 @end

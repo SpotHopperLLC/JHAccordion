@@ -42,6 +42,7 @@
 - (BOOL)isLoggedIn;
 - (void)login:(NSHTTPURLResponse*)response user:(UserModel*)user;
 - (void)logout;
+- (void)forgotPasswordWithEmail:(NSString *)email withCompletionBlock:(void (^)(NSError *error))completionBlock;
 
 #pragma mark - Track Content Length
 

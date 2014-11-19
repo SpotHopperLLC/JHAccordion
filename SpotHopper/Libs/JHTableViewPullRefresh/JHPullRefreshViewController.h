@@ -22,4 +22,6 @@
 
 - (void)dataDidFinishRefreshing;
 
+- (void)adjustForKeyboardHeight:(CGFloat)height;
+
 @end

@@ -93,6 +93,8 @@
 
 + (void)trackUserSearchedSpecials;
 
++ (void)trackUserCheckedIn;
+
 #pragma mark - Likes
 #pragma mark -
 

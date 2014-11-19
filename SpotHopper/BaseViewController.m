@@ -329,7 +329,6 @@ typedef void(^AlertBlock)();
 }
 
 - (void)keyboardWillShow:(NSNotification*)notification {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
     CGFloat height = [self getKeyboardHeight:notification forBeginning:TRUE];
     NSTimeInterval duration = [self getKeyboardDuration:notification];
     UIViewAnimationOptions animationOptions = [self getKeyboardAnimationCurve:notification];
@@ -348,7 +347,6 @@ typedef void(^AlertBlock)();
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
     CGFloat height = [self getKeyboardHeight:notification forBeginning:FALSE];
     NSTimeInterval duration = [self getKeyboardDuration:notification];
     UIViewAnimationOptions animationOptions = [self getKeyboardAnimationCurve:notification];

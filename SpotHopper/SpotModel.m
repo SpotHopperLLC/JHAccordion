@@ -642,13 +642,30 @@
 }
 
 + (void)fetchSpotsWithText:(NSString *)text page:(NSNumber *)page success:(void(^)(NSArray *spots))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    [self fetchSpotsWithText:text spotTypes:nil page:page success:successBlock failure:failureBlock];
+}
+
++ (void)fetchSpotsWithText:(NSString *)text spotTypes:(NSArray *)spotTypes page:(NSNumber *)page success:(void(^)(NSArray *spots))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock {
+    [self cancelGetSpots];
+    
     NSMutableDictionary *params = @{
                                     kSpotModelParamQuery : text,
-                                    kSpotModelParamQueryVisibleToUsers : @"true",
                                     kSpotModelParamPage : page,
                                     kSpotModelParamsPageSize : @5,
                                     kSpotModelParamSources : kSpotModelParamSourcesSpotHopper
                                     }.mutableCopy;
+    
+    if (spotTypes.count) {
+        NSArray *spotTypeIds = [spotTypes valueForKeyPath:@"id"];
+        NSString *spotTypeIdsString = [spotTypeIds componentsJoinedByString:@","];
+        params[kSpotModelParamQuerySpotTypeId] = spotTypeIdsString;
+        params[kSpotModelParamQueryVisibleToUsers] = @"false";
+    }
+    else {
+        params[kSpotModelParamQueryVisibleToUsers] = @"true";
+    }
+    
+    DebugLog(@"params: %@", params);
     
     NSDate *startDate = [NSDate date];
     
@@ -683,10 +700,14 @@
 }
 
 + (Promise *)fetchSpotsWithText:(NSString *)text page:(NSNumber *)page {
+    return [self fetchSpotsWithText:text spotTypes:nil page:page];
+}
+
++ (Promise *)fetchSpotsWithText:(NSString *)text spotTypes:(NSArray *)spotTypes page:(NSNumber *)page {
     // Creating deferred for promises
     Deferred *deferred = [Deferred deferred];
     
-    [self fetchSpotsWithText:text page:page success:^(NSArray *spots) {
+    [self fetchSpotsWithText:text spotTypes:spotTypes page:page success:^(NSArray *spots) {
         // Resolves promise
         [deferred resolveWith:spots];
     } failure:^(ErrorModel *errorModel) {
@@ -748,6 +769,45 @@
     return deferred.promise;
 }
 
++ (void)fetchAllSpotTypes:(void (^)(NSArray *allSpotTypes))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    NSDictionary *params = @{kSpotModelParamsPageSize:@0};
+    
+    [[ClientSessionManager sharedClient] GET:@"/api/spots" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
+            NSDictionary *forms = [jsonApi objectForKey:@"form"];
+            NSArray *allSpotTypes = forms[@"spot_types"];
+
+            if (successBlock) {
+                successBlock(allSpotTypes);
+            }
+        }
+        else {
+            ErrorModel *errorModel = [jsonApi resourceForKey:@"errors"];
+            failureBlock(errorModel);
+        }
+    }];
+}
+
++ (Promise *)fetchAllSpotTypes {
+    Deferred *deferred = [Deferred deferred];
+    
+    [SpotModel fetchAllSpotTypes:^(NSArray *allSpotTypes) {
+        [deferred resolveWith:allSpotTypes];
+    } failure:^(ErrorModel *errorModel) {
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
 + (void)fetchSpotTypes:(void (^)(NSArray *spotTypes))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     NSArray *cachedSpotTypes = [[SpotModel sh_sharedCache] cachedSpotTypes];
     if (cachedSpotTypes.count && successBlock) {
@@ -755,37 +815,28 @@
         return;
     }
     
-    [SpotModel getSpots:@{kSpotModelParamsPageSize:@0} success:^(NSArray *spotModels, JSONAPI *jsonApi) {
-        NSDictionary *forms = [jsonApi objectForKey:@"form"];
-        if (forms != nil) {
-            // Get spot types only user can see
-            NSMutableArray *userSpotTypes = [@[] mutableCopy];
-            
-            NSArray *allSpotTypes = [forms objectForKey:@"spot_types"];
-            
-            // Add an Any item
-            NSDictionary *anyDictionary = @{@"id" : [NSNull null], @"name" : @"Any"};
-            SpotTypeModel *anySpotType = [SHJSONAPIResource jsonAPIResource:anyDictionary withLinked:jsonApi.linked withClass:[SpotTypeModel class]];
-            [userSpotTypes addObject:anySpotType];
-            
-            for (NSDictionary *spotTypeDictionary in allSpotTypes) {
-                if ([[spotTypeDictionary objectForKey:@"visible_to_users"] boolValue] == YES) {
-                    SpotTypeModel *spotType = [SHJSONAPIResource jsonAPIResource:spotTypeDictionary withLinked:jsonApi.linked withClass:[SpotTypeModel class]];
-                    [userSpotTypes addObject:spotType];
-                }
-            }
-            
-            [[SpotModel sh_sharedCache] cacheSpotTypes:userSpotTypes];
-            
-            if (successBlock) {
-                successBlock(userSpotTypes);
+    [self fetchAllSpotTypes:^(NSArray *allSpotTypes) {
+        NSMutableArray *userSpotTypes = @[].mutableCopy;
+        
+        // Add an Any item
+        NSDictionary *anyDictionary = @{@"id" : [NSNull null], @"name" : @"Any"};
+        SpotTypeModel *anySpotType = [SHJSONAPIResource jsonAPIResource:anyDictionary withLinked:nil withClass:[SpotTypeModel class]];
+        [userSpotTypes addObject:anySpotType];
+        
+        for (NSDictionary *spotTypeDictionary in allSpotTypes) {
+            if ([[spotTypeDictionary objectForKey:@"visible_to_users"] boolValue] == YES) {
+                SpotTypeModel *spotType = [SHJSONAPIResource jsonAPIResource:spotTypeDictionary withLinked:nil withClass:[SpotTypeModel class]];
+                [userSpotTypes addObject:spotType];
             }
         }
-    } failure:^(ErrorModel *errorModel) {
-        if (failureBlock) {
-            failureBlock(errorModel);
+        
+        [[SpotModel sh_sharedCache] cacheSpotTypes:userSpotTypes];
+        
+        if (successBlock) {
+            successBlock(userSpotTypes);
         }
-    }];
+        
+    } failure:failureBlock];
 }
 
 + (Promise *)fetchSpotTypes {
@@ -862,7 +913,52 @@
     return deferred.promise;
 }
 
++ (void)queryBreweriesWithText:(NSString *)text page:(NSNumber *)page success:(void (^)(NSArray *spots))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    [self fetchAllSpotTypes:^(NSArray *spotTypes) {
+        NSArray *brewerySpotTypes = [spotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", @"brewery"]];
+        [self fetchSpotsWithText:text spotTypes:brewerySpotTypes page:page success:successBlock failure:failureBlock];
+    } failure:failureBlock];
+}
+
++ (Promise *)queryBreweriesWithText:(NSString *)text page:(NSNumber *)page {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+    
+    [self queryBreweriesWithText:text page:page success:^(NSArray *spots) {
+        // Resolves promise
+        [deferred resolveWith:spots];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
++ (void)queryWineriesWithText:(NSString *)text page:(NSNumber *)page success:(void (^)(NSArray *spots))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    [self fetchAllSpotTypes:^(NSArray *spotTypes) {
+        NSArray *brewerySpotTypes = [spotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", @"winery"]];
+        [self fetchSpotsWithText:text spotTypes:brewerySpotTypes page:page success:successBlock failure:failureBlock];
+    } failure:failureBlock];
+}
+
++ (Promise *)queryWineriesWithText:(NSString *)text page:(NSNumber *)page {
+    // Creating deferred for promises
+    Deferred *deferred = [Deferred deferred];
+
+    [self queryWineriesWithText:text page:page success:^(NSArray *spots) {
+        // Resolves promise
+        [deferred resolveWith:spots];
+    } failure:^(ErrorModel *errorModel) {
+        // Rejects promise
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
 #pragma mark - Caching
+#pragma mark -
 
 + (SpotModelCache *)sh_sharedCache {
     static SpotModelCache *_sh_Cache = nil;

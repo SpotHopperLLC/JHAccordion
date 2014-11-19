@@ -14,4 +14,7 @@
 @property (nonatomic, strong) NSDate *createdAt;
 @property (nonatomic, strong) NSDate *updatedAt;
 
++ (instancetype)commonCocktailDrinkSubType;
++ (instancetype)houseCocktailDrinkSubType;
+
 @end

@@ -18,11 +18,11 @@
     return [self subtract:-1.0f];
 }
 
-- (NSNumber *)add:(float)toAdd {
+- (NSNumber *)add:(CGFloat)toAdd {
     return [NSNumber numberWithFloat:self.floatValue + toAdd];
 }
 
-- (NSNumber *)subtract:(float)toSubtract {
+- (NSNumber *)subtract:(CGFloat)toSubtract {
     return [self add:-toSubtract];
 }
 

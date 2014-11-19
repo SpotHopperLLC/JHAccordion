@@ -9,8 +9,12 @@
 #import <Crashlytics/Crashlytics.h>
 
 #import "SHMenuAdminSearchViewController.h"
+#import "SHMenuAdminAddNewBeerViewController.h"
+#import "SHMenuAdminAddNewWineViewController.h"
+#import "SHMenuAdminAddNewCocktailViewController.h"
 
 #import "NSNumber+Helpers.h"
+#import "UIView+AutoLayout.h"
 
 #import "UserModel.h"
 #import "DrinkModel.h"
@@ -18,14 +22,13 @@
 #import "DrinkSubtypeModel.h"
 #import "MenuItemModel.h"
 #import "SpotModel.h"
+#import "BaseAlcoholModel.h"
 #import "ErrorModel.h"
 
 #import "Tracker.h"
 
 #import "SHMenuAdminDrinkTableViewCell.h"
 #import "SHMenuAdminSpotTableViewCell.h"
-
-//#import "AppConstants.h"
 
 #import "SHMenuAdminNetworkManager.h"
 #import "ImageUtil.h"
@@ -38,24 +41,20 @@
 
 #define kMaxAddressWidth 200.0f
 
-@interface SHMenuAdminSearchViewController ()<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+@interface SHMenuAdminSearchViewController () <SHMenuAdminAddNewBeerDelegate, SHMenuAdminAddNewWineDelegate, SHMenuAdminAddNewCocktailDelegate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableviewBottomConstraint;
-@property (nonatomic, assign) CGFloat startingTableviewBottomConstraint;
+@property (assign, nonatomic) CGFloat startingTableviewBottomConstraint;
 
-@property (weak, nonatomic) IBOutlet UITextField *txtSearch;
-@property (weak, nonatomic) IBOutlet UITableView *tblResults;
-@property (weak, nonatomic) IBOutlet UILabel *lblSearch;
+@property (weak, nonatomic) IBOutlet UITextField *searchTextField;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UILabel *searchLabel;
 
-@property (nonatomic, strong) NSTimer *searchTimer;
+@property (strong, nonatomic) NSTimer *searchTimer;
 
-@property (nonatomic, assign) CGRect tblResultsInitialFrame;
-
-@property (nonatomic, strong) NSNumber *page;
-@property (nonatomic, strong) NSMutableArray *results;
-
-@property (nonatomic, strong) NSMutableDictionary *drinkTypeMap;
+@property (strong, nonatomic) NSNumber *page;
+@property (strong, nonatomic) NSArray *results;
 
 @end
 
@@ -65,57 +64,50 @@
     [super viewDidLoad];
     
     // Register pull to refresh
-    [self registerRefreshTableView:_tblResults withReloadType:kPullRefreshTypeBoth];
+    [self registerRefreshTableView:_tableView withReloadType:kPullRefreshTypeBoth];
     
     [self styleView];
     
     self.startingTableviewBottomConstraint = self.tableviewBottomConstraint.constant;
     
-    // Initializes stuff
-    _tblResultsInitialFrame = CGRectZero;
-    _results = [NSMutableArray array];
-    
     if (self.isHouseCocktail && !self.spot) {
         NSAssert(self.spot, @"spot must be defined if searching for house cocktails");
     }
     
-    if (self.isWine && !self.menuType) {
+    if ([self.drinkType isWine] && !self.menuType) {
         NSAssert(self.menuType, @"menu type must be defined if searching wines");
     }
     
     if (self.isSpotSearch) {
-        self.txtSearch.placeholder = @"Search for spot named...";
+        self.searchTextField.placeholder = @"Search for spot named...";
     }
     
-    self.drinkTypeMap = [NSMutableDictionary dictionary];
-    [self createTypeDictionary];
+//    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+//        DebugLog(@"iOS 8.x+");
+//        
+//        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
+//        UIVibrancyEffect *effect = [UIVibrancyEffect effectForBlurEffect:blurEffect];
+//        UIVisualEffectView *veView = [[UIVisualEffectView alloc] initWithEffect:effect];
+//        veView.translatesAutoresizingMaskIntoConstraints = NO;
+//        [self.view insertSubview:veView belowSubview:self.tableView];
+//        [veView pinEdges:JRTViewPinAllEdges toSameEdgesOfView:self.tableView];
+//    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
     //hide navbar
     [self.navigationController setNavigationBarHidden:YES animated:animated];
-    
-    [_txtSearch becomeFirstResponder];
-    
-    // Configures text search
-    [_txtSearch addTarget:self action:@selector(onEditingChangeSearch:) forControlEvents:UIControlEventEditingChanged];
-    
-    // Gets table frame
-    if (CGRectEqualToRect(_tblResultsInitialFrame, CGRectZero)) {
-        _tblResultsInitialFrame = _tblResults.frame;
-    }
     
     // Keyboard notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    
+    [self.searchTextField becomeFirstResponder];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    
-    // Configures text search
-    [_txtSearch removeTarget:self action:@selector(onEditingChangeSearch:) forControlEvents:UIControlEventEditingChanged];
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [self.navigationController setNavigationBarHidden:NO animated:animated];
@@ -126,141 +118,233 @@
     return UIStatusBarStyleLightContent;
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    DebugLog(@"segue: %@", segue.identifier);
+    
+    if ([@"SearchToNewBeer" isEqualToString:segue.identifier]) {
+        if ([segue.destinationViewController isKindOfClass:[UINavigationController class]]) {
+            UINavigationController *nc = (UINavigationController *)segue.destinationViewController;
+            if ([nc.topViewController isKindOfClass:[SHMenuAdminAddNewBeerViewController class]]) {
+                SHMenuAdminAddNewBeerViewController *vc = (SHMenuAdminAddNewBeerViewController *)nc.topViewController;
+                vc.delegate = self;
+            }
+        }
+    }
+    else if ([@"SearchToNewWine" isEqualToString:segue.identifier]) {
+        if ([segue.destinationViewController isKindOfClass:[UINavigationController class]]) {
+            UINavigationController *nc = (UINavigationController *)segue.destinationViewController;
+            if ([nc.topViewController isKindOfClass:[SHMenuAdminAddNewWineViewController class]]) {
+                SHMenuAdminAddNewWineViewController *vc = (SHMenuAdminAddNewWineViewController *)nc.topViewController;
+                vc.delegate = self;
+            }
+        }
+    }
+    else if ([@"SearchToNewCocktail" isEqualToString:segue.identifier]) {
+        if ([segue.destinationViewController isKindOfClass:[UINavigationController class]]) {
+            UINavigationController *nc = (UINavigationController *)segue.destinationViewController;
+            if ([nc.topViewController isKindOfClass:[SHMenuAdminAddNewCocktailViewController class]]) {
+                SHMenuAdminAddNewCocktailViewController *vc = (SHMenuAdminAddNewCocktailViewController *)nc.topViewController;
+                vc.spot = self.spot;
+                vc.drinkType = self.drinkType;
+                vc.drinkSubType = self.drinkSubType;
+                vc.delegate = self;
+            }
+        }
+    }
+
+}
+
+#pragma mark - Base Overrides
+#pragma mark -
+
+- (UIScrollView *)mainScrollView {
+    return self.tableView;
+}
+
+#pragma mark - Keyboard Support
+#pragma mark -
+
+- (BOOL)keyboardWillShowWithHeight:(CGFloat)height duration:(CGFloat)duration animationOptions:(UIViewAnimationOptions)animationOptions {
+    [self adjustForKeyboardHeight:height];
+    return [super keyboardWillShowWithHeight:height duration:duration animationOptions:animationOptions];
+}
+
+- (BOOL)keyboardWillHideWithHeight:(CGFloat)height duration:(CGFloat)duration animationOptions:(UIViewAnimationOptions)animationOptions {
+    [self adjustForKeyboardHeight:0];
+    return [super keyboardWillHideWithHeight:height duration:duration animationOptions:animationOptions];
+}
+
 #pragma mark - Tracking
+#pragma mark -
 
 - (NSString *)screenName {
     return @"Search";
 }
 
-#pragma mark - Keyboard
+#pragma mark - Rendering Cells
+#pragma mark -
 
-- (NSArray *)textfieldToHideKeyboard {
-    return @[_txtSearch];
-}
-
-- (void)keyboardWillShow:(NSNotification*)notification {
-    [self keyboardWillHideOrShow:notification show:YES];
-}
-
-- (void)keyboardWillHide:(NSNotification*)notification {
-    [self keyboardWillHideOrShow:notification show:NO];
-}
-
-- (void)keyboardWillHideOrShow:(NSNotification*)notification show:(BOOL)show {
-    NSDictionary *userInfo = notification.userInfo;
-    NSTimeInterval duration = [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    UIViewAnimationCurve curve = [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+- (void)renderCell:(UITableViewCell *)cell withItem:(id)item {
+    UIImageView *imageView = (UIImageView *)[cell viewWithTag:1];
+    UILabel *titleLabel = (UILabel *)[cell viewWithTag:2];
+    UILabel *subtitle1Label = (UILabel *)[cell viewWithTag:3];
+    UILabel *subtitle2Label = (UILabel *)[cell viewWithTag:4];
     
-    CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    //CGRect frame = _tblResults.frame;
-    
-    CGFloat height;
-    
-    if (show == YES) {
-        height  = CGRectGetHeight(self.view.frame) - CGRectGetMinY(self.tblResults.frame) - CGRectGetHeight(keyboardFrame);
-        //        frame.size.height = CGRectGetHeight(self.view.frame) - CGRectGetMinY(frame) - CGRectGetHeight(keyboardFrame);
-
-        
-        if (SYSTEM_VERSION_LESS_THAN(@"7.0")) {
-            height -= 20.0f;
-        }
-        
-    } else {
-        //set bottom constraint to original position
-        height = self.startingTableviewBottomConstraint;
+    if ([item isKindOfClass:[SpotModel class]]) {
+        SpotModel *spot = (SpotModel *)item;
+        [ImageUtil loadThumbnailImage:spot.highlightImage imageView:imageView placeholderImage:spot.placeholderImage];
+        titleLabel.text = spot.name;
     }
-    
-    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | curve animations:^{
-        //set bottom constraint to above the keyboard
-        self.tableviewBottomConstraint.constant = height;
-    } completion:^(BOOL finished) {
-        [self dataDidFinishRefreshing];
-    }];
+    else if ([item isKindOfClass:[DrinkModel class]]) {
+        DrinkModel *drink = (DrinkModel *)item;
+        [ImageUtil loadThumbnailImage:drink.highlightImage imageView:imageView placeholderImage:drink.placeholderImage];
+        
+        titleLabel.text = drink.name;
+        subtitle1Label.text = drink.spot.name.length ? drink.spot.name : nil;
+        
+        if (drink.isBeer) {
+            subtitle2Label.text = drink.style;
+        }
+        else if (drink.isWine) {
+            subtitle2Label.text = [drink.vintage stringValue];
+        }
+        else if (drink.isCocktail) {
+            BaseAlcoholModel *baseAlcohol = [drink.baseAlochols firstObject];
+            subtitle2Label.text = baseAlcohol.name.length ? baseAlcohol.name : nil;
+        }
+    }
 
+}
+
+#pragma mark - SHMenuAdminAddNewBeerDelegate
+#pragma mark -
+
+- (void)addNewBeerViewControllerDidCancel:(SHMenuAdminAddNewBeerViewController *)vc {
+    [self.presentedViewController dismissViewControllerAnimated:TRUE completion:^{
+        DebugLog(@"Done");
+    }];
+}
+
+- (void)addNewBeerViewController:(SHMenuAdminAddNewBeerViewController *)vc didCreateDrink:(DrinkModel *)drink {
+    [vc.presentingViewController dismissViewControllerAnimated:TRUE completion:^{
+        if ([self.delegate respondsToSelector:@selector(searchViewController:selectedDrink:)]) {
+            [self.delegate searchViewController:self selectedDrink:drink];
+        }
+    }];
+}
+
+#pragma mark - SHMenuAdminAddNewWineDelegate
+#pragma mark -
+
+- (void)addNewWineViewControllerDidCancel:(SHMenuAdminAddNewWineViewController *)vc {
+    [self.presentedViewController dismissViewControllerAnimated:TRUE completion:^{
+        DebugLog(@"Done");
+    }];
+}
+
+- (void)addNewWineViewController:(SHMenuAdminAddNewWineViewController *)vc didCreateDrink:(DrinkModel *)drink {
+    [vc.presentingViewController dismissViewControllerAnimated:TRUE completion:^{
+        if ([self.delegate respondsToSelector:@selector(searchViewController:selectedDrink:)]) {
+            [self.delegate searchViewController:self selectedDrink:drink];
+        }
+    }];
+}
+
+#pragma mark - SHMenuAdminAddNewCocktailDelegate
+#pragma mark -
+
+- (void)addNewCocktailViewControllerDidCancel:(SHMenuAdminAddNewCocktailViewController *)vc {
+    [self.presentedViewController dismissViewControllerAnimated:TRUE completion:^{
+        DebugLog(@"Done");
+    }];
+}
+
+- (void)addNewCocktailViewController:(SHMenuAdminAddNewCocktailViewController *)vc didCreateDrink:(DrinkModel *)drink {
+    [vc.presentingViewController dismissViewControllerAnimated:TRUE completion:^{
+        if ([self.delegate respondsToSelector:@selector(searchViewController:selectedDrink:)]) {
+            [self.delegate searchViewController:self selectedDrink:drink];
+        }
+    }];
 }
 
 #pragma mark - UITableViewDataSource
 #pragma mark -
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _results.count;
+    DebugLog(@"self.results.count: %li", (long)self.results.count);
+    if (self.results.count) {
+        return self.results.count + 1;
+    }
+    else if (!self.results.count && self.searchTextField.text.length) {
+        return 1;
+    }
+    
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    JSONAPIResource *result = [_results objectAtIndex:indexPath.row];
-    
-    if ([result isKindOfClass:[DrinkModel class]] == YES) {
-        SHMenuAdminDrinkTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DrinkCell" forIndexPath:indexPath];
-        DrinkModel *drink = (DrinkModel*)result;
-        [cell setDrink:drink];
-        
+    if (indexPath.row < self.results.count) {
+        id item = self.results[indexPath.row];
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailCell" forIndexPath:indexPath];
+        [self renderCell:cell withItem:item];
         return cell;
-
-        
-    } else if ([result isKindOfClass:[SpotModel class]] == YES) {
-        SHMenuAdminSpotTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SpotCell" forIndexPath:indexPath];
-        SpotModel *spot = (SpotModel*)result;
-        [cell setSpot:spot];
-        
-        return cell;
-
     }
-    
-    CLS_LOG(@"json result returned is neither a spot or drink");
-    return nil;
-    
+    else {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"NewDrinkCell" forIndexPath:indexPath];
+        return cell;
+    }
 }
 
 #pragma mark - UITableViewDelegate
 #pragma mark -
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    JSONAPIResource *result = [_results objectAtIndex:indexPath.row];
-    if ([result isKindOfClass:[DrinkModel class]] == YES) {
-        DrinkModel *drink = (DrinkModel*)result;
-        
-        for (MenuItemModel *menuItem in self.filteredMenuItems) {
-            if ([menuItem.drink isEqual:drink]) {
-                //display
-                [self showAlert:[NSString stringWithFormat:@"Duplicate %@", self.drinkType] message:[NSString stringWithFormat:@"%@ is already a part of your %@ selection.", menuItem.drink.name, self.menuType]];
-                
-                [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-                return;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    });
+    
+    if (indexPath.row < self.results.count) {
+        id item = [self.results objectAtIndex:indexPath.row];
+        if ([item isKindOfClass:[SpotModel class]]) {
+            SpotModel *spot = (SpotModel *)item;
+            
+            if ([self.delegate respondsToSelector:@selector(searchViewController:selectedSpot:)]) {
+                //delegate to the homeviewcontroller to
+                //1. fetch menu items w/ new spot's id
+                //2. display menu items
+                [self.delegate searchViewController:self selectedSpot:spot];
             }
         }
-        
-        //delegate to the homeviewcontroller to add a new cell with the DrinkModel info
-        if ([_delegate respondsToSelector:@selector(searchViewController:selectedDrink:)]) {
-            [self.navigationController popViewControllerAnimated:TRUE];
-            [_delegate searchViewController:self selectedDrink:drink];
-        }
-        
-    } else if ([result isKindOfClass:[SpotModel class]] == YES) {
-        SpotModel *spot = (SpotModel*)result;
-        
-        if ([_delegate respondsToSelector:@selector(searchViewController:selectedSpot:)]) {
-            //delegate to the homeviewcontroller to
-            //1. fetch menu items w/ new spot's id
-            //2. display menu items
-            [self.navigationController popViewControllerAnimated:TRUE];
-            [_delegate searchViewController:self selectedSpot:spot];
+        else if ([item isKindOfClass:[DrinkModel class]]) {
+            DrinkModel *drink = (DrinkModel *)item;
+            
+            for (MenuItemModel *menuItem in self.filteredMenuItems) {
+                if ([menuItem.drink isEqual:drink]) {
+                    //display
+                    [self showAlert:[NSString stringWithFormat:@"Duplicate %@", self.drinkType.name] message:[NSString stringWithFormat:@"%@ is already a part of your %@ selection.", menuItem.drink.name, self.menuType]];
+                    
+                    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+                    
+                    return;
+                }
+            }
+            
+            //delegate to the homeviewcontroller to add a new cell with the DrinkModel info
+            if ([self.delegate respondsToSelector:@selector(searchViewController:selectedDrink:)]) {
+                [self.delegate searchViewController:self selectedDrink:drink];
+            }
         }
     }
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    else {
+        [self startCreatingNewDrink];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat height = 68.0f;
 
     if (self.isSpotSearch) {
-//        SpotModel *spot = [_results objectAtIndex:indexPath.row];
+//        SpotModel *spot = [self.results objectAtIndex:indexPath.row];
 //       
 //        if (spot.addressCityState) {
 //             height += [self heightForString:spot.addressCityState font:[UIFont fontWithName:@"Lato-Italic" size:14.0f] maxWidth:kMaxAddressWidth];
@@ -276,21 +360,33 @@
 }
 
 #pragma mark - JHPullToRefresh
+#pragma mark -
 
 - (void)reloadTableViewDataPullDown {
     // Starts search over
-    [self startSearch];
+    [self performSelector:@selector(runSearch) withObject:nil afterDelay:0.25];
 }
 
 - (void)reloadTableViewDataPullUp {
     // Increments pages
-    _page = [_page increment];
-    
-    // Does search
-    [self doSearch];
+    self.page = [self.page increment];
+    [self performSelector:@selector(runSearch) withObject:nil afterDelay:0.25];
 }
 
 #pragma mark - UITextFieldDelegate
+#pragma mark -
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    [self performSelector:@selector(runSearch) withObject:nil afterDelay:0.25];
+    
+    return YES;
+}
+
+- (BOOL)textFieldShouldClear:(UITextField *)textField {
+    [self performSelector:@selector(runSearch) withObject:nil afterDelay:0.25];
+    
+    return TRUE;
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
@@ -298,127 +394,129 @@
 }
 
 #pragma mark - User Actions
-
-- (void)onEditingChangeSearch:(id)sender {
-    // Cancel and nil
-    [_searchTimer invalidate];
-    _searchTimer = nil;
-    
-    // Schedule timer
-    _searchTimer = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(startSearch) userInfo:nil repeats:NO];
-}
+#pragma mark -
 
 - (IBAction)backButtonTapped:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (IBAction)newDrinkButtonTapped:(id)sender {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
-    [self performSegueWithIdentifier:@"SearchToNewBeerModal" sender:self];
-}
-
 #pragma mark - Private
+#pragma mark -
 
-- (void)createTypeDictionary {
+- (void)runSearch {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(runSearch) object:nil];
     
-    [[SHMenuAdminNetworkManager sharedInstance] fetchDrinkTypes:^(NSArray *drinkTypes) {
-        for (DrinkTypeModel *drinkType in drinkTypes) {
-            [self.drinkTypeMap setObject:drinkType.ID forKey:drinkType.name];
-        }
-    } failure:^(ErrorModel *error) {
-       
-        CLS_LOG(@"network error seacrching for drink types.f Error: %@", error.humanValidations);
-        //attempt to fetch types again
-        [self createTypeDictionary];
-    }];
-    
-}
-
-- (void)startSearch {
-    [self cancelRequests];
     // Resets pages and clears results
-    _page = @1;
+    self.page = @1;
         
-    if (_txtSearch.text.length > 0) {
+    if (self.searchTextField.text.length) {
         [self doSearch];
-    } else {
-        [self dataDidFinishRefreshing];
+    }
+    else {
+        self.results = nil;
+        [self.tableView reloadData];
     }
 }
 
 - (void)doSearch {
-    
-    [self hideHUD];
-    [self showHUD:@"Searching"];
-    
-    if (_isSpotSearch) {
+    if (self.isSpotSearch) {
         UserModel *user = [ClientSessionManager sharedClient].currentUser;
 
         //search spots
-        [[SHMenuAdminNetworkManager sharedInstance] fetchUserSpots:user queryParam:self.txtSearch.text page:@1 pageSize:kPageSize success:^(NSArray *spots) {
-           
-            [_results removeAllObjects];
-            [self.results addObjectsFromArray:spots];
-
-            [self hideHUD];
-            [self sortResultsAfterFetch];
-            [self dataDidFinishRefreshing];
-
-        } failure:^(ErrorModel *error) {
+        [self startSearching];
+        [UserModel fetchSpotsForUser:user query:self.searchTextField.text page:@1 pageSize:kPageSize success:^(NSArray *spots) {
+            if (spots) {
+                [self sortResultsAfterFetch:spots];
+                [self dataDidFinishRefreshing];
+                [self stopSearching];
+            }
+        } failure:^(ErrorModel *errorModel) {
+            [self stopSearching];
             [self showAlert:@"Network error" message:@"Please try again"];
-            
-            CLS_LOG(@"network error searching for spots. Error: %@", error.humanValidations);
+            CLS_LOG(@"network error searching for spots. Error: %@", errorModel.humanValidations);
         }];
     }
     else {
         //search drinks
-        id drinkTypeID = [self.drinkTypeMap objectForKey:self.drinkType];
-        NSMutableDictionary *extraParams = [NSMutableDictionary dictionary];
-
-        if (self.isHouseCocktail) {
-           [extraParams setValue:self.spot.ID forKey:kDrinkModelParamManufacturer];
-        }
+        [self startSearching];
         
-        [[SHMenuAdminNetworkManager sharedInstance] fetchDrinks:drinkTypeID queryParam:self.txtSearch.text page:self.page pageSize:kPageSize extraParams:extraParams success:^(NSArray *drinks) {
-            
-            [_results removeAllObjects];
-            
-            //if a wine, only show wines with the correct drink type
-            if (_isWine) {
-                for (DrinkModel *drink in drinks) {
-                    if ([drink.drinkSubtype.name isEqualToString:self.menuType]) {
-                        [_results addObject:drink];
+        NSString *searchText = self.searchTextField.text;
+        SpotModel * spot = self.isHouseCocktail ? self.spot : nil;
+        [DrinkModel fetchDrinksForDrinkType:self.drinkType drinkSubType:self.drinkSubType query:searchText page:self.page pageSize:kPageSize spot:spot success:^(NSArray *drinks) {
+            if (drinks) {
+                NSMutableArray *filteredDrinks = @[].mutableCopy;
+                
+                // if a wine, only show wines with the correct drink type
+                if ([self.drinkType isWine]) {
+                    for (DrinkModel *drink in drinks) {
+                        if ([drink.drinkSubtype.name isEqualToString:self.menuType]) {
+                            [filteredDrinks addObject:drink];
+                        }
                     }
                 }
+                else {
+                    // Adds drinks to results
+                    [filteredDrinks addObjectsFromArray:drinks];
+                }
+                
+                [self sortResultsAfterFetch:filteredDrinks];
+                [self dataDidFinishRefreshing];
+                [self stopSearching];
             }
-            else {
-                // Adds drinks to results
-                [_results addObjectsFromArray:drinks];
-            }
-            
-            [self hideHUD];
-            [self sortResultsAfterFetch];
-            [self dataDidFinishRefreshing];
-            
-        } failure:^(ErrorModel *error) {
-            //[self showAlert:@"Network error" message:@"Please try again"];
-            CLS_LOG(@"network error seacrching for drinks. Error: %@", error.humanValidations);
+        } failure:^(ErrorModel *errorModel) {
+            [self stopSearching];
+            [self showAlert:@"Network error" message:@"Please try again"];
+            CLS_LOG(@"network error searching for drinks. Error: %@", errorModel.humanValidations);
         }];
-        
     }
 }
 
-- (void)cancelRequests {
-    [DrinkModel cancelGetDrinks];
-    [[ClientSessionManager sharedClient] cancelAllHTTPOperationsWithMethod:@"GET" path:@"/api/users" parameters:nil ignoreParams:YES];
+- (void)startSearching {
+    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    activityIndicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+    activityIndicatorView.hidesWhenStopped = TRUE;
+    activityIndicatorView.tag = 100;
+    
+    CGRect frame = activityIndicatorView.frame;
+    frame.size.width += 5.0f;
+    UIView *containerView = [[UIView alloc] initWithFrame:frame];
+    [containerView addSubview:activityIndicatorView];
+    
+    self.searchTextField.rightView = containerView;
+    self.searchTextField.rightViewMode = UITextFieldViewModeAlways;
+    [activityIndicatorView startAnimating];
 }
 
-- (void)sortResultsAfterFetch {
-    [_results sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+- (void)stopSearching {
+    UIActivityIndicatorView *activityIndicatorView = (UIActivityIndicatorView *)[self.searchTextField.rightView viewWithTag:100];
+    [activityIndicatorView stopAnimating];
+    self.searchTextField.rightView = nil;
+    self.searchTextField.rightViewMode = UITextFieldViewModeNever;
+}
+
+- (void)sortResultsAfterFetch:(NSArray *)results {
+    NSMutableArray *sorted = results.mutableCopy;
+    [sorted sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         NSNumber *revObj1 = [obj1 valueForKey:@"relevance"];
         NSNumber *revObj2 = [obj2 valueForKey:@"relevance"];
         return [revObj2 compare:revObj1];
     }];
+    
+    DebugLog(@"sorted: %li for %@", (long)self.results.count, self.searchTextField.text);
+    
+    self.results = sorted;
+}
+
+- (void)startCreatingNewDrink {
+    if ([self.drinkType isBeer]) {
+        [self performSegueWithIdentifier:@"SearchToNewBeer" sender:self];
+    }
+    else if ([self.drinkType isWine]) {
+        [self performSegueWithIdentifier:@"SearchToNewWine" sender:self];
+    }
+    else if ([self.drinkType isCocktail]) {
+        [self performSegueWithIdentifier:@"SearchToNewCocktail" sender:self];
+    }
 }
 
 #pragma mark - Styling
@@ -427,13 +525,12 @@
 - (void)styleView {
     self.headerView.backgroundColor = [SHMenuAdminStyleSupport sharedInstance].LIGHT_ORANGE;
     
-    self.txtSearch.placeholder = [NSString stringWithFormat:@"Find %@ named...", [self.drinkType lowercaseString]];
-    self.txtSearch.font = [UIFont fontWithName:@"Lato-Regular" size:14.0f];
-    self.txtSearch.backgroundColor = [SHMenuAdminStyleSupport sharedInstance].DARK_ORANGE;
-    self.txtSearch.textColor = [UIColor whiteColor];
+    self.searchTextField.placeholder = [NSString stringWithFormat:@"Find %@ named...", [self.drinkType.name lowercaseString]];
+    self.searchTextField.font = [UIFont fontWithName:@"Lato-Regular" size:14.0f];
+    self.searchTextField.backgroundColor = [SHMenuAdminStyleSupport sharedInstance].DARK_ORANGE;
+    self.searchTextField.textColor = [UIColor whiteColor];
     
-    self.lblSearch.font = [UIFont fontWithName:@"Lato-Regular" size:20.0f];
-
+    self.searchLabel.font = [UIFont fontWithName:@"Lato-Regular" size:20.0f];
 }
 
 @end

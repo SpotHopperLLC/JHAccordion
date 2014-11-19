@@ -65,7 +65,9 @@
         NSMutableArray *activityItems = @[].mutableCopy;
         [activityItems addObject:[NSString stringWithFormat:@"Special at %@", spot.name]];
         [activityItems addObject:specialText.length ? specialText : @""];
-        [activityItems addObject:shortenedURL];
+        if (shortenedURL) {
+            [activityItems addObject:shortenedURL];
+        }
 //        [activityItems addObject:[NSURL URLWithString:link]];
 //        if (image) {
 //            [activityItems addObject:image];

@@ -20,6 +20,25 @@
     return self.name;
 }
 
+#pragma mark - Public
+#pragma mark -
+
++ (instancetype)commonCocktailDrinkSubType {
+    DrinkSubTypeModel *drinkSubType = [[DrinkSubTypeModel alloc] init];
+    drinkSubType.name = @"Common Cocktail";
+    drinkSubType.ID = @8;
+    
+    return drinkSubType;
+}
+
++ (instancetype)houseCocktailDrinkSubType {
+    DrinkSubTypeModel *drinkSubType = [[DrinkSubTypeModel alloc] init];
+    drinkSubType.name = @"House Cocktail";
+    drinkSubType.ID = @9;
+    
+    return drinkSubType;
+}
+
 #pragma mark -
 
 - (NSDictionary *)mapKeysToProperties {

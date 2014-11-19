@@ -156,6 +156,10 @@
     [self trackUserAction:@"User Searched Specials"];
 }
 
++ (void)trackUserCheckedIn {
+    [self trackUserAction:@"User Checked In"];
+}
+
 #pragma mark - Likes
 #pragma mark -
 

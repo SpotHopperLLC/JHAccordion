@@ -84,36 +84,38 @@
         NSAssert(pageSize, @"page size must be specified");
     }
     
-    NSMutableDictionary *paramsSpots = @{
-                                         kSpotModelParamPage : page, //@1,
-                                         kSpotModelParamsPageSize : pageSize
-                                         }.mutableCopy;
+    [UserModel fetchSpotsForUser:user query:query page:page pageSize:page success:successBlock failure:failureBlock];
     
-    if (query) {
-        [paramsSpots setObject:query forKey:kSpotModelParamQuery];
-    }
-    
-    
-    // /api/users/:id/spots
-    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"api/users/%@/spots", user.ID] parameters:paramsSpots success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        // Parses response with JSONAPI
-        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
-        
-        // Parses response with JSONAPI
-        if (operation.response.statusCode == 200) {
-            if (successBlock) {
-                NSArray *spots = [jsonApi resourcesForKey:@"spots"];
-                successBlock(spots);
-            }
-        }
-        else {
-            if (failureBlock) {
-                ErrorModel *error = [jsonApi resourceForKey:@"errors"];
-                failureBlock(error);
-            }
-        }
-    }];
+//    NSMutableDictionary *paramsSpots = @{
+//                                         kSpotModelParamPage : page, //@1,
+//                                         kSpotModelParamsPageSize : pageSize
+//                                         }.mutableCopy;
+//    
+//    if (query) {
+//        [paramsSpots setObject:query forKey:kSpotModelParamQuery];
+//    }
+//    
+//    
+//    // /api/users/:id/spots
+//    [[ClientSessionManager sharedClient] GET:[NSString stringWithFormat:@"api/users/%@/spots", user.ID] parameters:paramsSpots success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        
+//        // Parses response with JSONAPI
+//        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+//        
+//        // Parses response with JSONAPI
+//        if (operation.response.statusCode == 200) {
+//            if (successBlock) {
+//                NSArray *spots = [jsonApi resourcesForKey:@"spots"];
+//                successBlock(spots);
+//            }
+//        }
+//        else {
+//            if (failureBlock) {
+//                ErrorModel *error = [jsonApi resourceForKey:@"errors"];
+//                failureBlock(error);
+//            }
+//        }
+//    }];
     
 }
 
@@ -199,6 +201,7 @@
 
 #pragma mark - Drinks
 #pragma mark -
+
 - (void)fetchDrinks:(id)drinkTypeID queryParam:(NSString *)query page:(NSNumber *)page pageSize:(NSNumber *)pageSize extraParams:(NSDictionary *)extraParams success:(void(^)(NSArray *drinks))successBlock failure:(void(^)(ErrorModel *error))failureBlock {
   
     if (!drinkTypeID) {
@@ -214,14 +217,13 @@
     }
     
     NSMutableDictionary *paramsDrinks = [@{
-                                           kDrinkModelParamQuery : query,
                                            kDrinkModelParamPage : page,
                                            kDrinkModelParamsPageSize : pageSize,
                                            kDrinkModelParamDrinkTypeId : drinkTypeID
                                            } mutableCopy];
     
     if (query) {
-        [paramsDrinks setObject:query forKey:kSpotModelParamQuery];
+        [paramsDrinks setObject:query forKey:kDrinkModelParamQuery];
     }
     
     //any extra drink params that may be added to the search are found

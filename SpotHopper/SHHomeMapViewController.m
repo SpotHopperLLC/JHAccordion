@@ -3181,6 +3181,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)checkInAtSpot:(SpotModel *)spot {
     [CheckInModel checkInAtSpot:spot success:^(CheckInModel *checkin) {
+        [Tracker trackUserCheckedIn];
         [self hideCheckin:TRUE withCompletionBlock:^{
             [self displayCheckin:checkin atSpot:spot];
             [[SHAppContext defaultInstance] endActivity:@"Checkin"];
