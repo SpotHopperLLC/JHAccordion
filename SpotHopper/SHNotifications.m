@@ -64,6 +64,20 @@ NSString * const SHAppSpecialNotificationKey = @"SHAppSpecialNotificationKey";
 NSString * const SHAppDrinkNotificationKey = @"SHAppDrinkNotificationKey";
 NSString * const SHAppCheckinNotificationKey = @"SHAppCheckinNotificationKey";
 
+NSString * const SHAppShowSpecialsNotificationName = @"SHAppShowSpecialsNotificationName";
+NSString * const SHAppShowSpecialsNotificationLocationKey = @"location";
+NSString * const SHAppShowSpecialsNotificationRadiusKey = @"radius";
+
+NSString * const SHAppShowSpotlistNotificationName = @"SHAppShowSpotlistNotificationName";
+NSString * const SHAppShowSpotlistNotificationSpotlistKey = @"spotlist";
+NSString * const SHAppShowSpotlistNotificationLocationKey = @"location";
+NSString * const SHAppShowSpotlistNotificationRadiusKey = @"radius";
+
+NSString * const SHAppShowDrinklistNotificationName = @"SHAppShowDrinklistNotificationName";
+NSString * const SHAppShowDrinklistNotificationDrinklistKey = @"drinklist";
+NSString * const SHAppShowDrinklistNotificationLocationKey = @"location";
+NSString * const SHAppShowDrinklistNotificationRadiusKey = @"radius";
+
 @implementation SHNotifications
 
 + (void)goToHomeMap {
@@ -175,13 +189,13 @@ NSString * const SHAppCheckinNotificationKey = @"SHAppCheckinNotificationKey";
                                                       userInfo:userInfo];
 }
 
-+ (void)userDidLoginIn {
++ (void)userDidLogIn {
     [[NSNotificationCenter defaultCenter] postNotificationName:SHUserDidLogInNotificationName
                                                         object:nil
                                                       userInfo:nil];
 }
 
-+ (void)userDidLoginOut {
++ (void)userDidLogOut {
     [[NSNotificationCenter defaultCenter] postNotificationName:SHUserDidLogOutNotificationName
                                                         object:nil
                                                       userInfo:nil];
@@ -243,6 +257,53 @@ NSString * const SHAppCheckinNotificationKey = @"SHAppCheckinNotificationKey";
     NSDictionary *userInfo = @{SHAppCheckinNotificationKey : checkin};
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SHAppShareNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
+#pragma mark - Push Notifications
+#pragma mark -
+
++ (void)showSpecialsAtLocation:(CLLocation *)location withRadius:(CLLocationDegrees)radius {
+    if (!location || !radius) {
+        return;
+    }
+    
+    NSDictionary *userInfo = @{
+                               SHAppShowSpecialsNotificationLocationKey : location,
+                               SHAppShowSpecialsNotificationRadiusKey : [NSNumber numberWithDouble:radius]
+                               };
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHAppShowSpecialsNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
++ (void)showSpotlist:(SpotListModel *)spotlist atLocation:(CLLocation *)location withRadius:(CLLocationDegrees)radius {
+    if (!spotlist || !location || !radius) {
+        return;
+    }
+    
+    NSDictionary *userInfo = @{
+                               SHAppShowSpotlistNotificationSpotlistKey : spotlist,
+                               SHAppShowSpotlistNotificationLocationKey : location,
+                               SHAppShowSpotlistNotificationRadiusKey : [NSNumber numberWithDouble:radius]
+                               };
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHAppShowSpotlistNotificationName
+                                                        object:nil
+                                                      userInfo:userInfo];
+}
+
++ (void)showDrinklist:(DrinkListModel *)drinklist atLocation:(CLLocation *)location withRadius:(CLLocationDegrees)radius {
+    if (!drinklist || !location || !radius) {
+        return;
+    }
+    
+    NSDictionary *userInfo = @{
+                               SHAppShowDrinklistNotificationDrinklistKey : drinklist,
+                               SHAppShowDrinklistNotificationLocationKey : location,
+                               SHAppShowDrinklistNotificationRadiusKey : [NSNumber numberWithDouble:radius]
+                               };
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHAppShowDrinklistNotificationName
                                                         object:nil
                                                       userInfo:userInfo];
 }

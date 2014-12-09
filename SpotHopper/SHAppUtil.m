@@ -9,6 +9,7 @@
 #import "SHAppUtil.h"
 
 #import "SHAppConfiguration.h"
+#import "SHAppContext.h"
 #import "ClientSessionManager.h"
 
 #import "SpotModel.h"
@@ -181,11 +182,15 @@
     }];
 }
 
+#pragma mark - SpotHopper
+#pragma mark -
+
+
 #pragma mark - Parse
 #pragma mark -
 
 - (void)updateParse {
-    if ([UserModel isLoggedIn] && [SHAppConfiguration parseApplicationID].length) {
+    if ([UserModel isLoggedIn] && [SHAppConfiguration isParseEnabled]) {
         PFInstallation *currentInstallation = [PFInstallation currentInstallation];
         UserModel *currentUser = [UserModel currentUser];
         [currentInstallation addUniqueObject:[NSString stringWithFormat:@"user-%@", currentUser.ID] forKey:@"channels"];
@@ -194,13 +199,13 @@
         [currentInstallation saveInBackground];
         
         // Value for currentUser is now always due to [PFUser enableAutomaticUser]
-        PFUser *parseUser = [PFUser currentUser];
-        [parseUser setObject:currentUser.ID forKey:@"spotHopperUserId"];
-        [parseUser setObject:currentUser.email.length ? currentUser.email : [NSNull null] forKey:@"spotHopperEmail"];
-        [parseUser saveInBackground];
+//        PFUser *parseUser = [PFUser currentUser];
+//        [parseUser setObject:currentUser.ID forKey:@"spotHopperUserId"];
+//        [parseUser setObject:currentUser.email.length ? currentUser.email : [NSNull null] forKey:@"spotHopperEmail"];
+//        [parseUser saveInBackground];
         
         // The following code will require fetching the session token for the fetched user in order to use becomeInBackground
-        // Right now it the session token is not returned when the PFUser is fetched by spoerHoperUserId
+        // Right now it the session token is not returned when the PFUser is fetched by spotHopperUserId
         
 //        PFQuery *query = [PFUser query];
 //        [query whereKey:@"spotHopperUserId" equalTo:currentUser.ID];
@@ -236,8 +241,162 @@
 //                [parseUser saveInBackground];
 //            }
 //        }];
-        
     }
+}
+
+- (void)becomeSpotHopperUserWithCompletionBlock:(void (^)(BOOL success, NSError *error))completionBlock {
+    NSString *sessionToken = [[ClientSessionManager sharedClient] sessionToken];
+    if (!sessionToken.length) {
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"Session Token is not defined"};
+        NSError *error = [NSError errorWithDomain:@"Session" code:101 userInfo:userInfo];
+        if (completionBlock) {
+            completionBlock(FALSE, error);
+        }
+    }
+    else {
+        NSDictionary *params = @{ @"sessionToken" : sessionToken };
+        [PFCloud callFunctionInBackground:@"becomeSpotHopperUser"
+                           withParameters:params block:^(id result, NSError *error) {
+                               if (completionBlock) {
+                                   if (error) {
+                                       completionBlock(FALSE, error);
+                                   }
+                                   else {
+                                       DebugLog(@"result: %@", result);
+                                       completionBlock(TRUE, nil);
+                                   }
+                               }
+                           }];
+    }
+}
+
+- (void)becomeFacebookUserWithCompletionBlock:(void (^)(BOOL success, NSError *error))completionBlock {
+    if ([[FBSession activeSession] isOpen]) {
+        NSString *accessToken = [[[FBSession activeSession] accessTokenData] accessToken];
+        
+        [PFCloud callFunctionInBackground:@"becomeFacebookUser"
+                           withParameters:@{ @"accessToken" : accessToken }
+                                    block: ^(id result, NSError *error) {
+                                        if (error) {
+                                            DebugLog(@"Error: %@", error.localizedDescription);
+                                            completionBlock(FALSE, error);
+                                        }
+                                        else {
+                                            if ([result isKindOfClass:[NSDictionary class]]) {
+                                                NSDictionary *dict = (NSDictionary *)result;
+                                                NSString *sessionToken = dict[@"sessionToken"];
+                                                if (sessionToken.length) {
+                                                    [PFUser becomeInBackground:sessionToken block: ^(PFUser *user, NSError *error) {
+                                                        completionBlock(TRUE, nil);
+                                                    }];
+                                                }
+                                                else {
+                                                    completionBlock(TRUE, nil);
+                                                }
+                                            }
+                                        }
+                                    }];
+    }
+    else {
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"Facebook session is not active" };
+        NSError *error = [NSError errorWithDomain:@"Facebook" code:101 userInfo:userInfo];
+        completionBlock(FALSE, error);
+    }
+}
+
+- (void)saveUserProfile:(SHUserProfileModel *)userProfile withCompletionBlock:(void (^)(SHUserProfileModel *savedUserProfile, NSError *error))completionBlock {
+    if (!userProfile.name.length || !userProfile.imageURL || !userProfile.facebookId) {
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"Incomplete User Profile"};
+        NSError *error = [NSError errorWithDomain:@"Model" code:101 userInfo:userInfo];
+        if (completionBlock) {
+            completionBlock(nil, error);
+        }
+        return;
+    }
+    
+    NSMutableDictionary *params = @{
+                                    @"name" : userProfile.name,
+                                    @"imageURL" : userProfile.imageURL.absoluteString,
+                                    @"facebookId" : [NSString stringWithFormat:@"%@", userProfile.facebookId],
+                                    @"spotHopperUserId" : [NSString stringWithFormat:@"%@", userProfile.spotHopperUserId]}.mutableCopy;
+    
+//    CLLocation *location = [[SHLocationManager defaultInstance] location];
+//    if (location) {
+//        params[@"latitude"] = [NSNumber numberWithFloat:location.coordinate.latitude];
+//        params[@"longitude"] = [NSNumber numberWithFloat:location.coordinate.longitude];
+//    }
+    
+    DebugLog(@"params: %@", params);
+    
+    [PFCloud callFunctionInBackground:@"saveUserProfile"
+                       withParameters:params
+                                block:^(PFObject *userProfileObject, NSError *error) {
+                                    if (error) {
+                                        DebugLog(@"Error: %@", error.localizedDescription);
+                                        if (completionBlock) {
+                                            completionBlock(nil, error);
+                                        }
+                                    }
+                                    else {
+                                        SHUserProfileModel *savedUserProfile = [self userProfileFromObject:userProfileObject];
+                                        DebugLog(@"Saved User Profile");
+                                        
+                                        if (completionBlock) {
+                                            completionBlock(savedUserProfile, nil);
+                                        }
+                                    }
+                                }];
+}
+
+- (void)connectParseObjectsWithCompletionBlock:(void (^)(BOOL success, NSError *error))completionBlock {
+    // ensure the Installation instance has the User Profile and User
+    // ensure the User has the User Profile
+    // ensure the User Profile has the User
+    
+    SHUserProfileModel *userProfile = [[SHAppContext defaultInstance] currentUserProfile];
+    
+    if (!userProfile) {
+        NSDictionary *userInfo = @{NSLocalizedDescriptionKey : @"User Profile is not defined"};
+        NSError *error = [NSError errorWithDomain:@"Parse" code:101 userInfo:userInfo];
+        if (completionBlock) {
+            completionBlock(FALSE, error);
+        }
+        return;
+    }
+    
+    PFObject *userProfileObject = [PFObject objectWithClassName:@"UserProfile"];
+    userProfileObject.objectId = userProfile.objectId;
+    
+    [userProfileObject fetchIfNeededInBackgroundWithBlock:^(PFObject *fetchedUserProfile, NSError *error) {
+        PFInstallation *installation = [PFInstallation currentInstallation];
+        PFUser *user = [PFUser currentUser];
+        
+        [installation setObject:user forKey:@"user"];
+        [installation setObject:fetchedUserProfile forKey:@"userProfile"];
+        [user setObject:fetchedUserProfile forKey:@"userProfile"];
+        
+        [installation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (error) {
+                DebugLog(@"Error: %@", error);
+            }
+            else {
+                DebugLog(@"Success: %@", succeeded ? @"YES" : @"NO");
+            }
+        }];
+        
+        [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (error) {
+                DebugLog(@"Error: %@", error);
+            }
+            else {
+                DebugLog(@"Success: %@", succeeded ? @"YES" : @"NO");
+            }
+        }];
+        
+        if (completionBlock) {
+            completionBlock(TRUE, nil);
+        }
+    }];
 }
 
 #pragma mark - Facebook
@@ -386,9 +545,24 @@
                             [facebookUserProfile saveInBackground];
                         }
                         
-                        if (completionBlock) {
-                            completionBlock(TRUE, nil);
-                        }
+                        SHUserProfileModel *userProfile = [[SHUserProfileModel alloc] init];
+                        
+                        NSString *firstName = result[@"first_name"];
+                        NSString *lastName = result[@"last_name"];
+                        NSString *name = [NSString stringWithFormat:@"%@ %@", firstName, lastName.length ? [lastName substringToIndex:1]:@""];
+                        NSString *imageUrlString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", result[@"id"]];
+                        
+                        userProfile.name = name;
+                        userProfile.imageURL = [NSURL URLWithString:imageUrlString];
+                        userProfile.facebookId = [NSNumber numberWithLongLong:[result[@"id"] longLongValue]];
+                        
+                        [self saveUserProfile:userProfile withCompletionBlock:^(SHUserProfileModel *savedUserProfile, NSError *error) {
+                            [[SHAppContext defaultInstance] setCurrentUserProfile:savedUserProfile];
+                            
+                            if (completionBlock) {
+                                completionBlock(TRUE, nil);
+                            }
+                        }];
                     }];
                 }
                 else {
@@ -441,6 +615,7 @@
                                 [facebookFriends setACL:acl];
                             }
                             
+                            facebookFriends[@"friendsCount"] = [NSNumber numberWithLong:facebookIds.count];
                             facebookFriends[@"friends"] = facebookIds;
                             
                             [facebookFriends saveInBackground];
@@ -592,6 +767,26 @@
     } withErrorBlock:^(NSError *error) {
         [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
     }];
+}
+
+#pragma mark - Parse Objects
+#pragma mark -
+
+- (SHUserProfileModel *)userProfileFromObject:(PFObject *)object {
+    SHUserProfileModel *userProfile = [[SHUserProfileModel alloc] init];
+    userProfile.objectId = object.objectId;
+    userProfile.name = object[@"name"];
+    userProfile.imageURL = [NSURL URLWithString:object[@"imageURL"]];
+    id facebookId = object[@"facebookId"];
+    if ([facebookId isKindOfClass:[NSString class]]) {
+        userProfile.facebookId = [NSNumber numberWithLongLong:[facebookId longLongValue]];
+    }
+    id spotHopperUserId = object[@"spotHopperUserId"];
+    if ([spotHopperUserId isKindOfClass:[NSString class]]) {
+        userProfile.spotHopperUserId = [NSNumber numberWithLongLong:[spotHopperUserId longLongValue]];
+    }
+    
+    return userProfile;
 }
 
 @end

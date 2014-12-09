@@ -14,6 +14,8 @@
 #import "SHNavigationBar.h"
 #import "SHAppConfiguration.h"
 #import "SHAppUtil.h"
+#import "SHAppContext.h"
+#import "SHUserProfileModel.h"
 
 #import "ClientSessionManager.h"
 #import "SHModelResourceManager.h"
@@ -36,12 +38,32 @@
 #import "SHStyleKit.h"
 #import "SSTURLShortener.h"
 
+#import "DrinkListModel.h"
+#import "SpotListModel.h"
+#import "DrinkTypeModel.h"
+#import "DrinkSubTypeModel.h"
+#import "BaseAlcoholModel.h"
+
 #import "Crashlytics.h"
+#import "Promise.h"
 
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
 #import <JSONAPI/JSONAPI.h>
 #import <Parse/Parse.h>
 #import <STTwitter/STTwitter.h>
+
+#define kPushActionShowSpecials @"ShowSpecials"
+#define kPushActionShowSpotlist @"ShowSpotlist"
+#define kPushActionShowDrinklist @"ShowDrinklist"
+#define kPushActionUpdateLocation @"UpdateLocation"
+
+#define kUpdateLocationLunchLocation @"Lunch"
+#define kUpdateLocationHappyHourLocation @"Happy Hour"
+
+#define kUpdateLocationSleep @"4am"
+#define kUpdateLocationLunchTime @"11am"
+#define kUpdateLocationHappyHour @"7pm"
+#define kUpdateLocationLateNight @"12am"
 
 @interface AppDelegate()
 
@@ -63,17 +85,23 @@
                       clientKey:[SHAppConfiguration parseClientKey]];
         [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
         [PFUser enableAutomaticUser];
+        PFUser *user = [PFUser currentUser];
+        
+        if (!user.objectId.length) {
+            [user saveInBackground];
+        }
     }
     
     // Prompts user for permission to send notifications
     if ([application respondsToSelector:@selector(registerForRemoteNotifications)] && [application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-        [application registerForRemoteNotifications];
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIRemoteNotificationTypeBadge
-                                                                                             |UIRemoteNotificationTypeSound
-                                                                                             |UIRemoteNotificationTypeAlert) categories:nil];
+        // iOS 8 support
+        UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound);
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes categories:nil];
         [application registerUserNotificationSettings:settings];
+        [application registerForRemoteNotifications];
     }
     else {
+        // iOS 7 support
         UIRemoteNotificationType types = UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound;
         [application registerForRemoteNotificationTypes:types];
     }
@@ -97,37 +125,51 @@
     }
     
     if ([[FBSession activeSession] isOpen]) {
-        [[SHAppUtil defaultInstance] fetchFacebookDetailsWithCompletionBlock:^(BOOL success, NSError *error) {
-            if (error) {
-                DebugLog(@"Error: %@", error);
-                [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
-            }
+        
+        [[SHAppUtil defaultInstance] becomeFacebookUserWithCompletionBlock: ^(BOOL success, NSError *error) {
+            [[SHAppUtil defaultInstance] fetchFacebookDetailsWithCompletionBlock:^(BOOL success, NSError *error) {
+                if (error) {
+                    DebugLog(@"Error: %@", error);
+                    [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+                }
+            }];
         }];
     }
-    else {
-        DebugLog(@"Facebook session is not active");
+    else if ([UserModel isLoggedIn]) {
+        [[SHAppUtil defaultInstance] becomeSpotHopperUserWithCompletionBlock:^(BOOL success, NSError *error) {
+            if (error) {
+                DebugLog(@"Error: %@", error);
+            }
+            
+            // set the user profile using just UserModel
+            
+            UserModel *user = [UserModel currentUser];
+            DebugLog(@"user: %@", user);
+            
+            SHUserProfileModel *userProfile = [[SHUserProfileModel alloc] init];
+            userProfile.spotHopperUserId = [NSNumber numberWithLongLong:[user.ID longLongValue]];
+            userProfile.name = user.name;
+            
+            if (user.facebookId) {
+                userProfile.facebookId = [NSNumber numberWithLongLong:[user.facebookId longLongValue]];
+                NSString *imageUrlString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", user.facebookId];
+                userProfile.imageURL = [NSURL URLWithString:imageUrlString];
+            }
+            else {
+                userProfile.imageURL = [NSURL URLWithString:@"http://static.spotapps.co/spothopper-icon.png"];
+            }
+            
+            [[SHAppUtil defaultInstance] saveUserProfile:userProfile withCompletionBlock:^(SHUserProfileModel *savedUserProfile, NSError *error) {
+                if (error) {
+                    DebugLog(@"Error: %@", error);
+                }
+                else {
+                    [[SHAppContext defaultInstance] setCurrentUserProfile:savedUserProfile];
+                }
+            }];
+            
+        }];
     }
-    
-//#ifndef NDEBUG
-//    
-//    NSString *drinksType = [[JSONAPIResourceLinker defaultInstance] linkedType:@"drinks"];
-//    Class drinksClass = [[JSONAPIResourceModeler defaultInstance] resourceForLinkedType:drinksType];
-//    NSLog(@"Drinks Class: %@", NSStringFromClass(drinksClass));
-//    
-//    NSString *spotsType = [[JSONAPIResourceLinker defaultInstance] linkedType:@"spots"];
-//    Class spotsClass = [[JSONAPIResourceModeler defaultInstance] resourceForLinkedType:spotsType];
-//    NSLog(@"Spots Class: %@", NSStringFromClass(spotsClass));
-//    
-//    NSLog(@"Linker: %@", [JSONAPIResourceLinker defaultInstance]);
-//    NSLog(@"Modeler: %@", [JSONAPIResourceModeler defaultInstance]);
-//    
-//    JSONAPIResourceLinker *linker = [JSONAPIResourceLinker defaultInstance];
-//    JSONAPIResourceModeler *modeler = [JSONAPIResourceModeler defaultInstance];
-//    
-//    NSAssert([linker isEqual:[JSONAPIResourceLinker defaultInstance]], @"Linker must equal default instance");
-//    NSAssert([modeler isEqual:[JSONAPIResourceModeler defaultInstance]], @"Modeler must equal default instance");
-//    
-//#endif
     
     // Navigation bar styling
     [[UINavigationBar appearance] setTintColor:kColorOrange];
@@ -229,13 +271,7 @@
 }
 
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
-    [[UIApplication sharedApplication] registerForRemoteNotifications];
-}
-
-- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler {
-    DebugLog(@"%@, %@, %@", NSStringFromSelector(_cmd), identifier, userInfo);
-    
-    // TODO review for iOS 8 changes to Push Notifications
+    DebugLog(@"%@ - %@", NSStringFromSelector(_cmd), notificationSettings);
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
@@ -243,36 +279,24 @@
     if ([SHAppConfiguration isParseEnabled]) {
         PFInstallation *currentInstallation = [PFInstallation currentInstallation];
         [currentInstallation setDeviceTokenFromData:deviceToken];
+//        DebugLog(@"device type: %@", currentInstallation.deviceType);
+        DebugLog(@"device token: %@", currentInstallation.deviceToken);
+        PFUser *currentUser = [PFUser currentUser];
+        DebugLog(@"user: %@", currentUser.objectId);
+        
+#ifndef NDEBUG
+        [currentInstallation setObject:[NSNumber numberWithBool:YES] forKey:@"debug"];
+        [Tracker trackUserDebugMode:YES];
+#else
+        [currentInstallation setObject:[NSNumber numberWithBool:NO] forKey:@"debug"];
+        [Tracker trackUserDebugMode:NO];
+#endif
+
         [currentInstallation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (error) {
                 DebugLog(@"Error: %@", error);
             }
-//            else if (succeeded) {
-//                PFQuery *query = [PFQuery queryWithClassName:@"Application"];
-//                [query whereKey:@"installation" equalTo:currentInstallation];
-//                [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-//                    if (error) {
-//                        DebugLog(@"Error: %@", error);
-//                    }
-//                    else {
-//                        PFObject *app = nil;
-//                        if (objects.count) {
-//                            app = objects.firstObject;
-//                        }
-//                        else {
-//                            app = [PFObject objectWithClassName:@"Application"];
-//                        }
-//                        [app setObject:currentInstallation forKey:@"installation"];
-//                        [app setObject:[PFUser currentUser] forKey:@"user"];
-//                        [app setObject:[SHAppConfiguration bundleIdentifier] forKey:@"appIdentifier"];
-//                        [app setObject:[SHAppConfiguration bundleDisplayName] forKey:@"appName"];
-//                        [app saveEventually];
-//                    }
-//                }];
-//            }
         }];
-        
-        [[SHAppUtil defaultInstance] updateParse];
     }
 
     // prepare Mixpanel to send notifications to this device
@@ -281,15 +305,72 @@
     [mixpanel.people addPushDeviceToken:deviceToken];
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    [PFPush handlePush:userInfo];
-    [self handlePush:userInfo inForeground:(application.applicationState == UIApplicationStateActive)];
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler {
+    DebugLog(@"%@, %@, %@", NSStringFromSelector(_cmd), identifier, userInfo);
+    
+    // TODO review for iOS 8 changes to Push Notifications
 }
 
-- (void)handlePush:(NSDictionary*)payload inForeground:(BOOL)inForeground {
-    if (payload != nil) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationPushReceived object:self userInfo:payload];
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    DebugLog(@"userInfo: %@", userInfo);
+    
+    [Tracker trackUserNotification:userInfo];
+    [PFPush handlePush:userInfo];
+    
+    NSString *action = userInfo[@"action"];
+    BOOL inForeground = application.applicationState == UIApplicationStateActive;
+    
+    id contentAvailable = userInfo[@"aps"][@"content-available"];
+    BOOL isSilentPush = contentAvailable != nil && [contentAvailable intValue] == 1;
+    
+    DebugLog(@"is silent: %@", isSilentPush ? @"YES" : @"NO");
+    
+    if ([kPushActionUpdateLocation isEqualToString:action]) {
+        [self processLocationUpdate:userInfo withCompletionBlock:^{
+            if (completionHandler) {
+                completionHandler(UIBackgroundFetchResultNewData);
+            }
+        }];
     }
+    else if (isSilentPush && !inForeground) {
+        [self processSilentNotification:userInfo withCompletionBlock:^{
+            if (completionHandler) {
+                completionHandler(UIBackgroundFetchResultNewData);
+            }
+        }];
+    }
+    else if (!isSilentPush && !inForeground) {
+        [self handleNotification:userInfo];
+        completionHandler(UIBackgroundFetchResultNewData);
+    }
+    else if (completionHandler) {
+        completionHandler(UIBackgroundFetchResultNewData);
+    }
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    application.applicationIconBadgeNumber = 0;
+    
+    [self handleNotification:notification.userInfo];
+}
+
+- (CLLocation *)locationFromDictionary:(NSDictionary *)dictionary {
+    if (dictionary[@"latitude"] && dictionary[@"longitude"]) {
+        CLLocationDegrees latitude = [dictionary[@"latitude"] doubleValue];
+        CLLocationDegrees longitude = [dictionary[@"longitude"] doubleValue];
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+        return location;
+    }
+    
+    return nil;
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+#if !TARGET_IPHONE_SIMULATOR
+    DebugLog(@"Error: %@", error);
+#endif
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -306,6 +387,9 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
+    application.applicationIconBadgeNumber = 0;
+    
     if ([[ClientSessionManager sharedClient] hasSeenLaunch]) {
         [self refreshDeviceLocationWithCompletionBlock:^{
             // do nothing
@@ -324,6 +408,219 @@
 
 #pragma mark - Private
 
+- (void)handleNotification:(NSDictionary *)userInfo {
+    NSString *action = userInfo[@"action"];
+    
+    CLLocation *location = [self locationFromDictionary:userInfo];
+    CLLocationDegrees radius = [userInfo[@"radius"] doubleValue];
+    
+    if ([kPushActionShowSpecials isEqualToString:action]) {
+        if (location) {
+            [SHNotifications showSpecialsAtLocation:location withRadius:radius];
+        }
+    }
+    else if ([kPushActionShowSpotlist isEqualToString:action]) {
+        if (location) {
+            NSString *name = userInfo[@"name"];
+            DebugLog(@"name: %@", name);
+            
+            [[SpotListModel fetchMySpotLists] then:^(NSArray *spotlists) {
+                SpotListModel *foundSpotlist = nil;
+                for (SpotListModel *spotlist in spotlists) {
+                    if ([name isEqualToString:spotlist.name]) {
+                        foundSpotlist = spotlist;
+                        break;
+                    }
+                }
+                
+                if (foundSpotlist) {
+                    [SHNotifications showSpotlist:foundSpotlist atLocation:location withRadius:radius];
+                }
+            } fail:^(ErrorModel *errorModel) {
+                [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+            } always:nil];
+        }
+    }
+    else if ([kPushActionShowDrinklist isEqualToString:action]) {
+        if (location) {
+            NSString *name = userInfo[@"name"];
+            DebugLog(@"name: %@", name);
+            
+            if ([@"Highest Rated" isEqualToString:name]) {
+                DrinkListModel *drinklist = [[DrinkListModel alloc] init];
+                drinklist.name = name;
+
+                // the drink type should be defined while subtype and alcohol are optional
+                
+                if (userInfo[@"drinkTypeId"]) {
+                    DrinkTypeModel *drinkType = [[DrinkTypeModel alloc] init];
+                    drinkType.ID = [NSNumber numberWithInteger:[userInfo[@"drinkTypeId"] integerValue]];
+                    drinklist.drinkType = drinkType;
+                }
+                if (userInfo[@"drinkSubTypeId"]) {
+                    DrinkSubTypeModel *drinkSubType = [[DrinkSubTypeModel alloc] init];
+                    drinkSubType.ID = [NSNumber numberWithInteger:[userInfo[@"drinkTypeId"] integerValue]];
+                    drinklist.drinkSubType = drinkSubType;
+                }
+                if (userInfo[@"baseAlcoholId"]) {
+                    BaseAlcoholModel *baseAlcohol = [[BaseAlcoholModel alloc] init];
+                    baseAlcohol.ID = [NSNumber numberWithInteger:[userInfo[@"baseAlcoholId"] integerValue]];
+                    drinklist.baseAlcohol = baseAlcohol;
+                }
+                
+                [SHNotifications showDrinklist:drinklist atLocation:location withRadius:radius];
+            }
+            else {
+                [[DrinkListModel fetchMyDrinkLists] then:^(NSArray *drinklists) {
+                    DrinkListModel *foundDrinklist = nil;
+                    for (DrinkListModel *drinklist in drinklists) {
+                        if ([name isEqualToString:drinklist.name]) {
+                            foundDrinklist = drinklist;
+                            break;
+                        }
+                    }
+                    
+                    if (foundDrinklist) {
+                        [SHNotifications showDrinklist:foundDrinklist atLocation:location withRadius:radius];
+                    }
+                } fail:^(ErrorModel *errorModel) {
+                    [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+                } always:nil];
+            }
+        }
+    }
+    else {
+        DebugLog(@"Location notification not supported");
+    }
+}
+
+- (void)processLocationUpdate:(NSDictionary *)userInfo withCompletionBlock:(void (^)())completionBlock {
+    NSString *action = userInfo[@"action"];
+    NSString *key = userInfo[@"key"];
+    if (action.length && key.length) {
+        TellMeMyLocation *where = [[TellMeMyLocation alloc] init];
+        [where findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
+            CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+            [geocoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placemarks, NSError *error) {
+                if (!error && placemarks.count) {
+                    CLPlacemark *placemark = placemarks[0];
+                    if ([key isEqualToString:kUpdateLocationLunchLocation] || [key isEqualToString:kUpdateLocationHappyHourLocation]) {
+                        [Tracker trackUserLocation:placemark forKey:key];
+                    }
+                    else if ([key isEqualToString:kUpdateLocationSleep] ||
+                             [key isEqualToString:kUpdateLocationLunchTime] ||
+                             [key isEqualToString:kUpdateLocationLateNight] ||
+                             [key isEqualToString:kUpdateLocationHappyHour]) {
+                        [Tracker trackUserZip:placemark forKey:key];
+                    }
+                    
+                    if (completionBlock) {
+                        completionBlock();
+                    }
+                }
+            }];
+        } failure:^(NSError *error) {
+            DebugLog(@"Error: %@", error);
+        }];
+    }
+    else {
+        if (completionBlock) {
+            completionBlock();
+        }
+    }
+}
+
+- (void)processSilentNotification:(NSDictionary *)userInfo withCompletionBlock:(void (^)())completionBlock {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    if (!completionBlock) {
+        return;
+    }
+    
+    NSString *action = userInfo[@"action"];
+    
+    if ([kPushActionShowSpecials isEqualToString:action]) {
+        if (userInfo[@"latitude"] && userInfo[@"longitude"] && userInfo[@"radius"]) {
+            [self scheduleLocationNotification:userInfo];
+        }
+        completionBlock();
+    }
+    else if ([kPushActionShowSpotlist isEqualToString:action]) {
+        // check that the given spotlist is present for this user
+        
+        if (!userInfo[@"latitude"] || !userInfo[@"longitude"] || !userInfo[@"radius"]) {
+            completionBlock();
+            return;
+        }
+        
+        NSString *name = userInfo[@"name"];
+        DebugLog(@"name: %@", name);
+        
+        [[SpotListModel fetchMySpotLists] then:^(NSArray *spotlists) {
+            for (SpotListModel *spotlist in spotlists) {
+                if ([name isEqualToString:spotlist.name]) {
+                    [self scheduleLocationNotification:userInfo];
+                    break;
+                }
+            }
+            
+            completionBlock();
+        } fail:^(ErrorModel *errorModel) {
+            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+            completionBlock();
+        } always:nil];
+    }
+    else if ([kPushActionShowDrinklist isEqualToString:action]) {
+        // check that the given drinklist is present for this user
+        
+        if (!userInfo[@"latitude"] || !userInfo[@"longitude"] || !userInfo[@"radius"]) {
+            completionBlock();
+            return;
+        }
+        
+        NSString *name = userInfo[@"name"];
+        DebugLog(@"name: %@", name);
+        
+        if ([@"Highest Rated" isEqualToString:name]) {
+            [self scheduleLocationNotification:userInfo];
+            completionBlock();
+        }
+        else {
+            [[DrinkListModel fetchMyDrinkLists] then:^(NSArray *drinklists) {
+                for (DrinkListModel *drinklist in drinklists) {
+                    if ([name isEqualToString:drinklist.name]) {
+                        [self scheduleLocationNotification:userInfo];
+                        break;
+                    }
+                }
+                
+                completionBlock();
+            } fail:^(ErrorModel *errorModel) {
+                [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+                completionBlock();
+            } always:nil];
+        }
+    }
+    else {
+        DebugLog(@"Action not supported: %@", action);
+        completionBlock();
+    }
+}
+
+- (void)scheduleLocationNotification:(NSDictionary *)userInfo {
+    if (!userInfo[@"message"]) {
+        DebugLog(@"No alert to show");
+        return;
+    }
+    
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    notification.userInfo = userInfo;
+    notification.alertBody = userInfo[@"message"];
+    notification.soundName = UILocalNotificationDefaultSoundName;
+    notification.applicationIconBadgeNumber = 1;
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+}
+
 - (BOOL)isShortenedURL:(NSString *)urlString {
     NSString *bitlyShortURL = [SHAppConfiguration bitlyShortURL];
     return [urlString hasPrefix:bitlyShortURL];
@@ -341,6 +638,13 @@
     }
     
     return FALSE;
+}
+
+- (void)handlePush:(NSDictionary*)payload inForeground:(BOOL)inForeground {
+    // TODO: remove this method as it is not longer going to be used
+    //    if (payload) {
+    //        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationPushReceived object:self userInfo:payload];
+    //    }
 }
 
 #pragma mark - Location

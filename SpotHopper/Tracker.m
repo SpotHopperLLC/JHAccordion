@@ -71,6 +71,13 @@
     [self trackUserWithProperties:properties updateLocation:FALSE];
 }
 
++ (void)trackUserPropertyForKey:(NSString *)key withValue:(NSString *)value {
+    if (key.length && value.length) {
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        [mixpanel.people set:@{key : value}];
+    }
+}
+
 + (void)trackUserWithProperties:(NSDictionary *)properties updateLocation:(BOOL)updateLocation {
     if (![SHAppConfiguration isTrackingEnabled] || ![[ClientSessionManager sharedClient] isLoggedIn]) {
         return;
@@ -120,11 +127,9 @@
     
     if (updateLocation) {
         [updatedProperties addEntriesFromDictionary:[self locationProperties]];
-        [mixpanel.people set:updatedProperties];
     }
-    else {
-        [mixpanel.people set:updatedProperties];
-    }
+    
+    [mixpanel.people set:updatedProperties];
 }
 
 + (void)trackUserAction:(NSString *)actionName {

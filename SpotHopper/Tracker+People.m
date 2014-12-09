@@ -11,8 +11,17 @@
 #import "SHAppConfiguration.h"
 #import "Mixpanel.h"
 #import "ClientSessionManager.h"
+#import "SHAppContext.h"
+#import "TellMeMyLocation.h"
 
 @implementation Tracker (People)
+
+#pragma mark - Debugging
+#pragma mark -
+
++ (void)trackUserDebugMode:(BOOL)debugMode {
+    [self trackUserPropertyForKey:@"DebugMode" withValue:debugMode ? @"YES" : @"NO"];
+}
 
 #pragma mark - Launch
 #pragma mark -
@@ -27,6 +36,25 @@
 
 + (void)trackUserViewedHome {
     [self trackUserAction:@"User Viewed Home"];
+}
+
+#pragma mark - Notifications
+#pragma mark -
+
++ (void)trackUserNotification:(NSDictionary *)userInfo {
+    NSString *action = userInfo[@"action"];
+    NSString *key = userInfo[@"key"];
+    
+    if (action.length) {
+        NSString *trackedAction;
+        if (key.length) {
+            trackedAction = [NSString stringWithFormat:@"User Notification %@ - %@", action, key];
+        }
+        else {
+            trackedAction = [NSString stringWithFormat:@"User Notification %@", action];
+        }
+        [self trackUserAction:trackedAction];
+    }
 }
 
 #pragma mark - Logging In
@@ -46,6 +74,39 @@
     }
     
     [self trackUserWithProperties:@{ @"Facebook Friends List" : friendsList, @"Facebook Friends Count" : [NSNumber numberWithInteger:friendsList.count] }];
+}
+
+#pragma mark - Searching
+#pragma mark -
+
++ (void)trackUserSearchedSpotlist:(SpotListModel *)spotlist {
+    if (spotlist.name.length) {
+        NSString *action = [NSString stringWithFormat:@"User Searched Spotlist: %@", spotlist.name];
+        [Tracker trackUserAction:action];
+    }
+    [self trackUserSearchLocation];
+}
+
++ (void)trackUserSearchedDrinklist:(DrinkListModel *)drinklist {
+    if (drinklist.name.length) {
+        NSString *action = [NSString stringWithFormat:@"User Searched Drinklist: %@", drinklist.name];
+        [Tracker trackUserAction:action];
+    }
+    [self trackUserSearchLocation];
+}
+
++ (void)trackUserSearchLocation {
+    NSString *locationName = [TellMeMyLocation currentLocationName];
+    NSString *zip = [TellMeMyLocation currentLocationZip];
+    
+    if (locationName.length) {
+        NSString *action = [NSString stringWithFormat:@"User Searched City: %@", locationName];
+        [Tracker trackUserAction:action];
+    }
+    if (zip.length) {
+        NSString *action = [NSString stringWithFormat:@"User Searched Zip: %@", zip];
+        [Tracker trackUserAction:action];
+    }
 }
 
 #pragma mark - Search Results
@@ -89,6 +150,44 @@
 
 + (void)trackUserGoodSpecialsResults {
     [self trackUserAction:@"User Good Specials Results"];
+}
+
+#pragma mark - Location
+#pragma mark -
+
++ (void)trackUserFrequentLocation {
+    NSString *locationName = [TellMeMyLocation currentLocationName];
+    NSString *zip = [TellMeMyLocation currentLocationZip];
+    
+    if (locationName.length) {
+        NSString *action = [NSString stringWithFormat:@"User Frequent City: %@", locationName];
+        [Tracker trackUserAction:action];
+    }
+    if (zip.length) {
+        NSString *action = [NSString stringWithFormat:@"User Frequent Zip: %@", zip];
+        [Tracker trackUserAction:action];
+    }
+}
+
++ (void)trackUserLocation:(CLPlacemark *)placemark forKey:(NSString *)key {
+    NSString *city = [TellMeMyLocation shortLocationNameFromPlacemark:placemark];
+    
+    if (city.length && placemark.postalCode.length && key.length) {
+        NSString *locationName = [NSString stringWithFormat:@"User Last %@ City:", key];
+        NSString *zipName = [NSString stringWithFormat:@"User Last %@ Zip:", key];
+        NSDictionary *properties = @{
+                                     locationName : city,
+                                     zipName : placemark.postalCode
+                                     };
+        [self trackUserWithProperties:properties];
+    }
+}
+
++ (void)trackUserZip:(CLPlacemark *)placemark forKey:(NSString *)key {
+    if (placemark.postalCode.length && key.length) {
+        NSString *action = [NSString stringWithFormat:@"User Updated Location for %@: %@", key, placemark.postalCode];
+        [self trackUserAction:action];
+    }
 }
 
 #pragma mark - Highest Rated
@@ -156,8 +255,12 @@
     [self trackUserAction:@"User Searched Specials"];
 }
 
-+ (void)trackUserCheckedIn {
++ (void)trackUserCheckedInAtSpot:(SpotModel *)spot {
     [self trackUserAction:@"User Checked In"];
+    if (spot.name.length) {
+        NSString *action = [NSString stringWithFormat:@"User Checked In: %@", spot.name];
+        [self trackUserAction:action];
+    }
 }
 
 #pragma mark - Likes

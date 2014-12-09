@@ -9,6 +9,7 @@
 #import "SHAppContext.h"
 
 #import "Tracker+Events.h"
+#import "SHAppUtil.h"
 
 #define kMetersPerMile 1609.344
 
@@ -113,6 +114,22 @@
         self.activityName = nil;
         self.activityStartDate = nil;
     }
+}
+
+#pragma mark - User Profile
+#pragma mark -
+
+- (void)setCurrentUserProfile:(SHUserProfileModel *)currentUserProfile {
+    _currentUserProfile = currentUserProfile;
+    
+    [[SHAppUtil defaultInstance] connectParseObjectsWithCompletionBlock:^(BOOL success, NSError *error) {
+        if (error) {
+            DebugLog(@"Error: %@", error);
+        }
+        else {
+            DebugLog(@"Success: %@", success ? @"YES" : @"NO");
+        }
+    }];
 }
 
 @end

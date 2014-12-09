@@ -20,11 +20,11 @@
 - (void)fetchUserSpots:(UserModel *)user queryParam:(NSString *)query page:(NSNumber*)page pageSize:(NSNumber*)pageSize success:(void(^)(NSArray *spots))successBlock failure:(void(^)(ErrorModel *error))failureBlock __deprecated;
 
 //menu item based network calls
-- (void)createMenuItem:(MenuItemModel *)menuItem spot:(SpotModel*)spot menuType:(id)menuTypeID success:(void(^)(MenuItemModel *created))successBlock failure:(void(^)(ErrorModel *error))failureBlock;
+- (void)createMenuItem:(MenuItemModel *)menuItem spot:(SpotModel*)spot menuType:(id)menuTypeID success:(void(^)(MenuItemModel *created))successBlock failure:(void(^)(ErrorModel *error))failureBlock __deprecated;
 
 - (void)fetchMenuItems:(SpotModel *)spot success:(void(^)(NSArray *menuItems))successBlock failure:(void(^)(ErrorModel *error))failureBlock;
 
-- (void)deleteMenuItem:(MenuItemModel *)menuItem spot:(SpotModel *)spot success:(void(^)())successBlock failure:(void(^)(ErrorModel *error))failureBlock;
+- (void)deleteMenuItem:(MenuItemModel *)menuItem spot:(SpotModel *)spot success:(void(^)())successBlock failure:(void(^)(ErrorModel *error))failureBlock __deprecated;
 
 //price based network calls
 - (void)createPrices:(MenuItemModel *)menuItem success:(void(^)(NSArray *prices))successBlock failure:(void(^)(ErrorModel *errorModel))failureBlock;

@@ -58,7 +58,7 @@
 
 + (Promise *)fetchDrinkListWithRequest:(DrinkListRequest *)request;
 
-- (void)fetchDrinkList:(void (^)(DrinkListModel *spotlist))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
+- (void)fetchDrinkList:(void (^)(DrinkListModel *drinklist))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
 
 - (Promise *)fetchDrinkList;
 

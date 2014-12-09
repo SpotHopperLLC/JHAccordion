@@ -26,7 +26,6 @@
 #define kUpdatePriceQueryString @"/api/menu_items/%ld/prices?replace=true"
 #define kCreatePriceQueryString @"/api/menu_items/%ld/prices"
 
-
 @interface SHMenuAdminNetworkManager()
 
 @end
@@ -179,7 +178,6 @@
 }
 
 - (void)deleteMenuItem:(MenuItemModel *)menuItem spot:(SpotModel *)spot success:(void(^)())successBlock failure:(void(^)(ErrorModel *error))failureBlock {
-  
     //DELETE /api/spots/:spot_id/menu_items/:id
     [[ClientSessionManager sharedClient] DELETE:[NSString stringWithFormat:@"/api/spots/%ld/menu_items/%ld", (long)[spot.ID integerValue], (long)[menuItem.ID integerValue]] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

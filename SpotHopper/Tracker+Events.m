@@ -580,9 +580,6 @@
 }
 
 + (void)trackListViewDidDisplayDrink:(DrinkModel *)drink  position:(NSUInteger)position {
-    
-    
-    
     [self trackLocationPropertiesForEvent:@"List View Displayed Drink" properties:@{
                                                                                     @"Name" : drink.name.length ? drink.name : @"NULL",
                                                                                     @"Type" : drink.drinkType.name.length ? drink.drinkType.name : @"NULL",

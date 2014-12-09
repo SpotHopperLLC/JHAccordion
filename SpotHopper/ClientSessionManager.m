@@ -35,7 +35,7 @@
 
 @interface ClientSessionManager()
 
-@property (nonatomic, strong) NSString *cookie;
+//@property (nonatomic, strong) NSString *cookie;
 @property (nonatomic, strong) UserModel *currentUser;
 
 @property (nonatomic, readwrite, assign) NSUInteger totalContentLength;
@@ -470,6 +470,25 @@
     return _currentUser;
 }
 
+- (NSString *)sessionToken {
+    NSString *cookie = self.cookie;
+    
+    // Example: rack.session=SESSION_TOKEN_HERE; path=/; HttpOnly
+    
+    if (cookie.length) {
+        NSRange start = [cookie rangeOfString:@"rack.session="];
+        NSRange end = [cookie rangeOfString:@"; path=/;"];
+
+        if (start.location != NSNotFound && end.location != NSNotFound) {
+            NSRange range = NSMakeRange(start.length, end.location - start.length);
+            NSString *sessionToken = [cookie substringWithRange:range];
+            return sessionToken;
+        }
+    }
+    
+    return nil;
+}
+
 - (BOOL)isLoggedIn {
     if ([self cookie] != nil) {
         [self.requestSerializer setValue:self.cookie forHTTPHeaderField:@"Cookie"];
@@ -493,11 +512,13 @@
     NSLog(@"Setting Cookie - %@", cookie);
     
     [self setCookie:cookie];
+    NSLog(@"Session Token - %@", self.sessionToken);
+    
     [self.requestSerializer setValue:cookie forHTTPHeaderField:@"Cookie"];
     [self setCurrentUser:user];
     
     [[SHAppUtil defaultInstance] updateParse];
-    [SHNotifications userDidLoginIn];
+    [SHNotifications userDidLogIn];
 }
 
 - (void)logout {
@@ -514,7 +535,7 @@
     [self setCookie:nil];
     [self setCurrentUser:nil];
     
-    [SHNotifications userDidLoginOut];
+    [SHNotifications userDidLogOut];
 }
 
 - (void)forgotPasswordWithEmail:(NSString *)email withCompletionBlock:(void (^)(NSError *error))completionBlock {

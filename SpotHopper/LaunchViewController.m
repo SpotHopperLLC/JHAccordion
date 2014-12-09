@@ -270,6 +270,15 @@
 - (void)doLoginFacebook {
     if ([[FBSession activeSession] isOpen]) {
         
+        [[SHAppUtil defaultInstance] becomeFacebookUserWithCompletionBlock: ^(BOOL success, NSError *error) {
+            [[SHAppUtil defaultInstance] fetchFacebookDetailsWithCompletionBlock:^(BOOL success, NSError *error) {
+                if (error) {
+                    DebugLog(@"Error: %@", error);
+                    [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+                }
+            }];
+        }];
+        
         NSDictionary *params = @{
                                  kUserModelParamFacebookAccessToken: [[[FBSession activeSession] accessTokenData] accessToken]
                                  };
@@ -336,6 +345,12 @@
             [Tracker trackLoggedIn:TRUE];
             [Tracker trackLastLogin];
         }
+        
+        [[SHAppUtil defaultInstance] becomeSpotHopperUserWithCompletionBlock:^(BOOL success, NSError *error) {
+            if (error) {
+                DebugLog(@"Error: %@", error);
+            }
+        }];
         
         [self hideHUD];
         [self exitLaunch];
