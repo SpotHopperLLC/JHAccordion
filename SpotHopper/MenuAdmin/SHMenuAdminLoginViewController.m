@@ -48,6 +48,8 @@
 #ifndef NDEBUG
     self.emailTextField.text = @"niko.ivanovic@spothopperapp.com";
     self.passwordTextField.text = @"spothopper071";
+//    self.emailTextField.text = @"Aleksandarivanovic@yahoo.com";
+//    self.passwordTextField.text = @"password";
 #endif
     
     self.navigationController.navigationBarHidden = TRUE;

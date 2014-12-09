@@ -22,6 +22,9 @@
 @property (assign) BOOL hasSeenSpotlists;
 @property (assign) BOOL hasSeenDrinklists;
 
+@property (strong, nonatomic) NSString *cookie;
+@property (readonly, nonatomic) NSString *sessionToken;
+
 @property (nonatomic, readonly) NSUInteger totalContentLength;
 
 - (void)cancelAllHTTPOperationsWithMethod:(NSString*)method path:(NSString*)path parameters:(NSDictionary*)parameters ignoreParams:(BOOL)ignoreParams;
@@ -33,8 +36,8 @@
 - (AFHTTPRequestOperation *)DELETE:(NSString *)URLString parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *, id))success;
 
 // Session helpers
-- (NSString *)cookie;
-- (void)setCookie:(NSString *)cookie;
+//- (NSString *)cookie;
+//- (void)setCookie:(NSString *)cookie;
 - (UserModel *)currentUser;
 - (void)setCurrentUser:(UserModel *)currentUser;
 

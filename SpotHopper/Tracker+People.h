@@ -9,11 +9,18 @@
 #import "Tracker.h"
 
 #import "UserModel.h"
-#import "SpotModel.h"
 #import "SpecialModel.h"
+#import "SpotModel.h"
 #import "DrinkModel.h"
+#import "SpotListModel.h"
+#import "DrinkListModel.h"
 
 @interface Tracker (People)
+
+#pragma mark - Debugging
+#pragma mark -
+
++ (void)trackUserDebugMode:(BOOL)debugMode;
 
 #pragma mark - Launch
 #pragma mark -
@@ -21,6 +28,11 @@
 + (void)trackUserFirstUse;
 
 + (void)trackLastLogin;
+
+#pragma mark - Notifications
+#pragma mark -
+
++ (void)trackUserNotification:(NSDictionary *)userInfo;
 
 #pragma mark - Logging In
 #pragma mark -
@@ -32,6 +44,13 @@
 + (void)trackUserLeavingLoginNotLoggedIn;
 
 + (void)trackFacebookFriendsList:(NSArray *)friendsList;
+
+#pragma mark - Searching
+#pragma mark -
+
++ (void)trackUserSearchedSpotlist:(SpotListModel *)spotlist;
+
++ (void)trackUserSearchedDrinklist:(DrinkListModel *)drinklist;
 
 #pragma mark - Search Results
 #pragma mark -
@@ -55,6 +74,15 @@
 + (void)trackUserGoodSpotsResults;
 
 + (void)trackUserGoodSpecialsResults;
+
+#pragma mark - Location
+#pragma mark -
+
++ (void)trackUserFrequentLocation;
+
++ (void)trackUserLocation:(CLPlacemark *)placemark forKey:(NSString *)key;
+
++ (void)trackUserZip:(CLPlacemark *)placemark forKey:(NSString *)key;
 
 #pragma mark - Highest Rated
 #pragma mark -
@@ -93,7 +121,7 @@
 
 + (void)trackUserSearchedSpecials;
 
-+ (void)trackUserCheckedIn;
++ (void)trackUserCheckedInAtSpot:(SpotModel *)spot;
 
 #pragma mark - Likes
 #pragma mark -

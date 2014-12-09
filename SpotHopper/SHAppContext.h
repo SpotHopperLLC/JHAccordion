@@ -16,6 +16,8 @@
 #import "DrinkListModel.h"
 #import "CheckInModel.h"
 
+#import "SHUserProfileModel.h"
+
 @interface SHAppContext : NSObject
 
 @property (assign, nonatomic) SHMode mode;
@@ -32,6 +34,8 @@
 
 @property (readonly, nonatomic) CLLocation *deviceLocation;
 @property (readonly, nonatomic) CheckInModel *checkin;
+
+@property (strong, nonatomic) SHUserProfileModel *currentUserProfile;
 
 @property (readonly, nonatomic) NSString *activityName;
 @property (readonly, nonatomic) NSDate *activityStartDate;

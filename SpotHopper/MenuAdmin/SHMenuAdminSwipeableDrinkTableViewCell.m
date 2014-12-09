@@ -254,8 +254,6 @@ static CGFloat const kBounceValue = 40.0f;
 }
 
 - (void)resetConstraintConstantsToZero:(BOOL)animated notifyDelegateDidClose:(BOOL)notifyDelegate {
-    DebugLog(@"%@", NSStringFromSelector(_cmd));
-    
     if (notifyDelegate && [self.delegate respondsToSelector:@selector(cellDidClose:)]) {
         [self.delegate cellDidClose:self];
     }

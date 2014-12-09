@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class SpotModel, SpecialModel, DrinkModel, ImageModel, CheckInModel;
+@class SpotModel, SpecialModel, DrinkModel, ImageModel, CheckInModel, SHUserProfileModel;
 
 @interface SHAppUtil : NSObject
 
@@ -29,6 +29,14 @@
 #pragma mark -
 
 - (void)updateParse;
+
+- (void)becomeSpotHopperUserWithCompletionBlock:(void (^)(BOOL success, NSError *error))completionBlock;
+
+- (void)becomeFacebookUserWithCompletionBlock:(void (^)(BOOL success, NSError *error))completionBlock;
+
+- (void)saveUserProfile:(SHUserProfileModel *)userProfile withCompletionBlock:(void (^)(SHUserProfileModel *savedUserProfile, NSError *error))completionBlock;
+
+- (void)connectParseObjectsWithCompletionBlock:(void (^)(BOOL success, NSError *error))completionBlock;
 
 #pragma mark - Facebook
 #pragma mark -

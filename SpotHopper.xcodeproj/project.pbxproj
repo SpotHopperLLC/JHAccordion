@@ -1905,6 +1905,18 @@
 		267517611A01F09F00A7D0BB /* spotSideBarIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2675175A1A01F09F00A7D0BB /* spotSideBarIcon.png */; };
 		267517621A01F09F00A7D0BB /* spotSideBarIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2675175B1A01F09F00A7D0BB /* spotSideBarIcon@2x.png */; };
 		267517631A01F09F00A7D0BB /* spotSideBarIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2675175B1A01F09F00A7D0BB /* spotSideBarIcon@2x.png */; };
+		2677EB521A252F7600FDC57F /* SHUserProfileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2677EB511A252F7600FDC57F /* SHUserProfileModel.m */; };
+		2677EB531A252F7600FDC57F /* SHUserProfileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2677EB511A252F7600FDC57F /* SHUserProfileModel.m */; };
+		2677EB541A252F7600FDC57F /* SHUserProfileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2677EB511A252F7600FDC57F /* SHUserProfileModel.m */; };
+		2677EB551A252F7600FDC57F /* SHUserProfileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2677EB511A252F7600FDC57F /* SHUserProfileModel.m */; };
+		2677EB561A252F7600FDC57F /* SHUserProfileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2677EB511A252F7600FDC57F /* SHUserProfileModel.m */; };
+		2677EB571A252F7600FDC57F /* SHUserProfileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2677EB511A252F7600FDC57F /* SHUserProfileModel.m */; };
+		2677EB5A1A252F9700FDC57F /* SHBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2677EB591A252F9700FDC57F /* SHBaseModel.m */; };
+		2677EB5B1A252F9700FDC57F /* SHBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2677EB591A252F9700FDC57F /* SHBaseModel.m */; };
+		2677EB5C1A252F9700FDC57F /* SHBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2677EB591A252F9700FDC57F /* SHBaseModel.m */; };
+		2677EB5D1A252F9700FDC57F /* SHBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2677EB591A252F9700FDC57F /* SHBaseModel.m */; };
+		2677EB5E1A252F9700FDC57F /* SHBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2677EB591A252F9700FDC57F /* SHBaseModel.m */; };
+		2677EB5F1A252F9700FDC57F /* SHBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2677EB591A252F9700FDC57F /* SHBaseModel.m */; };
 		267C5E3A1908B7CC00D60EB5 /* ImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* ImageUtil.m */; };
 		267C5E3B1908B7CC00D60EB5 /* ImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* ImageUtil.m */; };
 		267C5E3D1908B7CC00D60EB5 /* ImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* ImageUtil.m */; };
@@ -2990,6 +3002,10 @@
 		267517591A01F09F00A7D0BB /* navigationArrowIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "navigationArrowIcon@2x.png"; path = "MenuAdmin/Media/navigationArrowIcon@2x.png"; sourceTree = "<group>"; };
 		2675175A1A01F09F00A7D0BB /* spotSideBarIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spotSideBarIcon.png; path = MenuAdmin/Media/spotSideBarIcon.png; sourceTree = "<group>"; };
 		2675175B1A01F09F00A7D0BB /* spotSideBarIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "spotSideBarIcon@2x.png"; path = "MenuAdmin/Media/spotSideBarIcon@2x.png"; sourceTree = "<group>"; };
+		2677EB501A252F7600FDC57F /* SHUserProfileModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHUserProfileModel.h; sourceTree = "<group>"; };
+		2677EB511A252F7600FDC57F /* SHUserProfileModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHUserProfileModel.m; sourceTree = "<group>"; };
+		2677EB581A252F9700FDC57F /* SHBaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHBaseModel.h; sourceTree = "<group>"; };
+		2677EB591A252F9700FDC57F /* SHBaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHBaseModel.m; sourceTree = "<group>"; };
 		267C5E381908B7CC00D60EB5 /* ImageUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageUtil.h; sourceTree = "<group>"; };
 		267C5E391908B7CC00D60EB5 /* ImageUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageUtil.m; sourceTree = "<group>"; };
 		267D78D418F4A8DD00E95D54 /* SHButtonLatoBold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoBold.h; sourceTree = "<group>"; };
@@ -3434,7 +3450,7 @@
 				03866476186D352400985CEC /* AppDelegate.m */,
 				038664A3186D373100985CEC /* Constants.h */,
 				26A7E3621922CE3C00FF7B88 /* Redesign 2.0 */,
-				267513AE1A00614C00A7D0BB /* Instant Menu */,
+				267513AE1A00614C00A7D0BB /* Easy Menu */,
 				268C8C9F190089B50011E0F8 /* State */,
 				26F0FDE018EB1B18001BB0CD /* Locations */,
 				038664A2186D370E00985CEC /* Media */,
@@ -4314,7 +4330,7 @@
 			name = Requests;
 			sourceTree = "<group>";
 		};
-		267513AE1A00614C00A7D0BB /* Instant Menu */ = {
+		267513AE1A00614C00A7D0BB /* Easy Menu */ = {
 			isa = PBXGroup;
 			children = (
 				267514441A00748000A7D0BB /* EasyMenu.storyboard */,
@@ -4326,7 +4342,7 @@
 				267514231A006D2300A7D0BB /* Cells */,
 				267517571A01F07B00A7D0BB /* Media */,
 			);
-			name = "Instant Menu";
+			name = "Easy Menu";
 			sourceTree = "<group>";
 		};
 		267513AF1A0061AF00A7D0BB /* View Controllers */ = {
@@ -4457,6 +4473,17 @@
 			name = Media;
 			sourceTree = "<group>";
 		};
+		2677EB4F1A252F5C00FDC57F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2677EB581A252F9700FDC57F /* SHBaseModel.h */,
+				2677EB591A252F9700FDC57F /* SHBaseModel.m */,
+				2677EB501A252F7600FDC57F /* SHUserProfileModel.h */,
+				2677EB511A252F7600FDC57F /* SHUserProfileModel.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		268C8C9F190089B50011E0F8 /* State */ = {
 			isa = PBXGroup;
 			children = (
@@ -4501,6 +4528,7 @@
 				26A7E3641922CE5A00FF7B88 /* View Controllers */,
 				A62B333A193D084400CE4BF0 /* Views */,
 				26C816C71926EC2D00E237F2 /* Managers */,
+				2677EB4F1A252F5C00FDC57F /* Model */,
 			);
 			name = "Redesign 2.0";
 			path = ..;
@@ -6574,6 +6602,7 @@
 				039F549A18D3501C004B2B67 /* MenuItemSubtypeCell.m in Sources */,
 				039B7022188759B100C590F8 /* NSArray+HoursOfOperation.m in Sources */,
 				03412C411882F6EC000F16A8 /* SHJSONAPIResource.m in Sources */,
+				2677EB521A252F7600FDC57F /* SHUserProfileModel.m in Sources */,
 				2654B8CE192BB6E000A66BED /* SHSpotsMenuViewController.m in Sources */,
 				03CAC19D18E9FAC300FAC5F5 /* AccountSettingsViewController.m in Sources */,
 				266FCA3E19B0E5B100BC1915 /* SpecialModel.m in Sources */,
@@ -6654,6 +6683,7 @@
 				039F549418D34AC4004B2B67 /* DrinkSubTypeModel.m in Sources */,
 				03E8833B18C838F600BD8FBB /* CardLayout.m in Sources */,
 				2619B5F419D222840043FD65 /* SHRatingStarsView.m in Sources */,
+				2677EB5A1A252F9700FDC57F /* SHBaseModel.m in Sources */,
 				26ED5CB618FDDE56006901ED /* Tracker.m in Sources */,
 				0320237C187773C0008368C2 /* SHViewTranlucentWhite.m in Sources */,
 				03C8DAE7188B42A40082321C /* MockData.m in Sources */,
@@ -6771,6 +6801,7 @@
 				03CABFAF18E7716400FAC5F5 /* NSArray+DailySpecials.m in Sources */,
 				03CABFB018E7716400FAC5F5 /* UIImage+FixOrientation.m in Sources */,
 				03CABFB118E7716400FAC5F5 /* MenuItemSubtypeCell.m in Sources */,
+				2677EB551A252F7600FDC57F /* SHUserProfileModel.m in Sources */,
 				03CABFB218E7716400FAC5F5 /* NSArray+HoursOfOperation.m in Sources */,
 				03CABFB318E7716400FAC5F5 /* SHJSONAPIResource.m in Sources */,
 				261E9CDE1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */,
@@ -6851,6 +6882,7 @@
 				03CABFE318E7716400FAC5F5 /* DrinkListModel.m in Sources */,
 				03CABFE418E7716400FAC5F5 /* ShareViewController.m in Sources */,
 				2619B5F719D222840043FD65 /* SHRatingStarsView.m in Sources */,
+				2677EB5D1A252F9700FDC57F /* SHBaseModel.m in Sources */,
 				2668971C192F2A82004FAC2D /* SHBaseCollectionViewManager.m in Sources */,
 				03CABFE518E7716400FAC5F5 /* CreateListCell.m in Sources */,
 				03CABFE618E7716400FAC5F5 /* SpotImageCollectViewCell.m in Sources */,
@@ -6960,6 +6992,7 @@
 				039F549B18D3501C004B2B67 /* MenuItemSubtypeCell.m in Sources */,
 				03F4E8AD18CA34260056EAA9 /* NSArray+HoursOfOperation.m in Sources */,
 				03F4E8AE18CA34260056EAA9 /* SHJSONAPIResource.m in Sources */,
+				2677EB531A252F7600FDC57F /* SHUserProfileModel.m in Sources */,
 				2654B8CF192BB6E000A66BED /* SHSpotsMenuViewController.m in Sources */,
 				03D7F56A18EA0392007B9E78 /* AccountSettingsViewController.m in Sources */,
 				266FCA3F19B0E5B100BC1915 /* SpecialModel.m in Sources */,
@@ -7040,6 +7073,7 @@
 				03F4E8D618CA34260056EAA9 /* SpotImageCollectViewCell.m in Sources */,
 				039F549518D34AC4004B2B67 /* DrinkSubTypeModel.m in Sources */,
 				2619B5F519D222840043FD65 /* SHRatingStarsView.m in Sources */,
+				2677EB5B1A252F9700FDC57F /* SHBaseModel.m in Sources */,
 				26ED5CB718FDDE56006901ED /* Tracker.m in Sources */,
 				03F4E8D718CA34260056EAA9 /* CardLayout.m in Sources */,
 				03F4E8D818CA34260056EAA9 /* SHViewTranlucentWhite.m in Sources */,
@@ -7149,6 +7183,7 @@
 				267514611A016AFD00A7D0BB /* NSArray+DailySpecials.m in Sources */,
 				267514621A016AFD00A7D0BB /* UIImage+FixOrientation.m in Sources */,
 				267514631A016AFD00A7D0BB /* MenuItemSubtypeCell.m in Sources */,
+				2677EB561A252F7600FDC57F /* SHUserProfileModel.m in Sources */,
 				267514641A016AFD00A7D0BB /* NSArray+HoursOfOperation.m in Sources */,
 				267514651A016AFD00A7D0BB /* SHJSONAPIResource.m in Sources */,
 				26F6FE271A0BE30100CEE6E8 /* SHMenuAdminDummyHomeViewController.m in Sources */,
@@ -7229,6 +7264,7 @@
 				267514AB1A016AFD00A7D0BB /* DrinkListModel.m in Sources */,
 				267514AC1A016AFD00A7D0BB /* ShareViewController.m in Sources */,
 				267514AD1A016AFD00A7D0BB /* SHRatingStarsView.m in Sources */,
+				2677EB5E1A252F9700FDC57F /* SHBaseModel.m in Sources */,
 				267514AE1A016AFD00A7D0BB /* SHBaseCollectionViewManager.m in Sources */,
 				267514AF1A016AFD00A7D0BB /* CreateListCell.m in Sources */,
 				267514B01A016AFD00A7D0BB /* SpotImageCollectViewCell.m in Sources */,
@@ -7338,6 +7374,7 @@
 				267515DD1A016B1300A7D0BB /* NSArray+DailySpecials.m in Sources */,
 				267515DE1A016B1300A7D0BB /* UIImage+FixOrientation.m in Sources */,
 				267515DF1A016B1300A7D0BB /* MenuItemSubtypeCell.m in Sources */,
+				2677EB571A252F7600FDC57F /* SHUserProfileModel.m in Sources */,
 				267515E01A016B1300A7D0BB /* NSArray+HoursOfOperation.m in Sources */,
 				267515E11A016B1300A7D0BB /* SHJSONAPIResource.m in Sources */,
 				26F6FE281A0BE30100CEE6E8 /* SHMenuAdminDummyHomeViewController.m in Sources */,
@@ -7418,6 +7455,7 @@
 				267516271A016B1300A7D0BB /* DrinkListModel.m in Sources */,
 				267516281A016B1300A7D0BB /* ShareViewController.m in Sources */,
 				267516291A016B1300A7D0BB /* SHRatingStarsView.m in Sources */,
+				2677EB5F1A252F9700FDC57F /* SHBaseModel.m in Sources */,
 				2675162A1A016B1300A7D0BB /* SHBaseCollectionViewManager.m in Sources */,
 				2675162B1A016B1300A7D0BB /* CreateListCell.m in Sources */,
 				2675162C1A016B1300A7D0BB /* SpotImageCollectViewCell.m in Sources */,
@@ -7527,6 +7565,7 @@
 				267E04F91922CC48004457B4 /* NSArray+DailySpecials.m in Sources */,
 				267E04FA1922CC48004457B4 /* UIImage+FixOrientation.m in Sources */,
 				267E04FB1922CC48004457B4 /* MenuItemSubtypeCell.m in Sources */,
+				2677EB541A252F7600FDC57F /* SHUserProfileModel.m in Sources */,
 				267E04FC1922CC48004457B4 /* NSArray+HoursOfOperation.m in Sources */,
 				267E04FD1922CC48004457B4 /* SHJSONAPIResource.m in Sources */,
 				261E9CDD1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */,
@@ -7607,6 +7646,7 @@
 				267E05361922CC48004457B4 /* DrinkListModel.m in Sources */,
 				267E05371922CC48004457B4 /* ShareViewController.m in Sources */,
 				2619B5F619D222840043FD65 /* SHRatingStarsView.m in Sources */,
+				2677EB5C1A252F9700FDC57F /* SHBaseModel.m in Sources */,
 				2668971B192F2A82004FAC2D /* SHBaseCollectionViewManager.m in Sources */,
 				267E05381922CC48004457B4 /* CreateListCell.m in Sources */,
 				267E053A1922CC48004457B4 /* SpotImageCollectViewCell.m in Sources */,
@@ -7929,8 +7969,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = SpotHopperProduction.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -7941,7 +7981,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				OTHER_CFLAGS = "$(inherited)";
 				PRODUCT_NAME = SpotHopperProduction;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "aecb953f-5615-4962-9ef1-198499efb201";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -7953,8 +7993,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = SpotHopperProduction.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -7971,7 +8011,7 @@
 					"-DNDEBUG=1",
 				);
 				PRODUCT_NAME = SpotHopperProduction;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "aecb953f-5615-4962-9ef1-198499efb201";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -8033,8 +8073,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = EasyMenuAppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = EasyMenuLaunchImage;
 				CODE_SIGN_ENTITLEMENTS = SpotHopperProduction.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -8045,7 +8085,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				OTHER_CFLAGS = "$(inherited)";
 				PRODUCT_NAME = "Easy Menu Staging";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "231af9dd-4d53-493b-9bd5-5a1437c8a57a";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -8057,8 +8097,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = EasyMenuAppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = EasyMenuLaunchImage;
 				CODE_SIGN_ENTITLEMENTS = SpotHopperProduction.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -8075,7 +8115,7 @@
 					"-DNDEBUG=1",
 				);
 				PRODUCT_NAME = "Easy Menu Staging";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "231af9dd-4d53-493b-9bd5-5a1437c8a57a";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -8087,8 +8127,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = EasyMenuAppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = EasyMenuLaunchImage;
 				CODE_SIGN_ENTITLEMENTS = SpotHopperProduction.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -8099,7 +8139,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				OTHER_CFLAGS = "$(inherited)";
 				PRODUCT_NAME = "Easy Menu";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "0ed2ec84-3a5c-4169-ad20-e5abfafe80f7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -8111,8 +8151,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = EasyMenuAppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = EasyMenuLaunchImage;
 				CODE_SIGN_ENTITLEMENTS = SpotHopperProduction.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -8129,7 +8169,7 @@
 					"-DNDEBUG=1",
 				);
 				PRODUCT_NAME = "Easy Menu";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "0ed2ec84-3a5c-4169-ad20-e5abfafe80f7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -485,6 +485,8 @@
                              @"cut_off_time" : cutOffTime
                              };
     
+    DebugLog(@"params: %@", params);
+    
     [[ClientSessionManager sharedClient] GET:@"/api/spots/specials" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI
@@ -913,6 +915,96 @@
     return deferred.promise;
 }
 
++ (void)createMenuItem:(MenuItemModel *)menuItem spot:(SpotModel*)spot menuType:(id)menuTypeID success:(void(^)(MenuItemModel *created))successBlock failure:(void(^)(ErrorModel *error))failureBlock {
+    
+    // clear cache for spot
+    NSString *cacheKey = [SpotModelCache menuKeyForSpot:spot];
+    [[SpotModel sh_sharedCache] cacheMenu:nil forKey:cacheKey];
+    spot.menu = nil;
+    
+    //create params and post new menu item
+    NSMutableDictionary *params = @{}.mutableCopy;
+    [params setObject:menuItem.drink.ID forKey:@"drink_id"];
+    [params setObject:menuTypeID forKey:@"menu_type_id"];
+    [params setObject:spot.ID forKey:@"spot_id"];
+    
+    //POST /api/spots/:spot_id/menu_items
+    [[ClientSessionManager sharedClient] POST:[NSString stringWithFormat:@"/api/spots/%ld/menu_items", (long)[spot.ID integerValue]] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Parses response with JSONAPI
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.isCancelled || operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else if (operation.response.statusCode == 200) {
+            MenuItemModel *created = [jsonApi resourceForKey:@"menu_items"];
+            
+            if (successBlock) {
+                successBlock(created);
+            }
+        }
+        else {
+            ErrorModel *error = [jsonApi resourceForKey:@"errors"];
+            
+            if (failureBlock) {
+                failureBlock(error);
+            }
+        }
+    }];
+}
+
++ (Promise *)createMenuItem:(MenuItemModel *)menuItem spot:(SpotModel*)spot menuType:(id)menuTypeID {
+    Deferred *deferred = [Deferred deferred];
+    
+    [self createMenuItem:menuItem spot:spot menuType:menuTypeID success:^(MenuItemModel *created) {
+        [deferred resolveWith:created];
+    } failure:^(ErrorModel *errorModel) {
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
++ (void)deleteMenuItem:(MenuItemModel *)menuItem spot:(SpotModel *)spot success:(void (^)())successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
+    // clear cache for spot
+    NSString *cacheKey = [SpotModelCache menuKeyForSpot:spot];
+    [[SpotModel sh_sharedCache] cacheMenu:nil forKey:cacheKey];
+    spot.menu = nil;
+    
+    //DELETE /api/spots/:spot_id/menu_items/:id
+    [[ClientSessionManager sharedClient] DELETE:[NSString stringWithFormat:@"/api/spots/%ld/menu_items/%ld", (long)[spot.ID integerValue], (long)[menuItem.ID integerValue]] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        JSONAPI *jsonApi = [JSONAPI JSONAPIWithDictionary:responseObject];
+        
+        if (operation.response.statusCode == 204) {
+            if (successBlock) {
+                successBlock(nil);
+            }
+        }
+        else {
+            if (failureBlock) {
+                ErrorModel *error = [jsonApi resourceForKey:@"errors"];
+                failureBlock(error);
+            }
+        }
+    }];
+}
+
++ (Promise *)deleteMenuItem:(MenuItemModel *)menuItem spot:(SpotModel *)spot {
+    Deferred *deferred = [Deferred deferred];
+    
+    [self deleteMenuItem:menuItem spot:spot success:^{
+        [deferred resolve];
+    } failure:^(ErrorModel *errorModel) {
+        [deferred rejectWith:errorModel];
+    }];
+    
+    return deferred.promise;
+}
+
 + (void)queryBreweriesWithText:(NSString *)text page:(NSNumber *)page success:(void (^)(NSArray *spots))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock {
     [self fetchAllSpotTypes:^(NSArray *spotTypes) {
         NSArray *brewerySpotTypes = [spotTypes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", @"brewery"]];
@@ -1114,7 +1206,10 @@ NSString * const SpotTypesKey = @"SpotTypesKey";
 }
 
 - (void)cacheMenu:(MenuModel *)menu forKey:(NSString *)key {
-    if (menu) {
+    if (!key.length) {
+        return;
+    }
+    else if (menu) {
         [self setObject:menu forKey:key];
     }
     else {

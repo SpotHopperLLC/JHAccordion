@@ -17,6 +17,7 @@
 
 + (void)identifyUser;
 
++ (void)trackUserPropertyForKey:(NSString *)key withValue:(NSString *)value;
 + (void)trackUserWithProperties:(NSDictionary *)properties;
 + (void)trackUserWithProperties:(NSDictionary *)properties updateLocation:(BOOL)updateLocation;
 + (void)trackUserAction:(NSString *)actionName;

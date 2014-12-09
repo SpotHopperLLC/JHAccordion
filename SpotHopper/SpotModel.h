@@ -40,7 +40,7 @@
 #import <JSONAPI/JSONAPI.h>
 #import <CoreLocation/CoreLocation.h>
 
-@class ErrorModel, AverageReviewModel, SpotListModel, SpotTypeModel, LiveSpecialModel, MenuModel, SpecialModel, ImageModel, DrinkTypeModel, CLLocation;
+@class ErrorModel, AverageReviewModel, SpotListModel, SpotTypeModel, LiveSpecialModel, MenuModel, MenuItemModel, SpecialModel, ImageModel, DrinkTypeModel, CLLocation;
 
 @interface SpotModel : SHJSONAPIResource
 
@@ -136,6 +136,14 @@
 
 - (Promise *)fetchMenu;
 
++ (void)createMenuItem:(MenuItemModel *)menuItem spot:(SpotModel*)spot menuType:(id)menuTypeID success:(void(^)(MenuItemModel *created))successBlock failure:(void(^)(ErrorModel *error))failureBlock;
+
++ (Promise *)createMenuItem:(MenuItemModel *)menuItem spot:(SpotModel*)spot menuType:(id)menuTypeID;
+
++ (void)deleteMenuItem:(MenuItemModel *)menuItem spot:(SpotModel *)spot success:(void (^)())successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
+
++ (Promise *)deleteMenuItem:(MenuItemModel *)menuItem spot:(SpotModel *)spot;
+ 
 + (void)queryBreweriesWithText:(NSString *)text page:(NSNumber *)page success:(void (^)(NSArray *spots))successBlock failure:(void (^)(ErrorModel *errorModel))failureBlock;
 
 + (Promise *)queryBreweriesWithText:(NSString *)text page:(NSNumber *)page;

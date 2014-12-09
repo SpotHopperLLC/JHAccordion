@@ -12,6 +12,8 @@
 #import "DrinkModel.h"
 #import "SpotModel.h"
 #import "CheckInModel.h"
+#import "SpotListModel.h"
+#import "DrinkListModel.h"
 
 extern NSString * const SHGoToHomeMapNotificationName;
 
@@ -69,6 +71,20 @@ extern NSString * const SHAppSpecialNotificationKey;
 extern NSString * const SHAppDrinkNotificationKey;
 extern NSString * const SHAppCheckinNotificationKey;
 
+extern NSString * const SHAppShowSpecialsNotificationName;
+extern NSString * const SHAppShowSpecialsNotificationLocationKey;
+extern NSString * const SHAppShowSpecialsNotificationRadiusKey;
+
+extern NSString * const SHAppShowSpotlistNotificationName;
+extern NSString * const SHAppShowSpotlistNotificationSpotlistKey;
+extern NSString * const SHAppShowSpotlistNotificationLocationKey;
+extern NSString * const SHAppShowSpotlistNotificationRadiusKey;
+
+extern NSString * const SHAppShowDrinklistNotificationName;
+extern NSString * const SHAppShowDrinklistNotificationDrinklistKey;
+extern NSString * const SHAppShowDrinklistNotificationLocationKey;
+extern NSString * const SHAppShowDrinklistNotificationRadiusKey;
+
 @interface SHNotifications : NSObject
 
 + (void)goToHomeMap;
@@ -103,9 +119,9 @@ extern NSString * const SHAppCheckinNotificationKey;
 
 + (void)showPhoto:(ImageModel *)image;
 
-+ (void)userDidLoginIn;
++ (void)userDidLogIn;
 
-+ (void)userDidLoginOut;
++ (void)userDidLogOut;
 
 + (void)shareSpecial:(SpecialModel *)special atSpot:(SpotModel *)spot;
 
@@ -114,5 +130,14 @@ extern NSString * const SHAppCheckinNotificationKey;
 + (void)shareDrink:(DrinkModel *)drink;
 
 + (void)shareCheckin:(CheckInModel *)checkin;
+
+#pragma mark - Push Notifications
+#pragma mark -
+
++ (void)showSpecialsAtLocation:(CLLocation *)location withRadius:(CLLocationDegrees)radius;
+
++ (void)showSpotlist:(SpotListModel *)spotlist atLocation:(CLLocation *)location withRadius:(CLLocationDegrees)radius;
+
++ (void)showDrinklist:(DrinkListModel *)drinklist atLocation:(CLLocation *)location withRadius:(CLLocationDegrees)radius;
 
 @end
