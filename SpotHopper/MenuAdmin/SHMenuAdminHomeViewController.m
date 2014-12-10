@@ -75,6 +75,8 @@ typedef enum {
 
 #define kFilterButtonContainerHeightOffset 80.0f
 
+#define kTopViewContainerHeight 160.0f
+
 #define kTagPickerCell 1
 #define kTagPickerView 2
 #define kCookie @"Cookie"
@@ -98,7 +100,7 @@ typedef enum {
 #define kSegueHomeToSearch @"HomeToSearch"
 #define kSegueHomeToDrink @"HomeToDrink"
 
-@interface SHMenuAdminHomeViewController () <UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate, UIGestureRecognizerDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SHMenuAdminSidebarViewControllerDelegate, SHMenuAdminSwipeableDrinkCellDelegate, SHMenuAdminEditMenuItemCellDelegate, SHMenuAdminSearchViewControllerDelegate, SHMenuAdminLoginDelegate>
+@interface SHMenuAdminHomeViewController () <UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIGestureRecognizerDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SHMenuAdminSidebarViewControllerDelegate, SHMenuAdminSwipeableDrinkCellDelegate, SHMenuAdminEditMenuItemCellDelegate, SHMenuAdminSearchViewControllerDelegate, SHMenuAdminLoginDelegate>
 
 @property (nonatomic, strong) SHMenuAdminSidebarViewController *rightSidebarViewController;
 
@@ -145,12 +147,10 @@ typedef enum {
 #pragma mark - Pan Gesture Properties
 #pragma mark -
 
-@property (weak, nonatomic) IBOutlet UIView *subtypeFilterContainer;
-@property (assign, nonatomic) CGPoint panStartPoint;
-@property (assign, nonatomic) CGFloat startingBottomLayoutConstraintConstant;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *subtypeFilterBottomConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *subtypeFilterTopConstraint;
-@property (assign, nonatomic) BOOL isShowingMenu;
+@property (weak, nonatomic) IBOutlet UIView *topContainerView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topContainerViewTopConstraint;
+@property (assign, nonatomic) BOOL isOpeningTopContainerView;
+@property (assign, nonatomic) BOOL isClosingTopContainerView;
 
 #pragma mark - Editing Properties
 #pragma mark -
@@ -227,8 +227,11 @@ typedef enum {
 	_isAddingMenuItem = FALSE;
 	_isEditingMenuItem = FALSE;
 	_indexOfRowForEditing = 0;
-	_isShowingMenu = TRUE;
 
+    UIEdgeInsets insets = UIEdgeInsetsMake(kTopViewContainerHeight, 0, 0, 0);
+    self.tableView.contentInset = insets;
+    self.tableView.scrollIndicatorInsets = insets;
+    
     self.cellWithOpenDrawers = @{}.mutableCopy;
 
 	self.menuTypes = [NSSet setWithArray:@[kMenuSubtypeNameOnTap, kMenuSubtypeNameBottled, kMenuSubtypeNameRedWine, kMenuSubtypeNameWhiteWine, kMenuSubtypeNameRoseWine, kMenuSubtypeNameFortifiedWine, kMenuSubtypeNameSparklingWine, kMenuSubtypeNameHouseCocktail, kMenuSubtypeNameCommonCocktail]];
@@ -240,20 +243,6 @@ typedef enum {
 	//initialize picker
 	UITableViewCell *pickerViewCellToCheck = [self.tableView dequeueReusableCellWithIdentifier:kPickerCellIdentifier];
 	self.pickerCellRowHeight = pickerViewCellToCheck.frame.size.height;
-
-	//gestures
-	UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
-	UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureRecognized:)];
-	panGesture.delegate = self;
-
-//    tapGesture.enabled = FALSE;
-//    panGesture.enabled = FALSE;
-
-	[self.tableView addGestureRecognizer:tapGesture];
-	[self.tableView addGestureRecognizer:panGesture];
-
-	//register tableview as pull to refresh
-//    [self registerRefreshTableView:self.tableView withReloadType:kPullRefreshTypeDown];
 
 	self.indexPathViewPairMap = [NSMutableDictionary dictionary];
 	self.addContainer = nil;
@@ -315,15 +304,24 @@ typedef enum {
 	});
 
 	self.navigationController.title = self.spot.name;
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
-
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
+    
+    if (self.tableView.hidden) {
+        DebugLog(@"Table View is Hidden");
+    }
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
@@ -382,7 +380,7 @@ typedef enum {
 }
 
 - (IBAction)toggleDrinkTypeButtons:(UIButton *)buttonPressed {
-	NSAssert(buttonPressed, @"button can't be null");
+	MAAssert(buttonPressed, @"button can't be null");
 	//return old drink button to original state
 	self.btnCurrentDrink.backgroundColor = [SHMenuAdminStyleSupport sharedInstance].LIGHT_ORANGE;
 	self.btnCurrentDrink.enabled = TRUE;
@@ -440,7 +438,7 @@ typedef enum {
 }
 
 - (IBAction)toggleBeerSubtypeButtons:(UIButton *)buttonPressed {
-	NSAssert(buttonPressed, @"button can't be null");
+	MAAssert(buttonPressed, @"button can't be null");
 
 	[self setCurrentSubTypesButton:buttonPressed];
 
@@ -457,12 +455,12 @@ typedef enum {
 		[self filterMenuItems:DrinkTypeBeer subTypes:MenuSubtypeBottles];
 	}
 	else {
-		NSAssert(buttonPressed, @"button pressed must be a beer btn");
+		MAAssert(buttonPressed, @"button pressed must be a beer btn");
 	}
 }
 
 - (IBAction)toggleWineSubtypeButtons:(UIButton *)buttonPressed {
-	NSAssert(buttonPressed, @"button can't be null");
+	MAAssert(buttonPressed, @"button can't be null");
 
 	[self setCurrentSubTypesButton:buttonPressed];
 
@@ -497,12 +495,12 @@ typedef enum {
 		[self filterMenuItems:DrinkTypeWine subTypes:MenuSubtypeFortifiedWine];
 	}
 	else {
-		NSAssert(buttonPressed, @"button pressed must be a wine btn");
+		MAAssert(buttonPressed, @"button pressed must be a wine btn");
 	}
 }
 
 - (IBAction)toggleCocktailSubtypeButtons:(UIButton *)buttonPressed {
-	NSAssert(buttonPressed, @"button can't be null");
+	MAAssert(buttonPressed, @"button can't be null");
 
 	[self setCurrentSubTypesButton:buttonPressed];
 
@@ -519,7 +517,7 @@ typedef enum {
 		[self filterMenuItems:DrinkTypeCocktail subTypes:MenuSubtypeCommonCocktail];
 	}
 	else {
-		NSAssert(buttonPressed, @"button pressed must be a cocktail btn");
+		MAAssert(buttonPressed, @"button pressed must be a cocktail btn");
 	}
 }
 
@@ -587,7 +585,7 @@ typedef enum {
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString *CellIdentifier = @"Cell";
+	static NSString *CellIdentifier = @"ButtonsCell";
 	static NSString *EditCellIdentifier = @"EditCell";
     
 	if ([self sizePickerIsShown] && (self.sizePickerIndexPath.row == indexPath.row)) {
@@ -868,6 +866,40 @@ typedef enum {
 	//do nothing
 }
 
+#pragma mark - UIScrollViewDelegate
+#pragma mark -
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (!self.isOpeningTopContainerView && scrollView == self.tableView) {
+        if (scrollView.hidden) {
+            // do not scroll table view when it is hidden
+            return;
+        }
+        
+        CGFloat y = scrollView.contentOffset.y + kTopViewContainerHeight;
+        if (y > 0) {
+            CGFloat targetY = MAX(0 - kTopViewContainerHeight, 0 - y);
+            CGRect frame = self.topContainerView.frame;
+            if (frame.origin.y > targetY) {
+                frame.origin.y = targetY;
+                self.topContainerView.frame = frame;
+                self.topContainerViewTopConstraint.constant = targetY;
+            }
+        }
+    }
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    if (scrollView == self.tableView) {
+        CGFloat y = targetContentOffset->y + kTopViewContainerHeight;
+        if (y == 0 && velocity.y < 0) {
+            [self openTopContainerViewWithCompletionBlock:^{
+                // done
+            }];
+        }
+    }
+}
+
 #pragma mark - SwipeableDrinkCellDelegate - User Actions
 #pragma mark -
 
@@ -894,23 +926,23 @@ typedef enum {
 	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 
 	if (!indexPath) {
-		NSAssert(indexPath, @"cell should've been found");
+		MAAssert(indexPath, @"cell should've been found");
 	}
 
 	self.indexOfRowForEditing = indexPath.row;
 	self.editMenuItem = [[self.filteredMenuItems objectAtIndex:indexPath.row] copy];
 
-	//close door
-	if (self.isShowingMenu) {
-		[self setConstraintsToHideView:TRUE];
-	}
-
 	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
 
-	//scroll cell to top that's being edited
-	[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:TRUE];
-
-	self.tableView.scrollEnabled = FALSE;
+    CGRect frame = [self.tableView rectForRowAtIndexPath:indexPath];
+    LOG_FRAME(@"cell", frame);
+    [self.tableView setContentOffset:frame.origin animated:TRUE];
+    
+    //scroll cell to top that's being edited
+//    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:TRUE];
+    
+//    [self closeTopContainerViewWithCompletionBlock:^{
+//    }];
 }
 
 - (void)deleteButtonTapped:(SHMenuAdminSwipeableDrinkTableViewCell *)cell {
@@ -921,7 +953,7 @@ typedef enum {
 	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 
 	if (!indexPath) {
-		NSAssert(indexPath, @"cell should've been found");
+		MAAssert(indexPath, @"cell should've been found");
 	}
 
 	MenuItemModel *menuItem = self.filteredMenuItems[indexPath.row];
@@ -932,7 +964,9 @@ typedef enum {
         [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationMiddle];
         
         if (!self.filteredMenuItems.count) {
-            [self setConstraintsToShowView:TRUE];
+            [self openTopContainerViewWithCompletionBlock:^{
+                // done
+            }];
             [self showEmptyView:TRUE];
         }
     } failure:^(ErrorModel *errorModel) {
@@ -1027,9 +1061,18 @@ typedef enum {
 	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
 
 	if (!self.filteredMenuItems.count) {
-		[self setConstraintsToShowView:TRUE];
 		[self showEmptyView:TRUE];
 	}
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.15 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        CGRect frame = [self.tableView rectForRowAtIndexPath:indexPath];
+        CGPoint point = frame.origin;
+        point.y -= kTopViewContainerHeight;
+        [self.tableView setContentOffset:point animated:TRUE];
+        [self openTopContainerViewWithCompletionBlock:^{
+            // done
+        }];
+    });
 }
 
 - (void)addButtonTapped:(SHMenuAdminEditMenuItemTableViewCell *)cell {
@@ -1047,7 +1090,7 @@ typedef enum {
 	    hvc.isAddingMenuItem = FALSE;
 	    hvc.addContainer = nil;
 
-	    [hvc hideKeyboard];
+        [hvc.view endEditing:TRUE];
 
 	    //refresh view
 	    [hvc.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -1080,10 +1123,20 @@ typedef enum {
 			}
 		}
 
-	    [self hideKeyboard];
+        [self.view endEditing:TRUE];
 
 	    //refresh view
 	    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.15 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            CGRect frame = [self.tableView rectForRowAtIndexPath:indexPath];
+            CGPoint point = frame.origin;
+            point.y -= kTopViewContainerHeight;
+            [self.tableView setContentOffset:point animated:TRUE];
+            [self openTopContainerViewWithCompletionBlock:^{
+                // done
+            }];
+        });
 	}];
 }
 
@@ -1117,11 +1170,6 @@ typedef enum {
 	[self.pickerView reloadAllComponents];
 }
 
-- (void)viewShouldScroll {
-	DebugLog(@"%@", NSStringFromSelector(_cmd));
-	//scroll view so that height of the textfield is not
-}
-
 #pragma mark - Image Picker Delegate
 #pragma mark -
 
@@ -1139,7 +1187,7 @@ typedef enum {
 	MenuItemModel *menuItem = [self.filteredMenuItems objectAtIndex:self.indexPathForPhotoTaken.row];
 
 	if (!menuItem) {
-		NSAssert(menuItem, @"menu item which picture was taken for should exist");
+		MAAssert(menuItem, @"menu item which picture was taken for should exist");
 	}
 
 	[self showHUD:@"Uploading..."];
@@ -1191,7 +1239,7 @@ typedef enum {
 	SHMenuAdminEditMenuItemTableViewCell *cell = (SHMenuAdminEditMenuItemTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
 
 	if (!self.lastSelectedContainer || ![cell.priceSizeWrapper.subviews containsObject:self.lastSelectedContainer]) {
-		NSAssert(self.lastSelectedContainer, @"last selected price size container cannot be nil");
+		MAAssert(self.lastSelectedContainer, @"last selected price size container cannot be nil");
 	}
 
 	NSString *displaySize = nil;
@@ -1215,12 +1263,8 @@ typedef enum {
 - (void)toggleSizePicker:(NSIndexPath *)indexPath {
 	[self.tableView beginUpdates];
 
-	if ([self sizePickerIsShown] /*&& (self.sizePickerIndexPath.row - 1 == indexPath.row)*/) {
+	if ([self sizePickerIsShown]) {
 		[self hideExistingPicker];
-
-		if (!self.isEditingMenuItem) {
-			self.tableView.scrollEnabled = TRUE;
-		}
 	}
 	else {
 		NSIndexPath *newPickerIndexPath = [self calculateIndexPathForNewPicker:indexPath];
@@ -1246,12 +1290,9 @@ typedef enum {
 			NSInteger index = [self.sizes indexOfObject:price.size];
 			[self.pickerView selectRow:index inComponent:0 animated:TRUE];
 		}
-
-		self.tableView.scrollEnabled = FALSE;
 	}
 
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-
 	[self.tableView endUpdates];
 }
 
@@ -1280,156 +1321,48 @@ typedef enum {
 	self.sizePickerIndexPath = nil;
 }
 
-#pragma mark - UIGestureDelegate/Filter Type Panning
+#pragma mark - Layout Helpers
 #pragma mark -
 
-- (void)panGestureRecognized:(UIPanGestureRecognizer *)recognizer {
-//    DebugLog(@"%@", NSStringFromSelector(_cmd));
-
-	if (self.isEditingMenuItem || self.isAddingMenuItem) {
-		return;
-	}
-
-	switch (recognizer.state) {
-		case UIGestureRecognizerStateBegan: {
-			//store the initial position of the view to tell whether it's opening
-			//or closing
-			self.panStartPoint = [recognizer translationInView:self.tableView];
-			self.startingBottomLayoutConstraintConstant = self.subtypeFilterBottomConstraint.constant;
-		}
-		break;
-
-		case UIGestureRecognizerStateChanged: {
-			CGPoint currentPoint = [recognizer translationInView:self.tableView];
-			CGFloat deltaY = currentPoint.y - self.panStartPoint.y;
-
-			BOOL panningDown = NO;
-			if (currentPoint.y < self.panStartPoint.y) {
-				panningDown = YES;
-			}
-
-			//if the subtype filter menu is open and needs to be shut (constraint constant == 0 if open)
-			if (self.startingBottomLayoutConstraintConstant == 0) {
-				//view is open
-				if (!panningDown) {
-					if (!self.subtypeFilterBottomConstraint.constant == 0) {
-						[self setConstraintsToShowView:TRUE];
-					}
-					self.tableView.scrollEnabled = TRUE;
-				}
-				else {
-					//user is scrolling up
-
-					//if the view.bottom_constraint == the bottom of the drink type filters
-					//hide the view completely
-					//else
-					//update the view's bottom constraint
-					CGFloat constant = MIN(-deltaY, kFilterButtonContainerHeightOffset);
-					if (constant == kFilterButtonContainerHeightOffset) {
-						self.tableView.scrollEnabled = TRUE;
-						[self setConstraintsToHideView:TRUE];
-					}
-					else {
-						self.subtypeFilterBottomConstraint.constant = constant;
-						self.tableView.scrollEnabled = FALSE;
-					}
-				}
-			}
-			else {
-				//handle if the view is partially open or close
-				//how much the view has opened from original position
-				CGFloat adjustment = self.startingBottomLayoutConstraintConstant - deltaY;
-
-				if (!panningDown) {
-					CGFloat constant = MAX(adjustment, 0);
-					if (constant == 0) {
-						self.tableView.scrollEnabled = TRUE;
-						[self setConstraintsToShowView:TRUE];
-					}
-					else {
-						self.tableView.scrollEnabled = FALSE;
-						self.subtypeFilterBottomConstraint.constant = constant;
-					}
-				}
-				else {
-					CGFloat constant = MIN(adjustment, kFilterButtonContainerHeightOffset);
-					if (constant == kFilterButtonContainerHeightOffset) {
-						self.tableView.scrollEnabled = TRUE;
-						[self setConstraintsToHideView:TRUE];
-					}
-					else {
-						self.tableView.scrollEnabled = FALSE;
-						self.subtypeFilterBottomConstraint.constant = constant;
-					}
-				}
-			}
-
-			self.subtypeFilterTopConstraint.constant = -self.subtypeFilterBottomConstraint.constant;
-		}
-		break;
-
-		case UIGestureRecognizerStateEnded: {
-			if (self.subtypeFilterBottomConstraint.constant != 0) {
-				CGFloat halfOfContainer = CGRectGetHeight(self.subtypeFilterContainer.frame) / 2;
-				//if less than half-way close, automatically close
-				if (self.subtypeFilterBottomConstraint.constant <= halfOfContainer) {
-					//close container
-					[self setConstraintsToHideView:TRUE];
-				}
-			}
-			else {
-				//do some other stuffs
-			}
-		}
-		break;
-
-		case UIGestureRecognizerStateCancelled:
-
-			break;
-
-		default:
-			break;
-	}
+- (void)openTopContainerViewWithCompletionBlock:(void (^)())completionBlock {
+    self.isOpeningTopContainerView = TRUE;
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:0.25 delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:5.0 options:options animations:^{
+        CGRect frame = self.topContainerView.frame;
+        frame.origin.y = 0;
+        self.topContainerView.frame = frame;
+    } completion:^(BOOL finished) {
+        self.topContainerViewTopConstraint.constant = 0;
+        // give it a moment to settle
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            self.isOpeningTopContainerView = FALSE;
+            
+            if (completionBlock) {
+                completionBlock();
+            }
+        });
+    }];
 }
 
-- (void)setConstraintsToShowView:(BOOL)animated {
-	if (self.subtypeFilterBottomConstraint.constant == 0) {
-		return;
-	}
-
-	self.isShowingMenu = TRUE;
-	[self updateConstraintsIfNeeded:TRUE completion: ^(BOOL finished) {
-	    self.subtypeFilterBottomConstraint.constant = 0;
-	    self.subtypeFilterTopConstraint.constant = 0;
-	}];
-}
-
-- (void)setConstraintsToHideView:(BOOL)animated {
-	if (self.subtypeFilterBottomConstraint.constant == kFilterButtonContainerHeightOffset) {
-		return;
-	}
-
-	self.isShowingMenu = FALSE;
-	[self updateConstraintsIfNeeded:TRUE completion: ^(BOOL finished) {
-	    self.subtypeFilterBottomConstraint.constant = kFilterButtonContainerHeightOffset;
-	    self.subtypeFilterTopConstraint.constant = -kFilterButtonContainerHeightOffset;
-	}];
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-//    DebugLog(@"%@", NSStringFromSelector(_cmd));
-	return TRUE;
-}
-
-- (void)updateConstraintsIfNeeded:(BOOL)animated completion:(void (^)(BOOL finished))completion {
-	float duration = 0;
-	if (animated) {
-		duration = 0.5;
-	}
-
-	[UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseOut animations: ^{
-	    [self.view layoutIfNeeded];
-	} completion:completion];
+- (void)closeTopContainerViewWithCompletionBlock:(void (^)())completionBlock {
+    self.isClosingTopContainerView = TRUE;
+    CGFloat targetY = kTopViewContainerHeight * -1;
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:0.25 delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:5.0 options:options animations:^{
+        CGRect frame = self.topContainerView.frame;
+        frame.origin.y = targetY;
+        self.topContainerView.frame = frame;
+    } completion:^(BOOL finished) {
+        self.topContainerViewTopConstraint.constant = targetY;
+        // give it a moment to settle
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            self.isClosingTopContainerView = FALSE;
+            
+            if (completionBlock) {
+                completionBlock();
+            }
+        });
+    }];
 }
 
 #pragma mark - SearchViewController Delegate
@@ -1457,11 +1390,6 @@ typedef enum {
 	self.indexOfRowForEditing = 0;
 	[self.filteredMenuItems insertObject:self.editMenuItem atIndex:0];
 
-	//close door
-	if (self.isShowingMenu) {
-		[self setConstraintsToHideView:TRUE];
-	}
-
 	// crash happens when reloading sections
 	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
 
@@ -1470,9 +1398,6 @@ typedef enum {
 	if (self.filteredMenuItems.count) {
 		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 	}
-
-	//disable scrolling
-	self.tableView.scrollEnabled = FALSE;
 
 	[self.navigationController popToViewController:self animated:TRUE];
 }
@@ -1745,10 +1670,12 @@ typedef enum {
 }
 
 - (void)showEmptyView:(BOOL)show {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
 	if (show) {
 		self.tableView.hidden = TRUE;
 		self.emptyView.hidden = FALSE;
 		self.lblEmpty.text = [NSString stringWithFormat:@"No %@s added.", [self.currentDrinkType.name lowercaseString]];
+        [self openTopContainerViewWithCompletionBlock:nil];
 	}
 	else {
 		self.emptyView.hidden = TRUE;
@@ -1891,7 +1818,7 @@ typedef enum {
             }
         }
         else {
-            NSAssert(index, @"object should exist");
+            MAAssert(index, @"object should exist");
         }
     } failure:^(ErrorModel *error) {
         [self showAlert:@"Error" message:@"Unable to create menu item. Please try again."];
@@ -1960,55 +1887,29 @@ typedef enum {
 	return NO;
 }
 
-- (void)keyboardWillShow:(NSNotification *)notification {
-	if (self.isEditingMenuItem) {
-		CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-		CGFloat h = CGRectGetHeight(keyboardFrame);
-
-		SHMenuAdminEditMenuItemTableViewCell *editCell = nil;
-
-		for (NSIndexPath *indexPath in[self.tableView indexPathsForVisibleRows]) {
-			UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-			if ([cell isKindOfClass:[SHMenuAdminEditMenuItemTableViewCell class]]) {
-				editCell = (SHMenuAdminEditMenuItemTableViewCell *)cell;
-			}
-		}
-
-		CGFloat height = (CGRectGetMaxY(editCell.frame));
-
-		//if currently selected container is below height of keyboard
-		//scroll up tableview
-		if (height >= h) {
-			//difference between space hidden behind keyboard frame
-			CGFloat offset = height - h;
-			self.tableView.contentOffset = CGPointMake(0, offset);
-		}
-	}
+- (BOOL)keyboardWillShowWithHeight:(CGFloat)height duration:(CGFloat)duration animationOptions:(UIViewAnimationOptions)animationOptions {
+    BOOL result = [super keyboardWillShowWithHeight:height duration:duration animationOptions:animationOptions];
+    
+    
+    return result;
 }
 
-- (void)keyboardWillHide:(NSNotification *)notification {
-	SHMenuAdminEditMenuItemTableViewCell *editCell = nil;
+- (BOOL)keyboardWillHideWithHeight:(CGFloat)height duration:(CGFloat)duration animationOptions:(UIViewAnimationOptions)animationOptions {
+    BOOL result = [super keyboardWillHideWithHeight:height duration:duration animationOptions:animationOptions];
+    
+    if ([self sizePickerIsShown]) {
+        NSIndexPath *indexPath = [[self.tableView indexPathsForVisibleRows] firstObject];
+        [self toggleSizePicker:indexPath];
+    }
 
-	for (NSIndexPath *indexPath in[self.tableView indexPathsForVisibleRows]) {
-		UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-		if ([cell isKindOfClass:[SHMenuAdminEditMenuItemTableViewCell class]]) {
-			editCell = (SHMenuAdminEditMenuItemTableViewCell *)cell;
-		}
-	}
-
-	CGFloat height = (CGRectGetMinY(editCell.frame));
-	self.tableView.contentOffset = CGPointMake(0, height);
+    return result;
 }
 
-- (void)hideKeyboard {
-	DebugLog(@"%@", NSStringFromSelector(_cmd));
+#pragma mark - Base Overrides
+#pragma mark -
 
-	[self.view endEditing:TRUE];
-
-	if ([self sizePickerIsShown]) {
-		NSIndexPath *indexPath = [[self.tableView indexPathsForVisibleRows] firstObject];
-		[self toggleSizePicker:indexPath];
-	}
+- (UIScrollView *)mainScrollView {
+    return self.tableView;
 }
 
 #pragma mark - Private Helpers
@@ -2016,7 +1917,7 @@ typedef enum {
 
 - (void)selectPhotoForCell:(SHMenuAdminSwipeableDrinkTableViewCell *)cell {
 	if (!cell) {
-		NSAssert(cell, @"cell cannnot be nil");
+		MAAssert(cell, @"cell cannnot be nil");
 	}
 
 	self.indexPathForPhotoTaken = [self.tableView indexPathForCell:cell];

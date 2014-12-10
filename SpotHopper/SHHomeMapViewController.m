@@ -277,7 +277,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     self.view.backgroundColor = [UIColor clearColor];
     
-    self.statusView.layer.cornerRadius = 15.f;
+    self.statusView.layer.cornerRadius = 15.0f;
     self.statusView.clipsToBounds = TRUE;
     
     _actionButtonTapCount = 0;
@@ -592,7 +592,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     CGFloat duration = animated ? 0.25f : 0.0f;
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-    [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.8f initialSpringVelocity:5.f options:options animations:^{
+    [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.8f initialSpringVelocity:5.0f options:options animations:^{
         self.homeNavigationViewBottomConstraint.constant = CGRectGetHeight(self.homeNavigationViewController.view.frame);
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
@@ -609,7 +609,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     CGFloat duration = animated ? 0.25f : 0.0f;
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-    [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.8f initialSpringVelocity:5.f options:options animations:^{
+    [UIView animateWithDuration:duration delay:0.0f usingSpringWithDamping:0.8f initialSpringVelocity:5.0f options:options animations:^{
         self.homeNavigationViewBottomConstraint.constant = 0.0f;
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
@@ -2365,7 +2365,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     CGRect topFrame = [self topFrame];
     // 40 for height of the annotation view
     
-    CGFloat padding = CGRectGetHeight(topFrame) + (self.hasFourInchDisplay ? self.topLayoutGuide.length : 0.0f) + 40.f;
+    CGFloat padding = CGRectGetHeight(topFrame) + (self.hasFourInchDisplay ? self.topLayoutGuide.length : 0.0f) + 40.0f;
     
     return padding;
 }
