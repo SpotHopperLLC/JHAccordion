@@ -303,22 +303,14 @@ typedef enum {
 		}
 	});
 
-    //[self openTopContainerViewWithCompletionBlock:nil];
-    
 	self.navigationController.title = self.spot.name;
-//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-//	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
-
-//	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-//	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardWillShowNotification
@@ -1099,7 +1091,6 @@ typedef enum {
 	    hvc.addContainer = nil;
 
         [hvc.view endEditing:TRUE];
-//	    [hvc hideKeyboard];
 
 	    //refresh view
 	    [hvc.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -1133,7 +1124,6 @@ typedef enum {
 		}
 
         [self.view endEditing:TRUE];
-//	    [self hideKeyboard];
 
 	    //refresh view
 	    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -1897,55 +1887,6 @@ typedef enum {
 	return NO;
 }
 
-//- (void)keyboardWillShow:(NSNotification *)notification {
-//	if (self.isEditingMenuItem) {
-//		CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-//		CGFloat h = CGRectGetHeight(keyboardFrame);
-//
-//		SHMenuAdminEditMenuItemTableViewCell *editCell = nil;
-//
-//		for (NSIndexPath *indexPath in[self.tableView indexPathsForVisibleRows]) {
-//			UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-//			if ([cell isKindOfClass:[SHMenuAdminEditMenuItemTableViewCell class]]) {
-//				editCell = (SHMenuAdminEditMenuItemTableViewCell *)cell;
-//			}
-//		}
-//
-//		CGFloat height = (CGRectGetMaxY(editCell.frame));
-//
-//		//if currently selected container is below height of keyboard
-//		//scroll up tableview
-//		if (height >= h) {
-//			//difference between space hidden behind keyboard frame
-//			CGFloat offset = height - h;
-//			self.tableView.contentOffset = CGPointMake(0, offset);
-//		}
-//	}
-//}
-
-//- (void)keyboardWillHide:(NSNotification *)notification {
-//	SHMenuAdminEditMenuItemTableViewCell *editCell = nil;
-//
-//	for (NSIndexPath *indexPath in[self.tableView indexPathsForVisibleRows]) {
-//		UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-//		if ([cell isKindOfClass:[SHMenuAdminEditMenuItemTableViewCell class]]) {
-//			editCell = (SHMenuAdminEditMenuItemTableViewCell *)cell;
-//		}
-//	}
-//
-//	CGFloat height = (CGRectGetMinY(editCell.frame));
-//	self.tableView.contentOffset = CGPointMake(0, height);
-//}
-
-//- (void)hideKeyboard {
-//	[self.view endEditing:TRUE];
-//    [self openTopContainerViewWithCompletionBlock:nil];
-//
-//	if ([self sizePickerIsShown]) {
-//		NSIndexPath *indexPath = [[self.tableView indexPathsForVisibleRows] firstObject];
-//		[self toggleSizePicker:indexPath];
-//	}
-//}
 - (BOOL)keyboardWillShowWithHeight:(CGFloat)height duration:(CGFloat)duration animationOptions:(UIViewAnimationOptions)animationOptions {
     BOOL result = [super keyboardWillShowWithHeight:height duration:duration animationOptions:animationOptions];
     
