@@ -85,6 +85,10 @@ extern NSString * const SHAppShowDrinklistNotificationDrinklistKey;
 extern NSString * const SHAppShowDrinklistNotificationLocationKey;
 extern NSString * const SHAppShowDrinklistNotificationRadiusKey;
 
+extern NSString * const SHLocationChangedNotificationName;
+
+extern NSString * const SHPromptForCheckInNotificationName;
+
 @interface SHNotifications : NSObject
 
 + (void)goToHomeMap;
@@ -139,5 +143,15 @@ extern NSString * const SHAppShowDrinklistNotificationRadiusKey;
 + (void)showSpotlist:(SpotListModel *)spotlist atLocation:(CLLocation *)location withRadius:(CLLocationDegrees)radius;
 
 + (void)showDrinklist:(DrinkListModel *)drinklist atLocation:(CLLocation *)location withRadius:(CLLocationDegrees)radius;
+
+#pragma mark - Local Notifications
+#pragma mark -
+
++ (void)promptForCheckIn:(NSDictionary *)userInfo;
+
+#pragma mark - Location
+#pragma mark -
+
++ (void)locationChanged;
 
 @end

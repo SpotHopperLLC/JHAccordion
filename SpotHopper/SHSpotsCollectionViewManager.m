@@ -8,6 +8,7 @@
 
 #import "SHSpotsCollectionViewManager.h"
 
+#import "SHAppContext.h"
 #import "SpotListModel.h"
 #import "SpotModel.h"
 #import "SpotTypeModel.h"
@@ -311,7 +312,7 @@
     neighborhoodLabel.text = spot.city;
     
     CLLocation *spotLocation = [[CLLocation alloc] initWithLatitude:[spot.latitude floatValue] longitude:[spot.longitude floatValue]];
-    CLLocation *currentLocation = [TellMeMyLocation currentLocation];
+    CLLocation *currentLocation = [SHAppContext currentLocation];
     CLLocationDistance meters = [currentLocation distanceFromLocation:spotLocation];
     
     CGFloat miles = meters * kMeterToMile;

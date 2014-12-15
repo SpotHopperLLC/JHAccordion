@@ -8,6 +8,7 @@
 
 #import "SHSidebarViewController.h"
 
+#import "SHAppUtil.h"
 #import "UIView+AddBorder.h"
 #import "UIViewController+Navigator.h"
 
@@ -24,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnReviews;
 @property (weak, nonatomic) IBOutlet UIButton *btnCheckIn;
 @property (weak, nonatomic) IBOutlet UIButton *btnGiveProps;
+@property (weak, nonatomic) IBOutlet UIButton *btnReset;
 @property (weak, nonatomic) IBOutlet UIButton *btnAccount;
 @property (weak, nonatomic) IBOutlet UIButton *btnLogin;
 
@@ -44,13 +46,15 @@
     [self.btnReviews setTitleEdgeInsets:insets];
     [self.btnCheckIn setTitleEdgeInsets:insets];
     [self.btnGiveProps setTitleEdgeInsets:insets];
+    [self.btnReset setTitleEdgeInsets:insets];
     [self.btnAccount setTitleEdgeInsets:insets];
     
     // Add white borders
     [self.btnReviews addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
     [self.btnCheckIn addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
     [self.btnGiveProps addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
-    [self.btnGiveProps addBottomBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
+    [self.btnReset addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
+    [self.btnReset addBottomBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
     [self.btnAccount addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
     [self.btnLogin addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
     
@@ -105,13 +109,20 @@
     return NO;
 }
 
+#pragma mark - Private
+#pragma mark -
+
+- (void)closeSideBar {
+    if ([self.delegate respondsToSelector:@selector(sidebarViewControllerDidRequestClose:)]) {
+        [self.delegate sidebarViewControllerDidRequestClose:self];
+    }
+}
+
 #pragma mark - User Actions
 #pragma mark -
 
 - (IBAction)closeButtonTapped:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(sidebarViewControllerDidRequestClose:)]) {
-        [self.delegate sidebarViewControllerDidRequestClose:self];
-    }
+    [self closeSideBar];
 }
 
 - (IBAction)reviewsButtonTapped:(id)sender {
@@ -130,6 +141,15 @@
     if ([self.delegate respondsToSelector:@selector(sidebarViewControllerDidRequestGiveProps:)]) {
         [self.delegate sidebarViewControllerDidRequestGiveProps:sender];
     }
+}
+
+- (IBAction)resetButtonTapped:(id)sender {
+    [[SHAppUtil defaultInstance] resetLastCheckInPromptDate];
+    [self showAlert:@"Reset" message:@"You have reset the prompts!"];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [self closeSideBar];
+    });
 }
 
 - (IBAction)accountSettingsButtonTapped:(id)sender {

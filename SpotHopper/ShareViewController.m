@@ -11,6 +11,7 @@
 
 #import "ShareViewController.h"
 
+#import "SHAppContext.h"
 #import "SHAppConfiguration.h"
 #import "NSArray+DailySpecials.h"
 
@@ -110,7 +111,7 @@
 }
 
 - (IBAction)onClickShareFacebook:(id)sender {
-    [Tracker track:@"Sharing" properties:@{@"Service" : @"Facebook", @"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"Sharing" properties:@{@"Service" : @"Facebook", @"Location" : [SHAppContext lastLocationNameShort]}];
     
     if ([[FBSession activeSession] isOpen] == YES) {
         _sendToFacebook = !_sendToFacebook;
@@ -131,7 +132,7 @@
 }
 
 - (IBAction)onClickShareTWitter:(id)sender {
-    [Tracker track:@"Sharing" properties:@{@"Service" : @"Twitter", @"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"Sharing" properties:@{@"Service" : @"Twitter", @"Location" : [SHAppContext lastLocationNameShort]}];
     
     if (_sendToTwitter == YES) {
         _selectedTwitterAccount = nil;
@@ -157,7 +158,7 @@
 }
 
 - (IBAction)onClickShareText:(id)sender {
-    [Tracker track:@"Sharing" properties:@{@"Service" : @"Text", @"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"Sharing" properties:@{@"Service" : @"Text", @"Location" : [SHAppContext lastLocationNameShort]}];
     
     _sendToText = !_sendToText;
     [self updateSocialViews];

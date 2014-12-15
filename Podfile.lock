@@ -51,11 +51,11 @@ PODS:
   - Mixpanel (2.6.2):
     - Mixpanel/MPCategoryHelpers (= 2.6.2)
   - Mixpanel/MPCategoryHelpers (2.6.2)
-  - Parse (1.5.0):
+  - Parse (1.6.0):
     - Bolts (~> 1.1.3)
   - PhotoZoom (0.0.2)
   - Promises (0.1.2)
-  - Reveal-iOS-SDK (1.0.6)
+  - Reveal-iOS-SDK (1.0.7)
   - STTwitter (0.1.6)
   - SVPulsingAnnotationView (0.3.0)
   - TransloaditAPI (1.0.0)
@@ -77,14 +77,14 @@ DEPENDENCIES:
   - JTSReachability (from `http://github.com/brennanMKE/JTSReachability.git`, tag `1.1.0`)
   - MBProgressHUD (~> 0.8.0)
   - Mixpanel (~> 2.5)
-  - Parse (~> 1.4)
+  - Parse (~> 1.6)
   - PhotoZoom (~> 0.0)
   - Promises (from `http://github.com/joshdholtz/ios-promises.git`)
   - Reveal-iOS-SDK
   - STTwitter (~> 0.1)
   - SVPulsingAnnotationView (~> 0.3.0)
   - TransloaditAPI (from `https://github.com/transloadit/ios-sdk.git`)
-  - TTTAttributedLabel (~> 1.10)
+  - TTTAttributedLabel (~> 1.12)
   - UIImage+BlurredFrame (~> 0.0)
   - UIView-Autolayout (~> 0.2.0)
 
@@ -152,10 +152,10 @@ SPEC CHECKSUMS:
   JTSReachability: 68c4706858c216b24097242d9880ff52e4749dd3
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
   Mixpanel: c075cedebda3328ce1ee29a18429e265ce967cd8
-  Parse: 7de25b6f70f0b233e5d25835f62eabfa91e4f9d7
+  Parse: f15dfacd941ee8084a5decbef486da8b223c2810
   PhotoZoom: 52b044c8086589e85415718402df6c4b5f411cb1
   Promises: c9d4e849f307a53b1b8714c64ff4b6e8695b24e1
-  Reveal-iOS-SDK: 74a39b426dbc915962704ed24f43ee32ae7797f9
+  Reveal-iOS-SDK: 7ee5e9b37ef13dcd93ae1736c1b72c7c650da3e3
   STTwitter: f5ca425b5636da2ab18ceba49c55a51300a476c6
   SVPulsingAnnotationView: 92364bec02160f481d1b603afc904183d385c3e6
   TransloaditAPI: 0eb4dd592e4693b8b5d0a464f48c5db7f02a2571

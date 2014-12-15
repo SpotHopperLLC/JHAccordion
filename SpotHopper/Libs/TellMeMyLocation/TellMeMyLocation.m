@@ -18,6 +18,8 @@
 
 #import <CoreLocation/CoreLocation.h>
 
+#import "SHAppContext.h"
+
 #import "Tracker.h"
 #import "Tracker+Events.h"
 #import "Tracker+People.h"
@@ -53,6 +55,8 @@ static NSString *_currentMapCenterLocationZip;
 #pragma mark - Public Implemention
 
 - (void)findMe:(CLLocationAccuracy)accuracy {
+    MAAssert(FALSE, @"Method is deprecated");
+    /*
     self.startDate = [NSDate date];
     
     CLAuthorizationStatus authorizationStatus = [CLLocationManager authorizationStatus];
@@ -97,9 +101,12 @@ static NSString *_currentMapCenterLocationZip;
         CLLocation * location = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
         [self found:location];
     }
+    */
 }
 
 - (void)findMe:(CLLocationAccuracy)accuracy found:(FoundBlock)foundBlock failure:(FailureBlock)failureBlock {
+    MAAssert(FALSE, @"Method is deprecated");
+    /*
     if (foundBlock) {
         self.foundBlock = foundBlock;
     }
@@ -108,6 +115,7 @@ static NSString *_currentMapCenterLocationZip;
     }
     
     [self findMe:accuracy];
+     */
 }
 
 + (BOOL)needsLocationServicesPermissions {
@@ -203,10 +211,6 @@ static NSString *_currentMapCenterLocationZip;
     return _currentSelectedLocationZip;
 }
 
-+ (CLLocation *)mapCenterLocation {
-    return _currentMapCenterLocation;
-}
-
 + (void)setMapCenterLocation:(CLLocation *)mapCenterLocation {
     _currentMapCenterLocation = mapCenterLocation;
     
@@ -219,6 +223,10 @@ static NSString *_currentMapCenterLocationZip;
     }];
 }
 
++ (CLLocation *)mapCenterLocation {
+    return _currentMapCenterLocation;
+}
+
 + (NSString *)mapCenterLocationName {
     if (_currentMapCenterLocation && _currentMapCenterLocationName.length) {
         return _currentMapCenterLocationName;
@@ -229,6 +237,53 @@ static NSString *_currentMapCenterLocationZip;
 
 + (NSString *)mapCenterLocationZip {
     return _currentMapCenterLocationZip;
+}
+
++ (NSString *)locationNameFromPlacemark:(CLPlacemark *)placemark {
+    if (!placemark) {
+        return @"Middle of Nowhere";
+    }
+    
+    if ([self isAtTheCastle:placemark.location]) {
+        return @"Stefan's Castle";
+    }
+    
+    if (placemark.subLocality.length && placemark.locality.length && placemark.administrativeArea.length) {
+        NSString *locationName = [NSString stringWithFormat:@"%@, %@, %@", placemark.subLocality, placemark.locality, placemark.administrativeArea];
+        
+        if (locationName.length > 25) {
+            locationName = [NSString stringWithFormat:@"%@, %@", placemark.locality, placemark.administrativeArea];
+        }
+        
+        return locationName;
+    } else if (placemark.locality.length > 0) {
+        return placemark.locality;
+    }
+    else if (placemark.name.length) {
+        return placemark.name;
+    }
+    
+    return @"Unknown";
+}
+
++ (NSString *)shortLocationNameFromPlacemark:(CLPlacemark *)placemark {
+    if (!placemark) {
+        return @"Middle of Nowhere";
+    }
+    
+    if ([self isAtTheCastle:placemark.location]) {
+        return @"Stefan's Castle";
+    }
+    
+    if (placemark.locality.length && placemark.administrativeArea.length) {
+        return [NSString stringWithFormat:@"%@, %@", placemark.locality, placemark.administrativeArea];
+    }
+    else if (placemark.name.length) {
+        return placemark.name;
+    }
+    else {
+        return @"Unknown";
+    }
 }
 
 + (void)setLastLocation:(CLLocation*)location completionHandler:(TellMeMyLocationCompletionHandler)completionHandler {
@@ -279,53 +334,6 @@ static NSString *_currentMapCenterLocationZip;
         
         completionHandler();
     }];
-}
-
-+ (NSString *)locationNameFromPlacemark:(CLPlacemark *)placemark {
-    if (!placemark) {
-        return @"Middle of Nowhere";
-    }
-    
-    if ([self isAtTheCastle:placemark.location]) {
-        return @"Stefan's Castle";
-    }
-    
-    if (placemark.subLocality.length && placemark.locality.length && placemark.administrativeArea.length) {
-        NSString *locationName = [NSString stringWithFormat:@"%@, %@, %@", placemark.subLocality, placemark.locality, placemark.administrativeArea];
-        
-        if (locationName.length > 25) {
-            locationName = [NSString stringWithFormat:@"%@, %@", placemark.locality, placemark.administrativeArea];
-        }
-        
-        return locationName;
-    } else if (placemark.locality.length > 0) {
-        return placemark.locality;
-    }
-    else if (placemark.name.length) {
-        return placemark.name;
-    }
-    
-    return @"Unknown";
-}
-
-+ (NSString *)shortLocationNameFromPlacemark:(CLPlacemark *)placemark {
-    if (!placemark) {
-        return @"Middle of Nowhere";
-    }
-    
-    if ([self isAtTheCastle:placemark.location]) {
-        return @"Stefan's Castle";
-    }
-    
-    if (placemark.locality.length && placemark.administrativeArea.length) {
-        return [NSString stringWithFormat:@"%@, %@", placemark.locality, placemark.administrativeArea];
-    }
-    else if (placemark.name.length) {
-        return placemark.name;
-    }
-    else {
-        return @"Unknown";
-    }
 }
 
 + (void)setLastLocationName:(NSString*)name {
@@ -411,7 +419,7 @@ static NSString *_currentMapCenterLocationZip;
 
 - (void)finishWithBestLocation:(CLLocation *)location error:(NSError *)error {
     if (!error) {
-        [TellMeMyLocation setCurrentDeviceLocation:location];
+        [SHAppContext setCurrentDeviceLocation:location];
     }
     
     if ((error || !location) && self.failureBlock) {

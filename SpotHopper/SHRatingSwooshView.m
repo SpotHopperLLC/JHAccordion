@@ -12,14 +12,6 @@
 
 @implementation SHRatingSwooshView
 
-//- (void)drawRect:(CGRect)rect {
-//    [self updateSwooshImage];
-//}
-
-//- (void)layoutSubviews {
-//    [super layoutSubviews];
-//}
-
 - (void)updateSwooshImage {
     self.contentMode = UIViewContentModeCenter;
     self.backgroundColor = [UIColor clearColor];

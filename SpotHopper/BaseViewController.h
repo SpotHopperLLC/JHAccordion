@@ -34,6 +34,8 @@
 
 - (NSArray *)viewOptions;
 
+- (BOOL)isiOS8OrAbove;
+
 - (void)showHUDCompleted:(NSString*)text;
 - (void)showHUDCompleted:(NSString*)text block:(dispatch_block_t)block;
 - (void)showHUDCompleted:(NSString*)text time:(NSInteger)time block:(dispatch_block_t)block;

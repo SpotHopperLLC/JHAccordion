@@ -8,7 +8,7 @@
 
 #import "LocationChooserViewController.h"
 
-#import "TellMeMyLocation.h"
+#import "SHAppContext.h"
 
 #import "ErrorModel.h"
 #import "Tracker.h"
@@ -20,8 +20,6 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSearch;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
-
-@property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
 
 @end
 
@@ -45,8 +43,6 @@
     
     // Sets title
     [self setTitle:@"Select a Location"];
-    
-    _tellMeMyLocation = [[TellMeMyLocation alloc] init];
     
     // Navigation bar buttons
     UIBarButtonItem *barButtonLeft = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(onClickCancel:)];
@@ -82,7 +78,6 @@
     [textField resignFirstResponder];
     
     if (textField.text.length > 0) {
-        
         // Reverse geocodes search text
         CLGeocoder *geocoder = [[CLGeocoder alloc] init];
         
@@ -100,7 +95,6 @@
                 [_mapView setRegion:mapRegion animated: YES];
             }
         }];
-        
     }
     
     return NO;
@@ -125,17 +119,13 @@
 }
 
 - (IBAction)onClickUseCurrentLocation:(id)sender {
-    [_tellMeMyLocation findMe:kCLLocationAccuracyKilometer found:^(CLLocation *newLocation) {
+    CLLocation *location = [SHAppContext currentDeviceLocation];
+    if (location) {
         MKCoordinateRegion mapRegion;
-        mapRegion.center = newLocation.coordinate;
+        mapRegion.center = location.coordinate;
         mapRegion.span = MKCoordinateSpanMake(0.2, 0.2);
         [_mapView setRegion:mapRegion animated: YES];
-    } failure:^(NSError *error){
-        if ([error.domain isEqualToString:kTellMeMyLocationDomain]) {
-            [self showAlert:error.localizedDescription message:error.localizedRecoverySuggestion];
-        }
-        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
-    }];
+    }
 }
 
 @end

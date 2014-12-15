@@ -338,7 +338,7 @@
         return coordinate;
     }
     
-    return [TellMeMyLocation lastLocation].coordinate;
+    return [SHAppContext lastLocation].coordinate;
 }
 
 - (CLLocationDistance)searchRadius {

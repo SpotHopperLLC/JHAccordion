@@ -11,6 +11,7 @@
 #import "NSNumber+Helpers.h"
 #import "UIViewController+Navigator.h"
 
+#import "SHAppContext.h"
 #import "TellMeMyLocation.h"
 
 #import "SHButtonLatoLightLocation.h"
@@ -128,7 +129,7 @@
     [_btnLocation updateWithLastLocation];
     
     if (_updatedSearchNeeded) {
-        _location = [TellMeMyLocation lastLocation];
+        _location = [SHAppContext lastLocation];
         [self startSearch];
     }
 }

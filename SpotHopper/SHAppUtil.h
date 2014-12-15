@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 
 @class SpotModel, SpecialModel, DrinkModel, ImageModel, CheckInModel, SHUserProfileModel;
 
@@ -24,6 +25,13 @@
 - (void)shareDrink:(DrinkModel *)drink withViewController:(UIViewController *)vc;
 
 - (void)shareCheckin:(CheckInModel *)checkin withViewController:(UIViewController *)vc;
+
+#pragma mark - Significant Location Changes
+#pragma mark -
+
+- (void)processSignificantLocationChange:(CLLocation *)location;
+
+- (void)resetLastCheckInPromptDate;
 
 #pragma mark - Parse
 #pragma mark -

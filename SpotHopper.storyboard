@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="xUM-VU-R28">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="xUM-VU-R28">
     <dependencies>
         <deployment version="2048" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="Lato-BlackItalic.ttf">
@@ -1196,10 +1196,10 @@
             </objects>
             <point key="canvasLocation" x="291" y="-693"/>
         </scene>
-        <!--Sidebar View Controller-->
+        <!--Initial View Controller-->
         <scene sceneID="Foa-zb-jdT">
             <objects>
-                <viewController id="xUM-VU-R28" customClass="JHSidebarViewController" sceneMemberID="viewController">
+                <viewController id="xUM-VU-R28" userLabel="Initial View Controller" customClass="JHSidebarViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tyr-5N-sqt"/>
                         <viewControllerLayoutGuide type="bottom" id="0sa-gg-cOb"/>
@@ -4356,6 +4356,25 @@
                                     <action selector="loginButtonTapped:" destination="MAW-d9-rLy" eventType="touchUpInside" id="NR1-sI-uqO"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="utr-Gr-cmF" customClass="SHButtonLatoLight">
+                                <rect key="frame" x="0.0" y="254" width="320" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="6wY-HH-NhS"/>
+                                </constraints>
+                                <inset key="insetFor6xAndEarlier" minX="0.0" minY="18" maxX="0.0" maxY="-18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <inset key="contentEdgeInsets" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <inset key="titleEdgeInsets" minX="7" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Reset" image="btn_sidebar_icon_reset.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="resetButtonTapped:" destination="MAW-d9-rLy" eventType="touchUpInside" id="8rq-tO-7eb"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -4364,6 +4383,7 @@
                             <constraint firstItem="VuU-LO-A1z" firstAttribute="leading" secondItem="QDI-8b-Edv" secondAttribute="leading" id="Hkz-fI-H8k"/>
                             <constraint firstItem="0oT-aw-FjE" firstAttribute="leading" secondItem="QDI-8b-Edv" secondAttribute="leading" id="IZC-Z3-TXA"/>
                             <constraint firstAttribute="trailing" secondItem="qaV-8H-YUC" secondAttribute="trailing" id="LbH-xJ-77r"/>
+                            <constraint firstItem="utr-Gr-cmF" firstAttribute="leading" secondItem="QDI-8b-Edv" secondAttribute="leading" id="Pc6-es-Nk1"/>
                             <constraint firstItem="OPk-Zq-UH1" firstAttribute="leading" secondItem="QDI-8b-Edv" secondAttribute="leading" constant="10" id="Slz-8d-2Cx"/>
                             <constraint firstItem="liv-IV-2rd" firstAttribute="top" secondItem="QDI-8b-Edv" secondAttribute="top" id="THv-qI-svB"/>
                             <constraint firstAttribute="bottom" secondItem="liv-IV-2rd" secondAttribute="bottom" id="TRz-Qm-SyD"/>
@@ -4378,12 +4398,14 @@
                             <constraint firstItem="OPk-Zq-UH1" firstAttribute="top" secondItem="fjF-eU-JbL" secondAttribute="bottom" constant="3" id="i7b-5M-YMi"/>
                             <constraint firstItem="Aey-qw-EMg" firstAttribute="top" secondItem="OPk-Zq-UH1" secondAttribute="bottom" constant="8" id="j4e-z3-yMd"/>
                             <constraint firstAttribute="trailing" secondItem="liv-IV-2rd" secondAttribute="trailing" id="kKz-b4-l8G"/>
+                            <constraint firstItem="utr-Gr-cmF" firstAttribute="top" secondItem="qaV-8H-YUC" secondAttribute="bottom" id="kXZ-Kn-va7"/>
                             <constraint firstAttribute="bottom" secondItem="IeU-dC-lez" secondAttribute="bottom" id="kni-3h-0r8"/>
                             <constraint firstItem="fVX-ov-pi6" firstAttribute="leading" secondItem="QDI-8b-Edv" secondAttribute="leading" id="mnR-ex-qXD"/>
                             <constraint firstItem="qaV-8H-YUC" firstAttribute="top" secondItem="VuU-LO-A1z" secondAttribute="bottom" id="o5E-Fe-0Z1"/>
                             <constraint firstItem="qaV-8H-YUC" firstAttribute="leading" secondItem="QDI-8b-Edv" secondAttribute="leading" id="qso-Y7-VmO"/>
                             <constraint firstItem="liv-IV-2rd" firstAttribute="leading" secondItem="QDI-8b-Edv" secondAttribute="leading" id="t9n-Kf-iDC"/>
                             <constraint firstItem="0oT-aw-FjE" firstAttribute="top" secondItem="Aey-qw-EMg" secondAttribute="bottom" constant="8" id="uP1-TX-nTf"/>
+                            <constraint firstAttribute="trailing" secondItem="utr-Gr-cmF" secondAttribute="trailing" id="yi5-o5-vbj"/>
                         </constraints>
                     </view>
                     <connections>
@@ -4391,6 +4413,7 @@
                         <outlet property="btnCheckIn" destination="VuU-LO-A1z" id="Tkf-tL-i8d"/>
                         <outlet property="btnGiveProps" destination="qaV-8H-YUC" id="2Nt-Ha-RxN"/>
                         <outlet property="btnLogin" destination="IeU-dC-lez" id="WpU-pv-MTy"/>
+                        <outlet property="btnReset" destination="utr-Gr-cmF" id="Bdy-AA-Uc1"/>
                         <outlet property="btnReviews" destination="0oT-aw-FjE" id="dln-Ea-3RM"/>
                         <outlet property="txtSearch" destination="Gm8-Nf-e5g" id="Ld3-eO-W1j"/>
                     </connections>
@@ -4806,6 +4829,7 @@
         <image name="btn_nav_arrow_east.png" width="22" height="22"/>
         <image name="btn_sidebar_icon_account.png" width="42" height="28"/>
         <image name="btn_sidebar_icon_checkin.png" width="42" height="29"/>
+        <image name="btn_sidebar_icon_reset.png" width="30" height="30"/>
         <image name="btn_sidebar_icon_reviews.png" width="42" height="26"/>
         <image name="btn_sidebar_icon_star.png" width="42" height="28"/>
         <image name="btn_spot_profile_image_next.png" width="58" height="90"/>

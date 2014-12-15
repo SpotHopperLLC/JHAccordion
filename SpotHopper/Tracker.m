@@ -19,6 +19,7 @@
 
 #import "Tracker.h"
 
+#import "SHAppContext.h"
 #import "TellMeMyLocation.h"
 #import "Mixpanel.h"
 #import "ErrorModel.h"
@@ -27,6 +28,8 @@
 
 #import "SHAppConfiguration.h"
 #import "Crashlytics.h"
+
+#import <Parse/Parse.h>
 
 #define kUnknown @"Unknown"
 
@@ -167,12 +170,12 @@
 }
 
 + (NSDictionary *)locationProperties {
-    CLLocation *currentLocation = [TellMeMyLocation currentLocation];
-    CLLocation *mapCenterLocation = [TellMeMyLocation mapCenterLocation];
-    NSString *currentLocationName = [TellMeMyLocation currentLocationName];
-    NSString *mapCenterLocationName = [TellMeMyLocation mapCenterLocationName];
-    NSString *currentLocationZip = [TellMeMyLocation currentLocationZip];
-    NSString *mapCenterLocationZip = [TellMeMyLocation mapCenterLocationZip];
+    CLLocation *currentLocation = [SHAppContext currentLocation];
+    CLLocation *mapCenterLocation = [SHAppContext mapCenterLocation];
+    NSString *currentLocationName = [SHAppContext currentLocationName];
+    NSString *mapCenterLocationName = [SHAppContext mapCenterLocationName];
+    NSString *currentLocationZip = [SHAppContext currentLocationZip];
+    NSString *mapCenterLocationZip = [SHAppContext mapCenterLocationZip];
 
     CLLocationDistance distance = [mapCenterLocation distanceFromLocation:currentLocation];
     

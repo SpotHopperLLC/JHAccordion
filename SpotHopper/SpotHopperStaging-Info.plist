@@ -41,7 +41,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>SpotHopper will use your location to show you the best local recommendations.</string>
+	<string>SpotHopper will use your location to show you the best nearby recommendations.</string>
 	<key>SpotHopperSettings</key>
 	<dict>
 		<key>AppURLScheme</key>

@@ -25,43 +25,43 @@ typedef void (^TellMeMyLocationCompletionHandler)();
 
 @property (weak, nonatomic) id <TellMeMyLocationDelegate> delegate;
 
-- (void)findMe:(CLLocationAccuracy)accuracy;
-- (void)findMe:(CLLocationAccuracy)accuracy found:(FoundBlock)foundBlock failure:(FailureBlock)failureBlock;
+- (void)findMe:(CLLocationAccuracy)accuracy __deprecated;
+- (void)findMe:(CLLocationAccuracy)accuracy found:(FoundBlock)foundBlock failure:(FailureBlock)failureBlock __deprecated;
 
-+ (BOOL)needsLocationServicesPermissions;
++ (BOOL)needsLocationServicesPermissions __deprecated;
 
-+ (CLLocation *)currentLocation;
-+ (NSString *)currentLocationName;
-+ (NSString *)currentLocationZip;
++ (CLLocation *)currentLocation __deprecated;
++ (NSString *)currentLocationName __deprecated;
++ (NSString *)currentLocationZip __deprecated;
 
 // Current Device Location
-+ (void)setCurrentDeviceLocation:(CLLocation *)deviceLocation;
-+ (CLLocation *)currentDeviceLocation;
-+ (NSString *)currentDeviceLocationName;
-+ (NSString *)currentDeviceLocationZip;
++ (void)setCurrentDeviceLocation:(CLLocation *)deviceLocation __deprecated;
++ (CLLocation *)currentDeviceLocation __deprecated;
++ (NSString *)currentDeviceLocationName __deprecated;
++ (NSString *)currentDeviceLocationZip __deprecated;
 
 // Current Selected Location
-+ (void)setCurrentSelectedLocation:(CLLocation *)selectedLocation;
-+ (CLLocation *)currentSelectedLocation;
-+ (NSString *)currentSelectedLocationName;
-+ (NSString *)currentSelectedLocationZip;
++ (void)setCurrentSelectedLocation:(CLLocation *)selectedLocation __deprecated;
++ (CLLocation *)currentSelectedLocation __deprecated;
++ (NSString *)currentSelectedLocationName __deprecated;
++ (NSString *)currentSelectedLocationZip __deprecated;
 
 // Map Center Location
-+ (void)setMapCenterLocation:(CLLocation *)mapCenterLocation;
-+ (CLLocation *)mapCenterLocation;
-+ (NSString *)mapCenterLocationName;
-+ (NSString *)mapCenterLocationZip;
++ (void)setMapCenterLocation:(CLLocation *)mapCenterLocation __deprecated;
++ (CLLocation *)mapCenterLocation __deprecated;
++ (NSString *)mapCenterLocationName __deprecated;
++ (NSString *)mapCenterLocationZip __deprecated;
 
-+ (NSString *)locationNameFromPlacemark:(CLPlacemark *)placemark;
-+ (NSString *)shortLocationNameFromPlacemark:(CLPlacemark *)placemark;
++ (NSString *)locationNameFromPlacemark:(CLPlacemark *)placemark __deprecated;
++ (NSString *)shortLocationNameFromPlacemark:(CLPlacemark *)placemark __deprecated;
 
-+ (void)setLastLocation:(CLLocation*)location completionHandler:(TellMeMyLocationCompletionHandler)completionHandler;
-+ (void)setLastLocationName:(NSString*)name;
++ (void)setLastLocation:(CLLocation*)location completionHandler:(TellMeMyLocationCompletionHandler)completionHandler __deprecated;
++ (void)setLastLocationName:(NSString*)name __deprecated;
 
-+ (CLLocation*)lastLocation;
-+ (NSDate*)lastLocationDate;
-+ (NSString*)lastLocationName;
-+ (NSString*)lastLocationNameShort;
++ (CLLocation*)lastLocation __deprecated;
++ (NSDate*)lastLocationDate __deprecated;
++ (NSString*)lastLocationName __deprecated;
++ (NSString*)lastLocationNameShort __deprecated;
 
 @end
 

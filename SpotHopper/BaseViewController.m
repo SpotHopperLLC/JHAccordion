@@ -10,6 +10,7 @@
 
 #import "SHAppConfiguration.h"
 #import "SHAppUtil.h"
+#import "SHAppContext.h"
 
 #import "MBProgressHUD.h"
 
@@ -67,6 +68,8 @@ typedef void(^AlertBlock)();
 
 @end
 
+#define isiOS8OrLater floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1
+
 @implementation BaseViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -94,6 +97,10 @@ typedef void(^AlertBlock)();
 
 - (NSArray *)viewOptions {
     return @[kDidLoadOptionsBlurredBackground];
+}
+
+- (BOOL)isiOS8OrAbove {
+    return isiOS8OrLater;
 }
 
 - (void)viewDidLoad:(NSArray*)options {
@@ -675,7 +682,7 @@ typedef void(^AlertBlock)();
 
 - (void)openGoogleMapsDirectionsForSpot:(SpotModel *)spot {
     if ([self isGoogleMapsAvailable]) {
-        CLLocation *currentLocation = [TellMeMyLocation currentDeviceLocation];
+        CLLocation *currentLocation = [SHAppContext currentDeviceLocation];
         CLLocation *spotLocation = [[CLLocation alloc] initWithLatitude:[spot.latitude floatValue] longitude:[spot.longitude floatValue]];
         
         CLLocationDistance meters = [currentLocation distanceFromLocation:spotLocation];
@@ -698,7 +705,7 @@ typedef void(^AlertBlock)();
 }
 
 - (void)openAppleMapsDirectionsForSpot:(SpotModel *)spot {
-    CLLocation *currentLocation = [TellMeMyLocation currentDeviceLocation];
+    CLLocation *currentLocation = [SHAppContext currentDeviceLocation];
     CLLocation *spotLocation = [[CLLocation alloc] initWithLatitude:[spot.latitude floatValue] longitude:[spot.longitude floatValue]];
     
     CLLocationDistance meters = [currentLocation distanceFromLocation:spotLocation];

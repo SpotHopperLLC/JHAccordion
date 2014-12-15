@@ -8,6 +8,7 @@
 
 #import "CheckinViewController.h"
 
+#import "SHAppContext.h"
 #import "NSNumber+Helpers.h"
 #import "UIViewController+Navigator.h"
 
@@ -88,19 +89,19 @@
     
     // Find me
     [self showHUD:@"Locating"];
-    _tellMeMyLocation = [[TellMeMyLocation alloc] init];
-    [_tellMeMyLocation findMe:kCLLocationAccuracyNearestTenMeters found:^(CLLocation *newLocation) {
-        
-        [self hideHUD];
-        _currentLocation = newLocation;
-        
-        [self doSearch];
-    } failure:^(NSError *error) {
-        [self hideHUD];
-        [self doSearch];
-        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
-    }];
     
+    CLLocation *location = [SHAppContext currentDeviceLocation];
+    if (location) {
+        [self hideHUD];
+        _currentLocation = location;
+        
+        [self doSearch];
+    }
+    else {
+        [self hideHUD];
+        [self doSearch];
+    }
+
     // Initializes stuff
     _page = @1;
     _spots = [NSMutableArray array];

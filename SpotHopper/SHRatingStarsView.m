@@ -12,13 +12,6 @@
 
 @implementation SHRatingStarsView
 
-//- (void)drawRect:(CGRect)rect {
-//}
-
-//- (void)layoutSubviews {
-//    [super layoutSubviews];
-//}
-
 - (void)updateStarsImage {
     self.backgroundColor = [UIColor clearColor];
     UIImage *image = [SHStyleKit drawImageForRatingStarsWithPercentage:(_rating * 10) size:self.frame.size];
