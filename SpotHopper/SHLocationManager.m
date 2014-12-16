@@ -104,7 +104,7 @@
         
         self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
         self.locationManager.pausesLocationUpdatesAutomatically = YES;
-        self.locationManager.activityType = CLActivityTypeAutomotiveNavigation;
+        self.locationManager.activityType = CLActivityTypeFitness;
         
         [self.locationManager startMonitoringSignificantLocationChanges];
         

@@ -37,7 +37,8 @@
 #define kCheckInPromptCooldownPeriodInSeconds 60 * 3
 #else
 // 5 days
-#define kCheckInPromptCooldownPeriodInSeconds 60*60*24*5
+#define kCheckInPromptCooldownPeriodInSeconds 60 * 3
+//#define kCheckInPromptCooldownPeriodInSeconds 60*60*24*5
 #endif
 
 #pragma mark - Class Extension
@@ -228,27 +229,31 @@
     // 2) fetch nearby spots
     // 3) ask the user if they would like to check in with a local notification
     
-    
     UIApplication *application = [UIApplication sharedApplication];
     if (application.applicationState == UIApplicationStateActive) {
         // prompting should not be triggered when the app is active
+        //[self logMessage:@"App is active" location:location spot:nil];
         return;
     }
-    else if ([location.timestamp timeIntervalSinceNow] > 30) {
-        // if the location update is old do not use it
-        // deferred/cached location updates could be reported which are out of date
-        return;
+    else if (location.horizontalAccuracy > 100) {
+        NSString *message = [NSString stringWithFormat:@"Location accuracy is not sufficient (%.1f)", location.horizontalAccuracy];
+        [self logMessage:message location:location spot:nil];
     }
-    else if (location.speed > 0.5) {
-        // device must not be moving (driving past a spot)
-        // speed is -1 when the device detects no movement
-        // average walking speed is ~3 mph which is ~1.35 meters per second
-        // the speed used here will ensure the user is essentially stopped
-        return;
-    }
-    else if (![self isNowAGoodTimeForADrink]) {
-        return;
-    }
+//    else if ([location.timestamp timeIntervalSinceNow] > 30) {
+//        // if the location update is old do not use it
+//        // deferred/cached location updates could be reported which are out of date
+//        return;
+//    }
+//    else if (location.speed > 0.5) {
+//        // device must not be moving (driving past a spot)
+//        // speed is -1 when the device detects no movement
+//        // average walking speed is ~3 mph which is ~1.35 meters per second
+//        // the speed used here will ensure the user is essentially stopped
+//        return;
+//    }
+//    else if (![self isNowAGoodTimeForADrink]) {
+//        return;
+//    }
     
     // Networking communications is costly on the batter so a cool down period and other filtering
     // criteria are used to prevent frequent API calls which are not necessary
@@ -258,14 +263,14 @@
     if (seconds > kCheckInPromptCooldownPeriodInSeconds) {
         [self setLastCheckInPromptDate:[NSDate date]];
         
-        CLLocationDistance radius = 100.0f * kMeterToMile;
+        CLLocationDistance radius = 5000.0f * kMeterToMile;
         [[SpotModel fetchSpotsNearLocation:location radius:radius] then:^(NSArray *spots) {
             if (spots.count) {
                 SpotModel *spot = spots[0];
 
                 CLLocationDistance distance = [spot.location distanceFromLocation:location];
 
-                if (distance < 25.0) {
+                if (distance < 100.0) {
                     [Tracker logInfo:@"Prompting to check in at spot" class:[self class] trace:NSStringFromSelector(_cmd)];
                     
                     NSDictionary *userInfo = @{
@@ -280,35 +285,67 @@
                     notification.soundName = UILocalNotificationDefaultSoundName;
                     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
                     
-                    if ([SHAppConfiguration isParseEnabled]) {
-                        
-                        PFGeoPoint *locationPoint = [PFGeoPoint geoPointWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude];
-                        PFGeoPoint *spotPoint = [PFGeoPoint geoPointWithLatitude:spot.location.coordinate.latitude longitude:spot.location.coordinate.longitude];
-                        
-                        PFUser *currentUser = [PFUser currentUser];
-                        PFObject *logObject = [PFObject objectWithClassName:@"LogMessage"];
-                        [logObject setObject:locationPoint forKey:@"locationPoint"];
-                        [logObject setObject:@"Prompted to check in at spot" forKey:@"message"];
-                        [logObject setObject:spot.name forKey:@"spot"];
-                        [logObject setObject:spotPoint forKey:@"spotPoint"];
-                        [logObject setObject:currentUser forKey:@"user"];
-                        [logObject setObject:currentUser.objectId forKey:@"userId"];
-                        [logObject saveEventually];
-                    }
+                    [self logMessage:@"Prompted to check in" location:location spot:spot];
                 }
                 else {
                     NSString *message = [NSString stringWithFormat:@"Nearest spot is not close enough: %f meters", distance];
                     [Tracker logInfo:message class:[self class] trace:NSStringFromSelector(_cmd)];
+                    [self logMessage:@"Not prompted to check in" location:location spot:spot];
                 }
             }
             else {
                 [Tracker logInfo:@"No spots found for prompting for check in" class:[self class] trace:NSStringFromSelector(_cmd)];
+                [self logMessage:@"No spots nearby" location:location spot:nil];
             }
-        } fail:nil always:^{
+        } fail:^(id error) {
+            [self logMessage:@"Failed to fetch spots" location:location spot:nil];
+        } always:^{
         }];
     }
     else {
         DebugLog(@"Cooling down from prompting for check in...");
+        NSString *message = [NSString stringWithFormat:@"Cooling down (%li)", (long)seconds];
+        [self logMessage:message location:location spot:nil];
+    }
+}
+
+- (void)logMessage:(NSString *)message location:(CLLocation *)location spot:(SpotModel *)spot {
+    MAAssert(message.length, @"There must be a message");
+    DebugLog(@"message: %@", message);
+    
+    CLLocationDistance distance = CGFLOAT_MAX;
+    if (spot && location) {
+        distance = [spot.location distanceFromLocation:location];
+    }
+    
+    if ([SHAppConfiguration isParseEnabled]) {
+        PFUser *currentUser = [PFUser currentUser];
+        PFObject *messageLog = [PFObject objectWithClassName:@"MessageLog"];
+        
+        [messageLog setObject:message forKey:@"message"];
+
+        if (distance != CGFLOAT_MAX) {
+            [messageLog setObject:[NSNumber numberWithDouble:distance] forKey:@"distance"];
+        }
+
+        if (location) {
+            PFGeoPoint *locationPoint = [PFGeoPoint geoPointWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude];
+            [messageLog setObject:locationPoint forKey:@"location"];
+            [messageLog setObject:[NSNumber numberWithDouble:location.speed] forKey:@"speed"];
+            [messageLog setObject:[NSNumber numberWithDouble:location.course] forKey:@"course"];
+        }
+        if (spot) {
+            [messageLog setObject:spot.name forKey:@"spot"];
+        }
+        
+        [messageLog setObject:currentUser forKey:@"user"];
+        [messageLog saveEventually];
+        
+        [messageLog saveEventually:^(BOOL succeeded, NSError *error) {
+            if (error) {
+                DebugLog(@"Error: %@", error);
+            }
+        }];
     }
 }
 

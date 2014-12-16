@@ -17,7 +17,6 @@
 #import "UIImageView+AFNetworking.h"
 #import "ImageUtil.h"
 
-#import "TellMeMyLocation.h"
 #import "SHNotifications.h"
 
 #import "SHCollectionViewTableManager.h"

@@ -18,7 +18,6 @@
 #import "SpecialModel.h"
 #import "CheckInModel.h"
 
-#import "TellMeMyLocation.h"
 #import "ClientSessionManager.h"
 
 #import "Mixpanel.h"

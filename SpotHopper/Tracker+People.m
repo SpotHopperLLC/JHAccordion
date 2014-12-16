@@ -12,7 +12,6 @@
 #import "Mixpanel.h"
 #import "ClientSessionManager.h"
 #import "SHAppContext.h"
-#import "TellMeMyLocation.h"
 
 @implementation Tracker (People)
 

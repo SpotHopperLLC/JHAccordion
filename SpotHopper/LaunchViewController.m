@@ -19,7 +19,6 @@
 #import "UserModel.h"
 
 #import "SHAppConfiguration.h"
-#import "TellMeMyLocation.h"
 #import "Mixpanel.h"
 #import "Tracker.h"
 #import "Tracker+Events.h"
@@ -67,14 +66,6 @@
 
 #pragma mark - View Lifecycle
 #pragma mark -
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

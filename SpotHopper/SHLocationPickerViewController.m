@@ -8,7 +8,6 @@
 
 #import "SHLocationPickerViewController.h"
 
-#import "TellMeMyLocation.h"
 #import "SVPulsingAnnotationView.h"
 
 #import "SHStyleKit+Additions.h"

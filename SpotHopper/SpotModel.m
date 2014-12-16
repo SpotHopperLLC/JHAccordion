@@ -667,7 +667,7 @@
         params[kSpotModelParamQueryVisibleToUsers] = @"true";
     }
     
-    DebugLog(@"params: %@", params);
+    //DebugLog(@"params: %@", params);
     
     NSDate *startDate = [NSDate date];
     

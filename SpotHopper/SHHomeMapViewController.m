@@ -1490,6 +1490,11 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                                              selector:@selector(handlePromptForCheckInNotification:)
                                                  name:SHPromptForCheckInNotificationName
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleDisplayDiagnosticsNotification:)
+                                                 name:SHDisplayDiagnosticsNotificationName
+                                               object:nil];
 }
 
 - (void)resetSearch {
@@ -2142,7 +2147,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     
     [self.locationMenuBarViewController updateLocationTitle:@"Locating..."];
     
-    CLLocation *location = [SHAppContext currentDeviceLocation];
+    CLLocation *location = [[SHLocationManager defaultInstance] location];
     if (location) {
         self.currentLocation = location;
         [SHAppContext setCurrentSelectedLocation:location];
@@ -2997,8 +3002,19 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self.navigationController popToViewController:self animated:FALSE];
     }
     
+    // clear out the application state
+    self.spotListModel = nil;
+    self.drinkListModel = nil;
+    self.specialsSpotModels = nil;
+    self.selectedSpot = nil;
+    self.selectedDrink = nil;
+    self.checkin = nil;
+    
     [self.mapView removeAnnotations:self.mapView.annotations];
     [self resetSearch];
+
+//    [self hideSearch:FALSE withCompletionBlock:nil];
+    [self hideCheckin:FALSE withCompletionBlock:nil];
     
     [self hideCollectionContainerView:FALSE withCompletionBlock:^{
         [self showHomeNavigation:FALSE withCompletionBlock:nil];
@@ -3469,7 +3485,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (void)sidebarViewControllerDidRequestCheckin:(SHSidebarViewController*)vc {
     [self hideSideBar:TRUE withCompletionBlock:^{
         if ([self promptLoginNeeded:@"Cannot checkin without logging in"] == NO) {
-            [self goToCheckin:nil];
         }
     }];
 }
@@ -4484,6 +4499,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [self resetViewWithCompletionBlock:^{
         [self showCheckin:TRUE withCompletionBlock:^{
         }];
+    }];
+}
+
+- (void)handleDisplayDiagnosticsNotification:(NSNotification *)notification {
+    [self hideSideBar:TRUE withCompletionBlock:^{
+        UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"DiagnosticsVC"];
+        [self.navigationController pushViewController:vc animated:TRUE];
     }];
 }
 

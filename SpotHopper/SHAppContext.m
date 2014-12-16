@@ -11,6 +11,7 @@
 #import "Tracker+Events.h"
 #import "SHAppUtil.h"
 #import "SHNotifications.h"
+#import "SHLocationManager.h"
 
 #import <Parse/Parse.h>
 
@@ -433,6 +434,11 @@ static NSString *_currentMapCenterLocationZip;
 }
 
 + (void)updateLocation:(CLLocation *)location withCompletionBlock:(void (^)(NSError *error))completionBlock {
+    if (location.horizontalAccuracy > 100) {
+        // do not log inaccurate locations
+        return;
+    }
+    
     NSDictionary *params = @{@"latitude" : [NSNumber numberWithFloat:location.coordinate.latitude], @"longitude" : [NSNumber numberWithFloat:location.coordinate.longitude]};
     
     [PFCloud callFunctionInBackground:@"updateLocation"

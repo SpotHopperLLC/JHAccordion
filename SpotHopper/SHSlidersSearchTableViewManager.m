@@ -30,8 +30,6 @@
 #import "DrinkSubTypeModel.h"
 #import "BaseAlcoholModel.h"
 
-#import "TellMeMyLocation.h"
-
 #import "Tracker.h"
 #import "Tracker+Events.h"
 #import "Tracker+People.h"

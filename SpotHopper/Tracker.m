@@ -20,7 +20,7 @@
 #import "Tracker.h"
 
 #import "SHAppContext.h"
-#import "TellMeMyLocation.h"
+#import "SHLocationManager.h"
 #import "Mixpanel.h"
 #import "ErrorModel.h"
 #import "UserModel.h"
@@ -56,6 +56,25 @@
         if (trackUserAction) {
             [self trackUserAction:event];
         }
+    }
+}
+
++ (void)trackInteraction:(NSString *)interaction {
+    if (interaction.length && [SHAppConfiguration isParseEnabled]) {
+        PFObject *interactionLog = [PFObject objectWithClassName:@"InteractionLog"];
+        [interactionLog setObject:interaction forKey:@"interaction"];
+        [interactionLog setObject:[PFUser currentUser] forKey:@"user"];
+        
+        CLLocation *location = [[SHLocationManager defaultInstance] location];
+        if (location) {
+            PFGeoPoint *point = [PFGeoPoint geoPointWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude];
+            [interactionLog setObject:point forKey:@"location"];
+        }
+        
+        [interactionLog setObject:[SHAppConfiguration bundleIdentifier] forKey:@"appIdentifier"];
+        [interactionLog setObject:[SHAppConfiguration bundleDisplayName] forKey:@"appName"];
+        
+        [interactionLog saveEventually];
     }
 }
 

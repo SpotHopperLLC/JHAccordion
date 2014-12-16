@@ -22,7 +22,6 @@
 #import "DrinkMenuViewController.h"
 #import "DrinkMenuOfferingsViewController.h"
 
-#import "CheckinViewController.h"
 #import "PhotoAlbumViewController.h"
 #import "PhotoViewerViewController.h"
 
@@ -30,7 +29,6 @@
 #import "SHSpotProfileViewController.h"
 
 #import "Tracker.h"
-#import "TellMeMyLocation.h"
 
 #import "CheckInModel.h"
 
@@ -194,20 +192,6 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
-#pragma mark - Checkin
-
-- (void)goToCheckin:(id<CheckinViewControllerDelegate>)delegate {
-    [Tracker track:@"View Check In" properties:@{@"Location" : [SHAppContext lastLocationNameShort]}];
-    CheckinViewController *viewController = [[self checkinStoryboard] instantiateViewControllerWithIdentifier:@"CheckinViewController"];
-    [viewController setDelegate:delegate];
-    [self.navigationController pushViewController:viewController animated:YES];
-}
-
-- (void)goToCheckIn:(CheckInModel*)checkIn {
-    [Tracker track:@"View Check In" properties:@{@"Location" : [SHAppContext lastLocationNameShort]}];
-    
-    [self goToSpotProfile:checkIn.spot];
-}
 
 #pragma mark - Commons
 

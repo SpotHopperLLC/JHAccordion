@@ -15,6 +15,7 @@
 #import "SHStyleKit+Additions.h"
 #import "ImageUtil.h"
 #import "SHNotifications.h"
+#import "SHLocationManager.h"
 
 #import "Tracker.h"
 #import "Tracker+Events.h"
@@ -80,7 +81,7 @@
 - (void)fetchSpots {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fetchSpots) object:nil];
     
-    CLLocation *location = [[SHAppContext defaultInstance] deviceLocation];
+    CLLocation *location = [[SHLocationManager defaultInstance] location];
     
     if (!location) {
         [self performSelector:@selector(fetchSpots) withObject:nil afterDelay:0.25];
@@ -222,6 +223,7 @@
         CLLocationDistance distance = [currentLocation distanceFromLocation:spot.location];
         
         [Tracker trackCheckedInAtSpot:spot position:indexPath.row+1 count:self.spots.count distance:distance];
+        [Tracker trackInteraction:@"Checked In at Spot"];
     }
     else {
         [SHNotifications reviewSpot:nil];

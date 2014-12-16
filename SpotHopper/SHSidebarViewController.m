@@ -9,6 +9,7 @@
 #import "SHSidebarViewController.h"
 
 #import "SHAppUtil.h"
+#import "SHNotifications.h"
 #import "UIView+AddBorder.h"
 #import "UIViewController+Navigator.h"
 
@@ -23,10 +24,8 @@
 // TODO: change to use StyleKit for button images (different than just showing the icons)
 
 @property (weak, nonatomic) IBOutlet UIButton *btnReviews;
-@property (weak, nonatomic) IBOutlet UIButton *btnCheckIn;
-@property (weak, nonatomic) IBOutlet UIButton *btnGiveProps;
-@property (weak, nonatomic) IBOutlet UIButton *btnReset;
 @property (weak, nonatomic) IBOutlet UIButton *btnAccount;
+@property (weak, nonatomic) IBOutlet UIButton *btnViewDiagnostics;
 @property (weak, nonatomic) IBOutlet UIButton *btnLogin;
 
 @end
@@ -44,19 +43,19 @@
     // Increasing left inset of button titles
     UIEdgeInsets insets = UIEdgeInsetsMake(0, 15.0f, 0, 0);
     [self.btnReviews setTitleEdgeInsets:insets];
-    [self.btnCheckIn setTitleEdgeInsets:insets];
-    [self.btnGiveProps setTitleEdgeInsets:insets];
-    [self.btnReset setTitleEdgeInsets:insets];
     [self.btnAccount setTitleEdgeInsets:insets];
     
     // Add white borders
     [self.btnReviews addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
-    [self.btnCheckIn addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
-    [self.btnGiveProps addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
-    [self.btnReset addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
-    [self.btnReset addBottomBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
+    [self.btnReviews addBottomBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
     [self.btnAccount addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
     [self.btnLogin addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
+    
+#ifndef STAGING
+    self.btnViewDiagnostics.hidden = TRUE;
+#else
+    self.btnViewDiagnostics.hidden = FALSE;
+#endif
     
     [self updateView:NO];
 }
@@ -144,12 +143,12 @@
 }
 
 - (IBAction)resetButtonTapped:(id)sender {
-    [[SHAppUtil defaultInstance] resetLastCheckInPromptDate];
-    [self showAlert:@"Reset" message:@"You have reset the prompts!"];
+}
+
+- (IBAction)viewDiagnosticsButtonTapped:(id)sender {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        [self closeSideBar];
-    });
+    [SHNotifications displayDiagnostics];
 }
 
 - (IBAction)accountSettingsButtonTapped:(id)sender {

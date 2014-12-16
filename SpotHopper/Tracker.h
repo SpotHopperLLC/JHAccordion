@@ -14,6 +14,7 @@
 // Mixpanel
 + (void)track:(NSString *)event;
 + (void)track:(NSString *)event properties:(NSDictionary *)properties;
++ (void)trackInteraction:(NSString *)interaction;
 
 + (void)identifyUser;
 

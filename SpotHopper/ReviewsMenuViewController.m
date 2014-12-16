@@ -24,7 +24,6 @@
 
 #import "MyReviewsViewController.h"
 
-#import "TellMeMyLocation.h"
 #import "ErrorModel.h"
 #import "Tracker.h"
 

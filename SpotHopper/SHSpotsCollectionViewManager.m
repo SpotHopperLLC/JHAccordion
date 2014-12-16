@@ -18,8 +18,6 @@
 #import "UIImageView+AFNetworking.h"
 #import "ImageUtil.h"
 
-#import "TellMeMyLocation.h"
-
 #import "SHCollectionViewTableManager.h"
 
 #import "Tracker.h"

@@ -32,7 +32,6 @@
 #import "Tracker.h"
 #import "Tracker+Events.h"
 #import "Tracker+People.h"
-#import "TellMeMyLocation.h"
 
 #import "UIAlertView+Block.h"
 

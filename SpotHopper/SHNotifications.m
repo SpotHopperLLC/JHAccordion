@@ -82,6 +82,8 @@ NSString * const SHLocationChangedNotificationName = @"SHLocationChangedNotifica
 
 NSString * const SHPromptForCheckInNotificationName = @"SHPromptForCheckInNotificationName";
 
+NSString * const SHDisplayDiagnosticsNotificationName = @"SHDisplayDiagnosticsNotificationName";
+
 @implementation SHNotifications
 
 + (void)goToHomeMap {
@@ -312,7 +314,6 @@ NSString * const SHPromptForCheckInNotificationName = @"SHPromptForCheckInNotifi
                                                       userInfo:userInfo];
 }
 
-
 #pragma mark - Local Notifications
 #pragma mark -
 
@@ -326,5 +327,13 @@ NSString * const SHPromptForCheckInNotificationName = @"SHPromptForCheckInNotifi
 + (void)locationChanged {
     [[NSNotificationCenter defaultCenter] postNotificationName:SHLocationChangedNotificationName object:nil];
 }
+
+#pragma mark - Diagnostics
+#pragma mark -
+
++ (void)displayDiagnostics {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHDisplayDiagnosticsNotificationName object:nil];
+}
+
 
 @end

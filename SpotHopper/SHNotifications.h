@@ -89,6 +89,8 @@ extern NSString * const SHLocationChangedNotificationName;
 
 extern NSString * const SHPromptForCheckInNotificationName;
 
+extern NSString * const SHDisplayDiagnosticsNotificationName;
+
 @interface SHNotifications : NSObject
 
 + (void)goToHomeMap;
@@ -153,5 +155,10 @@ extern NSString * const SHPromptForCheckInNotificationName;
 #pragma mark -
 
 + (void)locationChanged;
+
+#pragma mark - Diagnostics
+#pragma mark -
+
++ (void)displayDiagnostics;
 
 @end
