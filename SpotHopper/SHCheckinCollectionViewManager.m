@@ -42,6 +42,8 @@
 @property (strong, nonatomic) CheckInModel *checkin;
 @property (strong, nonatomic) SpotModel *spot;
 
+@property (strong, nonatomic) NSMutableDictionary *operations;
+
 @end
 
 @implementation SHCheckinCollectionViewManager
@@ -109,7 +111,7 @@
     [tableManager manageTableView:tableView forCheckin:self.checkin atSpot:self.spot];
     [self addTableManager:tableManager forIndexPath:indexPath];
     
-    [self renderCell:cell withSpot:self.spot atIndex:indexPath.item];
+    [self renderCell:cell withSpot:self.spot atIndexPath:indexPath];
     
     [self attachedPanGestureToCell:cell];
     
@@ -129,18 +131,27 @@
     return CGSizeMake(CGRectGetWidth(collectionView.frame), CGRectGetHeight(collectionView.frame));
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+- (void)collectionView:(UICollectionView *)collectionView willEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     [self removeTableManagerForIndexPath:indexPath];
+    
+    NSOperation *operation = self.operations[indexPath];
+    if (operation) {
+        if (operation.isExecuting) {
+            [operation cancel];
+        }
+        [self.operations removeObjectForKey:indexPath];
+    }
 }
 
 #pragma mark - Base Overrides
 #pragma mark -
 
-- (void)renderCell:(UICollectionViewCell *)cell withSpot:(SpotModel *)spot atIndex:(NSUInteger)index {
+- (void)renderCell:(UICollectionViewCell *)cell withSpot:(SpotModel *)spot atIndexPath:(NSIndexPath *)indexPath {
     DebugLog(@"%@ (%@)", NSStringFromSelector(_cmd), spot.name);
+    
     UIView *headerView = [cell viewWithTag:500];
     
-    UIImageView *spotImageView = (UIImageView *)[headerView viewWithTag:1];
+    __weak UIImageView *spotImageView = (UIImageView *)[headerView viewWithTag:1];
     UILabel *nameLabel = (UILabel *)[cell viewWithTag:2];
     UILabel *typeLabel = (UILabel *)[cell viewWithTag:3];
     UIButton *shareImageButton = (UIButton *)[cell viewWithTag:5];
@@ -164,19 +175,24 @@
     spotImageView.image = nil;
     ImageModel *highlightImage = spot.highlightImage;
     
-    if (highlightImage) {
-        __weak UIImageView *weakImageView = spotImageView;
-        [ImageUtil loadImage:highlightImage placeholderImage:spot.placeholderImage withThumbImageBlock:^(UIImage *thumbImage) {
-            weakImageView.image = thumbImage;
-        } withFullImageBlock:^(UIImage *fullImage) {
-            weakImageView.image = fullImage;
-        } withErrorBlock:^(NSError *error) {
-            weakImageView.image = spot.placeholderImage;
-            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+    __weak SHCheckinCollectionViewManager *weakSelf = self;
+    
+    spotImageView.image = spot.placeholderImage;
+    
+    if (highlightImage.smallUrl.length) {
+        NSURL *url = [NSURL URLWithString:highlightImage.smallUrl];
+        NSOperation *operation = [ImageUtil fetchImageWithURL:url cachable:TRUE withCompletionBlock:^(UIImage *image, NSError *error) {
+            if (!error && image) {
+                spotImageView.image = image;
+            }
+            
+            [weakSelf.operations removeObjectForKey:indexPath];
         }];
-    }
-    else {
-        spotImageView.image = spot.placeholderImage;
+        
+        if (!self.operations) {
+            self.operations = @{}.mutableCopy;
+        }
+        self.operations[indexPath] = operation;
     }
     
     nameLabel.text = spot.name;

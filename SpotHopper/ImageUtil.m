@@ -109,16 +109,16 @@
     }
 }
 
-+ (void)fetchImageWithURL:(NSURL *)url cachable:(BOOL)cachable withCompletionBlock:(void (^)(UIImage *image, NSError *error))completionBlock {
++ (NSOperation *)fetchImageWithURL:(NSURL *)url cachable:(BOOL)cachable withCompletionBlock:(void (^)(UIImage *image, NSError *error))completionBlock {
     if (!completionBlock) {
-        return;
+        return nil;
     }
     
     if (cachable) {
         UIImage *image = [[self sh_sharedCache] cachedThumbnailImageForKey:url.absoluteString];
         if (image) {
             completionBlock(image, nil);
-            return;
+            return nil;
         }
     }
     
@@ -145,6 +145,8 @@
     }];
     
     [operation start];
+    
+    return operation;
 }
 
 #pragma mark - Caching

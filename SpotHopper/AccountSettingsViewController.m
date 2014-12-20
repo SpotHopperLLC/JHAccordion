@@ -162,6 +162,10 @@
     _txtSex.text = _selectedSex;
 }
 
+- (IBAction)onClickAppSettings:(id)sender {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+}
+
 - (IBAction)onClickLogout:(id)sender {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Logout" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
     [alertView showWithCompletion:^(UIAlertView *alertView, NSInteger buttonIndex) {

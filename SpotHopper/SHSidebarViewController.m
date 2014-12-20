@@ -130,21 +130,6 @@
     }
 }
 
-- (IBAction)checkInButtonTapped:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(sidebarViewControllerDidRequestCheckin:)]) {
-        [self.delegate sidebarViewControllerDidRequestCheckin:self];
-    }
-}
-
-- (IBAction)givePropsButtonTapped:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(sidebarViewControllerDidRequestGiveProps:)]) {
-        [self.delegate sidebarViewControllerDidRequestGiveProps:sender];
-    }
-}
-
-- (IBAction)resetButtonTapped:(id)sender {
-}
-
 - (IBAction)viewDiagnosticsButtonTapped:(id)sender {
     DebugLog(@"%@", NSStringFromSelector(_cmd));
     

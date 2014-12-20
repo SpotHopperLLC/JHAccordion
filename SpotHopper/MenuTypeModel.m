@@ -13,7 +13,7 @@
 #pragma mark - Debugging
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ - %@", self.ID, self.href];
+    return [NSString stringWithFormat:@"%@ (%@)", self.name, self.ID];
 }
 
 #pragma mark -

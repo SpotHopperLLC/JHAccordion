@@ -12,6 +12,7 @@
 #import "SHAppUtil.h"
 #import "SHNotifications.h"
 #import "SHLocationManager.h"
+#import "JTSReachabilityResponder.h"
 
 #import <Parse/Parse.h>
 
@@ -439,6 +440,10 @@ static NSString *_currentMapCenterLocationZip;
         return;
     }
     
+    if (![[JTSReachabilityResponder sharedInstance] isReachable]) {
+        [[SHAppUtil defaultInstance] logMessage:@"Network is not reachable" location:location];
+    }
+    
     NSDictionary *params = @{@"latitude" : [NSNumber numberWithFloat:location.coordinate.latitude], @"longitude" : [NSNumber numberWithFloat:location.coordinate.longitude]};
     
     [PFCloud callFunctionInBackground:@"updateLocation"
@@ -446,6 +451,8 @@ static NSString *_currentMapCenterLocationZip;
                                 block:^(NSString *result, NSError *error) {
                                     if (error) {
                                         DebugLog(@"Error: %@", error.localizedDescription);
+                                        NSString *message = [NSString stringWithFormat:@"Error: %@", error.localizedDescription];
+                                        [[SHAppUtil defaultInstance] logMessage:message location:location];
                                     }
                                 }];
 }

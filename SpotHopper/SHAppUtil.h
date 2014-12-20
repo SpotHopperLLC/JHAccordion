@@ -33,6 +33,10 @@
 
 - (void)resetLastCheckInPromptDate;
 
+- (void)logMessage:(NSString *)message location:(CLLocation *)location;
+
+- (void)logMessage:(NSString *)message location:(CLLocation *)location spot:(SpotModel *)spot;
+
 #pragma mark - Parse
 #pragma mark -
 

@@ -1387,6 +1387,10 @@
 		2686683519A3EE0F00284A74 /* SpecialModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2686683319A3EE0F00284A74 /* SpecialModel.m */; };
 		2686683819A3F91500284A74 /* SHModelResourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2686683719A3F91500284A74 /* SHModelResourceManager.m */; };
 		2686683919A3F91500284A74 /* SHModelResourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2686683719A3F91500284A74 /* SHModelResourceManager.m */; };
+		26886BC01A42762100A09122 /* SHMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26886BBF1A42762100A09122 /* SHMenuViewController.m */; };
+		26886BC11A42762100A09122 /* SHMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26886BBF1A42762100A09122 /* SHMenuViewController.m */; };
+		26886BC21A42762100A09122 /* SHMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26886BBF1A42762100A09122 /* SHMenuViewController.m */; };
+		26886BC31A42762100A09122 /* SHMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26886BBF1A42762100A09122 /* SHMenuViewController.m */; };
 		2688CF20194B3A0600C37DE3 /* SpotListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */; };
 		2688CF21194B3A0600C37DE3 /* SpotListRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */; };
 		268C8CA5190089D00011E0F8 /* UserState.m in Sources */ = {isa = PBXBuildFile; fileRef = 268C8CA1190089D00011E0F8 /* UserState.m */; };
@@ -2017,6 +2021,8 @@
 		2686683319A3EE0F00284A74 /* SpecialModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpecialModel.m; sourceTree = "<group>"; };
 		2686683619A3F91500284A74 /* SHModelResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHModelResourceManager.h; sourceTree = "<group>"; };
 		2686683719A3F91500284A74 /* SHModelResourceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHModelResourceManager.m; sourceTree = "<group>"; };
+		26886BBE1A42762100A09122 /* SHMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHMenuViewController.h; path = SpotHopper/SHMenuViewController.h; sourceTree = "<group>"; };
+		26886BBF1A42762100A09122 /* SHMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHMenuViewController.m; path = SpotHopper/SHMenuViewController.m; sourceTree = "<group>"; };
 		2688CF1B194B3A0600C37DE3 /* SpotListRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotListRequest.h; sourceTree = "<group>"; };
 		2688CF1C194B3A0600C37DE3 /* SpotListRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotListRequest.m; sourceTree = "<group>"; };
 		268C8CA0190089D00011E0F8 /* UserState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserState.h; sourceTree = "<group>"; };
@@ -3361,6 +3367,8 @@
 				261323EC19DCA13300E051DB /* SHCheckinViewController.m */,
 				26BC42361A40CFBD0022C265 /* SHDiagnosticsLocationDetailViewController.h */,
 				26BC42371A40CFBD0022C265 /* SHDiagnosticsLocationDetailViewController.m */,
+				26886BBE1A42762100A09122 /* SHMenuViewController.h */,
+				26886BBF1A42762100A09122 /* SHMenuViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -4716,6 +4724,7 @@
 				262A65B6195893F800A4DACD /* MenuModel.m in Sources */,
 				03CABFCF18E7716400FAC5F5 /* MenuItemModel.m in Sources */,
 				26D0A8A219704BCB00F64384 /* SHNotifications.m in Sources */,
+				26886BC11A42762100A09122 /* SHMenuViewController.m in Sources */,
 				265CE7101911899C008DAF5E /* PhotoAlbumViewController.m in Sources */,
 				03CABFD118E7716400FAC5F5 /* NSDate+Globalize.m in Sources */,
 				03CABFD218E7716400FAC5F5 /* RefreshView.m in Sources */,
@@ -4906,6 +4915,7 @@
 				267514861A016AFD00A7D0BB /* SHButtonLatoLight.m in Sources */,
 				267514871A016AFD00A7D0BB /* MenuModel.m in Sources */,
 				267514881A016AFD00A7D0BB /* MenuItemModel.m in Sources */,
+				26886BC21A42762100A09122 /* SHMenuViewController.m in Sources */,
 				267514891A016AFD00A7D0BB /* SHNotifications.m in Sources */,
 				2675148A1A016AFD00A7D0BB /* PhotoAlbumViewController.m in Sources */,
 				2675148B1A016AFD00A7D0BB /* NSDate+Globalize.m in Sources */,
@@ -5096,6 +5106,7 @@
 				267516021A016B1300A7D0BB /* SHButtonLatoLight.m in Sources */,
 				267516031A016B1300A7D0BB /* MenuModel.m in Sources */,
 				267516041A016B1300A7D0BB /* MenuItemModel.m in Sources */,
+				26886BC31A42762100A09122 /* SHMenuViewController.m in Sources */,
 				267516051A016B1300A7D0BB /* SHNotifications.m in Sources */,
 				267516061A016B1300A7D0BB /* PhotoAlbumViewController.m in Sources */,
 				267516071A016B1300A7D0BB /* NSDate+Globalize.m in Sources */,
@@ -5286,6 +5297,7 @@
 				262A65B5195893F800A4DACD /* MenuModel.m in Sources */,
 				267E051D1922CC48004457B4 /* MenuItemModel.m in Sources */,
 				26D0A8A119704BCB00F64384 /* SHNotifications.m in Sources */,
+				26886BC01A42762100A09122 /* SHMenuViewController.m in Sources */,
 				267E051F1922CC48004457B4 /* PhotoAlbumViewController.m in Sources */,
 				267E05211922CC48004457B4 /* NSDate+Globalize.m in Sources */,
 				267E05221922CC48004457B4 /* RefreshView.m in Sources */,

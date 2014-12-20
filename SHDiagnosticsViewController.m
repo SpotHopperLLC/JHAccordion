@@ -74,6 +74,11 @@
 #pragma mark -
 
 - (void)refreshData {
+    self.locations = nil;
+    self.messages = nil;
+    self.interactions = nil;
+    [self.tableView reloadData];
+    
     if (self.segmentedControl.selectedSegmentIndex == kIndexLocations) {
         [self fetchLocations];
     }
@@ -148,6 +153,62 @@
     }];
 }
 
+- (NSDictionary *)dictionaryForRow:(NSIndexPath *)indexPath {
+    NSDictionary *dictionary = nil;
+    
+    if (self.segmentedControl.selectedSegmentIndex == kIndexLocations) {
+        PFObject *obj = self.locations[indexPath.row];
+        PFGeoPoint *point = [obj objectForKey:@"location"];
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:point.latitude longitude:point.longitude];
+        
+        dictionary = @{
+                       @"location" : location,
+                       @"text1" : @"Loading...",
+                       @"text2" : [NSString stringWithFormat:@"%f, %f", point.latitude, point.longitude],
+                       @"text3" : [self stringFromDate:obj.createdAt]
+                       };
+    }
+    else if (self.segmentedControl.selectedSegmentIndex == kIndexMessages) {
+        PFObject *obj = self.messages[indexPath.row];
+        PFGeoPoint *point = [obj objectForKey:@"location"];
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:point.latitude longitude:point.longitude];
+        
+        NSString *message = [obj objectForKey:@"message"];
+        NSString *spot = [obj objectForKey:@"spot"];
+        NSNumber *distance = [obj objectForKey:@"distance"];
+        
+        NSString *text2 = nil;
+        if (spot.length) {
+            text2 = [NSString stringWithFormat:@"%@ (%.1f meters)", spot, distance.doubleValue];
+        }
+        else {
+            text2 = @"N/A";
+        }
+        
+        dictionary = @{
+                       @"location" : location,
+                       @"text1" : message,
+                       @"text2" : text2,
+                       @"text3" : [self stringFromDate:obj.createdAt]
+                       };
+    }
+    else if (self.segmentedControl.selectedSegmentIndex == kIndexInteractions) {
+        PFObject *obj = self.interactions[indexPath.row];
+        PFGeoPoint *point = [obj objectForKey:@"location"];
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:point.latitude longitude:point.longitude];
+        
+        dictionary = @{
+                       @"location" : location,
+                       @"text1" : [obj objectForKey:@"interaction"],
+                       @"text2" : [self stringFromDate:obj.createdAt],
+                       @"text3" : @""
+                       };
+        
+    }
+    
+    return dictionary;
+}
+
 #pragma mark - Formatting
 #pragma mark -
 
@@ -196,16 +257,16 @@
     UILabel *label2 = (UILabel *)[cell viewWithTag:3];
     UILabel *label3 = (UILabel *)[cell viewWithTag:4];
     
-    PFObject *obj = self.locations[indexPath.row];
-    PFGeoPoint *point = [obj objectForKey:@"location"];
-    CLLocation *location = [[CLLocation alloc] initWithLatitude:point.latitude longitude:point.longitude];
+    NSDictionary *dictionary = [self dictionaryForRow:indexPath];
+    CLLocation *location = dictionary[@"location"];
+    
     CLLocationDistance radius = 50.0;
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location.coordinate, radius, radius);
     [mapView setRegion:region animated:FALSE];
     
-    label1.text = nil;
-    label2.text = [NSString stringWithFormat:@"%f, %f", point.latitude, point.longitude];
-    label3.text = [self stringFromDate:obj.createdAt];
+    label1.text = dictionary[@"text1"];
+    label2.text = dictionary[@"text2"];
+    label3.text = dictionary[@"text3"];
     
     [self fetchNameForLocation:location withCompletionBlock:^(NSString *name, NSError *error) {
         MAAssert([NSThread isMainThread], @"Must be main thread");
@@ -229,25 +290,16 @@
     UILabel *label2 = (UILabel *)[cell viewWithTag:3];
     UILabel *label3 = (UILabel *)[cell viewWithTag:4];
     
-    PFObject *obj = self.messages[indexPath.row];
-    PFGeoPoint *point = [obj objectForKey:@"location"];
-    CLLocation *location = [[CLLocation alloc] initWithLatitude:point.latitude longitude:point.longitude];
+    NSDictionary *dictionary = [self dictionaryForRow:indexPath];
+    CLLocation *location = dictionary[@"location"];
+    
     CLLocationDistance radius = 50.0;
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location.coordinate, radius, radius);
     [mapView setRegion:region animated:FALSE];
     
-    NSString *message = [obj objectForKey:@"message"];
-    NSString *spot = [obj objectForKey:@"spot"];
-    NSNumber *distance = [obj objectForKey:@"distance"];
-    
-    label1.text = message;
-    if (spot.length) {
-        label2.text = [NSString stringWithFormat:@"%@ (%.1f meters)", spot, distance.doubleValue];
-    }
-    else {
-        label2.text = @"N/A";
-    }
-    label3.text = [self stringFromDate:obj.createdAt];
+    label1.text = dictionary[@"text1"];
+    label2.text = dictionary[@"text2"];
+    label3.text = dictionary[@"text3"];
     
     return cell;
 }
@@ -261,18 +313,16 @@
     UILabel *label2 = (UILabel *)[cell viewWithTag:3];
     UILabel *label3 = (UILabel *)[cell viewWithTag:4];
     
-    PFObject *obj = self.interactions[indexPath.row];
-    PFGeoPoint *point = [obj objectForKey:@"location"];
-    CLLocation *location = [[CLLocation alloc] initWithLatitude:point.latitude longitude:point.longitude];
+    NSDictionary *dictionary = [self dictionaryForRow:indexPath];
+    CLLocation *location = dictionary[@"location"];
+    
     CLLocationDistance radius = 50.0;
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location.coordinate, radius, radius);
     [mapView setRegion:region animated:FALSE];
     
-    NSString *interaction = [obj objectForKey:@"interaction"];
-    
-    label1.text = interaction;
-    label2.text = [self stringFromDate:obj.createdAt];
-    label3.text = nil;
+    label1.text = dictionary[@"text1"];
+    label2.text = dictionary[@"text2"];
+    label3.text = dictionary[@"text3"];
     
     return cell;
 }
@@ -368,7 +418,20 @@
 #pragma mark -
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 100.0;
+    NSDictionary *dictionary = [self dictionaryForRow:indexPath];
+    NSString *text1 = dictionary[@"text1"];
+    NSString *text2 = dictionary[@"text2"];
+    NSString *text3 = dictionary[@"text3"];
+    
+    CGFloat maxWidth = 216;
+    UIFont *font1 = [UIFont boldSystemFontOfSize:16];
+    UIFont *font2 = [UIFont systemFontOfSize:14];
+    
+    CGFloat height1 = [[SHAppUtil defaultInstance] heightForString:text1 font:font1 maxWidth:maxWidth];
+    CGFloat height2 = [[SHAppUtil defaultInstance] heightForString:text2 font:font2 maxWidth:maxWidth];
+    CGFloat height3 = [[SHAppUtil defaultInstance] heightForString:text3 font:font2 maxWidth:maxWidth];
+    
+    return MAX(96.0, height1 + height2 + height3 + 24.0);
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

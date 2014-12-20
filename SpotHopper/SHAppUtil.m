@@ -232,12 +232,13 @@
     UIApplication *application = [UIApplication sharedApplication];
     if (application.applicationState == UIApplicationStateActive) {
         // prompting should not be triggered when the app is active
-        //[self logMessage:@"App is active" location:location spot:nil];
+        [self logMessage:@"App is active, not prompting" location:location spot:nil];
         return;
     }
     else if (location.horizontalAccuracy > 100) {
         NSString *message = [NSString stringWithFormat:@"Location accuracy is not sufficient (%.1f)", location.horizontalAccuracy];
         [self logMessage:message location:location spot:nil];
+        return;
     }
 //    else if ([location.timestamp timeIntervalSinceNow] > 30) {
 //        // if the location update is old do not use it
@@ -309,6 +310,10 @@
     }
 }
 
+- (void)logMessage:(NSString *)message location:(CLLocation *)location {
+    [self logMessage:message location:location spot:nil];
+}
+
 - (void)logMessage:(NSString *)message location:(CLLocation *)location spot:(SpotModel *)spot {
     MAAssert(message.length, @"There must be a message");
     DebugLog(@"message: %@", message);
@@ -339,7 +344,6 @@
         }
         
         [messageLog setObject:currentUser forKey:@"user"];
-        [messageLog saveEventually];
         
         [messageLog saveEventually:^(BOOL succeeded, NSError *error) {
             if (error) {

@@ -12,6 +12,8 @@
 #import "LaunchViewController.h"
 #import "AccountSettingsViewController.h"
 
+#import "SHMenuViewController.h"
+
 #import "MyReviewsViewController.h"
 #import "NewReviewViewController.h"
 #import "NewReviewTypeViewController.h"
@@ -177,7 +179,8 @@
 
 - (void)goToMenu:(SpotModel *)spot {
     [Tracker track:@"View Menu"];
-    DrinkMenuViewController *viewController = [[self menuStoryboard] instantiateViewControllerWithIdentifier:@"DrinkMenuViewController"];
+    //DrinkMenuViewController *viewController = [[self menuStoryboard] instantiateViewControllerWithIdentifier:@"DrinkMenuViewController"];
+    SHMenuViewController *viewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHMenuVC"];
     [viewController setSpot:spot];
     [self.navigationController pushViewController:viewController animated:YES];
 }

@@ -142,7 +142,6 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     self.reviewItButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     [self.reviewItButton setTitle:@"Review\nIt" forState:UIControlStateNormal];
 
-    
     [self.similarDrinksButton setTitleColor:SHStyleKit.myTextColor forState:UIControlStateNormal];
     
     [self.reviewItButton setTitleColor:SHStyleKit.myTextColor forState:UIControlStateNormal];

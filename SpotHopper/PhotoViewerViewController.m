@@ -18,6 +18,8 @@
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
+@property (strong, nonatomic) NSMutableDictionary *operations;
+
 @end
 
 @implementation PhotoViewerViewController {
@@ -97,14 +99,24 @@
     UIView *view = [cell viewWithTag:1];
     if ([view isKindOfClass:[PZPhotoView class]]) {
         __weak PZPhotoView *photoView = (PZPhotoView *)view;
+        [photoView prepareForReuse];
         ImageModel *imageModel = (ImageModel *)_images[indexPath.item];
-        [ImageUtil loadImage:imageModel placeholderImage:nil withThumbImageBlock:^(UIImage *thumbImage) {
-            [photoView displayImage:thumbImage];
-        } withFullImageBlock:^(UIImage *fullImage) {
-            [photoView displayImage:fullImage];
-        } withErrorBlock:^(NSError *error) {
-            // do nothing
+        
+        __weak PhotoViewerViewController *weakSelf = self;
+        
+        NSURL *url = [NSURL URLWithString:imageModel.fullUrl];
+        NSOperation *operation = [ImageUtil fetchImageWithURL:url cachable:TRUE withCompletionBlock:^(UIImage *image, NSError *error) {
+            if (!error && image) {
+                [photoView displayImage:image];
+            }
+            
+            [weakSelf.operations removeObjectForKey:indexPath];
         }];
+        
+        if (!self.operations) {
+            self.operations = @{}.mutableCopy;
+        }
+        self.operations[indexPath] = operation;
     }
     
     return cell;
@@ -112,6 +124,16 @@
 
 #pragma mark - UICollectionViewDelegate
 #pragma mark -
+
+- (void)collectionView:(UICollectionView *)collectionView willEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSOperation *operation = self.operations[indexPath];
+    if (operation) {
+        if (operation.isExecuting) {
+            [operation cancel];
+        }
+        [self.operations removeObjectForKey:indexPath];
+    }
+}
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     return FALSE;

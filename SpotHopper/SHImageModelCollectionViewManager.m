@@ -22,7 +22,9 @@
 
 @interface SHImageModelCollectionViewManager ()
 
-@property (nonatomic, weak) IBOutlet id<SHImageModelCollectionDelegate> delegate;
+@property (weak, nonatomic) IBOutlet id<SHImageModelCollectionDelegate> delegate;
+
+@property (strong, nonatomic) NSMutableDictionary *operations;
 
 @end
 
@@ -36,29 +38,34 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    // dequeue named cell template
-    
     static NSString *ImageCellIdentifier = @"ImageCell";
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ImageCellIdentifier forIndexPath:indexPath];
     
     UIImageView *imageView = (UIImageView *)[cell viewWithTag:kImageView];
+    imageView.image = self.placeholderImage;
 
     if (self.imageModels.count) {
         ImageModel *imageModel = self.imageModels[indexPath.item];
         
         __weak UIImageView *weakImageView = imageView;
-        [ImageUtil loadImage:imageModel placeholderImage:nil withThumbImageBlock:^(UIImage *thumbImage) {
-            weakImageView.image = thumbImage;
-        } withFullImageBlock:^(UIImage *fullImage) {
-            weakImageView.image = fullImage;
-        } withErrorBlock:^(NSError *error) {
-            weakImageView.image = nil;
-            [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
-        }];
-    }
-    else {
-        imageView.image = self.placeholderImage;
+        __weak SHImageModelCollectionViewManager *weakSelf = self;
+        
+        if (imageModel.fullUrl.length) {
+            NSURL *url = [NSURL URLWithString:imageModel.fullUrl];
+            NSOperation *operation = [ImageUtil fetchImageWithURL:url cachable:TRUE withCompletionBlock:^(UIImage *image, NSError *error) {
+                if (!error && image) {
+                    weakImageView.image = image;
+                }
+                
+                [weakSelf.operations removeObjectForKey:indexPath];
+            }];
+            
+            if (!self.operations) {
+                self.operations = @{}.mutableCopy;
+            }
+            self.operations[indexPath] = operation;
+        }
     }
     
     return cell;
@@ -66,6 +73,16 @@
 
 #pragma mark - UICollectionViewDelegate
 #pragma mark -
+
+- (void)collectionView:(UICollectionView *)collectionView willEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSOperation *operation = self.operations[indexPath];
+    if (operation) {
+        if (operation.isExecuting) {
+            [operation cancel];
+        }
+        [self.operations removeObjectForKey:indexPath];
+    }
+}
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.delegate respondsToSelector:@selector(imageCollectionViewManager:didSelectImageAtIndex:)]) {

@@ -23,6 +23,7 @@
 
 #define kMeterToMile 0.000621371f
 #define kMetersPerMile 1609.344
+#define kFeetPerMile 5280.0
 
 @interface SHCheckinViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -162,7 +163,13 @@
         
         CLLocationDistance meters = [self.currentLocation distanceFromLocation:spot.location];
         CGFloat miles = meters * kMeterToMile;
-        distanceLabel.text = [NSString stringWithFormat:@"%0.1f miles", miles];
+        if (miles < 0.1) {
+            CGFloat feet = miles * kFeetPerMile;
+            distanceLabel.text = [NSString stringWithFormat:@"%0.0f feet", feet];
+        }
+        else {
+            distanceLabel.text = [NSString stringWithFormat:@"%0.1f miles", miles];
+        }
     }
     else if (indexPath.row == self.spots.count) {
         static NSString *AddNewReviewCellIdentifier = @"AddNewReviewCell";

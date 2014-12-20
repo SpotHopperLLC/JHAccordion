@@ -9,8 +9,24 @@
 #import "MenuItemModel.h"
 
 #import "MenuTypeModel.h"
+#import "PriceModel.h"
 
 @implementation MenuItemModel
+
+#pragma mark - Properties
+#pragma mark -
+
+- (NSString *)priceSummary {
+    NSMutableArray *prices = @[].mutableCopy;
+    for (PriceModel *price in self.prices) {
+        NSString *priceAndSize = price.priceAndSize;
+        if (priceAndSize.length) {
+            [prices addObject:price.priceAndSize];
+        }
+    }
+    
+    return [prices componentsJoinedByString:@", "];
+}
 
 #pragma mark - Debugging
 #pragma mark -
@@ -32,7 +48,7 @@
     // Maps linked resource in JSON key 'prices' to 'prices' property
     return @{
              @"name" : @"name",
-             @"price" : @"price",
+//             @"price" : @"price",
              @"in_stock" : @"inStock",
              @"latitude" : @"latitude",
              @"links.drink" : @"drink",
@@ -60,6 +76,5 @@
     
     return copy;
 }
-
 
 @end
