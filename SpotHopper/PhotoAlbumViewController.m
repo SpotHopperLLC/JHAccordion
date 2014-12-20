@@ -17,6 +17,8 @@
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 
+@property (strong, nonatomic) NSMutableDictionary *operations;
+
 @end
 
 @implementation PhotoAlbumViewController
@@ -62,9 +64,28 @@
     if (indexPath.item < self.images.count) {
         ImageModel *imageModel = self.images[indexPath.item];
         UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ImageCell" forIndexPath:indexPath];
-        UIImageView *imageView = (UIImageView *)[cell viewWithTag:1];
+        __weak UIImageView *imageView = (UIImageView *)[cell viewWithTag:1];
         NSCAssert(imageView, @"Image View is required");
-        [ImageUtil loadThumbnailImage:imageModel imageView:imageView placeholderImage:self.placeholderImage];
+        
+        imageView.image = self.placeholderImage;
+        
+        __weak PhotoAlbumViewController *weakSelf = self;
+
+        if (imageModel.thumbUrl.length) {
+            NSURL *url = [NSURL URLWithString:imageModel.thumbUrl];
+            NSOperation *operation = [ImageUtil fetchImageWithURL:url cachable:TRUE withCompletionBlock:^(UIImage *image, NSError *error) {
+                if (!error && image) {
+                    imageView.image = image;
+                }
+                
+                [weakSelf.operations removeObjectForKey:indexPath];
+            }];
+            
+            if (!self.operations) {
+                self.operations = @{}.mutableCopy;
+            }
+            self.operations[indexPath] = operation;
+        }
         
         cell.backgroundColor = self.selectedIndex == indexPath.item ? [UIColor whiteColor] : [UIColor blackColor];
     
@@ -88,6 +109,16 @@
 
 #pragma mark - UICollectionViewDelegate
 #pragma mark -
+
+- (void)collectionView:(UICollectionView *)collectionView willEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSOperation *operation = self.operations[indexPath];
+    if (operation) {
+        if (operation.isExecuting) {
+            [operation cancel];
+        }
+        [self.operations removeObjectForKey:indexPath];
+    }
+}
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     self.selectedIndex = indexPath.item;

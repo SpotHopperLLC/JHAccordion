@@ -19,7 +19,8 @@
 
 #import "Tracker.h"
 
-#import "TellMeMyLocation.h"
+#import "SHAppContext.h"
+#import "SHLocationManager.h"
 #import "Mixpanel.h"
 #import "ErrorModel.h"
 #import "UserModel.h"
@@ -27,6 +28,8 @@
 
 #import "SHAppConfiguration.h"
 #import "Crashlytics.h"
+
+#import <Parse/Parse.h>
 
 #define kUnknown @"Unknown"
 
@@ -53,6 +56,25 @@
         if (trackUserAction) {
             [self trackUserAction:event];
         }
+    }
+}
+
++ (void)trackInteraction:(NSString *)interaction {
+    if (interaction.length && [SHAppConfiguration isParseEnabled]) {
+        PFObject *interactionLog = [PFObject objectWithClassName:@"InteractionLog"];
+        [interactionLog setObject:interaction forKey:@"interaction"];
+        [interactionLog setObject:[PFUser currentUser] forKey:@"user"];
+        
+        CLLocation *location = [[SHLocationManager defaultInstance] location];
+        if (location) {
+            PFGeoPoint *point = [PFGeoPoint geoPointWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude];
+            [interactionLog setObject:point forKey:@"location"];
+        }
+        
+        [interactionLog setObject:[SHAppConfiguration bundleIdentifier] forKey:@"appIdentifier"];
+        [interactionLog setObject:[SHAppConfiguration bundleDisplayName] forKey:@"appName"];
+        
+        [interactionLog saveEventually];
     }
 }
 
@@ -167,12 +189,12 @@
 }
 
 + (NSDictionary *)locationProperties {
-    CLLocation *currentLocation = [TellMeMyLocation currentLocation];
-    CLLocation *mapCenterLocation = [TellMeMyLocation mapCenterLocation];
-    NSString *currentLocationName = [TellMeMyLocation currentLocationName];
-    NSString *mapCenterLocationName = [TellMeMyLocation mapCenterLocationName];
-    NSString *currentLocationZip = [TellMeMyLocation currentLocationZip];
-    NSString *mapCenterLocationZip = [TellMeMyLocation mapCenterLocationZip];
+    CLLocation *currentLocation = [SHAppContext currentLocation];
+    CLLocation *mapCenterLocation = [SHAppContext mapCenterLocation];
+    NSString *currentLocationName = [SHAppContext currentLocationName];
+    NSString *mapCenterLocationName = [SHAppContext mapCenterLocationName];
+    NSString *currentLocationZip = [SHAppContext currentLocationZip];
+    NSString *mapCenterLocationZip = [SHAppContext mapCenterLocationZip];
 
     CLLocationDistance distance = [mapCenterLocation distanceFromLocation:currentLocation];
     

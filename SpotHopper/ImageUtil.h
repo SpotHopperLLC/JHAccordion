@@ -20,4 +20,6 @@
 
 + (void)preloadImageModels:(NSArray *)imageModels;
 
++ (NSOperation *)fetchImageWithURL:(NSURL *)url cachable:(BOOL)cachable withCompletionBlock:(void (^)(UIImage *image, NSError *error))completionBlock;
+
 @end

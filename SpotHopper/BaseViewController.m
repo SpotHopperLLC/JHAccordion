@@ -10,6 +10,7 @@
 
 #import "SHAppConfiguration.h"
 #import "SHAppUtil.h"
+#import "SHAppContext.h"
 
 #import "MBProgressHUD.h"
 
@@ -17,14 +18,8 @@
 #import "UIAlertView+Block.h"
 
 #import "AccountSettingsViewController.h"
-//#import "FooterViewController.h"
-//#import "SidebarViewController.h"
-//#import "SearchViewController.h"
-#import "ShareViewController.h"
 
 #import "LaunchViewController.h"
-//#import "DrinkProfileViewController.h"
-//#import "SpotProfileViewController.h"
 
 #import "SpotModel.h"
 #import "DrinkModel.h"
@@ -36,7 +31,6 @@
 #import "ClientSessionManager.h"
 #import "JTSReachabilityResponder.h"
 
-#import "TellMeMyLocation.h"
 #import "SSTURLShortener.h"
 #import "UIAlertView+Block.h"
 
@@ -50,7 +44,7 @@
 
 typedef void(^AlertBlock)();
 
-@interface BaseViewController () <UINavigationControllerDelegate, ShareViewControllerDelegate>
+@interface BaseViewController () <UINavigationControllerDelegate>
 
 @property (nonatomic, strong) UIAlertView *alertView;
 @property (nonatomic, copy) AlertBlock alertBlock;
@@ -61,11 +55,11 @@ typedef void(^AlertBlock)();
 @property (nonatomic, strong) UIImageView *backgroundImage;
 @property (nonatomic, strong) FooterViewController *footerViewController;
 
-@property (nonatomic, strong) ShareViewController *shareViewController;
-
 @property (nonatomic, assign) BOOL loaded;
 
 @end
+
+#define isiOS8OrLater floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1
 
 @implementation BaseViewController
 
@@ -94,6 +88,10 @@ typedef void(^AlertBlock)();
 
 - (NSArray *)viewOptions {
     return @[kDidLoadOptionsBlurredBackground];
+}
+
+- (BOOL)isiOS8OrAbove {
+    return isiOS8OrLater;
 }
 
 - (void)viewDidLoad:(NSArray*)options {
@@ -675,7 +673,7 @@ typedef void(^AlertBlock)();
 
 - (void)openGoogleMapsDirectionsForSpot:(SpotModel *)spot {
     if ([self isGoogleMapsAvailable]) {
-        CLLocation *currentLocation = [TellMeMyLocation currentDeviceLocation];
+        CLLocation *currentLocation = [SHAppContext currentDeviceLocation];
         CLLocation *spotLocation = [[CLLocation alloc] initWithLatitude:[spot.latitude floatValue] longitude:[spot.longitude floatValue]];
         
         CLLocationDistance meters = [currentLocation distanceFromLocation:spotLocation];
@@ -698,7 +696,7 @@ typedef void(^AlertBlock)();
 }
 
 - (void)openAppleMapsDirectionsForSpot:(SpotModel *)spot {
-    CLLocation *currentLocation = [TellMeMyLocation currentDeviceLocation];
+    CLLocation *currentLocation = [SHAppContext currentDeviceLocation];
     CLLocation *spotLocation = [[CLLocation alloc] initWithLatitude:[spot.latitude floatValue] longitude:[spot.longitude floatValue]];
     
     CLLocationDistance meters = [currentLocation distanceFromLocation:spotLocation];
@@ -868,75 +866,6 @@ typedef void(^AlertBlock)();
     }
 }
 
-#pragma mark - ShareViewController
-
-//- (void)showShareViewControllerWithCheckIn:(CheckInModel *)checkIn {
-//    if (_shareViewController == nil) {
-//        
-//        // Create lshare view controller
-//        _shareViewController = [[self shareStoryboard] instantiateViewControllerWithIdentifier:( IS_FOUR_INCH ? @"ShareViewController" : @"ShareViewControllerIPhone4" )];
-//        [_shareViewController setDelegate:self];
-//        
-//        // Set alpha to zero so we can animate in
-//        [_shareViewController.view setAlpha:0.0f];
-//        [_shareViewController.view setFrame:self.navigationController.view.frame];
-//        
-//        // Adding to window
-//        [[[UIApplication sharedApplication] keyWindow] addSubview:_shareViewController.view];
-//        
-//        // Animating in
-//        [UIView animateWithDuration:0.35 animations:^{
-//            [_shareViewController.view setAlpha:1.0f];
-//        }];
-//    }
-//    
-//    // Updating live special text
-//    [_shareViewController setCheckIn:checkIn];
-//    [_shareViewController setSpot:checkIn.spot];
-//    [_shareViewController setShareType:ShareViewControllerShareCheckin];
-//}
-
-- (void)showShareViewControllerWithSpot:(SpotModel *)spot shareType:(ShareViewControllerShareType)shareType {
-    if (_shareViewController == nil) {
-        
-        // Create lshare view controller
-        _shareViewController = [[self shareStoryboard] instantiateViewControllerWithIdentifier:( IS_FOUR_INCH ? @"ShareViewController" : @"ShareViewControllerIPhone4" )];
-        [_shareViewController setDelegate:self];
-        
-        // Set alpha to zero so we can animate in
-        [_shareViewController.view setAlpha:0.0f];
-        [_shareViewController.view setFrame:self.navigationController.view.frame];
-        
-        // Adding to window
-        [[[UIApplication sharedApplication] keyWindow] addSubview:_shareViewController.view];
-        
-        // Animating in
-        [UIView animateWithDuration:0.35 animations:^{
-            [_shareViewController.view setAlpha:1.0f];
-        }];
-    }
-    
-    // Updating live special text
-    [_shareViewController setSpot:spot];
-    [_shareViewController setShareType:shareType];
-}
-
-- (void)hideShareViewController:(void (^)(void))completion {
-    // Animating live special out
-    [UIView animateWithDuration:0.35 animations:^{
-        [_shareViewController.view setAlpha:0.0f];
-    } completion:^(BOOL finished) {
-        
-        // Removing live special from view
-        [_shareViewController.view removeFromSuperview];
-        _shareViewController = nil;
-        
-        if (completion != nil) {
-            completion();
-        }
-    }];
-}
-
 #pragma mark - Prompt Login Needed
 
 // Returns YES if a login is needed
@@ -983,17 +912,6 @@ typedef void(^AlertBlock)();
     }
     
     return NSNotFound;
-}
-
-#pragma mark - ShareViewControllerDelegate
-#pragma mark -
-
-- (void)shareViewControllerClickedClose:(ShareViewController*)viewController {
-    [self hideShareViewController:nil];
-}
-
-- (void)shareViewControllerDidFinish:(ShareViewController*)viewController {
-    [self hideShareViewController:nil];
 }
 
 @end

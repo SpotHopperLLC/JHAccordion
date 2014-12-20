@@ -18,12 +18,12 @@
 
 @property (nonatomic, readonly) UIImage *placeholderImage;
 
+@property (nonatomic, readonly) BOOL isBeer;
+@property (nonatomic, readonly) BOOL isWine;
+@property (nonatomic, readonly) BOOL isCocktail;
+
 + (instancetype)beerDrinkType;
 + (instancetype)wineDrinkType;
 + (instancetype)cocktailDrinkType;
-
-- (BOOL)isBeer;
-- (BOOL)isWine;
-- (BOOL)isCocktail;
 
 @end

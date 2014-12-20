@@ -15,6 +15,7 @@
 #import "SHStyleKit+Additions.h"
 #import "ImageUtil.h"
 #import "SHNotifications.h"
+#import "SHLocationManager.h"
 
 #import "Tracker.h"
 #import "Tracker+Events.h"
@@ -22,6 +23,7 @@
 
 #define kMeterToMile 0.000621371f
 #define kMetersPerMile 1609.344
+#define kFeetPerMile 5280.0
 
 @interface SHCheckinViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -80,7 +82,7 @@
 - (void)fetchSpots {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fetchSpots) object:nil];
     
-    CLLocation *location = [[SHAppContext defaultInstance] deviceLocation];
+    CLLocation *location = [[SHLocationManager defaultInstance] location];
     
     if (!location) {
         [self performSelector:@selector(fetchSpots) withObject:nil afterDelay:0.25];
@@ -161,7 +163,13 @@
         
         CLLocationDistance meters = [self.currentLocation distanceFromLocation:spot.location];
         CGFloat miles = meters * kMeterToMile;
-        distanceLabel.text = [NSString stringWithFormat:@"%0.1f miles", miles];
+        if (miles < 0.1) {
+            CGFloat feet = miles * kFeetPerMile;
+            distanceLabel.text = [NSString stringWithFormat:@"%0.0f feet", feet];
+        }
+        else {
+            distanceLabel.text = [NSString stringWithFormat:@"%0.1f miles", miles];
+        }
     }
     else if (indexPath.row == self.spots.count) {
         static NSString *AddNewReviewCellIdentifier = @"AddNewReviewCell";
@@ -222,6 +230,7 @@
         CLLocationDistance distance = [currentLocation distanceFromLocation:spot.location];
         
         [Tracker trackCheckedInAtSpot:spot position:indexPath.row+1 count:self.spots.count distance:distance];
+        [Tracker trackInteraction:@"Checked In at Spot"];
     }
     else {
         [SHNotifications reviewSpot:nil];

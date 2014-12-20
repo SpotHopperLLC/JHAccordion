@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 
 #import "Constants.h"
 
@@ -57,5 +58,38 @@
 - (void)startActivity:(NSString *)activityName;
 
 - (void)endActivity:(NSString *)activityName;
+
+#pragma mark - Location Context
+#pragma mark -
+
++ (CLLocation *)currentLocation;
++ (NSString *)currentLocationName;
++ (NSString *)currentLocationZip;
+
++ (void)setCurrentDeviceLocation:(CLLocation *)deviceLocation;
++ (CLLocation *)currentDeviceLocation;
++ (NSString *)currentDeviceLocationName;
++ (NSString *)currentDeviceLocationZip;
+
++ (void)setCurrentSelectedLocation:(CLLocation *)selectedLocation;
++ (CLLocation *)currentSelectedLocation;
++ (NSString *)currentSelectedLocationName;
++ (NSString *)currentSelectedLocationZip;
+
++ (void)setMapCenterLocation:(CLLocation *)mapCenterLocation;
++ (CLLocation *)mapCenterLocation;
++ (NSString *)mapCenterLocationName;
++ (NSString *)mapCenterLocationZip;
+
++ (NSString *)locationNameFromPlacemark:(CLPlacemark *)placemark;
++ (NSString *)shortLocationNameFromPlacemark:(CLPlacemark *)placemark;
+
++ (void)setLastLocation:(CLLocation*)location withCompletionBlock:(void (^)())completionBlock;
++ (void)setLastLocationName:(NSString*)name;
+
++ (CLLocation*)lastLocation;
++ (NSDate*)lastLocationDate;
++ (NSString*)lastLocationName;
++ (NSString*)lastLocationNameShort;
 
 @end

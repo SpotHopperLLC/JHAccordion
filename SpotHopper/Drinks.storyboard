@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="pjT-4Z-Cya">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="pjT-4Z-Cya">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
         <!--Drinks Nearby View Controller-->
@@ -336,7 +337,7 @@ available here</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qgn-jr-6h6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="773" y="-368"/>
+            <point key="canvasLocation" x="757" y="-421.5"/>
         </scene>
         <!--Drink List View Controller-->
         <scene sceneID="CWo-JL-FPN">
@@ -752,7 +753,7 @@ available here</string>
         <image name="btn_at_different_spot.png" width="147" height="34"/>
         <image name="btn_discover_drinks_nearby.png" width="317" height="115"/>
         <image name="btn_down_arrow.png" width="104" height="32"/>
-        <image name="btn_get_drinks_here.png" width="317" height="115"/>
+        <image name="btn_get_drinks_here.png" width="320" height="568"/>
         <image name="icon_recipe.png" width="20" height="20"/>
         <image name="img_card_background.png" width="228" height="309"/>
         <image name="img_carousel_background.png" width="320" height="409"/>

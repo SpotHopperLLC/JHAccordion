@@ -14,7 +14,6 @@
 #import <UIKit/UIKit.h>
 
 #import "FooterViewController.h"
-#import "ShareViewController.h"
 
 #import "MBProgressHUD.h"
 
@@ -33,6 +32,8 @@
 - (void)viewDidLoad:(NSArray*)options __deprecated;
 
 - (NSArray *)viewOptions;
+
+- (BOOL)isiOS8OrAbove;
 
 - (void)showHUDCompleted:(NSString*)text;
 - (void)showHUDCompleted:(NSString*)text block:(dispatch_block_t)block;
@@ -97,8 +98,6 @@
 
 - (NSIndexPath *)indexPathForView:(UIView *)view inTableView:(UITableView *)tableView;
 - (void)slideCell:(UITableViewCell *)cell aboveTableViewMidwayPoint:(UITableView *)tableView;
-
-- (void)showShareViewControllerWithSpot:(SpotModel *)spot shareType:(ShareViewControllerShareType)shareType;
 
 // URL Scheme Support
 - (void)handleOpenedURL:(NSURL *)openedURL;

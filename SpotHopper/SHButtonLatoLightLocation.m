@@ -8,15 +8,14 @@
 
 #import "SHButtonLatoLightLocation.h"
 
-#import "TellMeMyLocation.h"
+#import "SHAppContext.h"
+#import "SHNotifications.h"
 #import "ErrorModel.h"
 #import "Tracker.h"
 
 //#import "LocationChooserViewController.h"
 
 @interface SHButtonLatoLightLocation() <LocationChooserViewControllerDelegate>
-
-@property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
 
 @end
 
@@ -39,31 +38,18 @@
 }
 
 - (void)setupLatoLightLocation {
-    _tellMeMyLocation = [[TellMeMyLocation alloc] init];
-    
     [self setImage:[UIImage imageNamed:@"img_arrow_east.png"] forState:UIControlStateNormal];
     [self addTarget:self action:@selector(onClickSelf:) forControlEvents:UIControlEventTouchUpInside];
 
-#ifdef STAGING
-    DebugLog(@"%@ - %@", kTellMeMyLocationChangedNotification, NSStringFromClass([self class]));
-    NSCAssert([self respondsToSelector:@selector(tellMeMyLocationChangedNotification:)], @"Current instance must implement tellMeMyLocationChangedNotification:");
-#endif
-    
-    if ([self isKindOfClass:[SHButtonLatoLightLocation class]] && [self respondsToSelector:@selector(tellMeMyLocationChangedNotification:)]) {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(tellMeMyLocationChangedNotification:)
-                                                     name:kTellMeMyLocationChangedNotification
-                                                   object:nil];
-    }
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleLocationChangedNotification:)
+                                                 name:SHLocationChangedNotificationName
+                                               object:nil];
 }
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kTellMeMyLocationChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SHLocationChangedNotificationName object:nil];
     [self removeTarget:self action:@selector(onClickSelf:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kTellMeMyLocationChangedNotification
-                                                  object:nil];
 }
 
 - (void)setTitle:(NSString *)title forState:(UIControlState)state {
@@ -77,7 +63,8 @@
 - (void)updateTitle:(NSString*)locationName location:(CLLocation*)location {
     if (locationName.length == 0) {
         [self setTitle:@"<no location selected>" forState:UIControlStateNormal];
-    } else {
+    }
+    else {
         [self setTitle:locationName forState:UIControlStateNormal];
     }
     
@@ -103,17 +90,21 @@
                 NSString *name = nil;
                 if (placemark.locality.length > 0 && placemark.administrativeArea.length > 0) {
                     name = [NSString stringWithFormat:@"%@, %@", placemark.locality, placemark.administrativeArea];
-                } else if (placemark.locality.length > 0) {
+                }
+                else if (placemark.locality.length > 0) {
                     name = placemark.locality;
-                } else if (placemark.administrativeArea.length > 0) {
+                }
+                else if (placemark.administrativeArea.length > 0) {
                     name = placemark.administrativeArea;
                 }
                 [self updateTitle:name location:location];
                 
-            } else {
+            }
+            else {
                 [self updateTitle:nil location:nil];
             }
-        } else {
+        }
+        else {
             [self updateTitle:nil location:nil];
             
             if ([_delegate respondsToSelector:@selector(locationError:error:)]) {
@@ -125,30 +116,23 @@
 }
 
 - (void)updateWithLastLocation {
- 
-    CLLocation *lastLocation = [TellMeMyLocation lastLocation];
+    CLLocation *lastLocation = [SHAppContext lastLocation];
     if (lastLocation == nil) {
         [self updateWithCurrentLocation];
-    } else {
-        [self updateTitle:[TellMeMyLocation lastLocationName] location:lastLocation];
+    }
+    else {
+        [self updateTitle:[SHAppContext lastLocationName] location:lastLocation];
     }
 }
 
 - (void)updateWithCurrentLocation {
-    [_tellMeMyLocation findMe:kCLLocationAccuracyKilometer found:^(CLLocation *newLocation) {
-        [TellMeMyLocation setLastLocation:newLocation completionHandler:^{
-            [self updateTitle:[TellMeMyLocation lastLocationName] location:newLocation];
-        }];
-    } failure:^(NSError *error){
+    CLLocation *location = [SHAppContext currentDeviceLocation];
+    if (location) {
+        [self updateTitle:[SHAppContext lastLocationName] location:location];
+    }
+    else {
         [self updateTitle:nil location:nil];
-        
-        if ([_delegate respondsToSelector:@selector(locationError:error:)]) {
-            if ([error.domain isEqualToString:kTellMeMyLocationDomain]) {
-                [_delegate locationError:self error:error];
-            }
-        }
-        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
-    }];
+    }
 }
 
 #pragma mark - LocationChooserViewControllerDelegate
@@ -157,19 +141,16 @@
     // Shows hud when geocoding location to find name
     [viewController showHUD:@"Locating..."];
     
-    [TellMeMyLocation setLastLocation:location completionHandler:^{
-        
-        // Hides da hud
+    [SHAppContext setLastLocation:location withCompletionBlock:^{
         [viewController hideHUD];
         
         // Dismisses view controller
         [viewController dismissViewControllerAnimated:YES completion:^{
-            [self updateTitle:[TellMeMyLocation lastLocationName] location:location];
+            [self updateTitle:[SHAppContext lastLocationName] location:location];
             if ([_delegate respondsToSelector:@selector(locationDidChooseLocation:)]) {
                 [_delegate locationDidChooseLocation:location];
             }
         }];
-        
     }];
 }
 
@@ -195,14 +176,14 @@
     if ([_delegate respondsToSelector:@selector(locationRequestsUpdate:location:)]) {
         LocationChooserViewController *viewController = [LocationChooserViewController locationChooser];
         [viewController setDelegate:self];
-        [viewController setInitialLocation:[TellMeMyLocation lastLocation]];
+        [viewController setInitialLocation:[SHAppContext lastLocation]];
         [_delegate locationRequestsUpdate:self location:viewController];
     }
 }
 
 #pragma mark - Notifications
 
-- (void)tellMeMyLocationChangedNotification:(NSNotification *)notification {
+- (void)handleLocationChangedNotification:(NSNotification *)notification {
     [self updateWithLastLocation];
 }
 

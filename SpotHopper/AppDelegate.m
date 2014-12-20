@@ -8,13 +8,14 @@
 
 #import "AppDelegate.h"
 
+#import "SHAppContext.h"
+#import "SHLocationManager.h"
 #import "NSNumber+Helpers.h"
 #import "UIActionSheet+Block.h"
 
 #import "SHNavigationBar.h"
 #import "SHAppConfiguration.h"
 #import "SHAppUtil.h"
-#import "SHAppContext.h"
 #import "SHUserProfileModel.h"
 
 #import "ClientSessionManager.h"
@@ -23,7 +24,6 @@
 #import "UserState.h"
 #import "MockData.h"
 
-#import "TellMeMyLocation.h"
 #import "SHNotifications.h"
 
 #import "BFURL.h"
@@ -56,6 +56,7 @@
 #define kPushActionShowSpotlist @"ShowSpotlist"
 #define kPushActionShowDrinklist @"ShowDrinklist"
 #define kPushActionUpdateLocation @"UpdateLocation"
+#define kPushActionPromptForCheckIn @"PromptForCheckIn"
 
 #define kUpdateLocationLunchLocation @"Lunch"
 #define kUpdateLocationHappyHourLocation @"Happy Hour"
@@ -71,9 +72,7 @@
 
 @end
 
-@implementation AppDelegate {
-    TellMeMyLocation *_tellMeMyLocation;
-}
+@implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [SHModelResourceManager prepareResources];
@@ -83,6 +82,7 @@
     if ([SHAppConfiguration isParseEnabled]) {
         [Parse setApplicationId:[SHAppConfiguration parseApplicationID]
                       clientKey:[SHAppConfiguration parseClientKey]];
+//        [Parse enableLocalDatastore];
         [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
         [PFUser enableAutomaticUser];
         PFUser *user = [PFUser currentUser];
@@ -125,7 +125,6 @@
     }
     
     if ([[FBSession activeSession] isOpen]) {
-        
         [[SHAppUtil defaultInstance] becomeFacebookUserWithCompletionBlock: ^(BOOL success, NSError *error) {
             [[SHAppUtil defaultInstance] fetchFacebookDetailsWithCompletionBlock:^(BOOL success, NSError *error) {
                 if (error) {
@@ -167,7 +166,6 @@
                     [[SHAppContext defaultInstance] setCurrentUserProfile:savedUserProfile];
                 }
             }];
-            
         }];
     }
     
@@ -200,8 +198,8 @@
 
     if ([ClientSessionManager sharedClient].isLoggedIn) {
         [self refreshDeviceLocationWithCompletionBlock:^{
-            [TellMeMyLocation setLastLocation:[TellMeMyLocation currentDeviceLocation] completionHandler:^{
-                CLLocation *location = [TellMeMyLocation lastLocation];
+            [SHAppContext setLastLocation:[SHAppContext currentDeviceLocation] withCompletionBlock:^{
+                CLLocation *location = [SHAppContext lastLocation];
                 if (location) {
                     UserModel *user = [[ClientSessionManager sharedClient] currentUser];
                     [user putUser:@{ kUserModelParamLatitude : [NSNumber numberWithFloat:location.coordinate.latitude],
@@ -220,6 +218,10 @@
                                              selector:@selector(handleFacebookSessionDidBecomeOpenActiveSessionNotification:)
                                                  name:FBSessionDidBecomeOpenActiveSessionNotification
                                                object:nil];
+    
+    if ([launchOptions.allKeys containsObject:UIApplicationLaunchOptionsLocationKey]) {
+        [[SHLocationManager defaultInstance] wakeUp];
+    }
     
     return YES;
 }
@@ -489,6 +491,13 @@
             }
         }
     }
+    else if ([kPushActionPromptForCheckIn isEqualToString:action]) {
+        // prompt user to check in at spot
+        DebugLog(@"Check In at Spot");
+        DebugLog(@"userInfo: %@", userInfo);
+        
+        [SHNotifications promptForCheckIn:userInfo];
+    }
     else {
         DebugLog(@"Location notification not supported");
     }
@@ -498,10 +507,10 @@
     NSString *action = userInfo[@"action"];
     NSString *key = userInfo[@"key"];
     if (action.length && key.length) {
-        TellMeMyLocation *where = [[TellMeMyLocation alloc] init];
-        [where findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
+        CLLocation *location = [SHAppContext currentDeviceLocation];
+        if (location) {
             CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-            [geocoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placemarks, NSError *error) {
+            [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
                 if (!error && placemarks.count) {
                     CLPlacemark *placemark = placemarks[0];
                     if ([key isEqualToString:kUpdateLocationLunchLocation] || [key isEqualToString:kUpdateLocationHappyHourLocation]) {
@@ -519,9 +528,7 @@
                     }
                 }
             }];
-        } failure:^(NSError *error) {
-            DebugLog(@"Error: %@", error);
-        }];
+        }
     }
     else {
         if (completionBlock) {
@@ -650,23 +657,20 @@
 #pragma mark - Location
 
 - (void)refreshDeviceLocationWithCompletionBlock:(void (^)())completionBlock {
-    if (!_tellMeMyLocation) {
-        _tellMeMyLocation = [[TellMeMyLocation alloc] init];
-    }
-    
-    // Gets current location
-    [_tellMeMyLocation findMe:kCLLocationAccuracyHundredMeters found:^(CLLocation *newLocation) {
-        
+    CLLocation *location = [SHAppContext currentDeviceLocation];
+    if (location) {
         // Saves current location
-        [TellMeMyLocation setLastLocation:newLocation completionHandler:^{
+        [SHAppContext setLastLocation:location withCompletionBlock:^{
             if (completionBlock) {
                 completionBlock();
             }
         }];
-        
-    } failure:^(NSError *error) {
-        [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
-    }];
+    }
+    else {
+        if (completionBlock) {
+            completionBlock();
+        }
+    }
 }
 
 #pragma mark - Facebook Connect

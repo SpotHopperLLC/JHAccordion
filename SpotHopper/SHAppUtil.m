@@ -27,6 +27,29 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <Parse/Parse.h>
 
+#define kMeterToMile 0.000621371f
+#define kMetersPerMile 1609.344
+
+#define kLastCheckInPromptDateKey @"LastCheckInPromptDate"
+
+#ifndef NDEBUG
+// 3 minutes
+#define kCheckInPromptCooldownPeriodInSeconds 60 * 3
+#else
+// 5 days
+#define kCheckInPromptCooldownPeriodInSeconds 60 * 3
+//#define kCheckInPromptCooldownPeriodInSeconds 60*60*24*5
+#endif
+
+#pragma mark - Class Extension
+#pragma mark -
+
+@interface SHAppUtil ()
+
+@property (strong, nonatomic) NSDate *lastCheckInPromptDate;
+
+@end
+
 @implementation SHAppUtil
 
 + (instancetype)defaultInstance {
@@ -37,6 +60,22 @@
         defaultInstance = [[SHAppUtil alloc] init];
     });
     return defaultInstance;
+}
+
+#pragma mark - Properties
+#pragma mark -
+
+- (NSDate *)lastCheckInPromptDate {
+    NSDate *date = (NSDate *)[[NSUserDefaults standardUserDefaults] objectForKey:kLastCheckInPromptDateKey];
+    if (!date) {
+        return [NSDate distantPast];
+    }
+    return date;
+}
+
+- (void)setLastCheckInPromptDate:(NSDate *)date {
+    [[NSUserDefaults standardUserDefaults] setObject:date forKey:kLastCheckInPromptDateKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark - Sharing
@@ -182,9 +221,152 @@
     }];
 }
 
-#pragma mark - SpotHopper
+#pragma mark - Significant Location Changes
 #pragma mark -
 
+- (void)processSignificantLocationChange:(CLLocation *)location {
+    // 1) check for expiration of the cool down period
+    // 2) fetch nearby spots
+    // 3) ask the user if they would like to check in with a local notification
+    
+    UIApplication *application = [UIApplication sharedApplication];
+    if (application.applicationState == UIApplicationStateActive) {
+        // prompting should not be triggered when the app is active
+        [self logMessage:@"App is active, not prompting" location:location spot:nil];
+        return;
+    }
+    else if (location.horizontalAccuracy > 100) {
+        NSString *message = [NSString stringWithFormat:@"Location accuracy is not sufficient (%.1f)", location.horizontalAccuracy];
+        [self logMessage:message location:location spot:nil];
+        return;
+    }
+//    else if ([location.timestamp timeIntervalSinceNow] > 30) {
+//        // if the location update is old do not use it
+//        // deferred/cached location updates could be reported which are out of date
+//        return;
+//    }
+//    else if (location.speed > 0.5) {
+//        // device must not be moving (driving past a spot)
+//        // speed is -1 when the device detects no movement
+//        // average walking speed is ~3 mph which is ~1.35 meters per second
+//        // the speed used here will ensure the user is essentially stopped
+//        return;
+//    }
+//    else if (![self isNowAGoodTimeForADrink]) {
+//        return;
+//    }
+    
+    // Networking communications is costly on the batter so a cool down period and other filtering
+    // criteria are used to prevent frequent API calls which are not necessary
+    
+    // if it has been longer than the cool down period it is ok to prompt the user to check in
+    NSTimeInterval seconds = [[NSDate date] timeIntervalSinceDate:self.lastCheckInPromptDate];
+    if (seconds > kCheckInPromptCooldownPeriodInSeconds) {
+        [self setLastCheckInPromptDate:[NSDate date]];
+        
+        CLLocationDistance radius = 5000.0f * kMeterToMile;
+        [[SpotModel fetchSpotsNearLocation:location radius:radius] then:^(NSArray *spots) {
+            if (spots.count) {
+                SpotModel *spot = spots[0];
+
+                CLLocationDistance distance = [spot.location distanceFromLocation:location];
+
+                if (distance < 100.0) {
+                    [Tracker logInfo:@"Prompting to check in at spot" class:[self class] trace:NSStringFromSelector(_cmd)];
+                    
+                    NSDictionary *userInfo = @{
+                                               @"action" : @"PromptForCheckIn",
+                                               @"spotId" : spot.ID,
+                                               @"name" : spot.name
+                                               };
+                    
+                    UILocalNotification *notification = [[UILocalNotification alloc] init];
+                    notification.userInfo = userInfo;
+                    notification.alertBody = [NSString stringWithFormat:@"Want to check in at %@?", spot.name];
+                    notification.soundName = UILocalNotificationDefaultSoundName;
+                    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+                    
+                    [self logMessage:@"Prompted to check in" location:location spot:spot];
+                }
+                else {
+                    NSString *message = [NSString stringWithFormat:@"Nearest spot is not close enough: %f meters", distance];
+                    [Tracker logInfo:message class:[self class] trace:NSStringFromSelector(_cmd)];
+                    [self logMessage:@"Not prompted to check in" location:location spot:spot];
+                }
+            }
+            else {
+                [Tracker logInfo:@"No spots found for prompting for check in" class:[self class] trace:NSStringFromSelector(_cmd)];
+                [self logMessage:@"No spots nearby" location:location spot:nil];
+            }
+        } fail:^(id error) {
+            [self logMessage:@"Failed to fetch spots" location:location spot:nil];
+        } always:^{
+        }];
+    }
+    else {
+        DebugLog(@"Cooling down from prompting for check in...");
+        NSString *message = [NSString stringWithFormat:@"Cooling down (%li)", (long)seconds];
+        [self logMessage:message location:location spot:nil];
+    }
+}
+
+- (void)logMessage:(NSString *)message location:(CLLocation *)location {
+    [self logMessage:message location:location spot:nil];
+}
+
+- (void)logMessage:(NSString *)message location:(CLLocation *)location spot:(SpotModel *)spot {
+    MAAssert(message.length, @"There must be a message");
+    DebugLog(@"message: %@", message);
+    
+    CLLocationDistance distance = CGFLOAT_MAX;
+    if (spot && location) {
+        distance = [spot.location distanceFromLocation:location];
+    }
+    
+    if ([SHAppConfiguration isParseEnabled]) {
+        PFUser *currentUser = [PFUser currentUser];
+        PFObject *messageLog = [PFObject objectWithClassName:@"MessageLog"];
+        
+        [messageLog setObject:message forKey:@"message"];
+
+        if (distance != CGFLOAT_MAX) {
+            [messageLog setObject:[NSNumber numberWithDouble:distance] forKey:@"distance"];
+        }
+
+        if (location) {
+            PFGeoPoint *locationPoint = [PFGeoPoint geoPointWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude];
+            [messageLog setObject:locationPoint forKey:@"location"];
+            [messageLog setObject:[NSNumber numberWithDouble:location.speed] forKey:@"speed"];
+            [messageLog setObject:[NSNumber numberWithDouble:location.course] forKey:@"course"];
+        }
+        if (spot) {
+            [messageLog setObject:spot.name forKey:@"spot"];
+        }
+        
+        [messageLog setObject:currentUser forKey:@"user"];
+        
+        [messageLog saveEventually:^(BOOL succeeded, NSError *error) {
+            if (error) {
+                DebugLog(@"Error: %@", error);
+            }
+        }];
+    }
+}
+
+- (void)resetLastCheckInPromptDate {
+    [self setLastCheckInPromptDate:[NSDate distantPast]];
+}
+
+- (BOOL)isNowAGoodTimeForADrink {
+    NSDate *now = [NSDate date];
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [gregorian components:NSCalendarUnitWeekday|NSCalendarUnitHour fromDate:now];
+    
+    BOOL isWeekend = components.weekday == 7 || components.weekday == 0; // sat or sun
+
+    // it is a good time for a drink on weekends after 11am and weekdays after 5pm
+    return (isWeekend && components.hour >= 11) || (!isWeekend && components.hour >= 17);
+}
 
 #pragma mark - Parse
 #pragma mark -
@@ -353,6 +535,8 @@
     // ensure the User has the User Profile
     // ensure the User Profile has the User
     
+    DebugLog(@"Called by %@", NSStringFromSelector(_cmd));
+    
     SHUserProfileModel *userProfile = [[SHAppContext defaultInstance] currentUserProfile];
     
     if (!userProfile) {
@@ -375,23 +559,8 @@
         [installation setObject:fetchedUserProfile forKey:@"userProfile"];
         [user setObject:fetchedUserProfile forKey:@"userProfile"];
         
-        [installation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            if (error) {
-                DebugLog(@"Error: %@", error);
-            }
-            else {
-                DebugLog(@"Success: %@", succeeded ? @"YES" : @"NO");
-            }
-        }];
-        
-        [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            if (error) {
-                DebugLog(@"Error: %@", error);
-            }
-            else {
-                DebugLog(@"Success: %@", succeeded ? @"YES" : @"NO");
-            }
-        }];
+        [user saveEventually];
+        [installation saveEventually];
         
         if (completionBlock) {
             completionBlock(TRUE, nil);

@@ -11,7 +11,7 @@
 #import "NSNumber+Helpers.h"
 #import "UIViewController+Navigator.h"
 
-#import "TellMeMyLocation.h"
+#import "SHAppContext.h"
 
 #import "SHButtonLatoLightLocation.h"
 
@@ -29,8 +29,6 @@
 #import "ErrorModel.h"
 #import "SpotModel.h"
 #import "Tracker.h"
-
-#import "TellMeMyLocation.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import <QuartzCore/QuartzCore.h>
@@ -50,7 +48,6 @@
 @property (nonatomic, strong) NSNumber *drinkPage;
 @property (nonatomic, strong) NSNumber *spotPage;
 
-@property (nonatomic, strong) TellMeMyLocation *tellMeMyLocation;
 @property (nonatomic, strong) CLLocation *location;
 
 @end
@@ -128,7 +125,7 @@
     [_btnLocation updateWithLastLocation];
     
     if (_updatedSearchNeeded) {
-        _location = [TellMeMyLocation lastLocation];
+        _location = [SHAppContext lastLocation];
         [self startSearch];
     }
 }

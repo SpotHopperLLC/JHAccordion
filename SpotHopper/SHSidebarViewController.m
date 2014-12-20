@@ -8,6 +8,8 @@
 
 #import "SHSidebarViewController.h"
 
+#import "SHAppUtil.h"
+#import "SHNotifications.h"
 #import "UIView+AddBorder.h"
 #import "UIViewController+Navigator.h"
 
@@ -22,9 +24,8 @@
 // TODO: change to use StyleKit for button images (different than just showing the icons)
 
 @property (weak, nonatomic) IBOutlet UIButton *btnReviews;
-@property (weak, nonatomic) IBOutlet UIButton *btnCheckIn;
-@property (weak, nonatomic) IBOutlet UIButton *btnGiveProps;
 @property (weak, nonatomic) IBOutlet UIButton *btnAccount;
+@property (weak, nonatomic) IBOutlet UIButton *btnViewDiagnostics;
 @property (weak, nonatomic) IBOutlet UIButton *btnLogin;
 
 @end
@@ -42,17 +43,19 @@
     // Increasing left inset of button titles
     UIEdgeInsets insets = UIEdgeInsetsMake(0, 15.0f, 0, 0);
     [self.btnReviews setTitleEdgeInsets:insets];
-    [self.btnCheckIn setTitleEdgeInsets:insets];
-    [self.btnGiveProps setTitleEdgeInsets:insets];
     [self.btnAccount setTitleEdgeInsets:insets];
     
     // Add white borders
     [self.btnReviews addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
-    [self.btnCheckIn addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
-    [self.btnGiveProps addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
-    [self.btnGiveProps addBottomBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
+    [self.btnReviews addBottomBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
     [self.btnAccount addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
     [self.btnLogin addTopBorder:[UIColor colorWithWhite:1.0f alpha:0.8f]];
+    
+#ifndef STAGING
+    self.btnViewDiagnostics.hidden = TRUE;
+#else
+    self.btnViewDiagnostics.hidden = FALSE;
+#endif
     
     [self updateView:NO];
 }
@@ -105,13 +108,20 @@
     return NO;
 }
 
+#pragma mark - Private
+#pragma mark -
+
+- (void)closeSideBar {
+    if ([self.delegate respondsToSelector:@selector(sidebarViewControllerDidRequestClose:)]) {
+        [self.delegate sidebarViewControllerDidRequestClose:self];
+    }
+}
+
 #pragma mark - User Actions
 #pragma mark -
 
 - (IBAction)closeButtonTapped:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(sidebarViewControllerDidRequestClose:)]) {
-        [self.delegate sidebarViewControllerDidRequestClose:self];
-    }
+    [self closeSideBar];
 }
 
 - (IBAction)reviewsButtonTapped:(id)sender {
@@ -120,16 +130,10 @@
     }
 }
 
-- (IBAction)checkInButtonTapped:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(sidebarViewControllerDidRequestCheckin:)]) {
-        [self.delegate sidebarViewControllerDidRequestCheckin:self];
-    }
-}
-
-- (IBAction)givePropsButtonTapped:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(sidebarViewControllerDidRequestGiveProps:)]) {
-        [self.delegate sidebarViewControllerDidRequestGiveProps:sender];
-    }
+- (IBAction)viewDiagnosticsButtonTapped:(id)sender {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
+    [SHNotifications displayDiagnostics];
 }
 
 - (IBAction)accountSettingsButtonTapped:(id)sender {

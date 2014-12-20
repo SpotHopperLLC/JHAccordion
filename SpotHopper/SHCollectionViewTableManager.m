@@ -32,7 +32,6 @@
 #import "Tracker.h"
 #import "Tracker+Events.h"
 #import "Tracker+People.h"
-#import "TellMeMyLocation.h"
 
 #import "UIAlertView+Block.h"
 
@@ -576,7 +575,7 @@ typedef enum {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"AboutSpotCell" forIndexPath:indexPath];
 
     CLLocation *spotLocation = [[CLLocation alloc] initWithLatitude:[self.spot.latitude floatValue] longitude:[self.spot.longitude floatValue]];
-    CLLocation *currentLocation = [TellMeMyLocation currentLocation];
+    CLLocation *currentLocation = [SHAppContext currentLocation];
     CLLocationDistance meters = [currentLocation distanceFromLocation:spotLocation];
     
     CGFloat miles = meters * kMeterToMile;

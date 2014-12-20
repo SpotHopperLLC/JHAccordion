@@ -8,8 +8,11 @@
 
 #import "UIViewController+Navigator.h"
 
+#import "SHAppContext.h"
 #import "LaunchViewController.h"
 #import "AccountSettingsViewController.h"
+
+#import "SHMenuViewController.h"
 
 #import "MyReviewsViewController.h"
 #import "NewReviewViewController.h"
@@ -21,7 +24,6 @@
 #import "DrinkMenuViewController.h"
 #import "DrinkMenuOfferingsViewController.h"
 
-#import "CheckinViewController.h"
 #import "PhotoAlbumViewController.h"
 #import "PhotoViewerViewController.h"
 
@@ -29,7 +31,6 @@
 #import "SHSpotProfileViewController.h"
 
 #import "Tracker.h"
-#import "TellMeMyLocation.h"
 
 #import "CheckInModel.h"
 
@@ -50,7 +51,7 @@
 #pragma mark - Drinks
 
 - (void)goToDrinkProfile:(DrinkModel*)drink {
-    [Tracker track:@"View Drink Profile" properties:@{@"Name" : drink.name, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Drink Profile" properties:@{@"Name" : drink.name, @"Location" : [SHAppContext lastLocationNameShort]}];
     
     SHDrinkProfileViewController *viewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHDrinkProfileVC"];
     [viewController setDrink:drink];
@@ -158,7 +159,7 @@
 #pragma mark - Spots
 
 - (void)goToSpotProfile:(SpotModel *)spot {
-    [Tracker track:@"View Spot Profile" properties:@{@"Name" : spot.name, @"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Spot Profile" properties:@{@"Name" : spot.name, @"Location" : [SHAppContext lastLocationNameShort]}];
 
     SHSpotProfileViewController *vc = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHSpotProfileVC"];
     vc.spot = spot;
@@ -178,13 +179,14 @@
 
 - (void)goToMenu:(SpotModel *)spot {
     [Tracker track:@"View Menu"];
-    DrinkMenuViewController *viewController = [[self menuStoryboard] instantiateViewControllerWithIdentifier:@"DrinkMenuViewController"];
+    //DrinkMenuViewController *viewController = [[self menuStoryboard] instantiateViewControllerWithIdentifier:@"DrinkMenuViewController"];
+    SHMenuViewController *viewController = [[self spotHopperStoryboard] instantiateViewControllerWithIdentifier:@"SHMenuVC"];
     [viewController setSpot:spot];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)goToMenuOfferings:(SpotModel *)spot drinkType:(DrinkTypeModel*)drinkType menuType:(MenuTypeModel*)menuType menuItems:(NSArray*)menuItems {
-    [Tracker track:@"View Menu Offerings" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Menu Offerings" properties:@{@"Location" : [SHAppContext lastLocationNameShort]}];
     DrinkMenuOfferingsViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DrinkMenuOfferingsViewController"];
     [viewController setSpot:spot];
     [viewController setDrinkType:drinkType];
@@ -193,25 +195,11 @@
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
-#pragma mark - Checkin
-
-- (void)goToCheckin:(id<CheckinViewControllerDelegate>)delegate {
-    [Tracker track:@"View Check In" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    CheckinViewController *viewController = [[self checkinStoryboard] instantiateViewControllerWithIdentifier:@"CheckinViewController"];
-    [viewController setDelegate:delegate];
-    [self.navigationController pushViewController:viewController animated:YES];
-}
-
-- (void)goToCheckIn:(CheckInModel*)checkIn {
-    [Tracker track:@"View Check In" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
-    
-    [self goToSpotProfile:checkIn.spot];
-}
 
 #pragma mark - Commons
 
 - (void)goToPhotoAlbum:(NSArray *)images atIndex:(NSUInteger)index {
-    [Tracker track:@"View Photo Album" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Photo Album" properties:@{@"Location" : [SHAppContext lastLocationNameShort]}];
     UIStoryboard *commonStoryboard = [UIStoryboard storyboardWithName:@"Common" bundle:nil];
     PhotoAlbumViewController *viewController = [commonStoryboard instantiateViewControllerWithIdentifier:@"PhotoAlbumViewController"];
     viewController.images = images;
@@ -220,7 +208,7 @@
 }
 
 - (void)goToPhotoViewer:(NSArray *)images atIndex:(NSUInteger)index fromPhotoAlbum:(PhotoAlbumViewController *)photoAlbum {
-    [Tracker track:@"View Photo Viewer" properties:@{@"Location" : [TellMeMyLocation lastLocationNameShort]}];
+    [Tracker track:@"View Photo Viewer" properties:@{@"Location" : [SHAppContext lastLocationNameShort]}];
     UIStoryboard *commonStoryboard = [UIStoryboard storyboardWithName:@"Common" bundle:nil];
     PhotoViewerViewController *viewController = [commonStoryboard instantiateViewControllerWithIdentifier:@"PhotoViewerViewController"];
     viewController.images = images;

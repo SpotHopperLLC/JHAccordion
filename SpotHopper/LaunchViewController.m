@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 #import "SHAppConfiguration.h"
 #import "SHAppUtil.h"
+#import "SHAppContext.h"
 
 #import "UIViewController+Navigator.h"
 #import "ClientSessionManager.h"
@@ -18,7 +19,6 @@
 #import "UserModel.h"
 
 #import "SHAppConfiguration.h"
-#import "TellMeMyLocation.h"
 #import "Mixpanel.h"
 #import "Tracker.h"
 #import "Tracker+Events.h"
@@ -66,14 +66,6 @@
 
 #pragma mark - View Lifecycle
 #pragma mark -
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -332,7 +324,7 @@
     NSMutableDictionary *paramsWithLocation = params.mutableCopy;
     
     // Sets last location to user if there is one
-    CLLocation *location = [TellMeMyLocation lastLocation];
+    CLLocation *location = [SHAppContext lastLocation];
     if (location) {
         [paramsWithLocation setObject:[NSNumber numberWithFloat:location.coordinate.latitude] forKey:kUserModelParamLatitude];
         [paramsWithLocation setObject:[NSNumber numberWithFloat:location.coordinate.longitude] forKey:kUserModelParamLongitude];
@@ -396,7 +388,7 @@
                              }.mutableCopy;
     
     // Sets last location to user if there is one
-    CLLocation *location = [TellMeMyLocation lastLocation];
+    CLLocation *location = [SHAppContext lastLocation];
     if (location) {
         [params setObject:[NSNumber numberWithFloat:location.coordinate.latitude] forKey:kUserModelParamLatitude];
         [params setObject:[NSNumber numberWithFloat:location.coordinate.longitude] forKey:kUserModelParamLongitude];

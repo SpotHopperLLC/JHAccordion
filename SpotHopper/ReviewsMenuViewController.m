@@ -8,6 +8,7 @@
 
 #define kPageSize @15
 
+#import "SHAppContext.h"
 #import "ReviewsMenuViewController.h"
 
 #import "NSNumber+Helpers.h"
@@ -23,7 +24,6 @@
 
 #import "MyReviewsViewController.h"
 
-#import "TellMeMyLocation.h"
 #import "ErrorModel.h"
 #import "Tracker.h"
 
@@ -114,7 +114,7 @@
     [_btnLocation updateWithLastLocation];
     
     if (_updatedSearchNeeded) {
-        _location = [TellMeMyLocation lastLocation];
+        _location = [SHAppContext lastLocation];
         [self startSearch];
     }
 }

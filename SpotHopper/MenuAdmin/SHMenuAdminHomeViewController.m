@@ -937,12 +937,6 @@ typedef enum {
     CGRect frame = [self.tableView rectForRowAtIndexPath:indexPath];
     LOG_FRAME(@"cell", frame);
     [self.tableView setContentOffset:frame.origin animated:TRUE];
-    
-    //scroll cell to top that's being edited
-//    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:TRUE];
-    
-//    [self closeTopContainerViewWithCompletionBlock:^{
-//    }];
 }
 
 - (void)deleteButtonTapped:(SHMenuAdminSwipeableDrinkTableViewCell *)cell {

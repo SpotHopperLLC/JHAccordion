@@ -12,7 +12,6 @@
 #import "Mixpanel.h"
 #import "ClientSessionManager.h"
 #import "SHAppContext.h"
-#import "TellMeMyLocation.h"
 
 @implementation Tracker (People)
 
@@ -96,8 +95,8 @@
 }
 
 + (void)trackUserSearchLocation {
-    NSString *locationName = [TellMeMyLocation currentLocationName];
-    NSString *zip = [TellMeMyLocation currentLocationZip];
+    NSString *locationName = [SHAppContext currentLocationName];
+    NSString *zip = [SHAppContext currentLocationZip];
     
     if (locationName.length) {
         NSString *action = [NSString stringWithFormat:@"User Searched City: %@", locationName];
@@ -156,8 +155,8 @@
 #pragma mark -
 
 + (void)trackUserFrequentLocation {
-    NSString *locationName = [TellMeMyLocation currentLocationName];
-    NSString *zip = [TellMeMyLocation currentLocationZip];
+    NSString *locationName = [SHAppContext currentLocationName];
+    NSString *zip = [SHAppContext currentLocationZip];
     
     if (locationName.length) {
         NSString *action = [NSString stringWithFormat:@"User Frequent City: %@", locationName];
@@ -170,7 +169,7 @@
 }
 
 + (void)trackUserLocation:(CLPlacemark *)placemark forKey:(NSString *)key {
-    NSString *city = [TellMeMyLocation shortLocationNameFromPlacemark:placemark];
+    NSString *city = [SHAppContext shortLocationNameFromPlacemark:placemark];
     
     if (city.length && placemark.postalCode.length && key.length) {
         NSString *locationName = [NSString stringWithFormat:@"User Last %@ City:", key];

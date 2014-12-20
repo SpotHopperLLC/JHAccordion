@@ -78,6 +78,12 @@ NSString * const SHAppShowDrinklistNotificationDrinklistKey = @"drinklist";
 NSString * const SHAppShowDrinklistNotificationLocationKey = @"location";
 NSString * const SHAppShowDrinklistNotificationRadiusKey = @"radius";
 
+NSString * const SHLocationChangedNotificationName = @"SHLocationChangedNotificationName";
+
+NSString * const SHPromptForCheckInNotificationName = @"SHPromptForCheckInNotificationName";
+
+NSString * const SHDisplayDiagnosticsNotificationName = @"SHDisplayDiagnosticsNotificationName";
+
 @implementation SHNotifications
 
 + (void)goToHomeMap {
@@ -307,5 +313,27 @@ NSString * const SHAppShowDrinklistNotificationRadiusKey = @"radius";
                                                         object:nil
                                                       userInfo:userInfo];
 }
+
+#pragma mark - Local Notifications
+#pragma mark -
+
++ (void)promptForCheckIn:(NSDictionary *)userInfo {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHPromptForCheckInNotificationName object:userInfo];
+}
+
+#pragma mark - Location
+#pragma mark -
+
++ (void)locationChanged {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHLocationChangedNotificationName object:nil];
+}
+
+#pragma mark - Diagnostics
+#pragma mark -
+
++ (void)displayDiagnostics {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SHDisplayDiagnosticsNotificationName object:nil];
+}
+
 
 @end

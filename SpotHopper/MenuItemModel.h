@@ -23,4 +23,6 @@
 @property (nonatomic, strong) MenuTypeModel *menuType;
 @property (nonatomic, strong) NSArray *prices;
 
+@property (nonatomic, readonly) NSString *priceSummary;
+
 @end
