@@ -33,7 +33,8 @@
 #define kIndexCocktails 2
 
 #define kSortHighestRated @"Highest Rated"
-#define kSortPrice @"Price (Low to High)"
+#define kSortPriceLowToHigh @"Price (Low to High)"
+#define kSortPriceHighToLow @"Price (High to Low)"
 #define kSortAlcoholPercentage @"Alcohol Percentage"
 #define kSortBaseAlcohol @"Base Alcohol"
 
@@ -86,20 +87,23 @@
     self.offsetCocktails = offset;
     
     // sorts are aligned with the segmented control for Beer, Wine and Cocktails
-    self.sorts = @[@[kSortHighestRated, kSortPrice, kSortAlcoholPercentage],
-                   @[kSortHighestRated, kSortPrice],
-                   @[kSortHighestRated, kSortPrice, kSortBaseAlcohol]];
+    self.sorts = @[@[kSortHighestRated, kSortPriceLowToHigh, kSortPriceHighToLow, kSortAlcoholPercentage],
+                   @[kSortHighestRated, kSortPriceLowToHigh, kSortPriceHighToLow],
+                   @[kSortHighestRated, kSortPriceLowToHigh, kSortPriceHighToLow, kSortBaseAlcohol]];
     
     MAAssert([kSortHighestRated isEqualToString:self.sorts[kIndexBeer][0]], @"Invalid State");
-    MAAssert([kSortPrice isEqualToString:self.sorts[kIndexBeer][1]], @"Invalid State");
-    MAAssert([kSortAlcoholPercentage isEqualToString:self.sorts[kIndexBeer][2]], @"Invalid State");
+    MAAssert([kSortPriceLowToHigh isEqualToString:self.sorts[kIndexBeer][1]], @"Invalid State");
+    MAAssert([kSortPriceHighToLow isEqualToString:self.sorts[kIndexBeer][2]], @"Invalid State");
+    MAAssert([kSortAlcoholPercentage isEqualToString:self.sorts[kIndexBeer][3]], @"Invalid State");
     
     MAAssert([kSortHighestRated isEqualToString:self.sorts[kIndexWine][0]], @"Invalid State");
-    MAAssert([kSortPrice isEqualToString:self.sorts[kIndexWine][1]], @"Invalid State");
+    MAAssert([kSortPriceLowToHigh isEqualToString:self.sorts[kIndexWine][1]], @"Invalid State");
+    MAAssert([kSortPriceHighToLow isEqualToString:self.sorts[kIndexWine][2]], @"Invalid State");
     
     MAAssert([kSortHighestRated isEqualToString:self.sorts[kIndexCocktails][0]], @"Invalid State");
-    MAAssert([kSortPrice isEqualToString:self.sorts[kIndexCocktails][1]], @"Invalid State");
-    MAAssert([kSortBaseAlcohol isEqualToString:self.sorts[kIndexCocktails][2]], @"Invalid State");
+    MAAssert([kSortPriceLowToHigh isEqualToString:self.sorts[kIndexCocktails][1]], @"Invalid State");
+    MAAssert([kSortPriceHighToLow isEqualToString:self.sorts[kIndexCocktails][2]], @"Invalid State");
+    MAAssert([kSortBaseAlcohol isEqualToString:self.sorts[kIndexCocktails][3]], @"Invalid State");
 }
 
 - (NSArray *)viewOptions {
@@ -222,13 +226,26 @@
             return [rating2 compare:rating1];
         }];
     }
-    else if ([kSortPrice isEqualToString:sort]) {
+    else if ([kSortPriceLowToHigh isEqualToString:sort]) {
         sortedItems = [items sortedArrayUsingComparator:^NSComparisonResult(MenuItemModel *item1, MenuItemModel *item2) {
             PriceModel *price1 = item1.prices.firstObject;
             PriceModel *price2 = item2.prices.firstObject;
             
             if (price1.cents && price2.cents) {
                 return [price1.cents compare:price2.cents];
+            }
+            else {
+                return NSOrderedSame;
+            }
+        }];
+    }
+    else if ([kSortPriceHighToLow isEqualToString:sort]) {
+        sortedItems = [items sortedArrayUsingComparator:^NSComparisonResult(MenuItemModel *item1, MenuItemModel *item2) {
+            PriceModel *price1 = item1.prices.firstObject;
+            PriceModel *price2 = item2.prices.firstObject;
+            
+            if (price1.cents && price2.cents) {
+                return [price2.cents compare:price1.cents];
             }
             else {
                 return NSOrderedSame;
