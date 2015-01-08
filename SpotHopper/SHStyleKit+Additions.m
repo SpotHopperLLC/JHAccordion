@@ -95,11 +95,7 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
 
 + (void)setButton:(UIButton *)button withDrawing:(SHStyleKitDrawing)drawing normalColor:(SHStyleKitColor)normalColor highlightedColor:(SHStyleKitColor)highlightedColor;
 {
-    UIImage *normalImage = [SHStyleKit drawImage:drawing color:normalColor size:button.frame.size];
-    UIImage *highlightedImage = [SHStyleKit drawImage:drawing color:highlightedColor size:button.frame.size];
-    
-    [button setImage:normalImage forState:UIControlStateNormal];
-    [button setImage:highlightedImage forState:UIControlStateHighlighted];
+    [self setButton:button withDrawing:drawing normalColor:normalColor highlightedColor:highlightedColor size:button.frame.size];
 }
 
 + (void)setButton:(UIButton *)button withDrawing:(SHStyleKitDrawing)drawing text:(NSString *)text normalColor:(SHStyleKitColor)normalColor highlightedColor:(SHStyleKitColor)highlightedColor;
@@ -158,21 +154,24 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
         case SHStyleKitDrawingNavigationArrowUpIcon:
         case SHStyleKitDrawingArrowUpIcon:
         case SHStyleKitDrawingPencilArrowUp:
+        case SHStyleKitDrawingSearchArrowUpIcon:
             rotation = 90;
             break;
 
         case SHStyleKitDrawingNavigationArrowLeftIcon:
         case SHStyleKitDrawingArrowLeftIcon:
-        SHStyleKitDrawingPencilArrowLeft:
+        case SHStyleKitDrawingPencilArrowLeft:
+        case SHStyleKitDrawingSearchArrowLeftIcon:
             rotation = 180;
             break;
             
         case SHStyleKitDrawingNavigationArrowDownIcon:
         case SHStyleKitDrawingArrowDownIcon:
-        SHStyleKitDrawingPencilArrowDown:
+        case SHStyleKitDrawingPencilArrowDown:
+        case SHStyleKitDrawingSearchArrowDownIcon:
             rotation = 270;
             break;
-    
+            
         default:
             // leave the default
             break;
@@ -363,33 +362,32 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
         case SHStyleKitDrawingNavigationArrowUpIcon:
         case SHStyleKitDrawingNavigationArrowLeftIcon:
         case SHStyleKitDrawingNavigationArrowDownIcon:
-            [SHStyleKit drawNavigationArrowIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName rotation:rotation];
+            [SHStyleKit drawNavigationArrowIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName rotation:rotation];
             break;
-            
+        case SHStyleKitDrawingSearchArrowRightIcon:
+        case SHStyleKitDrawingSearchArrowLeftIcon:
+        case SHStyleKitDrawingSearchArrowUpIcon:
+        case SHStyleKitDrawingSearchArrowDownIcon:
+            [SHStyleKit drawSortArrowIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName rotation:rotation];
+            break;
         case SHStyleKitDrawingCloseIcon:
             [SHStyleKit drawCloseIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
             break;
-            
         case SHStyleKitDrawingClockIcon:
             [SHStyleKit drawClockIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
             break;
-            
         case SHStyleKitDrawingPhoneIcon:
             [SHStyleKit drawPhoneIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
             break;
-            
         case SHStyleKitDrawingMoreIcon:
             [SHStyleKit drawMoreIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
             break;
-            
         case SHStyleKitDrawingCheckinIcon:
             [SHStyleKit drawCheckinIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
             break;
-            
         case SHStyleKitDrawingCheckinMarkIcon:
             [SHStyleKit drawCheckinMarkIconWithScaleX:scaleX scaleY:scaleY fillColorName:colorName];
             break;
-            
         case SHStyleKitDrawingDeleteIcon:
             [SHStyleKit drawDeleteIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
             break;
@@ -397,7 +395,6 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
         case SHStyleKitDrawingArrowUpIcon:
         case SHStyleKitDrawingArrowLeftIcon:
         case SHStyleKitDrawingArrowDownIcon: {
-            
             NSString *fillColorName = SHStyleKitColorNameMyTintColor;
             NSString *strokeColorName = SHStyleKitColorNameMyClearColor;
             
@@ -422,37 +419,30 @@ NSString * const SHStyleKitColorNameMyClearColor = @"myClearColor";
             [SHStyleKit drawArrowIconWithScaleX:scaleX scaleY:scaleY strokeColorName:strokeColorName fillColorName:fillColorName rotation:rotation];
         }
             break;
-            
         case SHStyleKitDrawingPlaceholderBasic:
             [SHStyleKit drawMyPlaceholderWithScaleX:scaleX scaleY:scaleY];
             break;
-            
         case SHStyleKitDrawingDefaultAvatarIcon:
             [SHStyleKit drawDefaultAvatarIconWithScaleX:scaleX scaleY:scaleY strokeColorName:colorName];
             break;
-            
         case SHStyleKitDrawingTopBarBackground:
             [SHStyleKit drawTopBarBackgroundWithFillColorName:colorName];
-            
+            break;
         case SHStyleKitDrawingTopBarWhiteShadowBackground:
             [SHStyleKit drawTopBarWhiteShadowBackground];
             break;
-            
         case SHStyleKitDrawingBottomBarBlackShadowBackground:
             [SHStyleKit drawBottomBarBlackShadowBackground];
             break;
-            
         case SHStyleKitDrawingPencilArrowRight:
         case SHStyleKitDrawingPencilArrowLeft:
         case SHStyleKitDrawingPencilArrowUp:
         case SHStyleKitDrawingPencilArrowDown:
             [SHStyleKit drawPencilArrowWithScaleX:scaleX scaleY:scaleY rotation:rotation];
             break;
-            
         case SHStyleKitDrawingRatingSwoosh:
             [SHStyleKit drawRatingSwooshWithScaleX:scaleX scaleY:scaleY strokeColorName:[SHStyleKit colorName:SHStyleKitColorMyTintColor] fillColorName:[SHStyleKit colorName:SHStyleKitColorMyTextTransparentColor] percentage:percentage];
             break;
-            
         case SHStyleKitDrawingTopShadow:
             [SHStyleKit drawTopShadow];
             

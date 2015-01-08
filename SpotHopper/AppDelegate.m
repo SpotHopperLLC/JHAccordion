@@ -86,9 +86,28 @@
         [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
         [PFUser enableAutomaticUser];
         PFUser *user = [PFUser currentUser];
-        
-        if (!user.objectId.length) {
-            [user saveInBackground];
+        if (user.isAuthenticated) {
+            [user setObject:[SHAppConfiguration bundleDisplayName] forKey:@"appName"];
+            [user setObject:[SHAppConfiguration bundleIdentifier] forKey:@"appIdentifier"];
+            [user setObject:@"ios" forKey:@"deviceType"];
+            
+            if ([[ClientSessionManager sharedClient] isLoggedIn]) {
+                NSString *sessionToken = [[ClientSessionManager sharedClient] sessionToken];
+                if (sessionToken.length) {
+                    [user setObject:sessionToken forKey:@"spotHopperSessionToken"];
+                }
+            }
+            
+            NSString *timezone = [[NSTimeZone localTimeZone] name];
+            if (timezone.length) {
+                [user setObject:timezone forKey:@"timeZone"];
+            }
+            
+            [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (error) {
+                    DebugLog(@"Error: %@", error);
+                }
+            }];
         }
     }
     
@@ -282,9 +301,9 @@
         PFInstallation *currentInstallation = [PFInstallation currentInstallation];
         [currentInstallation setDeviceTokenFromData:deviceToken];
 //        DebugLog(@"device type: %@", currentInstallation.deviceType);
-        DebugLog(@"device token: %@", currentInstallation.deviceToken);
-        PFUser *currentUser = [PFUser currentUser];
-        DebugLog(@"user: %@", currentUser.objectId);
+//        DebugLog(@"device token: %@", currentInstallation.deviceToken);
+//        PFUser *currentUser = [PFUser currentUser];
+//        DebugLog(@"user: %@", currentUser.objectId);
         
 #ifndef NDEBUG
         [currentInstallation setObject:[NSNumber numberWithBool:YES] forKey:@"debug"];
@@ -409,6 +428,7 @@
 }
 
 #pragma mark - Private
+#pragma mark -
 
 - (void)handleNotification:(NSDictionary *)userInfo {
     NSString *action = userInfo[@"action"];
@@ -655,6 +675,7 @@
 }
 
 #pragma mark - Location
+#pragma mark -
 
 - (void)refreshDeviceLocationWithCompletionBlock:(void (^)())completionBlock {
     CLLocation *location = [SHAppContext currentDeviceLocation];
@@ -674,6 +695,7 @@
 }
 
 #pragma mark - Facebook Connect
+#pragma mark -
 
 - (void)facebookAuth:(BOOL)allowLogin success:(void(^)(FBSession *session))successHandler failure:(void(^)(FBSessionState state, NSError *error))failureHandler {
     
@@ -769,6 +791,7 @@
 }
 
 #pragma mark - Twitter Connect
+#pragma mark -
 
 - (void)twitterChooseAccount:(UIView*)view success:(void(^)(ACAccount* account))successHandler cancel:(void(^)())cancelHandler noAccounts:(void(^)())noAccounts permissionDenied:(void(^)())permissionDeniedHandler {
     

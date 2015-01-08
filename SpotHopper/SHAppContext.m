@@ -444,7 +444,12 @@ static NSString *_currentMapCenterLocationZip;
         [[SHAppUtil defaultInstance] logMessage:@"Network is not reachable" location:location];
     }
     
-    NSDictionary *params = @{@"latitude" : [NSNumber numberWithFloat:location.coordinate.latitude], @"longitude" : [NSNumber numberWithFloat:location.coordinate.longitude]};
+    NSDictionary *params = @{
+                             @"latitude" : [NSNumber numberWithFloat:location.coordinate.latitude],
+                             @"longitude" : [NSNumber numberWithFloat:location.coordinate.longitude],
+                             @"speed" : [NSNumber numberWithFloat:location.speed],
+                             @"altitude" : [NSNumber numberWithFloat:location.altitude]
+                             };
     
     [PFCloud callFunctionInBackground:@"updateLocation"
                        withParameters:params
@@ -455,6 +460,8 @@ static NSString *_currentMapCenterLocationZip;
                                         [[SHAppUtil defaultInstance] logMessage:message location:location];
                                     }
                                 }];
+    
+    [SHNotifications locationChanged];
 }
 
 + (BOOL)isAtTheCastle:(CLLocation *)location {

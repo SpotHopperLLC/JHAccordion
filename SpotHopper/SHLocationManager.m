@@ -198,6 +198,7 @@
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
     if (isWaitingForAuthorization && self.isAuthorized) {
         self.monitoringEnabled = TRUE;
+        [self reportCurrentLocation];
     }
 }
 

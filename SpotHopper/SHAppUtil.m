@@ -266,12 +266,15 @@
         
         CLLocationDistance radius = 5000.0f * kMeterToMile;
         [[SpotModel fetchSpotsNearLocation:location radius:radius] then:^(NSArray *spots) {
-            if (spots.count) {
-                SpotModel *spot = spots[0];
-
+            SpotModel *spot = spots.firstObject;
+            if (spot) {
                 CLLocationDistance distance = [spot.location distanceFromLocation:location];
 
                 if (distance < 100.0) {
+                    [Tracker trackUserPromptedToCheckIn];
+                    [Tracker trackPromptedToCheckInAtSpot:spot];
+                    [Tracker trackWentToSpot:spot];
+                    [Tracker trackUserWentToSpot:spot];
                     [Tracker logInfo:@"Prompting to check in at spot" class:[self class] trace:NSStringFromSelector(_cmd)];
                     
                     NSDictionary *userInfo = @{

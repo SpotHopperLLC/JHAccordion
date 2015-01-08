@@ -52,6 +52,13 @@
 
 + (void)trackUserSearchedDrinklist:(DrinkListModel *)drinklist;
 
+#pragma mark - Checkins
+#pragma mark -
+
++ (void)trackUserWentToSpot:(SpotModel *)spot;
+
++ (void)trackUserPromptedToCheckIn;
+
 #pragma mark - Search Results
 #pragma mark -
 

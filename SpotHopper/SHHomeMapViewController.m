@@ -69,6 +69,8 @@
 #import "CheckInModel.h"
 #import "SHPlacemark.h"
 
+#import "Promise.h"
+
 #import "UIImage+BlurredFrame.h"
 #import "UIImage+ImageEffects.h"
 
@@ -338,6 +340,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     else if (_didLeaveForFirstLaunch) {
         _didLeaveForFirstLaunch = FALSE;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            DebugLog(@"Repositioning on device location");
             [self repositionOnCurrentDeviceLocation:TRUE];
         });
     }
@@ -797,13 +800,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         }
         else {
             // prompt user to allow access to location
-            [self showAlert:@"Oops" message:@"This feature requires location services to be on. Please go to Settings > General > Restrictions > Location Services > SpotHopper and turn them on."];
+            NSString *message = [NSString stringWithFormat:@"This feature requires location services to be on. Please go to Settings > General > Restrictions > Location Services > %@ and turn them on.", [SHAppConfiguration bundleDisplayName]];
+            [self showAlert:@"Oops" message:message];
             return;
         }
-    }
-    
-    CLAuthorizationStatus authorizationStatus = [CLLocationManager authorizationStatus];
-    if (![CLLocationManager locationServicesEnabled] || authorizationStatus != kCLAuthorizationStatusAuthorized) {
     }
     
     [self checkNetworkReachabilityWithCompletionBlock:^{
@@ -1564,6 +1564,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             [self showHomeNavigation:TRUE withCompletionBlock:nil];
         }
     }
+    
+    MAAssert(self.locationMenuBarViewController.view.superview, @"Location Menu Bar must be in view hierarchy");
 }
 
 - (void)hideBottomViewWithCompletionBlock:(void (^)())completionBlock {
@@ -1916,8 +1918,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)styleBars {
     self.navigationController.navigationBar.shadowImage = [UIImage new];
-    UIImage *backgroundImage = [SHStyleKit gradientBackgroundWithSize:self.view.frame.size];
-    [self.navigationController.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.9569 green:0.3804 blue:0.0667 alpha:1.0];
+    self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [SHStyleKit myWhiteColor]};
 }
 
@@ -1970,7 +1973,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 }
 
 - (void)fetchSpecialsWithCompletionBlock:(void (^)())completionBlock {
-    [self addSearchAreaCircleWithCoordinate:self.mapView.centerCoordinate radius:self.searchRadius];
+    [self addSearchAreaCircleWithCoordinate:self.mapView.centerCoordinate radius:self.searchRadius removeAfterDelay:0.5];
     
     [self hideBottomViewWithCompletionBlock:^{
         [SpotModel fetchSpecialsSpotlistForCoordinate:self.visibleMapCenterCoordinate radius:self.searchRadius success:^(SpotListModel *spotlist) {
@@ -2151,9 +2154,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     if (location) {
         self.currentLocation = location;
         [SHAppContext setCurrentSelectedLocation:location];
-        CGFloat radius = 1500;
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.currentLocation.coordinate, radius, radius);
-        [self repositionMapOnRegion:region WithCompletionBlock:nil];
+        CGFloat diameter = 1500;
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.currentLocation.coordinate, diameter, diameter);
+        [self repositionMapOnRegion:region withCompletionBlock:nil];
         [self.mapView setShowsUserLocation:TRUE];
         return;
     }
@@ -2261,7 +2264,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }
 }
 
-- (void)repositionMapOnRegion:(MKCoordinateRegion)region WithCompletionBlock:(void (^)())completionBlock {
+- (void)repositionMapOnRegion:(MKCoordinateRegion)region withCompletionBlock:(void (^)())completionBlock {
     self.repositioningMap = TRUE;
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
@@ -2713,20 +2716,28 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }];
 }
 
+- (void)addSearchAreaCircleWithCoordinate:(CLLocationCoordinate2D)coordinate radius:(CLLocationDistance)radius removeAfterDelay:(CGFloat)delay {
+    [self removeSearchAreaCircle];
+    [self addSearchAreaCircleWithCoordinate:coordinate radius:radius];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [self removeSearchAreaCircle];
+    });
+}
+
 - (void)addSearchAreaCircleWithCoordinate:(CLLocationCoordinate2D)coordinate radius:(CLLocationDistance)radius {
-//    if (radius > 0) {
-//        MKCircle *circleOverlay = [MKCircle circleWithCenterCoordinate:coordinate radius:radius];
-//        [self.mapView addOverlay:circleOverlay];
-//    }
+    if (radius > 0) {
+        MKCircle *circleOverlay = [MKCircle circleWithCenterCoordinate:coordinate radius:radius];
+        [self.mapView addOverlay:circleOverlay];
+    }
 }
 
 - (void)removeSearchAreaCircle {
     // remove just circle overlays
-//    for (id <MKOverlay> overlay in self.mapView.overlays) {
-//        if ([overlay isKindOfClass:[MKCircle class]]) {
-//            [self.mapView removeOverlay:overlay];
-//        }
-//    }
+    for (id <MKOverlay> overlay in self.mapView.overlays) {
+        if ([overlay isKindOfClass:[MKCircle class]]) {
+            [self.mapView removeOverlay:overlay];
+        }
+    }
 }
 
 - (void)flashMapBoxing {
@@ -3025,8 +3036,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     }
     
     if (CLLocationCoordinate2DIsValid(coordinate) && radius > 0) {
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coordinate, radius, radius);
-        [self repositionMapOnRegion:region WithCompletionBlock:nil];
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coordinate, radius*2, radius*2);
+        [self repositionMapOnRegion:region withCompletionBlock:nil];
     }
     else {
         [self repositionOnCurrentDeviceLocation:FALSE];
@@ -3299,13 +3310,37 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [Tracker trackDrinkSpecials:spotlist];
 
     if (!spotlist.spots.count) {
-        [Tracker trackNoSpecialsResults];
-        [Tracker trackUserNoSpecialsResults];
-        
-        [self showHomeNavigation:TRUE withCompletionBlock:^{
-            [self showAlert:@"Oops" message:@"There are no drink specials which match in this location. Please try another search area."];
-            [self restoreNavigationIfNeeded];
-        }];
+        if (self.searchRadius < 3750) {
+            [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
+                [UIAlertView bk_showAlertViewWithTitle:@"Oops" message:@"There are no drink specials which match in this location. Would you like to try again with a larger search area?" cancelButtonTitle:@"No" otherButtonTitles:@[@"Sure!"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                    DebugLog(@"index: %i", (int)buttonIndex);
+                    
+                    if (buttonIndex == 1) {
+                        CGFloat diameter = 7500;
+                        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.mapView.centerCoordinate, diameter, diameter);
+                        [self repositionMapOnRegion:region withCompletionBlock:^{
+                            [self addSearchAreaCircleWithCoordinate:self.mapView.centerCoordinate radius:self.searchRadius removeAfterDelay:0.5];
+                            [self fetchSpecialsWithCompletionBlock:nil];
+                        }];
+                    }
+                    else {
+                        [Tracker trackNoSpecialsResults];
+                        [Tracker trackUserNoSpecialsResults];
+
+                        [self restoreNavigationIfNeeded];
+                    }
+                }];
+            }];
+        }
+        else {
+            [Tracker trackNoSpecialsResults];
+            [Tracker trackUserNoSpecialsResults];
+
+            [self showHomeNavigation:TRUE withCompletionBlock:^{
+                [self showAlert:@"Oops" message:@"There are no drink specials which match in this location. Please try another search area."];
+                [self restoreNavigationIfNeeded];
+            }];
+        }
     }
     else {
         [self descope];
@@ -3324,11 +3359,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             [Tracker trackUserGoodSpecialsResults];
         }
         
-        [self removeSearchAreaCircle];
         if (spotlist.latitude && spotlist.longitude && spotlist.radius) {
             CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(spotlist.latitude.floatValue, spotlist.longitude.floatValue);
             CLLocationDistance radius = spotlist.radius.floatValue * kMetersPerMile;
-            [self addSearchAreaCircleWithCoordinate:coordinate radius:radius];
+            [self addSearchAreaCircleWithCoordinate:coordinate radius:radius removeAfterDelay:2.5];
         }
         
         [self displaySpecialsForSpots:spotlist.spots];
@@ -3341,13 +3375,42 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [[SHAppContext defaultInstance] endActivity:@"Search Spots"];
     
     if (!spotlistModel.spots.count) {
-        [Tracker trackNoSpotResults];
-        [Tracker trackUserNoSpotResults];
+        if (self.searchRadius < 3750) {
+            [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
+                [UIAlertView bk_showAlertViewWithTitle:@"Oops" message:@"There are no spots which match in this location. Would you like to try again with a larger search area?" cancelButtonTitle:@"No" otherButtonTitles:@[@"Sure!"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                    DebugLog(@"index: %i", (int)buttonIndex);
+                    
+                    if (buttonIndex == 1) {
+                        CGFloat diameter = 7500;
+                        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.mapView.centerCoordinate, diameter, diameter);
+                        [self repositionMapOnRegion:region withCompletionBlock:^{
+                            request.radius = self.searchRadius / kMetersPerMile;
+                            [self addSearchAreaCircleWithCoordinate:request.coordinate radius:request.radius removeAfterDelay:0.5];
+                            
+                            [[SpotListModel fetchSpotListWithRequest:request] then:^(SpotListModel *spotListModel) {
+                                [self processSpotlistModel:spotListModel withRequest:request];
+                            } fail:^(ErrorModel *errorModel) {
+                            } always:^{
+                            }];
+                        }];
+                    }
+                    else {
+                        [Tracker trackNoSpotResults];
+                        [Tracker trackUserNoSpotResults];
+                        [self restoreNavigationIfNeeded];
+                    }
+                }];
+            }];
+        }
+        else {
+            [Tracker trackNoSpotResults];
+            [Tracker trackUserNoSpotResults];
 
-        [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
-            [self showAlert:@"Oops" message:@"There are no spots which match in this location. Please try another search area."];
-            [self restoreNavigationIfNeeded];
-        }];
+            [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
+                [self showAlert:@"Oops" message:@"There are no spots which match in this location. Please try another search area."];
+                [self restoreNavigationIfNeeded];
+            }];
+        }
     }
     else {
         [self descope];
@@ -3369,11 +3432,10 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         }
 
         [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
-            [self removeSearchAreaCircle];
             if (self.spotListModel.latitude && self.spotListModel.longitude && self.spotListModel.radius) {
                 CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(self.spotListModel.latitude.floatValue, self.spotListModel.longitude.floatValue);
                 CLLocationDistance radius = self.spotListModel.radius.floatValue * kMetersPerMile;
-                [self addSearchAreaCircleWithCoordinate:coordinate radius:radius];
+                [self addSearchAreaCircleWithCoordinate:coordinate radius:radius removeAfterDelay:2.5];
             }
             [self displaySpotlist:spotlistModel];
         }];
@@ -3385,31 +3447,41 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [Tracker trackUserSearchedDrinklist:drinklistModel];
     
     if (!drinklistModel.drinks.count) {
-        switch (mode) {
-            case SHModeBeer:
-                [Tracker trackNoBeerResults];
-                [Tracker trackUserNoBeerResults];
-                [[SHAppContext defaultInstance] endActivity:@"Search Beers"];
-                break;
-            case SHModeCocktail:
-                [Tracker trackNoCocktailResults];
-                [Tracker trackUserNoCocktailResults];
-                [[SHAppContext defaultInstance] endActivity:@"Search Wines"];
-                break;
-            case SHModeWine:
-                [Tracker trackNoWineResults];
-                [Tracker trackUserNoWineResults];
-                [[SHAppContext defaultInstance] endActivity:@"Search Cocktails"];
-                break;
-                
-            default:
-                break;
+        if (self.searchRadius < 3750) {
+            [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
+                [UIAlertView bk_showAlertViewWithTitle:@"Oops" message:@"There are no drinks which match in this location. Would you like to try again with a larger search area?" cancelButtonTitle:@"No" otherButtonTitles:@[@"Sure!"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                    DebugLog(@"index: %i", (int)buttonIndex);
+                    
+                    if (buttonIndex == 1) {
+                        CGFloat diameter = 7500;
+                        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.mapView.centerCoordinate, diameter, diameter);
+                        [self repositionMapOnRegion:region withCompletionBlock:^{
+                            request.radius = self.searchRadius / kMetersPerMile;
+                            [self addSearchAreaCircleWithCoordinate:request.coordinate radius:request.radius removeAfterDelay:0.5];
+                            
+                            [[DrinkListModel fetchDrinkListWithRequest:request] then:^(DrinkListModel *drinkList) {
+                                [self processDrinklistModel:drinkList withRequest:request forMode:mode];
+                            } fail:^(ErrorModel *errorModel) {
+                                [self oops:errorModel caller:_cmd message:@"Sorry, unable to fetch drinks. Please try again."];
+                            } always:nil];
+                        }];
+                    }
+                    else {
+                        [self trackNoDrinklistResultsForMode:mode];
+                        
+                        [self restoreNavigationIfNeeded];
+                    }
+                }];
+            }];
         }
-        
-        [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
-            [self showAlert:@"Oops" message:@"There are no drinks which match in this location. Please try another search area."];
-            [self restoreNavigationIfNeeded];
-        }];
+        else {
+            [self trackNoDrinklistResultsForMode:mode];
+            
+            [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
+                [self showAlert:@"Oops" message:@"There are no drinks which match in this location. Please try another search area."];
+                [self restoreNavigationIfNeeded];
+            }];
+        }
     }
     else {
         [self resetSearch];
@@ -3445,15 +3517,37 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         }
         
         [self hideSlidersSearch:TRUE forMode:mode withCompletionBlock:^{
-            [self removeSearchAreaCircle];
             if (self.drinkListModel.latitude && self.drinkListModel.longitude && self.drinkListModel.radius) {
                 CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(self.drinkListModel.latitude.floatValue, self.drinkListModel.longitude.floatValue);
                 CLLocationDistance radius = self.drinkListModel.radius.floatValue * kMetersPerMile;
-                [self addSearchAreaCircleWithCoordinate:coordinate radius:radius];
+                [self addSearchAreaCircleWithCoordinate:coordinate radius:radius removeAfterDelay:2.5];
             }
             
             [self displayDrinklist:drinklistModel forMode:mode];
         }];
+    }
+}
+
+- (void)trackNoDrinklistResultsForMode:(SHMode)mode {
+    switch (mode) {
+        case SHModeBeer:
+            [Tracker trackNoBeerResults];
+            [Tracker trackUserNoBeerResults];
+            [[SHAppContext defaultInstance] endActivity:@"Search Beers"];
+            break;
+        case SHModeCocktail:
+            [Tracker trackNoCocktailResults];
+            [Tracker trackUserNoCocktailResults];
+            [[SHAppContext defaultInstance] endActivity:@"Search Wines"];
+            break;
+        case SHModeWine:
+            [Tracker trackNoWineResults];
+            [Tracker trackUserNoWineResults];
+            [[SHAppContext defaultInstance] endActivity:@"Search Cocktails"];
+            break;
+            
+        default:
+            break;
     }
 }
 
@@ -3802,8 +3896,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     self.lastSelectedLocation = placemark.location;
     
     CLLocationDistance radius = MIN(7500, placemark.region.radius);
-    CLLocationDistance distance = radius*2;
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(placemark.region.center, distance, distance);
+    CLLocationDistance diameter = radius*2;
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(placemark.region.center, diameter, diameter);
     MKMapRect mapRect = [self mapRectForCoordinateRegion:region];
     
     [self.locationMenuBarViewController hideSearch:TRUE withCompletionBlock:nil];
@@ -4482,9 +4576,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         if (!self.currentLocation) {
             self.currentLocation = location;
             [SHAppContext setCurrentSelectedLocation:self.currentLocation];
-            CGFloat radius = 1500;
-            MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.currentLocation.coordinate, radius, radius);
-            [self repositionMapOnRegion:region WithCompletionBlock:nil];
+            CGFloat diameter = 3000;
+            MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.currentLocation.coordinate, diameter, diameter);
+            [self repositionMapOnRegion:region withCompletionBlock:nil];
         }
     }
 }

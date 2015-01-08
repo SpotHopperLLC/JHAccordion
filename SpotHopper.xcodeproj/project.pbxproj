@@ -251,6 +251,22 @@
 		2619B5F719D222840043FD65 /* SHRatingStarsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2619B5EF19D222840043FD65 /* SHRatingStarsView.m */; };
 		2619B5FC19D222950043FD65 /* SHDrawnButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2619B5F919D222950043FD65 /* SHDrawnButton.m */; };
 		2619B5FD19D222950043FD65 /* SHDrawnButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2619B5F919D222950043FD65 /* SHDrawnButton.m */; };
+		261E1CD11A4A179800E4E2C4 /* SHBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E1CD01A4A179800E4E2C4 /* SHBaseModel.m */; };
+		261E1CD21A4A179800E4E2C4 /* SHBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E1CD01A4A179800E4E2C4 /* SHBaseModel.m */; };
+		261E1CD31A4A179800E4E2C4 /* SHBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E1CD01A4A179800E4E2C4 /* SHBaseModel.m */; };
+		261E1CD41A4A179800E4E2C4 /* SHBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E1CD01A4A179800E4E2C4 /* SHBaseModel.m */; };
+		261E1CD71A4A17B800E4E2C4 /* SHUserProfileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E1CD61A4A17B800E4E2C4 /* SHUserProfileModel.m */; };
+		261E1CD81A4A17B800E4E2C4 /* SHUserProfileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E1CD61A4A17B800E4E2C4 /* SHUserProfileModel.m */; };
+		261E1CD91A4A17B800E4E2C4 /* SHUserProfileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E1CD61A4A17B800E4E2C4 /* SHUserProfileModel.m */; };
+		261E1CDA1A4A17B800E4E2C4 /* SHUserProfileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E1CD61A4A17B800E4E2C4 /* SHUserProfileModel.m */; };
+		261E1CDF1A4A183800E4E2C4 /* SHDiagnosticsLocationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E1CDC1A4A183800E4E2C4 /* SHDiagnosticsLocationDetailViewController.m */; };
+		261E1CE01A4A183800E4E2C4 /* SHDiagnosticsLocationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E1CDC1A4A183800E4E2C4 /* SHDiagnosticsLocationDetailViewController.m */; };
+		261E1CE11A4A183800E4E2C4 /* SHDiagnosticsLocationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E1CDC1A4A183800E4E2C4 /* SHDiagnosticsLocationDetailViewController.m */; };
+		261E1CE21A4A183800E4E2C4 /* SHDiagnosticsLocationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E1CDC1A4A183800E4E2C4 /* SHDiagnosticsLocationDetailViewController.m */; };
+		261E1CE31A4A183800E4E2C4 /* SHDiagnosticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E1CDE1A4A183800E4E2C4 /* SHDiagnosticsViewController.m */; };
+		261E1CE41A4A183800E4E2C4 /* SHDiagnosticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E1CDE1A4A183800E4E2C4 /* SHDiagnosticsViewController.m */; };
+		261E1CE51A4A183800E4E2C4 /* SHDiagnosticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E1CDE1A4A183800E4E2C4 /* SHDiagnosticsViewController.m */; };
+		261E1CE61A4A183800E4E2C4 /* SHDiagnosticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E1CDE1A4A183800E4E2C4 /* SHDiagnosticsViewController.m */; };
 		261E9CDD1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E9CD91989C2EF00BC9A9E /* SHTappableTextView.m */; };
 		261E9CDE1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 261E9CD91989C2EF00BC9A9E /* SHTappableTextView.m */; };
 		262138A31A39EADF0065C022 /* SHLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 262138A21A39EADF0065C022 /* SHLocationManager.m */; };
@@ -1148,14 +1164,6 @@
 		267517611A01F09F00A7D0BB /* spotSideBarIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2675175A1A01F09F00A7D0BB /* spotSideBarIcon.png */; };
 		267517621A01F09F00A7D0BB /* spotSideBarIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2675175B1A01F09F00A7D0BB /* spotSideBarIcon@2x.png */; };
 		267517631A01F09F00A7D0BB /* spotSideBarIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2675175B1A01F09F00A7D0BB /* spotSideBarIcon@2x.png */; };
-		2677EB541A252F7600FDC57F /* SHUserProfileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2677EB511A252F7600FDC57F /* SHUserProfileModel.m */; };
-		2677EB551A252F7600FDC57F /* SHUserProfileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2677EB511A252F7600FDC57F /* SHUserProfileModel.m */; };
-		2677EB561A252F7600FDC57F /* SHUserProfileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2677EB511A252F7600FDC57F /* SHUserProfileModel.m */; };
-		2677EB571A252F7600FDC57F /* SHUserProfileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2677EB511A252F7600FDC57F /* SHUserProfileModel.m */; };
-		2677EB5C1A252F9700FDC57F /* SHBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2677EB591A252F9700FDC57F /* SHBaseModel.m */; };
-		2677EB5D1A252F9700FDC57F /* SHBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2677EB591A252F9700FDC57F /* SHBaseModel.m */; };
-		2677EB5E1A252F9700FDC57F /* SHBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2677EB591A252F9700FDC57F /* SHBaseModel.m */; };
-		2677EB5F1A252F9700FDC57F /* SHBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2677EB591A252F9700FDC57F /* SHBaseModel.m */; };
 		267C5E3D1908B7CC00D60EB5 /* ImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 267C5E391908B7CC00D60EB5 /* ImageUtil.m */; };
 		267D78D918F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */ = {isa = PBXBuildFile; fileRef = 267D78D518F4A8DD00E95D54 /* SHButtonLatoBold.m */; };
 		267E04F91922CC48004457B4 /* NSArray+DailySpecials.m in Sources */ = {isa = PBXBuildFile; fileRef = 0372FFA018E36B0A009188B5 /* NSArray+DailySpecials.m */; };
@@ -1461,14 +1469,6 @@
 		26A7E3861922D20700FF7B88 /* SHStyleKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 26A7E3821922D20700FF7B88 /* SHStyleKit.m */; };
 		26A7E3871922D20700FF7B88 /* SHStyleKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 26A7E3821922D20700FF7B88 /* SHStyleKit.m */; };
 		26BABDD4190F718700852D73 /* DrinksNearbyViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 26BABDD0190F718700852D73 /* DrinksNearbyViewCell.xib */; };
-		26BC42321A40BCD50022C265 /* SHDiagnosticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BC42311A40BCD50022C265 /* SHDiagnosticsViewController.m */; };
-		26BC42331A40BCD50022C265 /* SHDiagnosticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BC42311A40BCD50022C265 /* SHDiagnosticsViewController.m */; };
-		26BC42341A40BCD50022C265 /* SHDiagnosticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BC42311A40BCD50022C265 /* SHDiagnosticsViewController.m */; };
-		26BC42351A40BCD50022C265 /* SHDiagnosticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BC42311A40BCD50022C265 /* SHDiagnosticsViewController.m */; };
-		26BC42381A40CFBD0022C265 /* SHDiagnosticsLocationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BC42371A40CFBD0022C265 /* SHDiagnosticsLocationDetailViewController.m */; };
-		26BC42391A40CFBD0022C265 /* SHDiagnosticsLocationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BC42371A40CFBD0022C265 /* SHDiagnosticsLocationDetailViewController.m */; };
-		26BC423A1A40CFBD0022C265 /* SHDiagnosticsLocationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BC42371A40CFBD0022C265 /* SHDiagnosticsLocationDetailViewController.m */; };
-		26BC423B1A40CFBD0022C265 /* SHDiagnosticsLocationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26BC42371A40CFBD0022C265 /* SHDiagnosticsLocationDetailViewController.m */; };
 		26C428D0192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C428CC192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m */; };
 		26C428D1192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C428CC192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m */; };
 		26C428DF192D625A00B67F10 /* SHBaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C428DB192D625A00B67F10 /* SHBaseNavigationController.m */; };
@@ -1861,6 +1861,14 @@
 		2619B5EF19D222840043FD65 /* SHRatingStarsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHRatingStarsView.m; path = SpotHopper/SHRatingStarsView.m; sourceTree = "<group>"; };
 		2619B5F819D222950043FD65 /* SHDrawnButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHDrawnButton.h; path = SpotHopper/SHDrawnButton.h; sourceTree = "<group>"; };
 		2619B5F919D222950043FD65 /* SHDrawnButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHDrawnButton.m; path = SpotHopper/SHDrawnButton.m; sourceTree = "<group>"; };
+		261E1CCF1A4A179800E4E2C4 /* SHBaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHBaseModel.h; path = SpotHopper/SHBaseModel.h; sourceTree = "<group>"; };
+		261E1CD01A4A179800E4E2C4 /* SHBaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHBaseModel.m; path = SpotHopper/SHBaseModel.m; sourceTree = "<group>"; };
+		261E1CD51A4A17B800E4E2C4 /* SHUserProfileModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHUserProfileModel.h; path = SpotHopper/SHUserProfileModel.h; sourceTree = "<group>"; };
+		261E1CD61A4A17B800E4E2C4 /* SHUserProfileModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHUserProfileModel.m; path = SpotHopper/SHUserProfileModel.m; sourceTree = "<group>"; };
+		261E1CDB1A4A183800E4E2C4 /* SHDiagnosticsLocationDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHDiagnosticsLocationDetailViewController.h; path = SpotHopper/SHDiagnosticsLocationDetailViewController.h; sourceTree = "<group>"; };
+		261E1CDC1A4A183800E4E2C4 /* SHDiagnosticsLocationDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHDiagnosticsLocationDetailViewController.m; path = SpotHopper/SHDiagnosticsLocationDetailViewController.m; sourceTree = "<group>"; };
+		261E1CDD1A4A183800E4E2C4 /* SHDiagnosticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHDiagnosticsViewController.h; path = SpotHopper/SHDiagnosticsViewController.h; sourceTree = "<group>"; };
+		261E1CDE1A4A183800E4E2C4 /* SHDiagnosticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHDiagnosticsViewController.m; path = SpotHopper/SHDiagnosticsViewController.m; sourceTree = "<group>"; };
 		261E9CD81989C2EF00BC9A9E /* SHTappableTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHTappableTextView.h; sourceTree = "<group>"; };
 		261E9CD91989C2EF00BC9A9E /* SHTappableTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHTappableTextView.m; sourceTree = "<group>"; };
 		262138A11A39EADF0065C022 /* SHLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHLocationManager.h; path = SpotHopper/SHLocationManager.h; sourceTree = "<group>"; };
@@ -2001,10 +2009,6 @@
 		267517591A01F09F00A7D0BB /* navigationArrowIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "navigationArrowIcon@2x.png"; path = "MenuAdmin/Media/navigationArrowIcon@2x.png"; sourceTree = "<group>"; };
 		2675175A1A01F09F00A7D0BB /* spotSideBarIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spotSideBarIcon.png; path = MenuAdmin/Media/spotSideBarIcon.png; sourceTree = "<group>"; };
 		2675175B1A01F09F00A7D0BB /* spotSideBarIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "spotSideBarIcon@2x.png"; path = "MenuAdmin/Media/spotSideBarIcon@2x.png"; sourceTree = "<group>"; };
-		2677EB501A252F7600FDC57F /* SHUserProfileModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHUserProfileModel.h; sourceTree = "<group>"; };
-		2677EB511A252F7600FDC57F /* SHUserProfileModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHUserProfileModel.m; sourceTree = "<group>"; };
-		2677EB581A252F9700FDC57F /* SHBaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHBaseModel.h; sourceTree = "<group>"; };
-		2677EB591A252F9700FDC57F /* SHBaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHBaseModel.m; sourceTree = "<group>"; };
 		267C5E381908B7CC00D60EB5 /* ImageUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageUtil.h; sourceTree = "<group>"; };
 		267C5E391908B7CC00D60EB5 /* ImageUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageUtil.m; sourceTree = "<group>"; };
 		267D78D418F4A8DD00E95D54 /* SHButtonLatoBold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHButtonLatoBold.h; sourceTree = "<group>"; };
@@ -2064,10 +2068,6 @@
 		26A7E3821922D20700FF7B88 /* SHStyleKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHStyleKit.m; path = SpotHopper/SHStyleKit.m; sourceTree = "<group>"; };
 		26B6768218E9F61400DAD113 /* SpotHopperProduction-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SpotHopperProduction-Info.plist"; sourceTree = "<group>"; };
 		26BABDD0190F718700852D73 /* DrinksNearbyViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DrinksNearbyViewCell.xib; sourceTree = "<group>"; };
-		26BC42301A40BCD50022C265 /* SHDiagnosticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHDiagnosticsViewController.h; sourceTree = "<group>"; };
-		26BC42311A40BCD50022C265 /* SHDiagnosticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHDiagnosticsViewController.m; sourceTree = "<group>"; };
-		26BC42361A40CFBD0022C265 /* SHDiagnosticsLocationDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHDiagnosticsLocationDetailViewController.h; sourceTree = "<group>"; };
-		26BC42371A40CFBD0022C265 /* SHDiagnosticsLocationDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHDiagnosticsLocationDetailViewController.m; sourceTree = "<group>"; };
 		26C428CB192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHSpecialsCollectionViewManager.h; path = SpotHopper/SHSpecialsCollectionViewManager.h; sourceTree = "<group>"; };
 		26C428CC192D5B4F00B67F10 /* SHSpecialsCollectionViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHSpecialsCollectionViewManager.m; path = SpotHopper/SHSpecialsCollectionViewManager.m; sourceTree = "<group>"; };
 		26C428DA192D625A00B67F10 /* SHBaseNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHBaseNavigationController.h; path = SpotHopper/SHBaseNavigationController.h; sourceTree = "<group>"; };
@@ -3277,10 +3277,10 @@
 		2677EB4F1A252F5C00FDC57F /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				2677EB581A252F9700FDC57F /* SHBaseModel.h */,
-				2677EB591A252F9700FDC57F /* SHBaseModel.m */,
-				2677EB501A252F7600FDC57F /* SHUserProfileModel.h */,
-				2677EB511A252F7600FDC57F /* SHUserProfileModel.m */,
+				261E1CCF1A4A179800E4E2C4 /* SHBaseModel.h */,
+				261E1CD01A4A179800E4E2C4 /* SHBaseModel.m */,
+				261E1CD51A4A17B800E4E2C4 /* SHUserProfileModel.h */,
+				261E1CD61A4A17B800E4E2C4 /* SHUserProfileModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -3353,8 +3353,10 @@
 				2654B8A6192BB6E000A66BED /* SHMapOverlayCollectionViewController.m */,
 				2654B8A7192BB6E000A66BED /* SHSidebarViewController.h */,
 				2654B8A8192BB6E000A66BED /* SHSidebarViewController.m */,
-				26BC42301A40BCD50022C265 /* SHDiagnosticsViewController.h */,
-				26BC42311A40BCD50022C265 /* SHDiagnosticsViewController.m */,
+				261E1CDB1A4A183800E4E2C4 /* SHDiagnosticsLocationDetailViewController.h */,
+				261E1CDC1A4A183800E4E2C4 /* SHDiagnosticsLocationDetailViewController.m */,
+				261E1CDD1A4A183800E4E2C4 /* SHDiagnosticsViewController.h */,
+				261E1CDE1A4A183800E4E2C4 /* SHDiagnosticsViewController.m */,
 				2654B8A9192BB6E000A66BED /* SHSpotsMenuViewController.h */,
 				2654B8AA192BB6E000A66BED /* SHSpotsMenuViewController.m */,
 				2668970F192F2A71004FAC2D /* SHSlidersSearchViewController.h */,
@@ -3365,8 +3367,6 @@
 				2619B5E719D2225C0043FD65 /* SHGlobalSearchViewController.m */,
 				261323EB19DCA13300E051DB /* SHCheckinViewController.h */,
 				261323EC19DCA13300E051DB /* SHCheckinViewController.m */,
-				26BC42361A40CFBD0022C265 /* SHDiagnosticsLocationDetailViewController.h */,
-				26BC42371A40CFBD0022C265 /* SHDiagnosticsLocationDetailViewController.m */,
 				26886BBE1A42762100A09122 /* SHMenuViewController.h */,
 				26886BBF1A42762100A09122 /* SHMenuViewController.m */,
 			);
@@ -4682,7 +4682,6 @@
 				03CABFAF18E7716400FAC5F5 /* NSArray+DailySpecials.m in Sources */,
 				03CABFB018E7716400FAC5F5 /* UIImage+FixOrientation.m in Sources */,
 				03CABFB118E7716400FAC5F5 /* MenuItemSubtypeCell.m in Sources */,
-				2677EB551A252F7600FDC57F /* SHUserProfileModel.m in Sources */,
 				03CABFB218E7716400FAC5F5 /* NSArray+HoursOfOperation.m in Sources */,
 				03CABFB318E7716400FAC5F5 /* SHJSONAPIResource.m in Sources */,
 				261E9CDE1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */,
@@ -4694,7 +4693,6 @@
 				03CABFB918E7716400FAC5F5 /* MenuItemCell.m in Sources */,
 				03CABFBA18E7716400FAC5F5 /* LaunchViewController.m in Sources */,
 				03CABFBB18E7716400FAC5F5 /* SHTableViewCell.m in Sources */,
-				26BC42331A40BCD50022C265 /* SHDiagnosticsViewController.m in Sources */,
 				03CABFBC18E7716400FAC5F5 /* SHNavigationBar.m in Sources */,
 				03CABFBD18E7716400FAC5F5 /* TTTAttributedLabel+QuickFonting.m in Sources */,
 				2619B5F319D222840043FD65 /* SHRatingSwooshView.m in Sources */,
@@ -4713,6 +4711,7 @@
 				03CABFC518E7716400FAC5F5 /* SliderTemplateModel.m in Sources */,
 				2633CCF119A53E7700764036 /* LikeModel.m in Sources */,
 				03CABFC618E7716400FAC5F5 /* AutoCompleteCell.m in Sources */,
+				261E1CE01A4A183800E4E2C4 /* SHDiagnosticsLocationDetailViewController.m in Sources */,
 				03CABFC718E7716400FAC5F5 /* MenuTypeModel.m in Sources */,
 				26823CB81A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m in Sources */,
 				03CABFC818E7716400FAC5F5 /* NSNumber+Currency.m in Sources */,
@@ -4720,6 +4719,7 @@
 				267514121A006C3200A7D0BB /* SHMenuAdminSearchViewController.m in Sources */,
 				263633121A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m in Sources */,
 				03CABFCA18E7716400FAC5F5 /* ReviewViewController.m in Sources */,
+				261E1CD81A4A17B800E4E2C4 /* SHUserProfileModel.m in Sources */,
 				03CABFCB18E7716400FAC5F5 /* SHButtonLatoLight.m in Sources */,
 				262A65B6195893F800A4DACD /* MenuModel.m in Sources */,
 				03CABFCF18E7716400FAC5F5 /* MenuItemModel.m in Sources */,
@@ -4729,13 +4729,13 @@
 				03CABFD118E7716400FAC5F5 /* NSDate+Globalize.m in Sources */,
 				03CABFD218E7716400FAC5F5 /* RefreshView.m in Sources */,
 				03CABFD318E7716400FAC5F5 /* NSDate+Util.m in Sources */,
+				261E1CE41A4A183800E4E2C4 /* SHDiagnosticsViewController.m in Sources */,
 				261323F019DCA13300E051DB /* SHCheckinViewController.m in Sources */,
 				26823C9F1A126CF70048D752 /* SHMenuAdminPickerViewController.m in Sources */,
 				267513EE1A006C3200A7D0BB /* SHMenuAdminDrinkProfileViewController.m in Sources */,
 				03CABFD418E7716400FAC5F5 /* ReviewsMenuViewController.m in Sources */,
 				262380241986F83500F0940A /* Tracker+Events.m in Sources */,
 				03CABFD518E7716400FAC5F5 /* ListCell.m in Sources */,
-				26BC42391A40CFBD0022C265 /* SHDiagnosticsLocationDetailViewController.m in Sources */,
 				267513FA1A006C3200A7D0BB /* SHMenuAdminHomeViewController.m in Sources */,
 				03CABFD618E7716400FAC5F5 /* UIImage+Resize.m in Sources */,
 				2619B5FD19D222950043FD65 /* SHDrawnButton.m in Sources */,
@@ -4763,9 +4763,9 @@
 				03CABFE118E7716400FAC5F5 /* AppDelegate.m in Sources */,
 				267D78D918F4A8DD00E95D54 /* SHButtonLatoBold.m in Sources */,
 				03CABFE218E7716400FAC5F5 /* Mockery.m in Sources */,
+				261E1CD21A4A179800E4E2C4 /* SHBaseModel.m in Sources */,
 				03CABFE318E7716400FAC5F5 /* DrinkListModel.m in Sources */,
 				2619B5F719D222840043FD65 /* SHRatingStarsView.m in Sources */,
-				2677EB5D1A252F9700FDC57F /* SHBaseModel.m in Sources */,
 				2668971C192F2A82004FAC2D /* SHBaseCollectionViewManager.m in Sources */,
 				03CABFE518E7716400FAC5F5 /* CreateListCell.m in Sources */,
 				03CABFE618E7716400FAC5F5 /* SpotImageCollectViewCell.m in Sources */,
@@ -4873,7 +4873,6 @@
 				267514611A016AFD00A7D0BB /* NSArray+DailySpecials.m in Sources */,
 				267514621A016AFD00A7D0BB /* UIImage+FixOrientation.m in Sources */,
 				267514631A016AFD00A7D0BB /* MenuItemSubtypeCell.m in Sources */,
-				2677EB561A252F7600FDC57F /* SHUserProfileModel.m in Sources */,
 				267514641A016AFD00A7D0BB /* NSArray+HoursOfOperation.m in Sources */,
 				267514651A016AFD00A7D0BB /* SHJSONAPIResource.m in Sources */,
 				26F6FE271A0BE30100CEE6E8 /* SHMenuAdminDummyHomeViewController.m in Sources */,
@@ -4885,7 +4884,6 @@
 				2675146B1A016AFD00A7D0BB /* ClientSessionManager.m in Sources */,
 				2675146D1A016AFD00A7D0BB /* MenuItemCell.m in Sources */,
 				2675146E1A016AFD00A7D0BB /* LaunchViewController.m in Sources */,
-				26BC42341A40BCD50022C265 /* SHDiagnosticsViewController.m in Sources */,
 				2675146F1A016AFD00A7D0BB /* SHTableViewCell.m in Sources */,
 				267514701A016AFD00A7D0BB /* SHNavigationBar.m in Sources */,
 				267514711A016AFD00A7D0BB /* TTTAttributedLabel+QuickFonting.m in Sources */,
@@ -4904,6 +4902,7 @@
 				2675147D1A016AFD00A7D0BB /* ReviewSliderCell.m in Sources */,
 				2675147E1A016AFD00A7D0BB /* SliderTemplateModel.m in Sources */,
 				2675147F1A016AFD00A7D0BB /* LikeModel.m in Sources */,
+				261E1CE11A4A183800E4E2C4 /* SHDiagnosticsLocationDetailViewController.m in Sources */,
 				267514801A016AFD00A7D0BB /* AutoCompleteCell.m in Sources */,
 				26823CB91A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m in Sources */,
 				267514811A016AFD00A7D0BB /* MenuTypeModel.m in Sources */,
@@ -4911,6 +4910,7 @@
 				267514831A016AFD00A7D0BB /* SpotListModel.m in Sources */,
 				263633131A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m in Sources */,
 				267514841A016AFD00A7D0BB /* SHMenuAdminSearchViewController.m in Sources */,
+				261E1CD91A4A17B800E4E2C4 /* SHUserProfileModel.m in Sources */,
 				267514851A016AFD00A7D0BB /* ReviewViewController.m in Sources */,
 				267514861A016AFD00A7D0BB /* SHButtonLatoLight.m in Sources */,
 				267514871A016AFD00A7D0BB /* MenuModel.m in Sources */,
@@ -4920,13 +4920,13 @@
 				2675148A1A016AFD00A7D0BB /* PhotoAlbumViewController.m in Sources */,
 				2675148B1A016AFD00A7D0BB /* NSDate+Globalize.m in Sources */,
 				2675148C1A016AFD00A7D0BB /* RefreshView.m in Sources */,
+				261E1CE51A4A183800E4E2C4 /* SHDiagnosticsViewController.m in Sources */,
 				2675148D1A016AFD00A7D0BB /* NSDate+Util.m in Sources */,
 				2675148E1A016AFD00A7D0BB /* SHCheckinViewController.m in Sources */,
 				2675148F1A016AFD00A7D0BB /* SHMenuAdminDrinkProfileViewController.m in Sources */,
 				267514901A016AFD00A7D0BB /* ReviewsMenuViewController.m in Sources */,
 				267514911A016AFD00A7D0BB /* Tracker+Events.m in Sources */,
 				267514921A016AFD00A7D0BB /* ListCell.m in Sources */,
-				26BC423A1A40CFBD0022C265 /* SHDiagnosticsLocationDetailViewController.m in Sources */,
 				267514931A016AFD00A7D0BB /* SHMenuAdminHomeViewController.m in Sources */,
 				267514941A016AFD00A7D0BB /* UIImage+Resize.m in Sources */,
 				267514951A016AFD00A7D0BB /* SHDrawnButton.m in Sources */,
@@ -4954,9 +4954,9 @@
 				267514A81A016AFD00A7D0BB /* AppDelegate.m in Sources */,
 				267514A91A016AFD00A7D0BB /* SHButtonLatoBold.m in Sources */,
 				267514AA1A016AFD00A7D0BB /* Mockery.m in Sources */,
+				261E1CD31A4A179800E4E2C4 /* SHBaseModel.m in Sources */,
 				267514AB1A016AFD00A7D0BB /* DrinkListModel.m in Sources */,
 				267514AD1A016AFD00A7D0BB /* SHRatingStarsView.m in Sources */,
-				2677EB5E1A252F9700FDC57F /* SHBaseModel.m in Sources */,
 				267514AE1A016AFD00A7D0BB /* SHBaseCollectionViewManager.m in Sources */,
 				267514AF1A016AFD00A7D0BB /* CreateListCell.m in Sources */,
 				267514B01A016AFD00A7D0BB /* SpotImageCollectViewCell.m in Sources */,
@@ -5064,7 +5064,6 @@
 				267515DD1A016B1300A7D0BB /* NSArray+DailySpecials.m in Sources */,
 				267515DE1A016B1300A7D0BB /* UIImage+FixOrientation.m in Sources */,
 				267515DF1A016B1300A7D0BB /* MenuItemSubtypeCell.m in Sources */,
-				2677EB571A252F7600FDC57F /* SHUserProfileModel.m in Sources */,
 				267515E01A016B1300A7D0BB /* NSArray+HoursOfOperation.m in Sources */,
 				267515E11A016B1300A7D0BB /* SHJSONAPIResource.m in Sources */,
 				26F6FE281A0BE30100CEE6E8 /* SHMenuAdminDummyHomeViewController.m in Sources */,
@@ -5076,7 +5075,6 @@
 				267515E71A016B1300A7D0BB /* ClientSessionManager.m in Sources */,
 				267515E91A016B1300A7D0BB /* MenuItemCell.m in Sources */,
 				267515EA1A016B1300A7D0BB /* LaunchViewController.m in Sources */,
-				26BC42351A40BCD50022C265 /* SHDiagnosticsViewController.m in Sources */,
 				267515EB1A016B1300A7D0BB /* SHTableViewCell.m in Sources */,
 				267515EC1A016B1300A7D0BB /* SHNavigationBar.m in Sources */,
 				267515ED1A016B1300A7D0BB /* TTTAttributedLabel+QuickFonting.m in Sources */,
@@ -5095,6 +5093,7 @@
 				267515F91A016B1300A7D0BB /* ReviewSliderCell.m in Sources */,
 				267515FA1A016B1300A7D0BB /* SliderTemplateModel.m in Sources */,
 				267515FB1A016B1300A7D0BB /* LikeModel.m in Sources */,
+				261E1CE21A4A183800E4E2C4 /* SHDiagnosticsLocationDetailViewController.m in Sources */,
 				267515FC1A016B1300A7D0BB /* AutoCompleteCell.m in Sources */,
 				26823CBA1A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m in Sources */,
 				267515FD1A016B1300A7D0BB /* MenuTypeModel.m in Sources */,
@@ -5102,6 +5101,7 @@
 				267515FF1A016B1300A7D0BB /* SpotListModel.m in Sources */,
 				263633141A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m in Sources */,
 				267516001A016B1300A7D0BB /* SHMenuAdminSearchViewController.m in Sources */,
+				261E1CDA1A4A17B800E4E2C4 /* SHUserProfileModel.m in Sources */,
 				267516011A016B1300A7D0BB /* ReviewViewController.m in Sources */,
 				267516021A016B1300A7D0BB /* SHButtonLatoLight.m in Sources */,
 				267516031A016B1300A7D0BB /* MenuModel.m in Sources */,
@@ -5111,13 +5111,13 @@
 				267516061A016B1300A7D0BB /* PhotoAlbumViewController.m in Sources */,
 				267516071A016B1300A7D0BB /* NSDate+Globalize.m in Sources */,
 				267516081A016B1300A7D0BB /* RefreshView.m in Sources */,
+				261E1CE61A4A183800E4E2C4 /* SHDiagnosticsViewController.m in Sources */,
 				267516091A016B1300A7D0BB /* NSDate+Util.m in Sources */,
 				2675160A1A016B1300A7D0BB /* SHCheckinViewController.m in Sources */,
 				2675160B1A016B1300A7D0BB /* SHMenuAdminDrinkProfileViewController.m in Sources */,
 				2675160C1A016B1300A7D0BB /* ReviewsMenuViewController.m in Sources */,
 				2675160D1A016B1300A7D0BB /* Tracker+Events.m in Sources */,
 				2675160E1A016B1300A7D0BB /* ListCell.m in Sources */,
-				26BC423B1A40CFBD0022C265 /* SHDiagnosticsLocationDetailViewController.m in Sources */,
 				2675160F1A016B1300A7D0BB /* SHMenuAdminHomeViewController.m in Sources */,
 				267516101A016B1300A7D0BB /* UIImage+Resize.m in Sources */,
 				267516111A016B1300A7D0BB /* SHDrawnButton.m in Sources */,
@@ -5145,9 +5145,9 @@
 				267516241A016B1300A7D0BB /* AppDelegate.m in Sources */,
 				267516251A016B1300A7D0BB /* SHButtonLatoBold.m in Sources */,
 				267516261A016B1300A7D0BB /* Mockery.m in Sources */,
+				261E1CD41A4A179800E4E2C4 /* SHBaseModel.m in Sources */,
 				267516271A016B1300A7D0BB /* DrinkListModel.m in Sources */,
 				267516291A016B1300A7D0BB /* SHRatingStarsView.m in Sources */,
-				2677EB5F1A252F9700FDC57F /* SHBaseModel.m in Sources */,
 				2675162A1A016B1300A7D0BB /* SHBaseCollectionViewManager.m in Sources */,
 				2675162B1A016B1300A7D0BB /* CreateListCell.m in Sources */,
 				2675162C1A016B1300A7D0BB /* SpotImageCollectViewCell.m in Sources */,
@@ -5255,7 +5255,6 @@
 				267E04F91922CC48004457B4 /* NSArray+DailySpecials.m in Sources */,
 				267E04FA1922CC48004457B4 /* UIImage+FixOrientation.m in Sources */,
 				267E04FB1922CC48004457B4 /* MenuItemSubtypeCell.m in Sources */,
-				2677EB541A252F7600FDC57F /* SHUserProfileModel.m in Sources */,
 				267E04FC1922CC48004457B4 /* NSArray+HoursOfOperation.m in Sources */,
 				267E04FD1922CC48004457B4 /* SHJSONAPIResource.m in Sources */,
 				261E9CDD1989C2EF00BC9A9E /* SHTappableTextView.m in Sources */,
@@ -5267,7 +5266,6 @@
 				267E05051922CC48004457B4 /* MenuItemCell.m in Sources */,
 				267E05061922CC48004457B4 /* LaunchViewController.m in Sources */,
 				267E05071922CC48004457B4 /* SHTableViewCell.m in Sources */,
-				26BC42321A40BCD50022C265 /* SHDiagnosticsViewController.m in Sources */,
 				267E05081922CC48004457B4 /* SHNavigationBar.m in Sources */,
 				267E05091922CC48004457B4 /* TTTAttributedLabel+QuickFonting.m in Sources */,
 				2619B5F219D222840043FD65 /* SHRatingSwooshView.m in Sources */,
@@ -5286,6 +5284,7 @@
 				267E05131922CC48004457B4 /* SliderTemplateModel.m in Sources */,
 				2633CCF019A53E7600764036 /* LikeModel.m in Sources */,
 				267E05141922CC48004457B4 /* AutoCompleteCell.m in Sources */,
+				261E1CDF1A4A183800E4E2C4 /* SHDiagnosticsLocationDetailViewController.m in Sources */,
 				267E05151922CC48004457B4 /* MenuTypeModel.m in Sources */,
 				26823CB71A1282360048D752 /* SHMenuAdminAddNewCocktailViewController.m in Sources */,
 				267E05161922CC48004457B4 /* NSNumber+Currency.m in Sources */,
@@ -5293,6 +5292,7 @@
 				267514111A006C3200A7D0BB /* SHMenuAdminSearchViewController.m in Sources */,
 				263633111A167AB10086DE8D /* SHMenuAdminNoAdminViewController.m in Sources */,
 				267E05181922CC48004457B4 /* ReviewViewController.m in Sources */,
+				261E1CD71A4A17B800E4E2C4 /* SHUserProfileModel.m in Sources */,
 				267E05191922CC48004457B4 /* SHButtonLatoLight.m in Sources */,
 				262A65B5195893F800A4DACD /* MenuModel.m in Sources */,
 				267E051D1922CC48004457B4 /* MenuItemModel.m in Sources */,
@@ -5302,13 +5302,13 @@
 				267E05211922CC48004457B4 /* NSDate+Globalize.m in Sources */,
 				267E05221922CC48004457B4 /* RefreshView.m in Sources */,
 				267E05231922CC48004457B4 /* NSDate+Util.m in Sources */,
+				261E1CE31A4A183800E4E2C4 /* SHDiagnosticsViewController.m in Sources */,
 				261323EF19DCA13300E051DB /* SHCheckinViewController.m in Sources */,
 				26823CA11A126CFE0048D752 /* SHMenuAdminPickerViewController.m in Sources */,
 				267513ED1A006C3200A7D0BB /* SHMenuAdminDrinkProfileViewController.m in Sources */,
 				267E05241922CC48004457B4 /* ReviewsMenuViewController.m in Sources */,
 				262380231986F83500F0940A /* Tracker+Events.m in Sources */,
 				267E05251922CC48004457B4 /* ListCell.m in Sources */,
-				26BC42381A40CFBD0022C265 /* SHDiagnosticsLocationDetailViewController.m in Sources */,
 				267513F91A006C3200A7D0BB /* SHMenuAdminHomeViewController.m in Sources */,
 				267E05271922CC48004457B4 /* UIImage+Resize.m in Sources */,
 				2619B5FC19D222950043FD65 /* SHDrawnButton.m in Sources */,
@@ -5336,9 +5336,9 @@
 				267E05331922CC48004457B4 /* AppDelegate.m in Sources */,
 				267E05341922CC48004457B4 /* SHButtonLatoBold.m in Sources */,
 				267E05351922CC48004457B4 /* Mockery.m in Sources */,
+				261E1CD11A4A179800E4E2C4 /* SHBaseModel.m in Sources */,
 				267E05361922CC48004457B4 /* DrinkListModel.m in Sources */,
 				2619B5F619D222840043FD65 /* SHRatingStarsView.m in Sources */,
-				2677EB5C1A252F9700FDC57F /* SHBaseModel.m in Sources */,
 				2668971B192F2A82004FAC2D /* SHBaseCollectionViewManager.m in Sources */,
 				267E05381922CC48004457B4 /* CreateListCell.m in Sources */,
 				267E053A1922CC48004457B4 /* SpotImageCollectViewCell.m in Sources */,

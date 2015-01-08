@@ -195,9 +195,13 @@
 #pragma mark - Checkins
 #pragma mark -
 
++ (void)trackWentToSpot:(SpotModel *)spot;
+
 + (void)trackCheckinButtonTapped;
 
 + (void)trackCheckinCancelButtonTapped;
+
++ (void)trackPromptedToCheckInAtSpot:(SpotModel *)spot;
 
 + (void)trackCheckedInAtSpot:(SpotModel *)spot position:(NSUInteger)position count:(NSUInteger)count distance:(CLLocationDistance)distance;
 

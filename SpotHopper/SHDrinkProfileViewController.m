@@ -168,10 +168,14 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     [super viewWillAppear:animated];
     
     [Tracker trackDrinkProfileScreenViewed:self.drink];
-    
+
     [self hideTopBars:TRUE withCompletionBlock:^{
         DebugLog(@"Done hiding top bars");
     }];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleDefault;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -256,9 +260,12 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
+        self.navigationController.navigationBar.barTintColor = [UIColor clearColor];
+        self.navigationController.navigationBar.translucent = YES;
         [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
         self.navigationController.navigationBar.shadowImage = [UIImage new];
         [self.navigationController.navigationItem setTitle:nil];
+        self.title = nil;
     } completion:^(BOOL finished) {
         [self.navigationItem setTitle:nil];
         
@@ -283,11 +290,10 @@ NSString* const DrinkProfileToPhotoAlbum = @"DrinkProfileToPhotoAlbum";
     
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
-        
-        UIImage *backgroundImage = [SHStyleKit drawImage:SHStyleKitDrawingTopBarBackground color:SHStyleKitColorMyWhiteColor size:CGSizeMake(320, 64)];
-        [self.navigationController.navigationBar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
+        self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+        self.navigationController.navigationBar.translucent = NO;
         [self.navigationController.navigationItem setTitle:self.drink.name];
-        
+        self.title = self.drink.name;
     } completion:^(BOOL finished) {
         [self.navigationItem setTitle:self.drink.name];
         

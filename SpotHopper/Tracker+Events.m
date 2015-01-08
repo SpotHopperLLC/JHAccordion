@@ -528,12 +528,24 @@
 #pragma mark - Checkins
 #pragma mark -
 
++ (void)trackWentToSpot:(SpotModel *)spot {
+    if (spot.ID && spot.name.length) {
+        [self track:@"Went to Spot" properties:@{ @"spot" : spot.name, @"spotId" : spot.ID }];
+    }
+}
+
 + (void)trackCheckinButtonTapped {
     [self track:@"Checkin Button Tapped"];
 }
 
 + (void)trackCheckinCancelButtonTapped {
     [self track:@"Checkin Cancel Button Tapped"];
+}
+
++ (void)trackPromptedToCheckInAtSpot:(SpotModel *)spot {
+    if (spot.ID && spot.name.length) {
+        [self track:@"Checkin Prompt" properties:@{ @"spot" : spot.name, @"spotId" : spot.ID }];
+    }
 }
 
 + (void)trackCheckedInAtSpot:(SpotModel *)spot position:(NSUInteger)position count:(NSUInteger)count distance:(CLLocationDistance)distance {

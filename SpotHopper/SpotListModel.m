@@ -22,6 +22,8 @@
 #import "UserModel.h"
 #import "SHNotifications.h"
 
+#import "Promise.h"
+
 #import <CoreLocation/CoreLocation.h>
 
 @interface SpotListCache : NSCache

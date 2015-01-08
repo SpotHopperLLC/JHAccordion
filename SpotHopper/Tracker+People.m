@@ -108,6 +108,19 @@
     }
 }
 
+#pragma mark - Checkins
+#pragma mark -
+
++ (void)trackUserWentToSpot:(SpotModel *)spot {
+    if (spot.ID && spot.name.length) {
+        [self trackUserAction:[NSString stringWithFormat:@"User Went to %@", spot.name]];
+    }
+}
+
++ (void)trackUserPromptedToCheckIn {
+    [self trackUserAction:@"User Prompted to Check In"];
+}
+
 #pragma mark - Search Results
 #pragma mark -
 
