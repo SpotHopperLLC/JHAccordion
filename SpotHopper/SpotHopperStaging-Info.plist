@@ -47,7 +47,7 @@
 		<key>AppURLScheme</key>
 		<string>spothopperappstaging</string>
 		<key>BaseUrl</key>
-		<string>http://spothopper-staging.herokuapp.com</string>
+		<string>https://spothopper-staging.herokuapp.com</string>
 		<key>BitlyAPIKey</key>
 		<string>R_11cbfeb881bd416fa9328fc8d239f0f8</string>
 		<key>BitlyAccessToken</key>
