@@ -96,6 +96,7 @@
 #define kTagSearchTextField 501
 
 #define kMetersPerMile 1609.344
+#define kWideDiameter 7500
 #define kDebugAnnotationViewPositions NO
 
 #define kHomeNavHeight 150.0f
@@ -461,7 +462,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self embedViewController:self.homeNavigationViewController intoView:self.view placementBlock:^(UIView *view) {
             NSArray *bottomConstaints = [view pinToSuperviewEdges:JRTViewPinBottomEdge inset:0.0f usingLayoutGuidesFrom:self];
             NSAssert(bottomConstaints.count == 1, @"There should be only 1 bottom constraint.");
-            self.homeNavigationViewBottomConstraint = bottomConstaints[0];
+            self.homeNavigationViewBottomConstraint = bottomConstaints.firstObject;
             [view pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0];
             [view constrainToHeight:kHomeNavHeight];
         }];
@@ -484,7 +485,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self.view addSubview:collectionContainerView];
         NSArray *bottomConstaints = [collectionContainerView pinToSuperviewEdges:JRTViewPinBottomEdge inset:0.0f usingLayoutGuidesFrom:self];
         NSAssert(bottomConstaints.count == 1, @"There should be only 1 bottom constraint.");
-        self.collectionContainerViewBottomConstraint = bottomConstaints[0];
+        self.collectionContainerViewBottomConstraint = bottomConstaints.firstObject;
         [collectionContainerView pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0];
         self.collectionContainerHeightConstraint = [collectionContainerView constrainToHeight:kCollectionContainerViewHeight];
         self.collectionContainerView = collectionContainerView;
@@ -506,7 +507,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [collectionContainerView addSubview:clippedContainerView];
         [clippedContainerView pinToSuperviewEdges:JRTViewPinLeftEdge | JRTViewPinRightEdge inset:0.0f];
         [clippedContainerView pinToSuperviewEdges:JRTViewPinTopEdge inset:0.0f];
-        self.clippedBottomConstraint = [clippedContainerView pinToSuperviewEdges:JRTViewPinBottomEdge inset:kFooterNavigationViewHeight][0];
+        self.clippedBottomConstraint = [clippedContainerView pinToSuperviewEdges:JRTViewPinBottomEdge inset:kFooterNavigationViewHeight].firstObject;
         self.clippedContainerView = clippedContainerView;
         
         self.mapOverlayCollectionViewController.view.tag = 300;
@@ -820,7 +821,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                 [self embedViewController:self.checkinViewController intoView:self.view placementBlock:^(UIView *view) {
                     NSArray *bottomConstaints = [view pinToSuperviewEdges:JRTViewPinBottomEdge inset:0.0f usingLayoutGuidesFrom:self];
                     NSAssert(bottomConstaints.count == 1, @"There should be only 1 bottom constraint.");
-                    self.checkinViewBottomConstraint = bottomConstaints[0];
+                    self.checkinViewBottomConstraint = bottomConstaints.firstObject;
                     self.checkinViewBottomConstraint.constant = height;
                     
                     [view pinToSuperviewEdges:JRTViewPinLeftEdge|JRTViewPinRightEdge inset:0.0f usingLayoutGuidesFrom:self];
@@ -894,7 +895,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             NSArray *topConstraints = [view pinToSuperviewEdges:JRTViewPinTopEdge inset:CGRectGetHeight(self.containerView.frame)];
             NSCAssert(topConstraints.count == 1, @"There should be only 1 constraint for top");
             if (topConstraints.count) {
-                NSLayoutConstraint *topConstraint = topConstraints[0];
+                NSLayoutConstraint *topConstraint = topConstraints.firstObject;
                 self.slidersSearchViewTopConstraint = topConstraint;
             }
         }];
@@ -1280,7 +1281,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 - (IBAction)areYouHereYesButtonTapped:(id)sender {
     [self hideAreYouHerePrompt:TRUE withCompletionBlock:nil];
     
-    SpotModel *spot = self.checkin ? self.checkin.spot : self.nearbySpots.count ? self.nearbySpots[0] : nil;
+    SpotModel *spot = self.checkin ? self.checkin.spot : self.nearbySpots.count ? self.nearbySpots.firstObject : nil;
     if (spot) {
         [Tracker trackAreYouHere:YES spot:spot];
         [self scopeToSpot:spot];
@@ -1289,7 +1290,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (IBAction)areYouHereNoButtonTapped:(id)sender {
     if (self.nearbySpots.count) {
-        SpotModel *spot = self.nearbySpots[0];
+        SpotModel *spot = self.nearbySpots.firstObject;
         [Tracker trackAreYouHere:NO spot:spot];
     }
     
@@ -1600,26 +1601,28 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                 [self fetchNearbySpotsAtLocation:self.userLocation withCompletionBlock:^(NSArray *spots) {
                     self.nearbySpots = spots;
                     
-                    SpotModel *nearestSpot = self.nearbySpots[0];
-                    CLLocation *nearestLocation = [[CLLocation alloc] initWithLatitude:nearestSpot.latitude.floatValue longitude:nearestSpot.longitude.floatValue];
-                    CLLocationDistance meters = [self.currentLocation distanceFromLocation:nearestLocation];
-                    if (meters < 150) {
-                        DrinkListRequest *request = self.drinkListRequest.copy;
-                        if (![request.name hasPrefix:@"Highest Rated"]) {
-                            request.name = kDrinkListModelDefaultName;
-                        }
-                        request.transient = TRUE;
-                        request.drinkListId = nil;
-                        request.spotId = nearestSpot.ID;
-                        request.coordinate = self.visibleMapCenterCoordinate;
-                        request.radius = self.searchRadiusInMiles;
-                        
-                        [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
-                            if (!_isMapOverlayExpanded && !self.isScopedToSpot && drinkListModel.drinks.count) {
-                                [self showAreYouHerePromptForSpot:nearestSpot animated:TRUE withCompletionBlock:nil];
-                                self.lastAreYouHerePrompt = [NSDate date];
+                    SpotModel *nearestSpot = self.nearbySpots.firstObject;
+                    if (nearestSpot) {
+                        CLLocation *nearestLocation = [[CLLocation alloc] initWithLatitude:nearestSpot.latitude.floatValue longitude:nearestSpot.longitude.floatValue];
+                        CLLocationDistance meters = [self.currentLocation distanceFromLocation:nearestLocation];
+                        if (meters < 150) {
+                            DrinkListRequest *request = self.drinkListRequest.copy;
+                            if (![request.name hasPrefix:@"Highest Rated"]) {
+                                request.name = kDrinkListModelDefaultName;
                             }
-                        } failure:nil];
+                            request.transient = TRUE;
+                            request.drinkListId = nil;
+                            request.spotId = nearestSpot.ID;
+                            request.coordinate = self.visibleMapCenterCoordinate;
+                            request.radius = self.searchRadiusInMiles;
+                            
+                            [DrinkListModel fetchDrinkListWithRequest:request success:^(DrinkListModel *drinkListModel) {
+                                if (!_isMapOverlayExpanded && !self.isScopedToSpot && drinkListModel.drinks.count) {
+                                    [self showAreYouHerePromptForSpot:nearestSpot animated:TRUE withCompletionBlock:nil];
+                                    self.lastAreYouHerePrompt = [NSDate date];
+                                }
+                            } failure:nil];
+                        }
                     }
                 }];
             }
@@ -1736,7 +1739,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [self.mapView removeAnnotations:[self.mapView annotations]];
     
     if (drinklistModel.drinks.count) {
-        DrinkModel *drink = drinklistModel.drinks[0];
+        DrinkModel *drink = drinklistModel.drinks.firstObject;
         [self updateMapWithCurrentDrink:drink];
     }
     
@@ -1881,7 +1884,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             [self hideHUD];
             
             if (drinkListModel.drinks.count) {
-                DrinkModel *drink = drinkListModel.drinks[0];
+                DrinkModel *drink = drinkListModel.drinks.firstObject;
                 SHMode mode = [self modeForDrink:drink];
                 
                 if (drinkListModel.drinks.count) {
@@ -2037,7 +2040,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         for (id<MKAnnotation>annotation in self.mapView.annotations) {
             if ([annotation isKindOfClass:[MatchPercentAnnotation class]]) {
                 MatchPercentAnnotation *matchPercentAnnotation = (MatchPercentAnnotation *)annotation;
-                if ([spots[0] isEqual:matchPercentAnnotation.spot]) {
+                if ([spots.firstObject isEqual:matchPercentAnnotation.spot]) {
                     matches++;
                 }
                 else {
@@ -2051,7 +2054,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             for (id<MKAnnotation>annotation in self.mapView.annotations) {
                 if ([annotation isKindOfClass:[MatchPercentAnnotation class]]) {
                     MatchPercentAnnotation *matchPercentAnnotation = (MatchPercentAnnotation *)annotation;
-                    if ([spots[0] isEqual:matchPercentAnnotation.spot]) {
+                    if ([spots.firstObject isEqual:matchPercentAnnotation.spot]) {
                         MatchPercentAnnotationView *pin = (MatchPercentAnnotationView *)[self.mapView viewForAnnotation:annotation];
                         [self displayCalloutViewInPin:pin inMapView:self.mapView];
                     }
@@ -2087,7 +2090,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self repositionMapOnAnnotations:self.mapView.annotations animated:TRUE];
     }
     else if (spots.count == 1) {
-        SpotModel *spot = spots[0];
+        SpotModel *spot = spots.firstObject;
         [self repositionMapOnCoordinate:spot.coordinate animated:TRUE];
     }
     
@@ -2096,13 +2099,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             [self selectSpot:self.selectedSpot];
         }
         else if (self.spotListRequest) {
-            [self selectSpot:spots[0]];
+            [self selectSpot:spots.firstObject];
         }
         else if (self.drinkListRequest && spots.count == 1) {
-            [self selectSpot:spots[0]];
+            [self selectSpot:spots.firstObject];
         }
         else if (self.mode == SHModeSpecials) {
-            [self selectSpot:spots[0]];
+            [self selectSpot:spots.firstObject];
         }
     }
     
@@ -2777,7 +2780,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         CLGeocoder *geocoder = [[CLGeocoder alloc] init];
         [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
             if (placemarks.count) {
-                CLPlacemark *placemark = placemarks[0];
+                CLPlacemark *placemark = placemarks.firstObject;
                 NSString *locationName = [SHAppContext locationNameFromPlacemark:placemark];
                 [self.locationMenuBarViewController updateLocationTitle:locationName];
                 [Tracker trackUserFrequentLocation];
@@ -3310,13 +3313,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [Tracker trackDrinkSpecials:spotlist];
 
     if (!spotlist.spots.count) {
-        if (self.searchRadius < 3750) {
+        if (self.searchRadius < kWideDiameter*0.4) {
             [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
                 [UIAlertView bk_showAlertViewWithTitle:@"Oops" message:@"There are no drink specials which match in this location. Would you like to try again with a larger search area?" cancelButtonTitle:@"No" otherButtonTitles:@[@"Sure!"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
                     DebugLog(@"index: %i", (int)buttonIndex);
                     
                     if (buttonIndex == 1) {
-                        CGFloat diameter = 7500;
+                        CGFloat diameter = kWideDiameter;
                         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.mapView.centerCoordinate, diameter, diameter);
                         [self repositionMapOnRegion:region withCompletionBlock:^{
                             [self addSearchAreaCircleWithCoordinate:self.mapView.centerCoordinate radius:self.searchRadius removeAfterDelay:0.5];
@@ -3353,7 +3356,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self pullDown:FALSE withCompletionBlock:nil];
         
         if (self.specialsSpotModels.count >= 5) {
-            SpotModel *spot = self.specialsSpotModels[0];
+            SpotModel *spot = self.specialsSpotModels.firstObject;
             SpecialModel *special = [spot specialForToday];
             [Tracker trackGoodSpecialsResultsWithLikes:special.likeCount];
             [Tracker trackUserGoodSpecialsResults];
@@ -3375,13 +3378,13 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [[SHAppContext defaultInstance] endActivity:@"Search Spots"];
     
     if (!spotlistModel.spots.count) {
-        if (self.searchRadius < 3750) {
+        if (self.searchRadius < kWideDiameter*0.4) {
             [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
                 [UIAlertView bk_showAlertViewWithTitle:@"Oops" message:@"There are no spots which match in this location. Would you like to try again with a larger search area?" cancelButtonTitle:@"No" otherButtonTitles:@[@"Sure!"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
                     DebugLog(@"index: %i", (int)buttonIndex);
                     
                     if (buttonIndex == 1) {
-                        CGFloat diameter = 7500;
+                        CGFloat diameter = kWideDiameter;
                         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.mapView.centerCoordinate, diameter, diameter);
                         [self repositionMapOnRegion:region withCompletionBlock:^{
                             request.radius = self.searchRadius / kMetersPerMile;
@@ -3424,7 +3427,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self pullDown:FALSE withCompletionBlock:nil];
         
         if (self.spotListModel.spots.count) {
-            SpotModel *spot = self.spotListModel.spots[0];
+            SpotModel *spot = self.spotListModel.spots.firstObject;
             if (spot.match.floatValue >= 0.85f) {
                 [Tracker trackGoodSpotsResultsWithName:spot.name match:spot.match];
                 [Tracker trackUserGoodSpotsResults];
@@ -3447,13 +3450,14 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [Tracker trackUserSearchedDrinklist:drinklistModel];
     
     if (!drinklistModel.drinks.count) {
-        if (self.searchRadius < 3750) {
+        DebugLog(@"radius: %f", self.searchRadius);
+        if (self.searchRadius < kWideDiameter*0.4) {
             [self hideSlidersSearch:TRUE forMode:SHModeSpots withCompletionBlock:^{
                 [UIAlertView bk_showAlertViewWithTitle:@"Oops" message:@"There are no drinks which match in this location. Would you like to try again with a larger search area?" cancelButtonTitle:@"No" otherButtonTitles:@[@"Sure!"] handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
                     DebugLog(@"index: %i", (int)buttonIndex);
                     
                     if (buttonIndex == 1) {
-                        CGFloat diameter = 7500;
+                        CGFloat diameter = kWideDiameter;
                         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.mapView.centerCoordinate, diameter, diameter);
                         [self repositionMapOnRegion:region withCompletionBlock:^{
                             request.radius = self.searchRadius / kMetersPerMile;
@@ -3494,7 +3498,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         [self pullDown:FALSE withCompletionBlock:nil];
         
         if (self.drinkListModel.drinks.count) {
-            DrinkModel *drink = self.drinkListModel.drinks[0];
+            DrinkModel *drink = self.drinkListModel.drinks.firstObject;
             if (drink.match.floatValue >= 0.85f) {
                 switch (mode) {
                     case SHModeBeer:
@@ -3895,7 +3899,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     self.currentLocation = placemark.location;
     self.lastSelectedLocation = placemark.location;
     
-    CLLocationDistance radius = MIN(7500, placemark.region.radius);
+    CLLocationDistance radius = MIN(kWideDiameter, placemark.region.radius);
     CLLocationDistance diameter = radius*2;
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(placemark.region.center, diameter, diameter);
     MKMapRect mapRect = [self mapRectForCoordinateRegion:region];
@@ -4310,7 +4314,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
             DrinkModel *drink = nil;
             SHMode mode = SHModeNone;
             if (drinklist.drinks.count > 0) {
-                drink = drinklist.drinks[0];
+                drink = drinklist.drinks.firstObject;
                 mode = [self modeForDrink:drink];
             }
             
