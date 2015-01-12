@@ -4240,6 +4240,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         return;
     }
     
+    DebugLog(@"location: %f, %f", self.mapView.centerCoordinate.latitude, self.mapView.centerCoordinate.longitude);
+    
     [[SHAppContext defaultInstance] changeMapCoordinate:self.visibleMapCenterCoordinate andRadius:self.searchRadius];
     
     CLLocation *mapCenterLocation = [[CLLocation alloc] initWithLatitude:self.mapView.centerCoordinate.latitude longitude:self.mapView.centerCoordinate.longitude];

@@ -11,6 +11,7 @@
 #import "UIView+ViewFromNib.h"
 #import "UIView+AddBorder.h"
 
+#import "SHStyleKit+Additions.h"
 #import "SHButtonLatoLight.h"
 #import "SectionHeaderView.h"
 
@@ -109,15 +110,23 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     [_btnSubmit setHidden:TRUE];
+    
+    [self styleBars];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return UIStatusBarStyleLightContent;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark - Styling
+#pragma mark -
+
+- (void)styleBars {
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.9569 green:0.3804 blue:0.0667 alpha:1.0];
+    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [SHStyleKit myWhiteColor]};
 }
 
 #pragma mark - Tracking
