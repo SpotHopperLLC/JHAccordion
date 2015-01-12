@@ -1838,6 +1838,7 @@
 		260076961A03EBBF008D0CB2 /* photoIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = photoIcon.png; path = MenuAdmin/Media/photoIcon.png; sourceTree = "<group>"; };
 		260076971A03EBBF008D0CB2 /* photoIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "photoIcon@2x.png"; path = "MenuAdmin/Media/photoIcon@2x.png"; sourceTree = "<group>"; };
 		2602BD9C18E283C500C93BBF /* Common.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Common.storyboard; sourceTree = "<group>"; };
+		260AEDFF1A636A9700FC6F39 /* PuneIndia.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PuneIndia.gpx; sourceTree = "<group>"; };
 		260B4A861A3A8FF400FE6EB7 /* SHAppContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SHAppContext.h; path = SpotHopper/SHAppContext.h; sourceTree = "<group>"; };
 		260B4A871A3A8FF400FE6EB7 /* SHAppContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SHAppContext.m; path = SpotHopper/SHAppContext.m; sourceTree = "<group>"; };
 		260B4A8C1A3BBC3700FE6EB7 /* btn_sidebar_icon_reset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_sidebar_icon_reset.png; sourceTree = "<group>"; };
@@ -3428,6 +3429,7 @@
 				26F0FDE418EB1B18001BB0CD /* San Francisco.gpx */,
 				261323F719DCA2B900E051DB /* Gainesville.gpx */,
 				268E0F4319F55DB7005C46C7 /* Brookfield.gpx */,
+				260AEDFF1A636A9700FC6F39 /* PuneIndia.gpx */,
 			);
 			path = Locations;
 			sourceTree = SOURCE_ROOT;
