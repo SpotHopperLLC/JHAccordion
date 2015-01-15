@@ -561,6 +561,25 @@
     [self trackUserAction:@"Checking In"];
 }
 
+#pragma mark - Notifications
+#pragma mark -
+
++ (void)trackNotification:(NSDictionary *)userInfo {
+    NSString *action = userInfo[@"action"];
+    NSString *key = userInfo[@"key"];
+    
+    if (action.length) {
+        NSString *trackedAction;
+        if (key.length) {
+            trackedAction = [NSString stringWithFormat:@"Notification %@ - %@", action, key];
+        }
+        else {
+            trackedAction = [NSString stringWithFormat:@"Notification %@", action];
+        }
+        [self track:trackedAction];
+    }
+}
+
 #pragma mark - Sharing
 #pragma mark -
 

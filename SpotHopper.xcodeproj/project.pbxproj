@@ -3497,6 +3497,7 @@
 				03CAC16618E7716400FAC5F5 /* Copy Pods Resources */,
 				264CF2DB19CCFBEC00310A56 /* Update Build Number */,
 				26D94A6419D505BC00C0CED9 /* Crashlytics */,
+				26CB22B61A6730430083C9EE /* Fabric */,
 			);
 			buildRules = (
 			);
@@ -3560,6 +3561,7 @@
 				267E06CD1922CC48004457B4 /* Copy Pods Resources */,
 				264CF2DC19CCFC9800310A56 /* Update Build Number */,
 				26D94A6519D506E300C0CED9 /* Crashlytics */,
+				26CB22B51A672EE70083C9EE /* Fabric */,
 			);
 			buildRules = (
 			);
@@ -4605,6 +4607,34 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SpotHopperStaging/Pods-SpotHopperStaging-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		26CB22B51A672EE70083C9EE /* Fabric */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = Fabric;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#./Fabric.framework/run 321a13e238ca85ade5f6115b32cbb55c5ab869bd 4a0082cd7447cbed0ceb8cfcc9ef58c0038e8c283a67e79ee82ccdcb9e832121";
+		};
+		26CB22B61A6730430083C9EE /* Fabric */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = Fabric;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#./Fabric.framework/run 321a13e238ca85ade5f6115b32cbb55c5ab869bd 4a0082cd7447cbed0ceb8cfcc9ef58c0038e8c283a67e79ee82ccdcb9e832121";
+		};
 		26D94A6419D505BC00C0CED9 /* Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -4631,7 +4661,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "./Pods/CrashlyticsFramework/Crashlytics.framework/run 35aca4223395cee9b73550f97a3022ea413e2c71 f05de3aa6ab4cab201a1be19e25ffe8d6d442c6725a5ddcae1f66a0f356bfd3e";
+			shellScript = "#./Pods/CrashlyticsFramework/Crashlytics.framework/run 35aca4223395cee9b73550f97a3022ea413e2c71 f05de3aa6ab4cab201a1be19e25ffe8d6d442c6725a5ddcae1f66a0f356bfd3e";
 		};
 		4D2B49071C184BB6A0A93E50 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5603,6 +5633,10 @@
 				CODE_SIGN_ENTITLEMENTS = SpotHopperProduction.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5627,6 +5661,10 @@
 				CODE_SIGN_ENTITLEMENTS = SpotHopperProduction.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5657,6 +5695,10 @@
 				CODE_SIGN_ENTITLEMENTS = SpotHopperProduction.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5681,6 +5723,10 @@
 				CODE_SIGN_ENTITLEMENTS = SpotHopperProduction.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5711,6 +5757,10 @@
 				CODE_SIGN_ENTITLEMENTS = SpotHopperProduction.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5735,6 +5785,10 @@
 				CODE_SIGN_ENTITLEMENTS = SpotHopperProduction.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5764,6 +5818,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5787,6 +5845,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SpotHopper/SpotHopper-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 com.SpotHopper.admin. All rights reserved.
 //
 
-#import <Crashlytics/Crashlytics.h>
+//#import <Crashlytics/Crashlytics.h>
 
 #import "SHMenuAdminNetworkManager.h"
 #import "ClientSessionManager.h"

@@ -175,10 +175,6 @@
         NSMutableArray *activityItems = @[].mutableCopy;
         [activityItems addObject:drink.name.length ? drink.name : @""];
         [activityItems addObject:shortenedURL];
-//        [activityItems addObject:[NSURL URLWithString:link]];
-//        if (image) {
-//            [activityItems addObject:image];
-//        }
         NSMutableArray *activities = @[].mutableCopy;
         UIActivityViewController *activityView = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activities];
         
@@ -210,10 +206,6 @@
          
         [activityItems addObject:[NSString stringWithFormat:@"Checked in at %@", checkin.spot.name.length ? checkin.spot.name : @""]];
         [activityItems addObject:shortenedURL];
-//        [activityItems addObject:[NSURL URLWithString:link]];
-//        if (image) {
-//            [activityItems addObject:image];
-//        }
         NSMutableArray *activities = @[].mutableCopy;
         UIActivityViewController *activityView = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:activities];
         
@@ -240,21 +232,21 @@
         [self logMessage:message location:location spot:nil];
         return;
     }
-//    else if ([location.timestamp timeIntervalSinceNow] > 30) {
-//        // if the location update is old do not use it
-//        // deferred/cached location updates could be reported which are out of date
-//        return;
-//    }
-//    else if (location.speed > 0.5) {
-//        // device must not be moving (driving past a spot)
-//        // speed is -1 when the device detects no movement
-//        // average walking speed is ~3 mph which is ~1.35 meters per second
-//        // the speed used here will ensure the user is essentially stopped
-//        return;
-//    }
-//    else if (![self isNowAGoodTimeForADrink]) {
-//        return;
-//    }
+    else if ([location.timestamp timeIntervalSinceNow] > 30) {
+        // if the location update is old do not use it
+        // deferred/cached location updates could be reported which are out of date
+        return;
+    }
+    else if (location.speed > 0.5) {
+        // device must not be moving (driving past a spot)
+        // speed is -1 when the device detects no movement
+        // average walking speed is ~3 mph which is ~1.35 meters per second
+        // the speed used here will ensure the user is essentially stopped
+        return;
+    }
+    else if (![self isNowAGoodTimeForADrink]) {
+        return;
+    }
     
     // Networking communications is costly on the batter so a cool down period and other filtering
     // criteria are used to prevent frequent API calls which are not necessary

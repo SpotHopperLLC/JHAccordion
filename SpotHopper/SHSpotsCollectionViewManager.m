@@ -27,6 +27,7 @@
 #import <CoreLocation/CoreLocation.h>
 
 #define kMeterToMile 0.000621371f
+#define kFeetPerMile 5280.0
 
 #define kSpotCellIdentifier @"SpotCell"
 
@@ -315,7 +316,14 @@
     
     CGFloat miles = meters * kMeterToMile;
     
-    distanceLabel.text = [NSString stringWithFormat:@"%0.1f miles away", miles];
+    if (miles < 0.1) {
+        CGFloat feet = miles * kFeetPerMile;
+        distanceLabel.text = [NSString stringWithFormat:@"%0.0f feet away", feet];
+    }
+    else {
+        distanceLabel.text = [NSString stringWithFormat:@"%0.1f miles away", miles];
+    }
+    
     percentageLabel.text = [NSString stringWithFormat:@"%@", spot.matchPercent];
     
     if (self.spotList.spots.count == 1) {

@@ -27,7 +27,7 @@
 #import "ClientSessionManager.h"
 
 #import "SHAppConfiguration.h"
-#import "Crashlytics.h"
+//#import "Crashlytics.h"
 
 #import <Parse/Parse.h>
 
@@ -263,7 +263,7 @@
                                             @"Trace" : trace.length ? trace : @"N/A",
                                             @"Level" : level.length ? level : @"N/A"}];
     
-    CLS_LOG(@"%@ - %@ - %@", logMessage, className, trace);
+//    CLS_LOG(@"%@ - %@ - %@", logMessage, className, trace);
 }
 
 @end

@@ -8,7 +8,7 @@
 
 #import "SHMenuAdminLoginViewController.h"
 
-#import <Crashlytics/Crashlytics.h>
+//#import <Crashlytics/Crashlytics.h>
 #import <MessageUI/MessageUI.h>
 #import <BlocksKit/MFMailComposeViewController+BlocksKit.h>
 #import <BlocksKit/MFMessageComposeViewController+BlocksKit.h>
@@ -155,7 +155,7 @@
             }
         }];
     } failure:^(ErrorModel *error) {
-        CLS_LOG(@"login issue: %@", error.humanValidations);
+//        CLS_LOG(@"login issue: %@", error.humanValidations);
         [self hideHUD];
         [self showAlert:@"Oops" message:error.humanValidations];
     }];

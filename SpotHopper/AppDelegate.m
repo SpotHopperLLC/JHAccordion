@@ -44,7 +44,7 @@
 #import "DrinkSubTypeModel.h"
 #import "BaseAlcoholModel.h"
 
-#import "Crashlytics.h"
+//#import "Crashlytics.h"
 #import "Promise.h"
 
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
@@ -125,18 +125,18 @@
         [application registerForRemoteNotificationTypes:types];
     }
     
-    if ([SHAppConfiguration isCrashlyticsEnabled]) {
-        NSString *crashlyticsKey = [SHAppConfiguration crashlyticsKey];
-        [Crashlytics startWithAPIKey:crashlyticsKey];
-        
-        if ([UserModel isLoggedIn]) {
-            UserModel *user = [[ClientSessionManager sharedClient] currentUser];
-            [[Crashlytics sharedInstance] setUserIdentifier:user.ID];
-            if (user.email.length) {
-                [[Crashlytics sharedInstance] setUserEmail:user.email];
-            }
-        }
-    }
+//    if ([SHAppConfiguration isCrashlyticsEnabled]) {
+//        NSString *crashlyticsKey = [SHAppConfiguration crashlyticsKey];
+//        [Crashlytics startWithAPIKey:crashlyticsKey];
+//        
+//        if ([UserModel isLoggedIn]) {
+//            UserModel *user = [[ClientSessionManager sharedClient] currentUser];
+//            [[Crashlytics sharedInstance] setUserIdentifier:user.ID];
+//            if (user.email.length) {
+//                [[Crashlytics sharedInstance] setUserEmail:user.email];
+//            }
+//        }
+//    }
     
     FBSessionTokenCachingStrategy *cachingStrategy = [FBSessionTokenCachingStrategy defaultInstance];
     if ([FBSessionTokenCachingStrategy isValidTokenInformation:[cachingStrategy fetchTokenInformation]]) {
@@ -238,9 +238,12 @@
                                                  name:FBSessionDidBecomeOpenActiveSessionNotification
                                                object:nil];
     
-    if ([launchOptions.allKeys containsObject:UIApplicationLaunchOptionsLocationKey]) {
-        [[SHLocationManager defaultInstance] wakeUp];
+    BOOL isLocationChange = [launchOptions.allKeys containsObject:UIApplicationLaunchOptionsLocationKey];
+    if (isLocationChange) {
+        [Tracker trackDidChangeSignificantLocation];
     }
+    
+    [[SHLocationManager defaultInstance] wakeUp];
     
     return YES;
 }
@@ -335,6 +338,7 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     DebugLog(@"userInfo: %@", userInfo);
     
+    [Tracker trackNotification:userInfo];
     [Tracker trackUserNotification:userInfo];
     [PFPush handlePush:userInfo];
     

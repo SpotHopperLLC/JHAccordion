@@ -96,6 +96,8 @@
 #define kTagSearchTextField 501
 
 #define kMetersPerMile 1609.344
+#define kMeterToMile 0.000621371f
+
 #define kWideDiameter 7500
 #define kDebugAnnotationViewPositions NO
 
@@ -2157,11 +2159,21 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     if (location) {
         self.currentLocation = location;
         [SHAppContext setCurrentSelectedLocation:location];
-        CGFloat diameter = 1500;
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.currentLocation.coordinate, diameter, diameter);
+        MKCoordinateRegion region =  self.mapView.region;
+        region.center = location.coordinate;
+        if (self.searchRadius > 10000) {
+            region = MKCoordinateRegionMakeWithDistance(location.coordinate, 3000, 3000);
+        }
         [self repositionMapOnRegion:region withCompletionBlock:nil];
         [self.mapView setShowsUserLocation:TRUE];
         return;
+    }
+    else {
+        if (self.searchRadius > 10000) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [self repositionOnCurrentDeviceLocation:animated];
+            });
+        }
     }
 }
 
@@ -2783,7 +2795,6 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
                 CLPlacemark *placemark = placemarks.firstObject;
                 NSString *locationName = [SHAppContext locationNameFromPlacemark:placemark];
                 [self.locationMenuBarViewController updateLocationTitle:locationName];
-                [Tracker trackUserFrequentLocation];
             }
         }];
     }
@@ -3376,6 +3387,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     [Tracker trackSpotlist:spotlistModel request:request];
     [Tracker trackUserSearchedSpotlist:spotlistModel];
     [[SHAppContext defaultInstance] endActivity:@"Search Spots"];
+    
+    DebugLog(@"radius (miles): %f", request.radius);
     
     if (!spotlistModel.spots.count) {
         if (self.searchRadius < kWideDiameter*0.4) {
@@ -4190,7 +4203,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     if ([overlay isKindOfClass:[MKCircle class]]) {
         MKCircleRenderer *circleView = [[MKCircleRenderer alloc] initWithCircle:overlay];
         
-        circleView.strokeColor = [[SHStyleKit color:SHStyleKitColorMyTintColor] colorWithAlphaComponent:0.35f];
+        circleView.strokeColor = [[SHStyleKit color:SHStyleKitColorMyTintColor] colorWithAlphaComponent:0.15f];
         circleView.fillColor = [[SHStyleKit color:SHStyleKitColorMyWhiteColor] colorWithAlphaComponent:0.25f];
 //        circleView.fillColor = [[SHStyleKit color:SHStyleKitColorMyTintColor] colorWithAlphaComponent:0.75f];
         circleView.lineWidth = 1.0f;
@@ -4247,6 +4260,8 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
     DebugLog(@"location: %f, %f", self.mapView.centerCoordinate.latitude, self.mapView.centerCoordinate.longitude);
     
     [[SHAppContext defaultInstance] changeMapCoordinate:self.visibleMapCenterCoordinate andRadius:self.searchRadius];
+    
+    [self addSearchAreaCircleWithCoordinate:self.visibleMapCenterCoordinate radius:self.searchRadius removeAfterDelay:1.5];
     
     CLLocation *mapCenterLocation = [[CLLocation alloc] initWithLatitude:self.mapView.centerCoordinate.latitude longitude:self.mapView.centerCoordinate.longitude];
     [SHAppContext setMapCenterLocation:mapCenterLocation];
@@ -4578,14 +4593,11 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
 
 - (void)handleLocationChangedNotification:(NSNotification *)notification {
     CLLocation *location = [SHAppContext currentDeviceLocation];
-    if (location) {
-        if (!self.currentLocation) {
-            self.currentLocation = location;
-            [SHAppContext setCurrentSelectedLocation:self.currentLocation];
-            CGFloat diameter = 3000;
-            MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.currentLocation.coordinate, diameter, diameter);
-            [self repositionMapOnRegion:region withCompletionBlock:nil];
-        }
+    if (location && !self.currentLocation) {
+        [SHAppContext setCurrentSelectedLocation:self.currentLocation];
+        CGFloat diameter = 3000;
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.currentLocation.coordinate, diameter, diameter);
+        [self repositionMapOnRegion:region withCompletionBlock:nil];
     }
 }
 
