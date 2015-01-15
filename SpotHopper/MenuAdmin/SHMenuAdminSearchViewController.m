@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 RokkinCat. All rights reserved.
 //
 
-#import <Crashlytics/Crashlytics.h>
+//#import <Crashlytics/Crashlytics.h>
 
 #import "SHMenuAdminSearchViewController.h"
 #import "SHMenuAdminAddNewBeerViewController.h"
@@ -433,7 +433,7 @@
         } failure:^(ErrorModel *errorModel) {
             [self stopSearching];
             [self showAlert:@"Network error" message:@"Please try again"];
-            CLS_LOG(@"network error searching for spots. Error: %@", errorModel.humanValidations);
+//            CLS_LOG(@"network error searching for spots. Error: %@", errorModel.humanValidations);
         }];
     }
     else {
@@ -466,7 +466,7 @@
         } failure:^(ErrorModel *errorModel) {
             [self stopSearching];
             [self showAlert:@"Network error" message:@"Please try again"];
-            CLS_LOG(@"network error searching for drinks. Error: %@", errorModel.humanValidations);
+//            CLS_LOG(@"network error searching for drinks. Error: %@", errorModel.humanValidations);
         }];
     }
 }

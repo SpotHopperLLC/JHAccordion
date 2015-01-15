@@ -7,7 +7,7 @@
 //
 
 #import <limits.h>
-#import <Crashlytics/Crashlytics.h>
+//#import <Crashlytics/Crashlytics.h>
 #import "UIView+AutoLayout.h"
 
 #import "SHMenuAdminHomeViewController.h"
@@ -965,7 +965,7 @@ typedef enum {
         }
     } failure:^(ErrorModel *errorModel) {
         [self showAlert:@"Error" message:@"Unable to delete menu item."];
-        CLS_LOG(@"network error deleting menu item [%@]. Error:%@", menuItem, errorModel.humanValidations);
+//        CLS_LOG(@"network error deleting menu item [%@]. Error:%@", menuItem, errorModel.humanValidations);
     }];
 }
 
@@ -1196,7 +1196,7 @@ typedef enum {
 	        menuItem.drink.images = images;
 		} failure: ^(ErrorModel *error) {
 	        [self hideHUD];
-	        CLSLog(@"saving image path to backend failed");
+//	        CLSLog(@"saving image path to backend failed");
 		}];
 	}];
 
@@ -1453,7 +1453,7 @@ typedef enum {
 		}
 	} failure: ^(ErrorModel *errorModel) {
 	    //  [self showAlert:@"Network error" message:@"Please try again"];
-	    CLS_LOG(@"network error fetching user's spots: %@", errorModel.humanValidations);
+//	    CLS_LOG(@"network error fetching user's spots: %@", errorModel.humanValidations);
         
         if (failureBlock) {
             failureBlock();
@@ -1487,7 +1487,7 @@ typedef enum {
 	    [self hideHUD];
 	} failure: ^(ErrorModel *error) {
 	    [self hideHUD];
-	    CLS_LOG(@"network error fetching menu items: %@", error.humanValidations);
+//	    CLS_LOG(@"network error fetching menu items: %@", error.humanValidations);
 	    //try to fetch menu items again in a few seconds
 	    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 	        [self fetchMenuItems];
@@ -1521,7 +1521,7 @@ typedef enum {
 			}
 		}
 	} failure: ^(ErrorModel *error) {
-	    CLS_LOG(@"network error fetching menu sizes: %@", error.humanValidations);
+//	    CLS_LOG(@"network error fetching menu sizes: %@", error.humanValidations);
 
 	    //try to fetch sizes again in a few seconds
 	    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
@@ -1538,7 +1538,7 @@ typedef enum {
 			}
 		}
 	} failure: ^(ErrorModel *error) {
-	    CLS_LOG(@"network error fetching menu types: %@", error.humanValidations);
+//	    CLS_LOG(@"network error fetching menu types: %@", error.humanValidations);
 	    //attempt to fetch types again if the error occurs
 
 	    //try to fetch menu types again in a few seconds
@@ -1816,7 +1816,7 @@ typedef enum {
         }
     } failure:^(ErrorModel *error) {
         [self showAlert:@"Error" message:@"Unable to create menu item. Please try again."];
-        CLS_LOG(@"network error adding new menu item [name: %@]. Error: %@", menuItem.name, error.humanValidations);
+//        CLS_LOG(@"network error adding new menu item [name: %@]. Error: %@", menuItem.name, error.humanValidations);
     }];
 }
 
@@ -1830,7 +1830,7 @@ typedef enum {
 	        successBlock();
 		}
 	} failure: ^(ErrorModel *error) {
-	    CLS_LOG(@"network error adding new prices to menu item [name: %@]. Error: %@", menuItem, error.humanValidations);
+//	    CLS_LOG(@"network error adding new prices to menu item [name: %@]. Error: %@", menuItem, error.humanValidations);
 	}];
 }
 
@@ -1846,7 +1846,7 @@ typedef enum {
 		        successBlock();
 			}
 		} failure: ^(ErrorModel *error) {
-		    CLS_LOG(@"network error adding new prices to menu item [name: %@]. Error: %@", menuItem, error.humanValidations);
+//		    CLS_LOG(@"network error adding new prices to menu item [name: %@]. Error: %@", menuItem, error.humanValidations);
 		}];
 	}
 }

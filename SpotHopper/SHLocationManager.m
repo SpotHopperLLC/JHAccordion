@@ -13,6 +13,8 @@
 #import "SHAppUtil.h"
 
 #import "Tracker.h"
+#import "Tracker+Events.h"
+#import "Tracker+People.h"
 
 #define kMonitoringEnabledKey @"MonitoringEnabledKey"
 
@@ -34,6 +36,9 @@
     static SHLocationManager *_defaultInstance = nil;
     if (!_defaultInstance) {
         _defaultInstance = [[SHLocationManager alloc] init];
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [_defaultInstance setMonitoringEnabled:[defaults boolForKey:kMonitoringEnabledKey]];
     }
     
     return _defaultInstance;
@@ -47,6 +52,10 @@
 - (void)wakeUp {
     if (self.isMonitoringEnabled) {
         [self startMonitoring];
+        
+        if ([self isAuthorized]) {
+            [SHAppContext setCurrentDeviceLocation:self.location];
+        }
     }
 }
 
@@ -186,11 +195,12 @@
     
     CLLocation *location = locations.firstObject;
     if (location) {
+        [SHAppContext setCurrentDeviceLocation:location];
         [[SHAppUtil defaultInstance] processSignificantLocationChange:location];
     }
     
     [self reportLatestLocations:locations];
-
+    
     // allow deferring updates for 25 meters and 2 minutes (120 seconds)
     [manager allowDeferredLocationUpdatesUntilTraveled:25.0 timeout:120.0];
 }

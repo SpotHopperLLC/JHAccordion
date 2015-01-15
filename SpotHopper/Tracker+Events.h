@@ -205,6 +205,11 @@
 
 + (void)trackCheckedInAtSpot:(SpotModel *)spot position:(NSUInteger)position count:(NSUInteger)count distance:(CLLocationDistance)distance;
 
+#pragma mark - Notifications
+#pragma mark -
+
++ (void)trackNotification:(NSDictionary *)userInfo;
+
 #pragma mark - Sharing
 #pragma mark -
 

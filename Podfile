@@ -32,7 +32,10 @@ def import_pods
     pod 'TransloaditAPI', :git => 'https://github.com/transloadit/ios-sdk.git'
 
     # Debugging
-    pod 'CrashlyticsFramework', '~> 2.2'
+    #pod 'CrashlyticsFramework', '~> 2.2'
+    
+    # Twitter garbage (do not use)
+    #pod 'Fabric', '~> 1.1'
 
     # Social
     pod 'Facebook-iOS-SDK', '~> 3.0'

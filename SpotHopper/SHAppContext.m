@@ -9,6 +9,7 @@
 #import "SHAppContext.h"
 
 #import "Tracker+Events.h"
+#import "Tracker+People.h"
 #import "SHAppUtil.h"
 #import "SHNotifications.h"
 #import "SHLocationManager.h"
@@ -202,6 +203,8 @@ static NSString *_currentMapCenterLocationZip;
             CLPlacemark *placemark = placemarks[0];
             _currentDeviceLocationName = [self shortLocationNameFromPlacemark:placemark];
             _currentDeviceLocationZip = placemark.postalCode;
+            
+            [Tracker trackUserFrequentLocation];
         }
     }];
     
@@ -435,6 +438,11 @@ static NSString *_currentMapCenterLocationZip;
 }
 
 + (void)updateLocation:(CLLocation *)location withCompletionBlock:(void (^)(NSError *error))completionBlock {
+    if (!location) {
+        DebugLog(@"No location to log");
+        return;
+    }
+    
     if (location.horizontalAccuracy > 100) {
         // do not log inaccurate locations
         return;
@@ -450,6 +458,8 @@ static NSString *_currentMapCenterLocationZip;
                              @"speed" : [NSNumber numberWithFloat:location.speed],
                              @"altitude" : [NSNumber numberWithFloat:location.altitude]
                              };
+    
+    DebugLog(@"params: %@", params);
     
     [PFCloud callFunctionInBackground:@"updateLocation"
                        withParameters:params

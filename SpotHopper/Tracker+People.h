@@ -85,6 +85,8 @@
 #pragma mark - Location
 #pragma mark -
 
++ (void)trackDidChangeSignificantLocation;
+
 + (void)trackUserFrequentLocation;
 
 + (void)trackUserLocation:(CLPlacemark *)placemark forKey:(NSString *)key;

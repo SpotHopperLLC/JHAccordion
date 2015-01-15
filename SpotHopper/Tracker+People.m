@@ -167,6 +167,10 @@
 #pragma mark - Location
 #pragma mark -
 
++ (void)trackDidChangeSignificantLocation {
+    [Tracker trackUserAction:@"Did Change Significant Location"];
+}
+
 + (void)trackUserFrequentLocation {
     NSString *locationName = [SHAppContext currentLocationName];
     NSString *zip = [SHAppContext currentLocationZip];
@@ -178,6 +182,10 @@
     if (zip.length) {
         NSString *action = [NSString stringWithFormat:@"User Frequent Zip: %@", zip];
         [Tracker trackUserAction:action];
+    }
+    
+    if (locationName.length && zip.length) {
+        [Tracker trackUserWithProperties:@{@"Most Recent City" : locationName, @"Most Recent Zip" : zip}];
     }
 }
 
