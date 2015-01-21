@@ -62,6 +62,9 @@
 + (BOOL)isLoggedIn;
 + (UserModel *)currentUser;
 
++ (void)fetchUser:(UserModel *)user success:(void(^)(UserModel *fetchedUser))successBlock failure:(void(^)(ErrorModel* errorModel))failureBlock;
++ (Promise *)fetchUser:(UserModel *)user;
+
 + (void)updateUser:(UserModel *)user success:(void(^)(UserModel *updatedUser))successBlock failure:(void(^)(ErrorModel* errorModel))failureBlock;
 + (Promise *)updateUser:(UserModel *)user;
 

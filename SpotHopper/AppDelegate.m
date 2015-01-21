@@ -49,7 +49,9 @@
 
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
 #import <JSONAPI/JSONAPI.h>
+#import <FiksuSDK/FiksuSDK.h>
 #import <Parse/Parse.h>
+#import <ParseCrashReporting/ParseCrashReporting.h>
 #import <STTwitter/STTwitter.h>
 
 #define kPushActionShowSpecials @"ShowSpecials"
@@ -80,9 +82,10 @@
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
     if ([SHAppConfiguration isParseEnabled]) {
+        [ParseCrashReporting enable];
         [Parse setApplicationId:[SHAppConfiguration parseApplicationID]
                       clientKey:[SHAppConfiguration parseClientKey]];
-//        [Parse enableLocalDatastore];
+//        [Parse enableLocalDatastore]; // not ready yet (it has crashing issues)
         [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
         [PFUser enableAutomaticUser];
         PFUser *user = [PFUser currentUser];
@@ -124,19 +127,6 @@
         UIRemoteNotificationType types = UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound;
         [application registerForRemoteNotificationTypes:types];
     }
-    
-//    if ([SHAppConfiguration isCrashlyticsEnabled]) {
-//        NSString *crashlyticsKey = [SHAppConfiguration crashlyticsKey];
-//        [Crashlytics startWithAPIKey:crashlyticsKey];
-//        
-//        if ([UserModel isLoggedIn]) {
-//            UserModel *user = [[ClientSessionManager sharedClient] currentUser];
-//            [[Crashlytics sharedInstance] setUserIdentifier:user.ID];
-//            if (user.email.length) {
-//                [[Crashlytics sharedInstance] setUserEmail:user.email];
-//            }
-//        }
-//    }
     
     FBSessionTokenCachingStrategy *cachingStrategy = [FBSessionTokenCachingStrategy defaultInstance];
     if ([FBSessionTokenCachingStrategy isValidTokenInformation:[cachingStrategy fetchTokenInformation]]) {
@@ -244,6 +234,9 @@
     }
     
     [[SHLocationManager defaultInstance] wakeUp];
+    
+    // Twitter ad tracking
+    [FiksuTrackingManager applicationDidFinishLaunching:launchOptions];
     
     return YES;
 }
@@ -532,6 +525,7 @@
     NSString *key = userInfo[@"key"];
     if (action.length && key.length) {
         CLLocation *location = [SHAppContext currentDeviceLocation];
+        [SHAppContext updateLocation:location withCompletionBlock:nil];
         if (location) {
             CLGeocoder *geocoder = [[CLGeocoder alloc] init];
             [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {

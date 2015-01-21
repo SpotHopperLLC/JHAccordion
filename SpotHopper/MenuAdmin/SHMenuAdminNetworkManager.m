@@ -55,10 +55,10 @@
     
     [UserModel loginUser:params success:^(UserModel *userModel, NSHTTPURLResponse *response) {
         
-#ifdef NDEBUG
-        [Crashlytics setUserIdentifier:userModel.ID];
-        [Crashlytics setUserName:userModel.name];
-#endif
+//#ifdef NDEBUG
+//        [Crashlytics setUserIdentifier:userModel.ID];
+//        [Crashlytics setUserName:userModel.name];
+//#endif
         if (successBlock) {
             successBlock(userModel);
         }

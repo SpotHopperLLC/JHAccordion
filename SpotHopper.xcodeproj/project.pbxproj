@@ -1493,6 +1493,10 @@
 		26F6FE281A0BE30100CEE6E8 /* SHMenuAdminDummyHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F6FE261A0BE30100CEE6E8 /* SHMenuAdminDummyHomeViewController.m */; };
 		26FDC1561A0D1A680012CAE5 /* SHMenuAdminAddNewBeerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FDC1551A0D1A680012CAE5 /* SHMenuAdminAddNewBeerViewController.m */; };
 		26FDC1571A0D1A680012CAE5 /* SHMenuAdminAddNewBeerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FDC1551A0D1A680012CAE5 /* SHMenuAdminAddNewBeerViewController.m */; };
+		26FE83DF1A6A1C7200B17898 /* FiksuConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 26FE83DC1A6A1C6A00B17898 /* FiksuConfiguration.plist */; };
+		26FE83E01A6A1C7300B17898 /* FiksuConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 26FE83DC1A6A1C6A00B17898 /* FiksuConfiguration.plist */; };
+		26FE83E11A6A1C7600B17898 /* FiksuConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 26FE83DE1A6A1C6A00B17898 /* FiksuConfiguration.plist */; };
+		26FE83E21A6A1C7600B17898 /* FiksuConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 26FE83DE1A6A1C6A00B17898 /* FiksuConfiguration.plist */; };
 		26FF53BC191B577D00834FBD /* CheckInModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FF53B8191B577D00834FBD /* CheckInModel.m */; };
 		26FFAFF7191B367B00D222B7 /* PhotoViewerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FFAFF3191B367B00D222B7 /* PhotoViewerViewController.m */; };
 		553D095AC54829DE672E37D2 /* libPods-EasyMenuProduction.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 305DC202D50AC7DB3EAAC60A /* libPods-EasyMenuProduction.a */; };
@@ -1881,6 +1885,7 @@
 		262A65B0195893F800A4DACD /* MenuModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuModel.h; sourceTree = "<group>"; };
 		262A65B1195893F800A4DACD /* MenuModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuModel.m; sourceTree = "<group>"; };
 		262B958719CA145200C2B1CC /* SpotHopperProduction.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SpotHopperProduction.entitlements; sourceTree = SOURCE_ROOT; };
+		2630421F1A6EB66C0057CF53 /* Shorewood.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Shorewood.gpx; sourceTree = "<group>"; };
 		2633CCEE19A53E7600764036 /* LikeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LikeModel.h; sourceTree = "<group>"; };
 		2633CCEF19A53E7600764036 /* LikeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LikeModel.m; sourceTree = "<group>"; };
 		2636330D1A167AB10086DE8D /* SHMenuAdminNoAdminViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHMenuAdminNoAdminViewController.h; sourceTree = "<group>"; };
@@ -2101,6 +2106,8 @@
 		26F6FE261A0BE30100CEE6E8 /* SHMenuAdminDummyHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHMenuAdminDummyHomeViewController.m; sourceTree = "<group>"; };
 		26FDC1541A0D1A680012CAE5 /* SHMenuAdminAddNewBeerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHMenuAdminAddNewBeerViewController.h; sourceTree = "<group>"; };
 		26FDC1551A0D1A680012CAE5 /* SHMenuAdminAddNewBeerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHMenuAdminAddNewBeerViewController.m; sourceTree = "<group>"; };
+		26FE83DC1A6A1C6A00B17898 /* FiksuConfiguration.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = FiksuConfiguration.plist; sourceTree = "<group>"; };
+		26FE83DE1A6A1C6A00B17898 /* FiksuConfiguration.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = FiksuConfiguration.plist; sourceTree = "<group>"; };
 		26FF53B7191B577D00834FBD /* CheckInModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckInModel.h; sourceTree = "<group>"; };
 		26FF53B8191B577D00834FBD /* CheckInModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CheckInModel.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		26FFAFF2191B367B00D222B7 /* PhotoViewerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewerViewController.h; sourceTree = "<group>"; };
@@ -2405,6 +2412,7 @@
 		0386646D186D352400985CEC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				26FE83DA1A6A1C6A00B17898 /* Fiksu */,
 				0386647E186D352400985CEC /* Images.xcassets */,
 				267E06D31922CCA2004457B4 /* SpotHopperStaging-Info.plist */,
 				26B6768218E9F61400DAD113 /* SpotHopperProduction-Info.plist */,
@@ -3354,10 +3362,10 @@
 				2654B8A6192BB6E000A66BED /* SHMapOverlayCollectionViewController.m */,
 				2654B8A7192BB6E000A66BED /* SHSidebarViewController.h */,
 				2654B8A8192BB6E000A66BED /* SHSidebarViewController.m */,
-				261E1CDB1A4A183800E4E2C4 /* SHDiagnosticsLocationDetailViewController.h */,
-				261E1CDC1A4A183800E4E2C4 /* SHDiagnosticsLocationDetailViewController.m */,
 				261E1CDD1A4A183800E4E2C4 /* SHDiagnosticsViewController.h */,
 				261E1CDE1A4A183800E4E2C4 /* SHDiagnosticsViewController.m */,
+				261E1CDB1A4A183800E4E2C4 /* SHDiagnosticsLocationDetailViewController.h */,
+				261E1CDC1A4A183800E4E2C4 /* SHDiagnosticsLocationDetailViewController.m */,
 				2654B8A9192BB6E000A66BED /* SHSpotsMenuViewController.h */,
 				2654B8AA192BB6E000A66BED /* SHSpotsMenuViewController.m */,
 				2668970F192F2A71004FAC2D /* SHSlidersSearchViewController.h */,
@@ -3430,9 +3438,35 @@
 				261323F719DCA2B900E051DB /* Gainesville.gpx */,
 				268E0F4319F55DB7005C46C7 /* Brookfield.gpx */,
 				260AEDFF1A636A9700FC6F39 /* PuneIndia.gpx */,
+				2630421F1A6EB66C0057CF53 /* Shorewood.gpx */,
 			);
 			path = Locations;
 			sourceTree = SOURCE_ROOT;
+		};
+		26FE83DA1A6A1C6A00B17898 /* Fiksu */ = {
+			isa = PBXGroup;
+			children = (
+				26FE83DD1A6A1C6A00B17898 /* SpotHopper */,
+				26FE83DB1A6A1C6A00B17898 /* EasyMenu */,
+			);
+			path = Fiksu;
+			sourceTree = SOURCE_ROOT;
+		};
+		26FE83DB1A6A1C6A00B17898 /* EasyMenu */ = {
+			isa = PBXGroup;
+			children = (
+				26FE83DC1A6A1C6A00B17898 /* FiksuConfiguration.plist */,
+			);
+			path = EasyMenu;
+			sourceTree = "<group>";
+		};
+		26FE83DD1A6A1C6A00B17898 /* SpotHopper */ = {
+			isa = PBXGroup;
+			children = (
+				26FE83DE1A6A1C6A00B17898 /* FiksuConfiguration.plist */,
+			);
+			path = SpotHopper;
+			sourceTree = "<group>";
 		};
 		996AC210727F41798C21C4EA /* Pods */ = {
 			isa = PBXGroup;
@@ -3562,6 +3596,7 @@
 				264CF2DC19CCFC9800310A56 /* Update Build Number */,
 				26D94A6519D506E300C0CED9 /* Crashlytics */,
 				26CB22B51A672EE70083C9EE /* Fabric */,
+				26B22A361A697CB200671AA7 /* Parse Crash Reporting */,
 			);
 			buildRules = (
 			);
@@ -3715,6 +3750,7 @@
 				03CAC09B18E7716400FAC5F5 /* btn_launch_background_create.png in Resources */,
 				03CAC09C18E7716400FAC5F5 /* cocktail_placeholder@2x.png in Resources */,
 				03CAC09D18E7716400FAC5F5 /* btn_loging_twitter@2x.png in Resources */,
+				26FE83E21A6A1C7600B17898 /* FiksuConfiguration.plist in Resources */,
 				03CAC09E18E7716400FAC5F5 /* wine_placeholder@2x.png in Resources */,
 				03CAC0A218E7716400FAC5F5 /* icon_arrow_shadow.png in Resources */,
 				03CAC0A318E7716400FAC5F5 /* img_launch_field_divider.png in Resources */,
@@ -3925,6 +3961,7 @@
 				267515711A016AFD00A7D0BB /* ReviewHeaderDrinkView.xib in Resources */,
 				267515721A016AFD00A7D0BB /* Lato-HairlineItalic.ttf in Resources */,
 				267515741A016AFD00A7D0BB /* logo_spothopper@2x.png in Resources */,
+				26FE83DF1A6A1C7200B17898 /* FiksuConfiguration.plist in Resources */,
 				267515751A016AFD00A7D0BB /* MyriadPro-Bold.ttf in Resources */,
 				267515761A016AFD00A7D0BB /* txt_sidebar_search_background.png in Resources */,
 				267515771A016AFD00A7D0BB /* Lato-LightItalic.ttf in Resources */,
@@ -4117,6 +4154,7 @@
 				267516ED1A016B1300A7D0BB /* ReviewHeaderDrinkView.xib in Resources */,
 				267516EE1A016B1300A7D0BB /* Lato-HairlineItalic.ttf in Resources */,
 				267516F01A016B1300A7D0BB /* logo_spothopper@2x.png in Resources */,
+				26FE83E01A6A1C7300B17898 /* FiksuConfiguration.plist in Resources */,
 				267516F11A016B1300A7D0BB /* MyriadPro-Bold.ttf in Resources */,
 				267516F21A016B1300A7D0BB /* txt_sidebar_search_background.png in Resources */,
 				267516F31A016B1300A7D0BB /* Lato-LightItalic.ttf in Resources */,
@@ -4286,6 +4324,7 @@
 				267E05FD1922CC48004457B4 /* btn_loging_twitter@2x.png in Resources */,
 				267E05FE1922CC48004457B4 /* wine_placeholder@2x.png in Resources */,
 				2652DC1A1A02F5AF00F34C2B /* btn_search_back@2x.png in Resources */,
+				26FE83E11A6A1C7600B17898 /* FiksuConfiguration.plist in Resources */,
 				267E06021922CC48004457B4 /* icon_arrow_shadow.png in Resources */,
 				267E06031922CC48004457B4 /* img_launch_field_divider.png in Resources */,
 				267E06041922CC48004457B4 /* btn_spot_profile_image_previous.png in Resources */,
@@ -4607,6 +4646,22 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SpotHopperStaging/Pods-SpotHopperStaging-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		26B22A361A697CB200671AA7 /* Parse Crash Reporting */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(DWARF_DSYM_FOLDER_PATH)/$(DWARF_DSYM_FILE_NAME)",
+			);
+			name = "Parse Crash Reporting";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/ParseCrashReporting.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Input Files\n# $(DWARF_DSYM_FOLDER_PATH)/$(DWARF_DSYM_FILE_NAME)\n\n# Output Files\n# $(DERIVED_FILE_DIR)/ParseCrashReporting.txt\n\necho \"Parse Crash Reporting\"\n\nCLOUD_CODE_DIR=${PROJECT_DIR}/ParseCloudCode\n\nif [ -d ${CLOUD_CODE_DIR} ]; then\n    cd ${CLOUD_CODE_DIR}\n    /usr/local/bin/parse symbols \"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"\nelse\n    echo \"Unable to upload symbols. The Parse Cloud Cloud folder must be created.\"\n    echo \"Please run 'parse new ParseCloudCode' in ${PROJECT_DIR}\"\n    echo \"Docs: https://www.parse.com/apps/quickstart#analytics/crashreporting/ios\"\nfi\n\ntouch \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+		};
 		26CB22B51A672EE70083C9EE /* Fabric */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -4647,7 +4702,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "./Pods/CrashlyticsFramework/Crashlytics.framework/run  35aca4223395cee9b73550f97a3022ea413e2c71 f05de3aa6ab4cab201a1be19e25ffe8d6d442c6725a5ddcae1f66a0f356bfd3e";
+			shellScript = "#./Pods/CrashlyticsFramework/Crashlytics.framework/run  35aca4223395cee9b73550f97a3022ea413e2c71 f05de3aa6ab4cab201a1be19e25ffe8d6d442c6725a5ddcae1f66a0f356bfd3e";
 		};
 		26D94A6519D506E300C0CED9 /* Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5631,8 +5686,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = SpotHopperProduction.entitlements;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -5647,7 +5703,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				OTHER_CFLAGS = "$(inherited)";
 				PRODUCT_NAME = SpotHopperProduction;
-				PROVISIONING_PROFILE = "aecb953f-5615-4962-9ef1-198499efb201";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -5659,8 +5715,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = SpotHopperProduction.entitlements;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -5681,7 +5738,7 @@
 					"-DNDEBUG=1",
 				);
 				PRODUCT_NAME = SpotHopperProduction;
-				PROVISIONING_PROFILE = "aecb953f-5615-4962-9ef1-198499efb201";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -5695,6 +5752,7 @@
 				CODE_SIGN_ENTITLEMENTS = SpotHopperProduction.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -5723,6 +5781,7 @@
 				CODE_SIGN_ENTITLEMENTS = SpotHopperProduction.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -5757,6 +5816,7 @@
 				CODE_SIGN_ENTITLEMENTS = SpotHopperProduction.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -5785,6 +5845,7 @@
 				CODE_SIGN_ENTITLEMENTS = SpotHopperProduction.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -5818,6 +5879,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -5845,6 +5907,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

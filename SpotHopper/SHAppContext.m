@@ -205,6 +205,7 @@ static NSString *_currentMapCenterLocationZip;
             _currentDeviceLocationZip = placemark.postalCode;
             
             [Tracker trackUserFrequentLocation];
+            [Tracker trackUserWithProperties:@{ @"Last Location Change" : [NSDate date] } updateLocation:TRUE];
         }
     }];
     
@@ -263,6 +264,8 @@ static NSString *_currentMapCenterLocationZip;
             CLPlacemark *placemark = placemarks[0];
             _currentMapCenterLocationName = [self shortLocationNameFromPlacemark:placemark];
             _currentMapCenterLocationZip = placemark.postalCode;
+            
+            [Tracker trackUserWithProperties:@{} updateLocation:TRUE];
         }
     }];
 }
@@ -450,6 +453,7 @@ static NSString *_currentMapCenterLocationZip;
     
     if (![[JTSReachabilityResponder sharedInstance] isReachable]) {
         [[SHAppUtil defaultInstance] logMessage:@"Network is not reachable" location:location];
+        return;
     }
     
     NSDictionary *params = @{
@@ -465,7 +469,7 @@ static NSString *_currentMapCenterLocationZip;
                        withParameters:params
                                 block:^(NSString *result, NSError *error) {
                                     if (error) {
-                                        DebugLog(@"Error: %@", error.localizedDescription);
+                                        DebugLog(@"Error when updating location: %@", error.localizedDescription);
                                         NSString *message = [NSString stringWithFormat:@"Error: %@", error.localizedDescription];
                                         [[SHAppUtil defaultInstance] logMessage:message location:location];
                                     }

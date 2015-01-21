@@ -47,8 +47,8 @@
 }
 
 + (void)track:(NSString *)event properties:(NSDictionary *)properties andTrackUserAction:(BOOL)trackUserAction {
-    //DebugLog(@"Event: %@", event);
-    //DebugLog(@"Properties: %@", properties);
+    DebugLog(@"Event: %@", event);
+//    DebugLog(@"Properties: %@", properties);
     
     if ([SHAppConfiguration isTrackingEnabled]) {
         [[Mixpanel sharedInstance] track:event properties:properties];

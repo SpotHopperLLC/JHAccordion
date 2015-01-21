@@ -92,4 +92,6 @@
 + (NSString*)lastLocationName;
 + (NSString*)lastLocationNameShort;
 
++ (void)updateLocation:(CLLocation *)location withCompletionBlock:(void (^)(NSError *error))completionBlock;
+
 @end

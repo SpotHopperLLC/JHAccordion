@@ -2164,7 +2164,9 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         if (self.searchRadius > 10000) {
             region = MKCoordinateRegionMakeWithDistance(location.coordinate, 3000, 3000);
         }
-        [self repositionMapOnRegion:region withCompletionBlock:nil];
+        [self repositionMapOnRegion:region withCompletionBlock:^{
+            DebugLog(@"radius: %f", self.searchRadius);
+        }];
         [self.mapView setShowsUserLocation:TRUE];
         return;
     }
@@ -2172,6 +2174,7 @@ NSString* const HomeMapToDrinkProfile = @"HomeMapToDrinkProfile";
         if (self.searchRadius > 10000) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
                 [self repositionOnCurrentDeviceLocation:animated];
+                DebugLog(@"radius: %f", self.searchRadius);
             });
         }
     }
