@@ -24,10 +24,10 @@
 #import "Mixpanel.h"
 #import "ErrorModel.h"
 #import "UserModel.h"
+#import "UserState.h"
 #import "ClientSessionManager.h"
 
 #import "SHAppConfiguration.h"
-//#import "Crashlytics.h"
 
 #import <Parse/Parse.h>
 
@@ -79,13 +79,22 @@
 }
 
 + (void)identifyUser {
-    Mixpanel *mixpanel = [Mixpanel sharedInstance];
-    [mixpanel identify:mixpanel.distinctId];
+    DebugLog(@"Identifying user with Mixpanel");
     
     if ([SHAppConfiguration isTrackingEnabled] && [UserModel isLoggedIn]) {
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
         UserModel *user = [[ClientSessionManager sharedClient] currentUser];
         NSString *userId = [NSString stringWithFormat:@"%@", user.ID];
+        [mixpanel identify:mixpanel.distinctId];
         [mixpanel createAlias:userId forDistinctID:mixpanel.distinctId];
+        DebugLog(@"mixpanel.distinctId: %@", mixpanel.distinctId);
+        
+//        [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+        
+    }
+    else if (![UserModel isLoggedIn]) {
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        [mixpanel identify:mixpanel.distinctId];
     }
 }
 
@@ -107,12 +116,14 @@
     
     UserModel *user = [[ClientSessionManager sharedClient] currentUser];
     
-    id birthYear = @"NULL";
+    NSString *birthYear = nil;
+    NSString *birthDate = nil;
     if (user.birthday) {
         NSAssert(user.birthday, @"Date must be defined");
         NSUInteger componentFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
         NSDateComponents *components = [[NSCalendar currentCalendar] components:componentFlags fromDate:user.birthday];
-        birthYear = [NSNumber numberWithInteger:[components year]];
+        birthYear = [NSString stringWithFormat:@"%li", (long)[components year]];
+        birthDate = [NSString stringWithFormat:@"%li-%li-%li", (long)[components year], (long)[components month], (long)[components day]];
     }
     
     NSMutableDictionary *updatedProperties = properties.mutableCopy;
@@ -134,16 +145,37 @@
             break;
     }
     
-    [updatedProperties addEntriesFromDictionary:@{
-                                                  @"name" : user.name.length ? user.name : @"NULL",
-                                                  @"role" : user.role.length ? user.role : @"NULL",
-                                                  @"email" : user.email.length ? user.email : @"NULL",
-                                                  @"facebookId" : user.facebookId.length ? user.facebookId : @"NULL",
-                                                  @"twitterId" : user.twitterId.length ? user.twitterId : @"NULL",
-                                                  @"gender" : user.gender.length ? user.gender : @"NULL",
-                                                  @"birthYear" : birthYear,
-                                                  @"locationServices" : authorizationStatus
-                                                  }];
+    if (user.name.length) {
+        updatedProperties[@"name"] = user.name;
+    }
+    if (user.role.length) {
+        updatedProperties[@"role"] = user.role;
+    }
+    if (user.email.length) {
+        updatedProperties[@"email"] = user.email;
+    }
+    if (user.facebookId.length) {
+        updatedProperties[@"facebookId"] = user.facebookId;
+    }
+    if (user.twitterId.length) {
+        updatedProperties[@"twitterId"] = user.twitterId;
+    }
+    if (user.gender.length) {
+        updatedProperties[@"gender"] = user.gender;
+    }
+    if (birthYear.length) {
+        updatedProperties[@"birthYear"] = birthYear;
+    }
+    if (birthDate.length) {
+        updatedProperties[@"birthDate"] = birthDate;
+    }
+    
+    NSDate *firstUseDate = [UserState firstUseDate];
+    if (firstUseDate) {
+        updatedProperties[@"firstUseDate"] = firstUseDate;
+    }
+    
+    updatedProperties[@"locationServices"] = authorizationStatus;
     
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     

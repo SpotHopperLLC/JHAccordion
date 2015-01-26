@@ -31,14 +31,9 @@ def import_pods
     # Note: This Transloadit library needs to be published properly via Trunks
     pod 'TransloaditAPI', :git => 'https://github.com/transloadit/ios-sdk.git'
 
-    # Debugging garbage (do not use)
-    #pod 'CrashlyticsFramework', '~> 2.2'
-    
-    # Twitter garbage (do not use)
-    #pod 'Fabric', '~> 1.1'
-    
-    # Twitter tracking
-    pod 'FiksuSDK', '~> 4.3'
+    # Twitter ad tracking
+    # https://developers.mobileapptracking.com/ios-sdk/
+    pod 'MobileAppTracker', '~> 3.7'
 
     # Social
     pod 'Facebook-iOS-SDK', '~> 3.0'

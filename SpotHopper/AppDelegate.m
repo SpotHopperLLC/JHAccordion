@@ -44,15 +44,16 @@
 #import "DrinkSubTypeModel.h"
 #import "BaseAlcoholModel.h"
 
-//#import "Crashlytics.h"
 #import "Promise.h"
 
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
 #import <JSONAPI/JSONAPI.h>
-#import <FiksuSDK/FiksuSDK.h>
 #import <Parse/Parse.h>
 #import <ParseCrashReporting/ParseCrashReporting.h>
 #import <STTwitter/STTwitter.h>
+
+#import <MobileAppTracker/MobileAppTracker.h>
+#import <AdSupport/AdSupport.h>
 
 #define kPushActionShowSpecials @"ShowSpecials"
 #define kPushActionShowSpotlist @"ShowSpotlist"
@@ -79,105 +80,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [SHModelResourceManager prepareResources];
 
-    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
-    
-    if ([SHAppConfiguration isParseEnabled]) {
-        [ParseCrashReporting enable];
-        [Parse setApplicationId:[SHAppConfiguration parseApplicationID]
-                      clientKey:[SHAppConfiguration parseClientKey]];
-//        [Parse enableLocalDatastore]; // not ready yet (it has crashing issues)
-        [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
-        [PFUser enableAutomaticUser];
-        PFUser *user = [PFUser currentUser];
-        if (user.isAuthenticated) {
-            [user setObject:[SHAppConfiguration bundleDisplayName] forKey:@"appName"];
-            [user setObject:[SHAppConfiguration bundleIdentifier] forKey:@"appIdentifier"];
-            [user setObject:@"ios" forKey:@"deviceType"];
-            
-            if ([[ClientSessionManager sharedClient] isLoggedIn]) {
-                NSString *sessionToken = [[ClientSessionManager sharedClient] sessionToken];
-                if (sessionToken.length) {
-                    [user setObject:sessionToken forKey:@"spotHopperSessionToken"];
-                }
-            }
-            
-            NSString *timezone = [[NSTimeZone localTimeZone] name];
-            if (timezone.length) {
-                [user setObject:timezone forKey:@"timeZone"];
-            }
-            
-            [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                if (error) {
-                    DebugLog(@"Error: %@", error);
-                }
-            }];
-        }
-    }
-    
-    // Prompts user for permission to send notifications
-    if ([application respondsToSelector:@selector(registerForRemoteNotifications)] && [application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-        // iOS 8 support
-        UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound);
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes categories:nil];
-        [application registerUserNotificationSettings:settings];
-        [application registerForRemoteNotifications];
-    }
-    else {
-        // iOS 7 support
-        UIRemoteNotificationType types = UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound;
-        [application registerForRemoteNotificationTypes:types];
-    }
-    
-    FBSessionTokenCachingStrategy *cachingStrategy = [FBSessionTokenCachingStrategy defaultInstance];
-    if ([FBSessionTokenCachingStrategy isValidTokenInformation:[cachingStrategy fetchTokenInformation]]) {
-        [FBSession openActiveSessionWithAllowLoginUI:NO];
-    }
-    
-    if ([[FBSession activeSession] isOpen]) {
-        [[SHAppUtil defaultInstance] becomeFacebookUserWithCompletionBlock: ^(BOOL success, NSError *error) {
-            [[SHAppUtil defaultInstance] fetchFacebookDetailsWithCompletionBlock:^(BOOL success, NSError *error) {
-                if (error) {
-                    DebugLog(@"Error: %@", error);
-                    [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
-                }
-            }];
-        }];
-    }
-    else if ([UserModel isLoggedIn]) {
-        [[SHAppUtil defaultInstance] becomeSpotHopperUserWithCompletionBlock:^(BOOL success, NSError *error) {
-            if (error) {
-                DebugLog(@"Error: %@", error);
-            }
-            
-            // set the user profile using just UserModel
-            
-            UserModel *user = [UserModel currentUser];
-            DebugLog(@"user: %@", user);
-            
-            SHUserProfileModel *userProfile = [[SHUserProfileModel alloc] init];
-            userProfile.spotHopperUserId = [NSNumber numberWithLongLong:[user.ID longLongValue]];
-            userProfile.name = user.name;
-            
-            if (user.facebookId) {
-                userProfile.facebookId = [NSNumber numberWithLongLong:[user.facebookId longLongValue]];
-                NSString *imageUrlString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", user.facebookId];
-                userProfile.imageURL = [NSURL URLWithString:imageUrlString];
-            }
-            else {
-                userProfile.imageURL = [NSURL URLWithString:@"http://static.spotapps.co/spothopper-icon.png"];
-            }
-            
-            [[SHAppUtil defaultInstance] saveUserProfile:userProfile withCompletionBlock:^(SHUserProfileModel *savedUserProfile, NSError *error) {
-                if (error) {
-                    DebugLog(@"Error: %@", error);
-                }
-                else {
-                    [[SHAppContext defaultInstance] setCurrentUserProfile:savedUserProfile];
-                }
-            }];
-        }];
-    }
-    
     // Navigation bar styling
     [[UINavigationBar appearance] setTintColor:kColorOrange];
     
@@ -186,57 +88,23 @@
     
     // Initializes cookie for network calls
     [[ClientSessionManager sharedClient] isLoggedIn];
-    
-    if ([SHAppConfiguration isTrackingEnabled]) {
-        NSString *token = [SHAppConfiguration mixpanelToken];
-        [Mixpanel sharedInstanceWithToken:token];
-        [Tracker trackAppLaunching];
-        [Tracker identifyUser];
-        [Tracker trackUserWithProperties:@{ @"Last Launch Date" : [NSDate date] }];
-        [Tracker trackUserAction:@"App Launch"];
-    }
-    
-    NSDate *firstUseDate = [UserState firstUseDate];
-    if (!firstUseDate) {
-        [UserState setFirstUseDate:[NSDate date]];
-        if ([SHAppConfiguration isTrackingEnabled]) {
-            [Tracker trackFirstUse];
-            [Tracker trackUserFirstUse];
-        }
-    }
 
-    if ([ClientSessionManager sharedClient].isLoggedIn) {
-        [self refreshDeviceLocationWithCompletionBlock:^{
-            [SHAppContext setLastLocation:[SHAppContext currentDeviceLocation] withCompletionBlock:^{
-                CLLocation *location = [SHAppContext lastLocation];
-                if (location) {
-                    UserModel *user = [[ClientSessionManager sharedClient] currentUser];
-                    [user putUser:@{ kUserModelParamLatitude : [NSNumber numberWithFloat:location.coordinate.latitude],
-                                     kUserModelParamLongitude : [NSNumber numberWithFloat:location.coordinate.longitude]
-                                     } success:^(UserModel *userModel, NSHTTPURLResponse *response) {
-                                         
-                                     } failure:^(ErrorModel *errorModel) {
-                                         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
-                                     }];
-                }
-            }];
-        }];
-    }
+    // Initialize network activity indicator for AFNetworking
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    
+    [self prepareTracking:application launchOptions:launchOptions];
+    [self trackLocation:application launchOptions:launchOptions];
+    [self prepareMobileAppTracking:application launchOptions:launchOptions];
+    [self promptForNotificationsPermissions:application launchOptions:launchOptions];
+    [self prepareParse:application launchOptions:launchOptions];
+    [self prepareLoginSession:application launchOptions:launchOptions];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleFacebookSessionDidBecomeOpenActiveSessionNotification:)
                                                  name:FBSessionDidBecomeOpenActiveSessionNotification
                                                object:nil];
     
-    BOOL isLocationChange = [launchOptions.allKeys containsObject:UIApplicationLaunchOptionsLocationKey];
-    if (isLocationChange) {
-        [Tracker trackDidChangeSignificantLocation];
-    }
-    
     [[SHLocationManager defaultInstance] wakeUp];
-    
-    // Twitter ad tracking
-    [FiksuTrackingManager applicationDidFinishLaunching:launchOptions];
     
     return YES;
 }
@@ -247,6 +115,10 @@
         // The URL is longer than we expect. Stop servicing it.
         return NO;
     }
+    
+#ifndef STAGING
+    [MobileAppTracker applicationDidOpenURL:[url absoluteString] sourceApplication:sourceApplication];
+#endif
     
     BFURL *parsedUrl = [BFURL URLWithURL:url];
     NSString *fullURLString = parsedUrl.targetURL.absoluteString;
@@ -316,6 +188,7 @@
         }];
     }
 
+    // Important: seeing the device token with Mixpanel must be done after identifying and aliasing the user
     // prepare Mixpanel to send notifications to this device
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     [mixpanel identify:mixpanel.distinctId];
@@ -344,6 +217,7 @@
     DebugLog(@"is silent: %@", isSilentPush ? @"YES" : @"NO");
     
     if ([kPushActionUpdateLocation isEqualToString:action]) {
+        DebugLog(@"action: %@", action);
         [self processLocationUpdate:userInfo withCompletionBlock:^{
             if (completionHandler) {
                 completionHandler(UIBackgroundFetchResultNewData);
@@ -418,10 +292,220 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [FBSession.activeSession handleDidBecomeActive];
+
+#ifndef STAGING
+    [MobileAppTracker measureSession];
+#endif
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark - Launching
+#pragma mark -
+
+- (void)prepareMobileAppTracking:(UIApplication *)application launchOptions:(NSDictionary *)launchOptions {
+    
+#ifdef STAGING
+    DebugLog(@"Notice: Mobile App Tracking is disabled for Staging build target");
+#else
+    // Account Configuration info - must be set
+    [MobileAppTracker initializeWithMATAdvertiserId:@"170962"
+                                   MATConversionKey:@"76735f1bfe9d724d3deda09704c12e06"];
+    
+    // Pass the Apple Identifier for Advertisers (IFA) to MAT; enables accurate 1-to-1 attribution.
+    // REQUIRED for attribution on iOS devices.
+    [MobileAppTracker setAppleAdvertisingIdentifier:[[ASIdentifierManager sharedManager] advertisingIdentifier]
+                         advertisingTrackingEnabled:[[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled]];
+    
+    // Check if deferred deeplink can be opened, with a max timeout value in seconds
+    // Uncomment this line if your MAT account has enabled deferred deeplinks
+    //[MobileAppTracker checkForDeferredDeeplinkWithTimeout:0.75];
+    
+    // If your app already has a pre-existing user base before you implement the MAT SDK, then
+    // identify the pre-existing users with this code snippet.
+    // Otherwise, MAT counts your pre-existing users as new installs the first time they run your app.
+    // Omit this section if you're upgrading to a newer version of the MAT SDK.
+    // This section only applies to NEW implementations of the MAT SDK.
+
+    // if the user is logged in or the first date is set it is an existing user
+    NSDate *firstUseDate = [UserState firstUseDate];
+    BOOL isExistingUser = [UserModel isLoggedIn] || firstUseDate;
+    if (isExistingUser) {
+        [MobileAppTracker setExistingUser:YES];
+    }
+    
+#endif
+}
+
+- (void)prepareTracking:(UIApplication *)application launchOptions:(NSDictionary *)launchOptions {
+    if ([SHAppConfiguration isTrackingEnabled]) {
+        NSString *token = [SHAppConfiguration mixpanelToken];
+        [Mixpanel sharedInstanceWithToken:token];
+        [Tracker trackAppLaunching];
+        [Tracker identifyUser];
+        [Tracker trackUserWithProperties:@{ @"Last Launch Date" : [NSDate date] }];
+        [Tracker trackUserAction:@"App Launch"];
+        
+        NSDate *firstUseDate = [UserState firstUseDate];
+        if (!firstUseDate) {
+            [UserState setFirstUseDate:[NSDate date]];
+            [Tracker trackFirstUse];
+        }
+        [Tracker trackUserFirstUse];
+    }
+}
+
+- (void)promptForNotificationsPermissions:(UIApplication *)application launchOptions:(NSDictionary *)launchOptions {
+    
+    DebugLog(@"Registering for user notifications");
+    
+    // Prompts user for permission to send notifications
+    if ([application respondsToSelector:@selector(registerForRemoteNotifications)] && [application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+        // iOS 8 support
+        UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound);
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes categories:nil];
+        [application registerUserNotificationSettings:settings];
+        [application registerForRemoteNotifications];
+    }
+    else {
+        // iOS 7 support
+        UIRemoteNotificationType types = UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound;
+        [application registerForRemoteNotificationTypes:types];
+    }
+}
+
+- (void)prepareParse:(UIApplication *)application launchOptions:(NSDictionary *)launchOptions {
+    if ([SHAppConfiguration isParseEnabled]) {
+        [ParseCrashReporting enable];
+        [Parse setApplicationId:[SHAppConfiguration parseApplicationID]
+                      clientKey:[SHAppConfiguration parseClientKey]];
+        // [Parse enableLocalDatastore]; // not ready yet (it has crashing issues)
+        [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+        [PFUser enableAutomaticUser];
+        PFUser *user = [PFUser currentUser];
+        if (user.isAuthenticated) {
+            [user setObject:[SHAppConfiguration bundleDisplayName] forKey:@"appName"];
+            [user setObject:[SHAppConfiguration bundleIdentifier] forKey:@"appIdentifier"];
+            [user setObject:@"ios" forKey:@"deviceType"];
+            
+            if ([[ClientSessionManager sharedClient] isLoggedIn]) {
+                NSString *sessionToken = [[ClientSessionManager sharedClient] sessionToken];
+                if (sessionToken.length) {
+                    [user setObject:sessionToken forKey:@"spotHopperSessionToken"];
+                }
+            }
+            
+            NSString *timezone = [[NSTimeZone localTimeZone] name];
+            if (timezone.length) {
+                [user setObject:timezone forKey:@"timeZone"];
+            }
+            
+            [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (error) {
+                    DebugLog(@"Error: %@", error);
+                }
+            }];
+        }
+    }
+}
+
+- (void)prepareLoginSession:(UIApplication *)application launchOptions:(NSDictionary *)launchOptions {
+    FBSessionTokenCachingStrategy *cachingStrategy = [FBSessionTokenCachingStrategy defaultInstance];
+    if ([FBSessionTokenCachingStrategy isValidTokenInformation:[cachingStrategy fetchTokenInformation]]) {
+        [FBSession openActiveSessionWithAllowLoginUI:NO];
+    }
+    
+    // sync up the FB identity with the SpotHopper user identity
+    if ([[FBSession activeSession] isOpen]) {
+        [[SHAppUtil defaultInstance] becomeFacebookUserWithCompletionBlock: ^(BOOL success, NSError *error) {
+            [[SHAppUtil defaultInstance] fetchFacebookDetailsWithCompletionBlock:^(BOOL success, NSError *error) {
+                if (error) {
+                    DebugLog(@"Error: %@", error);
+                    [Tracker logError:error class:[self class] trace:NSStringFromSelector(_cmd)];
+                    
+                    UserModel *user = [UserModel currentUser];
+                    if (!user.facebookId.length) {
+                        [UserModel fetchUser:user success:^(UserModel *fetchedUser) {
+                            [[ClientSessionManager sharedClient] setCurrentUser:fetchedUser];
+                            [Tracker trackUserWithProperties:@{}];
+                        } failure:^(ErrorModel *errorModel) {
+                            [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+                        }];
+                    }
+                }
+            }];
+        }];
+    }
+    else if ([UserModel isLoggedIn]) {
+        [[SHAppUtil defaultInstance] becomeSpotHopperUserWithCompletionBlock:^(BOOL success, NSError *error) {
+            if (error) {
+                DebugLog(@"Error: %@", error);
+            }
+            
+            // set the user profile using just UserModel
+            
+            UserModel *user = [UserModel currentUser];
+            DebugLog(@"user: %@", user);
+            
+            if (!user.birthday) {
+                [UserModel fetchUser:user success:^(UserModel *fetchedUser) {
+                    [[ClientSessionManager sharedClient] setCurrentUser:fetchedUser];
+                    [Tracker trackUserWithProperties:@{}];
+                } failure:^(ErrorModel *errorModel) {
+                    [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+                }];
+            }
+            
+            SHUserProfileModel *userProfile = [[SHUserProfileModel alloc] init];
+            userProfile.spotHopperUserId = [NSNumber numberWithLongLong:[user.ID longLongValue]];
+            userProfile.name = user.name;
+            
+            if (user.facebookId) {
+                userProfile.facebookId = [NSNumber numberWithLongLong:[user.facebookId longLongValue]];
+                NSString *imageUrlString = [NSString stringWithFormat:@"http://graph.facebook.com/%@/picture?type=large", user.facebookId];
+                userProfile.imageURL = [NSURL URLWithString:imageUrlString];
+            }
+            else {
+                userProfile.imageURL = [NSURL URLWithString:@"http://static.spotapps.co/spothopper-icon.png"];
+            }
+            
+            [[SHAppUtil defaultInstance] saveUserProfile:userProfile withCompletionBlock:^(SHUserProfileModel *savedUserProfile, NSError *error) {
+                if (error) {
+                    DebugLog(@"Error: %@", error);
+                }
+                else {
+                    [[SHAppContext defaultInstance] setCurrentUserProfile:savedUserProfile];
+                }
+            }];
+        }];
+    }
+}
+
+- (void)trackLocation:(UIApplication *)application launchOptions:(NSDictionary *)launchOptions {
+    if ([ClientSessionManager sharedClient].isLoggedIn) {
+        [self refreshDeviceLocationWithCompletionBlock:^{
+            [SHAppContext setLastLocation:[SHAppContext currentDeviceLocation] withCompletionBlock:^{
+                CLLocation *location = [SHAppContext lastLocation];
+                if (location) {
+                    UserModel *user = [[ClientSessionManager sharedClient] currentUser];
+                    [user putUser:@{ kUserModelParamLatitude : [NSNumber numberWithFloat:location.coordinate.latitude],
+                                     kUserModelParamLongitude : [NSNumber numberWithFloat:location.coordinate.longitude]
+                                     } success:^(UserModel *userModel, NSHTTPURLResponse *response) {
+                                         
+                                     } failure:^(ErrorModel *errorModel) {
+                                         [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+                                     }];
+                }
+            }];
+        }];
+    }
+    
+    BOOL isLocationChange = [launchOptions.allKeys containsObject:UIApplicationLaunchOptionsLocationKey];
+    if (isLocationChange) {
+        [Tracker trackDidChangeSignificantLocation];
+    }
 }
 
 #pragma mark - Private
@@ -521,6 +605,8 @@
 }
 
 - (void)processLocationUpdate:(NSDictionary *)userInfo withCompletionBlock:(void (^)())completionBlock {
+    DebugLog(@"%@", NSStringFromSelector(_cmd));
+    
     NSString *action = userInfo[@"action"];
     NSString *key = userInfo[@"key"];
     if (action.length && key.length) {
