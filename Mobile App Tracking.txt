@@ -1,0 +1,17 @@
+Mobile App Tracking
+
+App Type:
+iOS
+App Name:
+SpotHopper
+Destination URL:
+https://itunes.apple.com/us/app/spothopper/id853828436?mt=8
+Advertiser ID:
+170962
+Store App ID:
+853828436
+Package Name:
+com.spothopperapp.SpotHopper
+Conversion Key:
+76735f1bfe9d724d3deda09704c12e06
+

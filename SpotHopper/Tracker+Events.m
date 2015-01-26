@@ -605,6 +605,7 @@
 + (void)trackListViewDidDisplaySpot:(SpotModel *)spot  position:(NSUInteger)position isSpecials:(BOOL)isSpecials {
     [self trackLocationPropertiesForEvent:@"List View Displayed Spot" properties:@{
                                                                                    @"Name" : spot.name.length ? spot.name : @"NULL",
+                                                                                   @"Spot ID" : spot.ID ? spot.ID : @"NULL",
                                                                                    @"Position" : [NSNumber numberWithInteger:position],
                                                                                    @"Is Specials" : [NSNumber numberWithBool:isSpecials] }];
 }
@@ -612,6 +613,7 @@
 + (void)trackListViewDidDisplayDrink:(DrinkModel *)drink  position:(NSUInteger)position {
     [self trackLocationPropertiesForEvent:@"List View Displayed Drink" properties:@{
                                                                                     @"Name" : drink.name.length ? drink.name : @"NULL",
+                                                                                    @"Drink ID" : drink.ID ? drink.ID : @"NULL",
                                                                                     @"Type" : drink.drinkType.name.length ? drink.drinkType.name : @"NULL",
                                                                                     @"Position" : [NSNumber numberWithInteger:position] }];
 }

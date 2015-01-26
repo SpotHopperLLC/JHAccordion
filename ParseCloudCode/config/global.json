@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "_default": {
+            "link": "iOS"
+        }, 
+        "iOS": {
+            "applicationId": "mv8IYyHlRl74FL2KTWzjwGBoAwU65WrFP1mZDzmM", 
+            "masterKey": "9HkyUadNjDpCIm04gRNeKdAAHKcCKoUfzSDsUtSJ"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.3.3"
+    }
+}

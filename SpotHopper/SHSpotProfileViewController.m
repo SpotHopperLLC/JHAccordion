@@ -517,6 +517,7 @@ NSString* const SpotSpecialLabelText = @"Specials/Happy Hour";
             if (indexPaths.count) {
                 UICollectionViewCell *collectionCell = [collectionView cellForItemAtIndexPath:indexPaths[0]];
                 if (collectionCell) {
+                    NSAssert(!collectionCell.clipsToBounds, @"Cell must not clip to bounds");
                     UIImageView *imageView = (UIImageView *)[collectionCell viewWithTag:kTagImageView];
                     NSAssert(imageView, @"Image View is required");
                     CGRect frame = imageView.frame;

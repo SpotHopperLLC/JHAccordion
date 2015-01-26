@@ -221,6 +221,11 @@
     // 2) fetch nearby spots
     // 3) ask the user if they would like to check in with a local notification
     
+    // disable local prompting to allow for remote pushes to handle it
+    if (TRUE) {
+        return;
+    }
+    
     UIApplication *application = [UIApplication sharedApplication];
     if (application.applicationState == UIApplicationStateActive) {
         // prompting should not be triggered when the app is active
@@ -464,6 +469,7 @@
                                                 NSString *sessionToken = dict[@"sessionToken"];
                                                 if (sessionToken.length) {
                                                     [PFUser becomeInBackground:sessionToken block: ^(PFUser *user, NSError *error) {
+                                                        DebugLog(@"User is %@", user.objectId);
                                                         completionBlock(TRUE, nil);
                                                     }];
                                                 }

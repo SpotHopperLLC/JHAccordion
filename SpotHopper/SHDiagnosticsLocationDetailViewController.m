@@ -30,7 +30,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
 }
 
 - (NSArray *)viewOptions {
@@ -56,6 +55,10 @@
         
         self.timeLabel.text = [self stringFromDate:self.obj.createdAt];
     }
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 #pragma mark - Formatting

@@ -517,6 +517,12 @@
     [self.requestSerializer setValue:cookie forHTTPHeaderField:@"Cookie"];
     [self setCurrentUser:user];
     
+    [UserModel fetchUser:user success:^(UserModel *fetchedUser) {
+        [self setCurrentUser:fetchedUser];
+    } failure:^(ErrorModel *errorModel) {
+        [Tracker logError:errorModel class:[self class] trace:NSStringFromSelector(_cmd)];
+    }];
+    
     [[SHAppUtil defaultInstance] updateParse];
     [SHNotifications userDidLogIn];
 }
