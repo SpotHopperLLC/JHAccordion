@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="HEl-e0-h9y">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="HEl-e0-h9y">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
@@ -63,9 +63,6 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="73" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="V1h-kT-2cW">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="320" id="2xP-vy-1Fc"/>
-                                </constraints>
                                 <inset key="scrollIndicatorInsets" minX="0.0" minY="160" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ButtonsCell" rowHeight="110" id="3IS-Kg-Iil" customClass="SHMenuAdminSwipeableDrinkTableViewCell">
@@ -465,7 +462,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uyk-ac-rcf" userLabel="Drink Type Container">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VUd-qD-L54" userLabel="Beer Button">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VUd-qD-L54" userLabel="Beer Button">
                                                 <rect key="frame" x="0.0" y="0.0" width="107" height="60"/>
                                                 <state key="normal" title="Beer">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -478,10 +475,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b1k-qr-ywD" userLabel="Wine Button">
-                                                <rect key="frame" x="107" y="0.0" width="107" height="60"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="107" id="Xar-M5-TN7"/>
-                                                </constraints>
+                                                <rect key="frame" x="107" y="0.0" width="106.5" height="60"/>
                                                 <state key="normal" title="Wine">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -489,8 +483,8 @@
                                                     <action selector="toggleDrinkTypeButtons:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="YQz-78-QhW"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BQC-4h-fHR" userLabel="Cocktails Button">
-                                                <rect key="frame" x="213" y="0.0" width="107" height="60"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BQC-4h-fHR" userLabel="Cocktails Button">
+                                                <rect key="frame" x="213" y="0.0" width="106.5" height="60"/>
                                                 <state key="normal" title="Cocktails">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -501,12 +495,20 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="centerX" secondItem="b1k-qr-ywD" secondAttribute="centerX" id="6fy-J5-32Y"/>
+                                            <constraint firstItem="VUd-qD-L54" firstAttribute="leading" secondItem="uyk-ac-rcf" secondAttribute="leading" id="8MH-8W-PIU"/>
+                                            <constraint firstItem="b1k-qr-ywD" firstAttribute="leading" secondItem="VUd-qD-L54" secondAttribute="trailing" id="DLE-nt-Q2e"/>
                                             <constraint firstItem="b1k-qr-ywD" firstAttribute="top" secondItem="uyk-ac-rcf" secondAttribute="top" id="JFA-IG-SRz"/>
                                             <constraint firstAttribute="height" constant="70" id="Jcl-gC-5DN"/>
+                                            <constraint firstItem="BQC-4h-fHR" firstAttribute="top" secondItem="uyk-ac-rcf" secondAttribute="top" id="Nfr-GS-p4E"/>
+                                            <constraint firstItem="VUd-qD-L54" firstAttribute="top" secondItem="uyk-ac-rcf" secondAttribute="top" id="PUx-nM-gYL"/>
+                                            <constraint firstItem="BQC-4h-fHR" firstAttribute="leading" secondItem="b1k-qr-ywD" secondAttribute="trailing" id="Q7C-dT-oWb"/>
+                                            <constraint firstItem="VUd-qD-L54" firstAttribute="width" secondItem="b1k-qr-ywD" secondAttribute="width" id="Qwi-Ko-jyX"/>
                                             <constraint firstAttribute="bottom" secondItem="b1k-qr-ywD" secondAttribute="bottom" constant="10" id="Z6a-e9-gYt"/>
-                                            <constraint firstAttribute="width" constant="320" id="kLp-uM-mc0"/>
+                                            <constraint firstItem="BQC-4h-fHR" firstAttribute="width" secondItem="b1k-qr-ywD" secondAttribute="width" id="ZC3-og-NHS"/>
                                             <constraint firstItem="b1k-qr-ywD" firstAttribute="top" secondItem="uyk-ac-rcf" secondAttribute="top" id="nrR-ec-cqc"/>
+                                            <constraint firstAttribute="bottom" secondItem="VUd-qD-L54" secondAttribute="bottom" constant="10" id="sNA-j0-eMl"/>
+                                            <constraint firstAttribute="trailing" secondItem="BQC-4h-fHR" secondAttribute="trailing" id="tSv-J9-sOf"/>
+                                            <constraint firstAttribute="bottom" secondItem="BQC-4h-fHR" secondAttribute="bottom" constant="10" id="z8i-St-AVw"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qs3-3Y-llG" userLabel="Beer SubType Container">
@@ -514,9 +516,6 @@
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZSh-IR-gMx" userLabel="On Tap Button">
                                                 <rect key="frame" x="0.0" y="0.0" width="160" height="60"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="160" id="6Dz-dg-r3O"/>
-                                                </constraints>
                                                 <state key="normal" title="On Tap">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -524,7 +523,7 @@
                                                     <action selector="toggleBeerSubtypeButtons:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Ia0-Ak-PTY"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nVH-eL-q8Y" userLabel="Bottles Button">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nVH-eL-q8Y" userLabel="Bottles Button">
                                                 <rect key="frame" x="160" y="0.0" width="160" height="60"/>
                                                 <state key="normal" title="Bottles &amp; Cans">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -537,10 +536,14 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="6rG-RW-mHr"/>
+                                            <constraint firstItem="nVH-eL-q8Y" firstAttribute="width" secondItem="ZSh-IR-gMx" secondAttribute="width" id="TSK-br-PYW"/>
                                             <constraint firstItem="ZSh-IR-gMx" firstAttribute="leading" secondItem="Qs3-3Y-llG" secondAttribute="leading" id="YNd-cI-UB4"/>
-                                            <constraint firstAttribute="width" constant="320" id="hrA-NG-W52"/>
+                                            <constraint firstAttribute="bottom" secondItem="nVH-eL-q8Y" secondAttribute="bottom" id="ZV7-Qn-izQ"/>
+                                            <constraint firstItem="nVH-eL-q8Y" firstAttribute="top" secondItem="Qs3-3Y-llG" secondAttribute="top" id="bDi-0e-C99"/>
+                                            <constraint firstAttribute="trailing" secondItem="nVH-eL-q8Y" secondAttribute="trailing" id="mDc-sH-zs9"/>
                                             <constraint firstItem="ZSh-IR-gMx" firstAttribute="top" secondItem="Qs3-3Y-llG" secondAttribute="top" id="pFP-mG-eGe"/>
                                             <constraint firstAttribute="bottom" secondItem="ZSh-IR-gMx" secondAttribute="bottom" id="uQr-RE-Wv0"/>
+                                            <constraint firstItem="nVH-eL-q8Y" firstAttribute="leading" secondItem="ZSh-IR-gMx" secondAttribute="trailing" id="vEY-w9-h8m"/>
                                         </constraints>
                                     </view>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xmo-Le-Kas" userLabel="Wine SubType Container">
@@ -549,7 +552,6 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aid-P0-59h" userLabel="Red Button">
                                                 <rect key="frame" x="0.0" y="0.0" width="64" height="60"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="64" id="d4e-Yw-xS4"/>
                                                     <constraint firstAttribute="height" constant="60" id="dig-Az-VSH"/>
                                                 </constraints>
                                                 <state key="normal" title="Red">
@@ -559,7 +561,7 @@
                                                     <action selector="toggleWineSubtypeButtons:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="3Dn-F0-Jg5"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y4Y-uu-0xo" userLabel="White Button">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y4Y-uu-0xo" userLabel="White Button">
                                                 <rect key="frame" x="64" y="0.0" width="64" height="60"/>
                                                 <state key="normal" title="White">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -568,7 +570,7 @@
                                                     <action selector="toggleWineSubtypeButtons:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="bk8-4i-luS"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RcL-Gw-aSe" userLabel="Sparkling Button">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RcL-Gw-aSe" userLabel="Sparkling Button">
                                                 <rect key="frame" x="128" y="0.0" width="64" height="60"/>
                                                 <state key="normal" title="Sparkling">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -577,7 +579,7 @@
                                                     <action selector="toggleWineSubtypeButtons:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="hJq-87-Xm8"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hxe-Wc-oIh" userLabel="Rose Button">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hxe-Wc-oIh" userLabel="Rose Button">
                                                 <rect key="frame" x="192" y="0.0" width="64" height="60"/>
                                                 <state key="normal" title="Rose">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -586,7 +588,7 @@
                                                     <action selector="toggleWineSubtypeButtons:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="y5c-jl-vfd"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ExV-zI-QLg" userLabel="Fortified Button">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ExV-zI-QLg" userLabel="Fortified Button">
                                                 <rect key="frame" x="256" y="0.0" width="64" height="60"/>
                                                 <state key="normal" title="Fortified">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -598,11 +600,27 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="Hxe-Wc-oIh" secondAttribute="bottom" id="0fI-lV-uuC"/>
+                                            <constraint firstItem="Y4Y-uu-0xo" firstAttribute="top" secondItem="xmo-Le-Kas" secondAttribute="top" id="1ao-dR-UlR"/>
                                             <constraint firstItem="aid-P0-59h" firstAttribute="top" secondItem="xmo-Le-Kas" secondAttribute="top" id="5d0-Nt-XTT"/>
+                                            <constraint firstItem="ExV-zI-QLg" firstAttribute="width" secondItem="Hxe-Wc-oIh" secondAttribute="width" id="6eN-US-OqN"/>
                                             <constraint firstItem="aid-P0-59h" firstAttribute="leading" secondItem="xmo-Le-Kas" secondAttribute="leading" id="CCm-UY-VGQ"/>
+                                            <constraint firstItem="RcL-Gw-aSe" firstAttribute="leading" secondItem="Y4Y-uu-0xo" secondAttribute="trailing" id="GFT-oo-PSD"/>
+                                            <constraint firstItem="RcL-Gw-aSe" firstAttribute="top" secondItem="xmo-Le-Kas" secondAttribute="top" id="IjK-ww-2kt"/>
+                                            <constraint firstAttribute="bottom" secondItem="ExV-zI-QLg" secondAttribute="bottom" id="IlI-FW-MWO"/>
+                                            <constraint firstItem="Y4Y-uu-0xo" firstAttribute="leading" secondItem="aid-P0-59h" secondAttribute="trailing" id="JlS-vq-UbO"/>
+                                            <constraint firstItem="Hxe-Wc-oIh" firstAttribute="width" secondItem="RcL-Gw-aSe" secondAttribute="width" id="KI0-zh-5zC"/>
+                                            <constraint firstItem="Hxe-Wc-oIh" firstAttribute="top" secondItem="xmo-Le-Kas" secondAttribute="top" id="OBi-iJ-Lck"/>
                                             <constraint firstAttribute="bottom" secondItem="aid-P0-59h" secondAttribute="bottom" id="PMb-Wa-CeO"/>
+                                            <constraint firstItem="Hxe-Wc-oIh" firstAttribute="leading" secondItem="RcL-Gw-aSe" secondAttribute="trailing" id="Tnz-1B-UcG"/>
                                             <constraint firstAttribute="height" constant="60" id="UNT-Dt-nVK"/>
-                                            <constraint firstAttribute="width" constant="320" id="y2y-RK-YJd"/>
+                                            <constraint firstAttribute="bottom" secondItem="Y4Y-uu-0xo" secondAttribute="bottom" id="hac-5p-hzW"/>
+                                            <constraint firstItem="ExV-zI-QLg" firstAttribute="top" secondItem="xmo-Le-Kas" secondAttribute="top" id="kdU-x3-eoe"/>
+                                            <constraint firstItem="RcL-Gw-aSe" firstAttribute="width" secondItem="Y4Y-uu-0xo" secondAttribute="width" id="kjS-Kc-2Fq"/>
+                                            <constraint firstAttribute="trailing" secondItem="ExV-zI-QLg" secondAttribute="trailing" id="npw-vk-48n"/>
+                                            <constraint firstItem="ExV-zI-QLg" firstAttribute="leading" secondItem="Hxe-Wc-oIh" secondAttribute="trailing" id="pyM-JR-Q9p"/>
+                                            <constraint firstAttribute="bottom" secondItem="RcL-Gw-aSe" secondAttribute="bottom" id="s6O-Wt-A4h"/>
+                                            <constraint firstItem="Y4Y-uu-0xo" firstAttribute="width" secondItem="aid-P0-59h" secondAttribute="width" id="yZx-pw-4er"/>
                                         </constraints>
                                     </view>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xaN-wm-ueQ" userLabel="Cocktail SubTypes Container">
@@ -612,7 +630,6 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="160" height="60"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="60" id="FXT-OP-IXC"/>
-                                                    <constraint firstAttribute="width" constant="160" id="zm7-Yq-p2w"/>
                                                 </constraints>
                                                 <state key="normal" title="House Cocktails">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -621,7 +638,7 @@
                                                     <action selector="toggleCocktailSubtypeButtons:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="EMY-Wq-NJK"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LZz-oP-daa" userLabel="Common Cocktails Button">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LZz-oP-daa" userLabel="Common Cocktails Button">
                                                 <rect key="frame" x="160" y="0.0" width="160" height="60"/>
                                                 <state key="normal" title="Common Cocktails">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -633,11 +650,15 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="LZz-oP-daa" secondAttribute="trailing" id="0zi-lC-uqP"/>
+                                            <constraint firstItem="LZz-oP-daa" firstAttribute="width" secondItem="JWL-60-QfQ" secondAttribute="width" id="CGO-Ic-mvP"/>
+                                            <constraint firstAttribute="bottom" secondItem="LZz-oP-daa" secondAttribute="bottom" id="TO4-Af-PEt"/>
                                             <constraint firstItem="JWL-60-QfQ" firstAttribute="leading" secondItem="xaN-wm-ueQ" secondAttribute="leading" id="aJv-gE-nc0"/>
                                             <constraint firstAttribute="height" constant="60" id="i0v-7H-ZbX"/>
                                             <constraint firstItem="JWL-60-QfQ" firstAttribute="top" secondItem="xaN-wm-ueQ" secondAttribute="top" id="pFH-Jf-9KD"/>
+                                            <constraint firstItem="LZz-oP-daa" firstAttribute="leading" secondItem="JWL-60-QfQ" secondAttribute="trailing" id="s6F-i4-7Zq"/>
                                             <constraint firstAttribute="bottom" secondItem="JWL-60-QfQ" secondAttribute="bottom" id="vcW-1h-d3z"/>
-                                            <constraint firstAttribute="width" constant="320" id="ysq-o2-q4t"/>
+                                            <constraint firstItem="LZz-oP-daa" firstAttribute="top" secondItem="xaN-wm-ueQ" secondAttribute="top" id="viL-zA-MHO"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EFn-f8-qcU" userLabel="New Drink Container">
@@ -653,7 +674,6 @@
                                             </textField>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="320" id="3Mf-9b-PGR"/>
                                             <constraint firstItem="X5S-J2-1IS" firstAttribute="top" secondItem="EFn-f8-qcU" secondAttribute="top" constant="5" id="LwC-U3-5Ca"/>
                                             <constraint firstAttribute="height" constant="40" id="UJB-uy-Pya"/>
                                             <constraint firstItem="X5S-J2-1IS" firstAttribute="leading" secondItem="EFn-f8-qcU" secondAttribute="leading" constant="20" id="UOn-PE-vDM"/>
@@ -665,24 +685,35 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="EFn-f8-qcU" firstAttribute="top" secondItem="xaN-wm-ueQ" secondAttribute="bottom" id="296-wL-4fR"/>
+                                    <constraint firstAttribute="trailing" secondItem="uyk-ac-rcf" secondAttribute="trailing" id="3L5-pe-nKu"/>
                                     <constraint firstItem="Qs3-3Y-llG" firstAttribute="top" secondItem="uyk-ac-rcf" secondAttribute="bottom" constant="-10" id="5D2-Zf-aYX"/>
+                                    <constraint firstItem="xaN-wm-ueQ" firstAttribute="leading" secondItem="eSG-lL-MbD" secondAttribute="leading" id="68r-5J-fEi"/>
                                     <constraint firstItem="uyk-ac-rcf" firstAttribute="leading" secondItem="eSG-lL-MbD" secondAttribute="leading" id="6Ud-XO-1AY"/>
+                                    <constraint firstAttribute="trailing" secondItem="Qs3-3Y-llG" secondAttribute="trailing" id="7VF-u1-DWA"/>
                                     <constraint firstItem="xmo-Le-Kas" firstAttribute="top" secondItem="uyk-ac-rcf" secondAttribute="bottom" constant="-10" id="AZa-hV-Hex"/>
                                     <constraint firstItem="uyk-ac-rcf" firstAttribute="top" secondItem="eSG-lL-MbD" secondAttribute="top" id="ILf-5m-BfH"/>
                                     <constraint firstItem="EFn-f8-qcU" firstAttribute="top" secondItem="xmo-Le-Kas" secondAttribute="bottom" id="Nhs-9d-phm"/>
                                     <constraint firstItem="Qs3-3Y-llG" firstAttribute="leading" secondItem="eSG-lL-MbD" secondAttribute="leading" id="O5x-bs-fI1"/>
                                     <constraint firstItem="xaN-wm-ueQ" firstAttribute="leading" secondItem="eSG-lL-MbD" secondAttribute="leading" id="WYX-Nh-7VL"/>
                                     <constraint firstItem="EFn-f8-qcU" firstAttribute="leading" secondItem="eSG-lL-MbD" secondAttribute="leading" id="WkP-k7-VVB"/>
+                                    <constraint firstAttribute="trailing" secondItem="EFn-f8-qcU" secondAttribute="trailing" id="YLj-ni-GvS"/>
                                     <constraint firstItem="xmo-Le-Kas" firstAttribute="leading" secondItem="eSG-lL-MbD" secondAttribute="leading" id="afz-3v-VHd"/>
+                                    <constraint firstItem="EFn-f8-qcU" firstAttribute="leading" secondItem="eSG-lL-MbD" secondAttribute="leading" id="cXa-Yc-i6U"/>
+                                    <constraint firstAttribute="trailing" secondItem="xaN-wm-ueQ" secondAttribute="trailing" id="eK4-9O-Tcb"/>
                                     <constraint firstItem="xaN-wm-ueQ" firstAttribute="top" secondItem="uyk-ac-rcf" secondAttribute="bottom" constant="-10" id="fkg-2t-feq"/>
                                     <constraint firstItem="EFn-f8-qcU" firstAttribute="top" secondItem="Qs3-3Y-llG" secondAttribute="bottom" id="h6E-uw-i4Q"/>
                                     <constraint firstAttribute="height" constant="160" id="hjB-gm-pyU"/>
+                                    <constraint firstItem="uyk-ac-rcf" firstAttribute="leading" secondItem="eSG-lL-MbD" secondAttribute="leading" id="lx3-A0-v3J"/>
                                     <constraint firstAttribute="bottom" secondItem="EFn-f8-qcU" secondAttribute="bottom" id="mCI-hm-xJI"/>
+                                    <constraint firstAttribute="trailing" secondItem="xmo-Le-Kas" secondAttribute="trailing" id="s7o-Pu-vnn"/>
+                                    <constraint firstItem="Qs3-3Y-llG" firstAttribute="leading" secondItem="eSG-lL-MbD" secondAttribute="leading" id="wNw-By-D6j"/>
+                                    <constraint firstItem="xmo-Le-Kas" firstAttribute="leading" secondItem="eSG-lL-MbD" secondAttribute="leading" id="zOW-gD-khx"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="V1h-kT-2cW" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="2x9-yH-hcz"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="V1h-kT-2cW" secondAttribute="bottom" id="IeJ-TP-Uh2"/>
                             <constraint firstAttribute="trailing" secondItem="7e0-Y1-DGg" secondAttribute="trailing" id="QUm-7t-sfp"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="7e0-Y1-DGg" secondAttribute="bottom" id="U0R-W6-2Im"/>
@@ -690,8 +721,8 @@
                             <constraint firstItem="eSG-lL-MbD" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="eqS-IW-AEe"/>
                             <constraint firstAttribute="trailing" secondItem="eSG-lL-MbD" secondAttribute="trailing" id="h1M-s0-0WA"/>
                             <constraint firstItem="eSG-lL-MbD" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="k03-Sq-cO4"/>
-                            <constraint firstItem="V1h-kT-2cW" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="kbc-QQ-uMs"/>
                             <constraint firstItem="7e0-Y1-DGg" firstAttribute="top" secondItem="eSG-lL-MbD" secondAttribute="bottom" id="lLd-PY-vln"/>
+                            <constraint firstAttribute="trailing" secondItem="V1h-kT-2cW" secondAttribute="trailing" id="qhM-kB-BfI"/>
                             <constraint firstItem="V1h-kT-2cW" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="uGe-Ps-Hz7"/>
                         </constraints>
                     </view>

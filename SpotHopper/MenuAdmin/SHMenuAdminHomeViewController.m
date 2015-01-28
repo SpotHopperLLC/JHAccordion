@@ -7,7 +7,6 @@
 //
 
 #import <limits.h>
-//#import <Crashlytics/Crashlytics.h>
 #import "UIView+AutoLayout.h"
 
 #import "SHMenuAdminHomeViewController.h"
@@ -129,6 +128,8 @@ typedef enum {
 @property (strong, nonatomic) UIPickerView *pickerView;
 @property (strong, nonatomic) NSIndexPath *sizePickerIndexPath;
 @property (assign, nonatomic) CGFloat pickerCellRowHeight;
+
+@property (readonly) BOOL sizePickerIsShown;
 
 @property (strong, nonatomic) NSSet *menuTypes; //todo: consolidate menuTypes and menuTypeMap into one property
 @property (strong, nonatomic) NSMutableDictionary *menuTypeMap;
@@ -570,14 +571,10 @@ typedef enum {
 #pragma mark - UITableViewDataSource
 #pragma mark -
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 1;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	NSInteger rows = self.filteredMenuItems.count;
 
-	if ([self sizePickerIsShown]) {
+	if (self.sizePickerIsShown) {
 		rows++;
 	}
 
@@ -588,7 +585,7 @@ typedef enum {
 	static NSString *CellIdentifier = @"ButtonsCell";
 	static NSString *EditCellIdentifier = @"EditCell";
     
-	if ([self sizePickerIsShown] && (self.sizePickerIndexPath.row == indexPath.row)) {
+	if (self.sizePickerIsShown && (self.sizePickerIndexPath.row == indexPath.row)) {
 		UITableViewCell *pickerCell = [tableView dequeueReusableCellWithIdentifier:kPickerCellIdentifier];
 
 		if (!pickerCell) {
@@ -630,7 +627,7 @@ typedef enum {
 			else if ([self.editMenuItem.drink.drinkType isCocktail]) {
 				//check to see if there are base alcohols
 				if (self.editMenuItem.drink.baseAlochols.count > 0) {
-					BaseAlcoholModel *baseAlcohol = [self.editMenuItem.drink.baseAlochols objectAtIndex:0];
+					BaseAlcoholModel *baseAlcohol = self.editMenuItem.drink.baseAlochols[0];
 					editCell.lblDrinkSpecifics.text = baseAlcohol.name;
 				}
 			}
@@ -649,7 +646,8 @@ typedef enum {
 				editCell.drinkImage.image = placeHolderImage;
 			}
 
-			//remove container already in the wrappper if there is one
+            //remove container already in the wrappper if there is one
+            MAAssert(editCell.priceSizeWrapper, @"Property must be defined");
 			[[editCell.priceSizeWrapper.subviews firstObject] removeFromSuperview];
 
 			SHMenuAdminPriceSizeRowContainerView *container;
@@ -667,7 +665,8 @@ typedef enum {
 			else {
 				container = [self containerForAdd:editCell];
 			}
-
+            
+            MAAssert(editCell.priceSizeWrapper, @"Property must be defined");
 			[editCell.priceSizeWrapper addSubview:container];
 
 			//configure cell rows
@@ -706,8 +705,10 @@ typedef enum {
 	}
 
 	//normal view
-	if (indexPath.row < self.menuItems.count) {
-		MenuItemModel *menuItem = [self.filteredMenuItems objectAtIndex:indexPath.row];
+	if (indexPath.row < self.filteredMenuItems.count) {
+        MAAssert(indexPath.row < self.filteredMenuItems.count, @"Index must be within range");
+		MenuItemModel *menuItem = self.filteredMenuItems[indexPath.row];
+        MAAssert(menuItem, @"Menu Item must be defined");
 
 		SHMenuAdminSwipeableDrinkTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 		cell.delegate = self;
@@ -724,7 +725,7 @@ typedef enum {
 		else if ([menuItem.drink.drinkType.name isEqualToString:kDrinkTypeNameCocktail]) {
 			//check to see if there are base alcohols
 			if (menuItem.drink.baseAlochols.count > 0) {
-				BaseAlcoholModel *baseAlcohol = [menuItem.drink.baseAlochols objectAtIndex:0];
+				BaseAlcoholModel *baseAlcohol = menuItem.drink.baseAlochols[0];
 				cell.lblDrinkSpecifics.text = baseAlcohol.name;
 			}
 		}
@@ -799,16 +800,20 @@ typedef enum {
 	//if the size picker is showing then indexpath row does not match the backing array of
 	//filtered menu itemss
 	MenuItemModel *menuItem = nil;
-	if ([self sizePickerIsShown]) {
+	if (self.sizePickerIsShown) {
 		if (indexPath.row > self.sizePickerIndexPath.row) {
 			NSInteger row = indexPath.row - 1;
-			menuItem = [self.filteredMenuItems objectAtIndex:row];
+            if (row < self.filteredMenuItems.count) {
+                menuItem = self.filteredMenuItems[row];
+            }
 		}
 	}
 	else {
-		menuItem = [self.filteredMenuItems objectAtIndex:indexPath.row];
+        if (indexPath.row < self.filteredMenuItems.count) {
+            menuItem = self.filteredMenuItems[indexPath.row];
+        }
 	}
-
+    
 	//if the cell is being edited then cause it to grow
 	if (self.isEditingMenuItem || self.isAddingMenuItem) {
 		if (indexPath.section == 0 && indexPath.row == self.indexOfRowForEditing) {
@@ -840,10 +845,15 @@ typedef enum {
 		}
 	}
 
-	if ([self sizePickerIsShown] && (self.sizePickerIndexPath.row == indexPath.row)) {
+	if (self.sizePickerIsShown && (self.sizePickerIndexPath.row == indexPath.row)) {
 		return height = self.pickerCellRowHeight;
 	}
-
+    
+    if (!menuItem) {
+        DebugLog(@"Menu Item is not defined");
+        return 0.0;
+    }
+    
 	NSString *prices = @"";
 	for (PriceModel *price in menuItem.prices) {
 		if (price.cents || price.size) {
@@ -869,30 +879,14 @@ typedef enum {
 #pragma mark - UIScrollViewDelegate
 #pragma mark -
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (!self.isOpeningTopContainerView && scrollView == self.tableView) {
-        if (scrollView.hidden) {
-            // do not scroll table view when it is hidden
-            return;
-        }
-        
-        CGFloat y = scrollView.contentOffset.y + kTopViewContainerHeight;
-        if (y > 0) {
-            CGFloat targetY = MAX(0 - kTopViewContainerHeight, 0 - y);
-            CGRect frame = self.topContainerView.frame;
-            if (frame.origin.y > targetY) {
-                frame.origin.y = targetY;
-                self.topContainerView.frame = frame;
-                self.topContainerViewTopConstraint.constant = targetY;
-            }
-        }
-    }
-}
-
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
     if (scrollView == self.tableView) {
         CGFloat y = targetContentOffset->y + kTopViewContainerHeight;
-        if (y == 0 && velocity.y < 0) {
+        
+        if (y >= 0 && velocity.y > 0) {
+            [self closeTopContainerViewWithCompletionBlock:nil];
+        }
+        else if (velocity.y < 0) {
             [self openTopContainerViewWithCompletionBlock:^{
                 // done
             }];
@@ -930,7 +924,8 @@ typedef enum {
 	}
 
 	self.indexOfRowForEditing = indexPath.row;
-	self.editMenuItem = [[self.filteredMenuItems objectAtIndex:indexPath.row] copy];
+    MAAssert(indexPath.row < self.filteredMenuItems.count, @"Index must be within range");
+	self.editMenuItem = [self.filteredMenuItems[indexPath.row] copy];
 
 	[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
 
@@ -949,7 +944,8 @@ typedef enum {
 	if (!indexPath) {
 		MAAssert(indexPath, @"cell should've been found");
 	}
-
+    
+    MAAssert(indexPath.row < self.filteredMenuItems.count, @"Index must be within range");
 	MenuItemModel *menuItem = self.filteredMenuItems[indexPath.row];
     
     [SpotModel deleteMenuItem:menuItem spot:self.spot success:^{
@@ -1048,7 +1044,7 @@ typedef enum {
 
 	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 
-	if ([self sizePickerIsShown]) {
+	if (self.sizePickerIsShown) {
 		[self toggleSizePicker:indexPath];
 	}
 
@@ -1072,6 +1068,10 @@ typedef enum {
 - (void)addButtonTapped:(SHMenuAdminEditMenuItemTableViewCell *)cell {
 	__weak SHMenuAdminHomeViewController *hvc = self;
 	self.editMenuItem = [self gatherInfoToCreateMenuItem:cell];
+    
+    if (self.sizePickerIsShown) {
+        [self toggleSizePicker:nil];
+    }
 
 	//post new menu item
 	[self createMenuItem:self.editMenuItem success: ^{
@@ -1087,12 +1087,16 @@ typedef enum {
         [hvc.view endEditing:TRUE];
 
 	    //refresh view
-	    [hvc.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+        // reloading sections causes a crash so use reloadData for now
+//	    [hvc.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [hvc.tableView reloadData];
 	}];
 }
 
 - (void)saveButtonTapped:(SHMenuAdminEditMenuItemTableViewCell *)cell {
 	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    
+    MAAssert(indexPath.row < self.filteredMenuItems.count, @"Index must be within range");
 	MenuItemModel *menuItem = self.filteredMenuItems[indexPath.row];
 
 	self.editMenuItem = [self gatherInfoToCreateMenuItem:cell];
@@ -1136,6 +1140,8 @@ typedef enum {
 
 - (void)sizeLabelTapped:(SHMenuAdminEditMenuItemTableViewCell *)cell priceSizeContainer:(SHMenuAdminPriceSizeRowView *)row {
 	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    
+    MAAssert(indexPath.row < self.filteredMenuItems.count, @"Index must be within range");
 	MenuItemModel *menuItem = self.filteredMenuItems[indexPath.row];
 	[self.view endEditing:TRUE];
 
@@ -1143,7 +1149,7 @@ typedef enum {
 	//show size picker
 	//if already shown
 	//refresh the pciker data source with the sizes
-	if (![self sizePickerIsShown]) {
+	if (!self.sizePickerIsShown) {
 		[self toggleSizePicker:indexPath];
 	}
 
@@ -1177,8 +1183,9 @@ typedef enum {
 	//todo: show image in the appropriate cell
 	SHMenuAdminSwipeableDrinkTableViewCell *cell = (SHMenuAdminSwipeableDrinkTableViewCell *)[self.tableView cellForRowAtIndexPath:self.indexPathForPhotoTaken];
 	cell.drinkImage.image = image;
-
-	MenuItemModel *menuItem = [self.filteredMenuItems objectAtIndex:self.indexPathForPhotoTaken.row];
+    
+    MAAssert(self.indexPathForPhotoTaken.row < self.filteredMenuItems.count, @"Index must be within range");
+	MenuItemModel *menuItem = self.filteredMenuItems[self.indexPathForPhotoTaken.row];
 
 	if (!menuItem) {
 		MAAssert(menuItem, @"menu item which picture was taken for should exist");
@@ -1231,7 +1238,8 @@ typedef enum {
 
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.indexOfRowForEditing inSection:0];
 	SHMenuAdminEditMenuItemTableViewCell *cell = (SHMenuAdminEditMenuItemTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-
+    
+    MAAssert(cell.priceSizeWrapper, @"Property must be defined");
 	if (!self.lastSelectedContainer || ![cell.priceSizeWrapper.subviews containsObject:self.lastSelectedContainer]) {
 		MAAssert(self.lastSelectedContainer, @"last selected price size container cannot be nil");
 	}
@@ -1257,13 +1265,13 @@ typedef enum {
 - (void)toggleSizePicker:(NSIndexPath *)indexPath {
 	[self.tableView beginUpdates];
 
-	if ([self sizePickerIsShown]) {
+	if (self.sizePickerIsShown) {
 		[self hideExistingPicker];
 	}
 	else {
 		NSIndexPath *newPickerIndexPath = [self calculateIndexPathForNewPicker:indexPath];
 
-		if ([self sizePickerIsShown]) {
+		if (self.sizePickerIsShown) {
 			[self hideExistingPicker];
 		}
 
@@ -1275,8 +1283,10 @@ typedef enum {
 		//if the menu item has a size
 		//find index of the size
 		//initialize picker at that position
-		NSIndexPath *indexPath = [[self.tableView indexPathsForVisibleRows]firstObject];
-		MenuItemModel *menuItem =  [self.filteredMenuItems objectAtIndex:indexPath.row];
+		NSIndexPath *indexPath = [[self.tableView indexPathsForVisibleRows] firstObject];
+        
+        MAAssert(indexPath.row < self.filteredMenuItems.count, @"Index must be within range");
+		MenuItemModel *menuItem =  self.filteredMenuItems[indexPath.row];
 
 		PriceModel *price = [menuItem.prices firstObject];
 
@@ -1293,7 +1303,7 @@ typedef enum {
 - (NSIndexPath *)calculateIndexPathForNewPicker:(NSIndexPath *)selectedIndexPath {
 	NSIndexPath *newIndexPath;
 
-	if (([self sizePickerIsShown]) && (self.sizePickerIndexPath.row < selectedIndexPath.row)) {
+	if ((self.sizePickerIsShown) && (self.sizePickerIndexPath.row < selectedIndexPath.row)) {
 		newIndexPath = [NSIndexPath indexPathForRow:selectedIndexPath.row - 1 inSection:0];
 	}
 	else {
@@ -1321,7 +1331,7 @@ typedef enum {
 - (void)openTopContainerViewWithCompletionBlock:(void (^)())completionBlock {
     self.isOpeningTopContainerView = TRUE;
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-    [UIView animateWithDuration:0.25 delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:5.0 options:options animations:^{
+    [UIView animateWithDuration:0.45 delay:0.0 usingSpringWithDamping:0.9f initialSpringVelocity:0.35f options:options animations:^{
         CGRect frame = self.topContainerView.frame;
         frame.origin.y = 0;
         self.topContainerView.frame = frame;
@@ -1342,7 +1352,7 @@ typedef enum {
     self.isClosingTopContainerView = TRUE;
     CGFloat targetY = kTopViewContainerHeight * -1;
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-    [UIView animateWithDuration:0.25 delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:5.0 options:options animations:^{
+    [UIView animateWithDuration:0.45 delay:0.0 usingSpringWithDamping:0.9f initialSpringVelocity:0.35f options:options animations:^{
         CGRect frame = self.topContainerView.frame;
         frame.origin.y = targetY;
         self.topContainerView.frame = frame;
@@ -1747,7 +1757,8 @@ typedef enum {
 	menuItem.name = cell.lblDrinkName.text;
 
 	NSMutableArray *prices = [NSMutableArray array];
-
+    
+    MAAssert(cell.priceSizeWrapper, @"Property must be defined");
 	SHMenuAdminPriceSizeRowContainerView *container = [cell.priceSizeWrapper.subviews firstObject]; //only one container ever added
 
 	for (SHMenuAdminPriceSizeRowView *row in container.subviews) {
@@ -1891,7 +1902,7 @@ typedef enum {
 - (BOOL)keyboardWillHideWithHeight:(CGFloat)height duration:(CGFloat)duration animationOptions:(UIViewAnimationOptions)animationOptions {
     BOOL result = [super keyboardWillHideWithHeight:height duration:duration animationOptions:animationOptions];
     
-    if ([self sizePickerIsShown]) {
+    if (self.sizePickerIsShown) {
         NSIndexPath *indexPath = [[self.tableView indexPathsForVisibleRows] firstObject];
         [self toggleSizePicker:indexPath];
     }
