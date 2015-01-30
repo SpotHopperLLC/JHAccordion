@@ -80,7 +80,7 @@ typedef void(^AlertBlock)();
         _backgroundImage = [[UIImageView alloc] initWithFrame:self.view.frame];
         [_backgroundImage setImage:[UIImage imageNamed:( [options containsObject:kDidLoadOptionsFocusedBackground] ? @"app_background" : @"app_background_blurred" )]];
         [_backgroundImage setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
-        [_backgroundImage setContentMode:UIViewContentModeBottom];
+        [_backgroundImage setContentMode:UIViewContentModeScaleAspectFill];
         
         [self.view insertSubview:_backgroundImage atIndex:0];
     }

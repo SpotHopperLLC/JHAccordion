@@ -81,20 +81,21 @@
 + (void)identifyUser {
     DebugLog(@"Identifying user with Mixpanel");
     
-    if ([SHAppConfiguration isTrackingEnabled] && [UserModel isLoggedIn]) {
-        Mixpanel *mixpanel = [Mixpanel sharedInstance];
-        UserModel *user = [[ClientSessionManager sharedClient] currentUser];
-        NSString *userId = [NSString stringWithFormat:@"%@", user.ID];
-        [mixpanel identify:mixpanel.distinctId];
-        [mixpanel createAlias:userId forDistinctID:mixpanel.distinctId];
-        DebugLog(@"mixpanel.distinctId: %@", mixpanel.distinctId);
-        
-//        [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-        
-    }
-    else if (![UserModel isLoggedIn]) {
-        Mixpanel *mixpanel = [Mixpanel sharedInstance];
-        [mixpanel identify:mixpanel.distinctId];
+    if ([SHAppConfiguration isTrackingEnabled]) {
+        if ([UserModel isLoggedIn]) {
+            Mixpanel *mixpanel = [Mixpanel sharedInstance];
+            UserModel *user = [[ClientSessionManager sharedClient] currentUser];
+            NSString *userId = [NSString stringWithFormat:@"%@", user.ID];
+            [mixpanel identify:mixpanel.distinctId];
+            [mixpanel createAlias:userId forDistinctID:mixpanel.distinctId];
+            DebugLog(@"mixpanel.distinctId: %@", mixpanel.distinctId);
+            
+            // [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+        }
+        else {
+            Mixpanel *mixpanel = [Mixpanel sharedInstance];
+            [mixpanel identify:mixpanel.distinctId];
+        }
     }
 }
 

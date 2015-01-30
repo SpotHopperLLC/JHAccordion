@@ -34,6 +34,7 @@
 
     isConfiguredForAdd = FALSE;
     //clear prototype views
+    MAAssert(self.priceSizeWrapper, @"Property must be defined");
     for (UIView *view in self.priceSizeWrapper.subviews) {
         [view removeFromSuperview];
     }
@@ -50,7 +51,6 @@
 #pragma mark -
 
 - (IBAction)menuButtonTapped:(id)sender {
-    
     if (sender == self.btnCancel) {
         if ([self.delegate respondsToSelector:@selector(cancelButtonTapped:)]) {
             [self.delegate cancelButtonTapped:self];
@@ -68,7 +68,6 @@
             }
         }
     }
-    
 }
 
 - (void)addPriceAndSizeButtonTapped:(SHMenuAdminPriceSizeRowContainerView*)container {

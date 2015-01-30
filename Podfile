@@ -44,7 +44,7 @@ def import_pods
     pod 'ParseCrashReporting', '~> 1.6'
 
     # Analytics
-    pod 'Mixpanel', '~> 2.5'
+    pod 'Mixpanel', '~> 2.7'
 
 end
 
