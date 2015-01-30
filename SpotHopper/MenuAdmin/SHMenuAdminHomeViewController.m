@@ -158,9 +158,9 @@ typedef enum {
 
 @property (nonatomic, strong) MenuItemModel *editMenuItem;
 //toggles whether an item is being added
-@property (nonatomic, assign) BOOL isAddingMenuItem;
+@property (nonatomic, assign, getter=isAddingMenuItem) BOOL addingMenuItem;
 //toggles whether an item is being edited
-@property (nonatomic, assign) BOOL isEditingMenuItem;
+@property (nonatomic, assign, getter=isEditingMenuItem) BOOL editingMenuItem;
 //tracks the index of the cell that is being edited
 @property (nonatomic, assign) NSInteger indexOfRowForEditing;
 //tracks the pricesizerowcontainers per index path, view, and menu typ
@@ -225,8 +225,8 @@ typedef enum {
 	self.rightSidebarViewController.delegate = self;
 
 	//initalize stuff
-	_isAddingMenuItem = FALSE;
-	_isEditingMenuItem = FALSE;
+	self.addingMenuItem = FALSE;
+	self.editingMenuItem = FALSE;
 	_indexOfRowForEditing = 0;
 
     UIEdgeInsets insets = UIEdgeInsetsMake(kTopViewContainerHeight, 0, 0, 0);
@@ -363,6 +363,33 @@ typedef enum {
 		SHMenuAdminDrinkProfileViewController *vc = (SHMenuAdminDrinkProfileViewController *)segue.destinationViewController;
 		vc.drink = self.drinkToShow;
 	}
+}
+
+#pragma mark - Properties
+#pragma mark -
+
+- (void)setEditingMenuItem:(BOOL)editingMenuItem {
+    _editingMenuItem = editingMenuItem;
+    [self adjustTopContainerView];
+}
+
+- (void)setAddingMenuItem:(BOOL)addingMenuItem {
+    _addingMenuItem = addingMenuItem;
+    [self adjustTopContainerView];
+}
+
+- (void)adjustTopContainerView {
+    UIEdgeInsets insets = self.tableView.contentInset;
+    
+    if (self.isEditingMenuItem || self.isAddingMenuItem) {
+        insets.top = 0.0;
+    }
+    else {
+        insets.top = CGRectGetHeight(self.topContainerView.frame);
+    }
+    
+    self.tableView.contentInset = insets;
+    self.tableView.scrollIndicatorInsets = insets;
 }
 
 #pragma mark - Menu Toggle Actions
@@ -915,7 +942,7 @@ typedef enum {
 	//disable swipe gestures on the cell
 	//show edit view
 
-	self.isEditingMenuItem = TRUE;
+	self.editingMenuItem = TRUE;
 
 	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 
@@ -932,6 +959,7 @@ typedef enum {
     CGRect frame = [self.tableView rectForRowAtIndexPath:indexPath];
     LOG_FRAME(@"cell", frame);
     [self.tableView setContentOffset:frame.origin animated:TRUE];
+    [self closeTopContainerViewWithCompletionBlock:nil];
 }
 
 - (void)deleteButtonTapped:(SHMenuAdminSwipeableDrinkTableViewCell *)cell {
@@ -1033,11 +1061,11 @@ typedef enum {
 
 	//set isEditing to FALSE and reload table view
 	if (self.isEditingMenuItem) {
-		self.isEditingMenuItem = FALSE;
+		self.editingMenuItem = FALSE;
 	}
 
 	if (self.isAddingMenuItem) {
-		self.isAddingMenuItem = FALSE;
+		self.addingMenuItem = FALSE;
 		self.addContainer = nil;
 		[self.filteredMenuItems removeObjectAtIndex:0]; //removes the newly added drink
 	}
@@ -1081,7 +1109,7 @@ typedef enum {
 	    //3. show updated tableview
 	    //   remove the cell from list of cells that are open
 
-	    hvc.isAddingMenuItem = FALSE;
+	    hvc.addingMenuItem = FALSE;
 	    hvc.addContainer = nil;
 
         [hvc.view endEditing:TRUE];
@@ -1094,6 +1122,10 @@ typedef enum {
 }
 
 - (void)saveButtonTapped:(SHMenuAdminEditMenuItemTableViewCell *)cell {
+    if (self.sizePickerIsShown) {
+        [self toggleSizePicker:self.sizePickerIndexPath];
+    }
+    
 	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     
     MAAssert(indexPath.row < self.filteredMenuItems.count, @"Index must be within range");
@@ -1107,7 +1139,7 @@ typedef enum {
 	    //1. remove edit cell at that row
 	    //2. close drawer and hide picker or keyboard if shown
 	    //3. show updated tableview
-	    self.isEditingMenuItem = FALSE;
+	    self.editingMenuItem = FALSE;
 
 	    // replace edit menu item prices with menu item
 	    menuItem.prices = self.editMenuItem.prices;
@@ -1122,14 +1154,15 @@ typedef enum {
 		}
 
         [self.view endEditing:TRUE];
-
+        
 	    //refresh view
 	    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.15 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             CGRect frame = [self.tableView rectForRowAtIndexPath:indexPath];
             CGPoint point = frame.origin;
-            point.y -= kTopViewContainerHeight;
+            point.y -= CGRectGetHeight(self.topContainerView.frame);
+            DebugLog(@"point: %f", point.y);
             [self.tableView setContentOffset:point animated:TRUE];
             [self openTopContainerViewWithCompletionBlock:^{
                 // done
@@ -1263,6 +1296,8 @@ typedef enum {
 }
 
 - (void)toggleSizePicker:(NSIndexPath *)indexPath {
+    DebugLog(@"%@, %li", NSStringFromSelector(_cmd), (long)indexPath.row);
+    
 	[self.tableView beginUpdates];
 
 	if (self.sizePickerIsShown) {
@@ -1298,6 +1333,11 @@ typedef enum {
 
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 	[self.tableView endUpdates];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        CGRect frame = [self.tableView rectForRowAtIndexPath:indexPath];
+        [self.tableView setContentOffset:frame.origin animated:TRUE];
+    });
 }
 
 - (NSIndexPath *)calculateIndexPathForNewPicker:(NSIndexPath *)selectedIndexPath {
@@ -1329,6 +1369,11 @@ typedef enum {
 #pragma mark -
 
 - (void)openTopContainerViewWithCompletionBlock:(void (^)())completionBlock {
+    if (self.isEditingMenuItem || self.isAddingMenuItem) {
+        // top container must stay closed while editing
+        return;
+    }
+    
     self.isOpeningTopContainerView = TRUE;
     UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
     [UIView animateWithDuration:0.45 delay:0.0 usingSpringWithDamping:0.9f initialSpringVelocity:0.35f options:options animations:^{
@@ -1389,8 +1434,9 @@ typedef enum {
 	menuItem.menuType = menuType;
 
 	//set edit attributes
+    [self closeTopContainerViewWithCompletionBlock:nil];
 	self.editMenuItem = menuItem;
-	self.isAddingMenuItem = TRUE;
+	self.addingMenuItem = TRUE;
 	self.indexOfRowForEditing = 0;
 	[self.filteredMenuItems insertObject:self.editMenuItem atIndex:0];
 
@@ -1421,8 +1467,8 @@ typedef enum {
 		self.title = spot.name;
 
 		//reset edit state
-		self.isEditingMenuItem = FALSE;
-		self.isAddingMenuItem = FALSE;
+		self.editingMenuItem = FALSE;
+		self.addingMenuItem = FALSE;
 
 		[self.indexPathViewPairMap removeAllObjects];
 		[self.cellWithOpenDrawers removeAllObjects];
@@ -1756,7 +1802,7 @@ typedef enum {
 	//get base info from the cell
 	menuItem.name = cell.lblDrinkName.text;
 
-	NSMutableArray *prices = [NSMutableArray array];
+    NSMutableArray *prices = @[].mutableCopy;
     
     MAAssert(cell.priceSizeWrapper, @"Property must be defined");
 	SHMenuAdminPriceSizeRowContainerView *container = [cell.priceSizeWrapper.subviews firstObject]; //only one container ever added
