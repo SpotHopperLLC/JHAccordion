@@ -31,6 +31,7 @@
 
 #define kPageSize @25
 #define kMetersPerMile 1609.344
+#define kMeterToMile 0.000621371f
 
 @interface SpotModelCache : NSCache
 
@@ -596,6 +597,8 @@
         params[kSpotModelParamQueryRadius] = [NSNumber numberWithFloat:radius];
     }
 
+    DebugLog(@"params: %@", params);
+    
     [[ClientSessionManager sharedClient] GET:@"/api/spots" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         // Parses response with JSONAPI

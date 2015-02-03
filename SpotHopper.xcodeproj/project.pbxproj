@@ -4625,7 +4625,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Input Files\n# $(DWARF_DSYM_FOLDER_PATH)/$(DWARF_DSYM_FILE_NAME)\n\n# Output Files\n# $(DERIVED_FILE_DIR)/ParseCrashReporting.txt\n\necho \"Parse Crash Reporting\"\n\nCLOUD_CODE_DIR=${PROJECT_DIR}/ParseCloudCode\n\nif [ -d ${CLOUD_CODE_DIR} ]; then\n    cd ${CLOUD_CODE_DIR}\n    /usr/local/bin/parse symbols \"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"\nelse\n    echo \"Unable to upload symbols. The Parse Cloud Cloud folder must be created.\"\n    echo \"Please run 'parse new ParseCloudCode' in ${PROJECT_DIR}\"\n    echo \"Docs: https://www.parse.com/apps/quickstart#analytics/crashreporting/ios\"\nfi\n\ntouch \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "# Input Files\n# $(DWARF_DSYM_FOLDER_PATH)/$(DWARF_DSYM_FILE_NAME)\n\n# Output Files\n# $(DERIVED_FILE_DIR)/ParseCrashReporting.txt\n\necho \"Parse Crash Reporting\"\n\nCLOUD_CODE_DIR=${PROJECT_DIR}/ParseCloudCode\n\nif [ -d ${CLOUD_CODE_DIR} ]; then\n    cd ${CLOUD_CODE_DIR}\n#/usr/local/bin/parse symbols \"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"\nelse\n    echo \"Unable to upload symbols. The Parse Cloud Cloud folder must be created.\"\n    echo \"Please run 'parse new ParseCloudCode' in ${PROJECT_DIR}\"\n    echo \"Docs: https://www.parse.com/apps/quickstart#analytics/crashreporting/ios\"\nfi\n\ntouch \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 		};
 		26D8D75D1A70F58400921FE3 /* Parse Crash Reporting */ = {
 			isa = PBXShellScriptBuildPhase;

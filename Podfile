@@ -18,7 +18,7 @@ def import_pods
     pod 'JHSidebar', :git => 'https://github.com/SpotHopperLLC/JHSidebar.git', :tag => 'SpotHopper-v2'
     pod 'UIView-Autolayout', '~> 0.2.0'
     pod 'JHAutoCompleteTextField', :git => 'http://github.com/joshdholtz/JHAutoCompleteTextField.git'
-    pod 'TTTAttributedLabel', '~> 1.12'
+    pod 'TTTAttributedLabel', '~> 1.13'
     pod 'PhotoZoom', '~> 0.0'
     pod 'MBProgressHUD', '~> 0.8.0'
     pod 'UIImage+BlurredFrame', '~> 0.0'
